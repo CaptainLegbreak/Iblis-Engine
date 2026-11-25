@@ -9,7 +9,7 @@ Iblis Engine plays like 1.14d. It adds only what a modern port needs, and leaves
 - automatic gold pickup;
 - controller support;
 - realm-only content in single player: ladder-only runewords and cube recipes, the Pandemonium Event and Diablo Clone;
-- **Crossroads**, in place of Battle.net: host your own server, or join someone else's through the game browser;
+- **Crossroads**, in place of Battle.net: add servers to your server list by address, then join one to reach its lobby, chat and game list; anyone can host a server;
 - mod support: data, Lua and native mods, loaded in a load order, each described by one manifest.
 
 Everything else, including 1.14d's bugs, stays as it is. Gameplay changes belong in mods.
