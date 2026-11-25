@@ -1,0 +1,20 @@
+# Generated from the player's own game files; never commit
+/gen/
+codex/gen/
+
+# Build output
+/out/
+/build/
+codex/out/
+codex/toolchain/
+codex/local.json
+*.obj
+*.pdb
+*.ilk
+__pycache__/
+
+# Game files
+*.mpq
+*.MPQ
+Game.exe
+*.d2s
