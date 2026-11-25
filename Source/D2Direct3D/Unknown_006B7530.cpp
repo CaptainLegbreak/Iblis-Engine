@@ -236,13 +236,6 @@ static void __stdcall sub_006B7FD0_GetPanelRect(int nSide, D2RectStrc* pRect, in
     }
 }
 
-void __fastcall sub_Emit_006B7FD0(D2RectStrc* pRect, int nSide)
-{
-    int nOffset;
-    sub_006B7FD0_GetPanelRect(nSide, pRect, &nOffset, 1);
-    sub_006B7FD0_GetPanelRect(nSide, pRect, 0, 0);
-}
-
 // 0x006B8220
 int __fastcall sub_006B8220_DrawTileParts(D2TileContextStrc* pTile, int nX, int nY, int nLight, int nColorMode, int nViewMode)
 {

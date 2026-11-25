@@ -270,6 +270,7 @@ static void __stdcall SKILLDESC_DrawWeaponDamage(D2UnitStrc* pUnit, D2SkillStrc*
 void __fastcall SKILLDESC_DrawDualWieldLine(D2UnitStrc* pUnit, D2SkillStrc* pSkill, D2SkillsTxt* pSkillsTxt, int nSkillLevel, int nLeft, int nY, int nRight); // 0x004EA170
 
 void __fastcall SKILLDESC_DrawDualWieldLineNoElem(D2UnitStrc* pUnit, D2SkillStrc* pSkill, D2SkillsTxt* pSkillsTxt, int nSkillLevel, int nLeft, int nY, int nRight); // 0x004EA240
+void __fastcall SKILLDESC_DrawWeaponDamageWithParam(D2UnitStrc* pUnit, D2SkillStrc* pSkill, D2SkillsTxt* pSkillsTxt, int nSkillLevel, int nLeft, int nY, int nRight); // 0x004EB940
 
 void __fastcall SKILLDESC_DrawWeaponDamageLine(D2UnitStrc* pUnit, D2SkillStrc* pSkill, D2SkillsTxt* pSkillsTxt, int nSkillLevel, int nLeft, int nY, int nRight);
 
@@ -4379,26 +4380,6 @@ static inline int SKILLDESC_HasOnlyBonusLevels(D2UnitStrc* pUnit, int nSkillId)
 int __fastcall sub_M119_Emit_004ED530(D2UnitStrc* pUnit, int nSkillId)
 {
     return SKILLDESC_HasOnlyBonusLevels(pUnit, nSkillId);
-}
-
-void __fastcall SKILLDESC_DrawWeaponDamageWithParam(D2UnitStrc* pUnit, D2SkillStrc* pSkill, D2SkillsTxt* pSkillsTxt, int nSkillLevel, int nLeft, int nY, int nRight)
-{
-    if (!pSkill || !pSkillsTxt)
-    {
-        return;
-    }
-
-    int nMin = 0;
-    int nMax = 0;
-    int nColor = 0;
-    sub_004E86F0_GetWeaponDamage(&nMin, &nMax, &nColor, 0, pSkill, 0, 0, 0, pUnit, 0);
-    const int nSkillId = SKILLS_GetSkillIdFromSkill(pSkill, gszSkillDescFile, 0xD40);
-    D2SkillsTxt* pRecord = sub_I05_GetSkillsTxtRecord(nSkillId);
-    const int nParam = !pRecord ? 0 : pRecord->dwParam[4];
-    nMin += nParam * nMin / 100;
-    nMax += nParam * nMax / 100;
-    sub_004E89A0_GetElementalDamage(pUnit, &nMin, &nMax, &nColor, pSkill);
-    SKILLDESC_DrawDamageRange(nColor, nY, nMin, nMax, nLeft, nRight);
 }
 
 static unsigned short sub_004E6E30_GetSkillDescAltStr(int nSkillId)

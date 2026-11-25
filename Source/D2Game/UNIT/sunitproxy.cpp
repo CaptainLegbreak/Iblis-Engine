@@ -23,7 +23,6 @@ struct D2ItemCacheStrc;
 
 struct D2UnitProxyStrc;
 
-struct M08EmitRecStrc;
 
 struct D2NpcGambleStrc;
 
@@ -62,15 +61,6 @@ D2UnitProxyStrc gaUnitProxyItemCache[17]; // 0x00883D78
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
-
-struct M08EmitRecStrc
-{
-    int nKind;
-    char bFlagA;
-    char bFlagB;
-    char unk0x06[2];
-    D2UnitProxyStrc tProxy;
-};
 
 struct D2NpcVendorChainStrc
 {
@@ -443,27 +433,6 @@ initialize_shared:
     }
     pControl->pFirstRecord = pRecords;
     pGame->pNpcControl = pControl;
-}
-
-void __fastcall sub_M08_EmitInitializeItemCache(D2GameStrc* pGame, M08EmitRecStrc* pRec)
-{
-    for (; pRec->nKind; ++pRec)
-    {
-        switch (pRec->nKind)
-        {
-        case 31:
-            SUNITPROXY_InitializeItemCache(pGame, &pRec->tProxy, 9);
-            pRec->bFlagA = 1;
-            break;
-        case 37:
-            SUNITPROXY_InitializeItemCache(pGame, &pRec->tProxy, 3);
-            pRec->bFlagB = 1;
-            break;
-        case 45:
-            SUNITPROXY_InitializeItemCache(pGame, &pRec->tProxy, 0);
-            break;
-        }
-    }
 }
 
 static D2NpcRecordStrc* D10_GetNpcRecordFromUnit(D2GameStrc* pGame, D2UnitStrc* pNpc)

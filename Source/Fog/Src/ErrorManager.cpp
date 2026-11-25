@@ -1086,6 +1086,8 @@ static bool ERRORMANAGER_AppendPathSeparator(char* szPath)
 }
 
 // 0x00404110
+// Out of line by evidence: the original passes nSize in ecx and szSource in edi, a register convention the
+// compiler gives only a static whose callers are all in this unit (0x403FA0, 0x4040B0), so it was one here.
 static __declspec(noinline) size_t ERRORMANAGER_StrLCopy(char* szDest, const char* szSource, size_t nSize)
 {
     const char* p = szSource;
@@ -2108,6 +2110,8 @@ static int sub_00406BA0_GetModuleDirectoryAndSave(char* szPath, unsigned int nSi
 }
 
 // 0x004080B0
+// Out of line by evidence: the original passes the va_list in edi, a register convention the compiler gives
+// only a static whose callers are all in this unit (0x4082A0, 0x4082C0), so it was one here.
 static __declspec(noinline) void __stdcall ERRORMANAGER_DebugPrintV(unsigned int nFlags, const char* szFormat, va_list args)
 {
     char szBuffer[0x1000];

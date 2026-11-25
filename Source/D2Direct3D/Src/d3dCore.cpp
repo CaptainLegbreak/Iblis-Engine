@@ -844,7 +844,7 @@ struct D2Surface006B3570VtableStrc
 
 struct D2Surface006B3570Strc
 {
-    D2Surface006B3570VtableStrc* f_0;
+    D2Surface006B3570VtableStrc* lpVtbl;
 };
 
 extern D2Surface006B3570Strc* gpPrimarySurface_00970E68; // 0x00970E68
@@ -1671,7 +1671,7 @@ void __cdecl D3DCORE_Flush()
     D2DDSurfaceDesc2Strc desc;
     desc.dwSize = sizeof(desc);
     memset((char*)&desc + sizeof(desc.dwSize), 0, sizeof(desc) - sizeof(desc.dwSize));
-    int nResult = pSurface->f_0->Lock(pSurface, 0, &desc, 0x21, 0);
+    int nResult = pSurface->lpVtbl->Lock(pSurface, 0, &desc, 0x21, 0);
     if (nResult)
     {
         D3DCORE_LogDDrawError("Failed to lock render surface for clear", nResult);
@@ -1686,7 +1686,7 @@ void __cdecl D3DCORE_Flush()
         memset(pPixels, 0, nPitch);
         pPixels += nPitch;
     }
-    pSurface->f_0->Unlock(pSurface, 0);
+    pSurface->lpVtbl->Unlock(pSurface, 0);
 }
 
 // 0x006B38A0

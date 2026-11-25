@@ -67,6 +67,7 @@ int __fastcall GLSUBTILECACHE_TileCacheInit(D2GlideTileCacheStrc* pCache, unsign
     return pCache->nCount * nBlockSize + nStart;
 }
 
+// Kept noinline: a static whose callers here pass its arguments in registers (the #368 case).
 // 0x0050EF40
 static __declspec(noinline) void GLSUBTILECACHE_TileCacheAppendUsed(D2GlideTileCacheStrc* pCache, D2GlideTileCacheEntryStrc* pEntry)
 {

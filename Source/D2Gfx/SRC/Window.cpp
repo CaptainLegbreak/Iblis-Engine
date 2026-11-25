@@ -8,11 +8,13 @@ struct D2TileLibraryBlockStrc
 {
     short nPosX;
     short nPosY;
-    short unk0x04;
+    short nCacheIndex;
     unsigned char nGridX;
     unsigned char nGridY;
     unsigned char nFormat;
-    char unk0x09[0x07];
+    unsigned char nFormatHigh;
+    unsigned short nLength;
+    int nReserved;
     unsigned char* pData;
 };
 
@@ -74,7 +76,6 @@ struct D2PaletteStrc
     {
         unsigned char colors[256];
         unsigned char remap[256];
-        unsigned char unk0x00[0x100];
     };
 };
 
@@ -140,11 +141,34 @@ struct D2DevModeStrc
     unsigned short dmSize;
     unsigned short dmDriverExtra;
     unsigned int dmFields;
-    char unk0x2C[0x3C];
+    short dmOrientation;
+    short dmPaperSize;
+    short dmPaperLength;
+    short dmPaperWidth;
+    short dmScale;
+    short dmCopies;
+    short dmDefaultSource;
+    short dmPrintQuality;
+    short dmColor;
+    short dmDuplex;
+    short dmYResolution;
+    short dmTTOption;
+    short dmCollate;
+    char dmFormName[0x20];
+    unsigned short dmLogPixels;
     unsigned int dmBitsPerPel;
     unsigned int dmPelsWidth;
     unsigned int dmPelsHeight;
-    char f_74[0x28];
+    unsigned int dmDisplayFlags;
+    unsigned int dmDisplayFrequency;
+    unsigned int dmICMMethod;
+    unsigned int dmICMIntent;
+    unsigned int dmMediaType;
+    unsigned int dmDitherType;
+    unsigned int dmReserved1;
+    unsigned int dmReserved2;
+    unsigned int dmPanningWidth;
+    unsigned int dmPanningHeight;
 };
 
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
@@ -1373,11 +1397,6 @@ void __stdcall SCALE_SetDefaultFactor()
     return gpGraphicsInterface->pfSetGlobalScale(gnScaleFactor);
 }
 
-int __stdcall sub_J03_EmitScaleReaders()
-{
-    return gnChangedScaleFactor + gnPerspectiveScaleX + gnPerspectiveScaleY;
-}
-
 // 0x004F6610
 void __cdecl D2GFX_IncreaseScaleFactor()
 {
@@ -1571,45 +1590,45 @@ void __fastcall D2GFX_DrawLitSubtileRows(unsigned char* pSrc, unsigned char* pDs
         switch (ganSubtileRowWidth[i])
         {
         case 32:
-            pRow[nOff + 31] = gatLightPalettes[v[31]].unk0x00[s[31]];
-            pRow[nOff + 30] = gatLightPalettes[v[30]].unk0x00[s[30]];
-            pRow[nOff + 29] = gatLightPalettes[v[29]].unk0x00[s[29]];
-            pRow[nOff + 28] = gatLightPalettes[v[28]].unk0x00[s[28]];
+            pRow[nOff + 31] = gatLightPalettes[v[31]].colors[s[31]];
+            pRow[nOff + 30] = gatLightPalettes[v[30]].colors[s[30]];
+            pRow[nOff + 29] = gatLightPalettes[v[29]].colors[s[29]];
+            pRow[nOff + 28] = gatLightPalettes[v[28]].colors[s[28]];
         case 28:
-            pRow[nOff + 27] = gatLightPalettes[v[27]].unk0x00[s[27]];
-            pRow[nOff + 26] = gatLightPalettes[v[26]].unk0x00[s[26]];
-            pRow[nOff + 25] = gatLightPalettes[v[25]].unk0x00[s[25]];
-            pRow[nOff + 24] = gatLightPalettes[v[24]].unk0x00[s[24]];
+            pRow[nOff + 27] = gatLightPalettes[v[27]].colors[s[27]];
+            pRow[nOff + 26] = gatLightPalettes[v[26]].colors[s[26]];
+            pRow[nOff + 25] = gatLightPalettes[v[25]].colors[s[25]];
+            pRow[nOff + 24] = gatLightPalettes[v[24]].colors[s[24]];
         case 24:
-            pRow[nOff + 23] = gatLightPalettes[v[23]].unk0x00[s[23]];
-            pRow[nOff + 22] = gatLightPalettes[v[22]].unk0x00[s[22]];
-            pRow[nOff + 21] = gatLightPalettes[v[21]].unk0x00[s[21]];
-            pRow[nOff + 20] = gatLightPalettes[v[20]].unk0x00[s[20]];
+            pRow[nOff + 23] = gatLightPalettes[v[23]].colors[s[23]];
+            pRow[nOff + 22] = gatLightPalettes[v[22]].colors[s[22]];
+            pRow[nOff + 21] = gatLightPalettes[v[21]].colors[s[21]];
+            pRow[nOff + 20] = gatLightPalettes[v[20]].colors[s[20]];
         case 20:
-            pRow[nOff + 19] = gatLightPalettes[v[19]].unk0x00[s[19]];
-            pRow[nOff + 18] = gatLightPalettes[v[18]].unk0x00[s[18]];
-            pRow[nOff + 17] = gatLightPalettes[v[17]].unk0x00[s[17]];
-            pRow[nOff + 16] = gatLightPalettes[v[16]].unk0x00[s[16]];
+            pRow[nOff + 19] = gatLightPalettes[v[19]].colors[s[19]];
+            pRow[nOff + 18] = gatLightPalettes[v[18]].colors[s[18]];
+            pRow[nOff + 17] = gatLightPalettes[v[17]].colors[s[17]];
+            pRow[nOff + 16] = gatLightPalettes[v[16]].colors[s[16]];
         case 16:
-            pRow[nOff + 15] = gatLightPalettes[v[15]].unk0x00[s[15]];
-            pRow[nOff + 14] = gatLightPalettes[v[14]].unk0x00[s[14]];
-            pRow[nOff + 13] = gatLightPalettes[v[13]].unk0x00[s[13]];
-            pRow[nOff + 12] = gatLightPalettes[v[12]].unk0x00[s[12]];
+            pRow[nOff + 15] = gatLightPalettes[v[15]].colors[s[15]];
+            pRow[nOff + 14] = gatLightPalettes[v[14]].colors[s[14]];
+            pRow[nOff + 13] = gatLightPalettes[v[13]].colors[s[13]];
+            pRow[nOff + 12] = gatLightPalettes[v[12]].colors[s[12]];
         case 12:
-            pRow[nOff + 11] = gatLightPalettes[v[11]].unk0x00[s[11]];
-            pRow[nOff + 10] = gatLightPalettes[v[10]].unk0x00[s[10]];
-            pRow[nOff + 9] = gatLightPalettes[v[9]].unk0x00[s[9]];
-            pRow[nOff + 8] = gatLightPalettes[v[8]].unk0x00[s[8]];
+            pRow[nOff + 11] = gatLightPalettes[v[11]].colors[s[11]];
+            pRow[nOff + 10] = gatLightPalettes[v[10]].colors[s[10]];
+            pRow[nOff + 9] = gatLightPalettes[v[9]].colors[s[9]];
+            pRow[nOff + 8] = gatLightPalettes[v[8]].colors[s[8]];
         case 8:
-            pRow[nOff + 7] = gatLightPalettes[v[7]].unk0x00[s[7]];
-            pRow[nOff + 6] = gatLightPalettes[v[6]].unk0x00[s[6]];
-            pRow[nOff + 5] = gatLightPalettes[v[5]].unk0x00[s[5]];
-            pRow[nOff + 4] = gatLightPalettes[v[4]].unk0x00[s[4]];
+            pRow[nOff + 7] = gatLightPalettes[v[7]].colors[s[7]];
+            pRow[nOff + 6] = gatLightPalettes[v[6]].colors[s[6]];
+            pRow[nOff + 5] = gatLightPalettes[v[5]].colors[s[5]];
+            pRow[nOff + 4] = gatLightPalettes[v[4]].colors[s[4]];
         case 4:
-            pRow[nOff + 3] = gatLightPalettes[v[3]].unk0x00[s[3]];
-            pRow[nOff + 2] = gatLightPalettes[v[2]].unk0x00[s[2]];
-            pRow[nOff + 1] = gatLightPalettes[v[1]].unk0x00[s[1]];
-            pRow[nOff + 0] = gatLightPalettes[v[0]].unk0x00[s[0]];
+            pRow[nOff + 3] = gatLightPalettes[v[3]].colors[s[3]];
+            pRow[nOff + 2] = gatLightPalettes[v[2]].colors[s[2]];
+            pRow[nOff + 1] = gatLightPalettes[v[1]].colors[s[1]];
+            pRow[nOff + 0] = gatLightPalettes[v[0]].colors[s[0]];
         }
         pRow += gnScreenPitch;
         nLightX += nLightXStep;
@@ -2089,7 +2108,7 @@ void __fastcall CMNSUBTILE_DrawRleVisTile(unsigned char* pSrc, int nX, int nY, u
     if (nY < gnClipTop || nY >= gnClipBottom || nX < gnClipLeft || nX >= gnClipRight)
         return;
 
-    unsigned char* pPalette = gatLightPalettes[nLight >> 3].unk0x00;
+    unsigned char* pPalette = gatLightPalettes[nLight >> 3].colors;
     unsigned char* pDst = gnRowOffsets_007C9828[nY] + gpScreenBuffer + nX;
     D2_ASSERT(gpScreenBuffer, 0x373);
     if (nY >= gnInnerTop && nY < gnInnerBottom && nX >= gnInnerLeft && nX < gnInnerRight)
@@ -2309,7 +2328,7 @@ void __fastcall CMNSUBTILE_DrawLitBlendVisTile(unsigned char* pSrc, int nX, int 
                 unsigned char* pEnd = pSrc + nCount;
                 while (pSrc < pEnd)
                 {
-                    const unsigned char nLit = gatLightPalettes[*pRamp].unk0x00[*pSrc];
+                    const unsigned char nLit = gatLightPalettes[*pRamp].colors[*pSrc];
                     ++pSrc;
                     *p = pBlend[(nLit << 8) + *p];
                     ++pRamp;
@@ -2363,7 +2382,7 @@ void __fastcall CMNSUBTILE_DrawLitBlendVisTile(unsigned char* pSrc, int nX, int 
                         p += nLeft;
                         while (pSrc < pEnd)
                         {
-                            const unsigned char nLit = gatLightPalettes[*pRamp].unk0x00[*pSrc];
+                            const unsigned char nLit = gatLightPalettes[*pRamp].colors[*pSrc];
                             ++pSrc;
                             *p = pBlend[(nLit << 8) + *p];
                             ++pRamp;
@@ -2389,7 +2408,7 @@ void __fastcall CMNSUBTILE_DrawLitBlendVisTile(unsigned char* pSrc, int nX, int 
 // 0x004F8810
 void __fastcall CMNSUBTILE_DrawBlock(D2TileLibraryBlockStrc* pBlock, unsigned char* pDst, unsigned char nLight)
 {
-    unsigned char* pPalette = gatLightPalettes[nLight >> 3].unk0x00;
+    unsigned char* pPalette = gatLightPalettes[nLight >> 3].colors;
     if (pBlock->nFormat & 4)
         CMNSUBTILE_DrawRleRows(pBlock->pData, pDst, pPalette, 0xF);
     else
@@ -2412,7 +2431,7 @@ void __fastcall CMNSUBTILE_DrawLitBlock(D2TileLibraryBlockStrc* pBlock, unsigned
 // 0x004F88B0
 void __fastcall CMNSUBTILE_DrawBlockClipped(D2TileLibraryBlockStrc* pBlock, int nX, int nY, unsigned char* pDst, unsigned char nLight)
 {
-    unsigned char* pPalette = gatLightPalettes[nLight >> 3].unk0x00;
+    unsigned char* pPalette = gatLightPalettes[nLight >> 3].colors;
     if (pBlock->nFormat & 4)
     {
         CMNSUBTILE_DrawRleRowsClipped(nX, nY, pBlock->pData, pDst, pPalette, 0xF);
@@ -2491,7 +2510,7 @@ void __fastcall CMNSUBTILE_DrawLitBlockClipped(D2TileLibraryBlockStrc* pBlock, i
                 unsigned char* pEnd = s + nCount;
                 while (s < pEnd)
                 {
-                    *d = gatLightPalettes[*pLevels].unk0x00[*s];
+                    *d = gatLightPalettes[*pLevels].colors[*s];
                     ++s, ++d, ++pLevels;
                 }
             }

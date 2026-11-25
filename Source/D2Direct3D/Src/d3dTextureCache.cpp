@@ -31,6 +31,7 @@ void __fastcall D3DCORE_LogDDrawError(const char*, int); // 0x006B20E0
 
 static void D3DTEXTURECACHE_Append(D2TexPoolStrc* pList, D2TexPoolEntryStrc* pNode); // 0x006BA5C0
 
+// Kept noinline: a static whose callers here pass its arguments in registers (the #368 case).
 static __declspec(noinline) void sub_006BA5C0_AppendTail(D2TexPoolStrc* pList, D2TexPoolEntryStrc* pNode);
 
 D2TexPoolEntryStrc* __fastcall sub_006BA660_Unlink(D2TexPoolStrc* pList, int nIndex);
@@ -55,7 +56,7 @@ struct D2Node006BA7C0Strc
     D2OwnerSlot006BA7C0Strc* pOwnerSlots;
     int nOwnerIndex;
     unsigned char unk_0C[0x0C];
-    D2Link006BA7C0Strc f_18;
+    D2Link006BA7C0Strc tLink;
 };
 
 struct D2List006BA7C0Strc
@@ -332,16 +333,16 @@ void __fastcall D3DTEXTURECACHE_MoveFreeNode(D2List006BA7C0Strc* pList)
         D2Node006BA7C0Strc* pNode = pList->pFreeHead8;
         if (pNode)
         {
-            pList->pFreeHead8 = pNode->f_18.pNext;
+            pList->pFreeHead8 = pNode->tLink.pNext;
             if (pList->pFreeHead8)
             {
-                pList->pFreeHead8->f_18.pPrev = 0;
+                pList->pFreeHead8->tLink.pPrev = 0;
             }
             else
             {
                 pList->pFreeTailC = 0;
             }
-            ResetLink(&pNode->f_18);
+            ResetLink(&pNode->tLink);
             if (pNode->pOwnerSlots)
             {
                 pNode->pOwnerSlots[pNode->nOwnerIndex].n0 = 0;
@@ -355,8 +356,8 @@ void __fastcall D3DTEXTURECACHE_MoveFreeNode(D2List006BA7C0Strc* pList)
             }
             else
             {
-                pList->pTail14->f_18.pNext = pNode;
-                pNode->f_18.pPrev = pList->pTail14;
+                pList->pTail14->tLink.pNext = pNode;
+                pNode->tLink.pPrev = pList->pTail14;
                 pList->pTail14 = pNode;
             }
         }

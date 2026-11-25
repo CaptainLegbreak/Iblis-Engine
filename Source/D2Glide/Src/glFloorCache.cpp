@@ -72,6 +72,7 @@ int __fastcall GLFLOORCACHE_FloorCacheInit(D2GlideFloorCacheStrc* pCache, unsign
     return pCache->nCount * nBlockSize + nStart;
 }
 
+// Kept noinline: a static whose callers here pass its arguments in registers (the #368 case).
 // 0x0050F4D0
 static __declspec(noinline) void GLFLOORCACHE_FloorCacheAppendUsed(D2GlideFloorCacheStrc* pCache, D2GlideFloorCacheEntryStrc* pEntry)
 {

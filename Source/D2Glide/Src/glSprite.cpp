@@ -553,17 +553,6 @@ static void __stdcall GLSPRITE_DrawSpriteQuad(int nX, int nY, unsigned int dwCol
     gpfnGrDitherMode(2);
 }
 
-void __fastcall sub_leg345d_Emit_0050A9A0(D2GlideTexInfoStrc* pInfo, int nX, int nY, unsigned int dwColor, int nMode, int nPaletteIndex)
-{
-    D2GlideTexInfoStrc tInfo = *pInfo;
-    if (nMode == 1)
-        GLSPRITE_DrawSpriteQuad(nX, nY, dwColor, 0, &tInfo, nPaletteIndex);
-    else if (nMode == 2)
-        GLSPRITE_DrawSpriteQuad(nX - 1, nY + 1, -1, 1, &tInfo, 0);
-    else
-        GLSPRITE_DrawSpriteQuad(nX, nY, dwColor, 0, &tInfo, 0);
-}
-
 static void GLSPRITE_SetupTexInfoSize(D2GlideTexInfoStrc* pInfo); // 0x0050A2D0
 
 static int __stdcall GLSPRITE_UploadTexInfo(int nPalette, int nColor, D2GlideTexInfoStrc* pInfo, int nType); // 0x0050A450

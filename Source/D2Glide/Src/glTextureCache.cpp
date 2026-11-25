@@ -77,6 +77,7 @@ int __fastcall GLTEXTURECACHE_TexCacheInit(D2GlideTexCacheStrc* pCache, unsigned
     return pCache->nCount * nBlockSize + nStart;
 }
 
+// Kept noinline: a static whose callers here pass its arguments in registers (the #368 case).
 // 0x0050EA40
 static __declspec(noinline) void GLTEXTURECACHE_TexCacheAppendUsed(D2GlideTexCacheEntryStrc* pEntry, D2GlideTexCacheStrc* pCache)
 {

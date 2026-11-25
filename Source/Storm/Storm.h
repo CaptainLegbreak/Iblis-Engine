@@ -650,7 +650,6 @@ struct D2StormHuffLinkSlotStrc
 struct D2StormMsgSourceStrc
 {
     unsigned short wFacility;
-    char unk0x02[2];
     void* hModule;
     D2StormMsgSourceStrc* pNext;
 };

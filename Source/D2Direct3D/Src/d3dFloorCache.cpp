@@ -34,6 +34,7 @@ void __fastcall D3DCORE_LogDDrawError(const char*, int); // 0x006B20E0
 
 D2FloorPoolEntryStrc* __fastcall D3DFLOORCACHE_FloorCacheUnlink(D2FloorPoolStrc* pList); // 0x006BB1F0
 
+// Kept noinline: a static whose callers here pass its arguments in registers (the #368 case).
 static __declspec(noinline) void sub_006BB150_AppendTail(D2FloorPoolStrc* pList, D2FloorPoolEntryStrc* pNode);
 
 D2FloorPoolEntryStrc* __fastcall D3DFLOORCACHE_FloorCacheUnlink(D2FloorPoolStrc* pList, int nIndex); // 0x006BB1F0

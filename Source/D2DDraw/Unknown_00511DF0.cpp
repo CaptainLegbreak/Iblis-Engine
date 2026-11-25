@@ -27,7 +27,7 @@ struct D2DDrawCelClipStrc
 {
     int nLeft;
     int nRight;
-    int f_8;
+    int nFirstRow;
     int nRows;
 };
 
@@ -104,13 +104,13 @@ static int __fastcall sub_00511E80_ClipCel(D2CelStrc* pCel, int nY, int nX, D2DD
                     pOut->nLeft = nLeft;
                     pOut->nRight = nRight;
                     if (nY <= nBottom)
-                        pOut->f_8 = 0;
+                        pOut->nFirstRow = 0;
                     else
-                        pOut->f_8 = nY - nBottom - 1;
+                        pOut->nFirstRow = nY - nBottom - 1;
                     if (nY - nHeight >= nTop)
-                        pOut->nRows = nHeight - pOut->f_8;
+                        pOut->nRows = nHeight - pOut->nFirstRow;
                     else
-                        pOut->nRows = nY - pOut->f_8 - nTop + 1;
+                        pOut->nRows = nY - pOut->nFirstRow - nTop + 1;
 
                     D2_ASSERT(pOut->nRows > 0, 0xAB);
                     return 0;
@@ -128,14 +128,14 @@ void __fastcall sub_00512250_DrawCel(D2CelContextStrc* pContext, int nX, int nY,
     D2DDrawCelClipStrc tOut;
     tOut.nLeft = 0;
     tOut.nRight = 0;
-    tOut.f_8 = 0;
+    tOut.nFirstRow = 0;
     tOut.nRows = 0;
     if (!sub_006001F0(pContext, 0, 1))
         return;
     if (sub_00511E80_ClipCel(pContext->pCel, nY, nX, &tOut, pClip))
         return;
     CelDrawEx((D2CmpCelContextStrc*)pContext, nX, nY, tOut.nLeft, tOut.nRight, gpScreenBuffer_007C9154,
-        gnRenderHeight, gnRenderWidth, 0, DDCORE_GetDrawModePalette(nDrawMode, (int*)&pClip), tOut.f_8, tOut.nRows, 0); // 0x00511D70
+        gnRenderHeight, gnRenderWidth, 0, DDCORE_GetDrawModePalette(nDrawMode, (int*)&pClip), tOut.nFirstRow, tOut.nRows, 0); // 0x00511D70
 }
 
 // 0x00511FB0
