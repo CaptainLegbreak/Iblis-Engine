@@ -1,0 +1,26 @@
+#pragma once
+// Player modes: the value of D2UnitStrc::dwAnimMode for a player unit.
+
+enum D2C_PlayerModes
+{
+    PLRMODE_DEATH = 0,
+    PLRMODE_NEUTRAL = 1,
+    PLRMODE_WALK = 2,
+    PLRMODE_RUN = 3,
+    PLRMODE_GETHIT = 4,
+    PLRMODE_TOWNNEUTRAL = 5,
+    PLRMODE_TOWNWALK = 6,
+    PLRMODE_ATTACK1 = 7,
+    PLRMODE_ATTACK2 = 8,
+    PLRMODE_BLOCK = 9,
+    PLRMODE_CAST = 10,
+    PLRMODE_THROW = 11,
+    PLRMODE_KICK = 12,
+    PLRMODE_SPECIAL1 = 13,
+    PLRMODE_SPECIAL2 = 14,
+    PLRMODE_SPECIAL3 = 15,
+    PLRMODE_SPECIAL4 = 16,
+    PLRMODE_DEAD = 17,
+    PLRMODE_SEQUENCE = 18,
+    PLRMODE_KNOCKBACK = 19,
+};

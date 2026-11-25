@@ -1,0 +1,98 @@
+{
+ "note": "parts of Game.exe that no source defines (link stamps, the Rich block, resources, the PKWARE DCL records, the signature): offsets, lengths and keyed hashes only; tools/identity.py renders them from your own Game.exe",
+ "schema": 1,
+ "image_sha256": "631066c1649c4ea9ffe48bf97e24c00bca1f7a6759c21150f1a79982589adaaf",
+ "hmac": "HMAC-SHA256, key sha256('d2identity-plan\\0' + the whole image file)",
+ "directory_rva": "0x595000",
+ "directory_size": 6536,
+ "leaves": [
+  {
+   "type": 3,
+   "id": 1,
+   "language": 1033,
+   "offset": "0x280",
+   "size": 744,
+   "hmac": "465382b1c13fd221bd71d58a8d706e21c2cc43187e251b87f73273bae9e63151"
+  },
+  {
+   "type": 3,
+   "id": 2,
+   "language": 1033,
+   "offset": "0x568",
+   "size": 296,
+   "hmac": "31f9ea893fe28b7b98bd4135037b38d56788090fd5a295d623afd48b63f90679"
+  },
+  {
+   "type": 3,
+   "id": 3,
+   "language": 1033,
+   "offset": "0x690",
+   "size": 744,
+   "hmac": "da8da23abecc39ebe34c740ebfd4b4bb3df10f60d53ed5b2ea64734ae86bb5dd"
+  },
+  {
+   "type": 3,
+   "id": 4,
+   "language": 1033,
+   "offset": "0x978",
+   "size": 296,
+   "hmac": "2e7ffc63b3a978a61126b02ce07bd775e14aa25e4b71d9a322289c64d3fc6baf"
+  },
+  {
+   "type": 3,
+   "id": 5,
+   "language": 1033,
+   "offset": "0xAA0",
+   "size": 2216,
+   "hmac": "7310afa95a7701798a906d1d9b521bdc51077444912ecc886002ab0e08f9d47c"
+  },
+  {
+   "type": 3,
+   "id": 6,
+   "language": 1033,
+   "offset": "0x1348",
+   "size": 296,
+   "hmac": "305e2490889e0d4074f53959bcb0b381a62ec5716355acf870ce085f7106052c"
+  },
+  {
+   "type": 14,
+   "id": 101,
+   "language": 1033,
+   "offset": "0x1470",
+   "size": 34,
+   "hmac": "4e1c3fb9e88985679206f64760a4b6f29417521508e76a17680336ad4dffef63"
+  },
+  {
+   "type": 14,
+   "id": 102,
+   "language": 1033,
+   "offset": "0x1494",
+   "size": 34,
+   "hmac": "54d4ab41922c85c9685b04574cf015db25dc86618656beff8448e6508f341dc0"
+  },
+  {
+   "type": 14,
+   "id": 103,
+   "language": 1033,
+   "offset": "0x14B8",
+   "size": 34,
+   "hmac": "ad42a9d3050b38077318b3e4dc5937ace197fb52205137e66c2aaf7a923abb5c"
+  },
+  {
+   "type": 16,
+   "id": 1,
+   "language": 1033,
+   "offset": "0x14DC",
+   "size": 1108,
+   "hmac": "61f9ef8c3cf6006780e6f1fd33c8fbf95eb32e1e32fa2f9def6384177fb7369a"
+  },
+  {
+   "type": 24,
+   "id": 1,
+   "language": 1033,
+   "offset": "0x1930",
+   "size": 86,
+   "hmac": "572feeec6a0fb11fc24d167cc72f122cbd5cf81606fc9940fcd754cc18099612"
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+Notice for zlib-derived code
+
+Some sources in this repository are altered versions of zlib 1.2.8 code (inflate.c, deflate.c, trees.c, adler32.c,
+crc32.c, zutil.c), which Game.exe 1.14d links in its Storm library: Source/Storm/00427160_deflateResetKeep.cpp, Source/Storm/00427200_deflateSetHeader.cpp, Source/Storm/00427220_deflatePending.cpp, Source/Storm/00427260_deflatePrime.cpp, Source/Storm/00427420_putShortMSB.cpp, Source/Storm/00427770_lm_init.cpp, Source/Storm/004294C0_deflateInit2.cpp, Source/Storm/004297F0_deflateInit.cpp, Source/Storm/00429810_inflateResetKeep.cpp, Source/Storm/00429810_inflateResetKeep_710.cpp, Source/Storm/00429880_inflateReset.cpp, Source/Storm/00429AC0_updatewindow.cpp, Source/Storm/00429BB0_inflate.cpp, Source/Storm/0042B300_syncsearch.cpp, Source/Storm/0042B8E0_adler32_combine.cpp, Source/Storm/0042B9E0_init_block.cpp, Source/Storm/0042D460_crc32_little.cpp, Source/Storm/0042D700_crc32_big.cpp, Source/Storm/0042D9F0_gf2_matrix_times.cpp, Source/Storm/0042DA10_gf2_matrix_square.cpp, Source/Storm/0042DC90_zcfree.cpp, Source/Storm/0042DCA0_inflate_fast.cpp.
+They were changed to reproduce the bytes of that build: each file listed here is an altered version and not the
+original zlib software. zlib is distributed under the following licence:
+
+  zlib.h -- interface of the 'zlib' general purpose compression library
+  version 1.2.8, April 28th, 2013
+
+  Copyright (C) 1995-2013 Jean-loup Gailly and Mark Adler
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+
+  Jean-loup Gailly        Mark Adler
+  jloup@gzip.org          madler@alumni.caltech.edu
