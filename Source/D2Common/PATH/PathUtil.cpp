@@ -497,4 +497,103 @@ void __fastcall PATHUTIL_GetTargetPathPoint(D2PathPointStrc* pOutPathPoint, D2Dy
     }
 }
 
-#include "gen/data/Source/D2Common/PATH/PathUtil.inc"
+#pragma pack(push, 1)
+struct d2data_00749A20_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const D2UnkPathStrc gData_006F1518[25]; // 0x006F1518
+extern "C" const D2UnkPathStrc2 gData_006F1648[25]; // 0x006F1648
+extern "C" struct d2data_00749A20_t gData_00749A20; // 0x00749A20
+
+extern "C" const D2UnkPathStrc gData_006F1518[25] = {
+    { 5, 4, 6 },
+    { 4, 5, 6 },
+    { 4, 3, 5 },
+    { 4, 3, 2 },
+    { 3, 4, 2 },
+    { 6, 5, 4 },
+    { 5, 4, 6 },
+    { 4, 3, 5 },
+    { 3, 4, 2 },
+    { 2, 3, 4 },
+    { 6, 7, 5 },
+    { 6, 7, 5 },
+    { 6, 7, 5 },
+    { 2, 1, 3 },
+    { 2, 1, 3 },
+    { 6, 7 },
+    { 7, 0, 6 },
+    { 0, 1, 7 },
+    { 1, 0, 2 },
+    { 2, 1 },
+    { 7, 0, 6 },
+    { 0, 7, 6 },
+    { 0, 1, 7 },
+    { 0, 1, 2 },
+    { 1, 0, 2 }
+}; // 0x006F1518
+#pragma comment(linker, "/alternatename:?gaPathDirectionTriplets@@3QBUD2UnkPathStrc@@B=_gData_006F1518")
+
+extern "C" const D2UnkPathStrc2 gData_006F1648[25] = {
+    { 4, 6, 0xFF },
+    { 4, 6, 0xFF },
+    { 4, 2, 6 },
+    { 4, 2, 0xFF },
+    { 4, 2, 0xFF },
+    { 6, 4, 0xFF },
+    { 4, 6, 0xFF },
+    { 4, 2, 6 },
+    { 4, 2, 0xFF },
+    { 2, 4, 0xFF },
+    { 6, 0, 4 },
+    { 6, 0, 4 },
+    { 6, 0, 4 },
+    { 2, 0, 4 },
+    { 2, 0, 4 },
+    { 6, 0, 0xFF },
+    { 0, 6, 0xFF },
+    { 0, 2, 6 },
+    { 2, 0, 0xFF },
+    { 2, 0, 0xFF },
+    { 0, 6, 0xFF },
+    { 0, 6, 0xFF },
+    { 0, 2, 6 },
+    { 0, 2, 0xFF },
+    { 0, 2, 0xFF }
+}; // 0x006F1648
+#pragma comment(linker, "/alternatename:?gaPathDirectionTripletsAlt@@3QBUD2UnkPathStrc2@@B=_gData_006F1648")
+
+extern "C" struct d2data_00749A20_t gData_00749A20 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749A20

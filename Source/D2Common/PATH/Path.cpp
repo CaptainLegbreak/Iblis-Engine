@@ -2968,4 +2968,131 @@ void __fastcall D2COMMON_10916_Return()
 {
 }
 
-#include "gen/data/Source/D2Common/PATH/Path.inc"
+extern "C" void __cdecl PATH_AStar_ComputePath(); // 0x0067B850
+extern "C" void __cdecl PATH_BackupTurn_Compute(); // 0x00679E60
+extern "C" void __cdecl PATH_Knockback_Client(); // 0x00679FD0
+extern "C" void __cdecl PATH_Straight_Compute(); // 0x00679ED0
+extern "C" void __cdecl sub_00679C80(); // 0x00679C80
+extern "C" void __cdecl sub_00679E50(); // 0x00679E50
+extern "C" void __cdecl sub_00679F70(); // 0x00679F70
+extern "C" void __cdecl sub_0067A000(); // 0x0067A000
+extern "C" void __cdecl sub_0067AD00(); // 0x0067AD00
+extern "C" void __cdecl sub_0067C2D0(); // 0x0067C2D0
+
+#pragma pack(push, 1)
+struct d2data_006EB3D8_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006EB520_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007457B0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const D2CoordStrc gData_006EB398[8]; // 0x006EB398
+extern "C" const struct d2data_006EB3D8_t gData_006EB3D8; // 0x006EB3D8
+extern "C" const int gData_006EB3DC[4]; // 0x006EB3DC
+extern "C" const int gData_006EB490[4][9]; // 0x006EB490
+extern "C" const struct d2data_006EB520_t gData_006EB520; // 0x006EB520
+extern "C" const int gData_006EB548[64]; // 0x006EB548
+extern "C" const int gData_006EB648[18]; // 0x006EB648
+extern "C" const int gData_006EB690[18]; // 0x006EB690
+extern "C" PATH_FUNCTION const gData_006EB6D8[17]; // 0x006EB6D8
+extern "C" struct d2data_007457B0_t gData_007457B0; // 0x007457B0
+
+extern "C" const D2CoordStrc gData_006EB398[8] = {
+    { 1 },
+    { 1, 1 },
+    { 0, 1 },
+    { -1, 1 },
+    { -1 },
+    { -1, -1 },
+    { 0, -1 },
+    { 1, -1 }
+}; // 0x006EB398
+#pragma comment(linker, "/alternatename:?gaDirectionToOffset@@3QBUD2CoordStrc@@B=_gData_006EB398")
+
+extern "C" const struct d2data_006EB3D8_t gData_006EB3D8 = {
+    { 0x00 }
+}; // 0x006EB3D8
+
+extern "C" const int gData_006EB3DC[4] = { 0, 1, 1, 2 }; // 0x006EB3DC
+#pragma comment(linker, "/alternatename:?gaCollisionPatternsFromSize@@3QBHB=_gData_006EB3DC")
+
+extern "C" const int gData_006EB490[4][9] = {
+    { 0, 1, 1, 1, 1, -1, -1, -1, -1 },
+    { 0, 1, 1, 1, 1, -1, -1, -1 },
+    { 0, 0, 1, 1, 1, -1, -1 },
+    { 0, 0, 0, 1, 1, -1 }
+}; // 0x006EB490
+#pragma comment(linker, "/alternatename:?gnOrthogonalStepTable@@3QAY08$$CBHA=_gData_006EB490")
+
+extern "C" const struct d2data_006EB520_t gData_006EB520 = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01
+    }
+}; // 0x006EB520
+
+extern "C" const int gData_006EB548[64] = {
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4,
+    4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+    -8, -8, -8, -8, -8, -8, -8, -8, -8, -8, -8, -8, -8, -8, -8, -8,
+    -4, -4, -4, -4, -4, -4, -4, -4, -1, -1, -1, -1, -1, -1, -1, -1
+}; // 0x006EB548
+#pragma comment(linker, "/alternatename:?gnDirectionDiffTable@@3PAHA=_gData_006EB548")
+
+extern "C" const int gData_006EB648[18] = { 0, 0, 0, 0, 0, 2, -2, 0, 0, 0, 0, 0, -4 }; // 0x006EB648
+#pragma comment(linker, "/alternatename:?gaOffsetForPathType@@3PAHA=_gData_006EB648")
+
+extern "C" const int gData_006EB690[18] = { 137472, 6400, 0, 0, 393216, 0, 0, 137472, 124416, 124928, 393216, 124420, 0, 256, 393216, 2048 }; // 0x006EB690
+#pragma comment(linker, "/alternatename:?gaPathTypeFlags@@3PAHA=_gData_006EB690")
+
+extern "C" PATH_FUNCTION const gData_006EB6D8[17] = {
+    (PATH_FUNCTION)&sub_0067AD00, (PATH_FUNCTION)&PATH_AStar_ComputePath, (PATH_FUNCTION)&sub_00679C80, (PATH_FUNCTION)&sub_00679E50, 0, (PATH_FUNCTION)&sub_00679C80, (PATH_FUNCTION)&sub_00679C80, (PATH_FUNCTION)&PATH_Straight_Compute, (PATH_FUNCTION)&sub_0067A000, (PATH_FUNCTION)&sub_00679F70, 0, (PATH_FUNCTION)&PATH_Knockback_Client, (PATH_FUNCTION)&PATH_BackupTurn_Compute, (PATH_FUNCTION)&sub_00679C80, 0, (PATH_FUNCTION)&sub_0067C2D0,
+    (PATH_FUNCTION)&sub_0067AD00
+}; // 0x006EB6D8
+#pragma comment(linker, "/alternatename:?gpfnPathFunctions@@3QBQ6IHPAUD2PathInfoStrc@@@ZB=_gData_006EB6D8")
+
+extern "C" struct d2data_007457B0_t gData_007457B0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007457B0

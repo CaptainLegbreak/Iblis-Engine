@@ -2357,4 +2357,33 @@ void __stdcall INV_CubeButtonUpMsg(SMSGHANDLER_PARAMS* pMsg)
     gbCubeCloseClicked = 0;
 }
 
-#include "gen/data/Source/D2Client/UI/inv_004886C0.inc"
+#pragma pack(push, 1)
+struct d2data_00722164_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00722164_t gData_00722164; // 0x00722164
+
+extern D2PanelTabStrc gaNpcTabs[4] = {
+    { 42, 20, 0xFC4 },
+    { 121, 20, 0xFC5 },
+    { 201, 20, 0xFC5 },
+    { 281, 20, 0xFC7 }
+}; // 0x00722110
+
+extern int gnButtonRow = 3; // 0x0072215C
+
+extern int gnButtonCount = 4; // 0x00722160
+
+extern "C" struct d2data_00722164_t gData_00722164 = {
+    { 0xFF, 0xFF, 0xFF, 0xFF }
+}; // 0x00722164
+
+extern int gaNpcButtonX[4][4] = {
+    { 273 },
+    { 169, 273 },
+    { 169, 221, 273 },
+    { 116, 169, 221, 273 }
+}; // 0x00722168

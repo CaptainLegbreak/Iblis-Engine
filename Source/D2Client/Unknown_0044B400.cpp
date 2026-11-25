@@ -406,4 +406,19 @@ int __fastcall WINMAIN_RunLauncher(D2ClientCharRecordStrc* pRecord)
 
 void __cdecl RECORD_StartPlayback(); // 0x004518E0
 
-#include "gen/data/Source/D2Client/Unknown_0044B400.inc"
+extern "C" void __cdecl RECORD_RegisterLngArgument(); // 0x00451260
+extern "C" void __cdecl WINMAIN_SaveDefaultCmdLine(); // 0x0044B5E0
+
+#pragma pack(push, 1)
+struct d2data_0070EE0C_t
+{
+    const void* p0;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_0070EE0C_t gData_0070EE0C; // 0x0070EE0C
+
+extern "C" struct d2data_0070EE0C_t gData_0070EE0C = {
+    (const void*)(unsigned int)&WINMAIN_RunLauncher
+}; // 0x0070EE0C
+#pragma comment(linker, "/alternatename:?gtClientInterface@@3UD2ClientInterfaceStrc@@A=_gData_0070EE0C")

@@ -1125,4 +1125,126 @@ void __fastcall sub_005179A4_FreeVirtualMemory(void* address)
 // build: symbol ??__FgFaultHandlerList@@YAXXZ 0x006CB401
 D2ListStrc gFaultHandlerList; // 0x0072FA14
 
-#include "gen/data/Source/D2Hell/Unknown_00516D8B.inc"
+#pragma pack(push, 1)
+struct d2data_006DEBE8_t
+{
+    unsigned char b0[112];
+    const void* p1;
+    const void* p2;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072F9F4_t
+{
+    const void* p0;
+    unsigned char b1[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072FA20_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    unsigned char b15[4];
+    const void* p16;
+    const void* p17;
+    const void* p18;
+    const void* p19;
+    const void* p20;
+    const void* p21;
+    const void* p22;
+    const void* p23;
+    const void* p24;
+    const void* p25;
+    const void* p26;
+    const void* p27;
+    const void* p28;
+    const void* p29;
+    const void* p30;
+    unsigned char b31[4];
+};
+#pragma pack(pop)
+
+extern "C" const char* const gData_006CC848; // 0x006CC848
+extern "C" const struct d2data_006DEBE8_t gData_006DEBE8; // 0x006DEBE8
+extern "C" struct d2data_0072F9F4_t gData_0072F9F4; // 0x0072F9F4
+extern "C" const char gData_0072F9FC[24]; // 0x0072F9FC
+extern "C" struct d2data_0072FA20_t gData_0072FA20; // 0x0072FA20
+
+extern "C" const char* const gData_006CC848 = (const char* const)"Diablo 2.EXE"; // 0x006CC848
+#pragma comment(linker, "/alternatename:?gpszModuleName@@3QBDB=_gData_006CC848")
+
+extern "C" const struct d2data_006DEBE8_t gData_006DEBE8 = {
+    {
+        0x41, 0x6E, 0x20, 0x61, 0x73, 0x73, 0x65, 0x72, 0x74, 0x69, 0x6F, 0x6E, 0x20, 0x68, 0x61, 0x73,
+        0x20, 0x66, 0x61, 0x69, 0x6C, 0x65, 0x64, 0x2E, 0x0A, 0x0A, 0x46, 0x69, 0x6C, 0x65, 0x3A, 0x09,
+        0x09, 0x25, 0x73, 0x0A, 0x4C, 0x69, 0x6E, 0x65, 0x3A, 0x09, 0x09, 0x25, 0x64, 0x0A, 0x45, 0x78,
+        0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6F, 0x6E, 0x3A, 0x09, 0x25, 0x73, 0x0A, 0x0A, 0x41, 0x62,
+        0x6F, 0x72, 0x74, 0x20, 0x74, 0x6F, 0x20, 0x65, 0x78, 0x69, 0x74, 0x2C, 0x20, 0x52, 0x65, 0x74,
+        0x72, 0x79, 0x20, 0x74, 0x6F, 0x20, 0x62, 0x72, 0x65, 0x61, 0x6B, 0x2C, 0x20, 0x49, 0x67, 0x6E,
+        0x6F, 0x72, 0x65, 0x20, 0x74, 0x6F, 0x20, 0x63, 0x6F, 0x6E, 0x74, 0x69, 0x6E, 0x75, 0x65
+    },
+    (const void*)&sgszAssertFormatString,
+    (const void*)"D2Hell Fault.cpp error."
+}; // 0x006DEBE8
+#pragma comment(linker, "/alternatename:?sgszAssertFormatString@@3QBDB=_gData_006DEBE8")
+
+extern const char* gpReference = "Blizzard Entertainment, Inc."; // 0x0072F9F0
+
+extern "C" struct d2data_0072F9F4_t gData_0072F9F4 = {
+    (const void*)"~Nh",
+    { 0x00 }
+}; // 0x0072F9F4
+
+extern "C" const char gData_0072F9FC[24] = ".?AUTMESSAGESOURCE@@"; // 0x0072F9FC
+#pragma comment(linker, "/alternatename:?gszRecordType@@3QBDB=_gData_0072F9FC")
+
+extern "C" struct d2data_0072FA20_t gData_0072FA20 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14",
+    { 0x00 },
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14",
+    { 0x00 }
+}; // 0x0072FA20

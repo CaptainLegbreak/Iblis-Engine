@@ -1096,4 +1096,20 @@ int __fastcall sub_M120_Emit_0050A1E0(D2GlideRectViewStrc* pRect, int nA, int nB
     return n;
 }
 
-#include "gen/data/Source/D2Glide/Src/glSprite.inc"
+extern int gaGlideAspectLodTall[4] = { 0, -1, -2, -3 }; // 0x0072F258
+
+extern int gaGlideAspectLodWide[4] = { 0, 1, 2, 3 }; // 0x0072F268
+
+extern D2GlideTexDimsStrc gaGlideAspectTexDims[7] = {
+    { 32, 256 },
+    { 64, 256 },
+    { 128, 256 },
+    { 256, 256 },
+    { 256, 128 },
+    { 256, 64 },
+    { 256, 32 }
+}; // 0x0072F278
+
+extern D2GrTexInfoStrc gtGlideSmackTexInfoA = { 8, 8, 2, 10 }; // 0x0072F680
+
+extern D2GrTexInfoStrc gtGlideSmackTexInfoB = { 8, 8, 2, 10 }; // 0x0072F694

@@ -3128,4 +3128,104 @@ inline unsigned __int64 ITEMS_RollRandomNumberInline(D2SeedStrc* pSeed)
     return lSeed;
 }
 
-#include "gen/data/Source/D2Game/Quests/QUESTS.inc"
+extern "C" void __cdecl ACT1Intro_InitQuestData(); // 0x0058FA20
+extern "C" void __cdecl ACT2Intro_InitQuestData(); // 0x005985D0
+extern "C" void __cdecl ACT3Intro_InitQuestData(); // 0x005B6E60
+extern "C" void __cdecl sub_0058EA50_InitQuestCallbacks(); // 0x0058EA50
+extern "C" void __cdecl ACT1Q0_InitQuestData(); // 0x0058FB80
+extern "C" void __cdecl ACT1Q1_InitQuestData(); // 0x00590720
+extern "C" void __cdecl ACT1Q2_InitQuestData(); // 0x00591210
+extern "C" void __cdecl ACT1Q3_InitQuestData(); // 0x00591F70
+extern "C" void __cdecl ACT1Q4_InitQuestData(); // 0x005971B0
+extern "C" void __cdecl ACT1Q5_InitQuestData(); // 0x00595920
+extern "C" void __cdecl ACT1Q6_InitQuestData(); // 0x00596990
+extern "C" void __cdecl ACT2Q0_InitQuestData(); // 0x00598810
+extern "C" void __cdecl ACT2Q1_InitQuestData(); // 0x00599340
+extern "C" void __cdecl ACT2Q2_InitQuestData(); // 0x0059EB00
+extern "C" void __cdecl ACT2Q3_InitQuestData(); // 0x0059EEA0
+extern "C" void __cdecl ACT2Q4_InitQuestData(); // 0x0059F2A0
+extern "C" void __cdecl ACT2Q5_InitQuestData(); // 0x0059C280
+extern "C" void __cdecl ACT2Q7_InitQuestData(); // 0x0059E330
+extern "C" void __cdecl ACT2Q8_InitQuestData(); // 0x0059E530
+extern "C" void __cdecl ACT3Q0_InitQuestData(); // 0x005B7010
+extern "C" void __cdecl ACT3Q1_InitQuestData(); // 0x005B7E90
+extern "C" void __cdecl ACT3Q2_InitQuestData(); // 0x005BDA30
+extern "C" void __cdecl ACT3Q3_InitQuestData(); // 0x005B9850
+extern "C" void __cdecl ACT3Q4_InitQuestData(); // 0x005BAA70
+extern "C" void __cdecl ACT3Q5_InitQuestData(); // 0x005BBEB0
+extern "C" void __cdecl ACT3Q6_InitQuestData(); // 0x005BCDC0
+extern "C" void __cdecl ACT3Q7_InitQuestData(); // 0x005BD300
+extern "C" void __cdecl ACT4Q0_InitQuestData(); // 0x005B3780
+extern "C" void __cdecl ACT4Q1_InitQuestData(); // 0x005B42B0
+extern "C" void __cdecl ACT4Q2_InitQuestData(); // 0x005B54C0
+extern "C" void __cdecl ACT4Q3_InitQuestData(); // 0x005B6610
+extern "C" void __cdecl ACT4Q4_InitQuestData(); // 0x005B6A70
+extern "C" void __cdecl ACT5Q1_InitQuestData(); // 0x005876E0
+extern "C" void __cdecl ACT5Q2_InitQuestData(); // 0x00588510
+extern "C" void __cdecl ACT5Q3_InitQuestData(); // 0x0058A410
+extern "C" void __cdecl ACT5Q4_InitQuestData(); // 0x0058BB20
+extern "C" void __cdecl ACT5Q5_InitQuestData(); // 0x0058CE30
+extern "C" void __cdecl ACT5Q6_InitQuestData(); // 0x0058E500
+extern "C" void __cdecl sub_00596C40_InitQuestCallbacks(); // 0x00596C40
+extern "C" void __cdecl ACT2Q6_InitQuestData(); // 0x0059D5B0
+
+extern char gbQuestStateInitializationEnabled = 1; // 0x0073150C
+
+extern D2QuestInitTableStrc sgQuestInit[37] = {
+    { (void*)(unsigned int)&ACT1Q0_InitQuestData, 0, { 0 }, 0x64, 1 },
+    { (void*)(unsigned int)&ACT1Q1_InitQuestData, 0, { 0 }, 0x64, 0, { 0 }, 1, 1 },
+    { (void*)(unsigned int)&ACT1Q2_InitQuestData, 0, { 0 }, 0x64, 0, { 0 }, 2, 2 },
+    { (void*)(unsigned int)&ACT1Q3_InitQuestData, 0, { 0 }, 0x64, 0, { 0 }, 3, 3 },
+    { (void*)(unsigned int)&ACT1Q4_InitQuestData, 0, { 0 }, 0x64, 0, { 0 }, 4, 4 },
+    { (void*)(unsigned int)&ACT1Q5_InitQuestData, 0, { 0 }, 0x64, 0, { 0 }, 5, 5 },
+    { (void*)(unsigned int)&ACT1Q6_InitQuestData, 0, { 0 }, 0x64, 0, { 0 }, 6, 6 },
+    { (void*)(unsigned int)&sub_00596C40_InitQuestCallbacks, 0, { 0 }, 0x64, 0, { 0 }, 30, 41 },
+    { (void*)(unsigned int)&ACT2Q0_InitQuestData, 1, { 0 }, 0x64, 1, { 0 }, 7, 8 },
+    { (void*)(unsigned int)&ACT2Q1_InitQuestData, 1, { 0 }, 0x64, 0, { 0 }, 8, 9 },
+    { (void*)(unsigned int)&ACT2Q2_InitQuestData, 1, { 0 }, 0x64, 1, { 0 }, 9, 10 },
+    { (void*)(unsigned int)&ACT2Q3_InitQuestData, 1, { 0 }, 0x64, 0, { 0 }, 10, 11 },
+    { (void*)(unsigned int)&ACT2Q4_InitQuestData, 1, { 0 }, 0x64, 0, { 0 }, 11, 12 },
+    { (void*)(unsigned int)&ACT2Q5_InitQuestData, 1, { 0 }, 0x64, 0, { 0 }, 12, 13 },
+    { (void*)(unsigned int)&ACT2Q6_InitQuestData, 1, { 0 }, 0x64, 0, { 0 }, 13, 14 },
+    { (void*)(unsigned int)&ACT2Q7_InitQuestData, 1, { 0 }, 0x64, 1, { 0 }, 26, 30 },
+    { (void*)(unsigned int)&ACT2Q8_InitQuestData, 1, { 0 }, 0x64, 1, { 0 }, 27, 31 },
+    { (void*)(unsigned int)&ACT3Q0_InitQuestData, 2, { 0 }, 0x64, 1, { 0 }, 14, 16 },
+    { (void*)(unsigned int)&ACT3Q1_InitQuestData, 2, { 0 }, 0x64, 0, { 0 }, 15, 17 },
+    { (void*)(unsigned int)&ACT3Q2_InitQuestData, 2, { 0 }, 0x64, 0, { 0 }, 16, 18 },
+    { (void*)(unsigned int)&ACT3Q3_InitQuestData, 2, { 0 }, 0x64, 0, { 0 }, 17, 19 },
+    { (void*)(unsigned int)&ACT3Q4_InitQuestData, 2, { 0 }, 0x64, 0, { 0 }, 18, 20 },
+    { (void*)(unsigned int)&ACT3Q5_InitQuestData, 2, { 0 }, 0x64, 0, { 0 }, 19, 21 },
+    { (void*)(unsigned int)&ACT3Q6_InitQuestData, 2, { 0 }, 0x64, 0, { 0 }, 20, 22 },
+    { (void*)(unsigned int)&ACT3Q7_InitQuestData, 2, { 0 }, 0x64, 0, { 0 }, 28, 32 },
+    { (void*)(unsigned int)&ACT4Q0_InitQuestData, 3, { 0 }, 0x64, 1, { 0 }, 21, 24 },
+    { (void*)(unsigned int)&ACT4Q1_InitQuestData, 3, { 0 }, 0, 0, { 0 }, 22, 25 },
+    { (void*)(unsigned int)&ACT4Q2_InitQuestData, 3, { 0 }, 0, 0, { 0 }, 23, 26 },
+    { (void*)(unsigned int)&ACT4Q3_InitQuestData, 3, { 0 }, 0, 0, { 0 }, 24, 27 },
+    { (void*)(unsigned int)&sub_00596C40_InitQuestCallbacks, 0, { 0 }, 0x64, 1, { 0 }, 25, 29 },
+    { (void*)(unsigned int)&ACT4Q4_InitQuestData, 3, { 0 }, 0x64, 1, { 0 }, 29, 33 },
+    { (void*)(unsigned int)&ACT5Q1_InitQuestData, 4, { 0 }, 0, 0, { 0 }, 31, 35 },
+    { (void*)(unsigned int)&ACT5Q2_InitQuestData, 4, { 0 }, 0, 0, { 0 }, 32, 36 },
+    { (void*)(unsigned int)&ACT5Q3_InitQuestData, 4, { 0 }, 0, 0, { 0 }, 33, 37 },
+    { (void*)(unsigned int)&ACT5Q4_InitQuestData, 4, { 0 }, 0, 0, { 0 }, 34, 38 },
+    { (void*)(unsigned int)&ACT5Q5_InitQuestData, 4, { 0 }, 0, 0, { 0 }, 35, 39 },
+    { (void*)(unsigned int)&ACT5Q6_InitQuestData, 4, { 0 }, 0, 0, { 0 }, 36, 40 }
+}; // 0x00731510
+
+extern int gnQuestInitTableCount = 37; // 0x00731888
+
+extern D2QuestIntroTableStrc sgQuestIntro[4] = {
+    { (void (__fastcall *)(D2QuestDataStrc *))&ACT1Intro_InitQuestData },
+    { (void (__fastcall *)(D2QuestDataStrc *))&ACT2Intro_InitQuestData, 1 },
+    { (void (__fastcall *)(D2QuestDataStrc *))&ACT3Intro_InitQuestData, 2 },
+    { (void (__fastcall *)(D2QuestDataStrc *))&sub_0058EA50_InitQuestCallbacks, 4 }
+}; // 0x0073188C
+
+extern int gnQuestIntroTableCount = 4; // 0x007318AC
+
+extern int gnAct1NpcIds[6] = { 148, 154, 150, 147, 155, 265 }; // 0x007318B0
+
+extern int gnAct2NpcIds[11] = { 175, 176, 177, 178, 202, 200, 210, 201, 198, 199, 244 }; // 0x007318C8
+
+extern int gnAct3NpcIds[7] = { 245, 252, 253, 254, 255, 264, 297 }; // 0x007318F4
+
+extern int gnAct5NpcIds[7] = { 520, 521, 511, 512, 513, 514, 515 }; // 0x00731910

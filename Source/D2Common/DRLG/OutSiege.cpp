@@ -820,4 +820,71 @@ void __fastcall sub_0067E890(D2DrlgLevelStrc* pLevel)
     }
 }
 
-#include "gen/data/Source/D2Common/DRLG/OutSiege.inc"
+#pragma pack(push, 1)
+struct d2data_006F1FD8_t
+{
+    unsigned char b0[96];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00749C3C_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const D2DrlgOutSiegeInitStrc gData_006F1F9C[3]; // 0x006F1F9C
+extern "C" const struct d2data_006F1FD8_t gData_006F1FD8; // 0x006F1FD8
+extern "C" struct d2data_00749C3C_t gData_00749C3C; // 0x00749C3C
+
+extern "C" const D2DrlgOutSiegeInitStrc gData_006F1F9C[3] = {
+    { 112, 0, 0, 913, 914 },
+    { 117, 0, 1, 983, 984 },
+    { 117, 0, 0, 985, 986 }
+}; // 0x006F1F9C
+#pragma comment(linker, "/alternatename:?gaOutSiegeCaves@@3QBUD2DrlgOutSiegeInitStrc@@B=_gData_006F1F9C")
+
+extern "C" const struct d2data_006F1FD8_t gData_006F1FD8 = {
+    {
+        0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
+        0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01
+    }
+}; // 0x006F1FD8
+#pragma comment(linker, "/alternatename:?gaAct5WallSteps@@3QBUD2CoordStrc@@B=_gData_006F1FD8")
+
+extern "C" struct d2data_00749C3C_t gData_00749C3C = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749C3C

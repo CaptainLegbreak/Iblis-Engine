@@ -1420,4 +1420,126 @@ int __stdcall GAME_RunGameFrame(int nUnused)
     return 1;
 }
 
-#include "gen/data/Source/D2Client/GAME/Game_0044D080.inc"
+extern "C" void __cdecl GAME_HandleLeftButtonDown(); // 0x0044BF40
+extern "C" void __cdecl GAME_HandleLeftButtonUp(); // 0x0044C0F0
+extern "C" void __cdecl GAME_HandleRightButtonDown(); // 0x0044C180
+extern "C" void __cdecl GAME_HandleRightButtonUp(); // 0x0044C370
+extern "C" void __cdecl GAME_HandleMouseWheel(); // 0x0044C400
+extern "C" void __cdecl GAME_HandleMiddleButtonUp(); // 0x0044C470
+extern "C" void __cdecl GAME_HandleMiddleButtonDown(); // 0x0044C4A0
+extern "C" void __cdecl GAME_HandleXButtonDown(); // 0x0044C4D0
+extern "C" void __cdecl GAME_HandleXButtonUp(); // 0x0044C520
+extern "C" void __cdecl GAME_HandleSysCommand(); // 0x0044C570
+extern "C" void __cdecl GAME_SwallowMessage(); // 0x0044C5C0
+extern "C" void __cdecl GAME_HandleCloseMessage(); // 0x0044E0B0
+
+#pragma pack(push, 1)
+struct d2data_0070F2D0_t
+{
+    unsigned char b0[8];
+    const void* p1;
+    unsigned char b2[8];
+    const void* p3;
+    unsigned char b4[8];
+    const void* p5;
+    unsigned char b6[8];
+    const void* p7;
+    unsigned char b8[8];
+    const void* p9;
+    unsigned char b10[8];
+    const void* p11;
+    unsigned char b12[8];
+    const void* p13;
+    unsigned char b14[8];
+    const void* p15;
+    unsigned char b16[8];
+    const void* p17;
+    unsigned char b18[8];
+    const void* p19;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0070F378_t
+{
+    unsigned char b0[8];
+    const void* p1;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_0070F2D0_t gData_0070F2D0; // 0x0070F2D0
+extern "C" struct d2data_0070F378_t gData_0070F378; // 0x0070F378
+
+extern int gnState_0070EF18 = 5; // 0x0070EF18
+
+extern unsigned int gdwFrameTime = 0x28; // 0x0070EF1C
+
+extern int gnBetaScreenCount = 10; // 0x0070F024
+
+extern char gszMcpIP[260] = "207.82.87.133"; // 0x0070F130
+
+extern D2BetaScreenStrc gaBetaScreens[10] = {
+    { 0, 0, 0, (const char *)"screen01" },
+    { 0, 0, 0, (const char *)"screen02" },
+    { 0, 0, 0, (const char *)"screen03" },
+    { 0, 0, 0, (const char *)"screen04" },
+    { 0, 0, 0, (const char *)"screen05" },
+    { 0, 0, 0, (const char *)"screen06" },
+    { 0, 0, 0, (const char *)"screen07" },
+    { 0, 0, 0, (const char *)"screen08" },
+    { 0, 0, 0, (const char *)"screen09" },
+    { 0, 0, 0, (const char *)"screen10" }
+}; // 0x0070F238
+
+extern int gnRightClickState = 16; // 0x0070F2BC
+
+extern int gnClearScreenCount = 1; // 0x0070F2C0
+
+extern "C" D2MsgHandlerEntryStrc gaGameWheelHandlers[1] = { { 0, 522, (void*)(unsigned int)&GAME_HandleMouseWheel } }; // 0x0070F2C4
+
+extern "C" struct d2data_0070F2D0_t gData_0070F2D0 = {
+    { 0x00, 0x00, 0x00, 0x00, 0x01, 0x02 },
+    (const void*)(unsigned int)&GAME_HandleLeftButtonDown,
+    { 0x00, 0x00, 0x00, 0x00, 0x02, 0x02 },
+    (const void*)(unsigned int)&GAME_HandleLeftButtonUp,
+    { 0x00, 0x00, 0x00, 0x00, 0x04, 0x02 },
+    (const void*)(unsigned int)&GAME_HandleRightButtonDown,
+    { 0x00, 0x00, 0x00, 0x00, 0x05, 0x02 },
+    (const void*)(unsigned int)&GAME_HandleRightButtonUp,
+    { 0x03, 0x00, 0x00, 0x00, 0x5B },
+    (const void*)(unsigned int)&GAME_SwallowMessage,
+    { 0x03, 0x00, 0x00, 0x00, 0x5C },
+    (const void*)(unsigned int)&GAME_SwallowMessage,
+    { 0x03, 0x00, 0x00, 0x00, 0x5D },
+    (const void*)(unsigned int)&GAME_SwallowMessage,
+    { 0x00, 0x00, 0x00, 0x00, 0x12, 0x01 },
+    (const void*)(unsigned int)&GAME_HandleSysCommand,
+    { 0x00, 0x00, 0x00, 0x00, 0x10 },
+    (const void*)(unsigned int)&GAME_HandleCloseMessage,
+    { 0x00, 0x00, 0x00, 0x00, 0x1C },
+    (const void*)(unsigned int)&GAME_HandleActivateApp
+}; // 0x0070F2D0
+
+extern "C" D2MsgHandlerEntryStrc gaMiddleButtonHandlers[2] = {
+    { 0, 520, (void*)(unsigned int)&GAME_HandleMiddleButtonUp },
+    { 0, 519, (void*)(unsigned int)&GAME_HandleMiddleButtonDown }
+}; // 0x0070F348
+
+extern "C" D2MsgHandlerEntryStrc gaXButtonHandlers[2] = {
+    { 0, 523, (void*)(unsigned int)&GAME_HandleXButtonDown },
+    { 0, 524, (void*)(unsigned int)&GAME_HandleXButtonUp }
+}; // 0x0070F360
+
+extern "C" struct d2data_0070F378_t gData_0070F378 = {
+    { 0x00 },
+    (const void*)(unsigned int)&GAME_HandleMouseWheel
+}; // 0x0070F378
+
+extern unsigned short gawLoadingStrings[30] = {
+    0x14F5, 0x14F6, 0x14F7, 0x14F8, 0x14F9, 0x14FB, 0x14FA, 0x14ED, 0x14EE, 0x14FC, 0x14FD, 0x14FE, 0x14FF, 0x1500, 0x1501, 0x1502,
+    0x1503, 0x1504, 0x1505, 0x14F0, 0x14F4, 0x14F3, 0x14F2, 0x14F1, 0x14EF, 0x2775, 0x2776, 0x14FA, 0x14FB
+}; // 0x0070F384
+
+extern int gnLastViewY = -1; // 0x0070F558
+
+extern int gnLastViewX = -1; // 0x0070F55C

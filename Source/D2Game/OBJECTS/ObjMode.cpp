@@ -4151,4 +4151,164 @@ static int __stdcall OBJMODE_CalculateShrineStatBonus(int nStatId, int nValue, D
     return nValue * nStatValue / 100;
 }
 
-#include "gen/data/Source/D2Game/OBJECTS/ObjMode.inc"
+extern "C" void __cdecl sub_005822F0(); // 0x005822F0
+extern "C" void __cdecl sub_00582490(); // 0x00582490
+extern "C" void __cdecl sub_005824B0(); // 0x005824B0
+extern "C" void __cdecl sub_005824D0(); // 0x005824D0
+extern "C" void __cdecl sub_005824F0(); // 0x005824F0
+extern "C" void __cdecl sub_00582860(); // 0x00582860
+extern "C" void __cdecl sub_005828A0(); // 0x005828A0
+extern "C" void __cdecl sub_005828E0(); // 0x005828E0
+extern "C" void __cdecl sub_00582940(); // 0x00582940
+extern "C" void __cdecl sub_005829A0(); // 0x005829A0
+extern "C" void __cdecl sub_00582A00(); // 0x00582A00
+extern "C" void __cdecl sub_00582C40(); // 0x00582C40
+extern "C" void __cdecl sub_00583050(); // 0x00583050
+extern "C" void __cdecl sub_005830E0(); // 0x005830E0
+extern "C" void __cdecl sub_00583410(); // 0x00583410
+extern "C" void __cdecl sub_005839B0(); // 0x005839B0
+extern "C" void __cdecl sub_00583A70(); // 0x00583A70
+extern "C" void __cdecl sub_00583B30(); // 0x00583B30
+extern "C" void __cdecl OBJECTS_OperateFunction06_TowerTome(); // 0x00594E70
+extern "C" void __cdecl OBJECTS_OperateFunction10_CainGibbet(); // 0x00593480
+extern "C" void __cdecl OBJECTS_OperateFunction21_HoradrimMalus(); // 0x00591AC0
+extern "C" void __cdecl OBJECTS_OperateFunction24_TaintedSunAltar(); // 0x0059A7E0
+extern "C" void __cdecl OBJECTS_OperateFunction25_StaffOrifice(); // 0x0059DC70
+extern "C" void __cdecl OBJECTS_OperateFunction28_LamEsenTome(); // 0x005B7A60
+extern "C" void __cdecl OBJECTS_OperateFunction39_HoradricCubeChest(); // 0x00599DF0
+extern "C" void __cdecl OBJECTS_OperateFunction40_HoradricScrollChest(); // 0x00599C10
+extern "C" void __cdecl OBJECTS_OperateFunction42_SanctuaryTome(); // 0x0059B970
+extern "C" void __cdecl OBJECTS_OperateFunction44_SewerStairs(); // 0x005B84E0
+extern "C" void __cdecl OBJECTS_OperateFunction52_DiabloSeal(); // 0x005B5630
+extern "C" void __cdecl OBJECTS_OperateFunction53_CompellingOrb(); // 0x005BB980
+extern "C" void __cdecl OBJECTS_OperateFunction54_DiabloSeal(); // 0x005B6B70
+extern "C" void __cdecl OBJECTS_OperateFunction55_DiabloSeal(); // 0x005B6BC0
+extern "C" void __cdecl OBJECTS_OperateFunction56_DiabloSeal(); // 0x005B6C10
+extern "C" void __cdecl OBJECTS_OperateFunction57_KhalimChest(); // 0x005B8860
+extern "C" void __cdecl OBJECTS_OperateFunction58_KhalimChest(); // 0x005B8940
+extern "C" void __cdecl OBJECTS_OperateFunction59_KhalimChest(); // 0x005B8A20
+extern "C" void __cdecl OBJECTS_OperateFunction65_AncientsAltar(); // 0x0058D310
+extern "C" void __cdecl OBJECTS_OperateFunction66_AncientsDoor(); // 0x0058D400
+extern "C" void __cdecl OBJECTS_OperateFunction67_FrozenAnya(); // 0x0058ABC0
+extern "C" void __cdecl OBJECTS_OperateFunction69_InvisibleAncient(); // 0x0058D5E0
+extern "C" void __cdecl OBJECTS_OperateFunction70_BaalPortal(); // 0x0058E6A0
+extern "C" void __cdecl OBJECTS_OperateFunction71_SummitDoor(); // 0x0058D6A0
+extern "C" void __cdecl OBJECTS_OperateFunction72_LastPortal(); // 0x0058E740
+extern "C" void __cdecl OBJECTS_OperateFunction73_LastLastPortal(); // 0x005B5880
+extern "C" void __cdecl OBJECTS_OperateFunction32_Bank(); // 0x00564CD0
+extern "C" void __cdecl sub_00581BF0(); // 0x00581BF0
+extern "C" void __cdecl sub_00584870(); // 0x00584870
+extern "C" void __cdecl sub_00585F60(); // 0x00585F60
+extern "C" void __cdecl OBJECTS_OperateFunction62_AncientStatue(); // 0x0058D1E0
+extern "C" void __cdecl OBJECTS_OperateFunction63_AncientStatue(); // 0x0058D200
+extern "C" void __cdecl OBJECTS_OperateFunction64_AncientStatue(); // 0x0058D220
+extern "C" void __cdecl OBJECTS_OperateFunction09_Monolith(); // 0x00593710
+extern "C" void __cdecl sub_00593AF0(); // 0x00593AF0
+extern "C" void __cdecl OBJECTS_OperateFunction41_StaffOfKingsChest(); // 0x00599CF0
+extern "C" void __cdecl OBJECTS_OperateFunction49_HellForge(); // 0x005B5C10
+extern "C" void __cdecl sub_005B8530(); // 0x005B8530
+extern "C" void __cdecl OBJECTS_OperateFunction31_GidbinnDecoy(); // 0x005B9B40
+extern "C" void __cdecl OBJMODE_ObjectTimer_Light(); // 0x00581250
+extern "C" void __cdecl OBJMODE_OpenLinkPortal(); // 0x00581410
+
+#pragma pack(push, 1)
+struct d2data_006E1850_t
+{
+    unsigned char b0[8];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006E196C_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+extern "C" const struct d2data_006E1850_t gData_006E1850; // 0x006E1850
+extern "C" const D2EventState00583BF0Strc gData_006E1858[23]; // 0x006E1858
+extern "C" const struct d2data_006E196C_t gData_006E196C; // 0x006E196C
+extern "C" const int gData_006E1988[10]; // 0x006E1988
+extern "C" const EventCallbackFunction gData_006E19B0[15]; // 0x006E19B0
+
+extern "C" const struct d2data_006E1850_t gData_006E1850 = {
+    { 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF }
+}; // 0x006E1850
+#pragma comment(linker, "/alternatename:?sgcptShrineChart@@3QBUD2ShrineTableStrc@@B=_gData_006E1850")
+
+extern "C" const D2EventState00583BF0Strc gData_006E1858[23] = {
+    { 0, { (int)(unsigned int)&sub_005828E0, -1 } },
+    { 0, { (int)(unsigned int)&sub_00582860, -1 } },
+    { 0, { (int)(unsigned int)&sub_005828A0, -1 } },
+    { 0, { (int)(unsigned int)&sub_00582940, -1 } },
+    { 0, { (int)(unsigned int)&sub_005829A0, -1 } },
+    { 0, { (int)(unsigned int)&sub_00583B30, 171 } },
+    { 128, { (int)(unsigned int)&sub_005839B0, -1 } },
+    { 129, { (int)(unsigned int)&sub_00583B30, 39 } },
+    { 131, { (int)(unsigned int)&sub_00583B30, 43 } },
+    { 132, { (int)(unsigned int)&sub_00583B30, 41 } },
+    { 130, { (int)(unsigned int)&sub_00583B30, 45 } },
+    { 133, { (int)(unsigned int)&D2GAME_SHRINES_SkillBoost, 11 } },
+    { 134, { (int)(unsigned int)&sub_00583B30, 27 } },
+    { 135, { (int)(unsigned int)&sub_00583A70, 162 } },
+    { 136, { (int)(unsigned int)&sub_00583B30, 85 } },
+    { 137, { (int)(unsigned int)&sub_00582A00, -1 } },
+    { 0, { (int)(unsigned int)&D2GAME_SHRINES_Portal_6FC76880, -1 } },
+    { 0, { (int)(unsigned int)&sub_00582C40, -1 } },
+    { 0, { (int)(unsigned int)&D2GAME_SHRINES_Storm, -1 } },
+    { 0, { (int)(unsigned int)&sub_00583050, -1 } },
+    { 0, { (int)(unsigned int)&sub_005830E0, -1 } },
+    { 0, { (int)(unsigned int)&sub_00583410, -1 } },
+    { 0, { 0, -1 } }
+}; // 0x006E1858
+#pragma comment(linker, "/alternatename:?gaShrineSkillBoostStates@@3PAUD2EventState00583BF0Strc@@A=_gData_006E1858")
+
+extern "C" const struct d2data_006E196C_t gData_006E196C = {
+    { 0x00 }
+}; // 0x006E196C
+
+extern "C" const int gData_006E1988[10] = { 2, 37, 41, 73, 76, 102, 104, 108, 109, 136 }; // 0x006E1988
+#pragma comment(linker, "/alternatename:?gnChestActLevelIds@@3QBHB=_gData_006E1988")
+
+extern "C" const EventCallbackFunction gData_006E19B0[15] = { (EventCallbackFunction)&OBJMODE_UpdateTrapProximity, (EventCallbackFunction)&OBJMODE_CompleteObjectAnimation, (EventCallbackFunction)&OBJMODE_RegenerateWell, (EventCallbackFunction)&D2GAME_SpikeTraps_6FC74F60, (EventCallbackFunction)&OBJMODE_DispatchTrap, (EventCallbackFunction)&OBJMODE_ResetShrine, (EventCallbackFunction)&OBJMODE_ExpireHoverText, (EventCallbackFunction)&OBJMODE_HandleQuestObjectEvent, (EventCallbackFunction)&OBJMODE_ObjectTimer_Light, (EventCallbackFunction)&OBJMODE_UpdateTrappedSoul, (EventCallbackFunction)&OBJMODE_DropJungleStashItems, (EventCallbackFunction)&OBJMODE_OpenLinkPortal }; // 0x006E19B0
+#pragma comment(linker, "/alternatename:?gpfnObjectEventFunctions@@3PAP6IXPAUD2GameStrc@@PAUD2UnitStrc@@@ZA=_gData_006E19B0")
+
+extern ObjTrapHandlerFunction sgObjectTrapHandlers[10] = { 0, (ObjTrapHandlerFunction)&sub_00582490, (ObjTrapHandlerFunction)&sub_005824B0, (ObjTrapHandlerFunction)&sub_005824D0, (ObjTrapHandlerFunction)&sub_005824F0, (ObjTrapHandlerFunction)&D2GAME_OBJECTS_TrapHandler5_7_6FC75BC0, (ObjTrapHandlerFunction)&sub_005824B0, (ObjTrapHandlerFunction)&D2GAME_OBJECTS_TrapHandler5_7_6FC75BC0, (ObjTrapHandlerFunction)&sub_005822F0, (ObjTrapHandlerFunction)&sub_005822F0 }; // 0x00732CEC
+
+extern int gnObjectTrapHandlers_00732D14 = 10; // 0x00732D14
+
+extern ObjOperateFunction gpfnObjOperateFunctions[101] = {
+    0, (ObjOperateFunction)&OBJECTS_OperateFunction01_Casket, (ObjOperateFunction)&OBJECTS_OperateFunction02_Shrine, (ObjOperateFunction)&OBJECTS_OperateFunction03_Urn_Basket_Jar, (ObjOperateFunction)&sub_00585F60, (ObjOperateFunction)&OBJECTS_OperateFunction05_Barrel, (ObjOperateFunction)&OBJECTS_OperateFunction06_TowerTome, (ObjOperateFunction)&OBJECTS_OperateFunction07_ExplodingBarrel, (ObjOperateFunction)&OBJECTS_OperateFunction08_Door, (ObjOperateFunction)&OBJECTS_OperateFunction09_Monolith, (ObjOperateFunction)&OBJECTS_OperateFunction10_CainGibbet, (ObjOperateFunction)&OBJECTS_OperateFunction11_Torch, (ObjOperateFunction)&sub_00593AF0, (ObjOperateFunction)&OBJECTS_OperateFunction13_TorchTiki, (ObjOperateFunction)&OBJECTS_OperateFunction14_Corpse, (ObjOperateFunction)&sub_00584870,
+    (ObjOperateFunction)&OBJECTS_OperateFunction16_TrapDoor, (ObjOperateFunction)&OBJECTS_OperateFunction17_Obelisk, (ObjOperateFunction)&OBJECTS_OperateFunction18_SecretDoor, (ObjOperateFunction)&OBJECTS_OperateFunction19_ArmorStand, (ObjOperateFunction)&OBJECTS_OperateFunction20_WeaponRack, (ObjOperateFunction)&OBJECTS_OperateFunction21_HoradrimMalus, (ObjOperateFunction)&OBJECTS_OperateFunction22_Well, (ObjOperateFunction)&OBJECTS_OperateFunction23_Waypoint, (ObjOperateFunction)&OBJECTS_OperateFunction24_TaintedSunAltar, (ObjOperateFunction)&OBJECTS_OperateFunction25_StaffOrifice, (ObjOperateFunction)&OBJECTS_OperateFunction26_BookShelf, (ObjOperateFunction)&sub_00581BF0, (ObjOperateFunction)&OBJECTS_OperateFunction28_LamEsenTome, (ObjOperateFunction)&OBJECTS_OperateFunction29_SlimeDoor, (ObjOperateFunction)&OBJECTS_OperateFunction30_ExplodingChest, (ObjOperateFunction)&OBJECTS_OperateFunction31_GidbinnDecoy,
+    (ObjOperateFunction)&OBJECTS_OperateFunction32_Bank, (ObjOperateFunction)&OBJECTS_OperateFunction33_WirtsBody, (ObjOperateFunction)&OBJECTS_OperateFunction34_ArcaneSanctuaryPortal, 0, 0, 0, 0, (ObjOperateFunction)&OBJECTS_OperateFunction39_HoradricCubeChest, (ObjOperateFunction)&OBJECTS_OperateFunction40_HoradricScrollChest, (ObjOperateFunction)&OBJECTS_OperateFunction41_StaffOfKingsChest, (ObjOperateFunction)&OBJECTS_OperateFunction42_SanctuaryTome, (ObjOperateFunction)&OBJECTS_OperateFunction43_DurielPortal, (ObjOperateFunction)&OBJECTS_OperateFunction44_SewerStairs, (ObjOperateFunction)&sub_005B8530, (ObjOperateFunction)&OBJECTS_OperateFunction46_HellGatePortal, (ObjOperateFunction)&OBJECTS_OperateFunction47_Stair,
+    (ObjOperateFunction)&OBJECTS_OperateFunction48_TrappedSoul, (ObjOperateFunction)&OBJECTS_OperateFunction49_HellForge, (ObjOperateFunction)&OBJECTS_OperateFunction50_Stair, (ObjOperateFunction)&OBJECTS_OperateFunction51_JungleStash, (ObjOperateFunction)&OBJECTS_OperateFunction52_DiabloSeal, (ObjOperateFunction)&OBJECTS_OperateFunction53_CompellingOrb, (ObjOperateFunction)&OBJECTS_OperateFunction54_DiabloSeal, (ObjOperateFunction)&OBJECTS_OperateFunction55_DiabloSeal, (ObjOperateFunction)&OBJECTS_OperateFunction56_DiabloSeal, (ObjOperateFunction)&OBJECTS_OperateFunction57_KhalimChest, (ObjOperateFunction)&OBJECTS_OperateFunction58_KhalimChest, (ObjOperateFunction)&OBJECTS_OperateFunction59_KhalimChest, 0, (ObjOperateFunction)&OBJECTS_OperateFunction61_HarrogathMainGate, (ObjOperateFunction)&OBJECTS_OperateFunction62_AncientStatue, (ObjOperateFunction)&OBJECTS_OperateFunction63_AncientStatue,
+    (ObjOperateFunction)&OBJECTS_OperateFunction64_AncientStatue, (ObjOperateFunction)&OBJECTS_OperateFunction65_AncientsAltar, (ObjOperateFunction)&OBJECTS_OperateFunction66_AncientsDoor, (ObjOperateFunction)&OBJECTS_OperateFunction67_FrozenAnya, (ObjOperateFunction)&OBJECTS_OperateFunction68_EvilUrn, (ObjOperateFunction)&OBJECTS_OperateFunction69_InvisibleAncient, (ObjOperateFunction)&OBJECTS_OperateFunction70_BaalPortal, (ObjOperateFunction)&OBJECTS_OperateFunction71_SummitDoor, (ObjOperateFunction)&OBJECTS_OperateFunction72_LastPortal, (ObjOperateFunction)&OBJECTS_OperateFunction73_LastLastPortal
+}; // 0x00732D18
+
+extern int gnShrineTableCount = 24; // 0x00732EAC
+
+extern D2ObeliskPowerUpStrc gaObeliskPowerUps[21] = {
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseMana, 0x64, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseMana, 0x64, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseMana, 0x64, 2 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseEnergy, 5, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseEnergy, 0xA, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseEnergy, 0xF, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseDexterity, 5, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseDexterity, 0xA, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseDexterity, 0xF, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseVitality, 5, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseVitality, 0xA, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseVitality, 0xF, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseStrength, 5, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseStrength, 0xA, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseStrength, 0xF, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseHitpoints, 0x64, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseHitpoints, 0x64, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseHitpoints, 0x64, 2 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseSkillpoints, 3, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseSkillpoints, 6, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, int))&OBJMODE_ObeliskPowerUp_IncreaseSkillpoints, 0xA, 1 }
+}; // 0x00732EB0
+
+extern int gnObeliskPowerUpCount = 21; // 0x00732FAC

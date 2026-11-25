@@ -1,4 +1,4 @@
-// Functional replacement for the function at 0x006BD230, not the original code: only the ordinary build (tools/link.py) uses it.
+// Functional replacement for the function at 0x006BD230, not the original code (Iblis Codex has not reconstructed the original yet).
 
 struct D2TxtLinkEntry006BD230Strc { unsigned int nKey; int nIndex; };
 struct D2TxtLink006BD230Strc

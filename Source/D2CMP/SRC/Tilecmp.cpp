@@ -838,4 +838,87 @@ void __stdcall TileLibraryCopyHeaders(D2TileLibraryHeaderStrc* pSource, D2TileLi
     *pnSize = nSize;
 }
 
-#include "gen/data/Source/D2CMP/SRC/Tilecmp.inc"
+#pragma pack(push, 1)
+struct d2data_007435C8_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const unsigned char gData_006E5DA0[8]; // 0x006E5DA0
+extern "C" const unsigned char gData_006E5DA8[16]; // 0x006E5DA8
+extern "C" const unsigned char gData_006E5DB8[8]; // 0x006E5DB8
+extern "C" const unsigned char gData_006E5DC0[16]; // 0x006E5DC0
+extern "C" struct d2data_007435C8_t gData_007435C8; // 0x007435C8
+
+extern "C" const unsigned char gData_006E5DA0[8] = { 1, 1, 3, 3, 5, 5, 7, 7 }; // 0x006E5DA0
+#pragma comment(linker, "/alternatename:?gaDirection8To4@@3QBEB=_gData_006E5DA0")
+
+extern "C" const unsigned char gData_006E5DA8[16] = { 0, 0, 2, 2, 4, 4, 6, 6, 8, 8, 0xA, 0xA, 0xC, 0xC, 0xE, 0xE }; // 0x006E5DA8
+#pragma comment(linker, "/alternatename:?gaDirection16To8@@3QBEB=_gData_006E5DA8")
+
+extern "C" const unsigned char gData_006E5DB8[8] = { 3, 3, 5, 5, 7, 7, 1, 1 }; // 0x006E5DB8
+#pragma comment(linker, "/alternatename:?gaDirection8To4Alt@@3QBEB=_gData_006E5DB8")
+
+extern "C" const unsigned char gData_006E5DC0[16] = { 2, 2, 4, 4, 6, 6, 8, 8, 0xA, 0xA, 0xC, 0xC, 0xE, 0xE }; // 0x006E5DC0
+#pragma comment(linker, "/alternatename:?gaDirection16To8Alt@@3QBEB=_gData_006E5DC0")
+
+extern D2CmpSubTilePosStrc gatSubTilePositions[25] = {
+    { 64 },
+    { 80, 8 },
+    { 96, 16 },
+    { 112, 24 },
+    { 128, 32 },
+    { 48, 8 },
+    { 64, 16 },
+    { 80, 24 },
+    { 96, 32 },
+    { 112, 40 },
+    { 32, 16 },
+    { 48, 24 },
+    { 64, 32 },
+    { 80, 40 },
+    { 96, 48 },
+    { 16, 24 },
+    { 32, 32 },
+    { 48, 40 },
+    { 64, 48 },
+    { 80, 56 },
+    { 0, 32 },
+    { 16, 40 },
+    { 32, 48 },
+    { 48, 56 },
+    { 64, 64 }
+}; // 0x00743500
+
+extern "C" struct d2data_007435C8_t gData_007435C8 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007435C8

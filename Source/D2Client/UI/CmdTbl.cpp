@@ -3073,4 +3073,121 @@ void __stdcall CMDTBL_DispatchHotkey(SMSGHANDLER_PARAMS* pMsg)
     }
 }
 
-#include "gen/data/Source/D2Client/UI/CmdTbl.inc"
+extern "C" void __cdecl D2Win_10168_WINMAIN_CreateScreenshot(); // 0x004FA7A0
+extern "C" void __cdecl SCMD_ShowHelpOnce(); // 0x004689D0
+extern "C" void __cdecl HIREABLES_TogglePetIconPopup(); // 0x00493840
+
+#pragma pack(push, 1)
+struct d2data_007121E0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    unsigned char b15[4];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_007121E0_t gData_007121E0; // 0x007121E0
+
+extern "C" struct d2data_007121E0_t gData_007121E0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14",
+    { 0x72 }
+}; // 0x007121E0
+
+extern D2HotkeyCommandStrc gaHotkeyCommands[57] = {
+    { (void (__cdecl *)())&CMDTBL_SetUIVar2 },
+    { (void (__cdecl *)())&CMDTBL_SetUIVar1 },
+    { (void (__cdecl *)())&CMDTBL_SetUIVar22 },
+    { (void (__cdecl *)())&CMDTBL_SetUIVar24 },
+    { (void (__cdecl *)())&CMDTBL_OpenMode1 },
+    { (void (__cdecl *)())&CMDTBL_SetUIVar5, 0, 1 },
+    { (void (__cdecl *)())&SCMD_ShowHelpOnce },
+    { (void (__cdecl *)())&CMDTBL_SetUIVar10 },
+    { (void (__cdecl *)())&CMDTBL_Force },
+    { (void (__cdecl *)())&CMDTBL_CycleSetting },
+    { (void (__cdecl *)())&sub_00468A90_ToggleSetting },
+    { (void (__cdecl *)())&sub_00468AB0_ToggleSetting },
+    { (void (__cdecl *)())&CMDTBL_SetUIVar4 },
+    { (void (__cdecl *)())&CMDTBL_SetUIVar3 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey0 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey1 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey2 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey3 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey4 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey5 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey6 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey7 },
+    { (void (__cdecl *)())&sub_00468F00, 0, 1 },
+    { (void (__cdecl *)())&CMDTBL_BeltHotkey0 },
+    { (void (__cdecl *)())&CMDTBL_BeltHotkey1 },
+    { (void (__cdecl *)())&CMDTBL_BeltHotkey2 },
+    { (void (__cdecl *)())&CMDTBL_BeltHotkey3 },
+    { (void (__cdecl *)())&CMDTBL_Phrase19, 0, 1 },
+    { (void (__cdecl *)())&CMDTBL_Phrase1A, 0, 1 },
+    { (void (__cdecl *)())&CMDTBL_Phrase1B, 0, 1 },
+    { (void (__cdecl *)())&CMDTBL_Phrase1C, 0, 1 },
+    { (void (__cdecl *)())&CMDTBL_Phrase1D, 0, 1 },
+    { (void (__cdecl *)())&CMDTBL_Phrase1E, 0, 1 },
+    { (void (__cdecl *)())&CMDTBL_Phrase1F, 0, 1 },
+    { (void (__cdecl *)())&CMDTBL_HotkeyRunOn, (void (__cdecl *)())&CMDTBL_HotkeyRunOff },
+    { (void (__cdecl *)())&CMDTBL_ToggleAlwaysRun },
+    { (void (__cdecl *)())&CMDTBL_HotkeySetValue, (void (__cdecl *)())&CMDTBL_HotkeyStandStillRelease },
+    { (void (__cdecl *)())&CMDTBL_HotkeyUiVarOff, (void (__cdecl *)())&CMDTBL_HotkeyUiVarOn },
+    { (void (__cdecl *)())&CMDTBL_HotkeyClearScreen },
+    { (void (__cdecl *)())&CMDTBL_HotkeyPrevSkill },
+    { (void (__cdecl *)())&CMDTBL_HotkeyNextSkill },
+    { (void (__cdecl *)())&CMDTBL_HotkeyClearMessages, 0, 1 },
+    { 0, (void (__cdecl *)())&D2Win_10168_WINMAIN_CreateScreenshot, 1 },
+    { (void (__cdecl *)())&HIREABLES_TogglePetIconPopup },
+    { (void (__cdecl *)())&CMDTBL_HotkeyResetSounds, 0, 1 },
+    { (void (__cdecl *)())&sub_00468AD0_ToggleSetting, 0, 1 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey8 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey9 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey10 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey11 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey12 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey13 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey14 },
+    { (void (__cdecl *)())&CMDTBL_Hotkey15 },
+    { (void (__cdecl *)())&CMDTBL_HotkeyPetUi },
+    { (void (__cdecl *)())&CMDTBL_Phrase20, 0, 1 },
+    { (void (__cdecl *)())&CMDTBL_HotkeyEscape }
+}; // 0x00712698
+
+extern D2MsgHandlerEntryStrc gaHotkeyHandlers[4] = {
+    { 0, 256, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&SCMD_HandleHotkeyMessage },
+    { 0, 260, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&SCMD_HandleHotkeyMessage },
+    { 0, 257, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&CMDTBL_DispatchHotkey },
+    { 0, 261, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&CMDTBL_DispatchHotkey }
+}; // 0x00712944
+
+extern D2MsgHandlerEntryStrc gaHotkeyUpHandlers[2] = {
+    { 0, 257, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&CMDTBL_DispatchHotkey },
+    { 0, 261, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&CMDTBL_DispatchHotkey }
+}; // 0x00712974

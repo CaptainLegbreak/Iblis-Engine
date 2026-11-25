@@ -2742,7 +2742,212 @@ void __fastcall PLAYERSTATS_OnPlayerLeveledUp(void* pUnused, D2UnitStrc* pUnit, 
     sub_0053DA90(pUnit, nArg);
 }
 
-#include "gen/data/Source/D2Game/OBJECTS/Objects.inc"
+extern "C" void __cdecl OBJECTS_SpawnPresetChest(); // 0x0054F180
+extern "C" void __cdecl sub_0054F370(); // 0x0054F370
+extern "C" void __cdecl OBJECTS_InitFunction04_TowerTome(); // 0x00595A00
+extern "C" void __cdecl OBJECTS_InitFunction09_InifussTree(); // 0x00593FC0
+extern "C" void __cdecl OBJECTS_InitFunction13_InvisibleObject(); // 0x00594020
+extern "C" void __cdecl OBJECTS_InitFunction17_Waypoint(); // 0x00547210
+extern "C" void __cdecl OBJECTS_InitFunction18_JerhynPosition(); // 0x005448B0
+extern "C" void __cdecl OBJECTS_InitFunction19_JerhynPositionEx(); // 0x005448E0
+extern "C" void __cdecl OBJECTS_InitFunction20_TaintedAltar(); // 0x00544910
+extern "C" void __cdecl OBJECTS_InitFunction21_HoradricOrifice(); // 0x0059DB50
+extern "C" void __cdecl OBJECTS_InitFunction23_LamEsenTomeStand(); // 0x00544E30
+extern "C" void __cdecl OBJECTS_InitFunction29_ArcaneSanctuaryPortal(); // 0x0059BA40
+extern "C" void __cdecl OBJECTS_InitFunction30_HaremBlocker(); // 0x0059B7D0
+extern "C" void __cdecl OBJECTS_InitFunction38_TyraelsDoor(); // 0x0059DAD0
+extern "C" void __cdecl OBJECTS_InitFunction39_GidbinnAltar(); // 0x005B9D40
+extern "C" void __cdecl OBJECTS_InitFunction41_SewerStairs(); // 0x005B8660
+extern "C" void __cdecl OBJECTS_InitFunction42_SewerLever(); // 0x005B86B0
+extern "C" void __cdecl OBJECTS_InitFunction43_DarkWanderer(); // 0x005BD1F0
+extern "C" void __cdecl OBJECTS_InitFunction44_HellGatePortal(); // 0x005BCBF0
+extern "C" void __cdecl OBJECTS_InitFunction45_MephistoBridge(); // 0x005BCB90
+extern "C" void __cdecl OBJECTS_InitFunction47_CountessChest(); // 0x00595A50
+extern "C" void __cdecl OBJECTS_InitFunction49_HratliStart(); // 0x005B70B0
+extern "C" void __cdecl OBJECTS_InitFunction50_HratliEnd(); // 0x005B7160
+extern "C" void __cdecl OBJECTS_InitFunction52_NatalyaStart(); // 0x005BCE80
+extern "C" void __cdecl OBJECTS_InitFunction53_StairsR(); // 0x005BBB70
+extern "C" void __cdecl OBJECTS_InitFunction54_CainStartPosition(); // 0x005940E0
+extern "C" void __cdecl OBJECTS_InitFunction55_DiabloStartPoint(); // 0x005B5590
+extern "C" void __cdecl OBJECTS_InitFunction60_CompellingOrb(); // 0x005BBBA0
+extern "C" void __cdecl OBJECTS_InitFunction61_CainPortal(); // 0x00594290
+extern "C" void __cdecl OBJECTS_InitFunction62_CagedWussie(); // 0x005886A0
+extern "C" void __cdecl OBJECTS_InitFunction63_AncientStatue3(); // 0x0058D150
+extern "C" void __cdecl OBJECTS_InitFunction64_AncientStatue1(); // 0x0058D190
+extern "C" void __cdecl OBJECTS_InitFunction65_AncientStatue2(); // 0x0058D110
+extern "C" void __cdecl OBJECTS_InitFunction67_DrehyaStartOutsideTown(); // 0x0058A5B0
+extern "C" void __cdecl OBJECTS_InitFunction68_NihlathakStartInTown(); // 0x0058A610
+extern "C" void __cdecl OBJECTS_InitFunction69_NihlathakStartOutsideTown(); // 0x0058A6C0
+extern "C" void __cdecl OBJECTS_InitFunction71_LarzukStandard(); // 0x00587840
+extern "C" void __cdecl OBJECTS_InitFunction72_AncientsAltar(); // 0x0058D240
+extern "C" void __cdecl OBJECTS_InitFunction73_AncientsDoor(); // 0x0058D280
+extern "C" void __cdecl OBJECTS_InitFunction74_FrozenAnya(); // 0x0058AA50
+extern "C" void __cdecl OBJECTS_InitFunction75_BaalsPortal(); // 0x0058E670
+extern "C" void __cdecl OBJECTS_InitFunction76_SummitDoor(); // 0x0058D640
+extern "C" void __cdecl OBJECTS_InitFunction77_LastPortal(); // 0x0058E710
+extern "C" void __cdecl OBJECTS_InitFunction78_LastLastPortal(); // 0x005B5840
+extern "C" void __cdecl OBJECTS_InitFunction79_Zoo(); // 0x0058E830
+extern "C" void __cdecl OBJECTS_InitFunction_005500E0(); // 0x005500E0
+extern "C" void __cdecl OBJECTS_InitFunction15_MalusStand(); // 0x00544950
+extern "C" void __cdecl OBJECTS_InitFunction07_CainGibbet(); // 0x00544990
+extern "C" void __cdecl sub_005506D0(); // 0x005506D0
+extern "C" void __cdecl OBJECTS_InitFunction70_Unused(); // 0x00587830
+extern "C" void __cdecl OBJECTS_InitFunction66_DrehyaStartInTown(); // 0x0058EAC0
+extern "C" void __cdecl sub_005935E0(); // 0x005935E0
+extern "C" void __cdecl OBJECTS_InitFunction31_Unused(); // 0x00599EE0
+extern "C" void __cdecl OBJECTS_InitFunction33_Unused(); // 0x00599EF0
+extern "C" void __cdecl OBJECTS_InitFunction32_Unused(); // 0x00599F00
+extern "C" void __cdecl OBJECTS_InitFunction56_Unused(); // 0x005B5620
+extern "C" void __cdecl OBJECTS_InitFunction48_HellForge(); // 0x005B5A20
+extern "C" void __cdecl OBJECTS_InitFunction25_Gidbinn(); // 0x005B9AE0
+extern "C" void __cdecl OBJECTS_InitFunction37_Unused(); // 0x0059DA50
+extern "C" void __cdecl sub_00550C20(); // 0x00550C20
+extern "C" void __cdecl sub_005516C0(); // 0x005516C0
+extern "C" void __cdecl sub_00551850(); // 0x00551850
+extern "C" void __cdecl sub_00551C00(); // 0x00551C00
+
+#pragma pack(push, 1)
+struct d2data_00731D9C_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00731DD0_t
+{
+    unsigned char b0[40];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00731DFC_t
+{
+    unsigned char b0[40];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00731E28_t
+{
+    unsigned char b0[56];
+};
+#pragma pack(pop)
+
+extern "C" const D2ObjectTableStrc gData_006E1080[6]; // 0x006E1080
+extern "C" struct d2data_00731D9C_t gData_00731D9C; // 0x00731D9C
+extern "C" struct d2data_00731DD0_t gData_00731DD0; // 0x00731DD0
+extern "C" struct d2data_00731DFC_t gData_00731DFC; // 0x00731DFC
+extern "C" struct d2data_00731E28_t gData_00731E28; // 0x00731E28
+
+extern "C" const D2ObjectTableStrc gData_006E1080[6] = {
+    { 136, 2, 6 },
+    { 136, 7, 7 },
+    { 136, 8, 11 },
+    { 136, 12, 12 },
+    { 136, 1, 5 },
+    { 136, 14, 14 }
+}; // 0x006E1080
+#pragma comment(linker, "/alternatename:?gaShrineObjectTable@@3QBUD2ObjectTableStrc@@B=_gData_006E1080")
+
+extern int gaDirectionX_00731B7C[8] = { -1, 0, 1, -1, 1, -1, 0, 1 }; // 0x00731B7C
+
+extern int gaDirectionY_00731B9C[8] = { -1, -1, -1, 0, 0, 1, 1, 1 }; // 0x00731B9C
+
+extern unsigned char gnObjectGoreLevel = 2; // 0x00731BBC
+
+extern unsigned char gnObjectPopulateDensity = 0x40; // 0x00731BBD
+
+extern D2ObjInitFn sgInitTable[80] = {
+    0, (D2ObjInitFn)&OBJECTS_InitFunction01_Shrine, (D2ObjInitFn)&OBJECTS_InitFunction02_Urn, (D2ObjInitFn)&OBJECTS_InitFunction03_Chest, (D2ObjInitFn)&OBJECTS_InitFunction04_TowerTome, (D2ObjInitFn)&OBJECTS_InitFunction05_Door, (D2ObjInitFn)&sub_005935E0, (D2ObjInitFn)&OBJECTS_InitFunction07_CainGibbet, (D2ObjInitFn)&OBJECTS_InitFunction08_Torch, (D2ObjInitFn)&OBJECTS_InitFunction09_InifussTree, (D2ObjInitFn)&OBJECTS_InitFunction10_Unused, (D2ObjInitFn)&OBJECTS_InitFunction11_Portal, (D2ObjInitFn)&OBJECTS_InitFunction12_PermanentPortal, (D2ObjInitFn)&OBJECTS_InitFunction13_InvisibleObject, (D2ObjInitFn)&OBJECTS_InitFunction14_Brazier, (D2ObjInitFn)&OBJECTS_InitFunction15_MalusStand,
+    (D2ObjInitFn)&OBJECTS_InitFunction16_Well, (D2ObjInitFn)&OBJECTS_InitFunction17_Waypoint, (D2ObjInitFn)&OBJECTS_InitFunction18_JerhynPosition, (D2ObjInitFn)&OBJECTS_InitFunction19_JerhynPositionEx, (D2ObjInitFn)&OBJECTS_InitFunction20_TaintedAltar, (D2ObjInitFn)&OBJECTS_InitFunction21_HoradricOrifice, (D2ObjInitFn)&OBJECTS_InitFunction22_Fire, (D2ObjInitFn)&OBJECTS_InitFunction23_LamEsenTomeStand, (D2ObjInitFn)&OBJECTS_InitFunction24_SpikeFloorTrap, (D2ObjInitFn)&OBJECTS_InitFunction25_Gidbinn, (D2ObjInitFn)&OBJECTS_InitFunction_005500E0, (D2ObjInitFn)&OBJECTS_InitFunction27_GooPile, (D2ObjInitFn)&OBJECTS_InitFunction28_GoldPlaceHolder, (D2ObjInitFn)&OBJECTS_InitFunction29_ArcaneSanctuaryPortal, (D2ObjInitFn)&OBJECTS_InitFunction30_HaremBlocker, (D2ObjInitFn)&OBJECTS_InitFunction31_Unused,
+    (D2ObjInitFn)&OBJECTS_InitFunction32_Unused, (D2ObjInitFn)&OBJECTS_InitFunction33_Unused, (D2ObjInitFn)&OBJECTS_InitFunction34_HellBrazierFire, 0, 0, (D2ObjInitFn)&OBJECTS_InitFunction37_Unused, (D2ObjInitFn)&OBJECTS_InitFunction38_TyraelsDoor, (D2ObjInitFn)&OBJECTS_InitFunction39_GidbinnAltar, 0, (D2ObjInitFn)&OBJECTS_InitFunction41_SewerStairs, (D2ObjInitFn)&OBJECTS_InitFunction42_SewerLever, (D2ObjInitFn)&OBJECTS_InitFunction43_DarkWanderer, (D2ObjInitFn)&OBJECTS_InitFunction44_HellGatePortal, (D2ObjInitFn)&OBJECTS_InitFunction45_MephistoBridge, (D2ObjInitFn)&sub_005506D0, (D2ObjInitFn)&OBJECTS_InitFunction47_CountessChest,
+    (D2ObjInitFn)&OBJECTS_InitFunction48_HellForge, (D2ObjInitFn)&OBJECTS_InitFunction49_HratliStart, (D2ObjInitFn)&OBJECTS_InitFunction50_HratliEnd, (D2ObjInitFn)&OBJECTS_InitFunction51_TrappedSoul, (D2ObjInitFn)&OBJECTS_InitFunction52_NatalyaStart, (D2ObjInitFn)&OBJECTS_InitFunction53_StairsR, (D2ObjInitFn)&OBJECTS_InitFunction54_CainStartPosition, (D2ObjInitFn)&OBJECTS_InitFunction55_DiabloStartPoint, (D2ObjInitFn)&OBJECTS_InitFunction56_Unused, (D2ObjInitFn)&OBJECTS_InitFunction57_SparklyChest, (D2ObjInitFn)&OBJECTS_InitFunction58_Fissure, (D2ObjInitFn)&OBJECTS_InitFunction59_VileDogAfterglow, (D2ObjInitFn)&OBJECTS_InitFunction60_CompellingOrb, (D2ObjInitFn)&OBJECTS_InitFunction61_CainPortal, (D2ObjInitFn)&OBJECTS_InitFunction62_CagedWussie, (D2ObjInitFn)&OBJECTS_InitFunction63_AncientStatue3,
+    (D2ObjInitFn)&OBJECTS_InitFunction64_AncientStatue1, (D2ObjInitFn)&OBJECTS_InitFunction65_AncientStatue2, (D2ObjInitFn)&OBJECTS_InitFunction66_DrehyaStartInTown, (D2ObjInitFn)&OBJECTS_InitFunction67_DrehyaStartOutsideTown, (D2ObjInitFn)&OBJECTS_InitFunction68_NihlathakStartInTown, (D2ObjInitFn)&OBJECTS_InitFunction69_NihlathakStartOutsideTown, (D2ObjInitFn)&OBJECTS_InitFunction70_Unused, (D2ObjInitFn)&OBJECTS_InitFunction71_LarzukStandard, (D2ObjInitFn)&OBJECTS_InitFunction72_AncientsAltar, (D2ObjInitFn)&OBJECTS_InitFunction73_AncientsDoor, (D2ObjInitFn)&OBJECTS_InitFunction74_FrozenAnya, (D2ObjInitFn)&OBJECTS_InitFunction75_BaalsPortal, (D2ObjInitFn)&OBJECTS_InitFunction76_SummitDoor, (D2ObjInitFn)&OBJECTS_InitFunction77_LastPortal, (D2ObjInitFn)&OBJECTS_InitFunction78_LastLastPortal, (D2ObjInitFn)&OBJECTS_InitFunction79_Zoo
+}; // 0x00731BC0
+
+extern OBJECTPOPULATEFN sgPopulateTable[10] = { 0, (OBJECTPOPULATEFN)&sub_00550C20, (OBJECTPOPULATEFN)&OBJECTS_PopulateFn2_WaypointShrine, (OBJECTPOPULATEFN)&OBJECTS_PopulateFn3_CommonObjects, (OBJECTPOPULATEFN)&sub_00551850, (OBJECTPOPULATEFN)&sub_00551C00, (OBJECTPOPULATEFN)&OBJECTS_PopulateFn6_RogueGuardCorpse, (OBJECTPOPULATEFN)&OBJECTS_PopulateFn7_RogueOnStick, (OBJECTPOPULATEFN)&sub_005516C0, (OBJECTPOPULATEFN)&OBJECTS_PopulateFn9_TrappedSoul }; // 0x00731D00
+
+extern PRESETSPAWNFN gpfnPresetObjectSpawners[9] = { (PRESETSPAWNFN)&OBJECTS_SpawnShrine, (PRESETSPAWNFN)&OBJECTS_SpawnShrine, (PRESETSPAWNFN)&OBJECTS_SpawnShrine, (PRESETSPAWNFN)&OBJECTS_SpawnShrine, (PRESETSPAWNFN)&OBJECTS_SpawnShrine, (PRESETSPAWNFN)&OBJECTS_SpawnShrine, (PRESETSPAWNFN)&sub_0054F370, (PRESETSPAWNFN)&OBJECTS_SpawnPresetChest, (PRESETSPAWNFN)&OBJECTS_SpawnArcaneSymbol }; // 0x00731D28
+
+extern int gnPresetObjectSpawnerCount = 9; // 0x00731D4C
+
+extern int gnCasketClusterIds[3] = { 79, 53, 1 }; // 0x00731D50
+
+extern int gnCasket6ClusterIds[2] = { 3, 28 }; // 0x00731D5C
+
+extern int gnValues_00731D64[5] = { 4, 9, 52, 94, 95 }; // 0x00731D64
+
+extern int gnMummyCoffinClusterIds[2] = { 89, 284 }; // 0x00731D78
+
+extern int gnBasketClusterIds[2] = { 208, 209 }; // 0x00731D80
+
+extern int gnCasketClusterIdCount = 3; // 0x00731D88
+
+extern int gnCasket6ClusterIdCount = 2; // 0x00731D8C
+
+extern int gnCount_00731D90 = 5; // 0x00731D90
+
+extern int gnMummyCoffinClusterIdCount = 2; // 0x00731D94
+
+extern int gnBasketClusterIdCount = 2; // 0x00731D98
+
+extern "C" struct d2data_00731D9C_t gData_00731D9C = {
+    {
+        0xFC, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFC, 0xFF, 0xFF, 0xFF
+    }
+}; // 0x00731D9C
+
+extern int gnSource_00731DCC = 6; // 0x00731DCC
+
+extern "C" struct d2data_00731DD0_t gData_00731DD0 = {
+    {
+        0xF8, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0xFC, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x08
+    }
+}; // 0x00731DD0
+
+extern int gnSource_00731DF8 = 5; // 0x00731DF8
+
+extern "C" struct d2data_00731DFC_t gData_00731DFC = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0xF8, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0xFC, 0xFF, 0xFF, 0xFF,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x08
+    }
+}; // 0x00731DFC
+
+extern int gnSource_00731E24 = 5; // 0x00731E24
+
+extern "C" struct d2data_00731E28_t gData_00731E28 = {
+    {
+        0xF9, 0xFF, 0xFF, 0xFF, 0xFB, 0xFF, 0xFF, 0xFF, 0xFB, 0xFF, 0xFF, 0xFF, 0xFD, 0xFF, 0xFF, 0xFF,
+        0xFD, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x03, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x05, 0x00, 0x00, 0x00, 0xFD, 0xFF, 0xFF, 0xFF,
+        0x07, 0x00, 0x00, 0x00, 0xFB, 0xFF, 0xFF, 0xFF
+    }
+}; // 0x00731E28
+
+extern int gnSource_00731E60 = 7; // 0x00731E60
+
+extern int gnCoordInitCount = 4; // 0x00731E64
+
+extern D2ObjectPopulateStrc gaObjectThemeTable[7] = {
+    { 0 },
+    { 1, (int (__fastcall *)(D2GameStrc *, D2ActiveRoomStrc *, D2DrlgCoordsStrc *))&OBJECTS_SpawnNothing },
+    { 1, (int (__fastcall *)(D2GameStrc *, D2ActiveRoomStrc *, D2DrlgCoordsStrc *))&OBJECTS_SpawnBarrel },
+    { 0 },
+    { 1, (int (__fastcall *)(D2GameStrc *, D2ActiveRoomStrc *, D2DrlgCoordsStrc *))&OBJECTS_SpawnRandomItemGrid },
+    { 1, (int (__fastcall *)(D2GameStrc *, D2ActiveRoomStrc *, D2DrlgCoordsStrc *))&OBJECTS_SpawnArmorStand },
+    { 1, (int (__fastcall *)(D2GameStrc *, D2ActiveRoomStrc *, D2DrlgCoordsStrc *))&OBJECTS_SpawnWeaponRack }
+}; // 0x00731E68
+
+extern int gnArmorStandOrRackIds[4] = { 104, 105, 106, 107 }; // 0x00731EA0
+
+extern int gnArmorStandOrRackCount = 2; // 0x00731EB0
 
 // build: symbol ??__EgaCoordInit@@YAXXZ 0x006CAF30
 D2CoordInitStrc gaCoordInit[] =

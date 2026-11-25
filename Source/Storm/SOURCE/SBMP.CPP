@@ -1793,4 +1793,15 @@ int __stdcall SBmpSaveImage(char* szFile, unsigned char* pPalette, unsigned char
     return SBmpSaveImageEx(szFile, pPalette, pPixels, nWidth, nHeight, nBits, 0);
 }
 
-#include "gen/data/Source/Storm/SOURCE/SBMP.inc"
+extern "C" const char gData_006FCC6C[8]; // 0x006FCC6C
+extern "C" const char gData_006FCC74[8]; // 0x006FCC74
+extern "C" const char gData_006FCC7C[8]; // 0x006FCC7C
+
+extern "C" const char gData_006FCC6C[8] = ".gif"; // 0x006FCC6C
+#pragma comment(linker, "/alternatename:?gszGif_006FCC6C@@3QBDB=_gData_006FCC6C")
+
+extern "C" const char gData_006FCC74[8] = ".pcx"; // 0x006FCC74
+#pragma comment(linker, "/alternatename:?gszPcx_006FCC74@@3QBDB=_gData_006FCC74")
+
+extern "C" const char gData_006FCC7C[8] = ".tga"; // 0x006FCC7C
+#pragma comment(linker, "/alternatename:?gszTga_006FCC7C@@3QBDB=_gData_006FCC7C")

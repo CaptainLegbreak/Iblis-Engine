@@ -3635,4 +3635,481 @@ void __fastcall DATATBLS_UnloadSomeMonsterTxts()
     DATATBLS_UnloadUniqueNameTxts();
 }
 
-#include "gen/data/Source/D2Common/DATATBLS/MonsterTbls.inc"
+extern "C" char gData_006ED5B4[]; // 0x006ED5B4
+
+#pragma pack(push, 1)
+struct d2data_007459D4_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const char gData_006ECE74[12]; // 0x006ECE74
+extern "C" const char gData_006ECE80[16]; // 0x006ECE80
+extern "C" const char gData_006ECE90[16]; // 0x006ECE90
+extern "C" const char gData_006ECEA0[16]; // 0x006ECEA0
+extern "C" const char gData_006ECEB0[12]; // 0x006ECEB0
+extern "C" const char gData_006ECEBC[12]; // 0x006ECEBC
+extern "C" const char gData_006ECEC8[12]; // 0x006ECEC8
+extern "C" const char gData_006ECED4[8]; // 0x006ECED4
+extern "C" const char gData_006ECEDC[8]; // 0x006ECEDC
+extern "C" const char gData_006ECEE4[8]; // 0x006ECEE4
+extern "C" const char gData_006ECEEC[12]; // 0x006ECEEC
+extern "C" const char gData_006ECEF8[16]; // 0x006ECEF8
+extern "C" const char gData_006ECF08[16]; // 0x006ECF08
+extern "C" const char gData_006ECF18[8]; // 0x006ECF18
+extern "C" const char gData_006ECF20[12]; // 0x006ECF20
+extern "C" const char gData_006ECF2C[8]; // 0x006ECF2C
+extern "C" const char gData_006ECF34[8]; // 0x006ECF34
+extern "C" const char gData_006ECF3C[8]; // 0x006ECF3C
+extern "C" const char gData_006ECF44[8]; // 0x006ECF44
+extern "C" const char gData_006ECF4C[8]; // 0x006ECF4C
+extern "C" const char gData_006ECF54[8]; // 0x006ECF54
+extern "C" const char gData_006ECF5C[8]; // 0x006ECF5C
+extern "C" const char gData_006ECF64[8]; // 0x006ECF64
+extern "C" const char gData_006ECF6C[8]; // 0x006ECF6C
+extern "C" const char gData_006ECF74[12]; // 0x006ECF74
+extern "C" const char gData_006ECF80[12]; // 0x006ECF80
+extern "C" const char gData_006ECF8C[8]; // 0x006ECF8C
+extern "C" const char gData_006ECF94[8]; // 0x006ECF94
+extern "C" const char gData_006ECF9C[8]; // 0x006ECF9C
+extern "C" const char gData_006ECFA4[8]; // 0x006ECFA4
+extern "C" const char gData_006ECFAC[8]; // 0x006ECFAC
+extern "C" const char gData_006ECFB4[12]; // 0x006ECFB4
+extern "C" const char gData_006ECFC0[8]; // 0x006ECFC0
+extern "C" const char gData_006ECFC8[12]; // 0x006ECFC8
+extern "C" const char gData_006ECFD4[8]; // 0x006ECFD4
+extern "C" const char gData_006ECFDC[8]; // 0x006ECFDC
+extern "C" const char gData_006ECFE4[8]; // 0x006ECFE4
+extern "C" const char gData_006ECFEC[16]; // 0x006ECFEC
+extern "C" const char gData_006ECFFC[8]; // 0x006ECFFC
+extern "C" const char gData_006ED004[8]; // 0x006ED004
+extern "C" const char gData_006ED00C[8]; // 0x006ED00C
+extern "C" const char gData_006ED014[8]; // 0x006ED014
+extern "C" const char gData_006ED01C[8]; // 0x006ED01C
+extern "C" const char gData_006ED024[8]; // 0x006ED024
+extern "C" const char gData_006ED02C[8]; // 0x006ED02C
+extern "C" const char gData_006ED034[4]; // 0x006ED034
+extern "C" const char gData_006ED038[4]; // 0x006ED038
+extern "C" const char gData_006ED03C[4]; // 0x006ED03C
+extern "C" const char gData_006ED040[4]; // 0x006ED040
+extern "C" const char gData_006ED044[4]; // 0x006ED044
+extern "C" const char gData_006ED048[4]; // 0x006ED048
+extern "C" const char gData_006ED04C[4]; // 0x006ED04C
+extern "C" const char gData_006ED050[4]; // 0x006ED050
+extern "C" const char gData_006ED054[4]; // 0x006ED054
+extern "C" const char gData_006ED058[4]; // 0x006ED058
+extern "C" const char gData_006ED05C[4]; // 0x006ED05C
+extern "C" const char gData_006ED060[4]; // 0x006ED060
+extern "C" const char gData_006ED064[4]; // 0x006ED064
+extern "C" const char gData_006ED068[4]; // 0x006ED068
+extern "C" const char gData_006ED06C[4]; // 0x006ED06C
+extern "C" const char gData_006ED070[4]; // 0x006ED070
+extern "C" const char gData_006ED074[4]; // 0x006ED074
+extern "C" const char gData_006ED078[4]; // 0x006ED078
+extern "C" const char gData_006ED07C[4]; // 0x006ED07C
+extern "C" const char gData_006ED080[4]; // 0x006ED080
+extern "C" const char gData_006ED084[4]; // 0x006ED084
+extern "C" const char gData_006ED088[4]; // 0x006ED088
+extern "C" const char gData_006ED08C[4]; // 0x006ED08C
+extern "C" const char gData_006ED090[4]; // 0x006ED090
+extern "C" const char gData_006ED094[4]; // 0x006ED094
+extern "C" const char gData_006ED098[4]; // 0x006ED098
+extern "C" const char gData_006ED09C[4]; // 0x006ED09C
+extern "C" const char gData_006ED0A0[4]; // 0x006ED0A0
+extern "C" const char gData_006ED0A4[4]; // 0x006ED0A4
+extern "C" const char gData_006ED0A8[4]; // 0x006ED0A8
+extern "C" const char gData_006ED0AC[4]; // 0x006ED0AC
+extern "C" const char gData_006ED0B0[4]; // 0x006ED0B0
+extern "C" const char gData_006ED0B4[4]; // 0x006ED0B4
+extern "C" const char gData_006ED0B8[4]; // 0x006ED0B8
+extern "C" const char gData_006ED0BC[4]; // 0x006ED0BC
+extern "C" const char gData_006ED0C0[4]; // 0x006ED0C0
+extern "C" const char gData_006ED0C4[4]; // 0x006ED0C4
+extern "C" const char gData_006ED0C8[4]; // 0x006ED0C8
+extern "C" const char gData_006ED0CC[4]; // 0x006ED0CC
+extern "C" const char gData_006ED0D0[4]; // 0x006ED0D0
+extern "C" const char gData_006ED0D4[4]; // 0x006ED0D4
+extern "C" const char gData_006ED0D8[4]; // 0x006ED0D8
+extern "C" const char gData_006ED0DC[4]; // 0x006ED0DC
+extern "C" const char gData_006ED0E0[4]; // 0x006ED0E0
+extern "C" const char gData_006ED0E4[4]; // 0x006ED0E4
+extern "C" const char gData_006ED0E8[4]; // 0x006ED0E8
+extern "C" const char gData_006ED0EC[4]; // 0x006ED0EC
+extern "C" const char gData_006ED0F0[4]; // 0x006ED0F0
+extern "C" const char gData_006ED0F4[8]; // 0x006ED0F4
+extern "C" const char gData_006ED0FC[12]; // 0x006ED0FC
+extern "C" const char gData_006ED108[12]; // 0x006ED108
+extern "C" const char gData_006ED114[12]; // 0x006ED114
+extern "C" const char gData_006ED120[16]; // 0x006ED120
+extern "C" const char gData_006ED53C[8]; // 0x006ED53C
+extern "C" const char gData_006ED544[8]; // 0x006ED544
+extern "C" const char gData_006ED54C[8]; // 0x006ED54C
+extern "C" const char gData_006ED554[8]; // 0x006ED554
+extern "C" const char gData_006ED55C[8]; // 0x006ED55C
+extern "C" const char gData_006ED564[8]; // 0x006ED564
+extern "C" const char gData_006ED56C[8]; // 0x006ED56C
+extern "C" const char gData_006ED574[8]; // 0x006ED574
+extern "C" const char gData_006ED57C[12]; // 0x006ED57C
+extern "C" struct d2data_007459D4_t gData_007459D4; // 0x007459D4
+extern "C" const char* const gData_00745A10[3]; // 0x00745A10
+extern "C" const char* const gData_00745A1C[3]; // 0x00745A1C
+
+extern "C" const char gData_006ECE74[12] = "monstats2"; // 0x006ECE74
+#pragma comment(linker, "/alternatename:_gszMonStats2TxtName=_gData_006ECE74")
+
+extern "C" const char gData_006ECE80[16] = "ResurrectSkill"; // 0x006ECE80
+#pragma comment(linker, "/alternatename:_gszTxtField_ResurrectSkill=_gData_006ECE80")
+
+extern "C" const char gData_006ECE90[16] = "ResurrectMode"; // 0x006ECE90
+#pragma comment(linker, "/alternatename:_gszTxtField_ResurrectMode=_gData_006ECE90")
+
+extern "C" const char gData_006ECEA0[16] = "InfernoRollback"; // 0x006ECEA0
+#pragma comment(linker, "/alternatename:_gszTxtField_InfernoRollback=_gData_006ECEA0")
+
+extern "C" const char gData_006ECEB0[12] = "InfernoAnim"; // 0x006ECEB0
+#pragma comment(linker, "/alternatename:_gszTxtField_InfernoAnim=_gData_006ECEB0")
+
+extern "C" const char gData_006ECEBC[12] = "InfernoLen"; // 0x006ECEBC
+#pragma comment(linker, "/alternatename:_gszTxtField_InfernoLen=_gData_006ECEBC")
+
+extern "C" const char gData_006ECEC8[12] = "BodyPart"; // 0x006ECEC8
+#pragma comment(linker, "/alternatename:_gszTxtField_BodyPart=_gData_006ECEC8")
+
+extern "C" const char gData_006ECED4[8] = "Heart"; // 0x006ECED4
+#pragma comment(linker, "/alternatename:_gszTxtField_Heart=_gData_006ECED4")
+
+extern "C" const char gData_006ECEDC[8] = "light"; // 0x006ECEDC
+#pragma comment(linker, "/alternatename:_gszTxtField_light=_gData_006ECEDC")
+
+extern "C" const char gData_006ECEE4[8] = "bleed"; // 0x006ECEE4
+#pragma comment(linker, "/alternatename:_gszTxtField_bleed=_gData_006ECEE4")
+
+extern "C" const char gData_006ECEEC[12] = "localBlood"; // 0x006ECEEC
+#pragma comment(linker, "/alternatename:_gszTxtField_localBlood=_gData_006ECEEC")
+
+extern "C" const char gData_006ECEF8[16] = "compositeDeath"; // 0x006ECEF8
+#pragma comment(linker, "/alternatename:_gszTxtField_compositeDeath=_gData_006ECEF8")
+
+extern "C" const char gData_006ECF08[16] = "noUniqueShift"; // 0x006ECF08
+#pragma comment(linker, "/alternatename:_gszTxtField_noUniqueShift=_gData_006ECF08")
+
+extern "C" const char gData_006ECF18[8] = "shadow"; // 0x006ECF18
+#pragma comment(linker, "/alternatename:_gszTxtField_shadow=_gData_006ECF18")
+
+extern "C" const char gData_006ECF20[12] = "unflatDead"; // 0x006ECF20
+#pragma comment(linker, "/alternatename:_gszTxtField_unflatDead=_gData_006ECF20")
+
+extern "C" const char gData_006ECF2C[8] = "deadCol"; // 0x006ECF2C
+#pragma comment(linker, "/alternatename:_gszTxtField_deadCol=_gData_006ECF2C")
+
+extern "C" const char gData_006ECF34[8] = "objCol"; // 0x006ECF34
+#pragma comment(linker, "/alternatename:_gszTxtField_objCol=_gData_006ECF34")
+
+extern "C" const char gData_006ECF3C[8] = "inert"; // 0x006ECF3C
+#pragma comment(linker, "/alternatename:_gszTxtField_inert=_gData_006ECF3C")
+
+extern "C" const char gData_006ECF44[8] = "critter"; // 0x006ECF44
+#pragma comment(linker, "/alternatename:_gszTxtField_critter=_gData_006ECF44")
+
+extern "C" const char gData_006ECF4C[8] = "soft"; // 0x006ECF4C
+#pragma comment(linker, "/alternatename:_gszTxtField_soft=_gData_006ECF4C")
+
+extern "C" const char gData_006ECF54[8] = "small"; // 0x006ECF54
+#pragma comment(linker, "/alternatename:_gszTxtField_small=_gData_006ECF54")
+
+extern "C" const char gData_006ECF5C[8] = "large"; // 0x006ECF5C
+#pragma comment(linker, "/alternatename:_gszTxtField_large=_gData_006ECF5C")
+
+extern "C" const char gData_006ECF64[8] = "isAtt"; // 0x006ECF64
+#pragma comment(linker, "/alternatename:_gszTxtField_isAtt=_gData_006ECF64")
+
+extern "C" const char gData_006ECF6C[8] = "revive"; // 0x006ECF6C
+#pragma comment(linker, "/alternatename:_gszTxtField_revive=_gData_006ECF6C")
+
+extern "C" const char gData_006ECF74[12] = "corpseSel"; // 0x006ECF74
+#pragma comment(linker, "/alternatename:_gszTxtField_corpseSel=_gData_006ECF74")
+
+extern "C" const char gData_006ECF80[12] = "shiftSel"; // 0x006ECF80
+#pragma comment(linker, "/alternatename:_gszTxtField_shiftSel=_gData_006ECF80")
+
+extern "C" const char gData_006ECF8C[8] = "noSel"; // 0x006ECF8C
+#pragma comment(linker, "/alternatename:_gszTxtField_noSel=_gData_006ECF8C")
+
+extern "C" const char gData_006ECF94[8] = "alSel"; // 0x006ECF94
+#pragma comment(linker, "/alternatename:_gszTxtField_alSel=_gData_006ECF94")
+
+extern "C" const char gData_006ECF9C[8] = "isSel"; // 0x006ECF9C
+#pragma comment(linker, "/alternatename:_gszTxtField_isSel=_gData_006ECF9C")
+
+extern "C" const char gData_006ECFA4[8] = "noOvly"; // 0x006ECFA4
+#pragma comment(linker, "/alternatename:_gszTxtField_noOvly=_gData_006ECFA4")
+
+extern "C" const char gData_006ECFAC[8] = "noMap"; // 0x006ECFAC
+#pragma comment(linker, "/alternatename:_gszTxtField_noMap=_gData_006ECFAC")
+
+extern "C" const char gData_006ECFB4[12] = "automapCel"; // 0x006ECFB4
+#pragma comment(linker, "/alternatename:_gszTxtField_automapCel=_gData_006ECFB4")
+
+extern "C" const char gData_006ECFC0[8] = "restore"; // 0x006ECFC0
+#pragma comment(linker, "/alternatename:_gszTxtField_restore=_gData_006ECFC0")
+
+extern "C" const char gData_006ECFC8[12] = "htHeight"; // 0x006ECFC8
+#pragma comment(linker, "/alternatename:_gszTxtField_htHeight=_gData_006ECFC8")
+
+extern "C" const char gData_006ECFD4[8] = "htWidth"; // 0x006ECFD4
+#pragma comment(linker, "/alternatename:_gszTxtField_htWidth=_gData_006ECFD4")
+
+extern "C" const char gData_006ECFDC[8] = "htLeft"; // 0x006ECFDC
+#pragma comment(linker, "/alternatename:_gszTxtField_htLeft=_gData_006ECFDC")
+
+extern "C" const char gData_006ECFE4[8] = "htTop"; // 0x006ECFE4
+#pragma comment(linker, "/alternatename:_gszTxtField_htTop=_gData_006ECFE4")
+
+extern "C" const char gData_006ECFEC[16] = "noGfxHitTest"; // 0x006ECFEC
+#pragma comment(linker, "/alternatename:_gszTxtField_noGfxHitTest=_gData_006ECFEC")
+
+extern "C" const char gData_006ECFFC[8] = "S4mv"; // 0x006ECFFC
+#pragma comment(linker, "/alternatename:_gszTxtField_S4mv=_gData_006ECFFC")
+
+extern "C" const char gData_006ED004[8] = "S3mv"; // 0x006ED004
+#pragma comment(linker, "/alternatename:_gszTxtField_S3mv=_gData_006ED004")
+
+extern "C" const char gData_006ED00C[8] = "S2mv"; // 0x006ED00C
+#pragma comment(linker, "/alternatename:_gszTxtField_S2mv=_gData_006ED00C")
+
+extern "C" const char gData_006ED014[8] = "S1mv"; // 0x006ED014
+#pragma comment(linker, "/alternatename:_gszTxtField_S1mv=_gData_006ED014")
+
+extern "C" const char gData_006ED01C[8] = "SCmv"; // 0x006ED01C
+#pragma comment(linker, "/alternatename:_gszTxtField_SCmv=_gData_006ED01C")
+
+extern "C" const char gData_006ED024[8] = "A2mv"; // 0x006ED024
+#pragma comment(linker, "/alternatename:_gszTxtField_A2mv=_gData_006ED024")
+
+extern "C" const char gData_006ED02C[8] = "A1mv"; // 0x006ED02C
+#pragma comment(linker, "/alternatename:_gszTxtField_A1mv=_gData_006ED02C")
+
+extern "C" const char gData_006ED034[4] = "dRN"; // 0x006ED034
+#pragma comment(linker, "/alternatename:_gszTxtField_dRN=_gData_006ED034")
+
+extern "C" const char gData_006ED038[4] = "dSQ"; // 0x006ED038
+#pragma comment(linker, "/alternatename:_gszTxtField_dSQ=_gData_006ED038")
+
+extern "C" const char gData_006ED03C[4] = "dKB"; // 0x006ED03C
+#pragma comment(linker, "/alternatename:_gszTxtField_dKB=_gData_006ED03C")
+
+extern "C" const char gData_006ED040[4] = "dDD"; // 0x006ED040
+#pragma comment(linker, "/alternatename:_gszTxtField_dDD=_gData_006ED040")
+
+extern "C" const char gData_006ED044[4] = "dS4"; // 0x006ED044
+#pragma comment(linker, "/alternatename:_gszTxtField_dS4=_gData_006ED044")
+
+extern "C" const char gData_006ED048[4] = "dS3"; // 0x006ED048
+#pragma comment(linker, "/alternatename:_gszTxtField_dS3=_gData_006ED048")
+
+extern "C" const char gData_006ED04C[4] = "dS2"; // 0x006ED04C
+#pragma comment(linker, "/alternatename:_gszTxtField_dS2=_gData_006ED04C")
+
+extern "C" const char gData_006ED050[4] = "dS1"; // 0x006ED050
+#pragma comment(linker, "/alternatename:_gszTxtField_dS1=_gData_006ED050")
+
+extern "C" const char gData_006ED054[4] = "dSC"; // 0x006ED054
+#pragma comment(linker, "/alternatename:_gszTxtField_dSC=_gData_006ED054")
+
+extern "C" const char gData_006ED058[4] = "dBL"; // 0x006ED058
+#pragma comment(linker, "/alternatename:_gszTxtField_dBL=_gData_006ED058")
+
+extern "C" const char gData_006ED05C[4] = "dA2"; // 0x006ED05C
+#pragma comment(linker, "/alternatename:_gszTxtField_dA2=_gData_006ED05C")
+
+extern "C" const char gData_006ED060[4] = "dA1"; // 0x006ED060
+#pragma comment(linker, "/alternatename:_gszTxtField_dA1=_gData_006ED060")
+
+extern "C" const char gData_006ED064[4] = "dGH"; // 0x006ED064
+#pragma comment(linker, "/alternatename:_gszTxtField_dGH=_gData_006ED064")
+
+extern "C" const char gData_006ED068[4] = "dWL"; // 0x006ED068
+#pragma comment(linker, "/alternatename:_gszTxtField_dWL=_gData_006ED068")
+
+extern "C" const char gData_006ED06C[4] = "dNU"; // 0x006ED06C
+#pragma comment(linker, "/alternatename:_gszTxtField_dNU=_gData_006ED06C")
+
+extern "C" const char gData_006ED070[4] = "dDT"; // 0x006ED070
+#pragma comment(linker, "/alternatename:_gszTxtField_dDT=_gData_006ED070")
+
+extern "C" const char gData_006ED074[4] = "mRN"; // 0x006ED074
+#pragma comment(linker, "/alternatename:_gszTxtField_mRN=_gData_006ED074")
+
+extern "C" const char gData_006ED078[4] = "mSQ"; // 0x006ED078
+#pragma comment(linker, "/alternatename:_gszTxtField_mSQ=_gData_006ED078")
+
+extern "C" const char gData_006ED07C[4] = "mKB"; // 0x006ED07C
+#pragma comment(linker, "/alternatename:_gszTxtField_mKB=_gData_006ED07C")
+
+extern "C" const char gData_006ED080[4] = "mDD"; // 0x006ED080
+#pragma comment(linker, "/alternatename:_gszTxtField_mDD=_gData_006ED080")
+
+extern "C" const char gData_006ED084[4] = "mS4"; // 0x006ED084
+#pragma comment(linker, "/alternatename:_gszTxtField_mS4=_gData_006ED084")
+
+extern "C" const char gData_006ED088[4] = "mS3"; // 0x006ED088
+#pragma comment(linker, "/alternatename:_gszTxtField_mS3=_gData_006ED088")
+
+extern "C" const char gData_006ED08C[4] = "mS2"; // 0x006ED08C
+#pragma comment(linker, "/alternatename:_gszTxtField_mS2=_gData_006ED08C")
+
+extern "C" const char gData_006ED090[4] = "mS1"; // 0x006ED090
+#pragma comment(linker, "/alternatename:_gszTxtField_mS1=_gData_006ED090")
+
+extern "C" const char gData_006ED094[4] = "mSC"; // 0x006ED094
+#pragma comment(linker, "/alternatename:_gszTxtField_mSC=_gData_006ED094")
+
+extern "C" const char gData_006ED098[4] = "mBL"; // 0x006ED098
+#pragma comment(linker, "/alternatename:_gszTxtField_mBL=_gData_006ED098")
+
+extern "C" const char gData_006ED09C[4] = "mA2"; // 0x006ED09C
+#pragma comment(linker, "/alternatename:_gszTxtField_mA2=_gData_006ED09C")
+
+extern "C" const char gData_006ED0A0[4] = "mA1"; // 0x006ED0A0
+#pragma comment(linker, "/alternatename:_gszTxtField_mA1=_gData_006ED0A0")
+
+extern "C" const char gData_006ED0A4[4] = "mGH"; // 0x006ED0A4
+#pragma comment(linker, "/alternatename:_gszTxtField_mGH=_gData_006ED0A4")
+
+extern "C" const char gData_006ED0A8[4] = "mWL"; // 0x006ED0A8
+#pragma comment(linker, "/alternatename:_gszTxtField_mWL=_gData_006ED0A8")
+
+extern "C" const char gData_006ED0AC[4] = "mNU"; // 0x006ED0AC
+#pragma comment(linker, "/alternatename:_gszTxtField_mNU=_gData_006ED0AC")
+
+extern "C" const char gData_006ED0B0[4] = "mDT"; // 0x006ED0B0
+#pragma comment(linker, "/alternatename:_gszTxtField_mDT=_gData_006ED0B0")
+
+extern "C" const char gData_006ED0B4[4] = "S8v"; // 0x006ED0B4
+#pragma comment(linker, "/alternatename:_gszTxtField_S8v=_gData_006ED0B4")
+
+extern "C" const char gData_006ED0B8[4] = "S7v"; // 0x006ED0B8
+#pragma comment(linker, "/alternatename:_gszTxtField_S7v=_gData_006ED0B8")
+
+extern "C" const char gData_006ED0BC[4] = "S6v"; // 0x006ED0BC
+#pragma comment(linker, "/alternatename:_gszTxtField_S6v=_gData_006ED0BC")
+
+extern "C" const char gData_006ED0C0[4] = "S5v"; // 0x006ED0C0
+#pragma comment(linker, "/alternatename:_gszTxtField_S5v=_gData_006ED0C0")
+
+extern "C" const char gData_006ED0C4[4] = "S4v"; // 0x006ED0C4
+#pragma comment(linker, "/alternatename:_gszTxtField_S4v=_gData_006ED0C4")
+
+extern "C" const char gData_006ED0C8[4] = "S3v"; // 0x006ED0C8
+#pragma comment(linker, "/alternatename:_gszTxtField_S3v=_gData_006ED0C8")
+
+extern "C" const char gData_006ED0CC[4] = "S2v"; // 0x006ED0CC
+#pragma comment(linker, "/alternatename:_gszTxtField_S2v=_gData_006ED0CC")
+
+extern "C" const char gData_006ED0D0[4] = "S1v"; // 0x006ED0D0
+#pragma comment(linker, "/alternatename:_gszTxtField_S1v=_gData_006ED0D0")
+
+extern "C" const char gData_006ED0D4[4] = "SHv"; // 0x006ED0D4
+#pragma comment(linker, "/alternatename:_gszTxtField_SHv=_gData_006ED0D4")
+
+extern "C" const char gData_006ED0D8[4] = "LHv"; // 0x006ED0D8
+#pragma comment(linker, "/alternatename:_gszTxtField_LHv=_gData_006ED0D8")
+
+extern "C" const char gData_006ED0DC[4] = "RHv"; // 0x006ED0DC
+#pragma comment(linker, "/alternatename:_gszTxtField_RHv=_gData_006ED0DC")
+
+extern "C" const char gData_006ED0E0[4] = "Lav"; // 0x006ED0E0
+#pragma comment(linker, "/alternatename:_gszTxtField_Lav=_gData_006ED0E0")
+
+extern "C" const char gData_006ED0E4[4] = "Rav"; // 0x006ED0E4
+#pragma comment(linker, "/alternatename:_gszTxtField_Rav=_gData_006ED0E4")
+
+extern "C" const char gData_006ED0E8[4] = "LGv"; // 0x006ED0E8
+#pragma comment(linker, "/alternatename:_gszTxtField_LGv=_gData_006ED0E8")
+
+extern "C" const char gData_006ED0EC[4] = "TRv"; // 0x006ED0EC
+#pragma comment(linker, "/alternatename:_gszTxtField_TRv=_gData_006ED0EC")
+
+extern "C" const char gData_006ED0F0[4] = "HDv"; // 0x006ED0F0
+#pragma comment(linker, "/alternatename:_gszTxtField_HDv=_gData_006ED0F0")
+
+extern "C" const char gData_006ED0F4[8] = "BaseW"; // 0x006ED0F4
+#pragma comment(linker, "/alternatename:_gszTxtField_BaseW=_gData_006ED0F4")
+
+extern "C" const char gData_006ED0FC[12] = "MeleeRng"; // 0x006ED0FC
+#pragma comment(linker, "/alternatename:_gszTxtField_MeleeRng=_gData_006ED0FC")
+
+extern "C" const char gData_006ED108[12] = "spawnCol"; // 0x006ED108
+#pragma comment(linker, "/alternatename:_gszTxtField_spawnCol=_gData_006ED108")
+
+extern "C" const char gData_006ED114[12] = "pixHeight"; // 0x006ED114
+#pragma comment(linker, "/alternatename:_gszTxtField_pixHeight=_gData_006ED114")
+
+extern "C" const char gData_006ED120[16] = "overlayHeight"; // 0x006ED120
+#pragma comment(linker, "/alternatename:_gszTxtField_overlayHeight=_gData_006ED120")
+
+extern "C" const char gData_006ED53C[8] = "mod3"; // 0x006ED53C
+#pragma comment(linker, "/alternatename:?gszField_mod3@@3QBDB=_gData_006ED53C")
+
+extern "C" const char gData_006ED544[8] = "loc3"; // 0x006ED544
+#pragma comment(linker, "/alternatename:?gszField_loc3@@3QBDB=_gData_006ED544")
+
+extern "C" const char gData_006ED54C[8] = "mod2"; // 0x006ED54C
+#pragma comment(linker, "/alternatename:?gszField_mod2@@3QBDB=_gData_006ED54C")
+
+extern "C" const char gData_006ED554[8] = "loc2"; // 0x006ED554
+#pragma comment(linker, "/alternatename:?gszField_loc2@@3QBDB=_gData_006ED554")
+
+extern "C" const char gData_006ED55C[8] = "mod1"; // 0x006ED55C
+#pragma comment(linker, "/alternatename:?gszField_mod1@@3QBDB=_gData_006ED55C")
+
+extern "C" const char gData_006ED564[8] = "loc1"; // 0x006ED564
+#pragma comment(linker, "/alternatename:?gszField_loc1@@3QBDB=_gData_006ED564")
+
+extern "C" const char gData_006ED56C[8] = "oninit"; // 0x006ED56C
+#pragma comment(linker, "/alternatename:?gszField_oninit@@3QBDB=_gData_006ED56C")
+
+extern "C" const char gData_006ED574[8] = "monster"; // 0x006ED574
+#pragma comment(linker, "/alternatename:?gszField_monster@@3QBDB=_gData_006ED574")
+
+extern "C" const char gData_006ED57C[12] = "monequip"; // 0x006ED57C
+#pragma comment(linker, "/alternatename:?gszField_monequip@@3QBDB=_gData_006ED57C")
+
+extern "C" struct d2data_007459D4_t gData_007459D4 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007459D4
+
+extern "C" const char* const gData_00745A10[3] = { (const char* const)"A", (const char* const)"B", (const char* const)&gData_006ED5B4 }; // 0x00745A10
+#pragma comment(linker, "/alternatename:_gaszChestNames=_gData_00745A10")
+
+extern "C" const char* const gData_00745A1C[3] = { (const char* const)&gszEmptyAssertText, (const char* const)" (N)", (const char* const)" (H)" }; // 0x00745A1C
+#pragma comment(linker, "/alternatename:_gaszDifficultySuffixes=_gData_00745A1C")

@@ -738,4 +738,55 @@ void __fastcall DATATBLS_CubeMainParamLinker(char* pSrc, void* pRecord, int nOff
     }
 }
 
-#include "gen/data/Source/D2Common/Unknown_00668510.inc"
+#pragma pack(push, 1)
+struct d2data_00749690_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const char gData_006EE85C[28]; // 0x006EE85C
+extern "C" const char gData_006EE878[20]; // 0x006EE878
+extern "C" const char gData_006EE88C[12]; // 0x006EE88C
+extern "C" struct d2data_00749690_t gData_00749690; // 0x00749690
+
+extern "C" const char gData_006EE85C[28] = "Pandemonium Finale Portal"; // 0x006EE85C
+#pragma comment(linker, "/alternatename:_gszPandemoniumFinalePortal=_gData_006EE85C")
+
+extern "C" const char gData_006EE878[20] = "Pandemonium Portal"; // 0x006EE878
+#pragma comment(linker, "/alternatename:_gszPandemoniumPortal=_gData_006EE878")
+
+extern "C" const char gData_006EE88C[12] = "Cow Portal"; // 0x006EE88C
+#pragma comment(linker, "/alternatename:_gszCowPortal=_gData_006EE88C")
+
+extern "C" struct d2data_00749690_t gData_00749690 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749690

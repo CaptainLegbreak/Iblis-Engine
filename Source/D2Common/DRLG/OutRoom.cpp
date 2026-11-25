@@ -465,4 +465,52 @@ int __fastcall DRLGOUTROOM_LinkLevelsByOffsetCoords(D2DrlgLevelLinkDataStrc* pLe
     return 1;
 }
 
-#include "gen/data/Source/D2Common/DRLG/OutRoom.inc"
+#pragma pack(push, 1)
+struct d2data_00749C00_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const D2CoordStrc gData_006F1F7C[4]; // 0x006F1F7C
+extern "C" struct d2data_00749C00_t gData_00749C00; // 0x00749C00
+
+extern "C" const D2CoordStrc gData_006F1F7C[4] = {
+    { 0, -160 },
+    { -96, -64 },
+    { -64, -96 },
+    { -160 }
+}; // 0x006F1F7C
+#pragma comment(linker, "/alternatename:?gOutdoorOrthOffsets@@3QBUD2CoordStrc@@B=_gData_006F1F7C")
+
+extern "C" struct d2data_00749C00_t gData_00749C00 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749C00

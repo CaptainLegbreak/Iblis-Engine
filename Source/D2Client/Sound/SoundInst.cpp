@@ -1339,4 +1339,6 @@ void __cdecl SOUNDINST_ToggleHints()
 }
 
 
-#include "gen/data/Source/D2Client/Sound/SoundInst.inc"
+extern int gnSfxVolume = 100; // 0x00727564
+
+extern int gnEnvVolume = 100; // 0x00727568

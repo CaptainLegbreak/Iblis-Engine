@@ -520,7 +520,19 @@ int __fastcall sub_004E1120_SkillCreateTargetMissile(D2UnitStrc* pUnit, int nSki
     return 1;
 }
 
-#include "gen/data/Source/D2Client/Unknown_004DF1C0.inc"
+extern "C" const unsigned char gData_006DBA58[4]; // 0x006DBA58
+extern "C" const unsigned char gData_006DBA60[64]; // 0x006DBA60
+
+extern "C" const unsigned char gData_006DBA58[4] = { 0x31, 0x1F, 0x11 }; // 0x006DBA58
+#pragma comment(linker, "/alternatename:?gaDirection4@@3QBEB=_gData_006DBA58")
+
+extern "C" const unsigned char gData_006DBA60[64] = {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2,
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3,
+    3, 3, 3, 3, 3, 3, 3, 3, 3
+}; // 0x006DBA60
+#pragma comment(linker, "/alternatename:?gaDirection64To4@@3QBEB=_gData_006DBA60")
 
 static inline D2SkillsTxt* SKILLS_GetSkillsTxtRecord(int nSkillId)
 {

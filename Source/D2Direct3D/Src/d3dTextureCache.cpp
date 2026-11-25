@@ -438,4 +438,7 @@ int __fastcall D3DTEXTURECACHE_AllocOrEvict(D2TexPoolStrc* pPool)
 	return nId;
 }
 
-#include "gen/data/Source/D2Direct3D/Src/d3dTextureCache.inc"
+extern "C" const char gData_006FC36C[28]; // 0x006FC36C
+
+extern "C" const char gData_006FC36C[28] = ".\\Src\\d3dTextureCache.cpp"; // 0x006FC36C
+#pragma comment(linker, "/alternatename:?gszTexPoolSourceFile@@3QBDB=_gData_006FC36C")

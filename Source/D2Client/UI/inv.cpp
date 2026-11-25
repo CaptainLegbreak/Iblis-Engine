@@ -8662,4 +8662,347 @@ void __stdcall sub_P09_Emit_00486670(Unicode* pText)
     INV_AppendSocketedGemLetters(pText, gpHoverItem);
 }
 
-#include "gen/data/Source/D2Client/UI/inv.inc"
+#pragma pack(push, 1)
+struct d2data_00721DF8_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00721EAC_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00722298_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const D2CoordStrc gData_006D91E8[48][6]; // 0x006D91E8
+extern "C" const D2PanelLabelStrc gData_006D9AE8[12]; // 0x006D9AE8
+extern "C" struct d2data_00721DF8_t gData_00721DF8; // 0x00721DF8
+extern "C" struct d2data_00721EAC_t gData_00721EAC; // 0x00721EAC
+extern "C" struct d2data_00722298_t gData_00722298; // 0x00722298
+
+extern "C" const D2CoordStrc gData_006D91E8[48][6] = {
+    { { 1, 1 } },
+    { { 1, 2 } },
+    { { 1, 3 } },
+    { { 1, 4 } },
+    { { 2, 1 } },
+    { { 2, 2 } },
+    { { 2, 3 } },
+    { { 2, 4 } },
+    { 0 },
+    {
+    { 1, 1 },
+    { 1, 3 }
+},
+    {
+    { 1, 2 },
+    { 1, 4 }
+},
+    {
+    { 1, 3 },
+    { 1, 5 }
+},
+    {
+    { 1, 1 },
+    { 3, 1 }
+},
+    {
+    { 2, 1 },
+    { 2, 3 }
+},
+    {
+    { 2, 2 },
+    { 2, 4 }
+},
+    {
+    { 2, 2 },
+    { 2, 6 }
+},
+    { 0 },
+    { 0 },
+    {
+    { 1, 1 },
+    { 1, 3 },
+    { 1, 5 }
+},
+    {
+    { 1, 2 },
+    { 1, 4 },
+    { 1, 6 }
+},
+    { 0 },
+    {
+    { 1, 1 },
+    { 3, 1 },
+    { 2, 3 }
+},
+    {
+    { 2, 1 },
+    { 2, 3 },
+    { 2, 5 }
+},
+    {
+    { 2, 2 },
+    { 2, 4 },
+    { 2, 6 }
+},
+    { 0 },
+    { 0 },
+    { 0 },
+    {
+    { 1, 1 },
+    { 1, 3 },
+    { 1, 5 },
+    { 1, 7 }
+},
+    { 0 },
+    {
+    { 1, 1 },
+    { 3, 3 },
+    { 1, 3 },
+    { 3, 1 }
+},
+    {
+    { 1, 2 },
+    { 3, 4 },
+    { 1, 4 },
+    { 3, 2 }
+},
+    {
+    { 2, 1 },
+    { 2, 3 },
+    { 2, 5 },
+    { 2, 7 }
+},
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    {
+    { 2, 3 },
+    { 1, 1 },
+    { 3, 5 },
+    { 1, 5 },
+    { 3, 1 }
+},
+    {
+    { 2, 4 },
+    { 1, 2 },
+    { 3, 6 },
+    { 1, 6 },
+    { 3, 2 }
+},
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    {
+    { 1, 1 },
+    { 1, 3 },
+    { 1, 5 },
+    { 3, 1 },
+    { 3, 3 },
+    { 3, 5 }
+},
+    {
+    { 1, 2 },
+    { 1, 4 },
+    { 1, 6 },
+    { 3, 2 },
+    { 3, 4 },
+    { 3, 6 }
+}
+}; // 0x006D91E8
+#pragma comment(linker, "/alternatename:?gSocketLayouts@@3QAY05$$CBUD2CoordStrc@@A=_gData_006D91E8")
+
+extern "C" const D2PanelLabelStrc gData_006D9AE8[12] = {
+    { 15, 0, 236, 0xFDA },
+    { 145, 0, 236, 0xFD9 },
+    { 200, 0, 236, 0xFDB },
+    { 15, 0, 281, 0xFDC },
+    { 15, 0, 305, 0xFDE },
+    { 15, 0, 329, 0xFDD },
+    { 15, 0, 353, 0xFE0 },
+    { 180, 245, 281, 0xFE7 },
+    { 180, 245, 305, 0xFE8 },
+    { 180, 245, 329, 0xFE9 },
+    { 180, 245, 353, 0xFEA },
+    { 180, 0, 214, 0xFE4 }
+}; // 0x006D9AE8
+#pragma comment(linker, "/alternatename:?gaPanelLabels@@3PAUD2PanelLabelStrc@@A=_gData_006D9AE8")
+
+extern "C" struct d2data_00721DF8_t gData_00721DF8 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00721DF8
+
+extern int gnDialogState = 1; // 0x00721E34
+
+extern int gbHoverPlayerItem = 1; // 0x00721E38
+
+extern int gnHoverTopX = -1; // 0x00721E3C
+
+extern int gnHoverTopY = -1; // 0x00721E40
+
+extern int gnHoverBottomX = -1; // 0x00721E44
+
+extern int gnHoverBottomY = -1; // 0x00721E48
+
+extern int gnHoverCellX = -1; // 0x00721E4C
+
+extern int gnHoverCellY = -1; // 0x00721E50
+
+extern int gnStashObjectId = -1; // 0x00721E54
+
+extern D2BodyClickFn gaBodyClick[12] = { 0, (D2BodyClickFn)&sub_00490FC0, (D2BodyClickFn)&sub_00490FC0, (D2BodyClickFn)&sub_00490FC0, (D2BodyClickFn)&sub_00490780, (D2BodyClickFn)&sub_00490BA0, (D2BodyClickFn)&sub_00490FC0, (D2BodyClickFn)&sub_00490FC0, (D2BodyClickFn)&sub_00490FC0, (D2BodyClickFn)&sub_00490FC0, (D2BodyClickFn)&sub_00490FC0 }; // 0x00721E58
+
+extern D2SpeedNameStrc gaSpeedNames[6] = {
+    { 0xFF8, { 1 } },
+    { 0xFF9, { 2 } },
+    { 0xFFA, { 3 } },
+    { 0xFFB, { 4 } },
+    { 0xFFC, { 5 } },
+    { 0xFFD, { 6 } }
+}; // 0x00721E88
+
+extern "C" struct d2data_00721EAC_t gData_00721EAC = {
+    { 0xFE, 0x0F }
+}; // 0x00721EAC
+
+extern D2ItemTypeNameStrc gaItemTypeNames[15] = {
+    { 26, 0xFF5 },
+    { 28, 0xFEE },
+    { 30, 0xFEF },
+    { 32, 0xFF0 },
+    { 38, 0xFF1 },
+    { 44, 0xFF2 },
+    { 33, 0xFF3 },
+    { 27, 0xFF4 },
+    { 34, 0xFF6 },
+    { 35, 0xFF7 },
+    { 67, 0x530A },
+    { 88, 0x530A },
+    { 68, 0xFF5 },
+    { 25, 0xFF5 },
+    { 57, 0xFED }
+}; // 0x00721EB0
+
+extern int gaSpeedTable[18][5] = {
+    { 1, 1, 1, 1, 1 },
+    { 1, 1, 1, 1, 1 },
+    { 1, 1, 1, 1, 1 },
+    { 1, 1, 2, 1, 1 },
+    { 2, 1, 2, 2, 1 },
+    { 2, 1, 2, 2, 2 },
+    { 2, 2, 3, 2, 2 },
+    { 3, 2, 3, 3, 2 },
+    { 3, 2, 3, 3, 3 },
+    { 3, 2, 4, 3, 3 },
+    { 4, 3, 4, 4, 3 },
+    { 4, 3, 4, 4, 4 },
+    { 4, 3, 5, 4, 4 },
+    { 5, 4, 5, 5, 4 },
+    { 5, 4, 5, 5, 5 },
+    { 5, 4, 5, 5, 5 },
+    { 5, 5, 5, 5, 5 },
+    { 5, 5, 5, 5, 5 }
+}; // 0x00721F10
+
+extern int gaClassSpeedOffsets[7][2] = {
+    { 0, 2 },
+    { 1, 4 },
+    { 1, 4 },
+    { 0, 3 },
+    { 0, 3 },
+    { 1, 4 },
+    { 0, 3 }
+}; // 0x00722078
+
+extern int gnNpcTabCount = 4; // 0x00722158
+
+extern D2MercStatLineStrc gaMercStatLines[12] = {
+    { 0, 120, 254, 0, 13 },
+    { 0, 175, 254, 0, 12 },
+    { 0, 305, 254, 0, 30 },
+    { 0, 154, 282, 48 },
+    { 0, 154, 306, 48, 2 },
+    { 0, 154, 330, 48, 21 },
+    { 0, 154, 354, 48, 31 },
+    { 0, 309, 282, 48, 39 },
+    { 0, 309, 306, 48, 43 },
+    { 0, 309, 330, 48, 41 },
+    { 0, 309, 354, 48, 45 },
+    { 210, 305, 215, 0, 6 }
+}; // 0x007221A8
+
+extern "C" struct d2data_00722298_t gData_00722298 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00722298

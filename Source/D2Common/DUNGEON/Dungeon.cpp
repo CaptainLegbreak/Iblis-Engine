@@ -1594,4 +1594,12 @@ extern "C" __declspec(dllexport) void __stdcall DUNGEON_SaveKilledUnitGUID(Obj00
 
 void __fastcall DRLGACTIVATE_GetRoomsAllocationStats(int* pOutStatsClientAllocatedRooms, int* pOutStatsClientFreedRooms, int* pOutStatsAllocatedRooms, int* pOutStatsFreedRooms); // 0x0061B8F0
 
-#include "gen/data/Source/D2Common/DUNGEON/Dungeon.inc"
+extern "C" void __cdecl DRLGACTIVATE_RoomExSetStatus_ClientInRoom(); // 0x0061B2C0
+extern "C" void __cdecl DRLGACTIVATE_RoomExSetStatus_ClientInSight(); // 0x0061B2D0
+extern "C" void __cdecl DRLGACTIVATE_RoomExSetStatus_ClientOutOfSight(); // 0x0061BB10
+extern "C" void __cdecl DRLGACTIVATE_RoomExSetStatus_Untile(); // 0x0061B320
+
+extern "C" const int gData_006E7D1C[5]; // 0x006E7D1C
+
+extern "C" const int gData_006E7D1C[5] = { 1, 40, 75, 103, 109 }; // 0x006E7D1C
+#pragma comment(linker, "/alternatename:?gnTownLevelIdsByAct@@3QBHB=_gData_006E7D1C")

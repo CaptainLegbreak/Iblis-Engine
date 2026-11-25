@@ -2859,4 +2859,183 @@ extern "C" __declspec(dllimport) short __stdcall GetKeyState(int nVirtKey);
 
 
 
-#include "gen/data/Source/D2Client/Unknown_004A43E0.inc"
+extern "C" void __cdecl D2CLIENT_CloseNPCTalk(); // 0x004A17D0
+extern "C" void __cdecl TEXT_EatMsg(); // 0x0049DA10
+extern "C" void __cdecl TEXT_KeyUpMsg(); // 0x004A1770
+extern "C" void __cdecl TEXT_HotkeyMsg(); // 0x004A1870
+extern "C" void __cdecl TEXT_KeyDownMsg(); // 0x004A18C0
+extern "C" void __cdecl TEXT_WheelCaptureMsg(); // 0x004A6310
+extern "C" void __cdecl TEXT_ButtonCaptureMsg(); // 0x004A6350
+extern "C" void __cdecl sub_004A63B0_WheelMsgHandler(); // 0x004A63B0
+
+#pragma pack(push, 1)
+struct d2data_007246D8_t
+{
+    unsigned char b0[2];
+    const void* p1;
+    unsigned char b2[22];
+    const void* p3;
+    unsigned char b4[22];
+    const void* p5;
+    unsigned char b6[20];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_007246D8_t gData_007246D8; // 0x007246D8
+
+extern D2ClientListEntryStrc* gpListEntries = (D2ClientListEntryStrc*)&gaKeyConfigEntries; // 0x00724264
+
+extern D2ClientListEntryStrc gaKeyConfigEntries[51] = {
+    { 0, 0xF54 },
+    { 1, 0xF55 },
+    { 2, 0xF56 },
+    { 3, 0xF57 },
+    { 4, 0xF58 },
+    { 6, 0xF5D },
+    { 57 },
+    { 12, 0xF5E },
+    { 13, 0x2A51 },
+    { 14, 0xF60 },
+    { 15, 0xF61 },
+    { 16, 0xF62 },
+    { 17, 0xF63 },
+    { 18, 0xF64 },
+    { 19, 0xF65 },
+    { 20, 0xF66 },
+    { 21, 0xF67 },
+    { 39, 0xF68 },
+    { 40, 0xF69 },
+    { 57 },
+    { 22, 0xF6A },
+    { 23, 0xF6B },
+    { 24, 0xF6C },
+    { 25, 0xF6D },
+    { 26, 0xF6E },
+    { 57 },
+    { 5, 0xF59 },
+    { 34, 0xF7E },
+    { 35, 0xF7F },
+    { 36, 0xF80 },
+    { 37, 0xF81 },
+    { 43, 0xF8E },
+    { 57 },
+    { 7, 0xF5A },
+    { 8, 0xF5B },
+    { 9, 0xF8F },
+    { 10, 0xF91 },
+    { 11, 0xF90 },
+    { 57 },
+    { 27, 0xF77 },
+    { 28, 0xF78 },
+    { 29, 0xF79 },
+    { 30, 0xF7A },
+    { 31, 0xF7B },
+    { 32, 0xF7C },
+    { 33, 0xF7D },
+    { 55, 0x2B4B },
+    { 57 },
+    { 42, 0xF83 },
+    { 38, 0xF82 },
+    { 41, 0xF8D }
+}; // 0x00724268
+
+extern D2ClientListEntryStrc gaKeyConfigEntriesExp[62] = {
+    { 0, 0xF54 },
+    { 1, 0xF55 },
+    { 2, 0xF56 },
+    { 54, 0x58C7 },
+    { 3, 0xF57 },
+    { 4, 0xF58 },
+    { 6, 0xF5D },
+    { 57 },
+    { 12, 0xF5E },
+    { 13, 0x2A51 },
+    { 14, 0xF60 },
+    { 15, 0xF61 },
+    { 16, 0xF62 },
+    { 17, 0xF63 },
+    { 18, 0xF64 },
+    { 19, 0xF65 },
+    { 20, 0xF66 },
+    { 21, 0xF67 },
+    { 46, 0x58BD },
+    { 47, 0x58BE },
+    { 48, 0x58BF },
+    { 49, 0x58C0 },
+    { 50, 0x58C1 },
+    { 51, 0x58C2 },
+    { 52, 0x58C3 },
+    { 53, 0x58C4 },
+    { 39, 0xF68 },
+    { 40, 0xF69 },
+    { 57 },
+    { 22, 0xF6A },
+    { 23, 0xF6B },
+    { 24, 0xF6C },
+    { 25, 0xF6D },
+    { 26, 0xF6E },
+    { 44, 0x58C6 },
+    { 57 },
+    { 5, 0xF59 },
+    { 34, 0xF7E },
+    { 35, 0xF7F },
+    { 36, 0xF80 },
+    { 37, 0xF81 },
+    { 43, 0xF8E },
+    { 57 },
+    { 7, 0xF5A },
+    { 8, 0xF5B },
+    { 9, 0xF8F },
+    { 10, 0xF91 },
+    { 11, 0xF90 },
+    { 45, 0x58C5 },
+    { 57 },
+    { 27, 0xF77 },
+    { 28, 0xF78 },
+    { 29, 0xF79 },
+    { 30, 0xF7A },
+    { 31, 0xF7B },
+    { 32, 0xF7C },
+    { 33, 0xF7D },
+    { 55, 0x2B4B },
+    { 57 },
+    { 42, 0xF83 },
+    { 38, 0xF82 },
+    { 41, 0xF8D }
+}; // 0x00724468
+
+extern int gnKeyConfigColumn = 1; // 0x007246D4
+
+extern "C" struct d2data_007246D8_t gData_007246D8 = {
+    { 0x86, 0x0F },
+    (const void*)(unsigned int)&TEXT_CancelKeyConfig,
+    {
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x84, 0x0F
+    },
+    (const void*)(unsigned int)&TEXT_ResetKeyConfigDefaults,
+    {
+        0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x85, 0x0F
+    },
+    (const void*)(unsigned int)&TEXT_AcceptKeyConfig,
+    { 0x02 }
+}; // 0x007246D8
+#pragma comment(linker, "/alternatename:?gaKeyConfigButtons@@3PAUD2SliderButtonStrc@@A=_gData_007246D8")
+
+extern int gbKeyConfigReady = 1; // 0x00724728
+
+extern D2MsgHandlerEntryStrc gaKeyCaptureMButtonHandlers[1] = { { 0, 519, (void*)(unsigned int)&TEXT_WheelCaptureMsg } }; // 0x0072472C
+
+extern D2MsgHandlerEntryStrc gaKeyCaptureHandlers[6] = {
+    { 0, 513, (void*)(unsigned int)&sub_004A6000_RegisterPressMsgHandler },
+    { 0, 516, (void*)(unsigned int)&sub_004A6000_RegisterPressMsgHandler },
+    { 0, 256, (void*)(unsigned int)&sub_004A60B0_KeyDownMsgHandler },
+    { 0, 260, (void*)(unsigned int)&sub_004A60B0_KeyDownMsgHandler },
+    { 0, 257, (void*)(unsigned int)&sub_004A61A0_KeyUpMsgHandler },
+    { 0, 261, (void*)(unsigned int)&sub_004A61A0_KeyUpMsgHandler }
+}; // 0x00724738
+
+extern D2MsgHandlerEntryStrc gaKeyCaptureXButtonHandlers[1] = { { 0, 523, (void*)(unsigned int)&TEXT_ButtonCaptureMsg } }; // 0x00724780
+
+extern D2MsgHandlerEntryStrc gaKeyCaptureWheelHandlers[1] = { { 0, 522, (void*)(unsigned int)&sub_004A63B0_WheelMsgHandler } }; // 0x0072478C

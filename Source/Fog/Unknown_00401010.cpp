@@ -305,4 +305,12 @@ void __cdecl sub_00401DD0_CleanupSymbols()
     }
 }
 
-#include "gen/data/Source/Fog/Unknown_00401010.inc"
+extern "C" const char gData_006FFB94[24]; // 0x006FFB94
+
+extern "C" const char gData_006FFB94[24] = {
+    77, 105, 110, 105, 68, 117, 109, 112, 87, 114, 105, 116, 101, 68, 117, 109,
+    112, 0, 0, 0, 76, 1
+}; // 0x006FFB94
+#pragma comment(linker, "/alternatename:_gszMiniDumpWriteDump=_gData_006FFB94")
+
+extern void* ghProcess = (void*)0xFFFFFFFF; // 0x0074C6F0

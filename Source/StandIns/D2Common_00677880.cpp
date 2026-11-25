@@ -1,4 +1,4 @@
-// Functional replacement for the function at 0x00677880, not the original code: only the ordinary build (tools/link.py) uses it.
+// Functional replacement for the function at 0x00677880, not the original code (Iblis Codex has not reconstructed the original yet).
 // The other functions in this file are copies that give it its callees and their calling conventions; the build links their verified definitions instead.
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837

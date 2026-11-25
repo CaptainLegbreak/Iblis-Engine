@@ -88,4 +88,4 @@ int __stdcall sub_004450D0_OnGameListEvent(SMSGHANDLER_PARAMS* pMsg)
     return 0;
 }
 
-#include "gen/data/Source/D2Multi/Unknown_004450D0.inc"
+extern int gnGameListLastSelection = -2; // 0x0070EBDC

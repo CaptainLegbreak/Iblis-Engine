@@ -872,4 +872,11 @@ int __stdcall SCmdProcessCommandLine(OptionCallbackToken extra, D2ErrorCallback 
     return SCmdProcess(GetCommandLineA(), 1, extra, error);
 }
 
-#include "gen/data/Source/Storm/SOURCE/SCMD.inc"
+extern "C" const char* const gData_006FCC24[3]; // 0x006FCC24
+extern "C" const char gData_006FCC4C[12]; // 0x006FCC4C
+
+extern "C" const char* const gData_006FCC24[3] = { "Invalid argument: %s", "The syntax of the command is incorrect.", "Unable to open response file: %s" }; // 0x006FCC24
+#pragma comment(linker, "/alternatename:?gszErrorDefaults_006FCC24@@3PAPBDA=_gData_006FCC24")
+
+extern "C" const char gData_006FCC4C[12] = { 32, 44, 59, 34, 9, 10, 13, 26 }; // 0x006FCC4C
+#pragma comment(linker, "/alternatename:_gszCmdWhitespace_006FCC4C=_gData_006FCC4C")

@@ -581,4 +581,82 @@ int __cdecl ENVIRONMENT_GetLvlPrestTxtRecordCount()
     return sgptDataTables->nLvlPrestTxtRecordCount;
 }
 
-#include "gen/data/Source/D2Common/ENVIRONMENT/Env.inc"
+#pragma pack(push, 1)
+struct d2data_007443A8_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00744480_t
+{
+    unsigned char b0[72];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_007443A8_t gData_007443A8; // 0x007443A8
+extern "C" struct d2data_00744480_t gData_00744480; // 0x00744480
+
+extern "C" struct d2data_007443A8_t gData_007443A8 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007443A8
+
+extern int gnTimeRates[3] = { 128, 4, 8 }; // 0x007443E4
+
+extern D2EnvironmentCycleStrc gNormalEnvironmentCycle[6] = {
+    { 320, 3, 0x7D, 0x90, 0xF3 },
+    { 340, 3, 0xD0, 0xB8, 0x83 },
+    { 0, 0, 0xFF, 0xFF, 0xFF },
+    { 160, 1, 0xFF, 0xFF, 0xFF },
+    { 180, 1, 0xC2, 0x98, 0xC1 },
+    { 200, 2, 0x7D, 0x90, 0xF3 }
+}; // 0x007443F0
+
+extern D2EnvironmentCycleStrc gAct4EnvironmentCycle[6] = {
+    { 340, 3, 0xF3, 0x46, 0xF3 },
+    { 350, 3, 0xD0, 0xB8, 0x83 },
+    { 0, 0, 0xFF, 0x14, 0x14 },
+    { 180, 1, 0xFF, 0xFF, 0x1E },
+    { 190, 1, 0x14, 0x98, 0xC1 },
+    { 200, 2, 0x7D, 0x90, 0xF3 }
+}; // 0x00744438
+
+extern "C" struct d2data_00744480_t gData_00744480 = {
+    {
+        0x2C, 0x01, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x1E, 0xF3, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x1E, 0xF4, 0x00, 0x3C, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x1E, 0xF3, 0x00, 0x78, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x1E, 0xF3, 0x00,
+        0xB4, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x1E, 0xF4, 0x00, 0xF0, 0x00, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00, 0x00, 0x1E, 0xF3
+    }
+}; // 0x00744480
+#pragma comment(linker, "/alternatename:?gEclipseEnvironmentCycle@@3PAUD2EnvironmentCycleStrc@@A=_gData_00744480")

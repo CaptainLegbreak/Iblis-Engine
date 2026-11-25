@@ -320,4 +320,51 @@ int __fastcall SKILLS_SpawnScatterMissiles(D2UnitStrc* pUnit, int nSkillId, int 
     return 1;
 }
 
-#include "gen/data/Source/D2Client/Unknown_004C9420.inc"
+#pragma pack(push, 1)
+struct d2data_00727DF8_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006DAE88[8]; // 0x006DAE88
+extern "C" const int gData_006DAEA8[8]; // 0x006DAEA8
+extern "C" struct d2data_00727DF8_t gData_00727DF8; // 0x00727DF8
+
+extern "C" const int gData_006DAE88[8] = { 2, 1, 0, -1, -2, -1, 0, 1 }; // 0x006DAE88
+#pragma comment(linker, "/alternatename:?gaMissileAroundOffsetY@@3QBHB=_gData_006DAE88")
+
+extern "C" const int gData_006DAEA8[8] = { 0, -1, -2, -1, 0, 1, 2, 1 }; // 0x006DAEA8
+#pragma comment(linker, "/alternatename:?gaMissileAroundOffsetX@@3QBHB=_gData_006DAEA8")
+
+extern "C" struct d2data_00727DF8_t gData_00727DF8 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00727DF8

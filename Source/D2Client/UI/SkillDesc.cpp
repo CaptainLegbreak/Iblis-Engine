@@ -5364,4 +5364,116 @@ static int MONSTERS_GetBaseIdInline_J03(int nMonsterId)
 }
 
 
-#include "gen/data/Source/D2Client/UI/SkillDesc.inc"
+extern "C" void __cdecl SKILLDESC_DrawThrowAndElemDamage(); // 0x004EAAA0
+extern "C" void __cdecl SKILLSMON_DescIfRecord(); // 0x004EC040
+
+#pragma pack(push, 1)
+struct d2data_0072D724_t
+{
+    unsigned char b0[4];
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    const void* p15;
+    unsigned char b16[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072D840_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072D848_t
+{
+    unsigned char b0[68];
+};
+#pragma pack(pop)
+
+extern "C" const unsigned short gData_006DBD88[4]; // 0x006DBD88
+extern "C" const char gData_006DBF24[19]; // 0x006DBF24
+extern "C" const int gData_006DBFA8[8]; // 0x006DBFA8
+extern "C" const int gData_006DBFC8[8]; // 0x006DBFC8
+extern "C" const int gData_006DC1E8[8]; // 0x006DC1E8
+extern "C" const int gData_006DC208[8]; // 0x006DC208
+extern "C" struct d2data_0072D724_t gData_0072D724; // 0x0072D724
+extern "C" struct d2data_0072D840_t gData_0072D840; // 0x0072D840
+extern "C" struct d2data_0072D848_t gData_0072D848; // 0x0072D848
+
+extern "C" const unsigned short gData_006DBD88[4] = { 0x52F3, 0x52F5, 0x52F2, 0x52F4 }; // 0x006DBD88
+#pragma comment(linker, "/alternatename:?gawPeriodOfDayStr@@3QBGB=_gData_006DBD88")
+
+extern "C" const char gData_006DBF24[19] = ".\\UI\\SkillDesc.cpp"; // 0x006DBF24
+#pragma comment(linker, "/alternatename:_gszSkillDescFile=_gData_006DBF24")
+
+extern "C" const int gData_006DBFA8[8] = { 7, 5, 0, -5, -7, -5, 0, 5 }; // 0x006DBFA8
+#pragma comment(linker, "/alternatename:?gaSprayOffsetX@@3QBHB=_gData_006DBFA8")
+
+extern "C" const int gData_006DBFC8[8] = { 0, 5, 7, 5, 0, -5, -7, -5 }; // 0x006DBFC8
+#pragma comment(linker, "/alternatename:?gaSprayOffsetY@@3QBHB=_gData_006DBFC8")
+
+extern "C" const int gData_006DC1E8[8] = { 0, 2, 2, 2, 0, -2, -2, -2 }; // 0x006DC1E8
+#pragma comment(linker, "/alternatename:?gaCurvingPathOffsetY@@3QBHB=_gData_006DC1E8")
+
+extern "C" const int gData_006DC208[8] = { 2, 2, 0, -2, -2, -2, 0, 2 }; // 0x006DC208
+#pragma comment(linker, "/alternatename:?gaCurvingPathOffsetX@@3QBHB=_gData_006DC208")
+
+extern unsigned int gnFileIndexTextCount = 6; // 0x0072D720
+
+extern "C" struct d2data_0072D724_t gData_0072D724 = {
+    { 0x00 },
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14",
+    { 0x10 }
+}; // 0x0072D724
+
+extern SKILLDAMAGEFN gpfnSkillDamageFuncs[36] = {
+    0, (SKILLDAMAGEFN)&SKILLDESC_DrawDualWieldLine, (SKILLDAMAGEFN)&SKILLDESC_DrawKickBaseDamage, (SKILLDAMAGEFN)&SKILLDESC_DrawSkillDamage, (SKILLDAMAGEFN)&SKILLDESC_DrawOtherHandDamage, (SKILLDAMAGEFN)&SKILLDESC_DrawWeaponPhysElemDamage, (SKILLDAMAGEFN)&SKILLDESC_DrawWeaponAndSkillDamage, (SKILLDAMAGEFN)&SKILLDESC_DrawSkillWeaponLine, (SKILLDAMAGEFN)&SKILLDESC_DrawElemDamage, (SKILLDAMAGEFN)&SKILLDESC_DrawElementalDamageLine, (SKILLDAMAGEFN)&SKILLDESC_DrawThrowDamage, (SKILLDAMAGEFN)&SKILLDESC_DrawMasteryWeaponDamage, (SKILLDAMAGEFN)&SKILLDESC_DrawBoostedElemDamage, (SKILLDAMAGEFN)&SKILLDESC_DrawSkillWeaponDamage, (SKILLDAMAGEFN)&SKILLDESC_DrawWeaponDamageWithParam, (SKILLDAMAGEFN)&SKILLDESC_DrawKickDamage,
+    (SKILLDAMAGEFN)&SKILLDESC_DrawKickDamagePercent, (SKILLDAMAGEFN)&SKILLDESC_DrawDescWeaponAndElemDamage, (SKILLDAMAGEFN)&SKILLSMON_DescIfRecord, (SKILLDAMAGEFN)&SKILLDESC_DrawWeaponDamageLine, (SKILLDAMAGEFN)&SKILLDESC_DrawDualWieldLineNoElem, (SKILLDAMAGEFN)&SKILLDESC_DrawWeaponStatDamage, (SKILLDAMAGEFN)&SKILLDESC_DrawThrowAndElemDamage, (SKILLDAMAGEFN)&SKILLDESC_DrawWeaponAndElemDamage, (SKILLDAMAGEFN)&SKILLDESC_DrawPhysWeaponElemDamage
+}; // 0x0072D768
+
+extern "C" struct d2data_0072D840_t gData_0072D840 = {
+    { 0xA2 }
+}; // 0x0072D840
+#pragma comment(linker, "/alternatename:?gaSkillTextPositions@@3PAUD2SkillTextPositionStrc@@A=_gData_0072D840")
+
+extern "C" struct d2data_0072D848_t gData_0072D848 = {
+    {
+        0x02, 0x01, 0x00, 0x00, 0xA2, 0x00, 0x00, 0x00, 0x65, 0x00, 0x00, 0x00, 0x02, 0x01, 0x00, 0x00,
+        0x07, 0x01, 0x00, 0x00, 0x62, 0x00, 0x00, 0x00, 0x33, 0x01, 0x00, 0x00, 0xA2, 0x00, 0x00, 0x00,
+        0xA0, 0x00, 0x00, 0x00, 0x0E, 0x01, 0x00, 0x00, 0xA2, 0x00, 0x00, 0x00, 0xA3, 0x00, 0x00, 0x00,
+        0x0E, 0x01, 0x00, 0x00, 0x0E, 0x01, 0x00, 0x00, 0xA0, 0x00, 0x00, 0x00, 0x36, 0x01, 0x00, 0x00,
+        0xA2
+    }
+}; // 0x0072D848
+
+extern int gnChargedBoltTurnEvery = 15; // 0x0072D98C
+
+extern int gnChargedBoltTurnBase = 2; // 0x0072D990

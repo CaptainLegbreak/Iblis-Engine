@@ -1100,4 +1100,23 @@ void __fastcall sub_0040F570(PairStrc_0040F570* pPair)
     pPair->nSecond = 0;
 }
 
-#include "gen/data/Source/Fog/Src/LogManager.inc"
+extern "C" const char gData_006CE1A4[8]; // 0x006CE1A4
+extern "C" const char gData_006CE1AC[8]; // 0x006CE1AC
+extern "C" const char gData_006CE1B4[12]; // 0x006CE1B4
+extern "C" const char gData_006CE1C0[12]; // 0x006CE1C0
+extern "C" const char gData_006CE1CC[16]; // 0x006CE1CC
+
+extern "C" const char gData_006CE1A4[8] = " %02X"; // 0x006CE1A4
+#pragma comment(linker, "/alternatename:_gszLogDumpByteSpaced=_gData_006CE1A4")
+
+extern "C" const char gData_006CE1AC[8] = "%02X"; // 0x006CE1AC
+#pragma comment(linker, "/alternatename:_gszLogDumpByte=_gData_006CE1AC")
+
+extern "C" const char gData_006CE1B4[12] = "%s%s%08X:"; // 0x006CE1B4
+#pragma comment(linker, "/alternatename:_gszLogDumpAddress32=_gData_006CE1B4")
+
+extern "C" const char gData_006CE1C0[12] = "%s%s%04X:"; // 0x006CE1C0
+#pragma comment(linker, "/alternatename:_gszLogDumpAddress16=_gData_006CE1C0")
+
+extern "C" const char gData_006CE1CC[16] = "              "; // 0x006CE1CC
+#pragma comment(linker, "/alternatename:_gszLogBlankStamp=_gData_006CE1CC")

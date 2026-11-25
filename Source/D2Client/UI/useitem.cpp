@@ -747,4 +747,61 @@ void __fastcall USEITEM_OpenNpcItemPanel(int nValue)
     USEITEM_OpenPanel();
 }
 
-#include "gen/data/Source/D2Client/UI/useitem.inc"
+#pragma pack(push, 1)
+struct d2data_007278C0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_007278C0_t gData_007278C0; // 0x007278C0
+
+extern "C" struct d2data_007278C0_t gData_007278C0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007278C0
+
+extern int gnHotspotCount = 2; // 0x007278FC
+
+extern D2HotspotStrc gaUseItemHotspots[2] = {
+    { 0xFB1, 122, 256, 122, 256, 122, 154, 224, 256, 16 },
+    { 0x102F, 177, 256, 177, 256, 177, 209, 224, 256, 10 }
+}; // 0x00727900
+
+extern D2MsgHandlerEntryStrc gaUseItemHandlers[8] = {
+    { 0, 514, (void*)(unsigned int)&USEITEM_OnHotspotClick },
+    { 0, 513, (void*)(unsigned int)&USEITEM_ClickMsg },
+    { 0, 516, (void*)(unsigned int)&USEITEM_ClickMsg },
+    { 0, 517, (void*)(unsigned int)&USEITEM_OnHotspotClick },
+    { 0, 512, (void*)(unsigned int)&USEITEM_MouseMoveMsg },
+    { 3, 27, (void*)(unsigned int)&USEITEM_OnPanelCloseMsg },
+    { 3, 32, (void*)(unsigned int)&USEITEM_OnPanelCloseMsg },
+    { 0, 258, (void*)(unsigned int)&USEITEM_EatMsg }
+}; // 0x00727950

@@ -5279,4 +5279,219 @@ void __fastcall PLRMSG_SendDeathMode(D2GameStrc* pGame, D2UnitStrc* pUnit, D2Cli
     }
 }
 
-#include "gen/data/Source/D2Game/PLAYER/PlrMsg.inc"
+extern "C" void __cdecl D2GAME_PACKETCALLBACK_Rcv0x61_DropPickupMercItem_0054D430(); // 0x0054D430
+extern "C" void __cdecl sub_005497E0(); // 0x005497E0
+extern "C" void __cdecl sub_00549890(); // 0x00549890
+extern "C" void __cdecl sub_005498D0(); // 0x005498D0
+extern "C" void __cdecl sub_00549920(); // 0x00549920
+extern "C" void __cdecl sub_00549D00(); // 0x00549D00
+extern "C" void __cdecl sub_00549D80(); // 0x00549D80
+extern "C" void __cdecl sub_00549E00(); // 0x00549E00
+extern "C" void __cdecl sub_00549E80(); // 0x00549E80
+extern "C" void __cdecl sub_00549EE0(); // 0x00549EE0
+extern "C" void __cdecl sub_00549F40(); // 0x00549F40
+extern "C" void __cdecl sub_00549FC0(); // 0x00549FC0
+extern "C" void __cdecl sub_0054A040(); // 0x0054A040
+extern "C" void __cdecl sub_0054A0C0(); // 0x0054A0C0
+extern "C" void __cdecl sub_0054A140(); // 0x0054A140
+extern "C" void __cdecl sub_0054A1A0(); // 0x0054A1A0
+extern "C" void __cdecl sub_0054A200(); // 0x0054A200
+extern "C" void __cdecl sub_0054A260(); // 0x0054A260
+extern "C" void __cdecl sub_0054A290(); // 0x0054A290
+extern "C" void __cdecl sub_0054AAD0(); // 0x0054AAD0
+extern "C" void __cdecl sub_0054AB40(); // 0x0054AB40
+extern "C" void __cdecl sub_0054ABB0(); // 0x0054ABB0
+extern "C" void __cdecl sub_0054ACD0(); // 0x0054ACD0
+extern "C" void __cdecl sub_0054AD90(); // 0x0054AD90
+extern "C" void __cdecl sub_0054AE30(); // 0x0054AE30
+extern "C" void __cdecl sub_0054AEC0(); // 0x0054AEC0
+extern "C" void __cdecl sub_0054AF50(); // 0x0054AF50
+extern "C" void __cdecl sub_0054B0F0(); // 0x0054B0F0
+extern "C" void __cdecl sub_0054B1E0(); // 0x0054B1E0
+extern "C" void __cdecl sub_0054B280(); // 0x0054B280
+extern "C" void __cdecl sub_0054B300(); // 0x0054B300
+extern "C" void __cdecl sub_0054B380(); // 0x0054B380
+extern "C" void __cdecl sub_0054B3E0(); // 0x0054B3E0
+extern "C" void __cdecl sub_0054B450(); // 0x0054B450
+extern "C" void __cdecl sub_0054B4E0(); // 0x0054B4E0
+extern "C" void __cdecl sub_0054B560(); // 0x0054B560
+extern "C" void __cdecl sub_0054B650(); // 0x0054B650
+extern "C" void __cdecl sub_0054B710(); // 0x0054B710
+extern "C" void __cdecl sub_0054B790(); // 0x0054B790
+extern "C" void __cdecl sub_0054B810(); // 0x0054B810
+extern "C" void __cdecl sub_0054B930(); // 0x0054B930
+extern "C" void __cdecl sub_0054B9F0(); // 0x0054B9F0
+extern "C" void __cdecl sub_0054BA90(); // 0x0054BA90
+extern "C" void __cdecl sub_0054BB20(); // 0x0054BB20
+extern "C" void __cdecl sub_0054BB60(); // 0x0054BB60
+extern "C" void __cdecl sub_0054BC30(); // 0x0054BC30
+extern "C" void __cdecl sub_0054BCA0(); // 0x0054BCA0
+extern "C" void __cdecl sub_0054BD00(); // 0x0054BD00
+extern "C" void __cdecl sub_0054BD10(); // 0x0054BD10
+extern "C" void __cdecl sub_0054BD90(); // 0x0054BD90
+extern "C" void __cdecl sub_0054BE70(); // 0x0054BE70
+extern "C" void __cdecl sub_0054BF10(); // 0x0054BF10
+extern "C" void __cdecl sub_0054BF60(); // 0x0054BF60
+extern "C" void __cdecl sub_0054C0C0(); // 0x0054C0C0
+extern "C" void __cdecl sub_0054C0E0(); // 0x0054C0E0
+extern "C" void __cdecl sub_0054C2A0(); // 0x0054C2A0
+extern "C" void __cdecl sub_0054C300(); // 0x0054C300
+extern "C" void __cdecl sub_0054C380(); // 0x0054C380
+extern "C" void __cdecl sub_0054C4B0(); // 0x0054C4B0
+extern "C" void __cdecl sub_0054C520(); // 0x0054C520
+extern "C" void __cdecl sub_0054C5D0(); // 0x0054C5D0
+extern "C" void __cdecl sub_0054C6D0(); // 0x0054C6D0
+extern "C" void __cdecl sub_0054C760(); // 0x0054C760
+extern "C" void __cdecl sub_0054C7C0(); // 0x0054C7C0
+extern "C" void __cdecl sub_0054C800(); // 0x0054C800
+extern "C" void __cdecl sub_0054C870(); // 0x0054C870
+extern "C" void __cdecl sub_0054C940(); // 0x0054C940
+extern "C" void __cdecl sub_0054C9C0(); // 0x0054C9C0
+extern "C" void __cdecl sub_0054CA10(); // 0x0054CA10
+extern "C" void __cdecl sub_0054CD50(); // 0x0054CD50
+extern "C" void __cdecl sub_0054CE70(); // 0x0054CE70
+extern "C" void __cdecl sub_0054D520(); // 0x0054D520
+
+extern "C" const D2PacketTableStrc gData_006E0D18[103]; // 0x006E0D18
+extern "C" const D2WarpDelayStrc gData_006E1064[3]; // 0x006E1064
+extern "C" int gData_00731AD8[6]; // 0x00731AD8
+
+extern "C" const D2PacketTableStrc gData_006E0D18[103] = {
+    { 0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_005497E0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_00549890 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_005498D0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_00549920 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_00549D00 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_00549D80 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_00549E00 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_00549E80 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_00549EE0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_00549F40 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x0B_6FC83EE0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_00549FC0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054A040 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054A0C0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054A140 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054A1A0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054A200 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054A260 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x13_InteractWithEntity_6FC84D70, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054A290 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x15_HandleChatMessage },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054AAD0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054AB40, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054ABB0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054ACD0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054AD90, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054AE30, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054AEC0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054AF50, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x1E_SwapTwo1HandedWithOne2HandedItem, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B0F0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B1E0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B300, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B380, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B3E0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B450, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B4E0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B560, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B280, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B650, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B710, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B790, 1 },
+    { 0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B810 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x2D_Rejected },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x2E_Ignored, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B930, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054B9F0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054BA90 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x32_BuyItemFromNpcBuffer, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054BB20, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x34_IdentifyItemsWithNpc_6FC86BA0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054BB60, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x36_HireMerc_6FC86BD0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054BC30, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054BCA0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054BD00 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054BD10 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054BD90 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054BE70 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054BF10, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054BF60 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x3F_PlayAudio },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C0C0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C0E0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x42_Ignored, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x43_Ignored, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C380, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x45_ChangeTpLocation, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C4B0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C520 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x48_TurnOffBusyState_6FC87E20, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C5D0 },
+    { 0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C6D0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C760, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x4D_PlayNpcMessage_6FC880A0 },
+    { 0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C7C0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C800, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C870 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x52_Rejected, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C940 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x54_TurnStaminaOff_6FC88380 },
+    { 0, 1 },
+    { 0, 1 },
+    { 0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C9C0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054CA10 },
+    { 0, 1 },
+    { 0, 1 },
+    { 0, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C2A0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054C300 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054CD50 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054CE70, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x61_DropPickupMercItem_0054D430, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x62_ResurrectMerc_6FC86C00, 1 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&sub_0054D520, 1 },
+    { 0 },
+    { 0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, unsigned char*, int))&D2GAME_PACKETCALLBACK_Rcv0x66_Ignored }
+}; // 0x006E0D18
+#pragma comment(linker, "/alternatename:?sgcptIncomingMessageChart@@3PAUD2PacketTableStrc@@A=_gData_006E0D18")
+
+extern "C" const D2WarpDelayStrc gData_006E1064[3] = {
+    { 50, 1500 },
+    { 25, 3000 },
+    { 25, 4500 }
+}; // 0x006E1064
+#pragma comment(linker, "/alternatename:?gaWarpDelays@@3QBUD2WarpDelayStrc@@B=_gData_006E1064")
+
+extern D2UnkPlrMsgStrc gaUnitModeMessages[20] = {
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendDeathMode, 8, 8 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendNeutralMode, 7, 7 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendWalkMode, 1 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendWalkMode, 23, 24 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendGetHitMode, 6, 6 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendNeutralMode, 7, 7 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendWalkMode, 1 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendSkillMode, 21, 22 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendSkillMode, 21, 22 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendGetHitMode, 18, 18 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendSkillMode, 21, 22 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendSkillMode, 21, 22 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendSkillMode, 21, 22 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendSkillMode, 21, 22 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendSkillMode, 21, 22 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendSkillMode, 21, 22 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendSkillMode, 21, 22 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendGetHitMode, 9, 9 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendSkillMode, 21, 22 },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2ClientStrc *, int))&PLRMSG_SendKnockbackMode, 20, 20 }
+}; // 0x007319E8
+
+extern "C" int gData_00731AD8[6] = { 67, 68, 12, 0, 2, -1 }; // 0x00731AD8
+#pragma comment(linker, "/alternatename:?gnBaseStatIdsToSend@@3PAHA=_gData_00731AD8")

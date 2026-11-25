@@ -4087,7 +4087,113 @@ extern "C" int __cdecl INV_GetPanelY()
     return gCoordinateOffset+gCoordinateBase-64;
 }
 
-#include "gen/data/Source/D2Client/GAME/Game.inc"
+extern "C" void __cdecl GAME_DrawGameView(); // 0x0044C990
+extern "C" void __cdecl sub_0045FDE0_DrawLoadingScreen(); // 0x0045FDE0
+extern "C" void __cdecl sub_00460190_DrawFrame(); // 0x00460190
+extern "C" void __cdecl sub_0044AB70_McpIncomingIgnore(); // 0x0044AB70
+extern "C" void __cdecl sub_0044ABA0_McpIncoming02(); // 0x0044ABA0
+extern "C" void __cdecl sub_0044ABC0_McpIncoming07(); // 0x0044ABC0
+extern "C" void __cdecl sub_0044ABE0_McpIncoming03(); // 0x0044ABE0
+extern "C" void __cdecl sub_0044AC20_McpIncoming04(); // 0x0044AC20
+extern "C" void __cdecl sub_0044ADF0_McpIncoming08(); // 0x0044ADF0
+extern "C" void __cdecl sub_0044AE10_McpIncoming09(); // 0x0044AE10
+extern "C" void __cdecl sub_0044AE30_McpIncoming0A(); // 0x0044AE30
+extern "C" void __cdecl sub_0044AE60_McpIncoming18(); // 0x0044AE60
+extern "C" void __cdecl sub_0044AE80_McpIncoming0B(); // 0x0044AE80
+extern "C" void __cdecl sub_0044AEA0_McpIncoming0C(); // 0x0044AEA0
+extern "C" void __cdecl sub_0044AEC0_McpIncoming0E(); // 0x0044AEC0
+extern "C" void __cdecl sub_0044AEF0_McpIncoming0D(); // 0x0044AEF0
+extern "C" void __cdecl sub_0044AF10_McpIncoming0F(); // 0x0044AF10
+extern "C" void __cdecl WINMAIN_HandleMcpServerAddress(); // 0x0044AF30
+extern "C" void __cdecl sub_0044AFC0(); // 0x0044AFC0
+extern "C" void __cdecl WINMAIN_HandleMcpMotd(); // 0x0044B120
+extern "C" void __cdecl WINMAIN_HandleMcpCreateQueue(); // 0x0044B150
+extern "C" void __cdecl WINMAIN_HandleMcpCharList(); // 0x0044B170
+extern "C" void __cdecl WINMAIN_HandleMcpCharListExpanded(); // 0x0044B180
+extern "C" void __cdecl WINMAIN_HandleMcpGameList(); // 0x0044B2D0
+extern "C" void __cdecl GAME_ApplyConfigNoSave(); // 0x0044D580
+extern "C" void __cdecl GAME_ApplyConfigAct(); // 0x0044D5A0
+extern "C" void __cdecl GAME_ApplyConfigGame(); // 0x0044D5F0
+extern "C" void __cdecl GAME_ApplyConfigBattleNetIP(); // 0x0044D650
+extern "C" void __cdecl GAME_ApplyConfigMcpIP(); // 0x0044D680
+extern "C" void __cdecl GAME_ApplyConfigClass(); // 0x0044D6B0
+extern "C" void __cdecl GAME_ApplyConfigName(); // 0x0044D890
+extern "C" char gData_006F28F8[]; // 0x006F28F8
+
+#pragma pack(push, 1)
+struct d2data_006D5EE0_t
+{
+    unsigned char b0[8];
+    const void* p1;
+    const void* p2;
+    const void* p3;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0070EED0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const struct d2data_006D5EE0_t gData_006D5EE0; // 0x006D5EE0
+extern "C" struct d2data_0070EED0_t gData_0070EED0; // 0x0070EED0
+
+extern "C" const struct d2data_006D5EE0_t gData_006D5EE0 = {
+    { 0x44, 0x32, 0x2E, 0x4C, 0x4E, 0x47 },
+    (const void*)&gszLngFileName,
+    (const void*)"Unable to start LNG manager.",
+    (const void*)"Stupid Lng.cpp error."
+}; // 0x006D5EE0
+#pragma comment(linker, "/alternatename:_gszLngFileName=_gData_006D5EE0")
+
+extern "C" struct d2data_0070EED0_t gData_0070EED0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0070EED0
+
+extern D2ClientCallbackFn gpfnClientCallbacks[3] = { (D2ClientCallbackFn)&GAME_DrawGameView, (D2ClientCallbackFn)&sub_0045FDE0_DrawLoadingScreen, (D2ClientCallbackFn)&sub_00460190_DrawFrame }; // 0x0070EF0C
+
+extern int gnLeftClickState = 16; // 0x0070F234
+
+extern int gbInitHandlersResult = 1; // 0x0070F414
+
+extern D2InitHandlerFn gpfnInitHandlers[52] = {
+    (D2InitHandlerFn)&GAME_ApplyConfigWindow, (D2InitHandlerFn)&GAME_ApplyConfigWindow, (D2InitHandlerFn)&GAME_ApplyConfigWindow, (D2InitHandlerFn)&GAME_ApplyConfigNoFixAspect, (D2InitHandlerFn)&GAME_ApplyConfigGlide, (D2InitHandlerFn)&GAME_ApplyConfigOpenGL, (D2InitHandlerFn)&GAME_ApplyConfigDirectX, (D2InitHandlerFn)&GAME_ApplyConfigRave, (D2InitHandlerFn)&sub_0044D7C0_ApplyConfigNop, (D2InitHandlerFn)&GAME_ApplyConfigGamma, (D2InitHandlerFn)&GAME_ApplyConfigVSync, (D2InitHandlerFn)&sub_0044D810_ApplyConfigNop, (D2InitHandlerFn)&GAME_ApplyConfigGame, (D2InitHandlerFn)&GAME_ApplyConfigGame, (D2InitHandlerFn)&GAME_ApplyConfigGame, (D2InitHandlerFn)&GAME_ApplyConfigGame,
+    (D2InitHandlerFn)&GAME_ApplyConfigGame, (D2InitHandlerFn)&GAME_ApplyConfigBattleNetIP, (D2InitHandlerFn)&GAME_ApplyConfigMcpIP, (D2InitHandlerFn)&GAME_ApplyConfigClass, (D2InitHandlerFn)&GAME_ApplyConfigClass, (D2InitHandlerFn)&GAME_ApplyConfigClass, (D2InitHandlerFn)&GAME_ApplyConfigClass, (D2InitHandlerFn)&GAME_ApplyConfigClass, (D2InitHandlerFn)&sub_0044D750_ApplyConfigNop, (D2InitHandlerFn)&GAME_ApplyConfigName, (D2InitHandlerFn)&GAME_ApplyConfigRealm, (D2InitHandlerFn)&GAME_ApplyConfigCTemp, (D2InitHandlerFn)&sub_0044D730_ApplyConfigNop, (D2InitHandlerFn)&sub_0044D740_ApplyConfigNop, (D2InitHandlerFn)&sub_0044D7F0_ApplyConfigNop, (D2InitHandlerFn)&sub_0044D820_ApplyConfigNop,
+    (D2InitHandlerFn)&sub_0044D830_ApplyConfigNop, (D2InitHandlerFn)&GAME_ApplyConfigAct, (D2InitHandlerFn)&GAME_ApplyConfigLog, (D2InitHandlerFn)&sub_0044D880_ApplyConfigNop, (D2InitHandlerFn)&GAME_ApplyConfigNoSave, (D2InitHandlerFn)&GAME_ApplyConfigSeed, (D2InitHandlerFn)&GAME_ApplyConfigSetClientFlag, (D2InitHandlerFn)&sub_0044D930_ApplyConfigNop, (D2InitHandlerFn)&sub_0044D940_ApplyConfigNop, (D2InitHandlerFn)&sub_0044D800_ApplyConfigNop, (D2InitHandlerFn)&sub_0044D980_ApplyConfigNop, 0, (D2InitHandlerFn)&sub_0044D990_ApplyConfigNop, (D2InitHandlerFn)&sub_0044D950_ApplyConfigNop, (D2InitHandlerFn)&GAME_ApplyConfigComInterface, (D2InitHandlerFn)&GAME_ApplyConfigGame,
+    0, (D2InitHandlerFn)&GAME_ApplyConfigNoCompress, (D2InitHandlerFn)&GAME_ApplyConfigTxt, (D2InitHandlerFn)&sub_0044D9E0_ApplyConfigNop
+}; // 0x0070F488
+
+extern int gnQServerThreshold = 4; // 0x0070F560
 // 0x006CB400
 void __cdecl sub_006CB400_Nop()
 {

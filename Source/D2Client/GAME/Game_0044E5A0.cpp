@@ -1184,4 +1184,43 @@ unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMa
     return SEED_RollLimitedRandomNumberInline(pSeed, nMax);
 }
 
-#include "gen/data/Source/D2Client/GAME/Game_0044E5A0.inc"
+extern "C" void __cdecl WINMAIN_StartSession(); // 0x0044BC30
+extern "C" void __cdecl WINMAIN_StopSession(); // 0x0044BD90
+extern "C" void __cdecl GAME_SwallowMessage(); // 0x0044C5C0
+extern "C" void __cdecl GAME_HandleActivateApp(); // 0x0044C5E0
+extern "C" void __cdecl GAME_AdvanceBetaScreen(); // 0x0044D0A0
+extern "C" void __cdecl GAME_AdvanceBetaScreenNoRepeat(); // 0x0044D0D0
+extern "C" void __cdecl GAME_HandleKeyDown(); // 0x0044D360
+extern "C" void __cdecl GAME_HandleEndScreenButtonDown(); // 0x0044E460
+extern "C" void __cdecl GAME_HandleEndScreenButtonUp(); // 0x0044E4F0
+
+extern D2MsgHandlerEntryStrc gaBetaScreenHandlers[7] = {
+    { 0, 513, (void*)(unsigned int)&GAME_AdvanceBetaScreen },
+    { 0, 516, (void*)(unsigned int)&GAME_AdvanceBetaScreen },
+    { 0, 256, (void*)(unsigned int)&GAME_AdvanceBetaScreenNoRepeat },
+    { 0, 28, (void*)(unsigned int)&GAME_HandleActivateApp },
+    { 3, 91, (void*)(unsigned int)&GAME_SwallowMessage },
+    { 3, 92, (void*)(unsigned int)&GAME_SwallowMessage },
+    { 3, 93, (void*)(unsigned int)&GAME_SwallowMessage }
+}; // 0x0070F3C0
+
+extern D2MsgHandlerEntryStrc gaEndScreenHandlers[9] = {
+    { 0, 513, (void*)(unsigned int)&GAME_HandleEndScreenButtonDown },
+    { 0, 516, (void*)(unsigned int)&GAME_HandleEndScreenButtonDown },
+    { 0, 514, (void*)(unsigned int)&GAME_HandleEndScreenButtonUp },
+    { 0, 517, (void*)(unsigned int)&GAME_HandleEndScreenButtonUp },
+    { 0, 256, (void*)(unsigned int)&GAME_HandleKeyDown },
+    { 0, 28, (void*)(unsigned int)&GAME_HandleActivateApp },
+    { 3, 91, (void*)(unsigned int)&GAME_SwallowMessage },
+    { 3, 92, (void*)(unsigned int)&GAME_SwallowMessage },
+    { 3, 93, (void*)(unsigned int)&GAME_SwallowMessage }
+}; // 0x0070F418
+
+extern D2QuestScreenStrc gaQuestScreens[2] = {
+    { { 8 }, { 1 }, "A1Q1" },
+    { { 20 }, { 5 }, "A1Q5" }
+}; // 0x0070F85C
+
+extern int gnQuestScreens = 2; // 0x0070F92C
+
+extern int gnLineHeight = 19; // 0x007111C8

@@ -1061,4 +1061,65 @@ NonDoorA:
 }
 
 
-#include "gen/data/Source/D2Client/GAME/Select.inc"
+extern "C" void __cdecl CURSOR_MsgHandler(); // 0x00467EF0
+extern "C" void __cdecl CURSOR_HandleMouseMotion(); // 0x00468840
+extern "C" void __cdecl CURSOR_HandleButtonUp(); // 0x00467FA0
+
+#pragma pack(push, 1)
+struct d2data_00711F54_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006D6AF4[8]; // 0x006D6AF4
+extern "C" const int gData_006D6B14[8]; // 0x006D6B14
+extern "C" const int gData_006D6B34[7]; // 0x006D6B34
+extern "C" struct d2data_00711F54_t gData_00711F54; // 0x00711F54
+
+extern "C" const int gData_006D6AF4[8] = { 3, 2, 0, -2, -3, -2, 0, 2 }; // 0x006D6AF4
+#pragma comment(linker, "/alternatename:?gaDirectionDY@@3QBHB=_gData_006D6AF4")
+
+extern "C" const int gData_006D6B14[8] = { 0, -2, -3, -2, 0, 2, 3, 2 }; // 0x006D6B14
+#pragma comment(linker, "/alternatename:?gaDirectionDX@@3QBHB=_gData_006D6B14")
+
+extern "C" const int gData_006D6B34[7] = { 0, -1, 1, -2, 2, -3, 3 }; // 0x006D6B34
+#pragma comment(linker, "/alternatename:?gaAdjacentDirOffsets@@3QBHB=_gData_006D6B34")
+
+extern "C" struct d2data_00711F54_t gData_00711F54 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00711F54
+
+extern int gnHoverMonClassId = 19; // 0x00711F90
+
+extern int gnHoverClassId = 19; // 0x00711F94
+
+extern int gaUnitHoverPriority[6] = { 0, 0, -6, 0, -4 }; // 0x00711F98

@@ -2843,4 +2843,876 @@ void __cdecl D3DCORE_ReleaseRenderer()
     D3DSPRITE_ReleaseSprites();
 }
 
-#include "gen/data/Source/D2Direct3D/Src/d3dCore.inc"
+extern "C" void __cdecl D3DSMACK_CloseSmacker(); // 0x006B9BB0
+extern "C" void __cdecl D3DSMACK_DecodeSmacker(); // 0x006BA010
+extern "C" void __cdecl D3DSMACK_PlaySmacker(); // 0x006BA390
+extern "C" void __cdecl D3DSPRITE_CelDrawHilight(); // 0x006B7090
+extern "C" void __cdecl D3DSPRITE_DebugFillBackBuffer(); // 0x006B7100
+extern "C" void __cdecl D3DSPRITE_DrawFlatSprite(); // 0x006B6730
+extern "C" void __cdecl D3DSPRITE_DrawSpriteClipped(); // 0x006B6EE0
+extern "C" void __cdecl D3DSPRITE_DrawSpriteRows(); // 0x006B6C90
+extern "C" void __cdecl D3DSPRITE_DrawSpriteShadow(); // 0x006B7000
+extern "C" void __cdecl sub_006B7630_DrawTextV(); // 0x006B7630
+extern "C" void __cdecl sub_006B76C0(); // 0x006B76C0
+extern "C" void __cdecl sub_006B77B0_Call(); // 0x006B77B0
+extern "C" void __cdecl sub_006B7980_DrawRectangle(); // 0x006B7980
+extern "C" void __cdecl sub_006B7B30_DrawLine(); // 0x006B7B30
+extern "C" void __cdecl sub_006B7C90_DrawDiamond(); // 0x006B7C90
+extern "C" void __cdecl sub_006B7D80_DrawRectangle(); // 0x006B7D80
+extern "C" void __cdecl sub_006B7ED0_CallRect(); // 0x006B7ED0
+extern "C" void __cdecl sub_006B7F20_CallSquare(); // 0x006B7F20
+extern "C" void __cdecl sub_006B86F0_DrawShadow(); // 0x006B86F0
+extern "C" void __cdecl sub_006B8E60_DrawRelay(); // 0x006B8E60
+extern "C" void __cdecl sub_006B8E90_DrawWallTile(); // 0x006B8E90
+extern "C" void __cdecl sub_006B9170_DrawGrid(); // 0x006B9170
+extern "C" void __cdecl sub_006B9850_SetOrigin(); // 0x006B9850
+extern "C" void __cdecl sub_006B9860_Project(); // 0x006B9860
+extern "C" void __cdecl sub_006B9910_ProjectPoint(); // 0x006B9910
+extern "C" void __cdecl sub_006B9A00_ResetScale(); // 0x006B9A00
+extern "C" void __cdecl D3DSPRITE_CelDraw(); // 0x006B6B40
+extern "C" void __cdecl D3DSPRITE_CelDrawColor(); // 0x006B6BF0
+
+#pragma pack(push, 1)
+struct d2data_006FADC2_t
+{
+    unsigned char b0[2];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006FB77B_t
+{
+    unsigned char b0[1];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006FF488_t
+{
+    unsigned char b0[144];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006FF528_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006FF568_t
+{
+    unsigned char b0[608];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006FF7D8_t
+{
+    unsigned char b0[256];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006FF8E8_t
+{
+    unsigned char b0[88];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0074BF28_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    const void* p15;
+    const void* p16;
+    const void* p17;
+    const void* p18;
+    const void* p19;
+    const void* p20;
+    const void* p21;
+    const void* p22;
+    const void* p23;
+    const void* p24;
+    const void* p25;
+    const void* p26;
+    const void* p27;
+    const void* p28;
+    const void* p29;
+    const void* p30;
+    const void* p31;
+    const void* p32;
+    const void* p33;
+    const void* p34;
+    const void* p35;
+    const void* p36;
+    const void* p37;
+    const void* p38;
+    const void* p39;
+    const void* p40;
+    const void* p41;
+    const void* p42;
+    const void* p43;
+    const void* p44;
+    const void* p45;
+    const void* p46;
+    const void* p47;
+    const void* p48;
+    const void* p49;
+    const void* p50;
+    const void* p51;
+    const void* p52;
+    const void* p53;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0074C008_t
+{
+    unsigned char b0[8];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0074C018_t
+{
+    unsigned char b0[8];
+};
+#pragma pack(pop)
+
+extern "C" const struct d2data_006FADC2_t gData_006FADC2; // 0x006FADC2
+extern "C" const int gData_006FADC4; // 0x006FADC4
+extern "C" const int gData_006FADC8; // 0x006FADC8
+extern "C" const unsigned int gData_006FADCC; // 0x006FADCC
+extern "C" const unsigned int gData_006FADD0; // 0x006FADD0
+extern "C" const long gData_006FADD4; // 0x006FADD4
+extern "C" const long gData_006FADD8; // 0x006FADD8
+extern "C" const unsigned long gData_006FADDC; // 0x006FADDC
+extern "C" const unsigned long gData_006FADE0; // 0x006FADE0
+extern "C" const __int64 gData_006FADE8; // 0x006FADE8
+extern "C" const __int64 gData_006FADF0; // 0x006FADF0
+extern "C" const unsigned __int64 gData_006FADF8; // 0x006FADF8
+extern "C" const unsigned __int64 gData_006FAE00; // 0x006FAE00
+extern "C" const unsigned int gData_006FAE08; // 0x006FAE08
+extern "C" const int gData_006FAE0C; // 0x006FAE0C
+extern "C" const unsigned int gData_006FAE10; // 0x006FAE10
+extern "C" const int gData_006FAE14; // 0x006FAE14
+extern "C" const unsigned int gData_006FAE18; // 0x006FAE18
+extern "C" const int gData_006FAE1C; // 0x006FAE1C
+extern "C" const unsigned int gData_006FAE20; // 0x006FAE20
+extern "C" const int gData_006FAE24; // 0x006FAE24
+extern "C" const unsigned int gData_006FAE28; // 0x006FAE28
+extern "C" const int gData_006FAE2C; // 0x006FAE2C
+extern "C" const unsigned int gData_006FAE30; // 0x006FAE30
+extern "C" const int gData_006FAE34; // 0x006FAE34
+extern "C" const unsigned int gData_006FAE38; // 0x006FAE38
+extern "C" const int gData_006FAE3C; // 0x006FAE3C
+extern "C" const unsigned int gData_006FAE40; // 0x006FAE40
+extern "C" const int gData_006FAE44; // 0x006FAE44
+extern "C" const unsigned int gData_006FAE48; // 0x006FAE48
+extern "C" const int gData_006FAE4C; // 0x006FAE4C
+extern "C" const unsigned int gData_006FAE50; // 0x006FAE50
+extern "C" const int gData_006FAE54; // 0x006FAE54
+extern "C" const unsigned int gData_006FAE58; // 0x006FAE58
+extern "C" const int gData_006FAE5C; // 0x006FAE5C
+extern "C" const unsigned int gData_006FAE60; // 0x006FAE60
+extern "C" const int gData_006FAE64; // 0x006FAE64
+extern "C" const unsigned int gData_006FAE68; // 0x006FAE68
+extern "C" const int gData_006FAE6C; // 0x006FAE6C
+extern "C" const unsigned int gData_006FAE70; // 0x006FAE70
+extern "C" const int gData_006FAE74; // 0x006FAE74
+extern "C" const unsigned int gData_006FAE78; // 0x006FAE78
+extern "C" const int gData_006FAE7C; // 0x006FAE7C
+extern "C" const unsigned int gData_006FAE80; // 0x006FAE80
+extern "C" const int gData_006FAE84; // 0x006FAE84
+extern "C" const unsigned int gData_006FAE88; // 0x006FAE88
+extern "C" const int gData_006FAE8C; // 0x006FAE8C
+extern "C" const unsigned int gData_006FAE90; // 0x006FAE90
+extern "C" const int gData_006FAE94; // 0x006FAE94
+extern "C" const unsigned int gData_006FAE98; // 0x006FAE98
+extern "C" const int gData_006FAE9C; // 0x006FAE9C
+extern "C" const unsigned int gData_006FAEA0; // 0x006FAEA0
+extern "C" const int gData_006FAEA4; // 0x006FAEA4
+extern "C" const unsigned int gData_006FAEA8; // 0x006FAEA8
+extern "C" const int gData_006FAEAC; // 0x006FAEAC
+extern "C" const unsigned int gData_006FAEB0; // 0x006FAEB0
+extern "C" const int gData_006FAEB4; // 0x006FAEB4
+extern "C" const unsigned int gData_006FAEB8; // 0x006FAEB8
+extern "C" const int gData_006FAEBC; // 0x006FAEBC
+extern "C" const unsigned int gData_006FAEC0; // 0x006FAEC0
+extern "C" const int gData_006FAEC4; // 0x006FAEC4
+extern "C" const unsigned int gData_006FAEC8; // 0x006FAEC8
+extern "C" const unsigned int gData_006FAECC; // 0x006FAECC
+extern "C" const int gData_006FAED0; // 0x006FAED0
+extern "C" const unsigned int gData_006FAED4; // 0x006FAED4
+extern "C" const int gData_006FAED8; // 0x006FAED8
+extern "C" const unsigned int gData_006FAEDC; // 0x006FAEDC
+extern "C" const int gData_006FAEE0; // 0x006FAEE0
+extern "C" const unsigned int gData_006FAEE4; // 0x006FAEE4
+extern "C" const int gData_006FAEE8; // 0x006FAEE8
+extern "C" const unsigned int gData_006FAEEC; // 0x006FAEEC
+extern "C" const int gData_006FAEF0; // 0x006FAEF0
+extern "C" const unsigned int gData_006FAEF4; // 0x006FAEF4
+extern "C" const int gData_006FAEF8; // 0x006FAEF8
+extern "C" const unsigned int gData_006FAEFC; // 0x006FAEFC
+extern "C" const int gData_006FAF00; // 0x006FAF00
+extern "C" const unsigned int gData_006FAF04; // 0x006FAF04
+extern "C" const int gData_006FAF08; // 0x006FAF08
+extern "C" const char gData_006FB130[28]; // 0x006FB130
+extern "C" const char gData_006FB14C[32]; // 0x006FB14C
+extern "C" const struct d2data_006FB77B_t gData_006FB77B; // 0x006FB77B
+extern "C" const char gData_006FB77C[48]; // 0x006FB77C
+extern "C" const char gData_006FB7AC[48]; // 0x006FB7AC
+extern "C" const char gData_006FB7DC[52]; // 0x006FB7DC
+extern "C" const char gData_006FB810[44]; // 0x006FB810
+extern "C" const char gData_006FB83C[48]; // 0x006FB83C
+extern "C" const char gData_006FB86C[56]; // 0x006FB86C
+extern "C" const char gData_006FB8A4[48]; // 0x006FB8A4
+extern "C" const char gData_006FB8D4[52]; // 0x006FB8D4
+extern "C" const char gData_006FB908[32]; // 0x006FB908
+extern "C" const char gData_006FB928[40]; // 0x006FB928
+extern "C" const char gData_006FB950[60]; // 0x006FB950
+extern "C" const char gData_006FB98C[28]; // 0x006FB98C
+extern "C" const char gData_006FB9A8[28]; // 0x006FB9A8
+extern "C" const char gData_006FB9C4[48]; // 0x006FB9C4
+extern "C" const char gData_006FB9F4[40]; // 0x006FB9F4
+extern "C" const char gData_006FBA1C[44]; // 0x006FBA1C
+extern "C" const char gData_006FBA48[44]; // 0x006FBA48
+extern "C" const char gData_006FBA74[48]; // 0x006FBA74
+extern "C" const char gData_006FBAA4[52]; // 0x006FBAA4
+extern "C" const char gData_006FBAD8[40]; // 0x006FBAD8
+extern "C" const char gData_006FBB00[48]; // 0x006FBB00
+extern "C" const char gData_006FBB30[32]; // 0x006FBB30
+extern "C" const char gData_006FBB50[28]; // 0x006FBB50
+extern "C" const char gData_006FBB6C[52]; // 0x006FBB6C
+extern "C" const char gData_006FBBA0[40]; // 0x006FBBA0
+extern "C" const char gData_006FBBC8[44]; // 0x006FBBC8
+extern "C" const char gData_006FBBF4[32]; // 0x006FBBF4
+extern "C" const char gData_006FBC14[48]; // 0x006FBC14
+extern "C" const char gData_006FBC44[32]; // 0x006FBC44
+extern "C" const char gData_006FBC64[36]; // 0x006FBC64
+extern "C" const char gData_006FBC88[32]; // 0x006FBC88
+extern "C" const char gData_006FBCA8[24]; // 0x006FBCA8
+extern "C" const char gData_006FBCC0[36]; // 0x006FBCC0
+extern "C" const char gData_006FBCE4[36]; // 0x006FBCE4
+extern "C" const char gData_006FBD08[28]; // 0x006FBD08
+extern "C" const char gData_006FBD24[56]; // 0x006FBD24
+extern "C" const char gData_006FBD5C[64]; // 0x006FBD5C
+extern "C" const char gData_006FBD9C[32]; // 0x006FBD9C
+extern "C" const char gData_006FBDBC[32]; // 0x006FBDBC
+extern "C" const char gData_006FBDDC[44]; // 0x006FBDDC
+extern "C" const char gData_006FBE08[32]; // 0x006FBE08
+extern "C" const char gData_006FBE28[28]; // 0x006FBE28
+extern "C" const char gData_006FBE44[28]; // 0x006FBE44
+extern "C" const char gData_006FBE60[40]; // 0x006FBE60
+extern "C" const char gData_006FBE88[32]; // 0x006FBE88
+extern "C" const char gData_006FBEA8[48]; // 0x006FBEA8
+extern "C" const char gData_006FBED8[36]; // 0x006FBED8
+extern "C" const char gData_006FBEFC[48]; // 0x006FBEFC
+extern "C" const char gData_006FC010[28]; // 0x006FC010
+extern "C" const char gData_006FC02C[20]; // 0x006FC02C
+extern "C" const char gData_006FC040[36]; // 0x006FC040
+extern "C" const char gData_006FC064[28]; // 0x006FC064
+extern "C" const char gData_006FC080[32]; // 0x006FC080
+extern "C" const char gData_006FC0A0[36]; // 0x006FC0A0
+extern "C" const char gData_006FC0C4[40]; // 0x006FC0C4
+extern "C" const char gData_006FC0EC[28]; // 0x006FC0EC
+extern "C" const char gData_006FC108[24]; // 0x006FC108
+extern "C" const unsigned char gData_006FF478[16]; // 0x006FF478
+extern "C" const struct d2data_006FF488_t gData_006FF488; // 0x006FF488
+extern "C" const unsigned int gData_006FF518[4]; // 0x006FF518
+extern "C" const struct d2data_006FF528_t gData_006FF528; // 0x006FF528
+extern "C" const D2GuidStrc gData_006FF558; // 0x006FF558
+extern "C" const struct d2data_006FF568_t gData_006FF568; // 0x006FF568
+extern "C" const Guid gData_006FF7C8; // 0x006FF7C8
+extern "C" const struct d2data_006FF7D8_t gData_006FF7D8; // 0x006FF7D8
+extern "C" const D2GuidStrc gData_006FF8D8; // 0x006FF8D8
+extern "C" const struct d2data_006FF8E8_t gData_006FF8E8; // 0x006FF8E8
+extern "C" struct d2data_0074BF28_t gData_0074BF28; // 0x0074BF28
+extern "C" struct d2data_0074C008_t gData_0074C008; // 0x0074C008
+extern "C" struct d2data_0074C018_t gData_0074C018; // 0x0074C018
+
+extern "C" const struct d2data_006FADC2_t gData_006FADC2 = {
+    { 0x00 }
+}; // 0x006FADC2
+
+extern "C" const int gData_006FADC4 = (-2147483647 - 1); // 0x006FADC4
+
+extern "C" const int gData_006FADC8 = 2147483647; // 0x006FADC8
+
+extern "C" const unsigned int gData_006FADCC = 0; // 0x006FADCC
+
+extern "C" const unsigned int gData_006FADD0 = 0xFFFFFFFF; // 0x006FADD0
+
+extern "C" const long gData_006FADD4 = (-2147483647 - 1); // 0x006FADD4
+
+extern "C" const long gData_006FADD8 = 2147483647; // 0x006FADD8
+
+extern "C" const unsigned long gData_006FADDC = 0; // 0x006FADDC
+
+extern "C" const unsigned long gData_006FADE0 = 0xFFFFFFFF; // 0x006FADE0
+
+extern "C" const __int64 gData_006FADE8 = (-9223372036854775807i64 - 1); // 0x006FADE8
+
+extern "C" const __int64 gData_006FADF0 = 9223372036854775807i64; // 0x006FADF0
+
+extern "C" const unsigned __int64 gData_006FADF8 = 0x0ui64; // 0x006FADF8
+
+extern "C" const unsigned __int64 gData_006FAE00 = 0xFFFFFFFFFFFFFFFFui64; // 0x006FAE00
+
+extern "C" const unsigned int gData_006FAE08 = 0x10; // 0x006FAE08
+
+extern "C" const int gData_006FAE0C = 8; // 0x006FAE0C
+
+extern "C" const unsigned int gData_006FAE10 = 0x11; // 0x006FAE10
+
+extern "C" const int gData_006FAE14 = 8; // 0x006FAE14
+
+extern "C" const unsigned int gData_006FAE18 = 0x4010; // 0x006FAE18
+
+extern "C" const int gData_006FAE1C = 8; // 0x006FAE1C
+
+extern "C" const unsigned int gData_006FAE20 = 0x4011; // 0x006FAE20
+
+extern "C" const int gData_006FAE24 = 8; // 0x006FAE24
+
+extern "C" const unsigned int gData_006FAE28 = 2; // 0x006FAE28
+
+extern "C" const int gData_006FAE2C = 8; // 0x006FAE2C
+
+extern "C" const unsigned int gData_006FAE30 = 0x4002; // 0x006FAE30
+
+extern "C" const int gData_006FAE34 = 8; // 0x006FAE34
+
+extern "C" const unsigned int gData_006FAE38 = 0x12; // 0x006FAE38
+
+extern "C" const int gData_006FAE3C = 8; // 0x006FAE3C
+
+extern "C" const unsigned int gData_006FAE40 = 0x4012; // 0x006FAE40
+
+extern "C" const int gData_006FAE44 = 8; // 0x006FAE44
+
+extern "C" const unsigned int gData_006FAE48 = 3; // 0x006FAE48
+
+extern "C" const int gData_006FAE4C = 8; // 0x006FAE4C
+
+extern "C" const unsigned int gData_006FAE50 = 0x4003; // 0x006FAE50
+
+extern "C" const int gData_006FAE54 = 8; // 0x006FAE54
+
+extern "C" const unsigned int gData_006FAE58 = 0x13; // 0x006FAE58
+
+extern "C" const int gData_006FAE5C = 8; // 0x006FAE5C
+
+extern "C" const unsigned int gData_006FAE60 = 0x4013; // 0x006FAE60
+
+extern "C" const int gData_006FAE64 = 8; // 0x006FAE64
+
+extern "C" const unsigned int gData_006FAE68 = 3; // 0x006FAE68
+
+extern "C" const int gData_006FAE6C = 8; // 0x006FAE6C
+
+extern "C" const unsigned int gData_006FAE70 = 0x4003; // 0x006FAE70
+
+extern "C" const int gData_006FAE74 = 8; // 0x006FAE74
+
+extern "C" const unsigned int gData_006FAE78 = 0x13; // 0x006FAE78
+
+extern "C" const int gData_006FAE7C = 8; // 0x006FAE7C
+
+extern "C" const unsigned int gData_006FAE80 = 0x4013; // 0x006FAE80
+
+extern "C" const int gData_006FAE84 = 8; // 0x006FAE84
+
+extern "C" const unsigned int gData_006FAE88 = 0x14; // 0x006FAE88
+
+extern "C" const int gData_006FAE8C = 8; // 0x006FAE8C
+
+extern "C" const unsigned int gData_006FAE90 = 0x4014; // 0x006FAE90
+
+extern "C" const int gData_006FAE94 = 8; // 0x006FAE94
+
+extern "C" const unsigned int gData_006FAE98 = 0x15; // 0x006FAE98
+
+extern "C" const int gData_006FAE9C = 8; // 0x006FAE9C
+
+extern "C" const unsigned int gData_006FAEA0 = 0x4015; // 0x006FAEA0
+
+extern "C" const int gData_006FAEA4 = 8; // 0x006FAEA4
+
+extern "C" const unsigned int gData_006FAEA8 = 4; // 0x006FAEA8
+
+extern "C" const int gData_006FAEAC = 8; // 0x006FAEAC
+
+extern "C" const unsigned int gData_006FAEB0 = 0x4004; // 0x006FAEB0
+
+extern "C" const int gData_006FAEB4 = 8; // 0x006FAEB4
+
+extern "C" const unsigned int gData_006FAEB8 = 5; // 0x006FAEB8
+
+extern "C" const int gData_006FAEBC = 8; // 0x006FAEBC
+
+extern "C" const unsigned int gData_006FAEC0 = 0x4005; // 0x006FAEC0
+
+extern "C" const int gData_006FAEC4 = 8; // 0x006FAEC4
+
+extern "C" const unsigned int gData_006FAEC8 = 0xC; // 0x006FAEC8
+
+extern "C" const unsigned int gData_006FAECC = 8; // 0x006FAECC
+
+extern "C" const int gData_006FAED0 = 8; // 0x006FAED0
+
+extern "C" const unsigned int gData_006FAED4 = 0x4008; // 0x006FAED4
+
+extern "C" const int gData_006FAED8 = 8; // 0x006FAED8
+
+extern "C" const unsigned int gData_006FAEDC = 0xD; // 0x006FAEDC
+
+extern "C" const int gData_006FAEE0 = 8; // 0x006FAEE0
+
+extern "C" const unsigned int gData_006FAEE4 = 0x400D; // 0x006FAEE4
+
+extern "C" const int gData_006FAEE8 = 8; // 0x006FAEE8
+
+extern "C" const unsigned int gData_006FAEEC = 9; // 0x006FAEEC
+
+extern "C" const int gData_006FAEF0 = 8; // 0x006FAEF0
+
+extern "C" const unsigned int gData_006FAEF4 = 0x4009; // 0x006FAEF4
+
+extern "C" const int gData_006FAEF8 = 8; // 0x006FAEF8
+
+extern "C" const unsigned int gData_006FAEFC = 6; // 0x006FAEFC
+
+extern "C" const int gData_006FAF00 = 8; // 0x006FAF00
+
+extern "C" const unsigned int gData_006FAF04 = 0x4006; // 0x006FAF04
+
+extern "C" const int gData_006FAF08 = 8; // 0x006FAF08
+
+extern "C" const __declspec(selectany) GUID LIBID_ATLLib = { 0x44EC0535, 0x400F, 0x11D0, { 0x9D, 0xCD, 0, 0xA0, 0xC9, 3, 0x91, 0xD3 } }; // 0x006FAF0C
+
+extern "C" const __declspec(selectany) GUID CLSID_Registrar = { 0x44EC053A, 0x400F, 0x11D0, { 0x9D, 0xCD, 0, 0xA0, 0xC9, 3, 0x91, 0xD3 } }; // 0x006FAF1C
+
+extern "C" const __declspec(selectany) GUID IID_IRegistrar = { 0x44EC053B, 0x400F, 0x11D0, { 0x9D, 0xCD, 0, 0xA0, 0xC9, 3, 0x91, 0xD3 } }; // 0x006FAF2C
+
+extern "C" const __declspec(selectany) GUID IID_IAxWinHostWindow = { 0xB6EA2050, 0x48A, 0x11D1, { 0x82, 0xB9, 0, 0xC0, 0x4F, 0xB9, 0x94, 0x2E } }; // 0x006FAF3C
+
+extern "C" const __declspec(selectany) GUID IID_IAxWinAmbientDispatch = { 0xB6EA2051, 0x48A, 0x11D1, { 0x82, 0xB9, 0, 0xC0, 0x4F, 0xB9, 0x94, 0x2E } }; // 0x006FAF4C
+
+extern "C" const __declspec(selectany) GUID IID_IInternalConnection = { 0x72AD0770, 0x6A9F, 0x11D1, { 0xBC, 0xEC, 0, 0x60, 8, 0x8F, 0x44, 0x4E } }; // 0x006FAF5C
+
+extern "C" const __declspec(selectany) GUID IID_IDocHostUIHandlerDispatch = { 0x425B5AF0, 0x65F1, 0x11D1, { 0x96, 0x11, 0, 0, 0xF8, 0x1E, 0xD, 0xD } }; // 0x006FAF6C
+
+extern "C" const __declspec(selectany) GUID IID_IAxWinHostWindowLic = { 0x3935BDA8, 0x4ED9, 0x495C, { 0x86, 0x50, 0xE0, 0x1F, 0xC1, 0xE3, 0x8A, 0x4B } }; // 0x006FAF7C
+
+extern "C" const __declspec(selectany) GUID IID_IAxWinAmbientDispatchEx = { 0xB2D0778B, 0xAC99, 0x4C58, { 0xA5, 0xC8, 0xE7, 0x72, 0x4E, 0x53, 0x16, 0xB5 } }; // 0x006FAF8C
+
+__declspec(selectany) const char* const ATL::CRegParser::szStringVal = "S"; // 0x006FAF9C
+
+__declspec(selectany) const char* const ATL::CRegParser::multiszStringVal = "M"; // 0x006FAFA0
+
+__declspec(selectany) const char* const ATL::CRegParser::szDwordVal = "D"; // 0x006FAFA4
+
+__declspec(selectany) const char* const ATL::CRegParser::szBinaryVal = "B"; // 0x006FAFA8
+
+__declspec(selectany) const char* const ATL::CRegParser::szValToken = "Val"; // 0x006FAFAC
+
+__declspec(selectany) const char* const ATL::CRegParser::szForceRemove = "ForceRemove"; // 0x006FAFB0
+
+__declspec(selectany) const char* const ATL::CRegParser::szNoRemove = "NoRemove"; // 0x006FAFB4
+
+__declspec(selectany) const char* const ATL::CRegParser::szDelete = "Delete"; // 0x006FAFB8
+
+__declspec(selectany) const int ATL::CRegParser::MAX_VALUE = 4096; // 0x006FAFBC
+
+__declspec(selectany) const int ATL::CRegParser::MAX_TYPE = 4096; // 0x006FAFC0
+
+__declspec(selectany) const char* const ATL::CRegParser::rgszNeverDelete[12] = { "AppID", "CLSID", "Component Categories", "FileType", "Interface", "Hardware", "Mime", "SAM", "SECURITY", "SYSTEM", "Software", "TypeLib" }; // 0x006FAFC4
+
+__declspec(selectany) const int ATL::CRegParser::cbNeverDelete = 12; // 0x006FAFF4
+
+extern "C" const char gData_006FB130[28] = "Failed to lock dest surface"; // 0x006FB130
+#pragma comment(linker, "/alternatename:_gszFailedToLockDest=_gData_006FB130")
+
+extern "C" const char gData_006FB14C[32] = "Failed to lock source surface"; // 0x006FB14C
+#pragma comment(linker, "/alternatename:_gszFailedToLockSource=_gData_006FB14C")
+
+extern "C" const struct d2data_006FB77B_t gData_006FB77B = {
+    { 0x00 }
+}; // 0x006FB77B
+
+extern "C" const char gData_006FB77C[48] = "Create 3D HAL Device (mode enumeration) failed!"; // 0x006FB77C
+#pragma comment(linker, "/alternatename:?gszCreateHalDeviceFailed@@3QBDB=_gData_006FB77C")
+
+extern "C" const char gData_006FB7AC[48] = "GetAttachedSurface (mode enumeration) failed!"; // 0x006FB7AC
+#pragma comment(linker, "/alternatename:?gszAttached@@3QBDB=_gData_006FB7AC")
+
+extern "C" const char gData_006FB7DC[52] = "CreateSurface (primary, mode enumeration) failed!"; // 0x006FB7DC
+#pragma comment(linker, "/alternatename:?gszPrimary@@3QBDB=_gData_006FB7DC")
+
+extern "C" const char gData_006FB810[44] = "SetDisplayMode (mode enumeration) failed!"; // 0x006FB810
+#pragma comment(linker, "/alternatename:?gszSetDisplayModeFailed@@3QBDB=_gData_006FB810")
+
+extern "C" const char gData_006FB83C[48] = "SetCooperativeLevel (mode enumeration) failed!"; // 0x006FB83C
+#pragma comment(linker, "/alternatename:?gszCoop@@3QBDB=_gData_006FB83C")
+
+extern "C" const char gData_006FB86C[56] = "***** Exceeded Maximum Display Mode Count (%d >= %d)"; // 0x006FB86C
+#pragma comment(linker, "/alternatename:?gszTooMany@@3QBDB=_gData_006FB86C")
+
+extern "C" const char gData_006FB8A4[48] = " ** Couldn't clean up sEnumerateD3DDevices ** "; // 0x006FB8A4
+#pragma comment(linker, "/alternatename:?gszEnumD3DCleanupFailed@@3QBDB=_gData_006FB8A4")
+
+extern "C" const char gData_006FB8D4[52] = " ** Caught a failure in sEnumerateD3DDevices ** "; // 0x006FB8D4
+#pragma comment(linker, "/alternatename:?gszEnumD3DCaughtFailure@@3QBDB=_gData_006FB8D4")
+
+extern "C" const char gData_006FB908[32] = "\t\tDoes not support triangles!"; // 0x006FB908
+#pragma comment(linker, "/alternatename:?gszNoTriangleSupport@@3QBDB=_gData_006FB908")
+
+extern "C" const char gData_006FB928[40] = "\t\tPassed requirements for Diablo II."; // 0x006FB928
+#pragma comment(linker, "/alternatename:?gszPassedRequirements@@3QBDB=_gData_006FB928")
+
+extern "C" const char gData_006FB950[60] = "\t\tDoes not support any of the necessary texture formats!"; // 0x006FB950
+#pragma comment(linker, "/alternatename:?gszNoTextureFormats@@3QBDB=_gData_006FB950")
+
+extern "C" const char gData_006FB98C[28] = "\t\tSupports 1555 textures."; // 0x006FB98C
+#pragma comment(linker, "/alternatename:?gszSupports1555Textures@@3QBDB=_gData_006FB98C")
+
+extern "C" const char gData_006FB9A8[28] = "EnumTextureFormats() failed"; // 0x006FB9A8
+#pragma comment(linker, "/alternatename:?gszEnumTextureFormatsFailed@@3QBDB=_gData_006FB9A8")
+
+extern "C" const char gData_006FB9C4[48] = "\t\t\tDoes not support texturing from AGP memory."; // 0x006FB9C4
+#pragma comment(linker, "/alternatename:?gszNoAgpTexturing@@3QBDB=_gData_006FB9C4")
+
+extern "C" const char gData_006FB9F4[40] = "\t\t\tAGP Total= %2.3f MB, Free= %2.3f MB"; // 0x006FB9F4
+#pragma comment(linker, "/alternatename:?gszAgpMemoryFormat@@3QBDB=_gData_006FB9F4")
+
+extern "C" const char gData_006FBA1C[44] = "Failed to get available AGP texture memory"; // 0x006FBA1C
+#pragma comment(linker, "/alternatename:?gszAgpMemoryFailed@@3QBDB=_gData_006FBA1C")
+
+extern "C" const char gData_006FBA48[44] = "\t\t\tLocal Total= %2.3f MB, Free= %2.3f MB"; // 0x006FBA48
+#pragma comment(linker, "/alternatename:?gszLocalMemoryFormat@@3QBDB=_gData_006FBA48")
+
+extern "C" const char gData_006FBA74[48] = "Failed to get available local texture memory"; // 0x006FBA74
+#pragma comment(linker, "/alternatename:?gszLocalMemoryFailed@@3QBDB=_gData_006FBA74")
+
+extern "C" const char gData_006FBAA4[52] = "\t\tTexture Memory Total= %2.3f MB, Free= %2.3f MB"; // 0x006FBAA4
+#pragma comment(linker, "/alternatename:?gszTextureMemoryFormat@@3QBDB=_gData_006FBAA4")
+
+extern "C" const char gData_006FBAD8[40] = "Failed to get available texture memory"; // 0x006FBAD8
+#pragma comment(linker, "/alternatename:?gszTextureMemoryFailed@@3QBDB=_gData_006FBAD8")
+
+extern "C" const char gData_006FBB00[48] = "\t\tVideo Memory Total= %2.3f MB, Free= %2.3f MB"; // 0x006FBB00
+#pragma comment(linker, "/alternatename:?gszVideoMemoryFormat@@3QBDB=_gData_006FBB00")
+
+extern "C" const char gData_006FBB30[32] = "\t\tDoesn't support mipmapping."; // 0x006FBB30
+#pragma comment(linker, "/alternatename:?gszNoMipmapping@@3QBDB=_gData_006FBB30")
+
+extern "C" const char gData_006FBB50[28] = "\t\tRequires square textures!"; // 0x006FBB50
+#pragma comment(linker, "/alternatename:?gszRequiresSquareTextures@@3QBDB=_gData_006FBB50")
+
+extern "C" const char gData_006FBB6C[52] = "\t\tDoes not support perspective correct textures!"; // 0x006FBB6C
+#pragma comment(linker, "/alternatename:?gszNoPerspectiveTextures@@3QBDB=_gData_006FBB6C")
+
+extern "C" const char gData_006FBBA0[40] = "\t\tSupports non-power of two textures."; // 0x006FBBA0
+#pragma comment(linker, "/alternatename:?gszSupportsNonPow2Textures@@3QBDB=_gData_006FBBA0")
+
+extern "C" const char gData_006FBBC8[44] = "\t\tDoesn't support textures in video memory!"; // 0x006FBBC8
+#pragma comment(linker, "/alternatename:?gszNoVideoMemoryTextures@@3QBDB=_gData_006FBBC8")
+
+extern "C" const char gData_006FBBF4[32] = "Failed to get D3D device caps"; // 0x006FBBF4
+#pragma comment(linker, "/alternatename:?gszGetD3DDeviceCapsFailed@@3QBDB=_gData_006FBBF4")
+
+extern "C" const char gData_006FBC14[48] = "\t\tDoesn't appear to have hardware 3D support"; // 0x006FBC14
+#pragma comment(linker, "/alternatename:?gszNoHardware3D@@3QBDB=_gData_006FBC14")
+
+extern "C" const char gData_006FBC44[32] = "\t\tSupports gamma calibration."; // 0x006FBC44
+#pragma comment(linker, "/alternatename:?gszSupportsGammaCalibration@@3QBDB=_gData_006FBC44")
+
+extern "C" const char gData_006FBC64[36] = "\t\tDoesn't support gamma control."; // 0x006FBC64
+#pragma comment(linker, "/alternatename:?gszNoGammaControl@@3QBDB=_gData_006FBC64")
+
+extern "C" const char gData_006FBC88[32] = "\t\tDoesn't appear to support 3D."; // 0x006FBC88
+#pragma comment(linker, "/alternatename:?gszNo3DSupport@@3QBDB=_gData_006FBC88")
+
+extern "C" const char gData_006FBCA8[24] = "Failed to get DD4 Caps"; // 0x006FBCA8
+#pragma comment(linker, "/alternatename:?gszGetDD4CapsFailed@@3QBDB=_gData_006FBCA8")
+
+extern "C" const char gData_006FBCC0[36] = "Failed to get backbuffer surface"; // 0x006FBCC0
+#pragma comment(linker, "/alternatename:?gszGetBackbufferFailed@@3QBDB=_gData_006FBCC0")
+
+extern "C" const char gData_006FBCE4[36] = "Failed to create primary surface"; // 0x006FBCE4
+#pragma comment(linker, "/alternatename:?gszCreatePrimarySurfaceFailed@@3QBDB=_gData_006FBCE4")
+
+extern "C" const char gData_006FBD08[28] = "IDirectDraw4_SetDisplayMode"; // 0x006FBD08
+#pragma comment(linker, "/alternatename:?gszSetDisplayModeCall@@3QBDB=_gData_006FBD08")
+
+extern "C" const char gData_006FBD24[56] = "\t\tCouldn't find valid display mode for game screens."; // 0x006FBD24
+#pragma comment(linker, "/alternatename:?gszNoGameDisplayMode@@3QBDB=_gData_006FBD24")
+
+extern "C" const char gData_006FBD5C[64] = "\t\tCouldn't find valid display mode for user interface screens."; // 0x006FBD5C
+#pragma comment(linker, "/alternatename:?gszNoUIDisplayMode@@3QBDB=_gData_006FBD5C")
+
+extern "C" const char gData_006FBD9C[32] = "\t\tSupports 24 bit cutscenes."; // 0x006FBD9C
+#pragma comment(linker, "/alternatename:?gszSupports24BitCutscenes@@3QBDB=_gData_006FBD9C")
+
+extern "C" const char gData_006FBDBC[32] = "\t\tSupports 32 bit cutscenes."; // 0x006FBDBC
+#pragma comment(linker, "/alternatename:?gszSupports32BitCutscenes@@3QBDB=_gData_006FBDBC")
+
+extern "C" const char gData_006FBDDC[44] = "\t\tCouldn't find any valid display modes."; // 0x006FBDDC
+#pragma comment(linker, "/alternatename:?gszNoValidDisplayModes@@3QBDB=_gData_006FBDDC")
+
+extern "C" const char gData_006FBE08[32] = "IDirectDraw_EnumDisplayModes"; // 0x006FBE08
+#pragma comment(linker, "/alternatename:?gszEnumDisplayModesCall@@3QBDB=_gData_006FBE08")
+
+extern "C" const char gData_006FBE28[28] = "SetCooperativeLevel failed"; // 0x006FBE28
+#pragma comment(linker, "/alternatename:?gszSetCooperativeLevelFailed@@3QBDB=_gData_006FBE28")
+
+extern "C" const char gData_006FBE44[28] = "Failed to get D3D interface"; // 0x006FBE44
+#pragma comment(linker, "/alternatename:?gszGetD3DInterfaceFailed@@3QBDB=_gData_006FBE44")
+
+extern "C" const char gData_006FBE60[40] = "\t\tVendorID = 0x%08x, DeviceID = 0x%08x"; // 0x006FBE60
+#pragma comment(linker, "/alternatename:?gszVendorDeviceIdFormat@@3QBDB=_gData_006FBE60")
+
+extern "C" const char gData_006FBE88[32] = "\tChecking capabilities of %s..."; // 0x006FBE88
+#pragma comment(linker, "/alternatename:?gszCheckingCapabilitiesFormat@@3QBDB=_gData_006FBE88")
+
+extern "C" const char gData_006FBEA8[48] = "Enumeration failed to get DirectDraw4 interface"; // 0x006FBEA8
+#pragma comment(linker, "/alternatename:?gszEnumGetDirectDraw4Failed@@3QBDB=_gData_006FBEA8")
+
+extern "C" const char gData_006FBED8[36] = "Enumeration DirectDrawCreate failed"; // 0x006FBED8
+#pragma comment(linker, "/alternatename:?gszEnumDirectDrawCreateFailed@@3QBDB=_gData_006FBED8")
+
+extern "C" const char gData_006FBEFC[48] = "***** Exceeded Maximum Display Count (%d >= %d)"; // 0x006FBEFC
+#pragma comment(linker, "/alternatename:?gszMaxDisplayCountFormat@@3QBDB=_gData_006FBEFC")
+
+extern "C" const char gData_006FC010[28] = "SetCurrentViewport failed!"; // 0x006FC010
+#pragma comment(linker, "/alternatename:?gCurrentViewError@@3QBDB=_gData_006FC010")
+
+extern "C" const char gData_006FC02C[20] = "SetViewport failed!"; // 0x006FC02C
+#pragma comment(linker, "/alternatename:?gSetViewError@@3QBDB=_gData_006FC02C")
+
+extern "C" const char gData_006FC040[36] = "Failed to add viewport to device!"; // 0x006FC040
+#pragma comment(linker, "/alternatename:?gAddViewError@@3QBDB=_gData_006FC040")
+
+extern "C" const char gData_006FC064[28] = "Failed to create viewport!"; // 0x006FC064
+#pragma comment(linker, "/alternatename:?gCreateViewError@@3QBDB=_gData_006FC064")
+
+extern "C" const char gData_006FC080[32] = "Failed to create D3D device!"; // 0x006FC080
+#pragma comment(linker, "/alternatename:?gDeviceError@@3QBDB=_gData_006FC080")
+
+extern "C" const char gData_006FC0A0[36] = "Failed to get original gamma ramp"; // 0x006FC0A0
+#pragma comment(linker, "/alternatename:?gGammaError@@3QBDB=_gData_006FC0A0")
+
+extern "C" const char gData_006FC0C4[40] = "Failed to get gamma control interface!"; // 0x006FC0C4
+#pragma comment(linker, "/alternatename:?gGammaInterfaceError@@3QBDB=_gData_006FC0C4")
+
+extern "C" const char gData_006FC0EC[28] = "GetAttachedSurface failed!"; // 0x006FC0EC
+#pragma comment(linker, "/alternatename:?gAttachedError@@3QBDB=_gData_006FC0EC")
+
+extern "C" const char gData_006FC108[24] = "CreateSurface failed!"; // 0x006FC108
+#pragma comment(linker, "/alternatename:?gSurfaceError@@3QBDB=_gData_006FC108")
+
+extern "C" const unsigned char gData_006FF478[16] = { 2, 0x15, 0x28, 0x93, 0xF8, 0x8C, 0xD0, 0x11, 0x89, 0xAB, 0, 0xA0, 0xC9, 5, 0x41, 0x29 }; // 0x006FF478
+#pragma comment(linker, "/alternatename:?gabIidTexture@@3QBEB=_gData_006FF478")
+
+extern "C" const struct d2data_006FF488_t gData_006FF488 = {
+    {
+        0xE0, 0xD9, 0xDC, 0x2C, 0xA0, 0x25, 0xCF, 0x11, 0xA3, 0x1A, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+        0x79, 0x9E, 0x04, 0xF5, 0x61, 0x48, 0xD2, 0x11, 0xA4, 0x07, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+        0x60, 0x3B, 0xAB, 0xB0, 0xD7, 0x33, 0xD1, 0x11, 0xA9, 0x81, 0x00, 0xC0, 0x4F, 0xD7, 0xB1, 0x74,
+        0x01, 0x15, 0x28, 0x93, 0xF8, 0x8C, 0xD0, 0x11, 0x89, 0xAB, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29,
+        0x00, 0x88, 0x10, 0x64, 0x7D, 0x95, 0xD0, 0x11, 0x89, 0xAB, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29,
+        0x78, 0x9E, 0x04, 0xF5, 0x61, 0x48, 0xD2, 0x11, 0xA4, 0x07, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+        0x22, 0xDF, 0x67, 0x87, 0xCC, 0xBA, 0xD1, 0x11, 0x89, 0x69, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+        0x43, 0x66, 0x93, 0x50, 0xE9, 0x13, 0xD1, 0x11, 0x89, 0xAA, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29,
+        0xA1, 0x49, 0x19, 0x88, 0xF3, 0xD6, 0xD0, 0x11, 0x89, 0xAB, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29
+    }
+}; // 0x006FF488
+
+extern "C" const unsigned int gData_006FF518[4] = { 0x84E63DE0, 0x11CF46AA, 0x6F81, 0x6E1520C0 }; // 0x006FF518
+#pragma comment(linker, "/alternatename:?gadwHalGuid@@3QBIB=_gData_006FF518")
+
+extern "C" const struct d2data_006FF528_t gData_006FF528 = {
+    {
+        0x60, 0x5C, 0x66, 0xA4, 0x73, 0x26, 0xCF, 0x11, 0xA3, 0x1A, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+        0x20, 0x6B, 0x08, 0xF2, 0x9F, 0x25, 0xCF, 0x11, 0xA3, 0x1A, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+        0x77, 0x9E, 0x04, 0xF5, 0x61, 0x48, 0xD2, 0x11, 0xA4, 0x07, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8
+    }
+}; // 0x006FF528
+
+extern "C" const D2GuidStrc gData_006FF558 = { { 0xBB223240, 0x11D0E72B, 0xAA00B4A9, 0x3E99C000 } }; // 0x006FF558
+#pragma comment(linker, "/alternatename:?gtIidDirect3D3@@3UD2GuidStrc@@B=_gData_006FF558")
+
+extern "C" const struct d2data_006FF568_t gData_006FF568 = {
+    {
+        0xC1, 0x1E, 0xAE, 0x6A, 0x2A, 0x66, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
+        0x80, 0x00, 0xBA, 0x3B, 0x21, 0x24, 0xCF, 0x11, 0xA3, 0x1A, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+        0x60, 0xF1, 0x2C, 0x33, 0x61, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+        0x60, 0xA5, 0x52, 0x13, 0x61, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+        0xA0, 0x26, 0xA3, 0xFC, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+        0xE0, 0x77, 0x9C, 0xE0, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+        0xE0, 0x02, 0x7A, 0xA0, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+        0x20, 0x32, 0x78, 0x92, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+        0x80, 0x99, 0xF3, 0x54, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+        0x94, 0xFB, 0x55, 0xA6, 0x89, 0x05, 0x57, 0x4E, 0xB3, 0x33, 0x56, 0x7A, 0x89, 0x46, 0x8C, 0x88,
+        0xE0, 0x93, 0x6D, 0xB3, 0x43, 0x2B, 0xCF, 0x11, 0xA2, 0xDE, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+        0x60, 0x27, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
+        0xA0, 0x00, 0xA0, 0x0A, 0x04, 0xF4, 0xD9, 0x11, 0xBD, 0x7A, 0x00, 0x10, 0xDC, 0x4F, 0x8F, 0x81,
+        0xAC, 0x00, 0xA0, 0x0A, 0x04, 0xF4, 0xD9, 0x11, 0xBD, 0x7A, 0x00, 0x10, 0xDC, 0x4F, 0x8F, 0x81,
+        0xAB, 0x00, 0xA0, 0x0A, 0x04, 0xF4, 0xD9, 0x11, 0xBD, 0x7A, 0x00, 0x10, 0xDC, 0x4F, 0x8F, 0x81,
+        0xAA, 0x00, 0xA0, 0x0A, 0x04, 0xF4, 0xD9, 0x11, 0xBD, 0x7A, 0x00, 0x10, 0xDC, 0x4F, 0x8F, 0x81,
+        0x30, 0xAF, 0x0B, 0x88, 0x30, 0xB0, 0xD0, 0x11, 0x8E, 0xA7, 0x00, 0x60, 0x97, 0x97, 0xEA, 0x5B,
+        0x00, 0x2F, 0x6B, 0x40, 0x5A, 0x3E, 0xD1, 0x11, 0xB6, 0x40, 0x00, 0xAA, 0x00, 0xA1, 0xF9, 0x6A,
+        0xDE, 0xEC, 0xE9, 0x6F, 0x89, 0xDF, 0xD1, 0x11, 0x9D, 0xB0, 0x00, 0x60, 0x08, 0x27, 0x71, 0xBA,
+        0x40, 0x2B, 0x12, 0xB1, 0xA5, 0x5D, 0xD1, 0x11, 0x8F, 0xCF, 0x00, 0xC0, 0x4F, 0xC2, 0x9B, 0x4E,
+        0xA0, 0xFF, 0x04, 0x2E, 0xE4, 0x98, 0xD1, 0x11, 0x8C, 0xE1, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+        0xB6, 0x61, 0xF8, 0x97, 0xA1, 0x60, 0xD1, 0x11, 0x8C, 0xD0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+        0xE2, 0xE8, 0xB0, 0xF0, 0x97, 0x5F, 0xD1, 0x11, 0x8C, 0xD0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+        0x04, 0x28, 0x79, 0x9D, 0xA8, 0x5F, 0xD1, 0x11, 0x8C, 0xD0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+        0x72, 0x84, 0x5C, 0xE0, 0xD4, 0x51, 0xD1, 0x11, 0x8C, 0xCE, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+        0x9C, 0x16, 0x28, 0xF8, 0xE8, 0xA8, 0xD2, 0x11, 0xA1, 0xF2, 0x00, 0xA0, 0xC9, 0x83, 0xEA, 0xF6,
+        0x66, 0x04, 0x8A, 0x3B, 0x69, 0xF2, 0xD1, 0x11, 0x88, 0x0B, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+        0x80, 0x98, 0x86, 0x93, 0xCF, 0x36, 0xD1, 0x11, 0x9B, 0x1B, 0x00, 0xAA, 0x00, 0xBB, 0xB8, 0xAE,
+        0x80, 0x1F, 0xE4, 0x7D, 0x93, 0x9D, 0xD0, 0x11, 0x89, 0xAB, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29,
+        0x40, 0x75, 0xAA, 0xFF, 0xA8, 0x7A, 0xD0, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+        0x00, 0x38, 0x86, 0x80, 0x06, 0x6B, 0xD0, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+        0x80, 0xFA, 0xC4, 0x86, 0x84, 0x8D, 0xD0, 0x11, 0x94, 0xE8, 0x00, 0xC0, 0x4F, 0xC3, 0x41, 0x37,
+        0x30, 0x12, 0xF4, 0xDD, 0x0A, 0xEC, 0xD0, 0x11, 0xA9, 0xB6, 0x00, 0xAA, 0x00, 0xC0, 0x99, 0x3E,
+        0xE1, 0x84, 0xA5, 0x0B, 0xB6, 0x70, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
+        0xC3, 0x0C, 0xD6, 0xEF, 0xE7, 0x49, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
+        0xC2, 0x0C, 0xD6, 0xEF, 0xE7, 0x49, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
+        0xC1, 0x0C, 0xD6, 0xEF, 0xE7, 0x49, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
+        0xC0, 0x0C, 0xD6, 0xEF, 0xE7, 0x49, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A
+    }
+}; // 0x006FF568
+
+extern "C" const Guid gData_006FF7C8 = { 0x69C11C3E, 0xB46B, 0x11D1, { 0xAD, 0x7A, 0, 0xC0, 0x4F, 0xC2, 0x9B, 0x4E } }; // 0x006FF7C8
+#pragma comment(linker, "/alternatename:?gGammaGuid@@3UGuid@@B=_gData_006FF7C8")
+
+extern "C" const struct d2data_006FF7D8_t gData_006FF7D8 = {
+    {
+        0xE0, 0x0E, 0x9F, 0x4B, 0x7E, 0x0D, 0xD0, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+        0x85, 0xDB, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
+        0x84, 0xDB, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
+        0x7E, 0x47, 0x3C, 0xC0, 0x19, 0x65, 0xD1, 0x11, 0x8C, 0x52, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+        0x1E, 0x1F, 0x19, 0x51, 0x2B, 0x4F, 0xD1, 0x11, 0x8C, 0xC3, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+        0xFC, 0x7F, 0x0C, 0x73, 0x47, 0x53, 0xD1, 0x11, 0x8C, 0x4D, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+        0x46, 0xBC, 0x43, 0xE0, 0x17, 0x53, 0xD1, 0x11, 0x8C, 0x4D, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+        0x88, 0xC4, 0xB2, 0x89, 0xF4, 0x4A, 0xD1, 0x11, 0x8C, 0x4C, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+        0x90, 0x47, 0xDC, 0xB9, 0xF1, 0x4A, 0xD1, 0x11, 0x8C, 0x4C, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+        0x96, 0x8E, 0xAB, 0x1B, 0xFE, 0x9C, 0xE3, 0x4C, 0xBC, 0x72, 0xD7, 0xE9, 0xE9, 0x9A, 0x21, 0x75,
+        0x80, 0x5A, 0x67, 0x06, 0x9B, 0x3B, 0xD2, 0x11, 0xB9, 0x2F, 0x00, 0x60, 0x97, 0x97, 0xEA, 0x5B,
+        0x30, 0x86, 0x2B, 0x0B, 0x35, 0xAD, 0xD0, 0x11, 0x8E, 0xA6, 0x00, 0x60, 0x97, 0x97, 0xEA, 0x5B,
+        0x00, 0x4E, 0x04, 0xDA, 0xB2, 0x69, 0xD0, 0x11, 0xA1, 0xD5, 0x00, 0xAA, 0x00, 0xB8, 0xDF, 0xBB,
+        0x85, 0x58, 0x80, 0x57, 0xEC, 0x6E, 0xCF, 0x11, 0x94, 0x41, 0xA8, 0x23, 0x03, 0xC1, 0x0E, 0x27,
+        0x81, 0xDB, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
+        0xC0, 0x5E, 0xE6, 0x15, 0x9C, 0x3B, 0xD2, 0x11, 0xB9, 0x2F, 0x00, 0x60, 0x97, 0x97, 0xEA, 0x5B
+    }
+}; // 0x006FF7D8
+
+extern "C" const D2GuidStrc gData_006FF8D8 = { { 0x9C59509A, 0x11D139BD, 0xC0004A8C, 0xC530D94F } }; // 0x006FF8D8
+#pragma comment(linker, "/alternatename:?gtIidDirectDraw4@@3UD2GuidStrc@@B=_gData_006FF8D8")
+
+extern "C" const struct d2data_006FF8E8_t gData_006FF8E8 = {
+    {
+        0xE0, 0xF3, 0xA6, 0xB3, 0x43, 0x2B, 0xCF, 0x11, 0xA2, 0xDE, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+        0x80, 0xDB, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
+        0xA0, 0x17, 0x38, 0x59, 0xB3, 0x7D, 0xCF, 0x11, 0xA2, 0xDE, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+        0x96, 0x51, 0x30, 0x3C, 0xDB, 0x50, 0xD3, 0x11, 0x9C, 0xFE, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+        0xE0, 0x0E, 0xB7, 0xD7, 0x40, 0x43, 0xCF, 0x11, 0xB0, 0x63, 0x00, 0x20, 0xAF, 0xC2, 0xCD, 0x35,
+        0x10, 0x00, 0x00, 0x00, 0x00, 0x04
+    }
+}; // 0x006FF8E8
+
+extern "C" struct d2data_0074BF28_t gData_0074BF28 = {
+    (const void*)(unsigned int)&D3DCORE_LoadVideoConfiguration,
+    (const void*)(unsigned int)&D3DCORE_Init,
+    (const void*)(unsigned int)&D3DCORE_Close,
+    (const void*)(unsigned int)&D3DCORE_CreateSurface,
+    (const void*)(unsigned int)&D3DCORE_ReleaseWindow,
+    (const void*)(unsigned int)&D3DCORE_PauseSurface,
+    (const void*)(unsigned int)&D3DCORE_StartDraw,
+    (const void*)(unsigned int)&D3DCORE_EndDraw,
+    (const void*)(unsigned int)&D3DCORE_FlipPrimary,
+    (const void*)(unsigned int)&D3DCORE_ChangeRes,
+    (const void*)(unsigned int)&D3DCORE_GetBackBuffer,
+    (const void*)(unsigned int)&D3DCORE_ActivateWindow,
+    (const void*)(unsigned int)&D3DCORE_SetOption,
+    (const void*)(unsigned int)&D3DCORE_BeginCutScene,
+    (const void*)(unsigned int)&D3DCORE_OpenSmackCutscene,
+    (const void*)(unsigned int)&D3DCORE_CheckCutScene,
+    (const void*)(unsigned int)&D3DSMACK_DecodeSmacker,
+    (const void*)(unsigned int)&D3DSMACK_PlaySmacker,
+    (const void*)(unsigned int)&D3DSMACK_CloseSmacker,
+    (const void*)(unsigned int)&QSERVER_GetFloorCacheSize,
+    (const void*)(unsigned int)&D3DCORE_GetScreenSize,
+    (const void*)(unsigned int)&D3DCORE_SetGlobalScale,
+    (const void*)(unsigned int)&D3DCORE_SetGamma,
+    (const void*)(unsigned int)&D3DCORE_GetMaskedFlags,
+    (const void*)(unsigned int)&sub_006B9850_SetOrigin,
+    (const void*)(unsigned int)&sub_006B9860_Project,
+    (const void*)(unsigned int)&sub_006B9910_ProjectPoint,
+    (const void*)(unsigned int)&sub_006B9A00_ResetScale,
+    (const void*)(unsigned int)&D3DCORE_SetPalette,
+    (const void*)(unsigned int)&D3DCORE_SetPaletteView,
+    (const void*)(unsigned int)&sub_006B9710_SetColorComponents,
+    (const void*)(unsigned int)&sub_006B9170_DrawGrid,
+    (const void*)(unsigned int)&D3DSPRITE_DrawFlatSprite,
+    (const void*)(unsigned int)&D3DSPRITE_CelDraw,
+    (const void*)(unsigned int)&D3DSPRITE_CelDrawColor,
+    (const void*)(unsigned int)&D3DSPRITE_DrawSpriteRows,
+    (const void*)(unsigned int)&D3DSPRITE_DrawSpriteShadow,
+    (const void*)(unsigned int)&D3DSPRITE_CelDrawHilight,
+    (const void*)(unsigned int)&D3DSPRITE_DrawSpriteClipped,
+    (const void*)(unsigned int)&sub_006B8E90_DrawWallTile,
+    (const void*)(unsigned int)&sub_006B8E60_DrawRelay,
+    (const void*)(unsigned int)&sub_006B86F0_DrawShadow,
+    (const void*)(unsigned int)&sub_006B7C90_DrawDiamond,
+    (const void*)(unsigned int)&sub_006B7D80_DrawRectangle,
+    (const void*)(unsigned int)&sub_006B7ED0_CallRect,
+    (const void*)(unsigned int)&sub_006B7F20_CallSquare,
+    (const void*)(unsigned int)&sub_006B77B0_Call,
+    (const void*)(unsigned int)&sub_006B7980_DrawRectangle,
+    (const void*)(unsigned int)&sub_006B7B30_DrawLine,
+    (const void*)(unsigned int)&sub_006B7F70_ClearTarget,
+    (const void*)(unsigned int)&sub_006B7630_DrawTextV,
+    (const void*)(unsigned int)&sub_006B76C0,
+    (const void*)(unsigned int)&D3DSPRITE_DebugFillBackBuffer,
+    (const void*)(unsigned int)&D3DCORE_ClearCaches
+}; // 0x0074BF28
+
+extern unsigned int ganWidths[2] = { 0x280, 0x320 }; // 0x0074C000
+
+extern "C" struct d2data_0074C008_t gData_0074C008 = {
+    { 0x20, 0x03 }
+}; // 0x0074C008
+
+extern unsigned int ganHeights[2] = { 0x1E0, 0x258 }; // 0x0074C010
+
+extern "C" struct d2data_0074C018_t gData_0074C018 = {
+    { 0x58, 0x02 }
+}; // 0x0074C018
+
+extern int gnGammaScale_0074C020 = 100; // 0x0074C020
+
+extern D2PixelFormat006B1B60Strc gtWantedFormat_0074C024 = { 0x20, 0x41, 0, 0x10, 0x7C00, 0x3E0, 0x1F, 0x8000 }; // 0x0074C024
+
+extern char gszEnumerationClass[20] = "Enumeration Class"; // 0x0074C044
+
+extern char gszEnumerationWindow[24] = "Direct3D Enumeration"; // 0x0074C058

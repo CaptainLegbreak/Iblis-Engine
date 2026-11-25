@@ -450,4 +450,19 @@ int __fastcall PARTYSCREEN_CommandHandler(D2GameStrc* pGame, D2UnitStrc* pUnit, 
 }
 
 
-#include "gen/data/Source/D2Game/PLAYER/PartyScreen.inc"
+extern "C" void __cdecl PARTYSCREEN_InvitationCancelled(); // 0x005A5B30
+extern "C" void __cdecl PARTYSCREEN_PlayerLeftParty(); // 0x005A5D20
+extern "C" void __cdecl PARTYSCREEN_ReceivedInvitation(); // 0x005A5BE0
+extern "C" void __cdecl PARTYSCREEN_ToggleHostile(); // 0x005A5E50
+extern "C" void __cdecl PARTYSCREEN_ToggleIgnore(); // 0x005A5840
+extern "C" void __cdecl PARTYSCREEN_ToggleLootability(); // 0x005A57B0
+extern "C" void __cdecl PARTYSCREEN_ToggleSquelch(); // 0x005A58A0
+extern "C" void __cdecl PARTYSCREEN_AcceptInvitation(); // 0x005A5A30
+extern "C" void __cdecl MONSTERUNIQUE_UMod26_Teleport(); // 0x005A1600
+extern "C" void __cdecl MONSTERUNIQUE_UMod38_Possessed(); // 0x005A1230
+extern "C" void __cdecl MONSTERUNIQUE_UModChampion(); // 0x005A1280
+
+extern "C" const PartyCommandFunc gData_006E2218[10]; // 0x006E2218
+
+extern "C" const PartyCommandFunc gData_006E2218[10] = { 0, (PartyCommandFunc)&PARTYSCREEN_ToggleLootability, (PartyCommandFunc)&PARTYSCREEN_ToggleIgnore, (PartyCommandFunc)&PARTYSCREEN_ToggleSquelch, (PartyCommandFunc)&PARTYSCREEN_ToggleHostile, 0, (PartyCommandFunc)&PARTYSCREEN_ReceivedInvitation, (PartyCommandFunc)&PARTYSCREEN_InvitationCancelled, (PartyCommandFunc)&PARTYSCREEN_AcceptInvitation, (PartyCommandFunc)&PARTYSCREEN_PlayerLeftParty }; // 0x006E2218
+#pragma comment(linker, "/alternatename:?gpfnPartyCommands@@3PAP6IXPAUD2GameStrc@@PAUD2UnitStrc@@1HPAH@ZA=_gData_006E2218")

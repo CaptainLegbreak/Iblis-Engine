@@ -85,4 +85,69 @@ void __cdecl PROFCORE_DumpAndResetProfile()
     }
 }
 
-#include "gen/data/Source/D2Common/Logging/ProfCore.inc"
+#pragma pack(push, 1)
+struct d2data_007437C0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_007437C0_t gData_007437C0; // 0x007437C0
+
+extern "C" struct d2data_007437C0_t gData_007437C0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007437C0
+
+extern D2ProfileCounterStrc gaProfEntries[23] = {
+    { "Sample", 0i64 },
+    { "Server Loop", 0i64 },
+    { "Server Display", 0i64 },
+    { "Srv Process All Games", 0i64 },
+    { "-Srv Process Game", 0i64 },
+    { "-Srv Update Clients", 0i64 },
+    { "--Srv Process Units", 0i64 },
+    { "---Srv Player Do Mode", 0i64 },
+    { "---Srv Monster Do Mode", 0i64 },
+    { "----Srv Monster Awake", 0i64 },
+    { "----Srv Monster Run AI", 0i64 },
+    { "---Com Stats Calc All Outer", 0i64 },
+    { "----Com Stats Calc All Inner", 0i64 },
+    { "----Com Stats Calc All Test", 0i64 },
+    { "Srv Send All Msgs", 0i64 },
+    { "-Srv Send Client Packets", 0i64 },
+    { "Srv Process Msgs", 0i64 },
+    { "-Process Sys Message", 0i64 },
+    { "--Srv Join Game", 0i64 },
+    { "-Process Client Message", 0i64 },
+    { "--Srv Player Process Msg", 0i64 },
+    { "Com Find Path", 0i64 },
+    { "Com Path Step", 0i64 }
+}; // 0x00743800

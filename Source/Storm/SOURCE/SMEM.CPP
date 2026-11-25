@@ -1552,4 +1552,37 @@ void __stdcall SMemZero(void* pLocation, unsigned int nLength)
     memset(pLocation, 0, nLength);
 }
 
-#include "gen/data/Source/Storm/SOURCE/SMEM.inc"
+#pragma pack(push, 1)
+struct d2data_006CED03_t
+{
+    unsigned char b0[1];
+};
+#pragma pack(pop)
+
+extern "C" const struct d2data_006CED03_t gData_006CED03; // 0x006CED03
+extern "C" const char gData_006CED04[20]; // 0x006CED04
+extern "C" const char gData_006CED18[20]; // 0x006CED18
+extern "C" const char gData_006CEDCC[12]; // 0x006CEDCC
+extern "C" const unsigned int gData_006CEE30[16]; // 0x006CEE30
+extern "C" const unsigned __int64 gData_006CEE70[16]; // 0x006CEE70
+
+extern "C" const struct d2data_006CED03_t gData_006CED03 = {
+    { 0x00 }
+}; // 0x006CED03
+
+extern "C" const char gData_006CED04[20] = "SMemFindNextBlock\050)"; // 0x006CED04
+#pragma comment(linker, "/alternatename:_szSMemFindNextBlock_006CED04=_gData_006CED04")
+
+extern "C" const char gData_006CED18[20] = "SMemFindNextHeap\050)"; // 0x006CED18
+#pragma comment(linker, "/alternatename:_szSMemFindNextHeap_006CED18=_gData_006CED18")
+
+extern "C" const char gData_006CEDCC[12] = "SMemAlloc()"; // 0x006CEDCC
+#pragma comment(linker, "/alternatename:_szSMemAlloc_006CEDCC=_gData_006CEDCC")
+
+extern "C" const unsigned int gData_006CEE30[16] = { 0x486E26EE, 0xDCAA16B3, 0xE1918EEF, 0x202DAFDB, 0x341C7DC7, 0x1C365303, 0x40EF2D37, 0x65FD5E49, 0xD6057177, 0x904ECE93, 0x1C38024F, 0x98FD323B, 0xE3061AE7, 0xA39B0FA1, 0x9797F25F, 0xE4444563 }; // 0x006CEE30
+#pragma comment(linker, "/alternatename:_gdwSStrHashTable_006CEE30=_gData_006CEE30")
+
+extern "C" const unsigned __int64 gData_006CEE70[16] = { 0x486E26EEDCAA16B3ui64, 0xE1918EEF202DAFDBui64, 0x341C7DC71C365303ui64, 0x40EF2D3765FD5E49ui64, 0xD6057177904ECE93ui64, 0x1C38024F98FD323Bui64, 0xE3061AE7A39B0FA1ui64, 0x9797F25FE4444563ui64, 0xCD2EC20C8DC1B898ui64, 0x31759633799A306Dui64, 0x8C2063852E6E9627ui64, 0x79237D9973922C66ui64, 0x8728628D28628824ui64, 0x8F1F7E9625887795ui64, 0x296E3281389C0D60ui64, 0x6F4893CA61636542ui64 }; // 0x006CEE70
+#pragma comment(linker, "/alternatename:_gqwSStrHash64Table_006CEE70=_gData_006CEE70")
+
+extern unsigned int gnHeapId_00708344 = 0x80000000; // 0x00708344

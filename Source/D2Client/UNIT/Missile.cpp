@@ -7980,4 +7980,328 @@ int __fastcall MISSILE_CltHitClearGlobals(D2UnitStrc* pMissile, D2UnitStrc* pUni
     return 0;
 }
 
-#include "gen/data/Source/D2Client/UNIT/Missile.inc"
+extern "C" void __cdecl sub_004D2610(); // 0x004D2610
+extern "C" void __cdecl sub_004D47F0(); // 0x004D47F0
+extern "C" void __cdecl sub_004D48B0(); // 0x004D48B0
+extern "C" void __cdecl sub_004D4BB0(); // 0x004D4BB0
+extern "C" void __cdecl sub_004D4DC0(); // 0x004D4DC0
+extern "C" void __cdecl sub_004D4F20(); // 0x004D4F20
+extern "C" void __cdecl sub_004D5C10(); // 0x004D5C10
+extern "C" void __cdecl sub_004D6130(); // 0x004D6130
+extern "C" void __cdecl sub_004D63E0(); // 0x004D63E0
+extern "C" void __cdecl sub_004D66E0(); // 0x004D66E0
+extern "C" void __cdecl sub_004D6820(); // 0x004D6820
+extern "C" void __cdecl sub_004D7880(); // 0x004D7880
+extern "C" void __cdecl sub_004D7E00(); // 0x004D7E00
+extern "C" void __cdecl sub_004CF800(); // 0x004CF800
+extern "C" void __cdecl sub_004D1BD0(); // 0x004D1BD0
+
+#pragma pack(push, 1)
+struct d2data_006DB7F0_t
+{
+    unsigned char b0[8];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006DB7F8_t
+{
+    unsigned char b0[80];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006DB8C0_t
+{
+    unsigned char b0[12];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006DB8FC_t
+{
+    unsigned char b0[12];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A300_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006DAF08[16]; // 0x006DAF08
+extern "C" const int gData_006DAF48[16]; // 0x006DAF48
+extern "C" const int gData_006DAF88[8]; // 0x006DAF88
+extern "C" const int gData_006DAFA8[8]; // 0x006DAFA8
+extern "C" const int gData_006DAFC8[8]; // 0x006DAFC8
+extern "C" const int gData_006DAFE8[8]; // 0x006DAFE8
+extern "C" const D2CltHitPatternStrc gData_006DB008[3]; // 0x006DB008
+extern "C" const int gData_006DB048[18]; // 0x006DB048
+extern "C" const int gData_006DB090[18]; // 0x006DB090
+extern "C" const int gData_006DB0D8[5]; // 0x006DB0D8
+extern "C" const int gData_006DB0EC[5]; // 0x006DB0EC
+extern "C" const int gData_006DB100[8]; // 0x006DB100
+extern "C" const int gData_006DB120[8]; // 0x006DB120
+extern "C" const int gData_006DB140[64]; // 0x006DB140
+extern "C" const int gData_006DB240[64]; // 0x006DB240
+extern "C" const int gData_006DB340[64]; // 0x006DB340
+extern "C" const int gData_006DB440[64]; // 0x006DB440
+extern "C" const int gData_006DB540[18]; // 0x006DB540
+extern "C" const int gData_006DB588[18]; // 0x006DB588
+extern "C" const int gData_006DB5D0[64]; // 0x006DB5D0
+extern "C" const int gData_006DB6D0[64]; // 0x006DB6D0
+extern "C" const int gData_006DB7D0[4]; // 0x006DB7D0
+extern "C" const int gData_006DB7E0[4]; // 0x006DB7E0
+extern "C" const struct d2data_006DB7F0_t gData_006DB7F0; // 0x006DB7F0
+extern "C" const struct d2data_006DB7F8_t gData_006DB7F8; // 0x006DB7F8
+extern "C" const D2CltRateStrc gData_006DB848[6]; // 0x006DB848
+extern "C" const D2CltRateStrc gData_006DB890[4]; // 0x006DB890
+extern "C" const struct d2data_006DB8C0_t gData_006DB8C0; // 0x006DB8C0
+extern "C" const D2ScatterRateStrc gData_006DB8CC[4]; // 0x006DB8CC
+extern "C" const struct d2data_006DB8FC_t gData_006DB8FC; // 0x006DB8FC
+extern "C" const D2StormPhaseStrc gData_006DB908[5]; // 0x006DB908
+extern "C" struct d2data_0072A300_t gData_0072A300; // 0x0072A300
+extern "C" const int gData_0072A33C[3]; // 0x0072A33C
+
+extern "C" const int gData_006DAF08[16] = { 2, 2, 2, 1, 0, -1, -2, -2, -2, -2, -2, -1, 0, 1, 2, 2 }; // 0x006DAF08
+#pragma comment(linker, "/alternatename:?gaEffectRingOffsetY@@3QBHB=_gData_006DAF08")
+
+extern "C" const int gData_006DAF48[16] = { 0, 1, 2, 2, 2, 2, 2, 1, 0, -1, -2, -2, -2, -2, -2, -1 }; // 0x006DAF48
+#pragma comment(linker, "/alternatename:?gaEffectRingOffsetX@@3QBHB=_gData_006DAF48")
+
+extern "C" const int gData_006DAF88[8] = { 0, 16, 16, 16, 0, -16, -16, -16 }; // 0x006DAF88
+#pragma comment(linker, "/alternatename:?gaCltHitRingOffsetY@@3QBHB=_gData_006DAF88")
+
+extern "C" const int gData_006DAFA8[8] = { 16, 16, 0, -16, -16, -16, 0, 16 }; // 0x006DAFA8
+#pragma comment(linker, "/alternatename:?gaCltHitRingOffsetX@@3QBHB=_gData_006DAFA8")
+
+extern "C" const int gData_006DAFC8[8] = { 0, 1, 1, 1, 0, -1, -1, -1 }; // 0x006DAFC8
+#pragma comment(linker, "/alternatename:?gaCltHitOffsetX@@3QBHB=_gData_006DAFC8")
+
+extern "C" const int gData_006DAFE8[8] = { 1, 1, 0, -1, -1, -1, 0, 1 }; // 0x006DAFE8
+#pragma comment(linker, "/alternatename:?gaCltHitOffsetY@@3QBHB=_gData_006DAFE8")
+
+extern "C" const D2CltHitPatternStrc gData_006DB008[3] = {
+    { 4, { 0, 1, 4, 5 } },
+    { 4, { 0, 2, 4, 6 } },
+    { 3, { 0, 3, 5 } }
+}; // 0x006DB008
+#pragma comment(linker, "/alternatename:?gaCltHitPatterns@@3QBUD2CltHitPatternStrc@@B=_gData_006DB008")
+
+extern "C" const int gData_006DB048[18] = {
+    -2, -2, 2, 5, 3, 3, 3, 2, 1, -1, -1, -2, -2, -3, -4, -3,
+    -3, -2
+}; // 0x006DB048
+#pragma comment(linker, "/alternatename:?gaRing18OffsetY@@3QBHB=_gData_006DB048")
+
+extern "C" const int gData_006DB090[18] = {
+    2, -2, 0, 0, -3, 0, 3, -1, 1, -1, 2, -4, -3, -1, 0, 1,
+    3, 4
+}; // 0x006DB090
+#pragma comment(linker, "/alternatename:?gaRing18OffsetX@@3QBHB=_gData_006DB090")
+
+extern "C" const int gData_006DB0D8[5] = { 0, 0, 4, 0, -4 }; // 0x006DB0D8
+#pragma comment(linker, "/alternatename:?gaRing5OffsetY@@3QBHB=_gData_006DB0D8")
+
+extern "C" const int gData_006DB0EC[5] = { 0, 4, 0, -4 }; // 0x006DB0EC
+#pragma comment(linker, "/alternatename:?gaRing5OffsetX@@3QBHB=_gData_006DB0EC")
+
+extern "C" const int gData_006DB100[8] = { 0, 2, 2, 2, 0, -2, -2, -2 }; // 0x006DB100
+#pragma comment(linker, "/alternatename:?gaMissileFanTargetX@@3PAHA=_gData_006DB100")
+
+extern "C" const int gData_006DB120[8] = { 2, 2, 0, -2, -2, -2, 0, 2 }; // 0x006DB120
+#pragma comment(linker, "/alternatename:?gaMissileFanTargetY@@3PAHA=_gData_006DB120")
+
+extern "C" const int gData_006DB140[64] = {
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29,
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2
+}; // 0x006DB140
+#pragma comment(linker, "/alternatename:?gaHitRing64OffsetY@@3QBHB=_gData_006DB140")
+
+extern "C" const int gData_006DB240[64] = {
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2,
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29
+}; // 0x006DB240
+#pragma comment(linker, "/alternatename:?gaHitRing64OffsetX@@3QBHB=_gData_006DB240")
+
+extern "C" const int gData_006DB340[64] = {
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29,
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2
+}; // 0x006DB340
+#pragma comment(linker, "/alternatename:?gaRingOffsetY_006DB340@@3QBHB=_gData_006DB340")
+
+extern "C" const int gData_006DB440[64] = {
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2,
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29
+}; // 0x006DB440
+#pragma comment(linker, "/alternatename:?gaRingOffsetX_006DB440@@3QBHB=_gData_006DB440")
+
+extern "C" const int gData_006DB540[18] = {
+    2, -2, 0, 0, -3, 0, 3, -1, 1, -1, 2, -4, -3, -1, 0, 1,
+    3, 4
+}; // 0x006DB540
+#pragma comment(linker, "/alternatename:?gaHitRingX@@3QBHB=_gData_006DB540")
+
+extern "C" const int gData_006DB588[18] = {
+    -2, -2, 2, 5, 3, 3, 3, 2, 1, -1, -1, -2, -2, -3, -4, -3,
+    -3, -2
+}; // 0x006DB588
+#pragma comment(linker, "/alternatename:?gaHitRingY@@3QBHB=_gData_006DB588")
+
+extern "C" const int gData_006DB5D0[64] = {
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29,
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2
+}; // 0x006DB5D0
+#pragma comment(linker, "/alternatename:?gaCltDoRingOffsetY@@3QBHB=_gData_006DB5D0")
+
+extern "C" const int gData_006DB6D0[64] = {
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2,
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29
+}; // 0x006DB6D0
+#pragma comment(linker, "/alternatename:?gaCltDoRingOffsetX@@3QBHB=_gData_006DB6D0")
+
+extern "C" const int gData_006DB7D0[4] = { 0, -1, 0, 1 }; // 0x006DB7D0
+#pragma comment(linker, "/alternatename:?gaQuadOffsetY@@3QBHB=_gData_006DB7D0")
+
+extern "C" const int gData_006DB7E0[4] = { -1, 0, 1 }; // 0x006DB7E0
+#pragma comment(linker, "/alternatename:?gaQuadOffsetX@@3QBHB=_gData_006DB7E0")
+
+extern "C" const struct d2data_006DB7F0_t gData_006DB7F0 = {
+    { 0x03, 0x00, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF }
+}; // 0x006DB7F0
+
+extern "C" const struct d2data_006DB7F8_t gData_006DB7F8 = {
+    {
+        0x04, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFD, 0xFF, 0xFF, 0xFF, 0x3A, 0x00, 0x00, 0x00,
+        0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF,
+        0xFD, 0xFF, 0xFF, 0xFF, 0x31, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+        0x16, 0x00, 0x00, 0x00, 0xFD, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x28, 0x00, 0x00, 0x00,
+        0xFE, 0xFF, 0xFF, 0xFF, 0x02, 0x00, 0x00, 0x00, 0x1F
+    }
+}; // 0x006DB7F8
+
+extern "C" const D2CltRateStrc gData_006DB848[6] = {
+    { 300, 25, 1 },
+    { 250, 10, 3 },
+    { 100, 8, 4 },
+    { 75, 6, 4 },
+    { 30, 4, 3 },
+    { 0, 100 }
+}; // 0x006DB848
+#pragma comment(linker, "/alternatename:?gaCltRateTable@@3QBUD2CltRateStrc@@B=_gData_006DB848")
+
+extern "C" const D2CltRateStrc gData_006DB890[4] = {
+    { 350, 10, 1 },
+    { 300, 5, 1 },
+    { 200, 4, 1 },
+    { 175, 3, 1 }
+}; // 0x006DB890
+#pragma comment(linker, "/alternatename:?gaCltRateJitter@@3QBUD2CltRateStrc@@B=_gData_006DB890")
+
+extern "C" const struct d2data_006DB8C0_t gData_006DB8C0 = {
+    { 0x00, 0x00, 0x00, 0x00, 0x64 }
+}; // 0x006DB8C0
+
+extern "C" const D2ScatterRateStrc gData_006DB8CC[4] = {
+    { 350, 3, 5 },
+    { 300, 2, 3 },
+    { 200, 3, 2 },
+    { 175, 5, 1 }
+}; // 0x006DB8CC
+#pragma comment(linker, "/alternatename:?gaScatterRates@@3QBUD2ScatterRateStrc@@B=_gData_006DB8CC")
+
+extern "C" const struct d2data_006DB8FC_t gData_006DB8FC = {
+    { 0x00, 0x00, 0x00, 0x00, 0x64, 0x00, 0x00, 0x00, 0x05 }
+}; // 0x006DB8FC
+
+extern "C" const D2StormPhaseStrc gData_006DB908[5] = {
+    { 420, 64 },
+    { 435, 20, 1 },
+    { 470, 8, 1 },
+    { 270, 5, 1 },
+    { 0, 64 }
+}; // 0x006DB908
+#pragma comment(linker, "/alternatename:?gaBaalStormPhases@@3PAUD2StormPhaseStrc@@A=_gData_006DB908")
+
+extern "C" struct d2data_0072A300_t gData_0072A300 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0072A300
+
+extern "C" const int gData_0072A33C[3] = { 69, 104, 105 }; // 0x0072A33C
+#pragma comment(linker, "/alternatename:?gaCollisionBurstMissiles@@3QBHB=_gData_0072A33C")
+
+extern int gbMissileLights = 1; // 0x0072A348
+
+extern int gnCltDoFuncs = 91; // 0x0072A34C
+
+extern D2CltMissileModeStrc gaCltMissileModes[9] = {
+    { 0 },
+    { (D2UnitFindCallback)&MISSILE_CltCanCollideWithGoodAlignmentUnit, 132 },
+    { (D2UnitFindCallback)&MISSILE_CltCanCollideWithMonster, 260 },
+    { (D2UnitFindCallback)&MISSILE_CltCanCollideWithPlayerOrMonster, 388 },
+    { 0 },
+    { (D2UnitFindCallback)&MISSILE_CltCanCollideWithMonster, 260 },
+    { 0, 4 },
+    { (D2UnitFindCallback)&MISSILE_CltCanMissileDestroy, 64 },
+    { (D2UnitFindCallback)&MISSILE_CltCanCollideWithPlayerOrMonster, 389 }
+}; // 0x0072A350
+
+extern D2CltDoFunc gpfnCltDoFuncs[91] = {
+    0, (D2CltDoFunc)&MISSILE_CltDoCommon, (D2CltDoFunc)&MISSILE_CltDoOnScreen, (D2CltDoFunc)&MISSILE_CltDoFollowUp, (D2CltDoFunc)&MISSILE_CltDoParamCall, (D2CltDoFunc)&MISSILE_CltDoSubLoop, (D2CltDoFunc)&MISSILE_CltDoRandomTrail, (D2CltDoFunc)&MISSILE_CltDoSeekTarget, (D2CltDoFunc)&MISSILE_CltDoTimedSubMissile, (D2CltDoFunc)&MISSILE_CltDoLightGrow, (D2CltDoFunc)&MISSILE_CltDoRangeSpawn, (D2CltDoFunc)&MISSILE_CltDoFrameEndFree, (D2CltDoFunc)&MISSILE_CltDoTiming, (D2CltDoFunc)&MISSILE_ClientMissileDo, (D2CltDoFunc)&MISSILE_CltDoHoming, (D2CltDoFunc)&MISSILE_CltDoHomingSubMissile,
+    (D2CltDoFunc)&MISSILE_CltDoRandomSubMissile, (D2CltDoFunc)&MISSILE_CltDoBurst, (D2CltDoFunc)&MISSILE_CltDoCopySubMissile, (D2CltDoFunc)&MISSILE_CltDoRing, (D2CltDoFunc)&sub_004D47F0, (D2CltDoFunc)&sub_004D48B0, (D2CltDoFunc)&MISSILE_CltDoWeave, (D2CltDoFunc)&MISSILE_CltDoFrameFloor, (D2CltDoFunc)&sub_004D4BB0, (D2CltDoFunc)&sub_004D4DC0, (D2CltDoFunc)&sub_004D4F20, (D2CltDoFunc)&MISSILE_CltDoTurn, (D2CltDoFunc)&MISSILE_CltDoOwnerQuad, (D2CltDoFunc)&MISSILE_CltDoSubMissiles, (D2CltDoFunc)&MISSILE_CltDoScatterSub, (D2CltDoFunc)&sub_004D6820,
+    (D2CltDoFunc)&MISSILE_CltDoRateTable, (D2CltDoFunc)&MISSILE_CltDoRateJitterSpawn, (D2CltDoFunc)&MISSILE_CltDoLinked, (D2CltDoFunc)&MISSILE_CltDoPeriodicSpawn, (D2CltDoFunc)&MISSILE_CltDoScatterRate, (D2CltDoFunc)&MISSILE_CltDoTimedSound, (D2CltDoFunc)&MISSILE_CltDoObjectRing, (D2CltDoFunc)&MISSILE_CltDoClearFrameWithOwner, (D2CltDoFunc)&MISSILE_CltDoOffsetMissileTimer, (D2CltDoFunc)&MISSILE_CltDoAnimSpeedSteps, (D2CltDoFunc)&sub_004D66E0, (D2CltDoFunc)&MISSILE_CltDoOwnerStep, (D2CltDoFunc)&MISSILE_CltDoOwnerSkill, (D2CltDoFunc)&MISSILE_CltDoParamCallSub, (D2CltDoFunc)&MISSILE_CltDoPerpendicular, (D2CltDoFunc)&MISSILE_CltDoProgSound,
+    (D2CltDoFunc)&MISSILE_CltDoSeededSpawn, (D2CltDoFunc)&MISSILE_CltDoPeriodicSub, (D2CltDoFunc)&sub_004D5C10, (D2CltDoFunc)&MISSILE_CltDoTimedBurst, (D2CltDoFunc)&MISSILE_CltDoMirrorPair, (D2CltDoFunc)&MISSILE_CltDoOwnerSubMissile, (D2CltDoFunc)&MISSILE_CltDoEruption, (D2CltDoFunc)&MISSILE_CltDoMissileSpray, (D2CltDoFunc)&sub_004D6130, (D2CltDoFunc)&MISSILE_CltDoOwnerTarget, (D2CltDoFunc)&sub_004D63E0, (D2CltDoFunc)&MISSILE_CltDoZRange, (D2CltDoFunc)&MISSILE_CltDoRotateTargetPoint, (D2CltDoFunc)&MISSILE_CltDoOwnerSpawner, (D2CltDoFunc)&MISSILE_CltDoSpawner, (D2CltDoFunc)&sub_004D7880,
+    (D2CltDoFunc)&MISSILE_CltDoBaalStormMissile, (D2CltDoFunc)&sub_004D7E00, (D2CltDoFunc)&sub_004D2610, (D2CltDoFunc)&MISSILE_CltDoTimedRequests, (D2CltDoFunc)&MISSILE_CltDoPathSubMissile
+}; // 0x0072A398
+
+extern int gnCltHitFuncCount = 81; // 0x0072A504
+
+extern CLTHITFUNC gpfnCltHitFuncs[82] = {
+    0, (CLTHITFUNC)&MISSILE_CltHitSubMissileBurst, (CLTHITFUNC)&MISSILE_CltHitEffect, (CLTHITFUNC)&MISSILE_CltHitTwoSubMissiles, (CLTHITFUNC)&sub_004D05E0_HitRing64, 0, 0, 0, 0, (CLTHITFUNC)&MISSILE_CltHitUnit, (CLTHITFUNC)&MISSILE_CltHitProgOverlay, 0, (CLTHITFUNC)&MISSILE_CltHitSpawnSubMissiles, (CLTHITFUNC)&MISSILE_UpdateGuidedMissile, (CLTHITFUNC)&MISSILE_CltHitPatternSubMissiles, 0,
+    (CLTHITFUNC)&sub_004CF800, 0, (CLTHITFUNC)&MISSILE_CltHitRingSubMissiles, (CLTHITFUNC)&MISSILE_CltHitRandomSubMissile, 0, 0, 0, 0, (CLTHITFUNC)&MISSILE_CltHitOwnerRequest, (CLTHITFUNC)&MISSILE_ScanAreaCreateMissiles, (CLTHITFUNC)&MISSILE_CltHitScanArea, 0, (CLTHITFUNC)&MISSILE_CltHitForward, (CLTHITFUNC)&MISSILE_CreateChildMissile, (CLTHITFUNC)&sub_004D04D0_HitRing64, (CLTHITFUNC)&MISSILE_CltHitFollowUp,
+    (CLTHITFUNC)&MISSILE_CltHitSubMissiles, (CLTHITFUNC)&MISSILE_CltHitScatter, (CLTHITFUNC)&MISSILE_CltHitFlagOwner, 0, (CLTHITFUNC)&MISSILE_CltHitCollisionBurst, (CLTHITFUNC)&sub_004D1BD0, (CLTHITFUNC)&MISSILE_CltHitLinkMissile, (CLTHITFUNC)&MISSILE_CltHitRolledRequest, (CLTHITFUNC)&MISSILE_IsOwnersPet, (CLTHITFUNC)&MISSILE_CltHitSpawnRequest, (CLTHITFUNC)&MISSILE_SpawnOwnerSubMissile, (CLTHITFUNC)&MISSILE_SpawnHellfireFragments, (CLTHITFUNC)&MISSILE_CltHitSubMissileOwner, 0, (CLTHITFUNC)&MISSILE_CltHitSpiral, (CLTHITFUNC)&MISSILE_CltHitBurst,
+    (CLTHITFUNC)&MISSILE_CltDoEightWaySpawn, 0, (CLTHITFUNC)&MISSILE_CltHitParamBurst, (CLTHITFUNC)&MISSILE_CltHitSpiralGrid, (CLTHITFUNC)&MISSILE_CltHitBurstSub, (CLTHITFUNC)&MISSILE_CltHitLob, (CLTHITFUNC)&MISSILE_CltHitCreateSubMissile, (CLTHITFUNC)&MISSILE_CltHitTripleSubMissiles, (CLTHITFUNC)&MISSILE_CltHitSubMissileDir, (CLTHITFUNC)&MISSILE_CltHitBurstNoUnit, 0, 0, (CLTHITFUNC)&MISSILE_CltHitSubMissilesWithMotion, (CLTHITFUNC)&MISSILE_CltHitClearGlobals, (CLTHITFUNC)&MISSILE_CltDoScatterHit, (CLTHITFUNC)&MISSILE_CltHitSubMissile,
+    (CLTHITFUNC)&MISSILE_CltHitRing
+}; // 0x0072A508

@@ -343,4 +343,51 @@ void __fastcall DRLGANIM_TileToClientCoords(int* pX, int* pY)
     *pY += 0x28;
 }
 
-#include "gen/data/Source/D2Common/DRLG/DrlgAnim.inc"
+#pragma pack(push, 1)
+struct d2data_007498B8_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const char gData_006EEF08[20]; // 0x006EEF08
+extern "C" const int gData_006EEF88[16]; // 0x006EEF88
+extern "C" struct d2data_007498B8_t gData_007498B8; // 0x007498B8
+
+extern "C" const char gData_006EEF08[20] = ".\\DRLG\\DrlgAnim.cpp"; // 0x006EEF08
+#pragma comment(linker, "/alternatename:_gszDrlgAnimSourceFile=_gData_006EEF08")
+
+extern "C" const int gData_006EEF88[16] = { 0, 1, 2, 5, 5, 7, 9, 11, 13, 14, 15, 16, 17, 18, 19, 20 }; // 0x006EEF88
+#pragma comment(linker, "/alternatename:?gnTileTypeTable@@3QBHB=_gData_006EEF88")
+
+extern "C" struct d2data_007498B8_t gData_007498B8 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007498B8

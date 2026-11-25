@@ -1070,4 +1070,64 @@ void __fastcall DRLGOUTPLACE_PlaceAct1245OutdoorBorders(D2DrlgLevelStrc* pLevel)
     DRLGOUTPLACE_SetBlankBorderGridCells(pLevel);
 }
 
-#include "gen/data/Source/D2Common/DRLG/Outdoors.inc"
+#pragma pack(push, 1)
+struct d2data_006F061C_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007499A8_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const signed char gData_006F060C[8]; // 0x006F060C
+extern "C" const signed char gData_006F0614[8]; // 0x006F0614
+extern "C" const struct d2data_006F061C_t gData_006F061C; // 0x006F061C
+extern "C" struct d2data_007499A8_t gData_007499A8; // 0x007499A8
+
+extern "C" const signed char gData_006F060C[8] = { 0, -1, 1, 0, -1, 1, -1, 1 }; // 0x006F060C
+#pragma comment(linker, "/alternatename:?gnRandomOutdoorDs1OffsetY@@3QBCB=_gData_006F060C")
+
+extern "C" const signed char gData_006F0614[8] = { -1, 0, 0, 1, -1, 1, 1, -1 }; // 0x006F0614
+#pragma comment(linker, "/alternatename:?gnRandomOutdoorDs1OffsetX@@3QBCB=_gData_006F0614")
+
+extern "C" const struct d2data_006F061C_t gData_006F061C = {
+    { 0x00, 0x10 }
+}; // 0x006F061C
+#pragma comment(linker, "/alternatename:_gdwAct12ShrineFlags=_gData_006F061C")
+
+extern "C" struct d2data_007499A8_t gData_007499A8 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007499A8

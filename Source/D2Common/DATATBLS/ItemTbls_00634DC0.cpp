@@ -393,4 +393,175 @@ void __fastcall DATATBLS_LoadSets_SetItemsTxt(void* hArchive)
     }
 }
 
-#include "gen/data/Source/D2Common/DATATBLS/ItemTbls_00634DC0.inc"
+extern "C" const char gData_006E9CD4[12]; // 0x006E9CD4
+extern "C" const char gData_006E9CE0[8]; // 0x006E9CE0
+extern "C" const char gData_006E9CE8[8]; // 0x006E9CE8
+extern "C" const char gData_006E9CF0[8]; // 0x006E9CF0
+extern "C" const char gData_006E9CF8[8]; // 0x006E9CF8
+extern "C" const char gData_006E9D00[8]; // 0x006E9D00
+extern "C" const char gData_006E9D08[8]; // 0x006E9D08
+extern "C" const char gData_006E9D10[8]; // 0x006E9D10
+extern "C" const char gData_006E9D18[8]; // 0x006E9D18
+extern "C" const char gData_006E9D20[8]; // 0x006E9D20
+extern "C" const char gData_006E9D28[8]; // 0x006E9D28
+extern "C" const char gData_006E9D30[8]; // 0x006E9D30
+extern "C" const char gData_006E9D38[8]; // 0x006E9D38
+extern "C" const char gData_006E9D40[8]; // 0x006E9D40
+extern "C" const char gData_006E9D48[8]; // 0x006E9D48
+extern "C" const char gData_006E9D50[8]; // 0x006E9D50
+extern "C" const char gData_006E9D58[8]; // 0x006E9D58
+extern "C" const char gData_006E9D60[8]; // 0x006E9D60
+extern "C" const char gData_006E9D68[8]; // 0x006E9D68
+extern "C" const char gData_006E9D70[8]; // 0x006E9D70
+extern "C" const char gData_006E9D78[8]; // 0x006E9D78
+extern "C" const char gData_006E9D80[8]; // 0x006E9D80
+extern "C" const char gData_006E9D88[8]; // 0x006E9D88
+extern "C" const char gData_006E9D90[8]; // 0x006E9D90
+extern "C" const char gData_006E9D98[8]; // 0x006E9D98
+extern "C" const char gData_006E9DA0[8]; // 0x006E9DA0
+extern "C" const char gData_006E9DA8[8]; // 0x006E9DA8
+extern "C" const char gData_006E9DB0[8]; // 0x006E9DB0
+extern "C" const char gData_006E9DB8[8]; // 0x006E9DB8
+extern "C" const char gData_006E9DC0[8]; // 0x006E9DC0
+extern "C" const char gData_006E9DC8[8]; // 0x006E9DC8
+extern "C" const char gData_006E9DD0[8]; // 0x006E9DD0
+extern "C" const char gData_006E9DD8[8]; // 0x006E9DD8
+extern "C" const char gData_006E9DE0[8]; // 0x006E9DE0
+extern "C" const char gData_006E9DE8[8]; // 0x006E9DE8
+extern "C" const char gData_006E9DF0[8]; // 0x006E9DF0
+extern "C" const char gData_006E9DF8[8]; // 0x006E9DF8
+extern "C" const char gData_006E9E00[8]; // 0x006E9E00
+extern "C" const char gData_006E9E08[8]; // 0x006E9E08
+extern "C" const char gData_006E9E10[8]; // 0x006E9E10
+extern "C" const char gData_006E9E18[8]; // 0x006E9E18
+extern "C" const char gData_006E9E20[12]; // 0x006E9E20
+extern "C" const char gData_006E9E2C[8]; // 0x006E9E2C
+
+extern "C" const char gData_006E9CD4[12] = "setitems"; // 0x006E9CD4
+#pragma comment(linker, "/alternatename:_gszTxtName_setitems=_gData_006E9CD4")
+
+extern "C" const char gData_006E9CE0[8] = "amax5b"; // 0x006E9CE0
+#pragma comment(linker, "/alternatename:_gszTxtField_amax5b=_gData_006E9CE0")
+
+extern "C" const char gData_006E9CE8[8] = "amin5b"; // 0x006E9CE8
+#pragma comment(linker, "/alternatename:_gszTxtField_amin5b=_gData_006E9CE8")
+
+extern "C" const char gData_006E9CF0[8] = "apar5b"; // 0x006E9CF0
+#pragma comment(linker, "/alternatename:_gszTxtField_apar5b=_gData_006E9CF0")
+
+extern "C" const char gData_006E9CF8[8] = "aprop5b"; // 0x006E9CF8
+#pragma comment(linker, "/alternatename:_gszTxtField_aprop5b=_gData_006E9CF8")
+
+extern "C" const char gData_006E9D00[8] = "amax5a"; // 0x006E9D00
+#pragma comment(linker, "/alternatename:_gszTxtField_amax5a=_gData_006E9D00")
+
+extern "C" const char gData_006E9D08[8] = "amin5a"; // 0x006E9D08
+#pragma comment(linker, "/alternatename:_gszTxtField_amin5a=_gData_006E9D08")
+
+extern "C" const char gData_006E9D10[8] = "apar5a"; // 0x006E9D10
+#pragma comment(linker, "/alternatename:_gszTxtField_apar5a=_gData_006E9D10")
+
+extern "C" const char gData_006E9D18[8] = "aprop5a"; // 0x006E9D18
+#pragma comment(linker, "/alternatename:_gszTxtField_aprop5a=_gData_006E9D18")
+
+extern "C" const char gData_006E9D20[8] = "amax4b"; // 0x006E9D20
+#pragma comment(linker, "/alternatename:_gszTxtField_amax4b=_gData_006E9D20")
+
+extern "C" const char gData_006E9D28[8] = "amin4b"; // 0x006E9D28
+#pragma comment(linker, "/alternatename:_gszTxtField_amin4b=_gData_006E9D28")
+
+extern "C" const char gData_006E9D30[8] = "apar4b"; // 0x006E9D30
+#pragma comment(linker, "/alternatename:_gszTxtField_apar4b=_gData_006E9D30")
+
+extern "C" const char gData_006E9D38[8] = "aprop4b"; // 0x006E9D38
+#pragma comment(linker, "/alternatename:_gszTxtField_aprop4b=_gData_006E9D38")
+
+extern "C" const char gData_006E9D40[8] = "amax4a"; // 0x006E9D40
+#pragma comment(linker, "/alternatename:_gszTxtField_amax4a=_gData_006E9D40")
+
+extern "C" const char gData_006E9D48[8] = "amin4a"; // 0x006E9D48
+#pragma comment(linker, "/alternatename:_gszTxtField_amin4a=_gData_006E9D48")
+
+extern "C" const char gData_006E9D50[8] = "apar4a"; // 0x006E9D50
+#pragma comment(linker, "/alternatename:_gszTxtField_apar4a=_gData_006E9D50")
+
+extern "C" const char gData_006E9D58[8] = "aprop4a"; // 0x006E9D58
+#pragma comment(linker, "/alternatename:_gszTxtField_aprop4a=_gData_006E9D58")
+
+extern "C" const char gData_006E9D60[8] = "amax3b"; // 0x006E9D60
+#pragma comment(linker, "/alternatename:_gszTxtField_amax3b=_gData_006E9D60")
+
+extern "C" const char gData_006E9D68[8] = "amin3b"; // 0x006E9D68
+#pragma comment(linker, "/alternatename:_gszTxtField_amin3b=_gData_006E9D68")
+
+extern "C" const char gData_006E9D70[8] = "apar3b"; // 0x006E9D70
+#pragma comment(linker, "/alternatename:_gszTxtField_apar3b=_gData_006E9D70")
+
+extern "C" const char gData_006E9D78[8] = "aprop3b"; // 0x006E9D78
+#pragma comment(linker, "/alternatename:_gszTxtField_aprop3b=_gData_006E9D78")
+
+extern "C" const char gData_006E9D80[8] = "amax3a"; // 0x006E9D80
+#pragma comment(linker, "/alternatename:_gszTxtField_amax3a=_gData_006E9D80")
+
+extern "C" const char gData_006E9D88[8] = "amin3a"; // 0x006E9D88
+#pragma comment(linker, "/alternatename:_gszTxtField_amin3a=_gData_006E9D88")
+
+extern "C" const char gData_006E9D90[8] = "apar3a"; // 0x006E9D90
+#pragma comment(linker, "/alternatename:_gszTxtField_apar3a=_gData_006E9D90")
+
+extern "C" const char gData_006E9D98[8] = "aprop3a"; // 0x006E9D98
+#pragma comment(linker, "/alternatename:_gszTxtField_aprop3a=_gData_006E9D98")
+
+extern "C" const char gData_006E9DA0[8] = "amax2b"; // 0x006E9DA0
+#pragma comment(linker, "/alternatename:_gszTxtField_amax2b=_gData_006E9DA0")
+
+extern "C" const char gData_006E9DA8[8] = "amin2b"; // 0x006E9DA8
+#pragma comment(linker, "/alternatename:_gszTxtField_amin2b=_gData_006E9DA8")
+
+extern "C" const char gData_006E9DB0[8] = "apar2b"; // 0x006E9DB0
+#pragma comment(linker, "/alternatename:_gszTxtField_apar2b=_gData_006E9DB0")
+
+extern "C" const char gData_006E9DB8[8] = "aprop2b"; // 0x006E9DB8
+#pragma comment(linker, "/alternatename:_gszTxtField_aprop2b=_gData_006E9DB8")
+
+extern "C" const char gData_006E9DC0[8] = "amax2a"; // 0x006E9DC0
+#pragma comment(linker, "/alternatename:_gszTxtField_amax2a=_gData_006E9DC0")
+
+extern "C" const char gData_006E9DC8[8] = "amin2a"; // 0x006E9DC8
+#pragma comment(linker, "/alternatename:_gszTxtField_amin2a=_gData_006E9DC8")
+
+extern "C" const char gData_006E9DD0[8] = "apar2a"; // 0x006E9DD0
+#pragma comment(linker, "/alternatename:_gszTxtField_apar2a=_gData_006E9DD0")
+
+extern "C" const char gData_006E9DD8[8] = "aprop2a"; // 0x006E9DD8
+#pragma comment(linker, "/alternatename:_gszTxtField_aprop2a=_gData_006E9DD8")
+
+extern "C" const char gData_006E9DE0[8] = "amax1b"; // 0x006E9DE0
+#pragma comment(linker, "/alternatename:_gszTxtField_amax1b=_gData_006E9DE0")
+
+extern "C" const char gData_006E9DE8[8] = "amin1b"; // 0x006E9DE8
+#pragma comment(linker, "/alternatename:_gszTxtField_amin1b=_gData_006E9DE8")
+
+extern "C" const char gData_006E9DF0[8] = "apar1b"; // 0x006E9DF0
+#pragma comment(linker, "/alternatename:_gszTxtField_apar1b=_gData_006E9DF0")
+
+extern "C" const char gData_006E9DF8[8] = "aprop1b"; // 0x006E9DF8
+#pragma comment(linker, "/alternatename:_gszTxtField_aprop1b=_gData_006E9DF8")
+
+extern "C" const char gData_006E9E00[8] = "amax1a"; // 0x006E9E00
+#pragma comment(linker, "/alternatename:_gszTxtField_amax1a=_gData_006E9E00")
+
+extern "C" const char gData_006E9E08[8] = "amin1a"; // 0x006E9E08
+#pragma comment(linker, "/alternatename:_gszTxtField_amin1a=_gData_006E9E08")
+
+extern "C" const char gData_006E9E10[8] = "apar1a"; // 0x006E9E10
+#pragma comment(linker, "/alternatename:_gszTxtField_apar1a=_gData_006E9E10")
+
+extern "C" const char gData_006E9E18[8] = "aprop1a"; // 0x006E9E18
+#pragma comment(linker, "/alternatename:_gszTxtField_aprop1a=_gData_006E9E18")
+
+extern "C" const char gData_006E9E20[12] = "add func"; // 0x006E9E20
+#pragma comment(linker, "/alternatename:_gszTxtField_add_func=_gData_006E9E20")
+
+extern "C" const char gData_006E9E2C[8] = "item"; // 0x006E9E2C
+#pragma comment(linker, "/alternatename:_gszTxtField_item=_gData_006E9E2C")

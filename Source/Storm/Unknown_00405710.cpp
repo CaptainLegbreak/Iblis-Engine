@@ -103,6 +103,6 @@ int __fastcall sub_00405710_ParseCmdArgument(char* szCommandNameTestBuf, const c
     return nCommandIndex;
 }
 
-#include "gen/data/Source/Storm/Unknown_00405710.inc"
+
 
 void* ghCurrentProcess_0074C718; // 0x0074C718

@@ -2345,4 +2345,98 @@ void __stdcall D2Win_COMMANDS_MouseButton_6F8AE070(SMSGHANDLER_PARAMS* pMsg)
 
 int __fastcall SCROLLBAR_HandleMouseWheel(SMSGHANDLER_PARAMS* pMsg, D2WinScrollBarStrc* ptScrollbarData, int a3); // 0x00508030
 
-#include "gen/data/Source/D2Win/Src/D2WinMain.inc"
+extern "C" void __cdecl sub_004F9B60(); // 0x004F9B60
+extern "C" void __cdecl sub_004F9BF0(); // 0x004F9BF0
+extern "C" void __cdecl sub_004F9C80(); // 0x004F9C80
+extern "C" void __cdecl sub_004F9CA0(); // 0x004F9CA0
+extern "C" void __cdecl sub_004F9F20(); // 0x004F9F20
+extern "C" void __cdecl sub_004FA340(); // 0x004FA340
+extern "C" void __cdecl sub_004FA6B0(); // 0x004FA6B0
+extern "C" void __cdecl sub_004FA760(); // 0x004FA760
+extern "C" void __cdecl sub_004FA840(); // 0x004FA840
+extern "C" void __cdecl sub_004FA860(); // 0x004FA860
+
+#pragma pack(push, 1)
+struct d2data_0072DC00_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_0072DC00_t gData_0072DC00; // 0x0072DC00
+
+extern "C" struct d2data_0072DC00_t gData_0072DC00 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0072DC00
+
+extern int gbDrawCursor = 1; // 0x0072DC3C
+
+extern int gnScreenshotIndex = 1; // 0x0072DC40
+
+extern int gbAppActive = 1; // 0x0072DC44
+
+extern D2WinCommandRegisterStrc gatCommandRegister[0x21] = {
+    { 0, 512, (void*)(unsigned int)&sub_004FA6B0 },
+    { 0, 160, (void*)(unsigned int)&D2Win_COMMANDS_NcMouseMove },
+    { 0, 675, (void*)(unsigned int)&D2Win_COMMANDS_MouseLeave },
+    { 0, 513, (void*)(unsigned int)&sub_004FA860 },
+    { 0, 514, (void*)(unsigned int)&sub_004FA860 },
+    { 0, 516, (void*)(unsigned int)&sub_004FA860 },
+    { 0, 517, (void*)(unsigned int)&sub_004FA860 },
+    { 0, 258, (void*)(unsigned int)&sub_004F9B60 },
+    { 3, 8, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 37, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 39, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 36, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 35, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 46, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 38, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 40, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 33, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 34, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 13, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 82, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 78, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 72, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 27, (void*)(unsigned int)&sub_004FA760 },
+    { 3, 9, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 32, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 17, (void*)(unsigned int)&sub_004F9C80 },
+    { 3, 112, (void*)(unsigned int)&sub_004F9BF0 },
+    { 3, 77, (void*)(unsigned int)&D2Win_COMMANDS_ToggleMusic },
+    { 0, 28, (void*)(unsigned int)&sub_004F9F20 },
+    { 0, 274, (void*)(unsigned int)&D2Win_COMMANDS_SysCommand },
+    { 2, 44, (void*)(unsigned int)&sub_004FA840 },
+    { 2, 17, (void*)(unsigned int)&sub_004F9CA0 },
+    { 0, 522, (void*)(unsigned int)&sub_004FA340 }
+}; // 0x0072DC48
+
+extern int gbRunMessageLoop = 1; // 0x0072DDD4

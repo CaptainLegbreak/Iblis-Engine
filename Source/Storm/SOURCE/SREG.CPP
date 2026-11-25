@@ -345,4 +345,7 @@ int __stdcall SRegSaveValue(const char* szKeyName, const char* szValueName, unsi
     return InternalSaveEntry(szKeyName, szValueName, nFlags, 4, (const unsigned char*)&dwValue, 4);
 }
 
-#include "gen/data/Source/Storm/SOURCE/SREG.inc"
+extern "C" const char gData_006CEF68[4]; // 0x006CEF68
+
+extern "C" const char gData_006CEF68[4] = "%u"; // 0x006CEF68
+#pragma comment(linker, "/alternatename:_gszFmtUnsigned_006CEF68=_gData_006CEF68")

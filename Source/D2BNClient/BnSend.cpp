@@ -2937,4 +2937,79 @@ int D2BigPairStrc::sub_00528890_CompareServerProof(const D2BigLoginRecordStrc* p
     return memcmp(abProof, pServerProof, sizeof(abProof)) == 0;
 }
 
-#include "gen/data/Source/D2BNClient/BnSend.inc"
+extern "C" void __cdecl BNDOWNLOAD_HandleChatEvent(); // 0x00520660
+extern "C" void __cdecl sub_00520C40(); // 0x00520C40
+extern "C" void __cdecl BNDOWNLOAD_HandleCreateAccount(); // 0x00520C50
+extern "C" void __cdecl BNDOWNLOAD_HandleCreateAccountEx(); // 0x00520C60
+extern "C" void __cdecl BNDOWNLOAD_HandleChangePassword(); // 0x00520C80
+extern "C" void __cdecl BNDOWNLOAD_HandleClientId(); // 0x00520CB0
+extern "C" void __cdecl BNDOWNLOAD_HandleLogonChallenge(); // 0x00520D50
+extern "C" void __cdecl BNDOWNLOAD_HandleStartAdvex(); // 0x00520D60
+extern "C" void __cdecl BNDOWNLOAD_HandleLogonChallengeEx(); // 0x00520D70
+extern "C" void __cdecl BNDOWNLOAD_HandleLogonResponse(); // 0x00520DA0
+extern "C" void __cdecl BNDOWNLOAD_HandleStatus(); // 0x00520DC0
+extern "C" void __cdecl sub_00520E50(); // 0x00520E50
+extern "C" void __cdecl BNDOWNLOAD_HandleStartVersioning(); // 0x00520F60
+extern "C" void __cdecl BNDOWNLOAD_HandlePing(); // 0x00520FC0
+extern "C" void __cdecl BNDOWNLOAD_HandleCdKeyReply(); // 0x00520FE0
+extern "C" void __cdecl BNDOWNLOAD_HandleServerList(); // 0x005210A0
+extern "C" void __cdecl BNDOWNLOAD_HandleGetChannelList(); // 0x005210C0
+extern "C" void __cdecl BNDOWNLOAD_HandleGetAdvListEx(); // 0x005210D0
+extern "C" void __cdecl sub_005210E0(); // 0x005210E0
+extern "C" void __cdecl BNDOWNLOAD_HandleEnterChat(); // 0x005210F0
+extern "C" void __cdecl BNDOWNLOAD_HandleGetFileTime(); // 0x00521110
+extern "C" void __cdecl BNDOWNLOAD_HandleCheckAd(); // 0x00521150
+extern "C" void __cdecl BNDOWNLOAD_HandleQueryRealms(); // 0x005211D0
+extern "C" void __cdecl BNDOWNLOAD_HandleQueryAdUrl(); // 0x005211E0
+extern "C" void __cdecl BNDOWNLOAD_HandleLogonRealmEx(); // 0x005211F0
+extern "C" void __cdecl BNDOWNLOAD_HandleReadUserData(); // 0x00521200
+extern "C" void __cdecl BNDOWNLOAD_HandleNewsInfo(); // 0x00521210
+extern "C" void __cdecl BNDOWNLOAD_HandleAuthInfo(); // 0x00521220
+extern "C" void __cdecl BNDOWNLOAD_HandleAuthCheck(); // 0x005212D0
+extern "C" void __cdecl BNDOWNLOAD_HandleAuthAccountCreate(); // 0x005215B0
+extern "C" void __cdecl BNDOWNLOAD_HandleAuthAccountLogon(); // 0x005216B0
+extern "C" void __cdecl BNDOWNLOAD_HandleAuthAccountLogonProof(); // 0x00521760
+extern "C" void __cdecl BNDOWNLOAD_HandleAuthAccountChange(); // 0x00521800
+extern "C" void __cdecl BNDOWNLOAD_HandleAuthAccountChangeProof(); // 0x005218A0
+extern "C" void __cdecl BNDOWNLOAD_HandleAuthAccountUpgrade(); // 0x00521950
+extern "C" void __cdecl BNDOWNLOAD_HandleAuthAccountUpgradeProof(); // 0x005219B0
+extern "C" void __cdecl BNDOWNLOAD_HandleSetEmail(); // 0x00521AB0
+extern "C" void __cdecl BNDOWNLOAD_HandleOptionalWork(); // 0x00521AC0
+extern "C" void __cdecl BNDOWNLOAD_HandleRequiredWork(); // 0x00521AE0
+
+extern "C" const char gData_006DEF80[4]; // 0x006DEF80
+extern "C" const char gData_006DF238[256]; // 0x006DF238
+
+extern "C" const char gData_006DEF80[4] = { 0 }; // 0x006DEF80
+#pragma comment(linker, "/alternatename:_szEmpty_006DEF80=_gData_006DEF80")
+#pragma comment(linker, "/alternatename:_gabSha1Pad00=_gData_006DEF80")
+
+extern "C" const char gData_006DF238[256] = {
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, 0, -1, 1, -1, 2, 3, 4, 5, -1, -1, -1, -1, -1, -1,
+    -1, -1, 6, 7, 8, 9, 10, 11, 12, -1, 13, 14, -1, 15, 16, -1,
+    17, -1, 18, -1, 19, -1, 20, 21, 22, -1, 23, -1, -1, -1, -1, -1,
+    -1, -1, 6, 7, 8, 9, 10, 11, 12, -1, 13, 14, -1, 15, 16, -1,
+    17, -1, 18, -1, 19, -1, 20, 21, 22, -1, 23, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
+}; // 0x006DF238
+#pragma comment(linker, "/alternatename:?gacCDKeyMap@@3QBDB=_gData_006DF238")
+
+extern D2BnPacketHandler gapfnPacketHandlers[109] = {
+    (D2BnPacketHandler)&sub_00520C40, 0, 0, 0, (D2BnPacketHandler)&BNDOWNLOAD_HandleServerList, (D2BnPacketHandler)&BNDOWNLOAD_HandleClientId, (D2BnPacketHandler)&BNDOWNLOAD_HandleStartVersioning, (D2BnPacketHandler)&sub_00520E50, 0, (D2BnPacketHandler)&BNDOWNLOAD_HandleGetAdvListEx, (D2BnPacketHandler)&BNDOWNLOAD_HandleEnterChat, (D2BnPacketHandler)&BNDOWNLOAD_HandleGetChannelList, 0, 0, 0, (D2BnPacketHandler)&BNDOWNLOAD_HandleChatEvent,
+    0, 0, 0, 0, 0, (D2BnPacketHandler)&BNDOWNLOAD_HandleCheckAd, 0, 0, 0, 0, 0, 0, (D2BnPacketHandler)&BNDOWNLOAD_HandleStartAdvex, (D2BnPacketHandler)&BNDOWNLOAD_HandleLogonChallengeEx, 0, 0,
+    (D2BnPacketHandler)&sub_005210E0, 0, 0, 0, 0, (D2BnPacketHandler)&BNDOWNLOAD_HandlePing, (D2BnPacketHandler)&BNDOWNLOAD_HandleReadUserData, 0, (D2BnPacketHandler)&BNDOWNLOAD_HandleLogonChallenge, (D2BnPacketHandler)&BNDOWNLOAD_HandleLogonResponse, (D2BnPacketHandler)&BNDOWNLOAD_HandleCreateAccount, 0, 0, 0, 0, 0,
+    0, (D2BnPacketHandler)&BNDOWNLOAD_HandleChangePassword, 0, (D2BnPacketHandler)&BNDOWNLOAD_HandleGetFileTime, 0, 0, 0, 0, 0, 0, (D2BnPacketHandler)&BNDOWNLOAD_HandleStatus, 0, 0, (D2BnPacketHandler)&BNDOWNLOAD_HandleCreateAccountEx, (D2BnPacketHandler)&BNDOWNLOAD_HandleLogonRealmEx, 0,
+    (D2BnPacketHandler)&BNDOWNLOAD_HandleQueryRealms, (D2BnPacketHandler)&BNDOWNLOAD_HandleQueryAdUrl, (D2BnPacketHandler)&BNDOWNLOAD_HandleCdKeyReply, 0, 0, 0, (D2BnPacketHandler)&BNDOWNLOAD_HandleNewsInfo, 0, 0, 0, (D2BnPacketHandler)&BNDOWNLOAD_HandleOptionalWork, 0, (D2BnPacketHandler)&BNDOWNLOAD_HandleRequiredWork, 0, 0, 0,
+    (D2BnPacketHandler)&BNDOWNLOAD_HandleAuthInfo, (D2BnPacketHandler)&BNDOWNLOAD_HandleAuthCheck, (D2BnPacketHandler)&BNDOWNLOAD_HandleAuthAccountCreate, (D2BnPacketHandler)&BNDOWNLOAD_HandleAuthAccountLogon, (D2BnPacketHandler)&BNDOWNLOAD_HandleAuthAccountLogonProof, (D2BnPacketHandler)&BNDOWNLOAD_HandleAuthAccountChange, (D2BnPacketHandler)&BNDOWNLOAD_HandleAuthAccountChangeProof, (D2BnPacketHandler)&BNDOWNLOAD_HandleAuthAccountUpgrade, (D2BnPacketHandler)&BNDOWNLOAD_HandleAuthAccountUpgradeProof, (D2BnPacketHandler)&BNDOWNLOAD_HandleSetEmail, 0, 0, 0, 0, (D2BnPacketHandler)(void*)"English", (D2BnPacketHandler)(void*)"Spanish",
+    (D2BnPacketHandler)(void*)"German", (D2BnPacketHandler)(void*)"French", (D2BnPacketHandler)(void*)"Portuguese", (D2BnPacketHandler)(void*)"Italian", (D2BnPacketHandler)(void*)"Japanese", (D2BnPacketHandler)(void*)"Korean", (D2BnPacketHandler)(void*)"Simplified Chinese", (D2BnPacketHandler)(void*)"Traditional Chinese", (D2BnPacketHandler)(void*)"Polish", (D2BnPacketHandler)(void*)"Russian", (D2BnPacketHandler)(void*)"English with Korean Chat", (D2BnPacketHandler)(void*)"Unknown", (D2BnPacketHandler)(void*)"14"
+}; // 0x0072FFB0

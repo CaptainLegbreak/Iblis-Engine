@@ -2100,4 +2100,47 @@ extern "C" void __stdcall MISSILE_CalculateDamageData(Damage* damage, Unit* owne
 
 void __stdcall MISSILE_CalculateDamageData(Damage* pMissileDamageData, Unit* pOwner, Unit* pOrigin, Unit* pMissile, int nLevel); // 0x0064B860
 
-#include "gen/data/Source/D2Common/UNITS/Missile.inc"
+#pragma pack(push, 1)
+struct d2data_007457EC_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_007457EC_t gData_007457EC; // 0x007457EC
+
+extern "C" struct d2data_007457EC_t gData_007457EC = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007457EC
+
+extern void* gpfnMissileCalcFunctions[8] = { (void*)(unsigned int)&MISSILE_GetMinimum, (void*)0x2, (void*)(unsigned int)&MISSILE_GetMaximum, (void*)0x2, (void*)(unsigned int)&MISSILE_GetRandomNumberInRange, (void*)0x2, (void*)(unsigned int)&MISSILE_GetSpecialParamValueForSkillMissile, (void*)0x2 }; // 0x00745828
+
+extern int gnMissileCalcFunctionCount = 4; // 0x00745848

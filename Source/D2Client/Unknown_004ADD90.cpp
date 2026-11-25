@@ -866,4 +866,53 @@ extern "C" int __fastcall NPCMENU_GetMonsterTypeFlags(D2UnitStrc* pUnit, unsigne
 
 
 
-#include "gen/data/Source/D2Client/Unknown_004ADD90.inc"
+extern D2UModCallbacksStrc gaUModCallbacks[43] = {
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0, 0, (void (__fastcall *)(void*, int, int))&NPCMENU_StateOverlayCross } },
+    { { 0, 0, (void (__fastcall *)(void*, int, int))&NPCMENU_StateStartEffect } },
+    { { 0, 0, (void (__fastcall *)(void*, int, int))&NPCMENU_StateDurielDeath } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0, 0, (void (__fastcall *)(void*, int, int))&NPCMENU_StateBurstOnFrame, (void (__fastcall *)(void*, int, int))&NPCMENU_StateBurst } },
+    { { 0, 0, (void (__fastcall *)(void*, int, int))&NPCMENU_StateStartEffect } },
+    { { 0 } },
+    { { 0, 0, (void (__fastcall *)(void*, int, int))&NPCMENU_StateBurstNeutral } },
+    { { 0 } },
+    { { 0, (void (__fastcall *)(void*, int, int))&NPCMENU_HandleUnitClassEvent } },
+    { { (void (__fastcall *)(void*, int, int))&NPCMENU_StateBurstOnFrame } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0, 0, 0, 0, (void (__fastcall *)(void*, int, int))&NPCMENU_StateMissileSplit } },
+    { { 0 } },
+    { { 0, 0, (void (__fastcall *)(void*, int, int))&NPCMENU_StateOverlayBurst } },
+    { { 0, 0, (void (__fastcall *)(void*, int, int))&NPCMENU_StateOverlayAtPath } },
+    { { 0, 0, (void (__fastcall *)(void*, int, int))&NPCMENU_StateMonOverlay } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0 } },
+    { { 0, 0, (void (__fastcall *)(void*, int, int))&NPCMENU_StateRequestsCallback } },
+    { { 0 } },
+    { { 0, 0, (void (__fastcall *)(void*, int, int))&NPCMENU_StateStartEffect } }
+}; // 0x00724E28
+
+extern unsigned short gwUniqueModNameIds[44] = {
+    0, 0, 0, 0, 0, 0xC85, 0xC86, 0xC87, 0xC88, 0xC89, 0, 0, 0, 0, 0, 0,
+    0, 0xC8B, 0xC8A, 0, 0, 0, 0, 0, 0xC91, 0xC8C, 0xC8E, 0xC8D, 0xC8F, 0xC90, 0xC92
+}; // 0x00725188

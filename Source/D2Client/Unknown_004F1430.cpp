@@ -564,7 +564,42 @@ int __fastcall sub_004F2F20_CltSkillMissileRing(D2UnitStrc* pUnit, int nSkillId,
     return 1;
 }
 
-#include "gen/data/Source/D2Client/Unknown_004F1430.inc"
+extern "C" const int gData_006DBFE8[64]; // 0x006DBFE8
+extern "C" const int gData_006DC0E8[64]; // 0x006DC0E8
+extern "C" const int gData_006DC228[64]; // 0x006DC228
+extern "C" const int gData_006DC328[64]; // 0x006DC328
+
+extern "C" const int gData_006DBFE8[64] = {
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2,
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29
+}; // 0x006DBFE8
+#pragma comment(linker, "/alternatename:?gaMissileRingX@@3PAHA=_gData_006DBFE8")
+
+extern "C" const int gData_006DC0E8[64] = {
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29,
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2
+}; // 0x006DC0E8
+#pragma comment(linker, "/alternatename:?gaMissileRingY@@3PAHA=_gData_006DC0E8")
+
+extern "C" const int gData_006DC228[64] = {
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2,
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29
+}; // 0x006DC228
+#pragma comment(linker, "/alternatename:?gaMissileRing2X@@3PAHA=_gData_006DC228")
+
+extern "C" const int gData_006DC328[64] = {
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29,
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2
+}; // 0x006DC328
+#pragma comment(linker, "/alternatename:?gaMissileRing2Y@@3PAHA=_gData_006DC328")
 
 // 0x004F2DD0
 static void __stdcall sub_004F2DD0_CreateMissileRing2(D2UnitStrc* pUnit, int nMissile, int nX, int nY, int nSkillLevel, int nCount, unsigned int nInitSeed, int nSkillId)

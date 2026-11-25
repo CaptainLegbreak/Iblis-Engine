@@ -24,17 +24,21 @@ Pandemonium Event and Diablo Clone.
 
 ## Port milestones
 
+The order follows DevilutionX: first prove the reconstructed source runs as a whole program while it is still
+Windows-only, then build the replay tests, then swap the Windows-only parts (DirectDraw, DirectSound, Win32 input,
+Storm and Battle.net networking) for SDL 3.
+
 | # | Milestone | Check |
 |---|---|---|
-| M0 | Self-contained source. The game's initialised data tables are written into the source as ordinary C++ definitions (347 files still read them from a generated folder); the 8 functions Iblis Codex has not reconstructed yet keep their functional rewrites; the PKWARE compression routines get an open implementation; the program gets its own resources; the Codex build markers (`// build:`) are removed | A fresh clone contains every line of code and data the program needs: nothing is read from `Game.exe`, and no file outside the repository is used |
-| M1 | Modern Windows build. CMake project, current MSVC, 32-bit Windows, original platform code still in place | Builds from a fresh clone with CMake alone; the exe boots and plays on Windows 10/11 from a folder containing only the exe and the game's MPQs: menus, a new character of each class, Act 1, save and reload, a TCP/IP game against stock 1.14d |
-| M2 | Behaviour test harness | Fixed-seed runs of map generation, item drops, item requirements and combat formulas give the same results in the engine as in the original |
-| M3 | SDL 3 platform layer: window, rendering output, audio, input, file and MPQ access, timing, threads, sockets; settings in a config file instead of the registry | Same game, no DirectX or Win32 UI calls; original `.d2s` characters load and save; M2's tests pass |
-| M4 | Linux (32-bit x86) | Plays on Linux without Wine; M2's tests pass |
-| M5 | The additions: resolutions and widescreen, automatic gold pickup, controller support, realm-only content offline | Each addition has a test and an entry in `docs/DIFFERENCES.md`; with them turned off, M2's tests still pass |
-| M6 | Crossroads: host a headless server or join one through the game browser | Host and join across Windows and Linux with no desyncs in a scripted session |
-| M7 | 64-bit, then macOS and ARM Linux | M1–M6 checks on 64-bit builds; saves identical to what 32-bit builds write |
-| M8 | Releases | One download per platform: the exe (or app bundle) and nothing else to install. On first run it finds the player's game files, or says clearly which ones are missing |
+| M0 | Self-contained source. The game's initialised data tables are ordinary C++ definitions in the source; the PKWARE compression routines get an open implementation; the program gets its own resources; the Codex build markers (`// build:`) are removed | A fresh clone contains every line of code and data the program needs: nothing is read from `Game.exe` |
+| M1 | The relinked exe: the source linked as an ordinary Windows program, with the stand-ins for the 8 unreconstructed functions and the globals the code reaches across fixed so they work on their own | On a clean 1.14d install, with the exe in place of `Game.exe`: menus, a new character of each class, Act 1, save and reload, a TCP/IP game against stock 1.14d |
+| M2 | Replay test harness, as DevilutionX does with recorded demos: fixed-seed replays checked against stock 1.14d | Map generation, item drops, combat and saves give identical results in the engine and in stock 1.14d |
+| M3 | SDL 3 platform layer: video, audio, input, files and MPQ access, timing, threads, sockets; settings in a config file instead of the registry | Same game with no DirectX or Win32 calls; original `.d2s` characters load and save; M2's replays pass |
+| M4 | Settings layer: resolutions and widescreen, automatic gold pickup, controller support, realm-only content offline. Every addition is an option that defaults to stock | With every option at its default, M2's replays pass; each option has its own test and an entry in `docs/DIFFERENCES.md` |
+| M5 | Mod loading, the OpenMW way: data folders stacked over the game's MPQs in a load order, Lua for logic (see the engine milestones) | A test mod loads, and with no mods M2's replays pass |
+| M6 | Crossroads: host a headless server or join one through the game browser, growing around the engine as TES3MP grew around OpenMW | Host and join across Windows and Linux with no desyncs in a scripted session |
+| M7 | Linux, macOS, 64-bit and ARM builds | M2's replays pass on each; saves identical across platforms |
+| M8 | Releases | One download per platform with the engine alone. On first run it finds the player's own 1.14d MPQs, or says clearly which ones are missing. No Blizzard data is ever shipped |
 
 ## Engine milestones
 
@@ -49,6 +53,9 @@ Built by refactoring the port, with the port's behaviour as the baseline every c
 | E5 | Native mods |
 | E6 | Multiplayer content lock: every player in a Crossroads game runs the same mods, except server-only and visual-only mods |
 | E7 | First mod through the whole pipeline: Iblis: Resurrected |
+
+Iblis: Resurrected, Equilibrium, Unearthed, The Darkening and the other mods are content packs in this load order, not
+separate programs.
 
 ## Keeping up with Iblis Codex
 

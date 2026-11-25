@@ -1982,4 +1982,27 @@ int __fastcall MONSTERSPAWN_GetResurrectMode(D2UnitStrc* pUnit, int bUseResurrec
     return MONMODE_NEUTRAL;
 }
 
-#include "gen/data/Source/D2Game/Ai/AiUtil.inc"
+extern "C" void __cdecl sub_005DC8E0(); // 0x005DC8E0
+extern "C" void __cdecl sub_005DCBD0(); // 0x005DCBD0
+extern "C" void __cdecl sub_005DCC60(); // 0x005DCC60
+extern "C" void __cdecl sub_005DCCC0(); // 0x005DCCC0
+extern "C" void __cdecl sub_005DCE10(); // 0x005DCE10
+
+extern "C" const D2UnkAiTableStrc gData_006E3300[13]; // 0x006E3300
+
+extern "C" const D2UnkAiTableStrc gData_006E3300[13] = {
+    { 0 },
+    { 0 },
+    { 1 },
+    { 0, (D2UnitStrc *(__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, void*))&AIUTIL_TargetCallback_CountAndFindFriendlyMonster },
+    { 0, (D2UnitStrc *(__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, void*))&sub_005DC8E0 },
+    { 2, (D2UnitStrc *(__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, void*))&AIUTIL_TargetCallback_SelectHostileTarget },
+    { 0, (D2UnitStrc *(__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, void*))&sub_005DCBD0 },
+    { 0, (D2UnitStrc *(__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, void*))&sub_005DCC60 },
+    { 0, (D2UnitStrc *(__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, void*))&AIUTIL_TargetCallback_FindClosestClosedDoor },
+    { 3, (D2UnitStrc *(__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, void*))&AIUTIL_TargetCallback_CountDeadMinions },
+    { 3 },
+    { 2, (D2UnitStrc *(__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, void*))&sub_005DCCC0 },
+    { 0, (D2UnitStrc *(__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, void*))&sub_005DCE10 }
+}; // 0x006E3300
+#pragma comment(linker, "/alternatename:?gaAiTargetSearchTable@@3QBUD2UnkAiTableStrc@@B=_gData_006E3300")

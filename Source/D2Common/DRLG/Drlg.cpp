@@ -1814,4 +1814,63 @@ void __fastcall DRLGOUTPLACE_SetOutGridLinkFlags(D2DrlgLevelStrc* pLevel)
     while (pVertex != pOutdoors->pVertex);
 }
 
-#include "gen/data/Source/D2Common/DRLG/Drlg.inc"
+#pragma pack(push, 1)
+struct d2data_007456FC_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006EB180[64]; // 0x006EB180
+extern "C" const int gData_006EB2F0[6]; // 0x006EB2F0
+extern "C" const int gData_006EEF20[26]; // 0x006EEF20
+extern "C" struct d2data_007456FC_t gData_007456FC; // 0x007456FC
+
+extern "C" const int gData_006EB180[64] = {
+    -1, -1, -1, 0, 2, 4, 6, 8, -1, -1, 0, 1, 2, 4, 6, 8,
+    -1, 0, 0, 2, 3, 5, 7, 8, 0, 1, 2, 2, 4, 5, 7, 8,
+    2, 2, 3, 4, 5, 6, 7, 9, 4, 4, 5, 5, 6, 7, 8, 9,
+    6, 6, 7, 7, 7, 8, 10, 10, 8, 8, 8, 8, 9, 9, 10, 11
+}; // 0x006EB180
+#pragma comment(linker, "/alternatename:?gnUnitDistanceTable@@3PAHA=_gData_006EB180")
+
+extern "C" const int gData_006EB2F0[6] = { 1, 40, 75, 103, 109, 1024 }; // 0x006EB2F0
+#pragma comment(linker, "/alternatename:?gnFirstLevelIdByAct@@3QBHB=_gData_006EB2F0")
+
+extern "C" const int gData_006EEF20[26] = {
+    0, 1, 2, 1, 2, 3, 3, 5, 5, 6, 6, 7, 7, 8, 9, 10,
+    11, 12, 13, 14, 15, 16, 17, 18, 20
+}; // 0x006EEF20
+#pragma comment(linker, "/alternatename:?gnTileTypeMappingTable@@3QBHB=_gData_006EEF20")
+
+extern "C" struct d2data_007456FC_t gData_007456FC = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007456FC

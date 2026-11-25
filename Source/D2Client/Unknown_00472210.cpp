@@ -1579,4 +1579,28 @@ void __cdecl sub_00473F50_UpdateWeather()
     }
 }
 
-#include "gen/data/Source/D2Client/Unknown_00472210.inc"
+extern "C" const D2PeriodLightStrc gData_006D6E40[4]; // 0x006D6E40
+extern "C" const D2WeatherLineStrc gData_006D6E78[9]; // 0x006D6E78
+
+extern "C" const D2PeriodLightStrc gData_006D6E40[4] = {
+    { 0x50, 0xC8 },
+    { 0x40, 0xA0 },
+    { 0x20, 0x50 },
+    { 0x40, 0xA0 }
+}; // 0x006D6E40
+#pragma comment(linker, "/alternatename:?gaPeriodLights@@3QBUD2PeriodLightStrc@@B=_gData_006D6E40")
+
+extern "C" const D2WeatherLineStrc gData_006D6E78[9] = {
+    { 0, 0, 0, 1 },
+    { -1, -1 },
+    { 0, -1, 0, 1 },
+    { 1, 0, -1, 1 },
+    { 1, 0, 0, 1 },
+    { 2, -1, -1, 1 },
+    { 1, 1, -2, -1 },
+    { 2, 1, -2, -1 },
+    { 2, -1, -2, 2 }
+}; // 0x006D6E78
+#pragma comment(linker, "/alternatename:?gaWeatherLines@@3PAUD2WeatherLineStrc@@A=_gData_006D6E78")
+
+extern int gbPlayThunderSound = 1; // 0x00712B4C

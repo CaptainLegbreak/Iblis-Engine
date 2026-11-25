@@ -530,4 +530,7 @@ int __fastcall D3DSUBTILECACHE_SubtileCacheAdd(D2CacheListStrc* list)
     }
 }
 
-#include "gen/data/Source/D2Direct3D/Src/d3dSubtileCache.inc"
+extern "C" const char gData_006FC3A8[28]; // 0x006FC3A8
+
+extern "C" const char gData_006FC3A8[28] = ".\\Src\\d3dSubtileCache.cpp"; // 0x006FC3A8
+#pragma comment(linker, "/alternatename:?gszSubtilePoolSourceFile@@3QBDB=_gData_006FC3A8")

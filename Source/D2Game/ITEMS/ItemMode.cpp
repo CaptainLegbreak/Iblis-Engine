@@ -6572,4 +6572,14 @@ void __fastcall ITEMMODE_DetachItemFromOwner(D2GameStrc* pGame, D2UnitStrc* pUni
     }
 }
 
-#include "gen/data/Source/D2Game/ITEMS/ItemMode.inc"
+extern "C" const EventCallbackFunction gData_006E117C[15]; // 0x006E117C
+
+extern "C" const EventCallbackFunction gData_006E117C[15] = { 0, 0, 0, (EventCallbackFunction)&ITEMMODE_ReplenishItem, (EventCallbackFunction)&ITEMMODE_EventFn4_Return, 0, 0, 0, 0, 0, 0, 0, (EventCallbackFunction)&ITEMMODE_UpdateItemStatListExpiration }; // 0x006E117C
+#pragma comment(linker, "/alternatename:?gpfnItemEventFunctions@@3PAP6IXPAUD2GameStrc@@PAUD2UnitStrc@@@ZA=_gData_006E117C")
+
+extern D2QuestItemPairStrc gaQuestItemPairs[4] = {
+    { 3, 4 },
+    { 18, 0x11 },
+    { 19, 0x12 },
+    { 27, 0x19 }
+}; // 0x00731FEC

@@ -3038,4 +3038,7 @@ int __fastcall D2GAME_PLRTRADE_IsInteractingWithPlayer(D2GameStrc* pGame, D2Unit
     return 0;
 }
 
-#include "gen/data/Source/D2Game/PLAYER/PlrTrade.inc"
+extern "C" const CubeOutputFunc gData_006E11C8[4]; // 0x006E11C8
+
+extern "C" const CubeOutputFunc gData_006E11C8[4] = { 0, (CubeOutputFunc)&PLRTRADE_CreateCowPortal, (CubeOutputFunc)&PLRTRADE_CreateUberRunPortal, (CubeOutputFunc)&PLRTRADE_CreateUberFinalePortal }; // 0x006E11C8
+#pragma comment(linker, "/alternatename:?gpfnCubeOutputFunctions@@3QBQ6IHPAUD2GameStrc@@PAUD2UnitStrc@@@ZB=_gData_006E11C8")

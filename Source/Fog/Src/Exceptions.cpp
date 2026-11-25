@@ -1337,4 +1337,23 @@ void __fastcall EXCEPTIONS_WalkCurrentStack(const char* szPrefix)
     }
 }
 
-#include "gen/data/Source/Fog/Src/Exceptions.inc"
+extern "C" const char gData_006CD5FC[8]; // 0x006CD5FC
+extern "C" const char gData_006CD890[56]; // 0x006CD890
+extern "C" const char gData_006CD8C8[56]; // 0x006CD8C8
+extern "C" const char gData_006CD90C[4]; // 0x006CD90C
+extern "C" const char gData_006CD938[56]; // 0x006CD938
+
+extern "C" const char gData_006CD5FC[8] = "unknown"; // 0x006CD5FC
+#pragma comment(linker, "/alternatename:_gszUnknown=_gData_006CD5FC")
+
+extern "C" const char gData_006CD890[56] = "\n                           // 0x%08X - %s - %s+%04X\n\n"; // 0x006CD890
+#pragma comment(linker, "/alternatename:?gszStackSymbolLine@@3QBDB=_gData_006CD890")
+
+extern "C" const char gData_006CD8C8[56] = "\n                           // 0x%08X - %s - %s='%s'\n\n"; // 0x006CD8C8
+#pragma comment(linker, "/alternatename:?gszStackStringLine@@3QBDB=_gData_006CD8C8")
+
+extern "C" const char gData_006CD90C[4] = "%s\n"; // 0x006CD90C
+#pragma comment(linker, "/alternatename:?gszLogLineFormat@@3QBDB=_gData_006CD90C")
+
+extern "C" const char gData_006CD938[56] = "\n                     // EIP = 0x%08X - %s - %s+%04X\n\n"; // 0x006CD938
+#pragma comment(linker, "/alternatename:?gszStackEipLine@@3QBDB=_gData_006CD938")

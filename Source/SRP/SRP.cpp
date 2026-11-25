@@ -277,4 +277,7 @@ int D2BigPairStrc::sub_00528AC0_VerifyClientProof(D2BigServerRecordStrc* pRecord
     return memcmp(pRecord->abClientProof, pClientProof, sizeof(pRecord->abClientProof)) == 0;
 }
 
-#include "gen/data/Source/SRP/SRP.inc"
+extern "C" const unsigned char gData_006E03F0[4]; // 0x006E03F0
+
+extern "C" const unsigned char gData_006E03F0[4] = { 0x80 }; // 0x006E03F0
+#pragma comment(linker, "/alternatename:_gabSha1Pad80=_gData_006E03F0")

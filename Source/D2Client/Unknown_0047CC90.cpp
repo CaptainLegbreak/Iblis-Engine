@@ -2443,4 +2443,310 @@ void __cdecl sub_K04_EmitDrawModeCel(int nMode)
     sub_K04_EmitUse(nMode);
 }
 
-#include "gen/data/Source/D2Client/Unknown_0047CC90.inc"
+extern "C" void __cdecl sub_0047CD80(); // 0x0047CD80
+extern "C" char gData_006D7280[]; // 0x006D7280
+extern "C" char gData_006D7284[]; // 0x006D7284
+extern "C" void __cdecl CHAT_HandleImeStartComposition(); // 0x0047ACA0
+extern "C" void __cdecl CHAT_ResetImeCompositionMsg(); // 0x0047AD10
+extern "C" void __cdecl CHAT_SetMsgHandled(); // 0x0047B070
+extern "C" void __cdecl CHAT_CloseChatOnPanelClickMsg(); // 0x0047BC70
+
+#pragma pack(push, 1)
+struct d2data_00713008_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00713048_t
+{
+    unsigned char b0[16];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00713058_t
+{
+    unsigned char b0[264];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00713160_t
+{
+    unsigned char b0[192];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0071874C_t
+{
+    unsigned char b0[16];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00718760_t
+{
+    unsigned char b0[16];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0071D724_t
+{
+    unsigned char b0[16];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0071D738_t
+{
+    unsigned char b0[16];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00713008_t gData_00713008; // 0x00713008
+extern "C" struct d2data_00713048_t gData_00713048; // 0x00713048
+extern "C" struct d2data_00713058_t gData_00713058; // 0x00713058
+extern "C" struct d2data_00713160_t gData_00713160; // 0x00713160
+extern "C" struct d2data_0071874C_t gData_0071874C; // 0x0071874C
+extern "C" struct d2data_00718760_t gData_00718760; // 0x00718760
+extern "C" struct d2data_0071D724_t gData_0071D724; // 0x0071D724
+extern "C" struct d2data_0071D738_t gData_0071D738; // 0x0071D738
+
+extern "C" struct d2data_00713008_t gData_00713008 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00713008
+
+extern D2OptionHeaderStrc gtMainOptionHeader = { 3 }; // 0x00713044
+
+extern "C" struct d2data_00713048_t gData_00713048 = {
+    { 0x32, 0x00, 0x00, 0x00, 0x27, 0x00, 0x00, 0x00, 0x33 }
+}; // 0x00713048
+
+extern "C" struct d2data_00713058_t gData_00713058 = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x01
+    }
+}; // 0x00713058
+#pragma comment(linker, "/alternatename:?gaEscMenuUIState@@3PAUD2EscMenuUIStateStrc@@A=_gData_00713058")
+
+extern "C" struct d2data_00713160_t gData_00713160 = {
+    {
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01
+    }
+}; // 0x00713160
+
+extern D2OptionEntryStrc gaMainOptionEntries[3] = {
+    { 0, 0, 0, "Options", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F2A0_ShowPage1 },
+    { 0, 0, 0, "Exit", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F2D0_ExitGame },
+    { 0, 0, 0, "ReturnToGame", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F300_CloseMenus }
+}; // 0x00713220
+
+extern D2OptionHeaderStrc gtOptionsHeader = { 5, 50, 39, 51 }; // 0x00714210
+
+extern D2OptionHeaderStrc gtSoundOptionHeader = { 8, 45, 34, 49, 36 }; // 0x00714224
+
+extern D2OptionEntryStrc gaOptionsEntries[5] = {
+    { 0, 0, 0, "SoundOptions", (int (__cdecl *)())&sub_0047CD80, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F310_ShowPage2 },
+    { 0, 0, 0, "VideoOptions", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F340_ShowPage3 },
+    { 0, 0, 0, "AutoMapOptions", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F3A0_ShowPage4 },
+    { 0, 0, 0, "CfgOptions", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F400_OpenPanel },
+    { 0, 0, 0, "Previous", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F430_ShowPage0 }
+}; // 0x00714238
+
+extern D2OptionEntryStrc gaSoundOptionEntries[8] = {
+    { -1, 0, 0, "SoundOptions" },
+    { 2, 0, 0, "Sound", (int (__cdecl *)())&sub_0047CD90_IsSoundEnabled, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047CDA0_MasterVolumeSelect, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047CDC0_MasterVolumeOption, 0, 0x15 },
+    { 2, 0, 0, "Music", (int (__cdecl *)())&sub_0047CDE0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047CDF0_MusicVolumeSelect, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047CE10_MusicVolumeOption, 0, 0x15 },
+    { 1, 0, 0, "3DSound", (int (__cdecl *)())&sub_0047CE30_Is3DSoundEnabled, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047CE40_3DSoundSelect, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047CE50_SoundModeOption, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047CE50_SoundModeOption, 2, 1, { 0 }, {
+    "SmallOff",
+    "SmallOn"
+} },
+    { 1, 0, 0, "EAX", (int (__cdecl *)())&sub_0047CEB0_IsEAXEnabled, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047CEC0_EAXSelect, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047CED0_SoundMode2Option, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047CED0_SoundMode2Option, 2, 1, { 0 }, {
+    "SmallOff",
+    "SmallOn"
+} },
+    { 2, 0, 0, "3DBias", (int (__cdecl *)())&sub_0047CE60_Is3DBiasEnabled, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047CE70_PositionalBiasSelect, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047CE90_PositionalBiasOption, 0, 0x15, 0, { 1 } },
+    { 1, 0, 0, "NPCSpeech", (int (__cdecl *)())&sub_0047CEE0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047CEF0_NpcSpeechSelect, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047CF50_NpcSpeechOption, 0, 3, 2, { 0 }, {
+    "AudioOnly",
+    "TextOnly",
+    "AudioText"
+} },
+    { 0, 0, 0, "SPrevious", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F460_ShowPage1Twin }
+}; // 0x00715CC8
+
+extern D2OptionHeaderStrc gtVideoOptionHeader = { 7 }; // 0x00718748
+
+extern "C" struct d2data_0071874C_t gData_0071874C = {
+    { 0x2D, 0x00, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x31, 0x00, 0x00, 0x00, 0x24 }
+}; // 0x0071874C
+
+extern D2OptionHeaderStrc gtVideoResOptionHeader = { 8 }; // 0x0071875C
+
+extern "C" struct d2data_00718760_t gData_00718760 = {
+    { 0x2D, 0x00, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x31, 0x00, 0x00, 0x00, 0x24 }
+}; // 0x00718760
+
+extern D2OptionEntryStrc gaVideoOptionEntries[7] = {
+    { -1, 0, 0, "VideoOptions" },
+    { 1, 0, 0, "LightQuality", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047CF80_LightQualitySelect, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047CFE0_LightQualityOption, 0, 3, 2, { 0 }, {
+    "Low",
+    "Medium",
+    "High"
+} },
+    { 1, 0, 0, "BlendShadow", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D040_BlendShadowsChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D070_BlendShadowsLoad, 0, 2, 1, { 0 }, {
+    "SmallOff",
+    "SmallOn"
+} },
+    { 1, 0, 0, "Perspective", (int (__cdecl *)())&sub_0047D120_PerspectiveEnabled, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D130_PerspectiveChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D180_PerspectiveLoad, 0, 2, 1, { 0 }, {
+    "SmallOff",
+    "SmallOn"
+} },
+    { 2, 0, 0, "Gamma", (int (__cdecl *)())&sub_0047D1F0_GammaEnabled, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D200_GammaSelect, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D230_GammaOption, 0, 0x15, 0, { 1 } },
+    { 2, 0, 0, "Contrast", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D2B0_ContrastSelect, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D2F0_ContrastOption, 0, 0x64, 0x32, { 1 } },
+    { 0, 0, 0, "SPrevious", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F460_ShowPage1Twin }
+}; // 0x00718770
+
+extern D2OptionEntryStrc gaVideoResOptionEntries[8] = {
+    { -1, 0, 0, "VideoOptions" },
+    { 1, 1, 0, "Resolution", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D0A0_ResolutionChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D0E0_ResolutionLoad, 0, 2, 0, { 0 }, {
+    "640x480",
+    "800x600"
+} },
+    { 1, 0, 0, "LightQuality", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047CF80_LightQualitySelect, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047CFE0_LightQualityOption, 0, 3, 2, { 0 }, {
+    "Low",
+    "Medium",
+    "High"
+} },
+    { 1, 0, 0, "BlendShadow", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D040_BlendShadowsChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D070_BlendShadowsLoad, 0, 2, 1, { 0 }, {
+    "SmallOff",
+    "SmallOn"
+} },
+    { 1, 0, 0, "Perspective", (int (__cdecl *)())&sub_0047D120_PerspectiveEnabled, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D130_PerspectiveChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D180_PerspectiveLoad, 0, 2, 1, { 0 }, {
+    "SmallOff",
+    "SmallOn"
+} },
+    { 2, 0, 0, "Gamma", (int (__cdecl *)())&sub_0047D1F0_GammaEnabled, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D200_GammaSelect, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D230_GammaOption, 0, 0x15, 0, { 1 } },
+    { 2, 0, 0, "Contrast", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D2B0_ContrastSelect, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D2F0_ContrastOption, 0, 0x64, 0x32, { 1 } },
+    { 0, 0, 0, "SPrevious", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F460_ShowPage1Twin }
+}; // 0x0071ACA0
+
+extern D2OptionHeaderStrc gtAutomapOptionHeader = { 6 }; // 0x0071D720
+
+extern "C" struct d2data_0071D724_t gData_0071D724 = {
+    { 0x2D, 0x00, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x31, 0x00, 0x00, 0x00, 0x24 }
+}; // 0x0071D724
+
+extern D2OptionHeaderStrc gtAutomapModeOptionHeader = { 7 }; // 0x0071D734
+
+extern "C" struct d2data_0071D738_t gData_0071D738 = {
+    { 0x2D, 0x00, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x31, 0x00, 0x00, 0x00, 0x24 }
+}; // 0x0071D738
+
+extern D2OptionEntryStrc gaAutomapOptionEntries[6] = {
+    { -1, 0, 0, "AutoMapOptions" },
+    { 1, 0, 0, "AutoMapFade", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D3F0_AutoMapFadeChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D430_LoadAutoMapFade, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D430_LoadAutoMapFade, 4, 0, { 0 }, {
+    "SmallNo",
+    "Center",
+    "Everything",
+    "Auto"
+} },
+    { 1, 0, 0, "AutoMapCenter", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D470_AutoMapCentersChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D480_AutoMapCentersLoad, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D480_AutoMapCentersLoad, 2, 1, { 0 }, {
+    "SmallNo",
+    "SmallYes"
+} },
+    { 1, 0, 0, "AutoMapParty", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D490_AutoMapPartyChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D4A0_AutoMapPartyLoad, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D4A0_AutoMapPartyLoad, 2, 1, { 0 }, {
+    "SmallNo",
+    "SmallYes"
+} },
+    { 1, 0, 0, "AutoMapPartyNames", (int (__cdecl *)())&sub_0047D4B0_PartyNamesEnabled, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D4C0_AutoMapPartyNamesChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D4D0_AutoMapPartyNamesLoad, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D4D0_AutoMapPartyNamesLoad, 2, 1, { 0 }, {
+    "SmallNo",
+    "SmallYes"
+} },
+    { 0, 0, 0, "SPrevious", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F460_ShowPage1Twin }
+}; // 0x0071D748
+
+extern D2OptionEntryStrc gaAutomapModeOptionEntries[7] = {
+    { -1, 0, 0, "AutoMapOptions" },
+    { 1, 1, 0, "AutoMapMode", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D370_AutoMapModeChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D3B0_LoadAutoMapMode, 0, 2, 0, { 0 }, {
+    "Full",
+    "Mini"
+} },
+    { 1, 0, 0, "AutoMapFade", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D3F0_AutoMapFadeChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D430_LoadAutoMapFade, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D430_LoadAutoMapFade, 4, 0, { 0 }, {
+    "SmallNo",
+    "Center",
+    "Everything",
+    "Auto"
+} },
+    { 1, 0, 0, "AutoMapCenter", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D470_AutoMapCentersChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D480_AutoMapCentersLoad, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D480_AutoMapCentersLoad, 2, 1, { 0 }, {
+    "SmallNo",
+    "SmallYes"
+} },
+    { 1, 0, 0, "AutoMapParty", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D490_AutoMapPartyChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D4A0_AutoMapPartyLoad, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D4A0_AutoMapPartyLoad, 2, 1, { 0 }, {
+    "SmallNo",
+    "SmallYes"
+} },
+    { 1, 0, 0, "AutoMapPartyNames", (int (__cdecl *)())&sub_0047D4B0_PartyNamesEnabled, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047D4C0_AutoMapPartyNamesChanged, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D4D0_AutoMapPartyNamesLoad, (void (__fastcall *)(D2OptionEntryStrc *, int))&sub_0047D4D0_AutoMapPartyNamesLoad, 2, 1, { 0 }, {
+    "SmallNo",
+    "SmallYes"
+} },
+    { 0, 0, 0, "SPrevious", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F460_ShowPage1Twin }
+}; // 0x0071F728

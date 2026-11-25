@@ -291,4 +291,18 @@ void Crypt::RSA::Process(void* pBuffer, unsigned int nSize)
     tOutput.sub_00426010_ReadFill(pBuffer, nSize);
 }
 
-#include "gen/data/Source/Storm/Unknown_00425720.inc"
+extern "C" char gData_006F28F8[]; // 0x006F28F8
+
+#pragma pack(push, 1)
+struct d2data_00708890_t
+{
+    unsigned char b0[64];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00708890_t gData_00708890; // 0x00708890
+
+extern "C" struct d2data_00708890_t gData_00708890 = {
+    { 0x80 }
+}; // 0x00708890
+#pragma comment(linker, "/alternatename:_gaSha1Padding_00708890=_gData_00708890")

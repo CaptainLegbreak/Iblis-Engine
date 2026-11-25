@@ -94,7 +94,65 @@ void __fastcall DRLGOUTJUNG_BuildJungle(D2DrlgLevelStrc* ptDrlgLevel)
     }
 }
 
-#include "gen/data/Source/D2Common/DRLG/OutJung.inc"
+#pragma pack(push, 1)
+struct d2data_006F2370_t
+{
+    unsigned char b0[12];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00749C78_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006F2328[18]; // 0x006F2328
+extern "C" const struct d2data_006F2370_t gData_006F2370; // 0x006F2370
+extern "C" struct d2data_00749C78_t gData_00749C78; // 0x00749C78
+
+extern "C" const int gData_006F2328[18] = {
+    0, 1, 2, 1, 0, 2, 0, 2, 1, 1, 2, 0, 2, 0, 1, 2,
+    1
+}; // 0x006F2328
+#pragma comment(linker, "/alternatename:?gnJungleFiles@@3QBHB=_gData_006F2328")
+
+extern "C" const struct d2data_006F2370_t gData_006F2370 = {
+    { 0x00, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x14 }
+}; // 0x006F2370
+
+extern "C" struct d2data_00749C78_t gData_00749C78 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749C78
 
 // 0x0067EAD0
 void __fastcall DRLGOUTJUNG_BuildLowerKurast(D2DrlgLevelStrc* pLevel)

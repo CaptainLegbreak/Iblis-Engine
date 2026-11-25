@@ -925,4 +925,18 @@ int __fastcall sub_H05_Emit_0054EBC0(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom)
     return sub_0054EBC0_CanPopulateRoom(pRoom, pGame);
 }
 
-#include "gen/data/Source/D2Game/Unknown_0054DAC0.inc"
+#pragma pack(push, 1)
+struct d2data_00731B30_t
+{
+    unsigned char b0[16];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00731B30_t gData_00731B30; // 0x00731B30
+
+extern int gnWanderingIds[1] = { 270 }; // 0x00731B2C
+
+extern "C" struct d2data_00731B30_t gData_00731B30 = {
+    { 0x00, 0x01 }
+}; // 0x00731B30
+#pragma comment(linker, "/alternatename:?gaWanderingRanges@@3PAUD2WanderingRange@@A=_gData_00731B30")

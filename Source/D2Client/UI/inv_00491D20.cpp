@@ -821,4 +821,4 @@ OUTSIDE:
 // build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 
 
-#include "gen/data/Source/D2Client/UI/inv_00491D20.inc"
+

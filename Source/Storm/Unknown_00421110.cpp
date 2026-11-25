@@ -123,4 +123,39 @@ unsigned int D2StormArrayBStrc::sub_004219D0_AddOne(const unsigned char* pData)
     return sub_004218B0_Add(1, pData);
 }
 
-#include "gen/data/Source/Storm/Unknown_00421110.inc"
+extern "C" char gData_006F28F8[]; // 0x006F28F8
+
+#pragma pack(push, 1)
+struct d2data_00708874_t
+{
+    unsigned char b0[4];
+    const void* p1;
+    unsigned char b2[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00708880_t
+{
+    unsigned char b0[4];
+    const void* p1;
+    unsigned char b2[4];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00708874_t gData_00708874; // 0x00708874
+extern "C" struct d2data_00708880_t gData_00708880; // 0x00708880
+
+extern "C" struct d2data_00708874_t gData_00708874 = {
+    { 0x2E, 0x49 },
+    (const void*)&gData_006F28F8,
+    { 0x00 }
+}; // 0x00708874
+#pragma comment(linker, "/alternatename:?gszTypeNameUInt_00708874@@3PADA=_gData_00708874")
+
+extern "C" struct d2data_00708880_t gData_00708880 = {
+    { 0x2E, 0x45 },
+    (const void*)&gData_006F28F8,
+    { 0x00 }
+}; // 0x00708880
+#pragma comment(linker, "/alternatename:?gszTypeNameUChar_00708880@@3PADA=_gData_00708880")

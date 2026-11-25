@@ -1123,4 +1123,111 @@ int __fastcall sub_0050CD40_GlideShadowTileDraw(D2TileLibraryEntryStrc* pTile, i
     return nResult;
 }
 
-#include "gen/data/Source/D2Glide/Unknown_0050BD30.inc"
+extern "C" char gData_00880474[]; // 0x00880474
+extern "C" char gData_00880490[]; // 0x00880490
+extern "C" char gData_008804AC[]; // 0x008804AC
+extern "C" char gData_008804C8[]; // 0x008804C8
+extern "C" char gData_008804E4[]; // 0x008804E4
+extern "C" char gData_00880500[]; // 0x00880500
+extern "C" char gData_0088051C[]; // 0x0088051C
+extern "C" char gData_00880538[]; // 0x00880538
+extern "C" char gData_00880554[]; // 0x00880554
+extern "C" char gData_00880570[]; // 0x00880570
+extern "C" char gData_0088058C[]; // 0x0088058C
+extern "C" char gData_008805A8[]; // 0x008805A8
+extern "C" char gData_008805C4[]; // 0x008805C4
+extern "C" char gData_008805E0[]; // 0x008805E0
+extern "C" char gData_00880704[]; // 0x00880704
+extern "C" char gData_008809C0[]; // 0x008809C0
+extern "C" char gData_00880A4C[]; // 0x00880A4C
+
+extern int gaGlideCrossOffsetX[8] = { 1, 2, 0, 1, 2, 3, 1, 2 }; // 0x0072F2C8
+
+extern int gaGlideCrossOffsetY[8] = { 0, 0, 1, 1, 1, 1, 2, 2 }; // 0x0072F2E8
+
+extern unsigned int gaGlideLightPalette[18] = {
+    0, 0x11111100, 0x22222200, 0x33333300, 0x44444400, 0x55555500, 0x66666600, 0x77777700, 0x88888800, 0x99999900, 0xAAAAAA00, 0xBBBBBB00, 0xCCCCCC00, 0xDDDDDD00, 0xEEEEEE00, 0xFFFFFF00,
+    0xFFFFFF00
+}; // 0x0072F308
+
+extern void* gapGlideTileStripA[10] = { (void*)&gaGlideTileGrid, (void*)&gData_00880474, (void*)&gData_008804AC, (void*)&gData_008804C8, (void*)&gData_00880500, (void*)&gData_0088051C, (void*)&gData_00880554, (void*)&gData_00880570, (void*)&gData_008805A8, (void*)&gData_008805C4 }; // 0x0072F350
+
+extern void* gapGlideTileStripB[10] = { (void*)&gData_00880474, (void*)&gData_00880490, (void*)&gData_008804C8, (void*)&gData_008804E4, (void*)&gData_0088051C, (void*)&gData_00880538, (void*)&gData_00880570, (void*)&gData_0088058C, (void*)&gData_008805C4, (void*)&gData_008805E0 }; // 0x0072F378
+
+extern int gaGlideWallCorner[10][6][3] = {
+    { 0 },
+    {
+    { 0, 5, -40 },
+    { 0, 3, -56 },
+    { 0, 1, -72 },
+    { 0, -1, -88 },
+    { 0, -3, -104 },
+    { 0, -5, -120 }
+},
+    {
+    { -5, 0, -120 },
+    { -3, 0, -104 },
+    { -1, 0, -88 },
+    { 1, 0, -72 },
+    { 3, 0, -56 },
+    { 5, 0, -40 }
+},
+    {
+    { 0, 5, -40 },
+    { 0, 3, -56 },
+    { 0, 1, -72 },
+    { 1, 0, -72 },
+    { 3, 0, -56 },
+    { 5, 0, -40 }
+},
+    {
+    { -5, 0, -120 },
+    { -3, 0, -104 },
+    { -1, 0, -88 },
+    { 0, -1, -88 },
+    { 0, -3, -104 },
+    { 0, -5, -120 }
+},
+    {
+    { 0, 5, -40 },
+    { 0, 3, -56 },
+    { 0, 1, -72 },
+    { 1, 0, -72 },
+    { 3, 0, -56 },
+    { 5, 0, -40 }
+},
+    {
+    { 5, 10, 40 },
+    { 5, 8, 24 },
+    { 5, 6, 8 },
+    { 5, 4, -8 },
+    { 5, 2, -24 },
+    { 5, 0, -40 }
+},
+    {
+    { 0, 5, -40 },
+    { 2, 5, -24 },
+    { 4, 5, -8 },
+    { 6, 5, 8 },
+    { 8, 5, 24 },
+    { 10, 5, 40 }
+},
+    {
+    { 0, 5, -40 },
+    { 2, 5, -24 },
+    { 4, 5, -8 },
+    { 5, 4, -8 },
+    { 5, 2, -24 },
+    { 5, 0, -40 }
+},
+    {
+    { 0, 5, -40 },
+    { 2, 5, -24 },
+    { 4, 5, -8 },
+    { 5, 4, -8 },
+    { 5, 2, -24 },
+    { 5, 0, -40 }
+}
+}; // 0x0072F3A0
+
+extern void* gapGlideTileFan[4] = { (void*)&gatGlideTileVertices, (void*)&gData_00880704, (void*)&gData_00880A4C, (void*)&gData_008809C0 }; // 0x0072F670

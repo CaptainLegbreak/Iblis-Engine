@@ -9,5 +9,5 @@ void __cdecl sub_006CADE0_RegisterCleanup()
     sub_00683824_RegisterExit(sub_006CB400_Nop);
 }
 
-#include "gen/data/Source/Storm/Unknown_006CACE0.inc"
+
 

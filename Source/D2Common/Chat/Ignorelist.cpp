@@ -2772,4 +2772,127 @@ void sub_F45_EmitSlotArrays(D2CommonStormSlotArrayAStrc* pArrayA, D2CommonStormS
     delete pArrayB;
 }
 
-#include "gen/data/Source/D2Common/Chat/Ignorelist.inc"
+extern "C" char gData_006F28F8[]; // 0x006F28F8
+
+#pragma pack(push, 1)
+struct d2data_0074362C_t
+{
+    unsigned char b0[24];
+    const void* p1;
+    unsigned char b2[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0074364C_t
+{
+    unsigned char b0[24];
+    const void* p1;
+    unsigned char b2[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0074366C_t
+{
+    unsigned char b0[56];
+    const void* p1;
+    unsigned char b2[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00743780_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007437BC_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+extern "C" const char gData_006E62A8[8]; // 0x006E62A8
+extern "C" struct d2data_0074362C_t gData_0074362C; // 0x0074362C
+extern "C" struct d2data_0074364C_t gData_0074364C; // 0x0074364C
+extern "C" struct d2data_0074366C_t gData_0074366C; // 0x0074366C
+extern "C" const char gData_007436AC[56]; // 0x007436AC
+extern "C" struct d2data_00743780_t gData_00743780; // 0x00743780
+extern "C" struct d2data_007437BC_t gData_007437BC; // 0x007437BC
+
+extern "C" const char gData_006E62A8[8] = "!%s\n"; // 0x006E62A8
+#pragma comment(linker, "/alternatename:?gszBangLineFormat@@3QBDB=_gData_006E62A8")
+
+extern "C" struct d2data_0074362C_t gData_0074362C = {
+    {
+        0x2E, 0x3F, 0x41, 0x55, 0x4D, 0x61, 0x70, 0x70, 0x69, 0x6E, 0x67, 0x45, 0x6E, 0x74, 0x72, 0x79,
+        0x4E, 0x6F, 0x64, 0x65, 0x40, 0x40
+    },
+    (const void*)&gData_006F28F8,
+    { 0x00 }
+}; // 0x0074362C
+#pragma comment(linker, "/alternatename:_gszTypeNameMappingEntryNode_0074362C=_gData_0074362C")
+
+extern "C" struct d2data_0074364C_t gData_0074364C = {
+    {
+        0x2E, 0x3F, 0x41, 0x55, 0x53, 0x74, 0x72, 0x69, 0x6E, 0x67, 0x45, 0x6E, 0x74, 0x72, 0x79, 0x4E,
+        0x6F, 0x64, 0x65, 0x40, 0x40
+    },
+    (const void*)&gData_006F28F8,
+    { 0x00 }
+}; // 0x0074364C
+#pragma comment(linker, "/alternatename:_gszTypeNameStringEntryNode_0074364C=_gData_0074364C")
+
+extern "C" struct d2data_0074366C_t gData_0074366C = {
+    {
+        0x2E, 0x3F, 0x41, 0x56, 0x3F, 0x24, 0x54, 0x53, 0x45, 0x78, 0x70, 0x6C, 0x69, 0x63, 0x69, 0x74,
+        0x4C, 0x69, 0x73, 0x74, 0x40, 0x55, 0x53, 0x74, 0x72, 0x69, 0x6E, 0x67, 0x45, 0x6E, 0x74, 0x72,
+        0x79, 0x4E, 0x6F, 0x64, 0x65, 0x40, 0x40, 0x24, 0x30, 0x3F, 0x43, 0x43, 0x43, 0x43, 0x43, 0x43,
+        0x43, 0x44, 0x40, 0x40, 0x40
+    },
+    (const void*)&gData_006F28F8,
+    { 0x00 }
+}; // 0x0074366C
+#pragma comment(linker, "/alternatename:_gszTypeNameStringEntryList_0074366C=_gData_0074366C")
+
+extern "C" const char gData_007436AC[56] = ".?AV?$TSExplicitList@UMappingEntryNode@@$0?CCCCCCCD@@@"; // 0x007436AC
+#pragma comment(linker, "/alternatename:_gszTypeNameMappingEntryList_007436AC=_gData_007436AC")
+
+extern "C" struct d2data_00743780_t gData_00743780 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00743780
+
+extern "C" struct d2data_007437BC_t gData_007437BC = {
+    { 0x00 }
+}; // 0x007437BC

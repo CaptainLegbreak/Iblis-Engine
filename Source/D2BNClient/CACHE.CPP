@@ -855,4 +855,9 @@ Done:
     return nError == 0;
 }
 
-#include "gen/data/Source/D2BNClient/CACHE.inc"
+extern "C" const char gData_006DEEC0[64]; // 0x006DEEC0
+
+extern "C" const char gData_006DEEC0[64] = "File: '%s' in bncache.dat is corrupt (%d) - deleting from cache"; // 0x006DEEC0
+#pragma comment(linker, "/alternatename:?gszCorruptFile@@3QBDB=_gData_006DEEC0")
+
+extern void* ghCacheFile = (void*)0xFFFFFFFF; // 0x0072FB78

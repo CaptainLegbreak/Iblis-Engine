@@ -479,7 +479,24 @@ int __cdecl MAINMENUS_ShowTerms()
     return 1;
 }
 
-#include "gen/data/Source/D2Launch/Src/MainMenus_00431AF0.inc"
+#pragma pack(push, 1)
+struct d2data_0070CB84_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+extern "C" const char gData_006D48E8[16]; // 0x006D48E8
+extern "C" struct d2data_0070CB84_t gData_0070CB84; // 0x0070CB84
+
+extern "C" const char gData_006D48E8[16] = "tos-unicode_"; // 0x006D48E8
+#pragma comment(linker, "/alternatename:?gszTosPrefix@@3QBDB=_gData_006D48E8")
+
+extern int gnTextSentinel = -1; // 0x0070CB80
+
+extern "C" struct d2data_0070CB84_t gData_0070CB84 = {
+    { 0xFF, 0xFF, 0xFF, 0xFF }
+}; // 0x0070CB84
 
 D2WinControlStrc* gpControl_00779348; // 0x00779348
 

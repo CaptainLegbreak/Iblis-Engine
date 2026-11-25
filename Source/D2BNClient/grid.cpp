@@ -312,4 +312,17 @@ void __fastcall sub_M103_Emit_00523420(char* szFirst, char* szSecond, D2BnHashCt
     GRID_FreeKeyStrings(szFirst, szSecond);
 }
 
-#include "gen/data/Source/D2BNClient/grid.inc"
+#pragma pack(push, 1)
+struct d2data_00730194_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00730194_t gData_00730194; // 0x00730194
+
+extern int gdwGlobal_00730190 = 1; // 0x00730190
+
+extern "C" struct d2data_00730194_t gData_00730194 = {
+    { 0x00 }
+}; // 0x00730194

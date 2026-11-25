@@ -773,4 +773,80 @@ int __fastcall PATH_ComputePathOrSlideAlongObstacles(D2PathInfoStrc* pPathInfo)
     return PATH_SimplifyToLines(tStart, ptPathInfo->PathPoints, aPathPoints, nPoints);
 }
 
-#include "gen/data/Source/D2Common/Unknown_0067B9C0.inc"
+#pragma pack(push, 1)
+struct d2data_006F1E18_t
+{
+    unsigned char b0[16];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00749B34_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const D2CoordStrc gData_006F1D98[16]; // 0x006F1D98
+extern "C" const struct d2data_006F1E18_t gData_006F1E18; // 0x006F1E18
+extern "C" const int gData_006F1E28[6]; // 0x006F1E28
+extern "C" struct d2data_00749B34_t gData_00749B34; // 0x00749B34
+
+extern "C" const D2CoordStrc gData_006F1D98[16] = {
+    { 0, -1 },
+    { 1, -1 },
+    { 1 },
+    { 1, 1 },
+    { 0, 1 },
+    { -1, 1 },
+    { -1 },
+    { -1, -1 },
+    { 0, -1 },
+    { 1, -1 },
+    { 1 },
+    { 1, 1 },
+    { 0, 1 },
+    { -1, 1 },
+    { -1 },
+    { -1, -1 }
+}; // 0x006F1D98
+#pragma comment(linker, "/alternatename:?gnDirectionsToAdjacentCellOffsets@@3QBUD2CoordStrc@@B=_gData_006F1D98")
+
+extern "C" const struct d2data_006F1E18_t gData_006F1E18 = {
+    { 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x06 }
+}; // 0x006F1E18
+
+extern "C" const int gData_006F1E28[6] = { -1, 2, 5, 4, 3 }; // 0x006F1E28
+#pragma comment(linker, "/alternatename:?gaPathDeltaTable@@3QBHB=_gData_006F1E28")
+
+extern "C" struct d2data_00749B34_t gData_00749B34 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749B34

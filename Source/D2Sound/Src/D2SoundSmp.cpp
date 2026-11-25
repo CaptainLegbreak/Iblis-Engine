@@ -1224,4 +1224,61 @@ void __fastcall D2SOUNDSMP_GetPositionalVolumePan(int* pVolume, int* pPan, float
     *pPan = nPan;
 }
 
-#include "gen/data/Source/D2Sound/Src/D2SoundSmp.inc"
+#pragma pack(push, 1)
+struct d2data_0072F974_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const D2GuidStrc gData_006DE460; // 0x006DE460
+extern "C" const D2GuidStrc gData_006DE470; // 0x006DE470
+extern "C" const D2GuidStrc gData_006DE480; // 0x006DE480
+extern "C" const D2GuidStrc gData_006DE490; // 0x006DE490
+extern "C" struct d2data_0072F974_t gData_0072F974; // 0x0072F974
+
+extern "C" const D2GuidStrc gData_006DE460 = { 0x306A6A8, 0xB224, 0x11D2, { 0x99, 0xE5, 0, 0, 0xE8, 0xD8, 0xC7, 0x22 } }; // 0x006DE460
+#pragma comment(linker, "/alternatename:?gtEaxListener20PropertySet@@3UD2GuidStrc@@B=_gData_006DE460")
+
+extern "C" const D2GuidStrc gData_006DE470 = { 0x306A6A7, 0xB224, 0x11D2, { 0x99, 0xE5, 0, 0, 0xE8, 0xD8, 0xC7, 0x22 } }; // 0x006DE470
+#pragma comment(linker, "/alternatename:?gtEaxBuffer20PropertySet@@3UD2GuidStrc@@B=_gData_006DE470")
+
+extern "C" const D2GuidStrc gData_006DE480 = { 0x4A4E6FC1, 0xC341, 0x11D1, { 0xB7, 0x3A, 0x44, 0x45, 0x53, 0x54 } }; // 0x006DE480
+#pragma comment(linker, "/alternatename:?gtEaxListener10PropertySet@@3UD2GuidStrc@@B=_gData_006DE480")
+
+extern "C" const D2GuidStrc gData_006DE490 = { 0x4A4E6FC0, 0xC341, 0x11D1, { 0xB7, 0x3A, 0x44, 0x45, 0x53, 0x54 } }; // 0x006DE490
+#pragma comment(linker, "/alternatename:?gtEaxBuffer10PropertySet@@3UD2GuidStrc@@B=_gData_006DE490")
+
+extern "C" struct d2data_0072F974_t gData_0072F974 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0072F974
+
+extern int gnSoundMasterVolume = 255; // 0x0072F9B0

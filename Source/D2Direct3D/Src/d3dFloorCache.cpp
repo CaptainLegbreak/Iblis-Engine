@@ -713,4 +713,7 @@ void __fastcall D3DFLOORCACHE_InvalidateTileCaches(D2TileLibraryEntryStrc* pTile
     }
 }
 
-#include "gen/data/Source/D2Direct3D/Src/d3dFloorCache.inc"
+extern "C" const char gData_006FC3E4[24]; // 0x006FC3E4
+
+extern "C" const char gData_006FC3E4[24] = ".\\Src\\d3dFloorCache.cpp"; // 0x006FC3E4
+#pragma comment(linker, "/alternatename:?gszFloorPoolSourceFile@@3QBDB=_gData_006FC3E4")

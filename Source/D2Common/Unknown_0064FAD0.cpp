@@ -274,7 +274,138 @@ void __fastcall PATH_GetDirectionVector(D2CoordStrc* pDirectionVector, int* pOut
     *pOutDirection = (nDirection + 8) & 0x3F;
 }
 
-#include "gen/data/Source/D2Common/Unknown_0064FAD0.inc"
+#pragma pack(push, 1)
+struct d2data_006EB7C8_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006EB7CC_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006EB7D0_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006EB7D4_t
+{
+    unsigned char b0[8];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006EB7DC_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0074595C_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const struct d2data_006EB7C8_t gData_006EB7C8; // 0x006EB7C8
+extern "C" const struct d2data_006EB7CC_t gData_006EB7CC; // 0x006EB7CC
+extern "C" const struct d2data_006EB7D0_t gData_006EB7D0; // 0x006EB7D0
+extern "C" const struct d2data_006EB7D4_t gData_006EB7D4; // 0x006EB7D4
+extern "C" const struct d2data_006EB7DC_t gData_006EB7DC; // 0x006EB7DC
+extern "C" const int gData_006EB7E0[128 * 3]; // 0x006EB7E0
+extern "C" struct d2data_0074595C_t gData_0074595C; // 0x0074595C
+
+extern "C" const struct d2data_006EB7C8_t gData_006EB7C8 = {
+    { 0x00 }
+}; // 0x006EB7C8
+#pragma comment(linker, "/alternatename:?gnPathResetPrecisionX@@3HA=_gData_006EB7C8")
+
+extern "C" const struct d2data_006EB7CC_t gData_006EB7CC = {
+    { 0x00 }
+}; // 0x006EB7CC
+#pragma comment(linker, "/alternatename:?gnPathResetPrecisionY@@3HA=_gData_006EB7CC")
+
+extern "C" const struct d2data_006EB7D0_t gData_006EB7D0 = {
+    { 0x00 }
+}; // 0x006EB7D0
+
+extern "C" const struct d2data_006EB7D4_t gData_006EB7D4 = {
+    { 0x00 }
+}; // 0x006EB7D4
+#pragma comment(linker, "/alternatename:?gtPathZeroVelocity@@3UD2CoordStrc@@B=_gData_006EB7D4")
+
+extern "C" const struct d2data_006EB7DC_t gData_006EB7DC = {
+    { 0x00 }
+}; // 0x006EB7DC
+
+extern "C" const int gData_006EB7E0[128 * 3] = {
+    0, 4096, 0, 32, 4095, 0, 64, 4095, 0, 96, 4094, 0, 128, 4093, 0, 161,
+    4092, 0, 193, 4091, 0, 225, 4089, 0, 257, 4087, 0, 289, 4085, 0, 321, 4083,
+    0, 353, 4080, 0, 385, 4077, 0, 417, 4074, 1, 448, 4071, 1, 480, 4067, 1,
+    511, 4063, 1, 543, 4059, 1, 574, 4055, 1, 606, 4050, 1, 637, 4046, 1, 668,
+    4041, 1, 699, 4035, 1, 729, 4030, 1, 760, 4024, 1, 791, 4018, 1, 821, 4012,
+    2, 851, 4006, 2, 881, 3999, 2, 911, 3993, 2, 941, 3986, 2, 971, 3979, 2,
+    1000, 3971, 2, 1030, 3964, 2, 1059, 3956, 2, 1088, 3948, 2, 1117, 3940, 2, 1145,
+    3932, 2, 1174, 3924, 2, 1202, 3915, 3, 1230, 3906, 3, 1258, 3897, 3, 1286, 3888,
+    3, 1313, 3879, 3, 1340, 3870, 3, 1368, 3860, 3, 1394, 3851, 3, 1421, 3841, 3,
+    1448, 3831, 3, 1474, 3821, 3, 1500, 3811, 3, 1526, 3800, 3, 1552, 3790, 3, 1577,
+    3780, 4, 1602, 3769, 4, 1627, 3758, 4, 1652, 3747, 4, 1677, 3736, 4, 1701, 3725,
+    4, 1725, 3714, 4, 1749, 3703, 4, 1773, 3692, 4, 1796, 3680, 4, 1820, 3669, 4,
+    1843, 3657, 4, 1866, 3646, 4, 1888, 3634, 4, 1911, 3622, 4, 1933, 3610, 5, 1955,
+    3599, 5, 1977, 3587, 5, 1998, 3575, 5, 2020, 3563, 5, 2041, 3551, 5, 2062, 3539,
+    5, 2082, 3526, 5, 2103, 3514, 5, 2123, 3502, 5, 2143, 3490, 5, 2163, 3478, 5,
+    2183, 3465, 5, 2202, 3453, 5, 2221, 3441, 5, 2240, 3428, 5, 2259, 3416, 5, 2278,
+    3403, 6, 2296, 3391, 6, 2314, 3379, 6, 2332, 3366, 6, 2350, 3354, 6, 2368, 3341,
+    6, 2385, 3329, 6, 2402, 3317, 6, 2419, 3304, 6, 2436, 3292, 6, 2453, 3279, 6,
+    2469, 3267, 6, 2486, 3255, 6, 2502, 3242, 6, 2518, 3230, 6, 2533, 3218, 6, 2549,
+    3205, 6, 2564, 3193, 6, 2580, 3181, 6, 2595, 3169, 6, 2609, 3156, 7, 2624, 3144,
+    7, 2639, 3132, 7, 2653, 3120, 7, 2667, 3108, 7, 2681, 3096, 7, 2695, 3084, 7,
+    2709, 3072, 7, 2722, 3060, 7, 2736, 3048, 7, 2749, 3036, 7, 2762, 3024, 7, 2775,
+    3012, 7, 2788, 3000, 7, 2800, 2988, 7, 2813, 2977, 7, 2825, 2965, 7, 2837, 2953,
+    7, 2849, 2942, 7, 2861, 2930, 7, 2873, 2919, 7, 2884, 2907, 7, 2896, 2896, 7
+}; // 0x006EB7E0
+#pragma comment(linker, "/alternatename:?gaTanToDirectionTable@@3PAHA=_gData_006EB7E0")
+
+extern "C" struct d2data_0074595C_t gData_0074595C = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0074595C
 
 inline unsigned int PATH_ToFP16Center(unsigned int nValue)
 {

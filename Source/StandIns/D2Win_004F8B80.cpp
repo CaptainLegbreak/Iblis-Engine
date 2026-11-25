@@ -1,4 +1,4 @@
-// Functional replacement for the function at 0x004F8B80, not the original code: only the ordinary build (tools/link.py) uses it.
+// Functional replacement for the function at 0x004F8B80, not the original code (Iblis Codex has not reconstructed the original yet).
 
 struct D2TileLibraryBlockStrc
 {

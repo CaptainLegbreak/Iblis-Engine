@@ -709,4 +709,81 @@ void __stdcall MONSTERS_GetMinionSpawnInfo(D2UnitStrc* pMonster, int* pMonsterId
     }
 }
 
-#include "gen/data/Source/D2Common/Monsters/MONSTERS.inc"
+#pragma pack(push, 1)
+struct d2data_006EA9F0_t
+{
+    unsigned char b0[8];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006EA9F8_t
+{
+    unsigned char b0[52];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00745648_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const Coord gData_006EA9D0[4]; // 0x006EA9D0
+extern "C" const struct d2data_006EA9F0_t gData_006EA9F0; // 0x006EA9F0
+extern "C" const struct d2data_006EA9F8_t gData_006EA9F8; // 0x006EA9F8
+extern "C" struct d2data_00745648_t gData_00745648; // 0x00745648
+
+extern "C" const Coord gData_006EA9D0[4] = {
+    { 0, 1 },
+    { 1 },
+    { 1 },
+    { -1 }
+}; // 0x006EA9D0
+#pragma comment(linker, "/alternatename:?gaMonsterChainDirections@@3PAUCoord@@A=_gData_006EA9D0")
+
+extern "C" const struct d2data_006EA9F0_t gData_006EA9F0 = {
+    { 0x07, 0x00, 0x00, 0x00, 0x01 }
+}; // 0x006EA9F0
+
+extern "C" const struct d2data_006EA9F8_t gData_006EA9F8 = {
+    {
+        0x02, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00,
+        0x0A, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x00, 0x00,
+        0x0D, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00,
+        0x1A
+    }
+}; // 0x006EA9F8
+
+extern "C" struct d2data_00745648_t gData_00745648 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00745648

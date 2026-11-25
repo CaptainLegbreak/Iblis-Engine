@@ -3582,4 +3582,91 @@ CELLIST* TSHashTable<CELLIST, HASHKEY_NONE>::InternalFind(unsigned int hashval, 
     return 0;
 }
 
-#include "gen/data/Source/D2CMP/SRC/CelCmp.inc"
+extern "C" void __cdecl CelFileConvertRle24To8(); // 0x00606B50
+extern "C" void __cdecl sub_00608540(); // 0x00608540
+extern "C" void __cdecl CelCompressEncodeRleCels(); // 0x00608EE0
+
+extern "C" const CelFileBuildFn gData_006E3680[2]; // 0x006E3680
+extern "C" const CELDRAWFN gData_006E3688[2]; // 0x006E3688
+extern "C" const CELFILECONVERTFN gData_006E3690[2]; // 0x006E3690
+extern "C" const int gData_006E3A20[23][32]; // 0x006E3A20
+
+extern "C" const CelFileBuildFn gData_006E3680[2] = { (CelFileBuildFn)&CelCompressEncodeRleCels }; // 0x006E3680
+#pragma comment(linker, "/alternatename:?gapfnCelFileBuilders@@3PAP6IXPAUCELLIST@@PAUD2CelFileStrc@@@ZA=_gData_006E3680")
+
+extern "C" const CELDRAWFN gData_006E3688[2] = { (CELDRAWFN)&sub_00608540 }; // 0x006E3688
+#pragma comment(linker, "/alternatename:?gpfnCelDraw@@3PAP6IXPAUD2CelStrc@@PAEHHHHHHHHH@ZA=_gData_006E3688")
+
+extern "C" const CELFILECONVERTFN gData_006E3690[2] = { (CELFILECONVERTFN)&CelFileConvertRle24To8 }; // 0x006E3690
+#pragma comment(linker, "/alternatename:?gpfCelFileConvert@@3PAP6IXPAUD2CmpCelFileStrc@@0HH@ZA=_gData_006E3690")
+
+extern "C" const int gData_006E3A20[23][32] = {
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 4, 5, 6, 7, 0, 2, 1, 3 },
+    { 4, 5, 6, 7, 0, 2, 1, 3, 8, 9, 10, 11, 12, 13, 14, 15 },
+    {
+    4, 5, 6, 7, 0, 2, 1, 3, 8, 9, 10, 11, 12, 13, 14, 15,
+    16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+},
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+},
+    { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+    {
+    0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2,
+    2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1
+},
+    {
+    1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3,
+    3, 3, 3, 3, 3, 3, 3, 3
+},
+    {
+    0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2,
+    2, 2, 2, 2, 5, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1, 1
+},
+    {
+    1, 1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 3, 3,
+    3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 7
+},
+    {
+    0, 0, 8, 8, 8, 8, 4, 4, 4, 4, 9, 9, 9, 9, 2, 2,
+    2, 2, 10, 10, 10, 10, 5, 5, 5, 5, 11, 11, 11, 11, 1, 1
+},
+    {
+    1, 1, 12, 12, 12, 12, 6, 6, 6, 6, 13, 13, 13, 13, 3, 3,
+    3, 3, 14, 14, 14, 14, 7, 7, 7, 7, 15, 15, 15, 15
+},
+    {
+    0, 16, 16, 8, 8, 17, 17, 4, 4, 18, 18, 9, 9, 19, 19, 2,
+    2, 20, 20, 10, 10, 21, 21, 5, 5, 22, 22, 11, 11, 23, 23, 1
+},
+    {
+    1, 24, 24, 12, 12, 25, 25, 6, 6, 26, 26, 13, 13, 27, 27, 3,
+    3, 28, 28, 14, 14, 29, 29, 7, 7, 30, 30, 15, 15, 31, 31
+},
+    {
+    0, 32, 16, 33, 8, 34, 17, 35, 4, 36, 18, 37, 9, 38, 19, 39,
+    2, 40, 20, 41, 10, 42, 21, 43, 5, 44, 22, 45, 11, 46, 23, 47
+},
+    {
+    1, 48, 24, 49, 12, 50, 25, 51, 6, 52, 26, 53, 13, 54, 27, 55,
+    3, 56, 28, 57, 14, 58, 29, 59, 7, 60, 30, 61, 15, 62, 31, 63
+}
+}; // 0x006E3A20
+#pragma comment(linker, "/alternatename:?gaDirectionIndex32@@3PAY0CA@HA=_gData_006E3A20")
+
+extern int gbCmpCompressedDataMode = 1; // 0x00741EFC
+
+extern const char* gszCmpCompressedExtension = ".dcc"; // 0x00741F00
+
+extern const char* gszCmpDefaultExtension = ".dc6"; // 0x00741F04
+
+extern int gnCmpGfxMode = 1; // 0x00741F08

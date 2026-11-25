@@ -69,4 +69,4 @@ int __fastcall GFXUTIL_FindNearestUnitCallback(D2UnitStrc* pUnit, D2UnitStrc* pO
     return 0;
 }
 
-#include "gen/data/Source/D2Client/Unknown_0046C570.inc"
+

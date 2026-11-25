@@ -1204,7 +1204,83 @@ void __fastcall PLRSKILLS_SendPositionEvent(D2UnitStrc* pUnit)
 
 
 
-#include "gen/data/Source/D2Client/UNIT/PlrSkills.inc"
+#pragma pack(push, 1)
+struct d2data_0072A650_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    unsigned char b15[4];
+};
+#pragma pack(pop)
+
+extern "C" const unsigned char gData_006DBA08[8][9]; // 0x006DBA08
+extern "C" const unsigned char gData_006DBA50[8]; // 0x006DBA50
+extern "C" struct d2data_0072A650_t gData_0072A650; // 0x0072A650
+
+extern "C" const unsigned char gData_006DBA08[8][9] = {
+    { 0x1B, 0xE, 0xF, 3, 0x63, 7, 0x15, 0x16, 0x1F },
+    { 0x1A, 0xC, 0xD, 2, 0x63, 6, 0x13, 0x14, 0x1E },
+    { 0x19, 0xA, 0xB, 1, 0x63, 5, 0x11, 0x12, 0x1D },
+    { 0x18, 8, 9, 0, 0x63, 4, 0xF, 0x10, 0x1C },
+    { 0x1F, 0x16, 0x17, 7, 0x63, 3, 0xD, 0xE, 0x1B },
+    { 0x1E, 0x14, 7, 6, 0x63, 2, 1, 0xC, 0x1A },
+    { 0x1D, 0x12, 0x13, 5, 0x63, 1, 9, 0xA, 0x19 },
+    { 0x1C, 0x10, 0x11, 4, 0x63, 0, 0x17, 8, 0x18 }
+}; // 0x006DBA08
+#pragma comment(linker, "/alternatename:?gabFrameDirections@@3QAY08$$CBEA=_gData_006DBA08")
+
+extern "C" const unsigned char gData_006DBA50[8] = { 0x1D, 0x1C, 0x1B, 0x1A, 0x19, 0x18, 0x1F, 0x1E }; // 0x006DBA50
+#pragma comment(linker, "/alternatename:?gabBaseDirections@@3QBEB=_gData_006DBA50")
+
+extern "C" struct d2data_0072A650_t gData_0072A650 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14",
+    { 0x00 }
+}; // 0x0072A650
+
+extern CLIENTSTATEFN gpfnClientStateSetFuncs[32] = {
+    0, (CLIENTSTATEFN)&PLRSKILLS_StatePrgOverlayLevel, (CLIENTSTATEFN)&PLRSKILLS_StateAuraEffect, (CLIENTSTATEFN)&PLRSKILLS_StateSkillLevel, (CLIENTSTATEFN)&PLRSKILLS_StateStoreOwner, (CLIENTSTATEFN)&PLRSKILLS_ApplyStateMonster, (CLIENTSTATEFN)&PLRSKILLS_StateTieredOverlays, (CLIENTSTATEFN)&PLRSKILLS_StatePlaySkillSound, (CLIENTSTATEFN)&PLRSKILLS_StateTieredOverlayPairs, (CLIENTSTATEFN)&sub_004D9160, (CLIENTSTATEFN)&PLRSKILLS_StateStartMissile, (CLIENTSTATEFN)&PLRSKILLS_StateSetFlagEx, (CLIENTSTATEFN)&PLRSKILLS_StateSetFlags, (CLIENTSTATEFN)&PLRSKILLS_StateResetGfxMotion, (CLIENTSTATEFN)&PLRSKILLS_SendPositionEvent, (CLIENTSTATEFN)&PLRSKILLS_StateSetMode,
+    (CLIENTSTATEFN)&PLRSKILLS_StateOverlaySpread, (CLIENTSTATEFN)&PLRSKILLS_StateMissile, (CLIENTSTATEFN)&PLRSKILLS_StateCreateMissile, (CLIENTSTATEFN)&PLRSKILLS_StateResetValue
+}; // 0x0072A690
+
+extern CLIENTSTATEFN gpfnClientStateRemFuncs[150] = {
+    0, (CLIENTSTATEFN)&PLRSKILLS_StatePrgOverlays, (CLIENTSTATEFN)&PLRSKILLS_StateClearOwner, (CLIENTSTATEFN)&PLRSKILLS_StateOverlays, (CLIENTSTATEFN)&PLRSKILLS_StateStopSkillSound, (CLIENTSTATEFN)&PLRSKILLS_StateOverlayPairs, (CLIENTSTATEFN)&sub_004D9170, (CLIENTSTATEFN)&PLRSKILLS_StateClearCollision, (CLIENTSTATEFN)&PLRSKILLS_StateClearFlags, (CLIENTSTATEFN)&PLRSKILLS_StateClearMotion, (CLIENTSTATEFN)&PLRSKILLS_StateEndRequests, (CLIENTSTATEFN)&PLRSKILLS_StateOverlayRanges, (CLIENTSTATEFN)&PLRSKILLS_StateResetValue, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, (CLIENTSTATEFN)(void*)"English", (CLIENTSTATEFN)(void*)"Spanish",
+    (CLIENTSTATEFN)(void*)"German", (CLIENTSTATEFN)(void*)"French", (CLIENTSTATEFN)(void*)"Portuguese", (CLIENTSTATEFN)(void*)"Italian", (CLIENTSTATEFN)(void*)"Japanese", (CLIENTSTATEFN)(void*)"Korean", (CLIENTSTATEFN)(void*)"Simplified Chinese", (CLIENTSTATEFN)(void*)"Traditional Chinese", (CLIENTSTATEFN)(void*)"Polish", (CLIENTSTATEFN)(void*)"Russian", (CLIENTSTATEFN)(void*)"English with Korean Chat", (CLIENTSTATEFN)(void*)"Unknown", (CLIENTSTATEFN)(void*)"14", (CLIENTSTATEFN)(void*)"English", (CLIENTSTATEFN)(void*)"Spanish", (CLIENTSTATEFN)(void*)"German",
+    (CLIENTSTATEFN)(void*)"French", (CLIENTSTATEFN)(void*)"Portuguese", (CLIENTSTATEFN)(void*)"Italian", (CLIENTSTATEFN)(void*)"Japanese", (CLIENTSTATEFN)(void*)"Korean", (CLIENTSTATEFN)(void*)"Simplified Chinese", (CLIENTSTATEFN)(void*)"Traditional Chinese", (CLIENTSTATEFN)(void*)"Polish", (CLIENTSTATEFN)(void*)"Russian", (CLIENTSTATEFN)(void*)"English with Korean Chat", (CLIENTSTATEFN)(void*)"Unknown", (CLIENTSTATEFN)(void*)"14", (CLIENTSTATEFN)(void*)"English", (CLIENTSTATEFN)(void*)"Spanish", (CLIENTSTATEFN)(void*)"German", (CLIENTSTATEFN)(void*)"French",
+    (CLIENTSTATEFN)(void*)"Portuguese", (CLIENTSTATEFN)(void*)"Italian", (CLIENTSTATEFN)(void*)"Japanese", (CLIENTSTATEFN)(void*)"Korean", (CLIENTSTATEFN)(void*)"Simplified Chinese", (CLIENTSTATEFN)(void*)"Traditional Chinese", (CLIENTSTATEFN)(void*)"Polish", (CLIENTSTATEFN)(void*)"Russian", (CLIENTSTATEFN)(void*)"English with Korean Chat", (CLIENTSTATEFN)(void*)"Unknown", (CLIENTSTATEFN)(void*)"14", (CLIENTSTATEFN)(void*)"English", (CLIENTSTATEFN)(void*)"Spanish", (CLIENTSTATEFN)(void*)"German", (CLIENTSTATEFN)(void*)"French", (CLIENTSTATEFN)(void*)"Portuguese",
+    (CLIENTSTATEFN)(void*)"Italian", (CLIENTSTATEFN)(void*)"Japanese", (CLIENTSTATEFN)(void*)"Korean", (CLIENTSTATEFN)(void*)"Simplified Chinese", (CLIENTSTATEFN)(void*)"Traditional Chinese", (CLIENTSTATEFN)(void*)"Polish", (CLIENTSTATEFN)(void*)"Russian", (CLIENTSTATEFN)(void*)"English with Korean Chat", (CLIENTSTATEFN)(void*)"Unknown", (CLIENTSTATEFN)(void*)"14", (CLIENTSTATEFN)(void*)"English", (CLIENTSTATEFN)(void*)"Spanish", (CLIENTSTATEFN)(void*)"German", (CLIENTSTATEFN)(void*)"French", (CLIENTSTATEFN)(void*)"Portuguese", (CLIENTSTATEFN)(void*)"Italian",
+    (CLIENTSTATEFN)(void*)"Japanese", (CLIENTSTATEFN)(void*)"Korean", (CLIENTSTATEFN)(void*)"Simplified Chinese", (CLIENTSTATEFN)(void*)"Traditional Chinese", (CLIENTSTATEFN)(void*)"Polish", (CLIENTSTATEFN)(void*)"Russian", (CLIENTSTATEFN)(void*)"English with Korean Chat", (CLIENTSTATEFN)(void*)"Unknown", (CLIENTSTATEFN)(void*)"14", (CLIENTSTATEFN)(void*)"English", (CLIENTSTATEFN)(void*)"Spanish", (CLIENTSTATEFN)(void*)"German", (CLIENTSTATEFN)(void*)"French", (CLIENTSTATEFN)(void*)"Portuguese", (CLIENTSTATEFN)(void*)"Italian", (CLIENTSTATEFN)(void*)"Japanese",
+    (CLIENTSTATEFN)(void*)"Korean", (CLIENTSTATEFN)(void*)"Simplified Chinese", (CLIENTSTATEFN)(void*)"Traditional Chinese", (CLIENTSTATEFN)(void*)"Polish", (CLIENTSTATEFN)(void*)"Russian", (CLIENTSTATEFN)(void*)"English with Korean Chat", (CLIENTSTATEFN)(void*)"Unknown", (CLIENTSTATEFN)(void*)"14", (CLIENTSTATEFN)(void*)"English", (CLIENTSTATEFN)(void*)"Spanish", (CLIENTSTATEFN)(void*)"German", (CLIENTSTATEFN)(void*)"French", (CLIENTSTATEFN)(void*)"Portuguese", (CLIENTSTATEFN)(void*)"Italian", (CLIENTSTATEFN)(void*)"Japanese", (CLIENTSTATEFN)(void*)"Korean",
+    (CLIENTSTATEFN)(void*)"Simplified Chinese", (CLIENTSTATEFN)(void*)"Traditional Chinese", (CLIENTSTATEFN)(void*)"Polish", (CLIENTSTATEFN)(void*)"Russian", (CLIENTSTATEFN)(void*)"English with Korean Chat", (CLIENTSTATEFN)(void*)"Unknown", (CLIENTSTATEFN)(void*)"14", (CLIENTSTATEFN)(void*)"English", (CLIENTSTATEFN)(void*)"Spanish", (CLIENTSTATEFN)(void*)"German", (CLIENTSTATEFN)(void*)"French", (CLIENTSTATEFN)(void*)"Portuguese", (CLIENTSTATEFN)(void*)"Italian", (CLIENTSTATEFN)(void*)"Japanese", (CLIENTSTATEFN)(void*)"Korean", (CLIENTSTATEFN)(void*)"Simplified Chinese",
+    (CLIENTSTATEFN)(void*)"Traditional Chinese", (CLIENTSTATEFN)(void*)"Polish", (CLIENTSTATEFN)(void*)"Russian", (CLIENTSTATEFN)(void*)"English with Korean Chat", (CLIENTSTATEFN)(void*)"Unknown", (CLIENTSTATEFN)(void*)"14"
+}; // 0x0072A710
 
 static D2StatesTxt* STATES_GetStatesTxtRecord_J03(int nState)
 {

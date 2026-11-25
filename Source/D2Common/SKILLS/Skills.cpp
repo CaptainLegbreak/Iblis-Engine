@@ -4894,4 +4894,144 @@ void __fastcall SKILLS_FixThrowWeaponClassCode(unsigned int* pWeaponClassCode, i
     }
 }
 
-#include "gen/data/Source/D2Common/SKILLS/Skills.inc"
+extern "C" void __cdecl sub_00646C00(); // 0x00646C00
+
+#pragma pack(push, 1)
+struct d2data_006EB3EC_t
+{
+    unsigned char b0[164];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00745738_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006EB308[16]; // 0x006EB308
+extern "C" const int gData_006EB348[20]; // 0x006EB348
+extern "C" const struct d2data_006EB3EC_t gData_006EB3EC; // 0x006EB3EC
+extern "C" const int gData_006F0630[12][4]; // 0x006F0630
+extern "C" const int gData_006F0FD0[46]; // 0x006F0FD0
+extern "C" const int gData_006F1698[64]; // 0x006F1698
+extern "C" const int gData_006F1998[128]; // 0x006F1998
+extern "C" const int gData_006F1B98[128]; // 0x006F1B98
+extern "C" struct d2data_00745738_t gData_00745738; // 0x00745738
+
+extern "C" const int gData_006EB308[16] = { 0, 1, 2, 4, 7, 8, 9, 10, 13, 14, 15, 16, 17, 19, 18, 3 }; // 0x006EB308
+#pragma comment(linker, "/alternatename:?gnShapeshiftMonModes@@3QBHB=_gData_006EB308")
+
+extern "C" const int gData_006EB348[20] = {
+    0, 1, 2, 15, 3, 1, 2, 4, 5, 6, 7, 4, 11, 8, 9, 10,
+    11, 12, 14, 13
+}; // 0x006EB348
+#pragma comment(linker, "/alternatename:?gnShapeShiftedModeTable@@3QBHB=_gData_006EB348")
+
+extern "C" const struct d2data_006EB3EC_t gData_006EB3EC = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+        0xFF, 0xFF, 0xFF, 0xFF
+    }
+}; // 0x006EB3EC
+
+extern "C" const int gData_006F0630[12][4] = {
+    { 0, 4, 364, 799 },
+    { 16, 5, 365, 800 },
+    { 17, 6, 366, 801 },
+    { 0, 7, 367, 802 },
+    { 18, 8, 368, 803 },
+    { 19, 9, 369, 804 },
+    { 22, 10, 370, 805 },
+    { 0, 11, 371, 806 },
+    { 0, 12, 372, 807 },
+    { 23, 13, 373, 808 },
+    { 0, 14, 374, 809 },
+    { 0, 15, 375, 810 }
+}; // 0x006F0630
+#pragma comment(linker, "/alternatename:?gaBorderLevelPrestIds@@3PAY03HA=_gData_006F0630")
+
+extern "C" const int gData_006F0FD0[46] = {
+    -1, 2, -1, 3, -1, 0, 1, 9, 9, -1, -1, 1, 8, -1, -1, 12,
+    -1, -1, -1, -1, 12, 4, -1, -1, 5, 2, 2, 10, -1, -1, -1, -1,
+    10, 1, 9, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
+}; // 0x006F0FD0
+#pragma comment(linker, "/alternatename:?gaBorderIndices@@3PAHA=_gData_006F0FD0")
+
+extern "C" const int gData_006F1698[64] = {
+    -1, -1, -1, 0, 2, 4, 6, 8, -1, -1, 0, 1, 2, 4, 6, 8,
+    -1, 0, 0, 2, 3, 5, 7, 8, 0, 1, 2, 2, 4, 5, 7, 8,
+    2, 2, 3, 4, 5, 6, 7, 9, 4, 4, 5, 5, 6, 7, 8, 9,
+    6, 6, 7, 7, 7, 8, 10, 10, 8, 8, 8, 8, 9, 9, 10, 11
+}; // 0x006F1698
+#pragma comment(linker, "/alternatename:?gaPathHeuristicTable@@3QBHB=_gData_006F1698")
+
+extern "C" const int gData_006F1998[128] = {
+    57, 92, 72, 94, 119, 80, 14, 84, 93, 17, 20, 37, 87, 70, 100, 108,
+    30, 91, 85, 60, 40, 3, 118, 78, 81, 109, 43, 26, 67, 27, 49, 75,
+    69, 2, 58, 36, 55, 5, 122, 125, 11, 35, 77, 59, 29, 18, 28, 82,
+    63, 86, 83, 105, 90, 48, 101, 38, 115, 9, 41, 89, 95, 19, 1, 61,
+    51, 7, 110, 34, 126, 47, 15, 6, 99, 22, 104, 4, 71, 97, 121, 114,
+    0, 112, 62, 54, 23, 111, 74, 123, 45, 120, 44, 50, 31, 39, 42, 66,
+    33, 113, 53, 64, 16, 65, 106, 96, 88, 24, 46, 56, 103, 68, 10, 117,
+    25, 32, 124, 127, 76, 8, 79, 21, 102, 52, 107, 73, 13, 116, 98, 12
+}; // 0x006F1998
+#pragma comment(linker, "/alternatename:?gaIdaStar_PointCacheHashMaskX@@3QBHB=_gData_006F1998")
+
+extern "C" const int gData_006F1B98[128] = {
+    114, 80, 68, 91, 97, 73, 127, 88, 18, 58, 101, 41, 19, 108, 6, 8,
+    24, 99, 83, 33, 77, 56, 74, 37, 43, 107, 85, 12, 75, 30, 27, 23,
+    92, 69, 115, 2, 84, 7, 17, 20, 117, 67, 31, 121, 111, 105, 120, 96,
+    94, 122, 47, 25, 4, 112, 34, 62, 10, 89, 1, 40, 76, 71, 49, 51,
+    90, 55, 118, 50, 116, 106, 109, 42, 45, 65, 28, 60, 123, 36, 98, 48,
+    124, 22, 64, 38, 15, 102, 110, 79, 57, 125, 59, 21, 70, 63, 93, 86,
+    66, 35, 16, 53, 61, 103, 29, 52, 119, 46, 100, 3, 0, 126, 32, 81,
+    87, 9, 26, 14, 95, 113, 13, 54, 104, 82, 44, 72, 5, 78, 11, 39
+}; // 0x006F1B98
+#pragma comment(linker, "/alternatename:?gaIdaStar_PointCacheHashMaskY@@3QBHB=_gData_006F1B98")
+
+extern "C" struct d2data_00745738_t gData_00745738 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00745738
+
+extern void* gpSkillsCalcFunctions[14] = { (void*)(unsigned int)&SKILLS_GetMinimum, (void*)0x2, (void*)(unsigned int)&SKILLS_GetMaximum, (void*)0x2, (void*)(unsigned int)&DUNGEON_SkillCalcGetRandomNumberInRange, (void*)0x2, (void*)(unsigned int)&sub_00646C00, (void*)0x2, (void*)(unsigned int)&SKILLS_CalcMissileParamCallback, (void*)0x2, (void*)(unsigned int)&SKILLS_ItemCalcStatParamCallback, (void*)0x2, (void*)(unsigned int)&SKILLS_CalcNestedParamCallback, (void*)0x3 }; // 0x00745774
+
+extern int gnSkillsCalcFunctions = 7; // 0x007457AC

@@ -9881,4 +9881,87 @@ void __fastcall AITHINK_Fn137_PutridDefiler(D2GameStrc* pGame, D2UnitStrc* pUnit
     AITACTICS_IdleInNeutralMode(pGame, pUnit, 25);
 }
 
-#include "gen/data/Source/D2Game/Ai/AiThink4.inc"
+extern "C" void __cdecl sub_005E6F00(); // 0x005E6F00
+extern "C" void __cdecl sub_005E6FC0(); // 0x005E6FC0
+
+#pragma pack(push, 1)
+struct d2data_006E3512_t
+{
+    unsigned char b0[2];
+};
+#pragma pack(pop)
+
+extern "C" const D2CoordStrc gData_006E337C[4]; // 0x006E337C
+extern "C" const D2CoordStrc gData_006E33A0[8]; // 0x006E33A0
+extern "C" const int gData_006E33E0[64]; // 0x006E33E0
+extern "C" const int gData_006E34E0[2][2]; // 0x006E34E0
+extern "C" const unsigned char gData_006E34F0[8]; // 0x006E34F0
+extern "C" const unsigned char gData_006E34F8[8]; // 0x006E34F8
+extern "C" const struct d2data_006E3512_t gData_006E3512; // 0x006E3512
+extern "C" const int gData_006E3514[5]; // 0x006E3514
+extern "C" const int gData_006E3528[5]; // 0x006E3528
+extern "C" const unsigned char gData_006E353C[4]; // 0x006E353C
+extern "C" const unsigned char gData_006E3540[64]; // 0x006E3540
+
+extern "C" const D2CoordStrc gData_006E337C[4] = {
+    { -5, -5 },
+    { 5, -5 },
+    { 5, 5 },
+    { -5, 5 }
+}; // 0x006E337C
+#pragma comment(linker, "/alternatename:?gaHighPriestSkillOffsets@@3PAUD2CoordStrc@@A=_gData_006E337C")
+
+extern "C" const D2CoordStrc gData_006E33A0[8] = {
+    { 1, 1 },
+    { 0, 1 },
+    { -1, 1 },
+    { -1 },
+    { -1, -1 },
+    { 0, -1 },
+    { 1, -1 },
+    { 1 }
+}; // 0x006E33A0
+#pragma comment(linker, "/alternatename:_gaDesertTurretOffsets=_gData_006E33A0")
+
+extern "C" const int gData_006E33E0[64] = {
+    0, 0, 1, 2, 5, 6, 7, 0, 1, 1, 1, 2, 3, 6, 7, 0,
+    1, 2, 2, 2, 3, 4, 7, 0, 1, 2, 3, 3, 3, 4, 5, 6,
+    1, 2, 3, 4, 4, 4, 5, 6, 7, 2, 3, 4, 5, 5, 5, 6,
+    7, 0, 3, 4, 5, 6, 6, 6, 7, 0, 1, 4, 5, 6, 7, 7
+}; // 0x006E33E0
+#pragma comment(linker, "/alternatename:_gnDesertTurretIndices=_gData_006E33E0")
+
+extern "C" const int gData_006E34E0[2][2] = {
+    { 2 },
+    { 4 }
+}; // 0x006E34E0
+#pragma comment(linker, "/alternatename:?skill_choices@@3QAY01$$CBHA=_gData_006E34E0")
+
+extern "C" const unsigned char gData_006E34F0[8] = { 4, 3, 2, 1, 0, 7, 6, 5 }; // 0x006E34F0
+#pragma comment(linker, "/alternatename:?gnPetMoveDirections@@3QBEB=_gData_006E34F0")
+
+extern "C" const unsigned char gData_006E34F8[8] = { 4, 3, 2, 1, 0, 7, 6, 5 }; // 0x006E34F8
+#pragma comment(linker, "/alternatename:?gnPetDirections@@3QBEB=_gData_006E34F8")
+
+extern "C" const struct d2data_006E3512_t gData_006E3512 = {
+    { 0x00 }
+}; // 0x006E3512
+
+extern "C" const int gData_006E3514[5] = { 287, 288, 303, 304, 305 }; // 0x006E3514
+#pragma comment(linker, "/alternatename:?gnCatapultSkills@@3QBHB=_gData_006E3514")
+
+extern "C" const int gData_006E3528[5] = { 61, 62, 63, 64, 65 }; // 0x006E3528
+#pragma comment(linker, "/alternatename:?gnBaalThroneSuperUniqueIds@@3QBHB=_gData_006E3528")
+
+extern "C" const unsigned char gData_006E353C[4] = { 0x1F, 0x31, 0, 0x11 }; // 0x006E353C
+#pragma comment(linker, "/alternatename:?gnGargoyleTrapDirectionAxis@@3QBEB=_gData_006E353C")
+
+extern "C" const unsigned char gData_006E3540[64] = {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2,
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3,
+    3, 3, 3, 3, 3, 3, 3, 3, 3
+}; // 0x006E3540
+#pragma comment(linker, "/alternatename:?gnGargoyleTrapDirectionMap@@3QBEB=_gData_006E3540")
+
+extern MAPAIACTIONFN gpfnMapAiActions[7] = { 0, (MAPAIACTIONFN)&AITHINK_MapAiAction_WalkToPosition, (MAPAIACTIONFN)&AITHINK_MapAiAction_WalkToPositionOrWait, (MAPAIACTIONFN)&AITHINK_MapAiAction_ForwardWalkToPosition, (MAPAIACTIONFN)&sub_005E6F00, (MAPAIACTIONFN)&sub_005E6FC0 }; // 0x00741D74

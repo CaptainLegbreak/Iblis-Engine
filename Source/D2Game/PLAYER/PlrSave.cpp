@@ -3446,4 +3446,9 @@ static inline D2StatesTxt* STATES_GetStatesTxtRecordInline(int nStateId)
     return 0;
 }
 
-#include "gen/data/Source/D2Game/PLAYER/PlrSave.inc"
+extern "C" const char gData_006E09C4[36]; // 0x006E09C4
+
+extern "C" const char gData_006E09C4[36] = "Unable to open player save file %s"; // 0x006E09C4
+#pragma comment(linker, "/alternatename:_gszSaveOpenError=_gData_006E09C4")
+
+extern int gbWriteSaveFile = 1; // 0x007310CC

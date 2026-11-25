@@ -3161,4 +3161,7 @@ extern "C" __declspec(dllexport) int __fastcall SUNITDMG_SetHitClass(Obj00554650
     return 1;
 }
 
-#include "gen/data/Source/D2Game/UNIT/SUnit.inc"
+extern "C" const int gData_006E10E0[6]; // 0x006E10E0
+
+extern "C" const int gData_006E10E0[6] = { 4384, 4896, 5408, 6432, 5920 }; // 0x006E10E0
+#pragma comment(linker, "/alternatename:?gnUnitListOffsets@@3QBHB=_gData_006E10E0")

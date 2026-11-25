@@ -244,4 +244,72 @@ void __stdcall D2Common_10885_COMPOSIT_unk(D2UnitStrc* hUnit, char* szPath, int*
     D2Common_10884_COMPOSIT_unk(hUnit, nClass, nAnimMode, nType, pInventory, szPath, pWeaponClassCode, bAddPathPrefix, a5);
 }
 
-#include "gen/data/Source/D2Common/COMPOSIT/Composit.inc"
+#pragma pack(push, 1)
+struct d2data_007458C4_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const D2CompositStrc gData_006EB748[13]; // 0x006EB748
+extern "C" struct d2data_007458C4_t gData_007458C4; // 0x007458C4
+
+extern "C" const D2CompositStrc gData_006EB748[13] = {
+    { 544434225, 2 },
+    { 544499761, 3 },
+    { 544698210, 1 },
+    { 544434226, 5 },
+    { 544499762, 6 },
+    { 544434737, 8 },
+    { 544500273, 9 },
+    { 544437041, 10 },
+    { 544502577, 11 },
+    { 543585395, 4 },
+    { 544694904, 7 },
+    { 540111976, 12 },
+    { 540177512, 13 }
+}; // 0x006EB748
+#pragma comment(linker, "/alternatename:?gaWeaponClassCodeTable@@3QBUD2CompositStrc@@B=_gData_006EB748")
+
+extern "C" struct d2data_007458C4_t gData_007458C4 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007458C4
+
+extern D2CompositStrc gaCompositPlayerModes[2] = {
+    { 0x20206867, 18 },
+    { 0x20206867, 19 }
+}; // 0x00745900
+
+extern unsigned int gnCompositPlayerModeCount = 2; // 0x00745910
+
+extern D2CompositStrc gaCompositMonsterModes[1] = { { 0x20206867, 13 } }; // 0x00745914
+
+extern unsigned int gnCompositMonsterModeCount = 1; // 0x0074591C

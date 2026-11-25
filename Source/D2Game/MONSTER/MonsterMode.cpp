@@ -2658,4 +2658,214 @@ int __fastcall MISSMODE_UnitFindCallback_CanCollideWithPlayerOrMonster(D2UnitStr
     return MONSTERMODE_CanCollideWithUnit(pArg->pGame, pArg->pMissile, pUnit, pArg->pOwner, pArg->pMissilesTxtRecord) != 0;
 }
 
-#include "gen/data/Source/D2Game/MONSTER/MonsterMode.inc"
+extern "C" void __cdecl SKILLS_EventCallback_ActiveState(); // 0x0056D790
+extern "C" void __cdecl SKILLS_EventCallback_PeriodicSkillAura(); // 0x0056FCB0
+extern "C" void __cdecl SKILLS_EventCallback_ItemAura(); // 0x0056FE40
+extern "C" void __cdecl sub_005A7EF0(); // 0x005A7EF0
+extern "C" void __cdecl AITHINK_ExecuteMonsterAiTick(); // 0x005B1740
+extern "C" void __cdecl sub_005A6DE0(); // 0x005A6DE0
+extern "C" void __cdecl sub_005A72B0(); // 0x005A72B0
+extern "C" void __cdecl sub_005A7350(); // 0x005A7350
+extern "C" void __cdecl sub_005A7490(); // 0x005A7490
+extern "C" void __cdecl sub_005A74A0(); // 0x005A74A0
+extern "C" void __cdecl sub_005A74E0(); // 0x005A74E0
+extern "C" void __cdecl sub_005A7520(); // 0x005A7520
+extern "C" void __cdecl sub_005A7550(); // 0x005A7550
+extern "C" void __cdecl sub_005A7580(); // 0x005A7580
+extern "C" void __cdecl sub_005A77C0(); // 0x005A77C0
+extern "C" void __cdecl sub_005A7870(); // 0x005A7870
+extern "C" void __cdecl sub_005A8030(); // 0x005A8030
+extern "C" void __cdecl sub_005A8330(); // 0x005A8330
+extern "C" void __cdecl sub_005A83E0(); // 0x005A83E0
+extern "C" void __cdecl sub_005A8490(); // 0x005A8490
+extern "C" void __cdecl sub_005A84F0(); // 0x005A84F0
+extern "C" void __cdecl sub_005A8520(); // 0x005A8520
+extern "C" void __cdecl sub_005A8630(); // 0x005A8630
+extern "C" void __cdecl sub_005A8670(); // 0x005A8670
+extern "C" void __cdecl MONSTERUNIQUE_EventExecuteUModCallbacks(); // 0x005A4370
+
+#pragma pack(push, 1)
+struct d2data_006E2490_t
+{
+    const void* p0;
+    const void* p1;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006E2498_t
+{
+    const void* p0;
+    const void* p1;
+    unsigned char b2[4];
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    unsigned char b9[4];
+    const void* p10;
+    unsigned char b11[12];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0073C578_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    unsigned char b15[284];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0073C6D0_t
+{
+    unsigned char b0[16];
+};
+#pragma pack(pop)
+
+extern "C" const D2MonModeCallbackTableStrc gData_006E2260[16]; // 0x006E2260
+extern "C" const D2MonModeCallbackTableStrc gData_006E2360; // 0x006E2360
+extern "C" const D2MonModeCallbackTableStrc gData_006E2370; // 0x006E2370
+extern "C" const D2MonModeCallbackTableStrc gData_006E2380; // 0x006E2380
+extern "C" const D2MonModeCallbackTableStrc gData_006E2390; // 0x006E2390
+extern "C" const D2MonModeCallbackTableStrc gData_006E23A0; // 0x006E23A0
+extern "C" const D2MonModeInfoTableStrc gData_006E23D0[16]; // 0x006E23D0
+extern "C" const struct d2data_006E2490_t gData_006E2490; // 0x006E2490
+extern "C" const struct d2data_006E2498_t gData_006E2498; // 0x006E2498
+extern "C" struct d2data_0073C578_t gData_0073C578; // 0x0073C578
+extern "C" struct d2data_0073C6D0_t gData_0073C6D0; // 0x0073C6D0
+
+extern "C" const D2MonModeCallbackTableStrc gData_006E2260[16] = {
+    { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartDeath, (MonModeUnitFunc)(unsigned int)&sub_005A7350, (MonModeUnitFunc)(unsigned int)&sub_005A72B0, 1 },
+    { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartNeutral, (MonModeUnitFunc)(unsigned int)&sub_005A6DE0 },
+    { (MonModeStartFunc)(unsigned int)&sub_005A7520, (MonModeUnitFunc)(unsigned int)&sub_005A8490, 0, 1 },
+    { (MonModeStartFunc)(unsigned int)&sub_005A7580, (MonModeUnitFunc)(unsigned int)&sub_005A6DE0, (MonModeUnitFunc)(unsigned int)&sub_005A8030, 1 },
+    { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartAttackOrSkill, (MonModeUnitFunc)(unsigned int)&MONSTERMODE_UpdateAttackOrSkill, (MonModeUnitFunc)(unsigned int)&sub_005A8030, 1 },
+    { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartAttackOrSkill, (MonModeUnitFunc)(unsigned int)&MONSTERMODE_UpdateAttackOrSkill, (MonModeUnitFunc)(unsigned int)&sub_005A8030, 1 },
+    { (MonModeStartFunc)(unsigned int)&sub_005A77C0, (MonModeUnitFunc)(unsigned int)&sub_005A6DE0, (MonModeUnitFunc)(unsigned int)&sub_005A8030, 1 },
+    { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartAttackOrSkill, (MonModeUnitFunc)(unsigned int)&MONSTERMODE_UpdateAttackOrSkill, (MonModeUnitFunc)(unsigned int)&sub_005A8030, 1 },
+    { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartAttackOrSkill, (MonModeUnitFunc)(unsigned int)&MONSTERMODE_UpdateAttackOrSkill, (MonModeUnitFunc)(unsigned int)&sub_005A8030, 1 },
+    { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartAttackOrSkill, (MonModeUnitFunc)(unsigned int)&MONSTERMODE_UpdateAttackOrSkill, (MonModeUnitFunc)(unsigned int)&sub_005A8030, 1 },
+    { (MonModeStartFunc)(unsigned int)&sub_005A7490, (MonModeUnitFunc)(unsigned int)&sub_005A74A0, (MonModeUnitFunc)(unsigned int)&MONSTERMODE_EndSkill3 },
+    { (MonModeStartFunc)(unsigned int)&sub_005A74E0, (MonModeUnitFunc)(unsigned int)&sub_005A6DE0 },
+    { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartDead, (MonModeUnitFunc)(unsigned int)&sub_005A6DE0 },
+    { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartKnockback, (MonModeUnitFunc)(unsigned int)&sub_005A8630, (MonModeUnitFunc)(unsigned int)&sub_005A8520, 1 },
+    { (MonModeStartFunc)(unsigned int)&sub_005A7870, (MonModeUnitFunc)(unsigned int)&sub_005A8670, (MonModeUnitFunc)(unsigned int)&sub_005A8030, 1 },
+    { (MonModeStartFunc)(unsigned int)&sub_005A7550, (MonModeUnitFunc)(unsigned int)&sub_005A84F0, 0, 1 }
+}; // 0x006E2260
+#pragma comment(linker, "/alternatename:?gMonModeCallbacks@@3QBUD2MonModeCallbackTableStrc@@B=_gData_006E2260")
+
+extern "C" const D2MonModeCallbackTableStrc gData_006E2360 = { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartAttackOrSkill, (MonModeUnitFunc)(unsigned int)&MONSTERMODE_UpdateAttackOrSkill, (MonModeUnitFunc)(unsigned int)&sub_005A8030, 1 }; // 0x006E2360
+#pragma comment(linker, "/alternatename:?gDiablo_Skill4_Callbacks@@3UD2MonModeCallbackTableStrc@@B=_gData_006E2360")
+
+extern "C" const D2MonModeCallbackTableStrc gData_006E2370 = { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartAttackOrSkill, (MonModeUnitFunc)(unsigned int)&MONSTERMODE_UpdateAttackOrSkill, (MonModeUnitFunc)(unsigned int)&sub_005A8030, 1 }; // 0x006E2370
+#pragma comment(linker, "/alternatename:?gDiablo_Skill3_Callbacks@@3UD2MonModeCallbackTableStrc@@B=_gData_006E2370")
+
+extern "C" const D2MonModeCallbackTableStrc gData_006E2380 = { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartAttackOrSkill, (MonModeUnitFunc)(unsigned int)&MONSTERMODE_UpdateAttackOrSkill, (MonModeUnitFunc)(unsigned int)&sub_005A8330, 1 }; // 0x006E2380
+#pragma comment(linker, "/alternatename:?gTrappedSoul_Attack_Callbacks@@3UD2MonModeCallbackTableStrc@@B=_gData_006E2380")
+
+extern "C" const D2MonModeCallbackTableStrc gData_006E2390 = { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartAttackOrSkill, (MonModeUnitFunc)(unsigned int)&MONSTERMODE_UpdateAttackOrSkill, (MonModeUnitFunc)(unsigned int)&sub_005A83E0, 1 }; // 0x006E2390
+#pragma comment(linker, "/alternatename:?gTrappedSoul_Skill_Callbacks@@3UD2MonModeCallbackTableStrc@@B=_gData_006E2390")
+
+extern "C" const D2MonModeCallbackTableStrc gData_006E23A0 = { (MonModeStartFunc)(unsigned int)&MONSTERMODE_StartAttackOrSkill, (MonModeUnitFunc)(unsigned int)&MONSTERMODE_UpdateAttackOrSkill, (MonModeUnitFunc)(unsigned int)&sub_005A8030, 1 }; // 0x006E23A0
+#pragma comment(linker, "/alternatename:?gShadowMasterWarrior_Skill4_Callbacks@@3UD2MonModeCallbackTableStrc@@B=_gData_006E23A0")
+
+extern "C" const D2MonModeInfoTableStrc gData_006E23D0[16] = {
+    { 0, 1 },
+    { 0, 1 },
+    { 1 },
+    { 0, 1 },
+    { 0, 0, 1 },
+    { 0, 0, 1 },
+    { 0, 1 },
+    { 0, 0, 1 },
+    { 0, 0, 1 },
+    { 0, 0, 1 },
+    { 0, 0, 1 },
+    { 0, 0, 1 },
+    { 0, 1 },
+    { 1 },
+    { 1 },
+    { 1 }
+}; // 0x006E23D0
+#pragma comment(linker, "/alternatename:?gtMonsterModeEventPolicies@@3PAUD2MonModeInfoTableStrc@@A=_gData_006E23D0")
+
+extern "C" const struct d2data_006E2490_t gData_006E2490 = {
+    (const void*)(unsigned int)&MONSTERMODE_EventModeChange,
+    (const void*)(unsigned int)&MONSTERMODE_EventEndAnimation
+}; // 0x006E2490
+#pragma comment(linker, "/alternatename:?gpMonsterEventFunctions@@3PAP6IXPAUD2GameStrc@@PAUD2UnitStrc@@HH@ZA=_gData_006E2490")
+
+extern "C" const struct d2data_006E2498_t gData_006E2498 = {
+    (const void*)(unsigned int)&AITHINK_ExecuteMonsterAiTick,
+    (const void*)(unsigned int)&MONSTERMODE_ApplyStatRegen,
+    { 0x00 },
+    (const void*)(unsigned int)&SKILLS_EventCallback_ActiveState,
+    (const void*)(unsigned int)&MONSTERMODE_EventFreeHoverText,
+    (const void*)(unsigned int)&MONSTERUNIQUE_EventExecuteUModCallbacks,
+    (const void*)(unsigned int)&SKILLS_EventCallback_PeriodicSkillAura,
+    (const void*)(unsigned int)&SKILLS_EventCallback_ItemAura,
+    (const void*)(unsigned int)&MONSTERMODE_EventClearTargetOverride,
+    { 0x00 },
+    (const void*)(unsigned int)&sub_005A7EF0,
+    { 0x00 }
+}; // 0x006E2498
+
+extern "C" struct d2data_0073C578_t gData_0073C578 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14",
+    {
+        0x24, 0x00, 0x00, 0x00, 0x25, 0x00, 0x00, 0x00, 0x26, 0x00, 0x00, 0x00, 0x27, 0x00, 0x00, 0x00,
+        0x28, 0x00, 0x00, 0x00, 0x29, 0x00, 0x00, 0x00, 0x2A, 0x00, 0x00, 0x00, 0x2B, 0x00, 0x00, 0x00,
+        0x2C, 0x00, 0x00, 0x00, 0x2D, 0x00, 0x00, 0x00, 0x2E, 0x00, 0x00, 0x00, 0x2F, 0x00, 0x00, 0x00,
+        0x2D, 0x00, 0x00, 0x00, 0x2E, 0x00, 0x00, 0x00, 0x2F, 0x00, 0x00, 0x00, 0x0F, 0x00, 0x00, 0x00,
+        0x36, 0x00, 0x00, 0x00, 0x9C, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+        0x06, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x0B, 0x01, 0x00, 0x00,
+        0x3B, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+        0x04, 0x00, 0x00, 0x00, 0xD3, 0x00, 0x00, 0x00, 0x3D, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+        0x0D, 0x00, 0x00, 0x00, 0x0E, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xFA, 0x00, 0x00, 0x00,
+        0x3C, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00,
+        0x04, 0x00, 0x00, 0x00, 0xF2, 0x00, 0x00, 0x00, 0x3E, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+        0x14, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
+        0x3F, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00, 0x19, 0x00, 0x00, 0x00,
+        0x04, 0x00, 0x00, 0x00, 0xF3, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+        0x17, 0x00, 0x00, 0x00, 0x1A, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x0E, 0x02, 0x00, 0x00,
+        0x5E, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x26, 0x00, 0x00, 0x00,
+        0x04, 0x00, 0x00, 0x00, 0x20, 0x02, 0x00, 0x00, 0x5F, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+        0x24, 0x00, 0x00, 0x00, 0x28, 0x00, 0x00, 0x00, 0x04
+    }
+}; // 0x0073C578
+
+extern "C" struct d2data_0073C6D0_t gData_0073C6D0 = {
+    { 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }
+}; // 0x0073C6D0
+#pragma comment(linker, "/alternatename:?gbModeReset@@3PAEA=_gData_0073C6D0")

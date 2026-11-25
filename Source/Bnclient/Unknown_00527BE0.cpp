@@ -199,7 +199,7 @@ void D2BigPairStrc::sub_005286D0_InitLogin(D2BigLoginRecordStrc* pRecord, const 
     GAME_DeleteBigNum(hPublic);
 }
 
-#include "gen/data/Source/Bnclient/Unknown_00527BE0.inc"
+extern const char* gpszSrpSeparator = ":"; // 0x00730ADC
 
 // 0x005280C0
 int D2BigPowModStrc::sub_005280C0_ComputeSessionKey(void* const& hSecret, void* const& hPublic, void* const& hExp, void* const& hKey)

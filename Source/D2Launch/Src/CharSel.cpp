@@ -290,7 +290,7 @@ void* gapRowControlsX[8];                                                       
 
 D2WinControlStrc* gpControl_00779C84;                                                                       // 0x00779C84
 
-#include "gen/data/Source/D2Launch/Src/CharSel/gnSelected.inc"
+static int gnSelected = -1;                                                                                 // 0x0070CC00
 
 static D2WinControlStrc* gpCharSelectText; // 0x00779DD4
 
@@ -478,7 +478,7 @@ int __fastcall sub_00526800(const Unicode* pString);                            
 
 extern "C" const char* const gapszSkyPalette[2];                                                   // 0x006D3A08
 
-#include "gen/data/Source/D2Launch/Src/CharSel/gnSelectionA.inc"
+static int gnSelectionA = -999;                                                                             // 0x0070CC04
 
 extern D2WinControlStrc* gpGatewayList;                                                                // 0x00779590
 
@@ -960,7 +960,7 @@ int gnCharCount;                                                                
 
 static int CHARSEL_IsNotListedCode(int nValue); // 0x00438030
 
-#include "gen/data/Source/D2Launch/Src/CharSel/gnSelectionB.inc"
+static int gnSelectionB = -999;                                                                             // 0x0070CC08
 
 extern int gnCount_00779DC4; // 0x00779DC4
 
@@ -2992,4 +2992,115 @@ fail:
     return 0;
 }
 
-#include "gen/data/Source/D2Launch/Src/CharSel.inc"
+#pragma pack(push, 1)
+struct d2data_006D3A00_t
+{
+    const void* p0;
+    const void* p1;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0070CBC4_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007111D8_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    unsigned char b15[4];
+};
+#pragma pack(pop)
+
+extern "C" const struct d2data_006D3A00_t gData_006D3A00; // 0x006D3A00
+extern "C" const char* const gData_006D3A08[2]; // 0x006D3A08
+extern "C" struct d2data_0070CBC4_t gData_0070CBC4; // 0x0070CBC4
+extern "C" struct d2data_007111D8_t gData_007111D8; // 0x007111D8
+
+extern "C" const struct d2data_006D3A00_t gData_006D3A00 = {
+    (const void*)"palette\\fechar\\pal.dat",
+    (const void*)"palette\\fechar\\pal.pl2"
+}; // 0x006D3A00
+
+extern "C" const char* const gData_006D3A08[2] = { (const char* const)"palette\\sky\\pal.dat", (const char* const)"palette\\sky\\pal.pl2" }; // 0x006D3A08
+#pragma comment(linker, "/alternatename:_gapszSkyPalette=_gData_006D3A08")
+
+extern "C" struct d2data_0070CBC4_t gData_0070CBC4 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0070CBC4
+
+extern int gnVisibleRows = 5; // 0x0070CC0C
+
+extern char gszLevelDiffText[4] = "4"; // 0x0070EBD0
+
+extern char gszMaxPlayersText[4] = "4"; // 0x0070EBD4
+
+extern int gnGlobal_007111CC = 64; // 0x007111CC
+
+extern int gnGlobal_007111D0 = 148; // 0x007111D0
+
+extern int gnGlobal_007111D4 = 64; // 0x007111D4
+
+extern "C" struct d2data_007111D8_t gData_007111D8 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14",
+    { 0x00 }
+}; // 0x007111D8

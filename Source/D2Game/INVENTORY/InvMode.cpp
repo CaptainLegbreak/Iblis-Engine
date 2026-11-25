@@ -523,4 +523,13 @@ void __fastcall D2GAME_INVMODE_Last_6FC416D0(D2GameStrc* pGame, D2UnitStrc* pUni
     INVENTORY_FreeTradeInventory(pInventory);
 }
 
-#include "gen/data/Source/D2Game/INVENTORY/InvMode.inc"
+extern unsigned int gdwItemFlags[8] = { 0x20, 2, 8, 0x80, 0x40, 1, 0x200, 0x40000 }; // 0x00738C4C
+
+extern unsigned int gnItemFlagCount = 8; // 0x00738C6C
+
+extern unsigned int gdwItemCmdFlags[21] = {
+    2, 4, 8, 0x10, 0x20, 0x40, 0x80, 0x100, 0x40000, 0x400, 0x800, 0x1000, 0x2000, 0x200, 0x4000, 0x8000,
+    0x10000, 0x20000, 0x80000, 0x100000, 0x200000
+}; // 0x00738C70
+
+extern unsigned int gnItemCmdFlagCount = 0x15; // 0x00738CC4

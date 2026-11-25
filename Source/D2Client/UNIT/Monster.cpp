@@ -3319,4 +3319,155 @@ void __stdcall sub_004E4040(int nUnused1)
 {
 }
 
-#include "gen/data/Source/D2Client/UNIT/Monster.inc"
+#pragma pack(push, 1)
+struct d2data_006DA5DB_t
+{
+    unsigned char b0[1];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007251E0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    unsigned char b15[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00725340_t
+{
+    unsigned char b0[96];
+};
+#pragma pack(pop)
+
+extern "C" const D2MonCmdRecordStrc gData_006DA4D8[30]; // 0x006DA4D8
+extern "C" const struct d2data_006DA5DB_t gData_006DA5DB; // 0x006DA5DB
+extern "C" const int gData_006DA5DC[5]; // 0x006DA5DC
+extern "C" const int gData_006DA5F0[8]; // 0x006DA5F0
+extern "C" const int gData_006DA610[8]; // 0x006DA610
+extern "C" struct d2data_007251E0_t gData_007251E0; // 0x007251E0
+extern "C" struct d2data_00725340_t gData_00725340; // 0x00725340
+
+extern "C" const D2MonCmdRecordStrc gData_006DA4D8[30] = {
+    { 2 },
+    { 2 },
+    { 16 },
+    { 16 },
+    { 7, 1 },
+    { 7, 1 },
+    { 3 },
+    { 1 },
+    { 0 },
+    { 12 },
+    { 4, 1 },
+    { 4, 1 },
+    { 8, 1 },
+    { 8, 1 },
+    { 9, 1 },
+    { 9, 1 },
+    { 5, 1 },
+    { 5, 1 },
+    { 6 },
+    { 16 },
+    { 13 },
+    { 14 },
+    { 14 },
+    { 15 },
+    { 15 },
+    { 8 },
+    { 10, 1 },
+    { 10, 1 },
+    { 11, 1 },
+    { 11, 1 }
+}; // 0x006DA4D8
+#pragma comment(linker, "/alternatename:?gaMonCmdRecords@@3PAUD2MonCmdRecordStrc@@A=_gData_006DA4D8")
+
+extern "C" const struct d2data_006DA5DB_t gData_006DA5DB = {
+    { 0x00 }
+}; // 0x006DA5DB
+
+extern "C" const int gData_006DA5DC[5] = { 406, 410, 415, 418, 421 }; // 0x006DA5DC
+#pragma comment(linker, "/alternatename:?gaRandomCurseSkills@@3QBHB=_gData_006DA5DC")
+
+extern "C" const int gData_006DA5F0[8] = { 2, 1, 0, -1, -2, -1, 0, 1 }; // 0x006DA5F0
+#pragma comment(linker, "/alternatename:?gaBloodOffsetY@@3QBHB=_gData_006DA5F0")
+
+extern "C" const int gData_006DA610[8] = { 0, -1, -2, -1, 0, 1, 2, 1 }; // 0x006DA610
+#pragma comment(linker, "/alternatename:?gaBloodOffsetX@@3QBHB=_gData_006DA610")
+
+extern "C" struct d2data_007251E0_t gData_007251E0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14",
+    { 0x00 }
+}; // 0x007251E0
+
+extern D2MonAnimRecStrc gaMonAnimRecords[16] = {
+    { 0, 2 },
+    { 0 },
+    { 1, 0, 1 },
+    { 0, 1, 2 },
+    { 2, 1, 3 },
+    { 2, 1, 3 },
+    { 0, 1, 2 },
+    { 0, 1, 2 },
+    { 0, 1, 2 },
+    { 0, 1, 2 },
+    { 0, 2 },
+    { 0 },
+    { 0, 2 },
+    { 1, 2, 2 },
+    { 2, 1, 2 },
+    { 1, 0, 1 }
+}; // 0x00725220
+
+extern D2MonAnimRecStrc gaMonAnimRecordsMoving[6] = {
+    { 1, 2 },
+    { 0, 1, 2 },
+    { 0, 1, 2 },
+    { 0, 1, 2 },
+    { 1, 0, 4 },
+    { 1, 0, 4 }
+}; // 0x007252E0
+
+extern D2MonAnimRecStrc gtDiabloAnimRecord = { 2, 1, 3 }; // 0x00725328
+
+extern D2MonAnimRecStrc gtBaalAnimRecord = { 1, 0, 4 }; // 0x00725334
+
+extern "C" struct d2data_00725340_t gData_00725340 = {
+    {
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x02
+    }
+}; // 0x00725340

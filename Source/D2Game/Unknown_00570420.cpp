@@ -145,7 +145,12 @@ void __fastcall sub_K11_Emit005706A0(D2GameStrc* pGame, D2UnitStrc* pUnit, unsig
     sub_005706A0_UseActEntry(pGame, pUnit, nAct);
 }
 
-#include "gen/data/Source/D2Game/Unknown_00570420.inc"
+extern "C" const int gData_006E1520[5]; // 0x006E1520
+
+extern "C" const int gData_006E1520[5] = { 1, 15, 20, 26, 32 }; // 0x006E1520
+#pragma comment(linker, "/alternatename:?gnStartingActTargetLevels@@3QBHB=_gData_006E1520")
+
+extern int gnActCount = 5; // 0x007326B4
 struct D2MonStatsTxt;
 
 // 0x00570870

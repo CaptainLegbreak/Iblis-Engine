@@ -1408,4 +1408,63 @@ void __cdecl PANEL_DrawPartyPanel()
         D2Win_10129_DrawFramedText(D2LANG_GetStringFromTblIndex(0x102F), gnPanelOffsetX + 0x125, 0x182 - gnPanelOffsetY, 0, 1);
 }
 
-#include "gen/data/Source/D2Client/UI/Party.inc"
+#pragma pack(push, 1)
+struct d2data_00722414_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00722414_t gData_00722414; // 0x00722414
+
+extern "C" struct d2data_00722414_t gData_00722414 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00722414
+
+extern unsigned short gawRosterHostileMale[2][2] = {
+    { 0x2783, 0x277F },
+    { 0x2781, 0x277E }
+}; // 0x00722450
+
+extern unsigned short gawRosterHostileFemale[2][2] = {
+    { 0x2783, 0x2780 },
+    { 0x2782, 0x277E }
+}; // 0x00722458
+
+extern unsigned short gawRosterLootMale[2][2] = {
+    { 0x2789, 0x2787 },
+    { 0x2785, 0x2784 }
+}; // 0x00722460
+
+extern unsigned short gawRosterLootFemale[2][2] = {
+    { 0x2789, 0x2788 },
+    { 0x2786, 0x2784 }
+}; // 0x00722468

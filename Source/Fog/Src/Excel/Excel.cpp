@@ -695,4 +695,7 @@ extern "C" void __stdcall FOG_FreeLinker(D2TxtLinkStrc* pLinker)
     }
 }
 
-#include "gen/data/Source/Fog/Src/Excel/Excel.inc"
+extern "C" D2TxtLinkNodeStrc* const gData_0074C3D8; // 0x0074C3D8
+
+extern "C" D2TxtLinkNodeStrc* const gData_0074C3D8 = (D2TxtLinkNodeStrc* const)"?\?\?"; // 0x0074C3D8
+#pragma comment(linker, "/alternatename:?gpszFallback@@3QAUD2TxtLinkNodeStrc@@A=_gData_0074C3D8")

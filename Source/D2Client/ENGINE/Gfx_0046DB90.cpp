@@ -1264,4 +1264,59 @@ int __stdcall sub_M389_Emit_0046FEB0(int bAsync, D2UnitStrc* pUnit)
     return 0x3B;
 }
 
-#include "gen/data/Source/D2Client/ENGINE/Gfx_0046DB90.inc"
+#pragma pack(push, 1)
+struct d2data_00712B10_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const char* const gData_006D6C30[5]; // 0x006D6C30
+extern "C" const char gData_006D6CC8[100]; // 0x006D6CC8
+extern "C" struct d2data_00712B10_t gData_00712B10; // 0x00712B10
+
+extern "C" const char* const gData_006D6C30[5] = { "cmncof_a1.d2", "cmncof_a2.d2", "cmncof_a3.d2", "cmncof_a4.d2", "cmncof_a6.d2" }; // 0x006D6C30
+#pragma comment(linker, "/alternatename:?gaszHashedFileNames@@3PAPBDA=_gData_006D6C30")
+
+extern "C" const char gData_006D6CC8[100] = "sAsyncLoadBlock failed on async:%d unittype:%d unitclass:%d unitmode:%d weaponclass:%d wclass:%d\n"; // 0x006D6CC8
+#pragma comment(linker, "/alternatename:_gszAsyncLoadFailed=_gData_006D6CC8")
+
+extern int gaCofModes[15] = { 12, 0, 1, 2, 15, 4, 3, 5, 7, 6, 13, 8, 9, 10, 11 }; // 0x00712AC4
+
+extern int gnCofModeCount = 15; // 0x00712B00
+
+extern D2CofModeEntryStrc gaCofModeCodes[1] = { { 0x20206867, 13 } }; // 0x00712B04
+
+extern unsigned int gnCofModeCodeCount = 1; // 0x00712B0C
+
+extern "C" struct d2data_00712B10_t gData_00712B10 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00712B10

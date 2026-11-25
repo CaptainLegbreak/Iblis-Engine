@@ -857,4 +857,398 @@ inline D2SkillsTxt* GetSkill(int nId) {
     return 0;
 }
 
-#include "gen/data/Source/D2Game/Ai/AiThink.inc"
+extern "C" void __cdecl AITHINK_Fn002_Skeleton(); // 0x005EFCF0
+extern "C" void __cdecl AITHINK_Fn003_Zombie(); // 0x005EFE20
+extern "C" void __cdecl AITHINK_Fn004_Bighead(); // 0x005EFF50
+extern "C" void __cdecl AITHINK_Fn005_BloodHawk(); // 0x005F00E0
+extern "C" void __cdecl AITHINK_Fn006_Fallen(); // 0x005F02C0
+extern "C" void __cdecl AITHINK_Fn007_Brute(); // 0x005EFB80
+extern "C" void __cdecl sub_005F0700(); // 0x005F0700
+extern "C" void __cdecl AITHINK_Fn009_Wraith(); // 0x005F0A20
+extern "C" void __cdecl AITHINK_Fn010_CorruptRogue(); // 0x005F0B00
+extern "C" void __cdecl AITHINK_Fn011_Baboon(); // 0x005F0CD0
+extern "C" void __cdecl AITHINK_Fn012_019_Goatman_Swarm(); // 0x005F12A0
+extern "C" void __cdecl AITHINK_Fn013_FallenShaman(); // 0x005F1440
+extern "C" void __cdecl AITHINK_Fn014_QuillRat(); // 0x005F1140
+extern "C" void __cdecl AITHINK_Fn015_SandMaggot(); // 0x005F1800
+extern "C" void __cdecl AITHINK_SpecialFn015_SandMaggot(); // 0x005F1750
+extern "C" void __cdecl AITHINK_Fn016_ClawViper(); // 0x005F1B60
+extern "C" void __cdecl AITHINK_Fn017_SandLeaper(); // 0x005F20A0
+extern "C" void __cdecl AITHINK_Fn018_PantherWoman(); // 0x005F22B0
+extern "C" void __cdecl sub_005F2460_AiThink(); // 0x005F2460
+extern "C" void __cdecl AITHINK_Fn020_Scarab(); // 0x005F2540
+extern "C" void __cdecl AITHINK_Fn021_Mummy(); // 0x005F2850
+extern "C" void __cdecl sub_005F2B10(); // 0x005F2B10
+extern "C" void __cdecl sub_005F3170(); // 0x005F3170
+extern "C" void __cdecl AITHINK_Fn024_Mosquito(); // 0x005F3730
+extern "C" void __cdecl AITHINK_Fn025_Willowisp(); // 0x005F39B0
+extern "C" void __cdecl AITHINK_Fn026_Arach(); // 0x005F4510
+extern "C" void __cdecl AITHINK_Fn027_ThornHulk(); // 0x005F4850
+extern "C" void __cdecl sub_005F4A70(); // 0x005F4A70
+extern "C" void __cdecl AITHINK_Fn029_BatDemon(); // 0x005F5040
+extern "C" void __cdecl AITHINK_BatDemon_HandleSpecialAiState(); // 0x005F4FD0
+extern "C" void __cdecl sub_005F53E0(); // 0x005F53E0
+extern "C" void __cdecl AITHINK_Fn031_NpcOutOfTown(); // 0x005E7880
+extern "C" void __cdecl AITHINK_Fn032_Npc(); // 0x005E7130
+extern "C" void __cdecl AITHINK_Fn033_HellMeteor(); // 0x005F56D0
+extern "C" void __cdecl AITHINK_Fn034_Andariel(); // 0x005F5830
+extern "C" void __cdecl AITHINK_Fn035_CorruptArcher(); // 0x005F5A20
+extern "C" void __cdecl AITHINK_Fn036_CorruptLancer(); // 0x005F5D50
+extern "C" void __cdecl AITHINK_Fn037_SkeletonBow(); // 0x005F6070
+extern "C" void __cdecl AITHINK_Fn038_MaggotLarva(); // 0x005F6220
+extern "C" void __cdecl AITHINK_Fn039_PinHead(); // 0x005F6340
+extern "C" void __cdecl AITHINK_Fn040_MaggotEgg(); // 0x005F6530
+extern "C" void __cdecl AITHINK_Fn041_Towner(); // 0x005E7540
+extern "C" void __cdecl AITHINK_Fn042_Vendor(); // 0x005E9E00
+extern "C" void __cdecl sub_005F6630_InitAiParamsFrame(); // 0x005F6630
+extern "C" void __cdecl AITHINK_Fn043_FoulCrowNest(); // 0x005F6650
+extern "C" void __cdecl AITHINK_Fn044_Duriel(); // 0x005F67B0
+extern "C" void __cdecl AITHINK_Fn045_Sarcophagus(); // 0x005F6A10
+extern "C" void __cdecl AITHINK_Fn046_ElementalBeast(); // 0x005F6B70
+extern "C" void __cdecl AITHINK_Fn047_FlyingScimitar(); // 0x005F6CA0
+extern "C" void __cdecl AITHINK_Fn048_ZakarumZealot(); // 0x005F6E60
+extern "C" void __cdecl AITHINK_Fn049_ZakarumPriest(); // 0x005F72D0
+extern "C" void __cdecl sub_005F78B0(); // 0x005F78B0
+extern "C" void __cdecl AITHINK_ResetAiAndPreserveHomeCommand(); // 0x005E8480
+extern "C" void __cdecl AITHINK_Fn052_FrogDemon(); // 0x005F8260
+extern "C" void __cdecl sub_005F81D0(); // 0x005F81D0
+extern "C" void __cdecl AITHINK_Fn053_Summoner(); // 0x005F85C0
+extern "C" void __cdecl AITHINK_Fn054_NpcStationary(); // 0x005E73A0
+extern "C" void __cdecl AITHINK_Fn055_Izual(); // 0x005F89B0
+extern "C" void __cdecl AITHINK_Fn056_Tentacle(); // 0x005F8F80
+extern "C" void __cdecl sub_005F9270(); // 0x005F9270
+extern "C" void __cdecl AITHINK_Fn058_Navi(); // 0x005E7E20
+extern "C" void __cdecl AITHINK_ResetBloodRavenReturnState(); // 0x005E6300
+extern "C" void __cdecl AITHINK_Fn059_BloodRaven(); // 0x005E6320
+extern "C" void __cdecl AITHINK_Fn060_GoodNpcRanged(); // 0x005E7AC0
+extern "C" void __cdecl sub_005E52D0(); // 0x005E52D0
+extern "C" void __cdecl sub_005E5280(); // 0x005E5280
+extern "C" void __cdecl AITHINK_Fn062_TownRogue(); // 0x005E7D60
+extern "C" void __cdecl sub_005F9490(); // 0x005F9490
+extern "C" void __cdecl AITHINK_Fn064_SkeletonMage(); // 0x005F96C0
+extern "C" void __cdecl AITHINK_Fn065_FetishShaman(); // 0x005F9A80
+extern "C" void __cdecl sub_005F9950(); // 0x005F9950
+extern "C" void __cdecl AITHINK_Fn066_SandMaggotQueen(); // 0x005F9CF0
+extern "C" void __cdecl AITHINK_Fn067_NecroPet(); // 0x005E4CF0
+extern "C" void __cdecl AITHINK_Fn068_VileMother(); // 0x005FA010
+extern "C" void __cdecl AITHINK_Fn069_VileDog(); // 0x005FA280
+extern "C" void __cdecl AITHINK_Fn070_FingerMage(); // 0x005FA380
+extern "C" void __cdecl sub_005FA710(); // 0x005FA710
+extern "C" void __cdecl AITHINK_Fn072_DoomKnight(); // 0x005FAA90
+extern "C" void __cdecl AITHINK_Fn073_AbyssKnight(); // 0x005FAB80
+extern "C" void __cdecl AITHINK_Fn074_OblivionKnight(); // 0x005FAF00
+extern "C" void __cdecl AITHINK_Fn075_QuillMother(); // 0x005FB2A0
+extern "C" void __cdecl AITHINK_Fn076_EvilHole(); // 0x005FB410
+extern "C" void __cdecl AITHINK_Fn077_TrapMissile(); // 0x005FB5B0
+extern "C" void __cdecl AITHINK_Fn078_TrapRightArrow(); // 0x005FB6C0
+extern "C" void __cdecl AITHINK_Fn079_TrapLeftArrow(); // 0x005FB7E0
+extern "C" void __cdecl sub_005FB900(); // 0x005FB900
+extern "C" void __cdecl AITHINK_Fn081_JarJar(); // 0x005E7590
+extern "C" void __cdecl sub_005E0160(); // 0x005E0160
+extern "C" void __cdecl AITHINK_Fn083_MosquitoNest(); // 0x005E0260
+extern "C" void __cdecl AITHINK_InitializeBoneWallLifetime(); // 0x005E0390
+extern "C" void __cdecl AITHINK_Fn084_BoneWall(); // 0x005E0400
+extern "C" void __cdecl AITHINK_Fn085_HighPriest(); // 0x005E0490
+extern "C" void __cdecl AITHINK_Fn086_Hydra(); // 0x005E9E60
+extern "C" void __cdecl AITHINK_Fn087_TrapMelee(); // 0x005FBA60
+extern "C" void __cdecl AITHINK_Fn088_7TIllusion(); // 0x005EA080
+extern "C" void __cdecl AITHINK_Fn089_Megademon(); // 0x005E0C80
+extern "C" void __cdecl AITHINK_Fn090_Griswold(); // 0x005E5AC0
+extern "C" void __cdecl AITHINK_Fn091_DarkWanderer(); // 0x005EA130
+extern "C" void __cdecl sub_005FB9B0(); // 0x005FB9B0
+extern "C" void __cdecl AITHINK_Fn093_ArcaneTower(); // 0x005E0F60
+extern "C" void __cdecl AITHINK_Fn094_DesertTurret(); // 0x005E0980
+extern "C" void __cdecl AITHINK_Fn095_PantherJavelin(); // 0x005E1080
+extern "C" void __cdecl AITHINK_Fn096_FetishBlowgun(); // 0x005E1250
+extern "C" void __cdecl AITHINK_Fn097_Spirit(); // 0x005E3840
+extern "C" void __cdecl AITHINK_Fn098_Smith(); // 0x005E3890
+extern "C" void __cdecl AITHINK_Fn099_TrappedSoul(); // 0x005E9F10
+extern "C" void __cdecl sub_005E7F50(); // 0x005E7F50
+extern "C" void __cdecl AITHINK_InitializeAssassinSentry(); // 0x005EA290
+extern "C" void __cdecl AITHINK_Fn101_AssassinSentry(); // 0x005EA3D0
+extern "C" void __cdecl AITHINK_InitializeBladeCreeper(); // 0x005EA510
+extern "C" void __cdecl AITHINK_Fn102_BladeCreeper(); // 0x005EA540
+extern "C" void __cdecl AITHINK_Fn103_InvisoPet(); // 0x005EA7A0
+extern "C" void __cdecl sub_005EA980(); // 0x005EA980
+extern "C" void __cdecl AITHINK_InitializeShadowWarrior(); // 0x005EAF50
+extern "C" void __cdecl AITHINK_Fn105_ShadowWarrior(); // 0x005EAFA0
+extern "C" void __cdecl AITHINK_InitializeShadowMaster(); // 0x005EB490
+extern "C" void __cdecl sub_005EB970(); // 0x005EB970
+extern "C" void __cdecl AITHINK_InitializeRaven(); // 0x005ECB70
+extern "C" void __cdecl AITHINK_Fn107_Raven(); // 0x005ECC10
+extern "C" void __cdecl AITHINK_Fn108_DruidWolf(); // 0x005ED710
+extern "C" void __cdecl AITHINK_Fn109_Totem(); // 0x005ED9E0
+extern "C" void __cdecl AITHINK_InitializeVineState(); // 0x005EC6A0
+extern "C" void __cdecl AITHINK_Fn110_Vines(); // 0x005EC6C0
+extern "C" void __cdecl AITHINK_Fn111_CycleOfLife(); // 0x005EC8C0
+extern "C" void __cdecl AITHINK_Fn112_DruidBear(); // 0x005ED730
+extern "C" void __cdecl AITHINK_Fn113_SiegeTower(); // 0x005E1860
+extern "C" void __cdecl AITHINK_Fn114_ReanimatedHorde(); // 0x005E1540
+extern "C" void __cdecl AITHINK_Fn115_SiegeBeast(); // 0x005E1900
+extern "C" void __cdecl AITHINK_Fn116_Minion(); // 0x005E1B60
+extern "C" void __cdecl sub_005E1D30(); // 0x005E1D30
+extern "C" void __cdecl AITHINK_Fn118_Succubus(); // 0x005E1E00
+extern "C" void __cdecl AITHINK_Fn119_SuccubusWitch(); // 0x005E2120
+extern "C" void __cdecl AITHINK_Fn120_Overseer(); // 0x005E27A0
+extern "C" void __cdecl AITHINK_Fn121_MinionSpawner(); // 0x005E2BD0
+extern "C" void __cdecl AITHINK_InitializeImpMountTarget(); // 0x005E2FD0
+extern "C" void __cdecl sub_005E2FF0(); // 0x005E2FF0
+extern "C" void __cdecl AITHINK_Fn123_Catapult(); // 0x005E34C0
+extern "C" void __cdecl sub_005E3530(); // 0x005E3530
+extern "C" void __cdecl AITHINK_Fn125_BloodLord(); // 0x005E36F0
+extern "C" void __cdecl sub_005EDC40(); // 0x005EDC40
+extern "C" void __cdecl sub_005EDC50(); // 0x005EDC50
+extern "C" void __cdecl sub_005EE5C0(); // 0x005EE5C0
+extern "C" void __cdecl sub_005EE5D0(); // 0x005EE5D0
+extern "C" void __cdecl AITHINK_InitializeGenericSpawner(); // 0x005E6190
+extern "C" void __cdecl AITHINK_Fn129_GenericSpawner(); // 0x005E61B0
+extern "C" void __cdecl sub_005EE3C0(); // 0x005EE3C0
+extern "C" void __cdecl AITHINK_Fn133_Ancient(); // 0x005EF1A0
+extern "C" void __cdecl sub_005EF310(); // 0x005EF310
+extern "C" void __cdecl AITHINK_Fn135_BaalCrab(); // 0x005FCFE0
+extern "C" void __cdecl AIBAAL_RunSpecialAiState(); // 0x005FCF30
+extern "C" void __cdecl AITHINK_Fn136_BaalTaunt(); // 0x005EF710
+extern "C" void __cdecl AITHINK_Fn137_PutridDefiler(); // 0x005EFA90
+extern "C" void __cdecl AITHINK_Fn138_BaalToStairs(); // 0x005EF620
+extern "C" void __cdecl sub_005EF820(); // 0x005EF820
+extern "C" void __cdecl AITHINK_Fn140_BaalCrabClone(); // 0x005FD210
+extern "C" void __cdecl AITHINK_Fn141_BaalMinion(); // 0x005EF910
+extern "C" void __cdecl AITHINK_Fn142_ClawViperEx(); // 0x005F1DE0
+extern "C" void __cdecl AITHINK_InitializeShadowMasterAttackSkills(); // 0x005EB5C0
+extern "C" void __cdecl AITHINK_Fn144_UberIzual(); // 0x005F8C80
+extern "C" void __cdecl AITHINK_Fn145_UberBaal(); // 0x005FD200
+extern "C" void __cdecl AITHINK_Fn146_UberMephisto(); // 0x005F81C0
+extern "C" void __cdecl AITHINK_Fn147_UberDiablo(); // 0x005E9DF0
+extern "C" void __cdecl AITHINK_InitializeFormationOffsets(); // 0x005E5730
+extern "C" void __cdecl sub_005E5870(); // 0x005E5870
+extern "C" void __cdecl AITHINK_SpecialState06_HireableNonPlayerOwner(); // 0x005E7C10
+extern "C" void __cdecl AITHINK_SpecialState08_TownRogue(); // 0x005E7DC0
+extern "C" void __cdecl sub_005E7F80(); // 0x005E7F80
+extern "C" void __cdecl AITHINK_SpecialState10_17_DimVision(); // 0x005E8020
+extern "C" void __cdecl sub_005E80E0(); // 0x005E80E0
+extern "C" void __cdecl sub_005E8140(); // 0x005E8140
+extern "C" void __cdecl sub_005E8340(); // 0x005E8340
+extern "C" void __cdecl AITHINK_SpecialState13_Countess(); // 0x005E5C50
+extern "C" void __cdecl AITHINK_SpecialState14_AttackOrApproach(); // 0x005E2610
+extern "C" void __cdecl AITHINK_InitializeMountedImpSkills(); // 0x005E2CD0
+extern "C" void __cdecl sub_005E2D80(); // 0x005E2D80
+extern "C" void __cdecl AITHINK_Fn130_DeathMauler(); // 0x005EE260
+
+#pragma pack(push, 1)
+struct d2data_0073C9DC_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_0073C9DC_t gData_0073C9DC; // 0x0073C9DC
+extern "C" D2AiTableStrc gData_0073CA18[148]; // 0x0073CA18
+extern "C" D2AiTableStrc gData_0073D358[18]; // 0x0073D358
+
+extern "C" struct d2data_0073C9DC_t gData_0073C9DC = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0073C9DC
+
+extern "C" D2AiTableStrc gData_0073CA18[148] = {
+    { 0, 0, (AiFn)&sub_005B0CC0 },
+    { 0, 0, (AiFn)&AITHINK_Fn001_100_Idle_Buffy },
+    { 1, 0, (AiFn)&AITHINK_Fn002_Skeleton },
+    { 1, 0, (AiFn)&AITHINK_Fn003_Zombie },
+    { 1, 0, (AiFn)&AITHINK_Fn004_Bighead },
+    { 1, 0, (AiFn)&AITHINK_Fn005_BloodHawk },
+    { 1, 0, (AiFn)&AITHINK_Fn006_Fallen },
+    { 1, 0, (AiFn)&AITHINK_Fn007_Brute },
+    { 1, 0, (AiFn)&sub_005F0700 },
+    { 1, 0, (AiFn)&AITHINK_Fn009_Wraith },
+    { 1, 0, (AiFn)&AITHINK_Fn010_CorruptRogue },
+    { 1, 0, (AiFn)&AITHINK_Fn011_Baboon },
+    { 1, 0, (AiFn)&AITHINK_Fn012_019_Goatman_Swarm },
+    { 1, 0, (AiFn)&AITHINK_Fn013_FallenShaman },
+    { 1, 0, (AiFn)&AITHINK_Fn014_QuillRat },
+    { 4, 0, (AiFn)&AITHINK_Fn015_SandMaggot, (AiFn)&AITHINK_SpecialFn015_SandMaggot },
+    { 1, 0, (AiFn)&AITHINK_Fn016_ClawViper },
+    { 1, 0, (AiFn)&AITHINK_Fn017_SandLeaper },
+    { 1, 0, (AiFn)&AITHINK_Fn018_PantherWoman },
+    { 1, 0, (AiFn)&sub_005F2460_AiThink },
+    { 1, 0, (AiFn)&AITHINK_Fn020_Scarab },
+    { 1, 0, (AiFn)&AITHINK_Fn021_Mummy },
+    { 1, 0, (AiFn)&sub_005F2B10 },
+    { 1, 0, (AiFn)&sub_005F3170 },
+    { 1, 0, (AiFn)&AITHINK_Fn024_Mosquito },
+    { 1, 0, (AiFn)&AITHINK_Fn025_Willowisp },
+    { 1, 0, (AiFn)&AITHINK_Fn026_Arach },
+    { 1, 0, (AiFn)&AITHINK_Fn027_ThornHulk },
+    { 1, 0, (AiFn)&sub_005F4A70 },
+    { 1, 0, (AiFn)&AITHINK_Fn029_BatDemon, (AiFn)&AITHINK_BatDemon_HandleSpecialAiState },
+    { 1, 0, (AiFn)&sub_005F53E0 },
+    { 0, 0, (AiFn)&AITHINK_Fn031_NpcOutOfTown },
+    { 0, 0, (AiFn)&AITHINK_Fn032_Npc },
+    { 1, 0, (AiFn)&AITHINK_Fn033_HellMeteor },
+    { 1, 0, (AiFn)&AITHINK_Fn034_Andariel },
+    { 1, 0, (AiFn)&AITHINK_Fn035_CorruptArcher },
+    { 1, 0, (AiFn)&AITHINK_Fn036_CorruptLancer },
+    { 1, 0, (AiFn)&AITHINK_Fn037_SkeletonBow },
+    { 1, 0, (AiFn)&AITHINK_Fn038_MaggotLarva },
+    { 1, 0, (AiFn)&AITHINK_Fn039_PinHead },
+    { 1, 0, (AiFn)&AITHINK_Fn040_MaggotEgg },
+    { 0, 0, (AiFn)&AITHINK_Fn041_Towner },
+    { 0, 0, (AiFn)&AITHINK_Fn042_Vendor },
+    { 1, (AiFn)&sub_005F6630_InitAiParamsFrame, (AiFn)&AITHINK_Fn043_FoulCrowNest },
+    { 1, 0, (AiFn)&AITHINK_Fn044_Duriel },
+    { 1, (AiFn)&sub_005F6630_InitAiParamsFrame, (AiFn)&AITHINK_Fn045_Sarcophagus },
+    { 1, 0, (AiFn)&AITHINK_Fn046_ElementalBeast },
+    { 1, 0, (AiFn)&AITHINK_Fn047_FlyingScimitar },
+    { 1, 0, (AiFn)&AITHINK_Fn048_ZakarumZealot },
+    { 1, 0, (AiFn)&AITHINK_Fn049_ZakarumPriest },
+    { 1, 0, (AiFn)&sub_005F78B0 },
+    { 1, 0, (AiFn)&AITHINK_Fn051_Diablo, (AiFn)&AITHINK_ResetAiAndPreserveHomeCommand },
+    { 5, 0, (AiFn)&AITHINK_Fn052_FrogDemon, (AiFn)&sub_005F81D0 },
+    { 1, 0, (AiFn)&AITHINK_Fn053_Summoner },
+    { 0, 0, (AiFn)&AITHINK_Fn054_NpcStationary },
+    { 1, 0, (AiFn)&AITHINK_Fn055_Izual },
+    { 2, 0, (AiFn)&AITHINK_Fn056_Tentacle },
+    { 2, 0, (AiFn)&sub_005F9270 },
+    { 0, 0, (AiFn)&AITHINK_Fn058_Navi },
+    { 1, (AiFn)&AITHINK_ResetBloodRavenReturnState, (AiFn)&AITHINK_Fn059_BloodRaven },
+    { 0, 0, (AiFn)&AITHINK_Fn060_GoodNpcRanged },
+    { 0, 0, (AiFn)&sub_005E52D0, (AiFn)&sub_005E5280 },
+    { 1, 0, (AiFn)&AITHINK_Fn062_TownRogue },
+    { 1, 0, (AiFn)&sub_005F9490 },
+    { 1, 0, (AiFn)&AITHINK_Fn064_SkeletonMage },
+    { 1, 0, (AiFn)&AITHINK_Fn065_FetishShaman, (AiFn)&sub_005F9950 },
+    { 0, 0, (AiFn)&AITHINK_Fn066_SandMaggotQueen },
+    { 0, 0, (AiFn)&AITHINK_Fn067_NecroPet },
+    { 1, 0, (AiFn)&AITHINK_Fn068_VileMother },
+    { 1, 0, (AiFn)&AITHINK_Fn069_VileDog },
+    { 1, 0, (AiFn)&AITHINK_Fn070_FingerMage },
+    { 1, 0, (AiFn)&sub_005FA710 },
+    { 1, 0, (AiFn)&AITHINK_Fn072_DoomKnight },
+    { 1, 0, (AiFn)&AITHINK_Fn073_AbyssKnight },
+    { 1, 0, (AiFn)&AITHINK_Fn074_OblivionKnight },
+    { 1, 0, (AiFn)&AITHINK_Fn075_QuillMother },
+    { 1, 0, (AiFn)&AITHINK_Fn076_EvilHole },
+    { 2, 0, (AiFn)&AITHINK_Fn077_TrapMissile },
+    { 1, 0, (AiFn)&AITHINK_Fn078_TrapRightArrow },
+    { 1, 0, (AiFn)&AITHINK_Fn079_TrapLeftArrow },
+    { 2, 0, (AiFn)&sub_005FB900 },
+    { 0, 0, (AiFn)&AITHINK_Fn081_JarJar },
+    { 1, 0, (AiFn)&sub_005E0160 },
+    { 0, 0, (AiFn)&AITHINK_Fn083_MosquitoNest },
+    { 0, (AiFn)&AITHINK_InitializeBoneWallLifetime, (AiFn)&AITHINK_Fn084_BoneWall },
+    { 1, 0, (AiFn)&AITHINK_Fn085_HighPriest },
+    { 2, 0, (AiFn)&AITHINK_Fn086_Hydra },
+    { 1, 0, (AiFn)&AITHINK_Fn087_TrapMelee },
+    { 1, 0, (AiFn)&AITHINK_Fn088_7TIllusion },
+    { 1, 0, (AiFn)&AITHINK_Fn089_Megademon },
+    { 1, 0, (AiFn)&AITHINK_Fn090_Griswold },
+    { 1, 0, (AiFn)&AITHINK_Fn091_DarkWanderer },
+    { 1, 0, (AiFn)&sub_005FB9B0 },
+    { 1, 0, (AiFn)&AITHINK_Fn093_ArcaneTower },
+    { 1, 0, (AiFn)&AITHINK_Fn094_DesertTurret },
+    { 1, 0, (AiFn)&AITHINK_Fn095_PantherJavelin },
+    { 1, 0, (AiFn)&AITHINK_Fn096_FetishBlowgun },
+    { 1, 0, (AiFn)&AITHINK_Fn097_Spirit },
+    { 1, 0, (AiFn)&AITHINK_Fn098_Smith },
+    { 1, 0, (AiFn)&AITHINK_Fn099_TrappedSoul },
+    { 0, 0, (AiFn)&sub_005E7F50 },
+    { 0, (AiFn)&AITHINK_InitializeAssassinSentry, (AiFn)&AITHINK_Fn101_AssassinSentry },
+    { 0, (AiFn)&AITHINK_InitializeBladeCreeper, (AiFn)&AITHINK_Fn102_BladeCreeper },
+    { 0, 0, (AiFn)&AITHINK_Fn103_InvisoPet },
+    { 0, (AiFn)&AITHINK_InitializeAssassinSentry, (AiFn)&sub_005EA980 },
+    { 2, (AiFn)&AITHINK_InitializeShadowWarrior, (AiFn)&AITHINK_Fn105_ShadowWarrior },
+    { 2, (AiFn)&AITHINK_InitializeShadowMaster, (AiFn)&sub_005EB970 },
+    { 2, (AiFn)&AITHINK_InitializeRaven, (AiFn)&AITHINK_Fn107_Raven },
+    { 0, 0, (AiFn)&AITHINK_Fn108_DruidWolf },
+    { 0, 0, (AiFn)&AITHINK_Fn109_Totem },
+    { 2, (AiFn)&AITHINK_InitializeVineState, (AiFn)&AITHINK_Fn110_Vines },
+    { 2, (AiFn)&AITHINK_InitializeVineState, (AiFn)&AITHINK_Fn111_CycleOfLife },
+    { 0, 0, (AiFn)&AITHINK_Fn112_DruidBear },
+    { 1, 0, (AiFn)&AITHINK_Fn113_SiegeTower },
+    { 1, 0, (AiFn)&AITHINK_Fn114_ReanimatedHorde },
+    { 1, 0, (AiFn)&AITHINK_Fn115_SiegeBeast },
+    { 1, 0, (AiFn)&AITHINK_Fn116_Minion },
+    { 1, 0, (AiFn)&sub_005E1D30 },
+    { 1, 0, (AiFn)&AITHINK_Fn118_Succubus },
+    { 1, 0, (AiFn)&AITHINK_Fn119_SuccubusWitch },
+    { 1, 0, (AiFn)&AITHINK_Fn120_Overseer },
+    { 1, (AiFn)&sub_005F6630_InitAiParamsFrame, (AiFn)&AITHINK_Fn121_MinionSpawner },
+    { 1, (AiFn)&AITHINK_InitializeImpMountTarget, (AiFn)&sub_005E2FF0 },
+    { 1, 0, (AiFn)&AITHINK_Fn123_Catapult },
+    { 1, 0, (AiFn)&sub_005E3530 },
+    { 1, 0, (AiFn)&AITHINK_Fn125_BloodLord },
+    { 1, 0, (AiFn)&AITHINK_Fn126_CatapultSpotter },
+    { 2, (AiFn)&sub_005EDC40, (AiFn)&sub_005EDC50 },
+    { 2, (AiFn)&sub_005EE5C0, (AiFn)&sub_005EE5D0, (AiFn)&sub_005E5280 },
+    { 1, (AiFn)&AITHINK_InitializeGenericSpawner, (AiFn)&AITHINK_Fn129_GenericSpawner },
+    { 1, 0, (AiFn)&AITHINK_Fn130_DeathMauler },
+    { 2, 0, (AiFn)&sub_005EE3C0 },
+    { 0, 0, (AiFn)&AITHINK_Fn132_AncientStatue },
+    { 2, 0, (AiFn)&AITHINK_Fn133_Ancient },
+    { 2, (AiFn)&sub_005EF310, (AiFn)&AITHINK_Fn134_BaalThrone },
+    { 0, 0, (AiFn)&AITHINK_Fn135_BaalCrab, (AiFn)&AIBAAL_RunSpecialAiState },
+    { 1, 0, (AiFn)&AITHINK_Fn136_BaalTaunt },
+    { 1, 0, (AiFn)&AITHINK_Fn137_PutridDefiler },
+    { 1, 0, (AiFn)&AITHINK_Fn138_BaalToStairs },
+    { 1, 0, (AiFn)&sub_005EF820 },
+    { 0, 0, (AiFn)&AITHINK_Fn140_BaalCrabClone, (AiFn)&AIBAAL_RunSpecialAiState },
+    { 1, 0, (AiFn)&AITHINK_Fn141_BaalMinion },
+    { 1, 0, (AiFn)&AITHINK_Fn142_ClawViperEx },
+    { 2, (AiFn)&AITHINK_InitializeShadowMasterAttackSkills, (AiFn)&sub_005EB970 },
+    { 1, 0, (AiFn)&AITHINK_Fn144_UberIzual },
+    { 1, 0, (AiFn)&AITHINK_Fn145_UberBaal, (AiFn)&AIBAAL_RunSpecialAiState },
+    { 1, 0, (AiFn)&AITHINK_Fn146_UberMephisto },
+    { 1, 0, (AiFn)&AITHINK_Fn147_UberDiablo, (AiFn)&AITHINK_ResetAiAndPreserveHomeCommand }
+}; // 0x0073CA18
+#pragma comment(linker, "/alternatename:?gaAiTable@@3PAUD2AiTableStrc@@A=_gData_0073CA18")
+
+extern "C" D2AiTableStrc gData_0073D358[18] = {
+    { 0 },
+    { 0, 0, (AiFn)&AITHINK_Fn001_100_Idle_Buffy },
+    { 1, 0, (AiFn)&D2GAME_AI_SpecialState02_6FCD1660 },
+    { 1, (AiFn)&AITHINK_InitializeFormationOffsets, (AiFn)&sub_005E5870 },
+    { 0, 0, (AiFn)&sub_005E52D0, (AiFn)&sub_005E5280 },
+    { 0, 0, (AiFn)&AITHINK_Fn060_GoodNpcRanged },
+    { 0, 0, (AiFn)&AITHINK_SpecialState06_HireableNonPlayerOwner },
+    { 0, 0, (AiFn)&AITHINK_Fn067_NecroPet },
+    { 1, 0, (AiFn)&AITHINK_SpecialState08_TownRogue },
+    { 1, 0, (AiFn)&sub_005E7F80 },
+    { 1, 0, (AiFn)&AITHINK_SpecialState10_17_DimVision },
+    { 1, (AiFn)&sub_005E80E0, (AiFn)&sub_005E8140 },
+    { 0, 0, (AiFn)&sub_005E8340 },
+    { 1, 0, (AiFn)&AITHINK_SpecialState13_Countess },
+    { 1, 0, (AiFn)&AITHINK_SpecialState14_AttackOrApproach },
+    { 1, 0, (AiFn)&sub_005E1D30 },
+    { 1, (AiFn)&AITHINK_InitializeMountedImpSkills, (AiFn)&sub_005E2D80 },
+    { 2, 0, (AiFn)&AITHINK_SpecialState10_17_DimVision }
+}; // 0x0073D358
+#pragma comment(linker, "/alternatename:?gaSpecialAiStateTable@@3PAUD2AiTableStrc@@A=_gData_0073D358")
+
+extern const char* gaszLanguageNames_0073D478[15] = { "English", "Spanish", "German", "French", "Portuguese", "Italian", "Japanese", "Korean", "Simplified Chinese", "Traditional Chinese", "Polish", "Russian", "English with Korean Chat", "Unknown", "14" }; // 0x0073D478

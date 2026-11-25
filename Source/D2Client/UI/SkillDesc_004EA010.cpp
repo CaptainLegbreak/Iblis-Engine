@@ -2276,4 +2276,19 @@ int __fastcall SKILLDESC_IsVineBeastMissile(D2UnitStrc* unit, void* unused)
     return GetUnitClass(unit) == 468;
 }
 
-#include "gen/data/Source/D2Client/UI/SkillDesc_004EA010.inc"
+#pragma pack(push, 1)
+struct d2data_006DBF4C_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006DBF38[5]; // 0x006DBF38
+extern "C" const struct d2data_006DBF4C_t gData_006DBF4C; // 0x006DBF4C
+
+extern "C" const int gData_006DBF38[5] = { -2, -1, 0, 1, 2 }; // 0x006DBF38
+#pragma comment(linker, "/alternatename:?gaLobVelocityBonus@@3QBHB=_gData_006DBF38")
+
+extern "C" const struct d2data_006DBF4C_t gData_006DBF4C = {
+    { 0x00 }
+}; // 0x006DBF4C

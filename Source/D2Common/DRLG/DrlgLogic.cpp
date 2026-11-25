@@ -701,4 +701,63 @@ void __fastcall DRLGLOGIC_InitializeDrlgCoordList(D2DrlgRoomStrc* pDrlgRoom, D2D
     DRLGLOGIC_MergeCoordListsWithNearRooms(pDrlgRoom);
 }
 
-#include "gen/data/Source/D2Common/DRLG/DrlgLogic.inc"
+#pragma pack(push, 1)
+struct d2data_0074987C_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const D2CoordStrc gData_006EEE14[4]; // 0x006EEE14
+extern "C" const int gData_006EEE38[26]; // 0x006EEE38
+extern "C" const int gData_006EEEA0[20]; // 0x006EEEA0
+extern "C" struct d2data_0074987C_t gData_0074987C; // 0x0074987C
+
+extern "C" const D2CoordStrc gData_006EEE14[4] = {
+    { 1 },
+    { 0, 1 },
+    { -1 },
+    { 0, -1 }
+}; // 0x006EEE14
+#pragma comment(linker, "/alternatename:_gLogicDirections=_gData_006EEE14")
+
+extern "C" const int gData_006EEE38[26] = {
+    23, 0, 5, 21, 17, 15, 3, 0, 9, 7, 39, 0, 0, 5, 3, 31,
+    31, 31, 31, 31, 31, 31, 31, 31, 31
+}; // 0x006EEE38
+#pragma comment(linker, "/alternatename:_gnLogicTileFlags=_gData_006EEE38")
+
+extern "C" const int gData_006EEEA0[20] = { -1, 0, 1, 2, 2, 0, 1, 3, 0, 1, 0, 1, 4, -1, 4 }; // 0x006EEEA0
+#pragma comment(linker, "/alternatename:_gnLogicTileIndex=_gData_006EEEA0")
+
+extern "C" struct d2data_0074987C_t gData_0074987C = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0074987C

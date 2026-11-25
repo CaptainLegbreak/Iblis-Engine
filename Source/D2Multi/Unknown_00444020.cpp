@@ -115,7 +115,25 @@ int gnValue_00798CC0; // 0x00798CC0
 // build: symbol ?GAME_IsLaunchExpansion@* 0x0043DB10
 // build: symbol ?gszSpace@* 0x006FFC44
 
-#include "gen/data/Source/D2Multi/Unknown_00444020.inc"
+extern "C" char gData_0070CD84[]; // 0x0070CD84
+extern "C" char gData_0070CD94[]; // 0x0070CD94
+extern "C" char gpBnetJoinGameScrollBarsCelFile[]; // 0x0077BC20
+extern "C" char gpBnetCancelButtonBlankCelFileB[]; // 0x0077BD2C
+extern "C" char gpHelpBckgCelFile[]; // 0x0077BD44
+extern "C" void __cdecl CHATDLG_OnProfileClose(); // 0x0043F720
+
+#pragma pack(push, 1)
+struct d2data_006FFC46_t
+{
+    unsigned char b0[18];
+};
+#pragma pack(pop)
+
+extern "C" const struct d2data_006FFC46_t gData_006FFC46; // 0x006FFC46
+
+extern "C" const struct d2data_006FFC46_t gData_006FFC46 = {
+    { 0x00, 0x00, 0x25, 0x2A, 0x73, 0x00, 0x20, 0x25, 0x73, 0x2B, 0x25, 0x6C, 0x6C, 0x75 }
+}; // 0x006FFC46
 
 int gnGameCount; // 0x00798CCC
 

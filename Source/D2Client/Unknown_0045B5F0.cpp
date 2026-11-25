@@ -410,4 +410,8 @@ void __cdecl sub_0045BF00_DumpMemory()
     CloseHandle(hFile);
 }
 
-#include "gen/data/Source/D2Client/Unknown_0045B5F0.inc"
+extern int gnScreenWidth_0071146C = 640; // 0x0071146C
+
+extern int gnScreenHeight = 480; // 0x00711470
+
+extern int gnSavedScreenWidth = 640; // 0x00711474

@@ -2407,4 +2407,25 @@ int __fastcall MONSTERSPAWN_CanSpawnAtSpawnerExit(int nMonsterId, D2ActiveRoomSt
     return 1;
 }
 
-#include "gen/data/Source/D2Game/SKILLS/SkillItem.inc"
+extern "C" void __cdecl SKILLITEM_pSpell08_ExperienceElixir(); // 0x005BF060
+extern "C" void __cdecl SKILLITEM_pSpell09_AntidoteThawingPotion(); // 0x005BEF90
+extern "C" void __cdecl sub_005BE3F0(); // 0x005BE3F0
+extern "C" void __cdecl sub_005BE7B0(); // 0x005BE7B0
+extern "C" void __cdecl sub_005BEAC0(); // 0x005BEAC0
+
+extern int gnPSpellTableCount = 31; // 0x0074178C
+
+extern D2pSpellTblStrc gaPSpellTable[31] = {
+    { 0 },
+    { (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, D2UnitStrc *, int, int, int))&SKILLITEM_pSpell01_Initializer, (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, D2UnitStrc *, int, int, int))&SKILLITEM_pSpell01_IdentifyItem },
+    { 0, (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, D2UnitStrc *, int, int, int))&SKILLITEM_pSpell02_CastPortal },
+    { 0, (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, D2UnitStrc *, int, int, int))&sub_005BE3F0 },
+    { 0, (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, D2UnitStrc *, int, int, int))&sub_005BE7B0 },
+    { 0, (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, D2UnitStrc *, int, int, int))&sub_005BEAC0 },
+    { 0, (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, D2UnitStrc *, int, int, int))&SKILLITEM_pSpell09_AntidoteThawingPotion },
+    { 0, (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, D2UnitStrc *, int, int, int))&SKILLITEM_pSpell07_OpenCube },
+    { 0, (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, D2UnitStrc *, int, int, int))&SKILLITEM_pSpell08_ExperienceElixir },
+    { 0, (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, D2UnitStrc *, int, int, int))&SKILLITEM_pSpell09_StaminaPotion },
+    { 0, (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, D2UnitStrc *, int, int, int))&SKILLITEM_pSpell10_CastFireBallOnTarget },
+    { 0, (int (__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, D2UnitStrc *, int, int, int))&SKILLITEM_pSpell11_CastFireBallToCoordinates }
+}; // 0x00741790

@@ -1107,4 +1107,54 @@ int __fastcall WINMAIN_HandleMcpMotd(const unsigned char* pPacket, unsigned int 
 }
 void __cdecl RECORD_StartPlayback(); // 0x004518E0
 
-#include "gen/data/Source/D2MCPClient/Unknown_0044A170.inc"
+extern "C" void __cdecl RECORD_RegisterLngArgument(); // 0x00451260
+extern "C" void __cdecl sub_0044AFC0(); // 0x0044AFC0
+extern "C" void __cdecl WINMAIN_SaveDefaultCmdLine(); // 0x0044B5E0
+
+#pragma pack(push, 1)
+struct d2data_0070ECC0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_0070ECC0_t gData_0070ECC0; // 0x0070ECC0
+
+extern "C" struct d2data_0070ECC0_t gData_0070ECC0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0070ECC0
+
+extern D2McpPacketHandler gpfnMcpPacketHandlers[26] = {
+    (D2McpPacketHandler)&sub_0044AB70_McpIncomingIgnore, 0, (D2McpPacketHandler)&sub_0044ABA0_McpIncoming02, (D2McpPacketHandler)&sub_0044ABE0_McpIncoming03, (D2McpPacketHandler)&sub_0044AC20_McpIncoming04, (D2McpPacketHandler)&WINMAIN_HandleMcpGameList, (D2McpPacketHandler)&GAME_HandleMcpGameInfo, (D2McpPacketHandler)&sub_0044ABC0_McpIncoming07, (D2McpPacketHandler)&sub_0044ADF0_McpIncoming08, (D2McpPacketHandler)&sub_0044AE10_McpIncoming09, (D2McpPacketHandler)&sub_0044AE30_McpIncoming0A, (D2McpPacketHandler)&sub_0044AE80_McpIncoming0B, (D2McpPacketHandler)&sub_0044AEA0_McpIncoming0C, (D2McpPacketHandler)&sub_0044AEF0_McpIncoming0D, (D2McpPacketHandler)&sub_0044AEC0_McpIncoming0E, (D2McpPacketHandler)&sub_0044AF10_McpIncoming0F,
+    (D2McpPacketHandler)&WINMAIN_HandleMcpServerAddress, (D2McpPacketHandler)&sub_0044AFC0, (D2McpPacketHandler)&WINMAIN_HandleMcpMotd, 0, (D2McpPacketHandler)&WINMAIN_HandleMcpCreateQueue, 0, 0, (D2McpPacketHandler)&WINMAIN_HandleMcpCharList, (D2McpPacketHandler)&sub_0044AE60_McpIncoming18, (D2McpPacketHandler)&WINMAIN_HandleMcpCharListExpanded
+}; // 0x0070ED00
+
+extern D2McpPacketHandler gpfnConnectPacketHandlers[26] = { 0, (D2McpPacketHandler)&sub_0044AB80_McpIncoming1B }; // 0x0070ED68

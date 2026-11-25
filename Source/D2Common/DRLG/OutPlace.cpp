@@ -1195,7 +1195,300 @@ void __fastcall DRLGOUTPLACE_SetAct1OutdoorFlags(D2DrlgLevelStrc* pLevel, int nI
     }
 }
 
-#include "gen/data/Source/D2Common/DRLG/OutPlace.inc"
+extern "C" void __cdecl sub_006760F0(); // 0x006760F0
+extern "C" void __cdecl DRLGOUTROOM_LinkLevelsByLevelCoords(); // 0x0067D830
+extern "C" void __cdecl DRLGOUTROOM_LinkLevelsByLevelDef(); // 0x0067D8E0
+extern "C" void __cdecl DRLGOUTROOM_LinkLevelsByOffsetCoords(); // 0x0067D980
+extern "C" void __cdecl sub_00676AE0(); // 0x00676AE0
+
+#pragma pack(push, 1)
+struct d2data_006F0620_t
+{
+    unsigned char b0[16];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006F0FC0_t
+{
+    unsigned char b0[16];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006F1258_t
+{
+    unsigned char b0[356];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006F13BC_t
+{
+    unsigned char b0[52];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006F13F0_t
+{
+    unsigned char b0[272];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006F1500_t
+{
+    unsigned char b0[24];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007499E4_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const struct d2data_006F0620_t gData_006F0620; // 0x006F0620
+extern "C" const int gData_006F06F0[12][2]; // 0x006F06F0
+extern "C" const D2DrlgLinkStrc gData_006F0750[15]; // 0x006F0750
+extern "C" const D2DrlgLinkStrc gData_006F0840[15]; // 0x006F0840
+extern "C" const D2DrlgLinkStrc gData_006F0930[15]; // 0x006F0930
+extern "C" const D2DrlgLinkStrc gData_006F0A20[15]; // 0x006F0A20
+extern "C" const D2DrlgLinkStrc gData_006F0B10[15]; // 0x006F0B10
+extern "C" const D2DrlgLinkStrc gData_006F0C00[15]; // 0x006F0C00
+extern "C" const D2DrlgLinkStrc gData_006F0CF0[15]; // 0x006F0CF0
+extern "C" const D2DrlgLinkStrc gData_006F0DE0[15]; // 0x006F0DE0
+extern "C" const D2DrlgLinkStrc gData_006F0ED0[15]; // 0x006F0ED0
+extern "C" const struct d2data_006F0FC0_t gData_006F0FC0; // 0x006F0FC0
+extern "C" const int gData_006F1088[41]; // 0x006F1088
+extern "C" const int gData_006F112C[5][2]; // 0x006F112C
+extern "C" const int gData_006F1158[64]; // 0x006F1158
+extern "C" const struct d2data_006F1258_t gData_006F1258; // 0x006F1258
+extern "C" const struct d2data_006F13BC_t gData_006F13BC; // 0x006F13BC
+extern "C" const struct d2data_006F13F0_t gData_006F13F0; // 0x006F13F0
+extern "C" const struct d2data_006F1500_t gData_006F1500; // 0x006F1500
+extern "C" struct d2data_007499E4_t gData_007499E4; // 0x007499E4
+
+extern "C" const struct d2data_006F0620_t gData_006F0620 = {
+    { 0x00, 0x20, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x80 }
+}; // 0x006F0620
+
+extern "C" const int gData_006F06F0[12][2] = {
+    { 881, 957 },
+    { 882, 958 },
+    { 883, 959 },
+    { 884, 960 },
+    { 885, 961 },
+    { 886, 962 },
+    { 887, 963 },
+    { 888, 964 },
+    { 889, 965 },
+    { 890, 966 },
+    { 891, 967 },
+    { 892, 968 }
+}; // 0x006F06F0
+#pragma comment(linker, "/alternatename:?gaBarricadeCliffBorderIds@@3PAY01HA=_gData_006F06F0")
+
+extern "C" const D2DrlgLinkStrc gData_006F0750[15] = {
+    { (void*)(unsigned int)&sub_006760F0, 4, -1, -1 },
+    { (void*)(unsigned int)&DRLGOUTPLACE_TryNextSideOffset, 3, 0, -1 },
+    { (void*)(unsigned int)&DRLGOUTPLACE_LinkStepDirectionSideSized, 2, 1, -1 },
+    { (void*)(unsigned int)&DRLGOUTPLACE_LinkStepDirectionSide, 1, 2, -1 },
+    { (void*)(unsigned int)&DRLGOUTPLACE_TryNextSideOffset, 17, 1, -1 },
+    { 0, 0, -1, -1 }
+}; // 0x006F0750
+#pragma comment(linker, "/alternatename:?gAct1WildernessDrlgLink@@3PAUD2DrlgLinkStrc@@A=_gData_006F0750")
+
+extern "C" const D2DrlgLinkStrc gData_006F0840[15] = {
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_006760F0, 39, -1, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_006760F0, 26, -1, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTPLACE_PlaceLevel, 7, 1, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTPLACE_TryNextSideOffset, 6, 2, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTPLACE_TryNextSideOffset, 5, 3, -1 },
+    { 0, 0, -1, -1 }
+}; // 0x006F0840
+#pragma comment(linker, "/alternatename:?gAct1MonasteryDrlgLink@@3PAUD2DrlgLinkStrc@@A=_gData_006F0840")
+
+extern "C" const D2DrlgLinkStrc gData_006F0930[15] = {
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_006760F0, 40, -1, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_6FD81B30, 41, 0, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTPLACE_TryNextCenteredSideOffset, 42, 1, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTPLACE_TryNextCenteredSideOffset, 43, 2, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTPLACE_TryNextCenteredSideOffset, 44, 3, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_00676AE0, 45, 4, -1 },
+    { 0, 0, -1, -1 }
+}; // 0x006F0930
+#pragma comment(linker, "/alternatename:?gAct2OutdoorDrlgLink@@3PAUD2DrlgLinkStrc@@A=_gData_006F0930")
+
+extern "C" const D2DrlgLinkStrc gData_006F0A20[15] = {
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_006760F0, 46, -1, -1 },
+    { 0, 0, -1, -1 }
+}; // 0x006F0A20
+#pragma comment(linker, "/alternatename:?gAct2CanyonDrlgLink@@3PAUD2DrlgLinkStrc@@A=_gData_006F0A20")
+
+extern "C" const D2DrlgLinkStrc gData_006F0B10[15] = {
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_006760F0, 134, -1, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_006760F0, 136, -1, -1 },
+    { 0, 0, -1, -1 }
+}; // 0x006F0B10
+#pragma comment(linker, "/alternatename:?gAct5UbersDrlgLink@@3PAUD2DrlgLinkStrc@@A=_gData_006F0B10")
+
+extern "C" const D2DrlgLinkStrc gData_006F0C00[15] = {
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_006760F0, 103, -1, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTPLACE_PlaceLevelNextTo, 104, 0, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTPLACE_TryNextSideOffset, 105, 1, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTPLACE_TryNextSideOffset, 106, 2, -1 },
+    { 0, 0, -1, -1 }
+}; // 0x006F0C00
+#pragma comment(linker, "/alternatename:?gAct4OutdoorDrlgLink@@3PAUD2DrlgLinkStrc@@A=_gData_006F0C00")
+
+extern "C" const D2DrlgLinkStrc gData_006F0CF0[15] = {
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_006760F0, 108, -1, -1 },
+    { 0, 0, -1, -1 }
+}; // 0x006F0CF0
+#pragma comment(linker, "/alternatename:?gAct4ChaosSanctumDrlgLink@@3PAUD2DrlgLinkStrc@@A=_gData_006F0CF0")
+
+extern "C" const D2DrlgLinkStrc gData_006F0DE0[15] = {
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_006760F0, 109, -1, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_006760F0, 110, 0, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTROOM_LinkLevelsByLevelCoords, 111, 1, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTROOM_LinkLevelsByOffsetCoords, 112, 2, -1 },
+    { 0, 0, -1, -1 }
+}; // 0x006F0DE0
+#pragma comment(linker, "/alternatename:?gAct5OutdoorDrlgLink@@3PAUD2DrlgLinkStrc@@A=_gData_006F0DE0")
+
+extern "C" const D2DrlgLinkStrc gData_006F0ED0[15] = {
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTROOM_LinkLevelsByLevelDef, 117, -1, -1 },
+    { 0, 0, -1, -1 }
+}; // 0x006F0ED0
+#pragma comment(linker, "/alternatename:?gAct5TundraDrlgLink@@3PAUD2DrlgLinkStrc@@A=_gData_006F0ED0")
+
+extern "C" const struct d2data_006F0FC0_t gData_006F0FC0 = {
+    { 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF }
+}; // 0x006F0FC0
+
+extern "C" const int gData_006F1088[41] = {
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 11, 11, 3, 12, -1,
+    -1, -1, -1, 12, 4, 4, 7, -1, -1, 2, 10, -1, -1, -1, -1, 10,
+    -1, -1, 6, 3, -1, -1, 11, 11, 3
+}; // 0x006F1088
+#pragma comment(linker, "/alternatename:?gaBorderIndicesByDelta@@3PAHA=_gData_006F1088")
+
+extern "C" const int gData_006F112C[5][2] = {
+    { 373, 372 },
+    { 372, 375 },
+    { 0 },
+    { 373, 374 },
+    { 374, 375 }
+}; // 0x006F112C
+#pragma comment(linker, "/alternatename:?gaDesertBorderIds@@3PAY01HA=_gData_006F112C")
+
+extern "C" const int gData_006F1158[64] = {
+    1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1,
+    0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1
+}; // 0x006F1158
+#pragma comment(linker, "/alternatename:?gnAct1WildernessLinkTable@@3QBHB=_gData_006F1158")
+
+extern "C" const struct d2data_006F1258_t gData_006F1258 = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+        0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+        0x11, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+        0x11, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+        0x02
+    }
+}; // 0x006F1258
+#pragma comment(linker, "/alternatename:?gaAct1OutdoorRandFlags@@3QBUD2UnkOutdoorStrc3@@B=_gData_006F1258")
+
+extern "C" const struct d2data_006F13BC_t gData_006F13BC = {
+    {
+        0x00, 0x01, 0x00, 0x00, 0x3F, 0x02, 0x00, 0x00, 0x40, 0x02, 0x00, 0x00, 0x41, 0x02, 0x00, 0x00,
+        0x42, 0x02, 0x00, 0x00, 0x43, 0x02, 0x00, 0x00, 0x44, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x45, 0x02, 0x00, 0x00, 0x46, 0x02, 0x00, 0x00, 0x47, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x48, 0x02
+    }
+}; // 0x006F13BC
+
+extern "C" const struct d2data_006F13F0_t gData_006F13F0 = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x21, 0x02, 0x00, 0x00, 0x22, 0x02, 0x00, 0x00, 0x23, 0x02, 0x00, 0x00,
+        0x24, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x25, 0x02, 0x00, 0x00, 0x26, 0x02, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x27, 0x02, 0x00, 0x00, 0x28, 0x02, 0x00, 0x00,
+        0x29, 0x02, 0x00, 0x00, 0x2A, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2B, 0x02, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x2C, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2D, 0x02, 0x00, 0x00,
+        0x2E, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2F, 0x02, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x30, 0x02, 0x00, 0x00,
+        0x31, 0x02, 0x00, 0x00, 0x32, 0x02, 0x00, 0x00, 0x33, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x34, 0x02, 0x00, 0x00, 0x35, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x36, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x37, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x38, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x39, 0x02, 0x00, 0x00, 0x3A, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x3B, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x3C, 0x02
+    }
+}; // 0x006F13F0
+
+extern "C" const struct d2data_006F1500_t gData_006F1500 = {
+    {
+        0x2E, 0x5C, 0x44, 0x52, 0x4C, 0x47, 0x5C, 0x4F, 0x75, 0x74, 0x50, 0x6C, 0x61, 0x63, 0x65, 0x2E,
+        0x63, 0x70, 0x70
+    }
+}; // 0x006F1500
+
+extern "C" struct d2data_007499E4_t gData_007499E4 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007499E4
 
 typedef int (__fastcall* DRLGLINKFN)(D2DrlgLevelLinkDataStrc* pLevelLinkData);
 extern "C" const char gszOutPlaceFile[];                                                                    // 0x006F1500

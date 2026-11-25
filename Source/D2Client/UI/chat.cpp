@@ -2253,4 +2253,135 @@ void sub_A23_Emit_0047BA00(int nSkip)
 }
 
 
-#include "gen/data/Source/D2Client/UI/chat.inc"
+extern "C" void __cdecl sub_0047CD80(); // 0x0047CD80
+extern "C" char gData_006D7280[]; // 0x006D7280
+extern "C" char gData_006D7284[]; // 0x006D7284
+
+#pragma pack(push, 1)
+struct d2data_00712F08_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00712F4C_t
+{
+    unsigned char b0[8];
+    const void* p1;
+    unsigned char b2[8];
+    const void* p3;
+    unsigned char b4[8];
+    const void* p5;
+    unsigned char b6[8];
+    const void* p7;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00712FA8_t
+{
+    unsigned char b0[8];
+    const void* p1;
+    unsigned char b2[8];
+    const void* p3;
+    unsigned char b4[8];
+    const void* p5;
+    unsigned char b6[8];
+    const void* p7;
+    unsigned char b8[8];
+    const void* p9;
+    unsigned char b10[8];
+    const void* p11;
+    unsigned char b12[8];
+    const void* p13;
+};
+#pragma pack(pop)
+
+extern "C" const char gData_006D72C0[12]; // 0x006D72C0
+extern "C" struct d2data_00712F08_t gData_00712F08; // 0x00712F08
+extern "C" struct d2data_00712F4C_t gData_00712F4C; // 0x00712F4C
+extern "C" struct d2data_00712FA8_t gData_00712FA8; // 0x00712FA8
+extern "C" char gData_00712FFC[4]; // 0x00712FFC
+
+extern "C" const char gData_006D72C0[12] = "%s (*%s)"; // 0x006D72C0
+#pragma comment(linker, "/alternatename:_gszNameAccountFormat=_gData_006D72C0")
+
+extern "C" struct d2data_00712F08_t gData_00712F08 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00712F08
+
+extern int gnChatHistoryHead = 7; // 0x00712F44
+
+extern int gnChatHistoryTail = 7; // 0x00712F48
+
+extern "C" struct d2data_00712F4C_t gData_00712F4C = {
+    { 0x00, 0x00, 0x00, 0x00, 0x02, 0x01 },
+    (const void*)(unsigned int)&CHAT_OnChatChar,
+    { 0x03, 0x00, 0x00, 0x00, 0x26 },
+    (const void*)(unsigned int)&CHAT_HandleChatKeyDown,
+    { 0x03, 0x00, 0x00, 0x00, 0x28 },
+    (const void*)(unsigned int)&CHAT_HandleChatKeyDown,
+    { 0x00, 0x00, 0x00, 0x00, 0x01, 0x02 },
+    (const void*)(unsigned int)&CHAT_CloseChatOnPanelClickMsg
+}; // 0x00712F4C
+#pragma comment(linker, "/alternatename:?gaChatHandlers@@3PAUD2MsgHandlerEntryStrc@@A=_gData_00712F4C")
+
+extern D2ChatCommandStrc gaChatCommands[3] = {
+    { (const char *)&gData_006D7284, 3 },
+    { (const char *)&gData_006D7280, 0, 0, 1 },
+    { (const char *)"@", 2, 1 }
+}; // 0x00712F7C
+
+extern "C" struct d2data_00712FA8_t gData_00712FA8 = {
+    { 0x00, 0x00, 0x00, 0x00, 0x82, 0x02 },
+    (const void*)(unsigned int)&CHAT_ImeNotifyMsg,
+    { 0x00, 0x00, 0x00, 0x00, 0x0F, 0x01 },
+    (const void*)(unsigned int)&CHAT_OnImeComposition,
+    { 0x00, 0x00, 0x00, 0x00, 0x0D, 0x01 },
+    (const void*)(unsigned int)&CHAT_HandleImeStartComposition,
+    { 0x00, 0x00, 0x00, 0x00, 0x0E, 0x01 },
+    (const void*)(unsigned int)&CHAT_ResetImeCompositionMsg,
+    { 0x00, 0x00, 0x00, 0x00, 0x84, 0x02 },
+    (const void*)(unsigned int)&CHAT_SetMsgHandled,
+    { 0x00, 0x00, 0x00, 0x00, 0x85, 0x02 },
+    (const void*)(unsigned int)&CHAT_SetMsgHandled,
+    { 0x00, 0x00, 0x00, 0x00, 0x83, 0x02 },
+    (const void*)(unsigned int)&CHAT_SetMsgHandled
+}; // 0x00712FA8
+#pragma comment(linker, "/alternatename:?gaChatInputHandlers@@3PAUD2MsgHandlerEntryStrc@@A=_gData_00712FA8")
+
+extern "C" char gData_00712FFC[4] = " "; // 0x00712FFC
+#pragma comment(linker, "/alternatename:_gszTokenSeparator=_gData_00712FFC")
+
+extern unsigned short gwBlinkDelay = 0x1F4; // 0x00713000
+
+extern int gnBlinkOn = 1; // 0x00713004

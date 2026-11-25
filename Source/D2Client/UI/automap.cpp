@@ -4470,4 +4470,127 @@ int __fastcall AUTOMAP_RequestAtNearTarget(D2UnitStrc* pUnit, int nArg, int nArg
     return MISSILE_SubmitMissileRequest(pUnit, nArg, nTargetX, nTargetY, nArg3, nArg4);
 }
 
-#include "gen/data/Source/D2Client/UI/automap.inc"
+#pragma pack(push, 1)
+struct d2data_00711218_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006D6608[12]; // 0x006D6608
+extern "C" const D2AutomapPointStrc gData_006D6638[13]; // 0x006D6638
+extern "C" struct d2data_00711218_t gData_00711218; // 0x00711218
+
+extern "C" const int gData_006D6608[12] = { 0, 10, 15, 16, 19, 20, 25, 30, 35, 36, 39, -1 }; // 0x006D6608
+#pragma comment(linker, "/alternatename:?gaTownSkipCels@@3QBHB=_gData_006D6608")
+
+extern "C" const D2AutomapPointStrc gData_006D6638[13] = {
+    { 0, -1 },
+    { 2, -2 },
+    { 4, -1 },
+    { 2 },
+    { 4, 1 },
+    { 2, 2 },
+    { 0, 1 },
+    { -2, 2 },
+    { -4, 1 },
+    { -2 },
+    { -4, -1 },
+    { -2, -2 },
+    { 0, -1 }
+}; // 0x006D6638
+#pragma comment(linker, "/alternatename:?gaAutomapCross@@3QBUD2AutomapPointStrc@@B=_gData_006D6638")
+
+extern D2CharSaveIdStrc gtCharSaveId = { { 1, 1, 1, 1, 1, 0xFF, 0xFF, 0xFF, 1, 1, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } }; // 0x0070CCC8
+
+extern "C" struct d2data_00711218_t gData_00711218 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00711218
+
+extern int gnAutomapScale = 10; // 0x00711254
+
+extern D2AutomapPairStrc gaAutomapPairs[49] = {
+    { 0 },
+    { 1 },
+    { 2 },
+    { 3 },
+    { 6, 1 },
+    { 7, 1 },
+    { 8, 1 },
+    { 11, 2 },
+    { 12, 2 },
+    { 13, 3 },
+    { 14, 3 },
+    { 20, 4 },
+    { 38, 4 },
+    { 21, 5 },
+    { 39, 5 },
+    { 46, 6 },
+    { 47, 6 },
+    { 48, 6 },
+    { 49, 6 },
+    { 51, 7 },
+    { 52, 7 },
+    { 53, 7 },
+    { 54, 7 },
+    { 60, 8 },
+    { 70, 8 },
+    { 61, 9 },
+    { 71, 9 },
+    { 120, 10 },
+    { 169, 10 },
+    { 171, 10 },
+    { 121, 11 },
+    { 170, 11 },
+    { 172, 11 },
+    { 257, 12 },
+    { 258, 12 },
+    { 259, 12 },
+    { 266, 13 },
+    { 267, 13 },
+    { 337, 14 },
+    { 338, 14 },
+    { 472, 15 },
+    { 473, 15 },
+    { 474, 15 },
+    { 475, 15 },
+    { 520, 16 },
+    { 521, 16 },
+    { 522, 16 },
+    { 533, 17 },
+    { 534, 17 }
+}; // 0x00711258
+
+extern int gbAutomapCenter = 1; // 0x007113E0
+
+extern int gbAutomapParty = 1; // 0x007113E4
+
+extern int gbAutomapPartyNames = 1; // 0x007113E8

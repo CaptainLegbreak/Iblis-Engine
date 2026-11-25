@@ -8391,4 +8391,68 @@ void __cdecl OBJECTS_InitFunction70_Unused()
 {
 }
 
-#include "gen/data/Source/D2Common/ITEMS/Items.inc"
+#pragma pack(push, 1)
+struct d2data_007446E8_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006E90B8[5]; // 0x006E90B8
+extern "C" struct d2data_007446E8_t gData_007446E8; // 0x007446E8
+
+extern "C" const int gData_006E90B8[5] = { 165, 166, 167, 168, 169 }; // 0x006E90B8
+#pragma comment(linker, "/alternatename:?gnItemSetStatesBySetIndex@@3PAHA=_gData_006E90B8")
+
+extern unsigned int gnRejuvPotionCodeCount = 2; // 0x00744668
+
+extern unsigned int gnManaPotionCodeCount = 5; // 0x00744680
+
+extern unsigned int gnHealthPotionCodeCount = 5; // 0x00744698
+
+extern D2WeaponClassCodeStrc gWeaponClassTable[8] = {
+    { 0x20776F62, 1 },
+    { 0x20736831, 2 },
+    { 0x20746831, 3 },
+    { 0x20667473, 4 },
+    { 0x20736832, 5 },
+    { 0x20746832, 6 },
+    { 0x20776278, 7 },
+    { 0x20317468, 12 }
+}; // 0x007446A0
+
+extern unsigned int gnWeaponClassTableCount = 8; // 0x007446E0
+
+extern char* gpszDefaultString = (char*)""; // 0x007446E4
+
+extern "C" struct d2data_007446E8_t gData_007446E8 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007446E8

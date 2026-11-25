@@ -3154,4 +3154,6 @@ void __fastcall GFX_RefreshPathTarget(D2UnitStrc* pUnit)
     }
 }
 
-#include "gen/data/Source/D2Client/ENGINE/Gfx.inc"
+extern int gaPlayerModes[8] = { 5, 6, 1, 2, 3, 7, 10, 4 }; // 0x00712AA0
+
+extern unsigned int gnPlayerModeCount = 8; // 0x00712AC0

@@ -197,4 +197,43 @@ int __fastcall sub_M117_Emit_0065C300(D2Record16Strc* pBase, int nIndex)
     return (int)DATATBLS_GetRecord16(pBase, nIndex + 1);
 }
 
-#include "gen/data/Source/D2Common/DATATBLS/InvTbls.inc"
+#pragma pack(push, 1)
+struct d2data_00745AA0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00745AA0_t gData_00745AA0; // 0x00745AA0
+
+extern "C" struct d2data_00745AA0_t gData_00745AA0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00745AA0

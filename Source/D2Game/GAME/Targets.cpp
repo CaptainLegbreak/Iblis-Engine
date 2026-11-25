@@ -59,7 +59,19 @@ void __fastcall D2GAME_UpdateSummonAI_6FC401F0(D2GameStrc* pGame, D2UnitStrc* pU
     pUnit->dwNodeIndex = nNodeIndex;
 }
 
-#include "gen/data/Source/D2Game/GAME/Targets.inc"
+extern "C" const char gData_006E2C78[120]; // 0x006E2C78
+
+extern "C" const char gData_006E2C78[120] = {
+    46, 92, 71, 65, 77, 69, 92, 84, 97, 114, 103, 101, 116, 115, 46, 99,
+    112, 112, 0, 0, 0, 0, 0, 0, 98, 115, 100, 32, 4, 1, 0, 0,
+    116, 97, 120, 32, 4, 1, 0, 0, 118, 111, 117, 32, 4, 1, 0, 0,
+    116, 111, 119, 32, 5, 1, 0, 0, 116, 97, 120, 32, 5, 1, 0, 0,
+    114, 105, 110, 32, 6, 1, 0, 0, 102, 108, 100, 32, 3, 1, 0, 0,
+    104, 103, 108, 32, 10, 1, 0, 0, 102, 108, 100, 32, 3, 1, 0, 0,
+    104, 98, 116, 32, 9, 1, 0, 0, 104, 98, 116, 32, 9, 1, 0, 0,
+    99, 114, 110, 32, 1, 1
+}; // 0x006E2C78
+#pragma comment(linker, "/alternatename:_gszTargetsSourceFile=_gData_006E2C78")
 
 // 0x005B1990
 void __fastcall TARGETS_InsertUnitNode(D2GameStrc* pGame, D2UnitStrc* pUnit, int a3, int nNodeIndex)

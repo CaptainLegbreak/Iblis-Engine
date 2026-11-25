@@ -2005,4 +2005,95 @@ int __stdcall STATLIST_GetUnitStatBonus(D2UnitStrc* pUnit, int nStatId, unsigned
     return nValue - STATLIST_GetBaseStatValue(pStatList, nStatId, nLayer);
 }
 
-#include "gen/data/Source/D2Common/DATATBLS/DataTbls.inc"
+#pragma pack(push, 1)
+struct d2data_007442C8_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0074430C_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00744338_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_007442C8_t gData_007442C8; // 0x007442C8
+extern "C" struct d2data_0074430C_t gData_0074430C; // 0x0074430C
+extern "C" struct d2data_00744338_t gData_00744338; // 0x00744338
+
+extern "C" struct d2data_007442C8_t gData_007442C8 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007442C8
+
+extern int DATATBLS_LoadFromBin = 1; // 0x00744308
+
+extern "C" struct d2data_0074430C_t gData_0074430C = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish"
+}; // 0x0074430C
+
+extern "C" struct d2data_00744338_t gData_00744338 = {
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00744338

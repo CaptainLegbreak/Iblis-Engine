@@ -135,4 +135,12 @@ char* __fastcall sub_006C9B45(char* s)
     return s;
 }
 
-#include "gen/data/Source/D2Hell/Unknown_006C9A38.inc"
+extern "C" const unsigned char gData_0074C5C8[256]; // 0x0074C5C8
+
+extern "C" const unsigned char gData_0074C5C8[256] = {
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+}; // 0x0074C5C8
+#pragma comment(linker, "/alternatename:?gCharacterClass_0074C5C8@@3QBEB=_gData_0074C5C8")

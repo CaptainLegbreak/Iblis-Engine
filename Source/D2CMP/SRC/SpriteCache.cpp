@@ -2194,4 +2194,105 @@ int __stdcall sub_Emit_005FFE90(D2CmpSpriteFileStrc* pFile, int nArg2, int nArg3
     return D2CMPSpriteLoadDc6Entry(pFile, nArg2, nArg3, szName, pContext);
 }
 
-#include "gen/data/Source/D2CMP/SRC/SpriteCache.inc"
+extern "C" void __cdecl CelRemapRlePixels(); // 0x00606B00
+
+extern "C" const CELFILECELLOPFN gData_006E3698[226]; // 0x006E3698
+extern "C" const int gData_006E4DA0[8][64]; // 0x006E4DA0
+extern "C" const int gData_006E55A0[8][64]; // 0x006E55A0
+
+extern "C" const CELFILECELLOPFN gData_006E3698[226] = {
+    (CELFILECELLOPFN)&CelRemapRlePixels, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, (CELFILECELLOPFN)0x1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, (CELFILECELLOPFN)0x2, (CELFILECELLOPFN)0x1, (CELFILECELLOPFN)0x3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, (CELFILECELLOPFN)0x4, (CELFILECELLOPFN)0x2, (CELFILECELLOPFN)0x5, (CELFILECELLOPFN)0x1, (CELFILECELLOPFN)0x6, (CELFILECELLOPFN)0x3, (CELFILECELLOPFN)0x7, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, (CELFILECELLOPFN)0x8, (CELFILECELLOPFN)0x4, (CELFILECELLOPFN)0x9, (CELFILECELLOPFN)0x2, (CELFILECELLOPFN)0xA, (CELFILECELLOPFN)0x5, (CELFILECELLOPFN)0xB, (CELFILECELLOPFN)0x1, (CELFILECELLOPFN)0xC, (CELFILECELLOPFN)0x6, (CELFILECELLOPFN)0xD, (CELFILECELLOPFN)0x3, (CELFILECELLOPFN)0xE,
+    (CELFILECELLOPFN)0x7, (CELFILECELLOPFN)0xF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, (CELFILECELLOPFN)0x10, (CELFILECELLOPFN)0x8, (CELFILECELLOPFN)0x11, (CELFILECELLOPFN)0x4, (CELFILECELLOPFN)0x12, (CELFILECELLOPFN)0x9, (CELFILECELLOPFN)0x13, (CELFILECELLOPFN)0x2, (CELFILECELLOPFN)0x14, (CELFILECELLOPFN)0xA, (CELFILECELLOPFN)0x15, (CELFILECELLOPFN)0x5, (CELFILECELLOPFN)0x16,
+    (CELFILECELLOPFN)0xB, (CELFILECELLOPFN)0x17, (CELFILECELLOPFN)0x1, (CELFILECELLOPFN)0x18, (CELFILECELLOPFN)0xC, (CELFILECELLOPFN)0x19, (CELFILECELLOPFN)0x6, (CELFILECELLOPFN)0x1A, (CELFILECELLOPFN)0xD, (CELFILECELLOPFN)0x1B, (CELFILECELLOPFN)0x3, (CELFILECELLOPFN)0x1C, (CELFILECELLOPFN)0xE, (CELFILECELLOPFN)0x1D, (CELFILECELLOPFN)0x7, (CELFILECELLOPFN)0x1E,
+    (CELFILECELLOPFN)0xF, (CELFILECELLOPFN)0x1F
+}; // 0x006E3698
+#pragma comment(linker, "/alternatename:?gpfnCelFileCellOp@@3PAP6IXPAUD2CelStrc@@H@ZA=_gData_006E3698")
+
+extern "C" const int gData_006E4DA0[8][64] = {
+    { 0 },
+    { 0 },
+    {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+    32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32
+},
+    {
+    0, 0, 0, 0, 0, 0, 0, 0, 16, 16, 16, 16, 16, 16, 16, 16,
+    16, 16, 16, 16, 16, 16, 16, 16, 32, 32, 32, 32, 32, 32, 32, 32,
+    32, 32, 32, 32, 32, 32, 32, 32, 48, 48, 48, 48, 48, 48, 48, 48,
+    48, 48, 48, 48, 48, 48, 48, 48
+},
+    {
+    0, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 16, 16, 16, 16,
+    16, 16, 16, 16, 24, 24, 24, 24, 24, 24, 24, 24, 32, 32, 32, 32,
+    32, 32, 32, 32, 40, 40, 40, 40, 40, 40, 40, 40, 48, 48, 48, 48,
+    48, 48, 48, 48, 56, 56, 56, 56, 56, 56, 56, 56
+},
+    {
+    4, 4, 8, 8, 8, 8, 12, 12, 12, 12, 16, 16, 16, 16, 20, 20,
+    20, 20, 24, 24, 24, 24, 28, 28, 28, 28, 32, 32, 32, 32, 36, 36,
+    36, 36, 40, 40, 40, 40, 44, 44, 44, 44, 48, 48, 48, 48, 52, 52,
+    52, 52, 56, 56, 56, 56, 60, 60, 60, 60, 0, 0, 0, 0, 4, 4
+},
+    {
+    2, 4, 4, 6, 6, 8, 8, 10, 10, 12, 12, 14, 14, 16, 16, 18,
+    18, 20, 20, 22, 22, 24, 24, 26, 26, 28, 28, 30, 30, 32, 32, 34,
+    34, 36, 36, 38, 38, 40, 40, 42, 42, 44, 44, 46, 46, 48, 48, 50,
+    50, 52, 52, 54, 54, 56, 56, 58, 58, 60, 60, 62, 62, 0, 0, 2
+}
+}; // 0x006E4DA0
+#pragma comment(linker, "/alternatename:?gaDirectionIndex64A@@3PAY0EA@HA=_gData_006E4DA0")
+
+extern "C" const int gData_006E55A0[8][64] = {
+    { 0 },
+    { 0 },
+    {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+},
+    {
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2,
+    2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
+    3, 3, 3, 3, 3, 3, 3, 3
+},
+    {
+    0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2,
+    2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4,
+    4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6,
+    6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7
+},
+    {
+    0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4,
+    4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8,
+    8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12,
+    12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 15
+},
+    {
+    0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8,
+    8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16,
+    16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24,
+    24, 25, 25, 26, 26, 27, 27, 28, 28, 29, 29, 30, 30, 31, 31
+},
+    {
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+    16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+    48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63
+}
+}; // 0x006E55A0
+#pragma comment(linker, "/alternatename:?gaDirectionIndex64B@@3PAY0EA@HA=_gData_006E55A0")
+
+extern int gnCmpTilePoolBlocks = 4096; // 0x00741EF8

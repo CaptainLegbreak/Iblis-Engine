@@ -1710,4 +1710,24 @@ int __fastcall SKILLS_EventFunc03_ShiverArmor(D2GameStrc* pGame, int nEvent, D2U
     return 1;
 }
 
-#include "gen/data/Source/D2Game/SKILLS/SkillSor.inc"
+extern "C" const D2EnergyShieldDataStrc gData_006E30E0[8]; // 0x006E30E0
+extern "C" const int gData_006E3120[3]; // 0x006E3120
+extern "C" const int gData_006E312C[3]; // 0x006E312C
+
+extern "C" const D2EnergyShieldDataStrc gData_006E30E0[8] = {
+    { 8 },
+    { 16 },
+    { 28 },
+    { 36 },
+    { 32 },
+    { 56, 1 },
+    { 60, 1 },
+    { 64, 1 }
+}; // 0x006E30E0
+#pragma comment(linker, "/alternatename:?gaEnergyShieldData@@3QBUD2EnergyShieldDataStrc@@B=_gData_006E30E0")
+
+extern "C" const int gData_006E3120[3] = { -1, 0, -1 }; // 0x006E3120
+#pragma comment(linker, "/alternatename:?gnHydraOffsetY@@3QBHB=_gData_006E3120")
+
+extern "C" const int gData_006E312C[3] = { -1, 0, 1 }; // 0x006E312C
+#pragma comment(linker, "/alternatename:?gnHydraOffsetX@@3QBHB=_gData_006E312C")

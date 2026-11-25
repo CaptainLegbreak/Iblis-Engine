@@ -1,4 +1,4 @@
-// Functional replacement for the function at 0x0055A6D0, not the original code: only the ordinary build (tools/link.py) uses it.
+// Functional replacement for the function at 0x0055A6D0, not the original code (Iblis Codex has not reconstructed the original yet).
 // The other functions in this file are copies that give it its callees and their calling conventions; the build links their verified definitions instead.
 
 struct D2GameStrc

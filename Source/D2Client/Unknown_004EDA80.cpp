@@ -79,7 +79,26 @@ void __stdcall MISSILE_SetCurrentFrame(D2UnitStrc* pMissile, int nCurrentFrame);
 void __fastcall SEED_InitLowSeed(D2SeedStrc* pSeed, unsigned int nLowSeed); // 0x00650E40
 
 
-#include "gen/data/Source/D2Client/Unknown_004EDA80.inc"
+extern "C" void __cdecl sub_004E9000_SkillDescAttackRatingMain(); // 0x004E9000
+extern "C" void __cdecl PLRSKILLS_DescAttackRating(); // 0x004E9040
+extern "C" void __cdecl SKILLDESC_DescAttackRating(); // 0x004E9510
+extern "C" void __cdecl SKILLDESC_DescAttackRate(); // 0x004E9590
+extern "C" void __cdecl SKILLDESC_DescAttackRatingOffhand(); // 0x004E95C0
+
+extern "C" const int gData_006DBF50[8]; // 0x006DBF50
+extern "C" const int gData_006DBF70[8]; // 0x006DBF70
+extern "C" const char gData_006DBF90[24]; // 0x006DBF90
+
+extern "C" const int gData_006DBF50[8] = { 0, 0, 1, -1, 1, -1, -1, 1 }; // 0x006DBF50
+#pragma comment(linker, "/alternatename:?gaFanOffsetX@@3PAHA=_gData_006DBF50")
+
+extern "C" const int gData_006DBF70[8] = { 1, -1, 0, 0, 1, -1, 1, -1 }; // 0x006DBF70
+#pragma comment(linker, "/alternatename:?gaFanOffsetY@@3PAHA=_gData_006DBF70")
+
+extern "C" const char gData_006DBF90[24] = ".\\SKILLS\\SkillsEMon.cpp"; // 0x006DBF90
+#pragma comment(linker, "/alternatename:_gszSkillsEMonCpp=_gData_006DBF90")
+
+extern SKILLDESCFN gpfnSkillDescFuncs[18] = { 0, (SKILLDESCFN)&sub_004E9000_SkillDescAttackRatingMain, (SKILLDESCFN)&SKILLDESC_DescAttackRating, (SKILLDESCFN)&SKILLDESC_DescAttackRate, (SKILLDESCFN)&SKILLDESC_DescAttackRatingOffhand, (SKILLDESCFN)&PLRSKILLS_DescAttackRating }; // 0x0072D7F8
 struct D2UnitStrc;
 
 static inline D2SkillsTxt* SKILLS_GetSkillsTxtRecord(int nSkillId)

@@ -185,4 +185,104 @@ int __fastcall sub_00526430_UnicodeUtf8Length(const Unicode* pSource, int nCount
     return nLength;
 }
 
-#include "gen/data/Source/D2Lang/Unknown_00526100.inc"
+#pragma pack(push, 1)
+struct d2data_00730978_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007309B4_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00730AA0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00730978_t gData_00730978; // 0x00730978
+extern "C" struct d2data_007309B4_t gData_007309B4; // 0x007309B4
+extern "C" struct d2data_00730AA0_t gData_00730AA0; // 0x00730AA0
+
+extern "C" struct d2data_00730978_t gData_00730978 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00730978
+
+extern "C" struct d2data_007309B4_t gData_007309B4 = {
+    { 0x00 }
+}; // 0x007309B4
+
+extern D2UtfConvertSpecStrc gaUtf8ConvertTable[7] = {
+    { 0x80, 0, 0, 0, 127 },
+    { 0xE0, 192, 6, 0, 2047, 128 },
+    { 0xF0, 224, 12, 0, 65535, 2048 },
+    { 0xF8, 240, 18, 0, 2097151, 65536 },
+    { 0xFC, 248, 24, 0, 67108863, 2097152 },
+    { 0xFE, 252, 30, 0, 2147483647, 67108864 }
+}; // 0x007309B8
+
+extern "C" struct d2data_00730AA0_t gData_00730AA0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00730AA0

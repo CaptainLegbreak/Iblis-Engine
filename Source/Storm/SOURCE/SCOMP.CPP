@@ -834,10 +834,10 @@ void __fastcall HuffmanCompress(void* pvOutBuffer, int* pcbOutBuffer, void* pvIn
 void __fastcall HuffmanDecompress(void* pOut, unsigned int* pcbOut, void* pIn, unsigned int cbIn, int nExtra); // 0x0041F9E0
 
 // build: symbol _gtCompTable_006CFE9C 0x006CFE9C
-#include "gen/data/Source/Storm/SOURCE/SCOMP.static/gtCompTable_006CFE9C.inc"
+static const D2SCompCompStrc gtCompTable_006CFE9C[5] = { { 0x40, (void (__fastcall *)(void*, unsigned int*, void*, unsigned int, int*, int))&ImaAdpcmMonoCompress }, { 0x80, (void (__fastcall *)(void*, unsigned int*, void*, unsigned int, int*, int))&ImaAdpcmStereoCompress }, { 1, (void (__fastcall *)(void*, unsigned int*, void*, unsigned int, int*, int))&HuffmanCompress }, { 2, (void (__fastcall *)(void*, unsigned int*, void*, unsigned int, int*, int))&ZlibCompress }, { 8, (void (__fastcall *)(void*, unsigned int*, void*, unsigned int, int*, int))&PkwareCompress } }; // 0x006CFE9C
 
 // build: symbol _gtDecompTable_006CFEC4 0x006CFEC4
-#include "gen/data/Source/Storm/SOURCE/SCOMP.static/gtDecompTable_006CFEC4.inc"
+static const D2SCompDecompStrc gtDecompTable_006CFEC4[5] = { { 0x40, (void (__fastcall *)(void*, unsigned int*, void*, unsigned int, int))&ImaAdpcmMonoDecompress }, { 0x80, (void (__fastcall *)(void*, unsigned int*, void*, unsigned int, int))&ImaAdpcmStereoDecompress }, { 1, (void (__fastcall *)(void*, unsigned int*, void*, unsigned int, int))&HuffmanDecompress }, { 2, (void (__fastcall *)(void*, unsigned int*, void*, unsigned int, int))&ZlibDecompress }, { 8, (void (__fastcall *)(void*, unsigned int*, void*, unsigned int, int))&PkwareDecompress } }; // 0x006CFEC4
 
 // 0x0041E570
 int __stdcall SCompCompress(unsigned char* pDest, unsigned int* pdwDestSize, unsigned char* pSrc, unsigned int dwSrcSize, unsigned int dwMask, int nCmpType, int nCmpLevel)
@@ -1227,4 +1227,21 @@ HUFFNODE* CHuffman::NewItem(unsigned int nLinkType)
     return pItem;
 }
 
-#include "gen/data/Source/Storm/SOURCE/SCOMP.inc"
+extern "C" const int gData_006CFCB8[32]; // 0x006CFCB8
+extern "C" const int gData_006CFD38[89]; // 0x006CFD38
+
+extern "C" const int gData_006CFCB8[32] = {
+    -1, 0, -1, 4, -1, 2, -1, 6, -1, 1, -1, 5, -1, 3, -1, 7,
+    -1, 1, -1, 5, -1, 3, -1, 7, -1, 2, -1, 4, -1, 6, -1, 8
+}; // 0x006CFCB8
+#pragma comment(linker, "/alternatename:?gaADPCMIndexTable_006CFCB8@@3QBHB=_gData_006CFCB8")
+
+extern "C" const int gData_006CFD38[89] = {
+    7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 21, 23, 25, 28, 31,
+    34, 37, 41, 45, 50, 55, 60, 66, 73, 80, 88, 97, 107, 118, 130, 143,
+    157, 173, 190, 209, 230, 253, 279, 307, 337, 371, 408, 449, 494, 544, 598, 658,
+    724, 796, 876, 963, 1060, 1166, 1282, 1411, 1552, 1707, 1878, 2066, 2272, 2499, 2749, 3024,
+    3327, 3660, 4026, 4428, 4871, 5358, 5894, 6484, 7132, 7845, 8630, 9493, 10442, 11487, 12635, 13899,
+    15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767
+}; // 0x006CFD38
+#pragma comment(linker, "/alternatename:?gaADPCMStepTable_006CFD38@@3QBHB=_gData_006CFD38")

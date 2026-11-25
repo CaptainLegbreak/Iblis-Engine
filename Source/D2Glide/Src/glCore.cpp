@@ -1382,4 +1382,197 @@ int __cdecl BNCLIENT_IsSetEmailRequested()
     return gdwGlobal_00881C04;
 }
 
-#include "gen/data/Source/D2Glide/Src/glCore.inc"
+extern "C" void __cdecl GLDEBUGFONT_DebugPrintf(); // 0x0050BC90
+extern "C" void __cdecl GLIDE_DebugDraw(); // 0x0050BEF0
+extern "C" void __cdecl GLIDE_UtilDiamond(); // 0x0050C3A0
+extern "C" void __cdecl GLIDE_UtilPoint(); // 0x0050C630
+extern "C" void __cdecl GLIDE_UtilRect(); // 0x0050C490
+extern "C" void __cdecl GLPERSPECTIVE_PerspectiveTransform(); // 0x0050DD60
+extern "C" void __cdecl GLPERSPECTIVE_ProjectToScreenScaled(); // 0x0050DE10
+extern "C" void __cdecl GLPERSPECTIVE_SetProjectOrigin(); // 0x0050DD50
+extern "C" void __cdecl GLSMACK_CloseSmacker(); // 0x0050E040
+extern "C" void __cdecl GLSMACK_DecodeSmacker(); // 0x0050E5D0
+extern "C" void __cdecl GLSMACK_PlaySmacker(); // 0x0050E7F0
+extern "C" void __cdecl GLSPRITE_CelDraw(); // 0x0050B0D0
+extern "C" void __cdecl GLSPRITE_CelDrawClipped(); // 0x0050B500
+extern "C" void __cdecl GLSPRITE_CelDrawColor(); // 0x0050B190
+extern "C" void __cdecl GLSPRITE_CelDrawEx(); // 0x0050B230
+extern "C" void __cdecl GLSPRITE_CelDrawHilight(); // 0x0050B720
+extern "C" void __cdecl GLSPRITE_CelDrawShadow(); // 0x0050B690
+extern "C" void __cdecl GLSPRITE_CelFlatSpriteDraw(); // 0x0050ACC0
+extern "C" void __cdecl GLSPRITE_DebugFillBackBuffer(); // 0x0050B7A0
+extern "C" void __cdecl sub_0050C0F0_GlideDrawBoxAlpha(); // 0x0050C0F0
+extern "C" void __cdecl sub_0050C5E0_GlideUtilFilledRect(); // 0x0050C5E0
+extern "C" void __cdecl sub_0050C680_ClearBuffer(); // 0x0050C680
+extern "C" void __cdecl sub_0050CD40_GlideShadowTileDraw(); // 0x0050CD40
+extern "C" void __cdecl sub_0050D490_GlideTileDrawTrans(); // 0x0050D490
+extern "C" void __cdecl sub_0050D4C0_GlideTileDrawLit(); // 0x0050D4C0
+extern "C" void __cdecl sub_0050D6A0_GlideDrawFloorTile(); // 0x0050D6A0
+extern "C" void __cdecl GLVERTEX_PerspectiveClearScale(); // 0x0050DF00
+
+#pragma pack(push, 1)
+struct d2data_0072F13C_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072F178_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    const void* p15;
+    const void* p16;
+    const void* p17;
+    const void* p18;
+    const void* p19;
+    const void* p20;
+    const void* p21;
+    const void* p22;
+    const void* p23;
+    const void* p24;
+    const void* p25;
+    const void* p26;
+    const void* p27;
+    const void* p28;
+    const void* p29;
+    const void* p30;
+    const void* p31;
+    const void* p32;
+    const void* p33;
+    const void* p34;
+    const void* p35;
+    const void* p36;
+    const void* p37;
+    const void* p38;
+    const void* p39;
+    const void* p40;
+    const void* p41;
+    const void* p42;
+    const void* p43;
+    const void* p44;
+    const void* p45;
+    const void* p46;
+    const void* p47;
+    const void* p48;
+    const void* p49;
+    const void* p50;
+    const void* p51;
+    const void* p52;
+    const void* p53;
+};
+#pragma pack(pop)
+
+extern "C" const char gData_006DD480[76]; // 0x006DD480
+extern "C" struct d2data_0072F13C_t gData_0072F13C; // 0x0072F13C
+extern "C" struct d2data_0072F178_t gData_0072F178; // 0x0072F178
+
+extern "C" const char gData_006DD480[76] = "\t\tDoesn't have enough video memory (3.5 MB) to adequately run Diablo II!\n"; // 0x006DD480
+#pragma comment(linker, "/alternatename:?gszInsufficientTextureMemory@@3QBDB=_gData_006DD480")
+
+extern "C" struct d2data_0072F13C_t gData_0072F13C = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0072F13C
+
+extern "C" struct d2data_0072F178_t gData_0072F178 = {
+    (const void*)(unsigned int)&GLCORE_Detect,
+    (const void*)(unsigned int)&GLCORE_Init,
+    (const void*)(unsigned int)&GLCORE_Close,
+    (const void*)(unsigned int)&GLCORE_CreateSurface,
+    (const void*)(unsigned int)&GLCORE_CloseSurface,
+    (const void*)(unsigned int)&GLCORE_PauseSurface,
+    (const void*)(unsigned int)&GLCORE_StartDraw,
+    (const void*)(unsigned int)&GLCORE_EndDraw,
+    (const void*)(unsigned int)&GLCORE_Blit,
+    (const void*)(unsigned int)&GLCORE_ChangeRes,
+    (const void*)(unsigned int)&GLIDE_GetBackBuffer,
+    (const void*)(unsigned int)&GLCORE_ActivateWindow,
+    (const void*)(unsigned int)&GLCORE_SetOption,
+    (const void*)(unsigned int)&GLCORE_PlayCutscene,
+    (const void*)(unsigned int)&GLIDE_OpenSmackCutscene,
+    (const void*)(unsigned int)&GLCORE_CheckCutScene,
+    (const void*)(unsigned int)&GLSMACK_DecodeSmacker,
+    (const void*)(unsigned int)&GLSMACK_PlaySmacker,
+    (const void*)(unsigned int)&GLSMACK_CloseSmacker,
+    (const void*)(unsigned int)&GLCORE_GetCacheResults,
+    (const void*)(unsigned int)&GLCORE_GetDimensions,
+    (const void*)(unsigned int)&GLCORE_SetGlobalScale,
+    (const void*)(unsigned int)&GLCORE_SetGamma,
+    (const void*)(unsigned int)&GLCORE_GammaCanBeControlled,
+    (const void*)(unsigned int)&GLPERSPECTIVE_SetProjectOrigin,
+    (const void*)(unsigned int)&GLPERSPECTIVE_PerspectiveTransform,
+    (const void*)(unsigned int)&GLPERSPECTIVE_ProjectToScreenScaled,
+    (const void*)(unsigned int)&GLVERTEX_PerspectiveClearScale,
+    (const void*)(unsigned int)&GLCORE_SetPalette,
+    (const void*)(unsigned int)&GLCORE_SetPaletteTables,
+    (const void*)(unsigned int)&GLVERTEX_SetAmbientColor,
+    (const void*)(unsigned int)&sub_0050D6A0_GlideDrawFloorTile,
+    (const void*)(unsigned int)&GLSPRITE_CelFlatSpriteDraw,
+    (const void*)(unsigned int)&GLSPRITE_CelDraw,
+    (const void*)(unsigned int)&GLSPRITE_CelDrawColor,
+    (const void*)(unsigned int)&GLSPRITE_CelDrawEx,
+    (const void*)(unsigned int)&GLSPRITE_CelDrawShadow,
+    (const void*)(unsigned int)&GLSPRITE_CelDrawHilight,
+    (const void*)(unsigned int)&GLSPRITE_CelDrawClipped,
+    (const void*)(unsigned int)&sub_0050D4C0_GlideTileDrawLit,
+    (const void*)(unsigned int)&sub_0050D490_GlideTileDrawTrans,
+    (const void*)(unsigned int)&sub_0050CD40_GlideShadowTileDraw,
+    (const void*)(unsigned int)&GLIDE_UtilDiamond,
+    (const void*)(unsigned int)&GLIDE_UtilRect,
+    (const void*)(unsigned int)&sub_0050C5E0_GlideUtilFilledRect,
+    (const void*)(unsigned int)&GLIDE_UtilPoint,
+    (const void*)(unsigned int)&sub_0050BF50_GlideDrawBox,
+    (const void*)(unsigned int)&sub_0050C0F0_GlideDrawBoxAlpha,
+    (const void*)(unsigned int)&sub_0050C270_GlideDrawLine,
+    (const void*)(unsigned int)&sub_0050C680_ClearBuffer,
+    (const void*)(unsigned int)&GLDEBUGFONT_DebugPrintf,
+    (const void*)(unsigned int)&GLIDE_DebugDraw,
+    (const void*)(unsigned int)&GLSPRITE_DebugFillBackBuffer,
+    (const void*)(unsigned int)&GLCORE_ClearCaches
+}; // 0x0072F178
+
+extern int gdwGlobal_0072F250 = 1; // 0x0072F250
+
+extern int gnGlideTmuState = -1; // 0x0072F254

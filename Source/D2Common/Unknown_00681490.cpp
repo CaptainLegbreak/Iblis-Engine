@@ -351,4 +351,78 @@ int __fastcall sub_006817D0(D2DrlgLevelStrc* pLevel, int nRoad)
     return 0;
 }
 
-#include "gen/data/Source/D2Common/Unknown_00681490.inc"
+#pragma pack(push, 1)
+struct d2data_006F2850_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006F2854_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00749DA4_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const unsigned char gData_006F2840[4][4]; // 0x006F2840
+extern "C" const struct d2data_006F2850_t gData_006F2850; // 0x006F2850
+extern "C" const struct d2data_006F2854_t gData_006F2854; // 0x006F2854
+extern "C" struct d2data_00749DA4_t gData_00749DA4; // 0x00749DA4
+
+extern "C" const unsigned char gData_006F2840[4][4] = {
+    { 0, 1, 2, 3 },
+    { 0, 1, 1, 1 },
+    { 3, 2, 1, 2 },
+    { 0, 3, 2, 1 }
+}; // 0x006F2840
+#pragma comment(linker, "/alternatename:?gPathTurns@@3QAY03$$CBEA=_gData_006F2840")
+
+extern "C" const struct d2data_006F2850_t gData_006F2850 = {
+    { 0x00, 0x01, 0x00, 0xFF }
+}; // 0x006F2850
+#pragma comment(linker, "/alternatename:?gPathStepY@@3QBDB=_gData_006F2850")
+
+extern "C" const struct d2data_006F2854_t gData_006F2854 = {
+    { 0x01, 0x00, 0xFF }
+}; // 0x006F2854
+#pragma comment(linker, "/alternatename:?gPathStepX@@3QBDB=_gData_006F2854")
+
+extern "C" struct d2data_00749DA4_t gData_00749DA4 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749DA4

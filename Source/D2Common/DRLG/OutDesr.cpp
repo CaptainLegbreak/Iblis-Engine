@@ -1055,4 +1055,166 @@ void __fastcall DRLGOUTWILD_InitAct1OutdoorLevel(D2DrlgLevelStrc* pLevel)
     DRLGOUTWILD_SpawnSpecialPresets(pLevel);
 }
 
-#include "gen/data/Source/D2Common/DRLG/OutDesr.inc"
+#pragma pack(push, 1)
+struct d2data_006F2610_t
+{
+    unsigned char b0[112];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006F26A8_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006F26AC_t
+{
+    unsigned char b0[84];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00749CB4_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006F2390[8][5][4]; // 0x006F2390
+extern "C" const struct d2data_006F2610_t gData_006F2610; // 0x006F2610
+extern "C" const D2PresetPairStrc gData_006F2680[5]; // 0x006F2680
+extern "C" const struct d2data_006F26A8_t gData_006F26A8; // 0x006F26A8
+extern "C" const struct d2data_006F26AC_t gData_006F26AC; // 0x006F26AC
+extern "C" struct d2data_00749CB4_t gData_00749CB4; // 0x00749CB4
+
+extern "C" const int gData_006F2390[8][5][4] = {
+    {
+    { 376, 1, 0, 4 },
+    { 378, -1, 2, 4 },
+    { 377, -1, 4, 4 },
+    { 377, -1, 6, 4 },
+    { 376, 2, 8, 4 }
+},
+    {
+    { 376, 1, 0, 4 },
+    { 377, -1, 2, 4 },
+    { 378, -1, 4, 4 },
+    { 377, -1, 6, 4 },
+    { 376, 2, 8, 4 }
+},
+    {
+    { 376, 1, 0, 4 },
+    { 377, -1, 2, 4 },
+    { 377, -1, 4, 4 },
+    { 378, -1, 6, 4 },
+    { 376, 2, 8, 4 }
+},
+    {
+    { 376, 2, 8, 4 },
+    { 377, -1, 6, 4 },
+    { 382, -1, 4, 4 },
+    { 381, -1, 4, 6 },
+    { 379, 2, 4, 8 }
+},
+    {
+    { 376, 2, 8, 4 },
+    { 378, -1, 6, 4 },
+    { 382, -1, 4, 4 },
+    { 380, -1, 4, 6 },
+    { 379, 2, 4, 8 }
+},
+    {
+    { 379, 1, 4 },
+    { 381, -1, 4, 2 },
+    { 380, -1, 4, 4 },
+    { 380, -1, 4, 6 },
+    { 379, 2, 4, 8 }
+},
+    {
+    { 379, 1, 4 },
+    { 380, -1, 4, 2 },
+    { 381, -1, 4, 4 },
+    { 380, -1, 4, 6 },
+    { 379, 2, 4, 8 }
+},
+    {
+    { 379, 1, 4 },
+    { 380, -1, 4, 2 },
+    { 380, -1, 4, 4 },
+    { 381, -1, 4, 6 },
+    { 379, 2, 4, 8 }
+}
+}; // 0x006F2390
+#pragma comment(linker, "/alternatename:?gaDesertCliffs@@3QAY143$$CBHA=_gData_006F2390")
+
+extern "C" const struct d2data_006F2610_t gData_006F2610 = {
+    {
+        0x80, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x7F, 0x01, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x7F, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x7F, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x83, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x81, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+        0x81, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04
+    }
+}; // 0x006F2610
+#pragma comment(linker, "/alternatename:?gaTombEntries_006F2610@@3QBUD2DrlgOutDesertInitStrc@@B=_gData_006F2610")
+
+extern "C" const D2PresetPairStrc gData_006F2680[5] = {
+    { 385, 2 },
+    { 0, 6 },
+    { 386 },
+    { 0, 8 },
+    { 2, 2 }
+}; // 0x006F2680
+#pragma comment(linker, "/alternatename:?gaPresetPairs_006F2680@@3PAUD2PresetPairStrc@@A=_gData_006F2680")
+
+extern "C" const struct d2data_006F26A8_t gData_006F26A8 = {
+    { 0x00 }
+}; // 0x006F26A8
+
+extern "C" const struct d2data_006F26AC_t gData_006F26AC = {
+    {
+        0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x03, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+        0x02
+    }
+}; // 0x006F26AC
+
+extern "C" struct d2data_00749CB4_t gData_00749CB4 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749CB4

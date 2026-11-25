@@ -4079,4 +4079,185 @@ int __cdecl sub_0040A070()
     return 0;
 }
 
-#include "gen/data/Source/Fog/Src/ErrorManager.inc"
+extern "C" char gData_006CCB00[]; // 0x006CCB00
+extern "C" char gData_006CCB04[]; // 0x006CCB04
+extern "C" char gData_006CCB08[]; // 0x006CCB08
+extern "C" char gData_006CCB0C[]; // 0x006CCB0C
+extern "C" char gData_006CCB10[]; // 0x006CCB10
+extern "C" char gData_006CCB14[]; // 0x006CCB14
+extern "C" char gData_006CCB18[]; // 0x006CCB18
+extern "C" char gData_006CCB1C[]; // 0x006CCB1C
+extern "C" char gData_006CCB20[]; // 0x006CCB20
+extern "C" char gData_006CCB24[]; // 0x006CCB24
+extern "C" char gData_006CCB28[]; // 0x006CCB28
+extern "C" char gData_006CCB2C[]; // 0x006CCB2C
+
+#pragma pack(push, 1)
+struct d2data_006CCA6B_t
+{
+    unsigned char b0[1];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007077C0_t
+{
+    unsigned char b0[64];
+};
+#pragma pack(pop)
+
+extern "C" const struct d2data_006CCA6B_t gData_006CCA6B; // 0x006CCA6B
+extern "C" const D2GuidStrc gData_006CCA6C; // 0x006CCA6C
+extern "C" const char gData_006CCBE8[8]; // 0x006CCBE8
+extern "C" const char gData_006CD09C[24]; // 0x006CD09C
+extern "C" const char gData_006CD0B4[16]; // 0x006CD0B4
+extern "C" const char gData_006CD0C4[16]; // 0x006CD0C4
+extern "C" const char gData_006CD0D4[28]; // 0x006CD0D4
+extern "C" const char gData_006CD0F0[24]; // 0x006CD0F0
+extern "C" const char gData_006CD108[28]; // 0x006CD108
+extern "C" const char gData_006CD124[28]; // 0x006CD124
+extern "C" const char gData_006CD188[24]; // 0x006CD188
+extern "C" const char gData_006CD1A0[8]; // 0x006CD1A0
+extern "C" const char gData_006CD1A8[24]; // 0x006CD1A8
+extern "C" const unsigned int gData_006CD490[33]; // 0x006CD490
+extern "C" const char gData_006FF988[12]; // 0x006FF988
+extern "C" const char gData_006FF994[36]; // 0x006FF994
+extern "C" const char* const gData_00706618[15]; // 0x00706618
+extern "C" struct d2data_007077C0_t gData_007077C0; // 0x007077C0
+
+extern "C" const struct d2data_006CCA6B_t gData_006CCA6B = {
+    { 0x00 }
+}; // 0x006CCA6B
+
+extern "C" const D2GuidStrc gData_006CCA6C = { 0x4C5C32FF, 0xBB9D, 0x43B0, { 0xB5, 0xB4, 0x2D, 0x72, 0xE5, 0x4E, 0xAA, 0xA4 } }; // 0x006CCA6C
+#pragma comment(linker, "/alternatename:_gtKnownFolderId=_gData_006CCA6C")
+
+extern "C" const char gData_006CCBE8[8] = "Unknown"; // 0x006CCBE8
+#pragma comment(linker, "/alternatename:_gszUnknownTitle=_gData_006CCBE8")
+
+extern "C" const char gData_006CD09C[24] = "<:Inspector.HashBlock>\n"; // 0x006CD09C
+#pragma comment(linker, "/alternatename:?gszMore5@@3QBDB=_gData_006CD09C")
+
+extern "C" const char gData_006CD0B4[16] = "/Minidump.dmp"; // 0x006CD0B4
+#pragma comment(linker, "/alternatename:?gszMinidump@@3QBDB=_gData_006CD0B4")
+
+extern "C" const char gData_006CD0C4[16] = "DBG-OPTIONS<>\n"; // 0x006CD0C4
+#pragma comment(linker, "/alternatename:?gszMore4@@3QBDB=_gData_006CD0C4")
+
+extern "C" const char gData_006CD0D4[28] = "DBG-OPTIONS<FunctionsOnly>\n"; // 0x006CD0D4
+#pragma comment(linker, "/alternatename:?gszMore3@@3QBDB=_gData_006CD0D4")
+
+extern "C" const char gData_006CD0F0[24] = "<Inspector.HashBlock:>\n"; // 0x006CD0F0
+#pragma comment(linker, "/alternatename:?gszMore2@@3QBDB=_gData_006CD0F0")
+
+extern "C" const char gData_006CD108[28] = "<:Inspector.DebugModules>\n"; // 0x006CD108
+#pragma comment(linker, "/alternatename:?gszMore1@@3QBDB=_gData_006CD108")
+
+extern "C" const char gData_006CD124[28] = "<Inspector.DebugModules:>\n"; // 0x006CD124
+#pragma comment(linker, "/alternatename:?gszModules@@3QBDB=_gData_006CD124")
+
+extern "C" const char gData_006CD188[24] = "\n<:Inspector.Summary>\n"; // 0x006CD188
+#pragma comment(linker, "/alternatename:?gszCrashNewline@@3QBDB=_gData_006CD188")
+
+extern "C" const char gData_006CD1A0[8] = " (%s)"; // 0x006CD1A0
+#pragma comment(linker, "/alternatename:?gszCrashDetail@@3QBDB=_gData_006CD1A0")
+
+extern "C" const char gData_006CD1A8[24] = "<Inspector.Summary:>\n%s"; // 0x006CD1A8
+#pragma comment(linker, "/alternatename:?gszCrashSummary@@3QBDB=_gData_006CD1A8")
+
+extern "C" const unsigned int gData_006CD490[33] = {
+    0, 1, 3, 7, 0xF, 0x1F, 0x3F, 0x7F, 0xFF, 0x1FF, 0x3FF, 0x7FF, 0xFFF, 0x1FFF, 0x3FFF, 0x7FFF,
+    0xFFFF, 0x1FFFF, 0x3FFFF, 0x7FFFF, 0xFFFFF, 0x1FFFFF, 0x3FFFFF, 0x7FFFFF, 0xFFFFFF, 0x1FFFFFF, 0x3FFFFFF, 0x7FFFFFF, 0xFFFFFFF, 0x1FFFFFFF, 0x3FFFFFFF, 0x7FFFFFFF,
+    0xFFFFFFFF
+}; // 0x006CD490
+#pragma comment(linker, "/alternatename:?gadwLowBitMasks@@3QBIB=_gData_006CD490")
+
+extern "C" const char gData_006FF988[12] = "Main Thread"; // 0x006FF988
+#pragma comment(linker, "/alternatename:_gszMainThread=_gData_006FF988")
+
+extern "C" const char gData_006FF994[36] = {
+    105, 110, 116, 101, 114, 110, 97, 108, 99, 104, 101, 99, 107, 46, 99, 111,
+    114, 112, 46, 98, 108, 105, 122, 122, 97, 114, 100, 46, 110, 101, 116, 0,
+    127, 0, 0, 1
+}; // 0x006FF994
+#pragma comment(linker, "/alternatename:_gszInternalCheckHost=_gData_006FF994")
+
+extern "C" const char* const gData_00706618[15] = { (const char* const)"English", (const char* const)"Spanish", (const char* const)"German", (const char* const)"French", (const char* const)"Portuguese", (const char* const)"Italian", (const char* const)"Japanese", (const char* const)"Korean", (const char* const)"Simplified Chinese", (const char* const)"Traditional Chinese", (const char* const)"Polish", (const char* const)"Russian", (const char* const)"English with Korean Chat", (const char* const)"Unknown", (const char* const)"14" }; // 0x00706618
+#pragma comment(linker, "/alternatename:?gaszLanguageNames@@3QBQBDB=_gData_00706618")
+
+extern const char* gaszErrorTypeNames[1049] = {
+    "No Error", "Unknown Error", "Out of Memory Error", "File Read Error", "File Write Error", "Assertion Failure", "Halt", "Warning", "Missing Dll", "Registry Error", "Deadlock", "?\?\?", (const char*)&gData_006CCB2C, (const char*)&gData_006CCB28, (const char*)&gData_006CCB24, (const char*)&gData_006CCB20,
+    (const char*)&gData_006CCB1C, (const char*)&gData_006CCB18, (const char*)&gData_006CCB14, (const char*)&gData_006CCB10, (const char*)&gData_006CCB0C, (const char*)&gData_006CCB08, (const char*)&gData_006CCB04, (const char*)&gData_006CCB00, 0, (const char*)0x3244
+}; // 0x00706654
+
+extern long volatile gnReportBusy = -1; // 0x007076B8
+
+extern long volatile gnCrashReportBusy = -1; // 0x007076BC
+
+extern unsigned char gabHuffmanCodeLength[256] = {
+    1, 4, 6, 7, 7, 6, 7, 7, 7, 8, 7, 8, 8, 7, 9, 8,
+    8, 8, 7, 6, 6, 7, 8, 8, 8, 9, 9, 0xA, 0xA, 8, 7, 8,
+    8, 0xA, 0xA, 0xA, 0xA, 9, 0xA, 0xA, 9, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xB,
+    9, 9, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 9, 0xA, 0xA, 0xA, 0xA,
+    9, 0xA, 0xA, 9, 0xA, 9, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 9, 9, 0xA, 0xB,
+    9, 8, 9, 0xA, 0xB, 9, 9, 0xA, 9, 0xA, 0xA, 0xA, 0xB, 0xA, 0xA, 0xA,
+    0xA, 0xA, 9, 9, 9, 0xA, 0xA, 7, 7, 7, 0xA, 9, 8, 7, 0xA, 0xA,
+    0xA, 0xB, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xB, 0xA, 0xA, 0xA, 0xA,
+    7, 0xA, 0xA, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xA, 0xB, 0xB, 0xB, 0xB, 0xA,
+    9, 0xB, 0xB, 0xA, 0xB, 9, 9, 9, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
+    0xA, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
+    0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
+    0xA, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xB,
+    0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
+    0xA, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
+    0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 6
+}; // 0x007076C0
+
+extern "C" struct d2data_007077C0_t gData_007077C0 = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00,
+        0x0F, 0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x7F, 0x00, 0x00, 0x00,
+        0xFF, 0x00, 0x00, 0x00, 0xFF, 0x01, 0x00, 0x00, 0xFF, 0x03, 0x00, 0x00, 0xFF, 0x07, 0x00, 0x00,
+        0xFF, 0x0F, 0x00, 0x00, 0xFF, 0x1F, 0x00, 0x00, 0xFF, 0x3F, 0x00, 0x00, 0xFF, 0x7F
+    }
+}; // 0x007077C0
+#pragma comment(linker, "/alternatename:?gadwHuffmanMask@@3PAIA=_gData_007077C0")
+
+extern float gafSinTable[512] = {
+    0.0f, 0.012271538f, 0.024541229f, 0.036807224f, 0.049067676f, 0.061320737f, 0.07356457f, 0.08579732f, 0.09801714f, 0.11022221f, 0.12241068f, 0.13458072f, 0.14673048f, 0.15885815f, 0.17096189f, 0.18303989f,
+    0.19509032f, 0.20711139f, 0.21910125f, 0.23105812f, 0.24298018f, 0.25486568f, 0.26671275f, 0.2785197f, 0.2902847f, 0.30200595f, 0.31368175f, 0.3253103f, 0.33688986f, 0.34841868f, 0.35989505f, 0.3713172f,
+    0.38268346f, 0.39399204f, 0.4052413f, 0.41642958f, 0.4275551f, 0.43861625f, 0.44961134f, 0.46053872f, 0.47139674f, 0.48218378f, 0.4928982f, 0.50353837f, 0.51410276f, 0.5245897f, 0.53499764f, 0.545325f,
+    0.55557024f, 0.5657318f, 0.5758082f, 0.58579785f, 0.5956993f, 0.60551107f, 0.61523163f, 0.6248595f, 0.6343933f, 0.64383155f, 0.65317285f, 0.6624158f, 0.671559f, 0.680601f, 0.68954057f, 0.69837624f,
+    0.70710677f, 0.71573085f, 0.7242471f, 0.7326543f, 0.7409511f, 0.7491364f, 0.7572089f, 0.7651673f, 0.7730105f, 0.7807372f, 0.78834647f, 0.7958369f, 0.8032076f, 0.8104572f, 0.8175848f, 0.8245893f,
+    0.83146966f, 0.8382247f, 0.8448536f, 0.8513552f, 0.8577286f, 0.86397284f, 0.870087f, 0.8760701f, 0.8819213f, 0.88763964f, 0.8932243f, 0.8986745f, 0.9039893f, 0.909168f, 0.9142098f, 0.9191139f,
+    0.92387956f, 0.9285061f, 0.9329928f, 0.937339f, 0.94154406f, 0.94560736f, 0.9495282f, 0.9533061f, 0.95694035f, 0.9604305f, 0.96377605f, 0.96697646f, 0.97003126f, 0.97293997f, 0.97570217f, 0.9783174f,
+    0.9807853f, 0.9831055f, 0.98527765f, 0.9873014f, 0.9891765f, 0.99090266f, 0.99247956f, 0.993907f, 0.9951847f, 0.9963126f, 0.99729043f, 0.9981181f, 0.99879545f, 0.9993224f, 0.9996988f, 0.9999247f,
+    1.0f, 0.9999247f, 0.9996988f, 0.99932235f, 0.99879545f, 0.9981181f, 0.99729043f, 0.9963126f, 0.9951847f, 0.993907f, 0.9924795f, 0.9909026f, 0.9891765f, 0.9873014f, 0.98527765f, 0.9831055f,
+    0.98078525f, 0.9783174f, 0.9757021f, 0.97293997f, 0.97003126f, 0.96697646f, 0.96377605f, 0.9604305f, 0.9569403f, 0.953306f, 0.94952816f, 0.9456073f, 0.94154406f, 0.937339f, 0.93299276f, 0.9285061f,
+    0.9238795f, 0.9191138f, 0.9142097f, 0.90916795f, 0.90398926f, 0.8986744f, 0.8932243f, 0.8876396f, 0.88192123f, 0.8760701f, 0.87008697f, 0.86397284f, 0.8577286f, 0.85135514f, 0.8448535f, 0.83822465f,
+    0.8314696f, 0.82458925f, 0.81758475f, 0.81045717f, 0.8032075f, 0.79583687f, 0.7883464f, 0.78073716f, 0.77301043f, 0.76516724f, 0.7572088f, 0.7491363f, 0.74095106f, 0.7326542f, 0.72424704f, 0.7157308f,
+    0.7071067f, 0.6983762f, 0.6895405f, 0.68060094f, 0.6715589f, 0.66241574f, 0.6531728f, 0.6438315f, 0.6343932f, 0.62485945f, 0.6152315f, 0.605511f, 0.59569925f, 0.5857978f, 0.5758081f, 0.56573176f,
+    0.5555702f, 0.5453249f, 0.5349976f, 0.5245896f, 0.5141027f, 0.5035383f, 0.49289814f, 0.4821837f, 0.47139668f, 0.46053866f, 0.44961128f, 0.43861616f, 0.42755502f, 0.4164295f, 0.40524125f, 0.39399198f,
+    0.38268337f, 0.37131712f, 0.35989496f, 0.3484186f, 0.33688977f, 0.32531023f, 0.31368166f, 0.3020059f, 0.2902846f, 0.2785196f, 0.2667127f, 0.2548656f, 0.24298011f, 0.23105803f, 0.21910116f, 0.2071113f,
+    0.19509023f, 0.18303981f, 0.17096181f, 0.15885806f, 0.1467304f, 0.13458063f, 0.122410595f, 0.11022212f, 0.09801706f, 0.08579723f, 0.07356448f, 0.06132065f, 0.049067587f, 0.036807135f, 0.024541141f, 0.012271451f,
+    -8.742278e-08f, -0.012271626f, -0.024541317f, -0.03680731f, -0.04906776f, -0.061320826f, -0.073564656f, -0.0857974f, -0.09801723f, -0.110222295f, -0.12241077f, -0.1345808f, -0.14673057f, -0.15885824f, -0.17096198f, -0.18303998f,
+    -0.19509041f, -0.20711146f, -0.21910132f, -0.2310582f, -0.24298027f, -0.25486577f, -0.26671284f, -0.27851978f, -0.29028478f, -0.30200604f, -0.31368184f, -0.32531038f, -0.33688995f, -0.34841877f, -0.35989514f, -0.3713173f,
+    -0.38268352f, -0.39399213f, -0.4052414f, -0.41642964f, -0.42755517f, -0.43861634f, -0.44961143f, -0.4605388f, -0.47139683f, -0.48218387f, -0.4928983f, -0.5035385f, -0.5141028f, -0.5245898f, -0.5349977f, -0.5453251f,
+    -0.5555703f, -0.5657319f, -0.5758083f, -0.58579797f, -0.59569937f, -0.6055111f, -0.6152317f, -0.6248596f, -0.6343934f, -0.6438316f, -0.6531729f, -0.66241586f, -0.67155904f, -0.68060106f, -0.6895406f, -0.6983763f,
+    -0.7071068f, -0.7157309f, -0.72424716f, -0.73265433f, -0.7409512f, -0.74913645f, -0.75720894f, -0.76516736f, -0.77301055f, -0.7807373f, -0.78834647f, -0.795837f, -0.8032076f, -0.8104573f, -0.8175849f, -0.8245894f,
+    -0.83146966f, -0.83822477f, -0.84485364f, -0.85135525f, -0.85772866f, -0.8639729f, -0.870087f, -0.87607014f, -0.8819213f, -0.8876397f, -0.89322436f, -0.8986745f, -0.9039893f, -0.909168f, -0.9142098f, -0.9191139f,
+    -0.92387956f, -0.92850614f, -0.9329928f, -0.93733907f, -0.9415441f, -0.94560736f, -0.9495282f, -0.9533061f, -0.95694035f, -0.96043056f, -0.9637761f, -0.9669765f, -0.97003126f, -0.97293997f, -0.97570217f, -0.9783174f,
+    -0.9807853f, -0.98310554f, -0.98527765f, -0.9873014f, -0.9891765f, -0.99090266f, -0.99247956f, -0.993907f, -0.9951847f, -0.9963126f, -0.9972905f, -0.9981181f, -0.99879545f, -0.9993224f, -0.9996988f, -0.9999247f,
+    -1.0f, -0.9999247f, -0.9996988f, -0.99932235f, -0.99879545f, -0.9981181f, -0.99729043f, -0.9963126f, -0.9951847f, -0.993907f, -0.9924795f, -0.9909026f, -0.9891765f, -0.9873014f, -0.9852776f, -0.9831055f,
+    -0.98078525f, -0.9783173f, -0.9757021f, -0.9729399f, -0.9700312f, -0.96697646f, -0.96377605f, -0.9604305f, -0.9569403f, -0.953306f, -0.94952816f, -0.9456073f, -0.941544f, -0.93733895f, -0.93299276f, -0.928506f,
+    -0.9238795f, -0.9191138f, -0.9142097f, -0.90916795f, -0.90398926f, -0.8986744f, -0.89322424f, -0.8876396f, -0.8819212f, -0.87607f, -0.8700869f, -0.8639728f, -0.85772854f, -0.85135514f, -0.84485346f, -0.83822465f,
+    -0.83146954f, -0.8245892f, -0.81758475f, -0.8104571f, -0.80320746f, -0.7958368f, -0.78834635f, -0.78073716f, -0.7730104f, -0.7651672f, -0.75720876f, -0.74913627f, -0.740951f, -0.73265415f, -0.724247f, -0.7157307f,
+    -0.70710665f, -0.6983761f, -0.68954045f, -0.6806009f, -0.67155886f, -0.6624157f, -0.65317273f, -0.64383143f, -0.63439316f, -0.6248594f, -0.61523145f, -0.6055109f, -0.5956992f, -0.5857977f, -0.57580805f, -0.5657317f,
+    -0.5555701f, -0.54532486f, -0.53499746f, -0.52458954f, -0.5141026f, -0.50353825f, -0.49289805f, -0.48218364f, -0.4713966f, -0.46053857f, -0.4496112f, -0.4386161f, -0.42755494f, -0.4164294f, -0.40524116f, -0.3939919f,
+    -0.38268328f, -0.37131703f, -0.35989487f, -0.34841853f, -0.33688968f, -0.32531014f, -0.31368157f, -0.3020058f, -0.2902845f, -0.27851954f, -0.2667126f, -0.2548655f, -0.24298002f, -0.23105794f, -0.21910107f, -0.20711121f,
+    -0.19509016f, -0.18303972f, -0.17096172f, -0.15885797f, -0.1467303f, -0.13458054f, -0.122410506f, -0.110222034f, -0.09801697f, -0.08579714f, -0.07356439f, -0.061320562f, -0.0490675f, -0.03680705f, -0.024541054f, -0.012271364f
+}; // 0x00707800
+
+extern int gbUsePools = 1; // 0x00708000
+
+extern const char* gaszCpuVendorNames[5] = { "Unknown", "Intel", "AMD", "Cyrix" }; // 0x00708004

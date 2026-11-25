@@ -85,4 +85,11 @@ int __fastcall sub_004E1770_SpawnSkillMissileRing(D2UnitStrc* pUnit, int nSkillI
     return 0;
 }
 
-#include "gen/data/Source/D2Client/Unknown_004E1770.inc"
+extern "C" const int gData_006DBAB8[16]; // 0x006DBAB8
+extern "C" const int gData_006DBAF8[16]; // 0x006DBAF8
+
+extern "C" const int gData_006DBAB8[16] = { 2, 2, 2, 1, 0, -1, -2, -2, -2, -2, -2, -1, 0, 1, 2, 2 }; // 0x006DBAB8
+#pragma comment(linker, "/alternatename:?gaSkillRingOffsetY@@3QBHB=_gData_006DBAB8")
+
+extern "C" const int gData_006DBAF8[16] = { 0, 1, 2, 2, 2, 2, 2, 1, 0, -1, -2, -2, -2, -2, -2, -1 }; // 0x006DBAF8
+#pragma comment(linker, "/alternatename:?gaSkillRingOffsetX@@3QBHB=_gData_006DBAF8")

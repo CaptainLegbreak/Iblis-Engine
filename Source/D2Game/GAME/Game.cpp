@@ -980,7 +980,7 @@ void __stdcall GAME_GetUnitsDescriptions(unsigned short nGameId, D2UnitDescripti
 
 struct D2PoolSystemStrc;
 
-#include "gen/data/Source/D2Game/GAME/Game_0052D720.static/gnFrameRate.inc"
+static int gnFrameRate = 25;                                                                      // 0x00731010
 
 void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);                              // 0x0040B380
 
@@ -1582,7 +1582,7 @@ static __declspec(noinline) void GAME_SendGameInit(D2GameStrc* pGame, D2ClientSt
 }
 
 // build: symbol ?gnInitSeed@* 0x00731004
-#include "gen/data/Source/D2Game/GAME/Game/gnInitSeed.inc"
+static int gnInitSeed = -1;                                                                        // 0x00731004
 
 // 0x0052C320
 void __stdcall GAME_SetInitSeed(int nInitSeed)
@@ -4980,4 +4980,89 @@ bool R0052E0F0::sub_0052E0F0_IsOpen()
     return m_pFile != 0;
 }
 
-#include "gen/data/Source/D2Game/GAME/Game.inc"
+extern "C" void __cdecl sub_00548090(); // 0x00548090
+extern "C" void __cdecl sub_005482A0(); // 0x005482A0
+extern "C" void __cdecl sub_00548350(); // 0x00548350
+extern "C" void __cdecl sub_00548400(); // 0x00548400
+extern "C" void __cdecl sub_0054DA10(); // 0x0054DA10
+
+#pragma pack(push, 1)
+struct d2data_00731018_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    const void* p15;
+    const void* p16;
+    const void* p17;
+    const void* p18;
+    const void* p19;
+    const void* p20;
+    const void* p21;
+    const void* p22;
+    const void* p23;
+    const void* p24;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00731018_t gtDefaultServerCallbackFunctions; // 0x00731018
+
+extern const char gszEmptyLoadComplete[184] = { 0 }; // 0x006E0498
+
+extern const char gData_006E0550[24] = { 0 }; // 0x006E0550
+
+extern const char gData_006E0568[272] = { 0 }; // 0x006E0568
+
+extern int gbCheckHeartbeat = 1; // 0x00730FFC
+
+extern unsigned short gwGameId = 1; // 0x00731000
+
+extern int gdwGlobal_00731008 = 100; // 0x00731008
+
+extern int gbFixedCpuTargetRatio = 1; // 0x0073100C
+
+extern int gdwGlobal_00731010 = 25; // 0x00731010
+
+extern int gnTargetFrameRate = 25; // 0x00731014
+
+extern "C" struct d2data_00731018_t gtDefaultServerCallbackFunctions = {
+    (const void*)(unsigned int)&GAME_DefaultCloseGame,
+    (const void*)(unsigned int)&NET_DefaultLeaveGame,
+    (const void*)(unsigned int)&GAME_DefaultGetDatabaseCharacter,
+    (const void*)(unsigned int)&NET_DefaultSaveDatabaseCharacter,
+    (const void*)(unsigned int)&NET_DefaultServerLogMessage,
+    (const void*)(unsigned int)&NET_DefaultEnterGame,
+    (const void*)(unsigned int)&NET_DefaultFindPlayerToken,
+    (const void*)(unsigned int)&GAME_DefaultSaveDatabaseGuild,
+    (const void*)(unsigned int)&GAME_DefaultUnlockDatabaseCharacter,
+    (const void*)(unsigned int)&sub_0052BEC0,
+    (const void*)(unsigned int)&NET_DefaultUpdateCharacterLadder,
+    (const void*)(unsigned int)&GAME_DefaultUpdateGameInformation,
+    (const void*)(unsigned int)&GAME_DefaultGetGameServerInfo,
+    (const void*)(unsigned int)&GAME_DefaultGetValue,
+    (const void*)(unsigned int)&GAME_DefaultRelockDatabaseCharacter,
+    (const void*)(unsigned int)&GAME_DefaultLoadComplete,
+    (const void*)(unsigned int)&sub_0052BF30,
+    (const void*)(unsigned int)&sub_0052BF40_Stub,
+    (const void*)(unsigned int)&sub_0052BF50,
+    (const void*)(unsigned int)&sub_0052BF60,
+    (const void*)(unsigned int)&sub_0052BF70,
+    (const void*)(unsigned int)&GAME_ZeroBlock8,
+    (const void*)(unsigned int)&sub_0052BF90,
+    (const void*)(unsigned int)&sub_0052BFA0,
+    (const void*)(unsigned int)&sub_0052BFB0_Stub
+}; // 0x00731018
+
+extern UnitDescriptionFunction gpfnGetDescription[5] = { (UnitDescriptionFunction)&GAME_GetPlayerDescription, (UnitDescriptionFunction)&GAME_GetMonsterDescription, (UnitDescriptionFunction)&GAME_GetObjectDescription, (UnitDescriptionFunction)&GAME_GetItemDescription, (UnitDescriptionFunction)&GAME_GetMissileDescription }; // 0x0073107C

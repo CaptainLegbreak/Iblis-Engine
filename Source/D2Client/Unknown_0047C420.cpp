@@ -463,5 +463,8 @@ void __stdcall CHAT_OnChatChar(SMSGHANDLER_PARAMS* pMsg)
     sub_00420290_BreakHandlerChain(pMsg);
 }
 
-#include "gen/data/Source/D2Client/Unknown_0047C420.inc"
+extern "C" const char gData_006D72B0[14]; // 0x006D72B0
+
+extern "C" const char gData_006D72B0[14] = "<BattleNet>: "; // 0x006D72B0
+#pragma comment(linker, "/alternatename:_gszBattleNetPrefix=_gData_006D72B0")
 struct D2StoredUnitRecordStrc;

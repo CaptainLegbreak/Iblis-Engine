@@ -1438,4 +1438,11 @@ int __fastcall SKILLS_CanImpregnateTarget(D2UnitStrc* pUnit, D2UnitStrc* pTarget
     return STATLIST_GetUnitAlignment(pTarget) != 2;
 }
 
-#include "gen/data/Source/D2Game/Unknown_005D1080.inc"
+extern "C" const int gData_006E3254[4]; // 0x006E3254
+extern "C" const int gData_006E3264[4]; // 0x006E3264
+
+extern "C" const int gData_006E3254[4] = { 0, 0, 1, -1 }; // 0x006E3254
+#pragma comment(linker, "/alternatename:?gnVolleyOffsetX@@3QBHB=_gData_006E3254")
+
+extern "C" const int gData_006E3264[4] = { 1, -1 }; // 0x006E3264
+#pragma comment(linker, "/alternatename:?gnVolleyOffsetY@@3QBHB=_gData_006E3264")

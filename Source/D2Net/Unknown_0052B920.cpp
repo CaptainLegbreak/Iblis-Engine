@@ -184,7 +184,72 @@ int __fastcall SERVER_GetServerPacketSize(D2PacketBufferStrc* pBuffer, int nBuff
     return 1;
 }
 
-#include "gen/data/Source/D2Net/Unknown_0052B920.inc"
+#pragma pack(push, 1)
+struct d2data_00730FC0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00730FC0_t gData_00730FC0; // 0x00730FC0
+
+extern int ganServerPacketSizeTable[182] = {
+    1, 8, 1, 12, 1, 1, 1, 6, 6, 11, 6, 6, 9, 13, 12, 16,
+    16, 8, 26, 14, 18, 11, -1, 0, 15, 2, 2, 3, 5, 3, 4, 6,
+    10, 12, 12, 13, 90, 90, -1, 40, 103, 97, 15, 0, 8, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 8,
+    13, 0, 6, 0, 0, 13, 0, 11, 11, 0, 0, 0, 16, 17, 7, 1,
+    15, 14, 42, 10, 3, 0, 0, 14, 7, 26, 40, -1, 5, 6, 38, 5,
+    7, 2, 7, 21, 0, 7, 7, 16, 21, 12, 12, 16, 16, 10, 1, 1,
+    1, 1, 1, 32, 10, 13, 6, 2, 21, 6, 13, 8, 6, 18, 5, 10,
+    0, 20, 29, 0, 0, 0, 0, 0, 0, 2, 6, 6, 11, 7, 10, 33,
+    13, 26, 6, 8, -1, 13, 9, 1, 7, 16, 17, 7, -1, -1, 7, 8,
+    10, 7, 8, 24, 3, 8, -1, 7, -1, 7, -1, 7, -1, 0, -1, -1,
+    1, 0, 53, -1, 5
+}; // 0x00730AE8
+
+extern int ganClientPacketSizes[113] = {
+    0, 5, 9, 5, 9, 5, 9, 9, 5, 9, 9, 1, 5, 9, 9, 5,
+    9, 9, 1, 9, -1, -1, 13, 5, 17, 5, 9, 9, 3, 9, 9, 17,
+    13, 9, 5, 9, 5, 9, 13, 9, 9, 9, 9, 0, 0, 1, 3, 9,
+    9, 9, 17, 17, 5, 17, 9, 5, 13, 5, 3, 3, 9, 5, 5, 3,
+    1, 1, 1, 1, 17, 9, 13, 13, 1, 9, 0, 9, 5, 3, 0, 7,
+    9, 9, 5, 1, 1, 0, 0, 0, 3, 17, 0, 0, 0, 7, 6, 5,
+    1, 3, 5, 5, 0, 0, -1, 46, 37, 1, 1, 1, -1, 13, 1, 0,
+    1
+}; // 0x00730DC0
+
+extern "C" struct d2data_00730FC0_t gData_00730FC0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00730FC0
 
 static inline const char* NextString(const char* szString)
 {

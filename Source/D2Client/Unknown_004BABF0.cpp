@@ -629,7 +629,10 @@ UIWidget::UIWidget()
 }
 
 
-#include "gen/data/Source/D2Client/Unknown_004BABF0.inc"
+extern D2ButtonStringStrc gaButtonStrings[2] = {
+    { 0x10, 0xD49 },
+    { 0xA, 0x102E }
+}; // 0x007275A8
 
 
 

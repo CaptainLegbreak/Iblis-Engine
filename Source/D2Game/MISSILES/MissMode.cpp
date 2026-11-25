@@ -6247,4 +6247,236 @@ int __fastcall sub_005ADA80_Shim(D2UnitStrc* pMissile)
     return MISSMODE_GetPierceFlags(pMissile);
 }
 
-#include "gen/data/Source/D2Game/MISSILES/MissMode.inc"
+extern "C" void __cdecl MISSMODE_SrvDo37_Unused(); // 0x005B0AA0
+extern "C" void __cdecl sub_005AE520(); // 0x005AE520
+extern "C" void __cdecl sub_005AFB80(); // 0x005AFB80
+extern "C" void __cdecl AITHINK_Fn002_Skeleton(); // 0x005EFCF0
+extern "C" void __cdecl AITHINK_Fn004_Bighead(); // 0x005EFF50
+extern "C" void __cdecl AITHINK_Fn005_BloodHawk(); // 0x005F00E0
+extern "C" void __cdecl AITHINK_Fn006_Fallen(); // 0x005F02C0
+extern "C" void __cdecl AITHINK_Fn007_Brute(); // 0x005EFB80
+extern "C" void __cdecl AITHINK_Fn010_CorruptRogue(); // 0x005F0B00
+extern "C" void __cdecl AITHINK_Fn011_Baboon(); // 0x005F0CD0
+extern "C" void __cdecl AITHINK_Fn013_FallenShaman(); // 0x005F1440
+extern "C" void __cdecl AITHINK_Fn014_QuillRat(); // 0x005F1140
+extern "C" void __cdecl AITHINK_Fn015_SandMaggot(); // 0x005F1800
+extern "C" void __cdecl AITHINK_Fn016_ClawViper(); // 0x005F1B60
+extern "C" void __cdecl AITHINK_Fn017_SandLeaper(); // 0x005F20A0
+extern "C" void __cdecl AITHINK_Fn020_Scarab(); // 0x005F2540
+extern "C" void __cdecl AITHINK_Fn021_Mummy(); // 0x005F2850
+extern "C" void __cdecl AITHINK_Fn024_Mosquito(); // 0x005F3730
+extern "C" void __cdecl AITHINK_Fn026_Arach(); // 0x005F4510
+extern "C" void __cdecl AITHINK_Fn027_ThornHulk(); // 0x005F4850
+extern "C" void __cdecl AITHINK_Fn029_BatDemon(); // 0x005F5040
+extern "C" void __cdecl AITHINK_Fn032_Npc(); // 0x005E7130
+extern "C" void __cdecl AITHINK_Fn033_HellMeteor(); // 0x005F56D0
+extern "C" void __cdecl AITHINK_Fn034_Andariel(); // 0x005F5830
+extern "C" void __cdecl AITHINK_Fn035_CorruptArcher(); // 0x005F5A20
+extern "C" void __cdecl AITHINK_Fn036_CorruptLancer(); // 0x005F5D50
+extern "C" void __cdecl AITHINK_Fn037_SkeletonBow(); // 0x005F6070
+extern "C" void __cdecl AITHINK_Fn038_MaggotLarva(); // 0x005F6220
+extern "C" void __cdecl AITHINK_Fn039_PinHead(); // 0x005F6340
+extern "C" void __cdecl AITHINK_Fn040_MaggotEgg(); // 0x005F6530
+extern "C" void __cdecl AITHINK_Fn041_Towner(); // 0x005E7540
+extern "C" void __cdecl AITHINK_Fn042_Vendor(); // 0x005E9E00
+extern "C" void __cdecl AITHINK_Fn043_FoulCrowNest(); // 0x005F6650
+extern "C" void __cdecl AITHINK_Fn044_Duriel(); // 0x005F67B0
+extern "C" void __cdecl AITHINK_Fn045_Sarcophagus(); // 0x005F6A10
+extern "C" void __cdecl AITHINK_Fn047_FlyingScimitar(); // 0x005F6CA0
+extern "C" void __cdecl AITHINK_Fn048_ZakarumZealot(); // 0x005F6E60
+extern "C" void __cdecl AITHINK_Fn049_ZakarumPriest(); // 0x005F72D0
+extern "C" void __cdecl AITHINK_Fn052_FrogDemon(); // 0x005F8260
+extern "C" void __cdecl AITHINK_Fn053_Summoner(); // 0x005F85C0
+extern "C" void __cdecl AITHINK_Fn055_Izual(); // 0x005F89B0
+extern "C" void __cdecl AITHINK_Fn056_Tentacle(); // 0x005F8F80
+extern "C" void __cdecl AITHINK_Fn058_Navi(); // 0x005E7E20
+extern "C" void __cdecl AITHINK_Fn060_GoodNpcRanged(); // 0x005E7AC0
+extern "C" void __cdecl AITHINK_Fn062_TownRogue(); // 0x005E7D60
+extern "C" void __cdecl AITHINK_Fn064_SkeletonMage(); // 0x005F96C0
+extern "C" void __cdecl AITHINK_Fn065_FetishShaman(); // 0x005F9A80
+extern "C" void __cdecl AITHINK_Fn066_SandMaggotQueen(); // 0x005F9CF0
+extern "C" void __cdecl AITHINK_Fn067_NecroPet(); // 0x005E4CF0
+extern "C" void __cdecl AITHINK_Fn068_VileMother(); // 0x005FA010
+extern "C" void __cdecl AITHINK_Fn069_VileDog(); // 0x005FA280
+extern "C" void __cdecl AITHINK_Fn070_FingerMage(); // 0x005FA380
+extern "C" void __cdecl AITHINK_Fn072_DoomKnight(); // 0x005FAA90
+extern "C" void __cdecl AITHINK_Fn073_AbyssKnight(); // 0x005FAB80
+extern "C" void __cdecl AITHINK_Fn074_OblivionKnight(); // 0x005FAF00
+extern "C" void __cdecl AITHINK_Fn075_QuillMother(); // 0x005FB2A0
+extern "C" void __cdecl AITHINK_Fn077_TrapMissile(); // 0x005FB5B0
+extern "C" void __cdecl AITHINK_Fn078_TrapRightArrow(); // 0x005FB6C0
+extern "C" void __cdecl AITHINK_Fn079_TrapLeftArrow(); // 0x005FB7E0
+extern "C" void __cdecl AITHINK_Fn081_JarJar(); // 0x005E7590
+extern "C" void __cdecl AITHINK_Fn084_BoneWall(); // 0x005E0400
+extern "C" void __cdecl AITHINK_Fn087_TrapMelee(); // 0x005FBA60
+extern "C" void __cdecl AITHINK_Fn088_7TIllusion(); // 0x005EA080
+extern "C" void __cdecl AITHINK_Fn089_Megademon(); // 0x005E0C80
+extern "C" void __cdecl AITHINK_Fn090_Griswold(); // 0x005E5AC0
+extern "C" void __cdecl AITHINK_Fn093_ArcaneTower(); // 0x005E0F60
+extern "C" void __cdecl AITHINK_Fn094_DesertTurret(); // 0x005E0980
+extern "C" void __cdecl AITHINK_Fn095_PantherJavelin(); // 0x005E1080
+extern "C" void __cdecl AITHINK_Fn096_FetishBlowgun(); // 0x005E1250
+extern "C" void __cdecl AITHINK_Fn097_Spirit(); // 0x005E3840
+extern "C" void __cdecl AITHINK_Fn098_Smith(); // 0x005E3890
+extern "C" void __cdecl AITHINK_Fn099_TrappedSoul(); // 0x005E9F10
+extern "C" void __cdecl AITHINK_Fn101_AssassinSentry(); // 0x005EA3D0
+extern "C" void __cdecl AITHINK_Fn102_BladeCreeper(); // 0x005EA540
+extern "C" void __cdecl AITHINK_Fn103_InvisoPet(); // 0x005EA7A0
+extern "C" void __cdecl AITHINK_Fn107_Raven(); // 0x005ECC10
+extern "C" void __cdecl AITHINK_Fn108_DruidWolf(); // 0x005ED710
+extern "C" void __cdecl AITHINK_Fn109_Totem(); // 0x005ED9E0
+extern "C" void __cdecl AITHINK_Fn110_Vines(); // 0x005EC6C0
+extern "C" void __cdecl AITHINK_Fn112_DruidBear(); // 0x005ED730
+extern "C" void __cdecl AITHINK_Fn113_SiegeTower(); // 0x005E1860
+extern "C" void __cdecl AITHINK_Fn114_ReanimatedHorde(); // 0x005E1540
+extern "C" void __cdecl AITHINK_Fn115_SiegeBeast(); // 0x005E1900
+extern "C" void __cdecl AITHINK_Fn116_Minion(); // 0x005E1B60
+extern "C" void __cdecl AITHINK_Fn118_Succubus(); // 0x005E1E00
+extern "C" void __cdecl AITHINK_Fn119_SuccubusWitch(); // 0x005E2120
+extern "C" void __cdecl AITHINK_Fn120_Overseer(); // 0x005E27A0
+extern "C" void __cdecl AITHINK_Fn121_MinionSpawner(); // 0x005E2BD0
+extern "C" void __cdecl AITHINK_Fn123_Catapult(); // 0x005E34C0
+extern "C" void __cdecl AITHINK_Fn125_BloodLord(); // 0x005E36F0
+extern "C" void __cdecl AITHINK_Fn129_GenericSpawner(); // 0x005E61B0
+extern "C" void __cdecl AITHINK_Fn132_AncientStatue(); // 0x005EEAA0
+extern "C" void __cdecl AITHINK_Fn133_Ancient(); // 0x005EF1A0
+extern "C" void __cdecl AITHINK_Fn135_BaalCrab(); // 0x005FCFE0
+extern "C" void __cdecl AITHINK_Fn136_BaalTaunt(); // 0x005EF710
+extern "C" void __cdecl AITHINK_Fn137_PutridDefiler(); // 0x005EFA90
+extern "C" void __cdecl AITHINK_Fn138_BaalToStairs(); // 0x005EF620
+extern "C" void __cdecl AITHINK_Fn140_BaalCrabClone(); // 0x005FD210
+extern "C" void __cdecl AITHINK_Fn141_BaalMinion(); // 0x005EF910
+extern "C" void __cdecl AITHINK_Fn142_ClawViperEx(); // 0x005F1DE0
+extern "C" void __cdecl AITHINK_Fn144_UberIzual(); // 0x005F8C80
+extern "C" void __cdecl AITHINK_Fn145_UberBaal(); // 0x005FD200
+extern "C" void __cdecl AITHINK_Fn146_UberMephisto(); // 0x005F81C0
+extern "C" void __cdecl AITHINK_Fn147_UberDiablo(); // 0x005E9DF0
+extern "C" void __cdecl AITHINK_InitializeRaven(); // 0x005ECB70
+extern "C" void __cdecl sub_005B0CC0(); // 0x005B0CC0
+extern "C" void __cdecl sub_005B0CD0(); // 0x005B0CD0
+extern "C" void __cdecl sub_005E0160(); // 0x005E0160
+extern "C" void __cdecl AITHINK_Fn083_MosquitoNest(); // 0x005E0260
+extern "C" void __cdecl AITHINK_InitializeBoneWallLifetime(); // 0x005E0390
+extern "C" void __cdecl AITHINK_Fn085_HighPriest(); // 0x005E0490
+extern "C" void __cdecl sub_005E1D30(); // 0x005E1D30
+extern "C" void __cdecl AITHINK_InitializeImpMountTarget(); // 0x005E2FD0
+extern "C" void __cdecl sub_005E2FF0(); // 0x005E2FF0
+extern "C" void __cdecl sub_005E3530(); // 0x005E3530
+extern "C" void __cdecl sub_005E5280(); // 0x005E5280
+extern "C" void __cdecl sub_005E52D0(); // 0x005E52D0
+extern "C" void __cdecl AITHINK_InitializeGenericSpawner(); // 0x005E6190
+extern "C" void __cdecl AITHINK_ResetBloodRavenReturnState(); // 0x005E6300
+extern "C" void __cdecl AITHINK_Fn059_BloodRaven(); // 0x005E6320
+extern "C" void __cdecl AITHINK_Fn054_NpcStationary(); // 0x005E73A0
+extern "C" void __cdecl AITHINK_Fn031_NpcOutOfTown(); // 0x005E7880
+extern "C" void __cdecl sub_005E7F50(); // 0x005E7F50
+extern "C" void __cdecl AITHINK_ResetAiAndPreserveHomeCommand(); // 0x005E8480
+extern "C" void __cdecl sub_005E9170(); // 0x005E9170
+extern "C" void __cdecl AITHINK_Fn086_Hydra(); // 0x005E9E60
+extern "C" void __cdecl AITHINK_Fn091_DarkWanderer(); // 0x005EA130
+extern "C" void __cdecl AITHINK_InitializeAssassinSentry(); // 0x005EA290
+extern "C" void __cdecl AITHINK_InitializeBladeCreeper(); // 0x005EA510
+extern "C" void __cdecl sub_005EA980(); // 0x005EA980
+extern "C" void __cdecl AITHINK_InitializeShadowWarrior(); // 0x005EAF50
+extern "C" void __cdecl AITHINK_Fn105_ShadowWarrior(); // 0x005EAFA0
+extern "C" void __cdecl AITHINK_InitializeShadowMaster(); // 0x005EB490
+extern "C" void __cdecl AITHINK_InitializeShadowMasterAttackSkills(); // 0x005EB5C0
+extern "C" void __cdecl sub_005EB970(); // 0x005EB970
+extern "C" void __cdecl AITHINK_InitializeVineState(); // 0x005EC6A0
+extern "C" void __cdecl AITHINK_Fn111_CycleOfLife(); // 0x005EC8C0
+extern "C" void __cdecl sub_005EDC40(); // 0x005EDC40
+extern "C" void __cdecl sub_005EDC50(); // 0x005EDC50
+extern "C" void __cdecl sub_005EE040(); // 0x005EE040
+extern "C" void __cdecl sub_005EE3C0(); // 0x005EE3C0
+extern "C" void __cdecl sub_005EE5C0(); // 0x005EE5C0
+extern "C" void __cdecl sub_005EE5D0(); // 0x005EE5D0
+extern "C" void __cdecl sub_005EF310(); // 0x005EF310
+extern "C" void __cdecl sub_005EF320(); // 0x005EF320
+extern "C" void __cdecl sub_005EF820(); // 0x005EF820
+extern "C" void __cdecl AITHINK_Fn003_Zombie(); // 0x005EFE20
+extern "C" void __cdecl sub_005F0700(); // 0x005F0700
+extern "C" void __cdecl AITHINK_Fn009_Wraith(); // 0x005F0A20
+extern "C" void __cdecl AITHINK_Fn012_019_Goatman_Swarm(); // 0x005F12A0
+extern "C" void __cdecl AITHINK_SpecialFn015_SandMaggot(); // 0x005F1750
+extern "C" void __cdecl AITHINK_Fn018_PantherWoman(); // 0x005F22B0
+extern "C" void __cdecl sub_005F2460_AiThink(); // 0x005F2460
+extern "C" void __cdecl sub_005F2B10(); // 0x005F2B10
+extern "C" void __cdecl sub_005F3170(); // 0x005F3170
+extern "C" void __cdecl AITHINK_Fn025_Willowisp(); // 0x005F39B0
+extern "C" void __cdecl sub_005F4A70(); // 0x005F4A70
+extern "C" void __cdecl AITHINK_BatDemon_HandleSpecialAiState(); // 0x005F4FD0
+extern "C" void __cdecl sub_005F53E0(); // 0x005F53E0
+extern "C" void __cdecl sub_005F6630_InitAiParamsFrame(); // 0x005F6630
+extern "C" void __cdecl AITHINK_Fn046_ElementalBeast(); // 0x005F6B70
+extern "C" void __cdecl sub_005F78B0(); // 0x005F78B0
+extern "C" void __cdecl sub_005F81D0(); // 0x005F81D0
+extern "C" void __cdecl sub_005F9270(); // 0x005F9270
+extern "C" void __cdecl sub_005F9490(); // 0x005F9490
+extern "C" void __cdecl sub_005F9950(); // 0x005F9950
+extern "C" void __cdecl sub_005FA710(); // 0x005FA710
+extern "C" void __cdecl AITHINK_Fn076_EvilHole(); // 0x005FB410
+extern "C" void __cdecl sub_005FB900(); // 0x005FB900
+extern "C" void __cdecl sub_005FB9B0(); // 0x005FB9B0
+extern "C" void __cdecl AIBAAL_RunSpecialAiState(); // 0x005FCF30
+extern "C" void __cdecl AITHINK_Fn130_DeathMauler(); // 0x005EE260
+
+extern "C" const int gData_006E2550[18]; // 0x006E2550
+extern "C" const int gData_006E2598[18]; // 0x006E2598
+extern "C" const int gData_006E2A38[8]; // 0x006E2A38
+extern "C" const int gData_006E2A58[8]; // 0x006E2A58
+extern "C" const int gData_006E2A78[64]; // 0x006E2A78
+extern "C" const int gData_006E2B78[64]; // 0x006E2B78
+
+extern "C" const int gData_006E2550[18] = {
+    2, -2, 0, 0, -3, 0, 3, -1, 1, -1, 2, -4, -3, -1, 0, 1,
+    3, 4
+}; // 0x006E2550
+#pragma comment(linker, "/alternatename:?gnMeteorSubmissileOffsetsX@@3QBHB=_gData_006E2550")
+
+extern "C" const int gData_006E2598[18] = {
+    -2, -2, 2, 5, 3, 3, 3, 2, 1, -1, -1, -2, -2, -3, -4, -3,
+    -3, -2
+}; // 0x006E2598
+#pragma comment(linker, "/alternatename:?gnMeteorSubmissileOffsetsY@@3QBHB=_gData_006E2598")
+
+extern "C" const int gData_006E2A38[8] = { 0, 16, 16, 16, 0, -16, -16, -16 }; // 0x006E2A38
+#pragma comment(linker, "/alternatename:?gnSrvHit52_YOffsets@@3QBHB=_gData_006E2A38")
+
+extern "C" const int gData_006E2A58[8] = { 16, 16, 0, -16, -16, -16, 0, 16 }; // 0x006E2A58
+#pragma comment(linker, "/alternatename:?gnSrvHit52_XOffsets@@3QBHB=_gData_006E2A58")
+
+extern "C" const int gData_006E2A78[64] = {
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29,
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2
+}; // 0x006E2A78
+#pragma comment(linker, "/alternatename:?gnSrvDo15_YPositions@@3QBHB=_gData_006E2A78")
+
+extern "C" const int gData_006E2B78[64] = {
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2,
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29
+}; // 0x006E2B78
+#pragma comment(linker, "/alternatename:?gnSrvDo15_XPositions@@3QBHB=_gData_006E2B78")
+
+extern int gnMissileSrvDoFuncCount = 53; // 0x0073C71C
+
+extern D2MissileUnitFindTableStrc gtMissileCollisionModes[9] = {
+    { 0 },
+    { (void*)(unsigned int)&MISSMODE_UnitFindCallback_CanCollideWithGoodAlignmentUnit, 132 },
+    { (void*)(unsigned int)&MISSMODE_UnitFindCallback_CanCollideWithMonster, 260 },
+    { (void*)(unsigned int)&MISSMODE_UnitFindCallback_CanCollideWithPlayerOrMonster, 388 },
+    { 0 },
+    { (void*)(unsigned int)&MISSMODE_UnitFindCallback_CanCollideWithMonster, 260 },
+    { 0, 4 },
+    { (void*)(unsigned int)&MISSMODE_UnitFindCallback_CanMissileDestroy, 64 },
+    { (void*)(unsigned int)&MISSMODE_UnitFindCallback_CanCollideWithPlayerOrMonster, 389 }
+}; // 0x0073C720
+
+extern MISSMODE_SRVDO gpfnMissileSrvDoFunctions[53] = {
+    0, (MISSMODE_SRVDO)&MISSMODE_SrvDo01_BasicMissile, (MISSMODE_SRVDO)&MISSMODE_SrvDo02_PlagueJavelin_PoisonJavelin_PoisonTrap, (MISSMODE_SRVDO)&MISSMODE_SrvDo03_PoisonCloud_Blizzard_ThunderStorm_HandOfGod, 0, (MISSMODE_SRVDO)&sub_005AE520, (MISSMODE_SRVDO)&MISSMODE_SrvDo06_MoltenBoulder_FireWallMaker, (MISSMODE_SRVDO)&MISSMODE_SrvDo07_GuidedArrow_BoneSpirit, (MISSMODE_SRVDO)&MISSMODE_SrvDo08_MonBlizzCenter, (MISSMODE_SRVDO)&MISSMODE_SrvDo09_BatLightningBolt, (MISSMODE_SRVDO)&MISSMODE_SrvDo10_BlizzardCenter, (MISSMODE_SRVDO)&MISSMODE_SrvDo11_FingerMageSpider, (MISSMODE_SRVDO)&MISSMODE_SrvDo12_DiabWallMaker, (MISSMODE_SRVDO)&MISSMODE_SrvDo13_BoneWallMaker, (MISSMODE_SRVDO)&MISSMODE_SrvDo14_GrimWard, (MISSMODE_SRVDO)&MISSMODE_SrvDo15_FrozenOrb,
+    (MISSMODE_SRVDO)&MISSMODE_SrvDo16_FrozenOrbNova, (MISSMODE_SRVDO)&MISSMODE_SrvDo17_CairnStones, (MISSMODE_SRVDO)&MISSMODE_SrvDo18_TowerChestSpawner, (MISSMODE_SRVDO)&MISSMODE_SrvDo19_RadamentDeath, (MISSMODE_SRVDO)&MISSMODE_SrvDo20_BladeCreeper, (MISSMODE_SRVDO)&MISSMODE_SrvDo21_Distraction, (MISSMODE_SRVDO)&MISSMODE_SrvDo22_LightningTrailingJavelin, (MISSMODE_SRVDO)&MISSMODE_SrvDo23_24_SuccFireBall_FirestormMaker, (MISSMODE_SRVDO)&MISSMODE_SrvDo23_24_SuccFireBall_FirestormMaker, (MISSMODE_SRVDO)&MISSMODE_SrvDo25_EruptionCenter, (MISSMODE_SRVDO)&MISSMODE_SrvDo26_Vines_PlagueVines, (MISSMODE_SRVDO)&MISSMODE_SrvDo27_Tornado, (MISSMODE_SRVDO)&sub_005AFB80, (MISSMODE_SRVDO)&MISSMODE_SrvDo29_RecyclerDelay, (MISSMODE_SRVDO)&MISSMODE_SrvDo30_RabiesPlague, (MISSMODE_SRVDO)&MISSMODE_SrvDo31_WakeOfDestructionMaker_BaalColdMaker,
+    (MISSMODE_SRVDO)&MISSMODE_SrvDo32_TigerFury, (MISSMODE_SRVDO)&MISSMODE_SrvDo33_VineRecyclerDelay, (MISSMODE_SRVDO)&MISSMODE_SrvDo34_BaalTauntControl, (MISSMODE_SRVDO)&MISSMODE_SrvDo35_RoyalStrikeChaosIce, (MISSMODE_SRVDO)&MISSMODE_SrvDo36_BaalFxControl, (MISSMODE_SRVDO)&MISSMODE_SrvDo37_Unused
+}; // 0x0073C768

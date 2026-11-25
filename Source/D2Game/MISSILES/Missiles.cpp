@@ -585,4 +585,7 @@ extern "C" D2MonLvlTxt* __fastcall MISSILES_GetMonLvlTxtRecord(int nLevel)
     return 0;
 }
 
-#include "gen/data/Source/D2Game/MISSILES/Missiles.inc"
+extern "C" const char gData_006E2150[24]; // 0x006E2150
+
+extern "C" const char gData_006E2150[24] = ".\\MISSILES\\Missiles.cpp"; // 0x006E2150
+#pragma comment(linker, "/alternatename:_gszMissilesSourceFile=_gData_006E2150")

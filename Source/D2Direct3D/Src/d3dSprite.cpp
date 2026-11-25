@@ -1144,4 +1144,7 @@ void __cdecl D3DSPRITE_InitSprites()
     gnVertexCount_00970F40 = 0;
     CelSetHardwareFreeCallback(D3DSPRITE_ClearResourceEntries);
 }
-#include "gen/data/Source/D2Direct3D/Src/d3dSprite.inc"
+extern "C" const char gData_006FC26C[24]; // 0x006FC26C
+
+extern "C" const char gData_006FC26C[24] = "Failed to set texture"; // 0x006FC26C
+#pragma comment(linker, "/alternatename:_gszSetTextureFailed=_gData_006FC26C")

@@ -271,4 +271,83 @@ finish_collision:
     return 1;
 }
 
-#include "gen/data/Source/D2Game/MISSILES/MissMode_005ADF10.inc"
+extern "C" void __cdecl MISSMODE_SrvDmg01_FireArrow_MagicArrow_ColdArrow(); // 0x005AD050
+extern "C" void __cdecl MISSMODE_SrvDmg02_IceArrow_RoyalStrikeChaos(); // 0x005AD1B0
+extern "C" void __cdecl MISSMODE_SrvDmg03_Blaze_FireWall_ImmolationFire_MeteorFire(); // 0x005AD220
+extern "C" void __cdecl MISSMODE_SrvDmg04_IceBlast(); // 0x005AD290
+extern "C" void __cdecl MISSMODE_SrvDmg05_BlessedHammer(); // 0x005AD2F0
+extern "C" void __cdecl MISSMODE_SrvDmg06_MarkTargetNoTreasureClass(); // 0x005AD3A0
+extern "C" void __cdecl MISSMODE_SrvDmg07_Warcry_ShockWave(); // 0x005AD3E0
+extern "C" void __cdecl MISSMODE_SrvDmg08_EruptionCrack(); // 0x005AD450
+extern "C" void __cdecl MISSMODE_SrvDmg09_Twister(); // 0x005AD4A0
+extern "C" void __cdecl MISSMODE_SrvDmg10_BladesOfIceCubes(); // 0x005AD2B0
+extern "C" void __cdecl MISSMODE_SrvDmg11_RabiesContagion(); // 0x005AD530
+extern "C" void __cdecl MISSMODE_SrvDmg13_BlessedHammerEx(); // 0x005AD5C0
+extern "C" void __cdecl MISSMODE_SrvDmg14_MoltenBoulder(); // 0x005AD630
+extern "C" void __cdecl MISSMODE_SrvHit01_Fireball_ExplodingArrow_FreezingArrowExplosion(); // 0x005A9A70
+extern "C" void __cdecl MISSMODE_SrvHit02_PlagueJavelin_PoisonPotion(); // 0x005A9D80
+extern "C" void __cdecl MISSMODE_SrvHit03_ExplosivePotion_BombOnGround(); // 0x005A9F90
+extern "C" void __cdecl MISSMODE_SrvHit04_ExplodingArrow_FreezingArrow_RoyalStrikeMeteorCenter(); // 0x005B07A0
+extern "C" void __cdecl MISSMODE_SrvHit05_Unused(); // 0x005ABC40
+extern "C" void __cdecl MISSMODE_SrvHit06_Unused(); // 0x005AA1C0
+extern "C" void __cdecl MISSMODE_SrvHit07_HolyBolt_FistOfTheHeavenBolt(); // 0x005A9FB0
+extern "C" void __cdecl MISSMODE_SrvHit11_Unused(); // 0x005B0870
+extern "C" void __cdecl MISSMODE_SrvHit12_ChainLightning_LightningStrike(); // 0x005AA730
+extern "C" void __cdecl MISSMODE_SrvHit13_GlacialSpike_HellMeteorDown(); // 0x005AA8B0
+extern "C" void __cdecl MISSMODE_SrvHit14_MeteorCenter_CatapultMeteor_RoyalStrikeMeteor(); // 0x005AABB0
+extern "C" void __cdecl MISSMODE_SrvHit15_SpiderGooLay(); // 0x005AAD40
+extern "C" void __cdecl MISSMODE_SrvHit16_SpiderGoo_VinesTrail_VinesWither(); // 0x005AAE10
+extern "C" void __cdecl MISSMODE_SrvHit18_Shout_BattleCommand_BattleOrders(); // 0x005AB0B0
+extern "C" void __cdecl MISSMODE_SrvHit19_FingerMageSpider(); // 0x005AB110
+extern "C" void __cdecl MISSMODE_SrvHit20_LightningFury(); // 0x005AB370
+extern "C" void __cdecl MISSMODE_SrvHit21_BattleCry(); // 0x005AB500
+extern "C" void __cdecl MISSMODE_SrvHit23_Unused(); // 0x005ACFC0
+extern "C" void __cdecl MISSMODE_SrvHit24_PantherPotOrange(); // 0x005A9BF0
+extern "C" void __cdecl MISSMODE_SrvHit25_PantherPotGreen(); // 0x005AB820
+extern "C" void __cdecl MISSMODE_SrvHit27_GrimWard(); // 0x005ABA00
+extern "C" void __cdecl MISSMODE_SrvHit28_GrimWardScare(); // 0x005ABA10
+extern "C" void __cdecl MISSMODE_SrvHit29_FrozenOrb(); // 0x005ABB00
+extern "C" void __cdecl MISSMODE_SrvHit31_FireHead(); // 0x005ABD70
+extern "C" void __cdecl MISSMODE_SrvHit32_CairnStones(); // 0x005ABE50
+extern "C" void __cdecl MISSMODE_SrvHit33_TowerChestSpawner(); // 0x005ABEB0
+extern "C" void __cdecl MISSMODE_SrvHit35_OrbMist(); // 0x005ABEE0
+extern "C" void __cdecl MISSMODE_SrvHit36_MissileInAir(); // 0x005ABF70
+extern "C" void __cdecl MISSMODE_SrvHit37_BladeCreeper(); // 0x005AC020
+extern "C" void __cdecl MISSMODE_SrvHit38_CatapultChargedBall(); // 0x005AC0A0
+extern "C" void __cdecl MISSMODE_SrvHit39_ImpSpawnMonsters(); // 0x005AC1D0
+extern "C" void __cdecl MISSMODE_SrvHit40_CatapultSpikeBall(); // 0x005AC250
+extern "C" void __cdecl MISSMODE_SrvHit44_ExplodingJavelin(); // 0x005A9E10
+extern "C" void __cdecl MISSMODE_SrvHit45_LightningTrailingJavelin(); // 0x005AC480
+extern "C" void __cdecl MISSMODE_SrvHit47_MoltenBoulder(); // 0x005AC550
+extern "C" void __cdecl MISSMODE_SrvHit50_PlagueVinesTrail(); // 0x005AC800
+extern "C" void __cdecl MISSMODE_SrvHit51_VolcanoDebris(); // 0x005AC870
+extern "C" void __cdecl MISSMODE_SrvHit52_BladeFury(); // 0x005AC940
+extern "C" void __cdecl MISSMODE_SrvHit53_RabiesContagion(); // 0x005ACA50
+extern "C" void __cdecl MISSMODE_SrvHit54_BaalSpawnMonsters(); // 0x005ACAF0
+extern "C" void __cdecl MISSMODE_SrvHit55_Baalnferno(); // 0x005ACB60
+extern "C" void __cdecl MISSMODE_SrvHit56_ArmageddonControl(); // 0x005ACC50
+extern "C" void __cdecl MISSMODE_SrvHit57_BaalFxControl(); // 0x005AD970
+extern "C" void __cdecl MISSMODE_SrvHit58_BaalTauntLightningControl(); // 0x005ACDF0
+extern "C" void __cdecl MISSMODE_SrvHit59_BaalTauntPoisonControl(); // 0x005ACF20
+extern "C" void __cdecl MISSMODE_SrvHit08_Blaze(); // 0x005AA180
+extern "C" void __cdecl MISSMODE_SrvHit09_ImmolationArrow(); // 0x005AA250
+extern "C" void __cdecl sub_005AA650(); // 0x005AA650
+extern "C" void __cdecl sub_005AAFB0(); // 0x005AAFB0
+extern "C" void __cdecl MISSMODE_SrvHit26_GrimWardStart(); // 0x005AB8D0
+extern "C" void __cdecl MISSMODE_SrvHit43_HealingVortex(); // 0x005AC350
+extern "C" void __cdecl MISSMODE_SrvHit48_MoltenBoulderEmerge(); // 0x005AC6D0
+extern "C" void __cdecl sub_005AD0F0(); // 0x005AD0F0
+extern "C" void __cdecl MISSMODE_SrvHit22_FistOfTheHeavensDelay(); // 0x005ADD20
+
+extern int gnMissileSrvHitFnCount = 71; // 0x0073C83C
+
+extern MISSILESRVHITFN gpfMissileSrvHitFn[71] = {
+    0, (MISSILESRVHITFN)&MISSMODE_SrvHit01_Fireball_ExplodingArrow_FreezingArrowExplosion, (MISSILESRVHITFN)&MISSMODE_SrvHit02_PlagueJavelin_PoisonPotion, (MISSILESRVHITFN)&MISSMODE_SrvHit03_ExplosivePotion_BombOnGround, (MISSILESRVHITFN)&MISSMODE_SrvHit04_ExplodingArrow_FreezingArrow_RoyalStrikeMeteorCenter, (MISSILESRVHITFN)&MISSMODE_SrvHit05_Unused, (MISSILESRVHITFN)&MISSMODE_SrvHit06_Unused, (MISSILESRVHITFN)&MISSMODE_SrvHit07_HolyBolt_FistOfTheHeavenBolt, (MISSILESRVHITFN)&MISSMODE_SrvHit08_Blaze, (MISSILESRVHITFN)&MISSMODE_SrvHit09_ImmolationArrow, (MISSILESRVHITFN)&sub_005AA650, (MISSILESRVHITFN)&MISSMODE_SrvHit11_Unused, (MISSILESRVHITFN)&MISSMODE_SrvHit12_ChainLightning_LightningStrike, (MISSILESRVHITFN)&MISSMODE_SrvHit13_GlacialSpike_HellMeteorDown, (MISSILESRVHITFN)&MISSMODE_SrvHit14_MeteorCenter_CatapultMeteor_RoyalStrikeMeteor, (MISSILESRVHITFN)&MISSMODE_SrvHit15_SpiderGooLay,
+    (MISSILESRVHITFN)&MISSMODE_SrvHit16_SpiderGoo_VinesTrail_VinesWither, (MISSILESRVHITFN)&sub_005AAFB0, (MISSILESRVHITFN)&MISSMODE_SrvHit18_Shout_BattleCommand_BattleOrders, (MISSILESRVHITFN)&MISSMODE_SrvHit19_FingerMageSpider, (MISSILESRVHITFN)&MISSMODE_SrvHit20_LightningFury, (MISSILESRVHITFN)&MISSMODE_SrvHit21_BattleCry, (MISSILESRVHITFN)&MISSMODE_SrvHit22_FistOfTheHeavensDelay, (MISSILESRVHITFN)&MISSMODE_SrvHit23_Unused, (MISSILESRVHITFN)&MISSMODE_SrvHit24_PantherPotOrange, (MISSILESRVHITFN)&MISSMODE_SrvHit25_PantherPotGreen, (MISSILESRVHITFN)&MISSMODE_SrvHit26_GrimWardStart, (MISSILESRVHITFN)&MISSMODE_SrvHit27_GrimWard, (MISSILESRVHITFN)&MISSMODE_SrvHit28_GrimWardScare, (MISSILESRVHITFN)&MISSMODE_SrvHit29_FrozenOrb, 0, (MISSILESRVHITFN)&MISSMODE_SrvHit31_FireHead,
+    (MISSILESRVHITFN)&MISSMODE_SrvHit32_CairnStones, (MISSILESRVHITFN)&MISSMODE_SrvHit33_TowerChestSpawner, 0, (MISSILESRVHITFN)&MISSMODE_SrvHit35_OrbMist, (MISSILESRVHITFN)&MISSMODE_SrvHit36_MissileInAir, (MISSILESRVHITFN)&MISSMODE_SrvHit37_BladeCreeper, (MISSILESRVHITFN)&MISSMODE_SrvHit38_CatapultChargedBall, (MISSILESRVHITFN)&MISSMODE_SrvHit39_ImpSpawnMonsters, (MISSILESRVHITFN)&MISSMODE_SrvHit40_CatapultSpikeBall, 0, 0, (MISSILESRVHITFN)&MISSMODE_SrvHit43_HealingVortex, (MISSILESRVHITFN)&MISSMODE_SrvHit44_ExplodingJavelin, (MISSILESRVHITFN)&MISSMODE_SrvHit45_LightningTrailingJavelin, 0, (MISSILESRVHITFN)&MISSMODE_SrvHit47_MoltenBoulder,
+    (MISSILESRVHITFN)&MISSMODE_SrvHit48_MoltenBoulderEmerge, 0, (MISSILESRVHITFN)&MISSMODE_SrvHit50_PlagueVinesTrail, (MISSILESRVHITFN)&MISSMODE_SrvHit51_VolcanoDebris, (MISSILESRVHITFN)&MISSMODE_SrvHit52_BladeFury, (MISSILESRVHITFN)&MISSMODE_SrvHit53_RabiesContagion, (MISSILESRVHITFN)&MISSMODE_SrvHit54_BaalSpawnMonsters, (MISSILESRVHITFN)&MISSMODE_SrvHit55_Baalnferno, (MISSILESRVHITFN)&MISSMODE_SrvHit56_ArmageddonControl, (MISSILESRVHITFN)&MISSMODE_SrvHit57_BaalFxControl, (MISSILESRVHITFN)&MISSMODE_SrvHit58_BaalTauntLightningControl, (MISSILESRVHITFN)&MISSMODE_SrvHit59_BaalTauntPoisonControl
+}; // 0x0073C840
+
+extern int gnMissileSrvDmgFnCount = 31; // 0x0073C95C
+
+extern MISSILESRVDMGFN gpfnMissileSrvDmgFunctions[31] = { 0, (MISSILESRVDMGFN)&MISSMODE_SrvDmg01_FireArrow_MagicArrow_ColdArrow, (MISSILESRVDMGFN)&MISSMODE_SrvDmg02_IceArrow_RoyalStrikeChaos, (MISSILESRVDMGFN)&MISSMODE_SrvDmg03_Blaze_FireWall_ImmolationFire_MeteorFire, (MISSILESRVDMGFN)&MISSMODE_SrvDmg04_IceBlast, (MISSILESRVDMGFN)&MISSMODE_SrvDmg05_BlessedHammer, (MISSILESRVDMGFN)&MISSMODE_SrvDmg06_MarkTargetNoTreasureClass, (MISSILESRVDMGFN)&MISSMODE_SrvDmg07_Warcry_ShockWave, (MISSILESRVDMGFN)&MISSMODE_SrvDmg08_EruptionCrack, (MISSILESRVDMGFN)&MISSMODE_SrvDmg09_Twister, (MISSILESRVDMGFN)&MISSMODE_SrvDmg10_BladesOfIceCubes, (MISSILESRVDMGFN)&MISSMODE_SrvDmg11_RabiesContagion, (MISSILESRVDMGFN)&sub_005AD0F0, (MISSILESRVDMGFN)&MISSMODE_SrvDmg13_BlessedHammerEx, (MISSILESRVDMGFN)&MISSMODE_SrvDmg14_MoltenBoulder }; // 0x0073C960

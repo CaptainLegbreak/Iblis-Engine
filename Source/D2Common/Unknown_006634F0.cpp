@@ -203,7 +203,173 @@ int __fastcall sub_006634F0_RollSeededRecord(int nSeed, D2Rolled6634F0Strc* pOut
     return 1;
 }
 
-#include "gen/data/Source/D2Common/Unknown_006634F0.inc"
+#pragma pack(push, 1)
+struct d2data_00748488_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007484C4_t
+{
+    unsigned char b0[8];
+};
+#pragma pack(pop)
+
+extern "C" const unsigned short gData_006EE410[9]; // 0x006EE410
+extern "C" const int gData_006EE424[7]; // 0x006EE424
+extern "C" const int gData_006EE440[0x40]; // 0x006EE440
+extern "C" struct d2data_00748488_t gData_00748488; // 0x00748488
+extern "C" struct d2data_007484C4_t gData_007484C4; // 0x007484C4
+extern "C" const int gData_007484CC[4]; // 0x007484CC
+extern "C" const int gData_007484DC[5]; // 0x007484DC
+extern "C" const int gData_007484F0[4]; // 0x007484F0
+extern "C" const int gData_00748500[5]; // 0x00748500
+extern "C" const int gData_00748514[4]; // 0x00748514
+extern "C" const int gData_00748524[5]; // 0x00748524
+extern "C" const int gData_00748538[4]; // 0x00748538
+extern "C" const int gData_00748548[4]; // 0x00748548
+extern "C" const D2Roll8Strc gData_00748558[4]; // 0x00748558
+extern "C" const D2Roll16Strc gData_00748578[6]; // 0x00748578
+extern "C" const D2Roll16Strc gData_007485D8[6]; // 0x007485D8
+extern "C" const D2Roll24Strc gData_00748638[6]; // 0x00748638
+extern "C" const D2Roll20Strc gData_007486C8[12]; // 0x007486C8
+extern "C" const D2Roll28Strc gData_007487B8[3]; // 0x007487B8
+
+extern "C" const unsigned short gData_006EE410[9] = { 0, 0xD2B, 0xD2C, 0x2B52, 0x2B50, 0x2B51, 0xD31, 0xD30, 0xD2F }; // 0x006EE410
+#pragma comment(linker, "/alternatename:_gnHirelingDescStringIds=_gData_006EE410")
+
+extern "C" const int gData_006EE424[7] = { 165, 166, 167, 168, 169, 170 }; // 0x006EE424
+#pragma comment(linker, "/alternatename:?gnItemSetStates@@3QBHB=_gData_006EE424")
+
+extern "C" const int gData_006EE440[0x40] = {
+    0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6
+}; // 0x006EE440
+#pragma comment(linker, "/alternatename:?gnSetMaskToBonusMappingTable@@3QBHB=_gData_006EE440")
+
+extern "C" struct d2data_00748488_t gData_00748488 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00748488
+
+extern "C" struct d2data_007484C4_t gData_007484C4 = {
+    { 0x00, 0x00, 0x00, 0x00, 0x06 }
+}; // 0x007484C4
+
+extern "C" const int gData_007484CC[4] = { 0, 2, 4 }; // 0x007484CC
+#pragma comment(linker, "/alternatename:?gnHirelingRollBase1@@3QBHB=_gData_007484CC")
+
+extern "C" const int gData_007484DC[5] = { 2, 2, 2, 0, 6 }; // 0x007484DC
+#pragma comment(linker, "/alternatename:?gnHirelingRollCount1@@3QBHB=_gData_007484DC")
+
+extern "C" const int gData_007484F0[4] = { 0, 2, 4 }; // 0x007484F0
+#pragma comment(linker, "/alternatename:?gnHirelingRollBase2@@3QBHB=_gData_007484F0")
+
+extern "C" const int gData_00748500[5] = { 2, 2, 2, 0, 6 }; // 0x00748500
+#pragma comment(linker, "/alternatename:?gnHirelingRollCount2@@3QBHB=_gData_00748500")
+
+extern "C" const int gData_00748514[4] = { 0, 2, 4 }; // 0x00748514
+#pragma comment(linker, "/alternatename:?gnHirelingRollBase3@@3QBHB=_gData_00748514")
+
+extern "C" const int gData_00748524[5] = { 2, 2, 2, 0, 12 }; // 0x00748524
+#pragma comment(linker, "/alternatename:?gnHirelingRollCount3@@3QBHB=_gData_00748524")
+
+extern "C" const int gData_00748538[4] = { 0, 3, 6 }; // 0x00748538
+#pragma comment(linker, "/alternatename:?gnHirelingRollBase4@@3QBHB=_gData_00748538")
+
+extern "C" const int gData_00748548[4] = { 3, 3, 6 }; // 0x00748548
+#pragma comment(linker, "/alternatename:?gnHirelingRollCount4@@3QBHB=_gData_00748548")
+
+extern "C" const D2Roll8Strc gData_00748558[4] = {
+    { 150, 3 },
+    { 300, 9 },
+    { 600, 15 }
+}; // 0x00748558
+#pragma comment(linker, "/alternatename:?gaHirelingRollStart@@3QBUD2Roll8Strc@@B=_gData_00748558")
+
+extern "C" const D2Roll16Strc gData_00748578[6] = {
+    { 0, 30 },
+    { 0, 60, 100, 2 },
+    { 0, 120 },
+    { 1, 180, 110, 3 },
+    { 0, 240 },
+    { 1, 400, 170, 3 }
+}; // 0x00748578
+#pragma comment(linker, "/alternatename:?gaHirelingRoll1@@3QBUD2Roll16Strc@@B=_gData_00748578")
+
+extern "C" const D2Roll16Strc gData_007485D8[6] = {
+    { 0, 15 },
+    { 1, 45, 80, 1 },
+    { 0, 25 },
+    { 1, 60, 90, 2 },
+    { 0, 80 },
+    { 1, 150, 125, 2 }
+}; // 0x007485D8
+#pragma comment(linker, "/alternatename:?gaHirelingRoll2@@3QBUD2Roll16Strc@@B=_gData_007485D8")
+
+extern "C" const D2Roll24Strc gData_00748638[6] = {
+    { 0, 1, 1, 3 },
+    { 1, 1, 2, 4, 75, 2 },
+    { 0, 1, 2, 6 },
+    { 1, 1, 3, 8, 125, 2 },
+    { 1, 1, 4, 10, 200, 4 },
+    { 0, 1, 3, 8 }
+}; // 0x00748638
+#pragma comment(linker, "/alternatename:?gaHirelingRoll3@@3QBUD2Roll24Strc@@B=_gData_00748638")
+
+extern "C" const D2Roll20Strc gData_007486C8[12] = {
+    { 0 },
+    { 1, 55, 2, 0, 3371 },
+    { 2, 85, 2, 0, 3372 },
+    { 3 },
+    { 4, 65, 1, 3, 3373 },
+    { 5, 75, 1, 0, 3374 },
+    { 6, 0, 0, 2, 3375 },
+    { 7, 50, 1, 2, 3376 },
+    { 8, 0, 0, 2, 3377 },
+    { 9, 145, 1, 3, 3378 },
+    { 10, 190, 2, 3, 3379 },
+    { 11, 130, 1, 3, 3380 }
+}; // 0x007486C8
+#pragma comment(linker, "/alternatename:?gaHirelingRoll4@@3QBUD2Roll20Strc@@B=_gData_007486C8")
+
+extern "C" const D2Roll28Strc gData_007487B8[3] = {
+    { 0, 0, 0, 1, 1, 0, 1 },
+    { 80, 40, 25, 2, 2, 3, 2 },
+    { 120, 60, 40, 3, 3, 5, 3 }
+}; // 0x007487B8
+#pragma comment(linker, "/alternatename:?gaHirelingRollLevel@@3QBUD2Roll28Strc@@B=_gData_007487B8")
 
 // 0x00663720
 const Unicode* __fastcall MONSTERS_GetHirelingDescString(int nId)

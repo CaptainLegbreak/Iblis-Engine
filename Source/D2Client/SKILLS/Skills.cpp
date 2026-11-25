@@ -3057,4 +3057,262 @@ int __fastcall SKILLS_CltDoCharge(D2UnitStrc* pUnit, int nSkillId, int nSkillLev
 
 int __fastcall sub_004CA030_TickEvent(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel); // 0x004CA030
 
-#include "gen/data/Source/D2Client/SKILLS/Skills.inc"
+extern "C" void __cdecl sub_004E1320(); // 0x004E1320
+extern "C" void __cdecl SKILLSBAR_SkillCltDoLeap(); // 0x004C8C60
+extern "C" void __cdecl SKILLSBAR_SkillCltDoLeapAttack(); // 0x004C8ED0
+extern "C" void __cdecl SKILLSBAR_SkillCltDoCollide(); // 0x004C9320
+extern "C" void __cdecl sub_004C9490_MissileAroundUnit(); // 0x004C9490
+extern "C" void __cdecl sub_004C97C0(); // 0x004C97C0
+extern "C" void __cdecl sub_004E0A30_CltDoClearSeqSpeed(); // 0x004E0A30
+extern "C" void __cdecl GFXUTIL_CltDoSetAnimFrameFromCalc(); // 0x004E0F40
+extern "C" void __cdecl MISSILE_SkillDoClearTarget(); // 0x004E1090
+extern "C" void __cdecl sub_004E1120(); // 0x004E1120
+extern "C" void __cdecl sub_004E1620_SkillCltDoMissilePair(); // 0x004E1620
+extern "C" void __cdecl sub_004E1770_SpawnSkillMissileRing(); // 0x004E1770
+extern "C" void __cdecl sub_004E1A20_SkillCltDoChargedMissile(); // 0x004E1A20
+extern "C" void __cdecl PLRSKILLS_FireAtTarget(); // 0x004E1B10
+extern "C" void __cdecl SKILLSMON_FireVolley(); // 0x004E1D30
+extern "C" void __cdecl SKILLSMON_ChargeFrames(); // 0x004E1E50
+extern "C" void __cdecl SKILLDESC_CltDoMissileWall(); // 0x004E1FF0
+extern "C" void __cdecl SKILLSMON_MissileRing(); // 0x004E21D0
+extern "C" void __cdecl SKILLSMON_RepeatOnTarget(); // 0x004E2410
+extern "C" void __cdecl SKILLSMON_SpreadTwoMissiles(); // 0x004E2530
+extern "C" void __cdecl SKILLDESC_CltDoFrameSteps(); // 0x004E2630
+extern "C" void __cdecl SKILLSMON_StreamAtTarget(); // 0x004E26C0
+extern "C" void __cdecl SKILLDESC_CltDoComponentMissileA(); // 0x004E2A40
+extern "C" void __cdecl SKILLDESC_CltDoComponentMissileB(); // 0x004E2B30
+extern "C" void __cdecl SKILLDESC_CltDoWeaponOrSkillMissile(); // 0x004E2C20
+extern "C" void __cdecl GFXUTIL_CltDoTest(); // 0x004E3330
+extern "C" void __cdecl MISSILE_StartMissileEffect(); // 0x004E34E0
+extern "C" void __cdecl SKILLSMON_FlankTarget(); // 0x004E3590
+extern "C" void __cdecl SKILLDESC_CltDoMissileAtTargetOffset(); // 0x004E37C0
+extern "C" void __cdecl SKILLDESC_CltDoMissileIfCollision(); // 0x004E3910
+extern "C" void __cdecl SKILLDESC_CltDoFirstMissile(); // 0x004E3A30
+extern "C" void __cdecl SKILLDESC_CltDoScatterMissile(); // 0x004E3EB0
+extern "C" void __cdecl SKILLDESC_CltDoTurnedMissile(); // 0x004EFCF0
+extern "C" void __cdecl SKILLDESC_CltDoLobMissile(); // 0x004EFDF0
+extern "C" void __cdecl sub_004F0050(); // 0x004F0050
+extern "C" void __cdecl sub_004F03C0_CltMissileRequest(); // 0x004F03C0
+extern "C" void __cdecl sub_004F0430_CreateTargetMissile(); // 0x004F0430
+extern "C" void __cdecl SKILLSMON_SetParamTimes(); // 0x004F0710
+extern "C" void __cdecl sub_004F0830(); // 0x004F0830
+extern "C" void __cdecl SKILLSMON_TimedMissile(); // 0x004F0B50
+extern "C" void __cdecl SKILLSMON_RequestAtSkillPos(); // 0x004F0CD0
+extern "C" void __cdecl SKILLSMON_MoveToSkillPos(); // 0x004F0E30
+extern "C" void __cdecl sub_004F0EF0_UpdateRiderPath(); // 0x004F0EF0
+extern "C" void __cdecl sub_004F0F30(); // 0x004F0F30
+extern "C" void __cdecl SKILLSMON_MissileFromTarget(); // 0x004F1120
+extern "C" void __cdecl SKILLDESC_CltDoMissileLine(); // 0x004F11D0
+extern "C" void __cdecl SKILLDESC_CltDoFirstMissileTurned(); // 0x004F1370
+extern "C" void __cdecl sub_004F1430_MissilesOnUnitsInRadius(); // 0x004F1430
+extern "C" void __cdecl SKILLDESC_CltDoMissileFanA(); // 0x004F1850
+extern "C" void __cdecl SKILLDESC_CltDoMissileFanB(); // 0x004F18F0
+extern "C" void __cdecl SKILLDESC_CltDoMissileFanC(); // 0x004F1990
+extern "C" void __cdecl sub_004F1C80_SkillCltDoSpray(); // 0x004F1C80
+extern "C" void __cdecl PLRSKILLS_MotionMissiles(); // 0x004F1D80
+extern "C" void __cdecl sub_004F1F20_FireTwinCltMissiles(); // 0x004F1F20
+extern "C" void __cdecl sub_004F2060_CheckTargetSetFlag(); // 0x004F2060
+extern "C" void __cdecl SKILLDESC_CltDoMissileRows(); // 0x004F2340
+extern "C" void __cdecl SKILLDESC_CltDoRepeatMissile(); // 0x004F25A0
+extern "C" void __cdecl SKILLDESC_CltDoTargetMissile(); // 0x004F2720
+extern "C" void __cdecl SKILLSMON_StreamFromTarget(); // 0x004F2790
+extern "C" void __cdecl SKILLDESC_CltDoMissileScatterAtTarget(); // 0x004F29F0
+extern "C" void __cdecl SKILLDESC_CltDoUnitEffect(); // 0x004F2E90
+extern "C" void __cdecl sub_004F2F20_CltSkillMissileRing(); // 0x004F2F20
+extern "C" void __cdecl sub_004F2FE0_CltSkillMissileRing2(); // 0x004F2FE0
+extern "C" void __cdecl SKILLDESC_CltDoTargetPrgOverlay(); // 0x004F30A0
+extern "C" void __cdecl SKILLDESC_CltDoPrgOverlay(); // 0x004F31A0
+extern "C" void __cdecl SKILLDESC_CltDoPositionMissile(); // 0x004F33B0
+extern "C" void __cdecl sub_004F3430_CltSkillMissileBurst(); // 0x004F3430
+extern "C" void __cdecl SKILLSMON_LightAtTarget(); // 0x004F3530
+extern "C" void __cdecl SKILLDESC_CltDoParamMissile(); // 0x004F38D0
+extern "C" void __cdecl SKILLSMON_UseSkillParamsA(); // 0x004F3C80
+extern "C" void __cdecl SKILLSMON_UseSkillParamsB(); // 0x004F3E50
+extern "C" void __cdecl sub_004F4590_DoSkillSound(); // 0x004F4590
+extern "C" void __cdecl SKILLSMON_MissileLine(); // 0x004F4610
+extern "C" void __cdecl SKILLDESC_CltDoTargetedMissile(); // 0x004F47B0
+extern "C" void __cdecl SKILLDESC_CltDoMirrorMissiles(); // 0x004F48F0
+extern "C" void __cdecl SKILLSBAR_SkillCltStartPosition(); // 0x004C83C0
+extern "C" void __cdecl SKILLSBAR_SkillCltStartLeap(); // 0x004C8D90
+extern "C" void __cdecl SKILLSBAR_SkillCltStartRun(); // 0x004C9120
+extern "C" void __cdecl sub_004E0BD0_CltStartClearCollision(); // 0x004E0BD0
+extern "C" void __cdecl sub_004E0EB0_CltStartPathToTarget(); // 0x004E0EB0
+extern "C" void __cdecl PLRSKILLS_SkillStartMarkTarget(); // 0x004E0FD0
+extern "C" void __cdecl sub_004E12D0_SkillClearTargetFlags(); // 0x004E12D0
+extern "C" void __cdecl sub_004E1720_SkillSetTargetFlags(); // 0x004E1720
+extern "C" void __cdecl sub_004E1740_SkillNeedTarget(); // 0x004E1740
+extern "C" void __cdecl MISSILE_SkillStartCltCalc(); // 0x004E18F0
+extern "C" void __cdecl sub_004E2320(); // 0x004E2320
+extern "C" void __cdecl GFXUTIL_CltDoMissileA(); // 0x004E24D0
+extern "C" void __cdecl MISSILE_SkillStartSpawnRing(); // 0x004E27C0
+extern "C" void __cdecl SKILLDESC_CltDoPrgState(); // 0x004E3060
+extern "C" void __cdecl MISSILE_CheckTargetInRange(); // 0x004E3350
+extern "C" void __cdecl sub_004E39A0_CheckTargetRoom(); // 0x004E39A0
+extern "C" void __cdecl SKILLDESC_CltDoSoundMissile(); // 0x004F0160
+extern "C" void __cdecl SKILLDESC_CltDoDirectionMissile(); // 0x004F01F0
+extern "C" void __cdecl SKILLSMON_RequestMissile(); // 0x004F0350
+extern "C" void __cdecl sub_004F0650_CreateClientMissiles(); // 0x004F0650
+extern "C" void __cdecl SKILLSMON_StartTimedState(); // 0x004F0AB0
+extern "C" void __cdecl sub_004F0C20_StoreTargetPos(); // 0x004F0C20
+extern "C" void __cdecl sub_004F0DD0_StoreTargetInfo(); // 0x004F0DD0
+extern "C" void __cdecl sub_004F1640_AuraStateOverlay(); // 0x004F1640
+extern "C" void __cdecl GFXUTIL_CltDoSetParamFromCalc(); // 0x004F20C0
+extern "C" void __cdecl sub_004F2590_StartStateListEntry(); // 0x004F2590
+extern "C" void __cdecl sub_004F26D0_ApplyCltCalc(); // 0x004F26D0
+extern "C" void __cdecl GFXUTIL_CltDoMissileC(); // 0x004F34D0
+extern "C" void __cdecl SKILLDESC_CltStartMissileC(); // 0x004F3810
+extern "C" void __cdecl sub_004F3870_SetTargetPosParams(); // 0x004F3870
+extern "C" void __cdecl SKILLDESC_CltStartSetTargetParams(); // 0x004F39A0
+extern "C" void __cdecl sub_004F3EB0_CheckTargetRoom(); // 0x004F3EB0
+extern "C" void __cdecl SKILLSNEC_CheckNecromancerSkill(); // 0x004F3F50
+extern "C" void __cdecl PLRSKILLS_MissileByOverlay(); // 0x004F4000
+extern "C" void __cdecl sub_004F4140_CanThrowCheck(); // 0x004F4140
+extern "C" void __cdecl sub_004F4150_ClearSkillParam(); // 0x004F4150
+extern "C" void __cdecl sub_004F4170(); // 0x004F4170
+extern "C" void __cdecl sub_004F42E0(); // 0x004F42E0
+extern "C" void __cdecl sub_004F4450_InitializeSkillTarget(); // 0x004F4450
+extern "C" void __cdecl sub_004E0C90(); // 0x004E0C90
+extern "C" void __cdecl SKILLSAMA_CltDoRepeatAttack(); // 0x004F4C20
+extern "C" void __cdecl SKILLSPAL_StartCharge(); // 0x004C9B40
+extern "C" void __cdecl SKILLSMON_CreateTargetMissile(); // 0x004E3720
+extern "C" void __cdecl SKILLSMON_ClearUsedSkillFlags(); // 0x004E1E30
+extern "C" void __cdecl SKILLDESC_CltDoChargedMissile(); // 0x004F4A30
+extern "C" void __cdecl SKILLDESC_CreateMissileAtTarget(); // 0x004F4D90
+extern "C" void __cdecl SKILLDESC_CanTargetHostile(); // 0x004F2010
+extern "C" void __cdecl SKILLDESC_IsAuraStateOff(); // 0x004F23E0
+extern "C" void __cdecl SKILLDESC_IsTargetPlayerOrMonster(); // 0x004F2870
+extern "C" void __cdecl GFXUTIL_CltDoResetActionFrame(); // 0x004E0C60
+extern "C" void __cdecl GFXUTIL_CltDoResetActionFrame2(); // 0x004E12F0
+extern "C" void __cdecl SKILLDESC_DecrementParam(); // 0x004F2160
+extern "C" void __cdecl GFXUTIL_SkillDoFrameOffset(); // 0x004E0D40
+extern "C" void __cdecl SKILLDESC_VolleyAtTarget(); // 0x004E2F40
+extern "C" void __cdecl SKILLDESC_MissileAtTargetUnit(); // 0x004E3C50
+extern "C" void __cdecl GFXUTIL_SkillStartPlace(); // 0x004E0A40
+
+#pragma pack(push, 1)
+struct d2data_006DADDC_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006DADFC_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00727A50_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006DABC0[64]; // 0x006DABC0
+extern "C" const int gData_006DACC0[64]; // 0x006DACC0
+extern "C" const int gData_006DADC0[7]; // 0x006DADC0
+extern "C" const struct d2data_006DADDC_t gData_006DADDC; // 0x006DADDC
+extern "C" const int gData_006DADE0[7]; // 0x006DADE0
+extern "C" const struct d2data_006DADFC_t gData_006DADFC; // 0x006DADFC
+extern "C" const int gData_006DAE00[7]; // 0x006DAE00
+extern "C" const int gData_006DAE1C[4]; // 0x006DAE1C
+extern "C" const int gData_006DAE2C[7]; // 0x006DAE2C
+extern "C" const int gData_006DAE48[4]; // 0x006DAE48
+extern "C" struct d2data_00727A50_t gData_00727A50; // 0x00727A50
+
+extern "C" const int gData_006DABC0[64] = {
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29,
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2
+}; // 0x006DABC0
+#pragma comment(linker, "/alternatename:?gaRingTargetY@@3QBHB=_gData_006DABC0")
+
+extern "C" const int gData_006DACC0[64] = {
+    30, 29, 29, 28, 27, 26, 24, 23, 21, 19, 16, 14, 11, 8, 5, 2,
+    0, -2, -5, -8, -11, -14, -16, -19, -21, -23, -24, -26, -27, -28, -29, -29,
+    -30, -29, -29, -28, -27, -26, -24, -23, -21, -19, -16, -14, -11, -8, -5, -2,
+    0, 2, 5, 8, 11, 14, 16, 19, 21, 23, 24, 26, 27, 28, 29, 29
+}; // 0x006DACC0
+#pragma comment(linker, "/alternatename:?gaRingTargetX@@3QBHB=_gData_006DACC0")
+
+extern "C" const int gData_006DADC0[7] = { 0, 0, 20, -20, 14, 14, -14 }; // 0x006DADC0
+#pragma comment(linker, "/alternatename:?gaSpiralOuterY@@3QBHB=_gData_006DADC0")
+
+extern "C" const struct d2data_006DADDC_t gData_006DADDC = {
+    { 0xF2, 0xFF, 0xFF, 0xFF }
+}; // 0x006DADDC
+
+extern "C" const int gData_006DADE0[7] = { 20, -20, 0, 0, 14, -14, -14 }; // 0x006DADE0
+#pragma comment(linker, "/alternatename:?gaSpiralOuterX@@3QBHB=_gData_006DADE0")
+
+extern "C" const struct d2data_006DADFC_t gData_006DADFC = {
+    { 0x0E }
+}; // 0x006DADFC
+
+extern "C" const int gData_006DAE00[7] = { 8, 2, 11, 4, 13, 6, 9 }; // 0x006DAE00
+#pragma comment(linker, "/alternatename:?gaSpiralOuterB@@3QBHB=_gData_006DAE00")
+
+extern "C" const int gData_006DAE1C[4] = { -1, -1, 1, 1 }; // 0x006DAE1C
+#pragma comment(linker, "/alternatename:?gaSpiralInnerY@@3QBHB=_gData_006DAE1C")
+
+extern "C" const int gData_006DAE2C[7] = { 18, 20, 17, 20, 15, 19, 18 }; // 0x006DAE2C
+#pragma comment(linker, "/alternatename:?gaSpiralOuterA@@3QBHB=_gData_006DAE2C")
+
+extern "C" const int gData_006DAE48[4] = { -1, 1, 1, -1 }; // 0x006DAE48
+#pragma comment(linker, "/alternatename:?gaSpiralInnerX@@3QBHB=_gData_006DAE48")
+
+extern "C" struct d2data_00727A50_t gData_00727A50 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00727A50
+
+extern int gnClientSkillStartFuncs = 70; // 0x00727A8C
+
+extern CLIENTSKILLSTARTFN gpfnClientSkillStartFuncs[70] = {
+    0, (CLIENTSKILLSTARTFN)&SKILLS_CheckWeaponStart, (CLIENTSKILLSTARTFN)&SKILLS_CheckThrowStart, (CLIENTSKILLSTARTFN)&SKILLS_CheckPetTarget, (CLIENTSKILLSTARTFN)&sub_004C6020_AlwaysOne, (CLIENTSKILLSTARTFN)&SKILLDESC_CanTargetHostile, (CLIENTSKILLSTARTFN)&GFXUTIL_CltDoSetParamFromCalc, (CLIENTSKILLSTARTFN)&SKILLDESC_IsAuraStateOff, (CLIENTSKILLSTARTFN)&sub_004F2590_StartStateListEntry, (CLIENTSKILLSTARTFN)&sub_004F26D0_ApplyCltCalc, (CLIENTSKILLSTARTFN)&SKILLDESC_IsTargetPlayerOrMonster, (CLIENTSKILLSTARTFN)&sub_004F4140_CanThrowCheck, (CLIENTSKILLSTARTFN)&sub_004F4150_ClearSkillParam, (CLIENTSKILLSTARTFN)&sub_004F4170, (CLIENTSKILLSTARTFN)&sub_004F42E0, (CLIENTSKILLSTARTFN)&SKILLDESC_CltDoPrgState,
+    (CLIENTSKILLSTARTFN)&MISSILE_CheckTargetInRange, (CLIENTSKILLSTARTFN)&sub_004E39A0_CheckTargetRoom, (CLIENTSKILLSTARTFN)&GFXUTIL_CltDoMissileC, (CLIENTSKILLSTARTFN)&SKILLDESC_CltStartMissileC, (CLIENTSKILLSTARTFN)&sub_004F3870_SetTargetPosParams, (CLIENTSKILLSTARTFN)&SKILLDESC_CltStartSetTargetParams, (CLIENTSKILLSTARTFN)&sub_004F3EB0_CheckTargetRoom, (CLIENTSKILLSTARTFN)&SKILLSNEC_CheckNecromancerSkill, (CLIENTSKILLSTARTFN)&PLRSKILLS_MissileByOverlay, (CLIENTSKILLSTARTFN)&SKILLSPAL_StartCharge, (CLIENTSKILLSTARTFN)&SKILLS_TestTarget11018, (CLIENTSKILLSTARTFN)&SKILLS_EvaluateClientSkillCalc, (CLIENTSKILLSTARTFN)&SKILLS_TestTarget11019, (CLIENTSKILLSTARTFN)&SKILLSBAR_SkillCltStartPosition, (CLIENTSKILLSTARTFN)&SKILLSBAR_SkillCltStartLeap, (CLIENTSKILLSTARTFN)&SKILLSBAR_SkillCltStartRun,
+    (CLIENTSKILLSTARTFN)&GFXUTIL_SkillStartPlace, (CLIENTSKILLSTARTFN)&sub_004E0BD0_CltStartClearCollision, (CLIENTSKILLSTARTFN)&sub_004E0C90, (CLIENTSKILLSTARTFN)&sub_004E0EB0_CltStartPathToTarget, (CLIENTSKILLSTARTFN)&PLRSKILLS_SkillStartMarkTarget, (CLIENTSKILLSTARTFN)&sub_004E12D0_SkillClearTargetFlags, (CLIENTSKILLSTARTFN)&sub_004E1720_SkillSetTargetFlags, (CLIENTSKILLSTARTFN)&sub_004E1740_SkillNeedTarget, (CLIENTSKILLSTARTFN)&MISSILE_SkillStartCltCalc, (CLIENTSKILLSTARTFN)&SKILLSMON_ClearUsedSkillFlags, (CLIENTSKILLSTARTFN)&sub_004E2320, (CLIENTSKILLSTARTFN)&GFXUTIL_CltDoMissileA, (CLIENTSKILLSTARTFN)&MISSILE_SkillStartSpawnRing, (CLIENTSKILLSTARTFN)&sub_004F1640_AuraStateOverlay, (CLIENTSKILLSTARTFN)&SKILLDESC_CltDoSoundMissile, (CLIENTSKILLSTARTFN)&SKILLDESC_CltDoDirectionMissile,
+    (CLIENTSKILLSTARTFN)&SKILLSMON_RequestMissile, (CLIENTSKILLSTARTFN)&sub_004F0650_CreateClientMissiles, (CLIENTSKILLSTARTFN)&sub_004F0C20_StoreTargetPos, (CLIENTSKILLSTARTFN)&sub_004F0DD0_StoreTargetInfo, (CLIENTSKILLSTARTFN)&SKILLSMON_StartTimedState, (CLIENTSKILLSTARTFN)&sub_004F4450_InitializeSkillTarget
+}; // 0x00727A90
+
+extern CLIENTSKILLDOFN gpfnClientSkillDoFuncs[130] = {
+    0, (CLIENTSKILLDOFN)&SKILLS_UseBowOrCallTarget, (CLIENTSKILLDOFN)&SKILLS_ThrowWeapon, (CLIENTSKILLDOFN)&sub_004F2060_CheckTargetSetFlag, (CLIENTSKILLDOFN)&SKILLDESC_DecrementParam, (CLIENTSKILLDOFN)&SKILLDESC_CltDoMissileRows, (CLIENTSKILLDOFN)&SKILLDESC_CltDoRepeatMissile, (CLIENTSKILLDOFN)&SKILLDESC_CltDoTargetMissile, (CLIENTSKILLDOFN)&SKILLSMON_StreamFromTarget, (CLIENTSKILLDOFN)&SKILLDESC_CltDoMissileScatterAtTarget, (CLIENTSKILLDOFN)&SKILLDESC_CltDoUnitEffect, (CLIENTSKILLDOFN)&sub_004F2F20_CltSkillMissileRing, (CLIENTSKILLDOFN)&SKILLDESC_CltDoTargetPrgOverlay, (CLIENTSKILLDOFN)&SKILLDESC_CltDoPrgOverlay, (CLIENTSKILLDOFN)&SKILLDESC_CltDoPositionMissile, (CLIENTSKILLDOFN)&sub_004F3430_CltSkillMissileBurst,
+    (CLIENTSKILLDOFN)&sub_004F4590_DoSkillSound, (CLIENTSKILLDOFN)&SKILLSMON_MissileLine, (CLIENTSKILLDOFN)&SKILLDESC_CltDoTargetedMissile, (CLIENTSKILLDOFN)&SKILLDESC_CltDoMirrorMissiles, (CLIENTSKILLDOFN)&SKILLDESC_CltDoChargedMissile, (CLIENTSKILLDOFN)&SKILLSAMA_CltDoRepeatAttack, (CLIENTSKILLDOFN)&SKILLDESC_CreateMissileAtTarget, (CLIENTSKILLDOFN)&SKILLDESC_VolleyAtTarget, (CLIENTSKILLDOFN)&GFXUTIL_CltDoTest, (CLIENTSKILLDOFN)&MISSILE_StartMissileEffect, (CLIENTSKILLDOFN)&SKILLSMON_FlankTarget, (CLIENTSKILLDOFN)&SKILLSMON_CreateTargetMissile, (CLIENTSKILLDOFN)&SKILLDESC_CltDoMissileIfCollision, (CLIENTSKILLDOFN)&SKILLDESC_CltDoFirstMissile, (CLIENTSKILLDOFN)&SKILLSMON_LightAtTarget, (CLIENTSKILLDOFN)&SKILLDESC_CltDoParamMissile,
+    (CLIENTSKILLDOFN)&SKILLSMON_UseSkillParamsA, (CLIENTSKILLDOFN)&SKILLSMON_UseSkillParamsB, (CLIENTSKILLDOFN)&sub_004C9490_MissileAroundUnit, (CLIENTSKILLDOFN)&MISSILE_SkillStartAtTargetPos, (CLIENTSKILLDOFN)&sub_004C96D0, (CLIENTSKILLDOFN)&SKILLS_CltDoCharge, (CLIENTSKILLDOFN)&SKILLS_BurstTargetCorpse, (CLIENTSKILLDOFN)&SKILLS_LeapToTarget, (CLIENTSKILLDOFN)&SKILLS_BurstSoftTargetCorpse, (CLIENTSKILLDOFN)&SKILLS_SpawnPairAtTarget, (CLIENTSKILLDOFN)&SKILLS_FireWeaponMissile, (CLIENTSKILLDOFN)&SKILLSBAR_SkillCltDoLeap, (CLIENTSKILLDOFN)&SKILLSBAR_SkillCltDoLeapAttack, (CLIENTSKILLDOFN)&SKILLSBAR_SkillCltDoCollide, (CLIENTSKILLDOFN)&sub_004E0A30_CltDoClearSeqSpeed, (CLIENTSKILLDOFN)&GFXUTIL_CltDoResetActionFrame,
+    (CLIENTSKILLDOFN)&GFXUTIL_SkillDoFrameOffset, (CLIENTSKILLDOFN)&GFXUTIL_CltDoSetAnimFrameFromCalc, (CLIENTSKILLDOFN)&MISSILE_SkillDoClearTarget, (CLIENTSKILLDOFN)&sub_004E1120, (CLIENTSKILLDOFN)&GFXUTIL_CltDoResetActionFrame2, (CLIENTSKILLDOFN)&sub_004E1320, (CLIENTSKILLDOFN)&sub_004E1620_SkillCltDoMissilePair, (CLIENTSKILLDOFN)&sub_004E1770_SpawnSkillMissileRing, (CLIENTSKILLDOFN)&sub_004E1A20_SkillCltDoChargedMissile, (CLIENTSKILLDOFN)&PLRSKILLS_FireAtTarget, (CLIENTSKILLDOFN)&SKILLSMON_FireVolley, (CLIENTSKILLDOFN)&SKILLSMON_ChargeFrames, (CLIENTSKILLDOFN)&SKILLDESC_CltDoMissileWall, (CLIENTSKILLDOFN)&SKILLSMON_MissileRing, (CLIENTSKILLDOFN)&SKILLSMON_RepeatOnTarget, (CLIENTSKILLDOFN)&SKILLSMON_SpreadTwoMissiles,
+    (CLIENTSKILLDOFN)&SKILLDESC_CltDoFrameSteps, (CLIENTSKILLDOFN)&SKILLSMON_StreamAtTarget, (CLIENTSKILLDOFN)&SKILLDESC_CltDoWeaponOrSkillMissile, (CLIENTSKILLDOFN)&SKILLDESC_CltDoMissileFanA, (CLIENTSKILLDOFN)&SKILLDESC_CltDoMissileFanB, (CLIENTSKILLDOFN)&SKILLDESC_CltDoMissileFanC, (CLIENTSKILLDOFN)&SKILLDESC_CltDoTurnedMissile, (CLIENTSKILLDOFN)&SKILLDESC_CltDoLobMissile, (CLIENTSKILLDOFN)&sub_004F0050, (CLIENTSKILLDOFN)&sub_004F03C0_CltMissileRequest, (CLIENTSKILLDOFN)&sub_004F0430_CreateTargetMissile, (CLIENTSKILLDOFN)&SKILLSMON_SetParamTimes, (CLIENTSKILLDOFN)&sub_004F0830, (CLIENTSKILLDOFN)&SKILLSMON_TimedMissile, (CLIENTSKILLDOFN)&SKILLSMON_RequestAtSkillPos, (CLIENTSKILLDOFN)&SKILLSMON_MoveToSkillPos,
+    (CLIENTSKILLDOFN)&SKILLDESC_CltDoMissileLine, (CLIENTSKILLDOFN)&SKILLDESC_CltDoFirstMissileTurned, (CLIENTSKILLDOFN)&sub_004F1430_MissilesOnUnitsInRadius, (CLIENTSKILLDOFN)&sub_004F2FE0_CltSkillMissileRing2, (CLIENTSKILLDOFN)&SKILLDESC_MissileAtTargetUnit, (CLIENTSKILLDOFN)&sub_004CA030_TickEvent, (CLIENTSKILLDOFN)&sub_004C97C0, (CLIENTSKILLDOFN)&SKILLDESC_CltDoScatterMissile, (CLIENTSKILLDOFN)&sub_004F0EF0_UpdateRiderPath, (CLIENTSKILLDOFN)&sub_004F0F30, (CLIENTSKILLDOFN)&sub_004F1C80_SkillCltDoSpray, (CLIENTSKILLDOFN)&sub_004F1F20_FireTwinCltMissiles, (CLIENTSKILLDOFN)&PLRSKILLS_MotionMissiles, (CLIENTSKILLDOFN)&SKILLSMON_MissileFromTarget, (CLIENTSKILLDOFN)&SKILLDESC_CltDoComponentMissileA, (CLIENTSKILLDOFN)&SKILLDESC_CltDoComponentMissileB,
+    (CLIENTSKILLDOFN)&SKILLDESC_CltDoMissileAtTargetOffset
+}; // 0x00727BA8
+
+extern int gnClientSkillDoFuncs = 130; // 0x00727DB0

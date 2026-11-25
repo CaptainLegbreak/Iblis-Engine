@@ -68,7 +68,7 @@ void __stdcall MISSILE_SetTargetY(D2UnitStrc* pMissile, int nTargetY); // 0x0064
 int gbPulseDone; // 0x007A745C
 
 // build: symbol ?gnPulseTick@* 0x007129CC
-#include "gen/data/Source/D2Client/Unknown_0046ACE0/gnPulseTick.inc"
+static int gnPulseTick = -1;                                                                          // 0x007129CC
 extern int gbChaosLightEvent; // 0x007A7460
 extern int gnTimerEnd; // 0x007A7464
 extern int gbThroneEventPending; // 0x007A7468
@@ -1135,4 +1135,11 @@ void __fastcall sub_0046C460_PopulateRoom(D2ActiveRoomStrc* pRoom)
     }
 }
 
-#include "gen/data/Source/D2Client/Unknown_0046ACE0.inc"
+extern int gnLevelEffectTick = -1; // 0x007129D0
+
+extern int gnTimerUnitId = -1; // 0x007129D4
+
+extern LEVELEVENT_Fn gpfnLevelEvents[20] = {
+    (LEVELEVENT_Fn)&sub_0046B0C0_ResetPulseTick, (LEVELEVENT_Fn)&sub_0046AEE0_ObjectMissileTimedBox, 0, (LEVELEVENT_Fn)&sub_0046B100_EventObject98Request, 0, 0, (LEVELEVENT_Fn)&sub_0046B1E0_EventObject95Request, 0, 0, 0, 0, 0, (LEVELEVENT_Fn)&sub_0046B290_EventLevel108Request, (LEVELEVENT_Fn)&sub_0046B3A0_StartTimer, (LEVELEVENT_Fn)&sub_0046B300_EventObject178Request, 0,
+    (LEVELEVENT_Fn)&sub_0046B440_EventObject1CCRequest, (LEVELEVENT_Fn)&SCMD_TriggerNearbyMonsterEffect, 0, (LEVELEVENT_Fn)&sub_0046B520_SetFlag7A7468
+}; // 0x007129D8

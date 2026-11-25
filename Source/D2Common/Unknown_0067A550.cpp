@@ -471,4 +471,63 @@ D2PathIDAStarNodeStrc* __stdcall sub_M125_Emit_0067A590(int nUnused1, int nUnuse
     return PATH_IDAStar_GetNewNode(pContext);
 }
 
-#include "gen/data/Source/D2Common/Unknown_0067A550.inc"
+#pragma pack(push, 1)
+struct d2data_00749A98_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006F18D8[32]; // 0x006F18D8
+extern "C" const D2CoordStrc gData_006F1958[8]; // 0x006F1958
+extern "C" struct d2data_00749A98_t gData_00749A98; // 0x00749A98
+
+extern "C" const int gData_006F18D8[32] = {
+    -2, -1, 0, 1, 2, -2, -1, 0, 1, 2, -2, -1, 0, 1, 2, -2,
+    -1, 0, 1, 2, -2, -1, 0, 1, 2, -2, -1, 0, 1, 2, -1, 1
+}; // 0x006F18D8
+#pragma comment(linker, "/alternatename:?gnIdaStarNeighborRandOffsets@@3QBHB=_gData_006F18D8")
+
+extern "C" const D2CoordStrc gData_006F1958[8] = {
+    { 1 },
+    { 1, 1 },
+    { 0, 1 },
+    { -1, 1 },
+    { -1 },
+    { -1, -1 },
+    { 0, -1 },
+    { 1, -1 }
+}; // 0x006F1958
+#pragma comment(linker, "/alternatename:?aCoordOffsets@@3QBUD2CoordStrc@@B=_gData_006F1958")
+
+extern "C" struct d2data_00749A98_t gData_00749A98 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749A98

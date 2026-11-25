@@ -564,4 +564,63 @@ void __fastcall MONUNIQUE_ApplyUMods(D2UnitStrc* pUnit)
     }
 }
 
-#include "gen/data/Source/D2Client/UNIT/MonUnique.inc"
+#pragma pack(push, 1)
+struct d2data_00724D3C_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const D2HoverModeStrc gData_006DA488[5]; // 0x006DA488
+extern "C" const int gData_006DA4C8[4]; // 0x006DA4C8
+extern "C" struct d2data_00724D3C_t gData_00724D3C; // 0x00724D3C
+
+extern "C" const D2HoverModeStrc gData_006DA488[5] = {
+    { 16, 0xC94 },
+    { 36, 0x2B4C },
+    { 37, 0x2B4D },
+    { 38, 0x2B4E },
+    { 39, 0x2B4F }
+}; // 0x006DA488
+#pragma comment(linker, "/alternatename:?gaHoverModes@@3QBUD2HoverModeStrc@@B=_gData_006DA488")
+
+extern "C" const int gData_006DA4C8[4] = { 1, 2, 3, 4 }; // 0x006DA4C8
+#pragma comment(linker, "/alternatename:?gaUModList@@3QBHB=_gData_006DA4C8")
+
+extern "C" struct d2data_00724D3C_t gData_00724D3C = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00724D3C
+
+extern UMODCALLBACK gpfnUModCallbacks[44] = {
+    0, (UMODCALLBACK)&MONUNIQUE_SetMonsterHoverName, 0, (UMODCALLBACK)&MONUNIQUE_InitUModLight, 0, 0, 0, 0, (UMODCALLBACK)&MONUNIQUE_ApplyResistantMod, (UMODCALLBACK)&MONUNIQUE_ApplyResistantMod, 0, (UMODCALLBACK)&MONUNIQUE_ClearDurielFlag, (UMODCALLBACK)&MONUNIQUE_SetMonsterHoverName, 0, 0, 0,
+    (UMODCALLBACK)&MONUNIQUE_SetMonsterHoverName, (UMODCALLBACK)&MONUNIQUE_ApplyResistantMod, (UMODCALLBACK)&MONUNIQUE_ApplyResistantMod, 0, 0, 0, 0, (UMODCALLBACK)&MONUNIQUE_ApplyResistantMod, 0, (UMODCALLBACK)&MONUNIQUE_ApplyResistantMod, (UMODCALLBACK)&MONUNIQUE_AssignTeleportSkill, (UMODCALLBACK)&MONUNIQUE_ApplyResistantMod, (UMODCALLBACK)&MONUNIQUE_ApplyResistantMod, 0, 0, 0,
+    0, 0, 0, 0, (UMODCALLBACK)&MONUNIQUE_SetMonsterHoverName, (UMODCALLBACK)&MONUNIQUE_SetMonsterHoverName, (UMODCALLBACK)&MONUNIQUE_SetMonsterHoverName, (UMODCALLBACK)&MONUNIQUE_SetMonsterHoverName
+}; // 0x00724D78

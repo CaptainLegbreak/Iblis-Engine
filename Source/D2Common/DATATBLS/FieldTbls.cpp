@@ -182,7 +182,54 @@ int __stdcall D2Common_11099(D2FieldStrc* pField, D2ActiveRoomStrc* pRoom, int n
     return 0;
 }
 
-#include "gen/data/Source/D2Common/DATATBLS/FieldTbls.inc"
+#pragma pack(push, 1)
+struct d2data_00749744_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00749744_t gData_00749744; // 0x00749744
+extern "C" const int gData_00749780[9]; // 0x00749780
+extern "C" const int gData_007497A4[9]; // 0x007497A4
+
+extern "C" struct d2data_00749744_t gData_00749744 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749744
+
+extern "C" const int gData_00749780[9] = { 0, 1, 1, 1, 0, -1, -1, -1 }; // 0x00749780
+#pragma comment(linker, "/alternatename:?gnFieldXOffsets@@3QBHB=_gData_00749780")
+
+extern "C" const int gData_007497A4[9] = { -1, -1, 0, 1, 1, 1, 0, -1 }; // 0x007497A4
+#pragma comment(linker, "/alternatename:?gnFieldYOffsets@@3QBHB=_gData_007497A4")
 
 // 0x0066A700
 int __fastcall DATATBLS_LoadExpFieldD2(void* hArchive)

@@ -2527,4 +2527,26 @@ void __cdecl INV_DrawMercPanel()
     INV_DrawItemTooltip(pMerc, 0);
 }
 
-#include "gen/data/Source/D2Client/UI/inv_0048DD90.inc"
+extern D2CoordStrc gtOffsetTorso = { 2, -2 }; // 0x007220B0
+
+extern D2CoordStrc gtOffsetBelt = { 0, -1 }; // 0x007220B8
+
+extern D2CoordStrc gtOffsetFeet = { -1, -4 }; // 0x007220C0
+
+extern D2CoordStrc gtOffsetHead = { 0, -1 }; // 0x007220C8
+
+extern D2CoordStrc gtOffsetGloves = { -1, -2 }; // 0x007220D0
+
+extern D2CoordStrc gtOffsetNeck = { 0, -1 }; // 0x007220D8
+
+extern D2CoordStrc gtOffsetLRing = { 0, -1 }; // 0x007220E0
+
+extern D2CoordStrc gtOffsetRRing = { 0, -1 }; // 0x007220E8
+
+extern D2CoordStrc gtOffsetRArm = { 0, -2 }; // 0x007220F0
+
+extern D2CoordStrc gtOffsetLArm = { 0, -2 }; // 0x007220F8
+
+extern D2CoordStrc gtOffsetRArmTab = { -5, 4 }; // 0x00722100
+
+extern D2CoordStrc gtOffsetLArmTab = { -5, 4 }; // 0x00722108

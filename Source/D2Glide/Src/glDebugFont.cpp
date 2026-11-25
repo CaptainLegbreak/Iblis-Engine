@@ -223,4 +223,6 @@ void __fastcall GLDEBUGFONT_DebugPrintf(int nX, int nY, const char* szFormat, ch
     }
 }
 
-#include "gen/data/Source/D2Glide/Src/glDebugFont.inc"
+extern unsigned long gdwGlideDebugFontTextColor = 0xFFFFFF; // 0x0072F2B0
+
+extern D2GrTexInfoStrc gtGlideDebugFontTexInfo = { 4, 4, -1, 5 }; // 0x0072F2B4

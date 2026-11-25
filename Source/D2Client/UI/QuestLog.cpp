@@ -2266,5 +2266,79 @@ void __stdcall TEXT_QuestLButtonUpMsg(SMSGHANDLER_PARAMS* pMsg)
 
 
 
-#include "gen/data/Source/D2Client/UI/QuestLog.inc"
+#pragma pack(push, 1)
+struct d2data_00723768_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00723EA8_t
+{
+    unsigned char b0[8];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00724224_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00723768_t gData_00723768; // 0x00723768
+extern "C" struct d2data_00723EA8_t gData_00723EA8; // 0x00723EA8
+extern "C" struct d2data_00724224_t gData_00724224; // 0x00724224
+
+extern "C" struct d2data_00723768_t gData_00723768 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00723768
+
+extern "C" struct d2data_00723EA8_t gData_00723EA8 = {
+    { 0x1A, 0x00, 0x00, 0x00, 0x79 }
+}; // 0x00723EA8
+#pragma comment(linker, "/alternatename:?gaQuestPos@@3PAUD2QuestPosStrc@@A=_gData_00723EA8")
+
+extern int gnQuestTextTop = 270; // 0x00724210
+
+extern int gnQuestTextLeft = 16; // 0x00724214
+
+extern int gnQuestTitleY = 248; // 0x00724218
+
+extern int gnQuestIconOffsetY = -1; // 0x0072421C
+
+extern int gnQuestAnimOffsetY = -1; // 0x00724220
+
+extern "C" struct d2data_00724224_t gData_00724224 = {
+    { 0x00 }
+}; // 0x00724224
 struct D2CelFileStrc;

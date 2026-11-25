@@ -362,4 +362,54 @@ extern "C" int __stdcall WinMain(void* hInstance, void* hPrevInstance, char* lpC
     return 0;
 }
 
-#include "gen/data/Source/D2Launch/Main.inc"
+#pragma pack(push, 1)
+struct d2data_00706584_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00706584_t gData_00706584; // 0x00706584
+
+extern "C" struct d2data_00706584_t gData_00706584 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00706584
+
+extern int gbD2ServerStopEvent = 1; // 0x007065C0
+
+extern const char* gaszModuleTypes_007065C4[6] = { "modstate0", "client", "server", "multiplayer", "launcher", "expand" }; // 0x007065C4
+
+extern char gszServiceName[32] = {
+    68, 73, 65, 66, 76, 79, 50, 83, 82, 86, 0, 0, 68, 105, 97, 98,
+    108, 111, 32, 73, 73, 32, 83, 101, 114, 118, 101, 114
+}; // 0x007065DC
+
+extern D2ServiceStatusStrc gD2ServerServiceStatus = { 0x10, 4, 5 }; // 0x007065FC

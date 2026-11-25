@@ -2250,4 +2250,50 @@ void __fastcall SPELLSEL_BuildSkillRows(D2UnitStrc* pUnit, int nStartX, int bLef
 
 
 
-#include "gen/data/Source/D2Client/Unknown_00482C70.inc"
+#pragma pack(push, 1)
+struct d2data_00721D98_t
+{
+    unsigned char b0[4];
+    const void* p1;
+    unsigned char b2[8];
+    const void* p3;
+    unsigned char b4[8];
+    const void* p5;
+    unsigned char b6[8];
+    const void* p7;
+    unsigned char b8[8];
+    const void* p9;
+    unsigned char b10[8];
+    const void* p11;
+    unsigned char b12[8];
+    const void* p13;
+    unsigned char b14[8];
+    const void* p15;
+    unsigned char b16[4];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00721D98_t gData_00721D98; // 0x00721D98
+
+extern int gnAuxLevelEntries = 8; // 0x00721D94
+
+extern "C" struct d2data_00721D98_t gData_00721D98 = {
+    { 0x00 },
+    (const void*)"d2_promo.bik",
+    { 0x00, 0x00, 0x00, 0x00, 0x01 },
+    (const void*)"d2intro%s.bik",
+    { 0x01, 0x01, 0x00, 0x00, 0x02 },
+    (const void*)"ACT02START%s.BIK",
+    { 0x01, 0x01, 0x00, 0x00, 0x03 },
+    (const void*)"ACT03START%s.BIK",
+    { 0x01, 0x01, 0x00, 0x00, 0x04 },
+    (const void*)"ACT04START%s.BIK",
+    { 0x01, 0x01, 0x00, 0x00, 0x05 },
+    (const void*)"ACT04END%s.BIK",
+    { 0x01, 0x01, 0x00, 0x00, 0x06 },
+    (const void*)"D2X_INTRO_%s.BIK",
+    { 0x01, 0x01, 0x00, 0x00, 0x07 },
+    (const void*)"D2X_OUT_%s.BIK",
+    { 0x01, 0x01 }
+}; // 0x00721D98
+#pragma comment(linker, "/alternatename:?gaAuxLevelEntries@@3PAUD2AuxLevelEntryStrc@@A=_gData_00721D98")

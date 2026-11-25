@@ -249,7 +249,14 @@ extern "C" void __cdecl sub_004E4280()
     gnWeatherSoundId = 0;
 }
 
-#include "gen/data/Source/D2Client/Unknown_004DF4B0.inc"
+extern "C" const int gData_006DBAA0[6]; // 0x006DBAA0
+extern "C" const int gData_006DBB38[5]; // 0x006DBB38
+
+extern "C" const int gData_006DBAA0[6] = { -2, -1, 0, 1, 2 }; // 0x006DBAA0
+#pragma comment(linker, "/alternatename:?gaMissileVelocityPair@@3QBHB=_gData_006DBAA0")
+
+extern "C" const int gData_006DBB38[5] = { -1, -3, -2, -1 }; // 0x006DBB38
+#pragma comment(linker, "/alternatename:?gaMissileVelocityCharged@@3QBHB=_gData_006DBB38")
 
 // 0x004E06A0
 void __fastcall sub_004E06A0_FreeModules(D2ClientModuleListStrc* pList)

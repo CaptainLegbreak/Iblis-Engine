@@ -766,4 +766,23 @@ extern "C" int __fastcall SPELLSEL_GetSkillMaxLevel(int index)
     return 20;
 }
 
-#include "gen/data/Source/D2Client/UI/text_0049A950.inc"
+#pragma pack(push, 1)
+struct d2data_00723F00_t
+{
+    unsigned char b0[8];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00723F00_t gData_00723F00; // 0x00723F00
+
+extern D2QuestSlotRectStrc gaQuestSlots[5] = {
+    { 32, 65, 123, 121 },
+    { 128, 65, 220, 121 },
+    { 224, 65, 26, 218 },
+    { 32, 163, 123, 218 },
+    { 128, 163, 220, 218 }
+}; // 0x00723EB0
+
+extern "C" struct d2data_00723F00_t gData_00723F00 = {
+    { 0xE0, 0x00, 0x00, 0x00, 0xA3 }
+}; // 0x00723F00

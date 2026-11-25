@@ -1715,4 +1715,13 @@ void __fastcall SKILLS_DamagePaladinCaster(D2GameStrc* pGame, D2UnitStrc* pUnit,
 }
 
 
-#include "gen/data/Source/D2Game/Unknown_005C0D00.inc"
+extern "C" void __cdecl SKILLITEM_pSpell08_ExperienceElixir(); // 0x005BF060
+extern "C" void __cdecl SKILLITEM_pSpell09_AntidoteThawingPotion(); // 0x005BEF90
+extern "C" void __cdecl sub_005BE3F0(); // 0x005BE3F0
+extern "C" void __cdecl sub_005BE7B0(); // 0x005BE7B0
+extern "C" void __cdecl sub_005BEAC0(); // 0x005BEAC0
+
+extern "C" const int gData_006E3014[8]; // 0x006E3014
+
+extern "C" const int gData_006E3014[8] = { 3, 4, 4, 5, 5, 5, 6, 6 }; // 0x006E3014
+#pragma comment(linker, "/alternatename:?gnRareAffixCounts@@3QBHB=_gData_006E3014")

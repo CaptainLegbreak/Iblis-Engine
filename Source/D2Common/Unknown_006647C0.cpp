@@ -185,4 +185,177 @@ int __stdcall D2Common_11070(int nMonsterId, unsigned int nComponent, unsigned i
     return DATATBLS_GetCodeFromCompCodeTxt(pMonStats2TxtRecord->pComponents[nComponent].nComposit[nIndex]);
 }
 
-#include "gen/data/Source/D2Common/Unknown_006647C0.inc"
+#pragma pack(push, 1)
+struct d2data_007488C0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007488FC_t
+{
+    unsigned char b0[28];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00748918_t
+{
+    unsigned char b0[12];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00748924_t
+{
+    unsigned char b0[40];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0074894C_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00748960_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00748990_t
+{
+    unsigned char b0[12];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0074899C_t
+{
+    unsigned char b0[12];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007489E8_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00748A14_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006EA938[16]; // 0x006EA938
+extern "C" struct d2data_007488C0_t gData_007488C0; // 0x007488C0
+extern "C" struct d2data_007488FC_t gdwSkeletonHeadCodes; // 0x007488FC
+extern "C" struct d2data_00748918_t gdwSkeletonLimbCodes; // 0x00748918
+extern "C" struct d2data_00748924_t gdwSkeletonWeaponCodes; // 0x00748924
+extern "C" struct d2data_0074894C_t gdwSkeletonShieldCodes; // 0x0074894C
+extern "C" struct d2data_00748960_t gdwSkeletonSpecialCodes; // 0x00748960
+extern "C" struct d2data_00748990_t gdwSkeletonTorsoCodes; // 0x00748990
+extern "C" struct d2data_0074899C_t gdwArcherArmorCodes; // 0x0074899C
+extern "C" struct d2data_007489E8_t gdwArcherSpecialCodes; // 0x007489E8
+extern "C" struct d2data_00748A14_t gdwArcherBowCodes; // 0x00748A14
+
+extern "C" const int gData_006EA938[16] = { 0, 0, 0, 0, 58, 60, 0, 70, 62, 64, 66, 68, 0, 0, 72 }; // 0x006EA938
+#pragma comment(linker, "/alternatename:?gnMonStatsMissileOffsets@@3PAHA=_gData_006EA938")
+
+extern "C" struct d2data_007488C0_t gData_007488C0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007488C0
+
+extern "C" struct d2data_007488FC_t gdwSkeletonHeadCodes = {
+    {
+        0x6C, 0x69, 0x74, 0x20, 0x6C, 0x69, 0x74, 0x20, 0x64, 0x65, 0x73, 0x20, 0x64, 0x65, 0x73, 0x20,
+        0x68, 0x76, 0x79, 0x20, 0x68, 0x76, 0x79, 0x20, 0x68, 0x76, 0x79, 0x20
+    }
+}; // 0x007488FC
+
+extern "C" struct d2data_00748918_t gdwSkeletonLimbCodes = {
+    { 0x6C, 0x69, 0x74, 0x20, 0x64, 0x65, 0x73, 0x20, 0x68, 0x76, 0x79, 0x20 }
+}; // 0x00748918
+
+extern "C" struct d2data_00748924_t gdwSkeletonWeaponCodes = {
+    {
+        0x61, 0x78, 0x65, 0x20, 0x61, 0x78, 0x65, 0x20, 0x66, 0x6C, 0x61, 0x20, 0x66, 0x6C, 0x61, 0x20,
+        0x68, 0x61, 0x78, 0x20, 0x68, 0x61, 0x78, 0x20, 0x6D, 0x61, 0x63, 0x20, 0x6D, 0x61, 0x63, 0x20,
+        0x73, 0x63, 0x6D, 0x20, 0x73, 0x63, 0x6D, 0x20
+    }
+}; // 0x00748924
+
+extern "C" struct d2data_0074894C_t gdwSkeletonShieldCodes = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x62, 0x75, 0x63, 0x20, 0x6C, 0x72, 0x67, 0x20, 0x6B, 0x69, 0x74, 0x20,
+        0x73, 0x6D, 0x6C, 0x20
+    }
+}; // 0x0074894C
+
+extern "C" struct d2data_00748960_t gdwSkeletonSpecialCodes = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x6C, 0x69, 0x74, 0x20, 0x64, 0x65, 0x73, 0x20, 0x68, 0x76, 0x79, 0x20
+    }
+}; // 0x00748960
+
+extern "C" struct d2data_00748990_t gdwSkeletonTorsoCodes = {
+    { 0x6C, 0x69, 0x74, 0x20, 0x6D, 0x65, 0x64, 0x20, 0x68, 0x76, 0x79, 0x20 }
+}; // 0x00748990
+
+extern "C" struct d2data_0074899C_t gdwArcherArmorCodes = {
+    { 0x6C, 0x69, 0x74, 0x20, 0x64, 0x65, 0x73, 0x20, 0x68, 0x76, 0x79, 0x20 }
+}; // 0x0074899C
+
+extern const unsigned int* gpSkeletonComponentCodes[16] = { (const unsigned int*)&gdwSkeletonHeadCodes, (const unsigned int*)&gdwSkeletonTorsoCodes, (const unsigned int*)&gdwSkeletonLimbCodes, (const unsigned int*)&gdwSkeletonLimbCodes, (const unsigned int*)&gdwSkeletonLimbCodes, (const unsigned int*)&gdwSkeletonWeaponCodes, 0, (const unsigned int*)&gdwSkeletonShieldCodes, (const unsigned int*)&gdwSkeletonSpecialCodes, (const unsigned int*)&gdwSkeletonSpecialCodes }; // 0x007489A8
+
+extern "C" struct d2data_007489E8_t gdwArcherSpecialCodes = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x6C, 0x69, 0x74, 0x20, 0x64, 0x65, 0x73, 0x20, 0x68, 0x76, 0x79, 0x20
+    }
+}; // 0x007489E8
+
+extern "C" struct d2data_00748A14_t gdwArcherBowCodes = {
+    { 0x73, 0x62, 0x77, 0x20 }
+}; // 0x00748A14
+
+extern const unsigned int* gpArcherComponentCodes[16] = { (const unsigned int*)&gdwArcherArmorCodes, (const unsigned int*)&gdwSkeletonTorsoCodes, (const unsigned int*)&gdwArcherArmorCodes, (const unsigned int*)&gdwArcherArmorCodes, (const unsigned int*)&gdwArcherArmorCodes, 0, (const unsigned int*)&gdwArcherBowCodes, 0, (const unsigned int*)&gdwArcherSpecialCodes, (const unsigned int*)&gdwArcherSpecialCodes }; // 0x00748A18

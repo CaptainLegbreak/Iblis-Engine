@@ -250,7 +250,22 @@ void __cdecl QSERVER98_ServerThread(D2QueueServerStrc* server)
     }
 }
 
-#include "gen/data/Source/Fog/Src/QServer/QServer98.inc"
+extern "C" const char gData_006FCB38[24]; // 0x006FCB38
+extern "C" const char gData_006FCB50[28]; // 0x006FCB50
+extern "C" const char gData_006FCB6C[60]; // 0x006FCB6C
+extern "C" const char gData_006FCBA8[24]; // 0x006FCBA8
+
+extern "C" const char gData_006FCB38[24] = "Server thread close #2\n"; // 0x006FCB38
+#pragma comment(linker, "/alternatename:?gszFatal@@3QBDB=_gData_006FCB38")
+
+extern "C" const char gData_006FCB50[28] = "Accept failed.  Error %d"; // 0x006FCB50
+#pragma comment(linker, "/alternatename:?gszAcceptError@@3QBDB=_gData_006FCB50")
+
+extern "C" const char gData_006FCB6C[60] = "[HACKLIST] sServerThread(spamming server with reconnects)"; // 0x006FCB6C
+#pragma comment(linker, "/alternatename:?gszReconnect@@3QBDB=_gData_006FCB6C")
+
+extern "C" const char gData_006FCBA8[24] = "Server thread close #1\n"; // 0x006FCBA8
+#pragma comment(linker, "/alternatename:?gszStopped@@3QBDB=_gData_006FCBA8")
 
 // 0x006C3B50
 int __fastcall QSERVER98_StartServer(D2QueueServerStrc* pServer, int nPort)

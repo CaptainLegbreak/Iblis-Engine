@@ -1439,4 +1439,121 @@ void __fastcall OBJECT_UpdateObject(D2UnitStrc* pUnit)
         UNITSND_UpdateModeSound(pUnit);
 }
 
-#include "gen/data/Source/D2Client/UNIT/Object.inc"
+#pragma pack(push, 1)
+struct d2data_00727708_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00727744_t
+{
+    unsigned char b0[88];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007277A0_t
+{
+    unsigned char b0[68];
+    const void* p1;
+    const void* p2;
+    unsigned char b3[4];
+};
+#pragma pack(pop)
+
+extern "C" const D2ShrineHandlerStrc gData_006DA8C0[23]; // 0x006DA8C0
+extern "C" struct d2data_00727708_t gData_00727708; // 0x00727708
+extern "C" struct d2data_00727744_t gData_00727744; // 0x00727744
+extern "C" struct d2data_007277A0_t gData_007277A0; // 0x007277A0
+
+extern "C" const D2ShrineHandlerStrc gData_006DA8C0[23] = {
+    { 0, 0, -1, -1 },
+    { 0, 0, -1, -1, 2673 },
+    { 0, 0, -1, -1, 2673 },
+    { 0, 0, -1, -1, 2672 },
+    { 0, 0, -1, -1, 2666 },
+    { 0, 0, -1, -1, 2666 },
+    { (void (__fastcall *)(D2UnitStrc *, D2ShrinesTxt *))&OBJECT_InitShrineOverlays, 0, 59, 57, 2664 },
+    { (void (__fastcall *)(D2UnitStrc *, D2ShrinesTxt *))&OBJECT_InitShrineOverlays, 0, 60, 57, 2665 },
+    { (void (__fastcall *)(D2UnitStrc *, D2ShrinesTxt *))&OBJECT_InitShrineOverlays, 0, 62, 57, 2675 },
+    { (void (__fastcall *)(D2UnitStrc *, D2ShrinesTxt *))&OBJECT_InitShrineOverlays, 0, 63, 58, 2674 },
+    { (void (__fastcall *)(D2UnitStrc *, D2ShrinesTxt *))&OBJECT_InitShrineOverlays, 0, 61, 58, 2676 },
+    { (void (__fastcall *)(D2UnitStrc *, D2ShrinesTxt *))&OBJECT_InitShrineOverlays, 0, 64, 58, 2677 },
+    { (void (__fastcall *)(D2UnitStrc *, D2ShrinesTxt *))&OBJECT_InitShrineOverlays, 0, 65, 57, 2679 },
+    { (void (__fastcall *)(D2UnitStrc *, D2ShrinesTxt *))&OBJECT_InitShrineOverlays, 0, 66, 58, 2672 },
+    { (void (__fastcall *)(D2UnitStrc *, D2ShrinesTxt *))&OBJECT_InitShrineOverlays, 0, 67, 58, 2672 },
+    { (void (__fastcall *)(D2UnitStrc *, D2ShrinesTxt *))&OBJECT_InitShrineOverlays, 0, 68, 57, 2667 },
+    { 0, (void (__fastcall *)(D2UnitStrc *, D2UnitStrc *, D2ShrinesTxt *))&OBJECT_OperateReverseNameShrine, -1, -1, 2678 },
+    { 0, 0, -1, -1, 2671 },
+    { 0, 0, -1, -1, 2669 },
+    { 0, (void (__fastcall *)(D2UnitStrc *, D2UnitStrc *, D2ShrinesTxt *))&OBJECT_SpawnMissileGrid, -1, -1, 2680 },
+    { 0, 0, -1, -1, 2671 },
+    { 0, (void (__fastcall *)(D2UnitStrc *, D2UnitStrc *, D2ShrinesTxt *))&OBJECT_SpawnExplosivePotions, -1, -1, 2668 },
+    { 0, (void (__fastcall *)(D2UnitStrc *, D2UnitStrc *, D2ShrinesTxt *))&OBJECT_SpawnPoisonPotions, -1, -1, 2670 }
+}; // 0x006DA8C0
+#pragma comment(linker, "/alternatename:?gaShrineHandlers@@3PAUD2ShrineHandlerStrc@@A=_gData_006DA8C0")
+
+extern "C" struct d2data_00727708_t gData_00727708 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00727708
+
+extern "C" struct d2data_00727744_t gData_00727744 = {
+    {
+        0x02, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+        0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
+        0x07, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00,
+        0x09, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
+        0x05, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00, 0x01
+    }
+}; // 0x00727744
+
+extern int gnShrineHandlerCount = 23; // 0x0072779C
+
+extern "C" struct d2data_007277A0_t gData_007277A0 = {
+    {
+        0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+        0x05, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00,
+        0x09, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
+        0x05, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+        0x01
+    },
+    (const void*)((char*)&gData_00727744 + 4),
+    (const void*)&gData_007277A0,
+    { 0x00 }
+}; // 0x007277A0
+
+extern D2ObjectClientFn gapfnObjectClientFn[19] = {
+    0, (D2ObjectClientFn)&sub_004BDB90_AlwaysOne, (D2ObjectClientFn)&OBJECT_AnimCycle, (D2ObjectClientFn)&OBJECT_AnimCycleUpdate, (D2ObjectClientFn)&OBJECT_TimedSpecial, (D2ObjectClientFn)&OBJECT_TimedSpecialRandom, (D2ObjectClientFn)&OBJECT_TimedSpecialExact, (D2ObjectClientFn)&OBJECT_TimedOperate, (D2ObjectClientFn)&OBJECT_PreloadSingleMonsterOnce, (D2ObjectClientFn)&OBJECT_RemoveWhenFar, (D2ObjectClientFn)&OBJECT_TimedOperateShort, (D2ObjectClientFn)&sub_004BDAF0_AlwaysOne, (D2ObjectClientFn)&OBJECT_PreloadMonsterTrioOnce, (D2ObjectClientFn)&OBJECT_AutoOperateQuestObject, (D2ObjectClientFn)&OBJECT_TickEnvObject, (D2ObjectClientFn)&OBJECT_TimedOverlay,
+    (D2ObjectClientFn)&OBJECT_FinishOperate, (D2ObjectClientFn)&OBJECT_ReportPosition, (D2ObjectClientFn)&OBJECT_RandomSound
+}; // 0x007277F0

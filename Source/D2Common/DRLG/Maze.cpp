@@ -1994,4 +1994,593 @@ void __fastcall DRLGMAZE_ResetMazeRecord(D2DrlgLevelStrc* pLevel, int bKeepMazeR
     }
 }
 
-#include "gen/data/Source/D2Common/DRLG/Maze.inc"
+extern "C" void __cdecl sub_00672460(); // 0x00672460
+extern "C" void __cdecl sub_006724A0(); // 0x006724A0
+
+#pragma pack(push, 1)
+struct d2data_006EFA68_t
+{
+    unsigned char b0[64];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006F02F8_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00749930_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006EF6D8[16][2]; // 0x006EF6D8
+extern "C" const int gData_006EF758[16][3]; // 0x006EF758
+extern "C" const D2MazeLavaSetStrc gData_006EF828[8]; // 0x006EF828
+extern "C" const int gData_006EF888[4][2]; // 0x006EF888
+extern "C" const D2MazeLevelIdStrc gData_006EF8A8[4]; // 0x006EF8A8
+extern "C" const D2MazeLevelIdStrc gData_006EF8E8[4]; // 0x006EF8E8
+extern "C" const D2MazeLevelIdStrc gData_006EF928[4]; // 0x006EF928
+extern "C" const D2MazeLevelIdStrc gData_006EF968[4]; // 0x006EF968
+extern "C" const D2MazeLevelIdStrc gData_006EF9A8[4]; // 0x006EF9A8
+extern "C" const D2MazeLevelIdStrc gData_006EF9E8[4]; // 0x006EF9E8
+extern "C" const D2MazeLevelIdStrc gData_006EFA28[4]; // 0x006EFA28
+extern "C" const struct d2data_006EFA68_t gData_006EFA68; // 0x006EFA68
+extern "C" const D2MazeLevelIdStrc gData_006EFAA8[4]; // 0x006EFAA8
+extern "C" const D2MazeLevelIdStrc gData_006EFAE8[4]; // 0x006EFAE8
+extern "C" const D2MazeLevelIdStrc gData_006EFB28[4]; // 0x006EFB28
+extern "C" const D2MazeLevelIdStrc gData_006EFB68[4]; // 0x006EFB68
+extern "C" const D2MazeLevelIdStrc gData_006EFBA8[4]; // 0x006EFBA8
+extern "C" const D2MazeLevelIdStrc gData_006EFBE8[4]; // 0x006EFBE8
+extern "C" const D2MazeLevelIdStrc gData_006EFC28[4]; // 0x006EFC28
+extern "C" const D2MazeLevelIdStrc gData_006EFC68[4]; // 0x006EFC68
+extern "C" const D2MazeLevelIdStrc gData_006EFCA8[4]; // 0x006EFCA8
+extern "C" const D2MazeLevelIdStrc gData_006EFCE8[4]; // 0x006EFCE8
+extern "C" const D2MazeLevelIdStrc gData_006EFD28[4]; // 0x006EFD28
+extern "C" const D2MazeLevelIdStrc gData_006EFD68[4]; // 0x006EFD68
+extern "C" const D2MazeLevelIdStrc gData_006EFDA8[4]; // 0x006EFDA8
+extern "C" const D2MazeLevelIdStrc gData_006EFDE8[4]; // 0x006EFDE8
+extern "C" const D2MazeLevelIdStrc gData_006EFE28[4]; // 0x006EFE28
+extern "C" const D2MazeLevelIdStrc gData_006EFE68[4]; // 0x006EFE68
+extern "C" const D2MazeLevelIdStrc gData_006EFEA8[4]; // 0x006EFEA8
+extern "C" const D2MazeLevelIdStrc gData_006EFEE8[4]; // 0x006EFEE8
+extern "C" const D2MazeLevelIdStrc gData_006EFF28[4]; // 0x006EFF28
+extern "C" const D2MazeLevelIdStrc gData_006EFF68[4]; // 0x006EFF68
+extern "C" const D2MazeLevelIdStrc gData_006EFFA8[4]; // 0x006EFFA8
+extern "C" const D2MazeLevelIdStrc gData_006EFFE8[4]; // 0x006EFFE8
+extern "C" const D2MazeLevelIdStrc gData_006F0028[4]; // 0x006F0028
+extern "C" const D2MazeLevelIdStrc gData_006F0068[9]; // 0x006F0068
+extern "C" const D2MazeLevelIdStrc gData_006F00F8[4]; // 0x006F00F8
+extern "C" const D2MazeLevelIdStrc gData_006F0138[4]; // 0x006F0138
+extern "C" const D2MazeLevelIdStrc gData_006F0178[4]; // 0x006F0178
+extern "C" const D2MazeLevelIdStrc gData_006F01B8[4]; // 0x006F01B8
+extern "C" const D2MazeLevelIdStrc gData_006F01F8[4]; // 0x006F01F8
+extern "C" const D2MazeLevelIdStrc gData_006F0238[4]; // 0x006F0238
+extern "C" const D2MazeLevelIdStrc gData_006F0278[4]; // 0x006F0278
+extern "C" const D2MazeLevelIdStrc gData_006F02B8[4]; // 0x006F02B8
+extern "C" const struct d2data_006F02F8_t gData_006F02F8; // 0x006F02F8
+extern "C" const D2MazeLevelIdStrc gData_006F0328[4]; // 0x006F0328
+extern "C" const D2MazeLevelIdStrc gData_006F0368[4]; // 0x006F0368
+extern "C" const D2MazeLevelIdStrc gData_006F03A8[4]; // 0x006F03A8
+extern "C" const D2MazeLevelIdStrc gData_006F03E8[4]; // 0x006F03E8
+extern "C" const D2MazeLevelIdStrc gData_006F0428[4]; // 0x006F0428
+extern "C" D2MazeRoomFn const gData_006F0468[3]; // 0x006F0468
+extern "C" const D2MazeLevelIdStrc gData_006F0474[2]; // 0x006F0474
+extern "C" const D2MazeLevelIdStrc gData_006F0498[4]; // 0x006F0498
+extern "C" const D2MazeLevelIdStrc gData_006F04D8[4]; // 0x006F04D8
+extern "C" const D2MazeLevelIdStrc gData_006F0518[4]; // 0x006F0518
+extern "C" const D2MazeLevelIdStrc gData_006F0558[4]; // 0x006F0558
+extern "C" const D2MazeLevelIdStrc gData_006F0598[4]; // 0x006F0598
+extern "C" struct d2data_00749930_t gData_00749930; // 0x00749930
+
+extern "C" const int gData_006EF6D8[16][2] = {
+    { 0 },
+    { 0, 1056 },
+    { 0, 1055 },
+    { 0, 1057 },
+    { 0, 1054 },
+    { 1045 },
+    { 1044 },
+    { 0 },
+    { 0, 1053 },
+    { 1043 },
+    { 1042 },
+    { 0 },
+    { 0, 1058 }
+}; // 0x006EF6D8
+#pragma comment(linker, "/alternatename:?gnMazeExpansionPresetRemap@@3QAY01$$CBHA=_gData_006EF6D8")
+
+extern "C" const int gData_006EF758[16][3] = {
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 356, 360, 659 },
+    { 355, 359, 660 },
+    { 0 },
+    { 0 },
+    { 357, 361, 661 },
+    { 354, 358, 662 }
+}; // 0x006EF758
+#pragma comment(linker, "/alternatename:?gnMazePresetRemap@@3QAY02$$CBHA=_gData_006EF758")
+
+extern "C" const D2MazeLavaSetStrc gData_006EF828[8] = {
+    { 1054, 1 },
+    { 1053, 3, 1 },
+    { 1054, 1, 1 },
+    { 1053, 3 },
+    { 1055, 0, 1 },
+    { 1056, 2 },
+    { 1055 },
+    { 1056, 2, 1 }
+}; // 0x006EF828
+#pragma comment(linker, "/alternatename:?gnMazeAct5LavaSets@@3QBUD2MazeLavaSetStrc@@B=_gData_006EF828")
+
+extern "C" const int gData_006EF888[4][2] = {
+    { 447, 1075 },
+    { 444, 1077 },
+    { 446, 1076 },
+    { 445, 1074 }
+}; // 0x006EF888
+#pragma comment(linker, "/alternatename:?gnMazeTombBaalPrevPresets@@3QAY01$$CBHA=_gData_006EF888")
+
+extern "C" const D2MazeLevelIdStrc gData_006EF8A8[4] = {
+    { 60, 86, -1, 3 },
+    { 54, 84, -1 },
+    { 56, 85, -1, 1 },
+    { 53, 83, -1, 2 }
+}; // 0x006EF8A8
+#pragma comment(linker, "/alternatename:?gnAct1CavePrevIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EF8A8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EF8E8[4] = {
+    { 60, 98, -1, 3 },
+    { 54, 96, -1 },
+    { 56, 97, -1, 1 },
+    { 53, 95, -1, 2 }
+}; // 0x006EF8E8
+#pragma comment(linker, "/alternatename:?gnAct1CaveDOEIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EF8E8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EF928[4] = {
+    { 60, 94, -1, 3 },
+    { 54, 92, -1 },
+    { 56, 93, -1, 1 },
+    { 53, 91, -1, 2 }
+}; // 0x006EF928
+#pragma comment(linker, "/alternatename:?gnAct1CaveDownIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EF928")
+
+extern "C" const D2MazeLevelIdStrc gData_006EF968[4] = {
+    { 60, 102, -1, 3 },
+    { 54, 100, -1 },
+    { 56, 101, -1, 1 },
+    { 53, 99, -1, 2 }
+}; // 0x006EF968
+#pragma comment(linker, "/alternatename:?gnAct1CaveColdcrowIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EF968")
+
+extern "C" const D2MazeLevelIdStrc gData_006EF9A8[4] = {
+    { 60, 90, -1, 3 },
+    { 54, 88, -1 },
+    { 56, 89, -1, 1 },
+    { 53, 87, -1, 2 }
+}; // 0x006EF9A8
+#pragma comment(linker, "/alternatename:?gnAct1CaveNextIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EF9A8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EF9E8[4] = {
+    { 116, 142, -1, 3 },
+    { 110, 140, -1 },
+    { 112, 141, -1, 1 },
+    { 109, 139, -1, 2 }
+}; // 0x006EF9E8
+#pragma comment(linker, "/alternatename:?gnAct1CryptPrevIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EF9E8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFA28[4] = {
+    { 116, 150, -1, 3 },
+    { 110, 148, -1 },
+    { 112, 149, -1, 1 },
+    { 109, 147, -1, 2 }
+}; // 0x006EFA28
+#pragma comment(linker, "/alternatename:?gnAct1CryptSpecialIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFA28")
+
+extern "C" const struct d2data_006EFA68_t gData_006EFA68 = {
+    {
+        0x74, 0x00, 0x00, 0x00, 0x9E, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x03, 0x00, 0x00, 0x00,
+        0x6E, 0x00, 0x00, 0x00, 0x9C, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
+        0x70, 0x00, 0x00, 0x00, 0x9D, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x00, 0x00, 0x00,
+        0x6D, 0x00, 0x00, 0x00, 0x9B, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x02
+    }
+}; // 0x006EFA68
+
+extern "C" const D2MazeLevelIdStrc gData_006EFAA8[4] = {
+    { 116, 154, -1, 3 },
+    { 110, 152, -1 },
+    { 112, 153, -1, 1 },
+    { 109, 151, -1, 2 }
+}; // 0x006EFAA8
+#pragma comment(linker, "/alternatename:?gnAct1CryptChestIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFAA8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFAE8[4] = {
+    { 116, 146, -1, 3 },
+    { 110, 144, -1 },
+    { 112, 145, -1, 1 },
+    { 109, 143, -1, 2 }
+}; // 0x006EFAE8
+#pragma comment(linker, "/alternatename:?gnAct1CryptNextIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFAE8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFB28[4] = {
+    { 213, 239, -1, 3 },
+    { 207, 237, -1 },
+    { 209, 238, -1, 1 },
+    { 206, 236, -1, 2 }
+}; // 0x006EFB28
+#pragma comment(linker, "/alternatename:?gnAct1JailPrevIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFB28")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFB68[4] = {
+    { 213, 247, -1, 3 },
+    { 207, 245, -1 },
+    { 209, 246, -1, 1 },
+    { 206, 244, -1, 2 }
+}; // 0x006EFB68
+#pragma comment(linker, "/alternatename:?gnAct1JailCathIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFB68")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFBA8[4] = {
+    { 213, 243, -1, 3 },
+    { 207, 241, -1 },
+    { 209, 242, -1, 1 },
+    { 206, 240, -1, 2 }
+}; // 0x006EFBA8
+#pragma comment(linker, "/alternatename:?gnAct1JailNextIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFBA8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFBE8[4] = {
+    { 213, 251, -1, 3 },
+    { 207, 249, -1 },
+    { 209, 250, -1, 1 },
+    { 206, 248, -1, 2 }
+}; // 0x006EFBE8
+#pragma comment(linker, "/alternatename:?gnAct1JailWaypointIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFBE8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFC28[4] = {
+    { 213, 255, -1, 3 },
+    { 207, 253, -1 },
+    { 209, 254, -1, 1 },
+    { 206, 252, -1, 2 }
+}; // 0x006EFC28
+#pragma comment(linker, "/alternatename:?gnAct1JailPitspawnIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFC28")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFC68[4] = {
+    { 265, 294, -1, 3 },
+    { 259, 292, -1 },
+    { 261, 293, -1, 1 },
+    { 258, 291, -1, 2 }
+}; // 0x006EFC68
+#pragma comment(linker, "/alternatename:?gnAct1CatacombsNextIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFC68")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFCA8[4] = {
+    { 265, 298, -1, 3 },
+    { 259, 296, -1 },
+    { 261, 297, -1, 1 },
+    { 258, 295, -1, 2 }
+}; // 0x006EFCA8
+#pragma comment(linker, "/alternatename:?gnAct1CatacombsWaypointIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFCA8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFCE8[4] = {
+    { 309, 335, -1, 3 },
+    { 303, 333, -1 },
+    { 305, 334, -1, 1 },
+    { 302, 332, -1, 2 }
+}; // 0x006EFCE8
+#pragma comment(linker, "/alternatename:?gnAct2SewerPrevIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFCE8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFD28[4] = {
+    { 309, 340, -1, 3 },
+    { 303, 338, -1 },
+    { 305, 339, -1, 1 },
+    { 302, 337, -1, 2 }
+}; // 0x006EFD28
+#pragma comment(linker, "/alternatename:?gnAct2SewerNextIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFD28")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFD68[4] = {
+    { 309, 348, -1, 3 },
+    { 303, 346, -1 },
+    { 305, 347, -1, 1 },
+    { 302, 345, -1, 2 }
+}; // 0x006EFD68
+#pragma comment(linker, "/alternatename:?gnAct2SewerWaypointIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFD68")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFDA8[4] = {
+    { 309, 344, -1, 3 },
+    { 303, 342, -1 },
+    { 305, 343, -1, 1 },
+    { 302, 341, -1, 2 }
+}; // 0x006EFDA8
+#pragma comment(linker, "/alternatename:?gnAct2SewerRadamentIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFDA8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFDE8[4] = {
+    { 309, 352, -1, 3 },
+    { 303, 350, -1 },
+    { 305, 351, -1, 1 },
+    { 302, 349, -1, 2 }
+}; // 0x006EFDE8
+#pragma comment(linker, "/alternatename:?gnAct2SewerChestIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFDE8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFE28[4] = {
+    { 421, 451, -1, 3 },
+    { 415, 449, -1 },
+    { 417, 450, -1, 1 },
+    { 414, 448, -1, 2 }
+}; // 0x006EFE28
+#pragma comment(linker, "/alternatename:?gnAct2TombPrevIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFE28")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFE68[4] = {
+    { 421, 479, -1, 3 },
+    { 415, 477, -1 },
+    { 417, 478, -1, 1 },
+    { 414, 476, -1, 2 }
+}; // 0x006EFE68
+#pragma comment(linker, "/alternatename:?gnAct2TombNextIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFE68")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFEA8[4] = {
+    { 421, 475, -1, 3 },
+    { 415, 473, -1 },
+    { 417, 474, -1, 1 },
+    { 414, 472, -1, 2 }
+}; // 0x006EFEA8
+#pragma comment(linker, "/alternatename:?gnAct2TombTreasureIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFEA8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFEE8[4] = {
+    { 421, 467, -1, 3 },
+    { 415, 465, -1 },
+    { 417, 466, -1, 1 },
+    { 414, 464, -1, 2 }
+}; // 0x006EFEE8
+#pragma comment(linker, "/alternatename:?gnAct2TombTalRashaIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFEE8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFF28[4] = {
+    { 421, 459, -1, 3 },
+    { 415, 457, -1 },
+    { 417, 458, -1, 1 },
+    { 414, 456, -1, 2 }
+}; // 0x006EFF28
+#pragma comment(linker, "/alternatename:?gnAct2TombNext2Ids@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFF28")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFF68[4] = {
+    { 421, 455, -1, 3 },
+    { 415, 453, -1 },
+    { 417, 454, -1, 1 },
+    { 414, 452, -1, 2 }
+}; // 0x006EFF68
+#pragma comment(linker, "/alternatename:?gnAct2TombChest2Ids@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFF68")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFFA8[4] = {
+    { 421, 463, -1, 3 },
+    { 415, 461, -1 },
+    { 417, 462, -1, 1 },
+    { 414, 460, -1, 2 }
+}; // 0x006EFFA8
+#pragma comment(linker, "/alternatename:?gnAct2TombOrificeIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFFA8")
+
+extern "C" const D2MazeLevelIdStrc gData_006EFFE8[4] = {
+    { 421, 471, -1, 3 },
+    { 415, 469, -1 },
+    { 417, 470, -1, 1 },
+    { 414, 468, -1, 2 }
+}; // 0x006EFFE8
+#pragma comment(linker, "/alternatename:?gnAct2TombBossIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006EFFE8")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0028[4] = {
+    { 489, 500, -1, 3 },
+    { 483, 498, -1 },
+    { 485, 499, -1, 1 },
+    { 482, 497, -1, 2 }
+}; // 0x006F0028
+#pragma comment(linker, "/alternatename:?gnAct2LairPrevIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0028")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0068[9] = {
+    { 489, 504, -1, 3 },
+    { 483, 502, -1 },
+    { 485, 503, -1, 1 },
+    { 482, 501, -1, 2 },
+    { 489, 508, -1, 3 },
+    { 483, 506, -1 },
+    { 485, 507, -1, 1 },
+    { 482, 505, -1, 2 },
+    { 485, 509, -1, 1 }
+}; // 0x006F0068
+#pragma comment(linker, "/alternatename:?gnAct2LairSpecialIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0068")
+
+extern "C" const D2MazeLevelIdStrc gData_006F00F8[4] = {
+    { 517, 528, -1, 3 },
+    { 511, 526, -1 },
+    { 513, 527, -1, 1 },
+    { 510, 525, -1, 2 }
+}; // 0x006F00F8
+#pragma comment(linker, "/alternatename:?gnAct2ArcaneSummonerIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F00F8")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0138[4] = {
+    { 672, 698, -1, 3 },
+    { 666, 696, -1 },
+    { 668, 697, -1, 1 },
+    { 665, 695, -1, 2 }
+}; // 0x006F0138
+#pragma comment(linker, "/alternatename:?gnAct3DungeonPrevIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0138")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0178[4] = {
+    { 672, 702, -1, 3 },
+    { 666, 700, -1 },
+    { 668, 701, -1, 1 },
+    { 665, 699, -1, 2 }
+}; // 0x006F0178
+#pragma comment(linker, "/alternatename:?gnAct3DungeonNextIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0178")
+
+extern "C" const D2MazeLevelIdStrc gData_006F01B8[4] = {
+    { 712, 742, -1, 3 },
+    { 706, 740, -1 },
+    { 708, 741, -1, 1 },
+    { 705, 739, -1, 2 }
+}; // 0x006F01B8
+#pragma comment(linker, "/alternatename:?gnAct3SewerPrevIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F01B8")
+
+extern "C" const D2MazeLevelIdStrc gData_006F01F8[4] = {
+    { 712, 746, -1, 3 },
+    { 706, 744, -1 },
+    { 708, 745, -1, 1 },
+    { 705, 743, -1, 2 }
+}; // 0x006F01F8
+#pragma comment(linker, "/alternatename:?gnAct3SewerNextIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F01F8")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0238[4] = {
+    { 761, 787, -1, 3 },
+    { 755, 785, -1 },
+    { 757, 786, -1, 1 },
+    { 754, 784, -1, 2 }
+}; // 0x006F0238
+#pragma comment(linker, "/alternatename:?gnAct3KurastPrevIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0238")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0278[4] = {
+    { 761, 795, -1, 3 },
+    { 755, 793, -1 },
+    { 757, 794, -1, 1 },
+    { 754, 792, -1, 2 }
+}; // 0x006F0278
+#pragma comment(linker, "/alternatename:?gnAct3KurastNextIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0278")
+
+extern "C" const D2MazeLevelIdStrc gData_006F02B8[4] = {
+    { 761, 791, -1, 3 },
+    { 755, 789, -1 },
+    { 757, 790, -1, 1 },
+    { 754, 788, -1, 2 }
+}; // 0x006F02B8
+#pragma comment(linker, "/alternatename:?gnAct3KurastChestIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F02B8")
+
+extern "C" const struct d2data_006F02F8_t gData_006F02F8 = {
+    {
+        0x12, 0x04, 0x00, 0x00, 0x16, 0x04, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x00, 0x00, 0x00,
+        0x13, 0x04, 0x00, 0x00, 0x17, 0x04, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
+        0x15, 0x04, 0x00, 0x00, 0x18, 0x04, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x03
+    }
+}; // 0x006F02F8
+#pragma comment(linker, "/alternatename:?gnAct5TemplePrevIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F02F8")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0328[4] = {
+    { 1042, 1049, -1, 1 },
+    { 1043, 1050, -1 },
+    { 1045, 1052, -1, 3 },
+    { 1044, 1051, -1, 2 }
+}; // 0x006F0328
+#pragma comment(linker, "/alternatename:?gnAct5TempleNextIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0328")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0368[4] = {
+    { 1066, 1078, -1, 3 },
+    { 1060, 1080, -1 },
+    { 1062, 1079, -1, 1 },
+    { 1059, 1081, -1, 2 }
+}; // 0x006F0368
+#pragma comment(linker, "/alternatename:?gnAct5BaalPrevIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0368")
+
+extern "C" const D2MazeLevelIdStrc gData_006F03A8[4] = {
+    { 1066, 1082, -1, 3 },
+    { 1060, 1084, -1 },
+    { 1062, 1083, -1, 1 },
+    { 1059, 1085, -1, 2 }
+}; // 0x006F03A8
+#pragma comment(linker, "/alternatename:?gnAct5BaalNextIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F03A8")
+
+extern "C" const D2MazeLevelIdStrc gData_006F03E8[4] = {
+    { 175, 201, -1, 3 },
+    { 169, 199, -1 },
+    { 171, 200, -1, 1 },
+    { 168, 198, -1, 2 }
+}; // 0x006F03E8
+#pragma comment(linker, "/alternatename:?gnAct1BarracksNextIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F03E8")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0428[4] = {
+    { 175, 205, -1, 3 },
+    { 169, 203, -1 },
+    { 171, 204, -1, 1 },
+    { 168, 202, -1, 2 }
+}; // 0x006F0428
+#pragma comment(linker, "/alternatename:?gnAct1BarracksForgeIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0428")
+
+extern "C" D2MazeRoomFn const gData_006F0468[3] = { (D2MazeRoomFn)&sub_00672460, (D2MazeRoomFn)&sub_006724A0, (D2MazeRoomFn)&DRLGMAZE_GetFreeLocationForRoomEast }; // 0x006F0468
+#pragma comment(linker, "/alternatename:?gpfnMazeGetBarracksEntryRoom@@3QBQ6IPAUD2DrlgRoomStrc@@PAUD2DrlgLevelStrc@@@ZB=_gData_006F0468")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0474[2] = {
+    { 837, 853, -1, 2 },
+    { 838, 854, -1 }
+}; // 0x006F0474
+#pragma comment(linker, "/alternatename:?gnAct4LavaForgeIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0474")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0498[4] = {
+    { 1010, 1021, -1, 3 },
+    { 1004, 1019, -1 },
+    { 1006, 1020, -1, 1 },
+    { 1003, 1018, -1, 2 }
+}; // 0x006F0498
+#pragma comment(linker, "/alternatename:?gnAct5IcePrevIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0498")
+
+extern "C" const D2MazeLevelIdStrc gData_006F04D8[4] = {
+    { 1010, 1025, -1, 3 },
+    { 1004, 1023, -1 },
+    { 1006, 1024, -1, 1 },
+    { 1003, 1022, -1, 2 }
+}; // 0x006F04D8
+#pragma comment(linker, "/alternatename:?gnAct5IceNextIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F04D8")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0518[4] = {
+    { 1010, 1029, -1, 3 },
+    { 1004, 1027, -1 },
+    { 1006, 1028, -1, 1 },
+    { 1003, 1026, -1, 2 }
+}; // 0x006F0518
+#pragma comment(linker, "/alternatename:?gnAct5IceShrineIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0518")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0558[4] = {
+    { 1010, 1033, -1, 3 },
+    { 1004, 1031, -1 },
+    { 1006, 1032, -1, 1 },
+    { 1003, 1030, -1, 2 }
+}; // 0x006F0558
+#pragma comment(linker, "/alternatename:?gnAct5IceSpecialIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0558")
+
+extern "C" const D2MazeLevelIdStrc gData_006F0598[4] = {
+    { 1010, 1034, -1, 3 },
+    { 1004, 1036, -1 },
+    { 1006, 1035, -1, 1 },
+    { 1003, 1037, -1, 2 }
+}; // 0x006F0598
+#pragma comment(linker, "/alternatename:?gnAct5IceWaypointIds@@3QBUD2MazeLevelIdStrc@@B=_gData_006F0598")
+
+extern "C" struct d2data_00749930_t gData_00749930 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749930

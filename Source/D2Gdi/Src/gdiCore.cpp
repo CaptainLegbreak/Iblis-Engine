@@ -376,7 +376,147 @@ void __cdecl GDICORE_PerspectiveClearScale()
 {
 }
 
-#include "gen/data/Source/D2Gdi/Src/gdiCore.inc"
+extern "C" void __cdecl GDISMACK_PlaySmacker(); // 0x006C9900
+extern "C" void __cdecl sub_006C8C80_GdiDrawLine(); // 0x006C8C80
+extern "C" void __cdecl sub_006C8F70_RectDiamond(); // 0x006C8F70
+extern "C" void __cdecl sub_006C9030_DrawRect(); // 0x006C9030
+extern "C" void __cdecl sub_006C90E0_FillRect(); // 0x006C90E0
+extern "C" void __cdecl sub_006C91D0_GdiUtilPoint(); // 0x006C91D0
+extern "C" void __cdecl sub_006C9270_Apply(); // 0x006C9270
+extern "C" void __cdecl sub_006C9290_DrawWallTile(); // 0x006C9290
+extern "C" void __cdecl sub_006C93A0_DrawLitTile(); // 0x006C93A0
+extern "C" void __cdecl sub_006C94B0_DrawTile(); // 0x006C94B0
+extern "C" void __cdecl sub_006C95D0_DrawShifted(); // 0x006C95D0
+extern "C" void __cdecl GDISMACK_GdiCloseSmacker(); // 0x006C9640
+extern "C" void __cdecl GDISMACK_GdiDecodeSmacker(); // 0x006C9710
+
+#pragma pack(push, 1)
+struct d2data_0074C4A8_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    const void* p15;
+    const void* p16;
+    const void* p17;
+    const void* p18;
+    const void* p19;
+    const void* p20;
+    const void* p21;
+    const void* p22;
+    const void* p23;
+    const void* p24;
+    const void* p25;
+    const void* p26;
+    const void* p27;
+    const void* p28;
+    const void* p29;
+    const void* p30;
+    const void* p31;
+    const void* p32;
+    const void* p33;
+    const void* p34;
+    const void* p35;
+    const void* p36;
+    const void* p37;
+    const void* p38;
+    const void* p39;
+    const void* p40;
+    const void* p41;
+    const void* p42;
+    const void* p43;
+    const void* p44;
+    const void* p45;
+    const void* p46;
+    const void* p47;
+    const void* p48;
+    const void* p49;
+    const void* p50;
+    const void* p51;
+    const void* p52;
+    const void* p53;
+    unsigned char b54[32];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_0074C4A8_t gData_0074C4A8; // 0x0074C4A8
+
+extern "C" struct d2data_0074C4A8_t gData_0074C4A8 = {
+    (const void*)(unsigned int)&GDICORE_Detect,
+    (const void*)(unsigned int)&GDICORE_Init,
+    (const void*)(unsigned int)&GDICORE_Close,
+    (const void*)(unsigned int)&GDICORE_CreateSurface,
+    (const void*)(unsigned int)&GDICORE_CloseSurface,
+    (const void*)(unsigned int)&GDICORE_PauseSurface,
+    (const void*)(unsigned int)&GDICORE_LockAndSend,
+    (const void*)(unsigned int)&GDICORE_EndDraw,
+    (const void*)(unsigned int)&GDICORE_BlitWindow,
+    (const void*)(unsigned int)&GDICORE_ChangeRes,
+    (const void*)(unsigned int)&GDICORE_ConvertPalette,
+    (const void*)(unsigned int)&GDICORE_ActivateWindow,
+    (const void*)(unsigned int)&GDICORE_SetOption,
+    (const void*)(unsigned int)&GDICORE_PlayCutscene,
+    (const void*)(unsigned int)&GDICORE_OpenSmackCutscene,
+    (const void*)(unsigned int)&GDICORE_CheckCutScene,
+    (const void*)(unsigned int)&GDISMACK_GdiDecodeSmacker,
+    (const void*)(unsigned int)&GDISMACK_PlaySmacker,
+    (const void*)(unsigned int)&GDISMACK_GdiCloseSmacker,
+    (const void*)(unsigned int)&GDICORE_GetCacheResults,
+    (const void*)(unsigned int)&GDICORE_GetScreenSize,
+    (const void*)(unsigned int)&GDICORE_SetGlobalScale,
+    (const void*)(unsigned int)&GDICORE_SetGamma,
+    (const void*)(unsigned int)&GDICORE_GammaCanBeControlled,
+    (const void*)(unsigned int)&GDICORE_UpdatePerspective,
+    (const void*)(unsigned int)&GDICORE_PerspectiveTransform,
+    (const void*)(unsigned int)&GDICORE_PerspectiveTransformScale,
+    (const void*)(unsigned int)&GDICORE_PerspectiveClearScale,
+    (const void*)(unsigned int)&GDICORE_SetPalette,
+    (const void*)(unsigned int)&GDICORE_SetPaletteView,
+    (const void*)(unsigned int)&GDICORE_SetAmbientColor,
+    (const void*)(unsigned int)&sub_006C95D0_DrawShifted,
+    (const void*)(unsigned int)&GDICORE_ForwardDraw,
+    (const void*)(unsigned int)&GDICORE_DrawImage,
+    (const void*)(unsigned int)&GDICORE_CelDrawColor,
+    (const void*)(unsigned int)&GDICORE_DrawImageRows,
+    (const void*)(unsigned int)&GDICORE_DrawShadow,
+    (const void*)(unsigned int)&GDICORE_CelDrawHilight,
+    (const void*)(unsigned int)&GDICORE_DrawCelClipped,
+    (const void*)(unsigned int)&sub_006C94B0_DrawTile,
+    (const void*)(unsigned int)&sub_006C93A0_DrawLitTile,
+    (const void*)(unsigned int)&sub_006C9290_DrawWallTile,
+    (const void*)(unsigned int)&sub_006C8F70_RectDiamond,
+    (const void*)(unsigned int)&sub_006C9030_DrawRect,
+    (const void*)(unsigned int)&sub_006C90E0_FillRect,
+    (const void*)(unsigned int)&sub_006C91D0_GdiUtilPoint,
+    (const void*)(unsigned int)&sub_006C8A60_Draw,
+    (const void*)(unsigned int)&GDICORE_DrawAlpha,
+    (const void*)(unsigned int)&sub_006C8C80_GdiDrawLine,
+    (const void*)(unsigned int)&sub_006C9270_Apply,
+    (const void*)(unsigned int)&GDICORE_GdiDebugPrintf,
+    (const void*)(unsigned int)&GDICORE_DebugDraw,
+    (const void*)(unsigned int)&GDICORE_DrawAt,
+    (const void*)(unsigned int)&GDICORE_ClearCaches,
+    {
+        0x80, 0x02, 0x00, 0x00, 0x20, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0xE0, 0x01, 0x00, 0x00, 0x58, 0x02
+    }
+}; // 0x0074C4A8
+
+extern int gaSelectorValues[8] = { 2, 2, 2, 1, 1, 0, 1 }; // 0x0074C5A0
+
+extern unsigned long gdwGdiDebugTextColor = 0xFFFFFF; // 0x0074C5C0
 
 // 0x006C7A60
 int __cdecl GDICORE_Detect()

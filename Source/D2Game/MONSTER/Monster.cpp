@@ -681,4 +681,11 @@ int __fastcall MONSTER_Reinitialize(D2GameStrc* pGame, D2UnitStrc* pUnit, int nC
     return 0;
 }
 
-#include "gen/data/Source/D2Game/MONSTER/Monster.inc"
+extern "C" const int gData_006E1590[9]; // 0x006E1590
+extern "C" const int gData_006E15B4[9]; // 0x006E15B4
+
+extern "C" const int gData_006E1590[9] = { 0, 0, 50, 100, 150, 200, 250, 300, 350 }; // 0x006E1590
+#pragma comment(linker, "/alternatename:?gnHpBonusTable@@3QBHB=_gData_006E1590")
+
+extern "C" const int gData_006E15B4[9] = { 0, 0, 50, 100, 150, 200, 250, 300, 350 }; // 0x006E15B4
+#pragma comment(linker, "/alternatename:?gnExperienceBonusTable@@3QBHB=_gData_006E15B4")

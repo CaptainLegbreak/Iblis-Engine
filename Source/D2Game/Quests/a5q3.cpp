@@ -1848,4 +1848,348 @@ void __fastcall ACT5Q3_UpdateResistances(D2GameStrc* pGame, D2UnitStrc* pUnit, i
     D2GAME_UpdateAttribute_6FC822D0(pUnit, STAT_POISONRESIST, nValue, pUnit);
 }
 
-#include "gen/data/Source/D2Game/Quests/a5q3.inc"
+#pragma pack(push, 1)
+struct d2data_00735FA4_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00735FB8_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00735FCC_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00735FE0_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00735FF4_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00736008_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0073601C_t
+{
+    unsigned char b0[28];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00736038_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0073604C_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00736060_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00736074_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00736088_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0073609C_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007360B0_t
+{
+    unsigned char b0[28];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007360CC_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007360E0_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007360F4_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00736108_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0073611C_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00736130_t
+{
+    unsigned char b0[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00736144_t
+{
+    unsigned char b0[28];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00735FA4_t gdwAmazonNormalQuestRewardCodes; // 0x00735FA4
+extern "C" struct d2data_00735FB8_t gdwSorceressNormalQuestRewardCodes; // 0x00735FB8
+extern "C" struct d2data_00735FCC_t gdwNecromancerNormalQuestRewardCodes; // 0x00735FCC
+extern "C" struct d2data_00735FE0_t gdwPaladinNormalQuestRewardCodes; // 0x00735FE0
+extern "C" struct d2data_00735FF4_t gdwBarbarianNormalQuestRewardCodes; // 0x00735FF4
+extern "C" struct d2data_00736008_t gdwDruidNormalQuestRewardCodes; // 0x00736008
+extern "C" struct d2data_0073601C_t gdwAssassinNormalQuestRewardCodes; // 0x0073601C
+extern "C" struct d2data_00736038_t gdwAmazonExceptionalQuestRewardCodes; // 0x00736038
+extern "C" struct d2data_0073604C_t gdwSorceressExceptionalQuestRewardCodes; // 0x0073604C
+extern "C" struct d2data_00736060_t gdwNecromancerExceptionalQuestRewardCodes; // 0x00736060
+extern "C" struct d2data_00736074_t gdwPaladinExceptionalQuestRewardCodes; // 0x00736074
+extern "C" struct d2data_00736088_t gdwBarbarianExceptionalQuestRewardCodes; // 0x00736088
+extern "C" struct d2data_0073609C_t gdwDruidExceptionalQuestRewardCodes; // 0x0073609C
+extern "C" struct d2data_007360B0_t gdwAssassinEliteQuestRewardCodes; // 0x007360B0
+extern "C" struct d2data_007360CC_t gdwAmazonEliteQuestRewardCodes; // 0x007360CC
+extern "C" struct d2data_007360E0_t gdwSorceressEliteQuestRewardCodes; // 0x007360E0
+extern "C" struct d2data_007360F4_t gdwNecromancerEliteQuestRewardCodes; // 0x007360F4
+extern "C" struct d2data_00736108_t gdwPaladinEliteQuestRewardCodes; // 0x00736108
+extern "C" struct d2data_0073611C_t gdwBarbarianEliteQuestRewardCodes; // 0x0073611C
+extern "C" struct d2data_00736130_t gdwDruidEliteQuestRewardCodes; // 0x00736130
+extern "C" struct d2data_00736144_t gData_00736144; // 0x00736144
+
+extern D2QuestRewardItemsStrc gNightmareRewards[7] = {
+    { (unsigned int*)&gdwAmazonEliteQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwSorceressEliteQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwNecromancerEliteQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwPaladinEliteQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwBarbarianEliteQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwDruidEliteQuestRewardCodes, 5 },
+    { (unsigned int*)&gData_00736144, 7 }
+}; // 0x00735EFC
+
+extern D2QuestRewardItemsStrc gHellRewards[7] = {
+    { (unsigned int*)&gdwAmazonExceptionalQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwSorceressExceptionalQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwNecromancerExceptionalQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwPaladinExceptionalQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwBarbarianExceptionalQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwDruidExceptionalQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwAssassinEliteQuestRewardCodes, 7 }
+}; // 0x00735F34
+
+extern D2QuestRewardItemsStrc gNormalRewards[7] = {
+    { (unsigned int*)&gdwAmazonNormalQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwSorceressNormalQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwNecromancerNormalQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwPaladinNormalQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwBarbarianNormalQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwDruidNormalQuestRewardCodes, 5 },
+    { (unsigned int*)&gdwAssassinNormalQuestRewardCodes, 7 }
+}; // 0x00735F6C
+
+extern "C" struct d2data_00735FA4_t gdwAmazonNormalQuestRewardCodes = {
+    {
+        0x61, 0x6D, 0x31, 0x20, 0x61, 0x6D, 0x32, 0x20, 0x61, 0x6D, 0x33, 0x20, 0x61, 0x6D, 0x34, 0x20,
+        0x61, 0x6D, 0x35, 0x20
+    }
+}; // 0x00735FA4
+
+extern "C" struct d2data_00735FB8_t gdwSorceressNormalQuestRewardCodes = {
+    {
+        0x6F, 0x62, 0x31, 0x20, 0x6F, 0x62, 0x32, 0x20, 0x6F, 0x62, 0x33, 0x20, 0x6F, 0x62, 0x34, 0x20,
+        0x6F, 0x62, 0x35, 0x20
+    }
+}; // 0x00735FB8
+
+extern "C" struct d2data_00735FCC_t gdwNecromancerNormalQuestRewardCodes = {
+    {
+        0x6E, 0x65, 0x31, 0x20, 0x6E, 0x65, 0x32, 0x20, 0x6E, 0x65, 0x33, 0x20, 0x6E, 0x65, 0x34, 0x20,
+        0x6E, 0x65, 0x35, 0x20
+    }
+}; // 0x00735FCC
+
+extern "C" struct d2data_00735FE0_t gdwPaladinNormalQuestRewardCodes = {
+    {
+        0x70, 0x61, 0x31, 0x20, 0x70, 0x61, 0x32, 0x20, 0x70, 0x61, 0x33, 0x20, 0x70, 0x61, 0x34, 0x20,
+        0x70, 0x61, 0x35, 0x20
+    }
+}; // 0x00735FE0
+
+extern "C" struct d2data_00735FF4_t gdwBarbarianNormalQuestRewardCodes = {
+    {
+        0x62, 0x61, 0x31, 0x20, 0x62, 0x61, 0x32, 0x20, 0x62, 0x61, 0x33, 0x20, 0x62, 0x61, 0x34, 0x20,
+        0x62, 0x61, 0x35, 0x20
+    }
+}; // 0x00735FF4
+
+extern "C" struct d2data_00736008_t gdwDruidNormalQuestRewardCodes = {
+    {
+        0x64, 0x72, 0x31, 0x20, 0x64, 0x72, 0x32, 0x20, 0x64, 0x72, 0x33, 0x20, 0x64, 0x72, 0x34, 0x20,
+        0x64, 0x72, 0x35, 0x20
+    }
+}; // 0x00736008
+
+extern "C" struct d2data_0073601C_t gdwAssassinNormalQuestRewardCodes = {
+    {
+        0x6B, 0x74, 0x72, 0x20, 0x77, 0x72, 0x62, 0x20, 0x61, 0x78, 0x66, 0x20, 0x63, 0x65, 0x73, 0x20,
+        0x63, 0x6C, 0x77, 0x20, 0x62, 0x74, 0x6C, 0x20, 0x73, 0x6B, 0x72, 0x20
+    }
+}; // 0x0073601C
+
+extern "C" struct d2data_00736038_t gdwAmazonExceptionalQuestRewardCodes = {
+    {
+        0x61, 0x6D, 0x62, 0x20, 0x61, 0x6D, 0x63, 0x20, 0x61, 0x6D, 0x64, 0x20, 0x61, 0x6D, 0x65, 0x20,
+        0x61, 0x6D, 0x66, 0x20
+    }
+}; // 0x00736038
+
+extern "C" struct d2data_0073604C_t gdwSorceressExceptionalQuestRewardCodes = {
+    {
+        0x6F, 0x62, 0x62, 0x20, 0x6F, 0x62, 0x63, 0x20, 0x6F, 0x62, 0x64, 0x20, 0x6F, 0x62, 0x65, 0x20,
+        0x6F, 0x62, 0x66, 0x20
+    }
+}; // 0x0073604C
+
+extern "C" struct d2data_00736060_t gdwNecromancerExceptionalQuestRewardCodes = {
+    {
+        0x6E, 0x65, 0x62, 0x20, 0x6E, 0x65, 0x63, 0x20, 0x6E, 0x65, 0x64, 0x20, 0x6E, 0x65, 0x65, 0x20,
+        0x6E, 0x65, 0x66, 0x20
+    }
+}; // 0x00736060
+
+extern "C" struct d2data_00736074_t gdwPaladinExceptionalQuestRewardCodes = {
+    {
+        0x70, 0x61, 0x62, 0x20, 0x70, 0x61, 0x63, 0x20, 0x70, 0x61, 0x64, 0x20, 0x70, 0x61, 0x65, 0x20,
+        0x70, 0x61, 0x66, 0x20
+    }
+}; // 0x00736074
+
+extern "C" struct d2data_00736088_t gdwBarbarianExceptionalQuestRewardCodes = {
+    {
+        0x62, 0x61, 0x62, 0x20, 0x62, 0x61, 0x63, 0x20, 0x62, 0x61, 0x64, 0x20, 0x62, 0x61, 0x65, 0x20,
+        0x62, 0x61, 0x66, 0x20
+    }
+}; // 0x00736088
+
+extern "C" struct d2data_0073609C_t gdwDruidExceptionalQuestRewardCodes = {
+    {
+        0x64, 0x72, 0x62, 0x20, 0x64, 0x72, 0x63, 0x20, 0x64, 0x72, 0x64, 0x20, 0x64, 0x72, 0x65, 0x20,
+        0x64, 0x72, 0x66, 0x20
+    }
+}; // 0x0073609C
+
+extern "C" struct d2data_007360B0_t gdwAssassinEliteQuestRewardCodes = {
+    {
+        0x37, 0x61, 0x72, 0x20, 0x37, 0x77, 0x62, 0x20, 0x37, 0x78, 0x66, 0x20, 0x37, 0x63, 0x73, 0x20,
+        0x37, 0x6C, 0x77, 0x20, 0x37, 0x74, 0x77, 0x20, 0x37, 0x71, 0x72, 0x20
+    }
+}; // 0x007360B0
+
+extern "C" struct d2data_007360CC_t gdwAmazonEliteQuestRewardCodes = {
+    {
+        0x61, 0x6D, 0x36, 0x20, 0x61, 0x6D, 0x37, 0x20, 0x61, 0x6D, 0x38, 0x20, 0x61, 0x6D, 0x39, 0x20,
+        0x61, 0x6D, 0x61, 0x20
+    }
+}; // 0x007360CC
+
+extern "C" struct d2data_007360E0_t gdwSorceressEliteQuestRewardCodes = {
+    {
+        0x6F, 0x62, 0x36, 0x20, 0x6F, 0x62, 0x37, 0x20, 0x6F, 0x62, 0x38, 0x20, 0x6F, 0x62, 0x39, 0x20,
+        0x6F, 0x62, 0x61, 0x20
+    }
+}; // 0x007360E0
+
+extern "C" struct d2data_007360F4_t gdwNecromancerEliteQuestRewardCodes = {
+    {
+        0x6E, 0x65, 0x36, 0x20, 0x6E, 0x65, 0x37, 0x20, 0x6E, 0x65, 0x38, 0x20, 0x6E, 0x65, 0x39, 0x20,
+        0x6E, 0x65, 0x61, 0x20
+    }
+}; // 0x007360F4
+
+extern "C" struct d2data_00736108_t gdwPaladinEliteQuestRewardCodes = {
+    {
+        0x70, 0x61, 0x36, 0x20, 0x70, 0x61, 0x37, 0x20, 0x70, 0x61, 0x38, 0x20, 0x70, 0x61, 0x39, 0x20,
+        0x70, 0x61, 0x61, 0x20
+    }
+}; // 0x00736108
+
+extern "C" struct d2data_0073611C_t gdwBarbarianEliteQuestRewardCodes = {
+    {
+        0x62, 0x61, 0x36, 0x20, 0x62, 0x61, 0x37, 0x20, 0x62, 0x61, 0x38, 0x20, 0x62, 0x61, 0x39, 0x20,
+        0x62, 0x61, 0x61, 0x20
+    }
+}; // 0x0073611C
+
+extern "C" struct d2data_00736130_t gdwDruidEliteQuestRewardCodes = {
+    {
+        0x64, 0x72, 0x36, 0x20, 0x64, 0x72, 0x37, 0x20, 0x64, 0x72, 0x38, 0x20, 0x64, 0x72, 0x39, 0x20,
+        0x64, 0x72, 0x61, 0x20
+    }
+}; // 0x00736130
+
+extern "C" struct d2data_00736144_t gData_00736144 = {
+    {
+        0x39, 0x61, 0x72, 0x20, 0x39, 0x77, 0x62, 0x20, 0x39, 0x78, 0x66, 0x20, 0x39, 0x63, 0x73, 0x20,
+        0x39, 0x6C, 0x77, 0x20, 0x39, 0x74, 0x77, 0x20, 0x39, 0x71, 0x72, 0x20
+    }
+}; // 0x00736144

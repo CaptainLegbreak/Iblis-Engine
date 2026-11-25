@@ -1436,4 +1436,151 @@ int __cdecl DDCORE_GammaCanBeControlled()
     return 1;
 }
 
-#include "gen/data/Source/D2DDraw/Src/ddCore.inc"
+extern "C" void __cdecl DDDEBUGFONT_DebugPrintf(); // 0x00512680
+extern "C" void __cdecl DDRAW_CelDrawHilight(); // 0x005123A0
+extern "C" void __cdecl DDSMACK_DecodeSmacker(); // 0x00513400
+extern "C" void __cdecl DDSMACK_PlaySmacker(); // 0x005135F0
+extern "C" void __cdecl sub_00511FB0_DrawImage(); // 0x00511FB0
+extern "C" void __cdecl sub_005120A0_DrawImagePalette(); // 0x005120A0
+extern "C" void __cdecl sub_005121A0_DrawClipped(); // 0x005121A0
+extern "C" void __cdecl sub_00512250_DrawCel(); // 0x00512250
+extern "C" void __cdecl sub_005122E0_DrawShadow(); // 0x005122E0
+extern "C" void __cdecl sub_005123B0_DDrawDebugFillBackBuffer(); // 0x005123B0
+extern "C" void __cdecl sub_00512930_DDrawDrawLine(); // 0x00512930
+extern "C" void __cdecl sub_00512C20_DrawDiamond(); // 0x00512C20
+extern "C" void __cdecl sub_00512CE0_DrawRect(); // 0x00512CE0
+extern "C" void __cdecl sub_00512F90_DrawWallTile(); // 0x00512F90
+extern "C" void __cdecl sub_005130A0_DrawLitTile(); // 0x005130A0
+extern "C" void __cdecl sub_005131B0_DrawTile(); // 0x005131B0
+extern "C" void __cdecl GLVERTEX_CelFlatSpriteDraw(); // 0x00512410
+
+#pragma pack(push, 1)
+struct d2data_0072F6D0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    const void* p15;
+    const void* p16;
+    const void* p17;
+    const void* p18;
+    const void* p19;
+    const void* p20;
+    const void* p21;
+    const void* p22;
+    const void* p23;
+    const void* p24;
+    const void* p25;
+    const void* p26;
+    const void* p27;
+    const void* p28;
+    const void* p29;
+    const void* p30;
+    const void* p31;
+    const void* p32;
+    const void* p33;
+    const void* p34;
+    const void* p35;
+    const void* p36;
+    const void* p37;
+    const void* p38;
+    const void* p39;
+    const void* p40;
+    const void* p41;
+    const void* p42;
+    const void* p43;
+    const void* p44;
+    const void* p45;
+    const void* p46;
+    const void* p47;
+    const void* p48;
+    const void* p49;
+    const void* p50;
+    const void* p51;
+    const void* p52;
+    const void* p53;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_0072F6D0_t gData_0072F6D0; // 0x0072F6D0
+
+extern "C" struct d2data_0072F6D0_t gData_0072F6D0 = {
+    (const void*)(unsigned int)&DDCORE_Detect,
+    (const void*)(unsigned int)&DDCORE_Init,
+    (const void*)(unsigned int)&DDCORE_Close,
+    (const void*)(unsigned int)&DDCORE_CreateSurface,
+    (const void*)(unsigned int)&DDCORE_CloseSurface,
+    (const void*)(unsigned int)&DDCORE_PauseSurface,
+    (const void*)(unsigned int)&DDCORE_StartDraw,
+    (const void*)(unsigned int)&DDCORE_EndDraw,
+    (const void*)(unsigned int)&DDCORE_Blit,
+    (const void*)(unsigned int)&DDCORE_ChangeRes,
+    (const void*)(unsigned int)&DDRAW_GetBackBuffer,
+    (const void*)(unsigned int)&DDRAW_ActivateWindow,
+    (const void*)(unsigned int)&DDCORE_SetOption,
+    (const void*)(unsigned int)&DDCORE_PlayCutscene,
+    (const void*)(unsigned int)&DDRAW_OpenSmackCutscene,
+    (const void*)(unsigned int)&DDRAW_CheckCutScene,
+    (const void*)(unsigned int)&DDSMACK_DecodeSmacker,
+    (const void*)(unsigned int)&DDSMACK_PlaySmacker,
+    (const void*)(unsigned int)&DDSMACK_CloseSmacker,
+    (const void*)(unsigned int)&DDRAW_GetCacheResults,
+    (const void*)(unsigned int)&DDCORE_GetDimensions,
+    (const void*)(unsigned int)&DDCORE_SetGlobalScale,
+    (const void*)(unsigned int)&DDCORE_SetGamma,
+    (const void*)(unsigned int)&DDCORE_GammaCanBeControlled,
+    (const void*)(unsigned int)&DDCORE_UpdatePerspective,
+    (const void*)(unsigned int)&DDCORE_PerspectiveTransform,
+    (const void*)(unsigned int)&DDCORE_PerspectiveTransformScale,
+    (const void*)(unsigned int)&DDCORE_PerspectiveClearScale,
+    (const void*)(unsigned int)&DDCORE_SetPalette,
+    (const void*)(unsigned int)&DDCORE_SetPaletteTables,
+    (const void*)(unsigned int)&DDRAW_SetAmbientColor,
+    (const void*)(unsigned int)&DDCORE_FloorTileDraw,
+    (const void*)(unsigned int)&GLVERTEX_CelFlatSpriteDraw,
+    (const void*)(unsigned int)&sub_00511FB0_DrawImage,
+    (const void*)(unsigned int)&sub_005120A0_DrawImagePalette,
+    (const void*)(unsigned int)&sub_005121A0_DrawClipped,
+    (const void*)(unsigned int)&sub_005122E0_DrawShadow,
+    (const void*)(unsigned int)&DDRAW_CelDrawHilight,
+    (const void*)(unsigned int)&sub_00512250_DrawCel,
+    (const void*)(unsigned int)&sub_005131B0_DrawTile,
+    (const void*)(unsigned int)&sub_005130A0_DrawLitTile,
+    (const void*)(unsigned int)&sub_00512F90_DrawWallTile,
+    (const void*)(unsigned int)&sub_00512C20_DrawDiamond,
+    (const void*)(unsigned int)&sub_00512CE0_DrawRect,
+    (const void*)(unsigned int)&sub_00512D90_DDrawUtilFilledRect,
+    (const void*)(unsigned int)&DDCORE_UtilPoint,
+    (const void*)(unsigned int)&sub_00512710_DDrawDrawBox,
+    (const void*)(unsigned int)&DDCORE_DrawBoxAlpha,
+    (const void*)(unsigned int)&sub_00512930_DDrawDrawLine,
+    (const void*)(unsigned int)&sub_00512ED0_ClearScreen,
+    (const void*)(unsigned int)&DDDEBUGFONT_DebugPrintf,
+    (const void*)(unsigned int)&DDRAW_DebugDraw,
+    (const void*)(unsigned int)&sub_005123B0_DDrawDebugFillBackBuffer,
+    (const void*)(unsigned int)&DDCORE_ClearCaches
+}; // 0x0072F6D0
+
+extern int gaDDrawModeWidth[4] = { 640, 800, 800 }; // 0x0072F7A8
+
+extern int gaDDrawModeHeight[4] = { 480, 600, 600 }; // 0x0072F7B8
+
+extern int gnDDrawGammaScale = 100; // 0x0072F7C8
+
+extern int gnDDrawGamma = 100; // 0x0072F7CC
+
+extern int gaDDrawCapsTypes[8] = { 2, 2, 2, 1, 1, 0, 1 }; // 0x0072F7D0
+
+extern unsigned long gdwDDrawDebugFontTextColor = 0xFFFFFF; // 0x0072F7F0

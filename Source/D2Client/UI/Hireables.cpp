@@ -2079,4 +2079,4 @@ void __cdecl sub_00494020_DrawPetIcons()
     }
 }
 
-#include "gen/data/Source/D2Client/UI/Hireables.inc"
+extern unsigned long gdwHelpMenu = 0xFFFFFFFF; // 0x00722310

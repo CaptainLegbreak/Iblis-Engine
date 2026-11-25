@@ -4127,4 +4127,31 @@ void __fastcall sub_6FCF5870(D2UnitStrc* pUnit, D2DamageStrc* pDamage)
     }
 }
 
-#include "gen/data/Source/D2Game/SKILLS/SkillAss.inc"
+#pragma pack(push, 1)
+struct d2data_00741B14_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006E1274; // 0x006E1274
+extern "C" const int gData_006E328C[8]; // 0x006E328C
+extern "C" const int gData_006E32AC[8]; // 0x006E32AC
+extern "C" struct d2data_00741B14_t gData_00741B14; // 0x00741B14
+
+extern "C" const int gData_006E1274 = 191; // 0x006E1274
+#pragma comment(linker, "/alternatename:?gnSkillSrvDoFnCount@@3HB=_gData_006E1274")
+
+extern "C" const int gData_006E328C[8] = { 0, 2, 2, 2, 0, -2, -2, -2 }; // 0x006E328C
+#pragma comment(linker, "/alternatename:?gnCurvingPathOffsetY@@3QBHB=_gData_006E328C")
+
+extern "C" const int gData_006E32AC[8] = { 2, 2, 0, -2, -2, -2, 0, 2 }; // 0x006E32AC
+#pragma comment(linker, "/alternatename:?gnCurvingPathOffsetX@@3QBHB=_gData_006E32AC")
+
+extern int gnSrvChargedBoltTurnEvery = 15; // 0x00741B0C
+
+extern int gnSrvChargedBoltTurnBase = 2; // 0x00741B10
+
+extern "C" struct d2data_00741B14_t gData_00741B14 = {
+    { 0x00 }
+}; // 0x00741B14

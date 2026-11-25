@@ -1347,9 +1347,9 @@ void __stdcall TEXTURE_DebugFillBackBuffer(int nXPos, int nYPos)
     return gpGraphicsInterface->pfDebugFillBackBuffer(nXPos, nYPos);
 }
 
-#include "gen/data/Source/D2Gfx/SRC/Window/gnChangedScaleFactor.inc"
+static int gnChangedScaleFactor = 256;                                                           // 0x0072DB40
 
-#include "gen/data/Source/D2Gfx/SRC/Window/gnScaleFactor.inc"
+static int gnScaleFactor = 256;                                                                  // 0x0072DB44
 
 // 0x004F65C0
 void __stdcall SCALE_UpdateFactor()
@@ -2514,4 +2514,115 @@ void __fastcall CMNSUBTILE_SetPaletteTables(D2PaletteTableStrc* pPaletteTables)
     }
 }
 
-#include "gen/data/Source/D2Gfx/SRC/Window.inc"
+extern "C" void __cdecl sub_004F8B80(); // 0x004F8B80
+extern "C" void __cdecl sub_004F8DE0(); // 0x004F8DE0
+extern "C" struct d2data_0072F178_t gData_0072F178; // 0x0072F178
+extern "C" struct d2data_0072F6D0_t gData_0072F6D0; // 0x0072F6D0
+extern "C" struct d2data_0074BF28_t gData_0074BF28; // 0x0074BF28
+extern "C" struct d2data_0074C4A8_t gData_0074C4A8; // 0x0074C4A8
+
+#pragma pack(push, 1)
+struct d2data_0072DA0C_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072DA48_t
+{
+    unsigned char b0[24];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072DA60_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_0072DA0C_t gData_0072DA0C; // 0x0072DA0C
+extern "C" struct d2data_0072DA48_t gData_0072DA48; // 0x0072DA48
+extern "C" struct d2data_0072DA60_t gData_0072DA60; // 0x0072DA60
+extern "C" const char gData_0072DAA8[72]; // 0x0072DAA8
+extern "C" const char gData_0072DAF0[72]; // 0x0072DAF0
+
+extern "C" struct d2data_0072DA0C_t gData_0072DA0C = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0072DA0C
+
+extern "C" struct d2data_0072DA48_t gData_0072DA48 = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x9B, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x01
+    }
+}; // 0x0072DA48
+#pragma comment(linker, "/alternatename:?gGfxSettings@@3UD2GfxSettingsStrc@@A=_gData_0072DA48")
+
+extern "C" struct d2data_0072DA60_t gData_0072DA60 = {
+    (const void*)(unsigned int)&sub_004F8DE0,
+    (const void*)(unsigned int)&CMNSUBTILE_DrawVisTile,
+    (const void*)(unsigned int)&CMNSUBTILE_DrawRleVisTile,
+    (const void*)(unsigned int)&sub_004F8B80,
+    (const void*)(unsigned int)&CMNSUBTILE_DrawLitVisTile,
+    (const void*)(unsigned int)&CMNSUBTILE_DrawBlendVisTile,
+    (const void*)(unsigned int)&CMNSUBTILE_DrawLitBlendVisTile
+}; // 0x0072DA60
+#pragma comment(linker, "/alternatename:?gabGraphicsHelpers@@3QBEB=_gData_0072DA60")
+
+extern int gdwGlobal_0072DA7C = 1; // 0x0072DA7C
+
+extern D2GraphicsInterfaceStrc* gapGraphicsInterfaces[8] = { 0, (D2GraphicsInterfaceStrc*)&gData_0074C4A8, 0, (D2GraphicsInterfaceStrc*)&gData_0072F6D0, (D2GraphicsInterfaceStrc*)&gData_0072F178, 0, (D2GraphicsInterfaceStrc*)&gData_0074BF28 }; // 0x0072DA80
+
+extern const char* gszDefaultClass_0072DAA0 = "Diablo II"; // 0x0072DAA0
+
+extern "C" const char gData_0072DAA8[72] = "Error 1: Diablo II is unable to proceed.  Unsupported graphics mode."; // 0x0072DAA8
+#pragma comment(linker, "/alternatename:?gszRetryUnsupportedGraphics@@3QBDB=_gData_0072DAA8")
+
+extern "C" const char gData_0072DAF0[72] = "Error 1: Diablo II is unable to proceed.  Unsupported graphics mode."; // 0x0072DAF0
+#pragma comment(linker, "/alternatename:?gszUnsupportedGraphics@@3QBDB=_gData_0072DAF0")
+
+extern int gbCursorDisplayed = 1; // 0x0072DB38
+
+extern const char* gszDefaultWindow_0072DB3C = "Diablo II"; // 0x0072DB3C
+
+extern int ganSubtileRowXOffset[15] = { 14, 12, 10, 8, 6, 4, 2, 0, 2, 4, 6, 8, 10, 12, 14 }; // 0x0072DB48
+
+extern int ganSubtileRowWidth[15] = { 4, 8, 12, 16, 20, 24, 28, 32, 28, 24, 20, 16, 12, 8, 4 }; // 0x0072DB84
+
+extern int ganSubtileRowSrcOffset[15] = { 0, 4, 12, 24, 40, 60, 84, 112, 144, 172, 196, 216, 232, 244, 252 }; // 0x0072DBC0

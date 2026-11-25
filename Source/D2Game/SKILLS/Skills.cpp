@@ -4370,4 +4370,418 @@ D2UnitEventStrc* __fastcall SKILLS_RegisterUnitEvent(D2GameStrc* pGame, D2UnitSt
     return 0;
 }
 
-#include "gen/data/Source/D2Game/SKILLS/Skills.inc"
+extern "C" void __cdecl SKILLS_SrvSt05_Jab(); // 0x005DA8F0
+extern "C" void __cdecl SKILLS_SrvSt06_PowerStrike_ChargedStrike(); // 0x005DA940
+extern "C" void __cdecl SKILLS_SrvSt08_Strafe(); // 0x005DACD0
+extern "C" void __cdecl SKILLS_SrvSt10_LightningStrike(); // 0x005DB020
+extern "C" void __cdecl SKILLS_SrvSt11_Inferno_ArcticBlast(); // 0x005C8FA0
+extern "C" void __cdecl SKILLS_SrvSt12_Telekinesis_DragonFlight(); // 0x005C9030
+extern "C" void __cdecl SKILLS_SrvSt13_ThunderStorm(); // 0x005C91C0
+extern "C" void __cdecl SKILLS_SrvSt14_Hydra(); // 0x005C9220
+extern "C" void __cdecl SKILLS_SrvSt15_RaiseSkeleton_Mage(); // 0x005C3070
+extern "C" void __cdecl SKILLS_SrvSt16_PoisonDagger(); // 0x005C30A0
+extern "C" void __cdecl SKILLS_SrvSt17_Poison_CorpseExplosion(); // 0x005C31C0
+extern "C" void __cdecl SKILLS_SrvSt18_Attract(); // 0x005C3260
+extern "C" void __cdecl SKILLS_SrvSt19_BonePrison(); // 0x005C3270
+extern "C" void __cdecl SKILLS_SrvSt20_IronGolem(); // 0x005C32A0
+extern "C" void __cdecl SKILLS_SrvSt21_Revive(); // 0x005C3350
+extern "C" void __cdecl SKILLS_SrvSt22_PsychicHammer(); // 0x005D30F0
+extern "C" void __cdecl SKILLS_SrvSt23_AssasinChargeStrikes(); // 0x005D32F0
+extern "C" void __cdecl SKILLS_SrvSt24_DragonTalon(); // 0x005D5970
+extern "C" void __cdecl SKILLS_SrvSt25_64_DragonClaw_MonFrenzy(); // 0x005D6330
+extern "C" void __cdecl SKILLS_SrvSt26_BladeFury(); // 0x005D69D0
+extern "C" void __cdecl SKILLS_SrvSt28_BladeShield(); // 0x005D7A00
+extern "C" void __cdecl SKILLS_SrvSt29_Sacrifice(); // 0x005CE790
+extern "C" void __cdecl SKILLS_SrvSt32_Conversion_Bash_Stun_Concentrate_BearSmite(); // 0x005D7EA0
+extern "C" void __cdecl SKILLS_SrvSt33_FindPotion_GrimWard(); // 0x005D80C0
+extern "C" void __cdecl SKILLS_SrvSt34_FindItem(); // 0x005D8760
+extern "C" void __cdecl SKILLS_SrvSt36_HolyShield(); // 0x005D0180
+extern "C" void __cdecl SKILLS_SrvSt37_Zeal_Fury_BloodLordFrenzy(); // 0x005DAF40
+extern "C" void __cdecl SKILLS_SrvSt38_Whirlwind(); // 0x005D8F50
+extern "C" void __cdecl SKILLS_SrvSt39_Berserk(); // 0x005D97F0
+extern "C" void __cdecl SKILLS_SrvSt40_Leap(); // 0x005D9D50
+extern "C" void __cdecl SKILLS_SrvSt41_LeapAttack(); // 0x005DA540
+extern "C" void __cdecl SKILLS_SrvSt42_FireHit(); // 0x005CAE40
+extern "C" void __cdecl SKILLS_SrvSt43_MaggotEgg(); // 0x005CAF80
+extern "C" void __cdecl SKILLS_SrvSt45_MaggotDown(); // 0x005CB270
+extern "C" void __cdecl SKILLS_SrvSt46_AndrialSpray(); // 0x005CB4D0
+extern "C" void __cdecl SKILLS_SrvSt48_SwarmMove(); // 0x005CBBF0
+extern "C" void __cdecl SKILLS_SrvSt49_Nest_EvilHutSpawner(); // 0x005CBD10
+extern "C" void __cdecl SKILLS_SrvSt50_QuickStrike(); // 0x005CBF30
+extern "C" void __cdecl SKILLS_SrvSt51_Submerge(); // 0x005CC1D0
+extern "C" void __cdecl SKILLS_SrvSt53_MonInferno(); // 0x005CC240
+extern "C" void __cdecl SKILLS_SrvSt54_DiabRun(); // 0x005CD2C0
+extern "C" void __cdecl SKILLS_SrvSt56_FeralRage_Maul(); // 0x005C7690
+extern "C" void __cdecl SKILLS_SrvSt57_Rabies(); // 0x005C79E0
+extern "C" void __cdecl SKILLS_SrvSt59_ImpInferno(); // 0x005D1280
+extern "C" void __cdecl SKILLS_SrvSt60_SuckBlood(); // 0x005D1570
+extern "C" void __cdecl SKILLS_SrvSt62_MinionSpawner(); // 0x005D2420
+extern "C" void __cdecl SKILLS_SrvSt63_Corpse_VineCycler(); // 0x005D2A10
+extern "C" void __cdecl sub_0056CAB0(); // 0x0056CAB0
+extern "C" void __cdecl SKILLS_SrvSt58_FireClaws(); // 0x005C7E00
+extern "C" void __cdecl sub_005CB730(); // 0x005CB730
+extern "C" void __cdecl SKILLS_SrvSt52_Emerge(); // 0x005CC220
+extern "C" void __cdecl SKILLS_SrvSt31_Charge(); // 0x005CF6B0
+extern "C" void __cdecl SKILLS_SrvSt35_Vengeance(); // 0x005CFE10
+extern "C" void __cdecl SKILLS_SrvSt61_SelfResurrect(); // 0x005D1BF0
+extern "C" void __cdecl sub_005D7090(); // 0x005D7090
+extern "C" void __cdecl sub_005DA8B0(); // 0x005DA8B0
+extern "C" void __cdecl SKILLS_SrvSt07_Impale(); // 0x005DAB40
+extern "C" void __cdecl SKILLS_SrvSt09_Fend(); // 0x005DAE30
+extern "C" void __cdecl SKILLS_SrvSt44_MaggotUp(); // 0x005CB170
+extern "C" void __cdecl SKILLS_SrvSt55_Mosquito(); // 0x005CD910
+extern "C" void __cdecl SKILLITEM_EventFunc06_AttackerTakesDamage(); // 0x005BF670
+extern "C" void __cdecl SKILLITEM_EventFunc08_Howl(); // 0x005BFA10
+extern "C" void __cdecl SKILLITEM_EventFunc10_AttackerTakesLightDamage(); // 0x005BF720
+extern "C" void __cdecl SKILLITEM_EventFunc11_ApplyFireDamage(); // 0x005BF7D0
+extern "C" void __cdecl SKILLITEM_EventFunc12_ApplyColdDamage(); // 0x005BF880
+extern "C" void __cdecl SKILLITEM_EventFunc15_OpenWounds(); // 0x005BFE60
+extern "C" void __cdecl SKILLITEM_EventFunc16_CrushingBlow(); // 0x005BFFC0
+extern "C" void __cdecl SKILLITEM_EventFunc18_HealAfterDemonKill(); // 0x005C0260
+extern "C" void __cdecl SKILLITEM_EventFunc19_Slow(); // 0x005C0310
+extern "C" void __cdecl SKILLITEM_EventFunc20_SkillOnAttackHitKill(); // 0x005C0470
+extern "C" void __cdecl SKILLITEM_EventFunc21_SkillOnGetHit(); // 0x005C05A0
+extern "C" void __cdecl SKILLITEM_EventFunc28_HealAfterKill(); // 0x005C01D0
+extern "C" void __cdecl SKILLITEM_EventFunc29_RestInPeace(); // 0x005C0770
+extern "C" void __cdecl SKILLITEM_EventFunc30_SkillOnDeathLevelup(); // 0x005C0670
+extern "C" void __cdecl SKILLS_EventFunc01_ChillingArmor(); // 0x005CAB40
+extern "C" void __cdecl SKILLS_EventFunc02_FrozenArmor(); // 0x005CAC50
+extern "C" void __cdecl SKILLS_EventFunc03_ShiverArmor(); // 0x005CAD40
+extern "C" void __cdecl SKILLS_EventFunc04_ReflectPhysicalDamage(); // 0x005C5F50
+extern "C" void __cdecl SKILLS_EventFunc24_EnergyShield(); // 0x005CA6C0
+extern "C" void __cdecl SKILLS_EventFunc27_Slow(); // 0x005C6760
+extern "C" void __cdecl SKILLITEM_EventFunc07_Knockback(); // 0x005BF960
+extern "C" void __cdecl sub_005BFAA0(); // 0x005BFAA0
+extern "C" void __cdecl SKILLITEM_EventFunc13_DamageToMana(); // 0x005BFBB0
+extern "C" void __cdecl SKILLITEM_EventFunc14_Freeze(); // 0x005BFC60
+extern "C" void __cdecl SKILLITEM_EventFunc17_ManaAfterKill(); // 0x005C0130
+extern "C" void __cdecl SKILLITEM_EventFunc31_Reanimate(); // 0x005C09E0
+extern "C" void __cdecl SKILLS_EventFunc05_LifeTap(); // 0x005C61E0
+extern "C" void __cdecl SKILLS_EventFunc22_AbsorbPhysicalDamage(); // 0x005C6370
+extern "C" void __cdecl sub_005C6530(); // 0x005C6530
+extern "C" void __cdecl SKILLS_EventFunc26_ShareDamageWithOwner(); // 0x005C6690
+extern "C" void __cdecl SKILLS_EventFunc25_AbsorbElementalDamage(); // 0x005C87A0
+extern "C" void __cdecl SKILLS_SrvDo001_Attack_LeftHandSwing(); // 0x0056F070
+extern "C" void __cdecl SKILLS_SrvDo002_Kick_PowerStrike_MonIceSpear_Impale_Bash_Stun_Concentrate_BearSmite_Vengeance_Berserk_FireClaws(); // 0x0056F1F0
+extern "C" void __cdecl SKILLS_SrvDo003_Throw(); // 0x0056F460
+extern "C" void __cdecl SKILLS_SrvDo004_Unsummon(); // 0x0056CC20
+extern "C" void __cdecl SKILLS_SrvDo005_LeftHandThrow(); // 0x0056F550
+extern "C" void __cdecl SKILLS_SrvDo007_Jab(); // 0x005DB2D0
+extern "C" void __cdecl SKILLS_SrvDo011_ChargedStrike(); // 0x005DB850
+extern "C" void __cdecl SKILLS_SrvDo016_Valkyrie(); // 0x005DC1E0
+extern "C" void __cdecl SKILLS_SrvDo017_ChargedBolt_BoltSentry(); // 0x005C9300
+extern "C" void __cdecl SKILLS_SrvDo018_DefensiveBuff(); // 0x005C9480
+extern "C" void __cdecl SKILLS_SrvDo019_Inferno_ArcticBlast(); // 0x005C9640
+extern "C" void __cdecl SKILLS_SrvDo020_StaticField(); // 0x005C9800
+extern "C" void __cdecl SKILLS_SrvDo022_NovaAttack(); // 0x005C9B50
+extern "C" void __cdecl SKILLS_SrvDo023_Blaze_EnergyShield_SpiderLay(); // 0x005C9C10
+extern "C" void __cdecl SKILLS_SrvDo025_Enchant(); // 0x005CA030
+extern "C" void __cdecl SKILLS_SrvDo026_ChainLightning(); // 0x005CA1B0
+extern "C" void __cdecl SKILLS_SrvDo027_Teleport(); // 0x005CA360
+extern "C" void __cdecl SKILLS_SrvDo029_ThunderStorm(); // 0x005CA4D0
+extern "C" void __cdecl SKILLS_SrvDo030_Curse(); // 0x005C37C0
+extern "C" void __cdecl SKILLS_SrvDo032_PoisonDagger(); // 0x005C4CD0
+extern "C" void __cdecl SKILLS_SrvDo036_ClawsOfThunder_ProgressiveFn2(); // 0x005D4DB0
+extern "C" void __cdecl SKILLS_SrvDo040_RoyalStrike_ProgressiveFn1(); // 0x005D5010
+extern "C" void __cdecl SKILLS_SrvDo043_ShockField(); // 0x005D5D70
+extern "C" void __cdecl SKILLS_SrvDo048_BladeFury(); // 0x005D68A0
+extern "C" void __cdecl SKILLS_SrvDo053_Unused(); // 0x005D7B60
+extern "C" void __cdecl SKILLS_SrvDo054_BladeShield(); // 0x005D7E10
+extern "C" void __cdecl SKILLS_SrvDo056_Golem(); // 0x005C5100
+extern "C" void __cdecl SKILLS_SrvDo058_Revive(); // 0x005C56C0
+extern "C" void __cdecl SKILLS_SrvDo059_Attract(); // 0x005C3B90
+extern "C" void __cdecl SKILLS_SrvDo061_Confuse(); // 0x005C3F20
+extern "C" void __cdecl SKILLS_SrvDo063_PoisonExplosion(); // 0x005C5E60
+extern "C" void __cdecl SKILLS_SrvDo064_Sacrifice(); // 0x005CE8E0
+extern "C" void __cdecl SKILLS_SrvDo065_BasicAura(); // 0x005CF010
+extern "C" void __cdecl SKILLS_SrvDo068_BasicShout(); // 0x005D83E0
+extern "C" void __cdecl SKILLS_SrvDo069_FindPotion(); // 0x005D81C0
+extern "C" void __cdecl SKILLS_SrvDo070_DoubleSwing(); // 0x005D8470
+extern "C" void __cdecl SKILLS_SrvDo071_Taunt(); // 0x005D8570
+extern "C" void __cdecl SKILLS_SrvDo073_BlessedHammer(); // 0x005D0040
+extern "C" void __cdecl SKILLS_SrvDo076_Whirlwind(); // 0x005D9580
+extern "C" void __cdecl SKILLS_SrvDo077_Leap(); // 0x005DA370
+extern "C" void __cdecl SKILLS_SrvDo078_LeapAttack(); // 0x005DA7E0
+extern "C" void __cdecl SKILLS_SrvDo081_HolyFreeze(); // 0x005D0920
+extern "C" void __cdecl SKILLS_SrvDo083_FireHit(); // 0x005CAF30
+extern "C" void __cdecl SKILLS_SrvDo084_MaggotEgg(); // 0x005CAFA0
+extern "C" void __cdecl SKILLS_SrvDo085_UnholyBolt_ShamanFire(); // 0x005CB0C0
+extern "C" void __cdecl SKILLS_SrvDo086_MaggotDown(); // 0x005CB300
+extern "C" void __cdecl SKILLS_SrvDo087_MaggotLay(); // 0x005CB3C0
+extern "C" void __cdecl SKILLS_SrvDo088_AndrialSpray(); // 0x005CB580
+extern "C" void __cdecl SKILLS_SrvDo089_Jump(); // 0x005CB940
+extern "C" void __cdecl SKILLS_SrvDo090_SwarmMove(); // 0x005CBC80
+extern "C" void __cdecl SKILLS_SrvDo091_Nest_EvilHutSpawner(); // 0x005CBE00
+extern "C" void __cdecl SKILLS_SrvDo092_QuickStrike(); // 0x005CBF90
+extern "C" void __cdecl SKILLS_SrvDo094_Submerge(); // 0x005CC1F0
+extern "C" void __cdecl SKILLS_SrvDo095_MonInferno(); // 0x005CC4E0
+extern "C" void __cdecl SKILLS_SrvDo096_ZakarumHeal_Bestow(); // 0x005CC840
+extern "C" void __cdecl SKILLS_SrvDo097_Resurrect(); // 0x005CCB10
+extern "C" void __cdecl SKILLS_SrvDo098_MonTeleport(); // 0x005CCC80
+extern "C" void __cdecl SKILLS_SrvDo101_FingerMageSpider(); // 0x005CCFA0
+extern "C" void __cdecl SKILLS_SrvDo102_DiabWall(); // 0x005CD1C0
+extern "C" void __cdecl SKILLS_SrvDo103_DiabRun(); // 0x005CD380
+extern "C" void __cdecl SKILLS_SrvDo104_DiabPrison(); // 0x005CD5D0
+extern "C" void __cdecl SKILLS_SrvDo105_DesertTurret(); // 0x005CD6A0
+extern "C" void __cdecl SKILLS_SrvDo106_ArcaneTower(); // 0x005CD870
+extern "C" void __cdecl SKILLS_SrvDo110_Hireable_RogueMissile(); // 0x005CE1B0
+extern "C" void __cdecl SKILLS_SrvDo111_FetishAura(); // 0x005CE670
+extern "C" void __cdecl SKILLS_SrvDo112_MonCurseCast(); // 0x005CE2B0
+extern "C" void __cdecl SKILLS_SrvDo113_Scroll_Book(); // 0x005BF3D0
+extern "C" void __cdecl SKILLS_SrvDo114_Raven(); // 0x005C6910
+extern "C" void __cdecl SKILLS_SrvDo115_Vines(); // 0x005C6A80
+extern "C" void __cdecl SKILLS_SrvDo116_Wearwolf_Wearbear(); // 0x005C6EC0
+extern "C" void __cdecl SKILLS_SrvDo117_Firestorm(); // 0x005C7160
+extern "C" void __cdecl SKILLS_SrvDo118_Twister_Tornado(); // 0x005C72F0
+extern "C" void __cdecl SKILLS_SrvDo119_DruidSummon(); // 0x005C7390
+extern "C" void __cdecl SKILLS_SrvDo120_FeralRage_Maul(); // 0x005C77C0
+extern "C" void __cdecl SKILLS_SrvDo121_Rabies(); // 0x005C8AD0
+extern "C" void __cdecl SKILLS_SrvDo122_Hunger(); // 0x005C7F10
+extern "C" void __cdecl SKILLS_SrvDo125_WakeOfDestruction(); // 0x005D1170
+extern "C" void __cdecl SKILLS_SrvDo126_ImpInferno(); // 0x005D1350
+extern "C" void __cdecl SKILLS_SrvDo128_CryHelp(); // 0x005D1800
+extern "C" void __cdecl SKILLS_SrvDo129_ImpTeleport(); // 0x005D1AB0
+extern "C" void __cdecl SKILLS_SrvDo132_ImpFireMissile(); // 0x005D2090
+extern "C" void __cdecl SKILLS_SrvDo136_DeathMaul(); // 0x005D25B0
+extern "C" void __cdecl SKILLS_SrvDo138_Unused(); // 0x005D27B0
+extern "C" void __cdecl SKILLS_SrvDo142_Unused(); // 0x005D7CE0
+extern "C" void __cdecl SKILLS_SrvDo145_PeriodicAreaDamage(); // 0x005C8380
+extern "C" void __cdecl SKILLS_SrvDo147_Unused(); // 0x005D2B20
+extern "C" void __cdecl SKILLS_SrvDo149_NecromageMissile(); // 0x005CE0B0
+extern "C" void __cdecl SKILLS_SrvDo150_Smite(); // 0x005CE9F0
+extern "C" void __cdecl SKILLS_SrvDo151_Unused(); // 0x005CA260
+extern "C" void __cdecl SKILLS_SrvDo152_DiabLight(); // 0x005CC690
+extern "C" void __cdecl sub_005C4B00(); // 0x005C4B00
+extern "C" void __cdecl SKILLS_ExplodeCorpse(); // 0x005C4DF0
+extern "C" void __cdecl SKILLS_SrvDo057_IronGolem(); // 0x005C5250
+extern "C" void __cdecl sub_005C58B0(); // 0x005C58B0
+extern "C" void __cdecl sub_005C5D00(); // 0x005C5D00
+extern "C" void __cdecl SKILLS_SrvDo123_Volcano(); // 0x005C8080
+extern "C" void __cdecl SKILLS_SrvDo124_Armageddon_Hurricane(); // 0x005C8190
+extern "C" void __cdecl SKILLS_SrvDo146_PeriodicRandomMissile(); // 0x005C8520
+extern "C" void __cdecl SKILLS_SrvDo021_Telekinesis(); // 0x005C98F0
+extern "C" void __cdecl sub_005C9EA0(); // 0x005C9EA0
+extern "C" void __cdecl SKILLS_SrvDo144_Hydra(); // 0x005CA910
+extern "C" void __cdecl sub_005CC050(); // 0x005CC050
+extern "C" void __cdecl sub_005CCE80(); // 0x005CCE80
+extern "C" void __cdecl SKILLS_SrvDo107_Mosquito(); // 0x005CDA00
+extern "C" void __cdecl sub_005CDC10(); // 0x005CDC10
+extern "C" void __cdecl SKILLS_SrvDo066_HolyFire_HolyShock_Sanctuary_Conviction(); // 0x005CF3A0
+extern "C" void __cdecl sub_005CF900(); // 0x005CF900
+extern "C" void __cdecl sub_005D0350(); // 0x005D0350
+extern "C" void __cdecl SKILLS_SrvDo080_FistOfTheHeavens(); // 0x005D0670
+extern "C" void __cdecl SKILLS_SrvDo082_Redemption(); // 0x005D0E90
+extern "C" void __cdecl SKILLS_SrvDo127_SuckBlood(); // 0x005D16A0
+extern "C" void __cdecl SKILLS_SrvDo130_VineAttack(); // 0x005D1CD0
+extern "C" void __cdecl SKILLS_SrvDo131_OverseerWhip(); // 0x005D1F70
+extern "C" void __cdecl sub_005D3140(); // 0x005D3140
+extern "C" void __cdecl sub_005D8780(); // 0x005D8780
+extern "C" void __cdecl SKILLS_SrvDo009_Frenzy(); // 0x005D8E00
+extern "C" void __cdecl sub_005DBC60(); // 0x005DBC60
+extern "C" void __cdecl SKILLS_SrvDo099_PrimePoisonNova(); // 0x005CCD10
+extern "C" void __cdecl sub_005CDF10(); // 0x005CDF10
+extern "C" void __cdecl sub_005CDFB0(); // 0x005CDFB0
+extern "C" void __cdecl SKILLS_SrvDo014_LightningStrike(); // 0x005DBE50
+extern "C" void __cdecl SKILLS_SrvDo006_InnerSight_SlowMissiles(); // 0x005DB1C0
+extern "C" void __cdecl SKILLS_SrvDo010_GuidedArrow_BoneSpirit(); // 0x005DB6D0
+extern "C" void __cdecl SKILLS_SrvDo034_TigerStrike_CobraStrike_RoyalStrike(); // 0x005D3490
+extern "C" void __cdecl SKILLS_SrvDo035_FistsOfFire_ClawsOfThunder_BladesOfIce(); // 0x005D35D0
+extern "C" void __cdecl SKILLS_SrvDo037_ClawsOfThunder_ProgressiveFn3(); // 0x005D4E70
+extern "C" void __cdecl SKILLS_SrvDo038_FistsOfFire_BladesOfIce_ProgressiveFn2(); // 0x005D3E80
+extern "C" void __cdecl SKILLS_SrvDo039_FistsOfFire_BladesOfIce_ProgressiveFn3(); // 0x005D3F90
+extern "C" void __cdecl SKILLS_SrvDo041_RoyalStrike_ProgressiveFn3(); // 0x005D5080
+extern "C" void __cdecl SKILLS_SrvDo042_DragonTalon(); // 0x005D5A30
+extern "C" void __cdecl SKILLS_SrvDo044_BladeSentinel(); // 0x005D6020
+extern "C" void __cdecl SKILLS_SrvDo045_Sentry(); // 0x005D6170
+extern "C" void __cdecl SKILLS_SrvDo046_DragonClaw(); // 0x005D6340
+extern "C" void __cdecl SKILLS_SrvDo047_CloakOfShadows(); // 0x005D6630
+extern "C" void __cdecl SKILLS_SrvDo049_ShadowWarrior_Master(); // 0x005D6E70
+extern "C" void __cdecl SKILLS_SrvDo050_DragonTail(); // 0x005D7180
+extern "C" void __cdecl SKILLS_SrvDo051_MindBlast(); // 0x005D76E0
+extern "C" void __cdecl SKILLS_SrvDo052_DragonFlight(); // 0x005D7850
+extern "C" void __cdecl SKILLS_SrvDo074_DoubleThrow(); // 0x005D88B0
+extern "C" void __cdecl SKILLS_SrvDo075_GrimWard(); // 0x005D89B0
+extern "C" void __cdecl SKILLS_SrvDo133_Impregnate(); // 0x005D2250
+extern "C" void __cdecl SKILLS_SrvDo134_SiegeBeastStomp(); // 0x005D2320
+extern "C" void __cdecl SKILLS_SrvDo135_MinionSpawner(); // 0x005D2490
+extern "C" void __cdecl SKILLS_SrvDo137_FenrisRage(); // 0x005D26F0
+extern "C" void __cdecl SKILLS_SrvDo139_BaalColdMissiles(); // 0x005D2940
+extern "C" void __cdecl SKILLS_SrvDo140_BaalTentacle(); // 0x005D2C20
+extern "C" void __cdecl SKILLS_SrvDo141_BaalCorpseExplode(); // 0x005D2E80
+extern "C" void __cdecl SKILLS_SrvDo143_FistsOfFire_RoyalStrike_ProgressiveFn(); // 0x005D4F40
+extern "C" void __cdecl SKILLS_SrvDo028_Meteor_Blizzard_Eruption_BaalTaunt_Catapult(); // 0x005CA3E0
+extern "C" void __cdecl SKILLS_SrvDo008_MultipleShot_Teeth_ShockWave(); // 0x005DB410
+extern "C" void __cdecl SKILLS_SrvDo012_Strafe(); // 0x005DBA40
+extern "C" void __cdecl SKILLS_SrvDo015_Dopplezon(); // 0x005DC000
+extern "C" void __cdecl SKILLS_HasTarget(); // 0x005CDF00
+
+#pragma pack(push, 1)
+struct d2data_00732100_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    unsigned char b15[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007325B0_t
+{
+    unsigned char b0[4];
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    const void* p15;
+    const void* p16;
+    const void* p17;
+    const void* p18;
+    const void* p19;
+    const void* p20;
+    const void* p21;
+    const void* p22;
+    const void* p23;
+    const void* p24;
+    const void* p25;
+    const void* p26;
+    const void* p27;
+    const void* p28;
+    const void* p29;
+    const void* p30;
+    const void* p31;
+    unsigned char b32[72];
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006E1278[4]; // 0x006E1278
+extern "C" const int gData_006E1488[8]; // 0x006E1488
+extern "C" const int gData_006E14A8[8]; // 0x006E14A8
+extern "C" const int gData_006E14C8[7]; // 0x006E14C8
+extern "C" const int gData_006E14E4[4]; // 0x006E14E4
+extern "C" const int gData_006E14F4[7]; // 0x006E14F4
+extern "C" const int gData_006E1510[4]; // 0x006E1510
+extern "C" struct d2data_00732100_t gData_00732100; // 0x00732100
+extern "C" SkillDoFunc gData_007322B0[192]; // 0x007322B0
+extern "C" struct d2data_007325B0_t gData_007325B0; // 0x007325B0
+
+extern "C" const int gData_006E1278[4] = { 1, 2, 4, 5 }; // 0x006E1278
+#pragma comment(linker, "/alternatename:?gnRandomElemTypes@@3QBHB=_gData_006E1278")
+
+extern "C" const int gData_006E1488[8] = { 0, 0, 20, -20, 14, 14, -14, -14 }; // 0x006E1488
+#pragma comment(linker, "/alternatename:?gnMissilePatternYOffsets@@3QBHB=_gData_006E1488")
+
+extern "C" const int gData_006E14A8[8] = { 20, -20, 0, 0, 14, -14, -14, 14 }; // 0x006E14A8
+#pragma comment(linker, "/alternatename:?gnMissilePatternXOffsets@@3QBHB=_gData_006E14A8")
+
+extern "C" const int gData_006E14C8[7] = { 8, 2, 11, 4, 13, 6, 9 }; // 0x006E14C8
+#pragma comment(linker, "/alternatename:?gnMissilePatternOffsets2@@3QBHB=_gData_006E14C8")
+
+extern "C" const int gData_006E14E4[4] = { -1, -1, 1, 1 }; // 0x006E14E4
+#pragma comment(linker, "/alternatename:?gnMissilePatternSignY@@3QBHB=_gData_006E14E4")
+
+extern "C" const int gData_006E14F4[7] = { 18, 20, 17, 20, 15, 19, 18 }; // 0x006E14F4
+#pragma comment(linker, "/alternatename:?gnMissilePatternOffsets1@@3QBHB=_gData_006E14F4")
+
+extern "C" const int gData_006E1510[4] = { -1, 1, 1, -1 }; // 0x006E1510
+#pragma comment(linker, "/alternatename:?gnMissilePatternSignX@@3QBHB=_gData_006E1510")
+
+extern "C" struct d2data_00732100_t gData_00732100 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14",
+    { 0x00 }
+}; // 0x00732100
+
+extern SkillStartFunc gpfnSkillSrvStartFunctions[92] = {
+    0, (SkillStartFunc)&SKILLS_SrvSt01_Attack_LeftHandSwing, (SkillStartFunc)&SKILLS_SrvSt02_Kick, (SkillStartFunc)&SKILLS_SrvSt03_Unsummon, (SkillStartFunc)&sub_005DA8B0, (SkillStartFunc)&SKILLS_SrvSt05_Jab, (SkillStartFunc)&SKILLS_SrvSt06_PowerStrike_ChargedStrike, (SkillStartFunc)&SKILLS_SrvSt07_Impale, (SkillStartFunc)&SKILLS_SrvSt08_Strafe, (SkillStartFunc)&SKILLS_SrvSt09_Fend, (SkillStartFunc)&SKILLS_SrvSt10_LightningStrike, (SkillStartFunc)&SKILLS_SrvSt11_Inferno_ArcticBlast, (SkillStartFunc)&SKILLS_SrvSt12_Telekinesis_DragonFlight, (SkillStartFunc)&SKILLS_SrvSt13_ThunderStorm, (SkillStartFunc)&SKILLS_SrvSt14_Hydra, (SkillStartFunc)&SKILLS_SrvSt15_RaiseSkeleton_Mage,
+    (SkillStartFunc)&SKILLS_SrvSt16_PoisonDagger, (SkillStartFunc)&SKILLS_SrvSt17_Poison_CorpseExplosion, (SkillStartFunc)&SKILLS_SrvSt18_Attract, (SkillStartFunc)&SKILLS_SrvSt19_BonePrison, (SkillStartFunc)&SKILLS_SrvSt20_IronGolem, (SkillStartFunc)&SKILLS_SrvSt21_Revive, (SkillStartFunc)&SKILLS_SrvSt22_PsychicHammer, (SkillStartFunc)&SKILLS_SrvSt23_AssasinChargeStrikes, (SkillStartFunc)&SKILLS_SrvSt24_DragonTalon, (SkillStartFunc)&SKILLS_SrvSt25_64_DragonClaw_MonFrenzy, (SkillStartFunc)&SKILLS_SrvSt26_BladeFury, (SkillStartFunc)&sub_005D7090, (SkillStartFunc)&SKILLS_SrvSt28_BladeShield, (SkillStartFunc)&SKILLS_SrvSt29_Sacrifice, 0, (SkillStartFunc)&SKILLS_SrvSt31_Charge,
+    (SkillStartFunc)&SKILLS_SrvSt32_Conversion_Bash_Stun_Concentrate_BearSmite, (SkillStartFunc)&SKILLS_SrvSt33_FindPotion_GrimWard, (SkillStartFunc)&SKILLS_SrvSt34_FindItem, (SkillStartFunc)&SKILLS_SrvSt35_Vengeance, (SkillStartFunc)&SKILLS_SrvSt36_HolyShield, (SkillStartFunc)&SKILLS_SrvSt37_Zeal_Fury_BloodLordFrenzy, (SkillStartFunc)&SKILLS_SrvSt38_Whirlwind, (SkillStartFunc)&SKILLS_SrvSt39_Berserk, (SkillStartFunc)&SKILLS_SrvSt40_Leap, (SkillStartFunc)&SKILLS_SrvSt41_LeapAttack, (SkillStartFunc)&SKILLS_SrvSt42_FireHit, (SkillStartFunc)&SKILLS_SrvSt43_MaggotEgg, (SkillStartFunc)&SKILLS_SrvSt44_MaggotUp, (SkillStartFunc)&SKILLS_SrvSt45_MaggotDown, (SkillStartFunc)&SKILLS_SrvSt46_AndrialSpray, (SkillStartFunc)&sub_005CB730,
+    (SkillStartFunc)&SKILLS_SrvSt48_SwarmMove, (SkillStartFunc)&SKILLS_SrvSt49_Nest_EvilHutSpawner, (SkillStartFunc)&SKILLS_SrvSt50_QuickStrike, (SkillStartFunc)&SKILLS_SrvSt51_Submerge, (SkillStartFunc)&SKILLS_SrvSt52_Emerge, (SkillStartFunc)&SKILLS_SrvSt53_MonInferno, (SkillStartFunc)&SKILLS_SrvSt54_DiabRun, (SkillStartFunc)&SKILLS_SrvSt55_Mosquito, (SkillStartFunc)&SKILLS_SrvSt56_FeralRage_Maul, (SkillStartFunc)&SKILLS_SrvSt57_Rabies, (SkillStartFunc)&SKILLS_SrvSt58_FireClaws, (SkillStartFunc)&SKILLS_SrvSt59_ImpInferno, (SkillStartFunc)&SKILLS_SrvSt60_SuckBlood, (SkillStartFunc)&SKILLS_SrvSt61_SelfResurrect, (SkillStartFunc)&SKILLS_SrvSt62_MinionSpawner, (SkillStartFunc)&SKILLS_SrvSt63_Corpse_VineCycler,
+    (SkillStartFunc)&SKILLS_HasTarget, (SkillStartFunc)&sub_0056CAB0
+}; // 0x00732140
+
+extern "C" SkillDoFunc gData_007322B0[192] = {
+    0, (SkillDoFunc)&SKILLS_SrvDo001_Attack_LeftHandSwing, (SkillDoFunc)&SKILLS_SrvDo002_Kick_PowerStrike_MonIceSpear_Impale_Bash_Stun_Concentrate_BearSmite_Vengeance_Berserk_FireClaws, (SkillDoFunc)&SKILLS_SrvDo003_Throw, (SkillDoFunc)&SKILLS_SrvDo004_Unsummon, (SkillDoFunc)&SKILLS_SrvDo005_LeftHandThrow, (SkillDoFunc)&SKILLS_SrvDo006_InnerSight_SlowMissiles, (SkillDoFunc)&SKILLS_SrvDo007_Jab, (SkillDoFunc)&SKILLS_SrvDo008_MultipleShot_Teeth_ShockWave, (SkillDoFunc)&SKILLS_SrvDo009_Frenzy, (SkillDoFunc)&SKILLS_SrvDo010_GuidedArrow_BoneSpirit, (SkillDoFunc)&SKILLS_SrvDo011_ChargedStrike, (SkillDoFunc)&SKILLS_SrvDo012_Strafe, (SkillDoFunc)&sub_005DBC60, (SkillDoFunc)&SKILLS_SrvDo014_LightningStrike, (SkillDoFunc)&SKILLS_SrvDo015_Dopplezon,
+    (SkillDoFunc)&SKILLS_SrvDo016_Valkyrie, (SkillDoFunc)&SKILLS_SrvDo017_ChargedBolt_BoltSentry, (SkillDoFunc)&SKILLS_SrvDo018_DefensiveBuff, (SkillDoFunc)&SKILLS_SrvDo019_Inferno_ArcticBlast, (SkillDoFunc)&SKILLS_SrvDo020_StaticField, (SkillDoFunc)&SKILLS_SrvDo021_Telekinesis, (SkillDoFunc)&SKILLS_SrvDo022_NovaAttack, (SkillDoFunc)&SKILLS_SrvDo023_Blaze_EnergyShield_SpiderLay, (SkillDoFunc)&sub_005C9EA0, (SkillDoFunc)&SKILLS_SrvDo025_Enchant, (SkillDoFunc)&SKILLS_SrvDo026_ChainLightning, (SkillDoFunc)&SKILLS_SrvDo027_Teleport, (SkillDoFunc)&SKILLS_SrvDo028_Meteor_Blizzard_Eruption_BaalTaunt_Catapult, (SkillDoFunc)&SKILLS_SrvDo029_ThunderStorm, (SkillDoFunc)&SKILLS_SrvDo030_Curse, (SkillDoFunc)&sub_005C4B00,
+    (SkillDoFunc)&SKILLS_SrvDo032_PoisonDagger, (SkillDoFunc)&sub_005D3140, (SkillDoFunc)&SKILLS_SrvDo034_TigerStrike_CobraStrike_RoyalStrike, (SkillDoFunc)&SKILLS_SrvDo035_FistsOfFire_ClawsOfThunder_BladesOfIce, (SkillDoFunc)&SKILLS_SrvDo036_ClawsOfThunder_ProgressiveFn2, (SkillDoFunc)&SKILLS_SrvDo037_ClawsOfThunder_ProgressiveFn3, (SkillDoFunc)&SKILLS_SrvDo038_FistsOfFire_BladesOfIce_ProgressiveFn2, (SkillDoFunc)&SKILLS_SrvDo039_FistsOfFire_BladesOfIce_ProgressiveFn3, (SkillDoFunc)&SKILLS_SrvDo040_RoyalStrike_ProgressiveFn1, (SkillDoFunc)&SKILLS_SrvDo041_RoyalStrike_ProgressiveFn3, (SkillDoFunc)&SKILLS_SrvDo042_DragonTalon, (SkillDoFunc)&SKILLS_SrvDo043_ShockField, (SkillDoFunc)&SKILLS_SrvDo044_BladeSentinel, (SkillDoFunc)&SKILLS_SrvDo045_Sentry, (SkillDoFunc)&SKILLS_SrvDo046_DragonClaw, (SkillDoFunc)&SKILLS_SrvDo047_CloakOfShadows,
+    (SkillDoFunc)&SKILLS_SrvDo048_BladeFury, (SkillDoFunc)&SKILLS_SrvDo049_ShadowWarrior_Master, (SkillDoFunc)&SKILLS_SrvDo050_DragonTail, (SkillDoFunc)&SKILLS_SrvDo051_MindBlast, (SkillDoFunc)&SKILLS_SrvDo052_DragonFlight, (SkillDoFunc)&SKILLS_SrvDo053_Unused, (SkillDoFunc)&SKILLS_SrvDo054_BladeShield, (SkillDoFunc)&SKILLS_ExplodeCorpse, (SkillDoFunc)&SKILLS_SrvDo056_Golem, (SkillDoFunc)&SKILLS_SrvDo057_IronGolem, (SkillDoFunc)&SKILLS_SrvDo058_Revive, (SkillDoFunc)&SKILLS_SrvDo059_Attract, (SkillDoFunc)&sub_005C58B0, (SkillDoFunc)&SKILLS_SrvDo061_Confuse, (SkillDoFunc)&sub_005C5D00, (SkillDoFunc)&SKILLS_SrvDo063_PoisonExplosion,
+    (SkillDoFunc)&SKILLS_SrvDo064_Sacrifice, (SkillDoFunc)&SKILLS_SrvDo065_BasicAura, (SkillDoFunc)&SKILLS_SrvDo066_HolyFire_HolyShock_Sanctuary_Conviction, (SkillDoFunc)&sub_005CF900, (SkillDoFunc)&SKILLS_SrvDo068_BasicShout, (SkillDoFunc)&SKILLS_SrvDo069_FindPotion, (SkillDoFunc)&SKILLS_SrvDo070_DoubleSwing, (SkillDoFunc)&SKILLS_SrvDo071_Taunt, (SkillDoFunc)&sub_005D8780, (SkillDoFunc)&SKILLS_SrvDo073_BlessedHammer, (SkillDoFunc)&SKILLS_SrvDo074_DoubleThrow, (SkillDoFunc)&SKILLS_SrvDo075_GrimWard, (SkillDoFunc)&SKILLS_SrvDo076_Whirlwind, (SkillDoFunc)&SKILLS_SrvDo077_Leap, (SkillDoFunc)&SKILLS_SrvDo078_LeapAttack, (SkillDoFunc)&sub_005D0350,
+    (SkillDoFunc)&SKILLS_SrvDo080_FistOfTheHeavens, (SkillDoFunc)&SKILLS_SrvDo081_HolyFreeze, (SkillDoFunc)&SKILLS_SrvDo082_Redemption, (SkillDoFunc)&SKILLS_SrvDo083_FireHit, (SkillDoFunc)&SKILLS_SrvDo084_MaggotEgg, (SkillDoFunc)&SKILLS_SrvDo085_UnholyBolt_ShamanFire, (SkillDoFunc)&SKILLS_SrvDo086_MaggotDown, (SkillDoFunc)&SKILLS_SrvDo087_MaggotLay, (SkillDoFunc)&SKILLS_SrvDo088_AndrialSpray, (SkillDoFunc)&SKILLS_SrvDo089_Jump, (SkillDoFunc)&SKILLS_SrvDo090_SwarmMove, (SkillDoFunc)&SKILLS_SrvDo091_Nest_EvilHutSpawner, (SkillDoFunc)&SKILLS_SrvDo092_QuickStrike, (SkillDoFunc)&sub_005CC050, (SkillDoFunc)&SKILLS_SrvDo094_Submerge, (SkillDoFunc)&SKILLS_SrvDo095_MonInferno,
+    (SkillDoFunc)&SKILLS_SrvDo096_ZakarumHeal_Bestow, (SkillDoFunc)&SKILLS_SrvDo097_Resurrect, (SkillDoFunc)&SKILLS_SrvDo098_MonTeleport, (SkillDoFunc)&SKILLS_SrvDo099_PrimePoisonNova, (SkillDoFunc)&sub_005CCE80, (SkillDoFunc)&SKILLS_SrvDo101_FingerMageSpider, (SkillDoFunc)&SKILLS_SrvDo102_DiabWall, (SkillDoFunc)&SKILLS_SrvDo103_DiabRun, (SkillDoFunc)&SKILLS_SrvDo104_DiabPrison, (SkillDoFunc)&SKILLS_SrvDo105_DesertTurret, (SkillDoFunc)&SKILLS_SrvDo106_ArcaneTower, (SkillDoFunc)&SKILLS_SrvDo107_Mosquito, (SkillDoFunc)&sub_005CDC10, (SkillDoFunc)&sub_005CDF10, (SkillDoFunc)&SKILLS_SrvDo110_Hireable_RogueMissile, (SkillDoFunc)&SKILLS_SrvDo111_FetishAura,
+    (SkillDoFunc)&SKILLS_SrvDo112_MonCurseCast, (SkillDoFunc)&SKILLS_SrvDo113_Scroll_Book, (SkillDoFunc)&SKILLS_SrvDo114_Raven, (SkillDoFunc)&SKILLS_SrvDo115_Vines, (SkillDoFunc)&SKILLS_SrvDo116_Wearwolf_Wearbear, (SkillDoFunc)&SKILLS_SrvDo117_Firestorm, (SkillDoFunc)&SKILLS_SrvDo118_Twister_Tornado, (SkillDoFunc)&SKILLS_SrvDo119_DruidSummon, (SkillDoFunc)&SKILLS_SrvDo120_FeralRage_Maul, (SkillDoFunc)&SKILLS_SrvDo121_Rabies, (SkillDoFunc)&SKILLS_SrvDo122_Hunger, (SkillDoFunc)&SKILLS_SrvDo123_Volcano, (SkillDoFunc)&SKILLS_SrvDo124_Armageddon_Hurricane, (SkillDoFunc)&SKILLS_SrvDo125_WakeOfDestruction, (SkillDoFunc)&SKILLS_SrvDo126_ImpInferno, (SkillDoFunc)&SKILLS_SrvDo127_SuckBlood,
+    (SkillDoFunc)&SKILLS_SrvDo128_CryHelp, (SkillDoFunc)&SKILLS_SrvDo129_ImpTeleport, (SkillDoFunc)&SKILLS_SrvDo130_VineAttack, (SkillDoFunc)&SKILLS_SrvDo131_OverseerWhip, (SkillDoFunc)&SKILLS_SrvDo132_ImpFireMissile, (SkillDoFunc)&SKILLS_SrvDo133_Impregnate, (SkillDoFunc)&SKILLS_SrvDo134_SiegeBeastStomp, (SkillDoFunc)&SKILLS_SrvDo135_MinionSpawner, (SkillDoFunc)&SKILLS_SrvDo136_DeathMaul, (SkillDoFunc)&SKILLS_SrvDo137_FenrisRage, (SkillDoFunc)&SKILLS_SrvDo138_Unused, (SkillDoFunc)&SKILLS_SrvDo139_BaalColdMissiles, (SkillDoFunc)&SKILLS_SrvDo140_BaalTentacle, (SkillDoFunc)&SKILLS_SrvDo141_BaalCorpseExplode, (SkillDoFunc)&SKILLS_SrvDo142_Unused, (SkillDoFunc)&SKILLS_SrvDo143_FistsOfFire_RoyalStrike_ProgressiveFn,
+    (SkillDoFunc)&SKILLS_SrvDo144_Hydra, (SkillDoFunc)&SKILLS_SrvDo145_PeriodicAreaDamage, (SkillDoFunc)&SKILLS_SrvDo146_PeriodicRandomMissile, (SkillDoFunc)&SKILLS_SrvDo147_Unused, (SkillDoFunc)&sub_005CDFB0, (SkillDoFunc)&SKILLS_SrvDo149_NecromageMissile, (SkillDoFunc)&SKILLS_SrvDo150_Smite, (SkillDoFunc)&SKILLS_SrvDo151_Unused, (SkillDoFunc)&SKILLS_SrvDo152_DiabLight
+}; // 0x007322B0
+#pragma comment(linker, "/alternatename:?gpfnSkillSrvDoFunctions@@3PAP6IHPAUD2GameStrc@@PAUD2UnitStrc@@HH@ZA=_gData_007322B0")
+
+extern "C" struct d2data_007325B0_t gData_007325B0 = {
+    { 0x00 },
+    (const void*)(unsigned int)&SKILLS_EventFunc01_ChillingArmor,
+    (const void*)(unsigned int)&SKILLS_EventFunc02_FrozenArmor,
+    (const void*)(unsigned int)&SKILLS_EventFunc03_ShiverArmor,
+    (const void*)(unsigned int)&SKILLS_EventFunc04_ReflectPhysicalDamage,
+    (const void*)(unsigned int)&SKILLS_EventFunc05_LifeTap,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc06_AttackerTakesDamage,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc07_Knockback,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc08_Howl,
+    (const void*)(unsigned int)&sub_005BFAA0,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc10_AttackerTakesLightDamage,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc11_ApplyFireDamage,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc12_ApplyColdDamage,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc13_DamageToMana,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc14_Freeze,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc15_OpenWounds,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc16_CrushingBlow,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc17_ManaAfterKill,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc18_HealAfterDemonKill,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc19_Slow,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc20_SkillOnAttackHitKill,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc21_SkillOnGetHit,
+    (const void*)(unsigned int)&SKILLS_EventFunc22_AbsorbPhysicalDamage,
+    (const void*)(unsigned int)&sub_005C6530,
+    (const void*)(unsigned int)&SKILLS_EventFunc24_EnergyShield,
+    (const void*)(unsigned int)&SKILLS_EventFunc25_AbsorbElementalDamage,
+    (const void*)(unsigned int)&SKILLS_EventFunc26_ShareDamageWithOwner,
+    (const void*)(unsigned int)&SKILLS_EventFunc27_Slow,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc28_HealAfterKill,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc29_RestInPeace,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc30_SkillOnDeathLevelup,
+    (const void*)(unsigned int)&SKILLITEM_EventFunc31_Reanimate,
+    { 0x00 }
+}; // 0x007325B0
+#pragma comment(linker, "/alternatename:?gpfnSkillEventCallbacks@@3QBQ6IHPAUD2GameStrc@@HPAUD2UnitStrc@@1PAUD2DamageStrc@@HH@ZB=_gData_007325B0")

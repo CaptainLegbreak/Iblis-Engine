@@ -2071,4 +2071,519 @@ found:
     UNITSND_PlayPlayerSpeech(pPlayer, pEntry->f_2C);
 }
 
-#include "gen/data/Source/D2Client/UNIT/UnitSnd.inc"
+#pragma pack(push, 1)
+struct d2data_00727EAC_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00729F00_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00729F2C_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00729F58_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00729F84_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00729FB0_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00729FDC_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A024_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A054_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A084_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A0B4_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A0E4_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A114_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A144_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A174_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A1A4_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A1D4_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A204_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A234_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A264_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072A294_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00727EAC_t gData_00727EAC; // 0x00727EAC
+extern "C" struct d2data_00729F00_t gData_00729F00; // 0x00729F00
+extern "C" struct d2data_00729F2C_t gData_00729F2C; // 0x00729F2C
+extern "C" struct d2data_00729F58_t gData_00729F58; // 0x00729F58
+extern "C" struct d2data_00729F84_t gData_00729F84; // 0x00729F84
+extern "C" struct d2data_00729FB0_t gData_00729FB0; // 0x00729FB0
+extern "C" struct d2data_00729FDC_t gData_00729FDC; // 0x00729FDC
+extern "C" struct d2data_0072A024_t gData_0072A024; // 0x0072A024
+extern "C" struct d2data_0072A054_t gData_0072A054; // 0x0072A054
+extern "C" struct d2data_0072A084_t gData_0072A084; // 0x0072A084
+extern "C" struct d2data_0072A0B4_t gData_0072A0B4; // 0x0072A0B4
+extern "C" struct d2data_0072A0E4_t gData_0072A0E4; // 0x0072A0E4
+extern "C" struct d2data_0072A114_t gData_0072A114; // 0x0072A114
+extern "C" struct d2data_0072A144_t gData_0072A144; // 0x0072A144
+extern "C" struct d2data_0072A174_t gData_0072A174; // 0x0072A174
+extern "C" struct d2data_0072A1A4_t gData_0072A1A4; // 0x0072A1A4
+extern "C" struct d2data_0072A1D4_t gData_0072A1D4; // 0x0072A1D4
+extern "C" struct d2data_0072A204_t gData_0072A204; // 0x0072A204
+extern "C" struct d2data_0072A234_t gData_0072A234; // 0x0072A234
+extern "C" struct d2data_0072A264_t gData_0072A264; // 0x0072A264
+extern "C" struct d2data_0072A294_t gData_0072A294; // 0x0072A294
+
+extern "C" struct d2data_00727EAC_t gData_00727EAC = {
+    {
+        0x3E, 0x0B, 0x00, 0x00, 0x43, 0x0B, 0x00, 0x00, 0x89, 0x0B, 0x00, 0x00, 0x8D, 0x0B, 0x00, 0x00,
+        0x8B, 0x0B, 0x00, 0x00, 0x76, 0x0B, 0x00, 0x00, 0x78, 0x0B, 0x00, 0x00, 0x8F, 0x0B, 0x00, 0x00,
+        0x79, 0x0B, 0x00, 0x00, 0x91, 0x0B, 0x00, 0x00, 0xD0, 0x0A
+    }
+}; // 0x00727EAC
+
+extern D2DirRateStrc gaDirRate[14] = {
+    { 0 },
+    { 251, 6 },
+    { 262, 6 },
+    { 268, 6 },
+    { 274, 8 },
+    { 280, 8 },
+    { 286, 6 },
+    { 292, 8 },
+    { 268, 6 },
+    { 298, 6 }
+}; // 0x00727ED8
+
+extern D2UnitSndObjectStrc gaUnitSndObjects[121] = {
+    { { 0 }, 2532, 8 },
+    { { 0, 0, 2533 } },
+    { { 0, 2645 } },
+    { { 0, 2623 } },
+    { { 0, 2534 } },
+    { { 0, 0, 0, 525 } },
+    { { 0, 0, 0, 526 } },
+    { { 0, 0, 0, 528 } },
+    { { 0, 2535 } },
+    { { 0, 2540 } },
+    { { 0, 2548 } },
+    { { 0, 2570 } },
+    { { 0, 2622 } },
+    { { 0 }, 2541, 8 },
+    { { 0 }, 2574, 1, 2574, 2 },
+    { { 0, 0, 2542 } },
+    { { 0, 0, 2552 } },
+    { { 0 }, 2574, 8 },
+    { { 0 }, 2544, 8 },
+    { { 0 }, 2574, 2 },
+    { { 0 }, 2574 },
+    { { 0, 413, 414, 415, 416, 417 } },
+    { { 0, 0, 0, 0, 0, 0, 418 } },
+    { { 0, 4 } },
+    { { 0, 2545 } },
+    { { 0, 2546 } },
+    { { 0, 2546 } },
+    { { 0, 2547 } },
+    { { 0, 2548 } },
+    { { 0, 2600 } },
+    { { 0, 0, 2547 } },
+    { { 0, 2548 } },
+    { { 0, 2549 } },
+    { { 0, 2552 } },
+    { { 0, 2554 } },
+    { { 0, 407 } },
+    { { 0, 2555 } },
+    { { 0, 2556 }, 2557, 2 },
+    { { 2569, 2568 } },
+    { { 0, 2558 } },
+    { { 2560, 0, 2559 } },
+    { { 0, 2561 }, 2562, 2 },
+    { { 2564, 0, 2563 } },
+    { { 0, 2565, 0, 2565 } },
+    { { 0, 2566, 0, 2566 } },
+    { { 2567, 2567 } },
+    { { 2569, 0, 2568 } },
+    { { 0, 2601 } },
+    { { 0, 2570 } },
+    { { 0, 2571 }, 2572 },
+    { { 0 }, 2576, 8 },
+    { { 0, 2579 } },
+    { { 0, 2622 } },
+    { { 0 }, 2583, 8 },
+    { { 0, 2635 } },
+    { { 0 }, 2573, 8 },
+    { { 0, 2584, 0, 2585 } },
+    { { 0 }, 2586, 1, 2586, 2 },
+    { { 0, 2590 } },
+    { { 0, 2645 } },
+    { { 0, 2593 } },
+    { { 0 }, 2575, 8 },
+    { { 0, 34 } },
+    { { 0, 1786 } },
+    { { 0 }, 45, 8 },
+    { { 0, 2601 } },
+    { { 0, 0, 2594 } },
+    { { 0, 2543 } },
+    { { 0 }, 667, 8 },
+    { { 0, 2596 } },
+    { { 0 }, 2599, 8 },
+    { { 0, 2600 } },
+    { { 0, 2603 } },
+    { { 0, 2604 } },
+    { { 0, 2605 } },
+    { { 0, 2606 } },
+    { { 0, 2607 } },
+    { { 0, 2608 } },
+    { { 0, 2609 } },
+    { { 0, 2610 }, 2611 },
+    { { 0, 2579 } },
+    { { 0, 2612 } },
+    { { 0, 2617 } },
+    { { 0, 2618 } },
+    { { 0, 2619 } },
+    { { 0, 2620 } },
+    { { 0, 2621 } },
+    { { 0, 2622 } },
+    { { 0, 2623 } },
+    { { 0, 2624 } },
+    { { 0, 2625 } },
+    { { 0, 2626 } },
+    { { 0, 2627 } },
+    { { 0, 1981, 0, 0, 0, 1981 } },
+    { { 0, 2628 } },
+    { { 0, 2629 } },
+    { { 0, 2630 }, 45, 2 },
+    { { 0 }, 2631, 8 },
+    { { 0, 2632 } },
+    { { 0 }, 2578, 8 },
+    { { 0, 2633 } },
+    { { 0, 2636 } },
+    { { 0, 2534 } },
+    { { 0, 0, 46 }, 49, 1 },
+    { { 0, 2642 } },
+    { { 0, 0, 2643 } },
+    { { 0, 2644, 2644 } },
+    { { 0, 2662 } },
+    { { 0, 0, 0, 30 }, 2555, 4 },
+    { { 0, 2650 } },
+    { { 0 }, 2661, 1, 2661, 2 },
+    { { 0, 2651 } },
+    { { 0, 2652 } },
+    { { 0, 2653 } },
+    { { 0 }, 2654, 1 },
+    { { 0, 2658 } },
+    { { 0, 2659 } },
+    { { 0, 2663 } },
+    { { 0, 2655 } },
+    { { 0 }, 2656, 1, 2656 },
+    { { 0, 2657, 0, 0, 0, 2657 } }
+}; // 0x00727F48
+
+extern D2UnitSndObjectStrc* gapUnitSndObjects[578] = {
+    0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3504), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1440), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1440), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 96), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4704), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 192), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2640), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2016), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2016), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2208),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2208), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1104), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1104), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1104), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1104), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1104), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1104), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1920), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1920), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1920), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2688), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1824), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2880), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 816), 0, 0,
+    0, 0, 0, 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 672), 0, 0, 0, 0, 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 96), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1920),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1584), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1584), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4800), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4800), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1056), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2208), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2208),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2208), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3360), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3360), 0, 0, 0, 0, 0, 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2208), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2208), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152),
+    0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 624), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3504), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3504), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2160), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2160), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3552), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2160), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2160), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1872), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2544), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 48), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 48), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5040), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5040), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3168), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 240), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5088),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 288), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5088), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 336), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5088), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3792), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3600), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3648), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4032), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3888), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4128),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4080), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2064), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5088), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4944), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5088), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3600), 0, 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5088), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5088), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1200), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1200), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1200), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4608), 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3072), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1872), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4560), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4560),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2400), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2400), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2400), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3600), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3024), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4512), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4512),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1200), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1200), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1584), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 720), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 720), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1488), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1200), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3504), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4176), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4224), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4272), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4320), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3504), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3504),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4656), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4704), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3936), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3936), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2592), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3504), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1200), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3504), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3504), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4368), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4416), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4176), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2160),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 384), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 384), 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 864), 0, 0, 0, 0, 0, 0, 0, 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4032), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1536),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1536), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3888), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3600), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2112), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2112), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2112), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3600), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3648), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3984), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2112), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2112), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 912),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1200), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1200), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1200), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3312), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 960), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3312), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 432), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 432), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1680), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2736), 0, 0, 0,
+    0, 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3840), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3696), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2592), 0, 0, 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2784), 0, 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3504), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3504), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 432), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2016), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2016), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2016), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2016), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2208), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2208), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1776), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3600), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3600), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3504),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4656), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4656), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4656), (D2UnitSndObjectStrc*)&gaUnitSndObjects, (D2UnitSndObjectStrc*)&gaUnitSndObjects, (D2UnitSndObjectStrc*)&gaUnitSndObjects, (D2UnitSndObjectStrc*)&gaUnitSndObjects, (D2UnitSndObjectStrc*)&gaUnitSndObjects, (D2UnitSndObjectStrc*)&gaUnitSndObjects, (D2UnitSndObjectStrc*)&gaUnitSndObjects, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4800), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5088), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3504), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), 0, 0, 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3216), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1968), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 816), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 816), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 816), 0, 0, 0, 0,
+    0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1488), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1488), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1488), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4704), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2928), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2928), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3408), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2304), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2352), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3936), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3120),
+    0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4464), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3888), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3840), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2976), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4800), 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4464), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4464), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4464),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4464), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3936), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1728), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1728), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1728), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1728), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1728), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2448),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 816), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 816), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3264), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 816), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1200), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5760), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5664), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5664), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5616), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5328), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5328), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5088), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1392), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5616),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1392), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1392), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 816), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 816), 0, 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848), 0, 0,
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5424), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5136), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5712), 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4896), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1344), 0, 0, 0, 0, 0, 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 576),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 480), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4848), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5184), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5184), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5184), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1632), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5088), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5088), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5760), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1248), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1296), 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5376), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5088), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2496), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2496), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2832), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5088), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3456), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 1152), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2832), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4992), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5520), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3408), 0, 0,
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 3408), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5568), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5232), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5040), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5040), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 48), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 48), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 816), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752), 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5568), 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4752),
+    (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 2400), 0, 0, (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5280), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 5472), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4800), (D2UnitSndObjectStrc*)((char*)&gaUnitSndObjects + 4800)
+}; // 0x007295F8
+
+extern "C" struct d2data_00729F00_t gData_00729F00 = {
+    {
+        0x56, 0x0B, 0x00, 0x00, 0x5B, 0x0B, 0x00, 0x00, 0xD7, 0x0B, 0x00, 0x00, 0xDB, 0x0B, 0x00, 0x00,
+        0xD9, 0x0B, 0x00, 0x00, 0xC4, 0x0B, 0x00, 0x00, 0xC6, 0x0B, 0x00, 0x00, 0xDD, 0x0B, 0x00, 0x00,
+        0xC7, 0x0B, 0x00, 0x00, 0xDF, 0x0B, 0x00, 0x00, 0x00, 0x0B
+    }
+}; // 0x00729F00
+
+extern "C" struct d2data_00729F2C_t gData_00729F2C = {
+    {
+        0x4E, 0x0B, 0x00, 0x00, 0x53, 0x0B, 0x00, 0x00, 0x25, 0x0C, 0x00, 0x00, 0x29, 0x0C, 0x00, 0x00,
+        0x27, 0x0C, 0x00, 0x00, 0x12, 0x0C, 0x00, 0x00, 0x14, 0x0C, 0x00, 0x00, 0x2B, 0x0C, 0x00, 0x00,
+        0x15, 0x0C, 0x00, 0x00, 0x2D, 0x0C, 0x00, 0x00, 0xA0, 0x0A
+    }
+}; // 0x00729F2C
+
+extern "C" struct d2data_00729F58_t gData_00729F58 = {
+    {
+        0x46, 0x0B, 0x00, 0x00, 0x4B, 0x0B, 0x00, 0x00, 0x73, 0x0C, 0x00, 0x00, 0x77, 0x0C, 0x00, 0x00,
+        0x75, 0x0C, 0x00, 0x00, 0x60, 0x0C, 0x00, 0x00, 0x62, 0x0C, 0x00, 0x00, 0x79, 0x0C, 0x00, 0x00,
+        0x63, 0x0C, 0x00, 0x00, 0x7B, 0x0C, 0x00, 0x00, 0xD0, 0x0A
+    }
+}; // 0x00729F58
+
+extern "C" struct d2data_00729F84_t gData_00729F84 = {
+    {
+        0x5E, 0x0B, 0x00, 0x00, 0x63, 0x0B, 0x00, 0x00, 0xC1, 0x0C, 0x00, 0x00, 0xC5, 0x0C, 0x00, 0x00,
+        0xC3, 0x0C, 0x00, 0x00, 0xAE, 0x0C, 0x00, 0x00, 0xB0, 0x0C, 0x00, 0x00, 0xC7, 0x0C, 0x00, 0x00,
+        0xB1, 0x0C, 0x00, 0x00, 0xC9, 0x0C, 0x00, 0x00, 0xA0, 0x0A
+    }
+}; // 0x00729F84
+
+extern "C" struct d2data_00729FB0_t gData_00729FB0 = {
+    {
+        0x66, 0x0B, 0x00, 0x00, 0x6B, 0x0B, 0x00, 0x00, 0x0F, 0x0D, 0x00, 0x00, 0x13, 0x0D, 0x00, 0x00,
+        0x11, 0x0D, 0x00, 0x00, 0xFC, 0x0C, 0x00, 0x00, 0xFE, 0x0C, 0x00, 0x00, 0x15, 0x0D, 0x00, 0x00,
+        0xFF, 0x0C, 0x00, 0x00, 0x17, 0x0D, 0x00, 0x00, 0xA0, 0x0A
+    }
+}; // 0x00729FB0
+
+extern "C" struct d2data_00729FDC_t gData_00729FDC = {
+    {
+        0x6E, 0x0B, 0x00, 0x00, 0x73, 0x0B, 0x00, 0x00, 0x5D, 0x0D, 0x00, 0x00, 0x61, 0x0D, 0x00, 0x00,
+        0x5F, 0x0D, 0x00, 0x00, 0x4A, 0x0D, 0x00, 0x00, 0x4C, 0x0D, 0x00, 0x00, 0x63, 0x0D, 0x00, 0x00,
+        0x4D, 0x0D, 0x00, 0x00, 0x65, 0x0D, 0x00, 0x00, 0xA0, 0x0A
+    }
+}; // 0x00729FDC
+
+extern D2UnitSndPlayerStrc* gapUnitSndPlayers[7] = { (D2UnitSndPlayerStrc*)&gData_00727EAC, (D2UnitSndPlayerStrc*)&gData_00729F84, (D2UnitSndPlayerStrc*)&gData_00729F2C, (D2UnitSndPlayerStrc*)&gData_00729F58, (D2UnitSndPlayerStrc*)&gData_00729F00, (D2UnitSndPlayerStrc*)&gData_00729FDC, (D2UnitSndPlayerStrc*)&gData_00729FB0 }; // 0x0072A008
+
+extern "C" struct d2data_0072A024_t gData_0072A024 = {
+    {
+        0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x26
+    }
+}; // 0x0072A024
+
+extern "C" struct d2data_0072A054_t gData_0072A054 = {
+    {
+        0x22, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x24, 0x00, 0x00, 0x00, 0x25, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x28
+    }
+}; // 0x0072A054
+
+extern "C" struct d2data_0072A084_t gData_0072A084 = {
+    {
+        0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x29
+    }
+}; // 0x0072A084
+
+extern "C" struct d2data_0072A0B4_t gData_0072A0B4 = {
+    {
+        0x1D, 0x00, 0x00, 0x00, 0x1E, 0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x2A
+    }
+}; // 0x0072A0B4
+
+extern "C" struct d2data_0072A0E4_t gData_0072A0E4 = {
+    {
+        0x1A, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x2B
+    }
+}; // 0x0072A0E4
+
+extern "C" struct d2data_0072A114_t gData_0072A114 = {
+    {
+        0x14, 0x00, 0x00, 0x00, 0x15, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00, 0x17, 0x00, 0x00, 0x00,
+        0x18, 0x00, 0x00, 0x00, 0x19, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x2C
+    }
+}; // 0x0072A114
+
+extern "C" struct d2data_0072A144_t gData_0072A144 = {
+    {
+        0x26, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x2E
+    }
+}; // 0x0072A144
+
+extern "C" struct d2data_0072A174_t gData_0072A174 = {
+    {
+        0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00,
+        0x06, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x2F
+    }
+}; // 0x0072A174
+
+extern "C" struct d2data_0072A1A4_t gData_0072A1A4 = {
+    {
+        0x4A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x00, 0x00, 0x37
+    }
+}; // 0x0072A1A4
+
+extern "C" struct d2data_0072A1D4_t gData_0072A1D4 = {
+    {
+        0x3A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0x38
+    }
+}; // 0x0072A1D4
+
+extern "C" struct d2data_0072A204_t gData_0072A204 = {
+    {
+        0x6E, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00, 0x4C
+    }
+}; // 0x0072A204
+
+extern "C" struct d2data_0072A234_t gData_0072A234 = {
+    {
+        0x78, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x4E
+    }
+}; // 0x0072A234
+
+extern "C" struct d2data_0072A264_t gData_0072A264 = {
+    {
+        0x79, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x4D
+    }
+}; // 0x0072A264
+
+extern "C" struct d2data_0072A294_t gData_0072A294 = {
+    {
+        0x84, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x24, 0x00, 0x00, 0x00, 0x4F
+    }
+}; // 0x0072A294
+
+extern D2LevelSpeechStrc* gapLevelSpeeches[15] = { (D2LevelSpeechStrc*)&gData_0072A024, (D2LevelSpeechStrc*)&gData_0072A054, (D2LevelSpeechStrc*)&gData_0072A084, (D2LevelSpeechStrc*)&gData_0072A0B4, (D2LevelSpeechStrc*)&gData_0072A0E4, (D2LevelSpeechStrc*)&gData_0072A114, (D2LevelSpeechStrc*)&gData_0072A144, (D2LevelSpeechStrc*)&gData_0072A174, (D2LevelSpeechStrc*)&gData_0072A1A4, (D2LevelSpeechStrc*)&gData_0072A1D4, (D2LevelSpeechStrc*)&gData_0072A204, (D2LevelSpeechStrc*)&gData_0072A234, (D2LevelSpeechStrc*)&gData_0072A264, (D2LevelSpeechStrc*)&gData_0072A294 }; // 0x0072A2C4

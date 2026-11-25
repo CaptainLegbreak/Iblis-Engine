@@ -543,7 +543,7 @@ int __stdcall CLIENT_Send(int nSize, int nFlags, void* pData)
     return CLIENT_SendToSocket(pBuffer, nSize);
 }
 
-#include "gen/data/Source/D2Net/SRC/Client.inc"
+extern int gClientSocket = -1; // 0x00730AE0
 
 D2NetPacketRecStrc* gpGamePacketList; // 0x00882CE4
 

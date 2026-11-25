@@ -4326,4 +4326,159 @@ int __stdcall UNITS_IsObjectInInteractRange(D2UnitStrc* pUnit, D2UnitStrc* pObje
     return nX1 >= nX - 1 && nX1 <= nX + 1 && nY1 >= nY - 1 && nY1 <= nY + 1;
 }
 
-#include "gen/data/Source/D2Common/UNITS/Units.inc"
+#pragma pack(push, 1)
+struct d2data_006E8E22_t
+{
+    unsigned char b0[2];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00744508_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const D2AnimModeModulatorStrc gData_006E8A00[20]; // 0x006E8A00
+extern "C" const D2ValueRecordStrc gData_006E8B90[16]; // 0x006E8B90
+extern "C" const D2ValueRecordStrc gData_006E8CD0[16]; // 0x006E8CD0
+extern "C" const struct d2data_006E8E22_t gData_006E8E22; // 0x006E8E22
+extern "C" const D2AnimModeStatBasePercentageStrc gData_006E8E24[5]; // 0x006E8E24
+extern "C" const int gData_006E8E60[14][7]; // 0x006E8E60
+extern "C" struct d2data_00744508_t gData_00744508; // 0x00744508
+
+extern "C" const D2AnimModeModulatorStrc gData_006E8A00[20] = {
+    { 0, 0, 0, 0, 1 },
+    { 0 },
+    { 0, 1 },
+    { 0, 1 },
+    { 0 },
+    { 0 },
+    { 0, 1 },
+    { 0, 0, 0, 1 },
+    { 0, 0, 0, 1 },
+    { 0 },
+    { 0 },
+    { 0, 0, 0, 1 },
+    { 0, 0, 0, 1 },
+    { 1, 0, 1 },
+    { 1, 0, 1 },
+    { 1, 0, 1 },
+    { 1, 0, 1 },
+    { 0, 0, 0, 0, 1 },
+    { 1, 0, 1 }
+}; // 0x006E8A00
+#pragma comment(linker, "/alternatename:?gaPlayerModesAnimModulators_006E8A00@@3PAUD2AnimModeModulatorStrc@@A=_gData_006E8A00")
+
+extern "C" const D2ValueRecordStrc gData_006E8B90[16] = {
+    { { 0, 0, 0, 0, 1 } },
+    { { 0 } },
+    { { 0, 1 } },
+    { { 0 } },
+    { { 0, 0, 0, 1 } },
+    { { 0, 0, 0, 1 } },
+    { { 0 } },
+    { { 0 } },
+    { { 1, 1, 1 } },
+    { { 1, 1, 1 } },
+    { { 1, 1, 1 } },
+    { { 1, 1, 1 } },
+    { { 0, 0, 0, 0, 1 } },
+    { { 0 } },
+    { { 1, 0, 1 } },
+    { { 0, 1 } }
+}; // 0x006E8B90
+#pragma comment(linker, "/alternatename:?gTable_006E8B90@@3QBUD2ValueRecordStrc@@B=_gData_006E8B90")
+
+extern "C" const D2ValueRecordStrc gData_006E8CD0[16] = {
+    { { 0, 0, 0, 0, 1 } },
+    { { 0 } },
+    { { 0, 1 } },
+    { { 0 } },
+    { { 0, 0, 0, 1 } },
+    { { 0, 0, 0, 1 } },
+    { { 0 } },
+    { { 0 } },
+    { { 1, 0, 1 } },
+    { { 1, 0, 1 } },
+    { { 1, 0, 1 } },
+    { { 1, 0, 1 } },
+    { { 0, 0, 0, 0, 1 } },
+    { { 0 } },
+    { { 1, 0, 1 } },
+    { { 0, 1 } }
+}; // 0x006E8CD0
+#pragma comment(linker, "/alternatename:?gTable_006E8CD0@@3QBUD2ValueRecordStrc@@B=_gData_006E8CD0")
+
+extern "C" const struct d2data_006E8E22_t gData_006E8E22 = {
+    { 0x00 }
+}; // 0x006E8E22
+
+extern "C" const D2AnimModeStatBasePercentageStrc gData_006E8E24[5] = {
+    { 1, 120, 93 },
+    { 1, 120, 99 },
+    { 1, 120, 105 },
+    { 1, 120, 102 },
+    { 1, 150, 96 }
+}; // 0x006E8E24
+#pragma comment(linker, "/alternatename:?gaAnimModeStatBasePercentage@@3PAUD2AnimModeStatBasePercentageStrc@@A=_gData_006E8E24")
+
+extern "C" const int gData_006E8E60[14][7] = {
+    { 1, 1 },
+    { 0 },
+    { 2, 2 },
+    { 2, 2 },
+    { 2, 2 },
+    { 2, 2 },
+    { 2, 2 }
+}; // 0x006E8E60
+#pragma comment(linker, "/alternatename:?gaClassesWeaponFrameBonus@@3PAY06HA=_gData_006E8E60")
+
+extern "C" struct d2data_00744508_t gData_00744508 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00744508
+
+extern D2InventoryRecordMapStrc gaInventoryRecordMap[7] = {
+    { 0 },
+    { 1, 1 },
+    { 2, 2 },
+    { 3, 3 },
+    { 4, 4 },
+    { 5, 14 },
+    { 6, 15 }
+}; // 0x00744544
+
+extern unsigned int gnInventoryRecordMapCount = 7; // 0x0074457C
+
+extern unsigned int gdwNoBlockItemCodes[1] = { 0x20686374 }; // 0x00744580
+
+extern unsigned int gnNoBlockItemCodeCount = 1; // 0x00744584

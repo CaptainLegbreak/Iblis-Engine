@@ -249,15 +249,95 @@ int gnEaxVersion; // 0x00881774
 
 int gbSoundLockInit; // 0x0088177C
 
-#include "gen/data/Source/D2Sound/Unknown_00513BC0.inc"
+#pragma pack(push, 1)
+struct d2data_006DE3E0_t
+{
+    unsigned char b0[48];
+};
+#pragma pack(pop)
 
-#include "gen/data/Source/D2Sound/Unknown_00513BC0/gnChannelCountA.inc"
+#pragma pack(push, 1)
+struct d2data_006DE420_t
+{
+    unsigned char b0[64];
+};
+#pragma pack(pop)
 
-#include "gen/data/Source/D2Sound/Unknown_00513BC0/gaChannelTableA.inc"
+#pragma pack(push, 1)
+struct d2data_0072F838_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
 
-#include "gen/data/Source/D2Sound/Unknown_00513BC0/gaChannelTableB.inc"
+extern "C" const D2DSGuid gData_006DE3D0; // 0x006DE3D0
+extern "C" const struct d2data_006DE3E0_t gData_006DE3E0; // 0x006DE3E0
+extern "C" const D2DSGuid gData_006DE410; // 0x006DE410
+extern "C" const struct d2data_006DE420_t gData_006DE420; // 0x006DE420
+extern "C" struct d2data_0072F838_t gData_0072F838; // 0x0072F838
 
-#include "gen/data/Source/D2Sound/Unknown_00513BC0/gnChannelCountB.inc"
+extern "C" const D2DSGuid gData_006DE3D0 = { 0x279AFA86, 0x4981, 0x11CE, { 0xA5, 0x21, 0, 0x20, 0xAF, 0xB, 0xE5, 0x60 } }; // 0x006DE3D0
+#pragma comment(linker, "/alternatename:?gtIidDirectSound3DBuffer@@3UD2DSGuid@@B=_gData_006DE3D0")
+
+extern "C" const struct d2data_006DE3E0_t gData_006DE3E0 = {
+    {
+        0x81, 0x07, 0x21, 0xB0, 0xCD, 0x89, 0xD0, 0x11, 0xAF, 0x08, 0x00, 0xA0, 0xC9, 0x25, 0xCD, 0x16,
+        0x82, 0x07, 0x21, 0xB0, 0xCD, 0x89, 0xD0, 0x11, 0xAF, 0x08, 0x00, 0xA0, 0xC9, 0x25, 0xCD, 0x16,
+        0x83, 0x07, 0x21, 0xB0, 0xCD, 0x89, 0xD0, 0x11, 0xAF, 0x08, 0x00, 0xA0, 0xC9, 0x25, 0xCD, 0x16
+    }
+}; // 0x006DE3E0
+
+extern "C" const D2DSGuid gData_006DE410 = { 0x31EFAC30, 0x515C, 0x11D0, { 0xA9, 0xAA, 0, 0xAA, 0, 0x61, 0xBE, 0x93 } }; // 0x006DE410
+#pragma comment(linker, "/alternatename:?gtIidKsPropertySet@@3UD2DSGuid@@B=_gData_006DE410")
+
+extern "C" const struct d2data_006DE420_t gData_006DE420 = {
+    {
+        0x3F, 0x33, 0x41, 0xC2, 0x1B, 0x1C, 0xD2, 0x11, 0x94, 0xF5, 0x00, 0xC0, 0x4F, 0xC2, 0x8A, 0xCA,
+        0x40, 0x33, 0x41, 0xC2, 0x1B, 0x1C, 0xD2, 0x11, 0x94, 0xF5, 0x00, 0xC0, 0x4F, 0xC2, 0x8A, 0xCA,
+        0x42, 0x33, 0x41, 0xC2, 0x1B, 0x1C, 0xD2, 0x11, 0x94, 0xF5, 0x00, 0xC0, 0x4F, 0xC2, 0x8A, 0xCA,
+        0x81, 0x3B, 0xF5, 0x4F, 0xE0, 0x1C, 0xD3, 0x11, 0xAA, 0xB8, 0x00, 0xA0, 0xC9, 0x59, 0x49, 0xD5
+    }
+}; // 0x006DE420
+
+extern "C" struct d2data_0072F838_t gData_0072F838 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0072F838
+
+static int gnChannelCountA = 8; // 0x0072F874
+
+static D2SoundChannelEntryStrc gaChannelTableA[8] = { { (const char *)"data\\global\\music\\common\\options.wav" }, { (const char *)"data\\global\\music\\act1\\caves.wav" }, { (const char *)"data\\global\\music\\act1\\monastery.wav" }, { (const char *)"data\\global\\music\\act1\\crypt.wav" }, { (const char *)"data\\global\\music\\act2\\harem.wav" }, { (const char *)"data\\global\\music\\act2\\tombs.wav" }, { (const char *)"data\\global\\music\\act3\\spider.wav" }, { (const char *)"data\\global\\music\\act3\\kurastsewer.wav" } }; // 0x0072F878
+
+static D2SoundChannelEntryStrc gaChannelTableB[8] = { { (const char *)"data\\global\\music\\introedit.wav" }, { (const char *)"data\\global\\music\\act5\\icecaves.wav" }, { (const char *)"data\\global\\music\\act5\\xtemple.wav" }, { (const char *)"data\\global\\music\\act2\\desert.wav" }, { (const char *)"data\\global\\music\\act2\\sewer.wav" }, { (const char *)"data\\global\\music\\act3\\kurast.wav" }, { (const char *)"data\\global\\music\\act3\\kurastsewer.wav" }, { (const char *)"data\\global\\music\\act4\\diablo.wav" } }; // 0x0072F8B8
+
+static int gnChannelCountB = 8; // 0x0072F8F8
 
 extern "C" void __fastcall D2SOUND_CreateStreamChannel(int nArg); // 0x00514780
 

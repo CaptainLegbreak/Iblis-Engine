@@ -4125,4 +4125,105 @@ void __fastcall sub_M109_Emit_0057CEA0(D2UnitStrc* pAttacker, D2DamageStrc* pDam
     UNITS_GetHitClass((D2UnitStrc*)pDamage);
 }
 
-#include "gen/data/Source/D2Game/UNIT/SUnitDmg.inc"
+#pragma pack(push, 1)
+struct d2data_00732940_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    unsigned char b15[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00732BCC_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006E1668[11]; // 0x006E1668
+extern "C" const int gData_006E1694[11]; // 0x006E1694
+extern "C" const D2DamageHitClassMappingStrc gData_006E16D8[8]; // 0x006E16D8
+extern "C" struct d2data_00732940_t gData_00732940; // 0x00732940
+extern "C" struct d2data_00732BCC_t gData_00732BCC; // 0x00732BCC
+
+extern "C" const int gData_006E1668[11] = { 256, 256, 256, 256, 256, 256, 207, 159, 110, 61, 13 }; // 0x006E1668
+#pragma comment(linker, "/alternatename:?gnExpFactorLowerLevel@@3QBHB=_gData_006E1668")
+
+extern "C" const int gData_006E1694[11] = { 256, 256, 256, 256, 256, 256, 225, 174, 92, 38, 5 }; // 0x006E1694
+#pragma comment(linker, "/alternatename:?gnExpFactorHigherLevel@@3QBHB=_gData_006E1694")
+
+extern "C" const D2DamageHitClassMappingStrc gData_006E16D8[8] = {
+    { 36, 0x30 },
+    { 16, 0x20 },
+    { 28, 0x40 },
+    { 40, 0x50 },
+    { 36, 0x30 },
+    { 16, 0x20 },
+    { 28, 0x40 },
+    { 40, 0x50 }
+}; // 0x006E16D8
+#pragma comment(linker, "/alternatename:_gaDamageHitClassMapping=_gData_006E16D8")
+
+extern "C" struct d2data_00732940_t gData_00732940 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14",
+    { 0x00 }
+}; // 0x00732940
+
+extern Record gVar_00732980_Records[12] = {
+    { 8, 36, -1, -1, -1, -1, 1, 0, 1, (const char *)"Dam", 8 },
+    { 16, 39, 40, 333, 142, 143, 2, 0, 1, (const char *)"Fire", 8 },
+    { 28, 41, 42, 334, 144, 145, 2, 0, 1, (const char *)"Ligt", 8 },
+    { 36, 43, 44, 335, 148, 149, 2, 0, 1, (const char *)"Cold", 8 },
+    { 32, 37, 38, -1, 146, 147, 2, 0, 1, (const char *)"Magc", 8 },
+    { 48, 43, 44, 335, -1, -1, 0, 0, 0, (const char *)"CLen" },
+    { 52, 43, 44, 335, -1, -1, 0, 0, 0, (const char *)"FLen" },
+    { 44, 110, -1, 336, -1, -1, 0, 0, 0, (const char *)"PLen" },
+    { 40, 45, 46, 336, -1, -1, 0, 0, 1, (const char *)"Pois" },
+    { 56, -1, -1, -1, -1, -1, 0, 1, 1, (const char *)"Life", 8 },
+    { 60, -1, -1, -1, -1, -1, 0, 1, 1, (const char *)"Mana", 8 },
+    { 64, -1, -1, -1, -1, -1, 0, 1, 1, (const char *)"Stam", 8 }
+}; // 0x00732980
+
+extern D2BodyLocWeightStrc gaBodyLocWeights[7] = {
+    { 1, 3 },
+    { 3, 5 },
+    { 4, 4 },
+    { 5, 4 },
+    { 8, 2 },
+    { 9, 2 },
+    { 10, 2 }
+}; // 0x00732B90
+
+extern int gnBodyLocWeightCount = 7; // 0x00732BC8
+
+extern "C" struct d2data_00732BCC_t gData_00732BCC = {
+    { 0x00 }
+}; // 0x00732BCC

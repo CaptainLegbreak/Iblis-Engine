@@ -694,4 +694,10 @@ void __fastcall ACT1Q2_Callback13_PlayerStartedGame(D2QuestDataStrc* pQuestData,
     }
 }
 
-#include "gen/data/Source/D2Game/Quests/a1q2.inc"
+extern "C" const char gData_006E1B98[24]; // 0x006E1B98
+
+extern "C" const char gData_006E1B98[24] = {
+    100, 58, 92, 100, 105, 97, 98, 108, 111, 50, 92, 68, 105, 97, 98, 108,
+    111, 50, 92, 83, 111, 117, 114, 99
+}; // 0x006E1B98
+#pragma comment(linker, "/alternatename:_gszA1Q2SourceFile=_gData_006E1B98")

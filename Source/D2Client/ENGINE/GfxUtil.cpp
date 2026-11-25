@@ -2938,4 +2938,4 @@ static unsigned int GFXUTIL_GetWeaponClassToken(D2UnitStrc* pUnit, int nComponen
     return 0;
 }
 
-#include "gen/data/Source/D2Client/ENGINE/GfxUtil.inc"
+

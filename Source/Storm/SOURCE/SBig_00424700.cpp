@@ -408,4 +408,7 @@ void __stdcall Rand(BigBuffer* pResult, BigBuffer* pModulus, BigBuffer* pSeed, B
     pStack->nUsed -= 2;
 }
 
-#include "gen/data/Source/Storm/SOURCE/SBig_00424700.inc"
+extern "C" const unsigned char gData_006CFF68[8]; // 0x006CFF68
+
+extern "C" const unsigned char gData_006CFF68[8] = { 0xB5, 0x3B, 0x12, 0x1F, 0xE5, 0x55, 0x9A, 0x15 }; // 0x006CFF68
+#pragma comment(linker, "/alternatename:?gabSBigRandSeed_006CFF68@@3QBEB=_gData_006CFF68")

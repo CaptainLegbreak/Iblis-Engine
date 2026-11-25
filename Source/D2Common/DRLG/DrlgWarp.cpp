@@ -680,4 +680,62 @@ void __cdecl DRLGWARP_Nop()
 {
 }
 
-#include "gen/data/Source/D2Common/DRLG/DrlgWarp.inc"
+#pragma pack(push, 1)
+struct d2data_00749804_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const D2TileGroupStrc gData_006EED88[14]; // 0x006EED88
+extern "C" struct d2data_00749804_t gData_00749804; // 0x00749804
+
+extern "C" const D2TileGroupStrc gData_006EED88[14] = {
+    { 1 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 1, 1 },
+    { 0, 1 },
+    { 0, 1 },
+    { 0, 1 },
+    { 0, 1 },
+    { 0, 2 },
+    { 0, 3 },
+    { 0, 4 },
+    { 0, 5 }
+}; // 0x006EED88
+#pragma comment(linker, "/alternatename:?gaTileGroups@@3PAUD2TileGroupStrc@@A=_gData_006EED88")
+
+extern "C" struct d2data_00749804_t gData_00749804 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749804

@@ -119,7 +119,7 @@ void BigBuffer::sub_00422140_Trim()
     }
 }
 
-#include "gen/data/Source/Storm/SOURCE/SBig_004212F0.inc"
+extern char gszTypeNameChar_0070888C[4] = ".D"; // 0x0070888C
 
 // 0x00421FE0
 void BigBuffer::GrowToFit(int nIndex)

@@ -196,13 +196,13 @@ struct D2AiControlStrc;
 struct D2DynamicPathStrc;
 
 // build: symbol ?gnInactiveCmdParam1@* 0x007314C0
-#include "gen/data/Source/D2Game/UNIT/SUnitInactive/gnInactiveCmdParam1.inc"
+static int gnInactiveCmdParam1 = -559030611; // 0x007314C0
 
 // build: symbol ?gnInactiveNoXpParam2@* 0x007314C4
-#include "gen/data/Source/D2Game/UNIT/SUnitInactive/gnInactiveNoXpParam2.inc"
+static int gnInactiveNoXpParam2 = 1; // 0x007314C4
 
 // build: symbol ?gnInactiveNoTcParam2@* 0x007314C8
-#include "gen/data/Source/D2Game/UNIT/SUnitInactive/gnInactiveNoTcParam2.inc"
+static int gnInactiveNoTcParam2 = 2; // 0x007314C8
 
 int __fastcall MONSTER_CheckSummonerFlag(D2UnitStrc* pUnit, int nFlag);                                      // 0x00573540
 
@@ -1696,4 +1696,4 @@ void __fastcall SUNITINACTIVE_CompressUnitIfNeeded(D2GameStrc* pGame, D2UnitStrc
     }
 }
 
-#include "gen/data/Source/D2Game/UNIT/SUnitInactive.inc"
+

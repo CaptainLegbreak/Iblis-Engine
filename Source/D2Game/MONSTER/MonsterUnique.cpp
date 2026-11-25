@@ -3787,4 +3787,115 @@ void __fastcall MONSTERUNIQUE_ApplyElementalDamage(D2GameStrc* pGame, D2UnitStrc
     MONSTERUNIQUE_ApplyElementalDamageStats(pUnit, gnUniqueElementalStats[nRand][0], gnUniqueElementalStats[nRand][1], gnUniqueElementalStats[nRand][2], pGame);
 }
 
-#include "gen/data/Source/D2Game/MONSTER/MonsterUnique.inc"
+extern "C" void __cdecl PARTYSCREEN_InvitationCancelled(); // 0x005A5B30
+extern "C" void __cdecl PARTYSCREEN_PlayerLeftParty(); // 0x005A5D20
+extern "C" void __cdecl PARTYSCREEN_ReceivedInvitation(); // 0x005A5BE0
+extern "C" void __cdecl PARTYSCREEN_ToggleHostile(); // 0x005A5E50
+extern "C" void __cdecl PARTYSCREEN_ToggleIgnore(); // 0x005A5840
+extern "C" void __cdecl PARTYSCREEN_ToggleLootability(); // 0x005A57B0
+extern "C" void __cdecl PARTYSCREEN_ToggleSquelch(); // 0x005A58A0
+extern "C" void __cdecl PARTYSCREEN_AcceptInvitation(); // 0x005A5A30
+extern "C" void __cdecl MONSTERUNIQUE_UMod26_Teleport(); // 0x005A1600
+extern "C" void __cdecl MONSTERUNIQUE_ApplyCorpseFireDamage(); // 0x005A3D20
+
+#pragma pack(push, 1)
+struct d2data_0073BF5C_t
+{
+    unsigned char b0[4];
+    const void* p1;
+    const void* p2;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006E2168[4]; // 0x006E2168
+extern "C" const int gData_006E2198[4]; // 0x006E2198
+extern "C" const int gData_006E21A8[4]; // 0x006E21A8
+extern "C" const int gData_006E21B8[5][3]; // 0x006E21B8
+extern "C" struct d2data_0073BF5C_t gData_0073BF5C; // 0x0073BF5C
+
+extern "C" const int gData_006E2168[4] = { 1, 2, 3, 4 }; // 0x006E2168
+#pragma comment(linker, "/alternatename:?gnBaseUMods@@3QBHB=_gData_006E2168")
+
+extern "C" const int gData_006E2198[4] = { -1, 0, 1 }; // 0x006E2198
+#pragma comment(linker, "/alternatename:?gnBugLightningYOffsets@@3QBHB=_gData_006E2198")
+
+extern "C" const int gData_006E21A8[4] = { 0, 1, 0, -1 }; // 0x006E21A8
+#pragma comment(linker, "/alternatename:?gnBugLightningXOffsets@@3QBHB=_gData_006E21A8")
+
+extern "C" const int gData_006E21B8[5][3] = {
+    { 48, 49, -1 },
+    { 50, 51, -1 },
+    { 52, 53, -1 },
+    { 54, 55, 56 },
+    { 57, 58, 59 }
+}; // 0x006E21B8
+#pragma comment(linker, "/alternatename:?gnUniqueElementalStats@@3QAY02$$CBHA=_gData_006E21B8")
+
+extern "C" struct d2data_0073BF5C_t gData_0073BF5C = {
+    { 0x00 },
+    (const void*)(unsigned int)&MONSTERUNIQUE_UMod1_RandomName,
+    (const void*)(unsigned int)&MONSTERUNIQUE_UMod2_HealthBonus
+}; // 0x0073BF5C
+
+extern D2AuraEnchantStrc gaAuraEnchantTable[8] = {
+    { 0, 0, 1, 6, 98 },
+    { 0, 0, 1, 6, 102 },
+    { 0, 0, 1, 5, 108 },
+    { 0, 0, 1, 7, 114 },
+    { 0, 0, 1, 8, 123 },
+    { 0, 0, 1, 8, 122 },
+    { 20, 0, 1, 8, 118 },
+    { 999, 0, 0, 1, 103 }
+}; // 0x0073BF68
+
+extern UModInitFunc gpfnUModInitFunctions[44] = {
+    0, (UModInitFunc)&MONSTERUNIQUE_UMod1_RandomName, (UModInitFunc)&MONSTERUNIQUE_UMod2_HealthBonus, 0, (UModInitFunc)&MONSTERUNIQUE_IncreaseMonsterLevelAndExperience, (UModInitFunc)&MONSTERUNIQUE_UMod5_Strong, (UModInitFunc)&MONSTERUNIQUE_UMod6_Fast, 0, (UModInitFunc)&MONSTERUNIQUE_UMod8_Resistant, (UModInitFunc)&MONSTERUNIQUE_UMod9_FireEnchanted, 0, 0, 0, 0, 0, 0,
+    (UModInitFunc)&MONSTERUNIQUE_ApplyMonsterPenalty, (UModInitFunc)&MONSTERUNIQUE_UMod17_LightningEnchanted, (UModInitFunc)&MONSTERUNIQUE_UMod18_ColdEnchanted, 0, 0, 0, 0, (UModInitFunc)&MONSTERUNIQUE_UMod23_PoisonEnchanted, 0, (UModInitFunc)&MONSTERUNIQUE_UMod25_ManaSteal, (UModInitFunc)&MONSTERUNIQUE_UMod26_Teleport, (UModInitFunc)&MONSTERUNIQUE_UMod8_Resistant, (UModInitFunc)&MONSTERUNIQUE_UMod8_Resistant, 0, (UModInitFunc)&MONSTERUNIQUE_UMod30_AuraEnchanted, 0,
+    0, 0, 0, 0, (UModInitFunc)&MONSTERUNIQUE_UMod36_Ghostly, (UModInitFunc)&MONSTERUNIQUE_UMod37_Fanatic, (UModInitFunc)&MONSTERUNIQUE_UMod38_Possessed, (UModInitFunc)&MONSTERUNIQUE_UModChampion, 0, (UModInitFunc)&MONSTERUNIQUE_UMod41_AlwaysRun
+}; // 0x0073C008
+
+extern MONUMODFUNC gpfnSrvUModCallbacks[43][6] = {
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0, 0, 0, (MONUMODFUNC)&MONSTERUNIQUE_CastAmplifyDamage },
+    { 0 },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_FireEnchantedModeChange, (MONUMODFUNC)&MONSTERUNIQUE_CastCorpseExplode },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_ColdEnchantedModeChange, (MONUMODFUNC)&MONSTERUNIQUE_CastCorpsePoisonCloud },
+    { 0 },
+    { 0 },
+    { 0 },
+    { (MONUMODFUNC)&MONSTERUNIQUE_SetTrapDamage },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_KillMinions },
+    { 0 },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_LightningEnchantedModeChange, (MONUMODFUNC)&MONSTERUNIQUE_CastLightUniqueMissile, 0, (MONUMODFUNC)&MONSTERUNIQUE_CastLightUniqueMissileIfNotGetHit },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_ColdEnchantedModeChange, (MONUMODFUNC)&MONSTERUNIQUE_CastColdUniqueMissile },
+    { (MONUMODFUNC)&MONSTERUNIQUE_AddSecondaryDamage, 0, 0, 0, 0, (MONUMODFUNC)&MONSTERUNIQUE_AddRogueHireMissileSecondaryDamage },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_ScarabModeChange, (MONUMODFUNC)&MONSTERUNIQUE_CastBugLightningMissile },
+    { 0, 0, (MONUMODFUNC)&MONSTERUNIQUE_KillUnitOrRemovePet },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_QuestCompleteModeChange },
+    { (MONUMODFUNC)&MONSTERUNIQUE_CastQueenPoisonCloudMissile },
+    { 0, 0, 0, (MONUMODFUNC)&MONSTERUNIQUE_StealBeltItem },
+    { 0 },
+    { 0 },
+    { (MONUMODFUNC)&MONSTERUNIQUE_ApplyElementalDamage, 0, 0, 0, 0, (MONUMODFUNC)&MONSTERUNIQUE_ApplyMissileElementalDamage },
+    { 0 },
+    { 0, 0, 0, 0, 0, (MONUMODFUNC)&MONSTERUNIQUE_CreateMultishotMissiles },
+    { 0 },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_ColdEnchantedModeChange, (MONUMODFUNC)&MONSTERUNIQUE_CastCorpseExplode2 },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_ColdEnchantedModeChange, (MONUMODFUNC)&MONSTERUNIQUE_ApplyCorpseFireDamage },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_SuicideModeChange, (MONUMODFUNC)&MONSTERUNIQUE_CastSuicideExplodeMissile },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_ScheduleSelfResurrection, (MONUMODFUNC)&MONSTERUNIQUE_TrySelfResurrection },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_ApplyShatterState },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_CreatePainWorm },
+    { 0, 0, (MONUMODFUNC)&MONSTERUNIQUE_UpdateAiAndScheduleUModEvent },
+    { 0, (MONUMODFUNC)&MONSTERUNIQUE_ColdEnchantedModeChange, (MONUMODFUNC)&MONSTERUNIQUE_CastNova }
+}; // 0x0073C0B8

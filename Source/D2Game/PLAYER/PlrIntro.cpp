@@ -140,4 +140,42 @@ void __fastcall PLRINTRO_Destroy(D2GameStrc* pGame, D2PlrIntroStrc* pPlayerIntro
     FOG_FreeServerMemory(pGame->pMemoryPool, pPlayerIntro, ".\\PLAYER\\PlrIntro.cpp", 229, 0);
 }
 
-#include "gen/data/Source/D2Game/PLAYER/PlrIntro.inc"
+extern int gnPlrIntroNpcIndexMapCount = 35; // 0x00732734
+
+extern D2NpcIndexMapStrc gaPlrIntroNpcIndexMap[35] = {
+    { -1 },
+    { 147, 1 },
+    { 148, 2 },
+    { 150, 3 },
+    { 155, 4 },
+    { 154, 5 },
+    { 265, 6 },
+    { 175, 7 },
+    { 176, 8 },
+    { 177, 9 },
+    { 178, 10 },
+    { 202, 11 },
+    { 200, 12 },
+    { 210, 13 },
+    { 201, 14 },
+    { 198, 15 },
+    { 199, 16 },
+    { 244, 17 },
+    { 245, 18 },
+    { 246, 19 },
+    { 251, 20 },
+    { 252, 21 },
+    { 253, 22 },
+    { 254, 23 },
+    { 255, 24 },
+    { 256, 25 },
+    { 257, 26 },
+    { 264, 27 },
+    { 297, 28 },
+    { 511, 29 },
+    { 512, 30 },
+    { 513, 31 },
+    { 514, 32 },
+    { 515, 33 },
+    { 520, 34 }
+}; // 0x00732738

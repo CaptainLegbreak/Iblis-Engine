@@ -3568,4 +3568,127 @@ void __cdecl GRID_UnlockCDKeys()
     }
 }
 
-#include "gen/data/Source/D2Client/UNIT/CUnit.inc"
+#pragma pack(push, 1)
+struct d2data_00711EF4_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006D6ABC[6]; // 0x006D6ABC
+extern "C" struct d2data_00711EF4_t gData_00711EF4; // 0x00711EF4
+
+extern "C" const int gData_006D6ABC[6] = { 1, 0, 2, 3, 4, 5 }; // 0x006D6ABC
+#pragma comment(linker, "/alternatename:?gaUnitTypes@@3QBHB=_gData_006D6ABC")
+
+extern "C" struct d2data_00711EF4_t gData_00711EF4 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00711EF4
+
+extern unsigned int gnPresetUnitId = 1; // 0x00711F30
+
+extern SKILLSELECTPROC gpfnSkillSelectProcs[7] = { 0, (SKILLSELECTPROC)&CUNIT_SelectProcCorpse, (SKILLSELECTPROC)&CUNIT_SelectProcConsumable, (SKILLSELECTPROC)&CUNIT_SelectProcConvertTarget, (SKILLSELECTPROC)&CUNIT_SkillSelectProc4, (SKILLSELECTPROC)&CUNIT_SkillSelectProc5, (SKILLSELECTPROC)&CUNIT_SelectProcSoftCorpse }; // 0x00711F34
+
+extern int gnSkillSelectProcs = 7; // 0x00711F50
+
+extern unsigned char gaKeyTable[0x474] = {
+    0, 0, 0, 0, 0x41, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0x43, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0x42, 0, 0, 0, 0, 0, 1, 0,
+    0, 0, 0x49, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0x50, 0, 1, 0,
+    0, 0, 2, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 3, 0, 0, 0,
+    0x4D, 0, 1, 0, 0, 0, 3, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    4, 0, 0, 0, 0x51, 0, 1, 0, 0, 0, 4, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 5, 0, 0, 0, 0xD, 0, 1, 0, 0, 0, 5, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 6, 0, 0, 0, 0x48, 0, 1, 0,
+    0, 0, 6, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 7, 0, 0, 0,
+    9, 0, 1, 0, 0, 0, 7, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    8, 0, 0, 0, 0x78, 0, 1, 0, 0, 0, 8, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 9, 0, 0, 0, 0x79, 0, 1, 0, 0, 0, 9, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0xA, 0, 0, 0, 0x7A, 0, 1, 0,
+    0, 0, 0xA, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0xB, 0, 0, 0,
+    0x7B, 0, 1, 0, 0, 0, 0xB, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0xC, 0, 0, 0, 0x54, 0, 1, 0, 0, 0, 0xC, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0xD, 0, 0, 0, 0x53, 0, 1, 0, 0, 0, 0xD, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0xE, 0, 0, 0, 0x70, 0, 1, 0,
+    0, 0, 0xE, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0xF, 0, 0, 0,
+    0x71, 0, 1, 0, 0, 0, 0xF, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x10, 0, 0, 0, 0x72, 0, 1, 0, 0, 0, 0x10, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x11, 0, 0, 0, 0x73, 0, 1, 0, 0, 0, 0x11, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x12, 0, 0, 0, 0x74, 0, 1, 0,
+    0, 0, 0x12, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x13, 0, 0, 0,
+    0x75, 0, 1, 0, 0, 0, 0x13, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x14, 0, 0, 0, 0x76, 0, 1, 0, 0, 0, 0x14, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x16, 0, 0, 0, 0xC0, 0, 1, 0, 0, 0, 0x16, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x17, 0, 0, 0, 0x31, 0, 1, 0,
+    0, 0, 0x17, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x18, 0, 0, 0,
+    0x32, 0, 1, 0, 0, 0, 0x18, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x19, 0, 0, 0, 0x33, 0, 1, 0, 0, 0, 0x19, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x1A, 0, 0, 0, 0x34, 0, 1, 0, 0, 0, 0x1A, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x1B, 0, 0, 0, 0x60, 0, 1, 0,
+    0, 0, 0x1B, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x1C, 0, 0, 0,
+    0x61, 0, 1, 0, 0, 0, 0x1C, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x1D, 0, 0, 0, 0x62, 0, 1, 0, 0, 0, 0x1D, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x1E, 0, 0, 0, 0x63, 0, 1, 0, 0, 0, 0x1E, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x1F, 0, 0, 0, 0x64, 0, 1, 0,
+    0, 0, 0x1F, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x20, 0, 0, 0,
+    0x65, 0, 1, 0, 0, 0, 0x20, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x21, 0, 0, 0, 0x66, 0, 1, 0, 0, 0, 0x21, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x22, 0, 0, 0, 0x11, 0, 1, 0, 0, 0, 0x22, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x23, 0, 0, 0, 0x52, 0, 1, 0,
+    0, 0, 0x23, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0x24, 0, 0, 0,
+    0x10, 0, 1, 0, 0, 0, 0x24, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x25, 0, 0, 0, 0x12, 0, 1, 0, 0, 0, 0x25, 0, 0, 0, 1, 1,
+    0, 0, 0, 0, 0x26, 0, 0, 0, 0x20, 0, 1, 0, 0, 0, 0x26, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x27, 0, 0, 0, 3, 1, 1, 0,
+    0, 0, 0x27, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x28, 0, 0, 0,
+    4, 1, 1, 0, 0, 0, 0x28, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x29, 0, 0, 0, 0x4E, 0, 1, 0, 0, 0, 0x29, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x2A, 0, 0, 0, 0x2C, 0, 1, 0, 0, 0, 0x2A, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x2B, 0, 0, 0, 0x5A, 0, 1, 0,
+    0, 0, 0x2B, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x2C, 0, 0, 0,
+    0x57, 0, 1, 0, 0, 0, 0x2C, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x2D, 0, 0, 0, 0x56, 0, 1, 0, 0, 0, 0x2D, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x15, 0, 0, 0, 0x77, 0, 1, 0, 0, 0, 0x15, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x2E, 0, 0, 0, 0xFF, 0xFF, 1, 0,
+    0, 0, 0x2E, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x2F, 0, 0, 0,
+    0xFF, 0xFF, 1, 0, 0, 0, 0x2F, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x30, 0, 0, 0, 0xFF, 0xFF, 1, 0, 0, 0, 0x30, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x31, 0, 0, 0, 0xFF, 0xFF, 1, 0, 0, 0, 0x31, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x32, 0, 0, 0, 0xFF, 0xFF, 1, 0,
+    0, 0, 0x32, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x33, 0, 0, 0,
+    0xFF, 0xFF, 1, 0, 0, 0, 0x33, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x34, 0, 0, 0, 0xFF, 0xFF, 1, 0, 0, 0, 0x34, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x35, 0, 0, 0, 0xFF, 0xFF, 1, 0, 0, 0, 0x35, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x36, 0, 0, 0, 0x4F, 0, 1, 0,
+    0, 0, 0x36, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x37, 0, 0, 0,
+    0x67, 0, 1, 0, 0, 0, 0x37, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x38, 0, 0, 0, 0x1B, 0, 1, 0, 0, 0, 0x38, 0, 0, 0, 0xFF, 0xFF
+}; // 0x00712220

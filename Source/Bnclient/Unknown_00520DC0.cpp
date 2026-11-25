@@ -66,7 +66,21 @@ void __cdecl sub_00521B90_ClearSrpState()
     gtBigPair.sub_00528630_Release();
 }
 
-#include "gen/data/Source/Bnclient/Unknown_00520DC0.inc"
+extern "C" const unsigned char gData_00730164[4]; // 0x00730164
+extern "C" const unsigned char gData_0073016C[32]; // 0x0073016C
+
+extern "C" const unsigned char gData_00730164[4] = { 0x2F }; // 0x00730164
+#pragma comment(linker, "/alternatename:?gabSrpData1@@3QBEB=_gData_00730164")
+
+extern int gnSrpSize1 = 1; // 0x00730168
+
+extern "C" const unsigned char gData_0073016C[32] = {
+    0x87, 0xC7, 0x23, 0x85, 0x65, 0xF6, 0x16, 0x12, 0xD9, 0x12, 0x32, 0xC7, 0x78, 0x6C, 0x97, 0x7E,
+    0x55, 0xB5, 0x92, 0xA0, 0x8C, 0xB6, 0x86, 0x21, 3, 0x18, 0x99, 0x61, 0x8B, 0x1A, 0xFF, 0xF8
+}; // 0x0073016C
+#pragma comment(linker, "/alternatename:?gabSrpData2@@3QBEB=_gData_0073016C")
+
+extern int gnSrpSize2 = 32; // 0x0073018C
 
 #include "D2BnCryptTypes.h"
 

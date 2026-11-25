@@ -734,4 +734,7 @@ int* __fastcall sub_K10_EmitGetSlot(D2Unk00540B70Owner* pOwner, int nType)
     return EVENT_GetTimerSlot(pOwner, nType, nType + 1);
 }
 
-#include "gen/data/Source/D2Game/GAME/Event.inc"
+extern "C" const int gData_006E0B9C[6]; // 0x006E0B9C
+
+extern "C" const int gData_006E0B9C[6] = { 0, 1, 3, 2, 4, -1 }; // 0x006E0B9C
+#pragma comment(linker, "/alternatename:?gaSlotRows@@3QBHB=_gData_006E0B9C")

@@ -2875,4 +2875,76 @@ int __fastcall PLAYER_GetBaseIdFromMonsterId(int nMonsterId)
     return nMonsterId;
 }
 
-#include "gen/data/Source/D2Client/UNIT/Player.inc"
+#pragma pack(push, 1)
+struct d2data_00711DA0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00711DA0_t gData_00711DA0; // 0x00711DA0
+
+extern "C" struct d2data_00711DA0_t gData_00711DA0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00711DA0
+
+extern D2StringRefStrc gaStringRefs[9] = {
+    { 0 },
+    { 0x15 },
+    { 0x13 },
+    { 0x13 },
+    { 0x13 }
+}; // 0x00711DDC
+
+extern D2PlayerModeInfoStrc gaPlayerModeInfo[20] = {
+    { 0, 2 },
+    { 0 },
+    { 1, 0, 1 },
+    { 1, 0, 1 },
+    { 0, 1, 2 },
+    { 0 },
+    { 1, 0, 1 },
+    { 2, 1, 3 },
+    { 2, 1, 3 },
+    { 0, 1, 2 },
+    { 2, 1, 3 },
+    { 2, 1, 3 },
+    { 2, 1, 3 },
+    { 0, 1, 2 },
+    { 2, 1, 3 },
+    { 2, 1, 3 },
+    { 2, 1, 3 },
+    { 0, 2 },
+    { 2, 1, 3 },
+    { 1, 3, 1 }
+}; // 0x00711E00
+
+extern int gnStringCount = 9; // 0x00711EF0

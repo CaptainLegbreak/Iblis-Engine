@@ -1699,4 +1699,20 @@ void __cdecl DLIGHTMAP_FreeAllLights()
     gpLights = 0;
 }
 
-#include "gen/data/Source/D2Client/DRAW/dLightMap.inc"
+#pragma pack(push, 1)
+struct d2data_00712B90_t
+{
+    unsigned char b0[128];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00712B90_t gData_00712B90; // 0x00712B90
+
+extern int gbBlendLightColor = 1; // 0x00712B8C
+
+extern "C" struct d2data_00712B90_t gData_00712B90 = {
+    {
+        0x52, 0x45, 0x47, 0x49, 0x53, 0x54, 0x52, 0x41, 0x54, 0x49, 0x4F, 0x4E, 0x5F, 0x42, 0x4C, 0x4F,
+        0x43, 0x4B
+    }
+}; // 0x00712B90

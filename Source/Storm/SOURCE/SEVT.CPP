@@ -87,7 +87,7 @@ struct SEvtBreakCmdStrc
 
 void* __stdcall SMemAlloc(unsigned int nSize, const char* szLogName, int nLogLine, unsigned int nFlags); // 0x00413020
 
-#include "gen/data/Source/Storm/SOURCE/SEVT.inc"
+
 // 0x0042B9D0
 void __cdecl sub_0042B9D0_Nop()
 {

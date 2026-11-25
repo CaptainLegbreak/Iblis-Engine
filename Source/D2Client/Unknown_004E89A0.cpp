@@ -1860,4 +1860,16 @@ int __stdcall sub_004E89A0_GetElementalDamage(D2UnitStrc* pUnit, int* pMinDamage
     return 1;
 }
 
-#include "gen/data/Source/D2Client/Unknown_004E89A0.inc"
+extern "C" const int gData_006DBEE4[4]; // 0x006DBEE4
+extern "C" const D2ElemDamageStatsStrc gData_006DBEF4[4]; // 0x006DBEF4
+
+extern "C" const int gData_006DBEE4[4] = { 1, 9, 3, 3 }; // 0x006DBEE4
+#pragma comment(linker, "/alternatename:?gaElemDamageColors@@3QBHB=_gData_006DBEE4")
+
+extern "C" const D2ElemDamageStatsStrc gData_006DBEF4[4] = {
+    { 48, 49, 329 },
+    { 50, 51, 330 },
+    { 54, 55, 331 },
+    { 52, 53, -1 }
+}; // 0x006DBEF4
+#pragma comment(linker, "/alternatename:?gaElemDamageStats@@3QBUD2ElemDamageStatsStrc@@B=_gData_006DBEF4")

@@ -2963,4 +2963,141 @@ int __fastcall SKILLDESC_GetSkillParamSix(int nSkillId)
     return pSkillsTxtRecord->dwParam[5];
 }
 
-#include "gen/data/Source/D2Client/UI/SkillDesc_004E1FF0.inc"
+extern "C" char gD2DataTables[]; // 0x0096BC30
+
+#pragma pack(push, 1)
+struct d2data_0072D890_t
+{
+    unsigned char b0[64];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072D8D8_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    const void* p15;
+    const void* p16;
+    const void* p17;
+    const void* p18;
+    const void* p19;
+    const void* p20;
+    const void* p21;
+    const void* p22;
+    const void* p23;
+    const void* p24;
+    const void* p25;
+    const void* p26;
+    const void* p27;
+    const void* p28;
+    const void* p29;
+    const void* p30;
+    const void* p31;
+    const void* p32;
+    const void* p33;
+    const void* p34;
+    const void* p35;
+    const void* p36;
+    const void* p37;
+    const void* p38;
+    const void* p39;
+    const void* p40;
+    const void* p41;
+    const void* p42;
+    const void* p43;
+    const void* p44;
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006DBD90[0x40]; // 0x006DBD90
+extern "C" struct d2data_0072D890_t gData_0072D890; // 0x0072D890
+extern "C" struct d2data_0072D8D8_t gData_0072D8D8; // 0x0072D8D8
+
+extern "C" const int gData_006DBD90[0x40] = {
+    0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6
+}; // 0x006DBD90
+#pragma comment(linker, "/alternatename:?gaSetMaskToBonusMappingTable@@3QBHB=_gData_006DBD90")
+
+extern int gnGlobal_0072D844 = 93; // 0x0072D844
+
+extern int gnGlobal_0072D88C = 117; // 0x0072D88C
+
+extern "C" struct d2data_0072D890_t gData_0072D890 = {
+    {
+        0x02, 0x01, 0x00, 0x00, 0xA2, 0x00, 0x00, 0x00, 0x7D, 0x00, 0x00, 0x00, 0x02, 0x01, 0x00, 0x00,
+        0x07, 0x01, 0x00, 0x00, 0x7A, 0x00, 0x00, 0x00, 0x33, 0x01, 0x00, 0x00, 0xA2, 0x00, 0x00, 0x00,
+        0xB8, 0x00, 0x00, 0x00, 0x0E, 0x01, 0x00, 0x00, 0xA2, 0x00, 0x00, 0x00, 0xBB, 0x00, 0x00, 0x00,
+        0x0E, 0x01, 0x00, 0x00, 0x0E, 0x01, 0x00, 0x00, 0xB8, 0x00, 0x00, 0x00, 0x36, 0x01
+    }
+}; // 0x0072D890
+
+extern int gnTextOffset2 = 2; // 0x0072D8D0
+
+extern int gnTextOffset1 = -6; // 0x0072D8D4
+
+extern "C" struct d2data_0072D8D8_t gData_0072D8D8 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14",
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14",
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0072D8D8
+
+extern D2DataTablesStrc* sgptDataTables = (D2DataTablesStrc*)&gD2DataTables; // 0x00744304

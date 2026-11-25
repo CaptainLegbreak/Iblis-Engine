@@ -3977,4 +3977,15 @@ void __fastcall ITEMS_DestroyRunewordStatList(D2GameStrc* pGame, D2UnitStrc* pIt
     }
 }
 
-#include "gen/data/Source/D2Game/ITEMS/Items.inc"
+extern "C" const int gData_006E1138[6]; // 0x006E1138
+
+extern "C" const int gData_006E1138[6] = { 7, 6, 5, 4, 3, 2 }; // 0x006E1138
+#pragma comment(linker, "/alternatename:?gnQualityOrder@@3QBHB=_gData_006E1138")
+
+extern int gdwDropHealthPotionCodes[4] = { 540110952, 540176488, 540242024, 540307560 }; // 0x00731F4C
+
+extern unsigned int gnDropHealthPotionCodeCount = 4; // 0x00731F5C
+
+extern int gdwDropManaPotionCodes[4] = { 540110957, 540176493, 540242029, 540307565 }; // 0x00731F60
+
+extern unsigned int gnDropManaPotionCodeCount = 4; // 0x00731F70

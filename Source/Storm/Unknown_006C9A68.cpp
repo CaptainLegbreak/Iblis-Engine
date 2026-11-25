@@ -45,7 +45,22 @@ struct D2Block006CAB90Strc
 
 extern int gnTextLeft; // 0x007BF278
 
-#include "gen/data/Source/Storm/Unknown_006C9A68.inc"
+extern "C" char gData_006F28F8[]; // 0x006F28F8
+
+#pragma pack(push, 1)
+struct d2data_0070886C_t
+{
+    const void* p0;
+    unsigned char b1[4];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_0070886C_t gData_0070886C; // 0x0070886C
+
+extern "C" struct d2data_0070886C_t gData_0070886C = {
+    (const void*)&gData_006F28F8,
+    { 0x00 }
+}; // 0x0070886C
 
 const char* gpszCaption_007A0450; // 0x007A0450
 

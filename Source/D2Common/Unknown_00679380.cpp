@@ -844,7 +844,88 @@ static int __stdcall PATH_RayTrace(D2PathPointStrc tStartCoord, D2PathPointStrc*
 }
 
 
-#include "gen/data/Source/D2Common/Unknown_00679380.inc"
+#pragma pack(push, 1)
+struct d2data_00749A5C_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const D2CoordStrc gData_006F1798[8]; // 0x006F1798
+extern "C" const int gData_006F17D8[8][8]; // 0x006F17D8
+extern "C" const int gData_006F1E40[16]; // 0x006F1E40
+extern "C" const int gData_006F1E80[16]; // 0x006F1E80
+extern "C" const int gData_006F1EC0[16]; // 0x006F1EC0
+extern "C" const int gData_006F1F00[16]; // 0x006F1F00
+extern "C" struct d2data_00749A5C_t gData_00749A5C; // 0x00749A5C
+
+extern "C" const D2CoordStrc gData_006F1798[8] = {
+    { 1 },
+    { 1, 1 },
+    { 0, 1 },
+    { -1, 1 },
+    { -1 },
+    { -1, -1 },
+    { 0, -1 },
+    { 1, -1 }
+}; // 0x006F1798
+#pragma comment(linker, "/alternatename:?gatDirectionToOffset@@3QBUD2CoordStrc@@B=_gData_006F1798")
+
+extern "C" const int gData_006F17D8[8][8] = {
+    { 0, 1, 6, 3, 4, 5, 2, 7 },
+    { 0, 1, 6, 3, 1, 3, 6, 1 },
+    { 0, 1, 1, 1, 1, 1, 2, 7 },
+    { 1, 1, 1, 1, 1, 3, 6, 1 },
+    { 6, 4, 3, 6, 1, 3, 2, 7 },
+    { 7, 7, 7, 7, 7, 5, 2, 7 },
+    { 0, 7, 7, 7, 7, 5, 2, 7 },
+    { 0, 7, 2, 5, 7, 5, 2, 7 }
+}; // 0x006F17D8
+#pragma comment(linker, "/alternatename:?gnIdaStarNeighborSequences@@3QAY07$$CBHA=_gData_006F17D8")
+
+extern "C" const int gData_006F1E40[16] = { 6, 0, 0, 2, 2, 4, 4, 6, 6, 0, 0, 2, 2, 4, 4, 6 }; // 0x006F1E40
+#pragma comment(linker, "/alternatename:?gnNextDirection2@@3QBHB=_gData_006F1E40")
+
+extern "C" const int gData_006F1E80[16] = { 2, 2, 4, 4, 6, 6, 0, 0, 2, 2, 4, 4, 6, 6 }; // 0x006F1E80
+#pragma comment(linker, "/alternatename:?gnPreviousDirection2@@3QBHB=_gData_006F1E80")
+
+extern "C" const int gData_006F1EC0[16] = { 2, 2, 4, 4, 6, 6, 0, 0, 2, 2, 4, 4, 6, 6 }; // 0x006F1EC0
+#pragma comment(linker, "/alternatename:?gnNextDirection1@@3QBHB=_gData_006F1EC0")
+
+extern "C" const int gData_006F1F00[16] = { 6, 6, 0, 0, 2, 2, 4, 4, 6, 6, 0, 0, 2, 2, 4, 4 }; // 0x006F1F00
+#pragma comment(linker, "/alternatename:?gnPreviousDirection1@@3QBHB=_gData_006F1F00")
+
+extern "C" struct d2data_00749A5C_t gData_00749A5C = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749A5C
 
 inline unsigned int SEED_RollRandomNumber(D2SeedStrc* pSeed)
 {

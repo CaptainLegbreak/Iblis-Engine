@@ -2219,4 +2219,129 @@ int __stdcall WINMAIN_LauncherRun(void* hInstance, D2ConfigStrc* pRecord)
 
 void __cdecl RECORD_StartPlayback(); // 0x004518E0
 
-#include "gen/data/Source/D2Client/CORE/WINMAIN.inc"
+extern "C" void __cdecl RECORD_RegisterLngArgument(); // 0x00451260
+extern "C" void __cdecl GAME_RunGameSession(); // 0x0044F360
+extern "C" void __cdecl GAME_PushState(); // 0x0044D080
+extern "C" void __cdecl GAME_ShutdownClient(); // 0x0044D550
+extern "C" void __cdecl WINMAIN_StartSession(); // 0x0044BC30
+extern "C" void __cdecl WINMAIN_StopSession(); // 0x0044BD90
+
+#pragma pack(push, 1)
+struct d2data_006D5BE0_t
+{
+    const void* p0;
+    const void* p1;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0070EE10_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0070EE54_t
+{
+    unsigned char b0[8];
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+};
+#pragma pack(pop)
+
+extern "C" const struct d2data_006D5BE0_t gData_006D5BE0; // 0x006D5BE0
+extern "C" const D2CmdArgStrc gData_006D5BE8[8]; // 0x006D5BE8
+extern "C" struct d2data_0070EE10_t gData_0070EE10; // 0x0070EE10
+extern "C" struct d2data_0070EE54_t gData_0070EE54; // 0x0070EE54
+
+extern "C" const struct d2data_006D5BE0_t gData_006D5BE0 = {
+    (const void*)(unsigned int)&RECORD_RegisterLngArgument,
+    (const void*)"Available command line options:\n  -set[default command line]\t\tSet new default command line string\n  -lng[lngfile]\t\t\tUse \"lngfile\" for language resources\n"
+}; // 0x006D5BE0
+
+extern "C" const D2CmdArgStrc gData_006D5BE8[8] = {
+    { 0, 0xFFFFFFFF, (const char *)"?", (void*)(unsigned int)&WINMAIN_ShowCommandLineHelp },
+    { 0, 0xFFFFFFFF, (const char *)"h", (void*)(unsigned int)&WINMAIN_ShowCommandLineHelp },
+    { 0, 0xFFFFFFFF, (const char *)"help", (void*)(unsigned int)&WINMAIN_ShowCommandLineHelp },
+    { 0x20000, 0xFFFFFFFF, (const char *)"set", (void*)(unsigned int)&WINMAIN_SaveDefaultCmdLine },
+    { 0x20000, 0xFFFFFFFF, (const char *)"mode", (void*)(unsigned int)&WINMAIN_SetLaunchMode },
+    { 0, 0xFFFFFFFF, (const char *)"c", (void*)(unsigned int)&WINMAIN_RunMemoryTest },
+    { 0, 0xFFFFFFFF, (const char *)"r", (void*)(unsigned int)&WINMAIN_HandleToggleFlagsOption },
+    { 0, 0xFFFFFFFF, (const char *)"p", (void*)(unsigned int)&WINMAIN_HandlePlaybackOption }
+}; // 0x006D5BE8
+#pragma comment(linker, "/alternatename:?gaCommandLineArgs@@3QBUD2CmdArgStrc@@B=_gData_006D5BE8")
+
+extern "C" struct d2data_0070EE10_t gData_0070EE10 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0070EE10
+
+extern int gnClientLaunchState = 3; // 0x0070EE4C
+
+extern const char* gpszDefaultCaption_0070EE50 = "Diablo II"; // 0x0070EE50
+
+extern "C" struct d2data_0070EE54_t gData_0070EE54 = {
+    { 0x00 },
+    (const void*)(unsigned int)&GAME_RunGameSession,
+    (const void*)(unsigned int)&GAME_PushState,
+    (const void*)(unsigned int)&GAME_ShutdownClient,
+    (const void*)(unsigned int)&WINMAIN_StartSession,
+    (const void*)(unsigned int)&WINMAIN_StopSession
+}; // 0x0070EE54
+
+extern const char* gaszLaunchModeNames[7] = { 0, 0, "Game" }; // 0x0070EE70
+
+extern int gbExitApplication = 1; // 0x0070EE8C
+
+extern char gszServerIP[260] = "207.82.87.243"; // 0x0070EF20
+
+extern char gszBattleNetIP[264] = {
+    50, 48, 55, 46, 56, 50, 46, 56, 55, 46, 49, 51, 57, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1
+}; // 0x0070F028

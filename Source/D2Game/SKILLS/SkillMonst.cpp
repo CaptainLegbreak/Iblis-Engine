@@ -3219,4 +3219,29 @@ int __fastcall SKILLS_SrvDo111_FetishAura(D2GameStrc* pGame, D2UnitStrc* pUnit, 
     return 1;
 }
 
-#include "gen/data/Source/D2Game/SKILLS/SkillMonst.inc"
+extern "C" const unsigned char gData_006E3138[8]; // 0x006E3138
+extern "C" const unsigned char gData_006E3140[72]; // 0x006E3140
+extern "C" const unsigned char gData_006E3188[8]; // 0x006E3188
+extern "C" const int gData_006E3228[5]; // 0x006E3228
+
+extern "C" const unsigned char gData_006E3138[8] = { 0xA, 8, 0x16, 0x14, 0x12, 0x10, 0xE, 0xC }; // 0x006E3138
+#pragma comment(linker, "/alternatename:?gnMaggotLayDirections@@3QBEB=_gData_006E3138")
+
+extern "C" const unsigned char gData_006E3140[72] = {
+    0x1B, 0xE, 0xF, 3, 0x63, 7, 0x15, 0x16, 0x1F, 0x1A, 0xC, 0xD, 2, 0x63, 6, 0x13,
+    0x14, 0x1E, 0x19, 0xA, 0xB, 1, 0x63, 5, 0x11, 0x12, 0x1D, 0x18, 8, 9, 0, 0x63,
+    4, 0xF, 0x10, 0x1C, 0x1F, 0x16, 0x17, 7, 0x63, 3, 0xD, 0xE, 0x1B, 0x1E, 0x14, 7,
+    6, 0x63, 2, 1, 0xC, 0x1A, 0x1D, 0x12, 0x13, 5, 0x63, 1, 9, 0xA, 0x19, 0x1C,
+    0x10, 0x11, 4, 0x63, 0, 0x17, 8, 0x18
+}; // 0x006E3140
+#pragma comment(linker, "/alternatename:?gnAndrialSprayOffsets@@3QBEB=_gData_006E3140")
+
+extern "C" const unsigned char gData_006E3188[8] = { 0x1D, 0x1C, 0x1B, 0x1A, 0x19, 0x18, 0x1F, 0x1E }; // 0x006E3188
+#pragma comment(linker, "/alternatename:?gnAndrialSprayDirections@@3QBEB=_gData_006E3188")
+
+extern const int gnPrimePoisonNovaY[16] = { 2, 2, 2, 1, 0, -1, -2, -2, -2, -2, -2, -1, 0, 1, 2, 2 }; // 0x006E31A8
+
+extern const int gnPrimePoisonNovaX[16] = { 0, 1, 2, 2, 2, 2, 2, 1, 0, -1, -2, -2, -2, -2, -2, -1 }; // 0x006E31E8
+
+extern "C" const int gData_006E3228[5] = { 66, 72, 82, 87, 91 }; // 0x006E3228
+#pragma comment(linker, "/alternatename:?gaMonCurseIds@@3QBHB=_gData_006E3228")

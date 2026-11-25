@@ -239,7 +239,7 @@ void __cdecl sub_006B72A0_CreateFontTextures()
     DeleteDC(hDC);
 }
 
-#include "gen/data/Source/D2Direct3D/Unknown_006B7250.inc"
+extern unsigned long gdwFontTextColor = 0xFFFFFF; // 0x0074C0CC
 
 D2SurfaceStrc* gaSurfaces_00971150[96]; // 0x00971150
 

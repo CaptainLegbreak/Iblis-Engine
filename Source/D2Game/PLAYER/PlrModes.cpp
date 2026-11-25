@@ -2292,4 +2292,52 @@ void __fastcall PLRMODE_StartID_Death(D2GameStrc* pGame, D2UnitStrc* pDefender, 
 
 #define HOVER_EVENT 6
 
-#include "gen/data/Source/D2Game/PLAYER/PlrModes.inc"
+extern "C" void __cdecl SKILLS_EventCallback_ActiveState(); // 0x0056D790
+extern "C" void __cdecl SKILLS_EventCallback_PeriodicSkillAura(); // 0x0056FCB0
+extern "C" void __cdecl SKILLS_EventCallback_ItemAura(); // 0x0056FE40
+extern "C" void __cdecl sub_00580800(); // 0x00580800
+extern "C" void __cdecl sub_00580810(); // 0x00580810
+extern "C" void __cdecl sub_00580B70(); // 0x00580B70
+extern "C" void __cdecl sub_00580BE0(); // 0x00580BE0
+extern "C" void __cdecl sub_00581020(); // 0x00581020
+extern "C" void __cdecl PlayerTradeUpdate(); // 0x005689D0
+extern "C" void __cdecl PLRMODE_StartID_Death(); // 0x00580EC0
+extern "C" void __cdecl PLRMODE_StartXY_WalkRunKnockback(); // 0x0057F1F0
+extern "C" void __cdecl sub_0057F070(); // 0x0057F070
+extern "C" void __cdecl sub_00580C20(); // 0x00580C20
+
+extern "C" const D2PlayerModeChartStrc gData_006E1740[20]; // 0x006E1740
+extern "C" const EventCallbackFunction gData_006E1810[15]; // 0x006E1810
+
+extern "C" const D2PlayerModeChartStrc gData_006E1740[20] = {
+    { 0, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_Death },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_Neutral },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_WalkRunKnockback, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_WalkRunKnockback },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_WalkRunKnockback, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_WalkRunKnockback },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_GetHit },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_Neutral },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_WalkRunKnockback, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_WalkRunKnockback },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_AttackCastThrowKickSpecialSequence, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_AttackCastThrowKickSpecialSequence },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_AttackCastThrowKickSpecialSequence, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_AttackCastThrowKickSpecialSequence },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_Block },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_AttackCastThrowKickSpecialSequence, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_AttackCastThrowKickSpecialSequence },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_AttackCastThrowKickSpecialSequence, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_AttackCastThrowKickSpecialSequence },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_AttackCastThrowKickSpecialSequence, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_AttackCastThrowKickSpecialSequence },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_AttackCastThrowKickSpecialSequence, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_AttackCastThrowKickSpecialSequence },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_AttackCastThrowKickSpecialSequence, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_AttackCastThrowKickSpecialSequence },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_AttackCastThrowKickSpecialSequence, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_AttackCastThrowKickSpecialSequence },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_AttackCastThrowKickSpecialSequence, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_AttackCastThrowKickSpecialSequence },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_Dead },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_AttackCastThrowKickSpecialSequence, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_AttackCastThrowKickSpecialSequence },
+    { (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, int, int))&PLRMODE_StartXY_WalkRunKnockback, (void (__fastcall *)(D2GameStrc *, D2UnitStrc *, int, D2UnitStrc *))&PLRMODE_StartID_WalkRunKnockback }
+}; // 0x006E1740
+#pragma comment(linker, "/alternatename:?gaPlayerModeChart@@3PAUD2PlayerModeChartStrc@@A=_gData_006E1740")
+
+extern "C" const EventCallbackFunction gData_006E1810[15] = { (EventCallbackFunction)&PLRMODE_EventModeUpdate, (EventCallbackFunction)&sub_00581020, 0, (EventCallbackFunction)&sub_00580810, 0, (EventCallbackFunction)&SKILLS_EventCallback_ActiveState, (EventCallbackFunction)&sub_00580B70, 0, (EventCallbackFunction)&SKILLS_EventCallback_PeriodicSkillAura, (EventCallbackFunction)&SKILLS_EventCallback_ItemAura, 0, (EventCallbackFunction)&sub_00580BE0, (EventCallbackFunction)&sub_00580800, (EventCallbackFunction)&PlayerTradeUpdate }; // 0x006E1810
+#pragma comment(linker, "/alternatename:?gpfnPlayerEventCallbacks@@3QBQ6IXPAUD2GameStrc@@PAUD2UnitStrc@@HH@ZB=_gData_006E1810")
+
+extern D2ModeCheckFn gpfnModeChecks[40] = {
+    (D2ModeCheckFn)&sub_0057F070, (D2ModeCheckFn)&PLRMODE_ModeCheck_Neutral, (D2ModeCheckFn)&sub_00580C20, (D2ModeCheckFn)&sub_00580C20, (D2ModeCheckFn)&PLRMODE_ModeCheck_GetHit, (D2ModeCheckFn)&PLRMODE_ModeCheck_Neutral, (D2ModeCheckFn)&sub_00580C20, (D2ModeCheckFn)&PLRMODE_UpdateSkill, (D2ModeCheckFn)&PLRMODE_UpdateSkill, (D2ModeCheckFn)&PLRMODE_ModeCheck_GetHit, (D2ModeCheckFn)&PLRMODE_UpdateSkill, (D2ModeCheckFn)&PLRMODE_UpdateSkill, (D2ModeCheckFn)&PLRMODE_UpdateSkill, (D2ModeCheckFn)&PLRMODE_UpdateSkill, (D2ModeCheckFn)&PLRMODE_UpdateSkill, (D2ModeCheckFn)&PLRMODE_UpdateSkill,
+    (D2ModeCheckFn)&PLRMODE_UpdateSkill, (D2ModeCheckFn)&sub_0057F070, (D2ModeCheckFn)&PLRMODE_UpdateSkill, (D2ModeCheckFn)&sub_00580C20, 0, 0, (D2ModeCheckFn)&PLRMODE_StartID_WalkRunKnockback, (D2ModeCheckFn)&PLRMODE_StartID_WalkRunKnockback, 0, 0, (D2ModeCheckFn)&PLRMODE_StartID_WalkRunKnockback, (D2ModeCheckFn)&PLRMODE_StartID_AttackCastThrowKickSpecialSequence, (D2ModeCheckFn)&PLRMODE_StartID_AttackCastThrowKickSpecialSequence, 0, (D2ModeCheckFn)&PLRMODE_StartID_AttackCastThrowKickSpecialSequence, (D2ModeCheckFn)&PLRMODE_StartID_AttackCastThrowKickSpecialSequence,
+    (D2ModeCheckFn)&PLRMODE_StartID_AttackCastThrowKickSpecialSequence, (D2ModeCheckFn)&PLRMODE_StartID_AttackCastThrowKickSpecialSequence, (D2ModeCheckFn)&PLRMODE_StartID_AttackCastThrowKickSpecialSequence, (D2ModeCheckFn)&PLRMODE_StartID_AttackCastThrowKickSpecialSequence, (D2ModeCheckFn)&PLRMODE_StartID_AttackCastThrowKickSpecialSequence, 0, (D2ModeCheckFn)&PLRMODE_StartID_AttackCastThrowKickSpecialSequence, (D2ModeCheckFn)&PLRMODE_StartID_WalkRunKnockback
+}; // 0x00732C10

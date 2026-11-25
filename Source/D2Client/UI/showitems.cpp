@@ -377,4 +377,47 @@ void __cdecl USEITEM_LeaveGame()
 }
 
 
-#include "gen/data/Source/D2Client/UI/showitems.inc"
+#pragma pack(push, 1)
+struct d2data_007279B0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" const char gData_006DAB64[20]; // 0x006DAB64
+extern "C" struct d2data_007279B0_t gData_007279B0; // 0x007279B0
+
+extern "C" const char gData_006DAB64[20] = ".\\UI\\showitems.cpp"; // 0x006DAB64
+#pragma comment(linker, "/alternatename:_gszShowItems=_gData_006DAB64")
+
+extern "C" struct d2data_007279B0_t gData_007279B0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007279B0

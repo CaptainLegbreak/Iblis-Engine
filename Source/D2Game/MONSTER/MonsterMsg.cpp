@@ -370,5 +370,25 @@ void __fastcall MONSTERMSG_SendMonsterUpdates(D2GameStrc* pGame, D2UnitStrc* pUn
     }
 }
 
-#include "gen/data/Source/D2Game/MONSTER/MonsterMsg.inc"
+extern "C" const D2MonsterModeInfo gData_006E1D90[16]; // 0x006E1D90
+
+extern "C" const D2MonsterModeInfo gData_006E1D90[16] = {
+    { 0, 1, 0, 0, 8, 8 },
+    { 0, 0, 0, 0, 7, 7 },
+    { 1, 1, 1, 0, 1 },
+    { 0, 0, 0, 0, 6, 6 },
+    { 1, 1, 0, 1, 11, 10 },
+    { 1, 1, 0, 1, 17, 16 },
+    { 1, 1, 0, 0, 18, 18 },
+    { 1, 1, 0, 1, 4, 5 },
+    { 1, 1, 0, 1, 12, 13 },
+    { 1, 1, 0, 1, 14, 15 },
+    { 1, 1, 0, 1, 26, 27 },
+    { 1, 1, 0, 1, 28, 29 },
+    { 0, 0, 0, 0, 9, 9 },
+    { 0, 1, 1, 0, 20, 20 },
+    { 1, 1, 0, 1, 12, 13 },
+    { 1, 1, 1, 0, 23, 24 }
+}; // 0x006E1D90
+#pragma comment(linker, "/alternatename:?gMonsterModeInfo@@3PAUD2MonsterModeInfo@@A=_gData_006E1D90")
 struct D2ClientStrc;

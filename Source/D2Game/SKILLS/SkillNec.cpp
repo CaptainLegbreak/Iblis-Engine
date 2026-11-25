@@ -2946,4 +2946,74 @@ int __fastcall SKILLS_SharePotionLifeWithBloodGolem(D2GameStrc* pGame, D2UnitStr
     return nLife;
 }
 
-#include "gen/data/Source/D2Game/SKILLS/SkillNec.inc"
+#pragma pack(push, 1)
+struct d2data_00741900_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+    unsigned char b15[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00741940_t
+{
+    unsigned char b0[100];
+};
+#pragma pack(pop)
+
+extern "C" const int gData_006E304C[12]; // 0x006E304C
+extern "C" const int gData_006E307C[12]; // 0x006E307C
+extern "C" struct d2data_00741900_t gData_00741900; // 0x00741900
+extern "C" struct d2data_00741940_t gData_00741940; // 0x00741940
+
+extern "C" const int gData_006E304C[12] = { -1, 1, 3, 4, 4, 3, -1, 1, -3, -4, -4, -3 }; // 0x006E304C
+#pragma comment(linker, "/alternatename:?gnBonePrisonOffsetX@@3QBHB=_gData_006E304C")
+
+extern "C" const int gData_006E307C[12] = { -4, -4, -3, -1, 1, 3, 4, 4, 3, -1, 1, -3 }; // 0x006E307C
+#pragma comment(linker, "/alternatename:?gnBonePrisonOffsetY@@3QBHB=_gData_006E307C")
+
+extern "C" struct d2data_00741900_t gData_00741900 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14",
+    { 0x00 }
+}; // 0x00741900
+
+extern "C" struct d2data_00741940_t gData_00741940 = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x01, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x02, 0x01, 0x01, 0x00,
+        0x00, 0x00, 0x00, 0x01, 0x01, 0x02, 0x01, 0x01, 0x01, 0x00, 0x00, 0x01, 0x01, 0x01, 0x03, 0x02,
+        0x02, 0x01, 0x00, 0x00, 0x01, 0x01, 0x01, 0x03, 0x02, 0x02, 0x01, 0x00, 0x00, 0x01, 0x01, 0x02,
+        0x04, 0x02, 0x03, 0x01, 0x00, 0x00, 0x01, 0x02, 0x02, 0x04, 0x02, 0x03, 0x01, 0x00, 0x00, 0x01,
+        0x02, 0x02, 0x04
+    }
+}; // 0x00741940
+#pragma comment(linker, "/alternatename:?gaNecroSkeletonComponents@@3QBUD2NecroSkeletonComponentStrc@@B=_gData_00741940")

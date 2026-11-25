@@ -472,7 +472,7 @@ int __cdecl GAME_GetAlwaysRun(); // 0x0044BE90
 void __fastcall GAME_SetAlwaysRun(int); // 0x0044BE80
 
 // build: symbol ?gbControlPanelMouseDown@* 0x00722358
-#include "gen/data/Source/D2Client/UI/panel/gbControlPanelMouseDown.inc"
+static int gbControlPanelMouseDown = 1; // 0x00722358
 
 static int gnGlobal_007BEFD4;        // 0x007BEFD4
 
@@ -2313,4 +2313,81 @@ extern D2PartyRowStrc* gpRosterUnits;  // 0x007BF014
 
 
 
-#include "gen/data/Source/D2Client/UI/panel.inc"
+#pragma pack(push, 1)
+struct d2data_00722318_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00722368_t
+{
+    unsigned char b0[12];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00722318_t gData_00722318; // 0x00722318
+extern "C" struct d2data_00722368_t gData_00722368; // 0x00722368
+
+extern "C" struct d2data_00722318_t gData_00722318 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00722318
+
+extern int gnUiRecordIndex = 2; // 0x00722354
+
+extern int gnBeltBox = -1; // 0x0072235C
+
+extern int gnBeltRectX = -1; // 0x00722360
+
+extern int gnBeltRectY = -1; // 0x00722364
+
+extern "C" struct d2data_00722368_t gData_00722368 = {
+    { 0x55, 0x0F, 0x54, 0x0F, 0x5A, 0x0F, 0x5E, 0x0F, 0x58, 0x0F }
+}; // 0x00722368
+
+extern int gaBodyLocs[2] = { 4, 5 }; // 0x00722374
+
+extern unsigned int gnBodyLocCount = 2; // 0x0072237C
+
+extern D2QtyWarnStrc gaQtyWarn[5] = {
+    { 1, 0, 0x32, 0x19, 0xA },
+    { 2, 3, 0xF, 0xA, 5 },
+    { 3, 6, 5, 4, 2 },
+    { 4, 9, 0xF, 0xA, 5 },
+    { 5, 12, 5, 4, 2 }
+}; // 0x00722380
+
+extern unsigned int gnQtyWarnCount = 5; // 0x007223E4
+
+extern int gaDurabilityBodyLocs[7] = { 1, 3, 8, 9, 10, 4, 5 }; // 0x007223E8
+
+extern int gaBeltKeys[4] = { 23, 24, 25, 26 }; // 0x00722404

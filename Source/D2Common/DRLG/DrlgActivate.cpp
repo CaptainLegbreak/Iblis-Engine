@@ -783,4 +783,77 @@ void __stdcall sub_K14_EmitSetColorForId(D2ColorRecordStrc* pRecord, int nId)
     DRLGACTIVATE_ApplyArreatSummitLightColor(pRecord, nId);
 }
 
-#include "gen/data/Source/D2Common/DRLG/DrlgActivate.inc"
+#pragma pack(push, 1)
+struct d2data_00744348_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00744394_t
+{
+    const void* p0;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00744398_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    unsigned char b3[4];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00744348_t gData_00744348; // 0x00744348
+extern "C" const LEVELNODEFN gData_00744384[4]; // 0x00744384
+extern "C" struct d2data_00744394_t gpfnRoomExUnsetStatus; // 0x00744394
+extern "C" struct d2data_00744398_t gData_00744398; // 0x00744398
+
+extern "C" struct d2data_00744348_t gData_00744348 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00744348
+
+extern "C" const LEVELNODEFN gData_00744384[4] = { (LEVELNODEFN)&DRLGACTIVATE_RoomExSetStatus_ClientInRoom, (LEVELNODEFN)&DRLGACTIVATE_RoomExSetStatus_ClientInSight, (LEVELNODEFN)&DRLGACTIVATE_RoomExSetStatus_ClientOutOfSight, (LEVELNODEFN)&DRLGACTIVATE_RoomExSetStatus_Untile }; // 0x00744384
+#pragma comment(linker, "/alternatename:?gpfnRoomExSetStatus@@3QBQ6IXPAUD2CommonLevelNodeStrc@@@ZB=_gData_00744384")
+
+extern "C" struct d2data_00744394_t gpfnRoomExUnsetStatus = {
+    (const void*)(unsigned int)&DRLGACTIVATE_RoomExStatusUnset_ClientInRoom
+}; // 0x00744394
+
+extern "C" struct d2data_00744398_t gData_00744398 = {
+    (const void*)(unsigned int)&DRLGACTIVATE_RoomExStatusUnset_ClientInSight,
+    (const void*)(unsigned int)&DRLGACTIVATE_RoomExStatusUnset_ClientOutOfSight,
+    (const void*)(unsigned int)&DRLGACTIVATE_RoomExStatusUnset_Untile,
+    { 0x00 }
+}; // 0x00744398

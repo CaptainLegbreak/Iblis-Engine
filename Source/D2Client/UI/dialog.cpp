@@ -1174,4 +1174,141 @@ int __cdecl sub_004B70F0()
     return gdwGlobal_007C0E54;
 }
 
-#include "gen/data/Source/D2Client/UI/dialog.inc"
+#pragma pack(push, 1)
+struct d2data_007273A8_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007273F0_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_007273F8_t
+{
+    const void* p0;
+    unsigned char b1[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00727404_t
+{
+    const void* p0;
+    unsigned char b1[8];
+    const void* p2;
+    unsigned char b3[8];
+    const void* p4;
+    unsigned char b5[8];
+    const void* p6;
+    unsigned char b7[8];
+    const void* p8;
+    unsigned char b9[8];
+    const void* p10;
+    unsigned char b11[8];
+    const void* p12;
+    unsigned char b13[8];
+    const void* p14;
+    unsigned char b15[8];
+    const void* p16;
+    unsigned char b17[8];
+    const void* p18;
+    unsigned char b19[8];
+    const void* p20;
+    unsigned char b21[8];
+    const void* p22;
+    unsigned char b23[8];
+    const void* p24;
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_007273A8_t gData_007273A8; // 0x007273A8
+extern "C" struct d2data_007273F0_t gData_007273F0; // 0x007273F0
+extern "C" struct d2data_007273F8_t gData_007273F8; // 0x007273F8
+extern "C" struct d2data_00727404_t gData_00727404; // 0x00727404
+extern "C" char gszData_00727498[20]; // 0x00727498
+
+extern "C" struct d2data_007273A8_t gData_007273A8 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007273A8
+
+extern D2MsgHandlerEntryStrc gaDialogWheelHandlers[1] = { { 0, 522, (void*)(unsigned int)&DIALOG_WheelMsg } }; // 0x007273E4
+
+extern "C" struct d2data_007273F0_t gData_007273F0 = {
+    { 0x03 }
+}; // 0x007273F0
+#pragma comment(linker, "/alternatename:?gaDialogHandlers@@3PAUD2MsgHandlerEntryStrc@@A=_gData_007273F0")
+
+extern int gnGlobal_007273F4 = 27; // 0x007273F4
+
+extern "C" struct d2data_007273F8_t gData_007273F8 = {
+    (const void*)(unsigned int)&DIALOG_KeyMsg,
+    { 0x03 }
+}; // 0x007273F8
+
+extern int gnGlobal_00727400 = 27; // 0x00727400
+
+extern "C" struct d2data_00727404_t gData_00727404 = {
+    (const void*)(unsigned int)&DIALOG_KeyMsg,
+    { 0x00, 0x00, 0x00, 0x00, 0x02, 0x02 },
+    (const void*)(unsigned int)&DIALOG_LButtonUpMsg,
+    { 0x00, 0x00, 0x00, 0x00, 0x01, 0x02 },
+    (const void*)(unsigned int)&DIALOG_LButtonDownMsg,
+    { 0x00, 0x00, 0x00, 0x00, 0x05, 0x02 },
+    (const void*)(unsigned int)&DIALOG_LButtonUpMsg,
+    { 0x00, 0x00, 0x00, 0x00, 0x04, 0x02 },
+    (const void*)(unsigned int)&DIALOG_LButtonDownMsg,
+    { 0x03, 0x00, 0x00, 0x00, 0x26 },
+    (const void*)(unsigned int)&DIALOG_SelectPreviousAltMsg,
+    { 0x03, 0x00, 0x00, 0x00, 0x28 },
+    (const void*)(unsigned int)&DIALOG_SelectNextAltMsg,
+    { 0x03, 0x00, 0x00, 0x00, 0x27 },
+    (const void*)(unsigned int)&DIALOG_SelectPreviousMsg,
+    { 0x03, 0x00, 0x00, 0x00, 0x25 },
+    (const void*)(unsigned int)&DIALOG_SelectNextMsg,
+    { 0x03, 0x00, 0x00, 0x00, 0x0D },
+    (const void*)(unsigned int)&DIALOG_EnterMsg,
+    { 0x03, 0x00, 0x00, 0x00, 0x1B },
+    (const void*)(unsigned int)&ROSTERPETS_HandleDialogEscape,
+    { 0x00, 0x00, 0x00, 0x00, 0x02, 0x01 },
+    (const void*)(unsigned int)&DIALOG_KeyDownMsg,
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x02 },
+    (const void*)(unsigned int)&DIALOG_MouseMoveMsg
+}; // 0x00727404
+
+extern "C" char gszData_00727498[20] = "dialogbackground"; // 0x00727498
+
+extern const char* gaszDialogCels[1] = { (const char*)&gszData_00727498 }; // 0x007274AC
