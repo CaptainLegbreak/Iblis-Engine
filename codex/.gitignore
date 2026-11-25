@@ -1,6 +1,0 @@
-gen/
-out/
-toolchain/
-local.json
-*.obj
-__pycache__/
