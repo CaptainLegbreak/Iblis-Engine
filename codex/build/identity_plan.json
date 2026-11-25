@@ -1,0 +1,219 @@
+{
+ "note": "parts of Game.exe that no source defines (link stamps, the Rich block, resources, the PKWARE DCL records, the signature): offsets, lengths and keyed hashes only; tools/identity.py renders them from your own Game.exe",
+ "schema": 1,
+ "image_sha256": "631066c1649c4ea9ffe48bf97e24c00bca1f7a6759c21150f1a79982589adaaf",
+ "hmac": "HMAC-SHA256, key sha256('d2identity-plan\\0' + the whole image file)",
+ "e_lfanew": "0x120",
+ "size_of_headers": "0x1000",
+ "sections_end": "0x372000",
+ "items": [
+  {
+   "name": "rich_block",
+   "cls": "stamp",
+   "where": "file_offset",
+   "at": "0x80",
+   "length": 160,
+   "hmac": "1e583262e07604a52d0cd8287dafde40bc79e30d86caf19249ee4c212df29f45"
+  },
+  {
+   "name": "file_header_timestamp",
+   "cls": "stamp",
+   "where": "pe_offset",
+   "at": "0x8",
+   "length": 4,
+   "hmac": "a609f44d560db158d1126d5c1bb2fadfefcfe2caff0c259921c05d92cc193cad"
+  },
+  {
+   "name": "checksum",
+   "cls": "stamp",
+   "where": "pe_offset",
+   "at": "0x58",
+   "length": 4,
+   "hmac": "0d704d97e780be291c5802e2e2f71705f6565f7da2adbafc033672243f0c539c"
+  },
+  {
+   "name": "debug_directory_entry",
+   "cls": "stamp",
+   "where": "pe_offset",
+   "at": "0xA8",
+   "length": 8,
+   "hmac": "42f9e6d47757c57957c3190dc1f388a349c5eca7eed9d7d7b464262f9b2ceda1"
+  },
+  {
+   "name": "export_directory_timestamp",
+   "cls": "stamp",
+   "where": "va",
+   "at": "0x00704534",
+   "length": 4,
+   "hmac": "a609f44d560db158d1126d5c1bb2fadfefcfe2caff0c259921c05d92cc193cad"
+  },
+  {
+   "name": "debug_directory",
+   "cls": "stamp",
+   "where": "va",
+   "at": "0x006CC760",
+   "length": 28,
+   "hmac": "c2653577860e86adb8e3f6795d4537a2864b9821fddd241fe318356b9f1fbaae"
+  },
+  {
+   "name": "debug_data_0_type2",
+   "cls": "stamp",
+   "where": "va",
+   "at": "0x006FFF80",
+   "length": 64,
+   "hmac": "acb6545ad6d8489abd45307dcc92cfd9e614e9da64ae32857f8b7f601fee7cc6"
+  },
+  {
+   "name": "pkware_006B01B0",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B01B0",
+   "length": 373,
+   "hmac": "0a072bf2fbe75622b3008bd3aaac9be3c2b3161e61789a72a7929df4940ab911"
+  },
+  {
+   "name": "pkware_006B0330",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B0330",
+   "length": 250,
+   "hmac": "64b02be045f9ebc05d6354c1bb5d2765a303a36af5e3c4bd67cb949473d2cd53"
+  },
+  {
+   "name": "pkware_006B0430",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B0430",
+   "length": 426,
+   "hmac": "853c82a061cd73ae0ef52aa0e1293e39de800b05da1e846dc13c426711c07f4b"
+  },
+  {
+   "name": "pkware_006B05E0",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B05E0",
+   "length": 126,
+   "hmac": "d6bfbfa028ddc72eb70ca39bd2a3b57299d681179f3f94c043b7392177fb5633"
+  },
+  {
+   "name": "pkware_006B0660",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B0660",
+   "length": 144,
+   "hmac": "d5c322507037c8a40781afbe33e9617ca7477241059efa39bff756f24ecebc44"
+  },
+  {
+   "name": "pkware_006B06F0",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B06F0",
+   "length": 58,
+   "hmac": "342324e7babcb2e98deb6e39c8b1454132289a2705424978217ff17825b808bf"
+  },
+  {
+   "name": "pkware_006B0730",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B0730",
+   "length": 244,
+   "hmac": "1ba3421423871d373d334e83e47fccdd1d8627c826dc5263c4dceadf4b6fd854"
+  },
+  {
+   "name": "pkware_006B0830",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B0830",
+   "length": 55,
+   "hmac": "d50cce5efbe8afb7ae689abd94aa70b480ed98f7e63a55e312d8ce9519b6912f"
+  },
+  {
+   "name": "pkware_006B0870",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B0870",
+   "length": 412,
+   "hmac": "63f2f9fd0f65f290c10611cec6a2f85a6bdbbf9b0a05b0ad31bcf157869da7ff"
+  },
+  {
+   "name": "pkware_006B0A10",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B0A10",
+   "length": 884,
+   "hmac": "7470bd82fc4a7ef1573840d6892a82b6625c2e0e5059e856dffc7d10ac36e034"
+  },
+  {
+   "name": "pkware_006B0D90",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B0D90",
+   "length": 819,
+   "hmac": "ec136a87411fd7a50f95e0eaa30a384ac724930b150418fc48787ca4646bbe78"
+  },
+  {
+   "name": "pkware_006B10D0",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B10D0",
+   "length": 139,
+   "hmac": "2f23d394659715099d1aaaec34f20f7aaf1c17c3e1849221d569f57ae956997b"
+  },
+  {
+   "name": "pkware_006B1160",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B1160",
+   "length": 55,
+   "hmac": "d50cce5efbe8afb7ae689abd94aa70b480ed98f7e63a55e312d8ce9519b6912f"
+  },
+  {
+   "name": "pkware_006B11A0",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B11A0",
+   "length": 110,
+   "hmac": "861ab800981102b8b94ac2880a92425c1395bbf21e678d1b0f32d90d539ae35a"
+  },
+  {
+   "name": "pkware_006B1210",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B1210",
+   "length": 123,
+   "hmac": "b941e043f5ac303593962f44be5c6c7c42dd871e01eb5b28e0ef2d75f597082d"
+  },
+  {
+   "name": "pkware_006B1290",
+   "cls": "library",
+   "where": "va",
+   "at": "0x006B1290",
+   "length": 179,
+   "hmac": "1e6067a51ab14b9d0c568d6ab5c7f304917a937231919658a21be139d0edc350"
+  },
+  {
+   "name": "pkware_data_0074B618",
+   "cls": "library",
+   "where": "va",
+   "at": "0x0074B618",
+   "length": 2320,
+   "hmac": "2bc8a741ec71959162abeb34868d5de172ef8e6d4b2fd3b6328520ca082cc072"
+  },
+  {
+   "name": "security_directory_entry",
+   "cls": "signature",
+   "where": "pe_offset",
+   "at": "0x98",
+   "length": 8,
+   "hmac": "6766498901306a5b8d4459bdb750b493d206ce044131b8c277d164c144d2cd82"
+  },
+  {
+   "name": "signature",
+   "cls": "signature",
+   "where": "file_offset",
+   "at": "0x372000",
+   "length": 6120,
+   "hmac": "91374c56dc515979fcd43954ebf9454bb03e7d9e976f0c68e5e18f38d693372f"
+  }
+ ]
+}

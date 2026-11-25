@@ -1,0 +1,1628 @@
+{
+ "note": "runs of import thunks (jmp [IAT slot]) that link.exe emits in .text",
+ "runs": [
+  {
+   "start": "0x00406728",
+   "end": "0x004067B8",
+   "stubs": 24,
+   "neighbours": [],
+   "entries": [
+    {
+     "va": "0x00406728",
+     "iat_slot": "0x006CC420"
+    },
+    {
+     "va": "0x0040672E",
+     "iat_slot": "0x006CC150"
+    },
+    {
+     "va": "0x00406734",
+     "iat_slot": "0x006CC14C"
+    },
+    {
+     "va": "0x0040673A",
+     "iat_slot": "0x006CC148"
+    },
+    {
+     "va": "0x00406740",
+     "iat_slot": "0x006CC144"
+    },
+    {
+     "va": "0x00406746",
+     "iat_slot": "0x006CC140"
+    },
+    {
+     "va": "0x0040674C",
+     "iat_slot": "0x006CC13C"
+    },
+    {
+     "va": "0x00406752",
+     "iat_slot": "0x006CC138"
+    },
+    {
+     "va": "0x00406758",
+     "iat_slot": "0x006CC134"
+    },
+    {
+     "va": "0x0040675E",
+     "iat_slot": "0x006CC130"
+    },
+    {
+     "va": "0x00406764",
+     "iat_slot": "0x006CC12C"
+    },
+    {
+     "va": "0x0040676A",
+     "iat_slot": "0x006CC02C"
+    },
+    {
+     "va": "0x00406770",
+     "iat_slot": "0x006CC030"
+    },
+    {
+     "va": "0x00406776",
+     "iat_slot": "0x006CC034"
+    },
+    {
+     "va": "0x0040677C",
+     "iat_slot": "0x006CC038"
+    },
+    {
+     "va": "0x00406782",
+     "iat_slot": "0x006CC03C"
+    },
+    {
+     "va": "0x00406788",
+     "iat_slot": "0x006CC040"
+    },
+    {
+     "va": "0x0040678E",
+     "iat_slot": "0x006CC044"
+    },
+    {
+     "va": "0x00406794",
+     "iat_slot": "0x006CC048"
+    },
+    {
+     "va": "0x0040679A",
+     "iat_slot": "0x006CC04C"
+    },
+    {
+     "va": "0x004067A0",
+     "iat_slot": "0x006CC028"
+    },
+    {
+     "va": "0x004067A6",
+     "iat_slot": "0x006CC024"
+    },
+    {
+     "va": "0x004067AC",
+     "iat_slot": "0x006CC020"
+    },
+    {
+     "va": "0x004067B2",
+     "iat_slot": "0x006CC01C"
+    }
+   ]
+  },
+  {
+   "start": "0x006B00BA",
+   "end": "0x006B00C0",
+   "stubs": 1,
+   "neighbours": [
+    {
+     "va": "0x006B00C0",
+     "length": 6,
+     "state": "matched"
+    },
+    {
+     "va": "0x006B00B4",
+     "length": 6,
+     "state": "matched"
+    }
+   ],
+   "entries": [
+    {
+     "va": "0x006B00BA",
+     "iat_slot": "0x006CC0F4"
+    }
+   ]
+  },
+  {
+   "start": "0x006B00C6",
+   "end": "0x006B00F0",
+   "stubs": 7,
+   "neighbours": [
+    {
+     "va": "0x006B00C0",
+     "length": 6,
+     "state": "matched"
+    },
+    {
+     "va": "0x006B00F0",
+     "length": 6,
+     "state": "matched"
+    }
+   ],
+   "entries": [
+    {
+     "va": "0x006B00C6",
+     "iat_slot": "0x006CC118"
+    },
+    {
+     "va": "0x006B00CC",
+     "iat_slot": "0x006CC114"
+    },
+    {
+     "va": "0x006B00D2",
+     "iat_slot": "0x006CC110"
+    },
+    {
+     "va": "0x006B00D8",
+     "iat_slot": "0x006CC10C"
+    },
+    {
+     "va": "0x006B00DE",
+     "iat_slot": "0x006CC108"
+    },
+    {
+     "va": "0x006B00E4",
+     "iat_slot": "0x006CC104"
+    },
+    {
+     "va": "0x006B00EA",
+     "iat_slot": "0x006CC100"
+    }
+   ]
+  },
+  {
+   "start": "0x006B00F6",
+   "end": "0x006B0150",
+   "stubs": 15,
+   "neighbours": [
+    {
+     "va": "0x006B0150",
+     "length": 6,
+     "state": "matched"
+    },
+    {
+     "va": "0x006B00F0",
+     "length": 6,
+     "state": "matched"
+    }
+   ],
+   "entries": [
+    {
+     "va": "0x006B00F6",
+     "iat_slot": "0x006CC54C"
+    },
+    {
+     "va": "0x006B00FC",
+     "iat_slot": "0x006CC06C"
+    },
+    {
+     "va": "0x006B0102",
+     "iat_slot": "0x006CC068"
+    },
+    {
+     "va": "0x006B0108",
+     "iat_slot": "0x006CC058"
+    },
+    {
+     "va": "0x006B010E",
+     "iat_slot": "0x006CC070"
+    },
+    {
+     "va": "0x006B0114",
+     "iat_slot": "0x006CC05C"
+    },
+    {
+     "va": "0x006B011A",
+     "iat_slot": "0x006CC060"
+    },
+    {
+     "va": "0x006B0120",
+     "iat_slot": "0x006CC064"
+    },
+    {
+     "va": "0x006B0126",
+     "iat_slot": "0x006CC544"
+    },
+    {
+     "va": "0x006B012C",
+     "iat_slot": "0x006CC5A4"
+    },
+    {
+     "va": "0x006B0132",
+     "iat_slot": "0x006CC564"
+    },
+    {
+     "va": "0x006B0138",
+     "iat_slot": "0x006CC58C"
+    },
+    {
+     "va": "0x006B013E",
+     "iat_slot": "0x006CC574"
+    },
+    {
+     "va": "0x006B0144",
+     "iat_slot": "0x006CC568"
+    },
+    {
+     "va": "0x006B014A",
+     "iat_slot": "0x006CC5A8"
+    }
+   ]
+  },
+  {
+   "start": "0x006B0156",
+   "end": "0x006B0180",
+   "stubs": 7,
+   "neighbours": [
+    {
+     "va": "0x006B0180",
+     "length": 6,
+     "state": "matched"
+    },
+    {
+     "va": "0x006B0150",
+     "length": 6,
+     "state": "matched"
+    }
+   ],
+   "entries": [
+    {
+     "va": "0x006B0156",
+     "iat_slot": "0x006CC570"
+    },
+    {
+     "va": "0x006B015C",
+     "iat_slot": "0x006CC5A0"
+    },
+    {
+     "va": "0x006B0162",
+     "iat_slot": "0x006CC59C"
+    },
+    {
+     "va": "0x006B0168",
+     "iat_slot": "0x006CC598"
+    },
+    {
+     "va": "0x006B016E",
+     "iat_slot": "0x006CC594"
+    },
+    {
+     "va": "0x006B0174",
+     "iat_slot": "0x006CC590"
+    },
+    {
+     "va": "0x006B017A",
+     "iat_slot": "0x006CC5B0"
+    }
+   ]
+  },
+  {
+   "start": "0x006B0186",
+   "end": "0x006B01AA",
+   "stubs": 6,
+   "neighbours": [
+    {
+     "va": "0x006B0180",
+     "length": 6,
+     "state": "matched"
+    }
+   ],
+   "entries": [
+    {
+     "va": "0x006B0186",
+     "iat_slot": "0x006CC584"
+    },
+    {
+     "va": "0x006B018C",
+     "iat_slot": "0x006CC580"
+    },
+    {
+     "va": "0x006B0192",
+     "iat_slot": "0x006CC57C"
+    },
+    {
+     "va": "0x006B0198",
+     "iat_slot": "0x006CC578"
+    },
+    {
+     "va": "0x006B019E",
+     "iat_slot": "0x006CC5AC"
+    },
+    {
+     "va": "0x006B01A4",
+     "iat_slot": "0x006CC53C"
+    }
+   ]
+  },
+  {
+   "start": "0x006B134A",
+   "end": "0x006B1350",
+   "stubs": 1,
+   "neighbours": [
+    {
+     "va": "0x006B1350",
+     "length": 6,
+     "state": "matched"
+    },
+    {
+     "va": "0x006B1344",
+     "length": 6,
+     "state": "matched"
+    }
+   ],
+   "entries": [
+    {
+     "va": "0x006B134A",
+     "iat_slot": "0x006CC084"
+    }
+   ]
+  },
+  {
+   "start": "0x006B1356",
+   "end": "0x006B1440",
+   "stubs": 39,
+   "neighbours": [
+    {
+     "va": "0x006B1440",
+     "length": 6,
+     "state": "matched"
+    },
+    {
+     "va": "0x006B1350",
+     "length": 6,
+     "state": "matched"
+    }
+   ],
+   "entries": [
+    {
+     "va": "0x006B1356",
+     "iat_slot": "0x006CC5BC"
+    },
+    {
+     "va": "0x006B135C",
+     "iat_slot": "0x006CC5C0"
+    },
+    {
+     "va": "0x006B1362",
+     "iat_slot": "0x006CC5C4"
+    },
+    {
+     "va": "0x006B1368",
+     "iat_slot": "0x006CC5C8"
+    },
+    {
+     "va": "0x006B136E",
+     "iat_slot": "0x006CC5CC"
+    },
+    {
+     "va": "0x006B1374",
+     "iat_slot": "0x006CC5B8"
+    },
+    {
+     "va": "0x006B137A",
+     "iat_slot": "0x006CC5D4"
+    },
+    {
+     "va": "0x006B1380",
+     "iat_slot": "0x006CC5D8"
+    },
+    {
+     "va": "0x006B1386",
+     "iat_slot": "0x006CC5D0"
+    },
+    {
+     "va": "0x006B138C",
+     "iat_slot": "0x006CC608"
+    },
+    {
+     "va": "0x006B1392",
+     "iat_slot": "0x006CC60C"
+    },
+    {
+     "va": "0x006B1398",
+     "iat_slot": "0x006CC604"
+    },
+    {
+     "va": "0x006B139E",
+     "iat_slot": "0x006CC600"
+    },
+    {
+     "va": "0x006B13A4",
+     "iat_slot": "0x006CC5FC"
+    },
+    {
+     "va": "0x006B13AA",
+     "iat_slot": "0x006CC5F8"
+    },
+    {
+     "va": "0x006B13B0",
+     "iat_slot": "0x006CC5E8"
+    },
+    {
+     "va": "0x006B13B6",
+     "iat_slot": "0x006CC5E4"
+    },
+    {
+     "va": "0x006B13BC",
+     "iat_slot": "0x006CC5E0"
+    },
+    {
+     "va": "0x006B13C2",
+     "iat_slot": "0x006CC42C"
+    },
+    {
+     "va": "0x006B13C8",
+     "iat_slot": "0x006CC428"
+    },
+    {
+     "va": "0x006B13CE",
+     "iat_slot": "0x006CC194"
+    },
+    {
+     "va": "0x006B13D4",
+     "iat_slot": "0x006CC198"
+    },
+    {
+     "va": "0x006B13DA",
+     "iat_slot": "0x006CC19C"
+    },
+    {
+     "va": "0x006B13E0",
+     "iat_slot": "0x006CC1A0"
+    },
+    {
+     "va": "0x006B13E6",
+     "iat_slot": "0x006CC1A4"
+    },
+    {
+     "va": "0x006B13EC",
+     "iat_slot": "0x006CC1A8"
+    },
+    {
+     "va": "0x006B13F2",
+     "iat_slot": "0x006CC1AC"
+    },
+    {
+     "va": "0x006B13F8",
+     "iat_slot": "0x006CC1B0"
+    },
+    {
+     "va": "0x006B13FE",
+     "iat_slot": "0x006CC1B4"
+    },
+    {
+     "va": "0x006B1404",
+     "iat_slot": "0x006CC1B8"
+    },
+    {
+     "va": "0x006B140A",
+     "iat_slot": "0x006CC1BC"
+    },
+    {
+     "va": "0x006B1410",
+     "iat_slot": "0x006CC1C0"
+    },
+    {
+     "va": "0x006B1416",
+     "iat_slot": "0x006CC1C4"
+    },
+    {
+     "va": "0x006B141C",
+     "iat_slot": "0x006CC1C8"
+    },
+    {
+     "va": "0x006B1422",
+     "iat_slot": "0x006CC1CC"
+    },
+    {
+     "va": "0x006B1428",
+     "iat_slot": "0x006CC1D0"
+    },
+    {
+     "va": "0x006B142E",
+     "iat_slot": "0x006CC1D4"
+    },
+    {
+     "va": "0x006B1434",
+     "iat_slot": "0x006CC1D8"
+    },
+    {
+     "va": "0x006B143A",
+     "iat_slot": "0x006CC1DC"
+    }
+   ]
+  },
+  {
+   "start": "0x006B1446",
+   "end": "0x006B1530",
+   "stubs": 39,
+   "neighbours": [
+    {
+     "va": "0x006B1530",
+     "length": 6,
+     "state": "matched"
+    },
+    {
+     "va": "0x006B1440",
+     "length": 6,
+     "state": "matched"
+    }
+   ],
+   "entries": [
+    {
+     "va": "0x006B1446",
+     "iat_slot": "0x006CC1E4"
+    },
+    {
+     "va": "0x006B144C",
+     "iat_slot": "0x006CC1E8"
+    },
+    {
+     "va": "0x006B1452",
+     "iat_slot": "0x006CC1EC"
+    },
+    {
+     "va": "0x006B1458",
+     "iat_slot": "0x006CC1F0"
+    },
+    {
+     "va": "0x006B145E",
+     "iat_slot": "0x006CC1F4"
+    },
+    {
+     "va": "0x006B1464",
+     "iat_slot": "0x006CC1F8"
+    },
+    {
+     "va": "0x006B146A",
+     "iat_slot": "0x006CC1FC"
+    },
+    {
+     "va": "0x006B1470",
+     "iat_slot": "0x006CC200"
+    },
+    {
+     "va": "0x006B1476",
+     "iat_slot": "0x006CC204"
+    },
+    {
+     "va": "0x006B147C",
+     "iat_slot": "0x006CC208"
+    },
+    {
+     "va": "0x006B1482",
+     "iat_slot": "0x006CC20C"
+    },
+    {
+     "va": "0x006B1488",
+     "iat_slot": "0x006CC210"
+    },
+    {
+     "va": "0x006B148E",
+     "iat_slot": "0x006CC214"
+    },
+    {
+     "va": "0x006B1494",
+     "iat_slot": "0x006CC218"
+    },
+    {
+     "va": "0x006B149A",
+     "iat_slot": "0x006CC21C"
+    },
+    {
+     "va": "0x006B14A0",
+     "iat_slot": "0x006CC220"
+    },
+    {
+     "va": "0x006B14A6",
+     "iat_slot": "0x006CC224"
+    },
+    {
+     "va": "0x006B14AC",
+     "iat_slot": "0x006CC228"
+    },
+    {
+     "va": "0x006B14B2",
+     "iat_slot": "0x006CC22C"
+    },
+    {
+     "va": "0x006B14B8",
+     "iat_slot": "0x006CC230"
+    },
+    {
+     "va": "0x006B14BE",
+     "iat_slot": "0x006CC234"
+    },
+    {
+     "va": "0x006B14C4",
+     "iat_slot": "0x006CC238"
+    },
+    {
+     "va": "0x006B14CA",
+     "iat_slot": "0x006CC23C"
+    },
+    {
+     "va": "0x006B14D0",
+     "iat_slot": "0x006CC240"
+    },
+    {
+     "va": "0x006B14D6",
+     "iat_slot": "0x006CC244"
+    },
+    {
+     "va": "0x006B14DC",
+     "iat_slot": "0x006CC248"
+    },
+    {
+     "va": "0x006B14E2",
+     "iat_slot": "0x006CC24C"
+    },
+    {
+     "va": "0x006B14E8",
+     "iat_slot": "0x006CC250"
+    },
+    {
+     "va": "0x006B14EE",
+     "iat_slot": "0x006CC254"
+    },
+    {
+     "va": "0x006B14F4",
+     "iat_slot": "0x006CC258"
+    },
+    {
+     "va": "0x006B14FA",
+     "iat_slot": "0x006CC25C"
+    },
+    {
+     "va": "0x006B1500",
+     "iat_slot": "0x006CC260"
+    },
+    {
+     "va": "0x006B1506",
+     "iat_slot": "0x006CC264"
+    },
+    {
+     "va": "0x006B150C",
+     "iat_slot": "0x006CC268"
+    },
+    {
+     "va": "0x006B1512",
+     "iat_slot": "0x006CC26C"
+    },
+    {
+     "va": "0x006B1518",
+     "iat_slot": "0x006CC270"
+    },
+    {
+     "va": "0x006B151E",
+     "iat_slot": "0x006CC274"
+    },
+    {
+     "va": "0x006B1524",
+     "iat_slot": "0x006CC278"
+    },
+    {
+     "va": "0x006B152A",
+     "iat_slot": "0x006CC27C"
+    }
+   ]
+  },
+  {
+   "start": "0x006B1536",
+   "end": "0x006B19F2",
+   "stubs": 202,
+   "neighbours": [
+    {
+     "va": "0x006B1530",
+     "length": 6,
+     "state": "matched"
+    }
+   ],
+   "entries": [
+    {
+     "va": "0x006B1536",
+     "iat_slot": "0x006CC284"
+    },
+    {
+     "va": "0x006B153C",
+     "iat_slot": "0x006CC288"
+    },
+    {
+     "va": "0x006B1542",
+     "iat_slot": "0x006CC28C"
+    },
+    {
+     "va": "0x006B1548",
+     "iat_slot": "0x006CC290"
+    },
+    {
+     "va": "0x006B154E",
+     "iat_slot": "0x006CC294"
+    },
+    {
+     "va": "0x006B1554",
+     "iat_slot": "0x006CC298"
+    },
+    {
+     "va": "0x006B155A",
+     "iat_slot": "0x006CC29C"
+    },
+    {
+     "va": "0x006B1560",
+     "iat_slot": "0x006CC2A0"
+    },
+    {
+     "va": "0x006B1566",
+     "iat_slot": "0x006CC2A4"
+    },
+    {
+     "va": "0x006B156C",
+     "iat_slot": "0x006CC2A8"
+    },
+    {
+     "va": "0x006B1572",
+     "iat_slot": "0x006CC2AC"
+    },
+    {
+     "va": "0x006B1578",
+     "iat_slot": "0x006CC2B0"
+    },
+    {
+     "va": "0x006B157E",
+     "iat_slot": "0x006CC2B4"
+    },
+    {
+     "va": "0x006B1584",
+     "iat_slot": "0x006CC2B8"
+    },
+    {
+     "va": "0x006B158A",
+     "iat_slot": "0x006CC2BC"
+    },
+    {
+     "va": "0x006B1590",
+     "iat_slot": "0x006CC2C0"
+    },
+    {
+     "va": "0x006B1596",
+     "iat_slot": "0x006CC2C4"
+    },
+    {
+     "va": "0x006B159C",
+     "iat_slot": "0x006CC2C8"
+    },
+    {
+     "va": "0x006B15A2",
+     "iat_slot": "0x006CC2CC"
+    },
+    {
+     "va": "0x006B15A8",
+     "iat_slot": "0x006CC2D0"
+    },
+    {
+     "va": "0x006B15AE",
+     "iat_slot": "0x006CC2D4"
+    },
+    {
+     "va": "0x006B15B4",
+     "iat_slot": "0x006CC2D8"
+    },
+    {
+     "va": "0x006B15BA",
+     "iat_slot": "0x006CC2DC"
+    },
+    {
+     "va": "0x006B15C0",
+     "iat_slot": "0x006CC2E0"
+    },
+    {
+     "va": "0x006B15C6",
+     "iat_slot": "0x006CC2E4"
+    },
+    {
+     "va": "0x006B15CC",
+     "iat_slot": "0x006CC2E8"
+    },
+    {
+     "va": "0x006B15D2",
+     "iat_slot": "0x006CC2EC"
+    },
+    {
+     "va": "0x006B15D8",
+     "iat_slot": "0x006CC2F0"
+    },
+    {
+     "va": "0x006B15DE",
+     "iat_slot": "0x006CC2F4"
+    },
+    {
+     "va": "0x006B15E4",
+     "iat_slot": "0x006CC2F8"
+    },
+    {
+     "va": "0x006B15EA",
+     "iat_slot": "0x006CC2FC"
+    },
+    {
+     "va": "0x006B15F0",
+     "iat_slot": "0x006CC300"
+    },
+    {
+     "va": "0x006B15F6",
+     "iat_slot": "0x006CC304"
+    },
+    {
+     "va": "0x006B15FC",
+     "iat_slot": "0x006CC308"
+    },
+    {
+     "va": "0x006B1602",
+     "iat_slot": "0x006CC30C"
+    },
+    {
+     "va": "0x006B1608",
+     "iat_slot": "0x006CC310"
+    },
+    {
+     "va": "0x006B160E",
+     "iat_slot": "0x006CC314"
+    },
+    {
+     "va": "0x006B1614",
+     "iat_slot": "0x006CC318"
+    },
+    {
+     "va": "0x006B161A",
+     "iat_slot": "0x006CC31C"
+    },
+    {
+     "va": "0x006B1620",
+     "iat_slot": "0x006CC320"
+    },
+    {
+     "va": "0x006B1626",
+     "iat_slot": "0x006CC324"
+    },
+    {
+     "va": "0x006B162C",
+     "iat_slot": "0x006CC328"
+    },
+    {
+     "va": "0x006B1632",
+     "iat_slot": "0x006CC32C"
+    },
+    {
+     "va": "0x006B1638",
+     "iat_slot": "0x006CC330"
+    },
+    {
+     "va": "0x006B163E",
+     "iat_slot": "0x006CC334"
+    },
+    {
+     "va": "0x006B1644",
+     "iat_slot": "0x006CC338"
+    },
+    {
+     "va": "0x006B164A",
+     "iat_slot": "0x006CC33C"
+    },
+    {
+     "va": "0x006B1650",
+     "iat_slot": "0x006CC340"
+    },
+    {
+     "va": "0x006B1656",
+     "iat_slot": "0x006CC344"
+    },
+    {
+     "va": "0x006B165C",
+     "iat_slot": "0x006CC348"
+    },
+    {
+     "va": "0x006B1662",
+     "iat_slot": "0x006CC34C"
+    },
+    {
+     "va": "0x006B1668",
+     "iat_slot": "0x006CC350"
+    },
+    {
+     "va": "0x006B166E",
+     "iat_slot": "0x006CC354"
+    },
+    {
+     "va": "0x006B1674",
+     "iat_slot": "0x006CC358"
+    },
+    {
+     "va": "0x006B167A",
+     "iat_slot": "0x006CC35C"
+    },
+    {
+     "va": "0x006B1680",
+     "iat_slot": "0x006CC360"
+    },
+    {
+     "va": "0x006B1686",
+     "iat_slot": "0x006CC364"
+    },
+    {
+     "va": "0x006B168C",
+     "iat_slot": "0x006CC368"
+    },
+    {
+     "va": "0x006B1692",
+     "iat_slot": "0x006CC36C"
+    },
+    {
+     "va": "0x006B1698",
+     "iat_slot": "0x006CC370"
+    },
+    {
+     "va": "0x006B169E",
+     "iat_slot": "0x006CC374"
+    },
+    {
+     "va": "0x006B16A4",
+     "iat_slot": "0x006CC378"
+    },
+    {
+     "va": "0x006B16AA",
+     "iat_slot": "0x006CC37C"
+    },
+    {
+     "va": "0x006B16B0",
+     "iat_slot": "0x006CC380"
+    },
+    {
+     "va": "0x006B16B6",
+     "iat_slot": "0x006CC384"
+    },
+    {
+     "va": "0x006B16BC",
+     "iat_slot": "0x006CC388"
+    },
+    {
+     "va": "0x006B16C2",
+     "iat_slot": "0x006CC38C"
+    },
+    {
+     "va": "0x006B16C8",
+     "iat_slot": "0x006CC390"
+    },
+    {
+     "va": "0x006B16CE",
+     "iat_slot": "0x006CC394"
+    },
+    {
+     "va": "0x006B16D4",
+     "iat_slot": "0x006CC398"
+    },
+    {
+     "va": "0x006B16DA",
+     "iat_slot": "0x006CC39C"
+    },
+    {
+     "va": "0x006B16E0",
+     "iat_slot": "0x006CC3A0"
+    },
+    {
+     "va": "0x006B16E6",
+     "iat_slot": "0x006CC3A4"
+    },
+    {
+     "va": "0x006B16EC",
+     "iat_slot": "0x006CC3A8"
+    },
+    {
+     "va": "0x006B16F2",
+     "iat_slot": "0x006CC3AC"
+    },
+    {
+     "va": "0x006B16F8",
+     "iat_slot": "0x006CC3B0"
+    },
+    {
+     "va": "0x006B16FE",
+     "iat_slot": "0x006CC3B4"
+    },
+    {
+     "va": "0x006B1704",
+     "iat_slot": "0x006CC3B8"
+    },
+    {
+     "va": "0x006B170A",
+     "iat_slot": "0x006CC3BC"
+    },
+    {
+     "va": "0x006B1710",
+     "iat_slot": "0x006CC3C0"
+    },
+    {
+     "va": "0x006B1716",
+     "iat_slot": "0x006CC3C4"
+    },
+    {
+     "va": "0x006B171C",
+     "iat_slot": "0x006CC3C8"
+    },
+    {
+     "va": "0x006B1722",
+     "iat_slot": "0x006CC3CC"
+    },
+    {
+     "va": "0x006B1728",
+     "iat_slot": "0x006CC3D0"
+    },
+    {
+     "va": "0x006B172E",
+     "iat_slot": "0x006CC3D4"
+    },
+    {
+     "va": "0x006B1734",
+     "iat_slot": "0x006CC3D8"
+    },
+    {
+     "va": "0x006B173A",
+     "iat_slot": "0x006CC3DC"
+    },
+    {
+     "va": "0x006B1740",
+     "iat_slot": "0x006CC3E0"
+    },
+    {
+     "va": "0x006B1746",
+     "iat_slot": "0x006CC3E4"
+    },
+    {
+     "va": "0x006B174C",
+     "iat_slot": "0x006CC3E8"
+    },
+    {
+     "va": "0x006B1752",
+     "iat_slot": "0x006CC3EC"
+    },
+    {
+     "va": "0x006B1758",
+     "iat_slot": "0x006CC3F0"
+    },
+    {
+     "va": "0x006B175E",
+     "iat_slot": "0x006CC3F4"
+    },
+    {
+     "va": "0x006B1764",
+     "iat_slot": "0x006CC3F8"
+    },
+    {
+     "va": "0x006B176A",
+     "iat_slot": "0x006CC3FC"
+    },
+    {
+     "va": "0x006B1770",
+     "iat_slot": "0x006CC400"
+    },
+    {
+     "va": "0x006B1776",
+     "iat_slot": "0x006CC404"
+    },
+    {
+     "va": "0x006B177C",
+     "iat_slot": "0x006CC408"
+    },
+    {
+     "va": "0x006B1782",
+     "iat_slot": "0x006CC40C"
+    },
+    {
+     "va": "0x006B1788",
+     "iat_slot": "0x006CC410"
+    },
+    {
+     "va": "0x006B178E",
+     "iat_slot": "0x006CC414"
+    },
+    {
+     "va": "0x006B1794",
+     "iat_slot": "0x006CC418"
+    },
+    {
+     "va": "0x006B179A",
+     "iat_slot": "0x006CC41C"
+    },
+    {
+     "va": "0x006B17A0",
+     "iat_slot": "0x006CC190"
+    },
+    {
+     "va": "0x006B17A6",
+     "iat_slot": "0x006CC18C"
+    },
+    {
+     "va": "0x006B17AC",
+     "iat_slot": "0x006CC188"
+    },
+    {
+     "va": "0x006B17B2",
+     "iat_slot": "0x006CC184"
+    },
+    {
+     "va": "0x006B17B8",
+     "iat_slot": "0x006CC180"
+    },
+    {
+     "va": "0x006B17BE",
+     "iat_slot": "0x006CC17C"
+    },
+    {
+     "va": "0x006B17C4",
+     "iat_slot": "0x006CC178"
+    },
+    {
+     "va": "0x006B17CA",
+     "iat_slot": "0x006CC174"
+    },
+    {
+     "va": "0x006B17D0",
+     "iat_slot": "0x006CC170"
+    },
+    {
+     "va": "0x006B17D6",
+     "iat_slot": "0x006CC16C"
+    },
+    {
+     "va": "0x006B17DC",
+     "iat_slot": "0x006CC168"
+    },
+    {
+     "va": "0x006B17E2",
+     "iat_slot": "0x006CC164"
+    },
+    {
+     "va": "0x006B17E8",
+     "iat_slot": "0x006CC160"
+    },
+    {
+     "va": "0x006B17EE",
+     "iat_slot": "0x006CC15C"
+    },
+    {
+     "va": "0x006B17F4",
+     "iat_slot": "0x006CC158"
+    },
+    {
+     "va": "0x006B17FA",
+     "iat_slot": "0x006CC45C"
+    },
+    {
+     "va": "0x006B1800",
+     "iat_slot": "0x006CC460"
+    },
+    {
+     "va": "0x006B1806",
+     "iat_slot": "0x006CC464"
+    },
+    {
+     "va": "0x006B180C",
+     "iat_slot": "0x006CC468"
+    },
+    {
+     "va": "0x006B1812",
+     "iat_slot": "0x006CC46C"
+    },
+    {
+     "va": "0x006B1818",
+     "iat_slot": "0x006CC470"
+    },
+    {
+     "va": "0x006B181E",
+     "iat_slot": "0x006CC474"
+    },
+    {
+     "va": "0x006B1824",
+     "iat_slot": "0x006CC478"
+    },
+    {
+     "va": "0x006B182A",
+     "iat_slot": "0x006CC47C"
+    },
+    {
+     "va": "0x006B1830",
+     "iat_slot": "0x006CC480"
+    },
+    {
+     "va": "0x006B1836",
+     "iat_slot": "0x006CC484"
+    },
+    {
+     "va": "0x006B183C",
+     "iat_slot": "0x006CC488"
+    },
+    {
+     "va": "0x006B1842",
+     "iat_slot": "0x006CC48C"
+    },
+    {
+     "va": "0x006B1848",
+     "iat_slot": "0x006CC490"
+    },
+    {
+     "va": "0x006B184E",
+     "iat_slot": "0x006CC494"
+    },
+    {
+     "va": "0x006B1854",
+     "iat_slot": "0x006CC498"
+    },
+    {
+     "va": "0x006B185A",
+     "iat_slot": "0x006CC49C"
+    },
+    {
+     "va": "0x006B1860",
+     "iat_slot": "0x006CC4A0"
+    },
+    {
+     "va": "0x006B1866",
+     "iat_slot": "0x006CC4A4"
+    },
+    {
+     "va": "0x006B186C",
+     "iat_slot": "0x006CC4A8"
+    },
+    {
+     "va": "0x006B1872",
+     "iat_slot": "0x006CC4AC"
+    },
+    {
+     "va": "0x006B1878",
+     "iat_slot": "0x006CC4B0"
+    },
+    {
+     "va": "0x006B187E",
+     "iat_slot": "0x006CC4B4"
+    },
+    {
+     "va": "0x006B1884",
+     "iat_slot": "0x006CC4B8"
+    },
+    {
+     "va": "0x006B188A",
+     "iat_slot": "0x006CC4BC"
+    },
+    {
+     "va": "0x006B1890",
+     "iat_slot": "0x006CC4C0"
+    },
+    {
+     "va": "0x006B1896",
+     "iat_slot": "0x006CC4C4"
+    },
+    {
+     "va": "0x006B189C",
+     "iat_slot": "0x006CC4C8"
+    },
+    {
+     "va": "0x006B18A2",
+     "iat_slot": "0x006CC4CC"
+    },
+    {
+     "va": "0x006B18A8",
+     "iat_slot": "0x006CC4D0"
+    },
+    {
+     "va": "0x006B18AE",
+     "iat_slot": "0x006CC4D4"
+    },
+    {
+     "va": "0x006B18B4",
+     "iat_slot": "0x006CC4D8"
+    },
+    {
+     "va": "0x006B18BA",
+     "iat_slot": "0x006CC4DC"
+    },
+    {
+     "va": "0x006B18C0",
+     "iat_slot": "0x006CC4E0"
+    },
+    {
+     "va": "0x006B18C6",
+     "iat_slot": "0x006CC4E4"
+    },
+    {
+     "va": "0x006B18CC",
+     "iat_slot": "0x006CC4E8"
+    },
+    {
+     "va": "0x006B18D2",
+     "iat_slot": "0x006CC4EC"
+    },
+    {
+     "va": "0x006B18D8",
+     "iat_slot": "0x006CC4F0"
+    },
+    {
+     "va": "0x006B18DE",
+     "iat_slot": "0x006CC4F4"
+    },
+    {
+     "va": "0x006B18E4",
+     "iat_slot": "0x006CC4F8"
+    },
+    {
+     "va": "0x006B18EA",
+     "iat_slot": "0x006CC4FC"
+    },
+    {
+     "va": "0x006B18F0",
+     "iat_slot": "0x006CC500"
+    },
+    {
+     "va": "0x006B18F6",
+     "iat_slot": "0x006CC504"
+    },
+    {
+     "va": "0x006B18FC",
+     "iat_slot": "0x006CC508"
+    },
+    {
+     "va": "0x006B1902",
+     "iat_slot": "0x006CC50C"
+    },
+    {
+     "va": "0x006B1908",
+     "iat_slot": "0x006CC510"
+    },
+    {
+     "va": "0x006B190E",
+     "iat_slot": "0x006CC514"
+    },
+    {
+     "va": "0x006B1914",
+     "iat_slot": "0x006CC520"
+    },
+    {
+     "va": "0x006B191A",
+     "iat_slot": "0x006CC51C"
+    },
+    {
+     "va": "0x006B1920",
+     "iat_slot": "0x006CC454"
+    },
+    {
+     "va": "0x006B1926",
+     "iat_slot": "0x006CC524"
+    },
+    {
+     "va": "0x006B192C",
+     "iat_slot": "0x006CC528"
+    },
+    {
+     "va": "0x006B1932",
+     "iat_slot": "0x006CC52C"
+    },
+    {
+     "va": "0x006B1938",
+     "iat_slot": "0x006CC530"
+    },
+    {
+     "va": "0x006B193E",
+     "iat_slot": "0x006CC534"
+    },
+    {
+     "va": "0x006B1944",
+     "iat_slot": "0x006CC518"
+    },
+    {
+     "va": "0x006B194A",
+     "iat_slot": "0x006CC458"
+    },
+    {
+     "va": "0x006B1950",
+     "iat_slot": "0x006CC0E8"
+    },
+    {
+     "va": "0x006B1956",
+     "iat_slot": "0x006CC0DC"
+    },
+    {
+     "va": "0x006B195C",
+     "iat_slot": "0x006CC0D8"
+    },
+    {
+     "va": "0x006B1962",
+     "iat_slot": "0x006CC0D4"
+    },
+    {
+     "va": "0x006B1968",
+     "iat_slot": "0x006CC0D0"
+    },
+    {
+     "va": "0x006B196E",
+     "iat_slot": "0x006CC0B8"
+    },
+    {
+     "va": "0x006B1974",
+     "iat_slot": "0x006CC0B4"
+    },
+    {
+     "va": "0x006B197A",
+     "iat_slot": "0x006CC0B0"
+    },
+    {
+     "va": "0x006B1980",
+     "iat_slot": "0x006CC0AC"
+    },
+    {
+     "va": "0x006B1986",
+     "iat_slot": "0x006CC09C"
+    },
+    {
+     "va": "0x006B198C",
+     "iat_slot": "0x006CC0E4"
+    },
+    {
+     "va": "0x006B1992",
+     "iat_slot": "0x006CC0E0"
+    },
+    {
+     "va": "0x006B1998",
+     "iat_slot": "0x006CC0A0"
+    },
+    {
+     "va": "0x006B199E",
+     "iat_slot": "0x006CC090"
+    },
+    {
+     "va": "0x006B19A4",
+     "iat_slot": "0x006CC0A4"
+    },
+    {
+     "va": "0x006B19AA",
+     "iat_slot": "0x006CC050"
+    },
+    {
+     "va": "0x006B19B0",
+     "iat_slot": "0x006CC014"
+    },
+    {
+     "va": "0x006B19B6",
+     "iat_slot": "0x006CC018"
+    },
+    {
+     "va": "0x006B19BC",
+     "iat_slot": "0x006CC010"
+    },
+    {
+     "va": "0x006B19C2",
+     "iat_slot": "0x006CC00C"
+    },
+    {
+     "va": "0x006B19C8",
+     "iat_slot": "0x006CC008"
+    },
+    {
+     "va": "0x006B19CE",
+     "iat_slot": "0x006CC004"
+    },
+    {
+     "va": "0x006B19D4",
+     "iat_slot": "0x006CC000"
+    },
+    {
+     "va": "0x006B19DA",
+     "iat_slot": "0x006CC43C"
+    },
+    {
+     "va": "0x006B19E0",
+     "iat_slot": "0x006CC434"
+    },
+    {
+     "va": "0x006B19E6",
+     "iat_slot": "0x006CC438"
+    },
+    {
+     "va": "0x006B19EC",
+     "iat_slot": "0x006CC5F0"
+    }
+   ]
+  },
+  {
+   "start": "0x006C9B76",
+   "end": "0x006C9BE8",
+   "stubs": 19,
+   "neighbours": [
+    {
+     "va": "0x006C9B70",
+     "length": 6,
+     "state": "matched"
+    }
+   ],
+   "entries": [
+    {
+     "va": "0x006C9B76",
+     "iat_slot": "0x006CC558"
+    },
+    {
+     "va": "0x006C9B7C",
+     "iat_slot": "0x006CC554"
+    },
+    {
+     "va": "0x006C9B82",
+     "iat_slot": "0x006CC078"
+    },
+    {
+     "va": "0x006C9B88",
+     "iat_slot": "0x006CC154"
+    },
+    {
+     "va": "0x006C9B8E",
+     "iat_slot": "0x006CC128"
+    },
+    {
+     "va": "0x006C9B94",
+     "iat_slot": "0x006CC124"
+    },
+    {
+     "va": "0x006C9B9A",
+     "iat_slot": "0x006CC120"
+    },
+    {
+     "va": "0x006C9BA0",
+     "iat_slot": "0x006CC444"
+    },
+    {
+     "va": "0x006C9BA6",
+     "iat_slot": "0x006CC448"
+    },
+    {
+     "va": "0x006C9BAC",
+     "iat_slot": "0x006CC44C"
+    },
+    {
+     "va": "0x006C9BB2",
+     "iat_slot": "0x006CC450"
+    },
+    {
+     "va": "0x006C9BB8",
+     "iat_slot": "0x006CC0CC"
+    },
+    {
+     "va": "0x006C9BBE",
+     "iat_slot": "0x006CC0C8"
+    },
+    {
+     "va": "0x006C9BC4",
+     "iat_slot": "0x006CC0C4"
+    },
+    {
+     "va": "0x006C9BCA",
+     "iat_slot": "0x006CC0C0"
+    },
+    {
+     "va": "0x006C9BD0",
+     "iat_slot": "0x006CC0BC"
+    },
+    {
+     "va": "0x006C9BD6",
+     "iat_slot": "0x006CC098"
+    },
+    {
+     "va": "0x006C9BDC",
+     "iat_slot": "0x006CC094"
+    },
+    {
+     "va": "0x006C9BE2",
+     "iat_slot": "0x006CC0A8"
+    }
+   ]
+  }
+ ]
+}
