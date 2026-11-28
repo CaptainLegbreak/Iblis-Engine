@@ -37,6 +37,25 @@ links as an ordinary Windows program with nothing read from Game.exe, and passes
 
 ## Claimed
 
+- 2: CMake and VS 2022 x86 (lane14/cmake), started 2026-11-27.
+
 ## Findings
 
+- 2026-11-27, question for the user (item 0, parked, not blocking): I need the user's 1.14d Game.exe in the
+  sandbox for Codex's tools (linkdebt.py for item 3, shortdata.py for item 4) and to check 16 data bytes.
+  My request for access to ~/Iblis-Codex and ~/Desktop/Diablo 2 archives on the PC was declined by the
+  app's approval check, not by the user. Could the user attach Game.exe to the chat, or approve folder
+  access to the folder that holds it? Nothing from it goes into the repo.
+- 2026-11-27, item 0: 16 bytes of Codex main's data plan were in no record of the f835c02 plan, so the
+  engine's data didn't have them; written as 0 in PR #1, to check against Game.exe:
+  gaQuestTable[0] bytes 0-7 (0x00723F30) and gatControlTemplates[282], [284] .nFlags (0x0070C204,
+  0x0070C264). In Codex main's plan, 35 files list an `include` that isn't the file's own
+  (e.g. BnDownload.cpp lists BnDownload_00520B30.inc but includes BnDownload.inc) - stale plan
+  entries after the file merges, worth a fix in Codex.
+
 ## Status
+
+- 2026-11-27 17:40 PT: item 0 done, PR #1 (Source/ = Codex main 09eccff; data carried over exactly without
+  Game.exe, by inverting gendata's rendering, checked by re-rendering all 2,481 old records). Toolchain in the
+  sandbox: msvc-wine, MSVC 14.44.35207, cl 19.44.35230 for x86, link 14.44.35230.0, SDK 10.0.26100.0, under
+  wine 11.0 (Ubuntu's wine 9.0 crashes on this kernel). Starting item 2.
