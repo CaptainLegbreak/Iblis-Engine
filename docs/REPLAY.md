@@ -106,5 +106,17 @@ Once the engine links as a whole, the runner links the engine's libraries instea
 
 - `rng`, `bitbuf`, `startup`: identical between stock 1.14d and the engine (2,169, 1,993 and 4,163 lines; MSVC
   19.44 under wine, the user's 1.14d install).
-- Next: level 2 (Storm with the player's MPQs, D2Lang, the data tables), toward `drlg`.
+- Next: level 2 (Storm with the player's MPQs, D2Lang, the data tables), toward `drlg`. What the source says:
+  - The game's order (`GameInit` 0x004064C0, `GameStart` 0x00405C30): `FOG_SetLogPrefix`, `FOG_InitErrorMgr`,
+    `MAINMENUS_InitStorm`, `FOG_AsyncDataInitialize(1, 0)`, `ARCHIVE_LoadArchives` (0x004FAB90),
+    `ARCHIVE_LoadExpansionArchives` (0x004FAEC0), `STRTABLE_GetLanguage`; the data tables come later, from the
+    module that starts (`DATATBLS_LoadAllTxts`, 0x00619300). The oracle's level 2 calls this sequence from
+    the case, after level 1, instead of `GameStart`.
+  - Where the archives are found: `FOG_GetInstallPath` reads the registry's `InstallPath`, else the folder of
+    the running exe, which in the oracle is the runner's, not Game.exe's. The oracle must not write the
+    player's registry; it needs Storm's base path pointed at the game folder (`SFileSetBasePath`, 0x004164B0)
+    and the install-path lookup answered with the `--game` folder. Which of the two the archive loader
+    honours is the first thing to establish.
+  - The engine side of any level 2 case needs the engine to link as a whole (lane 14 queue item 6): the data
+    tables reach most of D2Common, Fog, Storm and D2Lang, beyond what `/FORCE:UNRESOLVED` can keep honest.
 - `drlg`, `drops` and `save`: designed above, not written.
