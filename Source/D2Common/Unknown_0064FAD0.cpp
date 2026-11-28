@@ -116,10 +116,10 @@ static void __stdcall PATH_RecacheRoom(D2ActiveRoomStrc* pHintRoom, D2DynamicPat
         return;
     }
 
-    D2ActiveRoomStrc* pRoomAtLocation = sub_00463740_FindRoomAtPoint(pPath->pRoom, nX, nY);
+    D2ActiveRoomStrc* pRoomAtLocation = COLLISION_GetRoomBySubTileCoordinates(pPath->pRoom, nX, nY);
     if (!pRoomAtLocation && pHintRoom)
     {
-        pRoomAtLocation = sub_00463740_FindRoomAtPoint(pHintRoom, nX, nY);
+        pRoomAtLocation = COLLISION_GetRoomBySubTileCoordinates(pHintRoom, nX, nY);
     }
 
     if (pRoomAtLocation || !(pPath->dwFlags & 0x40000))
@@ -135,7 +135,7 @@ static void __stdcall PATH_RecacheRoom(D2ActiveRoomStrc* pHintRoom, D2DynamicPat
 // 0x0064FB90
 static void __stdcall PATH_RecacheRoomAtCoordIfNeeded(D2FP32_16 tCoord, D2ActiveRoomStrc* pHintRoom, D2DynamicPathStrc* pPath)
 {
-    if ((pPath->dwFlags & 0x40000) && !sub_00463740_FindRoomAtPoint(pPath->pRoom, tCoord.dwPrecisionX >> 16, tCoord.dwPrecisionY >> 16))
+    if ((pPath->dwFlags & 0x40000) && !COLLISION_GetRoomBySubTileCoordinates(pPath->pRoom, tCoord.dwPrecisionX >> 16, tCoord.dwPrecisionY >> 16))
     {
         pPath->dwPathPoints = 0;
         return;
@@ -1122,7 +1122,7 @@ static BOOL __stdcall PATH_UpdateCollisionMask(D2ActiveRoomStrc* pDestRoom, D2Pa
     }
 
     PATH_RecacheRoomAtCoordIfNeeded(PATH_MakeCoord(PATH_ToFP16Center(tDest.X), PATH_ToFP16Center(tDest.Y)), pDestRoom, pPath);
-    D2_ASSERT((!tDest.X && !tDest.Y) || sub_00463740_FindRoomAtPoint(pDestRoom, tDest.X, tDest.Y), 0x489);
+    D2_ASSERT((!tDest.X && !tDest.Y) || COLLISION_GetRoomBySubTileCoordinates(pDestRoom, tDest.X, tDest.Y), 0x489);
     PATH_ResetMovement(pPath);
     return 1;
 }
@@ -1162,7 +1162,7 @@ static BOOL __stdcall D2Common_10231_Impl(D2ActiveRoomStrc* pRoomDest, D2PathPoi
     }
 
     PATH_RecacheRoomAtCoordIfNeeded(PATH_MakeCoord(PATH_ToFP16Center(tDest.X), PATH_ToFP16Center(tDest.Y)), pRoomDest, pPath);
-    D2_ASSERT((!tDest.X && !tDest.Y) || sub_00463740_FindRoomAtPoint(pRoomDest, tDest.X, tDest.Y), 0x4CC);
+    D2_ASSERT((!tDest.X && !tDest.Y) || COLLISION_GetRoomBySubTileCoordinates(pRoomDest, tDest.X, tDest.Y), 0x4CC);
     PATH_ResetMovement(pPath);
     return 1;
 }
@@ -1227,7 +1227,7 @@ BOOL __stdcall D2Common_10232(D2DynamicPathStrc* pPath, D2UnitStrc* pUnit, D2Act
     }
 
     PATH_RecacheRoomAtCoordIfNeeded(PATH_MakeCoord(PATH_ToFP16Center(nTargetX), PATH_ToFP16Center(nTargetY)), pDestRoom, pPath);
-    D2_ASSERT(sub_00463740_FindRoomAtPoint(pDestRoom, nTargetX, nTargetY), 0x524);
+    D2_ASSERT(COLLISION_GetRoomBySubTileCoordinates(pDestRoom, nTargetX, nTargetY), 0x524);
     PATH_ResetMovement(pPath);
     return 1;
 }

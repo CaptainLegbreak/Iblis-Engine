@@ -17,14 +17,6 @@ extern "C" const char gszEmptyAssertText;                                       
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
-struct D2UiBlockRectStrc
-{
-    int nLeft;
-    int nTop;
-    int nRight;
-    int nBottom;
-    char unk0x10[0x110];
-};
 
 extern int gnItemLabelCount;                                                                       // 0x007C54A0
 
@@ -219,7 +211,7 @@ void __cdecl SHOWITEMS_DrawUnitNames()
                 if(!SCALE_CheckPerspectivePosition(nPrecisionX,nPrecisionY))continue;
                 int nProjectedX,nProjectedY;
                 SCALE_AdjustPerspectivePosition(nPrecisionX,nPrecisionY,0,&nProjectedX,&nProjectedY);
-                switch(sub_0045AE90_GetPanelSlideMode())
+                switch(UI_GetPanelSlideMode())
                 {
                 case 1:nProjectedX+=-(gnScreenWidth_0071146C/4);break;
                 case 2:nProjectedX+=gnScreenWidth_0071146C/4;break;
@@ -236,7 +228,7 @@ void __cdecl SHOWITEMS_DrawUnitNames()
             }
             int nMinX=0;
             int nMaxX=gnScreenWidth_0071146C;
-            switch(sub_0045AE90_GetPanelSlideMode())
+            switch(UI_GetPanelSlideMode())
             {
             case 1:nMaxX=gnScreenWidth_0071146C/2-32;break;
             case 2:nMinX=gnScreenWidth_0071146C/2;break;

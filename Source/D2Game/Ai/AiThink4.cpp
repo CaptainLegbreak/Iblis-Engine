@@ -189,7 +189,7 @@ void __fastcall ACT5Q6_OpenWorldStoneChamber(D2GameStrc* pGame);                
 
 D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId);                                    // 0x00451F80
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
 D2UnitStrc* __fastcall D2GAME_SpawnMonster(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nX, int nY, int nMonsterId, int nAnimMode, int nMaxSearchRings, short nFlags); // 0x005B2F20
 
@@ -228,9 +228,9 @@ extern "C" const char szAiThink4File[];                                         
 
 int __fastcall GAME_GetUnitTypeOrInvalid(D2UnitStrc* pUnit);                                        // 0x0044BE50
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId);                                      // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId);                                      // 0x0045C4B0
 
-D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId);                                    // 0x0046ACE0
+D2MissilesTxt* __fastcall VIEW_GetMissilesTxtRecord(int nMissileId);                                    // 0x0046ACE0
 
 D2MonStatsTxt* __fastcall sub_0055B7E0_GetMonStatsTxtFromUnit(D2UnitStrc* pUnit);                           // 0x0055B7E0
 
@@ -654,7 +654,7 @@ struct D2MonRegDataStrc;
 
 struct D2MonsterRegionStrc;
 
-int __fastcall sub_00472210_SeedRollMasked(D2SeedStrc* pSeed, int nMax); // 0x00472210
+int __fastcall SEED_RollMasked(D2SeedStrc* pSeed, int nMax); // 0x00472210
 
 int __fastcall AITACTICS_RunToTargetCoordinates(D2GameStrc* pGame, D2UnitStrc* pUnit, int nX, int nY); // 0x005DEDE0
 
@@ -1247,7 +1247,7 @@ void __fastcall AITHINK_Fn085_HighPriest(D2GameStrc* pGame, D2UnitStrc* pUnit, D
         }
         if (pMonStatsTxt->nSkill[0] >= 0 && pGame->dwGameFrame > pAiControl->dwAiParam[1] && nDistance < AI_PARAM(pGame, pMonStatsTxt, 7)
             && (int)SEED_RollLimitedRandomNumber(pSeed, 100) < AI_PARAM(pGame, pMonStatsTxt, 3)) {
-            int nIndex = sub_00472210_SeedRollMasked(pSeed, 4);
+            int nIndex = SEED_RollMasked(pSeed, 4);
             int nX = CLIENTS_GetUnitX(pTarget) + gaHighPriestSkillOffsets[nIndex].nX;
             int nY = CLIENTS_GetUnitY(pTarget) + gaHighPriestSkillOffsets[nIndex].nY;
             AITACTICS_UseSkill(pGame, pUnit, pMonStatsTxt->nSkillMode[0], pMonStatsTxt->nSkill[0], pTarget, nX, nY);
@@ -1255,7 +1255,7 @@ void __fastcall AITHINK_Fn085_HighPriest(D2GameStrc* pGame, D2UnitStrc* pUnit, D
             return;
         }
         if (AI_PARAM(pGame, pMonStatsTxt, 4) > 0 && pMonStatsTxt->wMissiles[2] > 0) {
-            D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(pMonStatsTxt->wMissiles[2]);
+            D2MissilesTxt* pMissilesTxtRecord = VIEW_GetMissilesTxtRecord(pMonStatsTxt->wMissiles[2]);
             if (pMissilesTxtRecord && nDistance < pMissilesTxtRecord->wRange - 2 && (int)SEED_RollLimitedRandomNumber(pSeed, 100) < AI_PARAM(pGame, pMonStatsTxt, 4)) {
                 AITACTICS_ChangeModeAndTargetUnit(pGame, pUnit, 8, pTarget);
                 return;
@@ -2976,7 +2976,7 @@ int __fastcall AITHINK_PetMove(D2GameStrc* pGame, D2UnitStrc* pPlayer, D2UnitStr
         int nY;
         int nClass=363>=gpDataTables->nMonStatsTxtRecordCount ? -1 : 363;
         if (!sub_0054DC40_FindSpawnCoordinates(pGame,pRoom,pCoords,nClass,&nX,&nY,0)) return 0;
-        D2ActiveRoomStrc* pNewRoom=sub_00463740_FindRoomAtPoint(pRoom,nX,nY);
+        D2ActiveRoomStrc* pNewRoom=COLLISION_GetRoomBySubTileCoordinates(pRoom,nX,nY);
         if (!pNewRoom || !SUNIT_TeleportUnit(pGame,pPet,pNewRoom,nX,nY,0,0)) return 0;
         UNITROOM_RefreshUnit(pPet);
         if (pPet) pPet->dwFlagEx|=0x10000;
@@ -3149,7 +3149,7 @@ int __fastcall D2GAME_AI_PetMove(D2GameStrc* pGame, D2UnitStrc* pOwner, D2UnitSt
             int nSpawnX;
             int nSpawnY;
             if (!MONSTERREGION_FindSpawnLocation(pGame, pRoom, pCoords, GetMonsterId(363), &nSpawnX, &nSpawnY, 0)) break;
-            pRoom = sub_00463740_FindRoomAtPoint(pRoom, nSpawnX, nSpawnY);
+            pRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nSpawnX, nSpawnY);
             if (!pRoom) break;
             if (!SUNIT_TeleportUnit(pGame, pUnit, pRoom, nSpawnX, nSpawnY, 0, 0)) break;
             UNITROOM_RefreshUnit(pUnit);
@@ -3790,22 +3790,22 @@ void __fastcall AITHINK_Formation(D2GameStrc* pGame, D2UnitStrc* pUnit, D2AiTick
             int nOffset = SEED_RollLimitedRandomNumber(&pUnit->pSeed, 10);
             if (nPhase < 25)
             {
-                if (sub_00472210_SeedRollMasked(&pUnit->pSeed, 2)) nOffset = -nOffset;
+                if (SEED_RollMasked(&pUnit->pSeed, 2)) nOffset = -nOffset;
                 nX += nOffset; nY -= 5;
             }
             if (nPhase >= 25 && nPhase < 50)
             {
-                if (sub_00472210_SeedRollMasked(&pUnit->pSeed, 2)) nOffset = -nOffset;
+                if (SEED_RollMasked(&pUnit->pSeed, 2)) nOffset = -nOffset;
                 nX += 5; nY += nOffset;
             }
             if (nPhase >= 50 && nPhase < 75)
             {
-                if (sub_00472210_SeedRollMasked(&pUnit->pSeed, 2)) nOffset = -nOffset;
+                if (SEED_RollMasked(&pUnit->pSeed, 2)) nOffset = -nOffset;
                 nX += nOffset; nY += 5;
             }
             if (nPhase >= 75)
             {
-                if (sub_00472210_SeedRollMasked(&pUnit->pSeed, 2)) nOffset = -nOffset;
+                if (SEED_RollMasked(&pUnit->pSeed, 2)) nOffset = -nOffset;
                 nX -= 5; nY += nOffset;
             }
             if (AITACTICS_WalkToTargetCoordinatesDeleteAiEvent(pGame, pUnit, nX, nY))
@@ -4185,10 +4185,10 @@ void __fastcall AITHINK_Fn059_BloodRaven(D2GameStrc* pGame, D2UnitStrc* pUnit, D
         && (int)SEED_RollLimitedRandomNumber(pSeed, 100) < pAi->dwAiParam[0]) {
         nDistance = SEED_RollLimitedRandomNumber(pSeed, 15) + 5;
         int nX, nY;
-        if (sub_00472210_SeedRollMasked(pSeed, 2)) { nX = nDistance; nY = ITEMS_RollLimitedRandomNumber(pSeed, nDistance); }
+        if (SEED_RollMasked(pSeed, 2)) { nX = nDistance; nY = ITEMS_RollLimitedRandomNumber(pSeed, nDistance); }
         else { nX = ITEMS_RollLimitedRandomNumber(pSeed, nDistance); nY = nDistance; }
-        if (sub_00472210_SeedRollMasked(pSeed, 2)) nX = -nX;
-        if (sub_00472210_SeedRollMasked(pSeed, 2)) nY = -nY;
+        if (SEED_RollMasked(pSeed, 2)) nX = -nX;
+        if (SEED_RollMasked(pSeed, 2)) nY = -nY;
         AITACTICS_UseSkill(pGame, pUnit, pMonStats->nSkillMode[0], pMonStats->nSkill[0], 0, CLIENTS_GetUnitX(pTarget) + nX, CLIENTS_GetUnitY(pTarget) + nY);
         ++pAi->dwAiParam[1];
         pAi->dwAiParam[0] = 0;
@@ -5194,7 +5194,7 @@ static inline D2MissilesTxt* SKILLS_GetMissilesTxtRecord(int nMissileId)
         return 0;
     }
 
-    return sub_0046ACE0_GetMissilesTxtRecord(nMissileId);
+    return VIEW_GetMissilesTxtRecord(nMissileId);
 }
 
 static __forceinline D2StatListStrc* GetAuraStateStatList(D2UnitStrc* pUnit, D2SkillsTxt* pSkillsTxtRecord)
@@ -6911,7 +6911,7 @@ void __fastcall AITHINK_Fn105_ShadowWarrior(D2GameStrc* game, D2UnitStrc* unit, 
     if (D2Common_11016(unit, selected) == 1) {
         if (combat) {
             AITACTICS_UseSkill(game, unit, SKILLS_GetSkillMode(selected), SKILLS_GetSkillIdFromSkill(selected, ".\\Ai\\AiThink4.cpp", 0xB96), target, 0, 0);
-            D2SkillsTxt* record = sub_0045C4B0_GetSkillsTxtRecord(skillId);
+            D2SkillsTxt* record = SCMD_GetSkillsTxtRecord(skillId);
             int level = SKILLS_GetSkillLevel(unit, selected, 1);
             if (level <= 1) level = 1;
             tick->pAiControl->dwAiParam[0] = SKILLS_EvaluateSkillFormula(unit, record->dwDelay, skillId, level) / 3 + game->dwGameFrame + 18;
@@ -6921,7 +6921,7 @@ void __fastcall AITHINK_Fn105_ShadowWarrior(D2GameStrc* game, D2UnitStrc* unit, 
         return;
     }
     AITACTICS_UseSkill(game, unit, SKILLS_GetSkillMode(selected), SKILLS_GetSkillIdFromSkill(selected, ".\\Ai\\AiThink4.cpp", 0xBA8), target, 0, 0);
-    D2SkillsTxt* record = sub_0045C4B0_GetSkillsTxtRecord(skillId);
+    D2SkillsTxt* record = SCMD_GetSkillsTxtRecord(skillId);
     int level = SKILLS_GetSkillLevel(unit, selected, 1);
     if (level <= 1) level = 1;
     tick->pAiControl->dwAiParam[0] = SKILLS_EvaluateSkillFormula(unit, record->dwDelay, skillId, level) / 3 + game->dwGameFrame + 18;
@@ -7815,7 +7815,7 @@ void __fastcall AITHINK_Fn106_143_ShadowMaster(D2GameStrc* pGame, D2UnitStrc* pU
                 const int bInMeleeRange = UNITS_IsInMeleeRange(pUnit, pPickTarget, 0);
                 if (AITHINK_UseShadowMasterSkill(pGame, pOwner, pUnit, nPickSkillId, bInMeleeRange, pPickTarget, shadowMasterSkills[nCounter].nX, shadowMasterSkills[nCounter].nY, pAiTickParam))
                 {
-                    D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nPickSkillId);
+                    D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nPickSkillId);
                     if (pSkillsTxtRecord && pSkillsTxtRecord->wSrvDoFunc == 19)
                     {
                         pAiControl->dwAiParam[1] = nPickSkillId;
@@ -9682,7 +9682,7 @@ void __fastcall AITHINK_Fn134_BaalThrone(D2GameStrc* pGame, D2UnitStrc* pUnit, D
     D2UnitStrc* pTarget = pTick->pTarget;
     if (pMonStats->nSkill[0] > 0 && pTarget)
     {
-        D2SkillsTxt* pSkills = sub_0045C4B0_GetSkillsTxtRecord(pMonStats->nSkill[0]);
+        D2SkillsTxt* pSkills = SCMD_GetSkillsTxtRecord(pMonStats->nSkill[0]);
         if (pSkills)
         {
             if (pSkills->nAuraState >= 0 && pSkills->nAuraState < sgptDataTables->nStatesTxtRecordCount && STATES_CheckState(pUnit, pSkills->nAuraState)) goto Idle;

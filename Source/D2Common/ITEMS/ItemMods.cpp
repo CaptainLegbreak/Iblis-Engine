@@ -136,7 +136,7 @@ int __fastcall ITEMMODS_PropertyFunc06(int nType, D2UnitStrc* pUnit, D2UnitStrc*
 
 unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
-void* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
+void* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
 
 int __stdcall SKILLS_GetRequiredLevel(int nSkillId); // 0x00644710
@@ -2446,7 +2446,7 @@ int __fastcall ITEMMODS_PropertyFunc19(int nType, D2UnitStrc* pUnit, D2UnitStrc*
     }
 
     const int nSkillId = pProperty->nLayer;
-    if (nSkillId < 0 || nSkillId >= sgptDataTables->nSkillsTxtRecordCount || !sub_0045C4B0_GetSkillsTxtRecord(nSkillId))
+    if (nSkillId < 0 || nSkillId >= sgptDataTables->nSkillsTxtRecordCount || !SCMD_GetSkillsTxtRecord(nSkillId))
     {
         return 0;
     }

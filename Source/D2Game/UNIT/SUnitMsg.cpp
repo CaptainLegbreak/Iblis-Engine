@@ -334,14 +334,14 @@ void __fastcall D2GAME_STATES_SendUnitStates(D2UnitStrc* pUnit, D2ClientStrc* pC
     int nStateOffset = 0;
     for (; i < nTotalStatFlagCount; ++i, nStateOffset += 32)
     {
-        int nBit = sub_004111A0_GetLowestSetBit(nFlags[i]);
+        int nBit = BITMANIP_GetLowestSetBit(nFlags[i]);
         while (nBit >= 0)
         {
             nFlags[i + (nBit >> 5)] &= gdwInvBitMasks[nBit & 31];
             const int nStateId = nBit + nStateOffset;
             D2StatesTxt* pStatesTxtRecord = SKILLS_GetStatesTxtRecord(nStateId);
-            if (!pStatesTxtRecord) { nBit = sub_004111A0_GetLowestSetBit(nFlags[i]); continue; }
-            if (pStatesTxtRecord->nStateFlags[0] & gdwBitMasks[0]) { nBit = sub_004111A0_GetLowestSetBit(nFlags[i]); continue; }
+            if (!pStatesTxtRecord) { nBit = BITMANIP_GetLowestSetBit(nFlags[i]); continue; }
+            if (pStatesTxtRecord->nStateFlags[0] & gdwBitMasks[0]) { nBit = BITMANIP_GetLowestSetBit(nFlags[i]); continue; }
             {
                 if (BITMANIP_GetSize(&bitBuffer) + 7 >= 219) break;
                 BITMANIP_Write(&bitBuffer, nStateId, 8);
@@ -384,7 +384,7 @@ void __fastcall D2GAME_STATES_SendUnitStates(D2UnitStrc* pUnit, D2ClientStrc* pC
                 }
                 else BITMANIP_Write(&bitBuffer, 0, 1);
             }
-            nBit = sub_004111A0_GetLowestSetBit(nFlags[i]);
+            nBit = BITMANIP_GetLowestSetBit(nFlags[i]);
         }
     }
     BITMANIP_Write(&bitBuffer, 0xFF, 8);
@@ -407,7 +407,7 @@ void __fastcall D2GAME_STATES_SendUnitStateUpdates(D2UnitStrc* pUnit, D2ClientSt
     int nStateBase = 0;
     for (; i < nWords; ++i, nStateBase += 32)
     {
-        int nBit = sub_004111A0_GetLowestSetBit(dwFlags[i]);
+        int nBit = BITMANIP_GetLowestSetBit(dwFlags[i]);
         while (nBit >= 0)
         {
             dwFlags[i + (nBit >> 5)] &= gdwInvBitMasks[nBit & 31];
@@ -417,7 +417,7 @@ void __fastcall D2GAME_STATES_SendUnitStateUpdates(D2UnitStrc* pUnit, D2ClientSt
             {
                 if (pStates->nStateFlags[0] & gdwBitMasks[0])
                 {
-                    nBit = sub_004111A0_GetLowestSetBit(dwFlags[i]);
+                    nBit = BITMANIP_GetLowestSetBit(dwFlags[i]);
                     continue;
                 }
                 if (STATES_CheckState(pUnit, nState))
@@ -473,7 +473,7 @@ void __fastcall D2GAME_STATES_SendUnitStateUpdates(D2UnitStrc* pUnit, D2ClientSt
                 }
                 else D2GAME_PACKETS_SendPacket0xA9_StateOff(pClient, (unsigned char)nUnitType, nUnitId, (unsigned char)nState); // 0x0053E290
             }
-            nBit = sub_004111A0_GetLowestSetBit(dwFlags[i]);
+            nBit = BITMANIP_GetLowestSetBit(dwFlags[i]);
         }
     }
 }

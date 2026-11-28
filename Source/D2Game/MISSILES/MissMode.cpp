@@ -139,7 +139,7 @@ extern const int gnSrvHit52_XOffsets[8]; // 0x006E2A58
 extern const int gnSrvHit52_YOffsets[8]; // 0x006E2A38
 
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
 
 void __fastcall SKILLS_ExecuteServerDoFunction(D2GameStrc* pGame, D2UnitStrc* pUnit, int nDoFunc, int nSkillId, int nSkillLevel); // 0x0056D810
@@ -176,7 +176,7 @@ extern MISSMODE_SRVDO gpfnMissileSrvDoFunctions[]; // 0x0073C768
 
 extern int gnMissileSrvDoFuncCount; // 0x0073C71C
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
 
 
 typedef int(__fastcall* AURACALLBACK)(D2AuraCallbackStrc* pAuraCallback, D2UnitStrc* pUnit);
@@ -1358,7 +1358,7 @@ void __fastcall MISSMODE_CreateImmolationArrowHitSubmissiles(D2GameStrc* pGame, 
             const int nY = nUnitY + y;
             if (MISSMODE_CheckDistanceAndLineOfSight(nMaxDistanceSq, nUnitX + x, nY, UNITS_GetRoom(pMissile), x, y))
             {
-                D2ActiveRoomStrc* pTargetRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pMissile), nUnitX + x, nY);
+                D2ActiveRoomStrc* pTargetRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pMissile), nUnitX + x, nY);
                 if (pTargetRoom && !DUNGEON_IsRoomInTown(pTargetRoom))
                 {
                     if (nRange)
@@ -1394,7 +1394,7 @@ int __fastcall MISSMODE_SrvHit07_HolyBolt_FistOfTheHeavenBolt(D2GameStrc* pGame,
     if (pMissilesTxtRecord->dwHitPar[0] && pOwner
         && (SUNIT_CanPetBeTargetedBySkill(pGame, pOwner, pUnit, nSkillId) || SUNIT_CanAllyBeTargetedBySkill(pGame, pOwner, pUnit, nSkillId)))
     {
-        D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+        D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
         if (pSkillsTxtRecord)
         {
             const int nMin = SKILLS_EvaluateSkillFormula(pOwner, pSkillsTxtRecord->dwCalc[0], nSkillId, nLevel) << 8;
@@ -1541,7 +1541,7 @@ int __fastcall MISSMODE_SrvHit12_ChainLightning_LightningStrike(D2GameStrc* pGam
     {
         const int nSkillId = MISSILE_GetSkill(pMissile);
         const int nLevel = MISSILE_GetLevel(pMissile);
-        D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+        D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
         if (!pSkillsTxtRecord)
         {
             return 3;
@@ -2771,7 +2771,7 @@ int __fastcall MISSMODE_SrvHit38_CatapultChargedBall(D2GameStrc* pGame, D2UnitSt
     {
         const int nSkillId = MISSILE_GetSkill(pMissile);
         const int nLevel = MISSILE_GetLevel(pMissile);
-        D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+        D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
         if (!pSkillsTxtRecord)
         {
             return 1;
@@ -3090,7 +3090,7 @@ int __fastcall MISSMODE_SrvHit40_CatapultSpikeBall(D2GameStrc* pGame, D2UnitStrc
     if (nCalc <= 0)
     {
         const int nSkillId = MISSILE_GetSkill(pMissile);
-        D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+        D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
         if (!pSkillsTxtRecord)
         {
             return 1;
@@ -3188,7 +3188,7 @@ int __fastcall MISSMODE_SrvHit47_MoltenBoulder(D2GameStrc* pGame, D2UnitStrc* pM
         {
             const int nSkillId = sub_0064A280(pMissile);
             const int nLevel = sub_0064A210(pMissile);
-            D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+            D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
             if (!pSkillsTxtRecord)
             {
                 return 1;
@@ -4147,7 +4147,7 @@ static void __stdcall MISSMODE_SrvDoHandler(D2GameStrc* pGame, D2UnitStrc* pMiss
     D2ActiveRoomStrc* pRoom = UNITS_GetRoom(pMissile);
     if (!pRoom)
     {
-        pRoom = sub_00463740_FindRoomAtPoint(0, CLIENTS_GetUnitX(pMissile), CLIENTS_GetUnitY(pMissile));
+        pRoom = COLLISION_GetRoomBySubTileCoordinates(0, CLIENTS_GetUnitX(pMissile), CLIENTS_GetUnitY(pMissile));
     }
 
     D2UnitStrc* pOwner = SUNIT_GetOwner(pGame, pMissile);
@@ -4838,7 +4838,7 @@ int __fastcall MISSMODE_SrvDo13_BoneWallMaker(D2GameStrc* game,D2UnitStrc* unit)
   if(!owner) return 2;
   skillId=sub_0064A280_GetSkill(unit);
   skillLevel=sub_0064A210_GetSkillLevel(unit);
-  skill=sub_0045C4B0_GetSkillsTxtRecord(skillId);
+  skill=SCMD_GetSkillsTxtRecord(skillId);
   if(!skill) return 2;
   int variant;
   int monsterId=D2GAME_GetSummonIdFromSkill(owner,0,skillId,skillLevel,&variant,0,0);

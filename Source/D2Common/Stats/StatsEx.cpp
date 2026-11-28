@@ -1866,7 +1866,7 @@ int __fastcall STATLIST_GetStatFromLayer(D2StatListStrc* pStatList, int nLayer_S
         case 8:
             if (pStatListEx->pOwner && pStatListEx->pOwner->dwUnitType == UNIT_PLAYER)
             {
-                if (D2CharStatsTxt* pCharStatsTxtRecord = sub_004833E0_GetCharStatsTxtRecord(pStatListEx->pOwner->dwClassId))
+                if (D2CharStatsTxt* pCharStatsTxtRecord = INV_GetCharStatsTxtRecord(pStatListEx->pOwner->dwClassId))
                 {
                     const int nIndex = sub_00624B90_FindStatIndex(&pStatListEx->Stats, pOpStatData->nStat << STAT_SHIFT);
                     D2StatStrc* pStat = nIndex < 0 ? 0 : &pStatListEx->Stats.pStat[nIndex];
@@ -1884,7 +1884,7 @@ int __fastcall STATLIST_GetStatFromLayer(D2StatListStrc* pStatList, int nLayer_S
         case 9:
             if (pStatListEx->pOwner && pStatListEx->pOwner->dwUnitType == UNIT_PLAYER)
             {
-                if (D2CharStatsTxt* pCharStatsTxtRecord = sub_004833E0_GetCharStatsTxtRecord(pStatListEx->pOwner->dwClassId))
+                if (D2CharStatsTxt* pCharStatsTxtRecord = INV_GetCharStatsTxtRecord(pStatListEx->pOwner->dwClassId))
                 {
                     const int nIndex = sub_00624B90_FindStatIndex(&pStatListEx->Stats, pOpStatData->nStat << STAT_SHIFT);
                     D2StatStrc* pStat = nIndex < 0 ? 0 : &pStatListEx->Stats.pStat[nIndex];

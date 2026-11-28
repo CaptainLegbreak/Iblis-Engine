@@ -291,7 +291,7 @@ extern unsigned long gdwPaletteFlashTick; // 0x00841B6C
 
 
 
-void __fastcall sub_004E6850_BuildSocketFillerText(D2UnitStrc* pItem, Unicode* pBuffer, int nSize)
+void __fastcall SKILLDESC_BuildSocketFillerText(D2UnitStrc* pItem, Unicode* pBuffer, int nSize)
 {
     Unicode wszTemp[0x100];
     for (int i = 0; i < 0x100; ++i)

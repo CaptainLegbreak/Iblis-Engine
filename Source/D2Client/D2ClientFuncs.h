@@ -161,7 +161,7 @@ void __cdecl AUTOMAP_DrawDifficultyLine(); // 0x0045A190
 void __cdecl AUTOMAP_InitAutomapColors(); // 0x0045A620
 int __cdecl UI_GetAutomapMode(); // 0x0045A710
 void __cdecl AUTOMAP_DrawAutomapUnits(); // 0x0045AC90
-int __cdecl sub_0045AE90_GetPanelSlideMode(); // 0x0045AE90
+int __cdecl UI_GetPanelSlideMode(); // 0x0045AE90
 void __fastcall PLAYER_SetPanelSlide(int nMode); // 0x0045AEA0
 void __fastcall AUTOMAP_ScreenToMap(int* pX, int* pY); // 0x0045AFF0
 void __fastcall GFX_ClearPendingAction(D2UnitStrc* pUnit); // 0x0045C470
@@ -370,7 +370,7 @@ void __cdecl PARTY_FreeRosterUnits(); // 0x0049A020
 void __cdecl PARTY_RebuildRosterUnits(); // 0x0049A640
 int __stdcall TEXT_IsMouseInRect(int nX, int nY, int nWidth, int nHeight); // 0x0049AA50
 int __fastcall TEXT_GetCenteredStringX(unsigned short nStringIndex, int nCenterX); // 0x0049AAA0
-void __cdecl sub_0049C6C0_SendWaypointClose(); // 0x0049C6C0
+void __cdecl TEXT_SendWaypointClose(); // 0x0049C6C0
 void __fastcall TEXT_SaveTextDisplaySetting(unsigned long nValue); // 0x0049D570
 void __fastcall TEXT_DrawTextList(D2TextBoxStrc* pTextBox, int nX, int nY); // 0x0049D8E0
 void __fastcall TEXT_AddToHistory(D2TextNodeStrc* pSource); // 0x0049DBC0
@@ -413,7 +413,7 @@ void __fastcall MSG_SendFourDwords(char nCommand, int nUnitId, int nArg1, int nA
 int __fastcall ROSTERPETS_FindPetIdByOwner(D2UnitStrc* pUnit, int nType, int bAny); // 0x00478F20
 int __fastcall ROSTERPETS_FindRosterIndex(int nUnitId); // 0x00479150
 void __fastcall ROSTER_SetPortalIds(int nUnitId, int nA, int nB); // 0x0047A270
-void __fastcall sub_0047E200_CloseMenus(int bRestore); // 0x0047E200
+void __fastcall ESCMENU_CloseMenus(int bRestore); // 0x0047E200
 int __fastcall WARDENCLIENT_InitWarden(int nValue); // 0x004803C0
 int __fastcall UNITMODE_SetPathTargetPos(D2UnitStrc* pUnit, int nX, int nY); // 0x004804A0
 void __fastcall UNITMODE_SetPosition(D2UnitStrc* pUnit, unsigned short nX, unsigned short nY, int nMode, int nTargetX, int nTargetY); // 0x004804E0
@@ -486,7 +486,7 @@ int __cdecl TEXT_IsMouseOnStatButton(); // 0x004A65E0
 int __cdecl TEXT_IsMouseOnSkillButton(); // 0x004A6690
 bool __stdcall TEXT_IsStatButtonHidden(int nArg); // 0x004A6A00
 bool __stdcall TEXT_IsSkillButtonHidden(int nArg); // 0x004A6D50
-D2SkillDescTxt* __fastcall sub_004A89D0_SkillDescRec(int nSkillId); // 0x004A89D0
+D2SkillDescTxt* __fastcall TEXT_GetSkillDescTxtRecord(int nSkillId); // 0x004A89D0
 int __fastcall SPELLSEL_FindSkill(D2UnitStrc* pUnit, int nSkillId); // 0x004A9A90
 int __fastcall sub_004A9AE0_FindSkill(D2UnitStrc* pUnit, int nSkillId); // 0x004A9AE0
 int __fastcall sub_004A9B30_FindSkill(D2UnitStrc* pUnit, int nSkillId); // 0x004A9B30
@@ -500,7 +500,7 @@ void __fastcall MONSTER_SetClientFlags(D2UnitStrc* pUnit, unsigned short wFlags)
 void __fastcall MONSTER_SetMonsterLight(D2UnitStrc* pUnit); // 0x004AE210
 int __fastcall MONSTER_IsMinionMonster(D2UnitStrc* pUnit); // 0x004AE380
 D2UnitStrc* __cdecl NPCMENU_GetInteractNpc(); // 0x004B1620
-int __cdecl sub_004B1D70_FindNpcEntry(); // 0x004B1D70
+int __cdecl NPCMENU_FindNpcEntry(); // 0x004B1D70
 void __cdecl TEXT_InitNpcMenu(); // 0x004B23E0
 void __cdecl NPCMENU_FreeNpcMenu(); // 0x004B24A0
 int __cdecl NPCMENU_IsNpcTalkActive(); // 0x004B3470
@@ -569,7 +569,7 @@ unsigned int __fastcall GFXUTIL_TestRelationFlags(int nUnitId1, int nUnitId2, un
 void __fastcall PLAYERLIST_InitGfxData(D2UnitStrc* pUnit); // 0x004DC510
 void __fastcall GFXUTIL_ApplySoundEnviron(int nEnvironId); // 0x004DF6C0
 int __cdecl sub_004DF870_IsSoundSystemInit(); // 0x004DF870
-int __cdecl sub_004DF880_IsSoundSystemInit(); // 0x004DF880
+int __cdecl SOUNDINST_IsSoundSystemInit(); // 0x004DF880
 void __fastcall SKILLDESC_ToggleStateOffCallback(D2UnitStrc* pUnit, int nState, D2StatListStrc* pStatList); // 0x004E3050
 D2UnitStrc* __fastcall SKILLDESC_CltDoRandomMissile(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel); // 0x004E31C0
 void __fastcall sub_004E4050_Nothing(D2UnitStrc* pUnit, D2UnitStrc* pTarget); // 0x004E4050
@@ -580,7 +580,7 @@ int __cdecl SKILLDESC_SumProgressiveBonus(); // 0x004E6FF0
 void __stdcall TEXT_DrawHintText(int nArg1, int nStringIndex); // 0x004ED3F0
 int __fastcall CUNIT_ValidateMonsterId(int nMonsterId); // 0x00463900
 void __fastcall CUNIT_SetPathTargetToTargetUnit(D2UnitStrc* pUnit, int nArg); // 0x00465BF0
-D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId); // 0x0046ACE0
+D2MissilesTxt* __fastcall VIEW_GetMissilesTxtRecord(int nMissileId); // 0x0046ACE0
 int __fastcall TEXT_IsInPanelButton(int nMode, int nX, int nY); // 0x004A6580
 void __fastcall MONSTER_UpdateMonsterClient(D2UnitStrc* pUnit); // 0x004B13A0
 int __fastcall NPCMENU_GetInteractNpcId(int* pLow); // 0x004B3230
@@ -830,7 +830,7 @@ void __fastcall sub_004E0050_RestartSound(int nArg); // 0x004E0050
 void __cdecl sub_004E00C0_CloseSoundChannels(); // 0x004E00C0
 int __cdecl sub_004E00D0_ToggleSoundMode01(); // 0x004E00D0
 int __cdecl sub_004E0140_ToggleSoundMode12(); // 0x004E0140
-int __fastcall sub_004E0590_PickNpcSound(D2UnitStrc* pUnit, int nType); // 0x004E0590
+int __fastcall SOUNDINST_PickNpcSound(D2UnitStrc* pUnit, int nType); // 0x004E0590
 void __fastcall sub_004E0690_SetSoundTableFlag(int nValue); // 0x004E0690
 int __fastcall PLRSKILLS_FireAtTarget(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel); // 0x004E1B10
 void __fastcall sub_004E1C80_CltMissileInitDiabWall(D2UnitStrc* pMissile, int nInitSeed); // 0x004E1C80

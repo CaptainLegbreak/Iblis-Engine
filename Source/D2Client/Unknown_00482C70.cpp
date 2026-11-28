@@ -740,7 +740,7 @@ int __stdcall INVENTORY_GetWieldType(D2UnitStrc* pUnit, D2InventoryStrc* pInvent
 
 void __stdcall INV_DrawItemSockets(D2UnitStrc* item, D2InventoryGridInfoStrc* grid, int x, int y); // 0x00483E40
 
-void __fastcall sub_004E6850_BuildSocketFillerText(D2UnitStrc* pItem, Unicode* pText, int nMaxLength); // 0x004E6850
+void __fastcall SKILLDESC_BuildSocketFillerText(D2UnitStrc* pItem, Unicode* pText, int nMaxLength); // 0x004E6850
 
 int __stdcall ITEMS_CanBeEquipped(D2UnitStrc* pItem); // 0x0062A4E0
 
@@ -1187,7 +1187,7 @@ int __stdcall sub_00485410_AppendDamage(D2UnitStrc* pItem, Unicode* pText); // 0
 
 void __stdcall INV_AppendDefense(D2UnitStrc* pUnit, D2UnitStrc* pItem, Unicode* pText); // 0x00485EE0
 
-void __fastcall sub_004E6410_BuildPropText(D2UnitStrc* pItem, Unicode* wszText, int nUnused, int bFlag, const Unicode* wszExtra); // 0x004E6410
+void __fastcall SKILLDESC_BuildPropText(D2UnitStrc* pItem, Unicode* wszText, int nUnused, int bFlag, const Unicode* wszExtra); // 0x004E6410
 
 void __fastcall WARDENCLIENT_SetItemPropTexts(D2UnitStrc* pPlayer, D2UnitStrc* pItem, Unicode* pText, int nMaxLength); // 0x004E6560
 
@@ -1806,13 +1806,6 @@ struct D2LowQualityItemsTxt
     unsigned short wTblId;
 };
 
-struct D2RareAffixTxt
-{
-    char unk0x00[0x0C];
-    unsigned short wStringId;
-    char unk0x0E[0x18];
-    char szName[0x20];
-};
 
 #pragma intrinsic(memset, strcpy, strcat, strlen)
 

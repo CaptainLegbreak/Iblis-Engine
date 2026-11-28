@@ -13,9 +13,9 @@ extern "C" void* __cdecl memset(void* pDest, int nValue, unsigned int nSize);   
 
 extern "C" int __cdecl strncpy_s(char* szDest, unsigned int nDestSize, const char* szSource, unsigned int nCount); // 0x006859D2
 
-bool __cdecl sub_00401B00_LoadDbgHelp();                                                                    // 0x00401B00
+bool __cdecl ERRORMANAGER_LoadDbgHelp();                                                                    // 0x00401B00
 
-bool __cdecl sub_00401CB0_InitSymbols();                                                                    // 0x00401CB0
+bool __cdecl ERRORMANAGER_InitSymbols();                                                                    // 0x00401CB0
 
 extern void* ghProcess;                                                                            // 0x0074C6F0
 
@@ -27,7 +27,7 @@ extern bool gbSymInitialized;                                                   
 
 extern D2CriticalSectionStrc gtSymbolLock;                                                         // 0x0098A6F0
 
-static bool __stdcall sub_00401DF0_GetModuleFromAddr(unsigned long dwAddress, char* szModule, unsigned long* pdwBase);
+static bool __stdcall ERRORMANAGER_GetModuleFromAddr(unsigned long dwAddress, char* szModule, unsigned long* pdwBase); // 0x00401DF0
 
 extern "C" __declspec(dllimport) unsigned long __stdcall VirtualQuery(const void* pAddress, D2MemoryBasicInfoStrc* pBuffer, unsigned long nLength); // 0x006CC244
 
@@ -60,9 +60,9 @@ extern SymGetLineFromAddr64Fn gpfnSymGetLineFromAddr64;                         
 extern D2CriticalSectionStrc gtSymbolLockB_0098A6F0; // 0x0098A6F0
 
 
-static bool __stdcall sub_00401F10_GetSymbolFromAddr(char* szName, unsigned long dwAddress, unsigned long* pdwDisplacement);
+static bool __stdcall ERRORMANAGER_GetSymbolFromAddr(char* szName, unsigned long dwAddress, unsigned long* pdwDisplacement); // 0x00401F10
 
-static bool __stdcall sub_004020D0_GetLineFromAddr(unsigned long dwAddress, char* szFile, unsigned long* pLineNumber);
+static bool __stdcall ERRORMANAGER_GetLineFromAddr(unsigned long dwAddress, char* szFile, unsigned long* pLineNumber); // 0x004020D0
 
 typedef int (__stdcall* EnumerateLoadedModules64Fn)(void* hProcess, void* pfnCallback, void* pContext);
 
@@ -94,7 +94,7 @@ typedef int (__stdcall* D2MiniDumpWriteDumpFn)(void* hProcess, unsigned long dwP
 
 typedef int (__stdcall* SymCleanupFn)(void* hProcess);
 
-bool __stdcall sub_00405250_DescribeAddress(unsigned long dwAddress, D2SymbolInfoStrc* pInfo); // 0x00405250
+bool __stdcall ERRORMANAGER_DescribeAddress(unsigned long dwAddress, D2SymbolInfoStrc* pInfo); // 0x00405250
 
 extern "C" int __cdecl _snprintf_s(char* szBuffer, unsigned int nSizeOfBuffer, unsigned int nCount, const char* szFormat, ...); // 0x006824CB
 
@@ -106,22 +106,22 @@ extern unsigned long gdwMainThreadId_00992B1C;                                  
 
 extern "C" const char gszNewline[];                                                                // 0x006FFCB0
 
-void __fastcall sub_00402D60_FormatStackFrame(const D2StackFrameStrc* frame,const D2SymbolInfoStrc* symbol,char* output); // 0x00402D60
+void __fastcall ERRORMANAGER_FormatStackFrame(const D2StackFrameStrc* frame,const D2SymbolInfoStrc* symbol,char* output); // 0x00402D60
 
 // 0x00401A60
-void __cdecl sub_00401A60_UnlockSymbols()
+void __cdecl ERRORMANAGER_UnlockSymbols()
 {
     LeaveCriticalSection(&gtSymbolLock);
 }
 
 // 0x00401DF0
-static bool __stdcall sub_00401DF0_GetModuleFromAddr(unsigned long dwAddress, char* szModule, unsigned long* pdwBase)
+static bool __stdcall ERRORMANAGER_GetModuleFromAddr(unsigned long dwAddress, char* szModule, unsigned long* pdwBase)
 {
     szModule[0] = 0;
     *pdwBase = 0;
     D2SymbolLockGuardStrc tLock;
 
-    if ((ghDbgHelp || sub_00401B00_LoadDbgHelp()) && (gbSymInitialized || sub_00401CB0_InitSymbols()))
+    if ((ghDbgHelp || ERRORMANAGER_LoadDbgHelp()) && (gbSymInitialized || ERRORMANAGER_InitSymbols()))
     {
         SymGetModuleInfo64Fn pfnGetModuleInfo = gpfnSymGetModuleInfo64;
         if (pfnGetModuleInfo)
@@ -225,21 +225,21 @@ static unsigned char __stdcall ERRORMANAGER_GetThreadStack(unsigned long* pStack
 
 static inline bool sub_EnsureSymbolEngine()
 {
-    if (!ghDbgHelp && !sub_00401B00_LoadDbgHelp())
+    if (!ghDbgHelp && !ERRORMANAGER_LoadDbgHelp())
         return false;
-    if (!gbSymInitialized && !sub_00401CB0_InitSymbols())
+    if (!gbSymInitialized && !ERRORMANAGER_InitSymbols())
         return false;
     return true;
 }
 
 // 0x00401F10
-static bool __stdcall sub_00401F10_GetSymbolFromAddr(char* szName, unsigned long dwAddress, unsigned long* pdwDisplacement)
+static bool __stdcall ERRORMANAGER_GetSymbolFromAddr(char* szName, unsigned long dwAddress, unsigned long* pdwDisplacement)
 {
     szName[0] = 0;
     *pdwDisplacement = 0;
     D2SymbolLockGuardStrc tLock(&gtSymbolLockB_0098A6F0);
 
-    if ((ghDbgHelp || sub_00401B00_LoadDbgHelp()) && (gbSymInitialized || sub_00401CB0_InitSymbols()))
+    if ((ghDbgHelp || ERRORMANAGER_LoadDbgHelp()) && (gbSymInitialized || ERRORMANAGER_InitSymbols()))
     {
         if (gpfnSymGetSymFromAddr64)
         {
@@ -287,7 +287,7 @@ static inline const char* CRASH_GetFileName(const char* szPath)
 }
 
 // 0x00405250
-static bool __stdcall sub_00405250_DescribeAddress(unsigned long dwAddress, D2SymbolInfoStrc* pInfo)
+static bool __stdcall ERRORMANAGER_DescribeAddress(unsigned long dwAddress, D2SymbolInfoStrc* pInfo)
 {
     char szName[0x100];
     unsigned long dwBase;
@@ -298,19 +298,19 @@ static bool __stdcall sub_00405250_DescribeAddress(unsigned long dwAddress, D2Sy
     pInfo->szName[0] = 0;
     pInfo->szModule[0] = 0;
     dwBase = 0;
-    if (sub_00401DF0_GetModuleFromAddr(dwAddress, szName, &dwBase))
+    if (ERRORMANAGER_GetModuleFromAddr(dwAddress, szName, &dwBase))
         strncpy_s(pInfo->szModule, 0x40, CRASH_GetFileName(szName), (unsigned int)-1);
     else
         pInfo->szModule[0] = 0;
 
-    sub_00401F10_GetSymbolFromAddr(pInfo->szName, dwAddress, &pInfo->nOffset);
-    sub_004020D0_GetLineFromAddr(dwAddress, szName, &pInfo->nLine);
+    ERRORMANAGER_GetSymbolFromAddr(pInfo->szName, dwAddress, &pInfo->nOffset);
+    ERRORMANAGER_GetLineFromAddr(dwAddress, szName, &pInfo->nLine);
     strncpy_s(pInfo->szSource, 0x100, CRASH_GetFileName(szName), (unsigned int)-1);
     return true;
 }
 
 // 0x00402D60
-static void __fastcall sub_00402D60_FormatStackFrame(const D2StackFrameStrc* frame,const D2SymbolInfoStrc* symbol,char* output)
+static void __fastcall ERRORMANAGER_FormatStackFrame(const D2StackFrameStrc* frame,const D2SymbolInfoStrc* symbol,char* output)
 {
  char args[80];
  output[0]=0;
@@ -333,7 +333,7 @@ static void __fastcall sub_00402D60_FormatStackFrame(const D2StackFrameStrc* fra
 }
 
 // 0x00403100
-void __fastcall sub_00403100_PrintFrames(unsigned long dwThreadId, D2StackFrameStrc* pFrames, unsigned int nFrames, D2CrashPrintFn pfnPrint, void* pContext, bool bSymbols, bool bHeader)
+void __fastcall ERRORMANAGER_PrintFrames(unsigned long dwThreadId, D2StackFrameStrc* pFrames, unsigned int nFrames, D2CrashPrintFn pfnPrint, void* pContext, bool bSymbols, bool bHeader)
 {
     char szName[0x80];
     char szLine[0x400];
@@ -368,12 +368,12 @@ void __fastcall sub_00403100_PrintFrames(unsigned long dwThreadId, D2StackFrameS
     for (unsigned int i = 0; i < nFrames; ++i)
     {
         D2SymbolInfoStrc tSymbol;
-        sub_00405250_DescribeAddress(pFrames[i].dwPc, &tSymbol);
+        ERRORMANAGER_DescribeAddress(pFrames[i].dwPc, &tSymbol);
         if (!bSymbols)
         {
             tSymbol.szName[0] = 0;
         }
-        sub_00402D60_FormatStackFrame(&pFrames[i], &tSymbol, szLine);
+        ERRORMANAGER_FormatStackFrame(&pFrames[i], &tSymbol, szLine);
         const unsigned int nLineLength = strlen(szLine);
         if (nLineLength >= 0x3FF)
         {
@@ -390,7 +390,7 @@ void __fastcall sub_00403100_PrintFrames(unsigned long dwThreadId, D2StackFrameS
 }
 
 // 0x004020D0
-static bool __stdcall sub_004020D0_GetLineFromAddr(unsigned long dwAddress, char* szFile, unsigned long* pLineNumber)
+static bool __stdcall ERRORMANAGER_GetLineFromAddr(unsigned long dwAddress, char* szFile, unsigned long* pLineNumber)
 {
     unsigned long dwDisplacement;
     szFile[0] = 0;
@@ -418,16 +418,16 @@ static bool __stdcall sub_004020D0_GetLineFromAddr(unsigned long dwAddress, char
 
 
 // 0x004021D0
-bool __stdcall sub_004021D0_EnumerateModules(void* pfnCallback, void* pContext)
+bool __stdcall ERRORMANAGER_EnumerateModules(void* pfnCallback, void* pContext)
 {
     D2SymbolLockGuardStrc tGuard;
-    if (!ghDbgHelp && !sub_00401B00_LoadDbgHelp())
+    if (!ghDbgHelp && !ERRORMANAGER_LoadDbgHelp())
         return false;
     if (!gpfnEnumerateLoadedModules64)
         return false;
     return gpfnEnumerateLoadedModules64(ghProcess, pfnCallback, pContext) != 0;
 }
 
-unsigned __int64 __stdcall sub_00402460_LoadModule(void* hFile, const char* szImageName,
+unsigned __int64 __stdcall ERRORMANAGER_LoadModule(void* hFile, const char* szImageName,
     const char* szModuleName, unsigned __int64 qwBaseOfDll, unsigned long dwSizeOfDll); // 0x00402460
 

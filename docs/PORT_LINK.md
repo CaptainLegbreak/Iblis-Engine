@@ -8,7 +8,7 @@ fixes come back with the next sync. Remeasure after each sync:
     ninja -C build -k 0 2> link.log                       # or the Visual Studio build's output
     python tools/link_report.py build link.log ../Iblis-Codex --md links.md
 
-Last measured: 2026-11-28, Source/ at Codex f31f659 (#508) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
+Last measured: 2026-11-28, Source/ at Codex 4136fc4 (#509) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
 docs/PORT_COMPILE.md (every object of the 22 module libraries and the program, `/WHOLEARCHIVE`).
 
 ## Result
@@ -40,7 +40,7 @@ on calling convention, argument bytes and return register (`tools/abi.py`); a re
 of function pointers) is bound for its address alone. No game source is changed, and an alias drops out when Codex
 fixes the declaration.
 
-At Codex f31f659: **2733 aliases** (1124 of them address-only), unresolved symbols with them **914** (1222 at 16572ad). Checked against
+At Codex 4136fc4: **2729 aliases** (1124 of them address-only), unresolved symbols with them **914** (1222 at 16572ad). Checked against
 Codex's own `LINK_DEBT.json` (linkdebt.py with the user's Game.exe): 2803 agree; 3 bind the same address through the
 one external definition where Codex names it differently (`gpHoverItem`, `gbGoldButtonDisabled`); 25 aren't in Codex's
 list (references in code Codex's ordinary link leaves out, or tables the engine holds as source) and were checked by
@@ -138,12 +138,12 @@ crash risk, for Codex lane 12): **116**, by kind: calling convention 56, return 
 
 - `BigAdd` at 0x00422300 -> `BigAdd`, in Source/Storm/SOURCE/SBig_00425350.cpp
 - `EDITBOX_UpdateVisibleChars` at 0x004FE7C0 -> `EDITBOX_UpdateVisibleChars`, in Source/D2Win/Src/D2WinEditBox.cpp
-- `FindPrime` at 0x004255E0 -> `FindPrime`, in Source/Storm/SOURCE/SBig_00425350.cpp
-- `GFX_BuildMonsterCofPath` at 0x0046F490 -> `GFX_BuildMonsterCofPath`, in Source/D2Client/ENGINE/Gfx_0046F870.cpp
-- `GFX_LoadHashedEntry` at 0x0046DCC0 -> `GFX_LoadHashedEntry`, in Source/D2Client/ENGINE/Gfx_0046F870.cpp
-- `GFX_RemoveStateOverlay` at 0x0046E040 -> `GFX_RemoveStateOverlay`, in Source/D2Client/UI/automap.cpp
-- `MAINMENUS_IsListedCode` at 0x00432350 -> `MAINMENUS_IsListedCode`, in Source/D2Launch/Src/MainMenus.cpp
-- `NPCMENU_ClearUnicode` at 0x0042F530 -> `NPCMENU_ClearUnicode`, in Source/D2Client/UI/SkillDesc.cpp
+- `ERRORMANAGER_FindCodeView` at 0x00404900 -> `ERRORMANAGER_FindCodeView`, in Source/Fog/Unknown_00404AB0.cpp
+- `ERRORMANAGER_GetDebugDirectory` at 0x004047D0 -> `ERRORMANAGER_GetDebugDirectory`, in Source/Fog/Unknown_00404AB0.cpp
+- `ERRORMANAGER_GetImageKind` at 0x00404730 -> `ERRORMANAGER_GetImageKind`, in Source/Fog/Unknown_00404AB0.cpp
+- `ERRORMANAGER_IsDosHeaderValid` at 0x00404760 -> `ERRORMANAGER_IsDosHeaderValid`, in Source/Fog/Unknown_00404AB0.cpp
+- `ERRORMANAGER_ReadNb10` at 0x00404F80 -> `ERRORMANAGER_ReadNb10`, in Source/Fog/Unknown_004049A0.cpp
+- `ERRORMANAGER_ReadNb10` at 0x00404F80 -> `ERRORMANAGER_ReadNb10`, in Source/Fog/Unknown_004047D0.cpp
 
 **interior** (6 symbols)
 
@@ -192,7 +192,7 @@ crash risk, for Codex lane 12): **116**, by kind: calling convention 56, return 
 - `ACT3Q7_StatusFilterCallback`, in Source/D2Game/Quests/a2q0.cpp, Source/D2Game/Quests/a2q7.cpp, Source/D2Game/Quests/a2q8.cpp, Source/D2Game/Quests/a3q0.c
 - `sub_M106_Emit_0051DC70`, in Source/Bnclient/Unknown_00520DC0.cpp, Source/Bnclient/Unknown_00527BE0.cpp, Source/D2BNClient/BnDownload.cpp, Source/D2B
 - `ACT3Q5_Callback10_PlayerLeavesGame`, in Source/D2Game/Quests/a2q1.cpp, Source/D2Game/Quests/a2q2.cpp, Source/D2Game/Quests/a2q4.cpp, Source/D2Game/Quests/a2q5.c
-- `sub_00401A60_UnlockSymbols`, in Source/Fog/Unknown_00401010.cpp, Source/Fog/Unknown_00401DF0.cpp, Source/Fog/Unknown_00402280.cpp, Source/Fog/Unknown_00
+- `ERRORMANAGER_UnlockSymbols`, in Source/Fog/Unknown_00401010.cpp, Source/Fog/Unknown_00401DF0.cpp, Source/Fog/Unknown_00402280.cpp, Source/Fog/Unknown_00
 - `D2ChatStormListCStrc::D2ChatStormListCStrc`, in Source/D2Client/GAME/Game.cpp, Source/D2Common/Chat/Ignorelist.cpp, Source/Storm/SOURCE/SERR.CPP, Source/Storm/SOURCE/SE
 - `D2Storm4167B0Strc::~D2Storm4167B0Strc`, in Source/D2CMP/SRC/CelCmp.cpp, Source/D2Client/GAME/Game.cpp, Source/D2Common/DRLG/Preset.cpp, Source/D2Game/GAME/Game.cpp
 - `D2Storm4168F0Strc::~D2Storm4168F0Strc`, in Source/D2CMP/SRC/CelCmp.cpp, Source/D2Client/GAME/Game.cpp, Source/D2Common/DRLG/Preset.cpp, Source/D2Game/GAME/Game.cpp

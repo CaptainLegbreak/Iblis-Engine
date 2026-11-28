@@ -1237,7 +1237,7 @@ static int GetAnimMode(D2UnitStrc* pUnit)
 // 0x005B6AD0
 static void ACT4Q2_SpawnSealObject(D2ObjOperateFnStrc* pOp, D2CoordStrc* pCoord, int nSeal)
 {
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pOp->hObject), pCoord->nX, pCoord->nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pOp->hObject), pCoord->nX, pCoord->nY);
     if (!pRoom)
     {
         return;

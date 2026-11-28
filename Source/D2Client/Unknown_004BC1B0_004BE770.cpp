@@ -17,7 +17,6 @@
 
 class UIWidget;
 class ListBoxImplementation;
-class ListBoxWrapper;
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
@@ -160,33 +159,6 @@ public:
 };
 
 // 0x004BED10
-class ListBoxWrapper : public UIWidget
-{
-public:
-    ListBoxWrapper(int nX, int nY, int nWidth, int nHeight, int nArg10, int nArg14, int nArg18, int nCallback,
-        bool bLargeFont);
-    virtual ~ListBoxWrapper();
-
-    virtual void Draw();
-    virtual int OnMouseWheel(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnLButtonDown(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnLButtonUp(SMSGHANDLER_PARAMS* pMsg);
-    virtual int MsgSlot05(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnKeyDown(SMSGHANDLER_PARAMS* pMsg);
-    virtual int MsgSlot07(SMSGHANDLER_PARAMS* pMsg);
-    virtual int MsgSlot08(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnKeyRight(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnKeyLeft(SMSGHANDLER_PARAMS* pMsg);
-    virtual int GetValue();
-    virtual void sub_004BEDE0_ForwardSlot3C(const Unicode* wszText0, const Unicode* wszText1,
-        const Unicode* wszText2, const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5,
-        int nEntryData, int nColor, int bUseDefault, int nFont);
-    virtual int sub_004BEDF0_ForwardGetEntryData(int nIndex);
-    virtual int sub_004BEE00_Slot14();
-    virtual void sub_004BEE10_Slot15();
-
-    ListBoxImplementation* pImpl;
-};
 
 #pragma pack(pop)
 

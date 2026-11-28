@@ -9,24 +9,24 @@ extern SymSetSearchPathFn gpfnSymSetSearchPath;                                 
 extern bool gbSymInitialized;                                                                      // 0x0098A6B0
 extern D2CriticalSectionStrc gtSymbolLock;                                                         // 0x0098A6F0
 extern char gszSymSearchPath[];                                                                    // 0x0098A708
-bool __cdecl sub_00401B00_LoadDbgHelp();                                                                    // 0x00401B00
-bool __cdecl sub_00401CB0_InitSymbols();                                                                    // 0x00401CB0
+bool __cdecl ERRORMANAGER_LoadDbgHelp();                                                                    // 0x00401B00
+bool __cdecl ERRORMANAGER_InitSymbols();                                                                    // 0x00401CB0
 
 // 0x00401A60
-void __cdecl sub_00401A60_UnlockSymbols()
+void __cdecl ERRORMANAGER_UnlockSymbols()
 {
     LeaveCriticalSection(&gtSymbolLock);
 }
 
 // 0x00402280
-int __fastcall sub_00402280_SetSearchPath(const char* szSearchPath)
+int __fastcall ERRORMANAGER_SetSearchPath(const char* szSearchPath)
 {
     D2SymbolLockGuardStrc tGuard;
     strncpy_s(gszSymSearchPath, 0x8000, szSearchPath, (unsigned int)-1);
     if (!gbSymInitialized)
         return 1;
-    if ((ghDbgHelp || sub_00401B00_LoadDbgHelp())
-        && (gbSymInitialized || sub_00401CB0_InitSymbols())
+    if ((ghDbgHelp || ERRORMANAGER_LoadDbgHelp())
+        && (gbSymInitialized || ERRORMANAGER_InitSymbols())
         && gpfnSymSetSearchPath)
         return gpfnSymSetSearchPath(ghProcess, szSearchPath);
     return 0;

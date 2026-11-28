@@ -102,7 +102,7 @@ void __stdcall STATLIST_SetStatRemoveCallback(D2StatListStrc* pStatList, StatLis
 
 unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
 
 
@@ -128,7 +128,7 @@ int __fastcall SKILLS_ScanFindUnit(D2UnitStrc* pUnit, int nX, int nY, int nRange
 
 typedef char check_scalar_width[(sizeof(unsigned int) == 4 && sizeof(int) == 4) ? 1 : -1];
 
-extern "C" int __fastcall sub_004E40A0_RollPlayerSeed(int nRange); // 0x004E40A0
+extern "C" int __fastcall SKILLDESC_RollPlayerSeed(int nRange); // 0x004E40A0
 
 typedef char check_int_width[sizeof(int)==4?1:-1];
 
@@ -172,7 +172,7 @@ struct D2MonTypeTxt
 extern const int gaSetMaskToBonusMappingTable[0x40]; // 0x006DBD90
 
 
-void __fastcall sub_004E6410_BuildPropText(D2UnitStrc* pItem, Unicode* wszText, int nArg, int bFlag, int nArg2); // 0x004E6410
+void __fastcall SKILLDESC_BuildPropText(D2UnitStrc* pItem, Unicode* wszText, int nArg, int bFlag, int nArg2); // 0x004E6410
 
 int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
@@ -285,7 +285,7 @@ int __fastcall SKILLDESC_CltDoComponentMissileA(D2UnitStrc* pUnit, int nSkillId,
         return 0;
     }
 
-    if (sub_0046ACE0_GetMissilesTxtRecord(nMissile))
+    if (VIEW_GetMissilesTxtRecord(nMissile))
     {
         if (pUnit)
         {
@@ -323,7 +323,7 @@ int __fastcall SKILLDESC_CltDoComponentMissileB(D2UnitStrc* pUnit, int nSkillId,
     }
 
     nMissile += MONSTER_GetComponent11(pUnit);
-    if (nMissile < sgptDataTables->nMissilesTxtRecordCount && sub_0046ACE0_GetMissilesTxtRecord(nMissile))
+    if (nMissile < sgptDataTables->nMissilesTxtRecordCount && VIEW_GetMissilesTxtRecord(nMissile))
     {
         if (pUnit)
         {
@@ -392,7 +392,7 @@ int __fastcall SKILLDESC_CltDoWeaponOrSkillMissile(D2UnitStrc* pUnit, int nSkill
     }
 
     const int nCltMissile = pSkillsTxtRecord->wCltMissileA;
-    if (nCltMissile < 0 || nCltMissile >= sgptDataTables->nMissilesTxtRecordCount || !sub_0046ACE0_GetMissilesTxtRecord(nCltMissile))
+    if (nCltMissile < 0 || nCltMissile >= sgptDataTables->nMissilesTxtRecordCount || !VIEW_GetMissilesTxtRecord(nCltMissile))
     {
         return 0;
     }
@@ -668,12 +668,12 @@ int __fastcall SKILLDESC_OwnerMissileEvent(int nEvent, D2UnitStrc* pUnit, D2Unit
         return 0;
     }
 
-    if (!(sub_0046ACE0_GetMissilesTxtRecord(pMissileUnit->dwClassId)->nMissileFlags[1] & gnBitMasks_006CE268[1]))
+    if (!(VIEW_GetMissilesTxtRecord(pMissileUnit->dwClassId)->nMissileFlags[1] & gnBitMasks_006CE268[1]))
     {
         return 0;
     }
 
-    D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+    D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
     if (!pSkillsTxtRecord)
     {
         return 0;
@@ -778,7 +778,7 @@ void __cdecl SKILLDESC_Nothing()
 extern "C" int __fastcall SKILLDESC_RandomInRange(int nMin, int nMax)
 {
     unsigned int width = (unsigned int)nMax - (unsigned int)nMin + 1u;
-    return sub_004E40A0_RollPlayerSeed((int)width) + nMin;
+    return SKILLDESC_RollPlayerSeed((int)width) + nMin;
 }
 
 // 0x004E4120
@@ -786,7 +786,7 @@ extern "C" int __fastcall SKILLDESC_RandomSpread(int nRange)
 {
     const unsigned int uRange = (unsigned int)nRange;
     const unsigned int uWidth = 2u * uRange + 1u;
-    const unsigned int uRoll = (unsigned int)sub_004E40A0_RollPlayerSeed((int)uWidth);
+    const unsigned int uRoll = (unsigned int)SKILLDESC_RollPlayerSeed((int)uWidth);
     return (int)(uRoll - uRange);
 }
 

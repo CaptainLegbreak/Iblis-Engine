@@ -121,7 +121,7 @@ static int gnQServerBucketCount; // 0x0074C3EC
 
 static int gnGlobal_00989C28; // 0x00989C28
 
-int __stdcall FOG_10157(D2QueueServerStrc* pServer, unsigned int nKey, char* pData, int nSize); // 0x006C03A0
+int __stdcall FOG_SendToClient(D2QueueServerStrc* pServer, unsigned int nKey, char* pData, int nSize); // 0x006C03A0
 
 extern const char gszHackCategory_006FC4A8[]; // 0x006FC4A8
 
@@ -210,7 +210,7 @@ void __stdcall FOG_StartServer(D2QueueServerStrc* pServer, unsigned int nValue)
 }
 
 // 0x006BE390
-int __stdcall FOG_10186(D2QueueServerStrc* pServer, int nIndex, int nValue)
+int __stdcall FOG_SetServerValue(D2QueueServerStrc* pServer, int nIndex, int nValue)
 {
     int nOld = pServer->aValues[nIndex];
     if (nValue)
@@ -239,7 +239,7 @@ int __stdcall QSERVER_FreeAllSlots(D2QueueServerStrc* pServer)
 }
 
 // 0x006BE450
-unsigned int __stdcall FOG_10180(D2QueueServerStrc* pServer)
+unsigned int __stdcall FOG_GetClientCount(D2QueueServerStrc* pServer)
 {
     if (!pServer)
     {
@@ -536,7 +536,7 @@ int __stdcall QSERVER_CountQueuedMessages(D2QueueServerStrc* pServer, int nBucke
 }
 
 // 0x006BEAD0
-int __stdcall FOG_10156(D2QueueServerStrc* pQueue, int nIndex, void* pDst, unsigned int nMax)
+int __stdcall FOG_PopQueuedMessage(D2QueueServerStrc* pQueue, int nIndex, void* pDst, unsigned int nMax)
 {
     if (!pQueue)
     {
@@ -585,7 +585,7 @@ static inline int sub_006BEBC0_WaitHandle(D2QueueServerStrc* pServer, unsigned l
 }
 
 // 0x006BEBC0
-int __stdcall FOG_10177(D2QueueServerStrc* pServer, unsigned long dwMilliseconds)
+int __stdcall FOG_WaitForMessages(D2QueueServerStrc* pServer, unsigned long dwMilliseconds)
 {
     if (pServer->bAltSend)
         return QSERVERNT_ServiceSlots(pServer, dwMilliseconds);
@@ -666,7 +666,7 @@ unsigned short __stdcall QSERVER_GetClientPeerPort(D2QueueServerStrc* pServer, u
 }
 
 // 0x006BED90
-void __stdcall FOG_10159(D2QueueServerStrc* table, unsigned int key, char* output, unsigned int size)
+void __stdcall FOG_GetClientIPString(D2QueueServerStrc* table, unsigned int key, char* output, unsigned int size)
 {
     unsigned int index = table->nMask & key;
     EnterCriticalSection(&table->pLocks[index]);
@@ -685,7 +685,7 @@ void __stdcall FOG_10159(D2QueueServerStrc* table, unsigned int key, char* outpu
 }
 
 // 0x006BEE20
-unsigned int __stdcall FOG_10158(D2QueueServerStrc* table, unsigned int key)
+unsigned int __stdcall FOG_GetClientAddress(D2QueueServerStrc* table, unsigned int key)
 {
     unsigned int index = key & table->nMask;
     EnterCriticalSection(&table->pLocks[index]);
@@ -726,7 +726,7 @@ unsigned int __stdcall QSERVER_GetSocketPeerAddress(D2QueueServerStrc* table, vo
 }
 
 // 0x006BEF40
-int __stdcall FOG_10161(D2QueueServerStrc* pTable, unsigned int nKey)
+int __stdcall FOG_GetClientSocket(D2QueueServerStrc* pTable, unsigned int nKey)
 {
     const unsigned int nBucket = pTable->nMask & nKey;
     EnterCriticalSection(&pTable->pLocks[nBucket]);
@@ -763,20 +763,20 @@ void __stdcall QSERVER_HackListSize(D2QueueServerStrc* pServer, unsigned int nFi
 }
 
 // 0x006BF040
-void __stdcall FOG_10170(D2QueueServerStrc* pServer, D2AddressCallback pfnCallback)
+void __stdcall FOG_SetAddressCallback(D2QueueServerStrc* pServer, D2AddressCallback pfnCallback)
 {
     D2_ASSERT(pServer, 0x842);
     pServer->pfnAddressCallback = pfnCallback;
 }
 
 // 0x006BF080
-void __stdcall FOG_10171(D2QueueServerStrc* pServer, void* pfnCallback)
+void __stdcall FOG_SetRemoveClientCallback(D2QueueServerStrc* pServer, void* pfnCallback)
 {
     pServer->pfnRemoveClient = pfnCallback;
 }
 
 // 0x006BF0A0
-void __stdcall FOG_10172(void* pContainer, int nKey, int nValue)
+void __stdcall FOG_SetClientContext(void* pContainer, int nKey, int nValue)
 {
     if (nKey)
     {
@@ -787,7 +787,7 @@ void __stdcall FOG_10172(void* pContainer, int nKey, int nValue)
 }
 
 // 0x006BF0C0
-int __stdcall FOG_10173(void* pContainer, int nKey)
+int __stdcall FOG_GetClientContext(void* pContainer, int nKey)
 {
     if (!nKey)
         return 0;
@@ -940,7 +940,7 @@ static void QSERVER_FreePending(D2QueueServerStrc* pServer)
 }
 
 // 0x006BF370
-int __stdcall FOG_10175(D2QueueServerStrc* server,const unsigned char* buffer,int size,int id)
+int __stdcall FOG_QueueReceivedPacket(D2QueueServerStrc* server,const unsigned char* buffer,int size,int id)
 {
  int consumed=0;
  int unknown1=0;
@@ -1057,7 +1057,7 @@ void __stdcall FOG_10183_Return(int nUnused1, int nUnused2)
 }
 
 // 0x006BF610
-void __fastcall FOG_10187(D2QueueServerStrc* pServer, int nMaskIndex, unsigned int nKey)
+void __fastcall FOG_AddAddressMask(D2QueueServerStrc* pServer, int nMaskIndex, unsigned int nKey)
 {
     if (pServer->nMasks < 256)
     {
@@ -1554,7 +1554,7 @@ static void sub_006BF0F0_FreeBuckets(D2QueueServerStrc* pServer)
 }
 
 // 0x006C0170
-int __stdcall FOG_10152(D2QueueServerStrc* pServer, char* pData, int nSize)
+int __stdcall FOG_ShutdownServer(D2QueueServerStrc* pServer, char* pData, int nSize)
 {
     if (!pServer)
         return 1;
@@ -1631,7 +1631,7 @@ void __fastcall QSERVER_ReleaseClient(D2QueueServerStrc* pServer, D2QClientStrc*
 }
 
 // 0x006C03A0
-int __stdcall FOG_10157(D2QueueServerStrc* pServer, unsigned int nKey, char* pData, int nSize)
+int __stdcall FOG_SendToClient(D2QueueServerStrc* pServer, unsigned int nKey, char* pData, int nSize)
 {
     if (!pServer)
     {
@@ -1719,7 +1719,7 @@ void __stdcall QSERVER_HackListIP(D2QueueServerStrc* table, unsigned int ip, con
 }
 
 // 0x006C06B0
-void __stdcall FOG_10165(D2QueueServerStrc* pServer, int nClientId, const char* szFile, int nLine)
+void __stdcall FOG_CloseRemoteConnection(D2QueueServerStrc* pServer, int nClientId, const char* szFile, int nLine)
 {
     QSrvCloseRemoteConnection(pServer, nClientId, szFile, nLine);
 }

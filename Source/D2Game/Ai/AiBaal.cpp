@@ -118,7 +118,7 @@ void __fastcall AIGENERAL_AllocMinionList(D2GameStrc*,D2UnitStrc*,D2UnitStrc*); 
 
 void __stdcall MONSTERS_GetMinionSpawnInfo(D2UnitStrc*,int*,int*,int*,int*,int,int(__fastcall*)(D2UnitStrc*)); // 0x0063EFA0
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc*,int,int); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc*,int,int); // 0x00463740
 
 D2UnitStrc* __fastcall D2GAME_SpawnMonster(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nX, int nY, int nMonsterId, int nAnimMode, int nMaxSearchRings, short nFlags); // 0x005B2F20
 
@@ -871,10 +871,10 @@ static bool __stdcall AIBAAL_SummonClone(D2GameStrc* game,D2UnitStrc* unit,D2AiC
  x=baseX+(unsigned int)lSeed%24-12;
  lSeed=SEED_RollNextHL_Inline(seed,lSeed);
  y=baseY+(unsigned int)lSeed%24-12;
- D2ActiveRoomStrc* room=sub_00463740_FindRoomAtPoint(UNITS_GetRoom(unit),x,y);
+ D2ActiveRoomStrc* room=COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(unit),x,y);
  if(room) {
 
- sub_00463740_FindRoomAtPoint(UNITS_GetRoom(unit),x,y);
+ COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(unit),x,y);
  D2UnitStrc* clone=D2GAME_SpawnMonster(game,room,x,y,monsterId,mode,-1,0);
  if(clone) {
  clone->dwFlags|=0x04020000;

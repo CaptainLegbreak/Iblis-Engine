@@ -162,7 +162,7 @@ int __fastcall AITACTICS_ChangeModeAndTargetCoordinatesOneStep(D2GameStrc* pGame
 
 D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId);                                    // 0x00451F80
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
 D2UnitStrc* __fastcall D2GAME_SpawnMonster(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nX, int nY, int nMonsterId, int nAnimMode, int nMaxSearchRings, short nFlags); // 0x005B2F20
 
@@ -467,7 +467,7 @@ struct D2MonRegDataStrc;
 
 struct D2MonsterRegionStrc;
 
-int __fastcall sub_00472210_SeedRollMasked(D2SeedStrc* pSeed, int nMax); // 0x00472210
+int __fastcall SEED_RollMasked(D2SeedStrc* pSeed, int nMax); // 0x00472210
 
 
 #define GRISWOLD_WALK_FLAGS 7
@@ -3563,7 +3563,7 @@ void __fastcall AITHINK_Fn066_SandMaggotQueen(D2GameStrc* pGame, D2UnitStrc* pUn
         int nX;
         int nY;
         MONSTERS_GetMinionSpawnInfo(pUnit, &nMonsterId, &nX, &nY, &nSpawnMode, 0, AIGENERAL_GetMinionSpawnClassId);
-        D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+        D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
         if (pRoom)
         {
             D2UnitStrc* pSandMaggot = D2GAME_SpawnMonster(pGame, pRoom, nX, nY, nMonsterId, nSpawnMode, 2, 66);
@@ -5414,7 +5414,7 @@ void __fastcall AITHINK_Fn023_Vulture(D2GameStrc* pGame, D2UnitStrc* pUnit, D2Ai
     }
     if (!nState && !AIGENERAL_GetMinionOwner(pUnit) && pTarget && bFar && (int)SEED_RollLimitedRandomNumber(pSeed, 100) < 60) {
         AITHINK_RemoveGroundCollision(pGame, pUnit);
-        pAiControl->dwAiParam[0] = sub_00472210_SeedRollMasked(pSeed, 8) + 24;
+        pAiControl->dwAiParam[0] = SEED_RollMasked(pSeed, 8) + 24;
         AITACTICS_MoveInRadiusToTarget(pGame, pUnit, pTarget, 8, 8, 8);
         AITACTICS_Idle(pGame, pUnit, 12);
         return;
@@ -6878,7 +6878,7 @@ void __fastcall AITHINK_Fn076_EvilHole(D2GameStrc* pGame, D2UnitStrc* pUnit, D2A
             int nAnimMode;
             MONSTERS_GetMinionSpawnInfo(pUnit, &nMonsterId, &nX, &nY, &nAnimMode, 0, 0);
 
-            D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+            D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
             if (pRoom)
             {
                 D2UnitStrc* pMonster = D2GAME_SpawnMonster(pGame, pRoom, nX, nY, nMonsterId, nAnimMode, 2, 0x42);

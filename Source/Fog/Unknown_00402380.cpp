@@ -9,9 +9,9 @@ extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalS
 
 extern "C" int __cdecl strncpy_s(char* szDest, unsigned int nDestSize, const char* szSource, unsigned int nCount); // 0x006859D2
 
-bool __cdecl sub_00401B00_LoadDbgHelp();                                                                    // 0x00401B00
+bool __cdecl ERRORMANAGER_LoadDbgHelp();                                                                    // 0x00401B00
 
-bool __cdecl sub_00401CB0_InitSymbols();                                                                    // 0x00401CB0
+bool __cdecl ERRORMANAGER_InitSymbols();                                                                    // 0x00401CB0
 
 extern void* ghProcess;                                                                            // 0x0074C6F0
 
@@ -102,10 +102,10 @@ extern const char gszStringFormat[]; // 0x006FFC58
 
 extern const char gszSourceFormat[]; // 0x006FFC5C
 
-void __fastcall sub_00402D60_FormatStackFrame(const D2StackFrameStrc* frame,const D2SymbolInfoStrc* symbol,char* output); // 0x00402D60
+void __fastcall ERRORMANAGER_FormatStackFrame(const D2StackFrameStrc* frame,const D2SymbolInfoStrc* symbol,char* output); // 0x00402D60
 
 // 0x00401A60
-void __cdecl sub_00401A60_UnlockSymbols()
+void __cdecl ERRORMANAGER_UnlockSymbols()
 {
     LeaveCriticalSection(&gtSymbolLock);
 }
@@ -192,9 +192,9 @@ static unsigned char __stdcall ERRORMANAGER_GetThreadStack(unsigned long* pStack
 
 static inline bool sub_EnsureSymbolEngine()
 {
-    if (!ghDbgHelp && !sub_00401B00_LoadDbgHelp())
+    if (!ghDbgHelp && !ERRORMANAGER_LoadDbgHelp())
         return false;
-    if (!gbSymInitialized && !sub_00401CB0_InitSymbols())
+    if (!gbSymInitialized && !ERRORMANAGER_InitSymbols())
         return false;
     return true;
 }
@@ -215,7 +215,7 @@ static inline const char* CRASH_GetFileName(const char* szPath)
 }
 
 
-static void __fastcall sub_00402D60_FormatStackFrame(const D2StackFrameStrc* frame,const D2SymbolInfoStrc* symbol,char* output)
+static void __fastcall ERRORMANAGER_FormatStackFrame(const D2StackFrameStrc* frame,const D2SymbolInfoStrc* symbol,char* output)
 {
  char args[80];
  output[0]=0;
@@ -240,29 +240,29 @@ static void __fastcall sub_00402D60_FormatStackFrame(const D2StackFrameStrc* fra
 
 
 // 0x00402380
-int __fastcall sub_00402380_FindFileInPath(FindFileInPathCallbackFn pfnCallback, int nUnused, const char* szSearchPath,
+int __fastcall ERRORMANAGER_FindFileInPath(FindFileInPathCallbackFn pfnCallback, int nUnused, const char* szSearchPath,
     const char* szFileName, void* pId, unsigned int nTwo, unsigned int nThree, unsigned int nFlags, char* szFoundFile,
     void* pContext)
 {
     D2SymbolLockGuardStrc tGuard;
-    if ((ghDbgHelp || sub_00401B00_LoadDbgHelp())
-        && (gbSymInitialized || sub_00401CB0_InitSymbols())
+    if ((ghDbgHelp || ERRORMANAGER_LoadDbgHelp())
+        && (gbSymInitialized || ERRORMANAGER_InitSymbols())
         && gpfnSymFindFileInPath)
         return gpfnSymFindFileInPath(ghProcess, szSearchPath, szFileName, pId, nTwo, nThree, nFlags,
             szFoundFile, pfnCallback ? pfnCallback : sub_00402370, pContext);
     return 0;
 }
 
-static unsigned __int64 __stdcall sub_00402460_LoadModule(void* hFile, const char* szImageName,
+static unsigned __int64 __stdcall ERRORMANAGER_LoadModule(void* hFile, const char* szImageName,
     const char* szModuleName, unsigned __int64 qwBaseOfDll, unsigned long dwSizeOfDll);
 
 // 0x00402460
-static unsigned __int64 __stdcall sub_00402460_LoadModule(void* hFile, const char* szImageName, const char* szModuleName,
+static unsigned __int64 __stdcall ERRORMANAGER_LoadModule(void* hFile, const char* szImageName, const char* szModuleName,
     unsigned __int64 qwBaseOfDll, unsigned long dwSizeOfDll)
 {
     D2SymbolLockGuardStrc tGuard;
-    if ((ghDbgHelp || sub_00401B00_LoadDbgHelp())
-        && (gbSymInitialized || sub_00401CB0_InitSymbols())
+    if ((ghDbgHelp || ERRORMANAGER_LoadDbgHelp())
+        && (gbSymInitialized || ERRORMANAGER_InitSymbols())
         && gpfnSymLoadModule64)
         return gpfnSymLoadModule64(ghProcess, hFile, szImageName, szModuleName, qwBaseOfDll, dwSizeOfDll);
     return 0;
@@ -274,5 +274,5 @@ unsigned long __stdcall sub_00402460_Shim(void* hFile, const char* szImageName, 
 {
     __declspec(align(8)) char szName[0x104];
     strncpy_s(szName, 0x104, szModuleName, (unsigned int)-1);
-    return (unsigned long)sub_00402460_LoadModule(hFile, szImageName, szName, qwBaseOfDll, dwSizeOfDll);
+    return (unsigned long)ERRORMANAGER_LoadModule(hFile, szImageName, szName, qwBaseOfDll, dwSizeOfDll);
 }

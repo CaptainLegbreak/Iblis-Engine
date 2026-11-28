@@ -54,7 +54,7 @@ struct D2TxtLinkNodeStrc
 
 extern "C" int __cdecl strcmp(const char* szLeft, const char* szRight);
 
-void __fastcall sub_004113C0(char* szText, int nLength); // 0x004113C0
+void __fastcall STRING_ToLowerN(char* szText, int nLength); // 0x004113C0
 
 int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
@@ -84,7 +84,7 @@ struct D2BinFieldStrc { const char* name; unsigned type; int length,offset; void
 
 static int __stdcall EXCEL_MapColumns(unsigned short* pOut, D2BinFileStrc* pList, D2BinFieldStrc* pEntries); // 0x006BCE20
 
-int __stdcall sub_006BD230_AddCode(void*,unsigned); // 0x006BD230
+int __stdcall FOG_AddLinkCode(void*,unsigned); // 0x006BD230
 
 void* __fastcall FOG_ReallocPool(D2PoolSystemStrc* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
 
@@ -94,9 +94,9 @@ int __fastcall EXCEL_GetOrAddLinkIndex(D2TxtLinkStrc* pLinker, const char* szTex
 
 extern "C" int __stdcall FOG_GetLinkIndexByCode(D2TxtLinkStrc* pLink, unsigned int nCode, int bLogError); // 0x006BD130
 
-void __stdcall sub_00410B10(void*,int); // 0x00410B10
+void __stdcall BITMANIP_SetBitState(void*,int); // 0x00410B10
 
-void __stdcall sub_00410B50(void*,int); // 0x00410B50
+void __stdcall BITMANIP_ClearBitState(void*,int); // 0x00410B50
 
 typedef int (__fastcall* KeyCallback)(const char*);
 
@@ -329,7 +329,7 @@ D2BinFileStrc* __stdcall FOG_CreateBinFile(char* pDataBuffer, int nBufferSize)
 }
 
 // 0x006BD780
-void __stdcall FOG_10207(D2BinFileStrc* bin,D2BinFieldStrc* fields,char* output,unsigned records,unsigned stride)
+void __stdcall FOG_ParseBinFields(D2BinFileStrc* bin,D2BinFieldStrc* fields,char* output,unsigned records,unsigned stride)
 {
  unsigned short columns[280];
  char small[32];
@@ -354,7 +354,7 @@ void __stdcall FOG_10207(D2BinFileStrc* bin,D2BinFieldStrc* fields,char* output,
     switch(field->type) {
     case 10:case 12:case 14: {
      READ_CODE(); PAD_CODE(code);
-     int index=sub_006BD230_AddCode(*(void**)field->link,*(unsigned*)code);
+     int index=FOG_AddLinkCode(*(void**)field->link,*(unsigned*)code);
      switch(field->type) {
       case 10:*(unsigned*)dst=*(unsigned*)code;break;
       case 12:D2_ASSERT(index<=255,0x156);*dst=code[0];break;
@@ -387,7 +387,7 @@ void __stdcall FOG_10207(D2BinFileStrc* bin,D2BinFieldStrc* fields,char* output,
    case 10:case 12:case 14:case 16:case 17:case 18:SKIP_CELL();break;
    case 11:case 13:case 15:{READ_CODE();PAD_CODE(code);int index=FOG_GetLinkIndexByCode(*(D2TxtLinkStrc**)field->link,*(unsigned*)code,1);switch(field->type){case 11:*(int*)dst=index;break;case 13:*dst=(char)index;break;case 15:*(unsigned short*)dst=(unsigned short)index;break;}break;}
    case 19:case 20:case 21:{char* p=small;while(*input&&p<small+31)*p++=*input++;*p=0;while(*input)++input;++input;int index=FOG_GetLinkIndex(*(D2TxtLinkStrc**)field->link,small,1);switch(field->type){case 19:*(int*)dst=index;break;case 20:*(unsigned short*)dst=(unsigned short)index;break;case 21:*dst=(char)index;break;}break;}
-   case 2:case 3:case 4:case 5:case 6:case 8:case 26:{if(*input=='-')++input;int value=0;while(*input)value=value*10+*input++-'0';if(*start=='-')value=-value;++input;switch(type){case 2:case 8:*(int*)dst=value;break;case 3:*(unsigned short*)dst=(unsigned short)value;break;case 4:case 6:*dst=(char)value;break;case 5:if(start+1!=input)*dst=(char)value;break;case 26:if(value)sub_00410B10(dst,length);else sub_00410B50(dst,length);break;}break;}
+   case 2:case 3:case 4:case 5:case 6:case 8:case 26:{if(*input=='-')++input;int value=0;while(*input)value=value*10+*input++-'0';if(*start=='-')value=-value;++input;switch(type){case 2:case 8:*(int*)dst=value;break;case 3:*(unsigned short*)dst=(unsigned short)value;break;case 4:case 6:*dst=(char)value;break;case 5:if(start+1!=input)*dst=(char)value;break;case 26:if(value)BITMANIP_SetBitState(dst,length);else BITMANIP_ClearBitState(dst,length);break;}break;}
    case 22:{char callbackText[256];char* p=callbackText;while(*input){if(p>=callbackText+256){while(*input)++input;break;}*p++=*input++;}++input;*p=0;if(field->link)*(unsigned short*)dst=(unsigned short)((KeyCallback)field->link)(callbackText);break;}
    case 23:case 24:case 25:{char callbackText[256];char* p=callbackText;while(*input){if(p>=callbackText+256){while(*input)++input;break;}*p++=*input++;}if(field->link)++input;else ++input;*p=0;if(field->link)((FieldCallback)field->link)(callbackText,output,offset,length,row,c);break;}
    // every field type is a listed case
@@ -474,7 +474,7 @@ int __stdcall FOG_GetStringFromLinkIndex(D2TxtLinkStrc* linker, int index, char*
 }
 
 // 0x006BD230
-int __stdcall sub_006BD230_AddCode(void* pLinker, unsigned nCode)
+int __stdcall FOG_AddLinkCode(void* pLinker, unsigned nCode)
 {
     D2TxtLinkStrc* pLink = (D2TxtLinkStrc*)pLinker;
     // The code is read and advanced in the argument area itself, addressed from the handle argument.
@@ -562,7 +562,7 @@ int __stdcall FOG_10216_AddRecordToLinkingTable(D2TxtLinkStrc* pLinker, const ch
     D2TxtLinkNodeStrc* pNode = (D2TxtLinkNodeStrc*)FOG_AllocPool(0, sizeof(D2TxtLinkNodeStrc), ".\\Src\\Excel\\Excel.cpp", 0x4B9, 0);
     memset(pNode, 0, sizeof(D2TxtLinkNodeStrc));
     SStrCopy(pNode->szText, szCode, 0x20);
-    sub_004113C0(pNode->szText, 0x20);
+    STRING_ToLowerN(pNode->szText, 0x20);
     pNode->nLinkIndex = pLinker->count;
     EXCEL_InsertLinkNode(&pLinker->pFirstNode, pNode);
     return pLinker->count++;
@@ -583,14 +583,14 @@ int __fastcall EXCEL_GetOrAddLinkIndex(D2TxtLinkStrc* pLinker, const char* szTex
     D2TxtLinkNodeStrc* pNode = (D2TxtLinkNodeStrc*)FOG_AllocPool(0, sizeof(D2TxtLinkNodeStrc), ".\\Src\\Excel\\Excel.cpp", 0x4D9, 0);
     memset(pNode, 0, sizeof(D2TxtLinkNodeStrc));
     SStrCopy(pNode->szText, szText, sizeof(pNode->szText));
-    sub_004113C0(pNode->szText, sizeof(pNode->szText));
+    STRING_ToLowerN(pNode->szText, sizeof(pNode->szText));
     pNode->nLinkIndex = pLinker->count;
     EXCEL_InsertLinkNode(&pLinker->pFirstNode, pNode);
     return pLinker->count++;
 }
 
 // 0x006BD380
-const char* __stdcall FOG_10255(D2TxtLinkStrc* pLink, int nIndex, int bUseFallback)
+const char* __stdcall FOG_GetLinkNodeText(D2TxtLinkStrc* pLink, int nIndex, int bUseFallback)
 {
     if (!pLink || nIndex < 0 || nIndex >= pLink->count)
         return gpszFallback->szText;
@@ -605,7 +605,7 @@ int __stdcall FOG_GetLinkIndex(D2TxtLinkStrc* pLink, const char* szText, int bLo
 {
     char szKey[0x20];
     SStrCopy(szKey, szText, sizeof(szKey));
-    sub_004113C0(szKey, sizeof(szKey));
+    STRING_ToLowerN(szKey, sizeof(szKey));
 
     D2TxtLinkNodeStrc* pNode = pLink->pFirstNode;
     if (pLink->count && !pNode)

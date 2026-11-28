@@ -247,7 +247,7 @@ struct D2QueueServerStrc
         int aActive[4];
     };
     D2AddressCallback pfnAddressCallback;                   // 0xBB8
-    void* pfnRemoveClient;                                  // 0xBBC (FOG_10171 sets it; nothing in Fog calls it)
+    void* pfnRemoveClient;                                  // 0xBBC (FOG_SetRemoveClientCallback sets it; nothing in Fog calls it)
     D2MessageCallback pfnProcess;                           // 0xBC0
     union
     {

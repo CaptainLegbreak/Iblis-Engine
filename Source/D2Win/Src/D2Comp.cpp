@@ -141,7 +141,7 @@ void* __stdcall D2COMP_LoadExcelFile(void* hArchive, const char* szName, const c
 
 D2BinFileStrc* __stdcall FOG_CreateBinFile(void* pDataBuffer, int nBufferSize); // 0x006BD640
 
-void __stdcall FOG_10207(D2BinFileStrc* pBinFile, D2BinFieldStrc* pBinField, void* pTxt, int nRecordCount, int nRecordSize); // 0x006BD780
+void __stdcall FOG_ParseBinFields(D2BinFileStrc* pBinFile, D2BinFieldStrc* pBinField, void* pTxt, int nRecordCount, int nRecordSize); // 0x006BD780
 
 extern "C" const char gszBinExtension[]; // 0x006DCC68
 
@@ -183,7 +183,7 @@ int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char*
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
-void __stdcall sub_006BD230_AddLinkCode(D2TxtLinkStrc* pLinker, unsigned int dwCode); // 0x006BD230
+void __stdcall FOG_AddLinkCode(D2TxtLinkStrc* pLinker, unsigned int dwCode); // 0x006BD230
 
 void* __stdcall D2COMP_CompileTxt(void* hArchive, const char* szName, D2BinFieldStrc* pBinField, int* pRecordCount, int nRecordSize); // 0x00504430
 
@@ -1261,7 +1261,7 @@ void* __stdcall D2COMP_CompileTxt(void* hArchive, const char* szName, D2BinField
         const int nSize = nRecordCount * nRecordSize;
         pBinData = FOG_AllocPool(0, nSize, ".\\Src\\D2Comp.cpp", 0x9FA, 0);
         memset(pBinData, 0, nSize);
-        FOG_10207(pBinFile, pBinField, pBinData, nRecordCount, nRecordSize);
+        FOG_ParseBinFields(pBinFile, pBinField, pBinData, nRecordCount, nRecordSize);
         FOG_FreeBinFile(pBinFile);
     }
 
@@ -1336,7 +1336,7 @@ void __fastcall D2COMP_LoadItems(void* hArchive)
     gpCompItemsLinker = FOG_AllocLinker(".\\Src\\D2Comp.cpp", 0xA56);
     for (int i = 0; i < gnItemsTotalCount; ++i)
     {
-        sub_006BD230_AddLinkCode(gpCompItemsLinker, gpCompItemsTxt[i].dwCode);
+        FOG_AddLinkCode(gpCompItemsLinker, gpCompItemsTxt[i].dwCode);
     }
 }
 

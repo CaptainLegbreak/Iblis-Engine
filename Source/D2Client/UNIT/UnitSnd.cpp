@@ -105,7 +105,7 @@ void __fastcall SOUNDHDR_AddVariantRefs(int nIndex, int nDelta); // 0x004822B0
 
 int __cdecl sub_0044DB00_GetTickCounter(); // 0x0044DB00
 
-int __fastcall sub_004E40A0_RollPlayerSeed(int nRange); // 0x004E40A0
+int __fastcall SKILLDESC_RollPlayerSeed(int nRange); // 0x004E40A0
 
 extern "C" int __fastcall SKILLDESC_RandomInRange(int nMin, int nMax); // 0x004E4100
 
@@ -123,13 +123,13 @@ void __fastcall UNITSND_PurgeUnitHints(D2UnitStrc* pUnit); // 0x004CAA10
 
 D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
 void __fastcall TEXT_SetSpeechHoverText(D2UnitStrc* pUnit, int nStringId); // 0x004A0200
 
 void __fastcall UNITSND_PlayPlayerSpeech(D2UnitStrc* pUnit, unsigned short nStringId); // 0x004CB9C0
 
-int __fastcall sub_004E0590_PickNpcSound(D2UnitStrc* pUnit, int nType); // 0x004E0590
+int __fastcall SOUNDINST_PickNpcSound(D2UnitStrc* pUnit, int nType); // 0x004E0590
 
 void __fastcall sub_004DCE10_UpdateTimedHint(int nDelay, int nArg); // 0x004DCE10
 
@@ -236,7 +236,7 @@ int __fastcall TEXT_TestQuestCondition(int nCondition); // 0x004A4180
 
 int __cdecl SOUNDINST_IsSpeechPlaying(); // 0x004B9C20
 
-int __cdecl sub_004DF880_IsSoundSystemInit(); // 0x004DF880
+int __cdecl SOUNDINST_IsSoundSystemInit(); // 0x004DF880
 
 unsigned char __fastcall SOUNDHDR_GetGroupSize(int nId); // 0x004818C0
 
@@ -888,7 +888,7 @@ void __fastcall UNITSND_UpdateFootsteps(D2UnitStrc* pUnit)
         SOUNDINST_SetValue(hSound, nVolume);
     }
 
-    if (nLayerSound && (unsigned int)sub_004E40A0_RollPlayerSeed(100) < nChance)
+    if (nLayerSound && (unsigned int)SKILLDESC_RollPlayerSeed(100) < nChance)
         sub_004B9A00(nLayerSound, pUnit, 0, 0, 0);
 
     UNITSND_WriteStepSoundTick(pUnit, nTick);
@@ -993,7 +993,7 @@ void __fastcall UNITSND_PlayEventSound(int nUnitId, unsigned char nUnitType, uns
         const int nSkillId = STATLIST_GetStatValue(pStatList, STAT_MODIFIERLIST_SKILL, 0);
         if (!SKILLS_GetHighestLevelSkillFromUnitAndId(pUnit, nSkillId))
             return;
-        D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+        D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
         if (pSkillsTxtRecord && pSkillsTxtRecord->wStSound > 0)
             sub_004B9A00(pSkillsTxtRecord->wStSound, pUnit, 0, 0, 0);
         return;
@@ -1065,7 +1065,7 @@ void __fastcall UNITSND_PlayEventSound(int nUnitId, unsigned char nUnitType, uns
         UNITSND_PlayFleeSound(pUnit);
         return;
     case 18:
-        sub_004B9A00(sub_004E0590_PickNpcSound(pUnit, 1), CUNIT_GetPlayerUnit(), 0, 1, 0);
+        sub_004B9A00(SOUNDINST_PickNpcSound(pUnit, 1), CUNIT_GetPlayerUnit(), 0, 1, 0);
         return;
     case 13:
         sub_004B9A00(0xA4A, pUnit, 0, 0, 0);
@@ -1351,7 +1351,7 @@ void __fastcall UNITSND_UpdateModeSound(D2UnitStrc* pUnit)
         return;
     if (!SOUNDINST_IsNearPlayer(pUnit))
         return;
-    if (sub_004E40A0_RollPlayerSeed(0xF))
+    if (SKILLDESC_RollPlayerSeed(0xF))
         return;
 
     sub_004B9A00(nNeutral, pUnit, 0, 0, 0);
@@ -1415,7 +1415,7 @@ void __fastcall UNITSND_PlayAttackSound(D2UnitStrc* pUnit, int nMode, int bDelay
             goto second;
     }
 
-    if (bPlay && sub_004E40A0_RollPlayerSeed(100) < nChance)
+    if (bPlay && SKILLDESC_RollPlayerSeed(100) < nChance)
     {
         UNITSND_ReleaseNeutralSfx(pUnit, 1);
         sub_004B9A00(nSound, pUnit, nDelay, 0, 0);
@@ -1514,7 +1514,7 @@ static void UNITSND_PlayFleeSound(D2UnitStrc* pUnit)
     if (sub_0044DB00_GetTickCounter() - gnSfxTick < 4)
         return;
 
-    sub_004B9A00(pMonSoundsTxtRecord->dwFlee, pUnit, sub_004E40A0_RollPlayerSeed(3) + 6, 0, 0);
+    sub_004B9A00(pMonSoundsTxtRecord->dwFlee, pUnit, SKILLDESC_RollPlayerSeed(3) + 6, 0, 0);
     UNITSND_WriteSoundTick(pUnit, sub_0044DB00_GetTickCounter());
     gnSfxTick = sub_0044DB00_GetTickCounter();
 }
@@ -1933,7 +1933,7 @@ int __stdcall sub_M121_Emit_004CAC70(D2UnitStrc* pUnit) { return UNITSND_HasActi
 void* __fastcall UNITSND_FindUnitSfxInRange(D2UnitStrc* pUnit, int nId)
 {
     D2_ASSERT(pUnit, 0xC47);
-    if (!sub_004DF880_IsSoundSystemInit())
+    if (!SOUNDINST_IsSoundSystemInit())
     {
         return 0;
     }

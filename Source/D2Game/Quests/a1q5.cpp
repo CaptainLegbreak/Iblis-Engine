@@ -884,7 +884,7 @@ void __stdcall ACT1Q5_SpawnTowerChestMissiles(D2QuestDataStrc* pQuestData, D2Act
 
             if (!pTrapFirebolt)
             {
-                D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pObject), pCoord.nX, pCoord.nY);
+                D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pObject), pCoord.nX, pCoord.nY);
 
                 if (pRoom)
                 {
@@ -898,7 +898,7 @@ void __stdcall ACT1Q5_SpawnTowerChestMissiles(D2QuestDataStrc* pQuestData, D2Act
                     pCoord.nX += 5;
                     pCoord.nY += 5;
 
-                    pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pObject), pCoord.nX, pCoord.nY);
+                    pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pObject), pCoord.nX, pCoord.nY);
                     pTrapFirebolt = D2GAME_SpawnMonster(pQuestData->pGame, pRoom, pCoord.nX, pCoord.nY, MONSTER_TRAP_FIREBOLT, 0xC, -1, 8);
                 }
             }

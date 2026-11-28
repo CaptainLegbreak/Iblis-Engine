@@ -2874,7 +2874,7 @@ static inline D2ItemStatCostTxt* DATATBLS_GetItemStatCostTxtRecord(int nStatId)
 
 static inline unsigned int BITMANIP_ReadInl(D2BitBufferStrc* pBuffer, int nBits)
 {
-    return sub_00411020_ReadBits(pBuffer, nBits);
+    return BITMANIP_Read(pBuffer, nBits);
 }
 
 static inline int ITEMS_ReadQuestItemDifficultyForceInl(D2BitBufferStrc* pBuffer, D2ItemStatCostTxt* pRecord)
@@ -3320,53 +3320,53 @@ static int ITEMS_GetSocketedItemCount(D2UnitStrc* pItem)
 // 0x0062A960
 static inline unsigned int ITEMS_ReadBits(D2BitBufferStrc* pBuffer, int nBits)
 {
-    return sub_00411020_ReadBits(pBuffer, nBits);
+    return BITMANIP_Read(pBuffer, nBits);
 }
 
 // 0x0062A970
 static int __stdcall ITEMS_DecodeItemBitstreamCompact(D2UnitStrc* pItem, D2BitBufferStrc* pBuffer, int bCheckForHeader, unsigned int dwVersion)
 {
-    ITEMS_SetItemFormat(pItem, (unsigned short)sub_00411020_ReadBits(pBuffer, 10));
+    ITEMS_SetItemFormat(pItem, (unsigned short)BITMANIP_Read(pBuffer, 10));
 
-    const int nAnimMode = sub_00411020_ReadBits(pBuffer, 3);
+    const int nAnimMode = BITMANIP_Read(pBuffer, 3);
     if (nAnimMode == 3 || nAnimMode == 5)
     {
-        UNITS_SetXForStaticUnit(pItem, sub_00411020_ReadBits(pBuffer, 16));
-        UNITS_SetYForStaticUnit(pItem, sub_00411020_ReadBits(pBuffer, 16));
+        UNITS_SetXForStaticUnit(pItem, BITMANIP_Read(pBuffer, 16));
+        UNITS_SetYForStaticUnit(pItem, BITMANIP_Read(pBuffer, 16));
     }
     else
     {
-        ITEMS_SetBodyLoc(pItem, (unsigned char)sub_00411020_ReadBits(pBuffer, 4));
-        UNITS_SetXForStaticUnit(pItem, sub_00411020_ReadBits(pBuffer, 4));
-        UNITS_SetYForStaticUnit(pItem, sub_00411020_ReadBits(pBuffer, 4));
-        ITEMS_SetInvPage_Inline(pItem, (char)(sub_00411020_ReadBits(pBuffer, 3) - 1));
+        ITEMS_SetBodyLoc(pItem, (unsigned char)BITMANIP_Read(pBuffer, 4));
+        UNITS_SetXForStaticUnit(pItem, BITMANIP_Read(pBuffer, 4));
+        UNITS_SetYForStaticUnit(pItem, BITMANIP_Read(pBuffer, 4));
+        ITEMS_SetInvPage_Inline(pItem, (char)(BITMANIP_Read(pBuffer, 3) - 1));
     }
     UNITS_ChangeAnimMode(pItem, nAnimMode);
 
     if (ITEMS_GetItemFlags_Inline(pItem) & IFLAG_ISEAR)
     {
         char* szName = ITEMS_GetEarName_Inline(pItem);
-        ITEMS_SetFileIndex(pItem, sub_00411020_ReadBits(pBuffer, 3));
-        ITEMS_SetEarLevel_Inline(pItem, (unsigned char)sub_00411020_ReadBits(pBuffer, 7));
+        ITEMS_SetFileIndex(pItem, BITMANIP_Read(pBuffer, 3));
+        ITEMS_SetEarLevel_Inline(pItem, (unsigned char)BITMANIP_Read(pBuffer, 7));
         do
         {
-            *szName = (char)sub_00411020_ReadBits(pBuffer, 7);
+            *szName = (char)BITMANIP_Read(pBuffer, 7);
         }
         while (*szName++);
     }
     else
     {
-        const unsigned int dwCode = sub_00411020_ReadBits(pBuffer, 32);
+        const unsigned int dwCode = BITMANIP_Read(pBuffer, 32);
         const int nClassId = DATATBLS_GetItemIdFromItemCode(dwCode);
         if (pItem)
             pItem->dwClassId = nClassId;
 
         if (ITEMSIsA(pItem, 4))
         {
-            if (sub_00411020_ReadBits(pBuffer, 1))
-                STATLIST_SetUnitStat(pItem, 14, sub_00411020_ReadBits(pBuffer, 32), 0);
+            if (BITMANIP_Read(pBuffer, 1))
+                STATLIST_SetUnitStat(pItem, 14, BITMANIP_Read(pBuffer, 32), 0);
             else
-                STATLIST_SetUnitStat(pItem, 14, sub_00411020_ReadBits(pBuffer, 12), 0);
+                STATLIST_SetUnitStat(pItem, 14, BITMANIP_Read(pBuffer, 12), 0);
         }
 
         if (ITEMSIsA(pItem, 22))
@@ -3404,12 +3404,12 @@ static int __stdcall ITEMS_DecodeItemBitstreamCompact(D2UnitStrc* pItem, D2BitBu
         }
     }
 
-    if (bCheckForHeader && dwVersion > 0x56 && sub_00411020_ReadBits(pBuffer, 1))
+    if (bCheckForHeader && dwVersion > 0x56 && BITMANIP_Read(pBuffer, 1))
     {
-        const int nFirst = sub_00411020_ReadBits(pBuffer, 32);
-        ITEMS_SetRealmData(pItem, nFirst, sub_00411020_ReadBits(pBuffer, 32));
+        const int nFirst = BITMANIP_Read(pBuffer, 32);
+        ITEMS_SetRealmData(pItem, nFirst, BITMANIP_Read(pBuffer, 32));
         if (dwVersion > 0x5D)
-            sub_00411020_ReadBits(pBuffer, 32);
+            BITMANIP_Read(pBuffer, 32);
     }
 
     pItem->dwInitSeed = 0;
@@ -3498,9 +3498,9 @@ static __declspec(noinline) void __stdcall ITEMS_ReadStatFromItemBitstream(D2Bit
     }
 
     if (nParamBits > 0)
-        nParam = (unsigned short)sub_00411020_ReadBits(pBuffer, nParamBits);
+        nParam = (unsigned short)BITMANIP_Read(pBuffer, nParamBits);
 
-    const unsigned int nValue = sub_00411020_ReadBits(pBuffer, nSaveBits);
+    const unsigned int nValue = BITMANIP_Read(pBuffer, nSaveBits);
     STATLIST_SetStat(pStatList, nStatId, (nValue - nSaveAdd) << pItemStatCostTxtRecord->nValShift, nParam);
 }
 
@@ -3643,21 +3643,21 @@ int __stdcall ITEMS_GetCompactItemDataFromBitstream(unsigned char* pBitstream, u
     if (bCheckForHeader && BITMANIP_ReadSigned(&pBuffer, 16) != 'MJ')
         return 0;
 
-    unsigned int dwFlags = sub_00411020_ReadBits(&pBuffer, 32);
+    unsigned int dwFlags = BITMANIP_Read(&pBuffer, 32);
     pItemSave->dwFlags = dwFlags;
-    sub_00411020_ReadBits(&pBuffer, 10);
-    pItemSave->bMode = (unsigned char)sub_00411020_ReadBits(&pBuffer, 3);
+    BITMANIP_Read(&pBuffer, 10);
+    pItemSave->bMode = (unsigned char)BITMANIP_Read(&pBuffer, 3);
     if (pItemSave->bMode == IMODE_ONGROUND || pItemSave->bMode == IMODE_DROPPING)
     {
-        pItemSave->nX = (unsigned short)sub_00411020_ReadBits(&pBuffer, 16);
-        pItemSave->nY = (unsigned short)sub_00411020_ReadBits(&pBuffer, 16);
+        pItemSave->nX = (unsigned short)BITMANIP_Read(&pBuffer, 16);
+        pItemSave->nY = (unsigned short)BITMANIP_Read(&pBuffer, 16);
     }
     else
     {
-        pItemSave->nBodyloc = (unsigned char)sub_00411020_ReadBits(&pBuffer, 4);
-        pItemSave->nX = (unsigned short)sub_00411020_ReadBits(&pBuffer, 4);
-        pItemSave->nY = (unsigned short)sub_00411020_ReadBits(&pBuffer, 4);
-        pItemSave->nStorePage = (unsigned char)sub_00411020_ReadBits(&pBuffer, 3) - 1;
+        pItemSave->nBodyloc = (unsigned char)BITMANIP_Read(&pBuffer, 4);
+        pItemSave->nX = (unsigned short)BITMANIP_Read(&pBuffer, 4);
+        pItemSave->nY = (unsigned short)BITMANIP_Read(&pBuffer, 4);
+        pItemSave->nStorePage = (unsigned char)BITMANIP_Read(&pBuffer, 3) - 1;
     }
 
     if (dwFlags & IFLAG_ISEAR)
@@ -3666,7 +3666,7 @@ int __stdcall ITEMS_GetCompactItemDataFromBitstream(unsigned char* pBitstream, u
     }
     else
     {
-        unsigned int dwCode = sub_00411020_ReadBits(&pBuffer, 32);
+        unsigned int dwCode = BITMANIP_Read(&pBuffer, 32);
         if (dwVersion <= 0x5C && dwCode == ' cen')
             dwCode = ' gen';
         pItemSave->nClassId = DATATBLS_GetItemIdFromItemCode(dwCode);
@@ -3674,7 +3674,7 @@ int __stdcall ITEMS_GetCompactItemDataFromBitstream(unsigned char* pBitstream, u
 
     int nItemFileIndex = 0;
     if (!(dwFlags & IFLAG_COMPACTSAVE_LOWQUALITY))
-        nItemFileIndex = sub_00411020_ReadBits(&pBuffer, 3);
+        nItemFileIndex = BITMANIP_Read(&pBuffer, 3);
     pItemSave->nItemFileIndex = nItemFileIndex;
 
     return 1;
@@ -6566,7 +6566,7 @@ int __stdcall ITEMS_DecodeItemFromBitstream(D2UnitStrc* pItem, unsigned char* pB
 
     *pFail = 0;
 
-    unsigned int dwItemFlags = sub_00411020_ReadBits(&tBuffer, 32);
+    unsigned int dwItemFlags = BITMANIP_Read(&tBuffer, 32);
     if (dwItemFlags & IFLAG_UNK_GAMBLE)
     {
         bGamble = 1;

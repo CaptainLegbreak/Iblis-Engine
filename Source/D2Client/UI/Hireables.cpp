@@ -516,17 +516,6 @@ void __cdecl HIREABLES_TogglePetIconPopup()
 }
 
 
-class D2SquelchListStrc
-{
-public:
-    virtual void Squelch(const char* szName);
-    virtual void Unsquelch(const char* szName);
-    virtual int IsNameSquelched(const char* szName);
-    virtual void Unknown0C();
-    virtual void Unknown10();
-    virtual int IsTextSquelched(const char* szText);
-    virtual void AddName(const char* szName, int nSize);
-};
 
 
 // 0x004938E0
@@ -1946,7 +1935,7 @@ void __cdecl HIREABLES_DrawPetIcons()
     int nY = 0x48;
     int bAlternate = 0;
     int nX = 0xF;
-    const int nMode = sub_0045AE90_GetPanelSlideMode();
+    const int nMode = UI_GetPanelSlideMode();
     if (nMode != 3 && nMode != 2 && !GAME_GetUIVarState(9) && !GAME_GetUIVarState(0xB) && gnPetIconPopupState != 2)
     {
         if (GAME_IsExpansion() && !GAME_GetUIVarState(0x23) && gnPetIconPopupState != 2 && ROSTERPETS_FindPetIdByOwner(pPlayer, 7, 0) != -1)

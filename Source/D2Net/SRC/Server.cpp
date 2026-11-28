@@ -132,13 +132,13 @@ int __stdcall SERVER_WaitForSingleObject(int nArg1)
 // 0x0052B210
 int __stdcall SERVER_SwapSlotValue(int nArg1, int nArg2)
 {
-    return FOG_10186(gpServer, nArg1, nArg2);
+    return FOG_SetServerValue(gpServer, nArg1, nArg2);
 }
 
 // 0x0052B230
 int __stdcall SERVER_AddKeyValuePair(int nArg1, int nArg2)
 {
-    return ((D2NetQServerFastCall2)FOG_10187)(gpServer, nArg2, nArg1);
+    return ((D2NetQServerFastCall2)FOG_AddAddressMask)(gpServer, nArg2, nArg1);
 }
 
 // 0x0052B250
@@ -150,7 +150,7 @@ void __stdcall SERVER_SetMaxClientsPerGame(int nArg1)
 // 0x0052B270
 int __fastcall D2NET_10027()
 {
-    return FOG_10180(gpServer);
+    return FOG_GetClientCount(gpServer);
 }
 
 // 0x0052B280
@@ -163,26 +163,26 @@ int __stdcall SERVER_SetHackListEnabled(int nArg1)
 void __cdecl SERVER_Release()
 {
     unsigned char nMessage = 0xB0;
-    FOG_10152(gpServer, (char*)&nMessage, 1);
+    FOG_ShutdownServer(gpServer, (char*)&nMessage, 1);
     gpServer = 0;
 }
 
 // 0x0052B2D0
 int __stdcall SERVER_ReadGamePacket(int nArg1, int nArg2)
 {
-    return FOG_10156(gpServer, 1, (void*)nArg1, nArg2);
+    return FOG_PopQueuedMessage(gpServer, 1, (void*)nArg1, nArg2);
 }
 
 // 0x0052B2F0
 int __stdcall SERVER_ReadSystemPacket(int nArg1, int nArg2)
 {
-    return FOG_10156(gpServer, 0, (void*)nArg1, nArg2);
+    return FOG_PopQueuedMessage(gpServer, 0, (void*)nArg1, nArg2);
 }
 
 // 0x0052B310
 int __stdcall SERVER_ReadAdminPacket(int nArg1, int nArg2)
 {
-    return FOG_10156(gpServer, 2, (void*)nArg1, nArg2);
+    return FOG_PopQueuedMessage(gpServer, 2, (void*)nArg1, nArg2);
 }
 
 // 0x0052B330
@@ -200,7 +200,7 @@ unsigned int __stdcall SERVER_SendPacketToClient(char nSendMode, void* pClientId
 
     if (nSendMode != 0 || *pPacket != 0xAF)
     {
-        FOG_10222(pPacket, nPacketSize);
+        FOG_AddHuffmanStats(pPacket, nPacketSize);
         if (nSendMode != 2)
         {
             unsigned char frame[1036];
@@ -210,35 +210,35 @@ unsigned int __stdcall SERVER_SendPacketToClient(char nSendMode, void* pClientId
             if (++nFrameSize < 0xF0)
             {
                 frame[1] = (unsigned char)nFrameSize;
-                return FOG_10157(gpServer, (unsigned int)pClientId, (char*)&frame[1], nFrameSize) != 0 ? nFrameSize : 0;
+                return FOG_SendToClient(gpServer, (unsigned int)pClientId, (char*)&frame[1], nFrameSize) != 0 ? nFrameSize : 0;
             }
 
             ++nFrameSize;
             frame[0] = (unsigned char)((nFrameSize >> 8) | 0xF0);
             frame[1] = (unsigned char)nFrameSize;
-            return FOG_10157(gpServer, (unsigned int)pClientId, (char*)frame, nFrameSize) != 0 ? nFrameSize : 0;
+            return FOG_SendToClient(gpServer, (unsigned int)pClientId, (char*)frame, nFrameSize) != 0 ? nFrameSize : 0;
         }
     }
 
-    return FOG_10157(gpServer, (unsigned int)pClientId, (char*)pPacket, nPacketSize) != 0 ? nPacketSize : 0;
+    return FOG_SendToClient(gpServer, (unsigned int)pClientId, (char*)pPacket, nPacketSize) != 0 ? nPacketSize : 0;
 }
 
 // 0x0052B490
 int __stdcall CLIENT_ObjectCall_6BED90(int nArg1, int nArg2, int nArg3)
 {
-    return ((D2NetQServerCall3)FOG_10159)(gpServer, nArg1, nArg2, nArg3);
+    return ((D2NetQServerCall3)FOG_GetClientIPString)(gpServer, nArg1, nArg2, nArg3);
 }
 
 // 0x0052B4B0
 int __stdcall SERVER_GetIpAddressFromClientId(int nArg1)
 {
-    return FOG_10158(gpServer, nArg1);
+    return FOG_GetClientAddress(gpServer, nArg1);
 }
 
 // 0x0052B4D0
 int __stdcall SERVER_GetSocketFromClientId(int nArg1)
 {
-    return FOG_10161(gpServer, nArg1);
+    return FOG_GetClientSocket(gpServer, nArg1);
 }
 
 // 0x0052B4F0
@@ -268,7 +268,7 @@ int __stdcall SERVER_DisconnectIP(int nArg1, int nArg2, int nArg3)
 // 0x0052B570
 void __stdcall D2NET_10016(int nClientId)
 {
-    FOG_10165(gpServer, nClientId, ".\\SRC\\Server.cpp", 468);
+    FOG_CloseRemoteConnection(gpServer, nClientId, ".\\SRC\\Server.cpp", 468);
 }
 
 // 0x0052B5A0
@@ -279,13 +279,13 @@ void __stdcall D2NET_10018(int nClientId)
         return;
     }
 
-    FOG_10170(gpServer, (D2NetAddressCallback)nClientId);
+    FOG_SetAddressCallback(gpServer, (D2NetAddressCallback)nClientId);
 }
 
 // 0x0052B5C0
 int __stdcall SERVER_SetRemoveClientCallback(D2NET_Unk_Callback pfCallback)
 {
-    return ((D2NetQServerCall1)FOG_10171)(gpServer, (int)pfCallback);
+    return ((D2NetQServerCall1)FOG_SetRemoveClientCallback)(gpServer, (int)pfCallback);
 }
 
 // 0x0052B5E0
@@ -293,7 +293,7 @@ int __stdcall SERVER_SetClientGameGUID(int nClientId, int dwGameGuid)
 {
     if (nClientId)
     {
-        return ((D2NetQServerCall2)FOG_10172)(gpServer, nClientId, dwGameGuid);
+        return ((D2NetQServerCall2)FOG_SetClientContext)(gpServer, nClientId, dwGameGuid);
     }
 
     gnLocalClientGameGuid = dwGameGuid;
@@ -306,7 +306,7 @@ int __stdcall SERVER_GetClientGameGUID(int nClientId)
 {
     if (nClientId)
     {
-        return FOG_10173(gpServer, nClientId);
+        return FOG_GetClientContext(gpServer, nClientId);
     }
 
     return gnLocalClientGameGuid;
@@ -317,20 +317,20 @@ int __fastcall SERVER_EnqueueClientPacket(const unsigned char* pBuffer, unsigned
 {
     D2_ASSERT(nBufferSize <= MAX_MSG_SIZE, 521);
 
-    return FOG_10175(gpServer, pBuffer, nBufferSize, nClientId);
+    return FOG_QueueReceivedPacket(gpServer, pBuffer, nBufferSize, nClientId);
 }
 
 // 0x0052B690
 int __fastcall SERVER_EnqueueLocalClientPacket(const unsigned char* pBuffer, unsigned short nSize)
 {
     D2_ASSERT(nSize <= MAX_MSG_SIZE, 0x217);
-    return FOG_10175(gpServer, pBuffer, nSize, 0) != 0;
+    return FOG_QueueReceivedPacket(gpServer, pBuffer, nSize, 0) != 0;
 }
 
 // 0x0052B6D0
 int __stdcall D2NET_10022(int dwMilliseconds)
 {
-    return FOG_10177(gpServer, dwMilliseconds);
+    return FOG_WaitForMessages(gpServer, dwMilliseconds);
 }
 
 // 0x0052B6F0
@@ -360,7 +360,7 @@ int __fastcall SERVER_OnClientDisconnectedCallback(int nArg1, int nClientId, int
 {
     const unsigned char data[1] = { 0x70 };
 
-    FOG_10175(gpServer, data, sizeof(data), nClientId);
+    FOG_QueueReceivedPacket(gpServer, data, sizeof(data), nClientId);
     return 1;
 }
 

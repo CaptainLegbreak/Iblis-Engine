@@ -1457,7 +1457,7 @@ int __fastcall MISSILE_SubmitMissileRequest(D2UnitStrc* pUnit, int nArg, int nX,
 
 int gnAutomapTextY; // 0x007A51BC
 
-void __cdecl sub_0045B960_FilePrintf(void* hFile, const char* szFormat, ...); // 0x0045B960
+void __cdecl ARCHIVE_FilePrintf(void* hFile, const char* szFormat, ...); // 0x0045B960
 
 struct D2AutomapDrawStrc
 {
@@ -1672,7 +1672,7 @@ inline int UNITS_GetYPositionInline(D2UnitStrc* pUnit)
 int __fastcall AUTOMAP_GetHoverMonsterName(D2UnitStrc* pUnit, int nArg)
 {
     int nTick;
-    if (sub_0045AE90_GetPanelSlideMode() == 3)
+    if (UI_GetPanelSlideMode() == 3)
     {
         return 0;
     }
@@ -3034,7 +3034,7 @@ void __fastcall AUTOMAP_DrawAutomapCells(D2AutomapCellStrc* pCell, D2AutomapDraw
     }
 
     int nShift = 0;
-    switch (sub_0045AE90_GetPanelSlideMode())
+    switch (UI_GetPanelSlideMode())
     {
     case 1:
         nShift = -(gnScreenWidth / 4);
@@ -3154,7 +3154,7 @@ void __cdecl AUTOMAP_PaintAutomap()
     if (!gpAutomapContext)
         return;
     int nShift = 0;
-    switch (sub_0045AE90_GetPanelSlideMode())
+    switch (UI_GetPanelSlideMode())
     {
     case 1:
         if (gnAutomapMode != 1)

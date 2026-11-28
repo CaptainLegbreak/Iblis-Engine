@@ -33,7 +33,7 @@ extern "C" __declspec(dllimport) void* __stdcall CreateFileW(const wchar_t* szFi
 extern "C" __declspec(dllimport) int __stdcall SetEvent(void* hEvent); // 0x006CC130
 extern "C" __declspec(dllimport) unsigned long __stdcall WaitForSingleObject(void* hHandle, unsigned long dwMilliseconds); // 0x006CC230
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x006CC134
-bool __cdecl sub_00401B00_LoadDbgHelp(); // 0x00401B00
+bool __cdecl ERRORMANAGER_LoadDbgHelp(); // 0x00401B00
 extern bool gbMiniDumpEnabled; // 0x0098A6B1
 extern D2CriticalSectionStrc gtDbgHelpRequestLock; // 0x0098A6C4
 extern void* ghDbgHelpWorkEvent; // 0x0098A6C0
@@ -141,9 +141,9 @@ struct D2CrashSubmitInfoStrc
 
 extern "C" size_t __cdecl strlen(const char* szString);
 extern char gszTextBuffer[0x400]; // 0x0098A280
-bool __stdcall sub_00404330_FileExistsUtf8(const char* szPath); // 0x00404330
+bool __stdcall ERRORMANAGER_FileExistsUtf8(const char* szPath); // 0x00404330
 bool __fastcall ERRORMANAGER_CreateProcessUtf8(const char* szApplicationName, const char* szCommandLine); // 0x00404210
-static size_t __stdcall sub_00404150_StrlCat(const char* szSource, char* szDest, size_t nSize);
+static size_t __stdcall ERRORMANAGER_StrlCat(const char* szSource, char* szDest, size_t nSize); // 0x00404150
 
 struct D2CvRsdsStrc
 {
@@ -155,20 +155,20 @@ struct D2CvRsdsStrc
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, size_t nSize);
 extern "C" void* __cdecl memset(void* pDst, int nValue, size_t nSize);
 BOOLEAN __stdcall AUTOMAP_IsDebugDirectorySizeValid(unsigned int nValue);
-static bool __stdcall sub_004049A0_ReadImageInfo(D2CrashModuleStrc* pModule, const D2ImageDosHeaderStrc* pImage);
-static bool sub_00404F80_ReadNb10(D2CrashModuleStrc* pModule, const D2CvNb10Strc* pCv);
-static bool sub_00404FF0_ReadRsds(const D2CvRsdsStrc* pCv, D2CrashModuleStrc* pModule);
+static bool __stdcall ERRORMANAGER_ReadImageInfo(D2CrashModuleStrc* pModule, const D2ImageDosHeaderStrc* pImage); // 0x004049A0
+static bool ERRORMANAGER_ReadNb10(D2CrashModuleStrc* pModule, const D2CvNb10Strc* pCv); // 0x00404F80
+static bool ERRORMANAGER_ReadRsds(const D2CvRsdsStrc* pCv, D2CrashModuleStrc* pModule); // 0x00404FF0
 
 D2CriticalSectionStrc gtSymbolLock; // 0x0098A6F0
 
 // 0x004013A0
-int __cdecl sub_004013A0_IsDebuggerAttached()
+int __cdecl ERRORMANAGER_IsDebuggerAttached()
 {
     return !(IsDebuggerPresent() - 1);
 }
 
 // 0x00402820
-bool __fastcall sub_00402820_WriteMiniDump(const char* szPath, const char* szComment, void* pExceptionPointers, unsigned long dwThreadId)
+bool __fastcall ERRORMANAGER_WriteMiniDump(const char* szPath, const char* szComment, void* pExceptionPointers, unsigned long dwThreadId)
 {
     wchar_t wszPath[0x104];
     if (!gbMiniDumpEnabled)
@@ -176,7 +176,7 @@ bool __fastcall sub_00402820_WriteMiniDump(const char* szPath, const char* szCom
         return false;
     }
     EnterCriticalSection(&gtSymbolLock);
-    if (!ghDbgHelp && !sub_00401B00_LoadDbgHelp())
+    if (!ghDbgHelp && !ERRORMANAGER_LoadDbgHelp())
     {
         LeaveCriticalSection(&gtSymbolLock);
         return false;
@@ -222,7 +222,7 @@ void* ghDbgHelpThread; // 0x00992B08
 unsigned long gdwDbgHelpThreadId; // 0x00992B0C
 
 // 0x00402980
-void __cdecl sub_00402980_StartDbgHelpWorker()
+void __cdecl ERRORMANAGER_StartDbgHelpWorker()
 {
     InitializeCriticalSection(&gtSymbolLock);
     InitializeCriticalSection(&gtDbgHelpRequestLock);
@@ -233,7 +233,7 @@ void __cdecl sub_00402980_StartDbgHelpWorker()
 }
 
 // 0x004029F0
-void __cdecl sub_004029F0_StopDbgHelpWorker()
+void __cdecl ERRORMANAGER_StopDbgHelpWorker()
 {
     SetEvent(ghDbgHelpWorkEvent);
     WaitForSingleObject(ghDbgHelpThread, 0xFFFFFFFF);
@@ -252,7 +252,7 @@ void __cdecl sub_004029F0_StopDbgHelpWorker()
 }
 
 // 0x00402B50
-static inline void sub_00402B50_SetProcessHandle(void* hProcess)
+static inline void ERRORMANAGER_SetProcessHandle(void* hProcess)
 {
     ghProcess = hProcess;
 }
@@ -272,7 +272,7 @@ D2CrashRecord24Strc::D2CrashRecord24Strc()
 }
 
 // 0x00402B80
-static inline void sub_00402B80_ClearGuid(D2CrashGuidStrc* pGuid)
+static inline void ERRORMANAGER_ClearGuid(D2CrashGuidStrc* pGuid)
 {
     pGuid->Data1 = 0;
     pGuid->Data2 = 0;
@@ -282,7 +282,7 @@ static inline void sub_00402B80_ClearGuid(D2CrashGuidStrc* pGuid)
 }
 
 // 0x00402BA0
-static inline void sub_00402BA0_ClearGuidB(D2CrashGuidStrc* pGuid)
+static inline void ERRORMANAGER_ClearGuidB(D2CrashGuidStrc* pGuid)
 {
     pGuid->Data1 = 0;
     pGuid->Data2 = 0;
@@ -310,7 +310,7 @@ D2CrashModuleStrc::D2CrashModuleStrc()
 }
 
 // 0x00402C30
-bool __fastcall sub_00402C30_AddModule(const D2CrashModuleStrc* pModule, D2CrashModuleListStrc* pList)
+bool __fastcall ERRORMANAGER_AddModule(const D2CrashModuleStrc* pModule, D2CrashModuleListStrc* pList)
 {
     if (!pList)
     {
@@ -323,15 +323,15 @@ bool __fastcall sub_00402C30_AddModule(const D2CrashModuleStrc* pModule, D2Crash
 
 void __fastcall sub_M127_Emit_00402B50(void* hProcess, D2CrashGuidStrc* pGuid)
 {
-    sub_00402B50_SetProcessHandle(hProcess);
-    sub_00402B80_ClearGuid(pGuid);
+    ERRORMANAGER_SetProcessHandle(hProcess);
+    ERRORMANAGER_ClearGuid(pGuid);
     sub_M127_EmitSink(pGuid);
-    sub_00402BA0_ClearGuidB(pGuid + 1);
+    ERRORMANAGER_ClearGuidB(pGuid + 1);
     sub_M127_EmitSink(pGuid + 1);
 }
 
 // 0x00402A80
-int __cdecl sub_00402A80_IsDbgHelpLoaded()
+int __cdecl ERRORMANAGER_IsDbgHelpLoaded()
 {
     return ghDbgHelp != 0;
 }
@@ -361,7 +361,7 @@ int __cdecl INV_HasHoverItem()
 }
 
 // 0x00402A90
-bool __stdcall sub_00402A90_GetDbgHelpModuleRange(void** ppBase, unsigned long* pSize)
+bool __stdcall ERRORMANAGER_GetDbgHelpModuleRange(void** ppBase, unsigned long* pSize)
 {
     D2PsapiModuleInfoStrc tInfo;
     if (!ghDbgHelp)
@@ -376,7 +376,7 @@ bool __stdcall sub_00402A90_GetDbgHelpModuleRange(void** ppBase, unsigned long* 
 }
 
 // 0x00402FE0
-static D2CrashModuleListStrc* sub_00402FE0_InitModuleList(D2CrashModuleListStrc* pList)
+static D2CrashModuleListStrc* ERRORMANAGER_InitModuleList(D2CrashModuleListStrc* pList)
 {
     D2CrashModuleStrc* pModule = pList->aModules;
     int nLeft = 0x100 - 1;
@@ -395,13 +395,13 @@ static D2CrashModuleListStrc* sub_00402FE0_InitModuleList(D2CrashModuleListStrc*
 void __fastcall sub_M452_Emit_00402FE0(int nArg, int nArg2)
 {
     D2CrashModuleListStrc tList;
-    sub_M452_EmitSink(sub_00402FE0_InitModuleList(&tList));
+    sub_M452_EmitSink(ERRORMANAGER_InitModuleList(&tList));
     tList.nCount = nArg2 - nArg;
     sub_M452_EmitSink(&tList);
 }
 
 // 0x00404660
-static unsigned char sub_00404660_GetThreadContext(unsigned long dwThreadId, D2ThreadContextStrc* pContext)
+static unsigned char ERRORMANAGER_GetThreadContext(unsigned long dwThreadId, D2ThreadContextStrc* pContext)
 {
     pContext->ContextFlags = 0x1003F;
     if (GetCurrentThreadId() == dwThreadId)
@@ -424,11 +424,11 @@ static unsigned char sub_00404660_GetThreadContext(unsigned long dwThreadId, D2T
 }
 
 // 0x004032F0
-void __fastcall sub_004032F0_DumpRegisters(unsigned long dwThreadId, D2CrashPrintFn pfnPrint, void* pContext)
+void __fastcall ERRORMANAGER_DumpRegisters(unsigned long dwThreadId, D2CrashPrintFn pfnPrint, void* pContext)
 {
     D2ThreadContextStrc tContext;
     char szText[0x400];
-    if (!sub_00404660_GetThreadContext(dwThreadId, &tContext))
+    if (!ERRORMANAGER_GetThreadContext(dwThreadId, &tContext))
         return;
     if (tContext.ContextFlags & 0x10002)
     {
@@ -514,7 +514,7 @@ void __fastcall sub_004032F0_DumpRegisters(unsigned long dwThreadId, D2CrashPrin
 D2CrashHandlerFn gpfnCrashHandler; // 0x00992B10
 
 // 0x00403AC0
-static void sub_00403AC0_GetExceptionName(char* szBuffer, unsigned long dwCode)
+static void ERRORMANAGER_GetExceptionName(char* szBuffer, unsigned long dwCode)
 {
     const char* szName;
     switch (dwCode)
@@ -555,13 +555,13 @@ static void sub_00403AC0_GetExceptionName(char* szBuffer, unsigned long dwCode)
 }
 
 // 0x00403E90
-long __stdcall sub_00403E90_UnhandledExceptionFilter(void* pExceptionPointers)
+long __stdcall ERRORMANAGER_UnhandledExceptionFilter(void* pExceptionPointers)
 {
     if (!gpfnCrashHandler)
         return 0;
     D2ExceptionPointersStrc* pPointers = (D2ExceptionPointersStrc*)pExceptionPointers;
     char szName[0x100];
-    sub_00403AC0_GetExceptionName(szName, pPointers->pExceptionRecord->ExceptionCode);
+    ERRORMANAGER_GetExceptionName(szName, pPointers->pExceptionRecord->ExceptionCode);
     D2CrashHandlerInfoStrc tReport;
     tReport.szBuffer[0] = 0;
     tReport.szName = szName;
@@ -608,7 +608,7 @@ void __cdecl sub_00648450_Nop()
 }
 
 // 0x00401790
-bool __fastcall sub_00401790_SubmitReport(const char* szText, D2CrashSubmitInfoStrc* pInfo)
+bool __fastcall ERRORMANAGER_SubmitReport(const char* szText, D2CrashSubmitInfoStrc* pInfo)
 {
     char szPath[0x400];
     char* pDest = szPath;
@@ -636,50 +636,50 @@ bool __fastcall sub_00401790_SubmitReport(const char* szText, D2CrashSubmitInfoS
     if (nLength >= 0x400)
         return false;
     if (szPath[nLength - 1] != '/' && szPath[nLength - 1] != '\\')
-        sub_00404150_StrlCat("\\", szPath, 0x400);
-    sub_00404150_StrlCat("BlizzardError.exe", szPath, 0x400);
-    if (!sub_00404330_FileExistsUtf8(szPath))
+        ERRORMANAGER_StrlCat("\\", szPath, 0x400);
+    ERRORMANAGER_StrlCat("BlizzardError.exe", szPath, 0x400);
+    if (!ERRORMANAGER_FileExistsUtf8(szPath))
         return false;
     char szCommand[0x1000] = "";
     if (pInfo->dwFlags & 1)
-        sub_00404150_StrlCat(" -auto", szCommand, 0x1000);
+        ERRORMANAGER_StrlCat(" -auto", szCommand, 0x1000);
     if (pInfo->dwFlags & 2)
-        sub_00404150_StrlCat(" -nocancel", szCommand, 0x1000);
+        ERRORMANAGER_StrlCat(" -nocancel", szCommand, 0x1000);
     if (pInfo->dwFlags & 4)
-        sub_00404150_StrlCat(" -simple", szCommand, 0x1000);
+        ERRORMANAGER_StrlCat(" -simple", szCommand, 0x1000);
     if (pInfo->szFrom)
     {
-        sub_00404150_StrlCat(" -from ", szCommand, 0x1000);
-        sub_00404150_StrlCat(pInfo->szFrom, szCommand, 0x1000);
+        ERRORMANAGER_StrlCat(" -from ", szCommand, 0x1000);
+        ERRORMANAGER_StrlCat(pInfo->szFrom, szCommand, 0x1000);
     }
     if (pInfo->szLocale)
     {
-        sub_00404150_StrlCat(" -locale ", szCommand, 0x1000);
-        sub_00404150_StrlCat(pInfo->szLocale, szCommand, 0x1000);
+        ERRORMANAGER_StrlCat(" -locale ", szCommand, 0x1000);
+        ERRORMANAGER_StrlCat(pInfo->szLocale, szCommand, 0x1000);
     }
     if (pInfo->szName)
     {
-        sub_00404150_StrlCat(" -product \"", szCommand, 0x1000);
-        sub_00404150_StrlCat(pInfo->szName, szCommand, 0x1000);
-        sub_00404150_StrlCat("\"", szCommand, 0x1000);
+        ERRORMANAGER_StrlCat(" -product \"", szCommand, 0x1000);
+        ERRORMANAGER_StrlCat(pInfo->szName, szCommand, 0x1000);
+        ERRORMANAGER_StrlCat("\"", szCommand, 0x1000);
     }
     for (unsigned int i = 0; i < pInfo->nLines; i++)
     {
         if (pInfo->apszLines[i] && *pInfo->apszLines[i])
         {
-            sub_00404150_StrlCat(" -attachment \"", szCommand, 0x1000);
-            sub_00404150_StrlCat(pInfo->apszLines[i], szCommand, 0x1000);
-            sub_00404150_StrlCat("\"", szCommand, 0x1000);
+            ERRORMANAGER_StrlCat(" -attachment \"", szCommand, 0x1000);
+            ERRORMANAGER_StrlCat(pInfo->apszLines[i], szCommand, 0x1000);
+            ERRORMANAGER_StrlCat("\"", szCommand, 0x1000);
         }
     }
-    sub_00404150_StrlCat(" \"", szCommand, 0x1000);
-    sub_00404150_StrlCat(szText, szCommand, 0x1000);
-    sub_00404150_StrlCat("\"", szCommand, 0x1000);
+    ERRORMANAGER_StrlCat(" \"", szCommand, 0x1000);
+    ERRORMANAGER_StrlCat(szText, szCommand, 0x1000);
+    ERRORMANAGER_StrlCat("\"", szCommand, 0x1000);
     return ERRORMANAGER_CreateProcessUtf8(szPath, szCommand);
 }
 
 // 0x00404150
-static size_t __stdcall sub_00404150_StrlCat(const char* szSource, char* szDest, size_t nSize)
+static size_t __stdcall ERRORMANAGER_StrlCat(const char* szSource, char* szDest, size_t nSize)
 {
     char* pDest = szDest;
     const char* pSource = szSource;
@@ -706,7 +706,7 @@ static size_t __stdcall sub_00404150_StrlCat(const char* szSource, char* szDest,
 }
 
 // 0x00404730
-static int sub_00404730_GetImageKind(const D2ImageOptionalHeaderStrc* pHeader)
+static int ERRORMANAGER_GetImageKind(const D2ImageOptionalHeaderStrc* pHeader)
 {
     if (pHeader->Magic == 0x10B)
     {
@@ -720,7 +720,7 @@ static int sub_00404730_GetImageKind(const D2ImageOptionalHeaderStrc* pHeader)
 }
 
 // 0x00404760
-static bool sub_00404760_IsDosHeaderValid(const D2ImageDosHeaderStrc* pImage)
+static bool ERRORMANAGER_IsDosHeaderValid(const D2ImageDosHeaderStrc* pImage)
 {
     if (IsBadReadPtr(pImage, 0x40))
     {
@@ -734,7 +734,7 @@ static bool sub_00404760_IsDosHeaderValid(const D2ImageDosHeaderStrc* pImage)
 }
 
 // 0x00404780
-static inline bool sub_00404780_IsNtHeaderValid(const D2ImageNtHeadersStrc* pNt)
+static inline bool ERRORMANAGER_IsNtHeaderValid(const D2ImageNtHeadersStrc* pNt)
 {
     if (IsBadReadPtr(pNt, 4))
     {
@@ -752,16 +752,16 @@ static inline bool sub_00404780_IsNtHeaderValid(const D2ImageNtHeadersStrc* pNt)
     {
         return false;
     }
-    if (!sub_00404730_GetImageKind(&pNt->OptionalHeader))
+    if (!ERRORMANAGER_GetImageKind(&pNt->OptionalHeader))
     {
         return false;
     }
     return true;
 }
 
-static bool sub_004047D0_GetDebugDirectory(unsigned long* pSize, unsigned long* pRva, const D2ImageOptionalHeaderStrc* pHeader)
+static bool ERRORMANAGER_GetDebugDirectory(unsigned long* pSize, unsigned long* pRva, const D2ImageOptionalHeaderStrc* pHeader)
 {
-    const int nKind = sub_00404730_GetImageKind(pHeader);
+    const int nKind = ERRORMANAGER_GetImageKind(pHeader);
     if (!nKind)
     {
         return false;
@@ -801,20 +801,20 @@ BOOLEAN __stdcall AUTOMAP_IsDebugDirectorySizeValid(unsigned int nValue)
 }
 
 // 0x00404860
-static void sub_00404860_SetNb10Info(D2CrashModuleStrc* pModule, const D2CvNb10Strc* pCv)
+static void ERRORMANAGER_SetNb10Info(D2CrashModuleStrc* pModule, const D2CvNb10Strc* pCv)
 {
     pModule->nTimeStamp = pCv->dwSignature;
     memset(&pModule->tGuid, 0, sizeof(pModule->tGuid));
 }
 
 // 0x00404890
-static void sub_00404890_CopyRsdsGuid(D2CrashModuleStrc* pModule, const D2CvRsdsStrc* pCv)
+static void ERRORMANAGER_CopyRsdsGuid(D2CrashModuleStrc* pModule, const D2CvRsdsStrc* pCv)
 {
     pModule->tGuid = pCv->tGuid;
 }
 
 // 0x004048C0
-static bool sub_004048C0_ReadCodeView(const unsigned long* pCv, D2CrashModuleStrc* pModule, unsigned int nSize)
+static bool ERRORMANAGER_ReadCodeView(const unsigned long* pCv, D2CrashModuleStrc* pModule, unsigned int nSize)
 {
     if (nSize < 4)
     {
@@ -826,23 +826,23 @@ static bool sub_004048C0_ReadCodeView(const unsigned long* pCv, D2CrashModuleStr
     }
     if (*pCv == 0x3031424E)
     {
-        return sub_00404F80_ReadNb10(pModule, (const D2CvNb10Strc*)pCv);
+        return ERRORMANAGER_ReadNb10(pModule, (const D2CvNb10Strc*)pCv);
     }
     if (*pCv == 0x53445352)
     {
-        return sub_00404FF0_ReadRsds((const D2CvRsdsStrc*)pCv, pModule);
+        return ERRORMANAGER_ReadRsds((const D2CvRsdsStrc*)pCv, pModule);
     }
     return false;
 }
 
 // 0x00404900
-static bool __stdcall sub_00404900_FindCodeView(const D2ImageDosHeaderStrc* pImage, const D2ImageDebugDirStrc* pDirs, D2CrashModuleStrc* pModule, unsigned long nSize)
+static bool __stdcall ERRORMANAGER_FindCodeView(const D2ImageDosHeaderStrc* pImage, const D2ImageDebugDirStrc* pDirs, D2CrashModuleStrc* pModule, unsigned long nSize)
 {
     const unsigned int nCount = nSize / sizeof(D2ImageDebugDirStrc);
     for (unsigned int i = 0; i < nCount; i++)
     {
         const unsigned long* pData = (const unsigned long*)((const char*)pImage + pDirs[i].AddressOfRawData);
-        if (pDirs[i].Type == 2 && sub_004048C0_ReadCodeView(pData, pModule, pDirs[i].SizeOfData))
+        if (pDirs[i].Type == 2 && ERRORMANAGER_ReadCodeView(pData, pModule, pDirs[i].SizeOfData))
         {
             return true;
         }
@@ -850,15 +850,15 @@ static bool __stdcall sub_00404900_FindCodeView(const D2ImageDosHeaderStrc* pIma
     return false;
 }
 
-static bool __stdcall sub_004049A0_ReadImageInfo(D2CrashModuleStrc* pModule, const D2ImageDosHeaderStrc* pImage)
+static bool __stdcall ERRORMANAGER_ReadImageInfo(D2CrashModuleStrc* pModule, const D2ImageDosHeaderStrc* pImage)
 {
     pModule->pBase = (void*)pImage;
-    if (!sub_00404760_IsDosHeaderValid(pImage))
+    if (!ERRORMANAGER_IsDosHeaderValid(pImage))
     {
         return false;
     }
     const D2ImageNtHeadersStrc* pNt = (const D2ImageNtHeadersStrc*)((const char*)pImage + pImage->e_lfanew);
-    if (!sub_00404780_IsNtHeaderValid(pNt))
+    if (!ERRORMANAGER_IsNtHeaderValid(pNt))
     {
         return false;
     }
@@ -874,18 +874,18 @@ static bool __stdcall sub_004049A0_ReadImageInfo(D2CrashModuleStrc* pModule, con
     }
     unsigned long nRva = 0;
     unsigned long nSize = 0;
-    if (sub_004047D0_GetDebugDirectory(&nSize, &nRva, &pNt->OptionalHeader) && nRva && nSize)
+    if (ERRORMANAGER_GetDebugDirectory(&nSize, &nRva, &pNt->OptionalHeader) && nRva && nSize)
     {
         const D2ImageDebugDirStrc* pDirs = (const D2ImageDebugDirStrc*)((const char*)pImage + nRva);
         if (!IsBadReadPtr(pDirs, nSize) && AUTOMAP_IsDebugDirectorySizeValid(nSize))
         {
-            sub_00404900_FindCodeView(pImage, pDirs, pModule, nSize);
+            ERRORMANAGER_FindCodeView(pImage, pDirs, pModule, nSize);
         }
     }
     return true;
 }
 
-bool D2ModuleStrc::sub_00404AB0_VisitModule(void* pContext, const wchar_t* wszName, int nNameLength)
+bool D2ModuleStrc::ERRORMANAGER_VisitModule(void* pContext, const wchar_t* wszName, int nNameLength)
 {
     D2CrashModuleStrc tModule;
     tModule.pBase = 0;
@@ -928,7 +928,7 @@ bool D2ModuleStrc::sub_00404AB0_VisitModule(void* pContext, const wchar_t* wszNa
     }
     pName = pName ? pName + 1 : tModule.szName;
     memcpy(tModule.szName, pName, sizeof(tModule.szName));
-    if (!sub_004049A0_ReadImageInfo(&tModule, (const D2ImageDosHeaderStrc*)this))
+    if (!ERRORMANAGER_ReadImageInfo(&tModule, (const D2ImageDosHeaderStrc*)this))
     {
         return true;
     }
@@ -943,7 +943,7 @@ bool D2ModuleStrc::sub_00404AB0_VisitModule(void* pContext, const wchar_t* wszNa
 }
 
 // 0x00404F80
-static bool sub_00404F80_ReadNb10(D2CrashModuleStrc* pModule, const D2CvNb10Strc* pCv)
+static bool ERRORMANAGER_ReadNb10(D2CrashModuleStrc* pModule, const D2CvNb10Strc* pCv)
 {
     if (IsBadReadPtr(pCv, 0x14))
     {
@@ -955,12 +955,12 @@ static bool sub_00404F80_ReadNb10(D2CrashModuleStrc* pModule, const D2CvNb10Strc
     }
     strncpy_s(pModule->szPath, sizeof(pModule->szPath), pCv->szPdbName, -1);
     pModule->nAge = pCv->dwAge;
-    sub_00404860_SetNb10Info(pModule, pCv);
+    ERRORMANAGER_SetNb10Info(pModule, pCv);
     return true;
 }
 
 // 0x00404FF0
-static bool sub_00404FF0_ReadRsds(const D2CvRsdsStrc* pCv, D2CrashModuleStrc* pModule)
+static bool ERRORMANAGER_ReadRsds(const D2CvRsdsStrc* pCv, D2CrashModuleStrc* pModule)
 {
     if (IsBadReadPtr(pCv, 0x1C))
     {
@@ -972,14 +972,14 @@ static bool sub_00404FF0_ReadRsds(const D2CvRsdsStrc* pCv, D2CrashModuleStrc* pM
     }
     strncpy_s(pModule->szPath, sizeof(pModule->szPath), pCv->szPdbName, -1);
     pModule->nAge = pCv->dwAge;
-    sub_00404890_CopyRsdsGuid(pModule, pCv);
+    ERRORMANAGER_CopyRsdsGuid(pModule, pCv);
     return true;
 }
 
 extern "C" __declspec(dllimport) unsigned long __stdcall VirtualQuery(const void* pAddress, D2MemoryBasicInfoStrc* pBuffer, unsigned long nLength); // 0x006CC244
 
 // 0x00404F40
-static void __stdcall sub_00404F40_GetDebugDirectory64(unsigned long* pSize, unsigned long* pRva, const D2ImageOptionalHeader64Strc* pHeader)
+static void __stdcall ERRORMANAGER_GetDebugDirectory64(unsigned long* pSize, unsigned long* pRva, const D2ImageOptionalHeader64Strc* pHeader)
 {
     if (pHeader->NumberOfRvaAndSizes > 6)
     {
@@ -991,12 +991,12 @@ static void __stdcall sub_00404F40_GetDebugDirectory64(unsigned long* pSize, uns
 
 void __fastcall sub_G02_Emit_00404F40(const D2ImageOptionalHeader64Strc* pHeader, unsigned long* pOut)
 {
-    sub_00404F40_GetDebugDirectory64(&pOut[1], &pOut[0], pHeader);
-    sub_00404F40_GetDebugDirectory64(&pOut[3], &pOut[2], pHeader + 1);
+    ERRORMANAGER_GetDebugDirectory64(&pOut[1], &pOut[0], pHeader);
+    ERRORMANAGER_GetDebugDirectory64(&pOut[3], &pOut[2], pHeader + 1);
 }
 
 // 0x00404F60
-static void __stdcall sub_00404F60_GetDebugDirectory32(unsigned long* pSize, unsigned long* pRva, const D2ImageOptionalHeaderStrc* pHeader)
+static void __stdcall ERRORMANAGER_GetDebugDirectory32(unsigned long* pSize, unsigned long* pRva, const D2ImageOptionalHeaderStrc* pHeader)
 {
     if (pHeader->NumberOfRvaAndSizes > 6)
     {
@@ -1008,8 +1008,8 @@ static void __stdcall sub_00404F60_GetDebugDirectory32(unsigned long* pSize, uns
 
 void __fastcall DebugDirectory32Context(const D2ImageOptionalHeaderStrc* pHeader, unsigned long* pOut)
 {
-    sub_00404F60_GetDebugDirectory32(&pOut[1], &pOut[0], pHeader);
-    sub_00404F60_GetDebugDirectory32(&pOut[3], &pOut[2], pHeader + 1);
+    ERRORMANAGER_GetDebugDirectory32(&pOut[1], &pOut[0], pHeader);
+    ERRORMANAGER_GetDebugDirectory32(&pOut[3], &pOut[2], pHeader + 1);
 }
 
 // 0x00401480
@@ -1094,7 +1094,7 @@ static unsigned char __stdcall ERRORMANAGER_GetThreadStack(unsigned long* pStack
 }
 
 // 0x00405060
-int D2ThreadContextStrc::sub_00405060_CaptureFrames(unsigned long dwThreadId, D2StackFrameStrc* pFrames, int nSkipFrames)
+int D2ThreadContextStrc::CaptureFrames(unsigned long dwThreadId, D2StackFrameStrc* pFrames, int nSkipFrames)
 {
     D2StackFrameStrc* pOut = pFrames;
     unsigned int nMaxFrames = 0x80;

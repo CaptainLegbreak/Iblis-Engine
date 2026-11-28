@@ -152,7 +152,7 @@ inline void* operator new(unsigned int, void* pWhere) throw()
 }
 
 // 0x0040EB40
-char* __fastcall sub_0040EB40_GetMessageData(LogManager::Message* pMessage)
+char* __fastcall LOGMANAGER_GetMessageData(LogManager::Message* pMessage)
 {
     return (char*)&pMessage->nSize;
 }

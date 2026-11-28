@@ -7,21 +7,21 @@ extern void* ghDbgHelp;                                                         
 extern SymUnloadModule64Fn gpfnSymUnloadModule64;                                                  // 0x0098A694
 extern bool gbSymInitialized;                                                                      // 0x0098A6B0
 extern D2CriticalSectionStrc gtSymbolLock;                                                         // 0x0098A6F0
-bool __cdecl sub_00401B00_LoadDbgHelp();                                                                    // 0x00401B00
-bool __cdecl sub_00401CB0_InitSymbols();                                                                    // 0x00401CB0
+bool __cdecl ERRORMANAGER_LoadDbgHelp();                                                                    // 0x00401B00
+bool __cdecl ERRORMANAGER_InitSymbols();                                                                    // 0x00401CB0
 
 // 0x00401A60
-void __cdecl sub_00401A60_UnlockSymbols()
+void __cdecl ERRORMANAGER_UnlockSymbols()
 {
     LeaveCriticalSection(&gtSymbolLock);
 }
 
 // 0x00402530
-int __stdcall sub_00402530_UnloadModule(unsigned __int64 qwBaseOfDll)
+int __stdcall ERRORMANAGER_UnloadModule(unsigned __int64 qwBaseOfDll)
 {
     D2SymbolLockGuardStrc tGuard;
-    if ((ghDbgHelp || sub_00401B00_LoadDbgHelp())
-        && (gbSymInitialized || sub_00401CB0_InitSymbols())
+    if ((ghDbgHelp || ERRORMANAGER_LoadDbgHelp())
+        && (gbSymInitialized || ERRORMANAGER_InitSymbols())
         && gpfnSymUnloadModule64)
         return gpfnSymUnloadModule64(ghProcess, qwBaseOfDll) != 0;
     return 0;

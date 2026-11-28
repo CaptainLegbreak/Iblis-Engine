@@ -508,12 +508,6 @@ void __fastcall VIEW_UpdatePetLife(int nUnitId, int nLifePercent, unsigned short
     }
 }
 
-class D2SquelchListStrc
-{
-public:
-    virtual void Squelch(const char* szName);
-    virtual void Unsquelch(const char* szName);
-};
 
 // 0x00479080
 int __fastcall ROSTER_GetPetLife(int nUnitId)

@@ -207,7 +207,7 @@ int __fastcall GAME_GetUnitTypeOrInvalid(D2UnitStrc* pUnit); // 0x0044BE50
 extern "C" __declspec(dllimport) int __stdcall PtInRect(const tagRECT*,tagPOINT);
 
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc*,int,int); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc*,int,int); // 0x00463740
 
 
 

@@ -363,16 +363,6 @@ void* ghAccelerators;                                                           
 
 int __stdcall SCmdRegisterArgument(unsigned int dwFlags, unsigned int dwId, const char* szName, void* pVariable, unsigned int nBytes, int bSet, void* pfnCallback, void* pParam); // 0x006C4580
 
-class D2SquelchListStrc
-{
-public:
-    virtual void Squelch(const char* szName);
-    virtual void Unsquelch(const char* szName);
-    virtual int IsSquelched(const char* szName);
-    virtual void VirtSlot3();
-    virtual void VirtSlot4();
-    virtual int IsFiltered(const char* szText);
-};
 
 struct D2ChatMessageStrc { D2WinControlStrc* pControl; unsigned int nMessage; };
 

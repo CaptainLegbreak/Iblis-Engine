@@ -3005,10 +3005,10 @@ void __stdcall NPCMENU_OpenNpcWindow(D2UnitStrc* pUnit)
         return;
     }
     NPCMENU_OpenGreetingDialog();
-    const int nIndex = sub_004B1D70_FindNpcEntry();
+    const int nIndex = NPCMENU_FindNpcEntry();
     if (gaNpcEntries[nIndex].bRefreshed)
     {
-        const int nSound = sub_004E0590_PickNpcSound(NPCMENU_GetInteractNpc(), 1);
+        const int nSound = SOUNDINST_PickNpcSound(NPCMENU_GetInteractNpc(), 1);
         if (nSound)
         {
             UNITSND_ReleaseSkillSfx(pUnit);
@@ -3428,7 +3428,7 @@ void __stdcall NPCMENU_OpenConfirmDialog(int nStringIndex)
 int __cdecl NPCMENU_StartConfirm()
 {
     gtNpcMenu.nMenuState = 1;
-    sub_004B1D70_FindNpcEntry();
+    NPCMENU_FindNpcEntry();
     NPCMENU_OpenConfirmDialog(0x2BA0);
     return 1;
 }
@@ -3696,7 +3696,7 @@ static void __stdcall NPCMENU_OpenNpcInteract(D2UnitStrc* pUnit, int bReopen)
         }
     }
 
-    const int nSound = sub_004E0590_PickNpcSound(pUnit, nType);
+    const int nSound = SOUNDINST_PickNpcSound(pUnit, nType);
     if (!nSound)
     {
         return;
@@ -3825,7 +3825,7 @@ int __cdecl sub_004B6C70_OpenNpcMenu()
     }
 
     gtNpcMenu.nMenuState = 1;
-    int nEntry = sub_004B1D70_FindNpcEntry();
+    int nEntry = NPCMENU_FindNpcEntry();
     gtNpcMenu.pEntry = &gaNpcEntries[nEntry];
     NPCMENU_OpenNpcPanel(0xD35, nEntry);
     return 1;
@@ -3850,7 +3850,7 @@ int __cdecl NPCMENU_OpenConfirm()
     }
 
     gtNpcMenu.nMenuState = 1;
-    sub_004B1D70_FindNpcEntry();
+    NPCMENU_FindNpcEntry();
     NPCMENU_OpenConfirmDialog(0x2BA0);
     return 1;
 }

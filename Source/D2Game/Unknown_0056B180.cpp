@@ -148,7 +148,7 @@ int __fastcall SKILLS_CheckAuraTarget(D2UnitStrc* pUnit, D2UnitStrc* pTarget, un
             return 0;
         }
 
-        D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(pTarget->dwClassId);
+        D2MissilesTxt* pMissilesTxtRecord = VIEW_GetMissilesTxtRecord(pTarget->dwClassId);
         if (!pMissilesTxtRecord || pMissilesTxtRecord->nMissileFlags[0] & gdwBitMasks[1])
         {
             return 0;

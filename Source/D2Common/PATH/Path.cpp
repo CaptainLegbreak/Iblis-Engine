@@ -489,11 +489,11 @@ static BOOL PATH_IsTargetDestinationAllowed(D2PathInfoStrc* pPathInfo, D2UnitStr
         const unsigned short nStartY = pPathInfo->tStartCoord.Y;
         const unsigned short nTargetX = pPathInfo->tTargetCoord.X;
         const unsigned short nTargetY = pPathInfo->tTargetCoord.Y;
-        D2ActiveRoomStrc* pRoomHalfway = sub_00463740_FindRoomAtPoint(
+        D2ActiveRoomStrc* pRoomHalfway = COLLISION_GetRoomBySubTileCoordinates(
             pPathInfo->pStartRoom,
             nStartX + (nTargetX - nStartX) / 2,
             nStartY + (nTargetY - nStartY) / 2);
-        pTargetRoom = sub_00463740_FindRoomAtPoint(pRoomHalfway, nTargetX, nTargetY);
+        pTargetRoom = COLLISION_GetRoomBySubTileCoordinates(pRoomHalfway, nTargetX, nTargetY);
     }
 
     return !DUNGEON_IsRoomInTown(pTargetRoom);
@@ -1075,7 +1075,7 @@ int __stdcall D2Common_10142(D2DynamicPathStrc* pPath, D2UnitStrc* pUnit, int bA
                 if (nDeltaX <= PATH_MAX_DISTANCE && -nDeltaX <= PATH_MAX_DISTANCE && nDeltaY <= PATH_MAX_DISTANCE && -nDeltaY <= PATH_MAX_DISTANCE)
                 {
                     tPathInfo.pStartRoom = pPath->pRoom;
-                    tPathInfo.pTargetRoom = sub_00463740_FindRoomAtPoint(tPathInfo.pStartRoom, tPathInfo.tTargetCoord.X, tPathInfo.tTargetCoord.Y);
+                    tPathInfo.pTargetRoom = COLLISION_GetRoomBySubTileCoordinates(tPathInfo.pStartRoom, tPathInfo.tTargetCoord.X, tPathInfo.tTargetCoord.Y);
                     if (tPathInfo.pStartRoom && tPathInfo.pTargetRoom && (PATH_IsTargetDestinationAllowed(&tPathInfo, pUnit) || bAllowInTown))
                     {
                         tPathInfo.nPathType = pPath->eType;

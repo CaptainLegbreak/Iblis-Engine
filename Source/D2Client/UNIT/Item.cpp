@@ -245,7 +245,7 @@ int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nL
 
 void __stdcall DUNGEON_GameSubtileToClientCoords(int* pX, int* pY); // 0x00643260
 
-extern "C" int __fastcall sub_004D9FC0_GetSkillUseState(D2UnitStrc* unit, D2SkillStrc* skill); // 0x004D9FC0
+extern "C" int __fastcall PLRSKILLS_GetSkillUseState(D2UnitStrc* unit, D2SkillStrc* skill); // 0x004D9FC0
 
 #pragma pack(push, 1)
 
@@ -476,7 +476,7 @@ void __fastcall ITEM_HandleIndirectSwapBodyItem(D2GSPacketSrv9D* pPacket); // 0x
 
 static void __stdcall ITEM_PlaceItem(D2UnitStrc* pItem, unsigned short nX, unsigned short nY, int nMode, int bFindRoom, unsigned char nPage); // 0x004C2540
 
-int __fastcall sub_004D9FC0_GetSkillUseState(D2UnitStrc* pUnit, D2SkillStrc* pSkill);
+int __fastcall PLRSKILLS_GetSkillUseState(D2UnitStrc* pUnit, D2SkillStrc* pSkill); // 0x004D9FC0
 
 
 static void __stdcall ITEM_RemoveBodyItem(D2UnitStrc* pItem, D2UnitStrc* pUnit); // 0x004C1C90
@@ -729,7 +729,7 @@ struct D2SkillStrc;
 // 0x004C10C0
 int __fastcall ITEM_IsSkillStateUsable(D2UnitStrc* pUnit, D2SkillStrc* pSkill)
 {
-    switch (sub_004D9FC0_GetSkillUseState(pUnit, pSkill))
+    switch (PLRSKILLS_GetSkillUseState(pUnit, pSkill))
     {
     case 2:
     case 7:
@@ -800,7 +800,7 @@ static void ITEM_RestoreSkillState(D2UnitStrc* pUnit, D2SkillStateStrc* pState)
         D2SkillStrc* pSkill = SKILLS_GetSkillById(pUnit, pState->nLeftSkillId, pState->nLeftOwnerGUID);
         if (pSkill && pSkill != UNITS_GetLeftSkill(pUnit))
         {
-            switch (sub_004D9FC0_GetSkillUseState(pUnit, pSkill))
+            switch (PLRSKILLS_GetSkillUseState(pUnit, pSkill))
             {
             case 2:
             case 7:
@@ -817,7 +817,7 @@ static void ITEM_RestoreSkillState(D2UnitStrc* pUnit, D2SkillStateStrc* pState)
         D2SkillStrc* pSkill = SKILLS_GetSkillById(pUnit, pState->nRightSkillId, pState->nRightOwnerGUID);
         if (pSkill && pSkill != UNITS_GetRightSkill(pUnit))
         {
-            switch (sub_004D9FC0_GetSkillUseState(pUnit, pSkill))
+            switch (PLRSKILLS_GetSkillUseState(pUnit, pSkill))
             {
             case 2:
             case 7:

@@ -1021,7 +1021,7 @@ int __fastcall SUNITINACTIVE_IsDeadMonsterAt(D2GameStrc* ptGame, D2ActiveRoomStr
     D2_ASSERT(pRoom, 0x6DB);
     D2_ASSERT(nX && nY, 0x6DC);
 
-    D2ActiveRoomStrc* pTargetRoom = sub_00463740_FindRoomAtPoint(pRoom, nX, nY);
+    D2ActiveRoomStrc* pTargetRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY);
     const int nAct = DRLG_GetActNoFromLevelId(DUNGEON_GetLevelIdFromRoom(pRoom));
     if (!pTargetRoom)
     {

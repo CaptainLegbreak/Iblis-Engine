@@ -4420,7 +4420,7 @@ int __fastcall D2GAME_PACKETCALLBACK_Rcv0x59_MakeEntityMove(D2GameStrc* pGame, D
 static int __stdcall PLRMSG_TestPathToCoords(D2GameStrc* pGame, D2UnitStrc* pUnit, int nX, int nY)
 {
     D2ActiveRoomStrc* pRoom = UNITS_GetRoom(pUnit);
-    if (!sub_00463740_FindRoomAtPoint(pRoom, nX, nY))
+    if (!COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY))
     {
         return 0;
     }

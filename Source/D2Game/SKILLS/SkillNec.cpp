@@ -2121,7 +2121,7 @@ int __fastcall SKILLS_SrvDo060_BoneWall(D2GameStrc* pGame, D2UnitStrc* pUnit, in
     int nLength;
     D2MissileStrc missile;
     if (!D2GAME_GetXAndYFromTargetUnit(pGame, pUnit, &nX, &nY)) return 0;
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
     if (!pRoom || DUNGEON_IsRoomInTown(pRoom)) return 0;
     if (pUnit) pUnit->dwFlags |= 0x40;
     D2SkillsTxt* pSkills = SKILLS_GetSkillsTxtRecordForceInline(nSkillId);
@@ -2235,7 +2235,7 @@ static D2UnitStrc* __stdcall SKILLS_SpawnBonePrisonPet(D2GameStrc* pGame, int nS
         nPetType = 0;
     }
 
-    if (DUNGEON_IsRoomInTown(sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY)))
+    if (DUNGEON_IsRoomInTown(COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY)))
     {
         return 0;
     }
@@ -2371,7 +2371,7 @@ Alive:
     }
 
     int nLevel = nSkillLevel;
-    D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+    D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
     if (!pSkillsTxtRecord)
     {
         return 0;
@@ -2500,7 +2500,7 @@ int __fastcall SKILLS_EventFunc05_LifeTap(D2GameStrc* pGame, int nEvent, D2UnitS
     }
 
     int nLevel = nSkillLevel;
-    D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+    D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
     if (!pSkillsTxtRecord)
     {
         return 0;

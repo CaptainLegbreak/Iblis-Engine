@@ -19,7 +19,7 @@ void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char
 
 D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId);                                // 0x00543640
 #include "D2GameFuncs.h"
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 D2UnitStrc* __fastcall D2GAME_SpawnMonster(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nX, int nY, int nMonsterId, int nAnimMode, int nMaxSearchRings, short nFlags); // 0x005B2F20
 bool __fastcall ACT3Q7_StatusFilterCallback(D2QuestDataStrc* pQuest, D2UnitStrc* pPlayer, D2BitBufferStrc* pGlobalFlags, D2BitBufferStrc* pFlags, unsigned char* pStatus); // 0x005BD0B0
 void __fastcall ACT3Q7_Callback13_PlayerStartedGame(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
@@ -118,7 +118,7 @@ void __fastcall OBJECTS_InitFunction43_DarkWanderer(D2ObjInitFnStrc* pOp)
     pQuestDataEx->nDarkWandererX = pOp->nX + 7;
     pQuestDataEx->nDarkWandererY = pOp->nY;
 
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(pOp->pRoom, pQuestDataEx->nDarkWandererX, pQuestDataEx->nDarkWandererY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(pOp->pRoom, pQuestDataEx->nDarkWandererX, pQuestDataEx->nDarkWandererY);
     if (D2GAME_SpawnMonster(pOp->pGame, pRoom, pQuestDataEx->nDarkWandererX, pQuestDataEx->nDarkWandererY, MONSTER_DARKWANDERER, 1, -1, 0))
     {
         pQuestDataEx->bPrimaryGoalOpen = 0;

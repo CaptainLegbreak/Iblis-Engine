@@ -123,7 +123,7 @@ D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00
 
 int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
 #include "D2GameFuncs.h"
 
@@ -349,7 +349,7 @@ struct D2QuestItemPairStrc;
 
 struct SwapEntry;
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int); // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int); // 0x0045C4B0
 
 
 D2MonStatsTxt* __fastcall sub_0055B7E0_GetMonStatsTxtFromUnit(D2UnitStrc*); // 0x0055B7E0
@@ -654,7 +654,7 @@ D2ActiveRoomStrc* __fastcall D2GAME_GetFreeSpaceEx(D2ActiveRoomStrc* pRoom, D2Co
     const int nX = pCoords->nX + 2;
     const int nY = pCoords->nY + 3;
 
-    if (sub_00463740_FindRoomAtPoint(pRoom, nX, nY))
+    if (COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY))
     {
         pReturnCoords->nX = nX;
         pReturnCoords->nY = nY;
@@ -757,7 +757,7 @@ void __fastcall D2GAME_ITEMMODE_ServerStatlistCallback(D2GameStrc* pGame, D2Unit
     case 107:
         {
             int nSkillId = (unsigned short)nLayerStatId;
-            D2SkillsTxt* pSkills = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+            D2SkillsTxt* pSkills = SCMD_GetSkillsTxtRecord(nSkillId);
             if (nSkillId && (nStat != 107 || pUnit->dwUnitType == UNIT_PLAYER && (!pUnit ? -1 : pUnit->dwClassId) == pSkills->nCharClass)) {
                 D2SkillStrc* pSkill = SKILLS_GetSkillById(pUnit, nSkillId, -1);
                 if (!pSkill) {

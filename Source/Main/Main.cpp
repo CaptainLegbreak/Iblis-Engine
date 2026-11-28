@@ -92,7 +92,7 @@ int __fastcall GameStart(void* hInstance, D2ConfigStrc* pCfg, int nModType)
     MAINMENUS_InitStorm(pCfg->bDirect, 0);
     FOG_AsyncDataInitialize(1, 0);
     FOG_10082_Noop();
-    FOG_10218();
+    FOG_InitHuffman();
 
     if (gnMode != 2)
     {

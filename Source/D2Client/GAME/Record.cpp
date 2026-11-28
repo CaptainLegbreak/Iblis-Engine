@@ -84,16 +84,6 @@ void __cdecl RECORD_AddRecordChunk()
     gpMsgRecordChunk_0070F7A0 = pChunk;
 }
 
-class D2SquelchListStrc
-{
-public:
-    virtual void Squelch(const char* szName);
-    virtual void Unsquelch(const char* szName);
-    virtual int IsSquelched(const char* szName);
-    virtual void VirtSlot3();
-    virtual void VirtSlot4();
-    virtual int IsFiltered(const char* szText);
-};
 
 struct D2ChatMessageStrc { D2WinControlStrc* pControl; unsigned int nMessage; };
 

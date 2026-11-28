@@ -387,13 +387,13 @@ static void __stdcall DIALOG_LButtonDownMsg(SMSGHANDLER_PARAMS* pMsg)
         {
             if (!pDialog->pfnOutside())
                 return;
-            if (GAME_GetUIVarState(6) && TEXT_IsInPanelButton(sub_0045AE90_GetPanelSlideMode(), nX, nY))
+            if (GAME_GetUIVarState(6) && TEXT_IsInPanelButton(UI_GetPanelSlideMode(), nX, nY))
             {
                 pMsg->bReturn = 1;
                 pMsg->lResult = 0;
                 sub_00420290_BreakHandlerChain(pMsg);
             }
-            if (GAME_GetUIVarState(7) && TEXT_IsInRightPanelButton(sub_0045AE90_GetPanelSlideMode(), nX, nY))
+            if (GAME_GetUIVarState(7) && TEXT_IsInRightPanelButton(UI_GetPanelSlideMode(), nX, nY))
                 goto handled;
             return;
         }

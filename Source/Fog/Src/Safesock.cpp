@@ -319,8 +319,8 @@ public:
     Report();                                                               // 0x00401070
     virtual ~Report();                                                      // 0x004010D0
     bool OpenReport(const char* szFileName);                         // 0x00401100
-    bool sub_004011F0_Close();                                              // 0x004011F0
-    bool sub_00401220_AddFile(const char* szPath, bool bFlag);              // 0x00401220
+    bool Close();                                              // 0x004011F0
+    bool AddFile(const char* szPath, bool bFlag);              // 0x00401220
     int sub_00401380(const char* szFormat, ...);                                  // 0x00401380
     bool WriteInspectorHeader();                               // 0x00407A80
 

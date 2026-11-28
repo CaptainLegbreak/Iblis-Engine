@@ -657,7 +657,7 @@ int __stdcall UNITS_GetUnitSizeX(D2UnitStrc* pUnit)
             return SIZE_ITEM;
 
         case UNIT_MISSILE:
-            if (D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(pUnit->dwClassId))
+            if (D2MissilesTxt* pMissilesTxtRecord = VIEW_GetMissilesTxtRecord(pUnit->dwClassId))
             {
                 return pMissilesTxtRecord->nSize;
             }
@@ -698,7 +698,7 @@ int __stdcall UNITS_GetUnitSizeY(D2UnitStrc* ptUnit)
         return SIZE_ITEM;
 
     case UNIT_MISSILE:
-        if (D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(ptUnit->dwClassId))
+        if (D2MissilesTxt* pMissilesTxtRecord = VIEW_GetMissilesTxtRecord(ptUnit->dwClassId))
         {
             return pMissilesTxtRecord->nSize;
         }
@@ -1617,7 +1617,7 @@ int __fastcall UNITS_CanAnimModeUseAttackRate(int nAnimMode, int nUnitType, D2Un
     if (!pUsedSkill)
         return FALSE;
 
-    return sub_0045C4B0_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(pUsedSkill, ".\\UNITS\\Units.cpp", 3066))->nFlags[2] & gdwBitMasks[SKILLSFLAGINDEX_USEATTACKRATE];
+    return SCMD_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(pUsedSkill, ".\\UNITS\\Units.cpp", 3066))->nFlags[2] & gdwBitMasks[SKILLSFLAGINDEX_USEATTACKRATE];
 }
 
 static inline unsigned int DATATBLS_CheckMonStatsFlag_Inl(D2MonStatsTxt* pMonStatsTxtRecord)
@@ -1718,7 +1718,7 @@ static int UNITS_IsSeqAnimSpeedModulatedByFCR(int nUnitType, int nAnimMode, D2Un
         {
             if (D2SkillStrc* pUsedSkill = UNITS_GetUsedSkill(pUnit))
             {
-                D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(pUsedSkill, ".\\UNITS\\Units.cpp", 0xC48));
+                D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(pUsedSkill, ".\\UNITS\\Units.cpp", 0xC48));
                 if (pSkillsTxtRecord && pSkillsTxtRecord->nSeqTrans == 0xA)
                 {
                     return 1;
@@ -2339,7 +2339,7 @@ int __stdcall UNITS_GetDefense(D2UnitStrc* pUnit)
             const int nSkillLevel = STATLIST_GetStatValue(pStatList, STAT_MODIFIERLIST_LEVEL, 0);
             if (nSkillId > 0 && nSkillLevel > 0)
             {
-                D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+                D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
                 if (pSkillsTxtRecord)
                 {
                     D2UnitStrc* pShieldItem = 0;
@@ -4056,7 +4056,7 @@ int __stdcall UNITS_SetAnimStartFrame(D2UnitStrc* ptUnit)
 
     case 3:
     {
-        D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(ptUnit->dwClassId);
+        D2MissilesTxt* pMissilesTxtRecord = VIEW_GetMissilesTxtRecord(ptUnit->dwClassId);
         if (!pMissilesTxtRecord)
         {
             return 0;

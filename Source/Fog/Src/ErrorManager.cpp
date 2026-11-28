@@ -63,9 +63,9 @@ public:
     Report();                                                               // 0x00401070
     virtual ~Report();                                                      // 0x004010D0
     bool OpenReport(const char* szFileName);                         // 0x00401100
-    bool sub_004011F0_Close();                                              // 0x004011F0
-    bool sub_00401210_IsOpen();                                             // 0x00401210
-    bool sub_00401220_AddFile(const char* szPath, bool bCopy);              // 0x00401220
+    bool Close();                                              // 0x004011F0
+    bool IsOpen();                                             // 0x00401210
+    bool AddFile(const char* szPath, bool bCopy);              // 0x00401220
     int sub_00401380(const char* szFormat, ...);                            // 0x00401380
     bool WriteInspectorHeader();                               // 0x00407A80
 
@@ -113,7 +113,7 @@ struct D2SidAuthorityStrc;
 
 struct D2ProcessEntryStrc;
 
-void __cdecl sub_00402980_StartDbgHelpWorker(); // 0x00402980
+void __cdecl ERRORMANAGER_StartDbgHelpWorker(); // 0x00402980
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
@@ -334,17 +334,17 @@ int gdwMainThreadId = GetCurrentThreadId(); // 0x00992B1C
 
 void __fastcall ERRORMANAGER_DumpThread(unsigned long dwThreadId, D2ThreadContextStrc* pThreadContext, D2CrashPrintFn pfnPrint, void* pContext, bool bSymbols, bool bHeader, int nArg7); // 0x00403070
 
-void __fastcall sub_004032F0_DumpRegisters(unsigned long dwThreadId, D2CrashPrintFn pfnPrint, void* pContext); // 0x004032F0
+void __fastcall ERRORMANAGER_DumpRegisters(unsigned long dwThreadId, D2CrashPrintFn pfnPrint, void* pContext); // 0x004032F0
 
 void __fastcall ERRORMANAGER_DumpOtherThreads(D2CrashPrintFn pfnPrint, void* pContext, unsigned long dwSkipThreadId); // 0x00403A20
 
 void __fastcall ERRORMANAGER_ReportPrint(void* pContext, const char* szText);                               // 0x00407980
 
-bool __fastcall sub_00401790_SubmitReport(const char* szText, D2CrashSubmitInfoStrc* pInfo);                // 0x00401790
+bool __fastcall ERRORMANAGER_SubmitReport(const char* szText, D2CrashSubmitInfoStrc* pInfo);                // 0x00401790
 
 struct D2StackFrameStrc;
 
-void __fastcall sub_00403100_PrintFrames(unsigned long dwThreadId, D2StackFrameStrc* pFrames, unsigned int nFrames, D2CrashPrintFn pfnPrint, void* pContext, bool bSymbols, bool bHeader); // 0x00403100
+void __fastcall ERRORMANAGER_PrintFrames(unsigned long dwThreadId, D2StackFrameStrc* pFrames, unsigned int nFrames, D2CrashPrintFn pfnPrint, void* pContext, bool bSymbols, bool bHeader); // 0x00403100
 
 unsigned long __cdecl ERRORMANAGER_GetCurrentThreadId(); // 0x00401690
 
@@ -390,7 +390,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetFileAttributesW(cons
 
 extern "C" wchar_t* __cdecl wcsrchr(const wchar_t* szString, wchar_t nChar); // 0x00685DF7
 
-long __stdcall sub_00403E90_UnhandledExceptionFilter(void* pExceptionPointers); // 0x00403E90
+long __stdcall ERRORMANAGER_UnhandledExceptionFilter(void* pExceptionPointers); // 0x00403E90
 
 void __fastcall LOGMANAGER_SetLogPrefix(const char* szName); // 0x0040F5A0
 
@@ -410,7 +410,7 @@ void __cdecl LOGMANAGER_CloseLogFiles(); // 0x0040F960
 
 int __fastcall ERRORMANAGER_ReportNestedError(const char* szFile, int nLine, const char* szMessage); // 0x004088C0
 
-bool __cdecl sub_004013A0_IsDebuggerAttached(); // 0x004013A0
+bool __cdecl ERRORMANAGER_IsDebuggerAttached(); // 0x004013A0
 
 int __fastcall FOG_FCloseFile(void* pArg); // 0x004068F0
 
@@ -704,7 +704,7 @@ int __cdecl ERRORMANAGER_GetMainThreadId()
     return gdwMainThreadId;
 }
 
-int D2ThreadContextStrc::sub_00405060_CaptureFrames(unsigned long dwThreadId, D2StackFrameStrc* pFrames, int nSkipFrames)
+int D2ThreadContextStrc::CaptureFrames(unsigned long dwThreadId, D2StackFrameStrc* pFrames, int nSkipFrames)
 {
     D2ThreadContextStrc tContext;
     void* hThread = 0;
@@ -792,7 +792,7 @@ int D2ThreadContextStrc::sub_00405060_CaptureFrames(unsigned long dwThreadId, D2
 // noinline: FOG_InitErrorMgr (0x408CE0) calls it out of line in the image
 __declspec(noinline) void __cdecl ERRORMANAGER_StartDbgHelpThread()
 {
-    sub_00402980_StartDbgHelpWorker();
+    ERRORMANAGER_StartDbgHelpWorker();
 }
 
 // 0x004016B0
@@ -822,14 +822,14 @@ bool __cdecl ERRORMANAGER_IsInternalCheckLoopback()
 void __fastcall ERRORMANAGER_DumpThread(unsigned long dwThreadId, D2ThreadContextStrc* pThreadContext, D2CrashPrintFn pfnPrint, void* pContext, bool bSymbols, bool bHeader, int nArg7)
 {
     D2StackFrameStrc aFrames[0x80];
-    int nFrames = pThreadContext->sub_00405060_CaptureFrames(dwThreadId, aFrames, nArg7);
+    int nFrames = pThreadContext->CaptureFrames(dwThreadId, aFrames, nArg7);
     if (nFrames > 0)
     {
         if (nFrames > 0x80)
         {
             nFrames = 0x80;
         }
-        sub_00403100_PrintFrames(dwThreadId, aFrames, nFrames, pfnPrint, pContext, bSymbols, bHeader);
+        ERRORMANAGER_PrintFrames(dwThreadId, aFrames, nFrames, pfnPrint, pContext, bSymbols, bHeader);
     }
 }
 
@@ -898,7 +898,7 @@ static __forceinline size_t StrLCopy(char* szDest, const char* szSource, size_t 
     return p - szSource - 1;
 }
 
-bool crashy::Report::sub_00401220_AddFile(const char* szPath, bool bCopy)
+bool crashy::Report::AddFile(const char* szPath, bool bCopy)
 {
     if (m_nLineCount >= 16)
     {
@@ -1085,7 +1085,7 @@ bool __fastcall ERRORMANAGER_EnumLoadedModules(void* pContext)
         for (D2ListEntryStrc* pLink = pHead->Flink; pLink != pHead; pLink = pLink->Flink)
         {
             D2LdrEntryStrc* pEntry = (D2LdrEntryStrc*)((char*)pLink - 8);
-            if (!pEntry->DllBase->sub_00404AB0_VisitModule(pContext, pEntry->FullDllName.Buffer, pEntry->FullDllName.Length))
+            if (!pEntry->DllBase->ERRORMANAGER_VisitModule(pContext, pEntry->FullDllName.Buffer, pEntry->FullDllName.Length))
             {
                 break;
             }
@@ -1334,7 +1334,7 @@ void __fastcall BNNEWS_CopyNewsItem(D2Storm408ElemStrc* pDst, const D2Storm408El
 // 0x00407A80
 bool crashy::Report::WriteInspectorHeader()
 {
-    if (!sub_00401210_IsOpen())
+    if (!IsOpen())
     {
         return false;
     }
@@ -1394,7 +1394,7 @@ bool crashy::Report::WriteInspectorHeader()
     {
         if (apszFiles[i] && *apszFiles[i])
         {
-            sub_00401220_AddFile(apszFiles[i], true);
+            AddFile(apszFiles[i], true);
         }
     }
     return true;
@@ -1807,7 +1807,7 @@ __declspec(noinline) void __fastcall ERRORMANAGER_SetCrashHandler(void* pfnHandl
     }
     else
     {
-        gpfnPreviousFilter = SetUnhandledExceptionFilter(sub_00403E90_UnhandledExceptionFilter);
+        gpfnPreviousFilter = SetUnhandledExceptionFilter(ERRORMANAGER_UnhandledExceptionFilter);
     }
 }
 
@@ -2066,9 +2066,9 @@ extern "C" const char gszThreads[];                                             
 
 struct D2ExceptionPointersStrc { void* pRecord; D2ThreadContextStrc* pContext; };
 
-void __fastcall sub_00402EE0_DumpModules(D2CrashPrintFn pfnPrint,void* pContext); // 0x00402EE0
+void __fastcall ERRORMANAGER_DumpModules(D2CrashPrintFn pfnPrint,void* pContext); // 0x00402EE0
 
-bool __fastcall sub_00402820_WriteMiniDump(const char* szPath,const char* szComment,void* pExceptionPointers,unsigned long dwThreadId); // 0x00402820
+bool __fastcall ERRORMANAGER_WriteMiniDump(const char* szPath,const char* szComment,void* pExceptionPointers,unsigned long dwThreadId); // 0x00402820
 
 extern const char gszCrashSummary[]; // 0x006CD1A8
 
@@ -2124,7 +2124,7 @@ int __cdecl SYSTEM_IsPlatformNT(); // 0x00410960
 
 void __cdecl SYSTEM_InitTimeBase(); // 0x004109D0
 
-void __cdecl sub_00411210_InitTimer(); // 0x00411210
+void __cdecl SYSTEM_InitTimer(); // 0x00411210
 
 extern unsigned int gdwBitMasks_006CE268[]; // 0x006CE268
 
@@ -2170,30 +2170,30 @@ int __fastcall ERRORMANAGER_CrashHandler(D2CrashInputStrc* pInput)
                 if (pInput->dwThreadId == ERRORMANAGER_GetCurrentThreadId()) nSkip += 2;
             }
             if (pInput->pFrames)
-                sub_00403100_PrintFrames(pInput->dwThreadId,pInput->pFrames,pInput->nFrames,ERRORMANAGER_ReportPrint,&report,0,1);
+                ERRORMANAGER_PrintFrames(pInput->dwThreadId,pInput->pFrames,pInput->nFrames,ERRORMANAGER_ReportPrint,&report,0,1);
             else
                 ERRORMANAGER_DumpThread(pInput->dwThreadId,pThread,ERRORMANAGER_ReportPrint,&report,0,1,nSkip);
             report.sub_00401380(gszAssertionEnd);
             report.sub_00401380(gszRegisters);
-            sub_004032F0_DumpRegisters(pInput->dwThreadId,ERRORMANAGER_ReportPrint,&report);
+            ERRORMANAGER_DumpRegisters(pInput->dwThreadId,ERRORMANAGER_ReportPrint,&report);
             report.sub_00401380(gszThreads);
             ERRORMANAGER_DumpOtherThreads(ERRORMANAGER_ReportPrint,&report,pInput->dwThreadId);
             report.sub_00401380(gszModules);
-            sub_00402EE0_DumpModules(ERRORMANAGER_ReportPrint,&report);
+            ERRORMANAGER_DumpModules(ERRORMANAGER_ReportPrint,&report);
             report.sub_00401380(gszMore1);
             report.sub_00401380(gszMore2);
             report.sub_00401380(gszMore3);
             if (pInput->pFrames)
-                sub_00403100_PrintFrames(pInput->dwThreadId,pInput->pFrames,pInput->nFrames,ERRORMANAGER_ReportPrint,&report,0,0);
+                ERRORMANAGER_PrintFrames(pInput->dwThreadId,pInput->pFrames,pInput->nFrames,ERRORMANAGER_ReportPrint,&report,0,0);
             else
                 ERRORMANAGER_DumpThread(pInput->dwThreadId,pThread,ERRORMANAGER_ReportPrint,&report,0,0,nSkip);
             report.sub_00401380(gszMore4);
             SStrCopy(gszProcessPath,report.m_szText408,0x800);
             SStrPack(gszProcessPath,gszMinidump,0x800);
-            if (sub_00402820_WriteMiniDump(gszProcessPath,"",pInput->pException,0))
-                report.sub_00401220_AddFile(gszProcessPath,false);
+            if (ERRORMANAGER_WriteMiniDump(gszProcessPath,"",pInput->pException,0))
+                report.AddFile(gszProcessPath,false);
             report.sub_00401380(gszMore5);
-            report.sub_004011F0_Close();
+            report.Close();
             D2CrashSubmitInfoStrc info;
             memset(&info,0,sizeof(info));
             info.szName=gtInspectorInfo.szUnused04;
@@ -2205,7 +2205,7 @@ int __fastcall ERRORMANAGER_CrashHandler(D2CrashInputStrc* pInput)
                     ++info.nLines;
                 }
             }
-            sub_00401790_SubmitReport(report.m_szText08,&info);
+            ERRORMANAGER_SubmitReport(report.m_szText08,&info);
             gbWritingCrashReport=0;
         }
         InterlockedDecrement(&gnReportBusy);
@@ -2375,7 +2375,7 @@ static inline int IsValidCodeLength(Byte length)
 }
 
 // 0x0040ADB0
-int __fastcall FOG_10219(Byte* lengths)
+int __fastcall FOG_BuildHuffmanCodes(Byte* lengths)
 {
     int counts[16];
     Byte sortedSymbols[256];
@@ -2470,14 +2470,14 @@ static inline void AddTotal(unsigned __int64* pTotal, unsigned __int64 nValue)
 }
 
 // 0x0040B0C0
-void __cdecl FOG_10218()
+void __cdecl FOG_InitHuffman()
 {
     for (int i = 0; i < 256; i++)
         gaqHuffmanByteCounts[i] = 0;
     gqHuffmanBytesIn = 0;
     gqHuffmanBytesOut = 0;
     gqHuffmanHeaders = 0;
-    FOG_10219(gabHuffmanCodeLength);
+    FOG_BuildHuffmanCodes(gabHuffmanCodeLength);
 }
 
 // 0x0040B110
@@ -2491,7 +2491,7 @@ void __cdecl sub_0040B120_Nop()
 }
 
 // 0x0040B130
-void __fastcall FOG_10222(const unsigned char* pData, unsigned int nSize)
+void __fastcall FOG_AddHuffmanStats(const unsigned char* pData, unsigned int nSize)
 {
     unsigned int i = 0;
     unsigned int nBits = 0;
@@ -2738,7 +2738,7 @@ void __cdecl ERRORMANAGER_RaiseErrorReport(int nType, const char* szFile, int nL
     LOGMANAGER_LogWritePrefixed("", gszStringFormat, "---finished error callback---\n");
     LOGMANAGER_CloseLogFiles();
     int bFatal = nErrorType == 5 || nErrorType == 6 || nErrorType == 2;
-    if (!sub_004013A0_IsDebuggerAttached())
+    if (!ERRORMANAGER_IsDebuggerAttached())
     {
         va_list args;
         va_start(args, szFormat);
@@ -2802,16 +2802,16 @@ bool __fastcall ERRORMANAGER_ShowErrorReport(const char* szSummary, const char* 
     ERRORMANAGER_DumpThread(dwThreadId, 0, ERRORMANAGER_ReportPrint, &tReport, nBusy, 1, 4);
     tReport.sub_00401380("<:Inspector.Assertion>\n");
     tReport.sub_00401380("Registers:\n");
-    sub_004032F0_DumpRegisters(dwThreadId, ERRORMANAGER_ReportPrint, &tReport);
+    ERRORMANAGER_DumpRegisters(dwThreadId, ERRORMANAGER_ReportPrint, &tReport);
     tReport.sub_00401380("Threads:\n");
     ERRORMANAGER_DumpOtherThreads(ERRORMANAGER_ReportPrint, &tReport, dwThreadId);
 
     const char** ppszEnd = ppszFiles + nFiles;
     for (const char** ppszFile = ppszFiles; ppszFile != ppszEnd; ++ppszFile)
     {
-        tReport.sub_00401220_AddFile(*ppszFile, true);
+        tReport.AddFile(*ppszFile, true);
     }
-    tReport.sub_004011F0_Close();
+    tReport.Close();
 
     D2CrashSubmitInfoStrc tInfo;
     memset(&tInfo, 0, sizeof(tInfo));
@@ -2829,7 +2829,7 @@ bool __fastcall ERRORMANAGER_ShowErrorReport(const char* szSummary, const char* 
         }
     }
 
-    const bool bResult = sub_00401790_SubmitReport(tReport.m_szText08, &tInfo);
+    const bool bResult = ERRORMANAGER_SubmitReport(tReport.m_szText08, &tInfo);
     gbWritingCrashReport = 0;
     InterlockedDecrement(&gnCrashReportBusy);
     return bResult;
@@ -3289,7 +3289,7 @@ void __fastcall FOG_InitErrorMgr(const char* szProgramName, const char* szVersio
     SRegLoadValue("Diablo II", "TraceUnfreedMemory", 0, &dwValue);
     gdwRegValue = dwValue;
     FOG_CreateNewPoolSystem(0, "Global Pool System", 0x40000, 0x8000);
-    sub_00411210_InitTimer();
+    SYSTEM_InitTimer();
     for (int i = 0; i < 0x20; ++i)
     {
         const unsigned int nMask = 1 << i;

@@ -791,20 +791,6 @@ struct Unicode;
 
 void* __fastcall sub_0046E5A0_FindGfxNode(D2UnitStrc* pUnit, int nWeaponClassId, int nArg); // 0x0046E5A0
 
-class D2SquelchListStrc
-{
-public:
-    virtual int Squelch(const char* szName);
-    virtual int Unsquelch(const char* szName);
-    virtual int IsSquelched(const char* szName);
-    virtual int AddFilter(const char* szText);
-    virtual int RemoveFilter(const char* szText);
-    virtual int IsFiltered(const char* szText);
-    virtual void VirtSlot6();
-    virtual void VirtSlot7();
-    virtual int IsPersistent();
-    virtual void SetPersistent(int bPersistent);
-};
 
 int __fastcall GFXUTIL_GetCofLayerValue(const unsigned char* pData, int nCode); // 0x004DB0D0
 
@@ -816,7 +802,7 @@ int __fastcall GFXUTIL_UpdateUnitGfx(D2UnitStrc* pUnit, int nArg)
     if (sub_004F51D0_IsPerspective())
     {
         SCALE_AdjustPerspectivePosition(UNITS_GetPrecisionX(pUnit), UNITS_GetPrecisionY(pUnit), 0, &nX, &nY);
-        switch (sub_0045AE90_GetPanelSlideMode())
+        switch (UI_GetPanelSlideMode())
         {
         case 1:
             nX -= gnScreenWidth / 4;
@@ -930,7 +916,7 @@ void __cdecl GFXUTIL_DrawFadeBox()
     int nYEnd = gnScreenHeight - 47;
     int nXEnd = gnScreenWidth;
     int nXStart = 0;
-    switch (sub_0045AE90_GetPanelSlideMode())
+    switch (UI_GetPanelSlideMode())
     {
     case 1:
         nXEnd -= gnScreenWidth / 2;
@@ -1553,7 +1539,7 @@ static int __stdcall GFXUTIL_GetUnitModeDirections(D2UnitStrc* pUnit, int nMode,
 
     case 3:
     {
-        D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(nClassId);
+        D2MissilesTxt* pMissilesTxtRecord = VIEW_GetMissilesTxtRecord(nClassId);
         if (pMissilesTxtRecord)
         {
             nDirections = pMissilesTxtRecord->nNumDirections;

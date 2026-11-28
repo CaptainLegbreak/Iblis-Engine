@@ -122,7 +122,7 @@ void __fastcall ACT2Q6_UnitIterate_DeleteHoradricItems(D2GameStrc* pGame, D2Unit
 void __fastcall ACT3Q5_UnitIterate_DeleteKhalimItems(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x005BB850
 
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
 
 
@@ -781,7 +781,7 @@ static void __stdcall ACT1Q4_SpawnCainInTown(D2GameStrc* pGame, D2ActiveRoomStrc
         {
             ++pCoord.nX;
             ++pCoord.nY;
-            pFreeRoom = sub_00463740_FindRoomAtPoint(pFreeRoom, pCoord.nX, pCoord.nY);
+            pFreeRoom = COLLISION_GetRoomBySubTileCoordinates(pFreeRoom, pCoord.nX, pCoord.nY);
             if (!pFreeRoom)
             {
                 pFreeRoom = pRoom;
@@ -1916,7 +1916,7 @@ int __fastcall ACT1Q4_SpawnCainPortalOutsideTown(D2GameStrc* pGame, D2UnitStrc* 
         return 1;
     }
 
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), pQuestDataEx->pCainPortalOutsideTownCoords.nX, pQuestDataEx->pCainPortalOutsideTownCoords.nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), pQuestDataEx->pCainPortalOutsideTownCoords.nX, pQuestDataEx->pCainPortalOutsideTownCoords.nY);
     if (!pRoom)
     {
         pQuestDataEx->pCainPortalOutsideTownCoords.nX += PORTAL_RETRY_STEP;
@@ -2021,7 +2021,7 @@ void __fastcall ACT1Q4_SpawnCainPortalInTown(D2GameStrc* pGame, D2UnitStrc* pUni
 
     D2CoordStrc tCoord;
     UNITS_GetCoords(pCain, &tCoord);
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pCain), tCoord.nX, tCoord.nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pCain), tCoord.nX, tCoord.nY);
     if (!pRoom)
     {
         return;

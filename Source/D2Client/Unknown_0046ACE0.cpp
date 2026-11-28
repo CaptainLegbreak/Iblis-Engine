@@ -70,7 +70,7 @@ extern D2ClientTimedBoxStrc gtTimedBox; // 0x007A742C
 unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
 // 0x0046ACE0
-D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId)
+D2MissilesTxt* __fastcall VIEW_GetMissilesTxtRecord(int nMissileId)
 {
     if (nMissileId >= 0 && nMissileId < sgptDataTables->nMissilesTxtRecordCount)
     {
@@ -96,16 +96,6 @@ static inline D2MonStats2Txt* CLIENT_GetMonStats2TxtRecord(int nMonsterId)
 
 
 
-class D2SquelchListStrc
-{
-public:
-    virtual void Squelch(const char* szName);
-    virtual void Unsquelch(const char* szName);
-    virtual int IsSquelched(const char* szName);
-    virtual void VirtSlot3();
-    virtual void VirtSlot4();
-    virtual int IsFiltered(const char* szText);
-};
 
 
 
@@ -1022,7 +1012,7 @@ static void __stdcall VIEW_SpawnMonsterInRoom(D2ActiveRoomStrc* pRoom, int nMons
         CUNIT_SpawnPresetUnit(nMonsterId, nPosX, nPosY, 1, 0);
 }
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* room, int x, int y); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* room, int x, int y); // 0x00463740
 
 static inline D2MonStats2Txt* GetMonStats2(int nMonsterId)
 {
@@ -1055,7 +1045,7 @@ void __fastcall VIEW_SpawnAroundUnit(D2UnitStrc* pUnit, int nMonsterId, int nCou
         pUnit->pSeed.nHighSeed = (unsigned int)(lSeed >> 32);
         pUnit->pSeed.nLowSeed = (unsigned int)lSeed;
         const int nY = tCoord.nY + (unsigned int)lSeed % 5 - 2;
-        pRoom = sub_00463740_FindRoomAtPoint(pRoom, nX, nY);
+        pRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY);
         if (!COLLISION_CheckMaskWithSize(pRoom, nX, nY, pTxt->nSizeX, 0x3F11))
         {
             CUNIT_SpawnPresetUnit(nMonsterId, nX, nY, 1, 0);

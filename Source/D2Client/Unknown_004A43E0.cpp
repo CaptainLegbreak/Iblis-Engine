@@ -53,13 +53,11 @@ struct D2TextListStrc;
 
 
 
-struct D2GSPacketSrv26;
 
 struct D2CommonChatIgnoreListStrc;
 
 struct D2TextBoxStrc;
 
-class D2ListBoxViewStrc;
 
 struct D2ClientTextDataStrc;
 
@@ -91,9 +89,7 @@ struct UnitView;
 
 class ListBoxImplementation;
 
-class UIWidget;
 
-class ListBoxWrapper;
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
@@ -128,18 +124,6 @@ void __fastcall SCMD_RegisterMsgHandlers(void* hWnd, D2MsgHandlerEntryStrc* pTab
 
 extern D2MsgHandlerEntryStrc gaTextMsgHandlers[]; // 0x00722600
 
-struct D2GSPacketSrv26
-{
-    unsigned char nHeader;
-    unsigned char nMessageType;
-    unsigned char nLang;
-    unsigned char nUnitType;
-    unsigned int dwUnitGUID;
-    unsigned char nMessageColor;
-    unsigned char nNameColor;
-    char szName[16];
-    char szMessage[256];
-};
 
 extern "C" __declspec(dllimport) int __stdcall MultiByteToWideChar(unsigned int nCodePage, unsigned long dwFlags, const char* szSource, int nSource, Unicode* wszDest, int nDest); // 0x006CC29C
 
@@ -165,11 +149,6 @@ extern int gnGameFrame; // 0x007BF20E
 static bool TEXT_IsLanguageCompatible(int nLangId);
 
 
-class D2ListBoxViewStrc
-{
-public:
-    virtual ~D2ListBoxViewStrc();
-};
 
 
 
@@ -187,54 +166,7 @@ int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 
 
-class UIWidget
-{
-public:
-    static void* operator new(size_t nSize)
-    {
-        return SMemAlloc(nSize, gszNew, -1, 0);
-    }
 
-    virtual ~UIWidget();
-    virtual void Draw() = 0;
-    virtual int OnMouseWheel(SMSGHANDLER_PARAMS* pMsg) = 0;
-    virtual int OnLButtonDown(SMSGHANDLER_PARAMS* pMsg) = 0;
-    virtual int OnLButtonUp(SMSGHANDLER_PARAMS* pMsg) = 0;
-    virtual int MsgSlot05(SMSGHANDLER_PARAMS* pMsg) = 0;
-    virtual int OnKeyDown(SMSGHANDLER_PARAMS* pMsg) = 0;
-    virtual int MsgSlot07(SMSGHANDLER_PARAMS* pMsg) = 0;
-    virtual int MsgSlot08(SMSGHANDLER_PARAMS* pMsg) = 0;
-    virtual int OnKeyRight(SMSGHANDLER_PARAMS* pMsg) = 0;
-    virtual int OnKeyLeft(SMSGHANDLER_PARAMS* pMsg) = 0;
-    virtual int GetValue() = 0;
-
-    int unk0x04;
-};
-
-class ListBoxWrapper : public UIWidget
-{
-public:
-    ListBoxWrapper(int nX, int nY, int nWidth, int nHeight, int nArg10, int nArg14, int nArg18, int nArg1C,
-        int nArg20);                                                                                        // 0x004BF8F0
-    virtual ~ListBoxWrapper();
-    virtual void Draw();
-    virtual int OnMouseWheel(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnLButtonDown(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnLButtonUp(SMSGHANDLER_PARAMS* pMsg);
-    virtual int MsgSlot05(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnKeyDown(SMSGHANDLER_PARAMS* pMsg);
-    virtual int MsgSlot07(SMSGHANDLER_PARAMS* pMsg);
-    virtual int MsgSlot08(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnKeyRight(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnKeyLeft(SMSGHANDLER_PARAMS* pMsg);
-    virtual int GetValue();
-    virtual void sub_004BBFB0_GetRepeatStep();
-    virtual void Slot13();
-    virtual void Slot14();
-    virtual void Refresh();
-
-    ListBoxImplementation* pImpl;
-};
 
 
 
@@ -465,17 +397,6 @@ struct D2TextNodeStrc
 
 #pragma pack(pop)
 
-class D2SquelchListStrc
-{
-public:
-    virtual void Squelch(const char* szName);
-    virtual void Unsquelch(const char* szName);
-    virtual int IsNameSquelched(const char* szName);
-    virtual void Unknown0C();
-    virtual void Unknown10();
-    virtual int IsTextSquelched(const char* szText);
-    virtual void AddName(const char* szName, int nSize);
-};
 
 
 Unicode* __fastcall sub_00526790(Unicode* pDest, const Unicode* pSource, int nCount); // 0x00526790
@@ -853,7 +774,7 @@ struct D2GSPacketSrv5A;
 
 struct D2SuperUniquesTxt;
 
-void __fastcall sub_004E6410_BuildPropText(D2UnitStrc* pItem, Unicode* wszText, int nArg, int bFlag, int nArg2); // 0x004E6410
+void __fastcall SKILLDESC_BuildPropText(D2UnitStrc* pItem, Unicode* wszText, int nArg, int bFlag, int nArg2); // 0x004E6410
 
 
 Unicode* __fastcall sub_00526700(Unicode* pDst, const Unicode* pSrc); // 0x00526700
@@ -1706,7 +1627,7 @@ void __cdecl TEXT_AcceptKeyConfig()
 {
     CMDTBL_SaveAndBindHotkeys();
     UI_SetUIVar(11, 1, 0);
-    sub_0047E200_CloseMenus(1);
+    ESCMENU_CloseMenus(1);
 }
 
 // 0x004A5040

@@ -59,7 +59,7 @@ struct D2ActiveRoomStrc { char unknown0[76]; int x, y, width, height; };
 void __fastcall DLIGHTMAP_ReleaseLight(D2R01LightStrc* pLight); // 0x004743D0
 void __fastcall UNITMODE_DoUnitAction(int nMode, D2UnitStrc* pUnit, int nArg1, int nArg2, int nArg3); // 0x00481030
 void __fastcall SKILLS_DoUsedSkill(D2UnitStrc* pUnit); // 0x004C68F0
-int __fastcall sub_004D9FC0_GetSkillUseState(D2UnitStrc* pUnit, D2SkillStrc* pSkill); // 0x004D9FC0
+int __fastcall PLRSKILLS_GetSkillUseState(D2UnitStrc* pUnit, D2SkillStrc* pSkill); // 0x004D9FC0
 void __stdcall D2Common_10153(D2DynamicPathStrc* pDynamicPath);
 void __stdcall PATH_SetTargetUnit(D2DynamicPathStrc* pPath, D2UnitStrc* pTargetUnit);
 int __stdcall D2Common_10399(D2UnitStrc* pUnit1, D2UnitStrc* pUnit2); // 0x00641530
@@ -81,7 +81,7 @@ int __fastcall ITEMS_CheckUnitFlagEx(D2UnitStrc* pUnit, unsigned int dwMask)
 }
 
 // 0x00463740
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* room, int x, int y)
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* room, int x, int y)
 {
     if (!room) return 0;
     if (x >= room->x && x < room->x + room->width && y >= room->y && y < room->y + room->height) return room;

@@ -425,20 +425,6 @@ WardenClient gtWardenIface; // 0x00721C98
 
 
 
-class D2SquelchListStrc
-{
-public:
-    virtual int Squelch(const char* szName);
-    virtual int Unsquelch(const char* szName);
-    virtual int IsSquelched(const char* szName);
-    virtual int AddFilter(const char* szText);
-    virtual int RemoveFilter(const char* szText);
-    virtual int IsFiltered(const char* szText);
-    virtual void VirtSlot6();
-    virtual void VirtSlot7();
-    virtual int IsPersistent();
-    virtual void SetPersistent(int bPersistent);
-};
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);                         // 0x006829C0
 

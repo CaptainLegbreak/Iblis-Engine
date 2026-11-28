@@ -1687,7 +1687,7 @@ int __stdcall SKILLS_CheckRequiredSkills(D2UnitStrc* pUnit, int nSkillId)
 
     if (pSkillsTxtRecord->nReqSkill[1] >= 0)
     {
-        D2SkillsTxt* pReqSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(pSkillsTxtRecord->nReqSkill[1]);
+        D2SkillsTxt* pReqSkillsTxtRecord = SCMD_GetSkillsTxtRecord(pSkillsTxtRecord->nReqSkill[1]);
         if (!pReqSkillsTxtRecord)
         {
             return 0;
@@ -1706,7 +1706,7 @@ int __stdcall SKILLS_CheckRequiredSkills(D2UnitStrc* pUnit, int nSkillId)
 
     if (pSkillsTxtRecord->nReqSkill[2] >= 0)
     {
-        D2SkillsTxt* pReqSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(pSkillsTxtRecord->nReqSkill[2]);
+        D2SkillsTxt* pReqSkillsTxtRecord = SCMD_GetSkillsTxtRecord(pSkillsTxtRecord->nReqSkill[2]);
         if (!pReqSkillsTxtRecord)
         {
             return 0;
@@ -2547,12 +2547,12 @@ int __stdcall SKILLS_GetSpecialParamValue(D2UnitStrc* pUnit, int nParamId, int n
         if (nSkillLevel > 0)
         {
             nIndex = (nParam - 26) / 3;
-            pSkillDescTxtRecord = sub_004A89D0_SkillDescRec(nSkillId);
+            pSkillDescTxtRecord = TEXT_GetSkillDescTxtRecord(nSkillId);
         }
         if (pSkillDescTxtRecord)
         {
             nMissileId = pSkillDescTxtRecord->wDescMissile[nIndex];
-            if (sub_0046ACE0_GetMissilesTxtRecord(nMissileId))
+            if (VIEW_GetMissilesTxtRecord(nMissileId))
             {
                 nResult = MISSILE_GetMinElemDamage(0, pUnit, nMissileId, nSkillLevel) >> 8;
                 break;
@@ -2566,12 +2566,12 @@ int __stdcall SKILLS_GetSpecialParamValue(D2UnitStrc* pUnit, int nParamId, int n
         if (nSkillLevel > 0)
         {
             nIndex = (nParam - 27) / 3;
-            pSkillDescTxtRecord = sub_004A89D0_SkillDescRec(nSkillId);
+            pSkillDescTxtRecord = TEXT_GetSkillDescTxtRecord(nSkillId);
         }
         if (pSkillDescTxtRecord)
         {
             nMissileId = pSkillDescTxtRecord->wDescMissile[nIndex];
-            if (sub_0046ACE0_GetMissilesTxtRecord(nMissileId))
+            if (VIEW_GetMissilesTxtRecord(nMissileId))
             {
                 nResult = MISSILE_GetMaxElemDamage(0, pUnit, nMissileId, nSkillLevel) >> 8;
                 break;
@@ -2585,12 +2585,12 @@ int __stdcall SKILLS_GetSpecialParamValue(D2UnitStrc* pUnit, int nParamId, int n
         if (nSkillLevel > 0)
         {
             nIndex = (nParam - 28) / 3;
-            pSkillDescTxtRecord = sub_004A89D0_SkillDescRec(nSkillId);
+            pSkillDescTxtRecord = TEXT_GetSkillDescTxtRecord(nSkillId);
         }
         if (pSkillDescTxtRecord)
         {
             nMissileId = pSkillDescTxtRecord->wDescMissile[nIndex];
-            if (sub_0046ACE0_GetMissilesTxtRecord(nMissileId))
+            if (VIEW_GetMissilesTxtRecord(nMissileId))
             {
                 nResult = MISSILE_GetElementalLength(0, pUnit, nMissileId, nSkillLevel);
                 break;
@@ -2602,10 +2602,10 @@ int __stdcall SKILLS_GetSpecialParamValue(D2UnitStrc* pUnit, int nParamId, int n
     case 36:
     case 37:
     {
-        pSkillDescTxtRecord = sub_004A89D0_SkillDescRec(nSkillId);
+        pSkillDescTxtRecord = TEXT_GetSkillDescTxtRecord(nSkillId);
         if (pSkillDescTxtRecord)
         {
-            D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(pSkillDescTxtRecord->wDescMissile[nParam - 35]);
+            D2MissilesTxt* pMissilesTxtRecord = VIEW_GetMissilesTxtRecord(pSkillDescTxtRecord->wDescMissile[nParam - 35]);
             if (pMissilesTxtRecord)
             {
                 nResult = pMissilesTxtRecord->wRange + nSkillLevel * pMissilesTxtRecord->wLevRange;
@@ -2655,12 +2655,12 @@ int __stdcall SKILLS_GetSpecialParamValue(D2UnitStrc* pUnit, int nParamId, int n
         if (nSkillLevel > 0)
         {
             nIndex = (nParam - 43) / 3;
-            pSkillDescTxtRecord = sub_004A89D0_SkillDescRec(nSkillId);
+            pSkillDescTxtRecord = TEXT_GetSkillDescTxtRecord(nSkillId);
         }
         if (pSkillDescTxtRecord)
         {
             nMissileId = pSkillDescTxtRecord->wDescMissile[nIndex];
-            if (sub_0046ACE0_GetMissilesTxtRecord(nMissileId))
+            if (VIEW_GetMissilesTxtRecord(nMissileId))
             {
                 nResult = MISSILE_GetMinElemDamage(0, pUnit, nMissileId, nSkillLevel);
                 break;
@@ -2674,12 +2674,12 @@ int __stdcall SKILLS_GetSpecialParamValue(D2UnitStrc* pUnit, int nParamId, int n
         if (nSkillLevel > 0)
         {
             nIndex = (nParam - 44) / 3;
-            pSkillDescTxtRecord = sub_004A89D0_SkillDescRec(nSkillId);
+            pSkillDescTxtRecord = TEXT_GetSkillDescTxtRecord(nSkillId);
         }
         if (pSkillDescTxtRecord)
         {
             nMissileId = pSkillDescTxtRecord->wDescMissile[nIndex];
-            if (sub_0046ACE0_GetMissilesTxtRecord(nMissileId))
+            if (VIEW_GetMissilesTxtRecord(nMissileId))
             {
                 nResult = MISSILE_GetMaxElemDamage(0, pUnit, nMissileId, nSkillLevel);
                 break;
@@ -4198,7 +4198,7 @@ static int __stdcall SKILLS_IsPointOutsideTown(int nX, int nY, D2UnitStrc* pUnit
         return 0;
     }
 
-    pRoom = sub_00463740_FindRoomAtPoint(pRoom, nX, nY);
+    pRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY);
     if (!pRoom)
     {
         return 0;

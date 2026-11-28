@@ -103,30 +103,30 @@ static inline size_t StrLCopy(char* szDest, const char* szSource, size_t nSize)
 }
 
 // 0x00401010
-__int64 __cdecl sub_00401010_GetTime64()
+__int64 __cdecl ERRORMANAGER_GetTime64()
 {
     return _time64(0);
 }
 
 // 0x00401020
-static inline bool sub_00401020_SetLogDirectory(const char* szPath)
+static inline bool ERRORMANAGER_SetLogDirectory(const char* szPath)
 {
     return StrLCopy(gszLogDirectory, szPath, 0x400) < 0x400 ? true : false;
 }
 
 bool sub_M123_Emit_00401020(const char* szPath)
 {
-    return sub_00401020_SetLogDirectory(szPath);
+    return ERRORMANAGER_SetLogDirectory(szPath);
 }
 
 // 0x00401A60
-void __cdecl sub_00401A60_UnlockSymbols()
+void __cdecl ERRORMANAGER_UnlockSymbols()
 {
     LeaveCriticalSection(&gtSymbolLock);
 }
 
 // 0x00401B00
-bool __cdecl sub_00401B00_LoadDbgHelp()
+bool __cdecl ERRORMANAGER_LoadDbgHelp()
 {
     if (ghDbgHelp)
     {
@@ -223,7 +223,7 @@ bool __cdecl sub_00401B00_LoadDbgHelp()
 }
 
 // 0x00401C80
-void __cdecl sub_00401C80_FreeDbgHelp()
+void __cdecl ERRORMANAGER_FreeDbgHelp()
 {
     if (gbSymInitialized)
     {
@@ -236,7 +236,7 @@ void __cdecl sub_00401C80_FreeDbgHelp()
 }
 
 // 0x00401CB0
-bool __cdecl sub_00401CB0_InitSymbols()
+bool __cdecl ERRORMANAGER_InitSymbols()
 {
     char szPath[0x8000];
 
@@ -292,7 +292,7 @@ bool __cdecl sub_00401CB0_InitSymbols()
 }
 
 // 0x00401DD0
-void __cdecl sub_00401DD0_CleanupSymbols()
+void __cdecl ERRORMANAGER_CleanupSymbols()
 {
     if (gbSymInitialized)
     {

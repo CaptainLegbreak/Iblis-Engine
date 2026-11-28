@@ -814,7 +814,7 @@ int __stdcall INVENTORY_GetWieldType(D2UnitStrc* pUnit, D2InventoryStrc* pInvent
 
 void __stdcall INV_DrawItemSockets(D2UnitStrc* item, D2InventoryGridInfoStrc* grid, int x, int y); // 0x00483E40
 
-void __fastcall sub_004E6850_BuildSocketFillerText(D2UnitStrc* pItem, Unicode* pText, int nMaxLength); // 0x004E6850
+void __fastcall SKILLDESC_BuildSocketFillerText(D2UnitStrc* pItem, Unicode* pText, int nMaxLength); // 0x004E6850
 
 int __stdcall ITEMS_CanBeEquipped(D2UnitStrc* pItem); // 0x0062A4E0
 
@@ -1139,7 +1139,7 @@ void __cdecl INV_LoadUiRecords(); // 0x004835B0
 
 int __cdecl HIREABLES_AreBeltRowsShown(); // 0x004979E0
 
-int __cdecl sub_0045AE90_GetPanelSlideMode(); // 0x0045AE90
+int __cdecl UI_GetPanelSlideMode(); // 0x0045AE90
 
 void __cdecl UI_CancelCursorItemUse(); // 0x00453EC0
 
@@ -1367,7 +1367,7 @@ int __stdcall sub_00485410_AppendDamage(D2UnitStrc* pItem, Unicode* pText); // 0
 
 void __stdcall INV_AppendDefense(D2UnitStrc* pUnit, D2UnitStrc* pItem, Unicode* pText); // 0x00485EE0
 
-void __fastcall sub_004E6410_BuildPropText(D2UnitStrc* pItem, Unicode* wszText, int nUnused, int bFlag, const Unicode* wszExtra); // 0x004E6410
+void __fastcall SKILLDESC_BuildPropText(D2UnitStrc* pItem, Unicode* wszText, int nUnused, int bFlag, const Unicode* wszExtra); // 0x004E6410
 
 void __fastcall WARDENCLIENT_SetItemPropTexts(D2UnitStrc* pPlayer, D2UnitStrc* pItem, Unicode* pText, int nMaxLength); // 0x004E6560
 
@@ -3302,7 +3302,7 @@ static void INV_AppendBookCharges(Unicode* pText)
 {
     const Unicode* pColorEnd = D2LANG_GetStringFromTblIndex(0xF9E);
     D2_ASSERT(ITEMSIsA(gpHoverItem, 0x35), 0xC43);
-    sub_004E6850_BuildSocketFillerText(gpHoverItem, pText, 0x200);
+    SKILLDESC_BuildSocketFillerText(gpHoverItem, pText, 0x200);
     sub_00526700(pText, D2LANG_GetStringFromTblIndex(0x2B48));
     sub_00526700(pText, pColorEnd);
 }
@@ -3743,7 +3743,7 @@ static void __stdcall INV_ClickOutsidePanel(int nY, SMSGHANDLER_PARAMS* pMsg, in
     {
         return;
     }
-    if (sub_0045AE90_GetPanelSlideMode() == 1 && nX < gnScreenWidth / 2)
+    if (UI_GetPanelSlideMode() == 1 && nX < gnScreenWidth / 2)
     {
         return;
     }
@@ -3751,7 +3751,7 @@ static void __stdcall INV_ClickOutsidePanel(int nY, SMSGHANDLER_PARAMS* pMsg, in
     {
         UI_CancelCursorItemUse();
     }
-    if (sub_0045AE90_GetPanelSlideMode() == 3 && gnInvPanelMode == 0 && nX < gnScreenWidth / 2)
+    if (UI_GetPanelSlideMode() == 3 && gnInvPanelMode == 0 && nX < gnScreenWidth / 2)
     {
         return;
     }
@@ -7695,7 +7695,7 @@ void __fastcall INV_DrawSetItemTooltip(D2UnitStrc* pUnit)
         sub_005267E0(wszProps, wszSockets);
     }
 
-    sub_004E6410_BuildPropText(gpHoverItem, wszProps, 0x400, 1, 0);
+    SKILLDESC_BuildPropText(gpHoverItem, wszProps, 0x400, 1, 0);
 
     wszSetProps[0].wChar = 0;
     WARDENCLIENT_SetItemPropTexts(pPlayer, gpHoverItem, wszSetProps, 0x200);

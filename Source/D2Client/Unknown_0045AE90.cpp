@@ -153,7 +153,7 @@ int __cdecl sub_0045AE80()
 }
 
 // 0x0045AE90
-int __cdecl sub_0045AE90_GetPanelSlideMode()
+int __cdecl UI_GetPanelSlideMode()
 {
     return gnPanelSlideMode;
 }

@@ -70,12 +70,12 @@ extern D2CombinedStatIdStrc gaCombinedStatIds[]; // 0x0072CDD0
 
 
 
-extern "C" D2CharStatsTxt* __fastcall sub_004833E0_GetCharStatsTxtRecord(int nClass); // 0x004833E0
+extern "C" D2CharStatsTxt* __fastcall INV_GetCharStatsTxtRecord(int nClass); // 0x004833E0
 
 
 D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
 
 struct D2MonTypeTxt;
@@ -604,7 +604,7 @@ static int __stdcall SKILLDESC_BuildStatText(D2UnitStrc* pUnit, D2StatListStrc* 
             return 0;
         }
 
-        D2CharStatsTxt* pCharStats = sub_004833E0_GetCharStatsTxtRecord(nLayer);
+        D2CharStatsTxt* pCharStats = INV_GetCharStatsTxtRecord(nLayer);
         if (!pCharStats)
             return 0;
 
@@ -626,7 +626,7 @@ static int __stdcall SKILLDESC_BuildStatText(D2UnitStrc* pUnit, D2StatListStrc* 
     case 14:
     {
         const int nTab = nLayer & 7;
-        D2CharStatsTxt* pCharStats = sub_004833E0_GetCharStatsTxtRecord(nLayer >> 3);
+        D2CharStatsTxt* pCharStats = INV_GetCharStatsTxtRecord(nLayer >> 3);
         if (!pCharStats)
             return 0;
         if (nTab < 0 || nTab > 2)
@@ -861,7 +861,7 @@ static int __stdcall SKILLDESC_BuildStatText(D2UnitStrc* pUnit, D2StatListStrc* 
         if (nCharClass < 0 || nCharClass > 6)
             break;
 
-        D2CharStatsTxt* pCharStats = sub_004833E0_GetCharStatsTxtRecord(nCharClass);
+        D2CharStatsTxt* pCharStats = INV_GetCharStatsTxtRecord(nCharClass);
         if (!pCharStats)
             break;
 
@@ -874,7 +874,7 @@ static int __stdcall SKILLDESC_BuildStatText(D2UnitStrc* pUnit, D2StatListStrc* 
             break;
 
         D2SkillsTxt*& pSkillsTxt = (D2SkillsTxt*&)nCharClass;
-        pSkillsTxt = sub_0045C4B0_GetSkillsTxtRecord(nLayer);
+        pSkillsTxt = SCMD_GetSkillsTxtRecord(nLayer);
         if (!pSkillsTxt)
             break;
 
@@ -1288,7 +1288,7 @@ void __fastcall SKILLDESC_AddSetPropText(D2UnitStrc* pUnit, Unicode* pOut, int n
 }
 
 // 0x004E6410
-void __fastcall sub_004E6410_BuildPropText(D2UnitStrc* pItem, Unicode* wszText, int nUnused, int bFlag, const Unicode* wszExtra)
+void __fastcall SKILLDESC_BuildPropText(D2UnitStrc* pItem, Unicode* wszText, int nUnused, int bFlag, const Unicode* wszExtra)
 {
     Unicode wszBuffer[1024];
     wszBuffer[0] = 0;
@@ -1427,7 +1427,7 @@ void __fastcall TEXT_BuildItemPropTextB(D2UnitStrc* pItem, int nArg, int nArg2, 
     ITEMMODS_AssignProperty(5, 0, pItem, nArg, nArg2, 0);
     Unicode wszBuffer[1024];
     wszBuffer[0].wChar = 0;
-    sub_004E6410_BuildPropText(pItem, wszBuffer, nArg3, 1, nArg4);
+    SKILLDESC_BuildPropText(pItem, wszBuffer, nArg3, 1, nArg4);
     sub_00526700(wszText, wszBuffer);
 
     D2StatListStrc* pStatList = STATLIST_GetStatListFromUnitStateOrFlag(pItem, 0, 0x40);
@@ -1447,7 +1447,7 @@ void __fastcall TEXT_BuildItemPropTextB(D2UnitStrc* pItem, int nArg, int nArg2, 
 void __fastcall SKILLDESC_BuildItemPropText(D2UnitStrc* pItem, int nArg, int nArg2, Unicode* wszText, int nArg3, const Unicode* nArg4)
 {
     ITEMMODS_AssignProperty(2, 0, pItem, nArg, nArg2, 0);
-    sub_004E6410_BuildPropText(pItem, wszText, nArg3, 0, nArg4);
+    SKILLDESC_BuildPropText(pItem, wszText, nArg3, 0, nArg4);
 
     D2StatListStrc* pStatList = STATLIST_GetStatListFromUnitStateOrFlag(pItem, 0, 0x40);
     if (pStatList)
@@ -1463,7 +1463,7 @@ void __fastcall SKILLDESC_BuildItemPropText(D2UnitStrc* pItem, int nArg, int nAr
 }
 
 // 0x004E6850
-void __fastcall sub_004E6850_BuildSocketFillerText(D2UnitStrc* pItem, Unicode* pBuffer, int nSize)
+void __fastcall SKILLDESC_BuildSocketFillerText(D2UnitStrc* pItem, Unicode* pBuffer, int nSize)
 {
     Unicode wszTemp[0x100];
     for (int i = 0; i < 0x100; ++i)

@@ -31,8 +31,8 @@ void __cdecl FOG_AsyncDataDestroy(); // 0x0040A440
 int __fastcall FOG_AsyncDataTestLoaded(AsyncData* ptAsyncData); // 0x0040A7F0
 unsigned int __fastcall FOG_AsyncDataGetBufferSize(AsyncData* pAsyncData); // 0x0040AA40
 int __stdcall sub_0040ABE0(); // 0x0040ABE0
-void __cdecl FOG_10218(); // 0x0040B0C0
-void __fastcall FOG_10222(const unsigned char* pData, unsigned int nSize); // 0x0040B130
+void __cdecl FOG_InitHuffman(); // 0x0040B0C0
+void __fastcall FOG_AddHuffmanStats(const unsigned char* pData, unsigned int nSize); // 0x0040B130
 int __fastcall FOG_CompressPacket(unsigned char* pOut, int nOutSize, const unsigned char* pIn, int nInSize); // 0x0040B1B0
 int __fastcall FOG_DecompressPacket(unsigned char* pOut, int nOutSize, const unsigned char* pIn, unsigned int nInSize); // 0x0040B260
 void __cdecl FOG_10082_Noop(); // 0x0040B320
@@ -45,7 +45,7 @@ int __fastcall FOG_SOCKET_GetError(FSafeSock* pSafeSock, unsigned long* pFogErro
 const char* __fastcall FOG_ResolveHostIPAddress(const char* szHostName); // 0x0040E0D0
 int __fastcall FOG_SOCKET_SetBlockingMode(FSafeSock* pSafeSock, int bNonBlocking); // 0x0040E1A0
 void __cdecl LOGMANAGER_LogWritePrefixedLine(const char* szPrefix, const char* szFormat, ...); // 0x00410660
-int __stdcall sub_00411170_SumByteTable(unsigned char* pData, int nSize); // 0x00411170
+int __stdcall BITMANIP_SumByteTable(unsigned char* pData, int nSize); // 0x00411170
 char* __fastcall Int64ToString(char* szBuffer, unsigned int nBufferSize, __int64 nValue); // 0x00411540
 void __stdcall FOG_Encode14BitsToString(unsigned char* pBuffer, unsigned int nValue); // 0x006BBF40
 extern "C" int __stdcall FOG_ConnectionSend(D2ThreadRecord006BC5A0Strc* pRecord, const char* pData, unsigned short nLength); // 0x006BC0B0
@@ -65,29 +65,29 @@ extern "C" int __stdcall FOG_GetLinkIndexByCode(D2TxtLinkStrc* pLink, unsigned i
 int __stdcall FOG_GetStringFromLinkIndex(D2TxtLinkStrc* linker, int index, char* text); // 0x006BD180
 int __stdcall FOG_10216_AddRecordToLinkingTable(D2TxtLinkStrc* pLinker, const char* szCode); // 0x006BD500
 D2BinFileStrc* __stdcall FOG_CreateBinFile(char* pDataBuffer, int nBufferSize); // 0x006BD640
-void __stdcall FOG_10207(D2BinFileStrc* bin,D2BinFieldStrc* fields,char* output,unsigned records,unsigned stride); // 0x006BD780
-int __stdcall FOG_10186(D2QueueServerStrc* pServer, int nIndex, int nValue); // 0x006BE390
-unsigned int __stdcall FOG_10180(D2QueueServerStrc* pServer); // 0x006BE450
+void __stdcall FOG_ParseBinFields(D2BinFileStrc* bin,D2BinFieldStrc* fields,char* output,unsigned records,unsigned stride); // 0x006BD780
+int __stdcall FOG_SetServerValue(D2QueueServerStrc* pServer, int nIndex, int nValue); // 0x006BE390
+unsigned int __stdcall FOG_GetClientCount(D2QueueServerStrc* pServer); // 0x006BE450
 void __stdcall FOG_SetMaxClientsPerGame(D2QueueServerStrc* pServer, unsigned int nCount); // 0x006BE4A0
 unsigned long __stdcall FOG_WaitForSingleObject(D2QueueServerStrc* pServer, unsigned long dwMilliseconds); // 0x006BE4E0
-int __stdcall FOG_10156(D2QueueServerStrc* pQueue, int nIndex, void* pDst, unsigned int nMax); // 0x006BEAD0
-int __stdcall FOG_10177(D2QueueServerStrc* pServer, unsigned long dwMilliseconds); // 0x006BEBC0
-void __stdcall FOG_10159(D2QueueServerStrc* table, unsigned int key, char* output, unsigned int size); // 0x006BED90
-unsigned int __stdcall FOG_10158(D2QueueServerStrc* table, unsigned int key); // 0x006BEE20
-int __stdcall FOG_10161(D2QueueServerStrc* pTable, unsigned int nKey); // 0x006BEF40
+int __stdcall FOG_PopQueuedMessage(D2QueueServerStrc* pQueue, int nIndex, void* pDst, unsigned int nMax); // 0x006BEAD0
+int __stdcall FOG_WaitForMessages(D2QueueServerStrc* pServer, unsigned long dwMilliseconds); // 0x006BEBC0
+void __stdcall FOG_GetClientIPString(D2QueueServerStrc* table, unsigned int key, char* output, unsigned int size); // 0x006BED90
+unsigned int __stdcall FOG_GetClientAddress(D2QueueServerStrc* table, unsigned int key); // 0x006BEE20
+int __stdcall FOG_GetClientSocket(D2QueueServerStrc* pTable, unsigned int nKey); // 0x006BEF40
 void __stdcall QSERVER_HackUnlistIP(D2QueueServerStrc* pServer, unsigned long dwAddress, const char* szFile, int nLine); // 0x006BEFB0
-void __stdcall FOG_10171(D2QueueServerStrc* pServer, void* pfnCallback); // 0x006BF080
-void __stdcall FOG_10172(void* pContainer, int nKey, int nValue); // 0x006BF0A0
-int __stdcall FOG_10173(void* pContainer, int nKey); // 0x006BF0C0
+void __stdcall FOG_SetRemoveClientCallback(D2QueueServerStrc* pServer, void* pfnCallback); // 0x006BF080
+void __stdcall FOG_SetClientContext(void* pContainer, int nKey, int nValue); // 0x006BF0A0
+int __stdcall FOG_GetClientContext(void* pContainer, int nKey); // 0x006BF0C0
 void __stdcall FOG_SetHackListEnabled(D2QueueServerStrc* pServer, int bEnabled); // 0x006BF4E0
 void __stdcall FOG_10183_Return(int nUnused1, int nUnused2); // 0x006BF600
-void __fastcall FOG_10187(D2QueueServerStrc* pServer, int nMaskIndex, unsigned int nKey); // 0x006BF610
+void __fastcall FOG_AddAddressMask(D2QueueServerStrc* pServer, int nMaskIndex, unsigned int nKey); // 0x006BF610
 int __fastcall QSERVER_CheckClientMask(D2QueueServerStrc* server, int clientId); // 0x006BF6C0
-int __stdcall FOG_10152(D2QueueServerStrc* pServer, char* pData, int nSize); // 0x006C0170
-int __stdcall FOG_10157(D2QueueServerStrc* pServer, unsigned int nKey, char* pData, int nSize); // 0x006C03A0
+int __stdcall FOG_ShutdownServer(D2QueueServerStrc* pServer, char* pData, int nSize); // 0x006C0170
+int __stdcall FOG_SendToClient(D2QueueServerStrc* pServer, unsigned int nKey, char* pData, int nSize); // 0x006C03A0
 void __stdcall QSERVER_HackListClient(D2QueueServerStrc* pTable, int nClient, const char* szFile, int nLine); // 0x006C0530
 void __stdcall QSERVER_HackListIP(D2QueueServerStrc* table, unsigned int ip, const char* file, int line); // 0x006C0600
-void __stdcall FOG_10165(D2QueueServerStrc* pServer, int nClientId, const char* szFile, int nLine); // 0x006C06B0
+void __stdcall FOG_CloseRemoteConnection(D2QueueServerStrc* pServer, int nClientId, const char* szFile, int nLine); // 0x006C06B0
 void __stdcall QSERVER_DisconnectIP(D2QueueServerStrc* pServer, unsigned int nIP, const char* pFile, int nLine); // 0x006C06D0
 
 bool __fastcall ERRORMANAGER_EnumLoadedModules(void* pContext); // 0x00404E60
@@ -103,7 +103,7 @@ extern "C" int __stdcall BITMANIP_GetSize(D2BitBufferStrc* pBuffer); // 0x00410E
 void __stdcall BITMANIP_GoToNextByte(D2BitBufferStrc* pBuffer); // 0x00411070
 int __stdcall FOG_Decode14BitsFromString(const unsigned char* pBuffer); // 0x006BBF20
 extern "C" void __stdcall FOG_FreeLinker(D2TxtLinkStrc* pLinker); // 0x006BD0B0
-int __stdcall FOG_10175(D2QueueServerStrc* server,const unsigned char* buffer,int size,int id); // 0x006BF370
+int __stdcall FOG_QueueReceivedPacket(D2QueueServerStrc* server,const unsigned char* buffer,int size,int id); // 0x006BF370
 extern int gbRunningAsService; // 0x0074C720
 extern char szSRegReadBuf[260]; // 0x0074C728
 extern void* ghDbgHelp; // 0x0098A680

@@ -370,7 +370,7 @@ int __stdcall UNITFINDS_TestUnit(D2UnitStrc* unit,D2UnitFindArgStrc* args)
   case UNIT_OBJECT:if(!(args->nFlags&16))return 0;break;
   case UNIT_MISSILE: {
    if(!(args->nFlags&8))return 0;
-   D2MissilesTxt* record=sub_0046ACE0_GetMissilesTxtRecord(unit->dwClassId);
+   D2MissilesTxt* record=VIEW_GetMissilesTxtRecord(unit->dwClassId);
    if(!record || (record->nMissileFlags[0]&gdwBitMasks[1]))return 0;
    break;
   }
