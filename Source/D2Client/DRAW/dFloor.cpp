@@ -1,17 +1,17 @@
+#include "FogApi.h"
+#include "D2GfxApi.h"
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(void);
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
 struct D2GridCellStrc
 {
-    unsigned char nB0;
-    unsigned char nB1;
-    unsigned char nB2;
-    unsigned char nB3;
+    unsigned char nIntensity;
+    unsigned char nRed;
+    unsigned char nGreen;
+    unsigned char nBlue;
     int nX;
     int nY;
 };
@@ -79,12 +79,10 @@ unsigned char __stdcall ENVIRONMENT_GetIntensityFromAct(void* pAct);            
 void __stdcall ENVIRONMENT_GetLightColorFromAct(void* pAct, unsigned char* pR, unsigned char* pG, unsigned char* pB);           // 0x0061C0B0
 void __fastcall SCMD_ReadGridCell(int nX, int nY, unsigned char* pB0, unsigned char* pB1, unsigned char* pB2, unsigned char* pB3); // 0x00475AA0
 int __cdecl DLIGHTMAP_GetRenderMode(); // 0x00477730
-int __stdcall D2GFX_CheckPerspective();                                                                     // 0x004F51D0
-int __cdecl D2GFX_CheckLowQuality(); // 0x004F5210
-int __cdecl sub_0045AE90();                                                                         // 0x0045AE90
+int __cdecl sub_0045AE90_GetPanelSlideMode();                                                                         // 0x0045AE90
 void __stdcall D2GFX_FloorTileDraw(D2GridInfoStrc* pInfo, D2GridCellStrc* pCells, int nX, int nY, int nSubX, int nSubY, int nAlpha, int nMode, int nArg); // 0x004F68E0
-void __stdcall sub_004DE070(D2GridCellStrc* pCells, int nX, int nY, int nSubX, int nSubY, int nZ, int nMode, int bCorners); // 0x004DE070
-void __stdcall sub_004DE260(D2GridCellStrc* pCells, int nSubX, int nSubY, int nZ, int nMode, int bCorners); // 0x004DE260
+void __stdcall sub_004DE070_FillGridLight(D2GridCellStrc* pCells, int nX, int nY, int nSubX, int nSubY, int nZ, int nMode, int bCorners); // 0x004DE070
+void __stdcall sub_004DE260_FillCellLights(D2GridCellStrc* pCells, int nSubX, int nSubY, int nZ, int nMode, int bCorners); // 0x004DE260
 
 static void __stdcall WALL2_BuildLargeGrid(int nX, int nY, int bFlat, D2GridCellStrc* pCells); // 0x004DDEF0
 
@@ -102,10 +100,10 @@ static void __stdcall WALL2_BuildLargeGrid(int nX, int nY, int bFlat, D2GridCell
         {
             for (int i = 0; i < 8; ++i)
             {
-                pCells->nB1 = nB1;
-                pCells->nB0 = nB0;
-                pCells->nB3 = nB3;
-                pCells->nB2 = nB2;
+                pCells->nRed = nB1;
+                pCells->nIntensity = nB0;
+                pCells->nBlue = nB3;
+                pCells->nGreen = nB2;
                 ++pCells;
             }
         }
@@ -116,7 +114,7 @@ static void __stdcall WALL2_BuildLargeGrid(int nX, int nY, int bFlat, D2GridCell
     {
         for (int i = 0; i < 8; ++i)
         {
-            SCMD_ReadGridCell(8 * (nX + i - 1), 8 * (nY + j - 1), &pCells->nB0, &pCells->nB1, &pCells->nB2, &pCells->nB3);
+            SCMD_ReadGridCell(8 * (nX + i - 1), 8 * (nY + j - 1), &pCells->nIntensity, &pCells->nRed, &pCells->nGreen, &pCells->nBlue);
             ++pCells;
         }
     }
@@ -133,7 +131,7 @@ void __fastcall DFLOOR_UpdateFloorView(D2ViewStrc* pView)
     const int nOffX = 0x50 - pView->nOffX;
     const int nOffY = -0x50 - pView->nOffY;
     const unsigned int nCount = pView->nSize * pView->nSize;
-    const int nMode = sub_0045AE90();
+    const int nMode = sub_0045AE90_GetPanelSlideMode();
     D2GridCellStrc tLarge[8 * 8];
     D2GridCellStrc tSmall[6 * 6];
 
@@ -212,11 +210,11 @@ void __fastcall DFLOOR_UpdateFloorView(D2ViewStrc* pView)
                 {
                     if (bPerspective)
                     {
-                        sub_004DE260(tSmall, nSubX, nSubY, pInfo->wZ, nMode, nCorners);
+                        sub_004DE260_FillCellLights(tSmall, nSubX, nSubY, pInfo->wZ, nMode, nCorners);
                     }
                     else
                     {
-                        sub_004DE070(tSmall, nX, nY, nSubX, nSubY, pInfo->wZ, nMode, nCorners);
+                        sub_004DE070_FillGridLight(tSmall, nX, nY, nSubX, nSubY, pInfo->wZ, nMode, nCorners);
                     }
                     D2GFX_FloorTileDraw(pObj->pInfo, tSmall, nX, nY, nSubX, nSubY, pObj->nAlpha, nMode, 0);
                 }

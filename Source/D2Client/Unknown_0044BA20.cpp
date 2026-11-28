@@ -1,47 +1,21 @@
+#include "D2LanguageNames.h"
+// build: symbol _gaszLanguageNames 0x0070EE90
+
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Unicode.h"
 #include "D2McpPackets.h"
 #include "D2LaunchRequest.h"
-#pragma pack(push, 1)
-struct d2data_0070EE90_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
 
-extern "C" struct d2data_0070EE90_t gData_0070EE90; // 0x0070EE90
-
-extern "C" struct d2data_0070EE90_t gData_0070EE90 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0070EE90
+#include "FogApi2.h"
+#include "StormApi2.h"
+#include "D2GfxApi.h"
+#include "D2NetApi.h"
+#include "D2MCPClientApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -109,31 +83,17 @@ extern "C" unsigned long __cdecl strtoul(const char* szString, char** ppEnd, int
 
 extern "C" char* __cdecl strcpy(char* szDst, const char* szSrc);
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
 
-void __fastcall GAME_CalcCdKeyChecksum(char* szKey, unsigned int* pChecksum); // 0x00449890
-
-int __stdcall SCmdRegisterArgList(const D2CmdArgStrc* pArgList, unsigned int nCount); // 0x006C4E50
 
 int __stdcall SCmdProcess(const char* szCmdLine, int bSkipProgName, int (__stdcall* pfnExtra)(const char*), int (__stdcall* pfnError)(const char*)); // 0x006C4FB0
 
-unsigned short __stdcall FOG_ConnectionReceive(void* pConnection, char* pBuffer, int nSize); // 0x006BC120
 
-int __fastcall GAME_DispatchMcpPacket(const char* pPacket, unsigned int nSize); // 0x0044B190
-
-int __fastcall GAME_RunInitHandlers(void* pArg); // 0x0044D9F0
 
 int __stdcall WINMAIN_HandleExtraArgument(const char* szArgument); // 0x0044B5C0
 
 int __stdcall WINMAIN_HandleArgumentError(const char* szArgument); // 0x0044B5D0
 
-void __fastcall GAME_ShowLoadingMessage(int nError); // 0x0044E380
 
-int __stdcall CLIENT_DequeueGamePacket(unsigned char* pBuffer, unsigned int nBufferSize); // 0x0052A890
-
-int __stdcall CLIENT_DequeueSystemPacket(unsigned char* pBuffer, unsigned int nBufferSize); // 0x0052A8B0
-
-void __fastcall SCMD_HandleSystemPacket(unsigned char* pPacket, int nLength); // 0x0045C850
 
 void __fastcall SCMD_ProcessPackets(unsigned char* pPacket, int nLength); // 0x0045F7B0
 
@@ -155,9 +115,7 @@ unsigned long gdwStopSessionTick;                                               
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -183,15 +141,12 @@ struct D2McpInfoStrc
     char szName[0x20];
 };
 
-void __stdcall sub_00449DD0_SetValue(int nValue); // 0x00449DD0
 
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
 
 void __stdcall GAME_StripColorCodes(Unicode* pText); // 0x0044B230
 
-char* __fastcall sub_00526F70(char* szDest, const Unicode* pSource, int nCount); // 0x00526F70
 
 extern int gnMcpGameToken; // 0x00798FB0
 
@@ -222,51 +177,21 @@ struct D2ClientInterfaceStrc;
 
 typedef void (__fastcall* D2McpCallback)(int nId, unsigned int nSize, const unsigned char* pData);
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);                               // 0x0040B380
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
 
-void __stdcall sub_00449E30_SetValue(int nValue);                                                           // 0x00449E30
 
-void __stdcall sub_00449E50_SetValue(int nValue);                                                           // 0x00449E50
 
-void __stdcall MCPCONNECT_SetPacket(const char* pData, int nSize);                                     // 0x00449E70
 
-void __cdecl sub_006115F0_Empty();                                                                          // 0x006115F0
 
-void __cdecl sub_0052BDA0_Empty();                                                                          // 0x0052BDA0
-
-void __cdecl sub_0052BDB0_Empty();                                                                          // 0x0052BDB0
-
-void __cdecl PROFCORE_CloseLog();                                                                                // 0x00611600
 
 int __stdcall WINMAIN_LauncherRun(void* hInstance, D2ClientCharRecordStrc* pRecord);                   // 0x0044B8A0
 
-void __cdecl RECORD_ToggleRecordPlayback();                                                                    // 0x004519A0
 
-void __cdecl RECORD_StartPlayback();                                                                  // 0x004518E0
 
-int __cdecl CLIENT_GetConnectionStatus();                                                                   // 0x0052B050
-
-int __fastcall SCMD_RunMessageLoop(int (__stdcall* pfnIdle)(int));                                     // 0x00451BB0
-
-void __stdcall SERVER_Initialize(int a1, int a2);                                                           // 0x0052B7A0
-
-void __stdcall CLIENT_Initialize(int nArg, const char* szAddress);                                               // 0x0052A750
-
-void __stdcall SERVER_SetMaxClientsPerGame(int nArg1);                                                   // 0x0052B250
-
-int __stdcall SERVER_SetHackListEnabled(int nArg1);                                                    // 0x0052B280
 
 void __stdcall GAME_InitGameDataTable(D2GameDataTableStrc* pGameDataTbl, void* pGameList);                  // 0x0052C0A0
 
-int __stdcall WINMAIN_PollSystemPackets(int nUnused);                                                  // 0x0044BAD0
 
-int __stdcall WINMAIN_PumpSystemPackets(int nUnused);                                                  // 0x0044BD20
-
-void __cdecl CLIENT_Release();                                                                                // 0x0052A7E0
-
-void __cdecl SERVER_Release();                                                              // 0x0052B2A0
 
 int __cdecl WINMAIN_PopStateValue();                                                                        // 0x0044B480
 
@@ -301,21 +226,11 @@ extern int gnRecordPos;                                                         
 
 void __cdecl RECORD_LoadRecordFile();                                                                 // 0x00451710
 
-int __fastcall WINMAIN_SendMcpCharCreate(const char* szText, int nValue, unsigned short wValue);
 
-int __fastcall WINMAIN_SendMcpCharLogon(const char* szText);
 
-int __fastcall WINMAIN_SendMcpJoinGame(const char* szName, const char* szRealm, unsigned short wRequestId);
 
-int __fastcall sub_0044A680_SendPacket08(const char* szText, unsigned short wRequestId);
 
-int __fastcall sub_0044A710_SendPacket09(const char* szText, unsigned short wRequestId);
 
-int __fastcall sub_0044A870_SendPacket0B(const char* szText1, const char* szText2);
-
-int __fastcall sub_0044A900_SendPacket0C(const char* szText);
-
-int __fastcall WINMAIN_SendMcpCharRank(const char* szName, int nB, int nC); // 0x0044AAE0
 
 
 extern "C" void* __cdecl memcpy(void*,const void*,unsigned int);
@@ -343,21 +258,13 @@ extern unsigned char gabChunkBuffer[]; // 0x00799318
 
 extern "C" __declspec(dllimport) int __stdcall SetEvent(void* hEvent);                                      // 0x006CC130
 
-void __stdcall CHATDLG_SetCharLogonReceived(int nValue);                                                           // 0x00449C40
 
-void __stdcall CHATDLG_SetCharDeleteReceived(int nValue);                                                           // 0x00449C60
 
-void __stdcall CHATDLG_SetCharUpgradeReceived(int nValue);                                                           // 0x00449C80
 
-void __stdcall sub_00449C90_SetValue(int nValue);                                                           // 0x00449C90
 
-void __stdcall sub_00449CC0_SetValue(int nValue);                                                           // 0x00449CC0
 
-void __stdcall CHATDLG_SetMcpTexts(int nResult, const char* szText1, const char* szText2);                // 0x00449D10
 
-void __stdcall sub_00449D90_SetValue(int nValue);                                                           // 0x00449D90
 
-void __stdcall sub_00449DB0_SetValue(int nValue);                                                           // 0x00449DB0
 
 extern void* ghConnectEvent;                                                                       // 0x007992EC
 
@@ -408,19 +315,11 @@ extern void* ghConnectEvent;                                                    
 
 
 
-extern int gnScreenWidth; // 0x0071146C
 
-extern int gnAutomapHeight_007A521C; // 0x007A521C
 
-int __cdecl sub_0045AE90(); // 0x0045AE90
 
-void __fastcall AUTOMAP_ResetBaseOffset(int bForce); // 0x00457640
 
-int __stdcall D2GFX_GetResolutionMode(); // 0x004F5160
 
-void __fastcall PLAYER_SetPanelSlide(int nMode); // 0x0045AEA0
-
-void __fastcall sub_00457440_Nop(int nResolution); // 0x00457440
 
 void __fastcall UI_ToggleListDialog(int nResolution); // 0x004549B0
 
@@ -428,7 +327,6 @@ extern int gnSavedScreenWidth; // 0x00711474
 
 extern int gnBeltUiRecordRow; // 0x007A5218
 
-extern int gnAutomapWidth; // 0x007A5220
 
 // 0x0044BA20
 void __fastcall GAME_SetResolution(int nResolution)
@@ -452,7 +350,7 @@ void __fastcall GAME_SetResolution(int nResolution)
     gnAutomapHeight_007A521C = gnScreenHeight - 40;
     gnSavedScreenWidth = gnScreenWidth;
     sub_004F90A0(nResolution);
-    PLAYER_SetPanelSlide(sub_0045AE90());
+    PLAYER_SetPanelSlide(sub_0045AE90_GetPanelSlideMode());
     AUTOMAP_ResetBaseOffset(1);
     sub_00457440_Nop(nResolution);
     UI_ToggleListDialog(nResolution);
@@ -462,7 +360,7 @@ void __fastcall GAME_SetResolution(int nResolution)
 int __stdcall WINMAIN_PollSystemPackets(int nUnused)
 {
     unsigned char pBuffer[0x200];
-    if ((gdwGlobal_007A0610 != 0 && gdwGlobal_007A0610 != 1) || !WINDOW_GetState())
+    if ((gnGameType != 0 && gnGameType != 1) || !WINDOW_GetState())
     {
         if (GetTickCount() - gdwStartSessionTick > 10000)
         {
@@ -472,7 +370,8 @@ int __stdcall WINMAIN_PollSystemPackets(int nUnused)
             return 1;
         }
 
-        if (!sub_0052A640_IsConnected())
+// build: symbol ?CLIENT_IsConnected@* 0x0052A640
+        if (!CLIENT_IsConnected())
         {
             return 1;
         }
@@ -502,7 +401,6 @@ extern "C" int __cdecl GAME_ShutdownIfActive()
     return GAME_Shutdown();
 }
 
-int __cdecl GAME_GetConnectFailed();                                                                                 // 0x0044BBA0
 
 // 0x0044BBA0
 int __cdecl GAME_GetConnectFailed()
@@ -513,7 +411,7 @@ int __cdecl GAME_GetConnectFailed()
 // 0x0044BBB0
 int __stdcall WINMAIN_WaitConnect(int nUnused)
 {
-    if ((gdwGlobal_007A0610 != 0 && gdwGlobal_007A0610 != 1) || !WINDOW_GetState())
+    if ((gnGameType != 0 && gnGameType != 1) || !WINDOW_GetState())
     {
         const int nStatus = CLIENT_GetConnectionStatus();
         if (nStatus == 0)
@@ -540,7 +438,7 @@ int __fastcall GAME_RunClient(int nArg, const char* szAddress)
 int __cdecl WINMAIN_StartSession()
 {
     gbGameServerReady = 0;
-    if (gdwGlobal_007A0610 == 0)
+    if (gnGameType == 0)
     {
         SERVER_Initialize(1, 1);
         CLIENT_Initialize(1, 0);
@@ -551,7 +449,7 @@ int __cdecl WINMAIN_StartSession()
         gnSubsystemActive = 1;
         GAME_Initialize();
     }
-    else if (gdwGlobal_007A0610 == 1)
+    else if (gnGameType == 1)
     {
         SERVER_Initialize(2, 1);
         CLIENT_Initialize(2, 0);
@@ -561,13 +459,13 @@ int __cdecl WINMAIN_StartSession()
         gnSubsystemActive = 1;
         GAME_Initialize();
     }
-    else if (gdwGlobal_007A0610 == 4)
+    else if (gnGameType == 4)
     {
 // build: symbol ?gszBattleNetIP@* 0x0070F028
         CLIENT_Initialize(0, gszBattleNetIP);
         SCMD_RunMessageLoop(WINMAIN_WaitConnect);
     }
-    else if (gdwGlobal_007A0610 == 6 || gdwGlobal_007A0610 == 8)
+    else if (gnGameType == 6 || gnGameType == 8)
     {
         SERVER_Initialize(0, 1);
         SERVER_SetMaxClientsPerGame(8);
@@ -595,9 +493,10 @@ int __stdcall WINMAIN_PumpSystemPackets(int nUnused)
 {
     unsigned char pBuffer[0x200];
     WINDOW_GetState();
-    if (gdwGlobal_007A0610 == 0 || gdwGlobal_007A0610 == 1)
+    if (gnGameType == 0 || gnGameType == 1)
     {
-        sub_0052CFE0();
+// build: symbol ?GAME_ProcessNetworkMessages@* 0x0052CFE0
+        GAME_ProcessNetworkMessages();
     }
 
     const int nLength = CLIENT_DequeueSystemPacket(pBuffer, sizeof(pBuffer));
@@ -615,7 +514,7 @@ int __cdecl WINMAIN_StopSession()
     gdwStopSessionTick = GetTickCount();
     SCMD_RunMessageLoop(WINMAIN_PumpSystemPackets);
     CLIENT_Release();
-    if (gdwGlobal_007A0610 == 0 || gdwGlobal_007A0610 == 1 || gdwGlobal_007A0610 == 6 || gdwGlobal_007A0610 == 8)
+    if (gnGameType == 0 || gnGameType == 1 || gnGameType == 6 || gnGameType == 8)
         SERVER_Release();
     return WINMAIN_PopStateValue();
 }
@@ -626,5 +525,4 @@ int __cdecl WINMAIN_StopSession()
 
 
 
-void __cdecl RECORD_StartPlayback(); // 0x004518E0
 

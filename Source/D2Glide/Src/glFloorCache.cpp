@@ -7,11 +7,8 @@ extern int gdwGlobal_0087EFB8; // 0x0087EFB8
 
 extern D2GlideTileCacheStrc gtGlideTileCache; // 0x0087EB48
 extern D2GlideFloorCacheStrc gtGlideFloorCache; // 0x0087EB68
-void __fastcall GLSUBTILECACHE_TileCacheRelease(D2GlideTileCacheStrc* pCache, int nIndex); // 0x0050F1B0
-D2GlideFloorCacheEntryStrc* __fastcall GLSMACK_FloorCacheUnlink(D2GlideFloorCacheStrc* pCache, int nIndex); // 0x0050F570
-void __fastcall GLSMACK_FloorCacheRemove(D2GlideFloorCacheStrc* pCache, int nIndex); // 0x0050F750
+void __fastcall GLFLOORCACHE_FloorCacheRemove(D2GlideFloorCacheStrc* pCache, int nIndex); // 0x0050F750
 
-void __fastcall GLSMACK_FloorCacheEvict(D2GlideFloorCacheStrc* pCache); // 0x0050F6D0
 
 // 0x0050F320
 int __fastcall GLFLOORCACHE_FloorCacheInit(D2GlideFloorCacheStrc* pCache, unsigned int nStart, unsigned int nEnd, unsigned int nBlockSize)
@@ -171,6 +168,58 @@ D2GlideFloorCacheEntryStrc* __fastcall sub_M117_Emit_0050F150(D2GlideTileCacheSt
     return GLSUBTILECACHE_FloorCachePopFree(pCache);
 }
 
+static D2GlideFloorCacheEntryStrc* sub_N19_FloorPopHead(D2GlideFloorCacheStrc* pCache)
+{
+    D2GlideFloorCacheEntryStrc* pEntry = pCache->pHead;
+    if (!pEntry)
+        return 0;
+    pCache->pHead = pEntry->pNext;
+    if (pCache->pHead)
+        pCache->pHead->pPrev = 0;
+    else
+        pCache->pTail = 0;
+    pEntry->pNext = 0;
+    pEntry->pPrev = 0;
+    return pEntry;
+}
+
+// 0x0050F570
+D2GlideFloorCacheEntryStrc* __fastcall GLFLOORCACHE_FloorCacheUnlink(D2GlideFloorCacheStrc* pCache, int nIndex)
+{
+    D2GlideFloorCacheEntryStrc* pNode = pCache->pHead;
+    if (!pNode)
+        return 0;
+    D2GlideFloorCacheEntryStrc* pEntry = &pCache->pEntries[nIndex];
+    if (pEntry == pNode)
+    {
+        pCache->pHead = pNode->pNext;
+        if (pCache->pHead)
+            pCache->pHead->pPrev = 0;
+        else
+            pCache->pTail = 0;
+        pNode->pNext = 0;
+        pNode->pPrev = 0;
+        return pNode;
+    }
+    pNode = pCache->pTail;
+    if (pEntry == pNode)
+    {
+        pNode = pNode->pPrev;
+        pCache->pTail = pNode;
+        pNode->pNext = 0;
+    }
+    else
+    {
+        pNode = pEntry->pPrev;
+        pNode->pNext = pEntry->pNext;
+        pNode = pEntry->pNext;
+        pNode->pPrev = pEntry->pPrev;
+    }
+    pEntry->pNext = 0;
+    pEntry->pPrev = 0;
+    return pEntry;
+}
+
 // 0x0050F5F0
 static int GLFLOORCACHE_FloorCacheAlloc(D2GlideFloorCacheStrc* pCache)
 {
@@ -205,13 +254,68 @@ static int GLFLOORCACHE_FloorCacheAlloc(D2GlideFloorCacheStrc* pCache)
     return pEntry->nId + 1;
 }
 
+// 0x0050F6D0
+void __fastcall GLFLOORCACHE_FloorCacheEvict(D2GlideFloorCacheStrc* pCache)
+{
+    if (!pCache->nUsed)
+        return;
+    D2GlideFloorCacheEntryStrc* pEntry = sub_N19_FloorPopHead(pCache);
+    if (pEntry)
+    {
+        D2TileLibraryEntryStrc* pTile = pEntry->pTile;
+        D2_ASSERT(pTile, 0xD3);
+        pTile->nCacheIndex = 0;
+        pEntry->pTile = 0;
+        if (!pCache->pFreeHead)
+        {
+            pCache->pFreeHead = pEntry;
+            pCache->pFreeTail = pEntry;
+        }
+        else
+        {
+            pCache->pFreeTail->pNext = pEntry;
+            pEntry->pPrev = pCache->pFreeTail;
+            pCache->pFreeTail = pEntry;
+        }
+    }
+    --pCache->nUsed;
+}
+
+// 0x0050F750
+void __fastcall GLFLOORCACHE_FloorCacheRemove(D2GlideFloorCacheStrc* pCache, int nIndex)
+{
+    if (!pCache->nUsed)
+        return;
+    D2GlideFloorCacheEntryStrc* pEntry = GLFLOORCACHE_FloorCacheUnlink(pCache, nIndex);
+    if (pEntry)
+    {
+        D2TileLibraryEntryStrc* pTile = pEntry->pTile;
+        D2_ASSERT(pTile, 0xF1);
+        pTile->nCacheIndex = 0;
+        pEntry->pTile = 0;
+        if (!pCache->pFreeHead)
+        {
+            pCache->pFreeHead = pEntry;
+            pCache->pFreeTail = pEntry;
+        }
+        else
+        {
+            pCache->pFreeTail->pNext = pEntry;
+            pEntry->pPrev = pCache->pFreeTail;
+            pCache->pFreeTail = pEntry;
+        }
+    }
+    --pCache->nUsed;
+}
+
+
 // 0x0050F820
 short __fastcall GLFLOORCACHE_FloorCacheAdd(D2GlideFloorCacheStrc* pCache)
 {
     int nId = GLFLOORCACHE_FloorCacheAlloc(pCache);
     if (!nId)
     {
-        GLSMACK_FloorCacheEvict(pCache);
+        GLFLOORCACHE_FloorCacheEvict(pCache);
         nId = GLFLOORCACHE_FloorCacheAlloc(pCache);
         D2_ASSERT(nId, 0x8B);
     }
@@ -229,7 +333,7 @@ void __fastcall GLFLOORCACHE_FloorCacheTouch(D2GlideFloorCacheStrc* pCache, int 
     D2_ASSERT(nIndex, 0xBC);
     D2_ASSERT(nIndex <= pCache->nCount, 0xBD);
     D2_ASSERT(nIndex >= 1, 0xBE);
-    GLFLOORCACHE_FloorCacheAppendUsed(pCache, GLSMACK_FloorCacheUnlink(pCache, nIndex - 1));
+    GLFLOORCACHE_FloorCacheAppendUsed(pCache, GLFLOORCACHE_FloorCacheUnlink(pCache, nIndex - 1));
 }
 
 // 0x0050FCB0
@@ -237,7 +341,7 @@ void __fastcall GLFLOORCACHE_ReleaseTileCache(D2TileLibraryEntryStrc* pTile)
 {
     if (pTile->nCacheIndex > 0)
     {
-        GLSMACK_FloorCacheRemove(&gtGlideFloorCache, (short)(pTile->nCacheIndex - 1));
+        GLFLOORCACHE_FloorCacheRemove(&gtGlideFloorCache, (short)(pTile->nCacheIndex - 1));
     }
 
     for (int i = 0; i < pTile->nBlocks; ++i)
@@ -255,7 +359,7 @@ void __fastcall GLFLOORCACHE_FloorCacheDestroy(D2GlideFloorCacheStrc* pCache, in
     if (bFlush)
     {
         while (pCache->nUsed)
-            GLSMACK_FloorCacheEvict(pCache);
+            GLFLOORCACHE_FloorCacheEvict(pCache);
     }
     if (pCache->pEntries)
     {

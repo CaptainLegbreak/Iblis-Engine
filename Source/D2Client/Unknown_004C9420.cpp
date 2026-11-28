@@ -4,6 +4,7 @@
 #include "D2SkillIds.h"
 #include "D2StatIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Constants.h"
 #include "D2Structs.h"
 #include "D2Path.h"
@@ -14,6 +15,8 @@
 #include "D2GameTypes.h"
 #include "D2Records.h"
 #include "D2AnimData.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -33,43 +36,26 @@ D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
-int __fastcall ITEM_GetTargetPosition(D2UnitStrc* pUnit, int* pX, int* pY); // 0x004C52E0
 
-D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc* pUnit); // 0x004648F0
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
 
-D2SkillStrc* __fastcall SKILLS_GetHighestLevelSkillFromUnitAndId(D2UnitStrc* pUnit, int nSkillId); // 0x006439F0
 
-int __stdcall SKILLS_GetFlags(D2SkillStrc* pSkill); // 0x006446A0
 
-void __stdcall SKILLS_SetFlags(D2SkillStrc* pSkill, int nValue); // 0x00644660
 
-void* __fastcall UNITSND_FindUnitSfxInRange(D2UnitStrc* pUnit, int nId); // 0x004CA900
+void __fastcall sub_004BA840_StopSound(void* pUnitSfx); // 0x004BA840
 
-void __fastcall sub_004BA840(void* pUnitSfx); // 0x004BA840
 
-int __stdcall DUNGEON_IsRoomInTown(D2ActiveRoomStrc* pRoom); // 0x0061AB00
-
-void __stdcall MISSILE_SetTargetX(D2UnitStrc* pMissile, int nTargetX); // 0x0064A710
-
-void __stdcall MISSILE_SetTargetY(D2UnitStrc* pMissile, int nTargetY); // 0x0064A760
 
 #define SKILLSFLAGINDEX_LOB 1
 
 #define SKILLSFLAGINDEX_PRGSTACK 7
 
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc*,unsigned int,int,int); // 0x00646CA0
 
 int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                                   // 0x0045C390
 
 int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                                  // 0x0045C3E0
-
-void __stdcall PATH_SetDirection(D2DynamicPathStrc* pDynamicPath, int nDirection);                          // 0x006488A0
 
 inline D2SkillsTxt* SKILLS_GetSkillsTxtRecord(int nSkillId)
 {
@@ -87,7 +73,6 @@ static inline D2SkillsTxt* DATATBLS_GetSkillsTxtRecordInline(int nSkillId)
     return 0;
 }
 
-D2UnitStrc* __fastcall MISSILE_SubmitOwnerRequest(D2UnitStrc* pUnit, int nArg0, int nArg5, int nArg6, int nArg3, int nArg4); // 0x004CDBA0
 
 extern const int gaMissileAroundOffsetX[8]; // 0x006DAEA8
 
@@ -103,7 +88,7 @@ void __fastcall SKILLS_EndLoopSoundSkill(D2UnitStrc* pUnit, int nSkillId)
         if (nFlags & 1)
             SKILLS_SetFlags(pSkill, nFlags | 2);
     }
-    sub_004BA840(UNITSND_FindUnitSfxInRange(pUnit, 0x9E3));
+    sub_004BA840_StopSound(UNITSND_FindUnitSfxInRange(pUnit, 0x9E3));
 }
 
 // 0x004C9460
@@ -168,11 +153,8 @@ int __fastcall sub_004C9490_MissileAroundUnit(D2UnitStrc* pUnit, int nSkillId, i
     return 1;
 }
 
-int __fastcall SKILLDESC_GetCltMissileId(D2UnitStrc* pUnit, int nSkillId); // 0x004F21B0
 
-void __stdcall PATH_SetType(D2DynamicPathStrc* pPath, int nType); // 0x00648CF0
 
-int __stdcall D2Common_10142(D2DynamicPathStrc* pPath, D2UnitStrc* pUnit, int bAllowInTown); // 0x00649970
 
 // 0x004C95E0
 int __fastcall MISSILE_SkillStartAtTargetPos(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
@@ -229,7 +211,7 @@ int __fastcall MISSILE_SkillStartAtTargetPos(D2UnitStrc* pUnit, int nSkillId, in
 }
 
 // 0x004C96D0
-int __fastcall sub_004C96D0(D2UnitStrc* pUnit,int nSkillId,int nSkillLevel)
+int __fastcall sub_004C96D0_CreateMissileAtTarget(D2UnitStrc* pUnit,int nSkillId,int nSkillLevel)
 {
  if(!SKILLS_GetSkillsTxtRecord(nSkillId)) return 0;
  const int nMissile=SKILLDESC_GetCltMissileId(pUnit,nSkillId);
@@ -341,15 +323,11 @@ struct d2data_00727DF8_t
 };
 #pragma pack(pop)
 
-extern "C" const int gData_006DAE88[8]; // 0x006DAE88
-extern "C" const int gData_006DAEA8[8]; // 0x006DAEA8
 extern "C" struct d2data_00727DF8_t gData_00727DF8; // 0x00727DF8
 
-extern "C" const int gData_006DAE88[8] = { 2, 1, 0, -1, -2, -1, 0, 1 }; // 0x006DAE88
-#pragma comment(linker, "/alternatename:?gaMissileAroundOffsetY@@3QBHB=_gData_006DAE88")
+extern const int gaMissileAroundOffsetY[8] = { 2, 1, 0, -1, -2, -1, 0, 1 }; // 0x006DAE88
 
-extern "C" const int gData_006DAEA8[8] = { 0, -1, -2, -1, 0, 1, 2, 1 }; // 0x006DAEA8
-#pragma comment(linker, "/alternatename:?gaMissileAroundOffsetX@@3QBHB=_gData_006DAEA8")
+extern const int gaMissileAroundOffsetX[8] = { 0, -1, -2, -1, 0, 1, 2, 1 }; // 0x006DAEA8
 
 extern "C" struct d2data_00727DF8_t gData_00727DF8 = {
     (const void*)"English",

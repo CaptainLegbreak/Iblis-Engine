@@ -1,6 +1,8 @@
 #include "D2Win32System.h"
 #include "D2Win32SystemInfo.h"
 #include "D2Win32OsVersion.h"
+#include "FogApi.h"
+#include "StormApi.h"
 struct _iobuf;
 
 extern "C" int __cdecl fclose(_iobuf* pFile);                                                               // 0x00681FDC
@@ -39,10 +41,6 @@ extern "C" int __cdecl vfprintf(_iobuf* pFile, const char* szFormat, va_list arg
 
 
 int __fastcall EXCEPTIONS_GetAppPath(char* szPath, unsigned int nSize);                                   // 0x0040C220
-
-unsigned int __stdcall SStrPack(char* szDest, const char* szSource, unsigned int nDestSize);                // 0x00413800
-
-int __fastcall FOG_CreatePathHierarchy(const char* szPath);                                        // 0x00406A10
 
 
 

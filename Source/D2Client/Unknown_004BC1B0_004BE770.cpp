@@ -1,8 +1,18 @@
+// ListBoxImplementation::HitTestScrollDown (0x4BE770) and HitTestScrollTrack (0x4BE7C0) sit in
+// Unknown_004BC1B0.cpp's run, and only its OnLButtonDown (0x4BF430) and OnLButtonUp (0x4BF530) call them, but
+// they stay a piece of their own. Joined, 0x4BF430 holds its constant 1 in edx across the two calls; the
+// original keeps it in ebx, which calls preserve, as a caller that can't see the callees' bodies would. A noinline
+// on both changes nothing. So they were likely compiled in another object.
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Unicode.h"
 #include "D2CelContext.h"
 #include "D2StormTypes.h"
 #include "D2ListBoxLine.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2GfxApi.h"
+#include "StormApi2.h"
 
 class UIWidget;
 class ListBoxImplementation;
@@ -12,41 +22,29 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, int nFlags); // 0x00413020
-
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, int nFlags); // 0x00412650
-
 void __fastcall UI_DrawRectangleBorder(D2RectStrc* pRect); // 0x00452E50
 
-int __cdecl sub_00468730(); // 0x00468730
 
-int __cdecl sub_00468740(); // 0x00468740
 
 D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nType); // 0x004788B0
 
 int __fastcall PANEL_CountLinesInView(ListBoxImplementation* pListBox); // 0x004BE340
 
-int __stdcall D2GFX_GetResolutionMode(); // 0x004F5160
-
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 int __fastcall D2Win_10123(const Unicode* wszText, int nLength); // 0x00501730
 
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
-int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
@@ -98,7 +96,7 @@ struct D2ListScrollStrc
     int nY;
     int nRows;
 
-    int DrawRows(D2CelContextStrc* pContext);
+    int DrawRows(D2GfxDataStrc* pContext);
 };
 
 // 0x004BF8C0
@@ -124,8 +122,8 @@ public:
     virtual int sub_004BE0A0_GetLineCount();
     virtual void sub_004BE0B0_Clear();
     virtual void sub_004BE500_AddLine(const Unicode* wszText0, const Unicode* wszText1, const Unicode* wszText2,
-        const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5, int nArg20, int nData,
-        int bUseDefault, int nArg2C);
+        const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5, int nEntryData, int nColor,
+        int bUseDefault, int nFont);
 
     void DrawClippedText(const Unicode* wszSource, int nX, int nY, int nColor);
     int HitTestScrollDown(SMSGHANDLER_PARAMS* pMsg);
@@ -187,7 +185,7 @@ public:
     virtual int GetValue();
     virtual void sub_004BEDE0_ForwardSlot3C(const Unicode* wszText0, const Unicode* wszText1,
         const Unicode* wszText2, const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5,
-        int nArg20, int nData, int bUseDefault, int nArg2C);
+        int nEntryData, int nColor, int bUseDefault, int nFont);
     virtual int sub_004BEDF0_ForwardGetEntryData(int nIndex);
     virtual int sub_004BEE00_Slot14();
     virtual void sub_004BEE10_Slot15();

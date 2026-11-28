@@ -1,5 +1,6 @@
 #include "D2Drlg.h"
 #include "D2DrlgMaps.h"
+#include "FogApi.h"
 
 struct D2DrlgCoordStrc;
 
@@ -13,9 +14,7 @@ void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int
 
 void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
-extern "C" const char* __cdecl sub_00408090();
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);
 

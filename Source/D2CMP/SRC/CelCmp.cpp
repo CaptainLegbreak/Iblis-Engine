@@ -18,6 +18,12 @@
 #include "D2StormListArray.h"
 #include "D2FindTileEntry.h"
 #include "D2CmpDC6CacheEntry.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "FogApi.h"
+#include "D2CommonApi2.h"
+#include "D2HellApi.h"
+#include "StormApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -31,7 +37,6 @@ struct D2TileLibraryEntryStrc;
 
 struct D2TSLinkStrc;
 
-struct D2TSListStrc;
 
 struct D2CmpCacheBlockOwnerStrc;
 
@@ -64,11 +69,8 @@ struct D2Storm4168F0Strc;
 
 struct D2Storm416A90Strc;
 
-struct PairStrc_00601BB0;
 
-struct PairStrc_00601D20;
 
-struct PairStrc_00601DB0;
 
 struct PairStrc_0060E1B0;
 
@@ -144,23 +146,14 @@ struct sub_0044ECC0;
 
 struct sub_0044ED50;
 
-struct sub_00601BF0;
 
-struct sub_00601C70;
 
-struct sub_00601D60;
 
-struct sub_00601F20;
 
-struct sub_00601F60;
 
-struct sub_006020D0;
 
-struct sub_00602140;
 
-struct sub_006024A0;
 
-struct sub_00602760;
 
 struct sub_00417780;
 
@@ -194,7 +187,8 @@ struct sub_0041C4F0;
 
 struct sub_0041C720;
 
-struct sub_0041C7F0;
+// build: symbol ?HANDLER@* 0x0041C7F0
+struct HANDLER;
 
 struct sub_004204A0;
 
@@ -212,15 +206,10 @@ struct sub_0044ED40;
 
 struct sub_0044ED90;
 
-struct sub_00601F10;
 
-struct sub_00602130;
 
-struct sub_00602180;
 
-struct sub_00602420;
 
-struct sub_00602750;
 
 struct D2CommonStormSlotListAStrc;
 
@@ -266,7 +255,6 @@ struct D2CommonStormHashTableAStrc;
 
 struct R0052E0F0;
 
-struct R00601DC0;
 
 struct D2StormListEArrayStrc;
 
@@ -288,7 +276,6 @@ struct D2StormChunkListStrc;
 
 struct sub_0044F9F0;
 
-struct D2StormList0044FB30Strc;
 
 struct D2StormDeadListStrc;
 
@@ -312,7 +299,6 @@ struct D2CmpPoolStrc;
 
 class WardenModule;
 
-struct D2Warden47F930Strc;
 
 struct D2WardenModuleHolderAStrc;
 
@@ -331,14 +317,6 @@ struct D2TSLinkStrc
     unsigned int nNext;
 };
 
-struct D2TSListStrc
-{
-    int nLinkOffset;
-    D2TSLinkStrc tTerminator;
-
-    void sub_00601E80_InitCopy(const D2TSListStrc& source);
-};
-
 extern D2CmpPoolStrc gCmpPool; // 0x0088CAE0
 
 extern D2CmpPoolStrc gCmpTilePool; // 0x0088DB20
@@ -346,6 +324,8 @@ extern D2CmpPoolStrc gCmpTilePool; // 0x0088DB20
 extern D2CmpTileCacheStrc gCmpTileCache; // 0x0089DB60
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, size_t nSize); // 0x00681EF0
+typedef void(__fastcall* CELFILECELLOPFN)(D2CelStrc* pCel, int nArg);
+extern CELFILECELLOPFN gpfnCelFileCellOp[]; // 0x006E3698
 
 void __fastcall D2CMPTileCacheReleaseTile(void* pEntry); // 0x005FDE50
 
@@ -355,13 +335,10 @@ void __fastcall D2CMPSpriteCacheFreeAll(D2CmpTileCacheStrc* pCache); // 0x005FFB
 
 void __cdecl CodecReleaseLock(); // 0x0060CD50
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 struct D2CmpCacheBlockOwnerStrc
 {
@@ -375,7 +352,6 @@ extern const char* gszCmpCompressedExtension; // 0x00741F00
 
 extern const char* gszCmpDefaultExtension; // 0x00741F04
 
-extern D2CmpCacheListEntryStrc* gpCmpCacheEntries; // 0x0089DB7C
 
 struct D2CmpCacheNodeStrc
 {
@@ -402,8 +378,6 @@ extern int gnCmpGfxMode; // 0x00741F08
 
 extern unsigned char gaItemShiftMaps[][105][256]; // 0x008ADBB8
 
-int __cdecl sub_00517ABB_FindLowestSetBit(unsigned int dwMask); // 0x00517ABB
-
 extern int gaDirectionIndex32[][32]; // 0x006E3A20
 
 typedef void(__fastcall* CELFILECONVERTFN)(D2CelFileStrc* pSource, D2CelFileStrc* pTarget, int nArg1, int nArg2);
@@ -421,7 +395,6 @@ struct D2FindTileNodeStrc
 };
 
 
-unsigned char __fastcall FindTileHash(int a, int b, int c); // 0x0060CD70
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
@@ -446,34 +419,16 @@ extern unsigned short gwValue_0077905C;
 
 struct D2Storm4167B0Strc
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
 
     ~D2Storm4167B0Strc();
 };
 
 struct D2Storm4168F0Strc
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
 
     ~D2Storm4168F0Strc();
-};
-
-struct PairStrc_00601BB0
-{
-    int nFirst;
-    int nSecond;
-};
-
-struct PairStrc_00601D20
-{
-    int nFirst;
-    int nSecond;
-};
-
-struct PairStrc_00601DB0
-{
-    int nFirst;
-    int nSecond;
 };
 
 struct PairStrc_0060E1B0
@@ -488,452 +443,365 @@ struct PairStrc_0060E290
     int nSecond;
 };
 
-extern int gdwGlobal_0096CA48; // 0x0096CA48
-
-int __fastcall DRLGOUTSIEGE_GetBorderLookupId(D2DrlgLevelStrc* pLevel); // 0x0067DCE0
 
 struct sub_0040F7D0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_0040F7D0();
 };
 
 struct sub_00417810
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00417810();
 };
 
 struct sub_00417860
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00417860();
 };
 
 struct sub_004178C0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_004178C0();
 };
 
 struct sub_00417900
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00417900();
 };
 
 struct sub_00417950
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00417950();
 };
 
 struct sub_004179B0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_004179B0();
 };
 
 struct sub_004183F0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_004183F0();
 };
 
 struct sub_00418430
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00418430();
 };
 
 struct sub_00418780
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00418780();
 };
 
 struct sub_004187C0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_004187C0();
 };
 
 struct sub_00418800
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00418800();
 };
 
 struct sub_00418840
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00418840();
 };
 
 struct sub_00418880
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00418880();
 };
 
 struct sub_004188C0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_004188C0();
 };
 
 struct sub_00418BA0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00418BA0();
 };
 
 struct sub_00418BE0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00418BE0();
 };
 
 struct sub_00418C20
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00418C20();
 };
 
 struct sub_00418E10
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00418E10();
 };
 
 struct sub_0041C3D0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_0041C3D0();
 };
 
 struct sub_0041C500
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_0041C500();
 };
 
 struct sub_0041C730
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_0041C730();
 };
 
 struct sub_0041C800
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_0041C800();
 };
 
 struct sub_00420430
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00420430();
 };
 
 struct sub_004204B0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_004204B0();
 };
 
 struct sub_00420710
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00420710();
 };
 
 struct sub_004207E0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_004207E0();
 };
 
 struct sub_00426960
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00426960();
 };
 
 struct sub_00426A80
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00426A80();
 };
 
 struct sub_00426CB0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00426CB0();
 };
 
 struct sub_00426D80
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_00426D80();
 };
 
 struct sub_0044DDD0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_0044DDD0();
 };
 
 struct sub_0044DE90
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_0044DE90();
 };
 
 struct sub_0044ECC0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_0044ECC0();
 };
 
 struct sub_0044ED50
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     ~sub_0044ED50();
-};
-
-struct sub_00601BF0
-{
-    D2StormLinkStrc f_0;
-    ~sub_00601BF0();
-};
-
-struct sub_00601C70
-{
-    D2StormLinkStrc f_0;
-    ~sub_00601C70();
-};
-
-struct sub_00601D60
-{
-    D2StormLinkStrc f_0;
-    ~sub_00601D60();
-};
-
-struct sub_00601F20
-{
-    D2StormLinkStrc f_0;
-    ~sub_00601F20();
-};
-
-struct sub_00601F60
-{
-    D2StormLinkStrc f_0;
-    ~sub_00601F60();
-};
-
-struct sub_006020D0
-{
-    D2StormLinkStrc f_0;
-    ~sub_006020D0();
-};
-
-struct sub_00602140
-{
-    D2StormLinkStrc f_0;
-    ~sub_00602140();
-};
-
-struct sub_006024A0
-{
-    D2StormLinkStrc f_0;
-    ~sub_006024A0();
-};
-
-struct sub_00602760
-{
-    D2StormLinkStrc f_0;
-    ~sub_00602760();
 };
 
 struct sub_00417780
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00417780();
 };
 
 struct sub_00417850
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00417850();
 };
 
 struct sub_004178B0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_004178B0();
 };
 
 struct sub_00417940
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00417940();
 };
 
 struct sub_00417990
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00417990();
 };
 
 struct sub_00418760
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00418760();
 };
 
 struct sub_00418770
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00418770();
 };
 
 struct sub_00418A40
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00418A40();
 };
 
 struct sub_00418DE0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00418DE0();
 };
 
 struct sub_00418DF0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00418DF0();
 };
 
 struct sub_00418E00
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00418E00();
 };
 
 struct sub_00418E50
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00418E50();
 };
 
 struct sub_00418FF0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00418FF0();
 };
 
 struct sub_00419060
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00419060();
 };
 
 struct sub_0041C4F0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_0041C4F0();
 };
 
 struct sub_0041C720
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_0041C720();
 };
 
-struct sub_0041C7F0
+struct HANDLER
 {
-    D2StormLinkStrc f_0;
-    sub_0041C7F0();
+    D2StormLinkStrc m_link;
+    HANDLER();
 };
 
 struct sub_004204A0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_004204A0();
 };
 
 struct sub_00420700
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00420700();
 };
 
 struct sub_004207D0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_004207D0();
 };
 
 struct sub_00426CA0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00426CA0();
 };
 
 struct sub_00426D70
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_00426D70();
 };
 
 struct sub_0044BDE0
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_0044BDE0();
 };
 
 struct sub_0044ED40
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_0044ED40();
 };
 
 struct sub_0044ED90
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc m_link;
     sub_0044ED90();
-};
-
-struct sub_00601F10
-{
-    D2StormLinkStrc f_0;
-    sub_00601F10();
-};
-
-struct sub_00602130
-{
-    D2StormLinkStrc f_0;
-    sub_00602130();
-};
-
-struct sub_00602180
-{
-    D2StormLinkStrc f_0;
-    sub_00602180();
-};
-
-struct sub_00602420
-{
-    D2StormLinkStrc f_0;
-    sub_00602420();
-};
-
-struct sub_00602750
-{
-    D2StormLinkStrc f_0;
-    sub_00602750();
 };
 
 struct D2CommonStormSlotArrayAStrc {
@@ -943,8 +811,6 @@ struct D2CommonStormSlotArrayAStrc {
  D2CommonStormSlotListAStrc* sub_00601CC0_At(unsigned int index);
 };
 
-extern "C" int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
-
 extern "C" const char gszIgnoreListSourceFile_006E6290[];
 
 struct R0052E0F0
@@ -952,13 +818,6 @@ struct R0052E0F0
     void* pUnk0x00;
     void* m_pFile;
     bool sub_0052E0F0_IsOpen();
-};
-
-struct R00601DC0
-{
-    void* pUnk0x00;
-    void* m_pFile;
-    bool sub_00601DC0_IsOpen();
 };
 
 int __stdcall CelFileFreeHardware(D2CelFileStrc* pCelFile); // 0x00601A50
@@ -1061,14 +920,6 @@ struct sub_0044F9F0
     ~sub_0044F9F0();
 };
 
-struct D2StormList0044FB30Strc
-{
-    int m_linkoffset;
-    D2StormCtorLinkStrc m_terminator;
-
-    D2StormList0044FB30Strc();
-};
-
 struct D2StormDeadListStrc
 {
     int m_linkoffset;
@@ -1113,12 +964,12 @@ struct D2StormGameGrowArrayStrc
 struct D2StormGameHashChunkStrc
 {
     D2StormGameArrayStrc tArray;
-    D2StormChunkLinkStrc f_10;
+    D2StormChunkLinkStrc m_link;
 
     ~D2StormGameHashChunkStrc();
 };
 
-extern "C" const char gszTypeNewsTableItem_0072FF8C[];
+extern "C" const char gszTypeNewsTableItem[];
 
 typedef void (__fastcall* CelFileBuildFn)(CELLIST* pList, D2CelFileStrc* pCelFile);
 
@@ -1138,9 +989,7 @@ inline void __cdecl operator delete(void* pMemory)
         SMemFree(pMemory, "delete", -1, 0);
 }
 
-extern "C" void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags); // 0x00413020
-
-extern "C" const char szWardenClientFile_006D8E18[];
+extern "C" const char szWardenClientFile[];
 
 class WardenModule
 {
@@ -1153,15 +1002,6 @@ public:
     int nImports;
     int unk0x0C;
     void* f_10;
-};
-
-struct D2Warden47F930Strc
-{
-    int n00;
-    int n04;
-    int n08;
-
-    D2Warden47F930Strc();
 };
 
 struct D2WardenModuleHolderAStrc
@@ -1184,25 +1024,20 @@ int gnCmpPoolArg; // 0x0088CB18
 
 extern const char gszCelCmp[]; // 0x006E5DD0
 
-extern "C" void* __stdcall SMemReAlloc(void* pLocation, unsigned int nAmount, const char* szLogFileName, int nLogLine, unsigned int nFlags); // 0x004133D0
-
 struct D2CelStrc;
 
 extern "C" int __cdecl sub_00517ABB_BitScanForward1(unsigned int nValue);
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
-extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc* pLock);         // 0x006CC218
 
-extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalSectionStrc* pLock);         // 0x006CC214
 
-int gdwGlobal_0096C7F4; // 0x0096C7F4
+int gpCharstatsTxt; // 0x0096C7F4
 
 int gpAnimData; // 0x0096C8A4
 
-int gdwGlobal_0096D46C; // 0x0096D46C
+int gnShrinesTxtRecordCount; // 0x0096D46C
 
 char* __fastcall sub_0060E280_AddLinkOffset(char* pNode, int nLinkOffset);
 
@@ -1212,289 +1047,289 @@ int __cdecl sub_0069FA20(); // 0x0069FA20
 
 sub_0040F7D0::~sub_0040F7D0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00417780::sub_00417780()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00417810::~sub_00417810()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00417850::sub_00417850()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00417860::~sub_00417860()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_004178B0::sub_004178B0()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_004178C0::~sub_004178C0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00417900::~sub_00417900()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00417940::sub_00417940()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00417950::~sub_00417950()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00417990::sub_00417990()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_004179B0::~sub_004179B0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_004183F0::~sub_004183F0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00418430::~sub_00418430()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00418760::sub_00418760()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00418770::sub_00418770()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00418780::~sub_00418780()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_004187C0::~sub_004187C0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00418800::~sub_00418800()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00418840::~sub_00418840()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00418880::~sub_00418880()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_004188C0::~sub_004188C0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00418A40::sub_00418A40()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00418BA0::~sub_00418BA0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00418BE0::~sub_00418BE0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00418C20::~sub_00418C20()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00418DE0::sub_00418DE0()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00418DF0::sub_00418DF0()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00418E00::sub_00418E00()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00418E10::~sub_00418E10()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00418E50::sub_00418E50()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00418FF0::sub_00418FF0()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00419060::sub_00419060()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_0041C3D0::~sub_0041C3D0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_0041C4F0::sub_0041C4F0()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_0041C500::~sub_0041C500()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_0041C720::sub_0041C720()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_0041C730::~sub_0041C730()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
-sub_0041C7F0::sub_0041C7F0()
+HANDLER::HANDLER()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_0041C800::~sub_0041C800()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00420430::~sub_00420430()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_004204A0::sub_004204A0()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_004204B0::~sub_004204B0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00420700::sub_00420700()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00420710::~sub_00420710()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_004207D0::sub_004207D0()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_004207E0::~sub_004207E0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00426960::~sub_00426960()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00426A80::~sub_00426A80()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00426CA0::sub_00426CA0()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00426CB0::~sub_00426CB0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_00426D70::sub_00426D70()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_00426D80::~sub_00426D80()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 char* __fastcall sub_0060E360_AddLinkOffset(char* pNode, int nLinkOffset)
@@ -1547,58 +1382,40 @@ int __stdcall sub_00436E90_AlwaysOne(int nArg)
 
 sub_0044BDE0::sub_0044BDE0()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_0044DDD0::~sub_0044DDD0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_0044DE90::~sub_0044DE90()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_0044ECC0::~sub_0044ECC0()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_0044ED40::sub_0044ED40()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 sub_0044ED50::~sub_0044ED50()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 sub_0044ED90::sub_0044ED90()
 {
-    f_0.m_prevlink = 0;
-    f_0.m_next = 0;
-}
-
-// build: symbol ?SKILLS_ScaleUpDirection@* 0x004C5390
-void __fastcall SKILLS_ScaleUpDirection(int* pX, int* pY)
-{
-    int nDistance = *pX * *pX + *pY * *pY;
-    if (nDistance < 4)
-    {
-        *pX <<= 2;
-        *pY <<= 2;
-        nDistance = *pX * *pX + *pY * *pY;
-    }
-
-    if (nDistance < 16)
-    {
-        *pX <<= 1;
-        *pY <<= 1;
-    }
+    m_link.m_prevlink = 0;
+    m_link.m_next = 0;
 }
 
 int __stdcall sub_004C6020_AlwaysOne(int nArg)
@@ -1640,11 +1457,8 @@ struct D2TileLibraryStrc
     D2TileLibraryEntryStrc* pTiles;
 };
 
-int __stdcall SRegLoadValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long* pValue); // 0x00414F10
 
 D2TileFreeCallbackFn gpfnTileFreeCallback; // 0x0088CB1C
-
-int __fastcall ARCHIVE_SetFilePointer(void* unused, void* file, long nOffset, long* pnOffsetHigh, int nMethod); // 0x00516F14
 
 void __fastcall LRUCacheTouch(D2CmpPoolStrc* pPool, D2LRUNodeStrc* pNode); // 0x00609380
 
@@ -1668,126 +1482,56 @@ extern "C" int __cdecl vsprintf(char*,const char*,va_list);
 
 extern "C" char* __cdecl strcat(char*,const char*);
 
-struct Config { int enabled; const char* compressed; const char* standard; };
-
-extern Config extensions; // 0x00741EFC
-
-enum { DISABLED = 0 };
-
-void* __fastcall sub_0040A9E0(AsyncData* pAsync); // 0x0040A9E0
 
 
-static void* __stdcall sub_005FEB80_FindDC6Frame(void* pData, D2CmpSpriteContextStrc* pContext, D2CmpDC6HeaderStrc* pHeader); // 0x005FEB80
 
-static void* sub_005FEC50_GetCachedDC6Frame(D2CmpSpriteContextStrc* pContext, D2CmpDC6CacheEntryStrc* pEntry); // 0x005FEC50
+static void* __stdcall SPRITECACHE_FindDC6Frame(void* pData, D2CmpSpriteContextStrc* pContext, D2CmpDC6HeaderStrc* pHeader); // 0x005FEB80
 
-void __stdcall sub_P04_Emit_005FEC50(D2CmpSpriteContextStrc* pContext, D2CmpDC6CacheEntryStrc* pEntry)
-{
-    pContext->pFrame = sub_005FEC50_GetCachedDC6Frame(pContext, pEntry);
-}
-
-// build: symbol ?sub_005FEC50_GetCachedDC6Frame@* 0x005FEC50
-static void* sub_005FEC50_GetCachedDC6Frame(D2CmpSpriteContextStrc* pContext, D2CmpDC6CacheEntryStrc* pEntry)
-{
-    if (pEntry && pEntry->tHeader.pAsync)
-    {
-        D2CmpDC6HeaderStrc* pHeader = &pEntry->tHeader;
-        void* pData = sub_0040A9E0(pHeader->pAsync);
-        if (pData)
-        {
-            pContext->nFrames = pHeader->nFrames;
-            return sub_005FEB80_FindDC6Frame(pData, pContext, pHeader);
-        }
-
-        return 0;
-    }
-
-    return 0;
-}
-
-// build: symbol ?sub_005FEB80_FindDC6Frame@* 0x005FEB80
-static void* __stdcall sub_005FEB80_FindDC6Frame(void* pData, D2CmpSpriteContextStrc* pContext, D2CmpDC6HeaderStrc* pHeader)
-{
-    if (!pData)
-    {
-        return 0;
-    }
-
-    if (!pHeader)
-    {
-        return 0;
-    }
-
-    if ((unsigned int)pContext->nFrame >= pHeader->nFrames)
-    {
-        return 0;
-    }
-
-    int nIndex;
-    D2CmpDC6FrameStrc* pFrame = (D2CmpDC6FrameStrc*)pData;
-    if (pContext->nType == 6 && (pContext->dwFlags & 2))
-    {
-        nIndex = CelGameDirToFileDir(pContext->nDirection, pHeader->nDirections - 1);
-    }
-    else if (pContext->nType == 2)
-    {
-        nIndex = 0;
-    }
-    else if (pContext->nType == 4)
-    {
-        nIndex = pContext->nDirection;
-    }
-    else
-    {
-        nIndex = CelGameDirToFileDir(pContext->nDirection, pHeader->nDirections - 1);
-    }
-
-    if (nIndex >= pHeader->nDirections - 1)
-    {
-        return 0;
-    }
-
-    int nOffset = pHeader->aOffsets[nIndex];
-    if (nOffset < 0)
-    {
-        return 0;
-    }
-
-    const int nFrame = pContext->nFrame;
-    for (int i = 0; i <= nFrame; ++i)
-    {
-        pFrame = (D2CmpDC6FrameStrc*)((char*)pData + nOffset);
-        if (pFrame->nFlip != 0)
-        {
-            return 0;
-        }
-
-        if (pFrame->nWidth > 0x100)
-        {
-            return 0;
-        }
-
-        if (pFrame->nHeight > 0x100)
-        {
-            return 0;
-        }
-
-        nOffset += pFrame->nLength + pFrame->nOffsetY_14 + 0x23;
-        if (nOffset < 0)
-        {
-            return 0;
-        }
-    }
-
-    return pFrame;
-}
+static void* SPRITECACHE_GetCachedDC6Frame(D2CmpSpriteContextStrc* pContext, D2CmpDC6CacheEntryStrc* pEntry); // 0x005FEC50
 
 // 0x005FE210
 void __stdcall D2CMPBuildFileName(char* output,int allowCompressed,const char* format,va_list args)
 {
     vsprintf(output,format,args);
-    const char* suffix=(allowCompressed!=DISABLED && extensions.enabled!=DISABLED)?extensions.compressed:extensions.standard;
+    const char* suffix = allowCompressed && gbCmpCompressedDataMode ? gszCmpCompressedExtension : gszCmpDefaultExtension;
     strcat(output,suffix);
+}
+
+// Kept noinline: CelGetRawData (0x6015D0) calls this out of line in the image; without it the compiler inlines it there.
+// 0x00600C90
+__declspec(noinline) int __stdcall CelGameDirToFileDir(int nDirection, unsigned int nDirections)
+{
+// build: symbol ?gaDirectionIndex64@* 0x006E45A0
+    return gaDirectionIndex64[sub_00517ABB_FindLowestSetBit(nDirections)][nDirection];
+}
+
+// 0x00600D30
+int __stdcall D2CMPSpriteCanConvertDirections(int nDirections, int nNewDirections)
+{
+    if (nDirections == 4)
+    {
+        return 0;
+    }
+
+    if (nDirections == 8 && nNewDirections == 16)
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
+// 0x00601180
+void __stdcall CelFileIteratePixels(D2CelFileStrc* pCelFile, int nArg)
+{
+    D2_ASSERT(pCelFile->dwFlags & 4, 0x322);
+    for (unsigned int nDirection = 0; nDirection < pCelFile->nDirections; nDirection++)
+    {
+        for (unsigned int nFrame = 0; nFrame < pCelFile->nCelsPerDirection; nFrame++)
+        {
+            CelIterateRgbPixels(pCelFile->pCels[nDirection * pCelFile->nCelsPerDirection + nFrame], nArg, pCelFile->nTermination);
+        }
+    }
 }
 
 // 0x006011F0
@@ -1885,6 +1629,16 @@ void __stdcall CelFileFreeSerialized(D2CelFileStrc* pCelFile)
     FOG_Free(pCelFile, ".\\SRC\\CelCmp.cpp", 0x40E, 0);
 }
 
+// 0x00601450
+void __stdcall CelFileTransform(D2CelFileStrc* pCelFile, int nArg)
+{
+    D2_ASSERT(pCelFile, 0x431);
+    for (unsigned int i = 0; i < pCelFile->nDirections * pCelFile->nCelsPerDirection; i++)
+    {
+        gpfnCelFileCellOp[pCelFile->nFormat](pCelFile->pCels[i], nArg);
+    }
+}
+
 // 0x006014C0
 void __stdcall CelDraw(D2CmpCelContextStrc* pContext, int nX, int nY, int nArg4, int nArg5, unsigned char* pBuffer, int nHeight, int nPitch, int nArg9, int nArg10, int nArg11)
 {
@@ -1965,12 +1719,11 @@ int __stdcall CelGetRawData(CellTable* p, int nDirection, int nIndex, void* pDst
 }
 
 // 0x00600C60
-int __fastcall sub_00600C60_CallFree(void* pMemory)
+int __fastcall DATATBLS_CallFree(void* pMemory)
 {
     return sub_00517ABB_FindLowestSetBit((unsigned int)pMemory);
 }
 
-extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2CriticalSectionStrc* pLock);        // 0x006CC1FC
 
 
 // 0x005FDE50
@@ -1987,23 +1740,88 @@ void __fastcall D2CMPTileCacheReleaseTile(void* pEntry)
     pTile->pNext = 0;
 }
 
-// 0x00601980
-char* __stdcall CelGetControlData(D2CelStrc* pCel)
+// 0x00601650
+void __stdcall CelDrawEx(D2CmpCelContextStrc* pContext, int nX, int nY, int nArg4, int nArg5, unsigned char* pBuffer, int nHeight, int nPitch, int nArg9, int nArg10, int nClipTop, int nClipRows, int nArg13)
 {
-    D2_ASSERT(pCel, 0x5B4);
-    return pCel->data;
-}
-
-// 0x006019B0
-int __stdcall CelFileGetNumDirections(D2UnitStrc* unit)
-{
-    if(unit->dwUnitType!=REQUIRED_TYPE) {
-        FOG_DisplayHalt(&emptyAssert,sub_00408090(),0x5C2);
-        exit(-1);
+    D2CelFileStrc* pCelFile = pContext->pCelFile;
+    if (pCelFile)
+    {
+        D2_ASSERT(pCelFile->dwVersion == 6, 0x4C6);
+        D2_ASSERT(!(pCelFile->dwFlags & 4), 0x4C7);
     }
-    return unit->dwAnimMode;
+    D2_ASSERT(pBuffer, 0x4CA);
+    D2CelStrc* pCel = pContext->pCel;
+    D2_ASSERT(pCel, 0x4CD);
+    nY += pCel->nYOffset;
+    int nEnd = nY - nClipTop;
+    nX += pCel->nXOffset;
+    int nStart = nEnd - nClipRows;
+    if (nEnd < 0 || nStart >= nHeight)
+    {
+        return;
+    }
+    if (nStart < 0)
+    {
+        nStart = 0;
+    }
+    if (nEnd >= nHeight)
+    {
+        nEnd = nHeight - 1;
+    }
+    const int nRows = nEnd - nStart;
+    if (!nRows)
+    {
+        return;
+    }
+    CELDRAWFN pfnDraw = gpfnCelDraw[pCelFile->nFormat];
+    D2_ASSERT(pfnDraw, 0x4E9);
+    pfnDraw(pCel, &pBuffer[nEnd * nPitch + nX], nX, nArg4, nArg5, nPitch, nY - nEnd, nRows, nArg9, nArg10, nArg13);
 }
 
+// 0x00601730
+void __stdcall CelDrawShadow(D2CmpCelContextStrc* pContext, int nX, int nY, int nClipLeft, int nClipRight, unsigned char* pBuffer, int nHeightLimit, int nPitch, int nTable, int nColor)
+{
+    D2CelFileStrc* pCelFile = pContext->pCelFile;
+    if (pCelFile)
+    {
+        D2_ASSERT(pCelFile->dwVersion == 6, 0x50D);
+        D2_ASSERT(!(pCelFile->dwFlags & 4), 0x50E);
+    }
+
+    D2_ASSERT(pBuffer, 0x511);
+    D2CelStrc* pCel = pContext->pCel;
+    D2_ASSERT(pCel, 0x514);
+
+    nX += pCel->nXOffset + pCel->nYOffset / 2;
+    nY += pCel->nYOffset / 2;
+    int nLines = (unsigned int)pCel->nHeight / 2;
+    int nSkip = 0;
+    if (nY - pCel->nHeight / 2 < 0)
+    {
+        nLines = nY + 1;
+    }
+
+    if (nLines <= 0)
+    {
+        return;
+    }
+
+    if (nY >= nHeightLimit)
+    {
+        nSkip = nY - nHeightLimit + 1;
+        nLines -= nSkip;
+        if (nLines <= 0)
+        {
+            return;
+        }
+        nY = nHeightLimit - 1;
+    }
+
+    const int nStart = nX - nSkip;
+    CelDrawRleShadow(pCel, pBuffer + nY * nPitch + nStart, nStart, nClipLeft, nClipRight, nPitch, nSkip, nLines, nTable, nColor);
+}
+
+// 0x00601810
 int __stdcall CelValidateContext(D2CmpCelContextStrc* pContext)
 {
     D2CelFileStrc* pCelFile = (D2CelFileStrc*)pContext->pCelFile;
@@ -2028,6 +1846,75 @@ int __stdcall CelValidateContext(D2CmpCelContextStrc* pContext)
     }
 
     return 1;
+}
+
+// 0x006018C0
+int __stdcall CelGetWidth(D2CelStrc* pCel)
+{
+    D2_ASSERT(pCel, 1403);
+
+    return pCel->nWidth;
+}
+
+// 0x006018F0
+int __stdcall CelGetHeight(D2CelStrc* pCel)
+{
+    D2_ASSERT(pCel, 0x589);
+
+    return pCel->nHeight;
+}
+
+// 0x00601920
+int __stdcall CelGetOffsetX(D2CelStrc* pCel)
+{
+    D2_ASSERT(pCel, 0x597);
+
+    return pCel->nXOffset;
+}
+
+// 0x00601950
+int __stdcall CelGetOffsetY(D2CelStrc* pCel)
+{
+    D2_ASSERT(pCel, 0x5A5);
+
+    return pCel->nYOffset;
+}
+
+// 0x00601980
+char* __stdcall CelGetControlData(D2CelStrc* pCel)
+{
+    D2_ASSERT(pCel, 0x5B4);
+    return pCel->data;
+}
+
+// 0x006019B0
+int __stdcall CelFileGetNumDirections(D2UnitStrc* unit)
+{
+    if(unit->dwUnitType!=REQUIRED_TYPE) {
+        FOG_DisplayHalt(&emptyAssert,sub_00408090(),0x5C2);
+        exit(-1);
+    }
+    return unit->dwAnimMode;
+}
+
+// 0x006019F0
+int __stdcall CelFileGetCelsPerDirection(D2CelFileStrc* pFile)
+{
+    D2_ASSERT(pFile->dwVersion == 6, 1489);
+
+    return pFile->nCelsPerDirection;
+}
+
+// 0x00601A30
+void __stdcall CelSetHardwareFreeCallback(PixelDataFreeCallback pfnCallback)
+{
+    gpfnPixelDataFree = pfnCallback;
+}
+
+// 0x00601A40
+PixelDataFreeCallback __stdcall CelGetHardwareFreeCallback()
+{
+    return gpfnPixelDataFree;
 }
 
 // 0x00601A50
@@ -2089,7 +1976,7 @@ char* __fastcall sub_004167A0_LinkNext(D2StormLinkStrc* pLink)
 
 D2Storm4167B0Strc::~D2Storm4167B0Strc()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 char* __fastcall sub_004167F0_LinkNext(D2StormLinkStrc* pLink)
@@ -2139,7 +2026,7 @@ char* __fastcall sub_00416880_LinkRawNext(D2StormLinkStrc* pLink)
 
 D2Storm4168F0Strc::~D2Storm4168F0Strc()
 {
-    f_0.Unlink();
+    m_link.Unlink();
 }
 
 void __fastcall sub_004169F0_InitTerminator(D2StormListStrc* pList)
@@ -2193,7 +2080,7 @@ extern "C" void _ReadWriteBarrier(void);
 
 // Three members of the cel list table keep the forms this file had before: the original reloads the slot list
 // on every step of its loops, and no plain form of the templates' members has given that yet. InternalFind is
-// defined at the end of the file; GenerateHandle is CelCmp_005FF2A0.cpp's.
+// defined at the end of the file; GenerateHandle is CelCmp_00603280.cpp's.
 template<>
 CELLIST* TSHashTable<CELLIST, HASHKEY_NONE>::InternalFind(unsigned int hashval, const HASHKEY_NONE& key);
 template<>
@@ -2201,6 +2088,14 @@ int TSHashTable<CELLIST, HASHKEY_NONE>::MonitorFullness(unsigned int slot);
 template<>
 HCELLIST__* TSExportTableSimple<CELLIST, HCELLIST__*, 0>::GenerateHandle();
 
+
+// 0x00601B10
+void* __stdcall CelGetHardwareData(D2CelStrc* pCel)
+{
+    D2_ASSERT(pCel, 1578);
+
+    return pCel->pBlockPixelData;
+}
 
 // 0x006045B0
 template<>
@@ -2436,7 +2331,7 @@ CELLIST* D2CelListRecordArrayHolderStrc::sub_00604460_New()
 // build: symbol ??0?$TSBaseArray@UCELLIST@@@@QAE@XZ 0x00601E00
 // build: symbol ?InitializeTerminator@?$TSList@UCELLIST@@U?$TSGetExplicitLink@UCELLIST@@@@@@QAEXXZ 0x00601E10
 // build: symbol ?CalcChunkSize@?$TSGrowableArray@V?$TSExplicitList@UCELLIST@@$0?CCCCCCCD@@@U?$TSCD@V?$TSExplicitList@UCELLIST@@$0?CCCCCCCD@@@@@@@QAEII@Z 0x00601E20
-// build: symbol ?RoundUp@?$TSGrowableArray@UCELLIST@@U?$TSCD@UCELLIST@@@@@@SGIII@Z 0x00601E60
+// build: symbol ?RoundUp@?$TSGrowableArray@UCELLIST@@U?$TSCD@UCELLIST@@@@@@QAEIII@Z 0x00601E60
 // build: symbol ?Head@?$TSList@UTCELENTRY@@U?$TSGetLink@UTCELENTRY@@@@@@QAEPAUTCELENTRY@@XZ 0x00601F00
 // build: symbol ??0?$TSLink@UTCELENTRY@@@@QAE@XZ 0x00601F10
 // build: symbol ?Unlink@?$TSLink@UTCELENTRY@@@@QAEXXZ 0x00601F20
@@ -2529,7 +2424,7 @@ CELLIST* D2CelListRecordArrayHolderStrc::sub_00604460_New()
 // build: symbol ?DeleteChunksAndReuse@?$TSHashTableReuse@UCELLIST@@VHASHKEY_NONE@@$0A@@@QAEXXZ 0x00603E50
 // build: symbol ??0?$TSHashTableReuse@UCELLIST@@VHASHKEY_NONE@@$0A@@@QAE@XZ 0x00603E70
 // build: symbol ?CalcChunkSize@?$TSGrowableArray@UCELLIST@@U?$TSCD@UCELLIST@@@@@@QAEII@Z 0x00603EE0
-// build: symbol ?RoundUp@?$TSGrowableArray@V?$TSExplicitList@UCELLIST@@$0?CCCCCCCD@@@U?$TSCD@V?$TSExplicitList@UCELLIST@@$0?CCCCCCCD@@@@@@@SGIII@Z 0x00603F20
+// build: symbol ?RoundUp@?$TSGrowableArray@V?$TSExplicitList@UCELLIST@@$0?CCCCCCCD@@@U?$TSCD@V?$TSExplicitList@UCELLIST@@$0?CCCCCCCD@@@@@@@QAEIII@Z 0x00603F20
 // build: symbol ??0?$TSBaseArray@V?$TSExplicitList@UCELLIST@@$0?CCCCCCCD@@@@@QAE@XZ 0x00603F40
 // build: symbol ??0?$TSHashObject@UCELLIST@@VHASHKEY_NONE@@@@QAE@ABU0@@Z 0x00603F70
 // build: symbol ??0?$TSList@UCELLIST@@U?$TSGetExplicitLink@UCELLIST@@@@@@QAE@ABU0@@Z 0x00603F90
@@ -2715,14 +2610,6 @@ struct Library
 };
 }
 
-// build: symbol ?WARDENCLIENT_SwapBytes@* 0x0047F8B0
-void __fastcall WARDENCLIENT_SwapBytes(unsigned char* pA, unsigned char* pB)
-{
-    unsigned char nTemp = *pA;
-    *pA = *pB;
-    *pB = nTemp;
-}
-
 inline void* __cdecl operator new(unsigned int nSize, void* pWhere) throw()
 {
     return pWhere;
@@ -2765,7 +2652,7 @@ D2StormGameGrowArrayStrc::~D2StormGameGrowArrayStrc()
 
 D2StormGameHashChunkStrc::~D2StormGameHashChunkStrc()
 {
-    f_10.Unlink();
+    m_link.Unlink();
 }
 
 inline unsigned int RoundUpInline(unsigned int nValue, unsigned int nAlign)
@@ -2806,23 +2693,16 @@ void __cdecl sub_0051D2E0_Nop()
 {
 }
 
-// build: symbol ?BNNEWS_CopyNewsItem@* 0x0051D350
-void __fastcall BNNEWS_CopyNewsItem(D2Storm408ElemStrc* pDst, const D2Storm408ElemStrc* pSrc)
-{
-    if (pDst)
-        *pDst = *pSrc;
-}
-
 void D2StormArray408Strc::sub_0051D570_FreeData()
 {
     if (m_data)
-        SMemFree(m_data, gszTypeNewsTableItem_0072FF8C, -2, 0);
+        SMemFree(m_data, gszTypeNewsTableItem, -2, 0);
 }
 
 void D2StormArray408Strc::sub_0051D670_FreeData()
 {
     if (m_data)
-        SMemFree(m_data, gszTypeNewsTableItem_0072FF8C, -2, 0);
+        SMemFree(m_data, gszTypeNewsTableItem, -2, 0);
 }
 
 void __fastcall sub_005179B3_ConvertCelPixels(void* pDst, void* pSrc, int nRows, unsigned int nSrcSize, unsigned int nWidth, int nRows2); // 0x005179B3
@@ -2905,7 +2785,7 @@ unsigned int __stdcall CelCompressCreateCelFile(unsigned int hCelList, D2CelFile
 void D2StormArray408Strc::sub_0051D6A0_Clear()
 {
     if (m_data)
-        SMemFree(m_data, gszTypeNewsTableItem_0072FF8C, -2, 0);
+        SMemFree(m_data, gszTypeNewsTableItem, -2, 0);
     m_alloc = 0;
     m_count = 0;
     m_data = 0;
@@ -2923,7 +2803,7 @@ D2StormArray408Strc* D2StormArray408Strc::sub_0051D720_Init()
 void D2StormArray408Strc::sub_0051D730_FreeData()
 {
     if (m_data)
-        SMemFree(m_data, gszTypeNewsTableItem_0072FF8C, -2, 0);
+        SMemFree(m_data, gszTypeNewsTableItem, -2, 0);
 }
 
 D2Storm408ElemStrc* D2StormArray408Strc::sub_0051D7A0_New()
@@ -3141,7 +3021,7 @@ void __stdcall sub_00611640(int nUnused1)
 // 0x00611D10
 int __cdecl DATATBLS_GetCharstatsTxtTable()
 {
-    return gdwGlobal_0096C7F4;
+    return gpCharstatsTxt;
 }
 
 // 0x00611D20
@@ -3153,7 +3033,7 @@ int __cdecl DATATBLS_GetAnimData()
 // 0x00641500
 int __cdecl DATATBLS_GetShrinesTxtRecordCount()
 {
-    return gdwGlobal_0096D46C;
+    return gnShrinesTxtRecordCount;
 }
 
 // 0x00600C00
@@ -3261,25 +3141,6 @@ const char* __stdcall D2CMPGetGfxFileExtension(int bAllowCompressed)
     return gszCmpDefaultExtension;
 }
 
-// 0x005FF300
-int __stdcall D2CMPSpriteFindAsynchSiblings(int nKeyA, int nKeyB, int nKeyC)
-{
-    for (D2CmpCacheListEntryStrc* pEntry = gpCmpCacheEntries; pEntry; pEntry = pEntry->pNext)
-    {
-        D2CmpCacheKeyStrc* pKey = pEntry->pKey;
-        if (pKey && !(pKey->nFlags & 1) && pKey->nKeyC == nKeyC && pKey->nKeyB == nKeyB && pKey->nKeyA == nKeyA)
-        {
-            D2_ASSERT(pKey->pAsyncData, 0xB7B);
-            if (!sub_0040A7F0_AsyncDataCheck(pKey->pAsyncData))
-            {
-                return 1;
-            }
-        }
-    }
-
-    return 0;
-}
-
 // 0x005FE280
 void __stdcall D2CMPSetNoCompress(int bAllowCompressed)
 {
@@ -3302,7 +3163,8 @@ void __stdcall D2CMPSpriteCacheDestroy(int bFree)
 
     if (bFree)
     {
-        sub_006093E0_PoolFreeAll(&gCmpTilePool);
+// build: symbol ?LRUCacheDestroy@* 0x006093E0
+        LRUCacheDestroy(&gCmpTilePool);
     }
 
     memset(&gCmpTilePool, 0, sizeof(gCmpTilePool));
@@ -3421,18 +3283,6 @@ D2WardenModuleHolderBStrc::~D2WardenModuleHolderBStrc()
 {
 }
 
-// build: symbol ?WARDENCLIENT_AllocLoaderMemory@* 0x0047FBF0
-void* __fastcall WARDENCLIENT_AllocLoaderMemory(unsigned int nSize)
-{
-    return SMemAlloc(nSize, szWardenClientFile_006D8E18, 0x10D, 0);
-}
-
-// build: symbol ?WARDENCLIENT_FreeLoaderMemory@* 0x0047FC10
-void __fastcall WARDENCLIENT_FreeLoaderMemory(void* pMemory)
-{
-    SMemFree(pMemory, szWardenClientFile_006D8E18, 0x117, 0);
-}
-
 NWardenClient::Library::Library()
 {
 }
@@ -3468,17 +3318,13 @@ void __fastcall D2CMPSpriteCacheResize(D2CmpCacheStrc* pCache, D2CmpCacheNodeStr
     LeaveCriticalSection(&pCache->tLock);
 }
 
-void __stdcall sub_F43_EmitPixelDataFreeWriter(PixelDataFreeCallback pfnCallback)
-{
-    gpfnPixelDataFree = pfnCallback;
-}
-
 // 0x005FE120
 void __stdcall D2CMPTileCacheInit(void* pMemPool, int nArg)
 {
     gnCmpPoolArg = nArg;
     memset(&gCmpPool, 0, sizeof(gCmpPool));
-    sub_00609020_PoolInit(&gCmpPool, pMemPool, nArg, D2CMPTileCacheReleaseTile, 0x1000);
+// build: symbol ?LRUCacheInit@* 0x00609020
+    LRUCacheInit(&gCmpPool, pMemPool, nArg, D2CMPTileCacheReleaseTile, 0x1000);
     gbCmpPoolInitialized = 1;
 }
 
@@ -3489,7 +3335,7 @@ void __stdcall D2CMPTileCacheDestroy(int bFree)
     {
         if (bFree)
         {
-            sub_006093E0_PoolFreeAll(&gCmpPool);
+            LRUCacheDestroy(&gCmpPool);
         }
 
         memset(&gCmpPool, 0, sizeof(gCmpPool));
@@ -3502,13 +3348,14 @@ void __stdcall D2CMPTileCacheDestroy(int bFree)
 // 0x005FDF50
 void __stdcall D2CMPTileCacheFreeTile(D2CmpCacheBlockOwnerStrc* pOwner)
 {
-    sub_006092D0_PoolFree(&gCmpPool, pOwner->pBlock);
+// build: symbol ?LRUCacheRelease@* 0x006092D0
+    LRUCacheRelease(&gCmpPool, pOwner->pBlock);
     pOwner->nBlockUsed = 0;
     pOwner->pBlock = 0;
 }
 
 // 0x005FDEA0
-int __stdcall D2CMPTileValidate(D2TileLibraryEntryStrc* pEntry, int a2, int a3)
+int __stdcall D2CMPTileValidate(D2TileLibraryEntryStrc* pEntry, int nUnused1, int nUnused2)
 {
     if (pEntry->pNode)
     {
@@ -3561,7 +3408,7 @@ void __fastcall D2CMPTileCacheFreeProject(D2TileLibraryStrc* pLibrary)
         D2TileLibraryEntryStrc* pEntry = &pLibrary->pTiles[i];
         if (pEntry->pNode)
         {
-            sub_006092D0_PoolFree(&gCmpPool, pEntry->pNode);
+            LRUCacheRelease(&gCmpPool, pEntry->pNode);
             pEntry->pBlocks = 0;
             pEntry->pNode = 0;
         }
@@ -3586,87 +3433,83 @@ extern "C" void __cdecl CelFileConvertRle24To8(); // 0x00606B50
 extern "C" void __cdecl sub_00608540(); // 0x00608540
 extern "C" void __cdecl CelCompressEncodeRleCels(); // 0x00608EE0
 
-extern "C" const CelFileBuildFn gData_006E3680[2]; // 0x006E3680
-extern "C" const CELDRAWFN gData_006E3688[2]; // 0x006E3688
-extern "C" const CELFILECONVERTFN gData_006E3690[2]; // 0x006E3690
-extern "C" const int gData_006E3A20[23][32]; // 0x006E3A20
-
-extern "C" const CelFileBuildFn gData_006E3680[2] = { (CelFileBuildFn)&CelCompressEncodeRleCels }; // 0x006E3680
+extern "C" const CelFileBuildFn gData_006E3680[2] = { (CelFileBuildFn)&CelCompressEncodeRleCels, 0 }; // 0x006E3680
 #pragma comment(linker, "/alternatename:?gapfnCelFileBuilders@@3PAP6IXPAUCELLIST@@PAUD2CelFileStrc@@@ZA=_gData_006E3680")
 
-extern "C" const CELDRAWFN gData_006E3688[2] = { (CELDRAWFN)&sub_00608540 }; // 0x006E3688
+extern "C" const CELDRAWFN gData_006E3688[2] = { (CELDRAWFN)&sub_00608540, 0 }; // 0x006E3688
 #pragma comment(linker, "/alternatename:?gpfnCelDraw@@3PAP6IXPAUD2CelStrc@@PAEHHHHHHHHH@ZA=_gData_006E3688")
 
-extern "C" const CELFILECONVERTFN gData_006E3690[2] = { (CELFILECONVERTFN)&CelFileConvertRle24To8 }; // 0x006E3690
+extern "C" const CELFILECONVERTFN gData_006E3690[2] = { (CELFILECONVERTFN)&CelFileConvertRle24To8, 0 }; // 0x006E3690
 #pragma comment(linker, "/alternatename:?gpfCelFileConvert@@3PAP6IXPAUD2CmpCelFileStrc@@0HH@ZA=_gData_006E3690")
 
-extern "C" const int gData_006E3A20[23][32] = {
+extern "C" const int gData_006E3A20[23][32] = { // 0x006E3A20
     { 0 },
     { 0 },
     { 0 },
     { 0 },
     { 4, 5, 6, 7, 0, 2, 1, 3 },
     { 4, 5, 6, 7, 0, 2, 1, 3, 8, 9, 10, 11, 12, 13, 14, 15 },
-    {
-    4, 5, 6, 7, 0, 2, 1, 3, 8, 9, 10, 11, 12, 13, 14, 15,
-    16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
-},
+    { 4, 5, 6, 7, 0, 2, 1, 3, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 },
     { 0 },
     { 0 },
     { 0 },
     { 0 },
-    {
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-},
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
     { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-    {
-    0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2,
-    2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1
-},
-    {
-    1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 3, 3, 3
-},
-    {
-    0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2,
-    2, 2, 2, 2, 5, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1, 1
-},
-    {
-    1, 1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 3, 3,
-    3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 7
-},
-    {
-    0, 0, 8, 8, 8, 8, 4, 4, 4, 4, 9, 9, 9, 9, 2, 2,
-    2, 2, 10, 10, 10, 10, 5, 5, 5, 5, 11, 11, 11, 11, 1, 1
-},
-    {
-    1, 1, 12, 12, 12, 12, 6, 6, 6, 6, 13, 13, 13, 13, 3, 3,
-    3, 3, 14, 14, 14, 14, 7, 7, 7, 7, 15, 15, 15, 15
-},
-    {
-    0, 16, 16, 8, 8, 17, 17, 4, 4, 18, 18, 9, 9, 19, 19, 2,
-    2, 20, 20, 10, 10, 21, 21, 5, 5, 22, 22, 11, 11, 23, 23, 1
-},
-    {
-    1, 24, 24, 12, 12, 25, 25, 6, 6, 26, 26, 13, 13, 27, 27, 3,
-    3, 28, 28, 14, 14, 29, 29, 7, 7, 30, 30, 15, 15, 31, 31
-},
-    {
-    0, 32, 16, 33, 8, 34, 17, 35, 4, 36, 18, 37, 9, 38, 19, 39,
-    2, 40, 20, 41, 10, 42, 21, 43, 5, 44, 22, 45, 11, 46, 23, 47
-},
-    {
-    1, 48, 24, 49, 12, 50, 25, 51, 6, 52, 26, 53, 13, 54, 27, 55,
-    3, 56, 28, 57, 14, 58, 29, 59, 7, 60, 30, 61, 15, 62, 31, 63
-}
-}; // 0x006E3A20
+    { 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1 },
+    { 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 },
+    { 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 5, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1, 1 },
+    { 1, 1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 3, 3, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0 },
+    { 0, 0, 8, 8, 8, 8, 4, 4, 4, 4, 9, 9, 9, 9, 2, 2, 2, 2, 10, 10, 10, 10, 5, 5, 5, 5, 11, 11, 11, 11, 1, 1 },
+    { 1, 1, 12, 12, 12, 12, 6, 6, 6, 6, 13, 13, 13, 13, 3, 3, 3, 3, 14, 14, 14, 14, 7, 7, 7, 7, 15, 15, 15, 15, 0, 0 },
+    { 0, 16, 16, 8, 8, 17, 17, 4, 4, 18, 18, 9, 9, 19, 19, 2, 2, 20, 20, 10, 10, 21, 21, 5, 5, 22, 22, 11, 11, 23, 23, 1 },
+    { 1, 24, 24, 12, 12, 25, 25, 6, 6, 26, 26, 13, 13, 27, 27, 3, 3, 28, 28, 14, 14, 29, 29, 7, 7, 30, 30, 15, 15, 31, 31, 0 },
+    { 0, 32, 16, 33, 8, 34, 17, 35, 4, 36, 18, 37, 9, 38, 19, 39, 2, 40, 20, 41, 10, 42, 21, 43, 5, 44, 22, 45, 11, 46, 23, 47 },
+    { 1, 48, 24, 49, 12, 50, 25, 51, 6, 52, 26, 53, 13, 54, 27, 55, 3, 56, 28, 57, 14, 58, 29, 59, 7, 60, 30, 61, 15, 62, 31, 63 }
+};
 #pragma comment(linker, "/alternatename:?gaDirectionIndex32@@3PAY0CA@HA=_gData_006E3A20")
 
-extern int gbCmpCompressedDataMode = 1; // 0x00741EFC
+extern "C" const int gData_006E45A0[8][64] = { // 0x006E45A0
+    { 0 },
+    { 0 },
+    { 0 },
+    {
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2,
+        2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
+        3, 3, 3, 3, 3, 3, 3, 3
+    },
+    {
+        4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5,
+        5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1, 6, 6, 6, 6,
+        6, 6, 6, 6, 2, 2, 2, 2, 2, 2, 2, 2, 7, 7, 7, 7,
+        7, 7, 7, 7, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4
+    },
+    {
+        4, 4, 8, 8, 8, 8, 0, 0, 0, 0, 9, 9, 9, 9, 5, 5,
+        5, 5, 10, 10, 10, 10, 1, 1, 1, 1, 11, 11, 11, 11, 6, 6,
+        6, 6, 12, 12, 12, 12, 2, 2, 2, 2, 13, 13, 13, 13, 7, 7,
+        7, 7, 14, 14, 14, 14, 3, 3, 3, 3, 15, 15, 15, 15, 4, 4
+    },
+    {
+        4, 16, 16, 8, 8, 17, 17, 0, 0, 18, 18, 9, 9, 19, 19, 5,
+        5, 20, 20, 10, 10, 21, 21, 1, 1, 22, 22, 11, 11, 23, 23, 6,
+        6, 24, 24, 12, 12, 25, 25, 2, 2, 26, 26, 13, 13, 27, 27, 7,
+        7, 28, 28, 14, 14, 29, 29, 3, 3, 30, 30, 15, 15, 31, 31, 4
+    },
+    {
+        4, 32, 16, 33, 8, 34, 17, 35, 0, 36, 18, 37, 9, 38, 19, 39,
+        5, 40, 20, 41, 10, 42, 21, 43, 1, 44, 22, 45, 11, 46, 23, 47,
+        6, 48, 24, 49, 12, 50, 25, 51, 2, 52, 26, 53, 13, 54, 27, 55,
+        7, 56, 28, 57, 14, 58, 29, 59, 3, 60, 30, 61, 15, 62, 31, 63
+    }
+};
+#pragma comment(linker, "/alternatename:?gaDirectionIndex64@@3PAY0EA@HA=_gData_006E45A0")
+
+int gbCmpCompressedDataMode = 1; // 0x00741EFC
 
 extern const char* gszCmpCompressedExtension = ".dcc"; // 0x00741F00
 
 extern const char* gszCmpDefaultExtension = ".dc6"; // 0x00741F04
 
-extern int gnCmpGfxMode = 1; // 0x00741F08
+int gnCmpGfxMode = 1; // 0x00741F08

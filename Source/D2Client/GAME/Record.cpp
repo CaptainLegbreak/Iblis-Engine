@@ -1,7 +1,13 @@
+#include "D2LanguageNames.h"
+// build: symbol _gaszLanguageNames 0x0070F764
+
 #include "D2Client.h"
 #include "D2MsgRecord.h"
 #include "D2WinSplitText.h"
 #include "D2ClientUiRecords.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2CommonApi2.h"
 
 #define gpMsgRecordChunkHead_007A2760 (gtMsgRecordChunkFirst.pNext)
 #define FILE_ATTRIBUTE_NORMAL 0x00000080
@@ -16,7 +22,6 @@ struct D2RecordHeaderStrc;
 
 
 int __stdcall SCmdRegisterArgument(unsigned int dwFlags, unsigned int dwId, const char* szName, void* pVariable, unsigned int nBytes, int bSet, void* pfnCallback, void* pParam); // 0x006C4580
-int __fastcall FOG_Free(void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B3C0
 extern D2MsgRecordChunkStrc gtMsgRecordChunkFirst; // 0x007A0818
 
 
@@ -31,8 +36,7 @@ struct D2RecordFileHeaderStrc
 
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x006CC134
 extern "C" __declspec(dllimport) void* __stdcall CreateFileA(const char* szFileName, unsigned long dwDesiredAccess, unsigned long dwShareMode, void* pSecurityAttributes, unsigned long dwCreationDisposition, unsigned long dwFlagsAndAttributes, void* hTemplateFile); // 0x006CC19C
-int __cdecl sub_0044DA90(); // 0x0044DA90
-int __stdcall DUNGEON_GetInitSeedFromAct(D2DrlgActStrc* pAct); // 0x0061AAC0
+int __cdecl sub_0044DA90_GetTickCounter(); // 0x0044DA90
 extern D2DrlgActStrc* gpAct; // 0x007A0634
 void __stdcall RECORD_RecordMessage(unsigned int uMessage, unsigned int wParam, int lParam); // 0x00451450
 int gbRecordHandlerInstalled; // 0x007A2780
@@ -54,16 +58,12 @@ struct D2RecordHeaderStrc
 };
 extern "C" __declspec(dllimport) int __stdcall ReadFile(void* hFile, void* pBuffer, unsigned long nBytes, unsigned long* pRead, void* pOverlapped);
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 extern D2RecordBlockStrc gFirstRecordBlock_007A0818; // 0x007A0818
 extern D2RecordHeaderStrc sgtReadFileHeader; // 0x007A2768
-extern int gnRecordPos_007A2784; // 0x007A2784
-extern int gbRecordPlaying_007A2788; // 0x007A2788
+extern int gnRecordPos; // 0x007A2784
+extern int gbRecordPlaying; // 0x007A2788
 
-int __stdcall SMsgDispatchMessage(void* hWnd, unsigned int uMsg, unsigned int wParam, int lParam, int* pbUseResult, int* plResult); // 0x00420B00
 
 void* __cdecl WINDOW_GetWindow(); // 0x004F59A0
 
@@ -104,7 +104,7 @@ void __stdcall RECORD_RecordMessage(unsigned int uMessage, unsigned int wParam, 
     if (gpMsgRecordChunk_0070F7A0->nCount >= 500)
         RECORD_AddRecordChunk();
     D2MsgRecordStrc* pRecord = &gpMsgRecordChunk_0070F7A0->tRecords[gpMsgRecordChunk_0070F7A0->nCount++];
-    pRecord->nTick = sub_0044DA90();
+    pRecord->nTick = sub_0044DA90_GetTickCounter();
     pRecord->uMessage = uMessage;
     pRecord->wParam = wParam;
     pRecord->lParam = lParam;
@@ -152,7 +152,7 @@ void __cdecl RECORD_WriteRecordFile()
         pChunk = pChunk->pNext;
     }
     tHeader.nEntries = pChunk->nCount + 500 * (tHeader.nBlocks - 1);
-    tHeader.nTick = sub_0044DA90();
+    tHeader.nTick = sub_0044DA90_GetTickCounter();
     tHeader.nSeed = DUNGEON_GetInitSeedFromAct(gpAct);
 
     unsigned long nSize = sizeof(tHeader);
@@ -178,8 +178,8 @@ void __cdecl RECORD_LoadRecordFile()
     ReadFile(hFile, &sgtReadFileHeader, sizeof(D2RecordHeaderStrc), &nRead, 0);
     if (sgtReadFileHeader.nVersion != 1)
     {
-        gnRecordPos_007A2784 = 0;
-        gbRecordPlaying_007A2788 = 0;
+        gnRecordPos = 0;
+        gbRecordPlaying = 0;
         CloseHandle(hFile);
         return;
     }
@@ -230,7 +230,7 @@ int __fastcall RECORD_DispatchRecordedMessage(D2MsgRecordStrc* pMsg)
 {
     int bUseResult = 0;
     int lResult = 0;
-    D2_ASSERT(pMsg->nTick == sub_0044DA90(), 0x12A);
+    D2_ASSERT(pMsg->nTick == sub_0044DA90_GetTickCounter(), 0x12A);
     return SMsgDispatchMessage(WINDOW_GetWindow(), pMsg->uMessage, pMsg->wParam, pMsg->lParam, &bUseResult, &lResult);
 }
 
@@ -259,7 +259,7 @@ int __cdecl RECORD_IsRecordingEnabled()
 
 typedef void (__stdcall* D2RecordHandlerFn)(int nArg1, int nArg2, int nArg3);
 
-D2RecordHandlerFn gpfnPrevHandler; // 0x007A2764
+extern D2RecordHandlerFn gpfnPrevHandler; // 0x007A2764
 
 // 0x00451920
 void __stdcall RECORD_RecordHandler(int nArg1, int nArg2, int nArg3)
@@ -322,7 +322,7 @@ void __cdecl RECORD_ReplayRecords()
         return;
     if (!gpMsgRecordChunk_0070F7A0)
         return;
-    const int nNow = sub_0044DA90();
+    const int nNow = sub_0044DA90_GetTickCounter();
     if (nNow >= gnReplayEndTick)
     {
         gbRecordPlaying = 0;
@@ -350,46 +350,5 @@ void __cdecl RECORD_ReplayRecords()
         pRecord = &pChunk->tRecords[pChunk->nIndex];
     }
 }
-
-#pragma pack(push, 1)
-struct d2data_0070F764_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
-
-extern "C" struct d2data_0070F764_t gData_0070F764; // 0x0070F764
-
-extern "C" struct d2data_0070F764_t gData_0070F764 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0070F764
 
 extern D2MsgRecordChunkStrc* gpMsgRecordChunk_0070F7A0 = (D2MsgRecordChunkStrc*)&gFirstRecordBlock_007A0818; // 0x0070F7A0

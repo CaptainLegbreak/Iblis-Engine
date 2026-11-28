@@ -30,27 +30,27 @@ int __stdcall sub_00513A20_EnumCallback(void* pGuid, const char* szDescription, 
     return 1;
 }
 
-extern int gdwGlobal_00881768; // 0x00881768
+extern int gpDirectSound; // 0x00881768
 
-extern int gdwGlobal_0088176C; // 0x0088176C
+extern int gfPositionalSound; // 0x0088176C
 
-extern int gdwGlobal_00881770; // 0x00881770
+extern int gbEaxEnabled; // 0x00881770
 
-extern int gdwGlobal_00881774; // 0x00881774
+extern int gnEaxVersion; // 0x00881774
 
-extern int gdwGlobal_00881778; // 0x00881778
+extern int gbEaxRoomOff; // 0x00881778
 
-int gdwGlobal_00881790; // 0x00881790
+extern int gfSoundExpansion; // 0x00881790
 
 // 0x00513AE0
 int __cdecl D2SOUND_IsExpansion()
 {
-    return gdwGlobal_00881790;
+    return gfSoundExpansion;
 }
 
 extern D2ComObjectStrc* gpSoundObject_008816D8; // 0x008816D8
-extern D2ComObjectStrc* gpSoundObject_00881740; // 0x00881740
-extern D2ComObjectStrc* gpSoundObject_00881744; // 0x00881744
+extern D2ComObjectStrc* gpSoundObject; // 0x00881740
+extern D2ComObjectStrc* gpEaxBuffer; // 0x00881744
 
 // 0x00513AF0
 void __cdecl D2SOUND_ReleaseSoundObjects()
@@ -60,38 +60,38 @@ void __cdecl D2SOUND_ReleaseSoundObjects()
         gpSoundObject_008816D8->Release();
         gpSoundObject_008816D8 = 0;
     }
-    if (gpSoundObject_00881740)
+    if (gpSoundObject)
     {
-        gpSoundObject_00881740->Release();
-        gpSoundObject_00881740 = 0;
+        gpSoundObject->Release();
+        gpSoundObject = 0;
     }
-    if (gpSoundObject_00881744)
+    if (gpEaxBuffer)
     {
-        gpSoundObject_00881744->Release();
-        gpSoundObject_00881744 = 0;
+        gpEaxBuffer->Release();
+        gpEaxBuffer = 0;
     }
 }
 
 // 0x00513B50
 int __cdecl D2SOUND_GetDirectSound()
 {
-    return gdwGlobal_00881768;
+    return gpDirectSound;
 }
 
 // 0x00513B60
 int __cdecl D2SOUND_IsPositionalSoundEnabled()
 {
-    return gdwGlobal_0088176C;
+    return gfPositionalSound;
 }
 
 // 0x00513B70
 int __cdecl D2SOUND_IsEaxEnabled()
 {
-    return gdwGlobal_00881770;
+    return gbEaxEnabled;
 }
 
 // 0x00513B80
-int __cdecl sub_00513B80()
+int __cdecl sub_00513B80_AlwaysZero()
 {
     return 0;
 }
@@ -99,72 +99,39 @@ int __cdecl sub_00513B80()
 // 0x00513B90
 int __cdecl D2SOUND_GetEaxVersion()
 {
-    return gdwGlobal_00881774;
+    return gnEaxVersion;
 }
 
 // 0x00513BA0
 int __cdecl D2SOUND_IsEaxRoomOff()
 {
-    return gdwGlobal_00881778;
+    return gbEaxRoomOff;
 }
 
 // 0x00513BB0
-int __cdecl sub_00513BB0()
+int __cdecl sub_00513BB0_GetValue()
 {
     return gdwGlobal_0072F830;
 }
 
-#pragma pack(push, 1)
-struct d2data_0072F7F4_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
+extern "C" const char* gData_0072F7F4[15] = { // 0x0072F7F4
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
 };
-#pragma pack(pop)
 
-#pragma pack(push, 1)
-struct d2data_0072F834_t
-{
-    unsigned char b0[4];
-};
-#pragma pack(pop)
+int gdwGlobal_0072F830 = 1; // 0x0072F830
 
-extern "C" struct d2data_0072F7F4_t gData_0072F7F4; // 0x0072F7F4
-extern "C" struct d2data_0072F834_t gData_0072F834; // 0x0072F834
-
-extern "C" struct d2data_0072F7F4_t gData_0072F7F4 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0072F7F4
-
-extern int gdwGlobal_0072F830 = 1; // 0x0072F830
-
-extern "C" struct d2data_0072F834_t gData_0072F834 = {
-    { 0x00 }
-}; // 0x0072F834
+extern "C" unsigned char gData_0072F834[4] = { 0 }; // 0x0072F834

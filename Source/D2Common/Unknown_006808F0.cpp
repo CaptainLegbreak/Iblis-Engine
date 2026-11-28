@@ -18,19 +18,15 @@ struct D2DrlgOrthStrc;
 
 
 
-void __fastcall DRLGGRID_AlterGridFlag(D2DrlgGridStrc* pGrid, int nX, int nY, int nFlag, int eOperation); // 0x0067C4F0
-int __fastcall DRLGGRID_GetGridEntry(D2DrlgGridStrc* pGrid, int nX, int nY); // 0x0067C570
 void __fastcall DRLGGRID_AlterFlagsAlongVertexLine(D2DrlgGridStrc* pGrid, D2DrlgVertexStrc* pVertex, D2DrlgCoordStrc* pCoords, int nFlag, int eOperation, int nSize); // 0x0067C8E0
-void __fastcall DRLGGRID_InitializeGridCells(void* pMemPool, D2DrlgGridStrc* pGrid, int nWidth, int nHeight); // 0x0067CB80
 extern const unsigned char gRoadPatternCodes[256]; // 0x006F2700
 
 
 int __fastcall DRLGOUTDOORS_TestGridCellSpawnValid(D2DrlgLevelStrc* pLevel, int nX, int nY); // 0x00674200
-void __fastcall DRLGOUTWILD_GetBridgeCoords(D2DrlgLevelStrc* pLevel, int* pX, int* pY); // 0x0067FC20
-void __stdcall sub_00681000(D2DrlgLevelStrc* pLevel);
+void __stdcall sub_00681000_SetRoadEnds(D2DrlgLevelStrc* pLevel);
 
 // 0x006808F0
-static int sub_006808F0(int pFlags[3][3])
+static int sub_006808F0_GetPatternCode(int pFlags[3][3])
 {
     if (!pFlags[1][1])
     {
@@ -57,7 +53,7 @@ static int sub_006808F0(int pFlags[3][3])
 }
 
 // 0x00680950
-static void __stdcall sub_00680950(D2DrlgGridStrc* pGrid, int pFlags[3][3], int nX, int nY)
+static void __stdcall sub_00680950_ShiftNeighbours(D2DrlgGridStrc* pGrid, int pFlags[3][3], int nX, int nY)
 {
     pFlags[0][0] = pFlags[0][1];
     pFlags[0][1] = pFlags[0][2];
@@ -73,7 +69,7 @@ static void __stdcall sub_00680950(D2DrlgGridStrc* pGrid, int pFlags[3][3], int 
 }
 
 // 0x006809C0
-static void __stdcall sub_006809C0(D2DrlgGridStrc* pGrid, int pFlags[3][3], int nX, int nY)
+static void __stdcall sub_006809C0_ReadNeighbours(D2DrlgGridStrc* pGrid, int pFlags[3][3], int nX, int nY)
 {
     pFlags[0][2] = DRLGGRID_GetGridEntry(pGrid, nX - 1, nY - 1);
     pFlags[0][1] = DRLGGRID_GetGridEntry(pGrid, nX - 1, nY);
@@ -87,7 +83,7 @@ static void __stdcall sub_006809C0(D2DrlgGridStrc* pGrid, int pFlags[3][3], int 
 }
 
 // 0x00680A70
-static void sub_00680A70(D2DrlgLevelStrc* pLevel, D2DrlgRoomStrc* pRoom)
+static void sub_00680A70_MarkRoads(D2DrlgLevelStrc* pLevel, D2DrlgRoomStrc* pRoom)
 {
     D2DrlgOutdoorInfoStrc* pInfo = pLevel->pOutdoors;
     D2DrlgOutdoorRoomStrc* pOutdoor = pRoom->pOutdoor;
@@ -110,18 +106,18 @@ static void sub_00680A70(D2DrlgLevelStrc* pLevel, D2DrlgRoomStrc* pRoom)
 }
 
 // 0x00680B10
-static void __stdcall sub_00680B10(D2DrlgRoomStrc* pRoom)
+static void __stdcall sub_00680B10_PlaceRoadTiles(D2DrlgRoomStrc* pRoom)
 {
     D2DrlgOutdoorRoomStrc* pOutdoor = pRoom->pOutdoor;
     for (int nX = 1; nX <= pRoom->pDrlgCoord.nWidth + 1; ++nX)
     {
         int aFlags[3][3];
         int nY = pRoom->pDrlgCoord.nHeight + 1;
-        sub_006809C0(&pOutdoor->tGrid3C, aFlags, nX, nY);
+        sub_006809C0_ReadNeighbours(&pOutdoor->tGrid3C, aFlags, nX, nY);
 
         for (; nY >= 1; --nY)
         {
-            int nCode = sub_006808F0(aFlags);
+            int nCode = sub_006808F0_GetPatternCode(aFlags);
             if (nCode)
             {
                 unsigned char nRoadCode = gRoadPatternCodes[nCode];
@@ -133,18 +129,18 @@ static void __stdcall sub_00680B10(D2DrlgRoomStrc* pRoom)
 
             if (nY > 1)
             {
-                sub_00680950(&pOutdoor->tGrid3C, aFlags, nX, nY - 1);
+                sub_00680950_ShiftNeighbours(&pOutdoor->tGrid3C, aFlags, nX, nY - 1);
             }
         }
     }
 }
 
 // 0x00680C80
-void __fastcall sub_00680C80(D2DrlgLevelStrc* pLevel, D2DrlgRoomStrc* pRoom)
+void __fastcall DRLG_OUTDOORS_GenerateDirtPath(D2DrlgLevelStrc* pLevel, D2DrlgRoomStrc* pRoom)
 {
     DRLGGRID_InitializeGridCells(pLevel->pDrlg->pMempool, &pRoom->pOutdoor->tGrid3C, pRoom->pDrlgCoord.nWidth + 3, pRoom->pDrlgCoord.nHeight + 3);
-    sub_00680A70(pLevel, pRoom);
-    sub_00680B10(pRoom);
+    sub_00680A70_MarkRoads(pLevel, pRoom);
+    sub_00680B10_PlaceRoadTiles(pRoom);
 }
 
 #pragma pack(push, 1)
@@ -168,10 +164,9 @@ struct d2data_00749D2C_t
 };
 #pragma pack(pop)
 
-extern "C" const unsigned char gData_006F2700[256]; // 0x006F2700
 extern "C" struct d2data_00749D2C_t gData_00749D2C; // 0x00749D2C
 
-extern "C" const unsigned char gData_006F2700[256] = {
+extern const unsigned char gRoadPatternCodes[256] = {
     0, 0, 0x10, 0x10, 0, 0, 0x10, 0x10, 0xE, 0xE, 6, 0x13, 0xE, 0xE, 6, 0x13,
     0xF, 0xF, 5, 5, 0xF, 0xF, 0x15, 0x15, 8, 8, 0xA, 0x26, 8, 8, 0x28, 0x14,
     0, 0, 0x10, 0x10, 0, 0, 0x10, 0x10, 0xE, 0xE, 6, 0x13, 0xE, 0xE, 6, 0x13,
@@ -189,7 +184,6 @@ extern "C" const unsigned char gData_006F2700[256] = {
     0xD, 0xD, 7, 7, 0xD, 0xD, 0xD, 7, 0x17, 0x17, 0x29, 0x11, 0x17, 0x17, 0x29, 0x11,
     0x12, 0x12, 0x23, 0x23, 0x12, 0x12, 0x16, 0x16, 0x18, 0x18, 0x19, 0x20, 0x18, 0x18, 0x1E, 1
 }; // 0x006F2700
-#pragma comment(linker, "/alternatename:?gRoadPatternCodes@@3QBEB=_gData_006F2700")
 
 extern "C" struct d2data_00749D2C_t gData_00749D2C = {
     (const void*)"English",
@@ -242,7 +236,7 @@ static void DRLGOUTDOORS_CalculatePathCoordinates(D2DrlgLevelStrc* pLevel, D2Drl
 }
 
 // 0x00680D70
-void __stdcall sub_00680D70(D2DrlgLevelStrc* pLevel)
+void __stdcall sub_00680D70_CollectRoadStarts(D2DrlgLevelStrc* pLevel)
 {
     D2DrlgOutdoorInfoStrc* pOutdoors = pLevel->pOutdoors;
     pOutdoors->nVertices = 0;

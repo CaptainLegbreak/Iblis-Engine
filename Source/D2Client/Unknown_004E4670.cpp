@@ -1,4 +1,5 @@
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
 #include "D2Txt.h"
@@ -40,16 +41,16 @@
 #include "D2DrlgMaps.h"
 #include "D2ClientGfx.h"
 #include "D2LevelIds.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "D2CommonApi2.h"
 
 
 
 
-unsigned short __fastcall SKILLDESC_GetSkillDescStringId(int skillId, int stringIndex); // 0x004E6CE0
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource); // 0x00526700
 Unicode* __fastcall sub_005267E0(Unicode* pDest, const Unicode* pSource); // 0x005267E0
-int __stdcall SKILLS_IsPlayerClassSkill(int nSkillId, int* pPlayerClass); // 0x00645080
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 static inline D2CharStatsTxt* sub_GetCharStatsTxtRecord(int nClass)
@@ -63,72 +64,45 @@ static inline D2CharStatsTxt* sub_GetCharStatsTxtRecord(int nClass)
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-int __stdcall STATLIST_GetStatValue(D2StatListStrc* pStatList, int nStatId, unsigned short nLayer); // 0x00625D00
-
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
 
 extern D2CombinedStatIdStrc gaCombinedStatIds[]; // 0x0072CDD0
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-int __stdcall ITEMSIsA(D2UnitStrc* pItem, int nItemType); // 0x00629BB0
 
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pDst, const Unicode* pFormat, ...); // 0x005269D0
 
 extern "C" D2CharStatsTxt* __fastcall sub_004833E0_GetCharStatsTxtRecord(int nClass); // 0x004833E0
 
-int __stdcall ENVIRONMENT_GetPeriodOfDayFromAct(D2DrlgActStrc* pAct, int* pBaseTime); // 0x0061C100
-
-D2MonTypeTxt* __fastcall SKILLDESC_GetMonTypeTxtRecord(int nMonType); // 0x004E4640
 
 D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
 
 D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
-extern D2DrlgActStrc* gpAct; // 0x007A0634
 
 struct D2MonTypeTxt;
 
 
 extern const int gaSetMaskToBonusMappingTable[0x40]; // 0x006DBD90
 
-int __stdcall ITEMS_GetFileIndex(D2UnitStrc* pItem); // 0x00629DA0
-
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
 extern D2FileIndexTextStrc gaFileIndexText[]; // 0x0072D6C0
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitStateAndFlag(D2UnitStrc* pUnit, int nState, int nFlag); // 0x006257D0
 
-D2StatListStrc* __stdcall STATLIST_AllocStatList(void* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID); // 0x006251F0
 
-D2UnitStrc* __stdcall INVENTORY_GetFirstItem(D2InventoryStrc* pInventory); // 0x0063B2C0
 
-D2UnitStrc* __stdcall INVENTORY_UnitIsItem(D2UnitStrc* pItem); // 0x0063DFD0
 
-D2UnitStrc* __stdcall INVENTORY_GetNextItem(D2UnitStrc* pItem); // 0x0063DFA0
 
-int __stdcall STATLIST_UnitGetItemStatOrSkillStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625500
 
-D2ItemsTxt* __stdcall DATATBLS_GetItemsTxtRecord(int nItemId); // 0x006335F0
+int __fastcall UNICODE_StrLen(const Unicode* wszText); // 0x00526800
 
-int __fastcall sub_00526800(const Unicode* wszText); // 0x00526800
 
-int __stdcall ITEMS_GetItemQuality(D2UnitStrc* pItem); // 0x00627E70
 
-D2SetItemsTxt* __stdcall ITEMS_GetSetItemsTxtRecordFromItem(D2UnitStrc* pItem); // 0x0062A490
-
-unsigned int __stdcall ITEMS_GetSetItemsMask(D2UnitStrc* pPlayer, D2UnitStrc* pSetItem, int bDontIgnoreInputItem); // 0x0062A370
-
-int __stdcall ITEMS_GetNoOfSetItemsFromItem(D2UnitStrc* pItem); // 0x0062B3A0
 
 extern int gaSetPartialCounts_006DBD90[]; // 0x006DBD90
 
@@ -145,13 +119,10 @@ inline D2SetItemsTxt* ITEMS_GetSetItemsTxtRecordInline(D2UnitStrc* pItem)
     return 0;
 }
 
-D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitAndState(D2UnitStrc* pUnit, int nState); // 0x006256B0
 
 void __stdcall ITEMMODS_AssignProperty(int nPass, int nArg1, D2UnitStrc* pItem, int nArg, int nArg2, int nArg5); // 0x0065FEC0
 
-void __stdcall D2Common_10474(D2UnitStrc* pUnused, D2StatListStrc* pStatList); // 0x006277E0
 
-D2GemsTxt* __stdcall DATATBLS_GetGemsTxtRecord(int nGemId); // 0x006372C0
 
 struct D2GemsTxt;
 
@@ -159,7 +130,7 @@ struct D2GemsTxt;
 // build: symbol ??_FUnicode@@QAEXXZ 0x0042F530
 
 // 0x004E4670
-void __fastcall sub_004E4670_BuildSkillBonusText(D2UnitStrc* pUnit, Unicode* pBuffer, int a3, int a4, int nStatId)
+void __fastcall sub_004E4670_BuildSkillBonusText(D2UnitStrc* pUnit, Unicode* pBuffer, int nUnused3, int nUnused4, int nStatId)
 {
     D2StatStrc tStats[128];
     unsigned short wszLine[128];
@@ -607,18 +578,18 @@ static int __stdcall SKILLDESC_BuildStatText(D2UnitStrc* pUnit, D2StatListStrc* 
             if (nRate <= 30)
             {
                 const Unicode* pFormat = D2LANG_GetStringFromTblIndex(0x52F9);
-                sub_005269D0(128, pOut, pFormat, 1);
+                sub_005269D0_FormatText(128, pOut, pFormat, 1);
             }
             else
             {
                 const Unicode* pFormat = D2LANG_GetStringFromTblIndex(0x52FA);
-                sub_005269D0(128, pOut, pFormat, 1, (nRate + 12) / 25);
+                sub_005269D0_FormatText(128, pOut, pFormat, 1, (nRate + 12) / 25);
             }
         }
         else
         {
             const Unicode* pFormat = D2LANG_GetStringFromTblIndex(0x52F9);
-            sub_005269D0(128, pOut, pFormat, 25);
+            sub_005269D0_FormatText(128, pOut, pFormat, 25);
         }
         break;
     case 13:
@@ -667,7 +638,7 @@ static int __stdcall SKILLDESC_BuildStatText(D2UnitStrc* pUnit, D2StatListStrc* 
         if (nTab < 0 || nTab > 2)
             return 0;
 
-        sub_005269D0(256, pOut, D2LANG_GetStringFromTblIndex(pCharStats->wStrSkillTab[nTab]), nDisplay);
+        sub_005269D0_FormatText(256, pOut, D2LANG_GetStringFromTblIndex(pCharStats->wStrSkillTab[nTab]), nDisplay);
         sub_00526700(pOut, pSpace);
         sub_00526700(pOut, D2LANG_GetStringFromTblIndex(pCharStats->wStrClassOnly));
         break;
@@ -679,7 +650,7 @@ static int __stdcall SKILLDESC_BuildStatText(D2UnitStrc* pUnit, D2StatListStrc* 
         if (nSkillId <= 0 || nSkillId >= sgptDataTables->nSkillsTxtRecordCount)
             return 0;
 
-        sub_005269D0(256, pOut, D2LANG_GetStringFromTblIndex(pRecord->wDescStrPos), nDisplay, 0, nLevel, D2LANG_GetStringFromTblIndex(SKILLDESC_GetSkillDescStringId(nSkillId, 0)));
+        sub_005269D0_FormatText(256, pOut, D2LANG_GetStringFromTblIndex(pRecord->wDescStrPos), nDisplay, 0, nLevel, D2LANG_GetStringFromTblIndex(SKILLDESC_GetSkillDescStringId(nSkillId, 0)));
         break;
     }
     case 16:
@@ -688,7 +659,7 @@ static int __stdcall SKILLDESC_BuildStatText(D2UnitStrc* pUnit, D2StatListStrc* 
         if (!pSkillName)
             return 0;
 
-        sub_005269D0(256, pOut, pText, nDisplay, pSkillName);
+        sub_005269D0_FormatText(256, pOut, pText, nDisplay, pSkillName);
         break;
     }
     case 17:
@@ -743,7 +714,7 @@ static int __stdcall SKILLDESC_BuildStatText(D2UnitStrc* pUnit, D2StatListStrc* 
         break;
     }
     case 19:
-        sub_005269D0(256, pOut, pText, nDisplay);
+        sub_005269D0_FormatText(256, pOut, pText, nDisplay);
         break;
     case 22:
     {
@@ -828,7 +799,7 @@ static int __stdcall SKILLDESC_BuildStatText(D2UnitStrc* pUnit, D2StatListStrc* 
         sub_00526700(pOut, pSpace);
         sub_00526700(pOut, pSkillName);
         sub_00526700(pOut, pSpace);
-        sub_005269D0(128, wszValue, pText, nDisplay & 0xFF, nDisplay >> 8);
+        sub_005269D0_FormatText(128, wszValue, pText, nDisplay & 0xFF, nDisplay >> 8);
         sub_00526700(pOut, wszValue);
         break;
     }
@@ -892,7 +863,7 @@ static int __stdcall SKILLDESC_BuildStatText(D2UnitStrc* pUnit, D2StatListStrc* 
         sub_00526700(pOut, pSpace);
 
         nCharClass = 7;
-        if (!sub_00645080_GetSkillCharClass(nLayer, &nCharClass))
+        if (!SKILLS_IsPlayerClassSkill(nLayer, &nCharClass))
             break;
         if (nCharClass < 0 || nCharClass > 6)
             break;
@@ -1013,36 +984,36 @@ static int __stdcall sub_004E5A20_BuildCombinedStatText(int nStatId, Unicode* pO
         if (!pCombined->tFire.bCombined)
             return 0;
         if (pCombined->tFire.nMin >= pCombined->tFire.nMax)
-            sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(0xE1C), pCombined->tFire.nMax);
+            sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(0xE1C), pCombined->tFire.nMax);
         else
-            sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(0xE1D), pCombined->tFire.nMin, pCombined->tFire.nMax);
+            sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(0xE1D), pCombined->tFire.nMin, pCombined->tFire.nMax);
         bAppend = 1;
         break;
     case 54:
         if (!pCombined->tCold.bCombined)
             return 0;
         if (pCombined->tCold.nMin >= pCombined->tCold.nMax)
-            sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(0xE1E), pCombined->tCold.nMax);
+            sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(0xE1E), pCombined->tCold.nMax);
         else
-            sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(0xE1F), pCombined->tCold.nMin, pCombined->tCold.nMax);
+            sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(0xE1F), pCombined->tCold.nMin, pCombined->tCold.nMax);
         bAppend = 1;
         break;
     case 50:
         if (!pCombined->tLightning.bCombined)
             return 0;
         if (pCombined->tLightning.nMin >= pCombined->tLightning.nMax)
-            sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(0xE20), pCombined->tLightning.nMax);
+            sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(0xE20), pCombined->tLightning.nMax);
         else
-            sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(0xE21), pCombined->tLightning.nMin, pCombined->tLightning.nMax);
+            sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(0xE21), pCombined->tLightning.nMin, pCombined->tLightning.nMax);
         bAppend = 1;
         break;
     case 52:
         if (!pCombined->tMagic.bCombined)
             return 0;
         if (pCombined->tMagic.nMin >= pCombined->tMagic.nMax)
-            sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(0xE22), pCombined->tMagic.nMax);
+            sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(0xE22), pCombined->tMagic.nMax);
         else
-            sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(0xE23), pCombined->tMagic.nMin, pCombined->tMagic.nMax);
+            sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(0xE23), pCombined->tMagic.nMin, pCombined->tMagic.nMax);
         bAppend = 1;
         break;
     case 57:
@@ -1054,9 +1025,9 @@ static int __stdcall sub_004E5A20_BuildCombinedStatText(int nStatId, Unicode* pO
         pCombined->tPoison.nMin = (pCombined->tPoison.nMin * pCombined->tPoison.nLength + 0x80) >> 8;
         pCombined->tPoison.nMax = (pCombined->tPoison.nMax * pCombined->tPoison.nLength + 0x80) >> 8;
         if (pCombined->tPoison.nMin >= pCombined->tPoison.nMax)
-            sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(0xE24), pCombined->tPoison.nMax, pCombined->tPoison.nLength / 25);
+            sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(0xE24), pCombined->tPoison.nMax, pCombined->tPoison.nLength / 25);
         else
-            sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(0xE25), pCombined->tPoison.nMin, pCombined->tPoison.nMax, pCombined->tPoison.nLength / 25);
+            sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(0xE25), pCombined->tPoison.nMin, pCombined->tPoison.nMax, pCombined->tPoison.nLength / 25);
         bAppend = 1;
         break;
     case 24:
@@ -1077,7 +1048,7 @@ static int __stdcall sub_004E5A20_BuildCombinedStatText(int nStatId, Unicode* pO
                 return 0;
             }
             pCombined->tDamage.bShown = 1;
-            sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(0xE27), pCombined->tDamage.nMin, pCombined->tDamage.nMax);
+            sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(0xE27), pCombined->tDamage.nMin, pCombined->tDamage.nMax);
         }
         bAppend = 1;
         break;
@@ -1336,7 +1307,7 @@ void __fastcall sub_004E6410_BuildPropText(D2UnitStrc* pItem, Unicode* wszText, 
         return;
     }
 
-    const int nLength = sub_00526800(wszBuffer);
+    const int nLength = UNICODE_StrLen(wszBuffer);
     if (!nLength)
     {
         sub_00526700(wszText, wszBuffer);
@@ -1469,16 +1440,17 @@ void __fastcall TEXT_BuildItemPropTextB(D2UnitStrc* pItem, int nArg, int nArg2, 
     sub_004E6410_BuildPropText(pItem, wszBuffer, nArg3, 1, nArg4);
     sub_00526700(wszText, wszBuffer);
 
-    D2StatListStrc* pStatList = sub_00625790_UnitFindStatList(pItem, 0, 0x40);
+// build: symbol ?STATLIST_GetStatListFromUnitStateOrFlag@* 0x00625790
+    D2StatListStrc* pStatList = STATLIST_GetStatListFromUnitStateOrFlag(pItem, 0, 0x40);
     if (pStatList)
     {
         D2Common_10474(pItem, pStatList);
         STATLIST_FreeStatList(pStatList);
     }
 
-    if (wszText[sub_00526800(wszText) - 1].isNewline())
+    if (wszText[UNICODE_StrLen(wszText) - 1].isNewline())
     {
-        wszText[sub_00526800(wszText) - 1].wChar = 0;
+        wszText[UNICODE_StrLen(wszText) - 1].wChar = 0;
     }
 }
 
@@ -1488,16 +1460,16 @@ void __fastcall SKILLDESC_BuildItemPropText(D2UnitStrc* pItem, int nArg, int nAr
     ITEMMODS_AssignProperty(2, 0, pItem, nArg, nArg2, 0);
     sub_004E6410_BuildPropText(pItem, wszText, nArg3, 0, nArg4);
 
-    D2StatListStrc* pStatList = sub_00625790_UnitFindStatList(pItem, 0, 0x40);
+    D2StatListStrc* pStatList = STATLIST_GetStatListFromUnitStateOrFlag(pItem, 0, 0x40);
     if (pStatList)
     {
         D2Common_10474(pItem, pStatList);
         STATLIST_FreeStatList(pStatList);
     }
 
-    if (wszText[sub_00526800(wszText) - 1].isNewline())
+    if (wszText[UNICODE_StrLen(wszText) - 1].isNewline())
     {
-        wszText[sub_00526800(wszText) - 1].wChar = 0;
+        wszText[UNICODE_StrLen(wszText) - 1].wChar = 0;
     }
 }
 

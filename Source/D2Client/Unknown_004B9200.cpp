@@ -1,11 +1,16 @@
+#include "D2LanguageNames.h"
+// build: symbol _gaszLanguageNames 0x007274EC
+
 #include "D2StatIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2ClientGame.h"
 #include "D2Unicode.h"
 #include "D2ClientUi.h"
 #include "D2StormTypes.h"
 #include "D2ClientSound.h"
+#include "FogApi.h"
 
 struct D2GSPacketText5EStrc
 {
@@ -46,7 +51,6 @@ D2GSPacketText5EStrc gaQuestIntroFlags; // 0x007C0EA4
 
 extern "C" void __fastcall QUESTLOG_SetQuestPacketValue(unsigned int value); // 0x004A3100
 
-void __fastcall NPCMENU_ReloadHirelingPopup(unsigned short nArg); // 0x004B3340
 
 void __fastcall QUESTLOG_AcceptShortPacket(D2UiPacketStrc_004B9210* pPacket); // 0x004A28A0
 
@@ -56,13 +60,9 @@ void __fastcall TEXT_AcceptWordPacket(D2UiPacketStrc_004B9210* pPacket); // 0x00
 
 void __fastcall WINMAIN_SetExitApplication(int nValue); // 0x0044B880
 
-void __fastcall GAME_SetCinematicExit(int nValue); // 0x0044C860
 
-void __cdecl GAME_RequestExit(); // 0x0044D520
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -165,43 +165,4 @@ int __stdcall INV_GetTableByte(int nUnused, int nIndex)
 
 
 
-#pragma pack(push, 1)
-struct d2data_007274EC_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
 
-extern "C" struct d2data_007274EC_t gData_007274EC; // 0x007274EC
-
-extern "C" struct d2data_007274EC_t gData_007274EC = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x007274EC

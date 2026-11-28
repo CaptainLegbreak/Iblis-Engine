@@ -1,5 +1,8 @@
 #include "D2Lang.h"
 #include "D2LangTypes.h"
+#include "FogApi.h"
+#include "D2LangApi.h"
+#include "D2HellApi.h"
 
 #pragma intrinsic(strcmp)
 
@@ -9,13 +12,10 @@ struct D2StrCacheNodeStrc;
 
 struct D2LanguageInfoStrc;
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 D2ArchiveHandleStrc* __fastcall sub_00517332_LoadMpqFile(const char* szFileName, void* hFile, void* pfShowMessage, int nPriority); // 0x00517332
-
-void __fastcall ARCHIVE_UnloadMPQFile(D2ArchiveHandleStrc* pMPQHandle); // 0x005173AC
 
 extern "C" const char gszExpansionMpq[]; // 0x006CD3A0
 
@@ -44,8 +44,6 @@ extern "C" char* __cdecl strcat(char* szDst, const char* szSrc);
 
 extern "C" int __cdecl strcmp(const char* szString1, const char* szString2);
 
-unsigned short __stdcall STRTABLE_FindString(const char* szKey, const wchar_t** ppText); // 0x00524D30
-
 int __fastcall STRTABLE_GetLanguageIdFromName(const char* szLanguage); // 0x00525100
 
 struct Unicode
@@ -63,7 +61,6 @@ struct Unicode
     static Unicode* __fastcall strncat(Unicode* dest, const Unicode* src, int count);
 };
 
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 
 int __fastcall sub_00527D50_GetCodePageCharCount(const char* szSource, int nLength); // 0x00527D50
 
@@ -78,12 +75,10 @@ struct D2LanguageInfoStrc
     const char* szAltCode;
     const char* szRegion;
     int nFourCC;
-    int f_14;
+    int nLanguageId;
 };
 
 extern "C" int __cdecl _stricmp(const char* szString1, const char* szString2); // 0x006841E9
-
-void* __fastcall ARCHIVE_AllocateBufferAndReadFile(void* hArchive, const char* szFileName, unsigned int* pnSize, const char* szFile, int nLine); // 0x00517079
 
 extern D2LanguageInfoStrc gaLanguageInfo[13]; // 0x007303D8
 
@@ -107,11 +102,8 @@ extern "C" char* __cdecl _i64toa(__int64 nValue, char* szOut, int nRadix); // 0x
 
 extern Unicode gawszUnitSuffix[4][2]; // 0x00730510
 
-Unicode* __fastcall sub_005267E0(Unicode* pDest, const Unicode* pSource); // 0x005267E0
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
 
-char* __fastcall sub_00526F70(char* szDest, const Unicode* pSource, int nCount); // 0x00526F70
 
 static D2TblHeaderStrc* STRTABLE_LoadTblFile(const char* szPath); // 0x00525920
 
@@ -126,8 +118,6 @@ void* ghExpansionMpq; // 0x008829E4
 extern unsigned short gwCrc16Table_007301D8[0x100];                                                         // 0x007301D8
 
 extern "C" char* __cdecl strncpy(char* szDest, const char* szSource, unsigned int nCount);                  // 0x00687330
-
-void __stdcall STRTABLE_GetLanguageInfoField(void* pOut, int nField);                                                 // 0x00525260
 
 void __cdecl STRTABLE_InitUnitSuffixes();                                                               // 0x00525770
 
@@ -212,7 +202,7 @@ void __cdecl STRTABLE_CloseArchives()
 }
 
 // 0x00524930
-const Unicode* __fastcall sub_00524930(D2TblHeaderStrc* pTable, void* pIndex, unsigned short nIndex)
+const Unicode* __fastcall STRTABLE_GetStringFromTable(D2TblHeaderStrc* pTable, void* pIndex, unsigned short nIndex)
 {
     unsigned short nCount = pTable->nNumElements;
     unsigned short* pIndices = (unsigned short*)(pTable + 1);
@@ -265,19 +255,19 @@ const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex)
         }
         else
         {
-            const Unicode* pText = sub_00524930(sghExpansionStringTable, gppExpansionStringIndex, nIndex - 0x4E20);
+            const Unicode* pText = STRTABLE_GetStringFromTable(sghExpansionStringTable, gppExpansionStringIndex, nIndex - 0x4E20);
             if (pText)
                 return pText;
         }
     }
     if (sghPatchStringTable && nIndex >= 0x2710)
     {
-        const Unicode* pText = sub_00524930(sghPatchStringTable, gppPatchStringIndex, nIndex - 0x2710);
+        const Unicode* pText = STRTABLE_GetStringFromTable(sghPatchStringTable, gppPatchStringIndex, nIndex - 0x2710);
         if (pText)
             return pText;
     }
     D2_ASSERT(sghStringTable, 0x246);
-    return sub_00524930(sghStringTable, gppStringIndex, nIndex);
+    return STRTABLE_GetStringFromTable(sghStringTable, gppStringIndex, nIndex);
 }
 
 // 0x00524AC0
@@ -469,7 +459,7 @@ int __fastcall STRTABLE_GetLanguageIdFromName(const char* szLanguage)
     for (int i = 0; i < 13; ++i)
     {
         if (!_stricmp(szLanguage, gaLanguageInfo[i].szName))
-            return gaLanguageInfo[i].f_14;
+            return gaLanguageInfo[i].nLanguageId;
     }
     return 0;
 }
@@ -509,14 +499,6 @@ int __cdecl STRTABLE_GetSystemLanguage()
     return 0;
 }
 
-int sub_M15_Emit_00525920(const char* szDir, const char* szLang)
-{
-    char szPath[0x104];
-    sprintf(szPath, szM15EmitFormat, szDir, szLang);
-    gpM15EmitTbl = STRTABLE_LoadTblFile(szPath);
-    return gpM15EmitTbl != 0;
-}
-
 static inline const Unicode* D2LANG_GetStringFromTblIndex_Inline(unsigned short nIndex)
 {
     if (nIndex >= 0x4E20)
@@ -527,7 +509,7 @@ static inline const Unicode* D2LANG_GetStringFromTblIndex_Inline(unsigned short 
         }
         else
         {
-            const Unicode* pText = sub_00524930(sghExpansionStringTable, gppExpansionStringIndex, nIndex - 0x4E20);
+            const Unicode* pText = STRTABLE_GetStringFromTable(sghExpansionStringTable, gppExpansionStringIndex, nIndex - 0x4E20);
             if (pText)
             {
                 return pText;
@@ -536,14 +518,14 @@ static inline const Unicode* D2LANG_GetStringFromTblIndex_Inline(unsigned short 
     }
     if (sghPatchStringTable && nIndex >= 0x2710)
     {
-        const Unicode* pText = sub_00524930(sghPatchStringTable, gppPatchStringIndex, nIndex - 0x2710);
+        const Unicode* pText = STRTABLE_GetStringFromTable(sghPatchStringTable, gppPatchStringIndex, nIndex - 0x2710);
         if (pText)
         {
             return pText;
         }
     }
     D2_ASSERT(sghStringTable, 0x246);
-    return sub_00524930(sghStringTable, gppStringIndex, nIndex);
+    return STRTABLE_GetStringFromTable(sghStringTable, gppStringIndex, nIndex);
 }
 
 // 0x005259C0
@@ -691,14 +673,14 @@ int __fastcall STRTABLE_LoadStringTables(void* pMemPool, const char* szLanguage,
 void __stdcall STRTABLE_GetLanguageInfoField(void* pOut, int nField)
 {
     const int nLanguageId = sub_00525150();
-    D2_ASSERT(gaLanguageInfo[0].f_14 == 0, 0x490);
+    D2_ASSERT(gaLanguageInfo[0].nLanguageId == 0, 0x490);
 
     int nIndex = 0;
     if (nLanguageId < 14)
     {
         for (nIndex = 0; nIndex < 13; ++nIndex)
         {
-            if (gaLanguageInfo[nIndex].f_14 == nLanguageId)
+            if (gaLanguageInfo[nIndex].nLanguageId == nLanguageId)
             {
                 break;
             }
@@ -945,7 +927,7 @@ void __cdecl STRTABLE_InitUnitSuffixes()
 {
     char szBuffer[8];
 
-    sub_00526F70(szBuffer, D2LANG_GetStringFromTblIndex_Inline(0x14D0), 5);
+    UNICODE_ToAscii(szBuffer, D2LANG_GetStringFromTblIndex_Inline(0x14D0), 5);
     if (strlen(szBuffer) > 1)
     {
         gawszUnitSuffix[0][0].wChar = 'K';
@@ -955,7 +937,7 @@ void __cdecl STRTABLE_InitUnitSuffixes()
         gawszUnitSuffix[0][0].wChar = szBuffer[0];
     }
 
-    sub_00526F70(szBuffer, D2LANG_GetStringFromTblIndex_Inline(0x14D1), 5);
+    UNICODE_ToAscii(szBuffer, D2LANG_GetStringFromTblIndex_Inline(0x14D1), 5);
     if (strlen(szBuffer) > 1)
     {
         gawszUnitSuffix[1][0].wChar = 'M';
@@ -965,7 +947,7 @@ void __cdecl STRTABLE_InitUnitSuffixes()
         gawszUnitSuffix[1][0].wChar = szBuffer[0];
     }
 
-    sub_00526F70(szBuffer, D2LANG_GetStringFromTblIndex_Inline(0x14D2), 5);
+    UNICODE_ToAscii(szBuffer, D2LANG_GetStringFromTblIndex_Inline(0x14D2), 5);
     if (strlen(szBuffer) > 1)
     {
         gawszUnitSuffix[2][0].wChar = 'B';
@@ -975,7 +957,7 @@ void __cdecl STRTABLE_InitUnitSuffixes()
         gawszUnitSuffix[2][0].wChar = szBuffer[0];
     }
 
-    sub_00526F70(szBuffer, D2LANG_GetStringFromTblIndex_Inline(0x14D3), 5);
+    UNICODE_ToAscii(szBuffer, D2LANG_GetStringFromTblIndex_Inline(0x14D3), 5);
     if (strlen(szBuffer) > 1)
     {
         gawszUnitSuffix[3][0].wChar = 'T';
@@ -1027,146 +1009,78 @@ static D2TblHeaderStrc* STRTABLE_LoadTblFile(const char* szPath)
 }
 
 
-#pragma pack(push, 1)
-struct d2data_006E0318_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00730198_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_007301D4_t
-{
-    unsigned char b0[4];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00730524_t
-{
-    unsigned char b0[20];
-};
-#pragma pack(pop)
-
-extern "C" const char gszData_006DEDEC[4]; // 0x006DEDEC
-extern "C" const char gszData_006E0288[4]; // 0x006E0288
-extern "C" const struct d2data_006E0318_t gData_006E0318; // 0x006E0318
-extern "C" struct d2data_00730198_t gData_00730198; // 0x00730198
-extern "C" struct d2data_007301D4_t gData_007301D4; // 0x007301D4
-extern "C" const char gData_00730520[4]; // 0x00730520
-extern "C" struct d2data_00730524_t gData_00730524; // 0x00730524
-
 extern "C" const char gszData_006DEDEC[4] = "ENU"; // 0x006DEDEC
 
 extern "C" const char gszData_006E0288[4] = "USA"; // 0x006E0288
 
-extern "C" const struct d2data_006E0318_t gData_006E0318 = {
-    (const void*)"data\\local\\lng\\%s\\string.tbl",
-    (const void*)"data\\local\\font\\%s\\default.map",
-    (const void*)"data\\local\\lng\\%s\\patchstring.tbl",
-    (const void*)"data\\local\\lng\\%s\\expansionstring.tbl",
-    (const void*)"d2data.mpq",
-    (const void*)"patch_d2.mpq",
-    (const void*)"d2exp.mpq"
-}; // 0x006E0318
+extern "C" const char* const gData_006E0318[7] = { // 0x006E0318
+    "data\\local\\lng\\%s\\string.tbl",
+    "data\\local\\font\\%s\\default.map",
+    "data\\local\\lng\\%s\\patchstring.tbl",
+    "data\\local\\lng\\%s\\expansionstring.tbl",
+    "d2data.mpq",
+    "patch_d2.mpq",
+    "d2exp.mpq"
+};
 
-extern "C" struct d2data_00730198_t gData_00730198 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00730198
+extern "C" const char* gData_00730198[15] = { // 0x00730198
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
+};
 
-extern "C" struct d2data_007301D4_t gData_007301D4 = {
-    { 0x00 }
-}; // 0x007301D4
+extern "C" unsigned char gData_007301D4[4] = { 0 }; // 0x007301D4
 
-extern unsigned short gwCrc16Table_007301D8[0x100] = {
-    0, 0x1021, 0x2042, 0x3063, 0x4084, 0x50A5, 0x60C6, 0x70E7, 0x8108, 0x9129, 0xA14A, 0xB16B, 0xC18C, 0xD1AD, 0xE1CE, 0xF1EF,
-    0x1231, 0x210, 0x3273, 0x2252, 0x52B5, 0x4294, 0x72F7, 0x62D6, 0x9339, 0x8318, 0xB37B, 0xA35A, 0xD3BD, 0xC39C, 0xF3FF, 0xE3DE,
-    0x2462, 0x3443, 0x420, 0x1401, 0x64E6, 0x74C7, 0x44A4, 0x5485, 0xA56A, 0xB54B, 0x8528, 0x9509, 0xE5EE, 0xF5CF, 0xC5AC, 0xD58D,
-    0x3653, 0x2672, 0x1611, 0x630, 0x76D7, 0x66F6, 0x5695, 0x46B4, 0xB75B, 0xA77A, 0x9719, 0x8738, 0xF7DF, 0xE7FE, 0xD79D, 0xC7BC,
-    0x48C4, 0x58E5, 0x6886, 0x78A7, 0x840, 0x1861, 0x2802, 0x3823, 0xC9CC, 0xD9ED, 0xE98E, 0xF9AF, 0x8948, 0x9969, 0xA90A, 0xB92B,
-    0x5AF5, 0x4AD4, 0x7AB7, 0x6A96, 0x1A71, 0xA50, 0x3A33, 0x2A12, 0xDBFD, 0xCBDC, 0xFBBF, 0xEB9E, 0x9B79, 0x8B58, 0xBB3B, 0xAB1A,
-    0x6CA6, 0x7C87, 0x4CE4, 0x5CC5, 0x2C22, 0x3C03, 0xC60, 0x1C41, 0xEDAE, 0xFD8F, 0xCDEC, 0xDDCD, 0xAD2A, 0xBD0B, 0x8D68, 0x9D49,
-    0x7E97, 0x6EB6, 0x5ED5, 0x4EF4, 0x3E13, 0x2E32, 0x1E51, 0xE70, 0xFF9F, 0xEFBE, 0xDFDD, 0xCFFC, 0xBF1B, 0xAF3A, 0x9F59, 0x8F78,
-    0x9188, 0x81A9, 0xB1CA, 0xA1EB, 0xD10C, 0xC12D, 0xF14E, 0xE16F, 0x1080, 0xA1, 0x30C2, 0x20E3, 0x5004, 0x4025, 0x7046, 0x6067,
-    0x83B9, 0x9398, 0xA3FB, 0xB3DA, 0xC33D, 0xD31C, 0xE37F, 0xF35E, 0x2B1, 0x1290, 0x22F3, 0x32D2, 0x4235, 0x5214, 0x6277, 0x7256,
-    0xB5EA, 0xA5CB, 0x95A8, 0x8589, 0xF56E, 0xE54F, 0xD52C, 0xC50D, 0x34E2, 0x24C3, 0x14A0, 0x481, 0x7466, 0x6447, 0x5424, 0x4405,
-    0xA7DB, 0xB7FA, 0x8799, 0x97B8, 0xE75F, 0xF77E, 0xC71D, 0xD73C, 0x26D3, 0x36F2, 0x691, 0x16B0, 0x6657, 0x7676, 0x4615, 0x5634,
-    0xD94C, 0xC96D, 0xF90E, 0xE92F, 0x99C8, 0x89E9, 0xB98A, 0xA9AB, 0x5844, 0x4865, 0x7806, 0x6827, 0x18C0, 0x8E1, 0x3882, 0x28A3,
-    0xCB7D, 0xDB5C, 0xEB3F, 0xFB1E, 0x8BF9, 0x9BD8, 0xABBB, 0xBB9A, 0x4A75, 0x5A54, 0x6A37, 0x7A16, 0xAF1, 0x1AD0, 0x2AB3, 0x3A92,
-    0xFD2E, 0xED0F, 0xDD6C, 0xCD4D, 0xBDAA, 0xAD8B, 0x9DE8, 0x8DC9, 0x7C26, 0x6C07, 0x5C64, 0x4C45, 0x3CA2, 0x2C83, 0x1CE0, 0xCC1,
-    0xEF1F, 0xFF3E, 0xCF5D, 0xDF7C, 0xAF9B, 0xBFBA, 0x8FD9, 0x9FF8, 0x6E17, 0x7E36, 0x4E55, 0x5E74, 0x2E93, 0x3EB2, 0xED1, 0x1EF0
-}; // 0x007301D8
+unsigned short gwCrc16Table_007301D8[0x100] = { // 0x007301D8
+    0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50A5, 0x60C6, 0x70E7, 0x8108, 0x9129, 0xA14A, 0xB16B, 0xC18C, 0xD1AD, 0xE1CE, 0xF1EF,
+    0x1231, 0x0210, 0x3273, 0x2252, 0x52B5, 0x4294, 0x72F7, 0x62D6, 0x9339, 0x8318, 0xB37B, 0xA35A, 0xD3BD, 0xC39C, 0xF3FF, 0xE3DE,
+    0x2462, 0x3443, 0x0420, 0x1401, 0x64E6, 0x74C7, 0x44A4, 0x5485, 0xA56A, 0xB54B, 0x8528, 0x9509, 0xE5EE, 0xF5CF, 0xC5AC, 0xD58D,
+    0x3653, 0x2672, 0x1611, 0x0630, 0x76D7, 0x66F6, 0x5695, 0x46B4, 0xB75B, 0xA77A, 0x9719, 0x8738, 0xF7DF, 0xE7FE, 0xD79D, 0xC7BC,
+    0x48C4, 0x58E5, 0x6886, 0x78A7, 0x0840, 0x1861, 0x2802, 0x3823, 0xC9CC, 0xD9ED, 0xE98E, 0xF9AF, 0x8948, 0x9969, 0xA90A, 0xB92B,
+    0x5AF5, 0x4AD4, 0x7AB7, 0x6A96, 0x1A71, 0x0A50, 0x3A33, 0x2A12, 0xDBFD, 0xCBDC, 0xFBBF, 0xEB9E, 0x9B79, 0x8B58, 0xBB3B, 0xAB1A,
+    0x6CA6, 0x7C87, 0x4CE4, 0x5CC5, 0x2C22, 0x3C03, 0x0C60, 0x1C41, 0xEDAE, 0xFD8F, 0xCDEC, 0xDDCD, 0xAD2A, 0xBD0B, 0x8D68, 0x9D49,
+    0x7E97, 0x6EB6, 0x5ED5, 0x4EF4, 0x3E13, 0x2E32, 0x1E51, 0x0E70, 0xFF9F, 0xEFBE, 0xDFDD, 0xCFFC, 0xBF1B, 0xAF3A, 0x9F59, 0x8F78,
+    0x9188, 0x81A9, 0xB1CA, 0xA1EB, 0xD10C, 0xC12D, 0xF14E, 0xE16F, 0x1080, 0x00A1, 0x30C2, 0x20E3, 0x5004, 0x4025, 0x7046, 0x6067,
+    0x83B9, 0x9398, 0xA3FB, 0xB3DA, 0xC33D, 0xD31C, 0xE37F, 0xF35E, 0x02B1, 0x1290, 0x22F3, 0x32D2, 0x4235, 0x5214, 0x6277, 0x7256,
+    0xB5EA, 0xA5CB, 0x95A8, 0x8589, 0xF56E, 0xE54F, 0xD52C, 0xC50D, 0x34E2, 0x24C3, 0x14A0, 0x0481, 0x7466, 0x6447, 0x5424, 0x4405,
+    0xA7DB, 0xB7FA, 0x8799, 0x97B8, 0xE75F, 0xF77E, 0xC71D, 0xD73C, 0x26D3, 0x36F2, 0x0691, 0x16B0, 0x6657, 0x7676, 0x4615, 0x5634,
+    0xD94C, 0xC96D, 0xF90E, 0xE92F, 0x99C8, 0x89E9, 0xB98A, 0xA9AB, 0x5844, 0x4865, 0x7806, 0x6827, 0x18C0, 0x08E1, 0x3882, 0x28A3,
+    0xCB7D, 0xDB5C, 0xEB3F, 0xFB1E, 0x8BF9, 0x9BD8, 0xABBB, 0xBB9A, 0x4A75, 0x5A54, 0x6A37, 0x7A16, 0x0AF1, 0x1AD0, 0x2AB3, 0x3A92,
+    0xFD2E, 0xED0F, 0xDD6C, 0xCD4D, 0xBDAA, 0xAD8B, 0x9DE8, 0x8DC9, 0x7C26, 0x6C07, 0x5C64, 0x4C45, 0x3CA2, 0x2C83, 0x1CE0, 0x0CC1,
+    0xEF1F, 0xFF3E, 0xCF5D, 0xDF7C, 0xAF9B, 0xBFBA, 0x8FD9, 0x9FF8, 0x6E17, 0x7E36, 0x4E55, 0x5E74, 0x2E93, 0x3EB2, 0x0ED1, 0x1EF0
+};
 
-extern D2LanguageInfoStrc gaLanguageInfo[13] = {
-    { (const char *)&gszData_006DEDEC, (const char *)"ENG", (const char *)"ENG", (const char *)&gszData_006E0288, 1701729619 },
-    { (const char *)"ESP", (const char *)"ESP", (const char *)"ESP", (const char *)"ESP", 1702053203, 1 },
-    { (const char *)"DEU", (const char *)"DEU", (const char *)"DEU", (const char *)"DEU", 1684358213, 2 },
-    { (const char *)"FRA", (const char *)"FRA", (const char *)"FRA", (const char *)"FRA", 1718765138, 3 },
-    { (const char *)"POR", (const char *)"POR", (const char *)"POR", (const char *)"BRA", 1886667346, 4 },
-    { (const char *)"ITA", (const char *)"ITA", (const char *)"ITA", (const char *)"ITA", 1769228628, 5 },
-    { (const char *)"JPN", (const char *)"JPN", (const char *)"ENG", (const char *)"JPN", 1784760897, 6 },
-    { (const char *)"KOR", (const char *)"KOR", (const char *)"ENG", (const char *)"HAN", 1802455890, 7 },
-    { (const char *)"SIN", (const char *)"SIN", (const char *)"ENG", (const char *)"SIN", 2053653326, 8 },
-    { (const char *)"CHI", (const char *)"CHI", (const char *)"ENG", (const char *)"CHI", 2053657687, 9 },
-    { (const char *)"POL", (const char *)"POL", (const char *)"POL", (const char *)"POL", 1886146636, 10 },
-    { (const char *)"RUS", (const char *)"RUS", (const char *)"RUS", (const char *)"RUS", 1920291413, 11 },
-    { (const char *)&gszData_006DEDEC, (const char *)"ENG", (const char *)"ENG", (const char *)"HAN", 1802455890, 12 }
-}; // 0x007303D8
+D2LanguageInfoStrc gaLanguageInfo[13] = { // 0x007303D8
+    { gszData_006DEDEC, "ENG", "ENG", gszData_006E0288, 0x656E5553, 0 },
+    { "ESP", "ESP", "ESP", "ESP", 0x65734553, 1 },
+    { "DEU", "DEU", "DEU", "DEU", 0x64654445, 2 },
+    { "FRA", "FRA", "FRA", "FRA", 0x66724652, 3 },
+    { "POR", "POR", "POR", "BRA", 0x70744252, 4 },
+    { "ITA", "ITA", "ITA", "ITA", 0x69744954, 5 },
+    { "JPN", "JPN", "ENG", "JPN", 0x6A614A41, 6 },
+    { "KOR", "KOR", "ENG", "HAN", 0x6B6F4B52, 7 },
+    { "SIN", "SIN", "ENG", "SIN", 0x7A68434E, 8 },
+    { "CHI", "CHI", "ENG", "CHI", 0x7A685457, 9 },
+    { "POL", "POL", "POL", "POL", 0x706C504C, 10 },
+    { "RUS", "RUS", "RUS", "RUS", 0x72755255, 11 },
+    { gszData_006DEDEC, "ENG", "ENG", "HAN", 0x6B6F4B52, 12 }
+};
 
-extern Unicode gawszUnitSuffix[4][2] = {
-    { { 0x4B } },
-    { { 0x4D } },
-    { { 0x42 } },
-    { { 0x54 } }
-}; // 0x00730510
+Unicode gawszUnitSuffix[4][2] = { { { 'K' }, { 0 } }, { { 'M' }, { 0 } }, { { 'B' }, { 0 } }, { { 'T' }, { 0 } } }; // 0x00730510
 
-extern "C" const char gData_00730520[4] = { 32, 45, 110, 111 }; // 0x00730520
+extern "C" const char gData_00730520[4] = { ' ', '-', 'n', 'o' }; // 0x00730520
 #pragma comment(linker, "/alternatename:_gszNotTranslated=_gData_00730520")
 
-extern "C" struct d2data_00730524_t gData_00730524 = {
-    {
-        0x74, 0x20, 0x78, 0x6C, 0x61, 0x74, 0x65, 0x64, 0x20, 0x63, 0x61, 0x6C, 0x6C, 0x20, 0x6B, 0x65,
-        0x6E, 0x20, 0x77
-    }
-}; // 0x00730524
+extern "C" char gData_00730524[20] = "t xlated call ken w"; // 0x00730524

@@ -14,6 +14,7 @@
 #include "D2StatIds.h"
 
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 
 #include "D2Structs.h"
 
@@ -32,6 +33,9 @@
 #include "D2PlayerModes.h"
 
 #include "D2MonModes.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2CommonApi.h"
 
 #define FP16_SHIFT 16
 
@@ -71,17 +75,12 @@ struct D2MonStats2Txt;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" const char gszUnitsSourceFile; // 0x006E8E10
 
-unsigned char __stdcall PATH_GetDirection(D2DynamicPathStrc* pPath); // 0x006487F0
-
-D2SkillStrc* __stdcall SKILLS_GetFirstSkillFromSkillList(D2SkillListStrc* pSkillList); // 0x00643910
 
 void __stdcall STATLIST_FreeStatListEx(D2UnitStrc* pUnit); // 0x00626D10
 
@@ -95,9 +94,7 @@ int __stdcall PATH_GetClientCoordX(D2DynamicPathStrc* pPath); // 0x006489C0
 
 int __stdcall PATH_GetClientCoordY(D2DynamicPathStrc* pPath); // 0x006489D0
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
 
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
 
 void __fastcall PATH_SetClientCoordX(D2DynamicPathStrc* pPath, int nX); // 0x006489E0
 
@@ -115,19 +112,9 @@ D2SkillStrc* __fastcall SKILLS_GetRightSkillFromSkillList(D2SkillListStrc* pSkil
 
 D2SkillStrc* __fastcall SKILLS_GetUsedSkillFromSkillList(D2SkillListStrc* pSkillList); // 0x006439A0
 
-int __stdcall PATH_ComputeDirection(int nX1, int nY1, int nX2, int nY2); // 0x0064FDC0
-
-D2ItemsTxt* __stdcall DATATBLS_GetItemsTxtRecord(int nItemId); // 0x006335F0
-
-void __stdcall QUESTRECORD_FreeRecord(void* pMemPool, D2BitBufferStrc* pQuestRecord); // 0x0065C490
-
-void __stdcall WAYPOINTS_FreeWaypointData(void* pMemPool, D2WaypointDataStrc* pData); // 0x00660FD0
 
 void __fastcall sub_0066A260_PlayerDataFreeHook(D2UnitStrc* pUnit); // 0x0066A260
 
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
-
-int __stdcall STATLIST_GetMaxLifeFromUnit(D2UnitStrc* pUnit); // 0x00625D10
 
 void __fastcall SKILLS_SetUsedSkillInSkillList(D2SkillListStrc* pSkillList, D2SkillStrc* pUsedSkill); // 0x00643990
 
@@ -154,10 +141,6 @@ extern D2AnimUnkStrc gaMonModesAnimModulatorsExpansion[]; // 0x006E8CD0
 
 void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-D2SkillStrc* __stdcall UNITS_GetUsedSkill(D2UnitStrc* pUnit); // 0x00620250
-
-int __stdcall SKILLS_GetSkillIdFromSkill(D2SkillStrc* pSkill, const char* szFile, int nLine); // 0x00643CE0
-
 D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
 
@@ -176,53 +159,31 @@ extern const D2ValueRecordStrc gTable_006E8B90[]; // 0x006E8B90
 
 extern const D2ValueRecordStrc gTable_006E8CD0[]; // 0x006E8CD0
 
-void __stdcall STATES_ToggleState(D2UnitStrc* pUnit, int nState, int bSet); // 0x00639DB0
 
-D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitAndState(D2UnitStrc* pUnit, int nState); // 0x006256B0
 
-D2StatListStrc* __stdcall STATLIST_AllocStatList(void* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID); // 0x006251F0
 
 extern "C" void __stdcall STATLIST_SetState(D2StatListStrc* pStatList, unsigned int dwState); // 0x006252D0
 
-void __stdcall D2COMMON_10475_PostStatToStatList(D2UnitStrc* pUnit, D2StatListStrc* pStatList, int bResetFlag); // 0x00626E10
 
-void __stdcall STATLIST_SetStatIfListIsValid(D2StatListStrc* pStatList, int nStatId, int nValue, int nLayer); // 0x00627150
-
-void __stdcall D2Common_10474(D2UnitStrc* pUnit, D2StatListStrc* pStatList); // 0x006277E0
-
-void __stdcall STATLIST_FreeStatList(D2StatListStrc* pStatList); // 0x00626CD0
-
-int __fastcall MONSTERREGION_CheckMonStats2Flag(int nMonsterId, int nFlag); // 0x004638A0
 
 D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int); // 0x00451FE0
-
-int __stdcall INVENTORY_GetEquippedWeapon(D2InventoryStrc*, D2UnitStrc**, int*, int*); // 0x0063C9B0
 
 unsigned char __stdcall ITEMS_GetMeleeRange(D2UnitStrc*); // 0x006288D0
 
 int __stdcall COMPOSIT_GetWeaponClassId(D2UnitStrc*, D2InventoryStrc*, int*, int, int); // 0x0064F380
 
-int __stdcall D2COMMON_10175_PathGetFirstPointX(D2DynamicPathStrc* pDynamicPath); // 0x00648A00
 
-int __stdcall D2COMMON_10176_PathGetFirstPointY(D2DynamicPathStrc* pDynamicPath); // 0x00648A10
 
 int __stdcall PATH_GetNewDirection(D2DynamicPathStrc* pDynamicPath); // 0x00648810
 
 int __stdcall UNITS_GetDirectionToCoords(D2UnitStrc* pUnit, int nNewX, int nNewY); // 0x00621DC0
 
-int __stdcall UNITS_CanDualWield(D2UnitStrc* pUnit); // 0x006235A0
 
 D2SkillsTxt* __fastcall SKILLS_GetSkillsTxtRecordFromSkill(D2SkillStrc* pSkill); // 0x00644140
 
-int __stdcall SKILLS_GetFlags(D2SkillStrc* pSkill); // 0x006446A0
 
-D2UnitStrc* __stdcall INVENTORY_GetCompositItem(D2InventoryStrc* pInventory, int nBodyLoc); // 0x0063C050
+int __fastcall ITEMS_CheckUnitFlagEx(D2UnitStrc* pUnit, unsigned int dwMask); // 0x00463720
 
-int __stdcall ITEMSIsA(D2UnitStrc* pItem, int nItemType); // 0x00629BB0
-
-int __fastcall sub_00463720_TestUnitFlagEx(D2UnitStrc* pUnit, unsigned int dwMask); // 0x00463720
-
-D2UnitStrc* __stdcall D2Common_10434(D2UnitStrc* pUnit, int a2); // 0x00623990
 
 unsigned char __stdcall ITEMS_GetHitClassFromItem(D2UnitStrc* pItem); // 0x0062A180
 
@@ -250,31 +211,17 @@ struct D2AnimModeModulatorStrc;
 
 struct D2AnimModeStatBasePercentageStrc;
 
-D2MissilesTxt* __fastcall sub_0046ACE0(int nMissileId); // 0x0046ACE0
+D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId); // 0x0046ACE0
 
-int __stdcall UNITS_GetUnitSizeX(D2UnitStrc* pUnit); // 0x00620510
 
-int __stdcall UNITS_GetUnitSizeY(D2UnitStrc* pUnit); // 0x006205A0
 
-int __fastcall UNITS_GetCollisionMask(D2UnitStrc* pUnit); // 0x006209D0
 
-D2UnitStrc* __stdcall INVENTORY_GetLeftHandWeapon(D2InventoryStrc* pInventory); // 0x0063BEF0
-
-D2UnitStrc* __stdcall INVENTORY_GetSecondaryWeapon(D2InventoryStrc* pInventory); // 0x0063BF90
-
-D2UnitStrc* __stdcall STATLIST_GetOwner(D2UnitStrc* pUnit, int* pStatNotDynamic); // 0x00625820
-
-void __stdcall STATLIST_MergeStatLists(D2UnitStrc* pTarget, D2UnitStrc* pUnit, int bType); // 0x00627910
 
 unsigned char __stdcall ITEMS_GetBodyLocation(D2UnitStrc* pItem); // 0x00627D40
 
-D2UnitStrc* __stdcall INVENTORY_GetItemFromBodyLoc(D2InventoryStrc* pInventory, int nBodyLoc); // 0x0063BDE0
-
-unsigned int __stdcall ITEMS_CheckWeaponIfTwoHanded(D2UnitStrc* pItem); // 0x006289C0
 
 unsigned char __stdcall ITEMS_GetComponent(D2UnitStrc* pItem); // 0x00628660
 
-int __stdcall STATLIST_SetStatValue(D2StatListStrc* pStatList, int nStatId, int nValue, unsigned short nLayer); // 0x006270B0
 
 enum
 {
@@ -322,17 +269,9 @@ extern unsigned int gnNoBlockItemCodeCount; // 0x00744584
 
 unsigned int __stdcall D2Common_11069(D2UnitStrc* pMonster, unsigned int nIndex, unsigned int nComponent); // 0x00664860
 
-D2ItemsTxt* __stdcall DATATBLS_GetItemRecordFromItemCode(unsigned int dwCode, int* pItemId); // 0x00633640
-
 int __stdcall UNITS_GetMeleeRange(D2UnitStrc* pUnit); // 0x00622870
 
-int __stdcall UNITS_TestCollisionWithUnit(D2UnitStrc* pUnit1, D2UnitStrc* pUnit2, int nCollisionMask); // 0x00622AA0
-
 void __stdcall DATATBLS_ComputeSequenceAnimation(D2AnimSeqTxt* pMonSeqTxt, int nTargetFramePoint, int nCurrentFramePoint, int* pMode, int* pFrame, int* pDirection, int* pEvent); // 0x00663410
-
-D2AnimSeqTxt* __stdcall DATATBLS_GetMonSeqTxtRecordFromUnit(D2UnitStrc* pUnit); // 0x006633B0
-
-int __stdcall DATATBLS_GetSeqFramePointsCount(D2UnitStrc* pUnit); // 0x006633D0
 
 int __stdcall DATATBLS_GetSeqFrameCount(D2UnitStrc* pUnit); // 0x006633F0
 
@@ -366,57 +305,35 @@ int __fastcall UNITS_CanAnimModeUseAttackRate(int nAnimMode, int nUnitType, D2Un
 
 void __stdcall UNITS_MergeDualWieldWeaponStatLists(D2UnitStrc* pUnit, int bSet); // 0x00623C80
 
-int __stdcall STATLIST_UnitGetItemStatOrSkillStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625500
 
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
 
-int __stdcall STATES_CheckStateMaskOnUnit(D2UnitStrc* pUnit, int nStateMask); // 0x0063A7B0
-
-void __stdcall D2COMMON_11013_ConvertMode(D2UnitStrc* pUnit, int* pType, int* pClass, int* pMode, const char* szFile, int nLine); // 0x00645270
 
 unsigned int __stdcall D2Common_11043(D2UnitStrc* pUnit); // 0x00646170
 
 void __stdcall STATLIST_SetStat(D2StatListStrc* pStatList, int nStatId, int nValue, int nLayer); // 0x00627150
 
-int __stdcall STATLIST_GetStatValue(D2StatListStrc* pStatList, int nStatId, unsigned short nLayer); // 0x00625D00
 
 int __stdcall INVENTORY_GetEquippedShield(D2InventoryStrc* pInventory, D2UnitStrc** ppItem); // 0x0063C8F0
 
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646CA0
 
-int __fastcall DATATBLS_ApplyRatio(int nValue, int nMultiplier, int nDivisor); // 0x00483360
-
-D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitAndFlag(D2UnitStrc* pUnit, int nFlag); // 0x00625760
 
 void __stdcall D2Common_10534(D2UnitStrc* pUnit); // 0x00625A00
 
 int __stdcall D2Common_10531_SetStatInStatListLayer0(D2StatListStrc* pStatList, int nStatId, int nValue, int nUnused); // 0x00627810
 
-void __stdcall UNITROOM_RefreshUnit(D2UnitStrc* pUnit); // 0x0064C040
 
-D2SkillStrc* __stdcall UNITS_GetLeftSkill(D2UnitStrc* pUnit); // 0x00620190
 
-D2SkillStrc* __stdcall UNITS_GetRightSkill(D2UnitStrc* pUnit); // 0x006201D0
 
-int __stdcall SKILLS_GetOwnerGUIDFromSkill(D2SkillStrc* pSkill); // 0x00643AD0
-
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
 
 int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
 
-unsigned short __stdcall ITEMS_GetWeaponClassId(D2UnitStrc* pItem); // 0x00629FE0
 
 void __stdcall STATLIST_DeactivateTemporaryStates(D2UnitStrc* pUnit); // 0x006272E0
-
-int __stdcall UNITS_SetAnimStartFrame(D2UnitStrc* ptUnit); // 0x00624390
 
 static int __stdcall UNITS_CanAnimModeUseVelocityModifier(int nUnitType, int nAnimMode, D2UnitStrc* pUnit, int nClassId);
 
 static void __stdcall UNITS_StoreOwnerInfo(D2UnitStrc* pUnit, int nOwnerType, int nOwnerId);
-
-void __stdcall UNITS_StoreOwnerTypeAndGUID(D2UnitStrc* pUnit, int nOwnerType, int nOwnerId);
 
 void __stdcall UNITS_StoreOwner(D2UnitStrc* pUnit, D2UnitStrc* pOwner);
 
@@ -454,25 +371,16 @@ D2RosterInfoStrc* __fastcall GFXUTIL_GetNextRosterInfo(D2RosterInfoStrc* pRoster
 
 int __stdcall DUNGEON_GetPortalFlagFromLevelId(int nLevelId);                                               // 0x0061AE30
 
-D2BitBufferStrc* __stdcall QUESTRECORD_AllocRecord(void* pMemPool);                                         // 0x0065C430
-
-D2WaypointDataStrc* __stdcall WAYPOINTS_AllocWaypointData(void* pMemPool);                                  // 0x00660F30
-
 void __stdcall sub_0066A250(int nUnused);
 
 struct D2SkillStrc;
 
 struct D2TimerArgStrc;
 
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
-
-int __stdcall UNITS_IsInMovingMode(D2UnitStrc* pUnit);                                                      // 0x00622D00
-
 #pragma intrinsic(memset)
 
 #define STRCOPY_MAX 0x7FFFFFFF
 
-int __stdcall STATES_CheckStateMaskUdeadOnUnit(D2UnitStrc* pUnit);                                          // 0x0063A770
 
 #define MONSTATS2FLAGINDEX_CORPSESEL 7
 
@@ -502,7 +410,7 @@ D2AnimDataRecordStrc* __fastcall DATATBLS_GetAnimDataRecord(D2UnitStrc* pUnit, i
 
 int __stdcall PATH_IsCurrentRoomInvalid(D2DynamicPathStrc* pPath); // 0x00648B30
 
-void __stdcall PATH_SetCurrentRoomInvalid(D2DynamicPathStrc* pPath, int a2); // 0x00648B40
+void __stdcall PATH_SetCurrentRoomInvalid(D2DynamicPathStrc* pPath, int bInvalid); // 0x00648B40
 
 void __stdcall D2Common_10216(D2DynamicPathStrc* pPath, int nX, int nY, int bSetBothDirections); // 0x00649EF0
 
@@ -522,19 +430,10 @@ int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
 int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
-void __stdcall PATH_AddCollisionFootprintForUnit(D2UnitStrc* pUnit); // 0x00649400
 
-int __stdcall PATH_RemoveCollisionFootprintForUnit(D2UnitStrc* pUnit, int bForce); // 0x00649560
-
-int __stdcall COLLISION_RayTrace(D2ActiveRoomStrc* pRoom, D2CoordStrc* pBegin, D2CoordStrc* pEnd, int nCollisionMask); // 0x0064E260
 
 void __stdcall UNITS_InitializeSequence(D2UnitStrc* pUnit); // 0x00621260
 
-void __stdcall UnitUpdateAnimRateAndVel(D2UnitStrc* pUnit, const char* szFile, int nLine); // 0x00623F50
-
-int __stdcall STATES_IsUnitShapeShifted(D2UnitStrc* pUnit); // 0x0063A400
-
-D2ObjectsTxt* __stdcall DATATBLS_GetObjectsTxtRecord(int nObjectId); // 0x00640E90
 
 unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
@@ -544,17 +443,11 @@ static int UNITS_GetBaseAnimSpeed(int nUnitType, int nClassId, int nAnimMode);
 
 void __stdcall DUNGEON_GameSubtileToClientCoords(int* pX, int* pY); // 0x00643260
 
+// Kept noinline: UNITS_TestCollisionWithUnit (0x00622AA0) calls it once out of line in the image, and inlining it here changes that caller.
 static __declspec(noinline) int __stdcall sub_00622920_TestCollision(int nX1, int nY1, int nSize1, int nX2, int nY2, int nSize2, D2ActiveRoomStrc* pRoom, int nCollisionMask);
 
 extern int gaClassesWeaponFrameBonus[][7]; // 0x006E8E60
 
-void __stdcall UNITS_StopSequence(D2UnitStrc* pUnit);
-
-int __stdcall UNITS_GetAttackRate(D2UnitStrc* pAttacker);
-
-int __stdcall UNITS_TestCollisionByCoordinates(D2UnitStrc* pUnit, int nX, int nY, int nCollisionMask);
-
-int __stdcall UNITS_TestCollisionBetweenInteractingUnits(D2UnitStrc* pUnit1, D2UnitStrc* pUnit2, unsigned int nCollisionMask);
 
 static int __stdcall UNITS_UpdateSequenceFrame(D2UnitStrc* pUnit, int nPrevFrame);
 
@@ -790,7 +683,7 @@ int __stdcall UNITS_GetUnitSizeX(D2UnitStrc* pUnit)
             return SIZE_ITEM;
 
         case UNIT_MISSILE:
-            if (D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0(pUnit->dwClassId))
+            if (D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(pUnit->dwClassId))
             {
                 return pMissilesTxtRecord->nSize;
             }
@@ -831,7 +724,7 @@ int __stdcall UNITS_GetUnitSizeY(D2UnitStrc* ptUnit)
         return SIZE_ITEM;
 
     case UNIT_MISSILE:
-        if (D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0(ptUnit->dwClassId))
+        if (D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(ptUnit->dwClassId))
         {
             return pMissilesTxtRecord->nSize;
         }
@@ -1172,7 +1065,6 @@ void __stdcall UNITS_ResetRoom(D2UnitStrc* hUnit)
     }
 }
 
-D2ActiveRoomStrc* __stdcall PATH_GetRoom(D2DynamicPathStrc* pDynamicPath); // 0x00648A80
 inline D2SkillsTxt* DATATBLS_GetSkillsTxtRecord(int nSkillId)
 {
     if (nSkillId >= 0 && nSkillId < sgptDataTables->nSkillsTxtRecordCount)
@@ -1329,7 +1221,7 @@ int __stdcall UNITS_IsCurrentRoomInvalid(D2UnitStrc* ptUnit)
 }
 
 // 0x00620FA0
-void __stdcall UNITS_SetCurrentRoomInvalid(D2UnitStrc* ptUnit, int a2)
+void __stdcall UNITS_SetCurrentRoomInvalid(D2UnitStrc* ptUnit, int bInvalid)
 {
     D2_ASSERT(ptUnit, 2558);
 
@@ -1338,11 +1230,11 @@ void __stdcall UNITS_SetCurrentRoomInvalid(D2UnitStrc* ptUnit, int a2)
     case UNIT_OBJECT:
     case UNIT_ITEM:
     case UNIT_TILE:
-        ptUnit->pStaticPath->bRoomNeedsUpdate = a2 != 0;
+        ptUnit->pStaticPath->bRoomNeedsUpdate = bInvalid != 0;
         return;
 
     default:
-        PATH_SetCurrentRoomInvalid(ptUnit->pDynamicPath, a2);
+        PATH_SetCurrentRoomInvalid(ptUnit->pDynamicPath, bInvalid);
         return;
     }
 }
@@ -1561,60 +1453,6 @@ inline D2CharStatsTxt* DATATBLS_GetCharStatsTxtRecord_Inl(int nCharId)
     }
 
     return 0;
-}
-
-static inline int UNITS_IsAnimModeBlocking_Inl(int nUnitType, int nAnimMode)
-{
-    int nMode;
-    switch (nUnitType)
-    {
-    case 0:
-        nMode = 9;
-        break;
-    case 1:
-        nMode = 6;
-        break;
-    default:
-        return 0;
-    }
-
-    return nAnimMode == nMode;
-}
-
-static inline int UNITS_IsAnimModeGetHit_Inl(int nUnitType, int nAnimMode)
-{
-    int nMode;
-    switch (nUnitType)
-    {
-    case 0:
-        nMode = 4;
-        break;
-    case 1:
-        nMode = 3;
-        break;
-    default:
-        return 0;
-    }
-
-    return nAnimMode == nMode;
-}
-
-static inline int UNITS_IsAnimModeKnockBack_Inl(int nUnitType, int nAnimMode)
-{
-    int nMode;
-    switch (nUnitType)
-    {
-    case 0:
-        nMode = 0x13;
-        break;
-    case 1:
-        nMode = 0xD;
-        break;
-    default:
-        return 0;
-    }
-
-    return nAnimMode == nMode;
 }
 
 static __forceinline void UNITS_SetAnimationSpeed_Inl(D2UnitStrc* pUnit, int nSpeed)
@@ -2232,15 +2070,6 @@ static void __stdcall UNITS_StoreOwnerInfo(D2UnitStrc* pUnit, int nOwnerType, in
     }
 }
 
-int __stdcall sub_O05_Emit_006214A0(D2UnitStrc* pUnit, int nUnitType, int nAnimMode, int nClassId)
-{
-    if (UNITS_CanAnimModeUseVelocityModifier(nUnitType, nAnimMode, pUnit, nClassId))
-    {
-        return nClassId;
-    }
-    return 0;
-}
-
 // 0x00621CC0
 void __stdcall UNITS_StoreOwnerTypeAndGUID(D2UnitStrc* pUnit, int nOwnerType, int nOwnerId)
 {
@@ -2369,12 +2198,12 @@ void __stdcall UNITS_AllocPlayerData(D2UnitStrc* ptUnit)
     memset(ptUnit->pPlayerData, 0x00, sizeof(D2PlayerDataStrc));
     ptUnit->pPlayerData->szName[0] = 0;
 
+    // The loop reaches the unit through its own pointer: with ptUnit, the quest store's address operands come out swapped.
+    D2UnitStrc* pPlayer = ptUnit;
     for (int i = 0; i < 3; ++i)
     {
-        D2BitBufferStrc* const pQuestRecord = QUESTRECORD_AllocRecord(GFXUTIL_GetNextRosterInfo((D2RosterInfoStrc*)ptUnit));
-        // volatile: stands in for the reload of pPlayerData after the call (the original indexes it as [loop + record])
-        (*(D2PlayerDataStrc* volatile*)&ptUnit->pPlayerData)->pQuestData[i] = pQuestRecord;
-        ptUnit->pPlayerData->pWaypointData[i] = WAYPOINTS_AllocWaypointData(GFXUTIL_GetNextRosterInfo((D2RosterInfoStrc*)ptUnit));
+        pPlayer->pPlayerData->pQuestData[i] = QUESTRECORD_AllocRecord(GFXUTIL_GetNextRosterInfo((D2RosterInfoStrc*)pPlayer));
+        pPlayer->pPlayerData->pWaypointData[i] = WAYPOINTS_AllocWaypointData(GFXUTIL_GetNextRosterInfo((D2RosterInfoStrc*)pPlayer));
     }
 
     ptUnit->pPlayerData->nPortalFlags = DUNGEON_GetPortalFlagFromLevelId(1);
@@ -2710,7 +2539,7 @@ D2UnitStrc* __stdcall D2Common_10434(D2UnitStrc* pUnit, int a2)
         {
             const int nFrame = pUnit->dwSeqFrame >> 8;
             int bOther;
-            if (sub_00463720_TestUnitFlagEx(pUnit, 0x4000000))
+            if (ITEMS_CheckUnitFlagEx(pUnit, 0x4000000))
             {
                 bOther = nFrame % 2;
             }
@@ -2743,7 +2572,8 @@ D2UnitStrc* __stdcall D2Common_10434(D2UnitStrc* pUnit, int a2)
             break;
         }
 
-        if (ITEMSIsA(pWeapon, 45) && sub_0062A4E0_TestItem(pWeapon))
+// build: symbol ?ITEMS_CanBeEquipped@* 0x0062A4E0
+        if (ITEMSIsA(pWeapon, 45) && ITEMS_CanBeEquipped(pWeapon))
         {
             return pWeapon;
         }
@@ -3374,12 +3204,12 @@ unsigned char __stdcall UNITS_GetItemComponentId(D2UnitStrc* pUnit, D2UnitStrc* 
     {
         D2InventoryStrc* pInventory = pUnit->pInventory;
         D2UnitStrc* pRightHandItem = INVENTORY_GetItemFromBodyLoc(pInventory, 4);
-        if (!sub_0062A4E0_TestItem(pRightHandItem))
+        if (!ITEMS_CanBeEquipped(pRightHandItem))
         {
             pRightHandItem = 0;
         }
         D2UnitStrc* pLeftHandItem = INVENTORY_GetItemFromBodyLoc(pInventory, 5);
-        if (!sub_0062A4E0_TestItem(pLeftHandItem))
+        if (!ITEMS_CanBeEquipped(pLeftHandItem))
         {
             pLeftHandItem = 0;
         }
@@ -3682,7 +3512,8 @@ int __stdcall UNITS_GetWeaponGUID(D2UnitStrc* ptUnit)
 }
 
 // 0x00623460
-extern "C" __declspec(dllexport) int __stdcall UNITS_GetStashGoldLimit(int nUnused) {
+int __stdcall UNITS_GetStashGoldLimit(int nUnused)
+{
     return 2500000;
 }
 
@@ -3980,7 +3811,7 @@ void __stdcall UnitUpdateAnimRateAndVel(D2UnitStrc* pUnit, const char* szFile, i
     int nClassId = pUnit->dwClassId;
     int nAnimMode = pUnit->dwAnimMode;
     D2COMMON_11013_ConvertMode(pUnit, &nUnitType, &nClassId, &nAnimMode, ".\\UNITS\\Units.cpp", 0xCB9);
-    sub_00620F00(pUnit, nUnitType, nClassId, nAnimMode);
+    UNITS_SetAnimData(pUnit, nUnitType, nClassId, nAnimMode);
     D2AnimDataRecordStrc* pAnimData = pUnit->pAnimData;
 
     if (UNITS_IsSeqAnimSpeedModulatedByFCR(nUnitType, nAnimMode, pUnit))
@@ -4050,13 +3881,13 @@ void __stdcall UnitUpdateAnimRateAndVel(D2UnitStrc* pUnit, const char* szFile, i
         {
             D2InventoryStrc* pInventory = pUnit->pInventory;
             D2UnitStrc* pRightWeapon = INVENTORY_GetItemFromBodyLoc(pInventory, 4);
-            if (!sub_0062A4E0_TestItem(pRightWeapon))
+            if (!ITEMS_CanBeEquipped(pRightWeapon))
             {
                 pRightWeapon = 0;
             }
 
             D2UnitStrc* pLeftWeapon = INVENTORY_GetItemFromBodyLoc(pInventory, 5);
-            if (!sub_0062A4E0_TestItem(pLeftWeapon))
+            if (!ITEMS_CanBeEquipped(pLeftWeapon))
             {
                 pLeftWeapon = 0;
             }
@@ -4253,7 +4084,7 @@ int __stdcall UNITS_SetAnimStartFrame(D2UnitStrc* ptUnit)
 
     case 3:
     {
-        D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0(ptUnit->dwClassId);
+        D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(ptUnit->dwClassId);
         if (!pMissilesTxtRecord)
         {
             return 0;
@@ -4354,13 +4185,78 @@ struct d2data_00744508_t
 };
 #pragma pack(pop)
 
-extern "C" const D2AnimModeModulatorStrc gData_006E8A00[20]; // 0x006E8A00
-extern "C" const D2ValueRecordStrc gData_006E8B90[16]; // 0x006E8B90
-extern "C" const D2ValueRecordStrc gData_006E8CD0[16]; // 0x006E8CD0
 extern "C" const struct d2data_006E8E22_t gData_006E8E22; // 0x006E8E22
 extern "C" const D2AnimModeStatBasePercentageStrc gData_006E8E24[5]; // 0x006E8E24
+extern "C" const D2AnimModeModulatorStrc gData_006E8A00[20]; // 0x006E8A00
 extern "C" const int gData_006E8E60[14][7]; // 0x006E8E60
 extern "C" struct d2data_00744508_t gData_00744508; // 0x00744508
+
+extern "C" const struct d2data_006E8E22_t gData_006E8E22 = {
+    { 0x00 }
+}; // 0x006E8E22
+
+extern const D2ValueRecordStrc gTable_006E8B90[16] = {
+    { { 0, 0, 0, 0, 1 } },
+    { { 0 } },
+    { { 0, 1 } },
+    { { 0 } },
+    { { 0, 0, 0, 1 } },
+    { { 0, 0, 0, 1 } },
+    { { 0 } },
+    { { 0 } },
+    { { 1, 1, 1 } },
+    { { 1, 1, 1 } },
+    { { 1, 1, 1 } },
+    { { 1, 1, 1 } },
+    { { 0, 0, 0, 0, 1 } },
+    { { 0 } },
+    { { 1, 0, 1 } },
+    { { 0, 1 } }
+}; // 0x006E8B90
+
+extern const D2ValueRecordStrc gTable_006E8CD0[16] = {
+    { { 0, 0, 0, 0, 1 } },
+    { { 0 } },
+    { { 0, 1 } },
+    { { 0 } },
+    { { 0, 0, 0, 1 } },
+    { { 0, 0, 0, 1 } },
+    { { 0 } },
+    { { 0 } },
+    { { 1, 0, 1 } },
+    { { 1, 0, 1 } },
+    { { 1, 0, 1 } },
+    { { 1, 0, 1 } },
+    { { 0, 0, 0, 0, 1 } },
+    { { 0 } },
+    { { 1, 0, 1 } },
+    { { 0, 1 } }
+}; // 0x006E8CD0
+
+extern D2InventoryRecordMapStrc gaInventoryRecordMap[7] = {
+    { 0 },
+    { 1, 1 },
+    { 2, 2 },
+    { 3, 3 },
+    { 4, 4 },
+    { 5, 14 },
+    { 6, 15 }
+}; // 0x00744544
+
+extern unsigned int gnInventoryRecordMapCount = 7; // 0x0074457C
+
+extern unsigned int gdwNoBlockItemCodes[1] = { 0x20686374 }; // 0x00744580
+
+extern unsigned int gnNoBlockItemCodeCount = 1; // 0x00744584
+
+extern "C" const D2AnimModeStatBasePercentageStrc gData_006E8E24[5] = {
+    { 1, 120, 93 },
+    { 1, 120, 99 },
+    { 1, 120, 105 },
+    { 1, 120, 102 },
+    { 1, 150, 96 }
+}; // 0x006E8E24
+#pragma comment(linker, "/alternatename:?gaAnimModeStatBasePercentage@@3PAUD2AnimModeStatBasePercentageStrc@@A=_gData_006E8E24")
 
 extern "C" const D2AnimModeModulatorStrc gData_006E8A00[20] = {
     { 0, 0, 0, 0, 1 },
@@ -4384,59 +4280,6 @@ extern "C" const D2AnimModeModulatorStrc gData_006E8A00[20] = {
     { 1, 0, 1 }
 }; // 0x006E8A00
 #pragma comment(linker, "/alternatename:?gaPlayerModesAnimModulators_006E8A00@@3PAUD2AnimModeModulatorStrc@@A=_gData_006E8A00")
-
-extern "C" const D2ValueRecordStrc gData_006E8B90[16] = {
-    { { 0, 0, 0, 0, 1 } },
-    { { 0 } },
-    { { 0, 1 } },
-    { { 0 } },
-    { { 0, 0, 0, 1 } },
-    { { 0, 0, 0, 1 } },
-    { { 0 } },
-    { { 0 } },
-    { { 1, 1, 1 } },
-    { { 1, 1, 1 } },
-    { { 1, 1, 1 } },
-    { { 1, 1, 1 } },
-    { { 0, 0, 0, 0, 1 } },
-    { { 0 } },
-    { { 1, 0, 1 } },
-    { { 0, 1 } }
-}; // 0x006E8B90
-#pragma comment(linker, "/alternatename:?gTable_006E8B90@@3QBUD2ValueRecordStrc@@B=_gData_006E8B90")
-
-extern "C" const D2ValueRecordStrc gData_006E8CD0[16] = {
-    { { 0, 0, 0, 0, 1 } },
-    { { 0 } },
-    { { 0, 1 } },
-    { { 0 } },
-    { { 0, 0, 0, 1 } },
-    { { 0, 0, 0, 1 } },
-    { { 0 } },
-    { { 0 } },
-    { { 1, 0, 1 } },
-    { { 1, 0, 1 } },
-    { { 1, 0, 1 } },
-    { { 1, 0, 1 } },
-    { { 0, 0, 0, 0, 1 } },
-    { { 0 } },
-    { { 1, 0, 1 } },
-    { { 0, 1 } }
-}; // 0x006E8CD0
-#pragma comment(linker, "/alternatename:?gTable_006E8CD0@@3QBUD2ValueRecordStrc@@B=_gData_006E8CD0")
-
-extern "C" const struct d2data_006E8E22_t gData_006E8E22 = {
-    { 0x00 }
-}; // 0x006E8E22
-
-extern "C" const D2AnimModeStatBasePercentageStrc gData_006E8E24[5] = {
-    { 1, 120, 93 },
-    { 1, 120, 99 },
-    { 1, 120, 105 },
-    { 1, 120, 102 },
-    { 1, 150, 96 }
-}; // 0x006E8E24
-#pragma comment(linker, "/alternatename:?gaAnimModeStatBasePercentage@@3PAUD2AnimModeStatBasePercentageStrc@@A=_gData_006E8E24")
 
 extern "C" const int gData_006E8E60[14][7] = {
     { 1, 1 },
@@ -4466,19 +4309,3 @@ extern "C" struct d2data_00744508_t gData_00744508 = {
     (const void*)"Unknown",
     (const void*)"14"
 }; // 0x00744508
-
-extern D2InventoryRecordMapStrc gaInventoryRecordMap[7] = {
-    { 0 },
-    { 1, 1 },
-    { 2, 2 },
-    { 3, 3 },
-    { 4, 4 },
-    { 5, 14 },
-    { 6, 15 }
-}; // 0x00744544
-
-extern unsigned int gnInventoryRecordMapCount = 7; // 0x0074457C
-
-extern unsigned int gdwNoBlockItemCodes[1] = { 0x20686374 }; // 0x00744580
-
-extern unsigned int gnNoBlockItemCodeCount = 1; // 0x00744584

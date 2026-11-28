@@ -2,6 +2,7 @@
 #include "D2StormTypes.h"
 #include "SValidate.h"
 #include "stpl.h"
+#include "StormApi.h"
 
 struct D2SCmdLink006C43A0Strc;
 struct PairStrc_006C4030;
@@ -155,13 +156,7 @@ extern "C" unsigned long __cdecl strtoul(const char* szString, char** ppEnd, int
 
 int __stdcall SMemFree(void* pLocation, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
 void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags); // 0x00413020
-void __stdcall SMemCopy(void* pDest, const void* pSource, unsigned int nSize); // 0x0041D2A0
 void __stdcall SMemZero(void* pDst, unsigned int nSize); // 0x0041D300
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
-unsigned int __stdcall SStrPack(char*, const char*, unsigned int); // 0x00413800
-const char* __stdcall SStrChr(const char* szString, char nChar); // 0x00413490
-void __stdcall SStrTokenize(const char** pszString, char* szBuffer, unsigned int nBufferChars, const char* szWhitespace, int* pQuoted); // 0x00413B80
 void* __cdecl StormGetInstance(); // 0x0041BEF0
 void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
 
@@ -872,11 +867,12 @@ int __stdcall SCmdProcessCommandLine(OptionCallbackToken extra, D2ErrorCallback 
     return SCmdProcess(GetCommandLineA(), 1, extra, error);
 }
 
-extern "C" const char* const gData_006FCC24[3]; // 0x006FCC24
-extern "C" const char gData_006FCC4C[12]; // 0x006FCC4C
-
-extern "C" const char* const gData_006FCC24[3] = { "Invalid argument: %s", "The syntax of the command is incorrect.", "Unable to open response file: %s" }; // 0x006FCC24
+extern "C" const char* const gData_006FCC24[3] = { // 0x006FCC24
+    "Invalid argument: %s",
+    "The syntax of the command is incorrect.",
+    "Unable to open response file: %s"
+};
 #pragma comment(linker, "/alternatename:?gszErrorDefaults_006FCC24@@3PAPBDA=_gData_006FCC24")
 
-extern "C" const char gData_006FCC4C[12] = { 32, 44, 59, 34, 9, 10, 13, 26 }; // 0x006FCC4C
+extern "C" const char gData_006FCC4C[12] = " ,;\"\t\n\r\x1A"; // 0x006FCC4C
 #pragma comment(linker, "/alternatename:_gszCmdWhitespace_006FCC4C=_gData_006FCC4C")

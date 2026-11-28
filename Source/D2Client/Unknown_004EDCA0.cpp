@@ -1,10 +1,13 @@
 #include "D2StatIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
 #include "D2Txt.h"
 #include "D2Records.h"
 #include "D2LevelTxt.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
 struct D2UnitStrc;
 
 struct Unit0064A300;
@@ -31,46 +34,21 @@ const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); /
 Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource); // 0x00526700
 Unicode* __fastcall sub_005267E0(Unicode* pDest, const Unicode* pSource); // 0x005267E0
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...); // 0x005269D0
+void __cdecl sub_005269D0_FormatText(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...); // 0x005269D0
 void __fastcall NPCMENU_ClearUnicode(Unicode* pChar); // 0x0042F530
 void __stdcall sub_00403040_VectorConstructor(void* pArray, unsigned int nSize, int nCount, void (__fastcall* pfnConstructor)(Unicode*)); // 0x00403040
 void __fastcall INV_PrefixColorCode(Unicode* wszText, int nLevel); // 0x004521C0
 int __fastcall DATATBLS_ApplyRatio(int nValue, int nMultiplier, int nDivisor); // 0x00483360
 
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 int __cdecl GAME_GetLadderFlag(); // 0x0044DCA0
-int __cdecl GAME_IsExpansion(); // 0x0044DCC0
-unsigned char __cdecl GAME_GetDifficulty(); // 0x0044DCD0
-D2MissilesTxt* __fastcall sub_0046ACE0(int nMissileId); // 0x0046ACE0
-D2SkillDescTxt* __fastcall sub_004A89D0_SkillDescRec(int nSkillId); // 0x004A89D0
-int __fastcall sub_004A9A90_FindSkill(D2UnitStrc* pUnit, int nSkillId); // 0x004A9A90
-int __fastcall sub_004A9AE0_FindSkill(D2UnitStrc* pUnit, int nSkillId); // 0x004A9AE0
-int __fastcall sub_004A9B30_FindSkill(D2UnitStrc* pUnit, int nSkillId); // 0x004A9B30
-int __fastcall sub_004A9B80_FindSkill(D2UnitStrc* pUnit, int nSkillId); // 0x004A9B80
-void __stdcall TEXT_DrawHintText(int nArg1, int nStringIndex); // 0x004ED3F0
 int __stdcall SKILLDESC_AddMonsterDamage(Unicode* wszText, D2SkillsTxt* pSkillsTxt, int nBonusMin, int nBonusMax); // 0x004ECF50
 int __stdcall SKILLDESC_AddSummonDamageBonus(D2UnitStrc* pUnit, Unicode* wszText, int nSkillId, D2SkillsTxt* pSkillsTxt, int nSkillLevel); // 0x004ED150
-D2DifficultyLevelsTxt* __stdcall DATATBLS_GetDifficultyLevelsTxtRecord(int nDifficulty); // 0x00611D30
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
-int __stdcall SKILLS_GetMinElemDamage(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int bApplyMastery); // 0x00644D50
-int __stdcall SKILLS_GetMaxElemDamage(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int bApplyMastery); // 0x00644E40
-int __stdcall SKILLS_GetElementalLength(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int bFlag); // 0x00644F20
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646CA0
-int __stdcall SKILLS_EvaluateSkillDescFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646D00
-unsigned char __stdcall MISSILE_GetElemTypeFromMissileId(int nMissileId); // 0x0064B0C0
-int __stdcall MISSILE_GetMinElemDamage(D2UnitStrc* pMissile, D2UnitStrc* pOwner, int nMissileId, int nLevel); // 0x0064B100
-int __stdcall MISSILE_GetMaxElemDamage(D2UnitStrc* pMissile, D2UnitStrc* pOwner, int nMissileId, int nLevel); // 0x0064B1D0
+// noinline: the original calls this; without it the compiler expands it into 0x004EDCA0.
 static __declspec(noinline) unsigned short SKILLDESC_GetETypeDamageStr(int nEType);
-static int __stdcall SKILLDESC_AddSkillElemRate(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, Unicode* wszText); // 0x004EC6F0
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-int __fastcall ITEM_GetTargetPosition(D2UnitStrc* pUnit, int* pX, int* pY); // 0x004C52E0
+static int __stdcall SKILLDESC_AddSkillElemRate(D2UnitStrc* pUnit, Unicode* wszText, int nSkillId, int nSkillLevel); // 0x004EC6F0
 D2UnitStrc* __fastcall MISSILE_SubmitMissileRequest(D2UnitStrc* pUnit, int nRequest, int nX, int nY, int nSkillId, int nSkillLevel); // 0x004CDB40
-void __stdcall D2COMMON_10160_PathUpdateDirection(D2DynamicPathStrc* pDynamicPath, unsigned char nDirection); // 0x00648820
-void __stdcall MISSILE_SetTotalFrames(D2UnitStrc* pMissile, int nTotalFrames); // 0x0064A2B0
 extern "C" int __stdcall sub_0064A300(Unit0064A300* pUnit); // 0x0064A300
-void __stdcall MISSILE_SetCurrentFrame(D2UnitStrc* pMissile, int nCurrentFrame); // 0x0064A330
 
 static inline int ApplyPercent(int nValue, int nPercent)
 {
@@ -167,7 +145,7 @@ static void __stdcall SKILLDESC_ApplyFireMasteryBonus(int* pValue1, D2SkillsTxt*
 }
 
 // 0x004E6F00
-static void __stdcall SKILLDESC_ApplyLightningMasteryBonus(int* pValue1, D2SkillsTxt* pSkillsTxt, int* pValue2)
+static void __stdcall SKILLDESC_ApplyLightningMasteryBonus(int* pValue1, int* pValue2, D2SkillsTxt* pSkillsTxt)
 {
     D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
     if (pSkillsTxt && pSkillsTxt->nEType == 2)
@@ -293,7 +271,7 @@ static int __stdcall SKILLDESC_AppendFormattedValue(Unicode* wszOut, int nValue,
         return 1;
     }
 
-    sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(wStr), nValue);
+    sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(wStr), nValue);
     sub_00526700(wszText, D2LANG_GetStringFromTblIndex(0xF9E));
     sub_00526700(wszOut, wszText);
     return 1;
@@ -322,7 +300,7 @@ static int __stdcall SKILLDESC_AppendLabelValue(Unicode* wszOut, unsigned short 
 }
 
 // 0x004E7A90
-static int __stdcall SKILLDESC_AppendScaledValue(Unicode* wszOut, int bPrefixSign, int nValue, unsigned short wStr1, unsigned short wStr2, int nMultiplier)
+static int __stdcall SKILLDESC_AppendScaledValue(unsigned short wStr1, unsigned short wStr2, int nMultiplier, Unicode* wszOut, int bPrefixSign, int nValue)
 {
     int wszText_[16]; Unicode* const wszText = (Unicode*)wszText_;
     for (int i = 0; i < 32; ++i)
@@ -342,21 +320,6 @@ static int __stdcall SKILLDESC_AppendScaledValue(Unicode* wszOut, int bPrefixSig
 }
 
 // 0x004E7B90
-static int __stdcall SKILLDESC_AppendLabelDecimal(unsigned short wStr, Unicode* wszOut, int bPrefixSign, int nValue, int nFraction)
-{
-    int wszText_[16]; Unicode* const wszText = (Unicode*)wszText_;
-    for (int i = 0; i < 32; ++i)
-        wszText[i] = 0;
-
-    if (!nValue && nFraction <= 0)
-        return 0;
-
-    SKILLDESC_FormatIntOrDecimal(wszText, bPrefixSign, nValue, nFraction);
-    sub_00526700(wszOut, D2LANG_GetStringFromTblIndex(wStr));
-    sub_00526700(wszOut, wszText);
-    sub_00526700(wszOut, D2LANG_GetStringFromTblIndex(0xF9E));
-    return 1;
-}
 
 // 0x004E7C30
 static int __stdcall SKILLDESC_AppendValueLabel(Unicode* wszOut, unsigned short wStr, int nValue, int bPrefixSign)
@@ -381,7 +344,7 @@ static int __stdcall SKILLDESC_AppendValueLabel(Unicode* wszOut, unsigned short 
 }
 
 // 0x004E7CE0
-static int __stdcall SKILLDESC_AppendValueTwoLabels(Unicode* wszOut, unsigned short wStr1, unsigned short wStr2, int bPrefixSign, int nValue)
+static int __stdcall SKILLDESC_AppendValueTwoLabels(unsigned short wStr1, unsigned short wStr2, int bPrefixSign, Unicode* wszOut, int nValue)
 {
     int wszText_[16]; Unicode* const wszText = (Unicode*)wszText_;
     for (int i = 0; i < 32; ++i)
@@ -404,7 +367,7 @@ static int __stdcall SKILLDESC_AppendValueTwoLabels(Unicode* wszOut, unsigned sh
 }
 
 // 0x004E7DB0
-static int __stdcall SKILLDESC_AppendValueCountLabel(Unicode* wszOut, int nValue, int nStr1, int nStr2, int bPrefixSign)
+static int __stdcall SKILLDESC_AppendValueCountLabel(int nStr1, int nStr2, int bPrefixSign, Unicode* wszOut, int nValue)
 {
     int wszText_[16]; Unicode* const wszText = (Unicode*)wszText_;
     for (int i = 0; i < 32; ++i)
@@ -426,7 +389,7 @@ static int __stdcall SKILLDESC_AppendValueCountLabel(Unicode* wszOut, int nValue
 }
 
 // 0x004E7E70
-static int __stdcall SKILLDESC_AppendLabelValueLabel(Unicode* wszOut, unsigned short wStr1, unsigned short wStr2, int bPrefixSign, int nValue)
+static int __stdcall SKILLDESC_AppendLabelValueLabel(unsigned short wStr1, unsigned short wStr2, int bPrefixSign, Unicode* wszOut, int nValue)
 {
     int wszText_[16]; Unicode* const wszText = (Unicode*)wszText_;
     for (int i = 0; i < 32; ++i)
@@ -452,7 +415,7 @@ static int __stdcall SKILLDESC_AppendLabelValueLabel(Unicode* wszOut, unsigned s
 static int __stdcall SKILLDESC_AppendLabelRangeLabel(unsigned short wStr1, unsigned short wStr2, Unicode* wszOut, int bPrefixSign, int nMin, int nMax)
 {
     if (nMin == nMax)
-        return SKILLDESC_AppendLabelValueLabel(wszOut, wStr1, wStr2, 0, nMin);
+        return SKILLDESC_AppendLabelValueLabel(wStr1, wStr2, 0, wszOut, nMin);
 
     int wszText_[16]; Unicode* const wszText = (Unicode*)wszText_;
     for (int i = 0; i < 32; ++i)
@@ -475,10 +438,10 @@ static int __stdcall SKILLDESC_AppendLabelRangeLabel(unsigned short wStr1, unsig
 }
 
 // 0x004E8020
-static int __stdcall SKILLDESC_AppendLabelsRange(unsigned short wStr1, unsigned short wStr2, Unicode* wszOut, int bPrefixSign, int nMin, int nMax)
+static int __stdcall SKILLDESC_AppendLabelsRange(Unicode* wszOut, int bPrefixSign, unsigned short wStr1, unsigned short wStr2, int nMin, int nMax)
 {
     if (nMin == nMax)
-        return SKILLDESC_AppendLabelValueLabel(wszOut, wStr1, wStr2, 0, nMin);
+        return SKILLDESC_AppendLabelValueLabel(wStr1, wStr2, 0, wszOut, nMin);
 
     int wszText_[16]; Unicode* const wszText = (Unicode*)wszText_;
     for (int i = 0; i < 32; ++i)
@@ -522,7 +485,7 @@ static int __stdcall SKILLDESC_AppendLabelRange(unsigned short wStr, Unicode* ws
 }
 
 // 0x004E81C0
-static int __stdcall SKILLDESC_AppendLabelValueLabels(Unicode* wszOut, unsigned short wStr1, unsigned short wStr2, unsigned short wStr3, int bPrefixSign, int nValue)
+static int __stdcall SKILLDESC_AppendLabelValueLabels(unsigned short wStr1, unsigned short wStr2, unsigned short wStr3, int bPrefixSign, Unicode* wszOut, int nValue)
 {
     int wszText_[16]; Unicode* const wszText = (Unicode*)wszText_;
     for (int i = 0; i < 32; ++i)
@@ -546,7 +509,7 @@ static int __stdcall SKILLDESC_AppendLabelValueLabels(Unicode* wszOut, unsigned 
 }
 
 // 0x004E82A0
-static int __stdcall SKILLDESC_AppendSecondsTwentieths(Unicode* wszOut, unsigned short wStr, int nValue)
+static int __stdcall SKILLDESC_AppendSecondsTwentieths(unsigned short wStr, Unicode* wszOut, int nValue)
 {
     int wszText_[16]; Unicode* const wszText = (Unicode*)wszText_;
     for (int i = 0; i < 32; ++i)
@@ -577,7 +540,7 @@ static int __stdcall SKILLDESC_AppendSecondsTwentieths(Unicode* wszOut, unsigned
 }
 
 // 0x004E83E0
-static int __stdcall SKILLDESC_AppendSecondsTenths(Unicode* wszOut, unsigned short wStr, int nValue)
+static int __stdcall SKILLDESC_AppendSecondsTenths(unsigned short wStr, Unicode* wszOut, int nValue)
 {
     int wszText_[16]; Unicode* const wszText = (Unicode*)wszText_;
     for (int i = 0; i < 32; ++i)
@@ -608,27 +571,6 @@ static int __stdcall SKILLDESC_AppendSecondsTenths(Unicode* wszOut, unsigned sho
 }
 
 // 0x004E84F0
-static int __stdcall SKILLDESC_AppendManaValue(int nValue, Unicode* wszOut)
-{
-    const Unicode* wszStr1 = D2LANG_GetStringFromTblIndex(0x5300);
-    const Unicode* wszStr2 = D2LANG_GetStringFromTblIndex(0x5304);
-    const Unicode* wszStr3 = D2LANG_GetStringFromTblIndex(0x5305);
-    const Unicode* wszStr4 = D2LANG_GetStringFromTblIndex(0xF9B);
-    int wszText_[8]; Unicode* const wszText = (Unicode*)wszText_;
-    for (int i = 0; i < 16; ++i)
-        wszText[i] = 0;
-
-    int szText_[8]; char* const szText = (char*)szText_;
-    wsprintfA(szText, gszFormatD, nValue);
-    sub_00526320_ToUnicode(wszText, szText, 32);
-    sub_00526700(wszOut, wszStr2);
-    sub_00526700(wszOut, wszText);
-    sub_00526700(wszOut, wszStr4);
-    sub_00526700(wszOut, wszStr1);
-    sub_00526700(wszOut, wszStr3);
-    sub_00526700(wszOut, D2LANG_GetStringFromTblIndex(0xF9E));
-    return 1;
-}
 
 int __stdcall sub_004E85C0_AppendManaCost(Unicode* wszOut, int nSkillId, int nLevel, int nMultiplier, D2SkillsTxt* pSkillsTxt, int nValue); // 0x004E85C0
 
@@ -694,7 +636,7 @@ static int __stdcall SKILLDESC_AddElemRange(Unicode* wszText, int nMin, unsigned
 }
 
 // 0x004EC220
-static int __stdcall SKILLDESC_AddSkillElemDamage(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, Unicode* wszText, D2SkillsTxt* pSkillsTxt, unsigned short nString)
+static int __stdcall SKILLDESC_AddSkillElemDamage(D2UnitStrc* pUnit, Unicode* wszText, D2SkillsTxt* pSkillsTxt, unsigned short nString, int nSkillId, int nSkillLevel)
 {
     const int nMin = SKILLS_GetMinElemDamage(pUnit, nSkillId, nSkillLevel, 1);
     const int nMax = SKILLS_GetMaxElemDamage(pUnit, nSkillId, nSkillLevel, 1);
@@ -720,7 +662,7 @@ static int __stdcall SKILLDESC_AddMissileElemDamage(D2UnitStrc* pUnit, Unicode* 
 }
 
 // 0x004EC2E0
-static int __stdcall SKILLDESC_AddPhysDamage(int nPercent, D2UnitStrc* pUnit, Unicode* wszText, int nSkillId, int nSkillLevel, int nBonus)
+static int __stdcall SKILLDESC_AddPhysDamage(D2UnitStrc* pUnit, Unicode* wszText, int nSkillId, int nBonus, int nSkillLevel, int nPercent)
 {
     int wszNumber_[16]; Unicode* const wszNumber = (Unicode*)wszNumber_;
     for (int i = 0; i < 16; ++i)
@@ -763,7 +705,7 @@ static int SKILLDESC_AddToHit(Unicode* wszText, D2UnitStrc* pUnit, int nSkillId,
         return 0;
     }
 
-    return SKILLDESC_AppendLabelValueLabel(wszText, 0x10A6, 0x10B3, 1, nToHit);
+    return SKILLDESC_AppendLabelValueLabel(0x10A6, 0x10B3, 1, wszText, nToHit);
 }
 
 // 0x004EC540
@@ -802,7 +744,7 @@ static int __stdcall SKILLDESC_AddMissileElemRate(D2UnitStrc* pUnit, Unicode* ws
     int nMax = MISSILE_GetMaxElemDamage(0, pUnit, nMissileId, nSkillLevel) * 0x4B;
     int* const pMax = &nMax;
     SKILLDESC_ApplyFireMasteryBonus(&nMin, pSkillsTxt, pMax);
-    SKILLDESC_ApplyLightningMasteryBonus(&nMin, pSkillsTxt, pMax);
+    SKILLDESC_ApplyLightningMasteryBonus(&nMin, pMax, pSkillsTxt);
     const int nMinRate = nMin >> 8;
     const int nMaxRate = nMax >> 8;
     unsigned short nString;
@@ -835,7 +777,7 @@ static int __stdcall SKILLDESC_AddMissileElemRate(D2UnitStrc* pUnit, Unicode* ws
 }
 
 // 0x004EC6F0
-static int __stdcall SKILLDESC_AddSkillElemRate(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, Unicode* wszText)
+static int __stdcall SKILLDESC_AddSkillElemRate(D2UnitStrc* pUnit, Unicode* wszText, int nSkillId, int nSkillLevel)
 {
     const int nMin = SKILLS_GetMinElemDamage(pUnit, nSkillId, nSkillLevel, 1) * 0x4B >> 8;
     const int nMax = SKILLS_GetMaxElemDamage(pUnit, nSkillId, nSkillLevel, 1) * 0x4B >> 8;
@@ -843,7 +785,7 @@ static int __stdcall SKILLDESC_AddSkillElemRate(D2UnitStrc* pUnit, int nSkillId,
 }
 
 // 0x004EC740
-static int __stdcall SKILLDESC_AddSkillElemRateByType(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, Unicode* wszText, D2SkillsTxt* pSkillsTxt)
+static int __stdcall SKILLDESC_AddSkillElemRateByType(Unicode* wszText, D2SkillsTxt* pSkillsTxt, D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
 {
     int nMin = SKILLS_GetMinElemDamage(pUnit, nSkillId, nSkillLevel, 1);
     int nMax = SKILLS_GetMaxElemDamage(pUnit, nSkillId, nSkillLevel, 1);
@@ -1031,7 +973,7 @@ static int __stdcall SKILLDESC_AddFormattedText(Unicode* wszText, int nValue, un
     int wszLine_[128]; Unicode* const wszLine = (Unicode*)wszLine_;
     for (int i = 0; i < 128; ++i)
         wszLine_[i] = 0;
-    sub_005269D0(0x100, wszLine, D2LANG_GetStringFromTblIndex(nString), nValue);
+    sub_005269D0_FormatText(0x100, wszLine, D2LANG_GetStringFromTblIndex(nString), nValue);
     sub_00526700(wszText, wszLine);
     sub_00526700(wszText, D2LANG_GetStringFromTblIndex(0xF9E));
     return 1;
@@ -1207,11 +1149,11 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
         break;
 
     case 2:
-        SKILLDESC_AppendLabelValueLabel(wszText, nStringA, nStringB, 1, nCalcA);
+        SKILLDESC_AppendLabelValueLabel(nStringA, nStringB, 1, wszText, nCalcA);
         break;
 
     case 3:
-        SKILLDESC_AppendLabelValueLabel(wszText, nStringA, nStringB, 0, nCalcA);
+        SKILLDESC_AppendLabelValueLabel(nStringA, nStringB, 0, wszText, nCalcA);
         break;
 
     case 4:
@@ -1239,13 +1181,13 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
     case 9:
         AppendString(wszText, nStringA);
         AppendString(wszText, nStringB);
-        SKILLDESC_AddPhysDamage(nCalcA, pUnit, wszText, nSkillId, nSkillLevel, nCalcB);
+        SKILLDESC_AddPhysDamage(pUnit, wszText, nSkillId, nCalcB, nSkillLevel, nCalcA);
         break;
 
     case 10:
         AppendString(wszText, nStringA);
         AppendString(wszText, nStringB);
-        SKILLDESC_AddSkillElemDamage(pUnit, nSkillId, nSkillLevel, wszText, pSkillsTxt, 0);
+        SKILLDESC_AddSkillElemDamage(pUnit, wszText, pSkillsTxt, 0, nSkillId, nSkillLevel);
         break;
 
     case 11:
@@ -1304,15 +1246,15 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
 
     case 19:
         AppendString(wszText, nStringB);
-        SKILLDESC_AppendSecondsTwentieths(wszText, nStringA, nCalcA);
+        SKILLDESC_AppendSecondsTwentieths(nStringA, wszText, nCalcA);
         break;
 
     case 20:
-        SKILLDESC_AppendLabelValueLabels(wszText, nStringA, 0x10B3, nStringB, 1, nCalcA);
+        SKILLDESC_AppendLabelValueLabels(nStringA, 0x10B3, nStringB, 1, wszText, nCalcA);
         break;
 
     case 21:
-        SKILLDESC_AppendLabelValueLabels(wszText, nStringA, 0x10B3, nStringB, 0, nCalcA);
+        SKILLDESC_AppendLabelValueLabels(nStringA, 0x10B3, nStringB, 0, wszText, nCalcA);
         break;
 
     case 22:
@@ -1321,7 +1263,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
 
     case 23:
         nMissileId = pSkillDescTxt->wDescMissile[0];
-        pMissilesTxt = sub_0046ACE0(nMissileId);
+        pMissilesTxt = sub_0046ACE0_GetMissilesTxtRecord(nMissileId);
         if (!pMissilesTxt)
         {
             return 0;
@@ -1332,7 +1274,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
 
     case 24:
         AppendString(wszText, nStringB);
-        SKILLDESC_AddSkillElemDamage(pUnit, nSkillId, nSkillLevel, wszText, pSkillsTxt, nStringA);
+        SKILLDESC_AddSkillElemDamage(pUnit, wszText, pSkillsTxt, nStringA, nSkillId, nSkillLevel);
         break;
 
     case 25:
@@ -1358,29 +1300,29 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
     case 26:
         AppendString(wszText, nStringA);
         AppendString(wszText, nStringB);
-        SKILLDESC_AddSkillElemRateByType(pUnit, nSkillId, nSkillLevel, wszText, pSkillsTxt);
+        SKILLDESC_AddSkillElemRateByType(wszText, pSkillsTxt, pUnit, nSkillId, nSkillLevel);
         break;
 
     case 27:
         AppendString(wszText, nStringA);
         AppendString(wszText, nStringB);
-        SKILLDESC_AddSkillElemRate(pUnit, nSkillId, nSkillLevel, wszText);
+        SKILLDESC_AddSkillElemRate(pUnit, wszText, nSkillId, nSkillLevel);
         break;
 
     case 28:
     {
-        D2MissilesTxt* pMissilesTxt = sub_0046ACE0(pSkillDescTxt->wDescMissile[0]);
+        D2MissilesTxt* pMissilesTxt = sub_0046ACE0_GetMissilesTxtRecord(pSkillDescTxt->wDescMissile[0]);
         if (!pMissilesTxt)
         {
             return 0;
         }
-        SKILLDESC_AppendSecondsTwentieths(wszText, 0x10AE, pMissilesTxt->dwParam[0]);
+        SKILLDESC_AppendSecondsTwentieths(0x10AE, wszText, pMissilesTxt->dwParam[0]);
         break;
     }
 
     case 29:
     {
-        D2MissilesTxt* pMissilesTxt = sub_0046ACE0(pSkillDescTxt->wDescMissile[0]);
+        D2MissilesTxt* pMissilesTxt = sub_0046ACE0_GetMissilesTxtRecord(pSkillDescTxt->wDescMissile[0]);
         if (!pMissilesTxt)
         {
             return 0;
@@ -1390,13 +1332,13 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
     }
 
     case 30:
-        pMissilesTxt = sub_0046ACE0(pSkillDescTxt->wDescMissile[0]);
+        pMissilesTxt = sub_0046ACE0_GetMissilesTxtRecord(pSkillDescTxt->wDescMissile[0]);
         if (!pMissilesTxt)
         {
             return 0;
         }
         nMissileId = pMissilesTxt->wSubMissile[0];
-        pMissilesTxt = sub_0046ACE0(nMissileId);
+        pMissilesTxt = sub_0046ACE0_GetMissilesTxtRecord(nMissileId);
         if (!pMissilesTxt)
         {
             return 0;
@@ -1415,7 +1357,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
 
     case 32:
         sub_00526700(wszText, D2LANG_GetStringFromTblIndex(nStringA));
-        SKILLDESC_AppendLabelValueLabel(wszText, nStringB, 0x10B3, 1, nCalcA);
+        SKILLDESC_AppendLabelValueLabel(nStringB, 0x10B3, 1, wszText, nCalcA);
         break;
 
     case 33:
@@ -1443,11 +1385,11 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
         break;
 
     case 36:
-        SKILLDESC_AppendValueCountLabel(wszText, nCalcA, nStringA, nStringB, 0);
+        SKILLDESC_AppendValueCountLabel(nStringA, nStringB, 0, wszText, nCalcA);
         break;
 
     case 37:
-        SKILLDESC_AppendSecondsTenths(wszText, nStringA, nCalcA);
+        SKILLDESC_AppendSecondsTenths(nStringA, wszText, nCalcA);
         break;
 
     case 38:
@@ -1464,7 +1406,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
             return 0;
         }
         sub_00403040_VectorConstructor(wszLine, 2, 0x100, NPCMENU_ClearUnicode);
-        sub_005269D0(0x100, wszLine, D2LANG_GetStringFromTblIndex(nStringA), D2LANG_GetStringFromTblIndex(nStringB));
+        sub_005269D0_FormatText(0x100, wszLine, D2LANG_GetStringFromTblIndex(nStringA), D2LANG_GetStringFromTblIndex(nStringB));
         if (nCalcA > 0)
         {
             INV_PrefixColorCode(wszLine, nCalcA);
@@ -1505,7 +1447,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
             return 0;
         }
         sub_00403040_VectorConstructor(wszLine, 2, 0x100, NPCMENU_ClearUnicode);
-        sub_005269D0(0x100, wszLine, D2LANG_GetStringFromTblIndex(nStringA), D2LANG_GetStringFromTblIndex(nStringB));
+        sub_005269D0_FormatText(0x100, wszLine, D2LANG_GetStringFromTblIndex(nStringA), D2LANG_GetStringFromTblIndex(nStringB));
         if (nCalcA > 0)
         {
             INV_PrefixColorCode(wszLine, nCalcA);
@@ -1565,7 +1507,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
         break;
 
     case 58:
-        SKILLDESC_AppendLabelsRange(nStringA, nStringB, wszText, 1, nCalcA, nCalcB);
+        SKILLDESC_AppendLabelsRange(wszText, 1, nStringA, nStringB, nCalcA, nCalcB);
         break;
 
     case 59:
@@ -1578,7 +1520,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
         {
             nCalcB = 10;
         }
-        SKILLDESC_AppendScaledValue(wszText, 1, nCalcA, nStringA, nStringB, nCalcB);
+        SKILLDESC_AppendScaledValue(nStringA, nStringB, nCalcB, wszText, 1, nCalcA);
         break;
 
     case 61:
@@ -1586,11 +1528,11 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
         {
             nCalcB = 10;
         }
-        SKILLDESC_AppendScaledValue(wszText, 0, nCalcA, nStringA, nStringB, nCalcB);
+        SKILLDESC_AppendScaledValue(nStringA, nStringB, nCalcB, wszText, 0, nCalcA);
         break;
 
     case 62:
-        SKILLDESC_AppendLabelsRange(nStringA, nStringB, wszText, 0, nCalcA, nCalcB);
+        SKILLDESC_AppendLabelsRange(wszText, 0, nStringA, nStringB, nCalcA, nCalcB);
         break;
 
     case 63:
@@ -1614,7 +1556,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
         break;
 
     case 68:
-        SKILLDESC_AppendValueTwoLabels(wszText, nStringA, nStringB, 0, nCalcA);
+        SKILLDESC_AppendValueTwoLabels(nStringA, nStringB, 0, wszText, nCalcA);
         break;
 
     case 69:
@@ -1636,7 +1578,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
             return 0;
         }
         sub_00403040_VectorConstructor(wszMessage, 2, 0x64, NPCMENU_ClearUnicode);
-        sub_005269D0(0x64, wszMessage, D2LANG_GetStringFromTblIndex(nStringB), nCalcA);
+        sub_005269D0_FormatText(0x64, wszMessage, D2LANG_GetStringFromTblIndex(nStringB), nCalcA);
         sub_00526700(wszText, D2LANG_GetStringFromTblIndex(nStringA));
         sub_00526700(wszText, D2LANG_GetStringFromTblIndex(0xF9D));
         sub_00526700(wszText, D2LANG_GetStringFromTblIndex(0xF9B));
@@ -1693,7 +1635,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
             return 0;
         }
         sub_00403040_VectorConstructor(wszMessage, 2, 0x64, NPCMENU_ClearUnicode);
-        sub_005269D0(0x64, wszMessage, D2LANG_GetStringFromTblIndex(nStringA), nCalcA);
+        sub_005269D0_FormatText(0x64, wszMessage, D2LANG_GetStringFromTblIndex(nStringA), nCalcA);
         sub_00526700(wszText, wszMessage);
         sub_00526700(wszText, D2LANG_GetStringFromTblIndex(0xF9E));
         break;
@@ -1704,7 +1646,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
             return 0;
         }
         sub_00403040_VectorConstructor(wszMessage, 2, 0x64, NPCMENU_ClearUnicode);
-        sub_005269D0(0x64, wszMessage, D2LANG_GetStringFromTblIndex(nStringA), nCalcA, nCalcB);
+        sub_005269D0_FormatText(0x64, wszMessage, D2LANG_GetStringFromTblIndex(nStringA), nCalcA, nCalcB);
         sub_00526700(wszText, wszMessage);
         sub_00526700(wszText, D2LANG_GetStringFromTblIndex(0xF9E));
         break;

@@ -7,6 +7,10 @@
 #include "D2CelDataHash.h"
 
 #include "D2ColorBlock.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "StormApi.h"
+#include "D2HellApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -42,9 +46,6 @@ struct D2CmpCellListStrc;
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
-int __stdcall D2CMPGetFindTile(void* pData); // 0x00600760
-
-void __fastcall sub_005179A4_FreeVirtualMemory(void* pMemory); // 0x005179A4
 
 void __stdcall PaletteBuildAdditiveTable(unsigned char* pData); // 0x006059B0
 
@@ -52,21 +53,18 @@ extern unsigned int gdwSwappedColor; // 0x008E9D38
 
 extern int gbPaletteTestBackground; // 0x008E9028
 
-extern int gnGlobal_008E9D3C; // 0x008E9D3C
+extern int gbDarkTest; // 0x008E9D3C
 
 extern unsigned char gabPaletteMask[0x100]; // 0x008E9830
 
 extern int gbTableSet; // 0x008E9D40
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-int __stdcall SStrCmpI(const char* szString1, const char* szString2, unsigned int nMaxChars); // 0x00413590
 
 D2CmpTileStrc* __cdecl TileAlloc(); // 0x00609550
 
@@ -77,7 +75,6 @@ struct D2CmpStringStrc
     int EqualsNoCase(const D2CmpStringStrc* pOther); // 0x0060DD20
 };
 
-int __stdcall SFileSetBasePath(const char* szPath); // 0x004164B0
 
 extern "C" void __cdecl _chkstk(); // 0x006831B0
 
@@ -93,11 +90,9 @@ struct D2CelStrc { unsigned int flags,width,height; unsigned char unknown0C[0x14
 
 extern const char gszEmptyAssert[]; // 0x006CC837
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 int __fastcall sub_0060D280_ScanSameRun(const unsigned char* pData, const unsigned char* pEnd, int nMax, int* pbRunReachedEnd, int* pbRestReachedEnd); // 0x0060D280
 
-int __fastcall sub_0060D3A0_ScanOtherRun(const unsigned char* pData, const unsigned char* pEnd, unsigned char nValue, int nMax, int* pbRunReachedEnd, int* pbRestReachedEnd); // 0x0060D3A0
 
 typedef unsigned char (__stdcall* D2CmpMapColorFn)(unsigned char nRed, unsigned char nGreen, unsigned char nBlue);
 
@@ -131,7 +126,7 @@ int __stdcall CelGameDirToFileDir(int nDirection, unsigned int nDirections); // 
 
 typedef unsigned char BYTE;
 
-extern int gnGenericRle_008F03C8; // 0x008F03C8
+extern int gnGenericRle; // 0x008F03C8
 
 const unsigned char* __fastcall CelSkipRleLines(const unsigned char*,int); // 0x00606D10
 
@@ -163,9 +158,7 @@ void __fastcall CelDrawRleBlend(const unsigned char*,unsigned char*,int,int,cons
 
 void __fastcall CelDrawRleBlendClipped(const unsigned char* pSrc, unsigned char* pDst, int nRows, int nPitch, int nX, int nClipLeft, int nClipRight, const unsigned char* pBlend); // 0x006082E0
 
-extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
 int gnGenericRle; // 0x008F03C8
 
@@ -187,7 +180,6 @@ unsigned char __stdcall Palette24BitTo8BitPixel(unsigned char nRed, unsigned cha
 
 extern int gbPaletteLoaded; // 0x008E9934
 
-unsigned char __stdcall GetClosestColor(const unsigned char* pPalette, unsigned int nCount, int nC0, int nC1, int nC2); // 0x00605210
 
 extern const D2ColorBlockStrc gtColorBlock; // 0x007434D8
 
@@ -195,9 +187,9 @@ double __stdcall PaletteHueToRgb(double n1, double n2, double hue); // 0x00604FE
 
 void __stdcall PaletteBuildTintTables(unsigned char* pData); // 0x00605D20
 
-void __stdcall sub_00605DE0_BuildDarkenTables(unsigned char* pData); // 0x00605DE0
+void __stdcall FASTCMP_BuildDarkenTables(unsigned char* pData); // 0x00605DE0
 
-void __stdcall sub_00605E60_BuildLightenTables(unsigned char* pData); // 0x00605E60
+void __stdcall FASTCMP_BuildLightenTables(unsigned char* pData); // 0x00605E60
 
 void* __fastcall sub_00517993_VirtualAlloc(unsigned int nSize);
 
@@ -209,7 +201,7 @@ void __stdcall sub_00605AA0_BuildTablesC(unsigned char* pTables);
 
 void __stdcall sub_00605B70_BuildTablesD(unsigned char* pTables);
 
-void __stdcall sub_00605F00_BuildTablesE(unsigned char* pTables, D2HslStrc* pHsl);
+void __stdcall FASTCMP_BuildTablesE(unsigned char* pTables, D2HslStrc* pHsl); // 0x00605F00
 
 extern unsigned int gnPaletteStart; // 0x008E9930
 
@@ -219,11 +211,10 @@ extern int ganSquareTable[511]; // 0x008E9034
 
 extern int gbDarkTest; // 0x008E9D3C
 
-void __stdcall sub_00605AA0_BuildMultiplyTable(unsigned char* pTables); // 0x00605AA0
+void __stdcall FASTCMP_BuildMultiplyTable(unsigned char* pTables); // 0x00605AA0
 
-void __stdcall sub_00605B70_BuildBlendTables(unsigned char* pData); // 0x00605B70
+void __stdcall FASTCMP_BuildBlendTables(unsigned char* pData); // 0x00605B70
 
-void* __stdcall CreateD2Palette(void* pSource); // 0x00606930
 
 #define PAL_SATURATE(x) ((unsigned int)(x) < 255 ? (x) : 255)
 
@@ -238,7 +229,7 @@ struct D2PcxRgbStrc
 
 struct D2PcxPaletteStrc
 {
-    unsigned char f_0;
+    unsigned char nMarker;
     D2PcxRgbStrc aColors[256];
 };
 
@@ -325,7 +316,7 @@ double __stdcall PaletteMinComponent(double a, double b)
 }
 
 // 0x00604DF0
-void __fastcall sub_00604DF0_PaletteToHSL(D2HslStrc* pHSL, const unsigned char* pPalette)
+void __fastcall FASTCMP_PaletteToHSL(D2HslStrc* pHSL, const unsigned char* pPalette)
 {
     for (unsigned int i = 0; i < 256; ++i)
     {
@@ -407,7 +398,7 @@ double __stdcall PaletteHueToRgb(double n1, double n2, double hue)
 }
 
 // 0x00605080
-static void sub_00605080_HslToRgb(const D2HslStrc* pHsl, D2PalRgbaStrc* pRgb)
+static void FASTCMP_HslToRgb(const D2HslStrc* pHsl, D2PalRgbaStrc* pRgb)
 {
     for (int i = 0; i < 256; ++i)
     {
@@ -492,7 +483,7 @@ unsigned char __stdcall GetFurthestColor(unsigned char* pPalette, unsigned int n
 }
 
 // 0x006052F0
-void __cdecl sub_006052F0_InitSquareTable()
+void __cdecl FASTCMP_InitSquareTable()
 {
     for (int i = -256; i < 256; ++i)
         gnSquareTableCenter_008E9430[i] = i * i;
@@ -508,7 +499,7 @@ void __stdcall PaletteSetTransparency(unsigned int nColor)
 }
 
 // 0x00605340
-int __fastcall sub_00605340_LoadPcxPalette(const char* szFileName)
+int __fastcall FASTCMP_LoadPcxPalette(const char* szFileName)
 {
     void* hFile = CreateFileA(szFileName, 0x80000000, 1, 0, 3, 0, 0);
     if (hFile == (void*)-1)
@@ -535,7 +526,7 @@ int __fastcall sub_00605340_LoadPcxPalette(const char* szFileName)
     memset(&palette, 0, sizeof(palette));
     SetFilePointer(hFile, -(long)sizeof(palette), 0, 2);
     ReadFile(hFile, &palette, sizeof(palette), &nRead, 0);
-    if (nRead != sizeof(palette) || palette.f_0 != 0x0C)
+    if (nRead != sizeof(palette) || palette.nMarker != 0x0C)
     {
         OutputDebugStringA("Unable to extract palette from\n");
         CloseHandle(hFile);
@@ -621,7 +612,7 @@ int __stdcall Palette24BitTo8BitImage(const unsigned char* pSource, unsigned cha
 // 0x00605840
 void __stdcall PaletteFixBlack(int nValue)
 {
-    gnGlobal_008E9D3C = nValue;
+    gbDarkTest = nValue;
 }
 
 // 0x00605850
@@ -696,7 +687,7 @@ void __stdcall UpdateD2TransparencyTable(unsigned char* pData, int nUnused)
 }
 
 // 0x00605AA0
-void __stdcall sub_00605AA0_BuildMultiplyTable(unsigned char* pTables)
+void __stdcall FASTCMP_BuildMultiplyTable(unsigned char* pTables)
 {
     const D2PalRgbaStrc* pPalette = (const D2PalRgbaStrc*)pTables;
     for (int i = 0; i < 256; ++i)
@@ -712,7 +703,7 @@ void __stdcall sub_00605AA0_BuildMultiplyTable(unsigned char* pTables)
 }
 
 // 0x00605B70
-void __stdcall sub_00605B70_BuildBlendTables(unsigned char* pData)
+void __stdcall FASTCMP_BuildBlendTables(unsigned char* pData)
 {
     for (unsigned int i = 0; i < 256; ++i)
     {
@@ -753,7 +744,7 @@ void __stdcall sub_00605B70_BuildBlendTables(unsigned char* pData)
 }
 
 // 0x00605DE0
-void __stdcall sub_00605DE0_BuildDarkenTables(unsigned char* pData)
+void __stdcall FASTCMP_BuildDarkenTables(unsigned char* pData)
 {
     for (unsigned int i = 0; i < 32; ++i)
     {
@@ -768,7 +759,7 @@ void __stdcall sub_00605DE0_BuildDarkenTables(unsigned char* pData)
 }
 
 // 0x00605E60
-void __stdcall sub_00605E60_BuildLightenTables(unsigned char* pData)
+void __stdcall FASTCMP_BuildLightenTables(unsigned char* pData)
 {
     for (unsigned int i = 0; i < 16; ++i)
     {
@@ -783,7 +774,7 @@ void __stdcall sub_00605E60_BuildLightenTables(unsigned char* pData)
 }
 
 // 0x00605F00
-void __stdcall sub_00605F00_BuildTablesE(unsigned char* pTables, D2HslStrc* pHsl)
+void __stdcall FASTCMP_BuildTablesE(unsigned char* pTables, D2HslStrc* pHsl)
 {
     D2PalRgbaStrc tRgb[256];
     D2HslStrc aHsl[256];
@@ -801,7 +792,7 @@ void __stdcall sub_00605F00_BuildTablesE(unsigned char* pTables, D2HslStrc* pHsl
             if (aHsl[j].dHue > 360.0)
                 aHsl[j].dHue -= 360.0;
         }
-        sub_00605080_HslToRgb(aHsl, tRgb);
+        FASTCMP_HslToRgb(aHsl, tRgb);
         for (j = 0; j < 256; ++j)
             pTables[0x53500 + 0x100 * i + j] = GetClosestColor(pTables, 256, tRgb[j].nRed, tRgb[j].nGreen, tRgb[j].nBlue);
     }
@@ -820,7 +811,7 @@ void __stdcall sub_00605F00_BuildTablesE(unsigned char* pTables, D2HslStrc* pHsl
             if (aHsl[j].dLightness < 0.0)
                 aHsl[j].dLightness = 0.0;
         }
-        sub_00605080_HslToRgb(aHsl, tRgb);
+        FASTCMP_HslToRgb(aHsl, tRgb);
         for (k = 0; k < 256; ++k)
             pTables[0x54D00 + 0x100 * i + k] = GetClosestColor(pTables, 256, tRgb[k].nRed, tRgb[k].nGreen, tRgb[k].nBlue);
     }
@@ -839,7 +830,7 @@ void __stdcall sub_00605F00_BuildTablesE(unsigned char* pTables, D2HslStrc* pHsl
             if (aHsl[j].dLightness > 1.0)
                 aHsl[j].dLightness = 1.0;
         }
-        sub_00605080_HslToRgb(aHsl, tRgb);
+        FASTCMP_HslToRgb(aHsl, tRgb);
         for (j = 0; j < 256; ++j)
             pTables[0x56500 + 0x100 * i + j] = GetClosestColor(pTables, 256, tRgb[j].nRed, tRgb[j].nGreen, tRgb[j].nBlue);
     }
@@ -850,7 +841,7 @@ void __stdcall sub_00605F00_BuildTablesE(unsigned char* pTables, D2HslStrc* pHsl
         aHsl[j].dSaturation = 0.0;
         aHsl[j].dLightness *= 0.5;
     }
-    sub_00605080_HslToRgb(aHsl, tRgb);
+    FASTCMP_HslToRgb(aHsl, tRgb);
     for (j = 0; j < 256; ++j)
         pTables[0x57D00 + j] = GetClosestColor(pTables, 256, tRgb[j].nRed, tRgb[j].nGreen, tRgb[j].nBlue);
 
@@ -860,7 +851,7 @@ void __stdcall sub_00605F00_BuildTablesE(unsigned char* pTables, D2HslStrc* pHsl
         aHsl[j].dSaturation = 0.0;
         aHsl[j].dLightness = (aHsl[j].dLightness + 0.2f) / 1.2f;
     }
-    sub_00605080_HslToRgb(aHsl, tRgb);
+    FASTCMP_HslToRgb(aHsl, tRgb);
     for (j = 0; j < 256; ++j)
         pTables[0x57E00 + j] = GetClosestColor(pTables, 256, tRgb[j].nRed, tRgb[j].nGreen, tRgb[j].nBlue);
 
@@ -876,7 +867,7 @@ void __stdcall sub_00605F00_BuildTablesE(unsigned char* pTables, D2HslStrc* pHsl
                     aHsl[j].dHue -= 360.0;
             }
         }
-        sub_00605080_HslToRgb(aHsl, tRgb);
+        FASTCMP_HslToRgb(aHsl, tRgb);
         for (j = 0; j < 256; ++j)
             pTables[0x57F00 + 0x100 * i + j] = GetClosestColor(pTables, 256, tRgb[j].nRed, tRgb[j].nGreen, tRgb[j].nBlue);
     }
@@ -890,7 +881,7 @@ void __stdcall sub_00605F00_BuildTablesE(unsigned char* pTables, D2HslStrc* pHsl
             aHsl[j].dHue = dHue;
             aHsl[j].dSaturation = 1.0;
         }
-        sub_00605080_HslToRgb(aHsl, tRgb);
+        FASTCMP_HslToRgb(aHsl, tRgb);
         for (j = 0; j < 256; ++j)
             pTables[0x59800 + 0x100 * i + j] = GetClosestColor(pTables, 256, tRgb[j].nRed, tRgb[j].nGreen, tRgb[j].nBlue);
     }
@@ -905,7 +896,7 @@ void __stdcall sub_00605F00_BuildTablesE(unsigned char* pTables, D2HslStrc* pHsl
 }
 
 // 0x00606890
-static void sub_00606890_BuildBrightnessTable(unsigned char* pTables, D2HslStrc* pHsl)
+static void FASTCMP_BuildBrightnessTable(unsigned char* pTables, D2HslStrc* pHsl)
 {
     D2PalRgbaStrc tRgb[256];
 
@@ -921,7 +912,7 @@ static void sub_00606890_BuildBrightnessTable(unsigned char* pTables, D2HslStrc*
         }
     }
 
-    sub_00605080_HslToRgb(pHsl, tRgb);
+    FASTCMP_HslToRgb(pHsl, tRgb);
     for (unsigned int i = 0; i < 256; ++i)
     {
         pTables[0x3400 + i] = GetClosestColor(pTables, 256, tRgb[i].nRed, tRgb[i].nGreen, tRgb[i].nBlue);
@@ -938,12 +929,12 @@ void* __stdcall CreateD2Palette(void* pSource)
     memcpy(pTables, pSource, 0x400);
     sub_00604DF0_RgbToHsl(pTables, tHsl);
     PaletteBuildAlphaTables(pTables);
-    sub_00605DE0_BuildDarkenTables(pTables);
-    sub_00605E60_BuildLightenTables(pTables);
+    FASTCMP_BuildDarkenTables(pTables);
+    FASTCMP_BuildLightenTables(pTables);
     PaletteBuildAdditiveTable(pTables);
     sub_00605AA0_BuildTablesC(pTables);
-    sub_00605F00_BuildTablesE(pTables, tHsl);
-    sub_00606890_BuildBrightnessTable(pTables, tHsl);
+    FASTCMP_BuildTablesE(pTables, tHsl);
+    FASTCMP_BuildBrightnessTable(pTables, tHsl);
     sub_00605B70_BuildTablesD(pTables);
     *(D2ColorBlockStrc*)(pTables + 0x6B600) = gtColorBlock;
     PaletteBuildTintTables(pTables);
@@ -1092,6 +1083,33 @@ void __fastcall CelFileConvertRle24To8(D2CellFileStrc* pSrcFile, D2CellFileStrc*
 }
 
 #pragma intrinsic(memcpy)
+
+// 0x00606D10
+const char* __fastcall CelSkipRleLines(const char* pData, int nLines)
+{
+    if (!nLines)
+    {
+        return pData;
+    }
+
+    for (;;)
+    {
+        const char nRun = *pData++;
+        if (nRun < 0)
+        {
+            if (!(nRun & 0x7F) && !--nLines)
+            {
+                break;
+            }
+        }
+        else
+        {
+            pData += nRun;
+        }
+    }
+
+    return pData;
+}
 
 // 0x00606D40
 void __fastcall CelDrawRleCopy(const char* pSrc, char* pDst, int nLines, int nPitch)
@@ -1953,12 +1971,6 @@ void __fastcall CelDrawRleBlendClipped(const unsigned char* pSrc, unsigned char*
     }
 }
 
-// build: symbol ?ERRORMANAGER_SetBasePathToCurrent@* 0x004067C0
-int __cdecl ERRORMANAGER_SetBasePathToCurrent()
-{
-    return SFileSetBasePath(".\\");
-}
-
 void __cdecl sub_00413740_Nop()
 {
 }
@@ -1988,7 +2000,7 @@ void __fastcall CelDrawRle(D2CelStrc* pCel, unsigned char* pDest, int nX, int nL
     const unsigned char* pSrc = CelSkipRleLines(pCel->pixels, nSkipRows);
     const int nStride = (pCel->flags & 1) ? nPitch : -nPitch;
 
-    if (gnGenericRle_008F03C8)
+    if (gnGenericRle)
     {
         unsigned char* pNextRow = pDest + nStride;
         for (;;)
@@ -2372,28 +2384,6 @@ void __fastcall CelCompressEncodeRleCels(D2CmpCellListStrc* pList, D2CellFileStr
     }
 }
 
-// 0x006096D0
-D2CmpTileStrc* __stdcall TileListAddTile(D2CmpTileListStrc* ptList, short nValue16, short nValue14, int nValue24, int nValue28, int nValue2C, int nValue30, int nValue10, const D2CmpTileInfoStrc* pInfo)
-{
-    D2_ASSERT(ptList, 0xA2);
-    D2CmpTileStrc* pTile = TileAlloc();
-    D2_ASSERT(pTile, 0xA6);
-    pTile->pNext = ptList->pFirst;
-    ptList->nCount++;
-    ptList->pFirst = pTile;
-    pTile->nMaterialFlags = nValue16;
-    pTile->nRoofHeight = nValue14;
-    pTile->nOrientation = nValue24;
-    pTile->nIndex = nValue28;
-    pTile->nSubIndex = nValue2C;
-    pTile->nRarity = nValue30;
-    pTile->nLightDirection = nValue10;
-    pTile->nOwnerId = ptList->nId;
-    pTile->nType = 2;
-    pTile->tInfo = *pInfo;
-    return pTile;
-}
-
 // 0x0060B1A0
 void D2CmpBitCursorStrc::CodecSkipBits(int nBits)
 {
@@ -2486,19 +2476,11 @@ int D2CmpStringStrc::EqualsNoCase(const D2CmpStringStrc* pOther)
     return !SStrCmpI(szText, pOther->szText, 0x7FFFFFFF);
 }
 
-static void sub_00606890_BuildBrightnessTable(unsigned char* pTables, D2HslStrc* pHsl);
-void __cdecl sub_M386_Emit_00606890(int nUnused, unsigned char* pTables, D2HslStrc* pHsl)
-{
-    sub_00606890_BuildBrightnessTable(pTables, pHsl);
-}
-
-extern "C" const char gData_006E61F8[20]; // 0x006E61F8
-extern "C" const D2ColorBlockStrc gData_007434D8; // 0x007434D8
-
+static void FASTCMP_BuildBrightnessTable(unsigned char* pTables, D2HslStrc* pHsl); // 0x00606890
 extern "C" const char gData_006E61F8[20] = ".\\SRC\\SubTile.cpp"; // 0x006E61F8
 #pragma comment(linker, "/alternatename:_szSubTileFile=_gData_006E61F8")
 
-extern int ganTable_007420D8[256] = {
+int ganTable_007420D8[256] = { // 0x007420D8
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
     1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
@@ -2515,9 +2497,9 @@ extern int ganTable_007420D8[256] = {
     192, 192, 192, 193, 193, 193, 193, 194, 194, 194, 194, 195, 195, 195, 195, 195,
     195, 195, 195, 196, 196, 196, 196, 196, 196, 196, 196, 197, 197, 197, 197, 197,
     197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197
-}; // 0x007420D8
+};
 
-extern int ganTable_007424D8[256] = {
+int ganTable_007424D8[256] = { // 0x007424D8
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2534,9 +2516,9 @@ extern int ganTable_007424D8[256] = {
     127, 127, 127, 127, 128, 128, 128, 128, 128, 128, 128, 129, 129, 129, 129, 129,
     129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129,
     129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129
-}; // 0x007424D8
+};
 
-extern int ganTable_007428D8[256] = {
+int ganTable_007428D8[256] = { // 0x007428D8
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2553,9 +2535,9 @@ extern int ganTable_007428D8[256] = {
     60, 60, 60, 60, 61, 61, 61, 61, 61, 61, 62, 62, 62, 62, 62, 62,
     62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 63, 63, 63,
     63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63
-}; // 0x007428D8
+};
 
-extern int ganTable_00742CD8[256] = {
+int ganTable_00742CD8[256] = { // 0x00742CD8
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3,
     3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9,
@@ -2572,9 +2554,9 @@ extern int ganTable_00742CD8[256] = {
     253, 253, 253, 253, 253, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254,
     254, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
     255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255
-}; // 0x00742CD8
+};
 
-extern int ganTable_007430D8[256] = {
+int ganTable_007430D8[256] = { // 0x007430D8
     197, 196, 196, 196, 196, 196, 196, 196, 195, 195, 195, 195, 195, 195, 195, 195,
     194, 194, 194, 194, 194, 194, 194, 194, 193, 193, 193, 193, 192, 192, 192, 192,
     191, 191, 191, 191, 190, 190, 190, 190, 189, 189, 189, 189, 188, 188, 187, 187,
@@ -2591,11 +2573,13 @@ extern int ganTable_007430D8[256] = {
     39, 38, 37, 35, 34, 33, 32, 30, 29, 28, 27, 25, 24, 23, 22, 21,
     21, 20, 20, 19, 19, 18, 18, 17, 17, 16, 16, 15, 15, 14, 14, 13,
     13, 12, 11, 11, 11, 11, 11, 10, 10, 10, 10, 9, 9, 9, 9, 9
-}; // 0x007430D8
+};
 
-extern "C" const D2ColorBlockStrc gData_007434D8 = { {
-    0xFF, 0xFF, 0xFF, 0xFF, 0x4D, 0x4D, 0, 0xFF, 0, 0x69, 0x69, 0xFF, 0xC7, 0xB3, 0x77, 0x69,
-    0x69, 0x69, 0, 0, 0, 0xD0, 0xC2, 0x7D, 0xFF, 0xA8, 0, 0xFF, 0xFF, 0x64, 0, 0x80,
-    0, 0xAE, 0, 0xFF, 0, 0xC8
-} }; // 0x007434D8
+extern "C" const D2ColorBlockStrc gData_007434D8 = { // 0x007434D8
+    {
+        0xFF, 0xFF, 0xFF, 0xFF, 0x4D, 0x4D, 0x00, 0xFF, 0x00, 0x69, 0x69, 0xFF, 0xC7, 0xB3, 0x77, 0x69,
+        0x69, 0x69, 0x00, 0x00, 0x00, 0xD0, 0xC2, 0x7D, 0xFF, 0xA8, 0x00, 0xFF, 0xFF, 0x64, 0x00, 0x80,
+        0x00, 0xAE, 0x00, 0xFF, 0x00, 0xC8, 0x00
+    }
+};
 #pragma comment(linker, "/alternatename:?gtColorBlock@@3UD2ColorBlockStrc@@B=_gData_007434D8")

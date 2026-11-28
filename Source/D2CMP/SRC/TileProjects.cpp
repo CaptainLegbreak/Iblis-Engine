@@ -1,18 +1,16 @@
 #include "D2CMP.h"
 #include "D2CmpCache.h"
+#include "FogApi.h"
 struct D2CmpFindTilesNodeStrc;
 
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
 void __stdcall TileProjectDestroy(D2TileLibraryHeaderStrc* pLibrary, int bKeep);                    // 0x00609E90
 void __fastcall FindTileDestroyTable(D2CmpFindTilesNodeStrc** ppBuckets);                        // 0x0060CE00
 static D2TileRecordStrc* gpTileRecords;                                                                   // 0x008ADBB4
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);                               // 0x0040B380
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 extern "C" int __cdecl strcmp(const char* szString1, const char* szString2);
 extern "C" char* __cdecl strcpy(char* szDst, const char* szSrc);

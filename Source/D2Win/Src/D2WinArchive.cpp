@@ -1,17 +1,16 @@
 #include "D2Win.h"
 #include "D2MultiTypes.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "FogApi.h"
+#include "D2GfxApi.h"
+#include "D2CMPApi.h"
+#include "D2HellApi.h"
 
 extern "C" char* __cdecl strcpy(char* szDest, const char* szSource);
 
 extern "C" char* __cdecl strcat(char* szDest, const char* szSource);
 
-const char* __stdcall D2CMPGetGfxFileExtension(int bAllowCompressed);                                      // 0x005FE1F0
-
-void __stdcall CelFileNormalize(D2CelFileStrc* pFile, D2CelFileStrc** ppOutFile, const char* szFile, int nLine, int nSpecVersion, int nUnused); // 0x00601340
-
-int __stdcall CelFileFreeHardware(D2CelFileStrc* pCelFile);                                           // 0x00601A50
-
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
 
 // 0x004FA9B0
 D2CelFileStrc* __fastcall ARCHIVE_LoadCellFile(const char* szFile, int nType)
@@ -46,8 +45,6 @@ void __fastcall ARCHIVE_FreeCellFile(D2CelFileStrc* pCellFile)
         FOG_Free(pCellFile, ".\\Src\\D2WinArchive.cpp", 0x5C, 0);
     }
 }
-
-int __cdecl WINDOW_GetWindow(); // 0x004F59A0
 
 extern "C" __declspec(dllimport) int __stdcall MessageBoxA(void* hWnd, const char* szText, const char* szCaption, unsigned int nType); // 0x006CC464
 
@@ -117,11 +114,8 @@ void* __stdcall D2Win_GetArchive()
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetFileAttributesA(const char* szFileName); // 0x006CC1B0
 
-int __fastcall FOG_GetInstallPath(char* szPath, unsigned int nSize); // 0x00406BA0
 
-unsigned int __stdcall SStrPack(char* szDest, const char* szSource, unsigned int nDestSize); // 0x00413800
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
 
 extern "C" const char gszD2CharMpq[]; // 0x006DC77C
 
@@ -147,13 +141,11 @@ int __cdecl D2Win_10185_CheckCharMpq()
 
 extern "C" const char gszD2XVideoMpq[]; // 0x006DC788
 extern D2ArchiveHandleStrc* gpD2VideoMPQ; // 0x007D5614
-void __fastcall ARCHIVE_UnloadMPQFile(D2ArchiveHandleStrc* pMPQHandle); // 0x005173AC
 extern D2ArchiveHandleStrc* gpD2CharMPQ; // 0x007D5610
 extern D2ArchiveHandleStrc* gpD2XTalkMPQ; // 0x007D5618
 extern D2ArchiveHandleStrc* gpD2MusicMPQ; // 0x007D5628
 extern D2ArchiveHandleStrc* gpD2XMusicMPQ; // 0x007D5604
 typedef int (__cdecl* DiscCallback)();
-void __cdecl ARCHIVE_UnloadExpansionArchives(); // 0x004FAD70
 extern void* ghXMusicMpq; // 0x007D5604
 extern void* ghCharMpq; // 0x007D5610
 extern void* ghMusicMpq; // 0x007D5628

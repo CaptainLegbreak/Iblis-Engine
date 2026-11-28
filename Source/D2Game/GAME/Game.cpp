@@ -24,6 +24,10 @@
 #include "D2QuestData.h"
 #include "D2Packets.h"
 #include "D2GameCallbackArgs.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
 
 #pragma intrinsic(_ReadWriteBarrier)
 
@@ -117,7 +121,7 @@ struct D2StormSlotArray00530600Strc;
 
 struct D2StormHashTable00530600Strc;
 
-extern char gData_00882028[]; // 0x00882028
+extern char gszInfoText[]; // 0x00882028
 
 extern int gdwGlobal_00882528; // 0x00882528
 
@@ -135,25 +139,15 @@ extern int gdwGlobal_00730190; // 0x00730190
 
 extern int gdwGlobal_00882750; // 0x00882750
 
-int __stdcall sub_00424E40(void* pArg); // 0x00424E40
+int __stdcall SBigDel(void* pArg); // 0x00424E40
 
-extern const char gszEmptyLoadComplete[184]; // 0x006E0498
 
-extern const char gData_006E0550[24]; // 0x006E0550
-
-extern const char gData_006E0568[272]; // 0x006E0568
-
-extern int gdwGlobal_00731010; // 0x00731010
-
-extern int gdwGlobal_00731008; // 0x00731008
-
-void __stdcall GAME_SendGameList(void* pArg); // 0x0052E8E0
+#include "D2GameFuncs.h"
+#include "D2NetApi.h"
+#include "FogApi2.h"
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -163,8 +157,6 @@ extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalS
 
 extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC214
 
-void __cdecl FOG_DestroyMemoryPoolSystem(D2PoolSystemStrc* pSystem); // 0x00409C80
-
 int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 int __fastcall GAME_GetUnitGUID(D2UnitStrc* pUnit); // 0x00451F50
@@ -173,39 +165,6 @@ void __fastcall GAME_ForEachIngameClient(D2GameStrc* pGame, GAME_ForEachIngameCl
 
 void __fastcall GAME_SendUnitRemovalToClient(D2ClientStrc* pClient, void* pUnit); // 0x0052DFB0
 
-void __fastcall SUNITPROXY_FreeNpcControl(D2GameStrc* pGame); // 0x00536640
-
-D2UnitStrc* __stdcall CLIENTS_GetPlayerFromClient(D2ClientStrc* pClient, int bIgnoreDeath); // 0x00537860
-
-void __fastcall CLIENTS_FreeClientsFromGame(D2GameStrc* pGame); // 0x00537AC0
-
-void __fastcall LEVEL_RemoveAllUnits(D2GameStrc* pGame); // 0x0053AFD0
-
-void __fastcall D2GAME_PACKETS_SendPacket0x5C_6FC3E090(D2ClientStrc* pClient, int nUnitGUID); // 0x0053CA90
-
-void __fastcall ARENA_FreeArena(D2GameStrc* pGame); // 0x0053F500
-
-void __fastcall PARTY_FreePartyControl(D2GameStrc* pGame); // 0x00540000
-
-void __fastcall EVENT_FreeEventQueue(D2GameStrc* pGame); // 0x00541400
-
-void __fastcall SUNITINACTIVE_FreeInactiveUnitLists(D2GameStrc* pGame); // 0x00543080
-
-void __fastcall QUESTS_QuestFree(D2GameStrc* pGame); // 0x00543800
-
-void __fastcall OBJRGN_FreeObjectControl(D2GameStrc* pGame); // 0x00546E90
-
-void __fastcall MONSTERREGION_FreeAll(void* pMemPool, D2MonsterRegionStrc** ppMonsterRegion); // 0x00547B50
-
-void __fastcall MONSTERREGION_TrySpawnWanderingMonster(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom); // 0x0054F060
-
-void __fastcall OBJECTS_PopulationHandler(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom); // 0x00552610
-
-void __fastcall SUNIT_RemoveUnit(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00555600
-
-void __fastcall SUNIT_SpawnPresetUnitsInRoom(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom); // 0x005559A0
-
-void __stdcall DUNGEON_FreeAct(D2DrlgActStrc* pAct); // 0x0061AFD0
 
 D2CriticalSectionStrc gGameListLock; // 0x00882D18
 
@@ -213,35 +172,17 @@ D2GameStrc* gpGame; // 0x00882D34
 
 int gnGamesGUIDs[1024];                                                                            // 0x00882D38
 
-void __fastcall SCMD_SendPlayerJoinAndPets(D2ClientStrc*, D2UnitStrc*, D2ClientStrc*); // 0x0053C940
 
-D2CorpseStrc* __stdcall INVENTORY_GetFirstCorpse(D2InventoryStrc*); // 0x0063D570
 
-D2CorpseStrc* __stdcall INVENTORY_GetNextCorpse(D2CorpseStrc*); // 0x0063D610
-
-int __stdcall INVENTORY_GetUnitGUIDFromCorpse(D2CorpseStrc*); // 0x0063D630
-
-void __fastcall D2GAME_PACKETS_SendPacket0x8E_6FC3FA20(D2ClientStrc*, int, int, unsigned char); // 0x0053DFB0
-
-void __fastcall ARENA_SendScoresToClient(D2GameStrc*, D2ClientStrc*); // 0x0053FC70
-
-int __fastcall CLIENTS_CheckState(int nClientId, int nState); // 0x00538930
-
-int __fastcall CLIENTS_GetNameById(int nClientId, char* szName); // 0x00538B70
 
 typedef int (__stdcall* FARPROC)();
 
 extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(FARPROC lpfn); // 0x006CC34C
 
-int __fastcall GAME_GetGameGUIDFromGameId(unsigned short nGameId); // 0x0052C060
-
-int __fastcall CLIENTS_GetCanonicalName(const char* szName, char* szGameName); // 0x00538C60
 
 int __fastcall CCMD_IsStringZeroTerminated(const char* pData, int nDataSize); // 0x0053EFC0
 
 D2ServerCallbackFunctions* gpD2EventCallbackTable;                                                 // 0x00883D50
-
-void __fastcall D2GAME_PACKETS_SendGameLeft(int nClientId); // 0x0053B220
 
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, size_t nSize); // 0x006829C0
@@ -250,49 +191,20 @@ extern "C" size_t __cdecl strlen(const char* szString);
 
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nMax); // 0x004135D0
-
-void __fastcall GAME_LeaveGamesCriticalSection(D2GameStrc* pGame); // 0x0052DA90
-
-D2GameStrc* __fastcall GAME_LockGame(int nGameGUID); // 0x0052E860
-
-int __fastcall GAME_IsGameNameUnused(const char* szGameName); // 0x0052F8B0
-
-D2ClientStrc* __fastcall CLIENTS_GetClientFromClientId(D2GameStrc* pGame, int nClientId); // 0x00537810
-
-int __fastcall CLIENTS_IsInGame(D2GameStrc* pGame, int nClientId); // 0x005381C0
-
-int __fastcall CLIENTS_GetClientId(D2ClientStrc* pClient); // 0x00538590
-
-int __fastcall CLIENTS_GetClassId(D2ClientStrc* pClient); // 0x005385F0
-
-char* __fastcall CLIENTS_GetName(D2ClientStrc* pClient); // 0x00538830
-
-void __fastcall CLIENTS_CopyAccountNameToBuffer(D2ClientStrc* pClient, char* szBuffer); // 0x005392F0
 
 void __fastcall ClientRemoveFromGame(D2GameStrc* pGame, int nClientId, int bTriggerSave); // 0x00539DA0
 
 void __fastcall D2GAME_PACKETS_SendGameListEntry(void* pClientId, unsigned short nGameId, int nClients, const char* szGameName); // 0x0053B1B0
 
-void __fastcall SCMD_SendSkillList(D2ClientStrc* pClient, D2UnitStrc* pUnit); // 0x0053C5D0
 
-void __fastcall D2GAME_SetSkills_6FD14C60(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int bRemove); // 0x0056DEB0
+void __fastcall D2GAME_SetSkills(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int bRemove); // 0x0056DEB0
 
-unsigned int __fastcall CLIENT_IsGameOwner(D2ClientStrc* pClient); // 0x00539030
 
 typedef int (__fastcall* D2NET_Unk_Callback)(int, int, int, int);
 
-int __stdcall SRegLoadValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long* pValue); // 0x00414F10
 
 int __stdcall SERVER_SetRemoveClientCallback(D2NET_Unk_Callback pfCallback); // 0x0052B5C0
 
-int __stdcall GAME_AbortClientById(int nClientId, int a2, int a3); // 0x005300F0
-
-void __fastcall SUNITPROXY_FillGlobalItemCache(); // 0x00536F80
-
-void __fastcall CLIENTS_Initialize(); // 0x005376C0
-
-int __fastcall CLIENTS_AttachSaveFile(int nClientId, const void* pSaveData, int nSize, int nTotalSize, int bUnlockCharacter, int a6, int a7); // 0x00538CE0
 
 struct D2NetPacketRecStrc
 {
@@ -311,7 +223,6 @@ struct D2Net52BE10Strc
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);
 
 // build: symbol _gszD2NetSourceFile 0x006E0488
 extern "C" const char gszD2NetSourceFile[];
@@ -321,7 +232,6 @@ extern int gnConnectionMode;
 
 int gbD2ServerCallbackFunctionsInitialized;                                                        // 0x00883D54
 
-D2UnitStrc* __fastcall SUNIT_GetNextUnitFromList(D2UnitStrc* pUnit); // 0x00552DB0
 
 typedef void(__fastcall* UnitDescriptionFunction)(char* szDescription, int nClassId);
 
@@ -335,13 +245,6 @@ extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 extern "C" char* __cdecl strcpy(char* szDest, const char* szSource);
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
-
-char* __fastcall sub_00526F70(char* szDest, const Unicode* pSource, int nCount); // 0x00526F70
-
-D2ItemsTxt* __stdcall DATATBLS_GetItemsTxtRecord(int nItemId); // 0x006335F0
-
-D2ObjectsTxt* __stdcall DATATBLS_GetObjectsTxtRecord(int nObjectId); // 0x00640E90
 
 struct D2StormOwnedLinkStrc : D2StormLinkStrc
 {
@@ -573,23 +476,11 @@ struct D2GameDataTableStrc
     }
 };
 
-void __fastcall SrvFreeGame(int nGameGUID, D2GameStrc* pGame); // 0x0052C7F0
-
-int __stdcall SStrCmpI(const char* szString1, const char* szString2, unsigned int nMaxChars); // 0x00413590
 
 extern "C" __declspec(dllimport) int __stdcall QueryPerformanceCounter(D2LargeIntegerUnion* pCount); // 0x006CC25C
 
 extern "C" __declspec(dllimport) unsigned long __stdcall timeGetTime(void); // 0x006CC544
 
-extern int gbFixedCpuTargetRatio; // 0x0073100C
-
-void __fastcall GAME_UpdateProgress(D2GameStrc* pGame); // 0x0052D870
-
-void __fastcall GAME_FindGameOwnerCallback(D2ClientStrc* client, void* context); // 0x0052CBB0
-
-void __fastcall GAME_FindFirstClientCallback(D2ClientStrc* client, void* context); // 0x0052CBD0
-
-void __fastcall SrvEndGame(int clientId, int flag); // 0x005303D0
 
 extern "C" void _ReadWriteBarrier(void);
 
@@ -611,13 +502,8 @@ struct D2StormHashTable0052E650Strc
     char* sub_0052E650_Ptr(unsigned int nHashVal, int nKey);
 };
 
-int __fastcall D2GAME_SAVE_WriteFile_6FC8A500(D2GameStrc* pGame, D2UnitStrc* pPlayer, const char* szName, unsigned int dwArg); // 0x00532400
-
-int __fastcall CLIENTS_GetFlags(D2ClientStrc*); // 0x00538640
 
 void __fastcall CLIENTS_GetGuildEmblem(D2ClientStrc*, unsigned char*, unsigned char*, unsigned char*); // 0x00539190
-
-int __stdcall STATLIST_GetUnitBaseStat(D2UnitStrc*, int, int); // 0x006253B0
 
 struct D2StormSlotLink00530600Strc
 {
@@ -702,7 +588,6 @@ struct D2GameInfoStrc
 
 #define PATHTYPE_MON_CIRCLE_CCW 6
 
-unsigned int __fastcall ARENA_GetFlags(D2GameStrc* pGame);                                                  // 0x0053FD40
 
 static int GAME_CountUnitsInLists(D2UnitStrc** pUnitLists);
 
@@ -712,11 +597,9 @@ D2GameDataTableStrc* gpGameDataTbl; // 0x00883D38
 
 int gnLastGamesUpdateTimeMs; // 0x00883D58
 
-extern int gnTargetFrameRate; // 0x00731014
 // build: symbol ??__EgnTargetMsPerFrame@@YAXXZ 0x006CAF10
 int gnTargetMsPerFrame = 1000 / gnTargetFrameRate; // 0x00883D60
 
-int __stdcall GAME_GetPlayerUnitsCount(unsigned short nGameId);
 
 #define BUCKETS 128
 
@@ -726,8 +609,6 @@ int __stdcall GAME_GetPlayerUnitsCount(unsigned short nGameId);
 
 #define UNLOCK_LINE 4196
 
-
-void __fastcall SUNIT_FillUnitInfo(D2UnitStrc* pUnit, D2UnitInfoStrc* pUnitInfo);                           // 0x00553F30
 
 struct D2GameNodeStrc
 {
@@ -764,52 +645,16 @@ extern "C" __declspec(dllimport) void* __stdcall CreateThread(void* lpThreadAttr
 
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);          // 0x0040B430
 
-int __stdcall SERVER_HackListClient(int nClientId, int a2, int a3);                                                  // 0x0052B4F0
 
-void __stdcall GAME_SendMessageToAllClients(int a1, int nPacketParam, const char* szMessage);               // 0x0052F4C0
+int gnGlobal_00883D3C;                                                                                         // 0x00883D3C
 
-void __fastcall SrvDisconnectClientById(int nClientId, int nEventType);                                   // 0x00530270
+int gnGlobal_00883D40;                                                                                         // 0x00883D40
 
-void __fastcall CLIENTS_UpdatePing(int nClientId, int a2, int a3, int a4);                                  // 0x005389A0
-
-int __fastcall CLIENTS_GetClientIdByName(const char* szClientName);                                         // 0x00538BF0
-
-void __fastcall SUNITINACTIVE_CompressUnitIfNeeded(D2GameStrc* pGame, D2UnitStrc* pUnit);                   // 0x005433F0
-
-int __stdcall DUNGEON_TestRoomCanUnTile(D2DrlgActStrc* pAct, D2ActiveRoomStrc* pRoom);                      // 0x0061A3F0
-
-int __stdcall D2Common_10081_GetTileCountFromRoom(D2ActiveRoomStrc* pRoom);                                 // 0x0061A790
-
-void __stdcall DUNGEON_RemoveRoomFromAct(D2DrlgActStrc* pAct, D2ActiveRoomStrc* pRoom);                     // 0x0061A910
-
-extern int nInitSeed_6FDC2CA08;                                                                             // 0x00731004
-
-int dword_6FD4581C;                                                                                         // 0x00883D3C
-
-int dword_6FD45820;                                                                                         // 0x00883D40
-
-int gnPeakMemoryUsageInLast10s_6FD45828;                                                                    // 0x00883D48
-
-extern int gnTargetFrameRate;                                                                      // 0x00731014
 
 int gnAct;                                                                                         // 0x00883D44
 
 struct D2ClientInfoStrc;
 
-void __cdecl GAME_LogMessage(int nLevel, const char* szFormat, ...);                                        // 0x0052BE20
-
-void __fastcall CLIENTS_EnableCharacterUnlock(D2ClientStrc* pClient);                                                        // 0x00538320
-
-void __fastcall CLIENTS_SetClientState(D2ClientStrc* pClient, int nClientState);                            // 0x005386D0
-
-D2ClientStrc* __fastcall ClientAddToGame(D2GameStrc* pGame, int nClientId, unsigned char nClassIdOrCharTemplate, const char* szClientName, const char* szAccount, int nCharSaveTransactionToken, unsigned char nLocale, int a8, int a9); // 0x00539A30
-
-void __fastcall D2GAME_PACKETS_SendHeaderOnlyPacket(D2ClientStrc* pClient, unsigned char nHeader);          // 0x0053B320
-
-void __fastcall D2GAME_PACKETS_SendPacket0x01_6FC3C7C0(D2ClientStrc* pClient, char nHeader, D2GameStrc* pGame); // 0x0053B340
-
-
-extern int gbCheckHeartbeat;                                                                       // 0x00730FFC
 
 int __stdcall SERVER_ReadGamePacket(unsigned char* pBuffer, int nSize);                              // 0x0052B2D0
 
@@ -819,27 +664,8 @@ int __stdcall SERVER_ReadAdminPacket(unsigned char* pBuffer, int nSize);        
 
 void __fastcall GAME_ProcessAdminMessage(void* pData, int nSize);                                                       // 0x0052CC20
 
-void __fastcall SrvDisconnectClient(D2GameStrc* pGame, D2ClientStrc* pClient, int nEventType);            // 0x0052CAF0
-
-int __fastcall CLIENTS_CheckFlag(D2ClientStrc* pClient, unsigned short nFlag);                              // 0x00538670
-
-void __fastcall CCMD_ProcessClientSystemMessage(void* pData, int nSize);                                    // 0x0053F100
-
-void __fastcall ProcessClientMessage(void* pData, int nPacketSize);                                    // 0x0053F3D0
-
-void __fastcall PLRMSG_BroadcastSystemMessage(D2GameStrc* pGame, const char* szMessage, unsigned char nColor);               // 0x0054A9B0
 
 int __stdcall UNITS_GetInventoryGoldLimit(D2UnitStrc* pUnit);                                               // 0x00622E70
-
-void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStatId, int nValue, int nLayer);                // 0x00627260
-
-void __fastcall GAME_ClientEnterAct(D2GameStrc* pGame, D2ClientStrc* pClient);                      // 0x0052C210
-
-void __fastcall CLIENTS_SpawnPlayer(D2ClientStrc* pClient, D2UnitStrc* pPlayer, D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x005394A0
-
-int __fastcall ClientAddPlayerToGame(D2ClientStrc* pClient, D2GameStrc* pGame, int a3, D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00539760
-
-void __fastcall D2GAME_PACKETS_SendSystemError(int nClientId, unsigned int nReason);           // 0x0053B260
 
 #define INPUT_PREFIX 0
 
@@ -895,21 +721,17 @@ struct Reply {
 
 #pragma pack(pop)
 
-long gnAdminConnectionCount;         // 0x00883D64
+extern long gnAdminConnectionCount; // 0x00883D64
 
 extern "C" __declspec(dllimport) long __stdcall InterlockedIncrement(long volatile*);  // 0x006CC208
 
 extern "C" __declspec(dllimport) long __stdcall InterlockedDecrement(long volatile*);  // 0x006CC204
 
-int __stdcall CLIENT_ObjectCall_6BED90(int,int,int); // 0x0052B490
-
 int __stdcall sub_0052B330(unsigned char,int,void*,int);  // 0x0052B330
 
-void __stdcall D2NET_10016(int);  // 0x0052B570
 
 extern "C" int __cdecl strncmp(const char*,const char*,unsigned int);
 
-void __fastcall PLRMSG_BroadcastSystemMessage(D2GameStrc*,const char*,unsigned char);  // 0x0054A9B0
 
 enum { MODE_MASK = 15 };
 
@@ -922,43 +744,6 @@ struct D2GameHashLinkStrc;
 
 struct D2GameHashListStrc;
 
-int __cdecl CLIENTS_GetExpansionClientCount(); // 0x005377B0
-
-void __stdcall DUNGEON_UpdateAndFreeInactiveRooms(D2DrlgActStrc* pAct); // 0x0061AA20
-
-extern int gnFrameRate; // 0x00731010
-
-void __fastcall GAME_SynchronizePlayerWithClients(D2GameStrc* pGame, D2ClientStrc* pClient); // 0x0052C410
-
-void __fastcall GAME_SaveAllPlayers(D2GameStrc* pGame); // 0x0052CA10
-
-void __stdcall GAME_RemoveUntilableRooms(D2GameStrc* pGame); // 0x0052D240
-
-void __stdcall GAME_CheckClientHeartbeats(D2GameStrc* pGame, int* pbDisconnected); // 0x0052D350
-
-void __fastcall GAME_UpdateEnvironment(D2GameStrc* pGame); // 0x0052D7B0
-
-void __fastcall CLIENTS_SynchronizePlayer(D2GameStrc* pGame, D2ClientStrc* pClient); // 0x005380D0
-
-void __fastcall LEVEL_FreeDrlgDeletes(D2GameStrc* pGame); // 0x0053A820
-
-void __fastcall LEVEL_UpdateQueuedUnitsInAllActs(D2GameStrc* pGame); // 0x0053B000
-
-unsigned int __fastcall ARENA_NeedsClientUpdate(D2GameStrc* pGame); // 0x0053FCA0
-
-void __fastcall EVENT_IterateEvents(D2GameStrc* pGame); // 0x005414D0
-
-void __fastcall SUNITINACTIVE_DeleteExpiredItemNodes(D2GameStrc* pGame, int nAct); // 0x00542AC0
-
-void __fastcall QUESTS_QuestUpdater(D2GameStrc* pGame); // 0x00543E10
-
-void __fastcall ITEMS_DeleteInactiveItems(D2GameStrc* pGame, int nAct); // 0x00558B90
-
-void __fastcall PLAYERLIST_InitializePlayerRelations(D2GameStrc* pGame, D2UnitStrc* pPlayer); // 0x0055B620
-
-int __stdcall D2Common_10073(D2ActiveRoomStrc* pRoom); // 0x0061A460
-
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
 
 struct D2GameStatisticsStrc
 {
@@ -976,29 +761,15 @@ static unsigned int gnPeakMemoryUsageInLast10s; // 0x00883D48
 
 static unsigned int gnPreviousMemUsageTick; // 0x00883D68
 
-void __stdcall GAME_GetUnitsDescriptions(unsigned short nGameId, D2UnitDescriptionListStrc* pUnitDescriptionsList, unsigned int eType);
 
 struct D2PoolSystemStrc;
 
 static int gnFrameRate = 25;                                                                      // 0x00731010
+#include "StormApi2.h"
+#include "D2CommonApi3.h"
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);                              // 0x0040B380
 
-int __cdecl FOG_GetMemoryUsage(D2PoolSystemStrc* pSystem);                                     // 0x0040A040
 
-void __fastcall SUNITINACTIVE_RestoreInactiveUnits(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom);            // 0x00542B40
-
-void __fastcall sub_6FC84D40(D2GameStrc* pGame, D2GSPacketSrv5A* pPacket);                                 // 0x0054AA40
-
-void __fastcall D2GAME_PopulateRoom_6FC67190(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom);                  // 0x0054EC90
-
-void __fastcall D2GAME_ITEMS_UpdateInventoryItems(D2GameStrc* pGame, D2UnitStrc* pUnit, int a3, int bRefresh); // 0x0055DF00
-
-D2ActiveRoomStrc* __stdcall DUNGEON_GetRoomFromAct(D2DrlgActStrc* pAct);                                   // 0x0061A180
-
-int __stdcall D2Common_10074(D2ActiveRoomStrc* pRoom);                                                      // 0x0061A4D0
-
-void __stdcall D2Common_10075(D2ActiveRoomStrc* pRoom, int bSet);                                           // 0x0061A510
 
 static void GAME_UpdatePendingRooms(D2GameStrc* pGame);
 
@@ -1058,54 +829,14 @@ enum D2C_MonStatsTxtFlagIndices
 };
 
 
-
-
-
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 extern D2UnkPlrMsgStrc gaUnitModeMessages[20]; // 0x007319E8
 
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
-void __stdcall SUNITPROXY_FillIGlobaltemCacheRecordForNpc(int nNpcId); // 0x00536D50
 
-int __fastcall CLIENTS_IsInUnitsRoom(D2UnitStrc* pUnit, D2ClientStrc* pClient); // 0x005387F0
-
-void __fastcall D2GAME_PACKETS_SendPacket0x10_6FC3C9A0(D2ClientStrc* pClient, char nHeader, char a3, int a4, char a5, int a6, int a7, short a8, short a9); // 0x0053B520
-
-void __fastcall D2GAME_PACKETS_SendPacket0x0F_6FC3CA00(D2ClientStrc* pClient, char nHeader, unsigned char bTOU, int a4, char a5, short a6, short a7, char a8, short a9, short a10); // 0x0053B570
-
-void __fastcall D2GAME_SendPacket0x53_6FC3DF50(D2ClientStrc* pClient, D2GSPacketSrv53* pPacket); // 0x0053C900
-
-void __fastcall EVENT_SetEvent(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType, int nExpireFrame, int dwEventCustomId, int dwEventCustomParam); // 0x005417D0
-
-D2UnitStrc* __stdcall SUNIT_GetTargetUnit(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00553540
-
-int __fastcall SUNIT_IsDead(D2UnitStrc* pUnit); // 0x005541B0
-
-void __fastcall D2GAME_UpdatePlayerItems_6FC4BB90(D2GameStrc* pGame, D2UnitStrc* pUnit, int a3); // 0x0055FDE0
-
-int __stdcall DUNGEON_IsRoomInTown(D2ActiveRoomStrc* pRoom); // 0x0061AB00
-
-int __stdcall ENVIRONMENT_UpdateCycleIndex(D2DrlgActStrc* pAct, int nActNo); // 0x0061C040
-
-void __stdcall ENVIRONMENT_GetCycleIndex_Ticks_EclipseFromAct(D2DrlgActStrc* pAct, int* pCycleIndex, int* pTicks, int* pEclipse); // 0x0061C330
-
-int __stdcall UNITS_ChangeAnimMode(D2UnitStrc* pUnit, int nMode); // 0x00624690
-
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
-
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
-
-int __stdcall D2COMMON_10175_PathGetFirstPointX(D2DynamicPathStrc* pDynamicPath); // 0x00648A00
-
-int __stdcall D2COMMON_10176_PathGetFirstPointY(D2DynamicPathStrc* pDynamicPath); // 0x00648A10
-
-void __stdcall QUESTRECORD_FreeRecord(void* pMemPool, D2BitBufferStrc* pQuestRecord); // 0x0065C490
 
 
 
@@ -1114,55 +845,13 @@ typedef void (__fastcall* SUNIT_IterateFn)(D2GameStrc* pGame, D2UnitStrc* pUnit,
 
 extern int gnVirtualPlayerCount; // 0x00883D70
 
-void __fastcall D2GAME_SetSkills_6FD14C60(int a1, int a2, int a3, int a4); // 0x0056DEB0
+void __fastcall D2GAME_SetSkills(int pUnit, int nSkillId, int nSkillLevel, int bRemove); // 0x0056DEB0
 
-void __stdcall UNITS_SetTargetUnitForDynamicUnit(D2UnitStrc* pUnit, D2UnitStrc* pTargetUnit); // 0x00620C10
 
-void __fastcall PLRMODE_ChangeModeToCoords(D2GameStrc* pGame, D2UnitStrc* pUnit, D2SkillStrc* pUsedSkill, int nMode, int nX, int nY, int a7); // 0x005809D0
 
-D2ClientStrc* __fastcall UnitGetClient(D2UnitStrc* pPlayer, const char* szFile, int nLine); // 0x005531C0
-
-void __fastcall CLIENTS_SetSkillHotKey(D2ClientStrc* pClient, int nHotkeyId, short nSkillId, unsigned char nHand, int nItemGUID); // 0x005390A0
-
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
-
-void __fastcall SUNIT_IterateLivingPlayers(D2GameStrc* pGame, SUNIT_IterateFn pfIterate, void* pArg); // 0x005538D0
-
-int __fastcall PLAYERLIST_CheckFlag(D2UnitStrc* pPlayer1, D2UnitStrc* pPlayer2, unsigned int nFlags); // 0x0055B300
-
-void __fastcall ITEMS_RemoveFromAllPlayers(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00557FD0
 
 void __stdcall DUNGEON_GetAdjacentRoomsListFromRoom(D2ActiveRoomStrc* pRoom, D2ActiveRoomStrc*** pppRoomList, unsigned int* pnNumRooms); // 0x00619790
 
-void __fastcall SUNITMSG_SendRemoveObject(D2UnitStrc* pUnit, D2ClientStrc* pClient); // 0x00571600
-
-unsigned char __fastcall CLIENTS_GetActNo(D2ClientStrc* pClient); // 0x005382B0
-
-void __fastcall D2GAME_PACKETS_SendPacket0x03_6FC3C810(D2ClientStrc* pClient, unsigned char nHeader, unsigned char nAct, unsigned int dwInitSeed, unsigned int dwObjSeed, int nTownLevelId); // 0x0053B390
-
-void __stdcall UNITROOM_ClearUpdateQueue(D2ActiveRoomStrc* pRoom); // 0x0064C160
-
-void __fastcall ARENA_ClearUpdateFlag(D2GameStrc* pGame); // 0x0053FAE0
-
-void __fastcall SCMD_SendPlayerRelationshipCallback(D2GameStrc* pGame, D2UnitStrc* pPlayer, void* pPacket); // 0x0053DDF0
-
-void __fastcall SCMD_SendCorpseAssignCallback(D2GameStrc* pGame, D2UnitStrc* pPlayer, void* pPacket); // 0x0053DF50
-
-D2PlayerDataStrc* __stdcall UNITS_GetPlayerData(D2UnitStrc* pUnit); // 0x006221A0
-
-int __fastcall PLRMSG_InteractWithUnit(D2UnitStrc* pPlayer, int nUnitType, int nUnitGUID, int a4, D2GameStrc* pGame); // 0x00548B00
-
-void __fastcall D2GAME_NPC_IdentifyAllItems_6FCC9C90(D2GameStrc* pGame, D2UnitStrc* pPlayer, int nNpcGUID); // 0x00578460
-
-void __fastcall D2GAME_NPC_ResurrectMerc_6FCC9350(D2GameStrc* pGame, D2UnitStrc* pPlayer, int nNpcUnitId); // 0x00579C00
-
-void __fastcall PLAYER_ResetBusyState(D2UnitStrc* pUnit); // 0x005350B0
-
-void __fastcall PLRINTRO_MaskNpcIntroFlag(D2GameStrc* pGame, D2UnitStrc* pPlayer, int nNpcId); // 0x005724C0
-
-void __fastcall PLRMSG_SendWalkMode(D2GameStrc* pGame, D2UnitStrc* pUnit, D2ClientStrc* pClient, int nAnimMode);
 
 #define CLIENTS_MAX_UPDATES 55u
 
@@ -1185,79 +874,25 @@ extern "C" __declspec(dllimport) void __stdcall Sleep(unsigned long dwMillisecon
 
 unsigned long gdwLastClientsUpdateTick;                                                                               // 0x00883D5C
 
-int __cdecl sub_0052B910();                                                                                 // 0x0052B910
-
-void __fastcall GAME_CloseGame(int nGameGUID);                                                              // 0x0052E770
-
-void __fastcall CLIENTS_RefreshUnitsUpdateList(D2ClientStrc* pClient, unsigned int nUpdateSize);            // 0x00537FD0
-
-void __fastcall CLIENTS_FreeSaveHeader(D2ClientStrc* pClient);                                              // 0x00538F10
-
-int __fastcall CLIENTS_HasLoadedSave(D2ClientStrc* pClient);                                        // 0x00538FC0
-
-void __fastcall CLIENTS_PacketDataList_Reset(D2ClientStrc* pClient, D2PacketDataStrc* pPacketData);         // 0x00539270
-
-D2PacketDataStrc* __fastcall CLIENTS_PacketDataList_PopHead(D2ClientStrc* pClient);                         // 0x005392A0
 
 D2PacketDataStrc* __fastcall CLIENTS_PacketDataList_GetHead(D2ClientStrc* pClient);                         // 0x005392E0
 
-void __fastcall GAME_EndGameForConnectedClient(D2GameStrc* pGame, D2ClientStrc* pClient);                   // 0x00530590
 
-void __fastcall SCMD_SendUnitUpdates(D2ClientStrc* pClient);                           // 0x0053E130
 
-int __fastcall PLRMSG_SendPlayerStatUpdates(D2UnitStrc* pUnit, D2UnitStrc* pUnit2, int bSkipHpCheck);                       // 0x00548760
-
-void __fastcall SUNIT_IterateUnitsOfType(D2GameStrc* pGame, int nType, void* pArg, QUESTUNITITERATE pfIterate); // 0x005537D0
-
-void __stdcall TASK_FreeAllQueueSlots();                                                                    // 0x00564890
-
-int __fastcall ACT4Q2_UnitIterate_WarpToTownEndGame(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData);    // 0x005B4A80
-
-D2UnitStrc* __fastcall ACT4Q2_TrySpawnDiablo(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nX, int nY, D2Act4Quest2Strc* pQuestDataEx); // 0x005B4B60
-
-void __fastcall D2GAME_PACKETS_SendPacket0x0A_RemoveObject(D2ClientStrc* pClient, unsigned char nHeader, unsigned char nUnitType, int nUnitGUID); // 0x0053BDA0
 
 extern "C" const char gszSGameDataTypeName[];                                                               // 0x0070F56C
 
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int dwFlags);                  // 0x00412650
-
-void __fastcall SEED_InitSeed(D2SeedStrc* pSeed);                                                           // 0x00650E30
-
-void __fastcall SEED_InitLowSeed(D2SeedStrc* pSeed, unsigned int nLowSeed);                                 // 0x00650E40
-
 void __cdecl FOG_CreateNewPoolSystem(void* pReserved, const char* szName, int nSize, int nBlockSize); // 0x00409DD0
 
-void __stdcall GAME_SetReservedGameGUID(int hGame, unsigned short nGameId);                            // 0x0052C110
 
 unsigned short __cdecl sub_0052C170_AllocGameId();
 
-void __fastcall GAME_ResolveGameNameConflict(D2GameStrc* pGame, const char* szGameName, unsigned int a3);                    // 0x0052F940
-
-void __fastcall SUNITPROXY_InitializeNpcControl(D2GameStrc* pGame); // 0x00536070
-
-void __fastcall CLIENTS_SetGameData(D2ClientStrc* pClient);                                            // 0x005379A0
-
-void __fastcall ARENA_AllocArena(D2GameStrc* pGame, int a2, unsigned int nFlags, unsigned char a4);         // 0x0053F4B0
-
-void __fastcall PARTY_AllocPartyControl(D2GameStrc* pGame);                                                 // 0x0053FF90
-
-void __fastcall EVENT_AllocEventQueue(D2GameStrc* pGame);                                            // 0x00541470
-
-void __fastcall QUESTS_QuestInit(D2GameStrc* pGame); // 0x00545D80
 
 int __fastcall OBJRGN_AllocObjectControl(D2GameStrc* pGame); // 0x00546C60
 
-void __fastcall MONSTERREGION_InitializeForGame(D2GameStrc* pGame);                                         // 0x00547D20
 
-void __fastcall TASK_QueueGame(void* pTask, int a2, unsigned int hGame); // 0x00564A00
+void __fastcall TASK_QueueGame(void* pTask, int nArg, unsigned int hGame); // 0x00564A00
 
-void __fastcall CLIENTS_SetActNo(D2ClientStrc* pClient, unsigned char nAct);                                // 0x005382E0
-
-void __fastcall CLIENTS_SetGameOwner(D2ClientStrc* pClient);                                       // 0x00539000
-
-void __fastcall LEVEL_LoadAct(D2GameStrc* pGame, unsigned char nAct);                              // 0x0053AFB0
-
-void __fastcall LEVEL_SynchronizeDayNightCycleWithClient(D2GameStrc* pGame, D2ClientStrc* pClient);                            // 0x0053ABE0
 
 static inline D2GameLinkStrc* GAMELINK_NextLink(D2GameLinkStrc* pLink, int nLinkOffset)
 {
@@ -1277,12 +912,6 @@ static inline void GAMELINK_Unlink(D2GameLinkStrc* pLink)
         pLink->pPrevLink = 0;
         pLink->pNext = 0;
     }
-}
-
-// 0x00520650
-void* __cdecl sub_00520650()
-{
-    return gData_00882028;
 }
 
 // 0x00520AE0
@@ -1315,40 +944,10 @@ int __cdecl GAME_GetChangePasswordResult()
     return gnChangePasswordResult;
 }
 
-// 0x00520C40
-int __cdecl sub_00520C40()
-{
-    return 1;
-}
-
-// 0x005210E0
-int __cdecl sub_005210E0()
-{
-    return 1;
-}
-
-// 0x005224E0
-int __cdecl GAME_GetLoginRetryCount()
-{
-    return gnLoginRetryCount;
-}
-
-// 0x00523A00
-int __cdecl GAME_GetExeHash()
-{
-    return gdwGlobal_00730190;
-}
-
-// 0x00523AA0
-int __cdecl GAME_GetExeInfo()
-{
-    return gdwGlobal_00882750;
-}
-
 // 0x0052A600
 int __fastcall GAME_DeleteBigNum(void* pArg)
 {
-    return sub_00424E40(pArg);
+    return SBigDel(pArg);
 }
 
 // 0x0052BE20
@@ -1377,7 +976,7 @@ void __stdcall GAME_DefaultUnlockDatabaseCharacter(int nUnused1)
 }
 
 // 0x0052BEC0
-void __stdcall sub_0052BEC0(int nUnused1, int nUnused2)
+void __stdcall sub_0052BEC0_Nop(int nUnused1, int nUnused2)
 {
 }
 
@@ -1404,24 +1003,24 @@ const char* __cdecl GAME_DefaultLoadComplete()
 }
 
 // 0x0052BF30
-void __stdcall sub_0052BF30(int nUnused1, int nUnused2)
+void __stdcall sub_0052BF30_Nop(int nUnused1, int nUnused2)
 {
 }
 
 // 0x0052BF50
-int __cdecl sub_0052BF50()
+int __cdecl sub_0052BF50_Return0()
 {
     return 0;
 }
 
 // 0x0052BF60
-int __cdecl sub_0052BF60()
+int __cdecl sub_0052BF60_Return0()
 {
     return 0;
 }
 
 // 0x0052BF70
-int __cdecl sub_0052BF70()
+int __cdecl sub_0052BF70_Return0()
 {
     return 0;
 }
@@ -1435,18 +1034,17 @@ void __fastcall GAME_ZeroBlock8(void* pData)
 }
 
 // 0x0052BF90
-const void* __cdecl sub_0052BF90()
+const void* __cdecl sub_0052BF90_GetData6E0550()
 {
     return gData_006E0550;
 }
 
 // 0x0052BFA0
-const void* __cdecl sub_0052BFA0()
+const void* __cdecl sub_0052BFA0_GetData6E0568()
 {
     return gData_006E0568;
 }
 
-extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2CriticalSectionStrc* pLock);        // 0x006CC1FC
 
 void __fastcall CLIENTS_Release();                                                                          // 0x00537730
 
@@ -1521,7 +1119,7 @@ void __stdcall GAME_SetReservedGameGUID(int nGameGUID, unsigned short nGameId)
 
 typedef void* HGAMEDATA;
 
-extern HGAMEDATA hGameArray_6FD447F8[1024];                                                                 // 0x00882D38
+extern HGAMEDATA ghGameArray[1024];                                                                 // 0x00882D38
 
 // 0x0052C170
 unsigned short __fastcall GAME_ReserveGameId()
@@ -1535,7 +1133,7 @@ unsigned short __fastcall GAME_ReserveGameId()
         gwGameId = 1;
     }
 
-    if (hGameArray_6FD447F8[(unsigned short)nGameId - 1])
+    if (ghGameArray[(unsigned short)nGameId - 1])
     {
         while (1)
         {
@@ -1551,14 +1149,14 @@ unsigned short __fastcall GAME_ReserveGameId()
                 return 0;
             }
 
-            if (!hGameArray_6FD447F8[(unsigned short)nGameId - 1])
+            if (!ghGameArray[(unsigned short)nGameId - 1])
             {
                 break;
             }
         }
     }
 
-    hGameArray_6FD447F8[(unsigned short)nGameId - 1] = (HGAMEDATA)-1;
+    ghGameArray[(unsigned short)nGameId - 1] = (HGAMEDATA)-1;
     LeaveCriticalSection(&gGameListLock);
     return nGameId;
 }
@@ -1576,7 +1174,7 @@ void __fastcall GAME_ClientEnterAct(D2GameStrc* pGame, D2ClientStrc* pClient)
 // 0x0052C260
 static __declspec(noinline) void GAME_SendGameInit(D2GameStrc* pGame, D2ClientStrc* pClient)
 {
-    D2GAME_PACKETS_SendPacket0x01_6FC3C7C0(pClient, 1, pGame);
+    D2GAME_PACKETS_SendPacket0x01(pClient, 1, pGame);
     D2GAME_PACKETS_SendHeaderOnlyPacket(pClient, 0);
     CLIENTS_SetClientState(pClient, 1);
 }
@@ -1631,16 +1229,16 @@ int __fastcall SrvVerifyCreateNewGame(int nClientId, D2GSPacketClt66* pPacket)
 }
 
 // 0x0052C3E0
-void __stdcall D2Game_10056(int a1)
+void __stdcall D2Game_10056(int nValue)
 {
-    dword_6FD4581C = a1;
-    dword_6FD45820 = 0;
+    gnGlobal_00883D3C = nValue;
+    gnGlobal_00883D40 = 0;
 }
 
 // 0x0052C400
-void __fastcall GAME_UpdatePing(int nClientId, int a2, int a3, int a4)
+void __fastcall GAME_UpdatePing(int nClientId, int nTick, int nDelay, int nUnused)
 {
-    CLIENTS_UpdatePing(nClientId, a2, a3, a4);
+    CLIENTS_UpdatePing(nClientId, nTick, nDelay, nUnused);
 }
 
 // 0x0052C410
@@ -1667,7 +1265,7 @@ void __fastcall GAME_SynchronizePlayerWithClients(D2GameStrc* pGame, D2ClientStr
                     {
                         const int nCorpseGUID = INVENTORY_GetUnitGUIDFromCorpse(pCorpse);
                         if (nCorpseGUID != -1)
-                            D2GAME_PACKETS_SendPacket0x8E_6FC3FA20(pClient, GAME_GetUnitGUID(pOtherPlayer), nCorpseGUID, 1);
+                            D2GAME_PACKETS_SendPacket0x8E(pClient, GAME_GetUnitGUID(pOtherPlayer), nCorpseGUID, 1);
                     }
                 }
             }
@@ -1687,7 +1285,7 @@ void __fastcall GAME_SendPacket0x5CToAllConnectedClients(D2GameStrc* pGame, D2Cl
         {
             if (pClient->dwClientState == CLIENTSTATE_INGAME)
             {
-                D2GAME_PACKETS_SendPacket0x5C_6FC3E090(pClient, GAME_GetUnitGUID(pPlayer));
+                D2GAME_PACKETS_SendPacket0x5C(pClient, GAME_GetUnitGUID(pPlayer));
             }
         }
     }
@@ -1700,14 +1298,14 @@ int __fastcall GAME_VerifyJoinAct(int nClientId)
 }
 
 // 0x0052C570
-int __fastcall GAME_AbortClient(D2GameStrc* pGame, int nClientId, int a3, int a4)
+int __fastcall GAME_AbortClient(D2GameStrc* pGame, int nClientId, int szFile, int nLine)
 {
     if (pGame && CLIENTS_IsInGame(pGame, nClientId))
     {
         ClientRemoveFromGame(pGame, nClientId, 1);
     }
 
-    return SERVER_HackListClient(nClientId, a3, a4);
+    return SERVER_HackListClient(nClientId, szFile, nLine);
 }
 
 // 0x0052C5B0
@@ -1803,17 +1401,7 @@ static inline void GAME_RemoveGameGUID(int nGameGUID)
 // 0x0052C7F0
 void __fastcall SrvFreeGame(int nGameGUID, D2GameStrc* pGame)
 {
-    EnterCriticalSection(&gGameListLock);
-
-    for (int i = 0; i < 1024; ++i)
-    {
-        if (gnGamesGUIDs[i] == nGameGUID)
-        {
-            gnGamesGUIDs[i] = 0;
-        }
-    }
-
-    LeaveCriticalSection(&gGameListLock);
+    GAME_RemoveGameGUID(nGameGUID);
 
     MONSTERREGION_FreeAll(pGame->pMemoryPool, pGame->pMonReg);
     OBJRGN_FreeObjectControl(pGame);
@@ -1859,7 +1447,7 @@ void __fastcall GAME_TriggerClientSave(D2ClientStrc* pClient, D2GameStrc* pGame)
     if (!pClient)
         return;
     D2UnitStrc* pPlayer = CLIENTS_GetPlayerFromClient(pClient, 0);
-    if (!pPlayer || !D2GAME_SAVE_WriteFile_6FC8A500(pGame, pPlayer, CLIENTS_GetName(pClient), 1))
+    if (!pPlayer || !D2GAME_SAVE_WriteFile(pGame, pPlayer, CLIENTS_GetName(pClient), 1))
         return;
     D2ClientStrc* volatile pNext; // volatile only keeps pNext in its stack slot across the loop body, as the original does
     D2ClientStrc* i = pGame->pClientList;
@@ -1870,7 +1458,7 @@ void __fastcall GAME_TriggerClientSave(D2ClientStrc* pClient, D2GameStrc* pGame)
         if (pPlayer)
         {
             if (i != pClient)
-                D2GAME_SAVE_WriteFile_6FC8A500(pGame, pPlayer, CLIENTS_GetName(i), 0);
+                D2GAME_SAVE_WriteFile(pGame, pPlayer, CLIENTS_GetName(i), 0);
             if (gpD2EventCallbackTable && gpD2EventCallbackTable->pfUpdateCharacterLadder && pGame->dwGameType)
             {
                 unsigned char nBackgroundColor, nForegroundColor, nEmblemType;
@@ -1892,7 +1480,7 @@ void __fastcall GAME_SaveAllPlayers(D2GameStrc* pGame)
         D2UnitStrc* pPlayer = CLIENTS_GetPlayerFromClient(i, 0);
         if (pPlayer)
         {
-            D2GAME_SAVE_WriteFile_6FC8A500(pGame, pPlayer, CLIENTS_GetName(i), 0);
+            D2GAME_SAVE_WriteFile(pGame, pPlayer, CLIENTS_GetName(i), 0);
             if (gpD2EventCallbackTable && gpD2EventCallbackTable->pfUpdateCharacterLadder && pGame->dwGameType)
             {
                 unsigned char nBackgroundColor, nForegroundColor, nEmblemType;
@@ -1921,7 +1509,7 @@ void __fastcall SrvDisconnectClient(D2GameStrc* pGame, D2ClientStrc* pClient, in
     CLIENTS_CopyAccountNameToBuffer(pClient, &tPacket.szText[16]);
     tPacket.szText[31] = '\0';
     SStrCopy(tPacket.szText, CLIENTS_GetName(pClient), 16);
-    sub_6FC84D40(pGame, &tPacket);
+    PLRMSG_BroadcastEventMessage(pGame, &tPacket);
 
     ClientRemoveFromGame(pGame, CLIENTS_GetClientId(pClient), 1);
     D2GAME_PACKETS_SendGameLeft(nClientId);
@@ -1953,11 +1541,6 @@ int __fastcall GAME_VerifyDisconnect(int nClientId)
 {
     char szClientName[16];
     return CLIENTS_GetNameById(nClientId, szClientName) != 0;
-}
-
-void __fastcall sub_M117_Emit_0052C7C0(int nGameGUID)
-{
-    GAME_RemoveGameGUID(nGameGUID + 1);
 }
 
 // 0x0052CC10
@@ -2081,7 +1664,7 @@ static inline void GAME_PopulateRoom(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom)
     SUNIT_SpawnPresetUnitsInRoom(pGame, pRoom);
     SUNITINACTIVE_RestoreInactiveUnits(pGame, pRoom);
     OBJECTS_PopulationHandler(pGame, pRoom);
-    D2GAME_PopulateRoom_6FC67190(pGame, pRoom);
+    D2GAME_PopulateRoom(pGame, pRoom);
 }
 
 // 0x0052D0F0
@@ -2091,10 +1674,7 @@ void __fastcall GAME_ActivateRoom(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom)
 
     if (!(pRoom->dwFlags & 1))
     {
-        SUNIT_SpawnPresetUnitsInRoom(pGame, pRoom);
-        SUNITINACTIVE_RestoreInactiveUnits(pGame, pRoom);
-        OBJECTS_PopulationHandler(pGame, pRoom);
-        D2GAME_PopulateRoom_6FC67190(pGame, pRoom);
+        GAME_PopulateRoom(pGame, pRoom);
         pRoom->dwFlags |= 1;
         D2Common_10075(pRoom, 1);
     }
@@ -2154,7 +1734,7 @@ static void GAME_UpdatePendingRooms(D2GameStrc* pGame)
                     SUNIT_SpawnPresetUnitsInRoom(pGame, pRoom);
                     SUNITINACTIVE_RestoreInactiveUnits(pGame, pRoom);
                     OBJECTS_PopulationHandler(pGame, pRoom);
-                    D2GAME_PopulateRoom_6FC67190(pGame, pRoom);
+                    D2GAME_PopulateRoom(pGame, pRoom);
                     pRoom->dwFlags |= 1;
                     D2Common_10075(pRoom, 1);
                 }
@@ -2238,12 +1818,7 @@ void __stdcall GAME_RemoveUntilableRooms(D2GameStrc* pGame)
                 pNextRoom = pRoom->pRoomNext;
                 if (D2Common_10081_GetTileCountFromRoom(pRoom) > 10 && DUNGEON_TestRoomCanUnTile(pGame->pAct[i], pRoom))
                 {
-                    D2UnitStrc* pNextUnit = 0;
-                    for (D2UnitStrc* pUnit = pRoom->pUnitFirst; pUnit; pUnit = pNextUnit)
-                    {
-                        pNextUnit = pUnit->ptRoomNext;
-                        SUNITINACTIVE_CompressUnitIfNeeded(pGame, pUnit);
-                    }
+                    GAME_CompressRoomUnits(pGame, pRoom);
 
                     DUNGEON_RemoveRoomFromAct(pGame->pAct[i], pRoom);
                 }
@@ -2283,7 +1858,7 @@ void __stdcall GAME_CheckClientHeartbeats(D2GameStrc* pGame, int* pbDisconnected
         const int bHardcore = CLIENTS_CheckFlag(pClient, 4);
         if (nTickCount > pClient->dwLastPacketTick && (bHardcore && nTickCount - pClient->dwLastPacketTick > 10000 && pClient->dwPingsCount > 10 || nTickCount - pClient->dwLastPacketTick > 45000 || pClient->dw504) && gpD2EventCallbackTable)
         {
-            D2GAME_SAVE_WriteFile_6FC8A500(pGame, CLIENTS_GetPlayerFromClient(pClient, 0), CLIENTS_GetName(pClient), 0);
+            D2GAME_SAVE_WriteFile(pGame, CLIENTS_GetPlayerFromClient(pClient, 0), CLIENTS_GetName(pClient), 0);
             *pbDisconnected = 1;
             SrvDisconnectClient(pGame, pClient, 0);
         }
@@ -2338,7 +1913,7 @@ static void GAME_UpdateAllClients(D2GameStrc* pGame)
                 D2UnitStrc* pPlayer = CLIENTS_GetPlayerFromClient(pClient, 0);
                 if (pPlayer)
                 {
-                    D2GAME_ITEMS_UpdateInventoryItems_6FC45050(pGame, pPlayer, 0, 1);
+                    D2GAME_ITEMS_UpdateInventoryItems(pGame, pPlayer, 0, 1);
                 }
 
                 GAME_SynchronizePlayerWithClients(pGame, pClient);
@@ -2370,7 +1945,7 @@ static void GAME_UpdateAllClients(D2GameStrc* pGame)
                 }
 
                 SStrCopy(packet5A.szText, pClient->szName, 16);
-                sub_6FC84D40(pGame, &packet5A);
+                PLRMSG_BroadcastEventMessage(pGame, &packet5A);
             }
             break;
         }
@@ -2391,7 +1966,7 @@ static void GAME_UpdateAllClients(D2GameStrc* pGame)
                 D2UnitStrc* pPlayer = CLIENTS_GetPlayerFromClient(pClient, 0);
                 if (pPlayer)
                 {
-                    D2GAME_ITEMS_UpdateInventoryItems_6FC45050(pGame, pPlayer, 0, 1);
+                    D2GAME_ITEMS_UpdateInventoryItems(pGame, pPlayer, 0, 1);
                 }
             }
             break;
@@ -2515,7 +2090,7 @@ void __fastcall GAME_ResolveGameNameConflict(D2GameStrc* pGame, const char* szGa
 }
 
 // 0x00530EA0
-void __fastcall D2GAME_SetStatOrResetGold_6FC7CA70(D2UnitStrc* pUnit, int nStat, int nValue)
+void __fastcall D2GAME_SetStatOrResetGold(D2UnitStrc* pUnit, int nStat, int nValue)
 {
     if (!pUnit)
     {
@@ -2552,92 +2127,37 @@ void __fastcall D2GAME_SetStatOrResetGold_6FC7CA70(D2UnitStrc* pUnit, int nStat,
     STATLIST_SetUnitStat(pUnit, nStat, nValue, 0);
 }
 
-void __fastcall PLRSAVE_ByteToHex(char* szOut, unsigned char nByte); // 0x00531D60
 
 // build: symbol ?NET_IsSimulatedLagConnection@* 0x0052B800
-int __fastcall NET_IsSimulatedLagConnection()
-{
-    return gnConnectionMode == 2;
-}
+int __fastcall NET_IsSimulatedLagConnection();
 
-int __fastcall NET_DequeueFirstPacketFromList(D2CriticalSectionStrc* pCriticalSection, D2NetPacketRecStrc** ppPacketList, unsigned char* pBuffer, unsigned int nBufferSize)
-{
-    int nResult;
 
-    EnterCriticalSection(pCriticalSection);
 
-    D2NetPacketRecStrc* pPacket = *ppPacketList;
-    if (pPacket && (gnConnectionMode != 2 || GetTickCount() - pPacket->dwTickCount >= 500))
-    {
-        memcpy(pBuffer, pPacket, nBufferSize < MAX_MSG_SIZE ? nBufferSize : MAX_MSG_SIZE);
-        nResult = pPacket->nPacketSize;
-        *ppPacketList = pPacket->pNext;
-        FOG_Free(pPacket, gszD2NetSourceFile, 0x46, 0);
-    }
-    else
-    {
-        nResult = -1;
-    }
 
-    LeaveCriticalSection(pCriticalSection);
-    return nResult;
-}
-
-void __cdecl sub_0052B8F0_Nop()
-{
-}
-
-void __cdecl sub_0052B900_Nop()
-{
-}
-
-bool __stdcall sub_0052BDD0_AlwaysTrue(int nUnused)
-{
-    return true;
-}
 
 // build: symbol ?NET_GetBits12@* 0x0052BE00
-unsigned int __fastcall NET_GetBits12(unsigned int nValue)
-{
-    return (nValue >> 12) & 7;
-}
+unsigned int __fastcall NET_GetBits12(unsigned int nValue);
 
 // build: symbol ?NET_GetField0D0@* 0x0052BE10
-char* __fastcall NET_GetField0D0(D2Net52BE10Strc* pRecord)
-{
-    return pRecord->aData;
-}
+char* __fastcall NET_GetField0D0(D2Net52BE10Strc* pRecord);
 
 // build: symbol ?NET_DefaultLeaveGame@* 0x0052BE40
-void __stdcall NET_DefaultLeaveGame(int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9, int a10, int a11, int a12, int a13, int a14, int a15, int a16, int a17, int a18)
-{
-}
+void __stdcall NET_DefaultLeaveGame(int nUnused1, int nUnused2, int nUnused3, int nUnused4, int nUnused5, int nUnused6, int nUnused7, int nUnused8, int nUnused9, int nUnused10, int nUnused11, int nUnused12, int nUnused13, int nUnused14, int nUnused15, int nUnused16, int nUnused17, int nUnused18);
 
 // build: symbol ?NET_DefaultSaveDatabaseCharacter@* 0x0052BE60
-void __stdcall NET_DefaultSaveDatabaseCharacter(int a1, int a2, int a3, int a4)
-{
-}
+void __stdcall NET_DefaultSaveDatabaseCharacter(int nUnused1, int nUnused2, int nUnused3, int nUnused4);
 
 // build: symbol ?NET_DefaultServerLogMessage@* 0x0052BE70
-void __cdecl NET_DefaultServerLogMessage()
-{
-}
+void __cdecl NET_DefaultServerLogMessage();
 
 // build: symbol ?NET_DefaultEnterGame@* 0x0052BE80
-void __stdcall NET_DefaultEnterGame(int a1, int a2, int a3)
-{
-}
+void __stdcall NET_DefaultEnterGame(int nUnused1, int nUnused2, int nUnused3);
 
 // build: symbol ?NET_DefaultFindPlayerToken@* 0x0052BE90
-int __stdcall NET_DefaultFindPlayerToken(int a1, int a2, int a3, int a4, int a5, int a6, int a7)
-{
-    return 0;
-}
+int __stdcall NET_DefaultFindPlayerToken(int nUnused1, int nUnused2, int nUnused3, int nUnused4, int nUnused5, int nUnused6, int nUnused7);
 
 // build: symbol ?NET_DefaultUpdateCharacterLadder@* 0x0052BED0
-void __stdcall NET_DefaultUpdateCharacterLadder(int a1, int a2, int a3, int a4, int a5)
-{
-}
+void __stdcall NET_DefaultUpdateCharacterLadder(int nUnused1, int nUnused2, int nUnused3, int nUnused4, int nUnused5);
 
 // 0x0052BEF0
 void __cdecl GAME_DefaultGetGameServerInfo()
@@ -2645,12 +2165,12 @@ void __cdecl GAME_DefaultGetGameServerInfo()
 }
 
 // 0x0052BF40
-void __stdcall sub_0052BF40_Stub(int a1, int a2, int a3, int a4)
+void __stdcall sub_0052BF40_Stub(int nUnused1, int nUnused2, int nUnused3, int nUnused4)
 {
 }
 
 // 0x0052BFB0
-void __stdcall sub_0052BFB0_Stub(int a1, int a2, int a3, int a4)
+void __stdcall sub_0052BFB0_Stub(int nUnused1, int nUnused2, int nUnused3, int nUnused4)
 {
 }
 
@@ -2665,11 +2185,11 @@ const char* __fastcall GAME_GetLoadCompleteString()
 }
 
 // 0x005306E0
-int __stdcall SrvRecvDatabaseCharacter(int nClientId, const unsigned char* pSaveData, unsigned short nSaveSize, unsigned short nTotalSize, int nResult, int a6, D2FileTimeStrc* pSaveCreationTimestamp, int nCharSaveTransactionToken)
+int __stdcall SrvRecvDatabaseCharacter(int nClientId, const unsigned char* pSaveData, unsigned short nSaveSize, unsigned short nTotalSize, int nResult, int nUnused, D2FileTimeStrc* pSaveCreationTimestamp, int nCharSaveTransactionToken)
 {
     GAME_LogMessage(6, "[JOIN 3] %d clientid, %d csresult - Recv'ed char from CS", nClientId, nResult);
 
-    if (nTotalSize && !CLIENTS_AttachSaveFile(nClientId, pSaveData, nSaveSize, nTotalSize, nResult == 0, 1, a6))
+    if (nTotalSize && !CLIENTS_AttachSaveFile(nClientId, pSaveData, nSaveSize, nTotalSize, nResult == 0, 1, nUnused))
     {
         GAME_LogMessage(6, "[JOIN]  SrvRecvDatabaseCharacter: Didn't recv full char from db - CSResult(%d), ClientID(%d)", nResult, nClientId);
         return 1;
@@ -2688,7 +2208,7 @@ int __stdcall SrvRecvDatabaseCharacter(int nClientId, const unsigned char* pSave
         return 0;
     }
 
-    D2GameStrc* pGame = sub_0052FEE0_LockGameByClientId(nClientId);
+    D2GameStrc* pGame = GAME_GetGameByClientId(nClientId);
     if (!pGame)
     {
         return 0;
@@ -2714,9 +2234,7 @@ int __stdcall SrvRecvDatabaseCharacter(int nClientId, const unsigned char* pSave
     return nTotalSize;
 }
 
-void __fastcall PLAYER_CountPlayersInLevelCallback(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pArg); // 0x005356F0
 
-void __fastcall PLAYER_CountLivingPlayers(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pLivingPlayers); // 0x00535760
 static inline D2MonStatsTxt* DESC_GetMonStatsTxtRecord(int nMonsterId)
 {
     if (nMonsterId >= 0 && nMonsterId < sgptDataTables->nMonStatsTxtRecordCount)
@@ -2724,60 +2242,22 @@ static inline D2MonStatsTxt* DESC_GetMonStatsTxtRecord(int nMonsterId)
     return 0;
 }
 
-void __fastcall PLAYER_CheckHostileToUnitCallback(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pArgs); // 0x00535B50
 
-D2NpcRecordStrc* __fastcall SUNITPROXY_GetNpcRecordFromClassId(D2GameStrc* pGame, int nNpcClassId, int* pIndex); // 0x00535EA0
 
-void __fastcall D2GAME_NPC_HireMerc_6FCC9540(D2GameStrc* pGame, D2UnitStrc* pPlayer, int nNpcUnitId, int a4); // 0x00577FE0
 
-void __fastcall LEVEL_SynchronizeDayNightCycleWithClient(D2GameStrc* pGame, D2ClientStrc* pClient); // 0x0053ABE0
-void __fastcall LEVEL_UpdateQueuedUnitsInAllActs(D2GameStrc* pGame); // 0x0053B000
 
-void __stdcall sub_00646010_Empty(int nUnused1, int nUnused2, int nUnused3)
-{
-}
 
-void __stdcall sub_006460C0_Empty(int nUnused)
-{
-}
 
-void __stdcall sub_006460D0_Empty(int nUnused1, int nUnused2, int nUnused3)
-{
-}
 
-void __stdcall sub_006460E0_Empty(int nUnused)
-{
-}
 
-unsigned short __stdcall SFileGetLocale()
-{
-    return gwValue_0077905C;
-}
 
-void __stdcall sub_00416750_Nop()
-{
-}
-
-void __stdcall sub_00416760_Nop()
-{
-}
-
-char* __fastcall sub_004167A0_LinkNext(D2StormLinkStrc* pLink)
-{
-    return (int)pLink->m_next > 0 ? pLink->m_next : 0;
-}
 
 D2Storm4167B0Strc::~D2Storm4167B0Strc()
 {
     f_0.Unlink();
 }
 
-char* __fastcall sub_004167F0_LinkNext(D2StormLinkStrc* pLink)
-{
-    return (int)pLink->m_next > 0 ? pLink->m_next : 0;
-}
 
-void __fastcall PLRMSG_SendWalkMode(D2GameStrc* pGame, D2UnitStrc* pUnit, D2ClientStrc* pClient, int nAnimMode); // 0x00548180
 
 // 0x00530190
 void __fastcall SrvJoinAct(int nClientId)
@@ -2842,7 +2322,7 @@ D2GameStrc* D2GameListStrc::Next(D2GameStrc* pGame)
 }
 
 // 0x0052FA50
-void __fastcall SrvJoinGame(int dwClientId, unsigned short nGameId, int nClass, const char* szClientName, int a5, const char* szAccountName, int nCharSaveTransactionToken, int nLocale, int a8, int a9, int a11, int a12, int a13)
+void __fastcall SrvJoinGame(int dwClientId, unsigned short nGameId, int nClass, const char* szClientName, int nUnused3, const char* szAccountName, int nCharSaveTransactionToken, int nLocale, int nUnused1, int nUnused2, int nUnused4, int nUnused5, int nUnused6)
 {
     if (!gpGameDataTbl)
     {
@@ -2871,7 +2351,7 @@ void __fastcall SrvJoinGame(int dwClientId, unsigned short nGameId, int nClass, 
 
     SERVER_SetClientGameGUID(dwClientId, nGUID);
 
-    D2ClientStrc* pClient = ClientAddToGame(pGame, dwClientId, nClass, szClientName, szAccountName, nCharSaveTransactionToken, nLocale, a8, a9);
+    D2ClientStrc* pClient = ClientAddToGame(pGame, dwClientId, nClass, szClientName, szAccountName, nCharSaveTransactionToken, nLocale, nUnused1, nUnused2);
     if (!pClient)
     {
         if (gpD2EventCallbackTable && gpD2EventCallbackTable->pfUnlockDatabaseCharacter)
@@ -2904,7 +2384,7 @@ void __fastcall SrvJoinGame(int dwClientId, unsigned short nGameId, int nClass, 
 }
 
 // 0x0052FC20
-int __stdcall GAME_UpdateGamesProgress(int a1)
+int __stdcall GAME_UpdateGamesProgress(int bLimitCatchUp)
 {
     D2LargeIntegerUnion aCounter[2];
     int bQueryPerformance = 0;
@@ -2923,7 +2403,7 @@ int __stdcall GAME_UpdateGamesProgress(int a1)
     }
 
     unsigned int nLate = nElapsed - gnTargetMsPerFrame;
-    if (a1 && nLate >= gnTargetMsPerFrame)
+    if (bLimitCatchUp && nLate >= gnTargetMsPerFrame)
     {
         nLate = gnTargetMsPerFrame;
     }
@@ -3136,7 +2616,7 @@ static void __stdcall GAME_SendClientPackets(D2GameStrc* ptGame, int bSyncPlayer
         }
         else
         {
-            sub_0052B910();
+            sub_0052B910_GetLastError();
             bError = 1;
             ++ptClient->nSaveHeaderSendFailures;
             CLIENTS_PacketDataList_Reset(ptClient, pPacketData);
@@ -3223,85 +2703,23 @@ int __stdcall GAME_UpdateClients(int bForceUpdate1, int bForceUpdate2)
     return aCounter[0].LowPart;
 }
 
-char* __fastcall sub_00416820_LinkNext(D2StormLinkStrc* pLink)
-{
-    return (int)pLink->m_next > 0 ? pLink->m_next : 0;
-}
 
-char* __fastcall sub_00416830_LinkNext(D2StormLinkStrc* pLink)
-{
-    return (int)pLink->m_next > 0 ? pLink->m_next : 0;
-}
 
-char* __fastcall sub_00416840_LinkRawNext(D2StormLinkStrc* pLink)
-{
-    return pLink->m_next;
-}
 
-char* __fastcall sub_00416850_LinkNext(D2StormLinkStrc* pLink)
-{
-    return (int)pLink->m_next > 0 ? pLink->m_next : 0;
-}
 
-char* __fastcall sub_00416860_LinkPrev(D2StormLinkStrc* pLink)
-{
-    D2StormLinkStrc* pPrev = pLink->m_prevlink->m_prevlink;
-    return (int)pPrev->m_next > 0 ? pPrev->m_next : 0;
-}
 
-char* __fastcall sub_00416880_LinkRawNext(D2StormLinkStrc* pLink)
-{
-    return pLink->m_next;
-}
 
 D2Storm4168F0Strc::~D2Storm4168F0Strc()
 {
     f_0.Unlink();
 }
 
-void __fastcall sub_004169F0_InitTerminator(D2StormListStrc* pList)
-{
-    pList->m_terminator.m_prevlink = &pList->m_terminator;
-    pList->m_terminator.m_next = (char*)~(unsigned int)&pList->m_terminator;
-}
 
-void __fastcall sub_00416A00_InitTerminator(D2StormListStrc* pList)
-{
-    pList->m_terminator.m_prevlink = &pList->m_terminator;
-    pList->m_terminator.m_next = (char*)~(unsigned int)&pList->m_terminator;
-}
 
-void __fastcall sub_00416A10_InitTerminator(D2StormListStrc* pList)
-{
-    pList->m_terminator.m_prevlink = &pList->m_terminator;
-    pList->m_terminator.m_next = (char*)~(unsigned int)&pList->m_terminator;
-}
 
-void __fastcall sub_00416A20_InitTerminator(D2StormListStrc* pList)
-{
-    pList->m_terminator.m_prevlink = &pList->m_terminator;
-    pList->m_terminator.m_next = (char*)~(unsigned int)&pList->m_terminator;
-}
 
-void __fastcall sub_00416A30_InitTerminator(D2StormListStrc* pList)
-{
-    pList->m_terminator.m_prevlink = &pList->m_terminator;
-    pList->m_terminator.m_next = (char*)~(unsigned int)&pList->m_terminator;
-}
 
-int __fastcall sub_00416A90_TestField150(D2Storm416A90Strc* pRecord)
-{
-    if (pRecord && pRecord->n150)
-        return 1;
-    return 0;
-}
 
-int __fastcall sub_00416AB0_TestField14C(D2Storm416A90Strc* pRecord)
-{
-    if (pRecord && pRecord->n14C)
-        return 1;
-    return 0;
-}
 
 // 0x00530820
 D2GameStrc* D2GameDataTableStrc::sub_00530820_New(unsigned int nHashVal, HASHKEY_NONE* pKey, int nExtraBytes, int nFlags)
@@ -3337,7 +2755,6 @@ D2GameStrc* D2GameDataTableStrc::sub_00530820_New(unsigned int nHashVal, HASHKEY
     return pNode;
 }
 
-void __fastcall QUESTS_QuestUpdater(D2GameStrc* pGame); // 0x00543E10
 // 0x0052FEE0
 D2GameStrc* __fastcall GAME_GetGameByClientId(int nClientId)
 {
@@ -3385,7 +2802,7 @@ void D2StormHashTableStrc::GrowListArray()
 }
 
 // 0x005300F0
-int __stdcall GAME_AbortClientById(int nClientId, int a2, int a3)
+int __stdcall GAME_AbortClientById(int nClientId, int szFile, int nLine)
 {
     D2GameStrc* pGame = GAME_LockGame(SERVER_GetClientGameGUID(nClientId));
     if (pGame)
@@ -3405,7 +2822,7 @@ int __stdcall GAME_AbortClientById(int nClientId, int a2, int a3)
             LeaveCriticalSection(pGame->lpCriticalSection);
         }
     }
-    return SERVER_HackListClient(nClientId, a2, a3);
+    return SERVER_HackListClient(nClientId, szFile, nLine);
 }
 
 // 0x00530270
@@ -3471,7 +2888,7 @@ void __stdcall GAME_RemoveClientById(int nClientId)
     tPacket.dwParam = 0;
     tPacket.szText[16] = 0;
     SStrCopy(tPacket.szText, CLIENTS_GetName(pClient), 16);
-    sub_6FC84D40(pGame, &tPacket);
+    PLRMSG_BroadcastEventMessage(pGame, &tPacket);
     ClientRemoveFromGame(pGame, CLIENTS_GetClientId(pClient), 1);
     GAME_LeaveGamesCriticalSection(pGame);
 }
@@ -3532,7 +2949,7 @@ void __fastcall SrvEndGame(int nClientId, int bSendLeaveMessage)
 
             if (bSendLeaveMessage)
             {
-                sub_6FC84D40(pGame, &packet5A);
+                PLRMSG_BroadcastEventMessage(pGame, &packet5A);
             }
 
             if (!bOwner)
@@ -3574,7 +2991,7 @@ void __fastcall GAME_SaveAndSendClientSaves(D2GameStrc* pGame)
             D2UnitStrc* pPlayer = CLIENTS_GetPlayerFromClient(pClient, 0);
             if (pPlayer)
             {
-                D2GAME_SAVE_WriteFile_6FC8A500(pGame, pPlayer, CLIENTS_GetName(pClient), 0);
+                D2GAME_SAVE_WriteFile(pGame, pPlayer, CLIENTS_GetName(pClient), 0);
                 GAME_SendRemainingSaveParts(pGame, pClient);
             }
 
@@ -3834,9 +3251,9 @@ void __fastcall GAME_UpdateEnvironment(D2GameStrc* pGame)
                 D2UnitStrc* pPlayer = CLIENTS_GetPlayerFromClient(pClient, 0);
                 if (pPlayer)
                 {
-                    D2GAME_UpdatePlayerItems_6FC4BB90(pGame, pPlayer, 1);
+                    D2GAME_UpdatePlayerItems(pGame, pPlayer, 1);
                     if (pClient->dwClientState == 4 && pClient->bAct == i)
-                        D2GAME_SendPacket0x53_6FC3DF50(pClient, &packet53);
+                        D2GAME_SendPacket0x53(pClient, &packet53);
                 }
             }
         }
@@ -3903,7 +3320,7 @@ int __cdecl GAME_GetFrameRate()
 void __stdcall GAME_GetMemoryUsage(int* pCurrentMemoryUsage, int* pPeakMemoryUsageInLast10s)
 {
     *pCurrentMemoryUsage = FOG_GetMemoryUsage(0);
-    *pPeakMemoryUsageInLast10s = gnPeakMemoryUsageInLast10s_6FD45828;
+    *pPeakMemoryUsageInLast10s = gnPeakMemoryUsageInLast10s;
 }
 
 // 0x0052DBC0
@@ -3925,13 +3342,13 @@ static int GAME_CountUnitsInLists(D2UnitStrc** pUnitLists)
 }
 
 // 0x0052DC00
-int __stdcall GAME_ReturnArgument(int a1)
+int __stdcall GAME_ReturnArgument(int nValue)
 {
-    return a1;
+    return nValue;
 }
 
 // 0x0052DC10
-int __cdecl sub_0052DC10()
+int __cdecl sub_0052DC10_GetGlobal731008()
 {
     return gdwGlobal_00731008;
 }
@@ -4002,7 +3419,7 @@ void __fastcall GAME_GetMonsterDescription(char* szDescription, int nClassId)
     if (pMonStatsTxtRecord)
     {
         const Unicode* pName = D2LANG_GetStringFromTblIndex(pMonStatsTxtRecord->wNameStr);
-        sub_00526F70(szDescription, pName, 64);
+        UNICODE_ToAscii(szDescription, pName, 64);
     }
     else
         sprintf(szDescription, "Monster %d", nClassId);
@@ -4025,7 +3442,7 @@ void __fastcall GAME_GetItemDescription(char* szDescription, int nClassId)
     if (pItemsTxtRecord)
     {
         const Unicode* pName = D2LANG_GetStringFromTblIndex(pItemsTxtRecord->wNameStr);
-        sub_00526F70(szDescription, pName, 64);
+        UNICODE_ToAscii(szDescription, pName, 64);
     }
     else
         sprintf(szDescription, "Item %d", nClassId);
@@ -4243,7 +3660,7 @@ void __fastcall sSrvSendGameInit(int nClientId, char* szGameName, unsigned char 
 
     GAME_SetReservedGameGUID(hGame, pGame->nGameId);
 
-    D2GAME_PACKETS_SendPacket0x01_6FC3C7C0(pClient, 1, pGame);
+    D2GAME_PACKETS_SendPacket0x01(pClient, 1, pGame);
     D2GAME_PACKETS_SendHeaderOnlyPacket(pClient, 0);
     CLIENTS_SetClientState(pClient, 1);
     CLIENTS_SetActNo(pClient, gnAct);
@@ -4284,10 +3701,10 @@ void __fastcall GAME_UnlockDebugGame()
 }
 
 // 0x0052DF80
-void __stdcall GAME_SetTargetFrameRate(int a1)
+void __stdcall GAME_SetTargetFrameRate(int nFrameRate)
 {
-    gnTargetFrameRate = a1;
-    gnTargetMsPerFrame = 1000 / a1;
+    gnTargetFrameRate = nFrameRate;
+    gnTargetMsPerFrame = 1000 / nFrameRate;
 }
 
 // 0x0052DFA0
@@ -4384,9 +3801,9 @@ void __stdcall GAME_CloseAllGames()
 
                 D2GAME_PACKETS_SendGameLeft(pClient->dwClientId);
                 D2UnitStrc* pPlayer = CLIENTS_GetPlayerFromClient(pClient, 0);
-                D2GAME_SAVE_WriteFile_6FC8A500(ptGame, pPlayer, CLIENTS_GetName(pClient), 1);
+                D2GAME_SAVE_WriteFile(ptGame, pPlayer, CLIENTS_GetName(pClient), 1);
                 GAME_SendRemainingSaveParts(ptGame, pClient);
-                sub_0053B240_SendHeaderOnly0x06(pClient->dwClientId);
+                D2GAME_PACKETS_SendGameExit(pClient->dwClientId);
                 ClientRemoveFromGame(ptGame, pClient->dwClientId, 0);
 
                 pClient = pNextClient;
@@ -4700,7 +4117,6 @@ static D2MonStatsTxt* SUNITPROXY_GetMonStatsTxtRecordInline(int nMonsterId)
     return 0;
 }
 
-void __fastcall SUNITPROXY_FillGlobalItemCache(); // 0x00536F80
 // 0x0052F2C0
 int __stdcall GAME_GetUnitsInfoById(unsigned short nGameId, int nMaxCount, D2UnitInfoStrc* pUnitInfo, int* pUnitType, int* pUnitGUID)
 {
@@ -4781,7 +4197,7 @@ void __stdcall GAME_GetStatistics(D2GameStatisticsStrc* pStats)
 }
 
 // 0x0052F4C0
-void __stdcall GAME_SendMessageToAllClients(int a1, int nPacketParam, const char* szMessage)
+void __stdcall GAME_SendMessageToAllClients(int nMessageType, int nPacketParam, const char* szMessage)
 {
     for (int i = 0; i < 1024; ++i)
     {
@@ -4789,7 +4205,7 @@ void __stdcall GAME_SendMessageToAllClients(int a1, int nPacketParam, const char
         {
             D2GameStrc* ptGame = GAME_LockGame(gnGamesGUIDs[i]);
             D2_ASSERT(ptGame, 0x1063);
-            switch (a1)
+            switch (nMessageType)
             {
             case 1:
             {
@@ -4799,7 +4215,7 @@ void __stdcall GAME_SendMessageToAllClients(int a1, int nPacketParam, const char
                 packet5A.nColor = 4;
                 packet5A.dwParam = nPacketParam;
                 packet5A.szText[16] = 0;
-                sub_6FC84D40(ptGame, &packet5A);
+                PLRMSG_BroadcastEventMessage(ptGame, &packet5A);
                 break;
             }
             default:
@@ -4864,13 +4280,13 @@ unsigned long __stdcall GAME_SendMessageThreadProc(D2MessageThreadArgsStrc* pArg
 }
 
 // 0x0052F740
-void __fastcall GAME_SendMessageToAllClientsAsync(int a1, int nPacketParam, const char* szMessage)
+void __fastcall GAME_SendMessageToAllClientsAsync(int nParam1, int nPacketParam, const char* szMessage)
 {
     unsigned long nThreadId;
     D2MessageThreadArgsStrc* pArgs = (D2MessageThreadArgsStrc*)FOG_AllocPool(0, sizeof(D2MessageThreadArgsStrc), ".\\GAME\\Game.cpp", 5665, 0);
     if (pArgs)
     {
-        pArgs->nParam1 = a1;
+        pArgs->nParam1 = nParam1;
         pArgs->nParam2 = nPacketParam;
         strncpy(pArgs->szMessage, szMessage, 0xFF);
         pArgs->szMessage[0xFF] = 0;
@@ -4928,13 +4344,13 @@ unsigned int __fastcall GAME_GetFirstGameInitSeed()
 }
 
 // 0x0052E070
-int __cdecl sub_0052E070()
+int __cdecl sub_0052E070_Return0()
 {
     return 0;
 }
 
 // 0x0052E080
-int __cdecl sub_0052E080()
+int __cdecl sub_0052E080_Return0()
 {
     return 0;
 }
@@ -5019,21 +4435,13 @@ struct d2data_00731018_t
 
 extern "C" struct d2data_00731018_t gtDefaultServerCallbackFunctions; // 0x00731018
 
-extern const char gszEmptyLoadComplete[184] = { 0 }; // 0x006E0498
-
-extern const char gData_006E0550[24] = { 0 }; // 0x006E0550
-
-extern const char gData_006E0568[272] = { 0 }; // 0x006E0568
-
-extern int gbCheckHeartbeat = 1; // 0x00730FFC
-
-extern unsigned short gwGameId = 1; // 0x00731000
-
 extern int gdwGlobal_00731008 = 100; // 0x00731008
+
+extern int gdwGlobal_00731010 = 25; // 0x00731010
 
 extern int gbFixedCpuTargetRatio = 1; // 0x0073100C
 
-extern int gdwGlobal_00731010 = 25; // 0x00731010
+extern unsigned short gwGameId = 1; // 0x00731000
 
 extern int gnTargetFrameRate = 25; // 0x00731014
 
@@ -5047,22 +4455,30 @@ extern "C" struct d2data_00731018_t gtDefaultServerCallbackFunctions = {
     (const void*)(unsigned int)&NET_DefaultFindPlayerToken,
     (const void*)(unsigned int)&GAME_DefaultSaveDatabaseGuild,
     (const void*)(unsigned int)&GAME_DefaultUnlockDatabaseCharacter,
-    (const void*)(unsigned int)&sub_0052BEC0,
+    (const void*)(unsigned int)&sub_0052BEC0_Nop,
     (const void*)(unsigned int)&NET_DefaultUpdateCharacterLadder,
     (const void*)(unsigned int)&GAME_DefaultUpdateGameInformation,
     (const void*)(unsigned int)&GAME_DefaultGetGameServerInfo,
     (const void*)(unsigned int)&GAME_DefaultGetValue,
     (const void*)(unsigned int)&GAME_DefaultRelockDatabaseCharacter,
     (const void*)(unsigned int)&GAME_DefaultLoadComplete,
-    (const void*)(unsigned int)&sub_0052BF30,
+    (const void*)(unsigned int)&sub_0052BF30_Nop,
     (const void*)(unsigned int)&sub_0052BF40_Stub,
-    (const void*)(unsigned int)&sub_0052BF50,
-    (const void*)(unsigned int)&sub_0052BF60,
-    (const void*)(unsigned int)&sub_0052BF70,
+    (const void*)(unsigned int)&sub_0052BF50_Return0,
+    (const void*)(unsigned int)&sub_0052BF60_Return0,
+    (const void*)(unsigned int)&sub_0052BF70_Return0,
     (const void*)(unsigned int)&GAME_ZeroBlock8,
-    (const void*)(unsigned int)&sub_0052BF90,
-    (const void*)(unsigned int)&sub_0052BFA0,
+    (const void*)(unsigned int)&sub_0052BF90_GetData6E0550,
+    (const void*)(unsigned int)&sub_0052BFA0_GetData6E0568,
     (const void*)(unsigned int)&sub_0052BFB0_Stub
 }; // 0x00731018
 
+extern int gbCheckHeartbeat = 1; // 0x00730FFC
+
 extern UnitDescriptionFunction gpfnGetDescription[5] = { (UnitDescriptionFunction)&GAME_GetPlayerDescription, (UnitDescriptionFunction)&GAME_GetMonsterDescription, (UnitDescriptionFunction)&GAME_GetObjectDescription, (UnitDescriptionFunction)&GAME_GetItemDescription, (UnitDescriptionFunction)&GAME_GetMissileDescription }; // 0x0073107C
+
+extern const char gszEmptyLoadComplete[184] = { 0 }; // 0x006E0498
+
+extern const char gData_006E0550[24] = { 0 }; // 0x006E0550
+
+extern const char gData_006E0568[272] = { 0 }; // 0x006E0568

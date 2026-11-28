@@ -7,18 +7,17 @@
 #include "D2Unicode.h"
 
 #include "D2MultiTypes.h"
+#include "D2LangApi.h"
+#include "D2WinApi.h"
 
 struct D2ComInterfaceStrc;
 
 void __cdecl MAINMENUS_ShowLoginScreen(); // 0x00435330
 
-extern D2ComInterfaceStrc* gpFuncTable_0077ABF0; // 0x0077ABF0
 
 extern int gnStatusDots; // 0x007799B4
 
 extern "C" __declspec(dllimport) unsigned long __stdcall WaitForSingleObject(void* hHandle, unsigned long dwMilliseconds); // 0x006CC230
-
-int __fastcall D2Win_StopMessageLoop(); // 0x004F9190
 
 void __cdecl MAINMENUS_CreateLoginScreen(); // 0x00432100
 
@@ -26,27 +25,22 @@ void __cdecl MAINMENUS_CreateEmailScreen(); // 0x00436F30
 
 void __cdecl MAINMENUS_UpdatePasswordOk(); // 0x004371E0
 
-void __cdecl MAINMENUS_CreateInfoScreen(); // 0x004370C0
 
 void __cdecl MAINMENUS_CreatePasswordScreen(); // 0x004372B0
 
-int __cdecl sub_0043B830(); // 0x0043B830
+int __cdecl sub_0043B830_IsCancelled(); // 0x0043B830
 
-D2WinControlStrc* __fastcall MAINMENUS_CreateControl(int nId); // 0x0042F430
 
 void __cdecl MAINMENUS_DestroyControls(); // 0x0042F3F0
 
-D2WinControlStrc* __fastcall MAINMENUS_CreateFromTemplate(int nTemplateId); // 0x0042F3A0
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
 int __stdcall CONTROL_SetFocusedEditBox(D2WinControlStrc* pEditBox); // 0x004F91C0
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
-D2ConfigStrc* gpLaunchRecord; // 0x007795D4
+extern D2ConfigStrc* gpLaunchRecord; // 0x007795D4
 
-void __cdecl CHARSEL_CreateBaseScreen(); // 0x0043C4F0
 
 int __fastcall D2Win_10051(D2WinControlStrc* pTextBox, const Unicode* wszText, int nColor, char bIsWrapped, int nIndent); // 0x004FC9B0
 
@@ -58,7 +52,6 @@ void __fastcall sub_0042E6A0(void (__cdecl* pfnCallback)()); // 0x0042E6A0
 
 void __cdecl CHARSEL_SetCancelled(); // 0x0043B810
 
-void __cdecl MAINMENUS_UpdateStatus(); // 0x00436AD0
 
 int __stdcall MAINMENUS_FilterRestrictedChar(D2WinControlStrc* pControl, int nUnused, const char* pChar); // 0x0042FEF0
 
@@ -70,49 +63,39 @@ void __cdecl MAINMENUS_UpdateEmailOk(); // 0x00436EB0
 
 extern D2WinControlStrc* gpPasswordOk; // 0x007799A4
 
-D2WinControlStrc* gpStatusText; // 0x007799A8
+extern D2WinControlStrc* gpStatusText; // 0x007799A8
 
-D2WinControlStrc* gpCounterText; // 0x007799AC
+extern D2WinControlStrc* gpCounterText; // 0x007799AC
 
-int gnStatusStringId; // 0x007799B0
+extern int gnStatusStringId; // 0x007799B0
 
-unsigned long gdwStatusStart; // 0x007799B8
+extern unsigned long gdwStatusStart; // 0x007799B8
 
-extern D2WinControlStrc* gpButton_007799E4; // 0x007799E4
+extern D2WinControlStrc* gpButton; // 0x007799E4
 
-D2WinControlStrc* gpChangePwAccountEdit; // 0x007799BC
+extern D2WinControlStrc* gpChangePwAccountEdit; // 0x007799BC
 
-D2WinControlStrc* gpOldPasswordEdit; // 0x007799C0
+extern D2WinControlStrc* gpOldPasswordEdit; // 0x007799C0
 
-D2WinControlStrc* gpNewPasswordConfirmEdit; // 0x007799C4
+extern D2WinControlStrc* gpNewPasswordConfirmEdit; // 0x007799C4
 
-D2WinControlStrc* gpNewPasswordEdit; // 0x007799C8
+extern D2WinControlStrc* gpNewPasswordEdit; // 0x007799C8
 
-D2WinControlStrc* gpEdit_007799DC; // 0x007799DC
+extern D2WinControlStrc* gpEdit_007799DC; // 0x007799DC
 
-D2WinControlStrc* gpEdit_007799E0; // 0x007799E0
+extern D2WinControlStrc* gpEdit_007799E0; // 0x007799E0
 
-int __stdcall D2Win_10033(D2WinControlStrc* pControl, int nArg);                                            // 0x004FA470
 
-void __fastcall sub_004FDAD0_SetKeyCallback(D2WinControlStrc* pControl, int (__stdcall* pfnCallback)(D2WinControlStrc*, int, const char*)); // 0x004FDAD0
 
-void __fastcall sub_004FDB00_SetEnterCallback(D2WinControlStrc* pControl, int (__stdcall* pfnCallback)(int)); // 0x004FDB00
 
-void __fastcall sub_004FDD50_SetMaxLength(D2WinControlStrc* pControl, int nLength); // 0x004FDD50
 
-void __fastcall sub_004FDDD0_LinkTab(D2WinControlStrc* pControl, D2WinControlStrc* pNext); // 0x004FDDD0
 
-void __fastcall CONTROL_SetEnabled(D2WinControlStrc* pControl, int nFlags); // 0x004F96F0
 
-const Unicode* __fastcall sub_004FDD90_GetEditText(D2WinControlStrc* pControl); // 0x004FDD90
 
-char* __fastcall sub_005263E0(char* szDest, const Unicode* pSource, int nMaxLength); // 0x005263E0
 
-D2WinControlStrc* __fastcall MAINMENUS_CreateFromTemplate(int nTemplateId); // 0x0042F3A0
 
 void __cdecl MAINMENUS_DestroyControls(); // 0x0042F3F0
 
-D2WinControlStrc* __fastcall MAINMENUS_CreateControl(int nId); // 0x0042F430
 
 int __stdcall MAINMENUS_FilterRestrictedChar(void* pControl, int nUnused, const char* pChar); // 0x0042FEF0
 
@@ -120,7 +103,6 @@ void __cdecl MAINMENUS_CreateLoginScreen(); // 0x00432100
 
 void __cdecl MAINMENUS_ShowLoginScreen(); // 0x00435330
 
-void __cdecl MAINMENUS_UpdateStatus(); // 0x00436AD0
 
 static int MAINMENUS_CheckAtAndDot(const char* szText); // 0x00436C10
 
@@ -128,27 +110,21 @@ void __cdecl MAINMENUS_UpdateEmailOk(); // 0x00436EB0
 
 int __stdcall MAINMENUS_OnEditChange(int nArg); // 0x00436F20
 
-int gnStatusDots; // 0x007799B4
+extern int gnStatusDots; // 0x007799B4
 
-void __fastcall D2Win_10045(D2WinControlStrc* pControl, const char* szText); // 0x004FCF80
 
-extern D2WinControlStrc* gpEdit_007799CC; // 0x007799CC
 
-extern D2WinControlStrc* gpEdit_007799D0; // 0x007799D0
 
 extern D2WinControlStrc* gpControl_007799D4; // 0x007799D4
 
 void __cdecl MAINMENUS_UpdateTwoEditOk(); // 0x00436CF0
 
-void __fastcall sub_004FC9B0_SetText(D2WinControlStrc* pControl, const Unicode* pText, int nA, int nB, int nC); // 0x004FC9B0
 
 const Unicode* __fastcall D2Win_10077_EDITBOX_GetText(D2WinControlStrc*); // 0x004FDD90
 
-extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
-int gdwGlobal_007799D8; // 0x007799D8
+extern int gfConnectCancelled; // 0x007799D8
 
 void __fastcall MAINMENUS_ShowMessageBox(const Unicode* pTitle, const Unicode* pMessage, int nButton1StringId, int nButton2StringId, D2LaunchCallback pfnButton1, D2LaunchCallback pfnButton2, int bFlag1, int bFlag2); // 0x0042F540
 
@@ -166,7 +142,7 @@ void __cdecl MAINMENUS_UpdateStatus()
     int nState;
     if (!gpStatusText)
         return;
-    gpFuncTable_0077ABF0->pfnSlot80(&nState);
+    gpFuncTable->pfnSlot80(&nState);
     switch (nState)
     {
     case 0:
@@ -222,7 +198,7 @@ static int MAINMENUS_CheckAtAndDot(const char* szText)
 // 0x00436C70
 int __stdcall MAINMENUS_DeclineEmail(int nArg)
 {
-    gpFuncTable_0077ABF0->pfnSlotB8((char*)&gszEmptyAssertText);
+    gpFuncTable->pfnSlotB8((char*)&gszEmptyAssertText);
     D2Win_StopMessageLoop();
     return 1;
 }
@@ -230,14 +206,15 @@ int __stdcall MAINMENUS_DeclineEmail(int nArg)
 // 0x00436C90
 int __stdcall MAINMENUS_AskEmailRegistration(int nArg)
 {
-    MAINMENUS_ShowMessageBox(0, D2LANG_GetStringFromTblIndex(0x2B5E), 0x2B61, 0x13EF, MAINMENUS_DeclineEmail, sub_004334D0_CloseBox, 0, 1);
+// build: symbol ?MAINMENUS_OnCloseBox@* 0x004334D0
+    MAINMENUS_ShowMessageBox(0, D2LANG_GetStringFromTblIndex(0x2B5E), 0x2B61, 0x13EF, MAINMENUS_DeclineEmail, MAINMENUS_OnCloseBox, 0, 1);
     return 1;
 }
 
 // 0x00436CD0
 int __stdcall MAINMENUS_OnConnectCancel(int nArg)
 {
-    gdwGlobal_007799D8 = 1;
+    gfConnectCancelled = 1;
     D2Win_StopMessageLoop();
     return 1;
 }
@@ -247,8 +224,8 @@ void __cdecl MAINMENUS_UpdateTwoEditOk()
 {
  const Unicode* pText1=D2Win_10077_EDITBOX_GetText(gpEdit_007799CC);
  const Unicode* pText2=D2Win_10077_EDITBOX_GetText(gpEdit_007799D0);
- int bOk=sub_00526800(pText1)>0;
- bOk|=sub_00526800(pText2)>0;
+ int bOk=UNICODE_StrLen(pText1)>0;
+ bOk|=UNICODE_StrLen(pText2)>0;
  CONTROL_SetEnabled(gpControl_007799D4,bOk);
 }
 
@@ -262,7 +239,7 @@ int __stdcall MAINMENUS_OnTwoEditChange(int nArg)
 // 0x00436D50
 void __cdecl CHARSEL_CreateConnectScreen()
 {
-    gdwGlobal_007799D8 = 0;
+    gfConnectCancelled = 0;
     CHARSEL_CreateBaseScreen();
     D2WinControlStrc* pControl = MAINMENUS_CreateControl(0x122);
     sub_004FC9B0_SetText(pControl, D2LANG_GetStringFromTblIndex(0x2B55), 0, 0, 0);
@@ -294,23 +271,23 @@ int __stdcall sub_00436E90_AlwaysOne(int nArg)
 }
 
 // 0x00436EA0
-int __cdecl sub_00436EA0()
+int __cdecl sub_00436EA0_IsCancelled()
 {
-    return gdwGlobal_007799D8;
+    return gfConnectCancelled;
 }
 
 // 0x00436EB0
 void __cdecl MAINMENUS_UpdateEmailOk()
 {
     char szText[0x100];
-    int bOk = sub_00526800(sub_004FDD90_GetEditText(gpEdit_007799DC)) > 0;
+    int bOk = UNICODE_StrLen(sub_004FDD90_GetEditText(gpEdit_007799DC)) > 0;
     if (bOk)
     {
         const Unicode* pText = sub_004FDD90_GetEditText(gpEdit_007799E0);
-        sub_005263E0(szText, pText, 0x100);
+        UNICODE_ToUtf8(szText, pText, 0x100);
         bOk = MAINMENUS_CheckAtAndDot(szText);
     }
-    CONTROL_SetEnabled(gpButton_007799E4, bOk);
+    CONTROL_SetEnabled(gpButton, bOk);
 }
 
 // 0x00436F20
@@ -323,9 +300,10 @@ int __stdcall MAINMENUS_OnEditChange(int nArg)
 // 0x00436F30
 void __cdecl MAINMENUS_CreateEmailScreen()
 {
-    if (!gpFuncTable_0077ABF0->pfnSlot68())
+    if (!gpFuncTable->pfnSlot68())
     {
-        MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), sub_004336C0);
+// build: symbol ?MAINMENUS_ShowMainMenu@* 0x004336C0
+        MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), MAINMENUS_ShowMainMenu);
         return;
     }
     CHARSEL_CreateBaseScreen();
@@ -349,7 +327,7 @@ void __cdecl MAINMENUS_CreateEmailScreen()
     CONTROL_SetFocusedEditBox(gpEdit_007799DC);
     sub_004FDDD0_LinkTab(gpEdit_007799DC, gpEdit_007799E0);
     sub_004FDDD0_LinkTab(gpEdit_007799E0, gpEdit_007799DC);
-    gpButton_007799E4 = MAINMENUS_CreateControl(0x12C);
+    gpButton = MAINMENUS_CreateControl(0x12C);
     MAINMENUS_CreateControl(0x12D);
     MAINMENUS_UpdateEmailOk();
 }
@@ -364,9 +342,9 @@ int __stdcall sub_004370B0_ShowLoginScreen(int unused)
 // 0x004370C0
 void __cdecl MAINMENUS_CreateInfoScreen()
 {
-    if (!gpFuncTable_0077ABF0->pfnSlot68())
+    if (!gpFuncTable->pfnSlot68())
     {
-        MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), sub_004336C0);
+        MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), MAINMENUS_ShowMainMenu);
         return;
     }
     CHARSEL_CreateBaseScreen();
@@ -412,24 +390,24 @@ void __cdecl MAINMENUS_UpdatePasswordOk()
     char szText1[0x100];
     char szText2[0x100];
 // build: symbol ?gpChangePwAccountEdit@* 0x007799BC
-    int bOk = sub_00526800(sub_004FDD90_GetEditText(gpChangePwAccountEdit)) > 2;
+    int bOk = UNICODE_StrLen(sub_004FDD90_GetEditText(gpChangePwAccountEdit)) > 2;
     if (bOk)
     {
 // build: symbol ?gpOldPasswordEdit@* 0x007799C0
         const Unicode* pText1 = sub_004FDD90_GetEditText(gpOldPasswordEdit);
-            sub_005263E0(szText1, pText1, 0x100);
+            UNICODE_ToUtf8(szText1, pText1, 0x100);
         bOk = MAINMENUS_CheckAtAndDot(szText1);
         if (bOk)
         {
 // build: symbol ?gpNewPasswordEdit@* 0x007799C8
             const Unicode* pText2 = sub_004FDD90_GetEditText(gpNewPasswordEdit);
-            sub_005263E0(szText2, pText2, 0x100);
+            UNICODE_ToUtf8(szText2, pText2, 0x100);
             bOk = MAINMENUS_CheckAtAndDot(szText2);
             if (bOk)
             {
 // build: symbol ?gpNewPasswordConfirmEdit@* 0x007799C4
                 const Unicode* pText3 = sub_004FDD90_GetEditText(gpNewPasswordConfirmEdit);
-            sub_005263E0(szText3, pText3, 0x100);
+            UNICODE_ToUtf8(szText3, pText3, 0x100);
                 bOk = MAINMENUS_CheckAtAndDot(szText3);
             }
         }
@@ -447,9 +425,9 @@ int __stdcall sub_004372A0_OnEnter(int nArg)
 // 0x004372B0
 void __cdecl MAINMENUS_CreatePasswordScreen()
 {
-    if (!gpFuncTable_0077ABF0->pfnSlot68())
+    if (!gpFuncTable->pfnSlot68())
     {
-        MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), sub_004336C0);
+        MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), MAINMENUS_ShowMainMenu);
         return;
     }
     CHARSEL_CreateBaseScreen();
@@ -506,7 +484,7 @@ int __stdcall sub_004374F0_UpdateStatusWait(int nArg)
     {
 // build: symbol ?CHARSEL_ClearCancelled@* 0x0043B820
         CHARSEL_ClearCancelled();
-        gnStatusDots = (int)gpFuncTable_0077ABF0->pfnSlot04();
+        gnStatusDots = (int)gpFuncTable->pfnSlot04();
         if (!gnStatusDots)
         {
             D2Win_StopMessageLoop();
@@ -519,9 +497,9 @@ int __stdcall sub_004374F0_UpdateStatusWait(int nArg)
         D2Win_StopMessageLoop();
     }
 
-    if (sub_0043B830())
+    if (sub_0043B830_IsCancelled())
     {
-        gpFuncTable_0077ABF0->pfnSlot10();
+        gpFuncTable->pfnSlot10();
         D2Win_StopMessageLoop();
     }
 
@@ -562,17 +540,17 @@ int __stdcall MAINMENUS_ConfirmText(int nArg)
     const Unicode* pText2 = sub_004FDD90_GetEditText(gpEdit_007799D0);
     if (!sub_005264F0_Compare(pText1, pText2))
     {
-        sub_005263E0(szText, pText1, 0x100);
+        UNICODE_ToUtf8(szText, pText1, 0x100);
         if (!MAINMENUS_CheckAtAndDot(szText))
         {
-            MAINMENUS_ShowMessageBox(D2LANG_GetStringFromTblIndex(0x2B5C), D2LANG_GetStringFromTblIndex(0x2B5D), 0x13EE, 0, sub_004334D0_CloseBox, 0, 1, 0);
+            MAINMENUS_ShowMessageBox(D2LANG_GetStringFromTblIndex(0x2B5C), D2LANG_GetStringFromTblIndex(0x2B5D), 0x13EE, 0, MAINMENUS_OnCloseBox, 0, 1, 0);
             return 1;
         }
-        gpFuncTable_0077ABF0->pfnSlotB8(szText);
+        gpFuncTable->pfnSlotB8(szText);
         D2Win_StopMessageLoop();
         return 1;
     }
-    MAINMENUS_ShowMessageBox(0, D2LANG_GetStringFromTblIndex(0x2B5B), 0x13EE, 0, sub_004334D0_CloseBox, 0, 1, 0);
+    MAINMENUS_ShowMessageBox(0, D2LANG_GetStringFromTblIndex(0x2B5B), 0x13EE, 0, MAINMENUS_OnCloseBox, 0, 1, 0);
     return 1;
 }
 
@@ -606,7 +584,7 @@ int __stdcall sub_00437730_ChangePassword(int bOk)
     char szName[0x100];
     if (!bOk)
     {
-        sub_004370C0();
+        MAINMENUS_CreateInfoScreen();
         return 1;
     }
     if (!sub_004F9710_TestFlag(gpPasswordOk))
@@ -622,31 +600,31 @@ int __stdcall sub_00437730_ChangePassword(int bOk)
     {
         if (sub_005264F0_Compare(pOld, pNew))
         {
-            sub_005263E0(szName, pName, 0x100);
-            sub_005263E0(szOld, pOld, 0x100);
-            sub_005263E0(szNew, pNew, 0x100);
+            UNICODE_ToUtf8(szName, pName, 0x100);
+            UNICODE_ToUtf8(szOld, pOld, 0x100);
+            UNICODE_ToUtf8(szNew, pNew, 0x100);
             {
                 char szConfirm[0x100];
-                sub_005263E0(szConfirm, pNew, 0x100);
+                UNICODE_ToUtf8(szConfirm, pNew, 0x100);
             }
-            if (gpFuncTable_0077ABF0->pfnSlot68() && gpFuncTable_0077ABF0->pfnSlotC0(szName, szOld, szNew))
+            if (gpFuncTable->pfnSlot68() && gpFuncTable->pfnSlotC0(szName, szOld, szNew))
             {
                 MAINMENUS_ShowLoginScreen();
                 return 1;
             }
-            MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), sub_004336C0);
+            MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), MAINMENUS_ShowMainMenu);
             return 0;
         }
         else
         {
             Unicode aText[0x100];
-            MAINMENUS_ShowMessageBox(0, D2LANG_GetStringFromTblIndex(0x2B71), 0x13EE, 0, sub_004334D0_CloseBox, 0, 1, 0);
+            MAINMENUS_ShowMessageBox(0, D2LANG_GetStringFromTblIndex(0x2B71), 0x13EE, 0, MAINMENUS_OnCloseBox, 0, 1, 0);
         }
     }
     else
     {
         Unicode aText[0x100];
-        MAINMENUS_ShowMessageBox(0, D2LANG_GetStringFromTblIndex(0x2B72), 0x13EE, 0, sub_004334D0_CloseBox, 0, 1, 0);
+        MAINMENUS_ShowMessageBox(0, D2LANG_GetStringFromTblIndex(0x2B72), 0x13EE, 0, MAINMENUS_OnCloseBox, 0, 1, 0);
     }
     return 1;
 }
@@ -661,25 +639,25 @@ int __stdcall CHARSEL_SubmitPasswordReset(int nArg)
 
     if (!nArg)
     {
-        sub_004370C0();
+        MAINMENUS_CreateInfoScreen();
         return 1;
     }
 
-    if (!sub_004F9710_TestFlag(gpButton_007799E4))
+    if (!sub_004F9710_TestFlag(gpButton))
         return 1;
 
     const Unicode* pTextA = sub_004FDD90_GetEditText(gpEdit_007799DC);
     const Unicode* pTextB = sub_004FDD90_GetEditText(gpEdit_007799E0);
-    sub_005263E0(szA, pTextA, 0x100);
-    sub_005263E0(szB, pTextB, 0x100);
+    UNICODE_ToUtf8(szA, pTextA, 0x100);
+    UNICODE_ToUtf8(szB, pTextB, 0x100);
 
-    if (gpFuncTable_0077ABF0->pfnSlot68() && gpFuncTable_0077ABF0->pfnSlotBC(szA, szB))
+    if (gpFuncTable->pfnSlot68() && gpFuncTable->pfnSlotBC(szA, szB))
     {
         MAINMENUS_ShowMessageBox(0, D2LANG_GetStringFromTblIndex(0x2B60), 0x13EE, 0, sub_004370B0_ShowLoginScreen, 0, 1, 0);
         return 1;
     }
 
-    MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), sub_004336C0);
+    MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), MAINMENUS_ShowMainMenu);
     return 0;
 }
 

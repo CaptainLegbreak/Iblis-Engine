@@ -1,6 +1,9 @@
 #include "D2Net.h"
 
 #include "D2NetTypes.h"
+#include "StormApi.h"
+#include "FogApi.h"
+#include "FogApi2.h"
 
 
 struct D2NetPacketRecStrc;
@@ -9,7 +12,6 @@ struct D2CriticalSectionStrc;
 
 unsigned long __stdcall CLIENT_ConnectToHost(void* szIpAddress); // 0x0052A680
 
-int __fastcall NET_IsLocalConnection(); // 0x0052B7E0
 
 extern D2CriticalSectionStrc gCriticalSection; // 0x00882CE8
 
@@ -19,7 +21,6 @@ extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2Critical
 
 extern "C" __declspec(dllimport) unsigned long __stdcall WaitForSingleObject(void* hHandle, unsigned long dwMilliseconds); // 0x006CC230
 
-int __fastcall FOG_SOCKET_CloseSocket(unsigned int s); // 0x0040D880
 
 int __fastcall NET_FreePacketList(D2CriticalSectionStrc* pCriticalSection, D2NetPacketRecStrc** ppPacketList); // 0x0052B8B0
 
@@ -51,23 +52,15 @@ extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(D2Crit
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-const char* __fastcall FOG_ResolveHostIPAddress(const char* szHostName); // 0x0040E0D0
-
 void __fastcall SERVER_SendConnectionInfo(); // 0x0052B780
 
 extern void* ghClientConnectToHostThreadHandle; // 0x00882CE0
 
 extern unsigned long gdwThreadId; // 0x00882B30
 
-int __stdcall FOG_WaitForSingleObject(void* pObject, int nArg1); // 0x006BE4E0
-
 int __stdcall sub_006BE390(void* pObject, int nArg1, int nArg2); // 0x006BE390
 
 int __fastcall sub_006BF610(void* pObject, int nArg1, int nArg2); // 0x006BF610
-
-void __stdcall FOG_SetMaxClientsPerGame(void* pObject, int nArg1); // 0x006BE4A0
-
-int __stdcall FOG_SetHackListEnabled(void* pObject, int nArg1); // 0x006BF4E0
 
 int __stdcall sub_006C0170(void* pObject, const unsigned char* pData, int nSize); // 0x006C0170
 
@@ -78,14 +71,6 @@ int __stdcall sub_006BED90(void* pObject, int nArg1, int nArg2, int nArg3); // 0
 int __stdcall sub_006BEE20(void* pObject, int nArg1); // 0x006BEE20
 
 int __stdcall sub_006BEF40(void* pObject, int nArg1); // 0x006BEF40
-
-int __stdcall QSERVER_HackListClient(void* pObject, int nArg1, int nArg2, int nArg3); // 0x006C0530
-
-int __stdcall QSERVER_HackListIP(void* pObject, int nArg1, int nArg2, int nArg3); // 0x006C0600
-
-int __stdcall QSERVER_HackUnlistIP(void* pObject, int nArg1, int nArg2, int nArg3); // 0x006BEFB0
-
-int __stdcall QSERVER_DisconnectIP(void* pObject, int nArg1, int nArg2, int nArg3); // 0x006C06D0
 
 static inline void CLIENT_StartConnectThread(const char* szIpAddress); // 0x0052A730
 
@@ -99,7 +84,7 @@ extern "C" void* __cdecl memmove(void* pDest, const void* pSource, size_t nSize)
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(void); // 0x006CC260
 
-void __fastcall FOG_10219(unsigned char* pData); // 0x0040ADB0
+int __fastcall FOG_10219(unsigned char* pData); // 0x0040ADB0
 
 int __fastcall SERVER_GetServerPacketSize(D2PacketBufferStrc* pBuffer, int nBufferSize, int* pSize); // 0x0052B920
 
@@ -111,17 +96,12 @@ extern "C" int __stdcall __WSAFDIsSet(unsigned int nSocket, D2FdSetStrc* pSet); 
 
 extern "C" int __stdcall select(int nCount, D2FdSetStrc* pRead, D2FdSetStrc* pWrite, D2FdSetStrc* pExcept, const D2TimevalStrc* pTimeout); // 0x006B0186
 
-int __fastcall FOG_DecompressPacket(unsigned char* pOut, int nOutSize, const unsigned char* pIn, unsigned int nInSize); // 0x0040B260
-
 int __stdcall CLIENT_ParseReceiveBuffer(); // 0x0052A8D0
 
 unsigned long gdwThreadId; // 0x00882B30
 
 void* ghClientConnectToHostThreadHandle; // 0x00882CE0
 
-extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc* pLock);         // 0x006CC218
-extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalSectionStrc* pLock);         // 0x006CC214
-extern "C" __declspec(dllimport) void* __stdcall CreateThread(void* pAttributes, unsigned long nStackSize, unsigned long (__stdcall* pfnStart)(void*), void* pParameter, unsigned long nFlags, unsigned long* pThreadId); // 0x006CC250
 extern "C" __declspec(dllimport) int __stdcall SetThreadPriority(void* hThread, int nPriority);             // 0x006CC264
 
 // 0x0052A610
@@ -137,7 +117,8 @@ void __fastcall CLIENT_SetConnected(int bConnected)
 
 void __stdcall sub_M118_Emit_0052A730(int nArg, const char* szIpAddress)
 {
-    sub_0052B810(nArg);
+// build: symbol ?NET_SetConnectionMode@* 0x0052B810
+    NET_SetConnectionMode(nArg);
     if (NET_IsLocalConnection())
     {
         return;
@@ -171,7 +152,7 @@ D2WSADataStrc gWSAData; // 0x00882B48
 
 D2SockAddrInStrc gHostSockAddr; // 0x00882B38
 
-QServer* gpServer; // 0x00882D08
+D2QueueServerStrc* gpServer; // 0x00882D08
 
 // 0x0052A680
 unsigned long __stdcall CLIENT_ConnectToHost(void* szIpAddress)
@@ -351,7 +332,7 @@ void __stdcall CLIENT_Initialize(int nArg, const char* szIpAddress)
     InitializeCriticalSection(&gCriticalSection);
     gpPacketBuffer = (D2PacketBufferStrc*)FOG_Alloc(0x7BC, ".\\SRC\\Client.cpp", 200, 0);
     memset(gpPacketBuffer, 0, 0x7BC);
-    sub_0052B810(nArg);
+    NET_SetConnectionMode(nArg);
     if (NET_IsLocalConnection())
     {
         SERVER_SendConnectionInfo();
@@ -543,7 +524,7 @@ int __stdcall CLIENT_Send(int nSize, int nFlags, void* pData)
     return CLIENT_SendToSocket(pBuffer, nSize);
 }
 
-extern int gClientSocket = -1; // 0x00730AE0
+int gClientSocket = -1; // 0x00730AE0
 
 D2NetPacketRecStrc* gpGamePacketList; // 0x00882CE4
 
@@ -619,9 +600,7 @@ extern "C" char* __stdcall inet_ntoa(D2InAddrStrc tAddress);                    
 
 extern "C" int __stdcall getsockname(unsigned int nSocket, void* pAddress, int* pnLength);                 // 0x006B0144
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nMax);                     // 0x004135D0
 
-extern int gClientSocket;                                                                                   // 0x00730AE0
 
 // 0x0052AFE0
 void __stdcall CLIENT_GetLocalIpAddressString(char* szBuffer)

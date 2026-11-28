@@ -4,6 +4,8 @@
 #include "D2GameStrc.h"
 #include "D2GameTypes.h"
 #include "D2LanguageNames.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
 // build: symbol _gaszLanguageNames 0x0073140C
 
 #pragma intrinsic(_ReadWriteBarrier)
@@ -27,9 +29,7 @@ struct D2GameStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -37,25 +37,22 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-int __stdcall INVENTORY_GetOwnerId(D2InventoryStrc* pInventory); // 0x0063D450
 
 void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
-void __fastcall D2GAME_PACKETS_SendPacket0x8D_6FC3F960(D2UnitStrc* pUnit, D2UnitStrc* pPlayer); // 0x0053DF00
+void __fastcall D2GAME_PACKETS_SendPacket0x8D(D2UnitStrc* pUnit, D2UnitStrc* pPlayer); // 0x0053DF00
 
 typedef void(__fastcall* PartyCallbackFunction)(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pArgs);
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
 
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
 
 unsigned short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer); // 0x00554630
 
 D2ClientStrc* __fastcall UnitGetClient(D2UnitStrc* pPlayer, const char* szFile, int nLine); // 0x005531C0
 
-void __fastcall sub_6FC3E200(D2ClientStrc* pClient, D2UnitStrc* pUnit); // 0x0053CDF0
+void __fastcall SCMD_SendUnitLifeAndPositionUpdate(D2ClientStrc* pClient, D2UnitStrc* pUnit); // 0x0053CDF0
 
 unsigned short __fastcall PARTY_GetPartyIdForUnitOwner(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00540710
 
@@ -71,11 +68,6 @@ void __fastcall PARTY_CountLivingUnits(D2GameStrc* pGame, D2UnitStrc* pUnit, voi
 
 int __stdcall UNITS_GetInventoryGoldLimit(D2UnitStrc* pUnit); // 0x00622E70
 
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
-
-void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStatId, int nValue, int nLayer); // 0x00627260
-
-void __stdcall STATLIST_AddUnitStat(D2UnitStrc* pUnit, int nStatId, int nValue, int nLayer); // 0x006272B0
 
 void __fastcall PLRTRADE_AddGold(D2UnitStrc*, int, int); // 0x0053FF00
 
@@ -209,8 +201,8 @@ static void __stdcall PARTY_FreeParty(D2PartyStrc* pParty, D2GameStrc* pGame)
     {
         D2UnitStrc* pMember = SUNIT_GetServerUnit(pGame, UNIT_PLAYER, pNode->nUnitGUID);
         D2_ASSERT(pMember, 154);
-        sub_6FC7B450(pGame, pMember);
-        D2GAME_PACKETS_SendPacket0x8D_6FC3F960(pMember, pMember);
+        PARTYSCREEN_RefreshPartyRelationsAfterLeave(pGame, pMember);
+        D2GAME_PACKETS_SendPacket0x8D(pMember, pMember);
         D2PartyNodeStrc* pNext = pNode->pNext;
         FOG_FreeServerMemory(pGame->pMemoryPool, pNode, ".\\UNIT\\Party.cpp", 162, 0);
         pNode = pNext;
@@ -447,7 +439,7 @@ void __fastcall PARTY_SynchronizeWithClient(D2GameStrc* pGame, D2UnitStrc* pUnit
         D2UnitStrc* pPartyMember = SUNIT_GetServerUnit(pGame, UNIT_PLAYER, pPartyNode->nUnitGUID);
         if (pPartyMember && pPartyMember != pUnit)
         {
-            sub_6FC3E200(pClient, pPartyMember);
+            SCMD_SendUnitLifeAndPositionUpdate(pClient, pPartyMember);
         }
     }
 }
@@ -553,8 +545,8 @@ void __fastcall PARTY_LeaveParty(D2GameStrc* pGame, D2UnitStrc* pUnit)
             {
                 ptParty->pPartyNodes = pPartyNode->pNext;
             }
-            sub_6FC7B450(pGame, pUnit);
-            D2GAME_PACKETS_SendPacket0x8D_6FC3F960(pUnit, pUnit);
+            PARTYSCREEN_RefreshPartyRelationsAfterLeave(pGame, pUnit);
+            D2GAME_PACKETS_SendPacket0x8D(pUnit, pUnit);
             FOG_FreeServerMemory(pGame->pMemoryPool, pPartyNode, ".\\UNIT\\Party.cpp", 328, 0);
             break;
         }

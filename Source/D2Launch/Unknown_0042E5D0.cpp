@@ -1,4 +1,5 @@
 #include "D2Launch.h"
+#include "D2WinApi.h"
 
 struct D2CelFileStrc;
 
@@ -33,8 +34,6 @@ private:
 extern int gnGatewayValue_007795BC; // 0x007795BC
 
 extern int gbGatewayFlag; // 0x00779954
-
-void __fastcall ARCHIVE_FreeCellFile(D2CelFileStrc* pCellFile); // 0x004FAAE0
 
 extern D2CelFileStrc* gpBlizNoCelFile; // 0x007796F8
 
@@ -155,7 +154,7 @@ extern D2CelFileStrc* gapCellFiles_00779888[3]; // 0x00779888
 extern D2CelFileStrc* gapCellFiles_0077989C[3]; // 0x0077989C
 
 // 0x0042E610
-extern "C" unsigned short __fastcall sub_0042E610(const Value* object) { return object->value; }
+extern "C" unsigned short __fastcall sub_0042E610_GetValue(const Value* object) { return object->value; }
 
 // 0x0042E650
 Unicode Unicode::toUpper() const
@@ -176,7 +175,7 @@ int __stdcall BNGatewayAccess::CurGateway()
     return m_nCurGateway;
 }
 
-D2CelFileStrc* gpCellFile_00779700; // 0x00779700
+D2CelFileStrc* gpCellFile; // 0x00779700
 
 D2CelFileStrc* gpCharacterCreateCelFile; // 0x00779724
 

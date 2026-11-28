@@ -3,6 +3,11 @@
 #include "D2GameTypes.h"
 
 #include "D2GfxTypes.h"
+#include "FogApi.h"
+#include "FogApi.h"
+#include "D2DrlgMaps.h"
+#include "D2WinApi.h"
+#include "D2HellApi.h"
 
 struct D2TileLibraryBlockStrc
 {
@@ -22,7 +27,7 @@ struct D2TileLibraryBlockStrc
 
 #define D2_MIN(a, b) (((a) < (b)) ? (a) : (b))
 
-extern int gnResolutionMode_007C8CC4; // 0x007C8CC4
+extern int gnViewMatrixAdjust; // 0x007C8CC4
 
 int __fastcall WINDOW_SetVideoMode(int nMode); // 0x004F4FF0
 
@@ -119,7 +124,6 @@ extern "C" __declspec(dllimport) int __stdcall SystemParametersInfoA(unsigned in
 
 extern "C" __declspec(dllimport) int __stdcall GetWindowPlacement(void* hWnd, tagWINDOWPLACEMENT* lpwndpl); // 0x006CC508
 
-void __cdecl LOGMANAGER_WriteLogLine(const char* szFormat, ...); // 0x00410610
 
 int __stdcall WINDOW_Resize(int nResolution, int bForceResize); // 0x004F5AA0
 
@@ -171,7 +175,6 @@ struct D2DevModeStrc
     unsigned int dmPanningHeight;
 };
 
-extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
@@ -195,11 +198,9 @@ int gnCaptionHeight; // 0x007C9270
 
 extern int gbNoWindowCreated; // 0x007C9338
 
-void __cdecl sub_0051793E_FormatAndRaise(unsigned long dwError, ...); // 0x0051793E
-
 struct D2CacheStatsStrc;
 
-extern int gdwGlobal_0072DA7C; // 0x0072DA7C
+extern int gfFixedAspectRatio; // 0x0072DA7C
 
 extern int gnDisplayType; // 0x007C8CB0
 
@@ -217,8 +218,6 @@ extern "C" __declspec(dllimport) unsigned short __stdcall RegisterClassA(const W
 
 int __fastcall FOG_IsExpansion(); // 0x00408F20
 
-extern "C" void __cdecl sub_004F8DC0_InitLookupTable(); // 0x004F8DC0
-
 void __cdecl j_D2GFX_10040_ShowAllWindows(); // 0x004F5030
 
 extern "C" int __cdecl atexit(void (__cdecl*)()); // 0x00683824
@@ -229,6 +228,13 @@ extern WNDPROC gpfnGfxWndProc; // 0x007C8CAC
 
 extern const char* gszWindowClassName; // 0x007C9158
 
+extern D2GraphicsInterfaceStrc gtGdiGraphicsInterface; // 0x0074C4A8
+extern D2GraphicsInterfaceStrc gtDDrawGraphicsInterface; // 0x0072F6D0
+extern D2GraphicsInterfaceStrc gtGlideGraphicsInterface; // 0x0072F178
+extern D2GraphicsInterfaceStrc gtD3DGraphicsInterface; // 0x0074BF28
+
+// Static data, indexed by video mode: each entry points to one renderer's interface
+// (GDI, DirectDraw, Glide, Direct3D); modes without a renderer are null.
 extern D2GraphicsInterfaceStrc* gapGraphicsInterfaces[]; // 0x0072DA80
 
 extern const unsigned char gabGraphicsHelpers[]; // 0x0072DA60
@@ -250,13 +256,13 @@ int ganRowOffsets[732]; // 0x007C97A8
 
 D2PaletteTableStrc gtPaletteTables; // 0x007D5458
 
-extern const char* gszDefaultClass_0072DAA0; // 0x0072DAA0
-extern const char* gszDefaultWindow_0072DB3C; // 0x0072DB3C
+extern const char* gszDefaultClass; // 0x0072DAA0
+extern const char* gszDefaultWindow; // 0x0072DB3C
 // build: symbol ??__EgszWindowClass@@YAXXZ 0x006CAE00
-const char* gszWindowClass = gszDefaultWindow_0072DB3C; // 0x007C9344
+const char* gszWindowClass = gszDefaultWindow; // 0x007C9344
 
 // build: symbol ??__EgszWindowTitle@@YAXXZ 0x006CAE10
-const char* gszWindowTitle = gszDefaultWindow_0072DB3C; // 0x007C9348
+const char* gszWindowTitle = gszDefaultWindow; // 0x007C9348
 
 struct D2TileLibraryBlockStrc;
 
@@ -316,9 +322,7 @@ extern "C" __declspec(dllimport) int __stdcall QueryPerformanceCounter(D2LargeIn
 
 typedef char* va_list;
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
-extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern int gnChangedScaleFactor; // 0x0072DB40
 
@@ -368,7 +372,7 @@ extern "C" __declspec(dllimport) int __stdcall UnregisterClassA(const char* lpCl
 void* ghInstance;                                                                                  // 0x007C8CA8
 
 // build: symbol ??__EgszWindowClassName@@YAXXZ 0x006CADF0
-const char* gszWindowClassName = gszDefaultClass_0072DAA0; // 0x007C9158
+const char* gszWindowClassName = gszDefaultClass; // 0x007C9158
 
 int gbNoWindowCreated;                                                                             // 0x007C9338
 
@@ -408,20 +412,20 @@ int __stdcall D2GFX_Release()
     return 1;
 }
 
-extern int gdwGlobal_007C8CB0; // 0x007C8CB0
+extern int gnDisplayType; // 0x007C8CB0
 
-extern int gdwGlobal_007C8CB4; // 0x007C8CB4
+extern int gbIsWindowed; // 0x007C8CB4
 
 // 0x004F5140
 int __cdecl D2GFX_GetDisplayType()
 {
-    return gdwGlobal_007C8CB0;
+    return gnDisplayType;
 }
 
 // 0x004F5150
 int __cdecl D2GFX_CheckWindowed()
 {
-    return gdwGlobal_007C8CB4;
+    return gbIsWindowed;
 }
 
 // 0x004F5160
@@ -439,7 +443,7 @@ int __cdecl D2GFX_CheckUnitPerspective()
 // 0x004F5180
 int __cdecl D2GFX_IsFixedAspectRatio()
 {
-    return gdwGlobal_0072DA7C;
+    return gfFixedAspectRatio;
 }
 
 // 0x004F5190
@@ -518,7 +522,7 @@ void __cdecl D2GFX_EnableVSync()
 // 0x004F5280
 void __cdecl D2GFX_DisableFixedAspectRatio()
 {
-    gdwGlobal_0072DA7C = 0;
+    gfFixedAspectRatio = 0;
 }
 
 // 0x004F5290
@@ -779,7 +783,7 @@ int __stdcall WINDOW_Create(int bWindowed, int nResolution)
         }
     }
 
-    sub_004F8EA0();
+    WINDOW_LoadGammaSettings();
     SetWindowPos(ghWnd, (void*)-2, 0, 0, nWidth, nHeight, 2);
     return bResult;
 }
@@ -902,7 +906,7 @@ int __stdcall WINDOW_Resize(int nResolution, int bForceResize)
     }
 
     const int bResult = gpGraphicsInterface->pfChangeRes(ghWnd, nResolution);
-    sub_004F8EA0();
+    WINDOW_LoadGammaSettings();
     return bResult;
 }
 
@@ -1093,7 +1097,7 @@ void __cdecl WINDOW_UpdatePauseState()
     if (!gbWindowState)
     {
         D2GFX_SetPalette(0);
-        sub_004F8EA0();
+        WINDOW_LoadGammaSettings();
     }
 }
 
@@ -1293,6 +1297,7 @@ void __stdcall D2GFX_ClearScreen(int bPartial)
     return gpGraphicsInterface->pfClearScreen(bPartial);
 }
 
+// Kept noinline: the original calls this out of line from its callers in this file; without it the compiler inlines it.
 // 0x004F63D0
 __declspec(noinline) void __stdcall D2GFX_SetPalette(tagPALETTEENTRY* pPalette)
 {
@@ -1585,7 +1590,7 @@ void __fastcall D2GFX_DrawLitSubtileRows(unsigned char* pSrc, unsigned char* pDs
     for (int i = 0; i < 15; ++i)
     {
         const int nOff = ganSubtileRowXOffset[i];
-        unsigned char* v = (unsigned char*)gabLightCube + 32 * ((nLightY >> 7) + 32 * (nLightX >> 7)) + nOff;
+        unsigned char* v = &gabLightCube[nLightX >> 7][nLightY >> 7][nOff];
         unsigned char* s = &pSrc[ganSubtileRowSrcOffset[i]];
         switch (ganSubtileRowWidth[i])
         {
@@ -1982,11 +1987,11 @@ void __fastcall WINDOW_SetPanelCoords(int nWidth, int nHeight)
     int nLeft = 0;
     int nRight = nWidth;
     const int nBottom = nHeight - 0x2F;
-    if (gnResolutionMode_007C8CC4 == 1)
+    if (gnViewMatrixAdjust == 1)
     {
         nRight -= nWidth / 2;
     }
-    else if (gnResolutionMode_007C8CC4 == 2)
+    else if (gnViewMatrixAdjust == 2)
     {
         nLeft = nWidth / 2;
     }
@@ -2497,7 +2502,7 @@ void __fastcall CMNSUBTILE_DrawLitBlockClipped(D2TileLibraryBlockStrc* pBlock, i
     for (int i = nStartRow; i < nEndRow; ++i)
     {
         const int nNegX = -(nX + ganSubtileRowXOffset[i]);
-        unsigned char* pLevels = (unsigned char*)gabLightCube + 32 * ((nLightY >> 7) + 32 * (nLightX >> 7)) + ganSubtileRowXOffset[i];
+        unsigned char* pLevels = &gabLightCube[nLightX >> 7][nLightY >> 7][ganSubtileRowXOffset[i]];
         unsigned char* d = pRow + ganSubtileRowXOffset[i];
         unsigned char* s = pBlock->pData + ganSubtileRowSrcOffset[i];
         int nSkip;
@@ -2522,6 +2527,85 @@ void __fastcall CMNSUBTILE_DrawLitBlockClipped(D2TileLibraryBlockStrc* pBlock, i
     }
 }
 
+struct D2GfxLightExStrc
+{
+    unsigned char nIntensity;
+    unsigned char unk0x01[0x0B];
+};
+
+// 0x004F8B80
+void __fastcall CMNSUBTILE_DrawFloorTile(D2TileLibraryEntryStrc* pTile, int nX, int nY, D2GfxLightExStrc* pLight)
+{
+    unsigned char* pScreen = gnScreenPitch * nY + gpScreenBuffer + nX;
+    for (int i = 0; i < pTile->nBlocks; ++i)
+    {
+        D2TileLibraryBlockStrc* pBlock = &((D2TileLibraryBlockStrc*)pTile->pBlocks)[i];
+        const int nPosX = pBlock->nPosX;
+        unsigned char* pDst = pBlock->nPosY * gnScreenPitch + nPosX + pScreen;
+        if (!(pBlock->nFormat & 1))
+            continue;
+        const int nBlockX = nPosX + nX;
+        const int nBlockY = nY + pBlock->nPosY;
+        if (nBlockY < gnScreen_7D2330 || nBlockY >= gnScreen_7D2338 || nBlockX < gnScreen_7C9788 || nBlockX >= gnScreen_7C9798)
+            continue;
+
+        int aLight[4];
+        int bFlat = 0;
+        unsigned char nLight = 0;
+        if (gnLightingOff)
+        {
+            bFlat = 1;
+            nLight = pLight[8 * (pBlock->nGridY + 1) + pBlock->nGridX + 1].nIntensity;
+        }
+        else
+        {
+            // The 4x4 cells around the block, eight to a grid row. Rows 1 and 2 go into locals; rows 0 and 3 are read in the sums.
+            D2GfxLightExStrc* pCell = &pLight[8 * pBlock->nGridY + pBlock->nGridX];
+            const int nL01 = pCell[8].nIntensity;
+            const int nL11 = pCell[9].nIntensity;
+            const int nL21 = pCell[10].nIntensity;
+            const int nL31 = pCell[11].nIntensity;
+            const int nL02 = pCell[16].nIntensity;
+            const int nL12 = pCell[17].nIntensity;
+            const int nL22 = pCell[18].nIntensity;
+            const int nL32 = pCell[19].nIntensity;
+            int nDelta = nL21 - nL11;
+            const int nDiff1 = D2_ABS(nDelta);
+            nDelta = nL12 - nL11;
+            const int nDiff2 = D2_ABS(nDelta);
+            nDelta = nL22 - nL21;
+            const int nDiff3 = D2_ABS(nDelta);
+            if (!gGfxSettings.bLowQuality && nDiff3 + nDiff2 + nDiff1 >= 10)
+            {
+                aLight[0] = (nL12 + nL02 + nL11 + nL01) >> 2;
+                aLight[1] = (pCell[1].nIntensity + pCell[2].nIntensity + nL21 + nL11) >> 2;
+                aLight[2] = (nL32 + nL12 + nL31 + nL21) >> 2;
+                aLight[3] = (pCell[25].nIntensity + pCell[26].nIntensity + nL22 + nL12) >> 2;
+            }
+            else
+            {
+                bFlat = 1;
+                nLight = nL11;
+            }
+        }
+
+        if (nBlockY >= gnInnerBlockTop && nBlockY < gnInnerBlockBottom && nBlockX >= gnInnerBlockLeft && nBlockX < gnInnerBlockRight)
+        {
+            if (bFlat)
+                CMNSUBTILE_DrawBlock(pBlock, pDst, nLight);
+            else
+                CMNSUBTILE_DrawLitBlock(pBlock, pDst, aLight);
+        }
+        else
+        {
+            if (bFlat)
+                CMNSUBTILE_DrawBlockClipped(pBlock, nBlockX, nBlockY, pDst, nLight);
+            else
+                CMNSUBTILE_DrawLitBlockClipped(pBlock, nBlockX, nBlockY, pDst, aLight);
+        }
+    }
+}
+
 // 0x004F8E40
 void __fastcall CMNSUBTILE_SetPaletteTables(D2PaletteTableStrc* pPaletteTables)
 {
@@ -2533,100 +2617,62 @@ void __fastcall CMNSUBTILE_SetPaletteTables(D2PaletteTableStrc* pPaletteTables)
     }
 }
 
-extern "C" void __cdecl sub_004F8B80(); // 0x004F8B80
-extern "C" void __cdecl sub_004F8DE0(); // 0x004F8DE0
-extern "C" struct d2data_0072F178_t gData_0072F178; // 0x0072F178
-extern "C" struct d2data_0072F6D0_t gData_0072F6D0; // 0x0072F6D0
-extern "C" struct d2data_0074BF28_t gData_0074BF28; // 0x0074BF28
-extern "C" struct d2data_0074C4A8_t gData_0074C4A8; // 0x0074C4A8
-
-#pragma pack(push, 1)
-struct d2data_0072DA0C_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0072DA48_t
-{
-    unsigned char b0[24];
-};
-#pragma pack(pop)
+void __fastcall WINDOW_SetScreenBuffer(unsigned char* pBuffer, int nWidth, int nHeight, int nArg4); // 0x004F8DE0
 
 #pragma pack(push, 1)
 struct d2data_0072DA60_t
 {
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
+    void (__fastcall* p0)(unsigned char* pBuffer, int nWidth, int nHeight, int nArg4);
+    void (__fastcall* p1)(unsigned char* pSrc, int nX, int nY);
+    void (__fastcall* p2)(unsigned char* pSrc, int nX, int nY, unsigned char nLight);
+    void (__fastcall* p3)(D2TileLibraryEntryStrc* pTile, int nX, int nY, D2GfxLightExStrc* pLight);
+    void (__fastcall* p4)(unsigned char* pSrc, int nX, int nY, int* pLight);
+    void (__fastcall* p5)(unsigned char* pSrc, int nX, int nY, unsigned char nAlpha);
+    void (__fastcall* p6)(unsigned char* pSrc, int nX, int nY, int* pLight, unsigned char nAlpha);
 };
 #pragma pack(pop)
 
-extern "C" struct d2data_0072DA0C_t gData_0072DA0C; // 0x0072DA0C
-extern "C" struct d2data_0072DA48_t gData_0072DA48; // 0x0072DA48
-extern "C" struct d2data_0072DA60_t gData_0072DA60; // 0x0072DA60
-extern "C" const char gData_0072DAA8[72]; // 0x0072DAA8
-extern "C" const char gData_0072DAF0[72]; // 0x0072DAF0
+extern "C" const char* gData_0072DA0C[15] = { // 0x0072DA0C
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
+};
 
-extern "C" struct d2data_0072DA0C_t gData_0072DA0C = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0072DA0C
-
-extern "C" struct d2data_0072DA48_t gData_0072DA48 = {
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x9B, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x01
-    }
-}; // 0x0072DA48
+extern "C" unsigned char gData_0072DA48[24] = { // 0x0072DA48
+    0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x9B, 0x00, 0x00, 0x00,
+    0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00
+};
 #pragma comment(linker, "/alternatename:?gGfxSettings@@3UD2GfxSettingsStrc@@A=_gData_0072DA48")
 
-extern "C" struct d2data_0072DA60_t gData_0072DA60 = {
-    (const void*)(unsigned int)&sub_004F8DE0,
-    (const void*)(unsigned int)&CMNSUBTILE_DrawVisTile,
-    (const void*)(unsigned int)&CMNSUBTILE_DrawRleVisTile,
-    (const void*)(unsigned int)&sub_004F8B80,
-    (const void*)(unsigned int)&CMNSUBTILE_DrawLitVisTile,
-    (const void*)(unsigned int)&CMNSUBTILE_DrawBlendVisTile,
-    (const void*)(unsigned int)&CMNSUBTILE_DrawLitBlendVisTile
-}; // 0x0072DA60
+extern "C" struct d2data_0072DA60_t gData_0072DA60 = { // 0x0072DA60
+    &WINDOW_SetScreenBuffer,
+    &CMNSUBTILE_DrawVisTile,
+    &CMNSUBTILE_DrawRleVisTile,
+    &CMNSUBTILE_DrawFloorTile,
+    &CMNSUBTILE_DrawLitVisTile,
+    &CMNSUBTILE_DrawBlendVisTile,
+    &CMNSUBTILE_DrawLitBlendVisTile
+};
 #pragma comment(linker, "/alternatename:?gabGraphicsHelpers@@3QBEB=_gData_0072DA60")
 
-extern int gdwGlobal_0072DA7C = 1; // 0x0072DA7C
+int gdwGlobal_0072DA7C = 1; // 0x0072DA7C
 
-extern D2GraphicsInterfaceStrc* gapGraphicsInterfaces[8] = { 0, (D2GraphicsInterfaceStrc*)&gData_0074C4A8, 0, (D2GraphicsInterfaceStrc*)&gData_0072F6D0, (D2GraphicsInterfaceStrc*)&gData_0072F178, 0, (D2GraphicsInterfaceStrc*)&gData_0074BF28 }; // 0x0072DA80
+D2GraphicsInterfaceStrc* gapGraphicsInterfaces[8] = { // 0x0072DA80
+    0, &gtGdiGraphicsInterface, 0, &gtDDrawGraphicsInterface,
+    &gtGlideGraphicsInterface, 0, &gtD3DGraphicsInterface, 0
+};
 
 extern const char* gszDefaultClass_0072DAA0 = "Diablo II"; // 0x0072DAA0
 
@@ -2636,12 +2682,12 @@ extern "C" const char gData_0072DAA8[72] = "Error 1: Diablo II is unable to proc
 extern "C" const char gData_0072DAF0[72] = "Error 1: Diablo II is unable to proceed.  Unsupported graphics mode."; // 0x0072DAF0
 #pragma comment(linker, "/alternatename:?gszUnsupportedGraphics@@3QBDB=_gData_0072DAF0")
 
-extern int gbCursorDisplayed = 1; // 0x0072DB38
+int gbCursorDisplayed = 1; // 0x0072DB38
 
 extern const char* gszDefaultWindow_0072DB3C = "Diablo II"; // 0x0072DB3C
 
-extern int ganSubtileRowXOffset[15] = { 14, 12, 10, 8, 6, 4, 2, 0, 2, 4, 6, 8, 10, 12, 14 }; // 0x0072DB48
+int ganSubtileRowXOffset[15] = { 14, 12, 10, 8, 6, 4, 2, 0, 2, 4, 6, 8, 10, 12, 14 }; // 0x0072DB48
 
-extern int ganSubtileRowWidth[15] = { 4, 8, 12, 16, 20, 24, 28, 32, 28, 24, 20, 16, 12, 8, 4 }; // 0x0072DB84
+int ganSubtileRowWidth[15] = { 4, 8, 12, 16, 20, 24, 28, 32, 28, 24, 20, 16, 12, 8, 4 }; // 0x0072DB84
 
-extern int ganSubtileRowSrcOffset[15] = { 0, 4, 12, 24, 40, 60, 84, 112, 144, 172, 196, 216, 232, 244, 252 }; // 0x0072DBC0
+int ganSubtileRowSrcOffset[15] = { 0, 4, 12, 24, 40, 60, 84, 112, 144, 172, 196, 216, 232, 244, 252 }; // 0x0072DBC0

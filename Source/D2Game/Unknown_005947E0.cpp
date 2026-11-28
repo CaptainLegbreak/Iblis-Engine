@@ -3,14 +3,11 @@
 #include "D2GameStrc.h"
 #include "D2UnitData.h"
 #include "D2QuestData.h"
+#include "D2CommonApi.h"
 
 struct D2Act1Quest5Strc;
 struct D2PlayerDataStrc;
 
-D2PlayerDataStrc* __stdcall UNITS_GetPlayerData(D2UnitStrc*); // 0x006221A0
-int __stdcall QUESTRECORD_GetQuestState(D2BitBufferStrc*, int, int); // 0x0065C310
-void __stdcall QUESTRECORD_SetQuestState(D2BitBufferStrc*, int, int); // 0x0065C360
-D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc*, int); // 0x00543640
 
 // 0x005947E0
 static int __stdcall sub_005947E0_IsUnitGUIDInList(D2Act1Quest5Strc* pQuestDataEx, int nUnitGUID, int bSecondList)

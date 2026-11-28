@@ -3,6 +3,7 @@
 #include "D2GameTypes.h"
 #include "stpl.h"
 #include "D2Win32Message.h"
+#include "StormApi.h"
 
 struct HWND__;
 
@@ -43,7 +44,6 @@ int __stdcall SEvtUnregisterHandler(unsigned int nType, HWND__* hWnd, unsigned i
 int __stdcall SEvtUnregisterType(unsigned int nType, void* hWnd); // 0x00426810
 int __stdcall SEvtPopState(unsigned long dwId, void* pContext); // 0x004269C0
 
-int __stdcall SMsgDispatchMessage(void* hWnd, unsigned int uMsg, unsigned int wParam, int lParam, int* pbUseResult, int* plResult);
 int __stdcall SMsgRegisterCommand(HWND__* hWnd, unsigned int nId, SMSGHANDLER pHandler);
 int __stdcall SMsgRegisterKeyDown(HWND__* hWnd, unsigned int nId, SMSGHANDLER pHandler);
 int __stdcall SMsgRegisterKeyUp(HWND__* hWnd, unsigned int nId, SMSGHANDLER pHandler);

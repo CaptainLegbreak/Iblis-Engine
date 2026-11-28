@@ -7,6 +7,7 @@
 #include "D2ClientTypes.h"
 #include "D2StatIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Primitives.h"
 #include "D2Constants.h"
 #include "D2Structs.h"
@@ -25,8 +26,16 @@
 #include "D2MsgRecord.h"
 #include "D2ClientUiRecords.h"
 #include "D2Packets.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "FogApi.h"
 
 #include <D2UnitData.h>
+#include "StormApi.h"
+#include "D2GfxApi.h"
+#include "D2WinApi.h"
+#include "FogApi2.h"
 
 struct D2ClientInterfaceStrc;
 
@@ -81,11 +90,9 @@ struct D2ItemsTxt;
 
 struct D2AuxLevelEntryStrc;
 
-struct D2GfxDataStrc;
+struct D2UnitGfxDataStrc;
 
 
-
-extern void* ghDbgHelp; // 0x0098A680
 
 extern int gbRightClickConsumed; // 0x007A0670
 
@@ -153,70 +160,47 @@ struct D2ClientRecordStrc
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 void __stdcall sub_00420290_HandleMsg(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
 
-void __cdecl GAME_ResetMouseButtons(); // 0x0044DA70
 
-int __cdecl GAME_IsExpansion(); // 0x0044DCC0
 
-int __fastcall GAME_GetUIVarState(unsigned int nUIVar); // 0x004538D0
 
-int __fastcall UI_GetUIVarUnchecked(int nUIVar); // 0x00453A90
 
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
 
-D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
 D2UnitStrc* __cdecl SELECT_GetSelectedUnit(); // 0x00467A10
 
-void __fastcall CURSOR_SetCursorItemState(D2UnitStrc* pItem); // 0x00468070
 
-int __cdecl sub_00468730(); // 0x00468730
 
-int __cdecl sub_00468740(); // 0x00468740
 
-void __cdecl sub_00468F00(); // 0x00468F00
 
-void __fastcall MSG_SendShorts(char nHeader, short nArg1, short nArg2, short nArg3); // 0x00478600
 
-void __cdecl WARDENCLIENT_ActivatePendingModule(); // 0x00480230
 
 void __cdecl sub_0048A730(); // 0x0048A730
 
-void __cdecl HIREABLES_CloseHelpUi(); // 0x00494FC0
 
 void __fastcall sub_0049EB10_PostRecord(D2ClientRecordStrc* pRecord); // 0x0049EB10
 
 void __stdcall sub_004A1770(SMSGHANDLER_PARAMS* pMsg); // 0x004A1770
 
-void __cdecl sub_004B8CB0(); // 0x004B8CB0
 
 void __fastcall sub_004DC2B0(void* pResource); // 0x004DC2B0
 
-int __stdcall D2GFX_GetResolutionMode(); // 0x004F5160
-
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 Unicode* __fastcall sub_005267E0(Unicode* pDest, const Unicode* pSource); // 0x005267E0
 
-D2UnitStrc* __stdcall INVENTORY_GetCursorItem(D2InventoryStrc* pInventory); // 0x0063C1E0
 
-D2SkillStrc* __fastcall SKILLS_GetHighestLevelSkillFromUnitAndId(D2UnitStrc* pUnit, int nSkillId); // 0x006439F0
 
 void __stdcall SKILLS_AssignSkill(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int bRemove, const char* szFile, int nLine); // 0x00647280
 
-extern int gnScreenWidth; // 0x0071146C
 
 extern int gnHoverTopX; // 0x00721E3C
 
@@ -232,13 +216,10 @@ extern int gnHoverCellY; // 0x00721E50
 
 extern int gbGameServerReady; // 0x007A0618
 
-extern int gbPositionalSound; // 0x007A061C
 
 extern int gbLeavingGame; // 0x007A0620
 
-extern int gnPanelOffsetX; // 0x007A2858
 
-extern int gnPanelOffsetY; // 0x007A285C
 
 extern D2ClientNodeStrc* gpNodeList_007BB5BC; // 0x007BB5BC
 
@@ -254,21 +235,16 @@ extern D2ClientSlotHolderStrc* gpSlotHolder; // 0x007BC990
 extern int gnRecipeScrollColor; // 0x007BCEA4
 
 
-extern unsigned char gbTextHoverSet; // 0x007BF23A
 
 extern int gdwGlobal_007BF23F; // 0x007BF23F
 
-extern int gaHotkeySkills[16]; // 0x007C06C8
 
-extern int gaHotkeyOwners[16]; // 0x007C0768
 
-extern int gaHotkeyLeft[16]; // 0x007C07B8
 
 extern unsigned char gaTable_007C0EA4[]; // 0x007C0EA4
 
 extern int gbQuestIntroFlagsReady; // 0x007C0ECC
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
@@ -276,11 +252,6 @@ D2UnitStrc* __stdcall STATLIST_GetOwner(D2UnitStrc* pUnit, int* pStatNotDynamic)
 
 void __stdcall STATLIST_MergeStatLists(D2UnitStrc* pTarget, D2UnitStrc* pUnit, int bType); // 0x00627910
 
-void __stdcall STATLIST_ExpireUnitStatlist(D2UnitStrc* pUnused, D2UnitStrc* pUnit); // 0x006277F0
-
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
-
-int __stdcall STATLIST_GetUnitBaseStat(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x006253B0
 
 int __stdcall ENVIRONMENT_GetPeriodOfDayFromAct(D2DrlgActStrc* pAct, int* pBaseTime); // 0x0061C100
 
@@ -295,15 +266,9 @@ Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource); // 0x0
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
-int __cdecl GAME_GetConnectionType(); // 0x0044DB30
 
-D2CelFileStrc* __fastcall GAME_LoadUiCelFile(const char* szPath); // 0x004520C0
 
-int __cdecl sub_00468830(); // 0x00468830
-
-void __fastcall MSG_SendHeaderOnly(char nValue); // 0x00478590
 
 void __fastcall ARCHIVE_FreeClientCellFile(void* pCel); // 0x00478A00
 
@@ -313,7 +278,6 @@ void __cdecl sub_004B90B0(); // 0x004B90B0
 
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
-D2UnitStrc* __stdcall INVENTORY_GetItemFromBodyLoc(D2InventoryStrc* pInventory, int nBodyLoc); // 0x0063BDE0
 
 extern int gnStashObjectId; // 0x00721E54
 
@@ -336,15 +300,12 @@ extern D2InventoryGridInfoStrc gtBankGrid; // 0x007BCB40
 
 extern D2InventoryGridInfoStrc gtPlayerInvGrid; // 0x007BCB88
 
-void __fastcall MSG_SendDword(char nHeader, int nArg); // 0x00478680
 
 void __fastcall sub_004786D0_SendPacket(char nHeader, int nArg1, int nArg2, int nArg3); // 0x004786D0
 
-int __cdecl INV_CheckTradeClickDelay(); // 0x00486D10
 
 void __fastcall TEXT_OpenTextData(D2UnitStrc* pUnit, D2ItemsTxt* pTxt); // 0x0049FF90
 
-int __fastcall ITEM_IsItemActionBlocked(D2UnitStrc* pItem); // 0x004C2240
 
 int __stdcall UNITS_GetInventoryRecordId(D2UnitStrc* pUnit, unsigned char nInvPage, int bLoD); // 0x00621050
 
@@ -352,17 +313,13 @@ unsigned int __stdcall ITEMS_GetBaseCode(D2UnitStrc* hItem); // 0x00628590
 
 int __stdcall sub_0062A0A0(D2UnitStrc* pItem); // 0x0062A0A0
 
-D2ItemsTxt* __stdcall DATATBLS_GetItemsTxtRecord(int nItemId); // 0x006335F0
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
 
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
 
 int __fastcall NPCMENU_HandleTradeClick(D2UnitStrc* pPlayer, D2UnitStrc* pItem, int nMode, int nX, int nY, int nArg, int bCheckTick, int bRepairAll); // 0x004B3870
 
 void __cdecl sub_K04_EmitUse(int nValue);
 
-int __cdecl NPCMENU_IsGambleShop(); // 0x004B3500
 
 
 struct RangeNode
@@ -451,11 +408,8 @@ extern "C" unsigned short gValue_007BB5E4;
 
 extern "C" const unsigned char gColorTable_00971740[];
 
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
 
-unsigned char __stdcall DRLG_GetActNoFromLevelId(int nLevelId); // 0x006427F0
 
 extern unsigned char gColor;
 
@@ -471,39 +425,27 @@ extern void* gResourceB;
 
 void __cdecl InitializePalette();
 
-void __fastcall D2GFX_DrawBox(int x, int y, int width, int height, int color, int mode); // 0x004F6300
-
 int __stdcall ReleaseResource(void* resource);
 
 int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile); // 0x006280A0
 
-int __stdcall ITEMSIsA(D2UnitStrc* pItem, int nItemType); // 0x00629BB0
 
-int __fastcall ROSTERPETS_GetHirelingClassId(int nUnitId); // 0x00479120
 
-unsigned int __stdcall ITEMS_CheckWeaponIfTwoHanded(D2UnitStrc* pItem); // 0x006289C0
 
-int __stdcall ITEMS_CheckRequirements(D2UnitStrc* pItem, D2UnitStrc* pUnit, int bEquipping, int* bStrength, int* bDexterity, int* bLevel); // 0x0062EAF0
 
 void __stdcall sub_Z12_EmitUse2(int nValue1, int nValue2);
 
-void __stdcall ITEMS_GetDimensions(D2UnitStrc* pItem, unsigned char* pWidth, unsigned char* pHeight, const char* szFile, int nLine); // 0x006286C0
 
-int __stdcall ITEMS_CheckBodyLocation(D2UnitStrc* pItem, int nBodyLoc); // 0x0062ED50
 
 void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, unsigned char nColor, int nFlags); // 0x0046EFD0
 
 extern D2InvCompGridStrc gaBodyLocRects[11]; // 0x007BCD38
 
-extern int gnAutomapWidth; // 0x007A5220
 
-int __fastcall ROSTERPETS_FindPetIdByOwner(D2UnitStrc* pOwner, int nPetType, int bAny); // 0x00478F20
 
 void __stdcall sub_00467FA0(SMSGHANDLER_PARAMS* pMsg); // 0x00467FA0
 
-int __fastcall ITEM_GetDropSound(D2UnitStrc* pItem); // 0x004C1D60
 
-void __fastcall MSG_SendWord(unsigned char nCmd, unsigned short nArg); // 0x004785B0
 
 
 extern "C" int gnLightmapRenderMode; // 0x00712CCC
@@ -520,7 +462,6 @@ void __fastcall sub_0046EE80_DrawCursorItem(D2UnitStrc* pItem, int nX, int nY); 
 
 void __stdcall sub_00483E40(D2UnitStrc* pItem, D2InventoryGridInfoStrc* pGrid, int nX, int nY); // 0x00483E40
 
-void __fastcall INV_DrawMercEquipHighlights(D2UnitStrc* pUnit); // 0x0048B3F0
 
 int __stdcall ITEMS_CheckIfSocketable(D2UnitStrc* pItem); // 0x00629900
 
@@ -557,17 +498,13 @@ struct D2AuxLevelEntryStrc
     char unk0x0A[2];
 };
 
-int __stdcall SRegSaveString(const char* szKeyName, const char* szValueName, unsigned int nFlags, const char* szString); // 0x00415070
-
 D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nType); // 0x004788B0
 
 D2BitBufferStrc* __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
 
-int __stdcall QUESTRECORD_GetQuestState(D2BitBufferStrc* pQuestRecord, int nQuest, int nState); // 0x0065C310
 
-void __stdcall QUESTRECORD_SetQuestState(D2BitBufferStrc* pQuestRecord, int nQuest, int nState); // 0x0065C360
 
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
@@ -583,33 +520,21 @@ Unicode* __fastcall sub_00526F20(Unicode* pDst, const char* szSrc, int nMaxLengt
 
 void __fastcall sub_004521C0_SetTextColor(Unicode* pText, int nColor); // 0x004521C0
 
-int __stdcall STATLIST_GetUnitStatBonus(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer); // 0x00625560
 
-int __stdcall ITEMS_GetMissileType(D2UnitStrc* pItem); // 0x006288A0
 
-int __stdcall ITEMS_Is1Or2Handed(D2UnitStrc* pPlayer, D2UnitStrc* pItem); // 0x0062A1E0
 
 int __stdcall ITEMS_CheckIfThrowable(D2UnitStrc* pItem); // 0x0062BA80
 
-int __stdcall MISSILE_GetMinDamage(D2UnitStrc* pMissile, D2UnitStrc* pOwner, int nMissileId, int nLevel); // 0x0064AF20
 
-int __stdcall MISSILE_GetMaxDamage(D2UnitStrc* pMissile, D2UnitStrc* pOwner, int nMissileId, int nLevel); // 0x0064AFF0
 
-unsigned char __stdcall MISSILE_GetElemTypeFromMissileId(int nMissileId); // 0x0064B0C0
 
-int __stdcall MISSILE_GetMinElemDamage(D2UnitStrc* pMissile, D2UnitStrc* pOwner, int nMissileId, int nLevel); // 0x0064B100
 
-int __stdcall MISSILE_GetMaxElemDamage(D2UnitStrc* pMissile, D2UnitStrc* pOwner, int nMissileId, int nLevel); // 0x0064B1D0
 
-int __stdcall MISSILE_GetElementalLength(D2UnitStrc* pMissile, D2UnitStrc* pOwner, int nMissileId, int nLevel); // 0x0064B2A0
-
-void __stdcall TEXTURE_CelDraw(D2CelContextStrc* pData, int nXPos, int nYPos, unsigned int dwGamma, int eDrawMode, unsigned char* pPalette); // 0x004F6480
 
 int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
 
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
-int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
 extern D2CelFileStrc* gpGoldButtonCel_007BCC34; // 0x007BCC34
 
@@ -627,15 +552,10 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern "C" size_t __cdecl strlen(const char* szString);
 
-int __stdcall SRegLoadValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long* pValue); // 0x00414F10
-
-void __fastcall PLAYER_SetPanelSlide(int nMode); // 0x0045AEA0
 
 Unicode* __fastcall sub_00526940_UnicodeStrStr(const Unicode* pString, const Unicode* pPattern); // 0x00526940
 
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...); // 0x005269D0
 
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 
 void __fastcall TEXT_DrawCenteredText(int nLeft, int nY, int nRight, const Unicode* wszText, int nColor); // 0x004A7080
 
@@ -643,7 +563,6 @@ const Unicode* __fastcall CUNIT_GetUnitName(D2UnitStrc* pUnit); // 0x00464A60
 
 int __fastcall sub_004A7660_SplitAtNewLine(Unicode* wszText, Unicode** ppSecond); // 0x004A7660
 
-unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB); // 0x00469AA0
 
 const Unicode* __fastcall CMDTBL_GetKeyName(int nA, int nB); // 0x0046A530
 
@@ -668,7 +587,6 @@ extern void* gpCellFile_007BEF20; // 0x007BEF20
 extern D2HirelingIconRecordStrc* gpHirelingRecords_007BEEAC; // 0x007BEEAC
 
 
-int __cdecl sub_00402A80_IsDbgHelpLoaded(); // 0x00402A80
 
 struct D2ClientCacheEntryStrc
 {
@@ -689,35 +607,26 @@ struct D2ClientStateStrc
     unsigned char bFlag0x12A;
 };
 
-int __cdecl ROSTER_IsAnyoneHostile();                                                                                 // 0x0047A560
 
 void __fastcall SOUNDHDR_ReleaseCacheEntry(int nId);                                                    // 0x004823E0
 
 void __stdcall INV_UpdateInventoryHover(SMSGHANDLER_PARAMS* pMsg);                                          // 0x004873A0
 
-void __cdecl INV_ResetHover();                                                                     // 0x00487990
 
 void __fastcall sub_0049FF90_Close(int nArg, D2ClientStateStrc* pState);                                    // 0x0049FF90
 
-int __cdecl NPCMENU_IsAnyDialogOpen();                                                                                 // 0x004B34A0
 
-void __cdecl NPCMENU_CloseNpcShop();                                                                                // 0x004B3ED0
 
 int __fastcall sub_004DF9D0_CheckCacheEntry(int nId);                                                       // 0x004DF9D0
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
-D2UnitStrc* __stdcall INVENTORY_GetFirstItem(D2InventoryStrc* pInventory);                                  // 0x0063B2C0
 
-D2UnitStrc* __stdcall INVENTORY_GetNextItem(D2UnitStrc* pItem);                                             // 0x0063DFA0
 
-D2UnitStrc* __stdcall INVENTORY_UnitIsItem(D2UnitStrc* pItem);                                              // 0x0063DFD0
 
 void __stdcall PATH_SetTargetUnit(D2DynamicPathStrc* pPath, D2UnitStrc* pTargetUnit);                       // 0x00648B90
 
-int __stdcall D2Common_10142(D2DynamicPathStrc* pPath, D2UnitStrc* pUnit, int bAllowInTown);                // 0x00649970
 
-extern D2ClientTabStrc gaNpcTabStates[];                                                                   // 0x0072211A
 
 extern D2ClientCacheEntryStrc* sgptSoundHeaderTable;                                                     // 0x007BC9A0
 
@@ -788,17 +697,11 @@ struct D2InvRectStrc;
 
 extern "C" __declspec(dllimport) void __stdcall Sleep(unsigned long dwMilliseconds); // 0x006CC258
 
-void __fastcall SOUNDHDR_UpdateCache(unsigned int nTick); // 0x00482B40
 
-void __fastcall sub_004BA020(unsigned int nTick); // 0x004BA020
 
-void __fastcall sub_004DCAA0_UpdateLevelSong(unsigned int nTick); // 0x004DCAA0
 
-int __cdecl sub_004DF870(); // 0x004DF870
 
-void __cdecl sub_004DF890(); // 0x004DF890
 
-void __fastcall SKILLDESC_UpdateEnvironSounds(unsigned int nTick); // 0x004E42E0
 
 char gbCinematicStop; // 0x007BC9D4
 
@@ -825,26 +728,17 @@ struct D2InvCompGridStrc;
 
 extern const D2CoordStrc gSocketLayouts[][6]; // 0x006D91E8
 
-int __fastcall GFX_DrawItemCel(D2UnitStrc* pItem, int nX, int nY); // 0x0046EE80
 
 
-void __fastcall UI_OpenGoldPanel(int nMode); // 0x00454150
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
-void __fastcall sub_00468040(int nArg, int nArg2); // 0x00468040
 
-void __fastcall MSG_SendDwords3(unsigned char nHeader, unsigned int nArg1, unsigned int nArg2, unsigned int nArg3); // 0x004786D0
 
 void __fastcall sub_004B9070(int nArg); // 0x004B9070
 
-int __fastcall ITEM_GetItemUseSound(D2UnitStrc* pItem); // 0x004C1E20
 
-int __stdcall ITEMS_CheckIfUseable(D2UnitStrc* pItem); // 0x00628C20
 
-int __stdcall ITEMS_GetUniqueColumnFromItemsTxt(D2UnitStrc* pItem); // 0x00628C70
 
 int __stdcall INVENTORY_GetWieldType(D2UnitStrc* pUnit, D2InventoryStrc* pInventory); // 0x0063D340
 
@@ -856,7 +750,6 @@ int __stdcall ITEMS_CanBeEquipped(D2UnitStrc* pItem); // 0x0062A4E0
 
 int __stdcall sub_0063B9D0(D2InventoryStrc* pInventory, D2UnitStrc* pItem, int nX, int nY, int nRecord, int* pOutX, int* pOutY, unsigned char nPage); // 0x0063B9D0
 
-int __stdcall INVENTORY_GetItemNodePage(D2UnitStrc* pItem); // 0x0063E020
 
 extern "C" const char gszCmnItemsH[]; // 0x006D9B90
 
@@ -864,16 +757,13 @@ extern "C" const char gszInvCpp[]; // 0x006D9BC0
 
 extern int gnDialogState; // 0x00721E34
 
-extern unsigned char gabColors_007BCAD8[5]; // 0x007BCAD8
+extern unsigned char gabInvHighlightColors[5]; // 0x007BCAD8
 
 extern D2InventoryGridInfoStrc gtNpcInvGrid; // 0x007BCB58
 
 
-int __stdcall ITEMMODS_EvaluateItemFormula(D2UnitStrc* pUnit, D2UnitStrc* pItem, unsigned int nCalc); // 0x00627C20
 
-int __stdcall ITEMS_GetBonusLifeBasedOnClass(D2UnitStrc* pPlayer, int nValue); // 0x0062A5D0
 
-int __stdcall ITEMS_GetBonusManaBasedOnClass(D2UnitStrc* pPlayer, int nValue); // 0x0062A620
 
 static void __stdcall INV_GetPlacementCell(D2UnitStrc* pItem, D2InventoryGridInfoStrc* pGrid, unsigned int nX, unsigned int nY, int* pCellX, int* pCellY);
 
@@ -911,7 +801,6 @@ extern D2CoordStrc gtOffsetHead; // 0x007220C8
 extern D2CoordStrc gtOffsetRArm; // 0x007220F0
 extern D2CoordStrc gtOffsetLArm; // 0x007220F8
 
-D2GemsTxt* __stdcall DATATBLS_GetGemsTxtRecord(int nGemId);                                                 // 0x006372C0
 
 
 
@@ -931,27 +820,19 @@ void __cdecl sub_004972B0_InitializePalette(); // 0x004972B0
 
 D2ClientInterfaceStrc* __cdecl sub_0044D540_GetClientInterface();                                           // 0x0044D540
 
-int __cdecl CHAT_HasClassOverride();                                                                // 0x0047AA30
 
 extern char gszClientCharName[];                                                                         // 0x007A05C4
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize);                // 0x004135D0
-
 void INV_DrawSlotFrame(D2InvCompGridStrc* pCompGrid, int nColor); // 0x00483A70
 
-int __cdecl INV_GetPanelX();
 
 int __cdecl INV_GetPanelY();
 
-int __fastcall INV_IsInNpcPanelRect(int nX, int nY); // 0x00486E10
 
 void __stdcall sub_E05_Emit_00486E60(SMSGHANDLER_PARAMS* pMsg); // 0x00486E60
 
-int __cdecl INV_ResetNpcButtons(); // 0x00487BE0
 
-int __cdecl INV_CanUseCursor(); // 0x004888C0
 
-void __cdecl INV_RestoreSelectedShopButton(); // 0x00488F10
 
 void __stdcall sub_E05_Emit_004844A0(D2InventoryStrc* pInventory, Unicode* pText, int nSetItemId); // 0x004844A0
 
@@ -1014,29 +895,21 @@ void __stdcall sub_00403040_ConstructVector(void* pArray, unsigned int nSize, in
 
 void __fastcall NPCMENU_ClearUnicode(void* pChar);                                                     // 0x0042F530
 
-extern "C" int __cdecl SStrPrintf(char* szDest, unsigned int nSize, const char* szFormat, ...);             // 0x00413A40
-
-unsigned char __cdecl GAME_GetDifficulty();                                                         // 0x0044DCD0
 
 D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId);                                    // 0x00451F80
 
-Unicode* __fastcall sub_00452170(Unicode* pText);                                                           // 0x00452170
+Unicode* __fastcall sub_00452170_ReturnText(Unicode* pText);                                                           // 0x00452170
 
-D2SetItemsTxt* __fastcall DATATBLS_GetSetItemsTxtRecord(int nIndex);                                    // 0x00483440
 
-D2UniqueItemsTxt* __fastcall DATATBLS_GetUniqueItemsTxtRecord(int nIndex);                              // 0x00483470
 
 const Unicode* __fastcall INV_SkipBracketTag(const Unicode* pString); // 0x004834A0
 
 void __cdecl INV_FormatArgs(Unicode* pDest, const Unicode* pFormat, ...);                          // 0x0048BE80
 
-int __cdecl STRTABLE_GetLanguage();                                                                         // 0x00525150
 
-void __fastcall sub_005272B0_FormatText(Unicode* pDst, const Unicode* pText, const Unicode* pFormat, int nMaxLength, int nLanguage); // 0x005272B0
 
 int __stdcall ITEMS_GetItemQuality(D2UnitStrc* pItem);                                                      // 0x00627E70
 
-unsigned short __stdcall ITEMS_GetPrefixId(D2UnitStrc* pItem, int nPrefix);                                 // 0x00627EC0
 
 unsigned short __stdcall ITEMS_GetSuffixId(D2UnitStrc* pItem, int nSuffix);                                 // 0x00627F80
 
@@ -1044,17 +917,13 @@ unsigned short __stdcall ITEMS_GetRarePrefixId(D2UnitStrc* pItem);              
 
 unsigned short __stdcall ITEMS_GetRareSuffixId(D2UnitStrc* pItem);                                          // 0x00628040
 
-char* __stdcall ITEMS_GetEarName(D2UnitStrc* pItem);                                                        // 0x00628340
 
 unsigned char __stdcall ITEMS_GetEarLevel(D2UnitStrc* pItem);                                               // 0x006283A0
 
 int __stdcall ITEMS_GetFileIndex(D2UnitStrc* pItem);                                                        // 0x00629DA0
 
-int __stdcall ITEMS_GetItemType(D2UnitStrc* pItem);                                                         // 0x0062B400
 
-D2MagicAffixTxt* __stdcall DATATBLS_GetMagicAffixTxtRecord(int nIndex);                                     // 0x00633EE0
 
-D2RareAffixTxt* __stdcall DATATBLS_GetRareAffixTxtRecord(int nId);                                          // 0x00634260
 
 D2LowQualityItemsTxt* __stdcall DATATBLS_GetLowQualityItemsTxtRecord(int nId);                              // 0x006375C0
 
@@ -1068,29 +937,19 @@ void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int n
 
 void __fastcall D2Win_10131_GetTextDimensions(const Unicode* pText, int* pWidth, int* pHeight); // 0x00502520
 
-unsigned int __stdcall ITEMS_GetTransmogrify(D2UnitStrc* pItem); // 0x0062A0A0
 
 extern int gbHoverPlayerItem; // 0x00721E38
 
 extern "C" __declspec(dllimport) short __stdcall GetAsyncKeyState(int vKey);
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-D2UnitStrc* __cdecl sub_00463DE0_GetPlayerUnit(); // 0x00463DE0
 
-D2UnitStrc* __cdecl CURSOR_GetCursorItem(); // 0x004680A0
 
-void __fastcall MSG_SendTwoDwords(unsigned char nHeader, unsigned int d1, unsigned int d5); // 0x004786A0
 
-void __fastcall MSG_SendFourDwords(char nCommand, int nArg0, int nArg1, int nArg2, int nArg3); // 0x00478700
 
-void __cdecl SPELLSEL_UpdateSkillIcons(); // 0x004A9DF0
 
-int __fastcall NPCMENU_GetInteractNpcId(int* pUnitId); // 0x004B3230
 
-void __fastcall ITEM_SetUninterruptableState(D2UnitStrc* pItem); // 0x004C21F0
 
-void __fastcall UNITSND_PlayPlayerSpeech(D2UnitStrc* pUnit, unsigned short nStringId); // 0x004CB9C0
 
 void __fastcall sub_004DBEA0(D2UnitStrc* pUnit, int nArg2, int nArg3, unsigned int* pWidth, unsigned int* pHeight); // 0x004DBEA0
 
@@ -1098,23 +957,16 @@ unsigned char __stdcall ITEMS_GetInvPage(D2UnitStrc* pItem); // 0x00628250
 
 unsigned char __stdcall ITEMS_GetSockets(D2UnitStrc* pItem); // 0x006299B0
 
-int __stdcall ITEMS_IsNotQuestItem(D2UnitStrc* pItem); // 0x0062A130
 
-unsigned int __stdcall ITEMS_CheckIfBeltable(D2UnitStrc* pItem); // 0x0062BAD0
 
-int __stdcall ITEMS_IsSocketFiller(D2UnitStrc* pItem); // 0x0062BEB0
 
-int __stdcall ITEMS_AreStackablesEqual(D2UnitStrc* pItem1, D2UnitStrc* pItem2); // 0x0062C850
 
-int __stdcall ITEMS_GetTransactionCost(D2UnitStrc* pPlayer, D2UnitStrc* pItem, int nDifficulty, D2BitBufferStrc* pQuestFlags, int nVendorId, int nTransactionType); // 0x0062FDC0
 
 int __stdcall INVENTORY_GetFreePosition(D2InventoryStrc* pInventory, D2UnitStrc* pItem, int nInventoryRecordId, int* pFreeX, int* pFreeY, unsigned char nPage); // 0x0063B850
 
 int __stdcall INVENTORY_CanItemBePlaced(D2InventoryStrc* pInventory, D2UnitStrc* pItem, int nX, int nY, int nRecord, D2UnitStrc** ppExchangeItem, unsigned int* pCount, unsigned char nPage); // 0x0063B9D0
 
-int __stdcall INVENTORY_CanItemsBeExchanged(D2InventoryStrc* pInventory, D2UnitStrc* pItem, int nX, int nY, int nRecord, D2UnitStrc** ppOther, unsigned char nPage, int nArg8); // 0x0063BB20
 
-D2UnitStrc* __stdcall INVENTORY_GetItemFromInventoryPage(D2InventoryStrc* pInventory, int nX, int nY, int* pOutX, int* pOutY, int nRecord, unsigned char nPage); // 0x0063BD10
 
 
 static int INV_CanSocketInto(D2UnitStrc* pItem, D2UnitStrc* pSocketable); // 0x004843E0
@@ -1131,19 +983,12 @@ extern D2InventoryGridInfoStrc gtTradePage2Grid;        // 0x007BCA30
 
 extern D2InventoryGridInfoStrc gtCubeGrid;        // 0x007BCB70
 
-int __cdecl GAME_IsExitPending(); // 0x0044DA30
 
-int __cdecl CUNIT_IsPlayerDeadOrMissing(); // 0x00463DF0
 
-void __cdecl INV_LoadUiRecords(); // 0x004835B0
 
-int __cdecl HIREABLES_AreBeltRowsShown(); // 0x004979E0
 
-int __cdecl sub_0045AE90(); // 0x0045AE90
 
-void __cdecl UI_CancelCursorItemUse(); // 0x00453EC0
 
-int __fastcall AUTOMAP_IsCursorOverMiniPanelButton(SMSGHANDLER_PARAMS*); // 0x00498DC0
 
 void __cdecl sub_0048A730_SwapWeapons(); // 0x0048A730
 
@@ -1155,7 +1000,6 @@ extern D2BodyClickFn gaBodyClick[]; // 0x00721E58
 
 static void __stdcall INV_DrawGridCells(D2InventoryGridInfoStrc* pGrid, int nX, int nY, unsigned char nWidth, unsigned char nHeight, int nColor); // 0x004839D0
 
-int __fastcall INV_IsInPlayerInvRect(int nX, int nY); // 0x00483AB0
 
 static int INV_IsOverWeaponSwapTab(int nX, int nY); // 0x00486860
 
@@ -1163,7 +1007,6 @@ static int INV_IsOverGoldButton(int nX, int nY); // 0x00486DA0
 
 static void __stdcall INV_ClickOutsidePanel(int nY, SMSGHANDLER_PARAMS* pMsg, int nX); // 0x00486E60
 
-int __stdcall D2Common_10299(D2UnitStrc* pUnit, int nBodyLoc, D2UnitStrc* pItem, int bSkipRequirementCheck);  // 0x0063DE60
 
 int __stdcall sub_0062C0B0_GetItemTypeClass(D2UnitStrc* pItem);
 
@@ -1173,14 +1016,11 @@ const Unicode* __fastcall CMDTBL_GetKeyText(int nKey, int nArg2);               
 
 void __stdcall INV_UpdateGridHover(D2UnitStrc* pPlayer, D2InventoryStrc* pInventory, D2UnitStrc* pCursorItem, unsigned int nX, unsigned int nY, int nPage, D2InventoryGridInfoStrc* pGrid);
 
-void __cdecl INV_CloseCubePanel(); // 0x0048A050
 
 Unicode* __fastcall INV_PrefixColorCode(Unicode* pText, int nDigit);   // 0x004521C0
 
-int __stdcall STATLIST_GetDefenseFromUnit(D2UnitStrc* pUnit); // 0x00626020
 
 
-int __stdcall INV_IsCursorInRect(int nLeft, int nTop, int nRight, int nBottom);                    // 0x0048A790
 
 enum D2C_UIvars
 {
@@ -1280,31 +1120,17 @@ extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x
 
 extern "C" __declspec(dllimport) void* __stdcall CreateFileA(const char* szFileName, unsigned long dwDesiredAccess, unsigned long dwShareMode, void* pSecurityAttributes, unsigned long dwCreationDisposition, unsigned long dwFlagsAndAttributes, void* hTemplateFile); // 0x006CC19C
 
-void __fastcall INV_UpdateAuxBattleNetAddress(int nIndex); // 0x00482CA0
 
-int __fastcall ARCHIVE_LoadVideoArchives(void* pfShowMessage, void* hFile, int bExpansion); // 0x004FAD10
 
-int __fastcall D2Win_10177(unsigned char nAct); // 0x004FB480
 
-void __fastcall PLAYER_SetCinematicExpansion(int bExpansion); // 0x00460480
 
-int __cdecl sub_00460500_RunPopup(); // 0x00460500
-
-int __cdecl sub_00460680_RunOkCancel(); // 0x00460680
-
-int __cdecl sub_004605A0_RunPopup(); // 0x004605A0
 
 void __cdecl sub_00477DD0(); // 0x00477DD0
 
-void __cdecl sub_00481830(); // 0x00481830
 
-void __cdecl GFXUTIL_ClearFadeTimer(); // 0x004DC0A0
 
-void __fastcall GAME_SetPlayCinematic(int nValue); // 0x0044D530
 
-void __cdecl GAME_SetCinematicPlayed(); // 0x0044D510
 
-void __cdecl GAME_ExitForCinematic(); // 0x0044DD60
 
 extern "C" const char gszRes640x146[]; // 0x006D4214
 
@@ -1317,7 +1143,6 @@ char gbCinematicPlaying; // 0x007BC9D5
 
 extern int gnAutomapHeight; // 0x007A521C
 
-extern unsigned char gabGridColors_007BCAD8[]; // 0x007BCAD8
 
 struct D2CharStatsTxt;
 
@@ -1333,19 +1158,12 @@ struct D2SetsTxt;
 
 extern int gbWeaponSwitch; // 0x007BCC4C
 
-int __stdcall ITEMS_GetAmmoType(D2UnitStrc*); // 0x0062E6F0
-
-int __stdcall ITEMS_GetQuiverType(D2UnitStrc*); // 0x0062E740
 
 
 
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
 
-int __stdcall SKILLS_GetSkillLevel(D2UnitStrc* pUnit, void* pSkill, int bBonus); // 0x006442A0
 
-int __stdcall ITEMS_GetWeaponAttackSpeed(D2UnitStrc* pUnit, D2UnitStrc* pItem); // 0x0062A710
 
-int __stdcall D2COMMON_11036_GetMonCurseResistanceSubtraction(int nLevel, int nSkillId); // 0x00645C10
 
 extern D2SpeedNameStrc gaSpeedNames[6]; // 0x00721E88
 
@@ -1355,29 +1173,17 @@ extern int gaSpeedTable[][5]; // 0x00721F10
 
 extern int gaClassSpeedOffsets[][2]; // 0x00722078
 
-int __fastcall GAME_GetUnitGUID(D2UnitStrc* pUnit); // 0x00451F50
 
 int __fastcall GAME_GetUnitClassId(D2UnitStrc* pUnit); // 0x00451F60
 
-int __fastcall CUNIT_IsDeadOrDying(D2UnitStrc* pUnit); // 0x00464820
 
-int __fastcall ROSTER_GetPetLife(int nUnitId); // 0x00479080
 
-void __stdcall INV_DrawUnitName(D2UnitStrc* pUnit); // 0x0048A7D0
 
-void __cdecl INV_DrawPanelLabels(); // 0x0048A890
 
-void __stdcall D2LANG_FormatInt(Unicode* pOut, int nValue, int nSize); // 0x00525FB0
 
-D2DifficultyLevelsTxt* __stdcall DATATBLS_GetDifficultyLevelsTxtRecord(int nDifficulty); // 0x00611D30
 
-int __stdcall STATLIST_UnitGetItemStatOrSkillStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625500
 
-int __stdcall STATLIST_GetMaxLifeFromUnit(D2UnitStrc* pUnit); // 0x00625D10
 
-short __stdcall ITEMS_GetStrengthBonus(D2UnitStrc* pItem); // 0x00629860
-
-short __stdcall ITEMS_GetDexBonus(D2UnitStrc* pItem); // 0x006298A0
 
 int __stdcall SKILLS_GetWeaponMasteryBonus(D2UnitStrc* pUnit, D2UnitStrc* pItem, D2SkillStrc* pSkill, int nType); // 0x00645830
 
@@ -1385,7 +1191,6 @@ extern D2MercStatLineStrc gaMercStatLines[12]; // 0x007221A8
 
 static void INV_DrawMercStats(D2UnitStrc* pUnit); // 0x0048A990
 
-D2SetsTxt* __fastcall DATATBLS_GetSetsTxtRecord(int nSetId); // 0x00483410
 
 int __stdcall sub_00485410_AppendDamage(D2UnitStrc* pItem, Unicode* pText); // 0x00485410
 
@@ -1397,17 +1202,11 @@ void __fastcall WARDENCLIENT_SetItemPropTexts(D2UnitStrc* pPlayer, D2UnitStrc* p
 
 void __fastcall MISSILE_AddSetStatePropText(D2UnitStrc* pUnit, D2UnitStrc* pItem, Unicode* pText, int nMaxLength); // 0x004E6680
 
-int __stdcall STATLIST_GetMaxDamageFromUnit(D2UnitStrc* pItem, int a2); // 0x00625E60
 
-int __stdcall STATLIST_GetMinDamageFromUnit(D2UnitStrc* pItem, int a2); // 0x00625EF0
 
-int __stdcall STATLIST_GetDefenseFromUnit(D2UnitStrc* pUnit); // 0x00626020
 
-int __stdcall ITEMS_GetLevelRequirement(D2UnitStrc* pItem, D2UnitStrc* pUnit); // 0x0062BA60
 
-int __stdcall ITEMS_IsClassValid(D2UnitStrc* pItem); // 0x0062C060
 
-int __stdcall ITEMS_GetClassOfClassSpecificItem(D2UnitStrc* pItem); // 0x0062C0B0
 
 int __stdcall MONSTERS_GetHirelingTypeId(D2UnitStrc* pUnit); // 0x0063EE90
 
@@ -1664,9 +1463,10 @@ void __fastcall INV_PlayCinematic(int nIndex)
         strcpy(szName, gaAuxLevelEntries[nIndex].szFile);
     }
 
-    sub_00481830();
+    sub_00481830_StopAllSounds();
     sub_004DCA30();
-    sub_004FAD70();
+// build: symbol ?ARCHIVE_UnloadExpansionArchives@* 0x004FAD70
+    ARCHIVE_UnloadExpansionArchives();
 
     bExpansion = 0;
     bPlayed = bLoaded = 0;
@@ -1726,7 +1526,7 @@ void __fastcall INV_PlayCinematic(int nIndex)
     if (gbCinematicChain)
     {
         if (bLoaded)
-            sub_004FAD70();
+            ARCHIVE_UnloadExpansionArchives();
         if (bPlayed)
             D2Win_10004(D2GFX_GetResolutionMode());
 
@@ -1778,7 +1578,7 @@ lMissing:
         GAME_ExitForCinematic();
     }
 
-    sub_004FAD70();
+    ARCHIVE_UnloadExpansionArchives();
     ARCHIVE_LoadExpansionArchives(sub_00460500_RunPopup, sub_004605A0_RunPopup, 0, gpClientConfig);
     gbCinematicBusy = 0;
 }
@@ -1839,18 +1639,6 @@ struct D2ClientTextDataStrc;
 
 
 
-static __forceinline void sub_004845A0_DrawOtherHandFrame(D2InvCompGridStrc* pCompGrid)
-{
-    const int nLeft = pCompGrid->rect.nLeft;
-    if (nLeft >= 0 && nLeft < gnAutomapWidth)
-    {
-        const int nTop = pCompGrid->rect.nTop;
-        if (nTop >= 0 && nTop < gnAutomapHeight)
-        {
-            AUTOMAP_DrawFramedBox(nLeft, nTop, pCompGrid->nWidth, pCompGrid->nHeight, gabColors_007BCAD8[0], 0);
-        }
-    }
-}
 
 
 
@@ -1903,33 +1691,6 @@ static __forceinline void sub_004845A0_DrawOtherHandFrame(D2InvCompGridStrc* pCo
 
 
 
-
-
-static int UNITS_GetXPositionInline(D2UnitStrc* pUnit)
-{
-    switch (pUnit->dwUnitType)
-    {
-    case UNIT_OBJECT:
-    case UNIT_ITEM:
-    case UNIT_TILE:
-        return pUnit->pStaticPath->nXPos;
-    }
-
-    return pUnit->pDynamicPath ? PATH_GetXPosition(pUnit->pDynamicPath) : 0;
-}
-
-static int UNITS_GetYPositionInline(D2UnitStrc* pUnit)
-{
-    switch (pUnit->dwUnitType)
-    {
-    case UNIT_OBJECT:
-    case UNIT_ITEM:
-    case UNIT_TILE:
-        return pUnit->pStaticPath->nYPos;
-    }
-
-    return pUnit->pDynamicPath ? PATH_GetYPosition(pUnit->pDynamicPath) : 0;
-}
 
 
 
@@ -2014,11 +1775,6 @@ static int UNITS_GetWeaponClass(D2UnitStrc* pUnit)
 
 
 
-static inline int InRect(int nX, int nY, int nLeft, int nRight, int nTop, int nBottom)
-{
-    return nX >= nLeft && nX < nRight && nY >= nTop && nY <= nBottom;
-}
-
 
 
 
@@ -2047,31 +1803,9 @@ struct D2SkillStrc;
 
 
 
-static __forceinline int IsCursorInRectInline(int nLeft, int nTop, int nRight, int nBottom)
-{
-    int nX = sub_00468730();
-    int nY = sub_00468740();
-    if (nX >= nLeft && nX <= nRight && nY >= nTop && nY <= nBottom)
-        return 1;
-    return 0;
-}
-
-static __forceinline void DrawBodyLocRectInline(D2InvCompGridStrc* pRect, int nColor)
-{
-    const int nX = pRect->rect.nLeft;
-    const int nY = pRect->rect.nTop;
-    if (nX >= 0 && nX < gnAutomapWidth && nY >= 0 && nY < gnAutomapHeight)
-        AUTOMAP_DrawFramedBox(nX, nY, pRect->nWidth, pRect->nHeight, nColor, 0);
-}
 
 
 
-
-
-static inline int INV_GetUnitIdInline(D2UnitStrc* pUnit)
-{
-    return !pUnit ? -1 : pUnit->dwUnitId;
-}
 
 
 
@@ -2161,64 +1895,17 @@ static void __stdcall sub_00486BD0_GetItemCell(unsigned int nX, unsigned int nY,
 
 
 
-static inline int INV_IsModeInRange(int nMode)
-{
-    if (nMode < 2)
-    {
-        return 0;
-    }
-    if (nMode > 4)
-    {
-        return 0;
-    }
-    return 1;
-}
 
 
 
 
 
-static int __fastcall GetCenteredXInline(unsigned short nString, int nX)
-{
-    unsigned short wszTextBuf[100];
-    Unicode* wszText = (Unicode*)wszTextBuf;
-    for (int i = 0; i < 100; ++i)
-    {
-        wszText[i].wChar = 0;
-    }
-    sub_005267E0(wszText, D2LANG_GetStringFromTblIndex(nString));
-    int nWidth = D2Win_10121_GetTextWidth(wszText);
-    nWidth /= 2;
-    return nX - nWidth;
-}
 
-void __cdecl VIEW_DrawHelpFrameLowRes();                                                                  // 0x004943B0
 
-void __cdecl VIEW_DrawHelpFrameHighRes();                                                                  // 0x004944F0
 
-void __cdecl ROSTERPETS_DrawHelpColumn();                                                                     // 0x00494620
 
-void __cdecl VIEW_DrawHelpLinesLowRes();                                                               // 0x00494680
-
-void __cdecl VIEW_DrawHelpLinesHighRes();                                                               // 0x00494A00
-
-void __cdecl VIEW_DrawHelpPanelCel();                                                                   // 0x00494E40
 
 extern int gbHelpUiOpened;                                                                         // 0x007BEF00
-
-static int __fastcall GetCenteredX_Inl(unsigned short nString, int nX)
-{
-    unsigned short wszTextBuf[100];
-    Unicode* wszText = (Unicode*)wszTextBuf;
-    for (int i = 0; i < 100; ++i)
-    {
-        wszText[i].wChar = 0;
-    }
-    sub_005267E0(wszText, D2LANG_GetStringFromTblIndex(nString));
-    int nWidth = D2Win_10121_GetTextWidth(wszText);
-    nWidth /= 2;
-    return nX - nWidth;
-}
 
 
 
@@ -2237,7 +1924,6 @@ extern D2SkillIconStateStrc gtHotkeySlots;                                      
 
 extern int gbSkillSelectRight;                                                                               // 0x007C07FC
 
-void __fastcall SPELLSEL_BuildSkillRows(D2UnitStrc* pUnit, int nStartX, int bLeft, int bNoSlots, int bNoDraw); // 0x004AA3A0
 
 
 

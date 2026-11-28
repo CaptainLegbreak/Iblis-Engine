@@ -2,10 +2,6 @@
 #include "D2BnCryptTypes.h"
 
 unsigned char* __fastcall SHA_Interleave(unsigned char* pDest, const unsigned char* pData, unsigned int nSize); // 0x0052A120
-void* __fastcall sub_0052A240_BigFromUnsigned(unsigned int nValue);                                         // 0x0052A240
-void* __fastcall sub_0052A270_BigFromBinary(const void* pData, unsigned int nSize);                         // 0x0052A270
-unsigned int __fastcall sub_0052A2A0_BigToBinary(void* hBig, void* pBuffer, unsigned int nSize);            // 0x0052A2A0
-int __fastcall sub_0052A2F0_BigCompareUnsigned(void* hBig, unsigned int nValue);                            // 0x0052A2F0
 
 // 0x00528030
 void D2BigPowModStrc::sub_00528030_HashToUInt(void* const& hBig, unsigned int* pValue)

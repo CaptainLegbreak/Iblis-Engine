@@ -1,4 +1,5 @@
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2Drlg.h"
 #include "D2DrlgMaps.h"
 #include "D2Structs.h"
@@ -11,11 +12,9 @@ struct D2DrlgOrthStrc;
 
 struct D2DrlgOutdoorInfoStrc;
 
-int __fastcall DRLGGRID_GetGridEntry(D2DrlgGridStrc* pGrid, int nX, int nY); // 0x0067C570
 
 int __fastcall DRLGOUTDOORS_TestGridCellSpawnValid(D2DrlgLevelStrc* pLevel, int nX, int nY); // 0x00674200
 
-void __fastcall DRLGOUTWILD_GetBridgeCoords(D2DrlgLevelStrc* pLevel, int* pX, int* pY); // 0x0067FC20
 
 extern const int gnOutdoorScanXOffsets[4]; // 0x006F2810
 
@@ -23,15 +22,11 @@ extern const int gnOutdoorScanYOffsets[4]; // 0x006F2800
 
 struct D2DrlgGridStrc;
 
-void __fastcall DRLGGRID_SetVertexGridFlags(D2DrlgGridStrc* pGrid, D2DrlgVertexStrc* pVertex, int nFlag); // 0x0067C890
+void __stdcall sub_00680D70_CollectRoadStarts(D2DrlgLevelStrc* pLevel); // 0x00680D70
 
-void __stdcall sub_00680D70(D2DrlgLevelStrc* pLevel); // 0x00680D70
+void __stdcall sub_00681000_SetRoadEnds(D2DrlgLevelStrc* pLevel); // 0x00681000
 
-void __stdcall sub_00681000(D2DrlgLevelStrc* pLevel); // 0x00681000
-
-int __fastcall sub_006817D0(D2DrlgLevelStrc* pLevel, int nRoad); // 0x006817D0
-
-D2DrlgVertexStrc* __fastcall DRLGVER_AllocVertex(void* pMemPool, unsigned char nDirection); // 0x0067CDD0
+int __fastcall sub_006817D0_BuildRoad(D2DrlgLevelStrc* pLevel, int nRoad); // 0x006817D0
 
 extern const int gnAct1PathOffsetX[4]; // 0x006F2820
 
@@ -70,7 +65,7 @@ static void DRLGOUTDOORS_CalculatePathCoordinates(D2DrlgLevelStrc* pLevel, D2Drl
 }
 
 // 0x00681000
-void __stdcall sub_00681000(D2DrlgLevelStrc* pLevel)
+void __stdcall sub_00681000_SetRoadEnds(D2DrlgLevelStrc* pLevel)
 {
     D2DrlgOutdoorInfoStrc* pOutdoors = pLevel->pOutdoors;
     int nX = -1;
@@ -174,7 +169,7 @@ static inline unsigned int SEED_RollRandomNumber(D2SeedStrc* pSeed)
 }
 
 // 0x00681240
-static void __stdcall sub_00681240(D2DrlgLevelStrc* pLevel, int nRoad)
+static void __stdcall sub_00681240_PlaceRoadVertices(D2DrlgLevelStrc* pLevel, int nRoad)
 {
     void* pMemPool = pLevel->pDrlg->pMempool;
     D2DrlgOutdoorInfoStrc* pOutdoors = pLevel->pOutdoors;
@@ -225,15 +220,15 @@ static void __stdcall sub_00681240(D2DrlgLevelStrc* pLevel, int nRoad)
 void __fastcall DRLGOUTDOORS_SpawnAct1DirtPaths(D2DrlgLevelStrc* pLevel)
 {
     D2DrlgOutdoorInfoStrc* pOutdoors = pLevel->pOutdoors;
-    sub_00680D70(pLevel);
-    sub_00681000(pLevel);
+    sub_00680D70_CollectRoadStarts(pLevel);
+    sub_00681000_SetRoadEnds(pLevel);
 
     for (int nPath = 0; nPath < pOutdoors->nVertices; ++nPath)
     {
-        if (sub_006817D0(pLevel, nPath))
+        if (sub_006817D0_BuildRoad(pLevel, nPath))
         {
             DRLGGRID_SetVertexGridFlags(&pOutdoors->pGrid[2], pOutdoors->pRoads[nPath], 0x80);
-            sub_00681240(pLevel, nPath);
+            sub_00681240_PlaceRoadVertices(pLevel, nPath);
         }
     }
 }
@@ -259,23 +254,15 @@ struct d2data_00749D68_t
 };
 #pragma pack(pop)
 
-extern "C" const int gData_006F2800[4]; // 0x006F2800
-extern "C" const int gData_006F2810[4]; // 0x006F2810
-extern "C" const int gData_006F2820[4]; // 0x006F2820
-extern "C" const int gData_006F2830[4]; // 0x006F2830
 extern "C" struct d2data_00749D68_t gData_00749D68; // 0x00749D68
 
-extern "C" const int gData_006F2800[4] = { 0, 1, -1 }; // 0x006F2800
-#pragma comment(linker, "/alternatename:?gnOutdoorScanYOffsets@@3QBHB=_gData_006F2800")
+extern const int gnOutdoorScanYOffsets[4] = { 0, 1, -1 }; // 0x006F2800
 
-extern "C" const int gData_006F2810[4] = { -1, 0, 0, 1 }; // 0x006F2810
-#pragma comment(linker, "/alternatename:?gnOutdoorScanXOffsets@@3QBHB=_gData_006F2810")
+extern const int gnOutdoorScanXOffsets[4] = { -1, 0, 0, 1 }; // 0x006F2810
 
-extern "C" const int gData_006F2820[4] = { 1, 0, -1 }; // 0x006F2820
-#pragma comment(linker, "/alternatename:?gnAct1PathOffsetX@@3QBHB=_gData_006F2820")
+extern const int gnAct1PathOffsetX[4] = { 1, 0, -1 }; // 0x006F2820
 
-extern "C" const int gData_006F2830[4] = { 0, 1, 0, -1 }; // 0x006F2830
-#pragma comment(linker, "/alternatename:?gnAct1PathOffsetY@@3QBHB=_gData_006F2830")
+extern const int gnAct1PathOffsetY[4] = { 0, 1, 0, -1 }; // 0x006F2830
 
 extern "C" struct d2data_00749D68_t gData_00749D68 = {
     (const void*)"English",

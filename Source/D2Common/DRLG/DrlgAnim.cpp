@@ -1,8 +1,12 @@
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2Drlg.h"
 #include "D2DrlgMaps.h"
 #include "D2DrlgPresets.h"
 #include "D2DrlgTiles.h"
+#include "FogApi.h"
+#include "FogApi2.h"
+#include "D2CMPApi.h"
 extern const int gnTileTypeMappingTable[]; // 0x006EEF20
 
 struct D2TileLibraryEntryStrc;
@@ -13,18 +17,13 @@ struct D2DrlgRoomTilesStrc;
 
 struct D2DrlgTileDataStrc;
 
-int __fastcall DRLGGRID_GetGridEntry(D2DrlgGridStrc* pGrid, int nX, int nY); // 0x0067C570
 
 int __stdcall TileLibraryGetTiles(D2TileLibraryHeaderStrc** ppTiles, int nTileType, int nStyle, int nSequence, D2TileLibraryEntryStrc** ppTileEntries, int nMaxEntries); // 0x00604AE0
-
-int __stdcall TileGetFlags(D2TileLibraryEntryStrc* hTile); // 0x00604BC0
 
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
@@ -32,19 +31,9 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);    
 
 #define D2_ASSERTM(expr, msg, line) D2_ASSERT(expr, line)
 
-char* __cdecl ERRORMANAGER_Sprintf(char* szDest, const char* szFormat, ...);                                // 0x00407310
-
 extern "C" const char gszDrlgAnimSourceFile[];                                                              // 0x006EEF08
 
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
-
-int __stdcall TileGetRarity(D2TileLibraryEntryStrc* hTile); // 0x00604C20
-
-D2DrlgTileDataStrc* __fastcall DRLGROOMTILE_InitWallTileData(D2DrlgRoomStrc* pDrlgRoom, D2DrlgTileDataStrc** ppTileData, int nX, int nY, unsigned int nPackedTileInformation, D2TileLibraryEntryStrc* pTileLibraryEntry, int nTileType); // 0x0066DC50
-
-D2DrlgTileDataStrc* __fastcall DRLGROOMTILE_InitFloorTileData(D2DrlgRoomStrc* pDrlgRoom, D2DrlgTileDataStrc** ppTileData, int nX, int nY, unsigned int nPackedTileInformation, D2TileLibraryEntryStrc* pTileLibraryEntry); // 0x0066DEF0
-
-D2DrlgTileDataStrc* __fastcall DRLGROOMTILE_InitShadowTileData(D2DrlgRoomStrc* pDrlgRoom, D2DrlgTileDataStrc** ppTileData, int nX, int nY, unsigned int nPackedTileInformation, D2TileLibraryEntryStrc* pTileLibraryEntry); // 0x0066DF40
 
 static void __fastcall DRLGANIM_AllocAnimationTileGrid(D2DrlgRoomStrc* pDrlgRoom, int nAnimationSpeed, D2DrlgTileDataStrc* pTiles, int nTiles, D2DrlgGridStrc* pDrlgGrid, int nUnused);
 
@@ -80,9 +69,7 @@ struct D2CommonStormZero6105F0Strc
 
 extern const int gnTileTypeTable[];                                                                // 0x006EEF88
 
-void __stdcall DUNGEON_GameTileToClientCoords(int* pX, int* pY);                                            // 0x00643310
 
-void __fastcall DRLGANIM_AllocAnimationTileGrids(D2DrlgRoomStrc* pRoom, int nAnimationSpeed, D2DrlgGridStrc* pWallGrid, int nWalls, D2DrlgGridStrc* pFloorGrid, int nFloors, D2DrlgGridStrc* pShadowGrid);
 
 // 0x0066D290
 void __fastcall DRLGANIM_TestLoadAnimatedRoomTiles(D2DrlgRoomStrc* pDrlgRoom, D2DrlgGridStrc* pDrlgGrid, D2DrlgGridStrc* pTileTypeGrid, int nTileType, int nTileX, int nTileY)
@@ -364,15 +351,7 @@ struct d2data_007498B8_t
 };
 #pragma pack(pop)
 
-extern "C" const char gData_006EEF08[20]; // 0x006EEF08
-extern "C" const int gData_006EEF88[16]; // 0x006EEF88
 extern "C" struct d2data_007498B8_t gData_007498B8; // 0x007498B8
-
-extern "C" const char gData_006EEF08[20] = ".\\DRLG\\DrlgAnim.cpp"; // 0x006EEF08
-#pragma comment(linker, "/alternatename:_gszDrlgAnimSourceFile=_gData_006EEF08")
-
-extern "C" const int gData_006EEF88[16] = { 0, 1, 2, 5, 5, 7, 9, 11, 13, 14, 15, 16, 17, 18, 19, 20 }; // 0x006EEF88
-#pragma comment(linker, "/alternatename:?gnTileTypeTable@@3QBHB=_gData_006EEF88")
 
 extern "C" struct d2data_007498B8_t gData_007498B8 = {
     (const void*)"English",
@@ -391,3 +370,7 @@ extern "C" struct d2data_007498B8_t gData_007498B8 = {
     (const void*)"Unknown",
     (const void*)"14"
 }; // 0x007498B8
+
+extern "C" const char gszDrlgAnimSourceFile[20] = ".\\DRLG\\DrlgAnim.cpp"; // 0x006EEF08
+
+extern const int gnTileTypeTable[16] = { 0, 1, 2, 5, 5, 7, 9, 11, 13, 14, 15, 16, 17, 18, 19, 20 }; // 0x006EEF88

@@ -9,7 +9,7 @@ struct D2CharItemStrc
     unsigned int dwItemCode; // 0x00
     unsigned char nBodyLoc; // 0x04
     unsigned char nItemCount; // 0x05
-    unsigned char unk0x06[0x2]; // 0x06
+    unsigned char pad0x06[2]; // 0x06
 };
 
 struct D2OpStatDataStrc
@@ -40,7 +40,7 @@ struct D2CharStatsTxt
     unsigned char nPercentDex; // 0x38
     unsigned char nPercentVit; // 0x39
     unsigned char nManaRegen; // 0x3A
-    unsigned char unk0x3B[0x1]; // 0x3B
+    unsigned char pad0x3B; // 0x3B
     int dwToHitFactor; // 0x3C
     unsigned char nWalkSpeed; // 0x40
     unsigned char nRunSpeed; // 0x41
@@ -52,23 +52,23 @@ struct D2CharStatsTxt
     unsigned char nStaminaPerVitality; // 0x47
     unsigned char nManaPerMagic; // 0x48
     unsigned char nBlockFactor; // 0x49
-    unsigned char unk0x4A[0x2]; // 0x4A
+    unsigned char pad0x4A[2]; // 0x4A
     int dwBaseWClass; // 0x4C
     signed char statPerLevel; // 0x50
-    unsigned char unk0x51[0x1]; // 0x51
+    unsigned char pad0x51; // 0x51
     unsigned short wStrAllSkills; // 0x52
     unsigned short wStrSkillTab[3]; // 0x54
     unsigned short wStrClassOnly; // 0x5A
     D2CharItemStrc pItems[10]; // 0x5C
     short wStartSkill; // 0xAC
     short nBaseSkill[10]; // 0xAE
-    unsigned char unk0xC2[0x2]; // 0xC2
+    unsigned char pad0xC2[2]; // 0xC2
 };
 
 struct D2ItemStatCostTxt
 {
     unsigned short wStatId; // 0x00
-    unsigned char unk0x02[0x2]; // 0x02
+    unsigned char pad0x02[2]; // 0x02
     unsigned char nItemStatFlags[4]; // 0x04
     unsigned char nSendBits; // 0x08
     unsigned char nSendParamBits; // 0x09
@@ -80,14 +80,14 @@ struct D2ItemStatCostTxt
     unsigned char nValShift; // 0x18
     unsigned char nSaveBits; // 0x19
     unsigned char n109SaveBits; // 0x1A
-    unsigned char unk0x1B[0x1]; // 0x1B
+    unsigned char pad0x1B; // 0x1B
     int dwSaveAdd; // 0x1C
     int n109SaveAdd; // 0x20
     int nSaveParamBits; // 0x24
     int dw09SaveParamBits; // 0x28
     int dwMinAccr; // 0x2C
     unsigned char nEncode; // 0x30
-    unsigned char unk0x31[0x1]; // 0x31
+    unsigned char pad0x31; // 0x31
     unsigned short wMaxStat; // 0x32
     short nDescPriority; // 0x34
     unsigned char nDescFunc; // 0x36
@@ -113,7 +113,7 @@ struct D2ItemStatCostTxt
     unsigned short wOpStat[3]; // 0x58
     unsigned short wStatsAffected[64]; // 0x5E
     D2OpStatDataStrc pOpStatData[16]; // 0xDE
-    unsigned char unk0x13E[0x2]; // 0x13E
+    unsigned char pad0x13E[2]; // 0x13E
     int nStuff; // 0x140
 };
 
@@ -135,7 +135,7 @@ struct D2ItemsTxt
     unsigned int dwCalc[3]; // 0xA4
     unsigned int dwLen; // 0xB0
     unsigned char nDescType; // 0xB4
-    unsigned char unk0xB5[0x1]; // 0xB5
+    unsigned char pad0xB5; // 0xB5
     unsigned short wStringId; // 0xB6
     int dwSpellDescCalc; // 0xB8
     unsigned int dwUpgradeCode; // 0xBC
@@ -165,7 +165,7 @@ struct D2ItemsTxt
     unsigned char n2HandMinDam; // 0x102
     unsigned char n2HandMaxDam; // 0x103
     unsigned char nRangeAdder; // 0x104
-    unsigned char unk0x105[0x1]; // 0x105
+    unsigned char pad0x105; // 0x105
     short nStrBonus; // 0x106
     short nDexBonus; // 0x108
     unsigned short wReqStr; // 0x10A
@@ -183,7 +183,7 @@ struct D2ItemsTxt
     unsigned char bFlag0x11D; // 0x11D
     short wType[2]; // 0x11E
     unsigned char nSubType; // 0x122
-    unsigned char unk0x123[0x1]; // 0x123
+    unsigned char pad0x123; // 0x123
     short wDropSound; // 0x124
     short wUseSound; // 0x126
     unsigned char nDropSfxFrame; // 0x128
@@ -192,7 +192,7 @@ struct D2ItemsTxt
     unsigned char nQuestDiffCheck; // 0x12B
     unsigned char nTransparent; // 0x12C
     unsigned char nTransTbl; // 0x12D
-    unsigned char unk0x12E[0x1]; // 0x12E
+    unsigned char unused0x12E; // 0x12E
     unsigned char nLightRadius; // 0x12F
     unsigned char nBelt; // 0x130
     unsigned char nAutoBelt; // 0x131
@@ -221,18 +221,18 @@ struct D2ItemsTxt
     unsigned char nVendorMagicMin[17]; // 0x168
     unsigned char nVendorMagicMax[17]; // 0x179
     unsigned char nVendorMagicLvl[17]; // 0x18A
-    unsigned char unk0x19B[0x1]; // 0x19B
+    unsigned char pad0x19B; // 0x19B
     unsigned int dwNightmareUpgrade; // 0x19C
     unsigned int dwHellUpgrade; // 0x1A0
     unsigned char nPermStoreItem; // 0x1A4
     unsigned char nField1A5; // 0x1A5
-    unsigned char unk0x1A6[0x2]; // 0x1A6
+    unsigned char pad0x1A6[2]; // 0x1A6
 };
 
 struct D2MissilesTxt
 {
     unsigned short wId; // 0x00
-    unsigned char unk0x02[0x2]; // 0x02
+    unsigned char pad0x02[2]; // 0x02
     unsigned char nMissileFlags[4]; // 0x04
     unsigned short wCltDoFunc; // 0x08
     unsigned short wCltHitFunc; // 0x0A
@@ -259,13 +259,13 @@ struct D2MissilesTxt
     unsigned int dwCltHitCalc; // 0x8C
     unsigned int dwDmgCalc; // 0x90
     unsigned char nHitClass; // 0x94
-    unsigned char unk0x95[0x1]; // 0x95
+    unsigned char pad0x95; // 0x95
     short wRange; // 0x96
     short wLevRange; // 0x98
     unsigned char nVel; // 0x9A
     unsigned char nVelLev; // 0x9B
     unsigned char nMaxVel; // 0x9C
-    unsigned char unk0x9D[0x1]; // 0x9D
+    unsigned char pad0x9D; // 0x9D
     short wAccel; // 0x9E
     short nAnimLen_2; // 0xA0
     short nOffsetX; // 0xA2
@@ -274,14 +274,14 @@ struct D2MissilesTxt
     unsigned int dwHitFlags; // 0xA8
     unsigned short wResultFlags; // 0xAC
     unsigned char nKnockBack; // 0xAE
-    unsigned char unk0xAF[0x1]; // 0xAF
+    unsigned char pad0xAF; // 0xAF
     int dwMinDamage; // 0xB0
     int dwMaxDamage; // 0xB4
     int dwMinLevDam[5]; // 0xB8
     int dwMaxLevDam[5]; // 0xCC
     int dwDmgSymPerCalc; // 0xE0
     unsigned char nElemType; // 0xE4
-    unsigned char unk0xE5[0x3]; // 0xE5
+    unsigned char pad0xE5[3]; // 0xE5
     int dwElemMin; // 0xE8
     int dwElemMax; // 0xEC
     int dwMinElemLev[5]; // 0xF0
@@ -310,7 +310,7 @@ struct D2MissilesTxt
     unsigned char nLoopAnim; // 0x137
     char szCelFile[64]; // 0x138
     unsigned char nAnimLen; // 0x178
-    unsigned char unk0x179[0x3]; // 0x179
+    unsigned char pad0x179[3]; // 0x179
     int nRandFrames; // 0x17C
     unsigned char nSubLoop; // 0x180
     unsigned char nSubStart; // 0x181
@@ -328,12 +328,12 @@ struct D2MissilesTxt
     unsigned char nTrans; // 0x18D
     unsigned char nQty[0x8]; // 0x18E
     unsigned char nHitShift; // 0x196
-    unsigned char unk0x197[0x5]; // 0x197
+    unsigned char unused0x197[5]; // 0x197
     int nMissileStatValue; // 0x19C
     unsigned char nNumDirections; // 0x1A0
     unsigned char nAnimSpeed; // 0x1A1
     unsigned char bAltPalette; // 0x1A2
-    unsigned char unk0x1A3[0x1]; // 0x1A3
+    unsigned char pad0x1A3; // 0x1A3
 };
 
 struct D2MonStatsTxt
@@ -343,7 +343,7 @@ struct D2MonStatsTxt
     short nNextInClass; // 0x04
     unsigned short wNameStr; // 0x06
     unsigned short wDescStr; // 0x08
-    unsigned char unk0x0A[0x2]; // 0x0A
+    unsigned char pad0x0A[2]; // 0x0A
     unsigned char nMonStatsFlags[4]; // 0x0C
     union
     {
@@ -360,7 +360,7 @@ struct D2MonStatsTxt
     signed char nSpawnX; // 0x22
     signed char nSpawnY; // 0x23
     signed char nSpawnMode; // 0x24
-    unsigned char unk0x25[0x1]; // 0x25
+    unsigned char pad0x25; // 0x25
     short wMinion[2]; // 0x26
     short nMonEquipTxtRecordId; // 0x2A
     unsigned char nPartyMin; // 0x2C
@@ -381,7 +381,7 @@ struct D2MonStatsTxt
     unsigned char nThreat; // 0x4E
     unsigned char nAIdel[3]; // 0x4F
     unsigned char nAiDist[3]; // 0x52
-    unsigned char unk0x55; // 0x55
+    unsigned char unused0x55; // 0x55
     short wAiParam[8][3]; // 0x56
     unsigned short wTreasureClass[3][4]; // 0x86
     unsigned char nTCQuestId; // 0x9E
@@ -389,7 +389,7 @@ struct D2MonStatsTxt
     unsigned char nDrain[3]; // 0xA0
     unsigned char nBlock[3]; // 0xA3
     unsigned char nCrit; // 0xA6
-    unsigned char unk0xA7[0x1]; // 0xA7
+    unsigned char pad0xA7; // 0xA7
     short wSkillDamage; // 0xA8
     short nLevel[3]; // 0xAA
     short nMinHP[3]; // 0xB0
@@ -418,7 +418,7 @@ struct D2MonStatsTxt
     short wResCo[3]; // 0x15C
     short wResPo[3]; // 0x162
     signed char nColdEffect[3]; // 0x168
-    unsigned char unk0x16B[0x1]; // 0x16B
+    unsigned char pad0x16B; // 0x16B
     unsigned char nSendSkill[4]; // 0x16C
     short nSkill[8]; // 0x170
     unsigned char nSkillMode[8]; // 0x180
@@ -442,16 +442,16 @@ struct D2MonStats2Txt
     unsigned char nOverlayHeight; // 0x0C
     unsigned char nPixHeight; // 0x0D
     unsigned char nSteps; // 0x0E
-    unsigned char unk0x0F[0x1]; // 0x0F
+    unsigned char pad0x0F; // 0x0F
     unsigned int dwBaseW; // 0x10
     unsigned char nHitClass; // 0x14
     unsigned char nComponentChoiceCounts[16]; // 0x15
     unsigned char nExtraComponentChoices; // 0x25
     D2MonStats2CompStrc pComponents[16]; // 0x26
-    unsigned char unk0xE6[0x2]; // 0xE6
+    unsigned char pad0xE6[2]; // 0xE6
     unsigned char nComponentFlags[4]; // 0xE8
     unsigned char nTotalPieces; // 0xEC
-    unsigned char unk0xED[0x3]; // 0xED
+    unsigned char pad0xED[3]; // 0xED
     unsigned char nModeFlags[4]; // 0xF0
     unsigned char nModeDirections[16]; // 0xF4
     unsigned char nModeEnabledWhenMovingFlags[4]; // 0x104
@@ -469,9 +469,9 @@ struct D2MonStats2Txt
     unsigned char nLight_G; // 0x120
     unsigned char nLight_B; // 0x121
     unsigned char nModes[3]; // 0x122
-    unsigned char unk0x125[0xB]; // 0x125
+    unsigned char unused0x125[11]; // 0x125
     unsigned char nRestore; // 0x130
-    unsigned char unk0x131[0x3]; // 0x131
+    unsigned char pad0x131[3]; // 0x131
 };
 
 struct D2ObjectsTxt
@@ -499,7 +499,7 @@ struct D2ObjectsTxt
     unsigned char nAutomap13D; // 0x13D
     unsigned char nTrans; // 0x13E
     unsigned char nMode[8]; // 0x13F
-    unsigned char unk0x147[0x1]; // 0x147
+    unsigned char pad0x147; // 0x147
     int nXOffset; // 0x148
     int nYOffset; // 0x14C
     unsigned char bDraw; // 0x150
@@ -512,7 +512,7 @@ struct D2ObjectsTxt
     unsigned char nBlue; // 0x166
     unsigned char nSubClass; // 0x167
     unsigned int dwNameOffset; // 0x168
-    unsigned char unk0x16C[0x1]; // 0x16C
+    unsigned char unused0x16C; // 0x16C
     unsigned char nMonsterOK; // 0x16D
     unsigned char nOperateRange; // 0x16E
     unsigned char nShrineFunction; // 0x16F
@@ -522,12 +522,12 @@ struct D2ObjectsTxt
     unsigned char nRestore; // 0x173
     unsigned char nRestoreVirgins; // 0x174
     unsigned char nSync; // 0x175
-    unsigned char unk0x176[0x2]; // 0x176
+    unsigned char pad0x176[2]; // 0x176
     int dwParm[8]; // 0x178
     unsigned char nTgtFX[0x4]; // 0x198
     unsigned char nDamage; // 0x19C
     unsigned char nSelectBox; // 0x19D
-    unsigned char unk0x19E[0x2]; // 0x19E
+    unsigned char pad0x19E[2]; // 0x19E
     int dwLeft; // 0x1A0
     int dwTop; // 0x1A4
     int dwWidth; // 0x1A8
@@ -541,17 +541,17 @@ struct D2ObjectsTxt
     unsigned char nBlockMissile; // 0x1B6
     unsigned char nFlags1B7; // 0x1B7
     unsigned char nOpenWarp; // 0x1B8
-    unsigned char unk0x1B9[0x3]; // 0x1B9
+    unsigned char pad0x1B9[3]; // 0x1B9
     int dwAutomap; // 0x1BC
 };
 
 struct D2SkillsTxt
 {
     short nSkillId; // 0x00
-    unsigned char unk0x02[0x2]; // 0x02
+    unsigned char unused0x02[2]; // 0x02
     unsigned char nFlags[8]; // 0x04
     char nCharClass; // 0x0C
-    unsigned char unk0x0D[0x3]; // 0x0D
+    unsigned char unused0x0D[3]; // 0x0D
     unsigned char nAnim; // 0x10
     unsigned char nMonAnim; // 0x11
     char nSeqTrans; // 0x12
@@ -559,7 +559,7 @@ struct D2SkillsTxt
     char nAuraTargetState; // 0x14
     unsigned char nSelectProc; // 0x15
     unsigned char nSeqInput; // 0x16
-    unsigned char unk0x17[0x1]; // 0x17
+    unsigned char pad0x17; // 0x17
     short nITypeA[3]; // 0x18
     short nITypeB[3]; // 0x1E
     short nETypeA[2]; // 0x24
@@ -567,10 +567,10 @@ struct D2SkillsTxt
     short wSrvStartFunc; // 0x2C
     short wSrvDoFunc; // 0x2E
     short wProgFunc[3]; // 0x30
-    unsigned char unk0x36[0x2]; // 0x36
+    unsigned char pad0x36[2]; // 0x36
     unsigned int dwPrgCalc[3]; // 0x38
     unsigned char nPrgDamage; // 0x44
-    unsigned char unk0x45[0x1]; // 0x45
+    unsigned char pad0x45; // 0x45
     short wSrvMissile; // 0x46
     short wSrvMissileA; // 0x48
     short wSrvMissileB; // 0x4A
@@ -589,7 +589,7 @@ struct D2SkillsTxt
     short nPassiveState; // 0x94
     short nPassiveIType; // 0x96
     short nPassiveStat[5]; // 0x98
-    unsigned char unk0xA2[0x2]; // 0xA2
+    unsigned char pad0xA2[2]; // 0xA2
     unsigned int dwPassiveCalc[5]; // 0xA4
     unsigned char wPassiveEvent[0x4]; // 0xB8
     short wSummon; // 0xBC
@@ -597,7 +597,7 @@ struct D2SkillsTxt
     unsigned char nSumMode; // 0xBF
     unsigned int dwPetMax; // 0xC0
     short wSumSkill[5]; // 0xC4
-    unsigned char unk0xCE[0x2]; // 0xCE
+    unsigned char pad0xCE[2]; // 0xCE
     unsigned int dwSumSkCalc[5]; // 0xD0
     short wSumUMod; // 0xE4
     short wSumOverlay; // 0xE6
@@ -630,10 +630,10 @@ struct D2SkillsTxt
     short wCltOverlayB; // 0x112
     int dwCltCalc[3]; // 0x114
     unsigned char nItemTarget; // 0x120
-    unsigned char unk0x121[0x1]; // 0x121
+    unsigned char pad0x121; // 0x121
     short wItemStartSound; // 0x122
     short wItemCastOverlay; // 0x124
-    unsigned char unk0x126[0x2]; // 0x126
+    unsigned char pad0x126[2]; // 0x126
     unsigned int dwPerDelay; // 0x128
     short nMaxLevel; // 0x12C
     unsigned short wResultFlags; // 0x12E
@@ -642,10 +642,10 @@ struct D2SkillsTxt
     unsigned int dwCalc[4]; // 0x138
     int dwParam[8]; // 0x148
     unsigned char nWeapSel; // 0x168
-    unsigned char unk0x169[0x1]; // 0x169
+    unsigned char pad0x169; // 0x169
     short wItemEffect; // 0x16A
     short clientDoSecondary; // 0x16C
-    unsigned char unk0x16E[0x2]; // 0x16E
+    unsigned char pad0x16E[2]; // 0x16E
     unsigned int dwSkPoints; // 0x170
     short wReqLevel; // 0x174
     short wReqStr; // 0x176
@@ -662,20 +662,20 @@ struct D2SkillsTxt
     unsigned char nLineOfSight; // 0x18F
     unsigned int dwDelay; // 0x190
     short wSkillDesc; // 0x194
-    unsigned char unk0x196[0x2]; // 0x196
+    unsigned char pad0x196[2]; // 0x196
     int dwToHit; // 0x198
     int dwLevToHit; // 0x19C
     unsigned int dwToHitCalc; // 0x1A0
     unsigned char nToHitShift; // 0x1A4
     unsigned char nSrcDam; // 0x1A5
-    unsigned char unk0x1A6[0x2]; // 0x1A6
+    unsigned char pad0x1A6[2]; // 0x1A6
     int dwMinDam; // 0x1A8
     int dwMaxDam; // 0x1AC
     int dwMinLvlDam[5]; // 0x1B0
     int dwMaxLvlDam[5]; // 0x1C4
     unsigned int dwDmgSymPerCalc; // 0x1D8
     unsigned char nEType; // 0x1DC
-    unsigned char unk0x1DD[0x3]; // 0x1DD
+    unsigned char pad0x1DD[3]; // 0x1DD
     int dwEMin; // 0x1E0
     int dwEMax; // 0x1E4
     int dwEMinLev[5]; // 0x1E8
@@ -685,10 +685,10 @@ struct D2SkillsTxt
     int dwELevLen[3]; // 0x218
     unsigned int dwELenSymPerCalc; // 0x224
     unsigned char nRestrict; // 0x228
-    unsigned char unk0x229[0x1]; // 0x229
+    unsigned char pad0x229; // 0x229
     short nState[3]; // 0x22A
     unsigned char nAiType; // 0x230
-    unsigned char unk0x231[0x1]; // 0x231
+    unsigned char pad0x231; // 0x231
     short wAiBonus; // 0x232
     int nCostMult; // 0x234
     int nCostAdd; // 0x238

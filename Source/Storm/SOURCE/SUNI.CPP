@@ -1,11 +1,11 @@
 #include "Storm.h"
 
-extern const unsigned int gdwUtf8FirstByteMark_006FCDA0[]; // 0x006FCDA0
-extern unsigned char gnUtf8Trailing_006FCCA0[]; // 0x006FCCA0
-extern unsigned int gnUtf8Offsets_006FCC88[]; // 0x006FCC88
+extern const unsigned int gadwUtf8FirstByteMarks[]; // 0x006FCDA0
+extern unsigned char gaTrailingBytesForUtf8[]; // 0x006FCCA0
+extern unsigned int gaOffsetsFromUtf8[]; // 0x006FCC88
 extern const unsigned char gaTrailingBytesForUtf8_006FCCA0[256]; // 0x006FCCA0
 extern const unsigned int gaOffsetsFromUtf8_006FCC88[6]; // 0x006FCC88
-extern const unsigned short gWideTable_006FCDC0[]; // 0x006FCDC0
+extern const unsigned short gawWinTranslateTable[]; // 0x006FCDC0
 
 
 // 0x006C7030
@@ -194,7 +194,7 @@ int __stdcall SUniConvertUTF16to8(char* pDest, unsigned int nDestSize, const uns
             *--pDest = (char)((ch & 0x3F) | 0x80);
             ch >>= 6;
         case 1:
-            *--pDest = (char)(gdwUtf8FirstByteMark_006FCDA0[nBytes] | ch);
+            *--pDest = (char)(gadwUtf8FirstByteMarks[nBytes] | ch);
         }
 
         pSrc += nUnits;
@@ -214,17 +214,10 @@ int __stdcall SUniConvertUTF16to8(char* pDest, unsigned int nDestSize, const uns
     return nResult;
 }
 
-extern "C" const unsigned int gData_006FCC88[6]; // 0x006FCC88
-extern "C" const unsigned char gData_006FCCA0[256]; // 0x006FCCA0
-extern "C" const unsigned int gData_006FCDA0[8]; // 0x006FCDA0
-extern "C" const unsigned short gData_006FCDC0[256]; // 0x006FCDC0
-extern "C" const unsigned short gData_006FCFC0[256]; // 0x006FCFC0
-extern "C" const unsigned short gData_006FD1C0[256]; // 0x006FD1C0
-
-extern "C" const unsigned int gData_006FCC88[6] = { 0, 0x3080, 0xE2080, 0x3C82080, 0xFA082080, 0x82082080 }; // 0x006FCC88
+extern "C" const unsigned int gData_006FCC88[6] = { 0, 12416, 925824, 0x3C82080, 0xFA082080, 0x82082080 }; // 0x006FCC88
 #pragma comment(linker, "/alternatename:?gnUtf8Offsets_006FCC88@@3PAIA=_gData_006FCC88")
 
-extern "C" const unsigned char gData_006FCCA0[256] = {
+extern "C" const unsigned char gData_006FCCA0[256] = { // 0x006FCCA0
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -241,70 +234,70 @@ extern "C" const unsigned char gData_006FCCA0[256] = {
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
     3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5
-}; // 0x006FCCA0
+};
 #pragma comment(linker, "/alternatename:?gnUtf8Trailing_006FCCA0@@3PAEA=_gData_006FCCA0")
 
-extern "C" const unsigned int gData_006FCDA0[8] = { 0, 0, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC }; // 0x006FCDA0
+extern "C" const unsigned int gData_006FCDA0[8] = { 0, 0, 192, 224, 240, 248, 252, 0 }; // 0x006FCDA0
 #pragma comment(linker, "/alternatename:?gdwUtf8FirstByteMark_006FCDA0@@3QBIB=_gData_006FCDA0")
 
-extern "C" const unsigned short gData_006FCDC0[256] = {
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF,
-    0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
-    0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
-    0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F,
-    0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F,
-    0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F,
-    0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F,
-    0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F,
-    0x20AC, 0xFFFF, 0x201A, 0x192, 0x201E, 0x2026, 0x2020, 0x2021, 0x2C6, 0x2030, 0x160, 0x2039, 0x152, 0xFFFF, 0x17D, 0xFFFF,
-    0xFFFF, 0x2018, 0x2019, 0x201C, 0x201D, 0x2022, 0x2013, 0x2014, 0x2DC, 0x2122, 0x161, 0x203A, 0x153, 0xFFFF, 0x17E, 0x178,
-    0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF,
-    0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xB5, 0xB6, 0xB7, 0xB8, 0xB9, 0xBA, 0xBB, 0xBC, 0xBD, 0xBE, 0xBF,
-    0xC0, 0xC1, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8, 0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF,
-    0xD0, 0xD1, 0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7, 0xD8, 0xD9, 0xDA, 0xDB, 0xDC, 0xDD, 0xDE, 0xDF,
-    0xE0, 0xE1, 0xE2, 0xE3, 0xE4, 0xE5, 0xE6, 0xE7, 0xE8, 0xE9, 0xEA, 0xEB, 0xEC, 0xED, 0xEE, 0xEF,
-    0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF
-}; // 0x006FCDC0
+extern "C" const unsigned short gData_006FCDC0[256] = { // 0x006FCDC0
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+    16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+    48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
+    64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
+    80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
+    96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+    112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127,
+    8364, 65535, 8218, 402, 8222, 8230, 8224, 8225, 710, 8240, 352, 8249, 338, 65535, 381, 65535,
+    65535, 8216, 8217, 8220, 8221, 8226, 8211, 8212, 732, 8482, 353, 8250, 339, 65535, 382, 376,
+    160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175,
+    176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191,
+    192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207,
+    208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223,
+    224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239,
+    240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255
+};
 #pragma comment(linker, "/alternatename:?gWideTable_006FCDC0@@3QBGB=_gData_006FCDC0")
 
-extern "C" const unsigned short gData_006FCFC0[256] = {
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF,
-    0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
-    0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
-    0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F,
-    0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F,
-    0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F,
-    0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F,
-    0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F,
-    0xC4, 0xC5, 0xC7, 0xC9, 0xD1, 0xD6, 0xDC, 0xE1, 0xE0, 0xE2, 0xE4, 0xE3, 0xE5, 0xE7, 0xE9, 0xE8,
-    0xEA, 0xEB, 0xED, 0xEC, 0xEE, 0xEF, 0xF1, 0xF3, 0xF2, 0xF4, 0xF6, 0xF5, 0xFA, 0xF9, 0xFB, 0xFC,
-    0x2020, 0xB0, 0xA2, 0xA3, 0xA7, 0x2022, 0xB6, 0xDF, 0xAE, 0xA9, 0x2122, 0xB4, 0xA8, 0x2260, 0xC6, 0xD8,
-    0x221E, 0xB1, 0x2264, 0x2265, 0xA5, 0xB5, 0x2202, 0x2211, 0x220F, 0x3C0, 0x222B, 0xAA, 0xBA, 0x2126, 0xE6, 0xF8,
-    0xBF, 0xA1, 0xAC, 0x221A, 0x192, 0x2248, 0x2206, 0xAB, 0xBB, 0x2026, 0xA0, 0xC0, 0xC3, 0xD5, 0x152, 0x153,
-    0x2013, 0x2014, 0x201C, 0x201D, 0x2018, 0x2019, 0xF7, 0x25CA, 0xFF, 0x178, 0x2044, 0xA4, 0x2039, 0x203A, 0xFB01, 0xFB02,
-    0x2021, 0xB7, 0x201A, 0x201E, 0x2030, 0xC2, 0xCA, 0xC1, 0xCB, 0xC8, 0xCD, 0xCE, 0xCF, 0xCC, 0xD3, 0xD4,
-    0xFFFF, 0xD2, 0xDA, 0xDB, 0xD9, 0x131, 0x2C6, 0x2DC, 0xAF, 0x2D8, 0x2D9, 0x2DA, 0xB8, 0x2DD, 0x2DB, 0x2C7
-}; // 0x006FCFC0
+extern "C" const unsigned short gData_006FCFC0[256] = { // 0x006FCFC0
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+    16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+    48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
+    64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
+    80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
+    96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+    112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127,
+    196, 197, 199, 201, 209, 214, 220, 225, 224, 226, 228, 227, 229, 231, 233, 232,
+    234, 235, 237, 236, 238, 239, 241, 243, 242, 244, 246, 245, 250, 249, 251, 252,
+    8224, 176, 162, 163, 167, 8226, 182, 223, 174, 169, 8482, 180, 168, 8800, 198, 216,
+    8734, 177, 8804, 8805, 165, 181, 8706, 8721, 8719, 960, 8747, 170, 186, 8486, 230, 248,
+    191, 161, 172, 8730, 402, 8776, 8710, 171, 187, 8230, 160, 192, 195, 213, 338, 339,
+    8211, 8212, 8220, 8221, 8216, 8217, 247, 9674, 255, 376, 8260, 164, 8249, 8250, 64257, 64258,
+    8225, 183, 8218, 8222, 8240, 194, 202, 193, 203, 200, 205, 206, 207, 204, 211, 212,
+    65535, 210, 218, 219, 217, 305, 710, 732, 175, 728, 729, 730, 184, 733, 731, 711
+};
 #pragma comment(linker, "/alternatename:?gWideTable_006FCFC0@@3QBGB=_gData_006FCFC0")
 
-extern "C" const unsigned short gData_006FD1C0[256] = {
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF,
-    0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
-    0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
-    0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F,
-    0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F,
-    0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F,
-    0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F,
-    0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F,
-    0xC7, 0xFC, 0xE9, 0xE2, 0xE4, 0xE0, 0xE5, 0xE7, 0xEA, 0xEB, 0xE8, 0xEF, 0xEE, 0xEC, 0xC4, 0xC5,
-    0xC9, 0xE6, 0xC6, 0xF4, 0xF6, 0xF2, 0xFB, 0xF9, 0xFF, 0xD6, 0xDC, 0xA2, 0xA3, 0xA5, 0x20A7, 0x192,
-    0xE1, 0xED, 0xF3, 0xFA, 0xF1, 0xD1, 0xAA, 0xBA, 0xBF, 0x2310, 0xAC, 0xBD, 0xBC, 0xA1, 0xAB, 0xBB,
-    0x2591, 0x2592, 0x2593, 0x2502, 0x2524, 0x2561, 0x2562, 0x2556, 0x2555, 0x2563, 0x2551, 0x2557, 0x255D, 0x255C, 0x255B, 0x2510,
-    0x2514, 0x2534, 0x252C, 0x251C, 0x2500, 0x253C, 0x255E, 0x255F, 0x255A, 0x2554, 0x2569, 0x2566, 0x2560, 0x2550, 0x256C, 0x2567,
-    0x2568, 0x2564, 0x2565, 0x2559, 0x2558, 0x2552, 0x2553, 0x256B, 0x256A, 0x2518, 0x250C, 0x2588, 0x2584, 0x258C, 0x2590, 0x2580,
-    0x3B1, 0xDF, 0x393, 0x3C0, 0x3A3, 0x3C3, 0xB5, 0x3C4, 0x3A6, 0x398, 0x3A9, 0x3B4, 0x221E, 0x3C6, 0x3B5, 0x2229,
-    0x2261, 0xB1, 0x2265, 0x2264, 0x2320, 0x2321, 0xF7, 0x2248, 0xB0, 0x2219, 0xB7, 0x221A, 0x207F, 0xB2, 0x25A0, 0xA0
-}; // 0x006FD1C0
+extern "C" const unsigned short gData_006FD1C0[256] = { // 0x006FD1C0
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+    16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+    48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
+    64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
+    80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
+    96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+    112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127,
+    199, 252, 233, 226, 228, 224, 229, 231, 234, 235, 232, 239, 238, 236, 196, 197,
+    201, 230, 198, 244, 246, 242, 251, 249, 255, 214, 220, 162, 163, 165, 8359, 402,
+    225, 237, 243, 250, 241, 209, 170, 186, 191, 8976, 172, 189, 188, 161, 171, 187,
+    9617, 9618, 9619, 9474, 9508, 9569, 9570, 9558, 9557, 9571, 9553, 9559, 9565, 9564, 9563, 9488,
+    9492, 9524, 9516, 9500, 9472, 9532, 9566, 9567, 9562, 9556, 9577, 9574, 9568, 9552, 9580, 9575,
+    9576, 9572, 9573, 9561, 9560, 9554, 9555, 9579, 9578, 9496, 9484, 9608, 9604, 9612, 9616, 9600,
+    945, 223, 915, 960, 931, 963, 181, 964, 934, 920, 937, 948, 8734, 966, 949, 8745,
+    8801, 177, 8805, 8804, 8992, 8993, 247, 8776, 176, 8729, 183, 8730, 8319, 178, 9632, 160
+};
 #pragma comment(linker, "/alternatename:?gWideTable_006FD1C0@@3QBGB=_gData_006FD1C0")
 
 // 0x006C72F0
@@ -316,7 +309,7 @@ int __stdcall SUniConvertUTF8to16Len(const char* source, int maxLength, int* con
  int length=0;
  for(;;) {
   if(source>=end) { length=-1; break; }
-  unsigned int trailing=gnUtf8Trailing_006FCCA0[*source];
+  unsigned int trailing=gaTrailingBytesForUtf8[*source];
   if(source+trailing>=end) { length=-1-trailing; break; }
   unsigned int ch=0;
   switch(trailing) {
@@ -327,7 +320,7 @@ int __stdcall SUniConvertUTF8to16Len(const char* source, int maxLength, int* con
    case 1: ch+=*source++; ch<<=6;
    case 0: ch+=*source++;
   }
-  ch-=gnUtf8Offsets_006FCC88[trailing];
+  ch-=gaOffsetsFromUtf8[trailing];
   if(ch<=0xFFFF) { ++length; if(!ch) break; }
   else if(ch>0x10FFFF) ++length;
   else length+=2;
@@ -536,9 +529,8 @@ int __stdcall SUniFindAfterUTF8Chr(const unsigned char* text, int index)
     return SkipUtf8Continuation(text, index + 1, 1);
 }
 
-// table stands for the original's register choice (count, source and the index in ebx/edi/esi); with a plain parameter they rotate
 // 0x006C77F0
-static int __stdcall SUniConvertUTF16ToCP(const unsigned short* source, unsigned int count, const unsigned short* volatile table, char* destination)
+static int __stdcall SUniConvertUTF16ToCP(const unsigned short* source, unsigned int count, const unsigned short* table, char* destination)
 {
     if (!count)
     {
@@ -551,46 +543,23 @@ static int __stdcall SUniConvertUTF16ToCP(const unsigned short* source, unsigned
     {
         if (ch < 0x100 && ch == table[ch])
         {
-            *out = (char)*source;
+            *out++ = (char)*source;
+            ++source;
         }
         else
         {
-            int i = 255;
-            const unsigned short* p = &table[253];
-            do
+            int i;
+            for (i = 255; i > 0; --i)
             {
-                if (ch == p[2])
+                if (ch == table[i])
                 {
                     break;
                 }
-                if (ch == p[1])
-                {
-                    i -= 1;
-                    break;
-                }
-                if (ch == p[0])
-                {
-                    i -= 2;
-                    break;
-                }
-                if (ch == p[-1])
-                {
-                    i -= 3;
-                    break;
-                }
-                if (ch == p[-2])
-                {
-                    i -= 4;
-                    break;
-                }
-                i -= 5;
-                p -= 5;
             }
-            while (i > 0);
-            *out = (char)(i ? i : '?');
+            *out++ = (char)(i ? i : '?');
+            ++source;
         }
-        ch = *++source;
-        ++out;
+        ch = *source;
         --count;
     }
 
@@ -634,35 +603,35 @@ static int TranslateToUnicode(unsigned short* pDest, const unsigned char* pSourc
 // 0x006C7900
 int __stdcall SUniConvertUTF16ToWin(char* pDest, const unsigned short* pSource, unsigned int nCount)
 {
-    return SUniConvertUTF16ToCP(pSource, nCount, gWideTable_006FCDC0, pDest);
+    return SUniConvertUTF16ToCP(pSource, nCount, gawWinTranslateTable, pDest);
 }
 
 // 0x006C7920
 int __stdcall SUniConvertUTF16ToMac(char* pDest, const unsigned short* pSource, unsigned int nCount)
 {
-    return SUniConvertUTF16ToCP(pSource, nCount, gWideTable_006FCFC0, pDest);
+    return SUniConvertUTF16ToCP(pSource, nCount, gawTranslateTable, pDest);
 }
 
 // 0x006C7940
 int __stdcall SUniConvertUTF16ToDos(char* pDest, const unsigned short* pSource, unsigned int nCount)
 {
-    return SUniConvertUTF16ToCP(pSource, nCount, gWideTable_006FD1C0, pDest);
+    return SUniConvertUTF16ToCP(pSource, nCount, gawDosTranslateTable, pDest);
 }
 
 // 0x006C7960
 int __stdcall SUniConvertWinToUTF16(unsigned short* pDest, const unsigned char* pSource, unsigned int nCount)
 {
-    return TranslateToUnicode(pDest, pSource, nCount, gWideTable_006FCDC0);
+    return TranslateToUnicode(pDest, pSource, nCount, gawWinTranslateTable);
 }
 
 // 0x006C7980
 int __stdcall SUniConvertMacToUTF16(unsigned short* pDest, const unsigned char* pSource, unsigned int nCount)
 {
-    return TranslateToUnicode(pDest, pSource, nCount, gWideTable_006FCFC0);
+    return TranslateToUnicode(pDest, pSource, nCount, gawTranslateTable);
 }
 
 // 0x006C79A0
 int __stdcall SUniConvertDosToUTF16(unsigned short* pDest, const unsigned char* pSource, unsigned int nCount)
 {
-    return TranslateToUnicode(pDest, pSource, nCount, gWideTable_006FD1C0);
+    return TranslateToUnicode(pDest, pSource, nCount, gawDosTranslateTable);
 }

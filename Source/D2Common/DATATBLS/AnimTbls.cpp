@@ -1,5 +1,8 @@
 #include "D2Structs.h"
 #include "D2AnimData.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2HellApi.h"
 struct D2InventoryStrc;
 struct D2UnitStrc;
 
@@ -18,19 +21,14 @@ struct D2AnimDataTableStrc
 
 extern "C" const char gszDataGlobalPath[];                                                                      // 0x006D4118
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szBuffer, const char* szFormat, ...);           // 0x006CC468
-void* __fastcall ARCHIVE_AllocateBufferAndReadFile(void* hArchive, const char* szFilePath, unsigned int* pdwBytesWritten, const char* szSrcPath, int nLine); // 0x00517079
 void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);               // 0x0040B430
 void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);             // 0x0040B480
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                  // 0x00681EF0
 #pragma function(memset)
 unsigned int __fastcall sub_006C9A38(const char* szString);                                                    // 0x006C9A38
 D2AnimDataTableStrc* __fastcall DATATBLS_GetAnimData();                                                            // 0x00611D20
-void __stdcall D2Common_10884_COMPOSIT_unk(D2UnitStrc* pUnit, int nClassId, int nMode, int nUnitType, void* pInventory, char* szPath, int* pWeaponClassCode, int a8, int a9);   // 0x0064F5B0
-void __stdcall D2Common_10885_COMPOSIT_unk(D2UnitStrc* hUnit, char* szPath, int* pWeaponClassCode, int bAddPathPrefix, int a5, D2InventoryStrc* pInventory, int nAnimMode); // 0x0064FA00
+void __stdcall D2Common_10884_COMPOSIT_unk(D2UnitStrc* pUnit, int nClassId, int nMode, int nUnitType, void* pInventory, char* szPath, int* pWeaponClassCode, int bAddPathPrefix, int bDetermine);   // 0x0064F5B0
 extern "C" const char gszEmptyAssertText;                                                                         // 0x006CC837
-extern "C" const char* __cdecl sub_00408090();                                                              // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                  // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                                // 0x00681E09
 
 #define ANIM_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }

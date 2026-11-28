@@ -20,6 +20,7 @@
 #include "D2StormTypes.h"
 
 #include "D2WinControls.h"
+#include "FogApi.h"
 
 enum D2ControlTypes
 {
@@ -39,7 +40,6 @@ enum D2ControlTypes
 };
 
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
@@ -47,9 +47,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);    
 
 int __stdcall CONTROL_AppendToList(D2WinControlStrc* pControl);                                             // 0x004F9210
 
-extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -74,7 +72,7 @@ void __fastcall TIMER_DisableSpaceKey(D2WinTimerStrc* ptTimerData)
     ptTimerData->controlHeader.pfHandleVirtualKeyInput = 0;
 }
 
-unsigned int gdwTimeoutTickCount; // 0x00841B74
+extern unsigned int gdwTimeoutTickCount; // 0x00841B74
 
 // 0x004FD860
 int __fastcall TIMER_UpdateDefault(D2WinControlStrc* pControl)

@@ -1,5 +1,6 @@
 // Built /GS-: the buffer in 0x004680B0 has no security cookie.
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2ClientTypes.h"
 #include "D2CelContext.h"
@@ -7,6 +8,8 @@
 #include "D2StormTypes.h"
 #include "D2Win32Types.h"
 #include "D2WinSplitText.h"
+#include "FogApi.h"
+#include "D2GfxApi.h"
 
 struct D2MsgHandlerEntryStrc;
 
@@ -29,8 +32,6 @@ extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szDest, const char*
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
-int __cdecl WINDOW_GetWindow(); // 0x004F59A0
-
 void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
 D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nType); // 0x004788B0
@@ -39,7 +40,6 @@ extern D2MsgHandlerEntryStrc gaCursorMsgHandlers[]; // 0x00711FEC
 
 extern D2PanelAnimEntryStrc gaPanelAnim[]; // 0x00712020
 
-extern int gnScreenWidth; // 0x0071146C
 
 int gbCursorVisible;                                                                                      // 0x007A6B08
 
@@ -71,7 +71,7 @@ struct D2CelFileStrc;
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 D2CelFileStrc* gpCursorCel;        // 0x007A6AD8
 
@@ -80,9 +80,7 @@ struct D2UnitStrc;
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
@@ -90,15 +88,13 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                   
 
 void __cdecl CURSOR_UpdateCursor();                                                                // 0x00468310
 
-int __fastcall GFXUTIL_InitUnitCelContext(D2CelContextStrc* pToken, D2UnitStrc* pUnit, int nArg34, int nArg40, int nArg0, int* pItemId, unsigned char nComponent, int nMode); // 0x004DBB50
 
-int __stdcall sub_006001F0(D2CelContextStrc* pContext, int nArg2, int nArg3);                // 0x006001F0
+int __stdcall sub_006001F0(D2GfxDataStrc* pContext, int nArg2, int nArg3);                // 0x006001F0
 
 unsigned int __stdcall CelGetWidth(D2CelStrc* pCel);                                                        // 0x006018C0
 
 unsigned int __stdcall CelGetHeight(D2CelStrc* pCel);                                                       // 0x006018F0
 
-int __fastcall GFX_DrawItemCel(D2UnitStrc* pItem, int nX, int nY); // 0x0046EE80
 
 static int gnCursorMaxY;                                                                               // 0x007A6AA8
 
@@ -159,7 +155,8 @@ void __stdcall CURSOR_MsgHandler(SMSGHANDLER_PARAMS* pMsg)
     if (pMsg->wParam == 2)
     {
         gbCursorVisible = 0;
-        sub_004F59F0(0);
+// build: symbol ?WINDOW_ShowCursor@* 0x004F59F0
+        WINDOW_ShowCursor(0);
     }
     else
     {
@@ -224,11 +221,9 @@ extern "C" __declspec(dllimport) __declspec(noalias) int __stdcall GetWindowRect
 
 extern "C" __declspec(dllimport) int __stdcall GetSystemMetrics(int nIndex);
 
-int __stdcall WINDOW_IsFullScreen(); // 0x004F5A30
-
 void* __cdecl sub_004F59A0_GetWindow(); // 0x004F59A0
 
-extern int gnCursorX_007A6AB0; // 0x007A6AB0
+extern int gnCursorX; // 0x007A6AB0
 
 // 0x00468030
 int __cdecl CURSOR_GetCursorFrame()
@@ -237,7 +232,7 @@ int __cdecl CURSOR_GetCursorFrame()
 }
 
 // 0x00468040
-void __fastcall sub_00468040(int nArg, int nArg2)
+void __fastcall sub_00468040_ResetCursorState(int nArg, int nArg2)
 {
     gpCursorItem = 0;
     gnCursorAnim = 6;
@@ -303,7 +298,6 @@ void __cdecl CURSOR_ShutdownCursor()
 
 extern "C" __declspec(dllimport) int __stdcall SetCursorPos(int nX, int nY);                               // 0x006CC4B4
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit();                                                               // 0x00463DD0
 
 #define SEED_ROLL(pSeed, lSeed) \
     unsigned __int64 lSeed = (unsigned __int64)(pSeed)->nHighSeed + (unsigned __int64)(pSeed)->nLowSeed * 0x6AC690C5; \
@@ -422,9 +416,9 @@ void __cdecl CURSOR_DrawDefaultCursor()
     {
         nX = gnScreenWidth - gnCursorOffsetX - 1;
     }
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gapCursorCels[gnCursorAnim];
+    tContext.pCelFile = gapCursorCels[gnCursorAnim];
     tContext.nDirection = 0;
     tContext.nFrame = gnCursorAnimFrame >> 8;
     sub_004F6480(&tContext, nX, nY, -1, 5, 0);
@@ -434,9 +428,9 @@ void __cdecl CURSOR_DrawDefaultCursor()
 // 0x00468460
 void __cdecl CURSOR_DrawCursorCel()
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpCursorCel;
+    tContext.pCelFile = gpCursorCel;
     tContext.nFrame = gnCursorAnimFrame;
     const int nX = gnCursorX + gnCursorOffsetX;
     const int nY = gnCursorY + 0x21;
@@ -454,7 +448,7 @@ void __cdecl CURSOR_DrawCursor()
     D2UnitStrc* pItem = gpCursorItem;
     if (pItem && pItem->dwUnitType == UNIT_ITEM && gnCursorState < 6 && gnCursorState < 8)
     {
-        D2CelContextStrc tContext;
+        D2GfxDataStrc tContext;
         int nOut;
         memset(&tContext, 0, sizeof(tContext));
         if (GFXUTIL_InitUnitCelContext(&tContext, pItem, 0, 0, 0, &nOut, 1, -1) && sub_006001F0(&tContext, 0, 1))
@@ -478,7 +472,7 @@ void __cdecl CURSOR_PaintCursorItem()
         return;
     }
     D2UnitStrc* pItem = gpCursorItem;
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     if (pItem && pItem->dwUnitType == UNIT_ITEM)
     {
         int nOut;
@@ -514,7 +508,7 @@ void __cdecl CURSOR_PaintCursorItem()
                 nX = gnCursorMaxX - gnCursorOffsetX - 1;
             }
             memset(&tContext, 0, sizeof(tContext));
-            tContext.pCellFile = gapCursorCels[nType];
+            tContext.pCelFile = gapCursorCels[nType];
             tContext.nDirection = 0;
             tContext.nFrame = gnCursorAnimFrame >> 8;
             sub_004F6480(&tContext, nX, nY, -1, 5, 0);
@@ -529,32 +523,32 @@ int __cdecl CURSOR_GetCursorItem()
     return (int)gpCursorItem;
 }
 
-extern int gdwGlobal_007A6AAC; // 0x007A6AAC
+extern int gnCursorY; // 0x007A6AAC
 
-extern int gdwGlobal_007A6AB0; // 0x007A6AB0
+extern int gnCursorX; // 0x007A6AB0
 
 // 0x00468730
 int __cdecl sub_00468730()
 {
-    return gdwGlobal_007A6AB0;
+    return gnCursorX;
 }
 
 // 0x00468740
 int __cdecl sub_00468740()
 {
-    return gdwGlobal_007A6AAC;
+    return gnCursorY;
 }
 
-extern int data_007A6AB0; // 0x007A6AB0
+extern int gnCursorX; // 0x007A6AB0
 
-extern int data_007A6AAC; // 0x007A6AAC
+extern int gnCursorY; // 0x007A6AAC
 
 // 0x00468750
 void __fastcall CURSOR_SetCursorPos(int nX, int nY)
 {
     SetCursorPos(nX, nY);
-    data_007A6AB0 = nX;
-    data_007A6AAC = nY;
+    gnCursorX = nX;
+    gnCursorY = nY;
 }
 
 // 0x00468770
@@ -579,16 +573,16 @@ void __fastcall CURSOR_SetCursorPosition(int nX, int nY)
         SetCursorPos(nX, nY);
     }
     gnCursorY = nY;
-    gnCursorX_007A6AB0 = nX;
+    gnCursorX = nX;
 }
 
 // 0x00468820
-void __fastcall sub_00468820(int nArg1, int nArg2)
+void __fastcall sub_00468820_Nop(int nArg1, int nArg2)
 {
 }
 
 // 0x00468830
-int __cdecl sub_00468830()
+int __cdecl sub_00468830_GetCursorState()
 {
     return gnCursorState;
 }
@@ -621,7 +615,7 @@ void __stdcall CURSOR_HandleMouseMotion(SMSGHANDLER_PARAMS* pMsg)
             return;
         }
     }
-    sub_004F59F0(1);
+    WINDOW_ShowCursor(1);
     gdwLastMouseMoveTick = GetTickCount();
     if (gnCursorState == 4 || gnCursorState == 2)
     {
@@ -633,34 +627,6 @@ void __stdcall CURSOR_HandleMouseMotion(SMSGHANDLER_PARAMS* pMsg)
     pMsg->bReturn = 0;
     pMsg->lResult = 0;
 }
-#pragma pack(push, 1)
-struct d2data_00711FB0_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00712010_t
-{
-    unsigned char b0[16];
-};
-#pragma pack(pop)
-
 #pragma pack(push, 1)
 struct d2data_00712020_t
 {
@@ -696,6 +662,20 @@ struct d2data_007120C8_t
 #pragma pack(pop)
 
 #pragma pack(push, 1)
+struct d2data_007120EC_t
+{
+    unsigned char b0[240];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00712010_t
+{
+    unsigned char b0[16];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
 struct d2data_007120D8_t
 {
     unsigned char b0[20];
@@ -703,47 +683,32 @@ struct d2data_007120D8_t
 #pragma pack(pop)
 
 #pragma pack(push, 1)
-struct d2data_007120EC_t
+struct d2data_00711FB0_t
 {
-    unsigned char b0[240];
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
 };
 #pragma pack(pop)
 
-extern "C" struct d2data_00711FB0_t gData_00711FB0; // 0x00711FB0
-extern "C" struct d2data_00712010_t gData_00712010; // 0x00712010
 extern "C" struct d2data_00712020_t gData_00712020; // 0x00712020
 extern "C" struct d2data_007120C8_t gData_007120C8; // 0x007120C8
-extern "C" struct d2data_007120D8_t gData_007120D8; // 0x007120D8
 extern "C" struct d2data_007120EC_t gData_007120EC; // 0x007120EC
-
-extern "C" struct d2data_00711FB0_t gData_00711FB0 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00711FB0
-
-extern D2MsgHandlerEntryStrc gaCursorMsgHandlers[3] = {
-    { 0, 512, (void*)(unsigned int)&CURSOR_HandleMouseMotion },
-    { 0, 160, (void*)(unsigned int)&CURSOR_MsgHandler },
-    { 0, 514, (void*)(unsigned int)&CURSOR_HandleButtonUp }
-}; // 0x00711FEC
-
-extern "C" struct d2data_00712010_t gData_00712010 = {
-    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }
-}; // 0x00712010
-#pragma comment(linker, "/alternatename:?gaCursorAnim@@3PAUD2CursorAnimStrc@@A=_gData_00712010")
+extern "C" struct d2data_00712010_t gData_00712010; // 0x00712010
+extern "C" struct d2data_007120D8_t gData_007120D8; // 0x007120D8
+extern "C" struct d2data_00711FB0_t gData_00711FB0; // 0x00711FB0
 
 extern "C" struct d2data_00712020_t gData_00712020 = {
     { 0x01 },
@@ -789,14 +754,11 @@ extern "C" struct d2data_007120C8_t gData_007120C8 = {
     (const void*)"buysell"
 }; // 0x007120C8
 
-extern int gnCursorAnimCount = 7; // 0x007120D4
-
-extern "C" struct d2data_007120D8_t gData_007120D8 = {
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
-        0xFF, 0xFF, 0xFF, 0xFF
-    }
-}; // 0x007120D8
+extern D2MsgHandlerEntryStrc gaCursorMsgHandlers[3] = {
+    { 0, 512, (void*)(unsigned int)&CURSOR_HandleMouseMotion },
+    { 0, 160, (void*)(unsigned int)&CURSOR_MsgHandler },
+    { 0, 514, (void*)(unsigned int)&CURSOR_HandleButtonUp }
+}; // 0x00711FEC
 
 extern "C" struct d2data_007120EC_t gData_007120EC = {
     {
@@ -818,7 +780,39 @@ extern "C" struct d2data_007120EC_t gData_007120EC = {
     }
 }; // 0x007120EC
 
+extern "C" struct d2data_00712010_t gData_00712010 = {
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }
+}; // 0x00712010
+#pragma comment(linker, "/alternatename:?gaCursorAnim@@3PAUD2CursorAnimStrc@@A=_gData_00712010")
+
+extern int gnCursorAnimCount = 7; // 0x007120D4
+
+extern "C" struct d2data_007120D8_t gData_007120D8 = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
+        0xFF, 0xFF, 0xFF, 0xFF
+    }
+}; // 0x007120D8
+
 extern int gnDivisor_007121DC = 1; // 0x007121DC
+
+extern "C" struct d2data_00711FB0_t gData_00711FB0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00711FB0
 
 extern int gnQuotient_007A6B0C; // 0x007A6B0C
 // build: symbol ??__EgnQuotient_007A6B0C@@YAXXZ 0x006CAAB0

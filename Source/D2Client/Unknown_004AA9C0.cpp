@@ -1,6 +1,7 @@
 #include "D2StateIds.h"
 #include "D2StatIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
 #include "D2Txt.h"
@@ -9,6 +10,12 @@
 #include "D2Unicode.h"
 #include "D2StormTypes.h"
 #include "D2ClientUiRecords.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "StormApi.h"
+#include "D2CommonApi2.h"
+#include "D2GfxApi.h"
 struct D2SkillStrc;
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                              // 0x00681EF0
@@ -17,10 +24,6 @@ extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szBuffer, const cha
 extern D2DataTablesStrc* sgptDataTables;                                                                     // 0x00744304
 extern unsigned int gdwBitMasks[];                                                                          // 0x006CE268
 extern "C" const char gszFormatD[];                                                                // 0x006D57BC
-extern int gnScreenWidth;                                                                               // 0x0071146C
-extern int gnScreenHeight;                                                                               // 0x00711470
-extern int gnPanelOffsetX;                                                                               // 0x007A2858
-extern int gnPanelOffsetY;                                                                               // 0x007A285C
 extern int gnSkillPage;                                                                               // 0x00724BEC
 extern int gnTabSelection;                                                                         // 0x00724CE0
 int gbSkillTabPressed; // 0x007C0C38
@@ -30,40 +33,15 @@ int gbSkillPanelDrawn; // 0x007C0C4C
 int gaSkillButtonFrame[128];                                                                             // 0x007C0838
 int gaSkillButtonState[128]; // 0x007C0A38
 
-int __cdecl sub_00468730();                                                                                 // 0x00468730
-int __cdecl sub_00468740();                                                                                 // 0x00468740
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
-void __cdecl GAME_ResetMouseButtons();                                                                                // 0x0044DA70
 int __fastcall GAME_GetUnitClassId(D2UnitStrc* pUnit);                                                 // 0x00451F60
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
 D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId);                                      // 0x0045C4B0
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit();                                                               // 0x00463DD0
-void __stdcall CURSOR_HandleButtonDown(SMSGHANDLER_PARAMS* pMsg);                                           // 0x00467F20
 void __stdcall CURSOR_HandleButtonUp(SMSGHANDLER_PARAMS* pMsg);                                           // 0x00467FA0
-void __fastcall MSG_SendWord(unsigned char nCmd, unsigned short nArg);                          // 0x004785B0
-void __fastcall MSG_SendTwoDwords(unsigned char nHeader, unsigned int d1, unsigned int d5); // 0x004786A0
-int __fastcall AUTOMAP_IsCursorOverMiniPanelButton(SMSGHANDLER_PARAMS* pMsg);                                         // 0x00498DC0
 void __fastcall TEXT_DrawCenteredText(int nLeft, int nY, int nRight, const Unicode* wszText, int nColor); // 0x004A7080
-D2SkillDescTxt* __fastcall sub_004A89D0_SkillDescRec(int nSkillId);                                         // 0x004A89D0
 void* __fastcall SPELLSEL_GetSkillIconCel(D2SkillsTxt* pSkillsTxt);                                       // 0x004A8C80
 int __fastcall SPELLSEL_GetSkillMaxLevel(int nSkillId);                                                 // 0x004AA8B0
-int __cdecl sub_004AA900_IsStateOrValue();                                                                  // 0x004AA900
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4);                   // 0x004B9A00
-void __fastcall SKILLDESC_ShowSkillPopup(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int nArg, int nX, int nY); // 0x004EEF00
-void __fastcall SKILLDESC_ShowSkillPopupB(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int nArg, int nX, int nY); // 0x004EF410
-void __stdcall TEXTURE_CelDrawColor(D2CelContextStrc* pData, int nXPos, int nYPos, unsigned int dwGamma, int eDrawMode, int nGlobalPaletteShift); // 0x004F64B0
 void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5);    // 0x00502280
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered);         // 0x00502320
-int __fastcall D2Win_10127_SetFont(int nArg);                                                                      // 0x00502EF0
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex);                              // 0x00524A30
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
-int __stdcall STATLIST_GetUnitBaseStat(D2UnitStrc* pUnit, int nStatId, int nLayer);                         // 0x006253B0
-D2SkillStrc* __fastcall SKILLS_GetSkillById(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID);               // 0x006439B0
-int __stdcall SKILLS_GetSkillLevel(D2UnitStrc* pUnit, D2SkillStrc* pSkill, int bBonus);                     // 0x006442A0
-int __stdcall SKILLS_GetBonusSkillLevelFromSkillId(D2UnitStrc* pUnit, int nSkillId);                        // 0x00644300
-int __stdcall SKILLS_GetClassSkillId(int nClassId, int nPosition);                                          // 0x006460F0
-int __stdcall SKILLS_GetPlayerSkillCount(int nClassId);                                                     // 0x00646140
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646CA0
 
 #define BITARRAY_CHECK(pBytes, nBit) ((pBytes)[(nBit) >> 3] & gdwBitMasks[(nBit) & 7])
 
@@ -101,20 +79,15 @@ struct D2UiCelFileStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 
 extern D2UiCelFileStrc gaPanelCels[7]; // 0x00724BF0
 
-void* __fastcall GAME_LoadUiCelFile(const char* szPath); // 0x004520C0
 
-extern unsigned char gnCharClass; // 0x007A0522
 
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
 
 // 0x004AA900
 int __cdecl sub_004AA900_IsStateOrValue()
@@ -138,7 +111,7 @@ void __cdecl sub_004AA920_LoadPanelCel()
 void __fastcall ARCHIVE_FreeClientCellFile(void* pCel); // 0x00478A00
 
 // 0x004AA980
-void __cdecl sub_004AA980()
+void __cdecl sub_004AA980_FreePanelCel()
 {
     if (gaPanelCels[gnCharClass].pCelFile)
     {
@@ -177,14 +150,14 @@ static int sub_004AAA50_GetSkillColumnX(unsigned char nColumn)
     return 0;
 }
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 // 0x004AAAE0
 void __stdcall sub_004AAAE0_DrawPagedPanel(void* pCellFile, int nPage)
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = pCellFile;
+    tContext.pCelFile = pCellFile;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
     sub_004F6480(&tContext, gnScreenWidth - gnPanelOffsetX - 320, gnScreenHeight + gnPanelOffsetY - 224, -1, 5, 0);
@@ -206,7 +179,6 @@ void __stdcall sub_004AAAE0_DrawPagedPanel(void* pCellFile, int nPage)
 
 #define TEXT(y, id) sub_004AAAA0_DrawSkillTreeText(D2LANG_GetStringFromTblIndex(id), y)
 
-extern int gnAutomapWidth; // 0x007A5220
 
 // 0x004AAAA0
 static void __stdcall sub_004AAAA0_DrawSkillTreeText(const Unicode* wszText, int nY)
@@ -404,9 +376,9 @@ void __cdecl sub_004AB530_DrawTabCel()
     }
     nX += gnScreenWidth - gnPanelOffsetX;
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = sub_00454600();
+    tContext.pCelFile = sub_00454600();
     tContext.nFrame = (gbSkillTabPressed != 0) + 10;
     tContext.nDirection = 0;
     sub_004F6480(&tContext, nX, gnScreenHeight + gnPanelOffsetY - 63, -1, 5, 0);
@@ -780,9 +752,9 @@ static void __stdcall sub_004ABF60_DrawSkillIcon(int nSkillId, D2SkillsTxt* pSki
     if (!nBaseLevel && nBonus && nState != -1)
         nMode = 3;
 
-    D2CelContextStrc tCel;
+    D2GfxDataStrc tCel;
     memset(&tCel, 0, sizeof(tCel));
-    tCel.pCellFile = pCellFile;
+    tCel.pCelFile = pCellFile;
     tCel.nDirection = 0;
     tCel.nFrame = nFrame;
     TEXTURE_CelDrawColor(&tCel, nX, nY, -1, 5, nMode);
@@ -1019,7 +991,6 @@ void __cdecl sub_004AC4D0_DrawSkillTree()
 
 void __stdcall sub_004AB310_DrawTabHoverText(int nValue); // 0x004AB310
 
-void __cdecl sub_004AB530_DrawTabCel(); // 0x004AB530
 
 void __cdecl sub_004AC200_RefreshSkillTree(); // 0x004AC200
 
@@ -1051,6 +1022,13 @@ void __cdecl sub_004AC690_DrawSkillPanel()
 }
 
 #pragma pack(push, 1)
+struct d2data_00724BF0_t
+{
+    unsigned char b0[240];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
 struct d2data_00724BB0_t
 {
     const void* p0;
@@ -1071,35 +1049,22 @@ struct d2data_00724BB0_t
 };
 #pragma pack(pop)
 
-#pragma pack(push, 1)
-struct d2data_00724BF0_t
-{
-    unsigned char b0[240];
-};
-#pragma pack(pop)
-
-extern "C" struct d2data_00724BB0_t gData_00724BB0; // 0x00724BB0
 extern "C" struct d2data_00724BF0_t gData_00724BF0; // 0x00724BF0
+extern "C" struct d2data_00724BB0_t gData_00724BB0; // 0x00724BB0
 
-extern "C" struct d2data_00724BB0_t gData_00724BB0 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00724BB0
+extern int gnTabSelection = 1; // 0x00724CE0
 
-extern int gnSkillPage = 1; // 0x00724BEC
+extern int gaSkillTabX[7][3] = {
+    { 0, -149, -220 },
+    { -305, -305, -305 },
+    { -149, -305, -149 },
+    { -305, -305, -220 },
+    { -305, -149, -305 },
+    { -149, -149, -149 },
+    { -149, -220, -149 }
+}; // 0x00724CE4
+
+extern int gData_00724D38 = -305; // 0x00724D38
 
 extern "C" struct d2data_00724BF0_t gData_00724BF0 = {
     {
@@ -1122,16 +1087,22 @@ extern "C" struct d2data_00724BF0_t gData_00724BF0 = {
 }; // 0x00724BF0
 #pragma comment(linker, "/alternatename:?gaPanelCels@@3PAUD2UiCelFileStrc@@A=_gData_00724BF0")
 
-extern int gnTabSelection = 1; // 0x00724CE0
+extern int gnSkillPage = 1; // 0x00724BEC
 
-extern int gaSkillTabX[7][3] = {
-    { 0, -149, -220 },
-    { -305, -305, -305 },
-    { -149, -305, -149 },
-    { -305, -305, -220 },
-    { -305, -149, -305 },
-    { -149, -149, -149 },
-    { -149, -220, -149 }
-}; // 0x00724CE4
-
-extern int gData_00724D38 = -305; // 0x00724D38
+extern "C" struct d2data_00724BB0_t gData_00724BB0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00724BB0

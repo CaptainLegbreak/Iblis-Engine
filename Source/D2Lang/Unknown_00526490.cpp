@@ -1,62 +1,37 @@
 #include "D2Lang.h"
 #include "D2LangTypes.h"
 #include "D2Unicode.h"
+#include "FogApi.h"
 
-#pragma pack(push, 1)
-struct d2data_00730A28_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
+extern "C" const char* gData_00730A28[15] = { // 0x00730A28
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
 };
-#pragma pack(pop)
-
-extern "C" struct d2data_00730A28_t gData_00730A28; // 0x00730A28
-
-extern "C" struct d2data_00730A28_t gData_00730A28 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00730A28
+#include "D2LangApi.h"
+#include "StormApi2.h"
 
 struct D2LangByteRangeStrc;
 struct D2UtfConvertSpecStrc;
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 extern "C" unsigned int __cdecl strlen(const char* szString);
 extern "C" char* __cdecl _itoa(int nValue, char* szOut, int nRadix); // 0x00687605
-extern "C" int __cdecl isspace(int c); // 0x00687006
 
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 
 extern "C" void* __cdecl memset(void* pDest, int nValue, unsigned int nSize);
 Unicode* __fastcall sub_00526740(Unicode* pDest, const Unicode* pSource, int nCount); // 0x00526740
-Unicode* __fastcall sub_00526940_FindSubstring(const Unicode* pString, const Unicode* pSubstring); // 0x00526940
-int __stdcall SUniConvertUTF8to16(unsigned short* pDst, unsigned int nDstMax, const unsigned char* pSrc, unsigned int nSrcMax, unsigned int* pnDstWritten, unsigned int* pnSrcRead); // 0x006C7410
 
 
 // 0x00526740
@@ -201,7 +176,7 @@ Unicode* __fastcall Unicode::strcpy(Unicode* dest, const Unicode* src)
 }
 
 // 0x00526800
-extern "C" __declspec(dllexport) int __fastcall sub_00526800(const unsigned short* pText) {
+extern "C" __declspec(dllexport) int __fastcall UNICODE_StrLen(const unsigned short* pText) {
     int nLength = 0;
     if (!pText) {
         return 0;
@@ -331,7 +306,7 @@ static __forceinline void Unicode_strcpy_Inline(Unicode* pDest, const Unicode* p
 }
 
 // 0x005269D0
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...)
+void __cdecl sub_005269D0_FormatText(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...)
 {
     if (!pFormat)
     {
@@ -580,7 +555,7 @@ Unicode* __fastcall Unicode::win2Unicode(Unicode* dest, const char* src, int cou
 }
 
 // 0x00526F70
-char* __fastcall sub_00526F70(char* szDest, const Unicode* pSource, int nCount)
+char* __fastcall UNICODE_ToAscii(char* szDest, const Unicode* pSource, int nCount)
 {
     char* pCurrentDest = szDest;
     while (nCount > 1 && pSource->wChar != 0)

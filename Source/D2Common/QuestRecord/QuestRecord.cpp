@@ -1,15 +1,11 @@
 #include "D2Primitives.h"
 #include "D2DataTbls.h"
+#include "FogApi.h"
+#include "FogApi.h"
 
-int __stdcall sub_00410B30(unsigned char* pBitBuffer, int nBit);                                    // 0x00410B30
-void __stdcall sub_00410B10(unsigned char* pBitBuffer, int nBit);                                   // 0x00410B10
-void __stdcall sub_00410B50(unsigned char* pBitBuffer, int nBit);                                  // 0x00410B50
-void __stdcall BITMANIP_Initialize(D2BitBufferStrc* pBitBuffer, unsigned char* pBuffer, int nBufferSize);   // 0x00410E40
 void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);

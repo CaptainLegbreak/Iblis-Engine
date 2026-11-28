@@ -2,6 +2,8 @@
 #include "D2StormAutoLink.h"
 #include "D2StormTypes.h"
 #include "D2StormSha1.h"
+#include "StormApi.h"
+#include "stpl.h"
 
 struct D2StormNodeListStrc;
 
@@ -17,15 +19,12 @@ struct D2StormHuffLinkSlotStrc;
 
 struct CHuffman;
 
-struct D2StormArrayBStrc;
 
-struct D2StormArrayCStrc;
 
 struct BigBuffer;
 
 struct BigStack;
 
-struct D2StormBigStrc;
 
 extern "C" void* __cdecl _alloca(unsigned int nSize);
 
@@ -37,11 +36,9 @@ void* __stdcall SMemReAlloc(void* pLocation, unsigned int nSize, const char* szF
 
 int __stdcall SMemCmp(void* pLocation1, void* pLocation2, unsigned int nSize); // 0x0041D200
 
-void __stdcall SMemCopy(void* pDest, const void* pSource, unsigned int nSize); // 0x0041D2A0
-
 void __stdcall SMemFill(void* pLocation, unsigned int nLength, unsigned char nFillWith); // 0x0041D2C0
 
-extern unsigned int gaCrc32Table_00708448[256]; // 0x00708448
+extern unsigned int gaCrc32Table[256]; // 0x00708448
 
 struct D2StormNodeListStrc
 {
@@ -146,62 +143,6 @@ struct CHuffman
 
 #include "D2StormArrayA.h"
 
-struct D2StormArrayBStrc
-{
-    unsigned int m_alloc;
-    unsigned int m_count;
-    unsigned char* m_data;
-    unsigned int m_chunk;
-
-    void ReallocAndClear(unsigned int nCount)
-    {
-        m_alloc = nCount;
-        if (m_data || nCount)
-            m_data = (unsigned char*)SMemReAlloc(m_data, nCount, gszTypeNameUChar_00708880, -2, 0);
-    }
-    void sub_004219F0_Set(unsigned int nCount, const unsigned char* pData);
-    unsigned int sub_00421160_CalcChunkSize(unsigned int nCount);
-};
-
-struct D2StormArrayCStrc
-{
-    unsigned int m_alloc;
-    unsigned int m_count;
-    char* m_data;
-    unsigned int m_chunk;
-
-    static unsigned int __stdcall RoundUp(unsigned int nValue, unsigned int nAlign)
-    {
-        unsigned int nRemainder = nValue % nAlign;
-        if (nRemainder)
-            nValue += nAlign - nRemainder;
-        return nValue;
-    }
-    void Reserve(unsigned int nCount, int bRound)
-    {
-        nCount += m_count;
-        if (nCount > m_alloc)
-        {
-            if (bRound)
-            {
-                unsigned int nChunk = m_chunk ? m_chunk : sub_00421240_CalcChunkSize(nCount);
-                nCount = RoundUp(nCount, nChunk);
-            }
-            sub_00421770_ReallocData(nCount);
-        }
-    }
-    void ReallocAndClear(unsigned int nCount)
-    {
-        m_alloc = nCount;
-        if (m_data || nCount)
-            m_data = (char*)SMemReAlloc(m_data, nCount, gszTypeNameChar_0070888C, -2, 0);
-    }
-    unsigned int sub_00421240_CalcChunkSize(unsigned int nCount);                                           // 0x00421240
-    void sub_00421770_ReallocData(unsigned int nAlloc);                                                     // 0x00421770
-    void sub_00421A50_Set(unsigned int nCount, const char* pData);
-    unsigned int sub_00421F60_Add(unsigned int nCount, const char* pData);
-};
-
 struct BigBuffer
 {
     D2StormArrayAStrc m_array;
@@ -223,19 +164,6 @@ struct BigStack
 
     BigBuffer* Push(int* pCounter); // 0x00420DD0
     void Drop(unsigned int nCount); // 0x00420E00
-};
-
-struct D2StormBigStrc
-{
-    int unk0x00[5];
-    BigStack tStack;
-    int unk0x158[4];
-
-    ~D2StormBigStrc();                                                                                      // 0x00421D80
-    static void operator delete(void* pMemory)
-    {
-        SMemFree(pMemory, "delete", -1, 0);
-    }
 };
 
 inline void* operator new(unsigned int, void* pPlace) throw();
@@ -280,29 +208,34 @@ struct D2StormNodeListAStrc
     void LinkNode(char* pNode, unsigned int nLinkType, char* pExisting);
 };
 
-struct D2StormPtrArrayStrc
-{
-    unsigned int m_alloc;
-    unsigned int m_count;
-    int* m_data;
-    unsigned int m_chunk;
-
-    int* sub_00420FD0_At(unsigned int nIndex);
-};
-
-struct D2StormByteArrayStrc
-{
-    unsigned int m_alloc;
-    unsigned int m_count;
-    char* m_data;
-    unsigned int m_chunk;
-
-    char* sub_00421000_At(unsigned int nIndex);
-};
-
 inline void* operator new(unsigned int, void* pPlace) throw()
 {
     return pPlace;
+}
+
+struct D2StormBigStrc;
+void __stdcall SBigNew(D2StormBigStrc** ppBig);                                                             // 0x00423950
+void __stdcall SBigDel(D2StormBigStrc* pBig);                                                               // 0x00424E40
+
+// A big number handle that owns its SBig.
+struct BigNum
+{
+    D2StormBigStrc* hHandle;
+
+    BigNum();
+    ~BigNum();
+};
+
+// 0x0041D320
+BigNum::BigNum()
+{
+    SBigNew(&hHandle);
+}
+
+// 0x0041D330
+BigNum::~BigNum()
+{
+    SBigDel(hHandle);
 }
 
 // 0x0041D340
@@ -440,7 +373,7 @@ void __fastcall CrcBuffer(const unsigned char* pData, unsigned int nSize, unsign
     {
         while (nSize)
         {
-            nCrc = (nCrc >> 8) ^ gaCrc32Table_00708448[(*pData ^ nCrc) & 0xFF];
+            nCrc = (nCrc >> 8) ^ gaCrc32Table[(*pData ^ nCrc) & 0xFF];
             nSize--;
             pData++;
         }
@@ -451,54 +384,7 @@ void __fastcall CrcBuffer(const unsigned char* pData, unsigned int nSize, unsign
         *pCrc = nCrc;
 }
 
-// 0x0041D8D0
-unsigned int CBitInput::sub_0041D8D0_Peek(unsigned int nBits, unsigned int nMask)
-{
-    if (nBitCount <= nBits)
-    {
-        nBitBuffer |= *(unsigned short*)pInput << nBitCount;
-        nBitCount += 16;
-        pInput += 2;
-    }
-    return nBitBuffer & nMask;
-}
-
-// 0x0041D900
-void CBitInput::sub_0041D900_Skip(unsigned int nBits)
-{
-    nBitBuffer >>= nBits;
-    nBitCount -= nBits;
-}
-
 // build: symbol ?LinkNode@D2StormNodeListAStrc@@QAEXPADI0@Z 0x0041ED90
-
-// 0x0041F510
-void CHuffman::AddSymbol(unsigned int nValue)
-{
-    HUFFNODE* pFirst = (HUFFNODE*)tItemList.Head();
-    HUFFNODE* pItem = (HUFFNODE*)tFreeList.Head();
-    if (!pItem)
-        pItem = &aItems[nItemsUsed++];
-    tItemList.LinkNode((char*)pItem, 1, 0);
-    pItem->pParent = 0;
-    pItem->pChild = 0;
-    pItem->nValue = pFirst->nValue;
-    pItem->nWeight = pFirst->nWeight;
-    pItem->pParent = pFirst;
-    pItemsByValue[pItem->nValue] = pItem;
-    pItem = (HUFFNODE*)tFreeList.Head();
-    if (!pItem)
-        pItem = &aItems[nItemsUsed++];
-    tItemList.LinkNode((char*)pItem, 1, 0);
-    pItem->pParent = 0;
-    pItem->pChild = 0;
-    pItem->nValue = nValue;
-    pItem->nWeight = 0;
-    pItem->pParent = pFirst;
-    pItemsByValue[nValue] = pItem;
-    pFirst->pChild = pItem;
-    sub_0041F350_IncWeights(pItem);
-}
 
 // 0x0041F9E0
 void __fastcall HuffmanDecompress(void* pOutput, unsigned int* pOutputSize, void* pInput, unsigned int nInputSize, int nUnused)
@@ -526,42 +412,6 @@ BigBuffer* BigStack::Push(int* pCounter)
 void BigStack::Drop(unsigned int nCount)
 {
     nUsed -= nCount;
-}
-
-// 0x004212D0
-int BigBuffer::sub_004212D0_Get(unsigned int nIndex)
-{
-    return InRange(nIndex) ? m_array.m_data[m_start + nIndex] : 0;
-}
-
-// 0x004213B0
-unsigned int __stdcall BigHighBitIndex(BigBuffer* pQueue)
-{
-    unsigned int nCount = pQueue->m_array.m_count;
-    unsigned int nStart = pQueue->m_start;
-    unsigned int nWords = nCount - nStart;
-    for (unsigned int i = nWords; i != 0; )
-    {
-        i--;
-        if (nStart + i < nCount && pQueue->m_array.m_data[nStart + i])
-        {
-            unsigned int nMask = 0x80000000;
-            for (unsigned int nBit = 32; nBit != 0; )
-            {
-                nBit--;
-                if (pQueue->sub_004212D0_Get(i) & nMask)
-                    return i * 32 + nBit;
-                nMask >>= 1;
-            }
-        }
-    }
-    return 0;
-}
-
-// 0x004220D0
-void BigBuffer::sub_004220D0_SetCount(unsigned int nCount)
-{
-    m_array.SetCount(m_start + nCount);
 }
 
 extern "C" const char gData_006D0224[20]; // 0x006D0224

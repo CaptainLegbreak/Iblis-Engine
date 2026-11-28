@@ -8,7 +8,9 @@
 #include "D2LevelTxt.h"
 #include "D2Drlg.h"
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2Path.h"
+#include "FogApi.h"
 
 struct D2DrlgStrc;
 
@@ -20,39 +22,22 @@ struct D2DrlgOutDesertInitStrc
     int nY;
 };
 
-D2LvlPrestTxt* __stdcall DATATBLS_GetLvlPrestTxtRecord(int nLvlPrestId);                                     // 0x0061F0B0
-
-void __fastcall DRLGOUTDOORS_SpawnOutdoorLevelPresetEx(D2DrlgLevelStrc* pLevel, int nX, int nY, int nLevelPrestId, int nPickedFile, int a6); // 0x006743C0
 
 int __fastcall DRLGOUTDOORS_SpawnOutdoorLevelPreset(D2DrlgLevelStrc* pLevel, int nLevelPrestId, int nRand, int nOffset, char nFlags); // 0x00674730
 
-void __fastcall DRLGOUTDOORS_SpawnAct12Waypoint(D2DrlgLevelStrc* pLevel);                                   // 0x00674B70
 
-void __fastcall DRLGOUTDOORS_SpawnAct12Shrines(D2DrlgLevelStrc* pLevel, int nShrines);                      // 0x00674E40
 
-void __fastcall DRLGOUTDOORS_AddAct124SecondaryBorder(D2DrlgLevelStrc* pLevel, int nLvlSubId, int nLevelPrestId); // 0x006752A0
-
-void __fastcall DRLGOUTPLACE_SetOutGridLinkFlags(D2DrlgLevelStrc* pLevel);                                  // 0x00675770
-
-void __fastcall DRLGOUTPLACE_PlaceAct1245OutdoorBorders(D2DrlgLevelStrc* pLevel);                           // 0x00675850
 
 void __fastcall DRLGOUTDESR_PlaceDesertTransitionToTown(D2DrlgLevelStrc* pLevel);                           // 0x0067F560
 
 void __fastcall DRLGOUTDESR_AddExits(D2DrlgLevelStrc* pLevel);                                              // 0x0067F670
 
-D2DrlgLevelStrc* __stdcall DRLG_GetLevel(D2DrlgStrc* pDrlg, int nLevelId);                                  // 0x00642BB0
+int __fastcall DRLGOUTDOORS_SpawnPresetFarAway(D2DrlgLevelStrc* pLevel, D2DrlgCoordStrc* pCoords, int nLevelPrestId, int nPickedFile, int nOffset, int nFlags); // 0x006744F0
 
-int __fastcall DRLGOUTDOORS_SpawnPresetFarAway(D2DrlgLevelStrc* pLevel, D2DrlgCoordStrc* pCoords, int nLevelPrestId, int nPickedFile, int a5, int a6); // 0x006744F0
-
-int __fastcall DRLGGRID_GetGridEntry(D2DrlgGridStrc* pGrid, int nX, int nY);                                // 0x0067C570
-
-void __stdcall DRLGOUTDESR_PlaceColumns(D2DrlgLevelStrc* pLevel, int nColumn);                             // 0x0067FE90
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
@@ -96,13 +81,9 @@ static void DRLGOUTDESR_PlaceTombEntriesInCanyon(D2DrlgLevelStrc* pLevel); // 0x
 
 static void DRLGOUTDESR_PlaceFillsInCanyon(D2DrlgLevelStrc* pLevel);
 
-void __fastcall DRLGOUTDESR_InitAct2OutdoorLevel(D2DrlgLevelStrc* pLevel);
-
 static int DRLGOUTWILD_TestSpawnRiver(int nX, D2DrlgLevelStrc* pLevel);
 
 static int __stdcall DRLGOUTWILD_SpawnCliffCaves(D2DrlgLevelStrc* pLevel, int nX, int nY);
-
-void __stdcall DRLGOUTDESR_SpawnRiverAndCliffCaves(D2DrlgLevelStrc* pLevel); // 0x00680200
 
 struct D2PresetPairStrc;
 
@@ -147,8 +128,6 @@ M303_OFFSET_CHECK(M303_check_pNext, D2DrlgVertexStrc, pNext, 0x10);
 M303_OFFSET_CHECK(M303_check_pBounds, D2DrlgOutRectStrc, pBounds, 0x10);
 
 int __fastcall DRLGOUTDOORS_SpawnRandomOutdoorDS1(D2DrlgLevelStrc* pLevel, int nLvlPrestId, int nRand);
-
-void __fastcall DRLGOUTDOORS_SpawnAct1DirtPaths(D2DrlgLevelStrc* pLevel);                                   // 0x00681420
 
 static inline int DRLGOUTDESR_IsRectAdjacent(D2DrlgOutRectStrc* pRect, D2DrlgOutRectStrc* pOther); // 0x0067FFB0
 
@@ -514,11 +493,11 @@ static void __stdcall DRLGOUTDESR_PlacePair(int nColumn, D2DrlgLevelStrc* pLevel
             if (!sub_00674200_IsValid(pLevel, nColumn + 2, nY))
                 continue;
         }
-        if ((sub_0067C570_GetGrid(&pOutdoor->pGrid[2], nColumn, nY) & 0xF0000) == 0x30000
-            && (sub_0067C570_GetGrid(&pOutdoor->pGrid[2], nColumn + 1, nY) & 0xF0000) == 0x30000)
+        if ((DRLGGRID_GetGridEntry(&pOutdoor->pGrid[2], nColumn, nY) & 0xF0000) == 0x30000
+            && (DRLGGRID_GetGridEntry(&pOutdoor->pGrid[2], nColumn + 1, nY) & 0xF0000) == 0x30000)
         {
-            sub_006743C0_PlacePreset(pLevel, nColumn, nY, 28, 1, 0);
-            sub_006743C0_PlacePreset(pLevel, nColumn + 1, nY, 28, bBridge ? 3 : 2, 0);
+            DRLGOUTDOORS_SpawnOutdoorLevelPresetEx(pLevel, nColumn, nY, 28, 1, 0);
+            DRLGOUTDOORS_SpawnOutdoorLevelPresetEx(pLevel, nColumn + 1, nY, 28, bBridge ? 3 : 2, 0);
             return;
         }
     }
@@ -556,8 +535,8 @@ void __stdcall DRLGOUTDESR_PlaceColumns(D2DrlgLevelStrc* pLevel, int nColumn)
     D2DrlgOutdoorInfoStrc* pOutdoor = pLevel->pOutdoors;
     for (int nRow = 0; nRow < pOutdoor->nGridHeight; ++nRow)
     {
-        int nFlags = sub_0067C570_GetGrid(&pOutdoor->pGrid[2], nColumn, nRow);
-        int nType = sub_0067C570_GetGrid(&pOutdoor->pGrid[0], nColumn, nRow);
+        int nFlags = DRLGGRID_GetGridEntry(&pOutdoor->pGrid[2], nColumn, nRow);
+        int nType = DRLGGRID_GetGridEntry(&pOutdoor->pGrid[0], nColumn, nRow);
         int nFile;
         if (nType)
         {
@@ -568,10 +547,10 @@ void __stdcall DRLGOUTDESR_PlaceColumns(D2DrlgLevelStrc* pLevel, int nColumn)
         }
         else
             nFile = (nFlags & 0x100) ? 0 : 3;
-        sub_006743C0_PlacePreset(pLevel, nColumn, nRow, 26, nFile, 0);
+        DRLGOUTDOORS_SpawnOutdoorLevelPresetEx(pLevel, nColumn, nRow, 26, nFile, 0);
 
-        nFlags = sub_0067C570_GetGrid(&pOutdoor->pGrid[2], nColumn + 1, nRow);
-        nType = sub_0067C570_GetGrid(&pOutdoor->pGrid[0], nColumn + 1, nRow);
+        nFlags = DRLGGRID_GetGridEntry(&pOutdoor->pGrid[2], nColumn + 1, nRow);
+        nType = DRLGGRID_GetGridEntry(&pOutdoor->pGrid[0], nColumn + 1, nRow);
         if (nType)
         {
             if (nType == 7 && (nFlags & 0xF0000) == 0x30000)
@@ -581,7 +560,7 @@ void __stdcall DRLGOUTDESR_PlaceColumns(D2DrlgLevelStrc* pLevel, int nColumn)
         }
         else
             nFile = (nFlags & 0x100) ? 0 : 3;
-        sub_006743C0_PlacePreset(pLevel, nColumn + 1, nRow, 27, nFile, 0);
+        DRLGOUTDOORS_SpawnOutdoorLevelPresetEx(pLevel, nColumn + 1, nRow, 27, nFile, 0);
     }
     if (pOutdoor->dwFlags & 0x14)
         DRLGOUTDESR_PlacePair(nColumn, pLevel);
@@ -908,20 +887,6 @@ static void DRLGOUTWILD_SpawnTownTransitionsAndCaves(D2DrlgLevelStrc* pLevel)
     }
 }
 
-void __fastcall sub_A14_Emit_006803D0(D2DrlgLevelStrc* pLevel)
-{
-    DRLGOUTDOORS_AddAct124SecondaryBorder(pLevel, 2, 4);
-    DRLGOUTWILD_SpawnTownTransitionsAndCaves(pLevel);
-    DRLGOUTDOORS_AddAct124SecondaryBorder(pLevel, 3, 4);
-}
-
-void __fastcall sub_I19_Emit_0067F8D0(D2DrlgLevelStrc* pLevel)
-{
-    DRLGOUTDESR_InitAct2OutdoorLevel(pLevel);
-    DRLGOUTDESR_PlaceTombEntriesInCanyon(pLevel);
-    DRLGOUTDESR_InitAct2OutdoorLevel(pLevel);
-}
-
 
 static void __stdcall DRLGOUTWILD_SpawnCottage(int bExtraCottage, int nLvlPrestId, D2DrlgLevelStrc* pLevel)
 {
@@ -1056,16 +1021,16 @@ void __fastcall DRLGOUTWILD_InitAct1OutdoorLevel(D2DrlgLevelStrc* pLevel)
 }
 
 #pragma pack(push, 1)
-struct d2data_006F2610_t
+struct d2data_006F26A8_t
 {
-    unsigned char b0[112];
+    unsigned char b0[4];
 };
 #pragma pack(pop)
 
 #pragma pack(push, 1)
-struct d2data_006F26A8_t
+struct d2data_006F2610_t
 {
-    unsigned char b0[4];
+    unsigned char b0[112];
 };
 #pragma pack(pop)
 
@@ -1097,12 +1062,16 @@ struct d2data_00749CB4_t
 };
 #pragma pack(pop)
 
+extern "C" const struct d2data_006F26A8_t gData_006F26A8; // 0x006F26A8
 extern "C" const int gData_006F2390[8][5][4]; // 0x006F2390
 extern "C" const struct d2data_006F2610_t gData_006F2610; // 0x006F2610
-extern "C" const D2PresetPairStrc gData_006F2680[5]; // 0x006F2680
-extern "C" const struct d2data_006F26A8_t gData_006F26A8; // 0x006F26A8
 extern "C" const struct d2data_006F26AC_t gData_006F26AC; // 0x006F26AC
+extern "C" const D2PresetPairStrc gData_006F2680[5]; // 0x006F2680
 extern "C" struct d2data_00749CB4_t gData_00749CB4; // 0x00749CB4
+
+extern "C" const struct d2data_006F26A8_t gData_006F26A8 = {
+    { 0x00 }
+}; // 0x006F26A8
 
 extern "C" const int gData_006F2390[8][5][4] = {
     {
@@ -1177,19 +1146,6 @@ extern "C" const struct d2data_006F2610_t gData_006F2610 = {
 }; // 0x006F2610
 #pragma comment(linker, "/alternatename:?gaTombEntries_006F2610@@3QBUD2DrlgOutDesertInitStrc@@B=_gData_006F2610")
 
-extern "C" const D2PresetPairStrc gData_006F2680[5] = {
-    { 385, 2 },
-    { 0, 6 },
-    { 386 },
-    { 0, 8 },
-    { 2, 2 }
-}; // 0x006F2680
-#pragma comment(linker, "/alternatename:?gaPresetPairs_006F2680@@3PAUD2PresetPairStrc@@A=_gData_006F2680")
-
-extern "C" const struct d2data_006F26A8_t gData_006F26A8 = {
-    { 0x00 }
-}; // 0x006F26A8
-
 extern "C" const struct d2data_006F26AC_t gData_006F26AC = {
     {
         0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
@@ -1200,6 +1156,15 @@ extern "C" const struct d2data_006F26AC_t gData_006F26AC = {
         0x02
     }
 }; // 0x006F26AC
+
+extern "C" const D2PresetPairStrc gData_006F2680[5] = {
+    { 385, 2 },
+    { 0, 6 },
+    { 386 },
+    { 0, 8 },
+    { 2, 2 }
+}; // 0x006F2680
+#pragma comment(linker, "/alternatename:?gaPresetPairs_006F2680@@3PAUD2PresetPairStrc@@A=_gData_006F2680")
 
 extern "C" struct d2data_00749CB4_t gData_00749CB4 = {
     (const void*)"English",

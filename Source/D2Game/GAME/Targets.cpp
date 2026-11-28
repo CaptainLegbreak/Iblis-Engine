@@ -14,7 +14,7 @@ void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, in
 void __fastcall FOG_FreePool(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 // 0x005B1880
-void __fastcall TARGETS_AllocPlayerNode(D2GameStrc* pGame, D2UnitStrc* pUnit, int a3)
+void __fastcall TARGETS_AllocPlayerNode(D2GameStrc* pGame, D2UnitStrc* pUnit, int nNodeData)
 {
     if (!pGame || !pUnit || pUnit->dwUnitType != UNIT_PLAYER || pUnit->dwNodeIndex != 11)
         return;
@@ -32,13 +32,13 @@ void __fastcall TARGETS_AllocPlayerNode(D2GameStrc* pGame, D2UnitStrc* pUnit, in
         return;
     memset(p, 0, sizeof(D2TargetNodeStrc));
     p->hUnit = pUnit;
-    p->nNodeData = a3;
+    p->nNodeData = nNodeData;
     *ppNode = p;
     pUnit->dwNodeIndex = i;
 }
 
 // 0x005B1900
-void __fastcall D2GAME_UpdateSummonAI_6FC401F0(D2GameStrc* pGame, D2UnitStrc* pUnit, int a3, int nNodeIndex)
+void __fastcall D2GAME_UpdateSummonAI(D2GameStrc* pGame, D2UnitStrc* pUnit, int nNodeData, int nNodeIndex)
 {
     if (!pGame || !pUnit || pUnit->dwNodeIndex != 11 || nNodeIndex >= 8 || (pUnit->dwUnitType != UNIT_PLAYER && pUnit->dwUnitType != UNIT_MONSTER))
         return;
@@ -50,7 +50,7 @@ void __fastcall D2GAME_UpdateSummonAI_6FC401F0(D2GameStrc* pGame, D2UnitStrc* pU
         return;
     memset(p, 0, sizeof(D2TargetNodeStrc));
     p->hUnit = pUnit;
-    p->nNodeData = a3;
+    p->nNodeData = nNodeData;
     p->pNext = pNode->pNext;
     p->pPrevious = pNode;
     if (pNode->pNext)
@@ -59,22 +59,10 @@ void __fastcall D2GAME_UpdateSummonAI_6FC401F0(D2GameStrc* pGame, D2UnitStrc* pU
     pUnit->dwNodeIndex = nNodeIndex;
 }
 
-extern "C" const char gData_006E2C78[120]; // 0x006E2C78
-
-extern "C" const char gData_006E2C78[120] = {
-    46, 92, 71, 65, 77, 69, 92, 84, 97, 114, 103, 101, 116, 115, 46, 99,
-    112, 112, 0, 0, 0, 0, 0, 0, 98, 115, 100, 32, 4, 1, 0, 0,
-    116, 97, 120, 32, 4, 1, 0, 0, 118, 111, 117, 32, 4, 1, 0, 0,
-    116, 111, 119, 32, 5, 1, 0, 0, 116, 97, 120, 32, 5, 1, 0, 0,
-    114, 105, 110, 32, 6, 1, 0, 0, 102, 108, 100, 32, 3, 1, 0, 0,
-    104, 103, 108, 32, 10, 1, 0, 0, 102, 108, 100, 32, 3, 1, 0, 0,
-    104, 98, 116, 32, 9, 1, 0, 0, 104, 98, 116, 32, 9, 1, 0, 0,
-    99, 114, 110, 32, 1, 1
-}; // 0x006E2C78
-#pragma comment(linker, "/alternatename:_gszTargetsSourceFile=_gData_006E2C78")
+extern "C" const char gszTargetsSourceFile[20] = ".\\GAME\\Targets.cpp"; // 0x006E2C78
 
 // 0x005B1990
-void __fastcall TARGETS_InsertUnitNode(D2GameStrc* pGame, D2UnitStrc* pUnit, int a3, int nNodeIndex)
+void __fastcall TARGETS_InsertUnitNode(D2GameStrc* pGame, D2UnitStrc* pUnit, int nNodeData, int nNodeIndex)
 {
     if (!pGame || !pUnit || pUnit->dwNodeIndex != 11 || nNodeIndex < 8 || nNodeIndex > 9 || (pUnit->dwUnitType != UNIT_PLAYER && pUnit->dwUnitType != UNIT_MONSTER))
         return;
@@ -84,7 +72,7 @@ void __fastcall TARGETS_InsertUnitNode(D2GameStrc* pGame, D2UnitStrc* pUnit, int
         return;
     memset(p, 0, sizeof(D2TargetNodeStrc));
     p->hUnit = pUnit;
-    p->nNodeData = a3;
+    p->nNodeData = nNodeData;
     pGame->pTargetNodes[nNodeIndex] = p;
     if (pNode)
     {
@@ -95,7 +83,7 @@ void __fastcall TARGETS_InsertUnitNode(D2GameStrc* pGame, D2UnitStrc* pUnit, int
 }
 
 // 0x005B1A20
-void __fastcall D2GAME_FreeUnitNode_6FC40310(D2GameStrc* pGame, D2UnitStrc* pUnit)
+void __fastcall D2GAME_FreeUnitNode(D2GameStrc* pGame, D2UnitStrc* pUnit)
 {
     if (!pGame || !pUnit || (pUnit->dwUnitType != UNIT_PLAYER && pUnit->dwUnitType != UNIT_MONSTER))
     {
@@ -187,7 +175,7 @@ void __fastcall TARGETS_FreeAllTargetNodes(D2GameStrc* pGame)
     {
         if (pTargetNode && pTargetNode->hUnit)
         {
-            D2GAME_FreeUnitNode_6FC40310(pGame, pTargetNode->hUnit);
+            D2GAME_FreeUnitNode(pGame, pTargetNode->hUnit);
         }
         pTargetNode = *++ppTargetNode;
     }

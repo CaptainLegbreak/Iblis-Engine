@@ -540,12 +540,10 @@ static FOGASTNodeStrc* __stdcall DATATBLS_ExpressionBuffer_PushCallbackConstant(
     return pExpressionBufferPos;
 }
 
-extern "C" const unsigned char gData_006FC874[24]; // 0x006FC874
-
-extern "C" const unsigned char gData_006FC874[24] = {
-    0x17, 1, 2, 3, 9, 9, 9, 9, 9, 9, 0xF, 0xF, 0xF, 0xF, 0xF, 0xF,
-    0x11, 0x11, 0x13, 0x13, 0x14, 0x15, 0x16
-}; // 0x006FC874
+extern "C" const unsigned char gData_006FC874[24] = { // 0x006FC874
+    23, 1, 2, 3, 9, 9, 9, 9, 9, 9, 15, 15, 15, 15, 15, 15,
+    17, 17, 19, 19, 20, 21, 22, 0
+};
 #pragma comment(linker, "/alternatename:_gaASTOperatorPrecedence=_gData_006FC874")
 
 // 0x006C18A0

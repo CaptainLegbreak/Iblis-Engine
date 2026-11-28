@@ -1,12 +1,12 @@
 #include "D2CMP.h"
+#include "FogApi.h"
+#include "StormApi.h"
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 extern "C" __declspec(dllimport) unsigned long __stdcall GetFileSize(void* hFile, unsigned long* pFileSizeHigh);
 
-unsigned int __stdcall SStrLen(const char* szString);                                                       // 0x00413750
-int __fastcall sub_00605340_LoadPcxPalette(const char* szFileName);                                         // 0x00605340
+int __fastcall FASTCMP_LoadPcxPalette(const char* szFileName);                                         // 0x00605340
 extern unsigned int gnPaletteEnd;                                                                  // 0x008E902C
 extern unsigned int gnPaletteStart;                                                                // 0x008E9930
 extern int ganSquareTable[511];                                                                     // 0x008E9034
@@ -67,7 +67,7 @@ int __stdcall PaletteInit(const char* szFile, int nStart, int nEnd)
         }
 
         CloseHandle(hFile);
-        gbPaletteLoaded = sub_00605340_LoadPcxPalette(szFile);
+        gbPaletteLoaded = FASTCMP_LoadPcxPalette(szFile);
         return gbPaletteLoaded;
     }
 

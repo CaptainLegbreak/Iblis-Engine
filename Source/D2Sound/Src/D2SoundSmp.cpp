@@ -1,6 +1,11 @@
 #include "D2Sound.h"
 
 #include "D2SoundTypes.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "StormApi2.h"
 
 
 #define DSBSTATUS_BUFFERLOST 0x00000002
@@ -29,7 +34,7 @@ struct D2SoundViewStrc;
 
 struct D2StoredUnitRecordStrc;
 
-struct D2PanelCtrlStrc_004B8370;
+struct ROSTER_SetCtrlState;
 
 struct D2SoundObjStrc_00515A30;
 
@@ -51,7 +56,6 @@ struct D2GuidStrc;
 
 struct D2DSBufferDescStrc;
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -59,23 +63,16 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 void __cdecl sub_00419F30(); // 0x00419F30
 
-int __stdcall SFileDdaEnd(void* hStream); // 0x0041A990
-
 D2DirectSoundStrc* __cdecl D2SOUND_GetDirectSound(); // 0x00513B50
 
-void __fastcall D2SOUNDSMP_SetSoundVolume(D2SoundStrc* pSound, int nVolume); // 0x005157B0
 
-void __fastcall D2SOUNDSMP_StopSound(D2SoundStrc* pSound); // 0x00515EE0
 
-int __fastcall FOG_FOpenFile(const char* szFileName, void** phFile); // 0x004068E0
 
 int __stdcall SFileDdaBeginEx(void* hFile, int nBufferSize, unsigned int nFlags, unsigned int nOffset, int nVolume, int nPan, D2DSoundBufferStrc* pBuffer); // 0x0041B280
 
-int __fastcall D2SOUNDSMP_FillSoundBuffer(D2SoundStrc* sound,unsigned int sourcePosition,unsigned int destinationPosition,unsigned int size); // 0x00515180
 
 void* __fastcall D2SOUNDSMP_ReadWaveHeader(const void* pFile, unsigned int* pnSize, D2WaveFormatStrc* pFormat); // 0x00516760
 
-void __fastcall D2SOUNDSMP_DestroySound(D2SoundStrc* pSound); // 0x005160D0
 
 extern "C" __declspec(dllimport) int __stdcall SetEvent(void* hEvent); // 0x006CC130
 
@@ -87,9 +84,9 @@ extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalS
 
 extern D2ComObjectStrc* gpSoundObject_008816D8; // 0x008816D8
 
-extern D2ComObjectStrc* gpSoundObject_00881740; // 0x00881740
+extern D2ComObjectStrc* gpSoundObject; // 0x00881740
 
-extern D2ComObjectStrc* gpSoundObject_00881744; // 0x00881744
+extern D2ComObjectStrc* gpEaxBuffer; // 0x00881744
 
 extern D2SoundStrc* gpSoundChannel; // 0x00881794
 
@@ -113,7 +110,6 @@ struct D2SoundSampleStrc
     void* hSample;
 };
 
-int __stdcall SRegLoadValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long* pValue); // 0x00414F10
 
 D2CriticalSectionStrc gtSoundLock; // 0x0088174C
 
@@ -129,7 +125,7 @@ struct D2StoredUnitRecordStrc
     char szName[1];
 };
 
-struct D2PanelCtrlStrc_004B8370
+struct ROSTER_SetCtrlState
 {
     char unk0x00[0x5C];
     int nState;
@@ -163,7 +159,7 @@ typedef char check_ptr_width[(sizeof(void*) == 4) ? 1 : -1];
 
 typedef char check_size_entry[(sizeof(D2StoredUnitRecordStrc) == 0x67) ? 1 : -1];
 
-typedef char check_size_ctrl[(sizeof(D2PanelCtrlStrc_004B8370) == 0x60) ? 1 : -1];
+typedef char check_size_ctrl[(sizeof(ROSTER_SetCtrlState) == 0x60) ? 1 : -1];
 
 typedef char check_size_sound[(sizeof(D2SoundObjStrc_00515A30) == 0x48) ? 1 : -1];
 
@@ -191,17 +187,14 @@ struct D2SoundFadeStrc
     unsigned int dwFadeEndTick;
 };
 
-unsigned long __stdcall D2SOUNDSMP_SoundThreadProc(void* pParameter); // 0x00516250
 
 void* ghSoundEvent; // 0x0088180C
 
 void* ghSoundThread; // 0x00881810
 
-void __fastcall D2SOUNDSMP_CloseSoundStream(D2SoundStrc* pSound); // 0x00515E40
 
 int __cdecl D2SOUND_IsEaxRoomOff(); // 0x00513BA0
 
-float __stdcall sub_00516670_RoomToVolume(float fRoom); // 0x00516670
 
 extern const D2GuidStrc gtEaxListener20PropertySet; // 0x006DE460
 
@@ -217,19 +210,14 @@ extern int gnEaxVersion; // 0x00881774
 
 extern int gbEaxRoomOff; // 0x00881778
 
-void __fastcall D2SOUNDSMP_SetSoundPosition(D2SoundStrc* pSound, float x, float y, float z); // 0x00515950
 
-void __fastcall D2SOUNDSMP_SetSoundAttenuation(D2SoundStrc* pSound, float fAttenuation); // 0x00515A90
 
-void __fastcall D2SOUNDSMP_InitWaveFormat(D2WaveFormatStrc* pFormat, int nChannels); // 0x00516720
 
-void __fastcall D2SOUNDUTIL_ListAddHead(D2SoundNodeStrc** ppList, void* pData); // 0x00516950
 
-void __fastcall D2SOUNDUTIL_ListRemove(D2SoundNodeStrc** ppList, void* pData); // 0x00516980
 
-extern const D2GuidStrc gIidDirectSound3DBuffer_006DE3D0; // 0x006DE3D0
+extern const D2GuidStrc gtIidDirectSound3DBuffer; // 0x006DE3D0
 
-extern const D2GuidStrc gIidKsPropertySet_006DE410; // 0x006DE410
+extern const D2GuidStrc gtIidKsPropertySet; // 0x006DE410
 
 D2KsPropertySetStrc* gpEaxListenerPropertySet; // 0x008816D8
 
@@ -249,9 +237,7 @@ int gbSoundGlobalFocus; // 0x00881804
 
 extern "C" { int gnStreamChannelArg; } // 0x008817A0
 
-extern "C" int __stdcall SFileDdaInitialize(int nValue); // 0x00415EE0
 
-D2SoundStrc* __fastcall D2SOUNDSMP_CreateSound(unsigned int nFlags, int nValue); // 0x00515530
 
 extern const char gszEmptyAssert[]; // 0x006CC837
 
@@ -265,15 +251,11 @@ extern int gbIconic; // 0x00881814
 
 extern "C" void* __cdecl sub_004F59A0_GetHwnd(); // 0x004F59A0
 
-int __cdecl D2SOUND_GetStreamChannelValue(); // 0x00514920
 
-int __cdecl D2SOUND_IsStreamChannelPlaying(); // 0x00514840
 
-int __cdecl sub_00514990_PickRandomChannel(); // 0x00514990
 
 int __fastcall D2SOUNDSMP_ClearSoundBuffer(D2DSoundBufferStrc* pBuffer, unsigned long nOffset, unsigned long nBytes); // 0x00515300
 
-int __fastcall D2SOUNDSMP_RestoreLostBuffer(D2SoundStrc* pSound); // 0x00515FD0
 
 extern "C" double __cdecl sqrt(double x); // 0x006879C0
 
@@ -283,17 +265,16 @@ const unsigned char* __fastcall D2SOUNDSMP_ReadWaveHeader(const unsigned int* pR
 
 static void D2SOUNDSMP_ReleaseSoundBuffers(D2SoundStrc* pSound); // 0x00516070
 
-void __fastcall D2SOUNDSMP_ResetSound(D2SoundStrc* pSound); // 0x00516140
 
-// build: symbol ?D2SOUNDSMP_CreateSoundBuffer@* 0x005153C0
+// 0x005153C0
 static int __stdcall D2SOUNDSMP_CreateSoundBuffer(unsigned int nFlags, D2SoundStrc* pSound)
 {
     D2WaveFormatStrc tFormat;
     D2SOUNDSMP_InitWaveFormat(&tFormat, (nFlags & 1) ? 2 : 1);
 
+    const unsigned int nBytes = (nFlags & 1) ? 0x40000 : 0x20000;
     D2DSBufferDescStrc tDesc;
     memset(&tDesc, 0, sizeof(tDesc));
-    const unsigned int nBytes = (nFlags & 1) ? 0x40000 : 0x20000;
     tDesc.dwSize = 0x14;
     tDesc.dwFlags = gbSoundGlobalFocus ? 0x80A0 : 0xA0;
     if (nFlags & 2)
@@ -303,13 +284,12 @@ static int __stdcall D2SOUNDSMP_CreateSoundBuffer(unsigned int nFlags, D2SoundSt
     tDesc.dwBufferBytes = nBytes;
     tDesc.lpwfxFormat = &tFormat;
 
-    D2DirectSoundStrc* pDirectSound = D2SOUND_GetDirectSound();
-    if (pDirectSound->CreateSoundBuffer(&tDesc, &pSound->pBuffer, 0) < 0)
+    if (D2SOUND_GetDirectSound()->CreateSoundBuffer(&tDesc, &pSound->pBuffer, 0) < 0)
         return 0;
 
     if (nFlags & 2)
     {
-        if (pSound->pBuffer->QueryInterface(gIidDirectSound3DBuffer_006DE3D0, (void**)&pSound->p3DBuffer) < 0)
+        if (pSound->pBuffer->QueryInterface(gtIidDirectSound3DBuffer, (void**)&pSound->p3DBuffer) < 0)
         {
             pSound->pBuffer->Release();
             return 0;
@@ -319,24 +299,31 @@ static int __stdcall D2SOUNDSMP_CreateSoundBuffer(unsigned int nFlags, D2SoundSt
 // build: symbol ?D2SOUND_IsEaxEnabled@* 0x00513B70
     if ((nFlags & 2) && D2SOUND_IsEaxEnabled())
     {
-        if (pSound->p3DBuffer->QueryInterface(gIidKsPropertySet_006DE410, (void**)&pSound->pPropertySet) < 0)
+        if (pSound->p3DBuffer->QueryInterface(gtIidKsPropertySet, (void**)&pSound->pPropertySet) < 0)
         {
             pSound->pBuffer->Release();
             return 0;
         }
 
         unsigned long dwSupport = 0;
-        long hr;
 // build: symbol ?D2SOUND_GetEaxVersion@* 0x00513B90
         if (D2SOUND_GetEaxVersion() == 1)
-            hr = pSound->pPropertySet->QuerySupport(gtEaxBuffer10PropertySet, 1, &dwSupport);
-        else
-            hr = pSound->pPropertySet->QuerySupport(gtEaxBuffer20PropertySet, 1, &dwSupport);
-        if (hr < 0 || (dwSupport & 3) != 3)
         {
-            pSound->pPropertySet->Release();
-            pSound->pBuffer->Release();
-            return 0;
+            if (pSound->pPropertySet->QuerySupport(gtEaxBuffer10PropertySet, 1, &dwSupport) < 0 || (dwSupport & 3) != 3)
+            {
+                pSound->pPropertySet->Release();
+                pSound->pBuffer->Release();
+                return 0;
+            }
+        }
+        else
+        {
+            if (pSound->pPropertySet->QuerySupport(gtEaxBuffer20PropertySet, 1, &dwSupport) < 0 || (dwSupport & 3) != 3)
+            {
+                pSound->pPropertySet->Release();
+                pSound->pBuffer->Release();
+                return 0;
+            }
         }
     }
 
@@ -365,7 +352,7 @@ extern "C" const char* __fastcall ROSTER_GetEntryName(D2StoredUnitRecordStrc* pE
 }
 
 // build: symbol @ROSTER_SetCtrlState@* 0x004B8370
-extern "C" void __fastcall ROSTER_SetCtrlState(D2PanelCtrlStrc_004B8370* pCtrl, int nState)
+extern "C" void __fastcall ROSTER_SetCtrlState(ROSTER_SetCtrlState* pCtrl, int nState)
 {
     D2_ASSERT(pCtrl, 1310);
     pCtrl->nState = nState;
@@ -384,11 +371,6 @@ extern "C" void* __fastcall UNITSND_GetLinkFirst(D2OwnerStrc_004CA990* pOwner)
     return 0;
 }
 
-extern "C" void __fastcall CLIENTS_SetPlayerUnitAlive(D2ClientStrc* pClient)
-{
-    D2_ASSERT(pClient, 518);
-    pClient->dwFlags |= 1;
-}
 
 void __cdecl sub_00650EA0_Nop()
 {
@@ -876,7 +858,7 @@ void __fastcall D2SOUNDSMP_ResetSound(D2SoundStrc* pSound)
     D2_ASSERT(!pSound->hStream, 0x227);
 
     EnterCriticalSection(&gtSoundLock);
-    if (sub_00513BB0())
+    if (sub_00513BB0_GetValue())
     {
         pSound->pData = 0;
         pSound->nDataSize = 0;
@@ -1113,8 +1095,9 @@ static const unsigned char* __stdcall D2SOUNDSMP_FindRiffChunk(const unsigned ch
     return 0;
 }
 
+// Kept noinline: D2SOUNDSMP_CreateSoundBuffer (0x5153C0) calls this out of line in the image; without it the compiler inlines it there.
 // 0x00516720
-void __fastcall D2SOUNDSMP_InitWaveFormat(D2WaveFormatStrc* pFormat, int nChannels)
+__declspec(noinline) void __fastcall D2SOUNDSMP_InitWaveFormat(D2WaveFormatStrc* pFormat, int nChannels)
 {
     memset(pFormat, 0, sizeof(D2WaveFormatStrc));
     pFormat->wFormatTag = 1;
@@ -1224,61 +1207,54 @@ void __fastcall D2SOUNDSMP_GetPositionalVolumePan(int* pVolume, int* pPan, float
     *pPan = nPan;
 }
 
-#pragma pack(push, 1)
-struct d2data_0072F974_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
+extern "C" const D2GuidStrc gData_006DE460 = { // 0x006DE460
+    0x306A6A8,
+    0xB224,
+    0x11D2,
+    { 0x99, 0xE5, 0x00, 0x00, 0xE8, 0xD8, 0xC7, 0x22 }
 };
-#pragma pack(pop)
-
-extern "C" const D2GuidStrc gData_006DE460; // 0x006DE460
-extern "C" const D2GuidStrc gData_006DE470; // 0x006DE470
-extern "C" const D2GuidStrc gData_006DE480; // 0x006DE480
-extern "C" const D2GuidStrc gData_006DE490; // 0x006DE490
-extern "C" struct d2data_0072F974_t gData_0072F974; // 0x0072F974
-
-extern "C" const D2GuidStrc gData_006DE460 = { 0x306A6A8, 0xB224, 0x11D2, { 0x99, 0xE5, 0, 0, 0xE8, 0xD8, 0xC7, 0x22 } }; // 0x006DE460
 #pragma comment(linker, "/alternatename:?gtEaxListener20PropertySet@@3UD2GuidStrc@@B=_gData_006DE460")
 
-extern "C" const D2GuidStrc gData_006DE470 = { 0x306A6A7, 0xB224, 0x11D2, { 0x99, 0xE5, 0, 0, 0xE8, 0xD8, 0xC7, 0x22 } }; // 0x006DE470
+extern "C" const D2GuidStrc gData_006DE470 = { // 0x006DE470
+    0x306A6A7,
+    0xB224,
+    0x11D2,
+    { 0x99, 0xE5, 0x00, 0x00, 0xE8, 0xD8, 0xC7, 0x22 }
+};
 #pragma comment(linker, "/alternatename:?gtEaxBuffer20PropertySet@@3UD2GuidStrc@@B=_gData_006DE470")
 
-extern "C" const D2GuidStrc gData_006DE480 = { 0x4A4E6FC1, 0xC341, 0x11D1, { 0xB7, 0x3A, 0x44, 0x45, 0x53, 0x54 } }; // 0x006DE480
+extern "C" const D2GuidStrc gData_006DE480 = { // 0x006DE480
+    0x4A4E6FC1,
+    0xC341,
+    0x11D1,
+    { 0xB7, 0x3A, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00 }
+};
 #pragma comment(linker, "/alternatename:?gtEaxListener10PropertySet@@3UD2GuidStrc@@B=_gData_006DE480")
 
-extern "C" const D2GuidStrc gData_006DE490 = { 0x4A4E6FC0, 0xC341, 0x11D1, { 0xB7, 0x3A, 0x44, 0x45, 0x53, 0x54 } }; // 0x006DE490
+extern "C" const D2GuidStrc gData_006DE490 = { // 0x006DE490
+    0x4A4E6FC0,
+    0xC341,
+    0x11D1,
+    { 0xB7, 0x3A, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00 }
+};
 #pragma comment(linker, "/alternatename:?gtEaxBuffer10PropertySet@@3UD2GuidStrc@@B=_gData_006DE490")
 
-extern "C" struct d2data_0072F974_t gData_0072F974 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0072F974
+extern "C" const char* gData_0072F974[15] = { // 0x0072F974
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
+};
 
-extern int gnSoundMasterVolume = 255; // 0x0072F9B0
+int gnSoundMasterVolume = 255; // 0x0072F9B0

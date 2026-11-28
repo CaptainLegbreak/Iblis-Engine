@@ -6,6 +6,7 @@
 #include "D2StormSha1.h"
 #include "D2StormBitOutput.h"
 #include "D2Win32SystemInfo.h"
+#include "StormApi.h"
 
 struct D2FileStrc;
 
@@ -101,12 +102,6 @@ struct D2StormList004185B0Strc;
 
 struct D2StormHashBufferStrc;
 
-class THuffmannTree;
-
-struct D2StormHuffLinkSlotStrc;
-
-struct CHuffman;
-
 struct HANDLER;
 
 
@@ -144,10 +139,6 @@ char gszBasePath_00778F28[260]; // 0x00778F28
 unsigned short gwValue_0077905C; // 0x0077905C
 
 void __cdecl InitBasePath(); // 0x004158E0
-
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
-
-void __stdcall SMemCopy(void* pDst, const void* pSrc, unsigned int nSize); // 0x0041D2A0
 
 struct Link {
     Link* previous;
@@ -206,8 +197,6 @@ void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, uns
 
 void __stdcall SMemFill(void* pLocation, unsigned int nLength, unsigned char nFillWith); // 0x0041D2C0
 
-const char* __stdcall SStrChrR(const char* szString, char nChar); // 0x004134D0
-
 void __fastcall CrcBuffer(const unsigned char* pData, unsigned int nSize, unsigned int* pCrc, unsigned char nFlags); // 0x0041D810
 
 int __cdecl GetDefaultOpenFlags(); // 0x00418B50
@@ -219,8 +208,6 @@ void __cdecl StartCdThread(); // 0x0041A880
 void __cdecl PumpStreams(); // 0x00419C00
 
 int __stdcall SFileCloseFile(void* pArg); // 0x004198D0
-
-int __stdcall SFileCloseArchive(void* hMpq); // 0x00419A80
 
 static int __stdcall ReadAdditionalAttributes(ARCHIVEREC* pArchive, D2StormBlockStrc* pBlockTable, unsigned int nCount);
 
@@ -327,10 +314,6 @@ extern TSList<AUDIOSTREAM> gDdaList_00708384; // 0x00708384
 
 extern "C" __declspec(dllimport) int __stdcall GetFileTime(void* hFile, D2FileTimeStrc* pCreation, D2FileTimeStrc* pAccess, D2FileTimeStrc* pWrite);
 
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
-
-unsigned int __stdcall SStrPack(char* szDest, const char* szSource, unsigned int nDestSize); // 0x00413800
-
 struct PairStrc_00416810
 {
     int nFirst;
@@ -435,21 +418,6 @@ struct D2StormHashBufferStrc
     unsigned int nWindow;
 };
 
-class THuffmannTree
-{
-public:
-    THuffmannTree();                                                                                        // 0x0041F4A0
-
-    unsigned int adwData[0x3474 / 4];
-};
-
-struct CHuffman : THuffmannTree
-{
-    D2StormHuffLinkSlotStrc aQuickLinks[0x80];
-
-    CHuffman();
-};
-
 static void* ghStormThread_00779034; // 0x00779034
 
 int gnStormDirectFlags_00779058;                                                                            // 0x00779058
@@ -519,17 +487,8 @@ extern TSList<REQUEST> gRequestList_00708360; // 0x00708360
 
 static int gbStreamsPaused_00779044;                                                                        // 0x00779044
 
-struct D2FogBlockStrc;
 
 struct D2StormRecord419000Strc;
-
-struct D2FogBlockStrc
-{
-    D2FogBlockStrc* pNext;
-    unsigned int dwSize;
-    int unk0x08[3];
-    int bInUse;
-};
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetModuleFileNameA(void* hModule, char* szFileName, unsigned long nSize); // 0x006CC1BC
 
@@ -2519,13 +2478,6 @@ void __cdecl StartCdThread()
     }
 }
 
-// 0x0041F950
-CHuffman::CHuffman()
-{
-    for (int i = 0; i < 0x80; ++i)
-        aQuickLinks[i].nData[0] = 0;
-}
-
 // build: symbol ??1?$TSLinkedNode@UAUDIOSTREAM@@@@QAE@XZ 0x00418BE0
 // 0x004199A0
 AUDIOSTREAM::~AUDIOSTREAM()
@@ -2572,7 +2524,6 @@ inline HANDLER::~HANDLER()
 
 void __stdcall SErrReportResourceLeak(const char* szName); // 0x0041D1E0
 void __stdcall SErrReportNamedResourceLeak(const char* szName, const char* szDetail); // 0x0041D010
-int __cdecl SFileDdaDestroy(); // 0x00419F30
 
 // 0x0041A110
 int __cdecl SFileDestroy()
@@ -4748,6 +4699,16 @@ sub_00419060::sub_00419060()
 
 extern "C" char gData_006F28F8[]; // 0x006F28F8
 
+unsigned int gnReadUnit_00708348 = 131072; // 0x00708348
+
+int gnValueA_0070834C = 2; // 0x0070834C
+
+int gnValue_00708350 = 1; // 0x00708350
+
+long gnErrorLockUsers_0070841C = -1; // 0x0070841C
+
+extern "C" char gData_006F28F8[]; // 0x006F28F8
+
 extern "C" const unsigned char gData_006CEF78[0x100]; // 0x006CEF78
 extern "C" const unsigned char gData_006CF078[4]; // 0x006CF078
 extern "C" const D2StormSignatureKeyStrc gData_006CF07C[1]; // 0x006CF07C
@@ -4777,14 +4738,6 @@ extern "C" const unsigned char gData_006CF078[4] = { 1, 0, 1 }; // 0x006CF078
 
 extern "C" const D2StormSignatureKeyStrc gData_006CF07C[1] = { { (const char *)"BLIZZARDKEY", 5 } }; // 0x006CF07C
 #pragma comment(linker, "/alternatename:?gaSignatureKeys_006CF07C@@3QBUD2StormSignatureKeyStrc@@B=_gData_006CF07C")
-
-extern unsigned int gnReadUnit_00708348 = 0x20000; // 0x00708348
-
-extern int gnValueA_0070834C = 2; // 0x0070834C
-
-extern int gnValue_00708350 = 1; // 0x00708350
-
-extern long gnErrorLockUsers_0070841C = -1; // 0x0070841C
 
 // build: symbol ??__EgRequestList_00708360@@YAXXZ 0x006CA7D0
 // build: symbol ??__FgRequestList_00708360@@YAXXZ 0x006CB120

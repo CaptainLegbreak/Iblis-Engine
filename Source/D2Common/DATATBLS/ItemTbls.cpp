@@ -1,4 +1,5 @@
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2DataTbls.h"
 #include "D2Txt.h"
 #include "D2Records.h"
@@ -6,6 +7,7 @@
 #include "D2TxtItems.h"
 #include "D2TxtTables.h"
 #include "D2GameRecords.h"
+#include "FogApi2.h"
 
 // build: base-profile
 #define NULL 0
@@ -77,8 +79,6 @@ extern int gbCompileTxt; // 0x0096C8B4
 unsigned short __fastcall DATATBLS_GetStringIdFromReferenceString(char* szReference); // 0x006117B0
 
 void __fastcall DATATBLS_ItemCalcLinker(char* pSrc, void* pRecord, int nOffset, int nPosition, int nTxtRow, int nTxtColumn); // 0x00631530
-
-void* __stdcall DATATBLS_CompileTxt(void* hArchive, const char* szName, D2BinFieldStrc* pTbl, int* pRecordCount, int nRecordSize); // 0x006122F0
 
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
@@ -190,10 +190,6 @@ extern "C" const char gszTxtField_index[]; // 0x006E9CCC
 
 extern D2TxtLinkStrc* gpColorsLinker; // 0x0096C5E4
 
-void __fastcall DATATBLS_ItemParamLinker(char* pSrc, void* pRecord, int nOffset, int nPosition, int nTxtRow, int nTxtColumn); // 0x006336A0
-
-void __stdcall FOG_10216_AddRecordToLinkingTable(D2TxtLinkStrc* pLinker, const char* szName); // 0x006BD500
-
 unsigned short __stdcall D2LANG_GetTblIndex(const char* szReference, void** ppUnicode); // 0x00524D30
 
 D2ItemsTxt* gpItemsTxt; // 0x0096CA5C
@@ -280,7 +276,7 @@ int gnItemsCodeSizeEx; // 0x0096BCD0
 int __fastcall DATATBLS_AppendMemoryBuffer(char** ppCodes, int* pSize, int* pSizeEx, void* pBuffer, int nBufferSize); // 0x006118B0
 int __stdcall DATATBLS_CompileExpression(const char* szFormulaString, char* pOutBuffer, int nOutBufferSize, int (__fastcall* pfnKeywordToNumber)(char*), int (__cdecl* pfnGetParameterCount)(), int (__fastcall* pfnLinkParse)(char*, int*, int, int)); // 0x006C1AE0
 int __fastcall DATATBLS_MapItemsTxtKeywordToNumber(char* szKey); // 0x00631430
-int __cdecl sub_00631490(); // 0x00631490
+int __cdecl DATATBLS_Return2(); // 0x00631490
 int __fastcall ITEMS_ResolveItemCalcKeyword(char* szText, int* a2, int a3, int nKeywordNumber); // 0x006314A0
 
 int gnItemsTxtRecordCount; // 0x0096CA58
@@ -355,8 +351,6 @@ int gnItemratioTxtRecordCount; // 0x0096CC48
 
 int gnPropertiesTxtRecordCount; // 0x0096BCDC
 
-void* __fastcall FOG_ReallocPool(void* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
-
 
 
 // 0x00631430
@@ -385,7 +379,7 @@ int __fastcall DATATBLS_MapItemsTxtKeywordToNumber(char* szKey)
 }
 
 // 0x00631490
-int __cdecl sub_00631490()
+int __cdecl DATATBLS_Return2()
 {
     return 2;
 }
@@ -442,7 +436,7 @@ void __fastcall DATATBLS_ItemCalcLinker(char* pSrc, void* pRecord, int nOffset, 
         return;
     }
 
-    const int nBufferSize = DATATBLS_CompileExpression(pSrc, szBuffer, sizeof(szBuffer), DATATBLS_MapItemsTxtKeywordToNumber, sub_00631490, ITEMS_ResolveItemCalcKeyword);
+    const int nBufferSize = DATATBLS_CompileExpression(pSrc, szBuffer, sizeof(szBuffer), DATATBLS_MapItemsTxtKeywordToNumber, DATATBLS_Return2, ITEMS_ResolveItemCalcKeyword);
     if (nBufferSize <= 0)
     {
         *(int*)((char*)pRecord + nOffset) = -1;

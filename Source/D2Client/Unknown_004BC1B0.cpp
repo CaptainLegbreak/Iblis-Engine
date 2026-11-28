@@ -1,9 +1,17 @@
+#include "D2LanguageNames.h"
+// build: symbol _gaszLanguageNames 0x0072783C
+
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Unicode.h"
 #include "D2CelContext.h"
 #include "D2StormTypes.h"
 #include "D2ListBoxLine.h"
 #include "D2ClientTextPanel.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2GfxApi.h"
+#include "StormApi2.h"
 
 class UIWidget;
 class ListBoxImplementation;
@@ -13,41 +21,29 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, int nFlags); // 0x00413020
-
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, int nFlags); // 0x00412650
-
 void __fastcall UI_DrawRectangleBorder(D2RectStrc* pRect); // 0x00452E50
 
-int __cdecl sub_00468730(); // 0x00468730
 
-int __cdecl sub_00468740(); // 0x00468740
 
 D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nType); // 0x004788B0
 
 int __fastcall PANEL_CountLinesInView(ListBoxImplementation* pListBox); // 0x004BE340
 
-int __stdcall D2GFX_GetResolutionMode(); // 0x004F5160
-
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 int __fastcall D2Win_10123(const Unicode* wszText, int nLength); // 0x00501730
 
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
-int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
@@ -148,7 +144,7 @@ struct D2ListScrollStrc
     int nY;
     int nRows;
 
-    int DrawRows(D2CelContextStrc* pContext);
+    int DrawRows(D2GfxDataStrc* pContext);
 };
 
 // 0x004BF8C0
@@ -174,8 +170,8 @@ public:
     virtual int sub_004BE0A0_GetLineCount();
     virtual void sub_004BE0B0_Clear();
     virtual void sub_004BE500_AddLine(const Unicode* wszText0, const Unicode* wszText1, const Unicode* wszText2,
-        const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5, int nArg20, int nData,
-        int bUseDefault, int nArg2C);
+        const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5, int nEntryData, int nColor,
+        int bUseDefault, int nFont);
 
     void DrawClippedText(const Unicode* wszSource, int nX, int nY, int nColor);
     int HitTestScrollDown(SMSGHANDLER_PARAMS* pMsg); // 0x004BE770
@@ -237,7 +233,7 @@ public:
     virtual int GetValue();
     virtual void sub_004BEDE0_ForwardSlot3C(const Unicode* wszText0, const Unicode* wszText1,
         const Unicode* wszText2, const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5,
-        int nArg20, int nData, int bUseDefault, int nArg2C);
+        int nEntryData, int nColor, int bUseDefault, int nFont);
     virtual int sub_004BEDF0_ForwardGetEntryData(int nIndex);
     virtual int sub_004BEE00_Slot14();
     virtual void sub_004BEE10_Slot15();
@@ -276,7 +272,7 @@ void __cdecl TEXT_LoadTextSliderCel()
 }
 
 // 0x004BE060
-void __cdecl sub_004BE060()
+void __cdecl sub_004BE060_FreeSliderCel()
 {
     if (gpListBoxSliderCel)
     {
@@ -382,9 +378,9 @@ void ListBoxImplementation::sub_004BE110_UpdateScrollBar()
 
     const int nTop = tBar.nY + 13;
     const int nLeft = tBar.nX - 1;
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpListBoxSliderCel;
+    tContext.pCelFile = gpListBoxSliderCel;
     tContext.nDirection = 0;
     tContext.nFrame = 16;
     sub_004F6480(&tContext, nLeft, nTop + 12 * nStart, -1, 5, 0);
@@ -439,30 +435,30 @@ void ListBoxImplementation::DrawClippedText(const Unicode* wszSource, int nX, in
 {
     Unicode wszText[1024];
     sub_005267E0(wszText, wszSource);
-    if (D2Win_10123(wszText, sub_00526800(wszText)) < nRectWidth - 0x32)
+    if (D2Win_10123(wszText, UNICODE_StrLen(wszText)) < nRectWidth - 0x32)
     {
         D2Win_10117_DrawText(wszText, nX, nY, nColor, 0);
         return;
     }
 
-    while (D2Win_10123(wszText, sub_00526800(wszText)) > nRectWidth - 0x32)
+    while (D2Win_10123(wszText, UNICODE_StrLen(wszText)) > nRectWidth - 0x32)
     {
-        wszText[sub_00526800(wszText) - 1].wChar = 0;
+        wszText[UNICODE_StrLen(wszText) - 1].wChar = 0;
     }
     D2Win_10117_DrawText(wszText, nX, nY, nColor, 0);
 }
 
 // 0x004BE500
 void ListBoxImplementation::sub_004BE500_AddLine(const Unicode* wszText0, const Unicode* wszText1, const Unicode* wszText2,
-    const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5, int nArg20, int nData, int bUseDefault,
-    int nArg2C)
+    const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5, int nEntryData, int nColor, int bUseDefault,
+    int nFont)
 {
     if (nEntryCount >= 0x80)
     {
         return;
     }
 
-    aLines[nEntryCount].unk0x3002 = nArg20;
+    aLines[nEntryCount].nData = nEntryData;
     if (nSelectedIndex == -1)
     {
         nSelectedIndex = 0;
@@ -505,13 +501,13 @@ void ListBoxImplementation::sub_004BE500_AddLine(const Unicode* wszText0, const 
     }
     if (bUseDefault)
     {
-        aLines[nEntryCount].nData = nArg14;
+        aLines[nEntryCount].nColor = nArg14;
     }
     else
     {
-        aLines[nEntryCount].nData = nData;
+        aLines[nEntryCount].nColor = nColor;
     }
-    aLines[nEntryCount].nFont = nArg2C;
+    aLines[nEntryCount].nFont = nFont;
     ++nEntryCount;
 }
 
@@ -720,7 +716,7 @@ int ListBoxImplementation::GetListEntryData(int nIndex)
 {
     if (nIndex >= 0 && nIndex < nEntryCount && nIndex < 0x80)
     {
-        return aLines[nIndex].unk0x3002;
+        return aLines[nIndex].nData;
     }
     D2_ASSERT(nEntryCount < 0x80, 0x46C);
     D2_ASSERT(nEntryCount < nIndex, 0x46D);
@@ -807,10 +803,10 @@ void ListBoxWrapper::Draw()
 // 0x004BEDE0
 void ListBoxWrapper::sub_004BEDE0_ForwardSlot3C(const Unicode* wszText0, const Unicode* wszText1,
     const Unicode* wszText2, const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5,
-    int nArg20, int nData, int bUseDefault, int nArg2C)
+    int nEntryData, int nColor, int bUseDefault, int nFont)
 {
-    pImpl->sub_004BE500_AddLine(wszText0, wszText1, wszText2, wszText3, wszText4, wszText5, nArg20, nData,
-        bUseDefault, nArg2C);
+    pImpl->sub_004BE500_AddLine(wszText0, wszText1, wszText2, wszText3, wszText4, wszText5, nEntryData, nColor,
+        bUseDefault, nFont);
 }
 
 // 0x004BEDF0
@@ -819,7 +815,7 @@ int ListBoxWrapper::sub_004BEDF0_ForwardGetEntryData(int nIndex)
     return pImpl->GetListEntryData(nIndex);
 }
 
-__forceinline int D2ListScrollStrc::DrawRows(D2CelContextStrc* pContext)
+__forceinline int D2ListScrollStrc::DrawRows(D2GfxDataStrc* pContext)
 {
     int i;
     for (i = 0; i < nRows; ++i)
@@ -862,9 +858,9 @@ void ListBoxImplementation::Draw()
 
     const int nOldFont = D2Win_10127_SetFont(nArg18);
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpListBoxSliderCel;
+    tContext.pCelFile = gpListBoxSliderCel;
     tContext.nFrame = bTopPressed ? 11 : 9;
     tContext.nDirection = 0;
     sub_004F6480(&tContext, tBar.nX, tBar.nY, -1, 5, 0);
@@ -886,7 +882,7 @@ void ListBoxImplementation::Draw()
         }
         else
         {
-            nColor = aLines[nLine].nData;
+            nColor = aLines[nLine].nColor;
         }
 
         D2Win_10127_SetFont(aLines[nLine].nFont != 14 ? aLines[nLine].nFont : nArg18);
@@ -1124,9 +1120,9 @@ ListBoxImplementation::ListBoxImplementation(int nX, int nY, int nWidth, int nHe
         aLines[n].wszText4[0].wChar = 0;
         aLines[n].wszText5[0].wChar = 0;
         aLines[n].nFlags = 0;
-        aLines[n].nData = 0;
+        aLines[n].nColor = 0;
         aLines[n].nFont = 1;
-        aLines[n].unk0x3002 = 0;
+        aLines[n].nData = 0;
     }
     pfnCallback = (void (__cdecl*)())nCallback;
     this->nArg10 = nArg10;
@@ -1159,43 +1155,4 @@ ListBoxWrapper::ListBoxWrapper(int nX, int nY, int nWidth, int nHeight, int nArg
     pImpl = new ListBoxImplementation(nX, nY, nWidth, nHeight, nArg10, nArg14, nArg18, nCallback, bLargeFont);
 }
 
-#pragma pack(push, 1)
-struct d2data_0072783C_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
 
-extern "C" struct d2data_0072783C_t gData_0072783C; // 0x0072783C
-
-extern "C" struct d2data_0072783C_t gData_0072783C = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0072783C

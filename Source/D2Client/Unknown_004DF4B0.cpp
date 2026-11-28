@@ -15,6 +15,9 @@
 #include "D2ClientUi.h"
 
 #include "D2Txt.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
+#include "D2CommonApi3.h"
 
 struct D2GridCellStrc
 {
@@ -39,7 +42,7 @@ struct D2CellGridViewStrc
     void __thiscall sub_004DF510_DrawCellNodes();
 };
 
-int __cdecl sub_0045AE90(); // 0x0045AE90
+int __cdecl sub_0045AE90_GetPanelSlideMode(); // 0x0045AE90
 
 void __fastcall SCMD_ReadGridCell(int nA, int nB, unsigned char* pByte0, unsigned char* pByte1, unsigned char* pByte2, unsigned char* pByte3); // 0x00475AA0
 
@@ -63,7 +66,7 @@ extern int gnAmbientDelay; // 0x007C8C94
 
 extern int gnAmbientTick; // 0x007C8C98
 
-void __fastcall sub_004BA840(int nHandle); // 0x004BA840
+void __fastcall sub_004BA840_StopSound(int nHandle); // 0x004BA840
 
 struct D2ClientModuleListStrc
 {
@@ -74,43 +77,22 @@ struct D2ClientModuleListStrc
 
 extern "C" __declspec(dllimport) int __stdcall VirtualFree(void* pAddress, unsigned int nSize, unsigned int nFreeType); // 0x006CC220
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
 
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
 
 D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc* pUnit); // 0x004648F0
 
-D2SkillStrc* __stdcall UNITS_GetUsedSkill(D2UnitStrc* pUnit); // 0x00620250
 
-void __stdcall PATH_SetType(D2DynamicPathStrc* pDynamicPath, int nPathType); // 0x00648CF0
 
-int __stdcall D2Common_10142(D2DynamicPathStrc* pPath, D2UnitStrc* pUnit, int bAllowInTown); // 0x00649970
-
-int __stdcall PATH_GetNumberOfPathPoints(D2DynamicPathStrc* pDynamicPath); // 0x00648780
-
-void __stdcall SKILLS_SetFlags(D2SkillStrc* pSkill, int nValue); // 0x00644660
-
-void __stdcall SKILLS_SetParam1(D2SkillStrc*, int); // 0x00644560
-
-void __stdcall SKILLS_SetParam2(D2SkillStrc*, int); // 0x006445A0
 
 enum { SUCCESS_VALUE = 1 };
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646CA0
-
-void __stdcall MISSILE_SetTotalFrames(D2UnitStrc* pMissile, int nTotalFrames); // 0x0064A2B0
-
-void __stdcall MISSILE_SetCurrentFrame(D2UnitStrc* pMissile, int nCurrentFrame); // 0x0064A330
 
 D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams); // 0x004CD540
 
 int __fastcall ITEM_GetTargetPosition(D2UnitStrc* pUnit, int* pX, int* pY); // 0x004C52E0
-
-void __stdcall D2Common_10216(D2DynamicPathStrc* pPath, int nX, int nY, int bSetBothDirections); // 0x00649EF0
 
 void __fastcall sub_004E1970_SetInfernoFrames(D2SkillsTxt* pSkillsTxtRecord, D2UnitStrc* pUnit); // 0x004E1970
 
@@ -126,16 +108,18 @@ static inline void sub_004DF4B0_DrawCellNode(D2CellGridViewStrc* pView, D2CellNo
     {
         if (bMode)
         {
-            sub_004F6980(pNode->pPos->f_18, pNode->nA, pNode->nB, 4, nArg);
+// build: symbol ?TILE_ShadowTileDraw@* 0x004F6980
+            TILE_ShadowTileDraw(pNode->pPos->f_18, pNode->nA, pNode->nB, 4, nArg);
         }
         else
         {
-            sub_004F6980(pNode->pPos->f_18, pView->nOffsetX - pView->nScrollX + pNode->pPos->nX, pNode->pPos->nY - pView->nScrollY + pView->nOffsetY, 4, nArg);
+            TILE_ShadowTileDraw(pNode->pPos->f_18, pView->nOffsetX - pView->nScrollX + pNode->pPos->nX, pNode->pPos->nY - pView->nScrollY + pView->nOffsetY, 4, nArg);
         }
     }
     else if (pNode->dwFlags & 2)
     {
-        sub_00471620(pNode->pPos);
+// build: symbol ?GFX_DrawUnitShadow@* 0x00471620
+        GFX_DrawUnitShadow(pNode->pPos);
     }
 }
 
@@ -145,7 +129,7 @@ void __thiscall D2CellGridViewStrc::sub_004DF510_DrawCellNodes()
     const int nCells = nSize;
     int nCount = nCells * nCells;
     D2GridCellStrc* pCell = pCells;
-    const int nArg = sub_0045AE90();
+    const int nArg = sub_0045AE90_GetPanelSlideMode();
     while (nCount--)
     {
         for (D2CellNodeStrc* pNode = pCell->pNodes; pNode; pNode = pNode->pNext)
@@ -217,7 +201,7 @@ void __fastcall sub_004E3170_SetMissileFrames(D2UnitStrc* pMissile, int nDivisor
 }
 
 // 0x004E4020
-void __fastcall sub_004E4020(D2UnitStrc* pUnit)
+void __fastcall sub_004E4020_Nop(D2UnitStrc* pUnit)
 {
 }
 
@@ -226,37 +210,9 @@ void __fastcall sub_004E4050_Nothing(D2UnitStrc* pUnit, D2UnitStrc* pTarget)
 {
 }
 
-// 0x004E4280
-extern "C" void __cdecl sub_004E4280()
-{
-    gnEnvironLevelId = 0;
-    gnEnvironAmbientId = 0;
-    gnAmbientDelay = 0;
-    gnAmbientTick = 0;
-    if (gnEnvironSoundHandle)
-    {
-        sub_004BA840(gnEnvironSoundHandle);
-        gnEnvironSoundHandle = 0;
-    }
+extern const int gaMissileVelocityPair[6] = { -2, -1, 0, 1, 2 }; // 0x006DBAA0
 
-    gnEnvironSoundId = 0;
-    if (gnWeatherSoundHandle)
-    {
-        sub_004BA840(gnWeatherSoundHandle);
-        gnWeatherSoundHandle = 0;
-    }
-
-    gnWeatherSoundId = 0;
-}
-
-extern "C" const int gData_006DBAA0[6]; // 0x006DBAA0
-extern "C" const int gData_006DBB38[5]; // 0x006DBB38
-
-extern "C" const int gData_006DBAA0[6] = { -2, -1, 0, 1, 2 }; // 0x006DBAA0
-#pragma comment(linker, "/alternatename:?gaMissileVelocityPair@@3QBHB=_gData_006DBAA0")
-
-extern "C" const int gData_006DBB38[5] = { -1, -3, -2, -1 }; // 0x006DBB38
-#pragma comment(linker, "/alternatename:?gaMissileVelocityCharged@@3QBHB=_gData_006DBB38")
+extern const int gaMissileVelocityCharged[5] = { -1, -3, -2, -1 }; // 0x006DBB38
 
 // 0x004E06A0
 void __fastcall sub_004E06A0_FreeModules(D2ClientModuleListStrc* pList)
@@ -276,96 +232,11 @@ void __fastcall sub_004E06A0_FreeModules(D2ClientModuleListStrc* pList)
     pList->pUnknown04 = 0;
 }
 
-static int UNITS_GetUnitXPosition(D2UnitStrc* pUnit)
-{
-    switch (pUnit->dwUnitType)
-    {
-    case UNIT_OBJECT:
-    case UNIT_ITEM:
-    case UNIT_TILE:
-        return pUnit->pStaticPath->nXPos;
-    }
-    return pUnit->pDynamicPath ? PATH_GetXPosition(pUnit->pDynamicPath) : 0;
-}
-
-static int UNITS_GetUnitYPosition(D2UnitStrc* pUnit)
-{
-    switch (pUnit->dwUnitType)
-    {
-    case UNIT_OBJECT:
-    case UNIT_ITEM:
-    case UNIT_TILE:
-        return pUnit->pStaticPath->nYPos;
-    }
-    return pUnit->pDynamicPath ? PATH_GetYPosition(pUnit->pDynamicPath) : 0;
-}
-
 // 0x004E0A30
 int __fastcall sub_004E0A30_CltDoClearSeqSpeed(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
 {
     pUnit->dwSeqSpeed = 0;
     return 1;
-}
-
-// 0x004E0BD0
-int __fastcall sub_004E0BD0_CltStartClearCollision(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
-{
-    if (pUnit)
-    {
-        pUnit->dwFlags &= ~0x0E;
-    }
-
-    COLLISION_ResetMaskWithPattern(UNITS_GetRoom(pUnit), UNITS_GetUnitXPosition(pUnit), UNITS_GetUnitYPosition(pUnit), 5, 0x1000);
-    return 1;
-}
-
-// 0x004E0EB0
-int __fastcall sub_004E0EB0_CltStartPathToTarget(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
-{
-    if (!CUNIT_GetPathTargetUnit(pUnit))
-    {
-        return 0;
-    }
-
-    D2SkillStrc* pSkill = UNITS_GetUsedSkill(pUnit);
-    if (!pSkill)
-    {
-        return 0;
-    }
-
-    D2DynamicPathStrc* pPath = pUnit->pDynamicPath;
-    if (!pPath)
-    {
-        return 0;
-    }
-
-    PATH_SetNewDistance(pPath, 5);
-    PATH_SetType(pPath, 2);
-    D2Common_10142(pPath, pUnit, 0);
-    if (PATH_GetNumberOfPathPoints(pPath) <= 0)
-    {
-        PATH_SetType(pPath, 1);
-        D2Common_10142(pPath, pUnit, 0);
-        if (PATH_GetNumberOfPathPoints(pPath) <= 0)
-        {
-            return 0;
-        }
-    }
-
-    SKILLS_SetFlags(pSkill, 1);
-    return 1;
-}
-
-// 0x004E0C90
-int __fastcall sub_004E0C90(D2UnitStrc* unit, int skillId, int skillLevel)
-{
-    D2UnitStrc* target = CUNIT_GetPathTargetUnit(unit);
-    if (!target) return 0;
-    D2SkillStrc* skill = UNITS_GetUsedSkill(unit);
-    if (!skill) return 0;
-    SKILLS_SetParam1(skill, UNITS_GetUnitXPosition(target));
-    SKILLS_SetParam2(skill, UNITS_GetUnitYPosition(target));
-    return SUCCESS_VALUE;
 }
 
 static inline unsigned int SEED_RollRandomNumber(D2SeedStrc* pSeed)
@@ -448,7 +319,7 @@ static int __stdcall sub_004E1400_SetMissileFrames(D2UnitStrc* pUnit, int nSkill
     nFrames = nFrames > 1 ? (nFrames < 0xFF ? nFrames : 0xFF) : 1;
 
     PATH_SetNewDistance(pMissile->pDynamicPath, nFrames);
-    sub_00621780_SetMissileArg(pMissile, (pMissilesTxt->nAnimLen << 8) / nFrames);
+    UNITS_SetAnimationSpeed(pMissile, (pMissilesTxt->nAnimLen << 8) / nFrames);
     MISSILE_SetTotalFrames(pMissile, nFrames);
     MISSILE_SetCurrentFrame(pMissile, nFrames);
     return 1;

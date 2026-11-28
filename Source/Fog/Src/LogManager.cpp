@@ -3,6 +3,8 @@
 #include "D2FogTypes.h"
 #include "D2StormLink.h"
 #include "stpl.h"
+#include "FogApi.h"
+#include "StormApi.h"
 
 struct D2FindDataStrc
 {
@@ -44,8 +46,6 @@ struct D2FileTimeStrc;
 
 extern "C" __declspec(dllimport) unsigned long __stdcall WaitForSingleObject(void* hHandle, unsigned long dwMilliseconds); // 0x006CC230
 
-extern "C" __declspec(dllimport) int __stdcall SetEvent(void* hEvent); // 0x006CC130
-
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x006CC134
 
 extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC218
@@ -55,14 +55,6 @@ extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalS
 extern "C" void* __cdecl memset(void* pDst, int nValue, size_t nSize); // 0x00681EF0
 
 extern "C" size_t __cdecl fread(void* pBuffer, size_t nSize, size_t nCount, _iobuf* pFile); // 0x00684782
-
-extern "C" int __cdecl SStrPrintf(char* szDest, unsigned int nMaxCount, const char* szFormat, ...); // 0x00413A40
-
-void __cdecl ERRORMANAGER_SetMiniDumpThreadName(); // 0x00401A70
-
-void __cdecl sub_004026D0_WriteMiniDump(); // 0x004026D0
-
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
 _iobuf* __fastcall LOGMANAGER_OpenDatedLogFile(const char* szName, D2SystemTimeStrc* pTime, const char* szMode, int* pbNew, char* szPathOut, unsigned int nPathOutSize); // 0x0040EBD0
 
@@ -76,19 +68,11 @@ void __cdecl LOGMANAGER_LogWritePrefixedLine(const char* szPrefix, const char* s
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
-
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" int __cdecl sscanf(const char* szSource, const char* szFormat, ...); // 0x00684BD5
 
 extern "C" __declspec(dllimport) long __stdcall SHGetFolderPathA(void* hWnd, int nFolder, void* hToken, unsigned long dwFlags, char* szPath); // 0x006CC43C
-
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
-
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
-
-int __fastcall FOG_CreatePathHierarchy(const char* szPath); // 0x00406A10
 
 int __fastcall ERRORMANAGER_AppendBackslash(char* szPath, unsigned int nSize); // 0x00406B20
 
@@ -96,9 +80,8 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(void); // 
 
 extern "C" __declspec(dllimport) void __stdcall Sleep(unsigned long dwMilliseconds); // 0x006CC258
 
-int gbLogInitialized; // 0x0075D2EC
+extern int gbLogInitialized; // 0x0075D2EC
 
-extern int gnLogQueueCount; // 0x0075E870
 
 extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC210
 extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC1FC
@@ -304,9 +287,9 @@ void __fastcall LOGMANAGER_WriteStartupBanner(_iobuf* pFile)
     fprintf(pFile, "---------------------------------------------------------------\n");
 }
 
-int ganLogNewFile[20]; // 0x0075D298
+extern int ganLogNewFile[20]; // 0x0075D298
 
-char gaszLogFilePaths[20][0x104]; // 0x0075D340
+extern char gaszLogFilePaths[20][0x104]; // 0x0075D340
 
 // 0x0040EB90
 unsigned int __fastcall LOGMANAGER_GetLogFilePaths(char** apszFiles, unsigned int nCount)
@@ -340,25 +323,6 @@ extern "C" const char gszLogDumpByte[]; // 0x006CE1AC
 extern "C" const char gszLogDumpByteSpaced[]; // 0x006CE1A4
 
 extern "C" const char gszLogLineFormat_006CD90C[]; // 0x006CD90C
-
-// 0x004027C0
-unsigned long __stdcall LOGMANAGER_DbgHelpThreadProc(void* pParam)
-{
-    // stands for a stack local the original stores 0 to and reads back unused (no plain-C form found)
-    volatile int nDummy = 0;
-    nDummy;
-    ERRORMANAGER_SetMiniDumpThreadName();
-// build: symbol ?ghDbgHelpWorkEvent@* 0x0098A6C0
-    WaitForSingleObject(ghDbgHelpWorkEvent, 0xFFFFFFFF);
-    while (gpMiniDumpRequest)
-    {
-        sub_004026D0_WriteMiniDump();
-// build: symbol ?ghDbgHelpDoneEvent@* 0x0098A6BC
-        SetEvent(ghDbgHelpDoneEvent);
-        WaitForSingleObject(ghDbgHelpWorkEvent, 0xFFFFFFFF);
-    }
-    return 0;
-}
 
 // 0x0040EBD0
 _iobuf* __fastcall LOGMANAGER_OpenDatedLogFile(const char* szName, D2SystemTimeStrc* pTime, const char* szMode, int* pbNew, char* szPathOut, unsigned int nPathOutSize)
@@ -476,9 +440,9 @@ void __cdecl LOGMANAGER_CloseLogFilesNow()
     while (GetTickCount() - dwStart < 1000)
     {
         EnterCriticalSection(&gtLogQueueLock);
-        const int nQueued = gnLogQueueCount > 0 ? gnLogQueueCount : 0;
+        LogManager::Message* pQueued = gtLogMsgQueue_0075E868.Head();
         LeaveCriticalSection(&gtLogQueueLock);
-        if (!nQueued)
+        if (!pQueued)
         {
             break;
         }
@@ -520,11 +484,11 @@ LogManager::Message::~Message()
 {
 }
 
-void* ghLogThread; // 0x0075D2E8
+extern void* ghLogThread; // 0x0075D2E8
 
-int gbLogThreadStop; // 0x0075E830
+extern int gbLogThreadStop; // 0x0075E830
 
-unsigned long gnLogThreadId; // 0x0075E834
+extern unsigned long gnLogThreadId; // 0x0075E834
 
 // 0x0040FFD0
 void __cdecl LOGMANAGER_ShutdownLogSystem()
@@ -1099,12 +1063,6 @@ void __fastcall sub_0040F570(PairStrc_0040F570* pPair)
     pPair->nFirst = 0;
     pPair->nSecond = 0;
 }
-
-extern "C" const char gData_006CE1A4[8]; // 0x006CE1A4
-extern "C" const char gData_006CE1AC[8]; // 0x006CE1AC
-extern "C" const char gData_006CE1B4[12]; // 0x006CE1B4
-extern "C" const char gData_006CE1C0[12]; // 0x006CE1C0
-extern "C" const char gData_006CE1CC[16]; // 0x006CE1CC
 
 extern "C" const char gData_006CE1A4[8] = " %02X"; // 0x006CE1A4
 #pragma comment(linker, "/alternatename:_gszLogDumpByteSpaced=_gData_006CE1A4")

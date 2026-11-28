@@ -1,9 +1,11 @@
 #include "D2LevelIds.h"
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2Structs.h"
 #include "D2Path.h"
 #include "D2DrlgTiles.h"
 #include "D2Drlg.h"
+#include "FogApi.h"
 
 #define LVLPREST_ACT3_JUNGLE_HEAD 573
 #define LVLPREST_ACT3_JUNGLE_TAIL 574
@@ -18,16 +20,11 @@ struct D2DrlgOutdoorInfoStrc;
 
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
-D2LevelDefBin* __fastcall DATATBLS_GetLevelDefRecord(int nLevelId); // 0x0061E470
-void __fastcall DRLGOUTDOORS_SpawnOutdoorLevelPresetEx(D2DrlgLevelStrc* pLevel, int nX, int nY, int nLevelPrestId, int nPickedFile, int a6); // 0x006743C0
 extern const int gnJungleDefOffsets[3]; // 0x006F2370
 extern const int gnJungleFiles[18]; // 0x006F2328
 int __fastcall DRLGOUTDOORS_SpawnOutdoorLevelPreset(D2DrlgLevelStrc* pLevel, int nLevelPrestId, int nRand, int nOffset, char nFlags); // 0x00674730
-void __fastcall DRLGOUTPLACE_SetOutGridLinkFlags(D2DrlgLevelStrc* pLevel); // 0x00675770
 void __fastcall DRLGOUTJUNG_BuildJungle(D2DrlgLevelStrc* pLevel); // 0x0067E910
 void __fastcall DRLGOUTJUNG_SpawnRandomPreset(D2DrlgLevelStrc* pLevel, int nLevelPrestId1, int nLevelPrestId2, int nMaxSpawns); // 0x0067EED0
 
@@ -122,19 +119,17 @@ struct d2data_00749C78_t
 };
 #pragma pack(pop)
 
-extern "C" const int gData_006F2328[18]; // 0x006F2328
 extern "C" const struct d2data_006F2370_t gData_006F2370; // 0x006F2370
 extern "C" struct d2data_00749C78_t gData_00749C78; // 0x00749C78
-
-extern "C" const int gData_006F2328[18] = {
-    0, 1, 2, 1, 0, 2, 0, 2, 1, 1, 2, 0, 2, 0, 1, 2,
-    1
-}; // 0x006F2328
-#pragma comment(linker, "/alternatename:?gnJungleFiles@@3QBHB=_gData_006F2328")
 
 extern "C" const struct d2data_006F2370_t gData_006F2370 = {
     { 0x00, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x14 }
 }; // 0x006F2370
+
+extern const int gnJungleFiles[18] = {
+    0, 1, 2, 1, 0, 2, 0, 2, 1, 1, 2, 0, 2, 0, 1, 2,
+    1
+}; // 0x006F2328
 
 extern "C" struct d2data_00749C78_t gData_00749C78 = {
     (const void*)"English",

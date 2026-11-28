@@ -1,12 +1,19 @@
 #include "D2LanguageNames.h"
 #include "TALLOCREC.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Constants.h"
 #include "D2Structs.h"
 #include "D2Path.h"
 #include "D2Drlg.h"
 #include "D2DrlgMaps.h"
 #include "D2Win32Types.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
+#include "StormApi2.h"
+#include "D2GfxApi.h"
+#include "D2CMPApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 struct D2TileLibraryEntryStrc;
@@ -16,29 +23,14 @@ struct D2DrlgCoordsStrc;
 struct D2StaticPathStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-D2DrlgTileDataStrc* __stdcall DUNGEON_GetWallTilesFromRoom(D2ActiveRoomStrc* pRoom, int* pWallCount); // 0x006196A0
-void __stdcall DUNGEON_GetRoomCoordinates(D2ActiveRoomStrc* pRoom, D2DrlgCoordsStrc* pCoords); // 0x00619730
-D2RoomCoordListStrc* __stdcall DUNGEON_GetRoomCoordList(D2ActiveRoomStrc* pRoom); // 0x0061AD50
-void __stdcall DUNGEON_GameSubtileToClientCoords(int* pX, int* pY); // 0x00643260
-void __stdcall DUNGEON_GameTileToClientCoords(int* pX, int* pY); // 0x00643310
-int __stdcall TileGetFlags(D2TileLibraryEntryStrc* pTile); // 0x00604BC0
-void __stdcall D2GFX_DrawLine(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, unsigned char nAlpha); // 0x004F6380
 void __fastcall CUNIT_DrawAutomapDiamond(int nX, int nY, unsigned char nColor); // 0x0045B1A0
-D2ActiveRoomStrc* __cdecl CUNIT_GetPlayerRoom(); // 0x004646A0
 extern int gnAutomapOriginY; // 0x007A5208
 extern int gnAutomapOriginX; // 0x007A520C
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-D2UnitStrc* __cdecl sub_00463DE0_GetPlayerUnit(); // 0x00463DE0
-int __cdecl D2GFX_GetDisplayType(); // 0x004F5140
 void __stdcall AUTOMAP_DrawRoomCollision(D2ActiveRoomStrc* pRoom); // 0x0045B4F0
-void __stdcall sub_0045B5F0(D2ActiveRoomStrc* pRoom); // 0x0045B5F0
+void __stdcall sub_0045B5F0_DrawRoomTileDebug(D2ActiveRoomStrc* pRoom); // 0x0045B5F0
 
 extern "C" __declspec(dllimport) int __stdcall wvsprintfA(char* szDest, const char* szFormat, va_list args); // 0x006CC4AC
 
@@ -66,7 +58,6 @@ extern "C" __declspec(dllimport) void* __stdcall CreateFileA(const char* szFileN
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject);                                 // 0x006CC134
 int __stdcall SMemFindNextHeap(unsigned int hPrev, unsigned int* phNext, D2SMemHeapInfoStrc* pInfo);      // 0x004124B0
 int __stdcall SMemFindNextBlock(unsigned int hHeap, void* pMemory, void** ppBlock, D2SMemBlockInfoStrc* pInfo); // 0x004122F0
-unsigned int __stdcall SMemGetHeapByCaller(const char* szFile, int nLine);                                 // 0x00412710
 
 inline void* operator new(unsigned int nSize, void* pWhere) throw()
 {
@@ -74,7 +65,7 @@ inline void* operator new(unsigned int nSize, void* pWhere) throw()
 }
 
 // 0x0045B5F0
-void __stdcall sub_0045B5F0(D2ActiveRoomStrc* pRoom)
+void __stdcall sub_0045B5F0_DrawRoomTileDebug(D2ActiveRoomStrc* pRoom)
 {
     int nTiles;
     D2DrlgTileDataStrc* pTiles = DUNGEON_GetWallTilesFromRoom(pRoom, &nTiles);
@@ -194,9 +185,9 @@ void __cdecl sub_0045B8B0_DrawLogicalRoom()
     int nX = UNITS_GetXPositionInline(pPlayer);
     int nY = UNITS_GetYPositionInline(pPlayer);
     D2ActiveRoomStrc* pRoom = UNITS_GetRoom(pPlayer);
-    D2GFX_OutputString(10, 0x37, "Logical Room->%d", sub_0061B130_GetCollision(pRoom, nX, nY));
+    D2GFX_OutputString(10, 0x37, "Logical Room->%d", D2Common_10095(pRoom, nX, nY));
     AUTOMAP_DrawRoomCollision(pRoom);
-    sub_0045B5F0(pRoom);
+    sub_0045B5F0_DrawRoomTileDebug(pRoom);
 }
 
 // 0x0045B960
@@ -410,8 +401,8 @@ void __cdecl sub_0045BF00_DumpMemory()
     CloseHandle(hFile);
 }
 
-extern int gnScreenWidth_0071146C = 640; // 0x0071146C
+extern int gnSavedScreenWidth = 640; // 0x00711474
 
 extern int gnScreenHeight = 480; // 0x00711470
 
-extern int gnSavedScreenWidth = 640; // 0x00711474
+extern int gnScreenWidth_0071146C = 640; // 0x0071146C

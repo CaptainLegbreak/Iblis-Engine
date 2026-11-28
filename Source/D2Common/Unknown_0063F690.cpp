@@ -1,20 +1,17 @@
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2Txt.h"
 #include "D2Records.h"
+#include "FogApi.h"
 struct D2TxtLinkStrc;
 
 
 
-extern "C" const char gszTxtField_end[];                                                                    // 0x006D9060
-void* __stdcall DATATBLS_CompileTxt(void* hArchive, const char* szName, D2BinFieldStrc* pTbl, int* pRecordCount, int nRecordSize);// 0x006122F0
 extern D2ObjectsTxt* gpObjectsTxt;                                                                          // 0x0096D470
 int gnObjectsTxtRecordCount;                                                                                // 0x0096D474
 extern void* gpObjgroupTxt; // 0x0096D478
 extern int gnObjgroupTxtRecordCount; // 0x0096D47C
-void __stdcall DATATBLS_UnloadBin(void* pBinFile); // 0x006125C0
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 const unsigned short* __fastcall D2LANG_GetStringByReferenceString(const char* szReference);                // 0x00524E20
 unsigned short* __fastcall sub_00526790(unsigned short* wszDest, const unsigned short* wszSrc, int nCount);// 0x00526790

@@ -9,13 +9,13 @@ struct D2CelStrc;
 struct D2GfxListNodeStrc;
 struct D2GfxMotionStrc;
 struct D2UnitOverlayStrc;
-struct D2GfxDataStrc;
+struct D2UnitGfxDataStrc;
 struct D2InvRectStrc;
 struct D2MsgHandlerEntryStrc;
 struct D2GfxLayerStrc;
 struct D2GfxNodeTargetStrc;
 
-struct D2GfxDataStrc
+struct D2UnitGfxDataStrc
 {
     unsigned char aEntries[20][2]; // 0x00 (two bytes per component; the first is its value)
     D2GfxListNodeStrc* pList; // 0x28
@@ -50,7 +50,7 @@ struct D2GfxNodeTargetStrc
     }; // 0x14
 };
 
-D2_CHECK_SIZE(D2GfxDataStrc, 0x3C);
+D2_CHECK_SIZE(D2UnitGfxDataStrc, 0x3C);
 D2_CHECK_SIZE(D2InvRectStrc, 0x10);
 D2_CHECK_SIZE(D2MsgHandlerEntryStrc, 0xC);
 D2_CHECK_SIZE(D2GfxNodeTargetStrc, 0x18);

@@ -9,6 +9,8 @@
 #include "D2Path.h"
 #include "D2GameObjs.h"
 #include "D2Packets.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
 
 #define QUEST_A1Q4_CAIN 4
 
@@ -79,42 +81,26 @@ typedef bool (__fastcall* QUESTSEQFILTER)(D2QuestDataStrc* pQuestData);
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-D2ClientStrc* __fastcall UnitGetClient(D2UnitStrc* pPlayer, const char* szFile, int nLine); // 0x005531C0
-
-unsigned char __fastcall CLIENTS_GetActNo(D2ClientStrc* pClient); // 0x005382B0
-
-void __fastcall D2GAME_SendPacket0x53_6FC3DF50(D2ClientStrc* pClient, D2GSPacketSrv53* pPacket); // 0x0053C900
-
-void __fastcall SCMD_SendPacket0x5D(D2ClientStrc* pClient, D2GSPacketSrv5D* pPacket); // 0x0053D710
+#include "D2GameFuncs.h"
+#include "D2CommonApi2.h"
 
 
 D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId); // 0x00543640
 
-int __stdcall QUESTRECORD_GetQuestState(D2BitBufferStrc* pQuestFlags, int nQuestId, int nState); // 0x0065C310
-
-int __fastcall QUESTS_FastRemovePlayerGUID(D2QuestGUIDStrc* pGUIDs, int dwGUID); // 0x00545240
 
 void __fastcall QUESTS_CreateTimer(D2QuestDataStrc* pQuest, QUESTUPDATE pfnCallback, int nTicks); // 0x00543F10
 
-bool __fastcall ACT3Q7_SpawnVileDogs(D2GameStrc* pGame, D2QuestDataStrc* pQuestData); // 0x005BD390
-
-D2SeedStrc* __fastcall QUESTS_GetGlobalSeed(D2GameStrc* pGame); // 0x005438B0
 
 int __fastcall OBJECTS_RollRandomNumber(D2SeedStrc* pSeed, int nMin, int nMax); // 0x004BC500
 
-D2UnitStrc* __fastcall D2GAME_DropItemAtUnit_6FC4FEC0(D2GameStrc* ptGame, D2UnitStrc* pUnit, int nQuality, int* pItemLevel, D2ItemDropStrc* pItemDrop, int nItemType, int bIgnoreRarity); // 0x00559A30
-
-void __fastcall EVENT_SetEvent(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType, int nExpireFrame, int dwEventCustomId, int dwEventCustomParam); // 0x005417D0
 
 typedef int (__fastcall* QUESTUNITITERATE)(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pArg);
 
 void __fastcall SUNIT_IterateUnitsOfType(D2GameStrc* pGame, int nType, void* pArg, QUESTUNITITERATE pfIterate); // 0x005537D0
 
-D2UnitStrc* __fastcall ITEMS_FindQuestItem(D2GameStrc* pGame, D2UnitStrc* pUnit, unsigned int dwItemCode); // 0x00558110
 
 int __fastcall ACT2Q3_UnitIterate_SendPacket0x53ToClient(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x0059A170
 
-void __fastcall QUESTS_TriggerFX(D2GameStrc* pGame, unsigned char a2); // 0x00545760
 
 enum
 {
@@ -124,17 +110,12 @@ enum
 
 extern char gpAct2Q3NpcMessages[]; // 0x0073A188
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall QUESTS_StatusCyclerEx(D2GameStrc* game,D2UnitStrc* player,unsigned char id); // 0x00544190
 
 void __fastcall QUESTS_ResetPlayerGUIDCount(D2QuestGUIDStrc* pQuestGUID); // 0x00545300
 
-void __fastcall QUESTS_SendLogUpdateEx(D2UnitStrc* pPlayer, int nQuestId, unsigned char nAct); // 0x00545920
-
-D2PlayerDataStrc* __stdcall UNITS_GetPlayerData(D2UnitStrc* pUnit); // 0x006221A0
-
-void __stdcall QUESTRECORD_SetQuestState(D2BitBufferStrc* pQuestFlags, int nQuestId, int nState); // 0x0065C360
 
 void __fastcall ACT2Q3_Callback10_PlayerLeavesGame(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x00599FB0
 
@@ -152,13 +133,9 @@ void __fastcall ACT2Q3_Callback03_ChangedLevel(D2QuestDataStrc* pQuestData, D2Qu
 
 void __fastcall QUESTS_UnitIterate(D2QuestDataStrc* pQuest, int nIterateState, D2UnitStrc* pUnit, QUESTUNITITERATE pfIterate, bool bIterate); // 0x00544300
 
-void __fastcall QUESTS_StateDebug(D2QuestDataStrc* pQuestData, int nState, const char* szFile, int nLine); // 0x00544350
 
 void __fastcall QUESTS_QuickRemovePlayerGUID(D2QuestDataStrc* pQuest, D2QuestArgStrc* pQuestArg); // 0x00545310
 
-void __fastcall QUESTS_SetGlobalState(D2GameStrc* pGame, int nQuestId, int nState); // 0x00544720
-
-int __stdcall UNITS_ChangeAnimMode(D2UnitStrc* pUnit, int nMode); // 0x00624690
 
 int __fastcall ACT2Q3_UnitIterate_StatusCyclerEx(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x00599F50
 
@@ -198,31 +175,13 @@ enum D2QuestConstants
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-int __fastcall QUESTS_GetGlobalState(D2GameStrc* pGame, int nQuestId, int nState); // 0x00544760
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-
-void __stdcall DUNGEON_GetAdjacentRoomsListFromRoom(D2ActiveRoomStrc* pRoom, D2ActiveRoomStrc*** pppRoomList, unsigned int* pnNumRooms); // 0x00619790
-
-int __stdcall DRLG_UnitEdgeDistance(D2UnitStrc* pUnit, D2UnitStrc* pOther); // 0x006416D0
-
-int __fastcall QUESTS_SetObjectSelection(D2ObjOperateFnStrc* pOp); // 0x00545850
 
 D2UnitStrc* __fastcall OBJMODE_DropItemWithCodeAndQuality(D2GameStrc* pGame, D2UnitStrc* pUnit, unsigned int dwCode, int nItemQuality); // 0x00585970
 
-D2UnitStrc* __fastcall OBJMODE_DropFromChestTCWithQuality(D2ObjOperateFnStrc* pOp, int nItemQuality); // 0x00585B90
-
-int __fastcall ACT2Q2_UnitIterate_DetermineHoradricScrollDropCount(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x00599700
-
-int __fastcall ACT2Q2_UnitIterate_DetermineCubeDropCount(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x005997C0
-
-void __fastcall QUESTS_DebugOutput(D2GameStrc* pGame, const char* szMessage, const char* szFile, int nLine); // 0x00544070
 
 void __fastcall SUNIT_AttachSound(D2UnitStrc* pUnit, int nUpdateType, D2UnitStrc* pUpdateUnit); // 0x00553380
 
@@ -238,11 +197,6 @@ int __fastcall ACT2Q3_UnitIterate_AttachCompletionSound(D2GameStrc* pGame, D2Uni
 
 int __fastcall ACT2Q3_UnitIterate_DetermineViperAmuletDropCount(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x0059A770
 
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
-
-void __stdcall ITEMS_SetItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int bSet); // 0x006280D0
-
-void __stdcall QUESTRECORD_ClearQuestState(D2BitBufferStrc* pQuestFlags, int nQuestId, int nState); // 0x0065C3A0
 
 #define PREFIX
 
@@ -267,7 +221,6 @@ enum
 
 typedef void (__fastcall* PartyCallbackFunction)(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pArgs);
 
-unsigned char __stdcall DRLG_GetActNoFromLevelId(int nLevelId); // 0x006427F0
 
 short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer); // 0x00554630
 
@@ -275,25 +228,17 @@ void __fastcall PARTY_IteratePartyMembers(D2GameStrc* pGame, unsigned short nPar
 
 extern "C" const char gszA2Q3SourceFile[];                                                                 // 0x006E1FB0
 
-void __fastcall QUESTS_AddPlayerGUID(D2QuestGUIDStrc* pQuestGUID, int dwGUID);                              // 0x00545200
-
-void __fastcall QUESTS_NPCActivateSpeeches(D2GameStrc* pGame, D2UnitStrc* pPlayer, D2UnitStrc* pTarget);    // 0x00545780
 
 static bool ACT2Q3_ApplyDarkness(D2QuestDataStrc* pQuestData);
 
 static void __stdcall ACT2Q3_StartDarknessForPlayer(D2UnitStrc* pPlayer, D2QuestDataStrc* pQuestData);
 
-bool __fastcall ACT5Q6_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId, D2UnitStrc* pPlayer, D2BitBufferStrc* pQuestFlags, D2UnitStrc* pNPC); // 0x0058E2B0
-
-void __fastcall QUESTS_RemovePlayerGUID(D2QuestDataStrc* quest, D2QuestArgStrc* argument); // 0x00545530
 
 static inline int GetUnitId(D2UnitStrc* unit) { return !unit ? -1 : unit->dwUnitId; }
 
-int __fastcall ACT2Q2_UnitIterate_DetermineStaffDropCount(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x00599750
 
 static inline void ACT2Q3_EndTaintedSun(D2QuestDataStrc* pQuestData, D2GameStrc* pGame);
 
-int __fastcall ACT2Q2_UnitIterate_DetermineHoradricScrollDropCount(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x00599700
 
 static inline unsigned int SEED_RollRandomNumber(D2SeedStrc* pSeed)
 {
@@ -321,7 +266,7 @@ int __fastcall OBJECTS_OperateFunction40_HoradricScrollChest(D2ObjOperateFnStrc*
             for (int i = 0; i < pQuestDataEx->nItemDropCount; ++i)
             {
                 int nItemLevel;
-                D2GAME_DropItemAtUnit_6FC4FEC0(pOp->pGame, pOp->hObject, ITEMQUAL_UNIQUE, &nItemLevel, 0, -1, 1);
+                D2GAME_DropItemAtUnit(pOp->pGame, pOp->hObject, ITEMQUAL_UNIQUE, &nItemLevel, 0, -1, 1);
             }
         }
 
@@ -355,7 +300,7 @@ int __fastcall OBJECTS_OperateFunction41_StaffOfKingsChest(D2ObjOperateFnStrc* p
             for (int i = 0; i < pQuestDataEx->nItemDropCount; ++i)
             {
                 int nItemLevel;
-                D2UnitStrc* pItem = D2GAME_DropItemAtUnit_6FC4FEC0(pOp->pGame, pOp->hObject, ITEMQUAL_UNIQUE, &nItemLevel, 0, -1, 1);
+                D2UnitStrc* pItem = D2GAME_DropItemAtUnit(pOp->pGame, pOp->hObject, ITEMQUAL_UNIQUE, &nItemLevel, 0, -1, 1);
                 if (pItem)
                 {
                     ITEMS_SetItemFlag(pItem, 0x10, 1);
@@ -395,7 +340,7 @@ int __fastcall OBJECTS_OperateFunction39_HoradricCubeChest(D2ObjOperateFnStrc* p
             for (int i = 0; i < pQuestDataEx->nItemDropCount; ++i)
             {
                 int nItemLevel;
-                if (D2GAME_DropItemAtUnit_6FC4FEC0(pOp->pGame, pOp->hObject, ITEMQUAL_NORMAL, &nItemLevel, 0, -1, 1))
+                if (D2GAME_DropItemAtUnit(pOp->pGame, pOp->hObject, ITEMQUAL_NORMAL, &nItemLevel, 0, -1, 1))
                 {
                     ++pQuestDataEx->nHoradricCubes;
                     pQuestDataEx->bCubeDropped = 1;
@@ -428,15 +373,6 @@ void __fastcall OBJECTS_InitFunction33_Unused(D2ObjInitFnStrc* pOp)
 // 0x00599F00
 void __fastcall OBJECTS_InitFunction32_Unused(D2ObjInitFnStrc* pOp)
 {
-}
-
-void __fastcall sub_M118_Emit_0059A3C0(D2QuestDataStrc* pQuestData)
-{
-    if (pQuestData->bNotIntro)
-    {
-        ACT2Q3_EndTaintedSun(pQuestData, pQuestData->pGame);
-        QUESTS_TriggerFX(pQuestData->pGame, 6);
-    }
 }
 
 // 0x00599F10
@@ -544,7 +480,7 @@ int __fastcall ACT2Q3_UnitIterate_UpdateClient(D2GameStrc* pGame, D2UnitStrc* pU
         packet53.nCycleIndex = 5;
         packet53.nTicks = 0;
         packet53.nEclipse = 1;
-        D2GAME_SendPacket0x53_6FC3DF50(pClient, &packet53);
+        D2GAME_SendPacket0x53(pClient, &packet53);
 
         D2GSPacketSrv5D packet5D;
         memset(&packet5D, 0, sizeof(packet5D));
@@ -568,7 +504,7 @@ int __fastcall ACT2Q3_UnitIterate_SendPacket0x53ToClient(D2GameStrc* pGame, D2Un
         packet53.nCycleIndex = 2;
         packet53.nTicks = 0;
         packet53.nEclipse = 0;
-        D2GAME_SendPacket0x53_6FC3DF50(pClient, &packet53);
+        D2GAME_SendPacket0x53(pClient, &packet53);
     }
 
     return 0;
@@ -602,7 +538,6 @@ bool __fastcall ACT2Q3_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId,
 
 #define QFLAG_COMPLETEDNOW 14
 
-void __fastcall QUESTS_InitScrollTextChain(D2QuestDataStrc* pQuest, D2TextHeaderStrc* pTextControl, int nNPCID, int nIndex); // 0x00543790
 
 int __fastcall QUESTS_CheckPlayerGUID(D2QuestDataStrc* pQuest, int dwGUID); // 0x005452C0
 
@@ -850,7 +785,7 @@ bool __fastcall ACT2Q3_Timer_StatusCycler(D2GameStrc* pGame, D2QuestDataStrc* pQ
         pQuestData->nStatusFlags = 0;
         QUESTS_UnitIterate(pQuestData, A2Q3_ITERATE_TIMER, 0, ACT2Q3_UnitIterate_StatusCyclerEx, 1);
     }
-    *(unsigned char*)&pQuestDataEx->unk0x06 = 0;
+    pQuestDataEx->bTimerActive = 0;
 
     return 1;
 }
@@ -907,7 +842,7 @@ void __fastcall ACT2Q3_InitQuestData(D2QuestDataStrc* pQuestData)
     pQuestData->pNPCMessages = gpAct2Q3NpcMessages;
     pQuestData->bActive = 1;
     pQuestData->fState = 0;
-    D2Act2Quest3Strc* pQuestDataEx = (D2Act2Quest3Strc*)sub_0040B430(pQuestData->pGame->pMemoryPool, sizeof(D2Act2Quest3Strc), "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a2q3.cpp", 803, 0);
+    D2Act2Quest3Strc* pQuestDataEx = (D2Act2Quest3Strc*)FOG_AllocPool(pQuestData->pGame->pMemoryPool, sizeof(D2Act2Quest3Strc), "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a2q3.cpp", 803, 0);
     pQuestData->pQuestDataEx = pQuestDataEx;
     pQuestData->eFilter = QUESTSTATEFLAG_A2Q3;
     pQuestData->pfStatusFilter = 0;
@@ -956,7 +891,7 @@ int __fastcall OBJECTS_OperateFunction24_TaintedSunAltar(D2ObjOperateFnStrc* pOp
         pOp->hObject->dwDropItemCode = ' piv';
         for (int i = 0; i < pQuestDataEx->nViperAmuletDropCount; ++i)
         {
-            D2UnitStrc* pItem = D2GAME_DropItemAtUnit_6FC4FEC0(pOp->pGame, pOp->hObject, 7, &nItemLevel, 0, -1, 0);
+            D2UnitStrc* pItem = D2GAME_DropItemAtUnit(pOp->pGame, pOp->hObject, 7, &nItemLevel, 0, -1, 0);
             if (pItem)
             {
                 ITEMS_SetItemFlag(pItem, 16, 1);
@@ -991,13 +926,7 @@ int __fastcall OBJECTS_OperateFunction24_TaintedSunAltar(D2ObjOperateFnStrc* pOp
 
     if (pQuestData->bNotIntro)
     {
-        D2GameStrc* pGame = pQuestData->pGame;
-        if (pGame->pAct[1])
-        {
-            ((D2Act2Quest3Strc*)pQuestData->pQuestDataEx)->bDarknessApplied = 0;
-            ENVIRONMENT_TaintedSunEnd(pGame->pAct[1]);
-            SUNIT_IterateUnitsOfType(pGame, 0, 0, ACT2Q3_UnitIterate_SendPacket0x53ToClient);
-        }
+        ACT2Q3_EndTaintedSun(pQuestData, pQuestData->pGame);
 
         QUESTS_DebugOutput(pQuestData->pGame, "Finished quest", "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a2q3.cpp", 991);
         QUESTS_StateDebug(pQuestData, 4, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a2q3.cpp", 992);
@@ -1027,7 +956,7 @@ int __fastcall OBJECTS_OperateFunction24_TaintedSunAltar(D2ObjOperateFnStrc* pOp
     pOp->hObject->dwDropItemCode = ' piv';
     for (int i = 0; i < pQuestDataEx->nViperAmuletDropCount; ++i)
     {
-        D2UnitStrc* pItem = D2GAME_DropItemAtUnit_6FC4FEC0(pOp->pGame, pOp->hObject, 7, &nItemLevel, 0, -1, 0);
+        D2UnitStrc* pItem = D2GAME_DropItemAtUnit(pOp->pGame, pOp->hObject, 7, &nItemLevel, 0, -1, 0);
         if (pItem)
         {
             ITEMS_SetItemFlag(pItem, 16, 1);
@@ -1090,7 +1019,6 @@ void __fastcall ACT2Q3_ApplyPendingDarkness(D2GameStrc* pGame, unsigned char nAc
     pQuestDataEx->bDarknessApplied = 1;
 }
 
-bool __fastcall ACT2Q3_IsAltarDestroyed(D2QuestDataStrc* pQuest);                              // 0x0059AC80
 
 // 0x0059AC80
 bool __fastcall ACT2Q3_IsAltarDestroyed(D2QuestDataStrc* pQuest)

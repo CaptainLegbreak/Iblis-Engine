@@ -56,7 +56,11 @@ typedef int (__stdcall* SymFindFileInPathFn)(void* hProcess, const char* szSearc
 
 extern SymFindFileInPathFn gpfnSymFindFileInPath;                                                  // 0x0098A6EC
 
-int __stdcall sub_00402370(int nUnused1, int nUnused2);                                                     // 0x00402370
+// 0x00402370
+int __stdcall sub_00402370(int nUnused1, int nUnused2)
+{
+    return 0;
+}
 
 typedef unsigned __int64 (__stdcall* SymLoadModule64Fn)(void* hProcess, void* hFile, const char* szImageName,
     const char* szModuleName, unsigned __int64 qwBaseOfDll, unsigned long dwSizeOfDll);

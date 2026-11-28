@@ -1,3 +1,9 @@
+// These five functions stay out of inv.cpp. Joined there (with D2ItemsTxt for the formula record, the class check written
+// inline, an unsigned length compare and gnInvMouseX/gnInvMouseY static), 0x004922A0 and 0x004929F0 match but three do not:
+// INV_DrawItemTooltip (0x0048DD90) flips the operands of four gnScreenHeight + gnPanelOffsetY leas and
+// INV_DrawInventoryPanel (0x0048EDF0) moves one push. The source is the same in both files, so the file around them decides.
+// INV_OnStashButtonUp (0x00492310) calls INV_IsInTradeGrid (0x00483B10) out of line at 0x00492395, as 0x00483FF0 and
+// 0x004873A0 do, but the image has it inline in 0x00483BF0 and 0x00489580, so a noinline cannot keep both.
 #include "D2StatIds.h"
 #include "D2Structs.h"
 #include "D2Path.h"
@@ -12,6 +18,12 @@
 #include "D2LevelTxt.h"
 #include "D2StormTypes.h"
 #include "D2ClientUiRecords.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "D2GfxApi.h"
+#include "D2WinApi.h"
+#include "FogApi.h"
+#include "StormApi.h"
 
 struct D2SkillStrc;
 
@@ -47,25 +59,21 @@ struct UNum10
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
-
 extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
-extern "C" int __cdecl SStrPrintf(char* szDest, unsigned int nMaxCount, const char* szFormat, ...);         // 0x00413A40
-
 void __stdcall sub_00403040_VectorCtor(void* pArray, unsigned int nSize, int nCount, void (__fastcall* pfnCtor)(void*)); // 0x00403040
 
-void __fastcall sub_0042F530_UnicodeCtor(void* pThis);                                                      // 0x0042F530
+void __fastcall NPCMENU_ClearUnicode(void* pThis);                                                      // 0x0042F530
 
 int __cdecl FOG_IsExpansion();                                                                 // 0x00408F20
 
 int __cdecl GAME_IsExpansion();                                                                                 // 0x0044DCC0
 
-Unicode* __fastcall sub_00452170(Unicode* pText);                                                           // 0x00452170
+Unicode* __fastcall sub_00452170_ReturnText(Unicode* pText);                                                           // 0x00452170
 
 Unicode* __fastcall INV_PrefixColorCode(Unicode* pText, int nDigit);                               // 0x004521C0
 
@@ -79,7 +87,7 @@ int __cdecl sub_00468730();                                                     
 
 int __cdecl sub_00468740();                                                                                 // 0x00468740
 
-int __cdecl sub_00468830();                                                                                 // 0x00468830
+int __cdecl sub_00468830_GetCursorState();                                                                                 // 0x00468830
 
 unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB);                                                     // 0x00469AA0
 
@@ -115,17 +123,14 @@ void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int n
 
 void __fastcall D2Win_10131_GetTextDimensions(const Unicode* pText, int* pWidth, int* pHeight);             // 0x00502520
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex);                              // 0x00524A30
 
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource);                                 // 0x00526700
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc);                                     // 0x005267E0
 
-unsigned int __fastcall sub_00526800(const Unicode* pString);                                             // 0x00526800
+unsigned int __fastcall UNICODE_StrLen(const Unicode* pString);                                             // 0x00526800
 
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...);               // 0x005269D0
 
 Unicode* __fastcall sub_00526F20(Unicode* pDst, const char* szSrc, int nMaxLength);                  // 0x00526F20
 
@@ -133,83 +138,54 @@ int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLay
 
 int __stdcall STATLIST_UnitGetItemStatOrSkillStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer);         // 0x00625500
 
-int __stdcall STATLIST_GetUnitStatBonus(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer); // 0x00625560
 
 int __stdcall STATLIST_GetMaxDurabilityFromUnit(D2UnitStrc* pUnit);                                         // 0x00625E00
 
-int __stdcall STATLIST_GetMaxDamageFromUnit(D2UnitStrc* pItem, int a2);                                     // 0x00625E60
 
-int __stdcall STATLIST_GetMinDamageFromUnit(D2UnitStrc* pItem, int a2);                                     // 0x00625EF0
 
-int __stdcall STATLIST_GetDefenseFromUnit(D2UnitStrc* pUnit);                                               // 0x00626020
 
-int __stdcall ITEMMODS_EvaluateItemFormula(D2UnitStrc* pUnit, D2UnitStrc* pItem, unsigned int nCalc);       // 0x00627C20
 
 int __stdcall ITEMS_GetItemQuality(D2UnitStrc* pItem);                                                      // 0x00627E70
 
 int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile);   // 0x006280A0
 
-int __stdcall ITEMS_GetTotalMaxStack(D2UnitStrc* pItem);                                                    // 0x006295B0
 
 int __stdcall ITEMS_CheckIfSocketable(D2UnitStrc* pItem);                                                   // 0x00629900
 
-int __stdcall ITEMS_HasDurability(D2UnitStrc* pItem);                                                       // 0x00629930
 
 unsigned char __stdcall ITEMS_GetSockets(D2UnitStrc* pItem); // 0x006299B0
 
-int __stdcall ITEMSIsA(D2UnitStrc* pItem, int nItemType);                                      // 0x00629BB0
 
-unsigned int __stdcall ITEMS_GetTransmogrify(D2UnitStrc* pItem); // 0x0062A0A0
 
-int __stdcall ITEMS_GetBonusLifeBasedOnClass(D2UnitStrc* pPlayer, int nValue);                              // 0x0062A5D0
 
-int __stdcall ITEMS_GetBonusManaBasedOnClass(D2UnitStrc* pPlayer, int nValue);                              // 0x0062A620
 
-int __stdcall ITEMS_GetWeaponAttackSpeed(D2UnitStrc* pUnit, D2UnitStrc* pItem);                             // 0x0062A710
 
 int __stdcall ITEMS_GetItemType(D2UnitStrc* pItem);                                                         // 0x0062B400
 
-int __stdcall ITEMS_GetLevelRequirement(D2UnitStrc* pItem, D2UnitStrc* pUnit);                       // 0x0062BA60
 
 int __stdcall ITEMS_CheckIfThrowable(D2UnitStrc* pItem);                                                    // 0x0062BA80
 
-int __stdcall ITEMS_IsClassValid(D2UnitStrc* pItem);                                                  // 0x0062C060
 
-int __stdcall ITEMS_GetClassOfClassSpecificItem(D2UnitStrc* pItem);                                             // 0x0062C0B0
 
-int __stdcall ITEMS_GetQuiverType(D2UnitStrc* pItem);                                                       // 0x0062E740
 
-int __stdcall ITEMS_CheckRequirements(D2UnitStrc* pItem, D2UnitStrc* pUnit, int bEquipping, int* bStrength, int* bDexterity, int* bLevel); // 0x0062EAF0
 
-D2ItemsTxt* __stdcall DATATBLS_GetItemsTxtRecord(int nItemId);                                              // 0x006335F0
 
-D2GemsTxt* __stdcall DATATBLS_GetGemsTxtRecord(int nGemId);                                                 // 0x006372C0
 
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState);                                             // 0x00639DF0
 
-int __stdcall INVENTORY_CompareWithItemsParentInventory(D2InventoryStrc* pInventory, D2UnitStrc* pItem);   // 0x0063AD50
 
-D2UnitStrc* __stdcall INVENTORY_GetFirstItem(D2InventoryStrc* pInventory);                                  // 0x0063B2C0
 
-D2UnitStrc* __stdcall INVENTORY_GetCursorItem(D2InventoryStrc* pInventory);                                 // 0x0063C1E0
 
-D2UnitStrc* __stdcall INVENTORY_GetNextItem(D2UnitStrc* pItem);                                             // 0x0063DFA0
 
-D2UnitStrc* __stdcall INVENTORY_UnitIsItem(D2UnitStrc* pItem);                                              // 0x0063DFD0
 
-D2SkillStrc* __fastcall SKILLS_GetHighestLevelSkillFromUnitAndId(D2UnitStrc* pUnit, int nSkillId); // 0x006439F0
 
 int __stdcall SKILLS_GetSkillLevel(D2UnitStrc* pUnit, void* pSkill, int bBonus);                            // 0x006442A0
 
-int __stdcall D2COMMON_11036_GetMonCurseResistanceSubtraction(int nLevel, int nSkillId);                    // 0x00645C10
 
-int __stdcall SKILLS_GetMinPhysDamage(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int bAddWeaponDamage);            // 0x00647BC0
 
-int __stdcall SKILLS_GetMaxPhysDamage(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int bAddWeaponDamage);            // 0x00647D00
 
 extern "C" const char gszFormatLd[];                                                                 // 0x006D9BE8
 
-extern "C" const char szFmtInt_006D6454[];                                                                  // 0x006D6454
+extern "C" const char gszFormatI[];                                                                  // 0x006D6454
 
 extern "C" const char gszQuote[];                                                                   // 0x006D9BF4
 
@@ -329,19 +305,12 @@ int __cdecl MONSTER_GetSecondaryTradeGold();                                    
 
 int __cdecl MONSTER_GetPrimaryTradeGold();                                                                                 // 0x004B9100
 
-void __stdcall TEXTURE_CelDraw(D2CelContextStrc* pData, int nXPos, int nYPos, unsigned int dwGamma, int eDrawMode, unsigned char* pPalette); // 0x004F6480
-
-void __stdcall TEXTURE_CelDrawColor(D2CelContextStrc* pData, int nXPos, int nYPos, unsigned int dwGamma, int eDrawMode, int nPaletteShift); // 0x004F64B0
-
 int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText);                                             // 0x00501820
 
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered);          // 0x00502320
 
-int __fastcall D2Win_10127_SetFont(int nArg);                                                                      // 0x00502EF0
-
 int __stdcall UNITS_GetStashGoldLimit(D2UnitStrc* pUnit);                                                            // 0x00623460
 
-D2UnitStrc* __stdcall INVENTORY_GetItemFromBodyLoc(D2InventoryStrc* pInventory, int nBodyLoc);              // 0x0063BDE0
 
 int __stdcall INVENTORY_GetWieldType(D2UnitStrc* pUnit, D2InventoryStrc* pInventory);                       // 0x0063D340
 
@@ -362,9 +331,9 @@ static D2CelFileStrc* gpTradePanelCel;                                          
 
 static unsigned char gnSelectedTab;                                                                // 0x007BCC04
 
-static unsigned long gdwGlobal_007BCC08;                                                                    // 0x007BCC08
+static unsigned long gdwNpcPanelDelayTick;                                                                    // 0x007BCC08
 
-static int gnGlobal_007BCC0C;                                                                               // 0x007BCC0C
+static int gRequest;                                                                               // 0x007BCC0C
 
 static int gbQuestTimerActive;                                                                     // 0x007BCC10
 
@@ -472,8 +441,6 @@ struct D2BodyLocRectStrc;
 
 struct D2InventoryGridInfoStrc;
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
-
 int __fastcall AUTOMAP_IsCursorOverMiniPanelButton(SMSGHANDLER_PARAMS* pMsg); // 0x00498DC0
 
 int __fastcall INV_IsInNpcPanelRect(int nX, int nY); // 0x00486E10
@@ -494,7 +461,7 @@ static int INV_IsOverTradeButtonRight(int nX, int nY); // 0x00489480
 
 extern int gnPanelX_007A2858; // 0x007A2858
 
-extern int gnPanelY_007A285C; // 0x007A285C
+extern int gnPanelOffsetY; // 0x007A285C
 
 extern int gnGlobal_007BCA34; // 0x007BCA34
 
@@ -524,7 +491,7 @@ extern int gbTradeCancelButtonDown; // 0x007BCE24
 
 extern int gbInvGoldButtonDown; // 0x007BCE30
 
-extern int gnGlobal_007BCE90; // 0x007BCE90
+extern int gbPanelButtonDown; // 0x007BCE90
 
 extern int gbPanelButtonClicked; // 0x007BCE9C
 
@@ -544,19 +511,13 @@ void __cdecl INV_DrawPanelLabels(); // 0x0048A890
 
 void __fastcall TEXT_DrawCenteredText(int nLeft, int nY, int nRight, const Unicode* wszText, int nColor); // 0x004A7080
 
-void __stdcall D2LANG_FormatInt(Unicode* pOut, int nValue, int nSize); // 0x00525FB0
 
-D2DifficultyLevelsTxt* __stdcall DATATBLS_GetDifficultyLevelsTxtRecord(int nDifficulty); // 0x00611D30
 
 int __stdcall STATLIST_GetUnitBaseStat(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x006253B0
 
-int __stdcall STATLIST_GetMaxLifeFromUnit(D2UnitStrc* pUnit); // 0x00625D10
 
-unsigned int __stdcall ITEMS_CheckWeaponIfTwoHanded(D2UnitStrc* pItem); // 0x006289C0
 
-short __stdcall ITEMS_GetStrengthBonus(D2UnitStrc* pItem); // 0x00629860
 
-short __stdcall ITEMS_GetDexBonus(D2UnitStrc* pItem); // 0x006298A0
 
 int __stdcall SKILLS_GetWeaponMasteryBonus(D2UnitStrc* pUnit, D2UnitStrc* pItem, D2SkillStrc* pSkill, int nType); // 0x00645830
 
@@ -581,7 +542,6 @@ void __stdcall INV_DrawItemSockets(D2UnitStrc* pItem, D2InventoryGridInfoStrc* p
 
 void __fastcall INV_DrawMercEquipHighlights(D2UnitStrc* pUnit); // 0x0048B3F0
 
-void __stdcall ITEMS_GetDimensions(D2UnitStrc* pItem, unsigned char* pWidth, unsigned char* pHeight, const char* szFile, int nLine); // 0x006286C0
 
 unsigned char __stdcall ITEMS_GetMaxSockets(D2UnitStrc* pItem); // 0x0062BC20
 
@@ -590,9 +550,9 @@ extern D2BodyLocRectStrc gaBodyLocRects[11]; // 0x007BCD38
 int __fastcall ROSTERPETS_FindPetIdByOwner(D2UnitStrc* pOwner, int nPetType, int nIndex); // 0x00478F20
 
 
-extern D2CelFileStrc* gpMercPanelCells_007BCE88; // 0x007BCE88
+extern D2CelFileStrc* gpCelNpcInv; // 0x007BCE88
 
-extern int gbBuySellPressed_007BCEA0; // 0x007BCEA0
+extern int gbBuySellPressed; // 0x007BCEA0
 
 D2InventoryGridInfoStrc gtHirelingInvGrid; // 0x007BCBC0
 
@@ -666,14 +626,14 @@ static void __stdcall INV_AppendDurability(D2UnitStrc* pItem, Unicode* pText)
             bBonus = 1;
         }
         sub_005267E0(pText, D2LANG_GetStringFromTblIndex(0xD81));
-        SStrPrintf((char*)szNumber, 10, szFmtInt_006D6454, STATLIST_UnitGetStatValue(pItem, STAT_DURABILITY, 0));
+        SStrPrintf((char*)szNumber, 10, gszFormatI, STATLIST_UnitGetStatValue(pItem, STAT_DURABILITY, 0));
         sub_00526700(pText, pColorStart);
         sub_00526F20(W(&wszNumber), (char*)szNumber, 9);
         sub_00526700(pText, W(&wszNumber));
         sub_00526700(pText, pColorStart);
         sub_00526700(pText, D2LANG_GetStringFromTblIndex(0xD87));
         sub_00526700(pText, pColorStart);
-        SStrPrintf((char*)szNumber, 10, szFmtInt_006D6454, STATLIST_GetMaxDurabilityFromUnit(pItem));
+        SStrPrintf((char*)szNumber, 10, gszFormatI, STATLIST_GetMaxDurabilityFromUnit(pItem));
         sub_00526F20(W(&wszNumber), (char*)szNumber, 9);
         if (bBonus)
         {
@@ -691,7 +651,7 @@ static void __stdcall INV_AppendLabeledNumber(int nValue, Unicode* pText)
     const Unicode* pColorStart = D2LANG_GetStringFromTblIndex(0xF9B);
     const Unicode* pColorEnd = D2LANG_GetStringFromTblIndex(0xF9E);
     sub_005267E0(pText, D2LANG_GetStringFromTblIndex(0xD8D));
-    SStrPrintf((char*)szNumber, 10, szFmtInt_006D6454, nValue);
+    SStrPrintf((char*)szNumber, 10, gszFormatI, nValue);
     sub_00526F20(W(&wszNumber), (char*)szNumber, 9);
     sub_00526700(pText, pColorStart);
     sub_00526700(pText, W(&wszNumber));
@@ -711,7 +671,7 @@ static void __stdcall INV_AppendReqStr(D2ItemsTxt* pItemsTxt, int nBonus, Unicod
         return;
     }
     sub_005267E0(pText, D2LANG_GetStringFromTblIndex(0xD82));
-    SStrPrintf((char*)szNumber, 10, szFmtInt_006D6454, nValue);
+    SStrPrintf((char*)szNumber, 10, gszFormatI, nValue);
     sub_00526F20(W(&wszNumber), (char*)szNumber, 9);
     sub_00526700(pText, pColorStart);
     sub_00526700(pText, W(&wszNumber));
@@ -731,7 +691,7 @@ static void __stdcall INV_AppendReqDex(D2ItemsTxt* pItemsTxt, int nBonus, Unicod
         return;
     }
     sub_005267E0(pText, D2LANG_GetStringFromTblIndex(0xD83));
-    SStrPrintf((char*)szNumber, 10, szFmtInt_006D6454, nValue);
+    SStrPrintf((char*)szNumber, 10, gszFormatI, nValue);
     sub_00526F20(W(&wszNumber), (char*)szNumber, 9);
     sub_00526700(pText, pColorStart);
     sub_00526700(pText, W(&wszNumber));
@@ -768,13 +728,13 @@ static void __stdcall INV_AppendThrowDamage(D2UnitStrc* pItem, D2ItemsTxt* pItem
         nStringId = 0x5516;
     }
     sub_005267E0(pText, D2LANG_GetStringFromTblIndex(nStringId));
-    SStrPrintf((char*)szNumber, 10, szFmtInt_006D6454, nMin);
+    SStrPrintf((char*)szNumber, 10, gszFormatI, nMin);
     sub_00526F20(W(&wszNumber), (char*)szNumber, 9);
     sub_00526700(pText, pColorStart);
     sub_00526700(pText, W(&wszNumber));
     sub_00526700(pText, pColorStart);
     sub_00526700(pText, D2LANG_GetStringFromTblIndex(0xD88));
-    SStrPrintf((char*)szNumber, 10, szFmtInt_006D6454, nMax);
+    SStrPrintf((char*)szNumber, 10, gszFormatI, nMax);
     sub_00526F20(W(&wszNumber), (char*)szNumber, 9);
     sub_00526700(pText, pColorStart);
     sub_00526700(pText, W(&wszNumber));
@@ -956,7 +916,7 @@ static void __stdcall INV_AppendItemFormulaText(D2UnitStrc* pItem, D2ItemsTxt* p
     {
         int nValue = ITEMMODS_EvaluateItemFormula(pPlayer, pItem, pRecord->dwCalc[0]);
         unsigned int wszText[0x100];
-        sub_005269D0(0x200, W(wszText), D2LANG_GetStringFromTblIndex(pRecord->wStringId), nValue);
+        sub_005269D0_FormatText(0x200, W(wszText), D2LANG_GetStringFromTblIndex(pRecord->wStringId), nValue);
         sub_00526700(pBuffer, W(wszText));
         sub_00526700(pBuffer, pLineEnd);
         break;
@@ -1158,7 +1118,7 @@ void __stdcall INV_DrawItemTooltip(D2UnitStrc* pUnit, int nFlag)
             if (FOG_IsExpansion() && GAME_IsExpansion() && INV_IsOverWeaponSwapTab(sub_00468730(), sub_00468740()))
             {
                 unsigned int wszSwap[0x100];
-                sub_00403040_VectorCtor(wszSwap, 2, 0x200, sub_0042F530_UnicodeCtor);
+                sub_00403040_VectorCtor(wszSwap, 2, 0x200, NPCMENU_ClearUnicode);
                 sub_005267E0(W(wszSwap), D2LANG_GetStringFromTblIndex(0x58C6));
                 if (CUNIT_GetHotkeyBinding(0x2C, 1) != 0xFFFF)
                 {
@@ -1256,7 +1216,7 @@ void __stdcall INV_DrawItemTooltip(D2UnitStrc* pUnit, int nFlag)
             }
 
             const int nQuality = ITEMS_GetItemQuality(gpHoverItem);
-            if (sub_00468830() == 8 || ITEMS_GetTransmogrify(gpHoverItem))
+            if (sub_00468830_GetCursorState() == 8 || ITEMS_GetTransmogrify(gpHoverItem))
             {
                 INV_DrawTransmogrifyTooltip();
                 return;
@@ -1499,8 +1459,8 @@ void __stdcall INV_DrawItemTooltip(D2UnitStrc* pUnit, int nFlag)
                 nPopupArg = 4;
                 INV_PrefixColorCode(W(wszTooltip), nPopupArg);
             }
-            sub_00452170(W(wszTooltip));
-            if (sub_00526800(W(wszTooltip)) >= 0x3FF)
+            sub_00452170_ReturnText(W(wszTooltip));
+            if (UNICODE_StrLen(W(wszTooltip)) >= 0x3FF)
             {
                 W(wszTooltip)[0x3FF].wChar = 0;
             }
@@ -1551,21 +1511,21 @@ void __cdecl INV_DrawInventoryPanel()
 
     if (gnInvPanelMode >= 1 && gnInvPanelMode <= 9)
     {
-        if (GetTickCount() > gdwGlobal_007BCC08)
+        if (GetTickCount() > gdwNpcPanelDelayTick)
         {
-            gdwGlobal_007BCC08 = 0;
+            gdwNpcPanelDelayTick = 0;
         }
         int nTick;
-        if (gnGlobal_007BCC0C == 1 && !gdwGlobal_007BCC08 && NPCMENU_GetInteractNpcId(&nTick))
+        if (gRequest == 1 && !gdwNpcPanelDelayTick && NPCMENU_GetInteractNpcId(&nTick))
         {
             INV_SelectItemPageTab(gnSelectedTab);
-            gnGlobal_007BCC0C = 0;
+            gRequest = 0;
         }
         INV_DrawNpcShopPanel();
         INV_DrawGold(2);
     }
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
     tContext.nDirection = 0;
 
@@ -1576,7 +1536,7 @@ void __cdecl INV_DrawInventoryPanel()
         {
             if (gpSuperTransmogrifierCel)
             {
-                tContext.pCellFile = gpSuperTransmogrifierCel;
+                tContext.pCelFile = gpSuperTransmogrifierCel;
                 tContext.nFrame = 0;
                 TEXTURE_CelDraw(&tContext, gnPanelOffsetX, gnScreenHeight + gnPanelOffsetY - 0xE0, -1, 5, 0);
                 tContext.nFrame = 1;
@@ -1595,11 +1555,11 @@ void __cdecl INV_DrawInventoryPanel()
                 gnSelectedTab = nOldTab;
             }
 
-            tContext.pCellFile = GAME_GetBuySellButtonCells();
+            tContext.pCelFile = GAME_GetBuySellButtonCells();
             tContext.nFrame = gbCubeButtonDown + 10;
             TEXTURE_CelDraw(&tContext, gnPanelOffsetX + 0x113, gnScreenHeight + gnPanelOffsetY - 0x41, -1, 5, 0);
 
-            tContext.pCellFile = gpMiniConvertCel;
+            tContext.pCelFile = gpMiniConvertCel;
             tContext.nFrame = gbCubeCloseButtonDown;
             TEXTURE_CelDraw(&tContext, gnPanelOffsetX + 0x90, gnScreenHeight + gnPanelOffsetY - 0xBC, -1, 5, 0);
 
@@ -1620,7 +1580,7 @@ void __cdecl INV_DrawInventoryPanel()
                         goto timer_done;
                     }
                 }
-                tContext.pCellFile = gpHoradricCel;
+                tContext.pCelFile = gpHoradricCel;
                 tContext.nFrame = gnQuestTimerValue;
                 TEXTURE_CelDraw(&tContext, gnScreenWidth / 2, gnScreenHeight / 2 - 1, -1, 3, 0);
             }
@@ -1653,11 +1613,11 @@ timer_done:
         {
             if (GAME_IsExpansion())
             {
-                tContext.pCellFile = gpTradeStashCel;
+                tContext.pCelFile = gpTradeStashCel;
             }
             else
             {
-                tContext.pCellFile = gpBankCel;
+                tContext.pCelFile = gpBankCel;
             }
             tContext.nFrame = 0;
             TEXTURE_CelDraw(&tContext, gnPanelOffsetX, gnScreenHeight + gnPanelOffsetY - 0xE0, -1, 5, 0);
@@ -1671,7 +1631,7 @@ timer_done:
 
         const int nGoldLimit = UNITS_GetStashGoldLimit(sub_00463DD0_GetPlayerUnit());
         Unicode wszGold[100];
-        sub_005269D0(100, wszGold, D2LANG_GetStringFromTblIndex(0xFD3), nGoldLimit);
+        sub_005269D0_FormatText(100, wszGold, D2LANG_GetStringFromTblIndex(0xFD3), nGoldLimit);
         if (GAME_IsExpansion())
         {
             D2Win_10117_DrawText(wszGold, gnPanelOffsetX + 0x4E, gnScreenHeight + gnPanelOffsetY - 0x19F, 0, 0);
@@ -1686,7 +1646,7 @@ timer_done:
         INV_DrawUnitInventory(sub_00463DD0_GetPlayerUnit());
         gnSelectedTab = nOldTab;
 
-        tContext.pCellFile = GAME_GetBuySellButtonCells();
+        tContext.pCelFile = GAME_GetBuySellButtonCells();
         tContext.nFrame = gbStashButtonDown + 10;
         const int nButtonX = !GAME_IsExpansion() ? gnPanelOffsetX + 0x113 : gnPanelOffsetX + 0x110;
         TEXTURE_CelDraw(&tContext, nButtonX, INV_GetPanelY(), -1, 5, 0);
@@ -1705,7 +1665,7 @@ timer_done:
     }
     }
 
-    tContext.pCellFile = gpCellFile_007BEF64;
+    tContext.pCelFile = gpInvCharCel;
     tContext.nFrame = 4;
     TEXTURE_CelDraw(&tContext, gnScreenWidth - gnPanelOffsetX - 0x140, gnScreenHeight + gnPanelOffsetY - 0xE0, -1, 5, 0);
     tContext.nFrame = 5;
@@ -1719,10 +1679,10 @@ timer_done:
 
     if (gbWeaponSwitch && FOG_IsExpansion() && GAME_IsExpansion())
     {
-        tContext.pCellFile = gpCelInvChar6Tab;
+        tContext.pCelFile = gpCelInvChar6Tab;
         tContext.nFrame = 0;
         TEXTURE_CelDraw(&tContext, gnGlobal_007BCCBC + gtOffsetLArmTab.nX, gnGlobal_007BCCC8 + gtOffsetLArmTab.nY, -1, 5, 0);
-        tContext.pCellFile = gpCelInvChar6Tab;
+        tContext.pCelFile = gpCelInvChar6Tab;
         tContext.nFrame = 1;
         TEXTURE_CelDraw(&tContext, gnGlobal_007BCCA8 + gtOffsetRArmTab.nX, gnGlobal_007BCCB4 + gtOffsetRArmTab.nY, -1, 5, 0);
     }
@@ -1732,49 +1692,49 @@ timer_done:
 
     if (!INVENTORY_GetItemFromBodyLoc(pInventory, 3))
     {
-        tContext.pCellFile = gpCelInvArmor;
+        tContext.pCelFile = gpCelInvArmor;
         tContext.nFrame = 0;
         TEXTURE_CelDraw(&tContext, gnGlobal_007BCC94 + gtOffsetTorso.nX, gnGlobal_007BCCA0 + gtOffsetTorso.nY, -1, 5, 0);
     }
     if (!INVENTORY_GetItemFromBodyLoc(pInventory, 8))
     {
-        tContext.pCellFile = gpCelInvBelt;
+        tContext.pCelFile = gpCelInvBelt;
         tContext.nFrame = 0;
         TEXTURE_CelDraw(&tContext, gnGlobal_007BCCF8 + gtOffsetBelt.nX, gnGlobal_007BCD04 + gtOffsetBelt.nY, -1, 5, 0);
     }
     if (!INVENTORY_GetItemFromBodyLoc(pInventory, 9))
     {
-        tContext.pCellFile = gpCelInvBoots;
+        tContext.pCelFile = gpCelInvBoots;
         tContext.nFrame = 0;
         TEXTURE_CelDraw(&tContext, gnGlobal_007BCD0C + gtOffsetFeet.nX, gnGlobal_007BCD18 + gtOffsetFeet.nY, -1, 5, 0);
     }
     if (!INVENTORY_GetItemFromBodyLoc(pInventory, 1))
     {
-        tContext.pCellFile = gpCelInvHelmGlove;
+        tContext.pCelFile = gpCelInvHelmGlove;
         tContext.nFrame = 1;
         TEXTURE_CelDraw(&tContext, gnGlobal_007BCC6C + gtOffsetHead.nX, gnGlobal_007BCC78 + gtOffsetHead.nY, -1, 5, 0);
     }
     if (!INVENTORY_GetItemFromBodyLoc(pInventory, 10))
     {
-        tContext.pCellFile = gpCelInvHelmGlove;
+        tContext.pCelFile = gpCelInvHelmGlove;
         tContext.nFrame = 0;
         TEXTURE_CelDraw(&tContext, gnGlobal_007BCD20 + gtOffsetGloves.nX, gnGlobal_007BCD2C + gtOffsetGloves.nY, -1, 5, 0);
     }
     if (!INVENTORY_GetItemFromBodyLoc(pInventory, 2))
     {
-        tContext.pCellFile = gpCelInvRingAmulet;
+        tContext.pCelFile = gpCelInvRingAmulet;
         tContext.nFrame = 0;
         TEXTURE_CelDraw(&tContext, gnGlobal_007BCC80 + gtOffsetNeck.nX, gnGlobal_007BCC8C + gtOffsetNeck.nY, -1, 5, 0);
     }
     if (!INVENTORY_GetItemFromBodyLoc(pInventory, 6))
     {
-        tContext.pCellFile = gpCelInvRingAmulet;
+        tContext.pCelFile = gpCelInvRingAmulet;
         tContext.nFrame = 1;
         TEXTURE_CelDraw(&tContext, gnGlobal_007BCCD0 + gtOffsetRRing.nX, gnGlobal_007BCCDC + gtOffsetRRing.nY, -1, 5, 0);
     }
     if (!INVENTORY_GetItemFromBodyLoc(pInventory, 7))
     {
-        tContext.pCellFile = gpCelInvRingAmulet;
+        tContext.pCelFile = gpCelInvRingAmulet;
         tContext.nFrame = 1;
         TEXTURE_CelDraw(&tContext, gnGlobal_007BCCE4 + gtOffsetLRing.nX, gnGlobal_007BCCF0 + gtOffsetLRing.nY, -1, 5, 0);
     }
@@ -1792,7 +1752,7 @@ timer_done:
 
     if (!INVENTORY_GetItemFromBodyLoc(pInventory, 5))
     {
-        tContext.pCellFile = gpCelInvWeapons;
+        tContext.pCelFile = gpCelInvWeapons;
         tContext.nFrame = 0;
         if (bRightHand)
         {
@@ -1808,7 +1768,7 @@ timer_done:
     }
     if (!INVENTORY_GetItemFromBodyLoc(pInventory, 4))
     {
-        tContext.pCellFile = gpCelInvWeapons;
+        tContext.pCelFile = gpCelInvWeapons;
         tContext.nFrame = 0;
         if (bLeftHand)
         {
@@ -1823,7 +1783,7 @@ timer_done:
         }
     }
 
-    tContext.pCellFile = gpCelInvWeapons;
+    tContext.pCelFile = gpCelInvWeapons;
     tContext.nFrame = 0;
     if (bRightHand && bLeftHand)
     {
@@ -1856,7 +1816,7 @@ timer_done:
 
     if (gnInvPanelMode == 11 && gpTradePanelCel)
     {
-        tContext.pCellFile = gpTradePanelCel;
+        tContext.pCelFile = gpTradePanelCel;
         tContext.nFrame = 0;
         TEXTURE_CelDraw(&tContext, gnPanelOffsetX, gnScreenHeight + gnPanelOffsetY - 0xE0, -1, 5, 0);
         tContext.nFrame = 1;
@@ -1866,7 +1826,7 @@ timer_done:
         tContext.nFrame = 3;
         TEXTURE_CelDraw(&tContext, gnPanelOffsetX + 0x100, gnScreenHeight + gnPanelOffsetY - 0x30, -1, 5, 0);
 
-        tContext.pCellFile = GAME_GetBuySellButtonCells();
+        tContext.pCelFile = GAME_GetBuySellButtonCells();
         if (gbTradeAcceptedOther)
         {
             tContext.nFrame = 17;
@@ -1923,7 +1883,7 @@ timer_done:
 
         Unicode wszText[0x17];
         sub_005267E0(wszText, MONSTER_GetTradePartnerName());
-        int nLength = sub_00526800(wszText);
+        int nLength = UNICODE_StrLen(wszText);
         while (D2Win_10121_GetTextWidth(wszText) > 0x70)
         {
             wszText[nLength].wChar = 0;
@@ -1932,7 +1892,7 @@ timer_done:
         D2Win_10117_DrawText(wszText, gnPanelOffsetX + 0x19, 0x1B - gnPanelOffsetY, 0, 0);
 
         sub_005267E0(wszText, wszName);
-        nLength = sub_00526800(wszText);
+        nLength = UNICODE_StrLen(wszText);
         while (D2Win_10121_GetTextWidth(wszText) > 0x70)
         {
             wszText[nLength].wChar = 0;
@@ -1968,7 +1928,7 @@ timer_done:
     }
     INV_DrawGold(1);
 
-    tContext.pCellFile = GAME_GetBuySellButtonCells();
+    tContext.pCelFile = GAME_GetBuySellButtonCells();
     tContext.nFrame = (gbPanelButtonDown != 0) + 10;
     TEXTURE_CelDraw(&tContext, gnScreenWidth - gnPanelOffsetX - 0x12E, gnScreenHeight + gnPanelOffsetY - 0x40, -1, 5, 0);
 
@@ -1990,6 +1950,7 @@ timer_done:
     INV_DrawItemTooltip(pPanelUnit, bOther);
 }
 
+// noinline: the original calls this; without it the compiler expands it into its callers.
 static __declspec(noinline) int INV_IsInTradeGrid(int nX, int nY)
 {
     if (nX > gnGlobal_007BCA34 && nX < gnGlobal_007BCA38 && nY >= gnGlobal_007BCA3C && nY <= gnGlobal_007BCA40)
@@ -2005,7 +1966,7 @@ static int INV_IsOverGoldButton(int nX, int nY)
     {
         return 0;
     }
-    if (nY >= gnScreenHeight + gnPanelY_007A285C - 0x57 && nY <= gnScreenHeight + gnPanelY_007A285C - 0x45
+    if (nY >= gnScreenHeight + gnPanelOffsetY - 0x57 && nY <= gnScreenHeight + gnPanelOffsetY - 0x45
         && nX >= gnScreenWidth - gnPanelX_007A2858 - 0xED && nX <= gnScreenWidth - gnPanelX_007A2858 - 0xD9)
     {
         return 1;
@@ -2016,7 +1977,7 @@ static int INV_IsOverGoldButton(int nX, int nY)
 static int INV_IsOverTradeButtonLeft(int nX, int nY)
 {
     if (nX > gnPanelX_007A2858 + 0xDF && nX < gnPanelX_007A2858 + 0xFF
-        && nY > gnScreenHeight + gnPanelY_007A285C - 0x60 && nY < gnScreenHeight + gnPanelY_007A285C - 0x40)
+        && nY > gnScreenHeight + gnPanelOffsetY - 0x60 && nY < gnScreenHeight + gnPanelOffsetY - 0x40)
     {
         return 1;
     }
@@ -2026,7 +1987,7 @@ static int INV_IsOverTradeButtonLeft(int nX, int nY)
 static int INV_IsOverTradeButtonRight(int nX, int nY)
 {
     if (nX > gnPanelX_007A2858 + 0x113 && nX < gnPanelX_007A2858 + 0x133
-        && nY > gnScreenHeight + gnPanelY_007A285C - 0x60 && nY < gnScreenHeight + gnPanelY_007A285C - 0x40)
+        && nY > gnScreenHeight + gnPanelOffsetY - 0x60 && nY < gnScreenHeight + gnPanelOffsetY - 0x40)
     {
         return 1;
     }
@@ -2080,7 +2041,7 @@ void __stdcall INV_OnStashButtonUp(SMSGHANDLER_PARAMS* pMsg)
     gnInvMouseY = nY;
     if (!AUTOMAP_IsCursorOverMiniPanelButton(pMsg) && INV_IsInNpcPanelRect(nX, nY))
     {
-        gnGlobal_007BCE90 = 1;
+        gbPanelButtonDown = 1;
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
         sub_004B9A00(4, 0, 0, 0, 0);
@@ -2190,7 +2151,7 @@ static void INV_DrawMercStats(D2UnitStrc* pUnit)
 
         const int nLeft = gaMercStatLines[i].nLeft + gnPanelX_007A2858;
         const int nRight = gaMercStatLines[i].nRight + gnPanelX_007A2858;
-        int nY = gaMercStatLines[i].nY - gnPanelY_007A285C - 2;
+        int nY = gaMercStatLines[i].nY - gnPanelOffsetY - 2;
 
         switch (gaMercStatLines[i].nStatId)
         {
@@ -2501,22 +2462,22 @@ void __cdecl INV_DrawMercPanel()
 
     INV_LoadUiRecords();
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpMercPanelCells_007BCE88;
+    tContext.pCelFile = gpCelNpcInv;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
-    TEXTURE_CelDraw(&tContext, gnPanelX_007A2858, gnScreenHeight + gnPanelY_007A285C - 0xE0, -1, 5, 0);
+    TEXTURE_CelDraw(&tContext, gnPanelX_007A2858, gnScreenHeight + gnPanelOffsetY - 0xE0, -1, 5, 0);
     tContext.nFrame = 1;
-    TEXTURE_CelDraw(&tContext, gnPanelX_007A2858 + 0x100, gnScreenHeight + gnPanelY_007A285C - 0xE0, -1, 5, 0);
+    TEXTURE_CelDraw(&tContext, gnPanelX_007A2858 + 0x100, gnScreenHeight + gnPanelOffsetY - 0xE0, -1, 5, 0);
     tContext.nFrame = 2;
-    TEXTURE_CelDraw(&tContext, gnPanelX_007A2858, gnScreenHeight + gnPanelY_007A285C - 0x30, -1, 5, 0);
+    TEXTURE_CelDraw(&tContext, gnPanelX_007A2858, gnScreenHeight + gnPanelOffsetY - 0x30, -1, 5, 0);
     tContext.nFrame = 3;
-    TEXTURE_CelDraw(&tContext, gnPanelX_007A2858 + 0x100, gnScreenHeight + gnPanelY_007A285C - 0x30, -1, 5, 0);
+    TEXTURE_CelDraw(&tContext, gnPanelX_007A2858 + 0x100, gnScreenHeight + gnPanelOffsetY - 0x30, -1, 5, 0);
 
-    tContext.pCellFile = GAME_GetBuySellButtonCells();
-    tContext.nFrame = (gbBuySellPressed_007BCEA0 != 0) + 10;
-    TEXTURE_CelDraw(&tContext, gnPanelX_007A2858 + 0x110, gnScreenHeight + gnPanelY_007A285C - 0x3F, -1, 5, 0);
+    tContext.pCelFile = GAME_GetBuySellButtonCells();
+    tContext.nFrame = (gbBuySellPressed != 0) + 10;
+    TEXTURE_CelDraw(&tContext, gnPanelX_007A2858 + 0x110, gnScreenHeight + gnPanelOffsetY - 0x3F, -1, 5, 0);
 
     INV_DrawUnitName(pMerc);
     INV_DrawPanelLabels();

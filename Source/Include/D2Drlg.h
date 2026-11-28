@@ -75,8 +75,8 @@ struct D2DrlgVertexStrc
     int nPosX; // 0x00
     int nPosY; // 0x04
     unsigned char nDirection; // 0x08
-    unsigned char unk0x09; // 0x09
-    unsigned short unk0x0A; // 0x0A
+    unsigned char pad0x09; // 0x09
+    unsigned short pad0x0A; // 0x0A
     unsigned int dwFlags; // 0x0C
     D2DrlgVertexStrc* pNext; // 0x10
 };
@@ -122,8 +122,8 @@ struct D2DrlgRoomStrc
     D2ActiveRoomStrc* pRoom; // 0x30
     D2DrlgCoordStrc pDrlgCoord; // 0x34
     unsigned char fRoomStatus; // 0x44
-    unsigned char unk0x45; // 0x45
-    unsigned short unk0x46; // 0x46
+    unsigned char pad0x45; // 0x45
+    unsigned short pad0x46; // 0x46
     int nType; // 0x48
     D2RoomTileStrc* pRoomTiles; // 0x4C
     unsigned int dwDT1Mask; // 0x50
@@ -133,7 +133,7 @@ struct D2DrlgRoomStrc
     unsigned int dwOtherFlags; // 0x60
     D2DrlgLogicalRoomInfoStrc* pLogicalRoomInfo; // 0x64
     D2TileLibraryHeaderStrc* pTiles; // 0x68
-    int unk0x6C[31]; // 0x6C
+    int unused0x6C[31]; // 0x6C
     D2DrlgRoomStrc* pStatusPrev; // 0xE8
 };
 
@@ -150,7 +150,7 @@ struct D2DrlgLevelStrc
         D2DrlgOutdoorInfoStrc* pOutdoors;
         D2LvlMazeTxt* pMaze;
     };
-    int unk0x18; // 0x18
+    int unused0x18; // 0x18
     union // 0x1C
     {
         struct
@@ -190,18 +190,18 @@ struct D2DrlgStrc
     D2DrlgWarpStrc* pWarp; // 0x90
     int nStaffTombLevel; // 0x94
     unsigned char nRoomsInitSinceLastUpdate; // 0x98
-    unsigned char unk0x99; // 0x99
-    unsigned short unk0x9A; // 0x9A
+    unsigned char pad0x99; // 0x99
+    unsigned short pad0x9A; // 0x9A
     D2GameStrc* pGame; // 0x9C
     D2DrlgRoomStrc tStatusRoomsLists[4]; // 0xA0
     unsigned char nDifficulty; // 0x450
-    unsigned char unk0x451; // 0x451
-    unsigned short unk0x452; // 0x452
+    unsigned char unused0x451; // 0x451
+    unsigned short unused0x452; // 0x452
     void (__stdcall* pfAutomap)(D2RoomStrc*); // 0x454
     unsigned int dwGameLowSeed; // 0x458
     unsigned char nRoomsInitTimeout; // 0x45C
-    unsigned char unk0x45D; // 0x45D
-    unsigned short unk0x45E; // 0x45E
+    unsigned char pad0x45D; // 0x45D
+    unsigned short pad0x45E; // 0x45E
     D2DrlgRoomStrc* pDrlgRoom; // 0x460
     void* hArchive; // 0x464
     int nFreedRooms; // 0x468
@@ -211,8 +211,8 @@ struct D2DrlgStrc
     void* pMempool; // 0x478
     D2DrlgLevelStrc* pLevel; // 0x47C
     unsigned char nAct; // 0x480
-    unsigned char unk0x481; // 0x481
-    unsigned short unk0x482; // 0x482
+    unsigned char pad0x481; // 0x481
+    unsigned short pad0x482; // 0x482
     int nBossTombLevel; // 0x484
     void (__stdcall* pfTownAutomap)(int, int, int, int); // 0x488
 };
@@ -231,7 +231,7 @@ struct D2ActiveRoomStrc
     int nNumRooms; // 0x24
     int nAllies; // 0x28
     D2DrlgActStrc* pAct; // 0x2C
-    int unk0x30; // 0x30
+    int unused0x30; // 0x30
     unsigned int dwFlags; // 0x34
     int nLastDeadGUIDs[4]; // 0x38
     D2ClientStrc** ppClients; // 0x48

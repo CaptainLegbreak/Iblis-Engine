@@ -1,4 +1,5 @@
 #include "Bnclient.h"
+#include "StormApi.h"
 
 struct D2SrpSeedRecordStrc;
 struct D2BigLoginRecordStrc;
@@ -19,14 +20,9 @@ struct D2SrpSeedRecordStrc
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nMax); // 0x004135D0
-void* __fastcall sub_0052A240_BigFromUnsigned(unsigned int nValue); // 0x0052A240
-void* __fastcall sub_0052A270_BigFromBinary(const void* pData, unsigned int nSize); // 0x0052A270
-unsigned int __fastcall sub_0052A2A0_BigToBinary(void* hBig, void* pBuffer, unsigned int nSize); // 0x0052A2A0
 void __fastcall sub_0052A590_BigOp_425330(void* hResult, void* hArg1, void* hArg2, void* hArg3); // 0x0052A590
 extern const char* gpszSrpSeparator; // 0x00730ADC
 int __fastcall sub_0052A2E0_BigCompare(void* hLeft, void* hRight); // 0x0052A2E0
-int __fastcall sub_0052A2F0_BigCompareUnsigned(void* hBig, unsigned int nValue); // 0x0052A2F0
 int __fastcall sub_0052A350_BigOp_423790(void* hResult, void* hLeft, void* hRight); // 0x0052A350
 int __fastcall sub_0052A3B0_BigOp_423AC0(void* hResult, void* hLeft, void* hRight); // 0x0052A3B0
 void __fastcall sub_0052A430_BigOpUnsigned_424F10(void* hResult, void* hLeft, unsigned int nValue); // 0x0052A430
@@ -65,21 +61,6 @@ static int BNSEND_MapKeyChar(unsigned char cChar)
 long __stdcall sub_M106_Emit_0051DC70(long* pTime)
 {
     return BNDOWNLOAD_GetTime(pTime);
-}
-
-unsigned int __stdcall sub_M106_Emit_0051DD10(int n)
-{
-    return BNSEND_NibbleToHex(tolower(n)) + BNSEND_NibbleToHex(tolower(n + 1));
-}
-
-int __stdcall sub_M106_Emit_0051DD20(int n)
-{
-    return BNSEND_HexToNibble((char)tolower(n)) * 16 + BNSEND_HexToNibble((char)tolower(n + 1));
-}
-
-int __stdcall sub_M106_Emit_0051DD40(int n)
-{
-    return BNSEND_MapKeyChar((unsigned char)tolower(n)) * 24 + BNSEND_MapKeyChar((unsigned char)tolower(n + 1));
 }
 
 // 0x00527DC0

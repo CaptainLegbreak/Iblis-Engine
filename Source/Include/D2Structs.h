@@ -13,7 +13,7 @@ struct D2DrlgActStrc;
 struct D2DynamicPathStrc;
 struct D2EventTimerStrc;
 struct D2GameStrc;
-struct D2GfxDataStrc;
+struct D2UnitGfxDataStrc;
 struct D2GfxLightStrc;
 struct D2HoverTextStrc;
 struct D2InventoryStrc;
@@ -152,8 +152,8 @@ struct D2UnitStrc
     unsigned char nActionFrame; // 0x4E
     unsigned char unk0x4F; // 0x4F
     D2AnimDataRecordStrc* pAnimData; // 0x50
-    D2GfxDataStrc* pGfxData; // 0x54
-    D2GfxDataStrc* pGfxDataCopy; // 0x58
+    D2UnitGfxDataStrc* pGfxData; // 0x54
+    D2UnitGfxDataStrc* pGfxDataCopy; // 0x58
     D2StatListExStrc* pStatListEx; // 0x5C
     D2InventoryStrc* pInventory; // 0x60
     union // 0x64

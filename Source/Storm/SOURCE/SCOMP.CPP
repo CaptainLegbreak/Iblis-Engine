@@ -1,13 +1,13 @@
 #include "Storm.h"
 #include "D2GameTypes.h"
 #include "D2StormLink.h"
+#include "stpl.h"
 #include "SValidate.h"
 
 struct D2StormHashBufferStrc;
 
 struct D2CriticalSectionStrc;
 
-struct D2FogBlockStrc;
 
 struct D2StormMemSourceStrc;
 
@@ -16,8 +16,6 @@ struct D2StormMemSinkStrc;
 struct D2StormCompParamStrc;
 
 struct D2StormZArenaStrc;
-
-struct D2StormNodeListAStrc;
 
 struct HUFFNODE;
 
@@ -31,46 +29,19 @@ struct D2SCompListViewStrc;
 
 struct D2SCompLinkNextAStrc;
 
-struct D2SCompLinkNextBStrc;
-
 struct D2SCompLinkPrevStrc;
 
 struct D2SCompLinkRawAStrc;
 
-struct D2SCompLinkRawBStrc;
-
 struct D2SCompUnlinkAStrc;
 
-struct D2SCompUnlinkBStrc;
-
-struct D2SCompUnlinkCStrc;
-
-struct D2SCompUnlinkDStrc;
-
 struct D2SCompListTermStrc;
-
-struct D2SCompLinkCtorAStrc;
-
-struct D2SCompLinkCtorBStrc;
-
-struct D2SCompListHeadStrc;
 
 struct D2SCompListTailStrc;
 
 struct D2SCompListInitStrc;
 
 struct D2SCompTermLinkStrc;
-
-struct D2SCompListStrc;
-
-struct D2FogBlockStrc
-{
-    D2FogBlockStrc* pNext;
-    unsigned int dwSize;
-    int unk0x08[2];
-    int bReportLeak;
-    int bInUse;
-};
 
 struct D2StormMemSourceStrc
 {
@@ -97,46 +68,155 @@ struct D2StormCompParamStrc
     unsigned int nSrcSize;
 };
 
-struct D2StormNodeListAStrc
+struct HUFFNODE : TSLinkedNode<HUFFNODE>
 {
-    int m_linkoffset;
-    D2StormLinkStrc m_terminator;
-
-    char* Head()
-    {
-        return m_terminator.Next();
-    }
-    D2StormLinkStrc* Link(char* pNode)
-    {
-        return pNode ? (D2StormLinkStrc*)pNode : &m_terminator;
-    }
-    D2StormLinkStrc* sub_0041EB40_Link(char* pNode);
-    void sub_0041EB60_UnlinkNode(char* pNode);
-    void LinkNode(char* pNode, unsigned int nLinkType, char* pExisting);                       // 0x0041ED90
-};
-
-struct HUFFNODE
-{
-    D2StormLinkStrc tLink;
-    unsigned int nValue;
-    unsigned int nWeight;
-    HUFFNODE* pParent;
-    HUFFNODE* pChild;
+    unsigned int nValue;                                    // 0x08
+    unsigned int nWeight;                                   // 0x0C
+    HUFFNODE* pParent;                                      // 0x10
+    HUFFNODE* pChild;                                       // 0x14
 
     HUFFNODE();
     ~HUFFNODE();
 };
 
+// The Huffman coder's bit reader: little-endian, refilled 16 bits at a time when peeking and a dword at a time
+// when reading single bits.
+struct CBitInput
+{
+    unsigned char* pInput;                                  // 0x00
+    unsigned int nBitBuffer;                                // 0x04
+    unsigned int nBitCount;                                 // 0x08
+
+    CBitInput(void* pInputBuffer);                                                          // 0x0041D880
+    int sub_0041D8A0_ReadBit();                                                             // 0x0041D8A0
+    unsigned int sub_0041D8D0_Peek(unsigned int nBits, unsigned int nMask);                 // 0x0041D8D0
+    void sub_0041D900_Skip(unsigned int nBits);                                             // 0x0041D900
+    unsigned int sub_0041E9E0_Get(unsigned int nBits, unsigned int nMask);                  // 0x0041E9E0
+
+    unsigned int Peek(unsigned int nBits, unsigned int nMask)
+    {
+        if (nBitCount <= nBits)
+        {
+            nBitBuffer |= *(unsigned short*)pInput << nBitCount;
+            nBitCount += 16;
+            pInput += 2;
+        }
+        return nBitBuffer & nMask;
+    }
+    void Skip(unsigned int nBits)
+    {
+        nBitBuffer >>= nBits;
+        nBitCount -= nBits;
+    }
+    unsigned int Peek7()
+    {
+        if (nBitCount <= 7)
+        {
+            nBitBuffer |= *(unsigned short*)pInput << nBitCount;
+            nBitCount += 16;
+            pInput += 2;
+        }
+        return nBitBuffer & 127;
+    }
+    unsigned int GetBit()
+    {
+        unsigned int nValue = nBitBuffer & 1;
+        nBitBuffer >>= 1;
+        if (!--nBitCount)
+        {
+            nBitBuffer = *(unsigned int*)pInput;
+            pInput += 4;
+            nBitCount = 32;
+        }
+        return nValue;
+    }
+    unsigned int Get8Bits()
+    {
+        if (nBitCount <= 8)
+        {
+            nBitBuffer |= *(unsigned short*)pInput << nBitCount;
+            nBitCount += 16;
+            pInput += 2;
+        }
+        unsigned int nValue = nBitBuffer & 0xFF;
+        nBitBuffer >>= 8;
+        nBitCount -= 8;
+        return nValue;
+    }
+};
+
+#include "D2StormBitOutput.h"
+#include "StormApi.h"
+
+// The adaptive Huffman tree. tItemList keeps the nodes sorted by weight; nMinValidValue is bumped whenever
+// the tree changes shape, which invalidates the decoder's prefix cache.
 struct CHuffman
 {
-    int unk0x00[2];
-    HUFFNODE aItems[0x203];
-    D2StormNodeListAStrc tFreeList;
-    D2StormNodeListAStrc tItemList;
-    unsigned int nItemsUsed;
+    int bIsCmp0;                                            // 0x0000
+    unsigned int nMinValidValue;                            // 0x0004
+    HUFFNODE aItems[0x203];                                 // 0x0008
+    TSList<HUFFNODE> tFreeList;                             // 0x3050
+    TSList<HUFFNODE> tItemList;                             // 0x305C
+    unsigned int nItemsUsed;                                // 0x3068
+    HUFFNODE* pItemsByValue[0x102];                         // 0x306C
 
-    HUFFNODE* NewItem(unsigned int nLinkType); // 0x0041EED0
+    CHuffman();                                                                             // 0x0041F4A0
+    ~CHuffman();                                                                            // 0x0041F6A0
+    HUFFNODE* NewItem(unsigned int nLinkType);                                              // 0x0041EED0
+    HUFFNODE* AllocateItem(unsigned int nLinkType)
+    {
+        HUFFNODE* pItem = tFreeList.m_terminator.Next();
+        if (!pItem) pItem = &aItems[nItemsUsed++];
+        tItemList.LinkNode(pItem, nLinkType, 0);
+        pItem->pParent = 0;
+        pItem->pChild = 0;
+        return pItem;
+    }
+    HUFFNODE* Root()
+    {
+        return tItemList.m_terminator.Prev();
+    }
+    void BuildTree(unsigned char nCmpType);                                                 // 0x0041EF20
+    void sub_0041F350_IncWeights(HUFFNODE* pItem);                                          // 0x0041F350
+    void AddSymbol(unsigned int nValue);                                                    // 0x0041F510
+    void sub_0041D9E0_EncodeOne(CBitOutput* pOutput, unsigned int nValue);                  // 0x0041D9E0
+    unsigned int Compress(CBitOutput* pOutput, void* pvIn, int cbIn, unsigned char nCmpType); // 0x0041F850
 };
+
+struct CHuffmanEncoder : CHuffman
+{
+    CHuffmanEncoder();                                                                      // 0x0041F920
+    ~CHuffmanEncoder();                                                                     // 0x0041F930
+};
+
+// One decoder prefix-cache slot: the tree generation it was filled in, the code length, and the value (codes
+// of up to 7 bits) or the node reached after 7 bits.
+struct HUFFCACHE
+{
+    unsigned int nGeneration;                               // 0x00
+    unsigned int nBits;                                     // 0x04
+    union
+    {
+        unsigned int nValue;
+        HUFFNODE* pNode;
+    };                                                      // 0x08
+};
+
+struct CHuffmanDecoder : CHuffman
+{
+    ~CHuffmanDecoder();                                                                     // 0x0041F940
+};
+
+// The tree HuffmanDecompress decodes with: the tree plus a 7-bit prefix cache.
+struct CHuffmanCache : CHuffman
+{
+    HUFFCACHE aCache[0x80];                                 // 0x3474
+
+    CHuffmanCache();                                                                        // 0x0041F950
+    unsigned int sub_0041EBC0_DecodeOne(CBitInput* pInput);                                 // 0x0041EBC0
+    unsigned int Decompress(void* pOutput, unsigned int nOutputSize, CBitInput* pInput);   // 0x0041F740
+};
+
 
 extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC218
 
@@ -162,29 +242,13 @@ struct D2SCompListViewStrc
 
 struct D2SCompLinkNextAStrc { D2SCompLinkStrc tLink; char* sub_0041E930_Next(); };
 
-struct D2SCompLinkNextBStrc { D2SCompLinkStrc tLink; char* sub_0041EA40_Next(); };
-
 struct D2SCompLinkPrevStrc { D2SCompLinkStrc tLink; char* sub_0041E940_Prev(); };
 
 struct D2SCompLinkRawAStrc { D2SCompLinkStrc tLink; char* sub_0041E960_RawNext(); };
 
-struct D2SCompLinkRawBStrc { D2SCompLinkStrc tLink; char* sub_0041EA50_RawNext(); };
-
 struct D2SCompUnlinkAStrc { D2SCompLinkStrc tLink; void sub_0041E970_Unlink(); };
 
-struct D2SCompUnlinkBStrc { D2SCompLinkStrc tLink; void sub_0041EA70_Unlink(); };
-
-struct D2SCompUnlinkCStrc { D2SCompLinkStrc tLink; void sub_0041EAE0_Unlink(); };
-
-struct D2SCompUnlinkDStrc { D2SCompLinkStrc tLink; void sub_0041ED30_Unlink(); };
-
 struct D2SCompListTermStrc { D2SCompListViewStrc tList; void sub_0041E9B0_InitializeTerminator(); };
-
-struct D2SCompLinkCtorAStrc { D2SCompLinkStrc* m_prevlink; char* m_next; D2SCompLinkCtorAStrc(); };
-
-struct D2SCompLinkCtorBStrc { D2SCompLinkStrc* m_prevlink; char* m_next; D2SCompLinkCtorBStrc(); };
-
-struct D2SCompListHeadStrc { D2SCompListViewStrc tList; char* sub_0041EAB0_Head(); };
 
 struct D2SCompListTailStrc { D2SCompListViewStrc tList; char* sub_0041EAC0_Tail(); };
 
@@ -195,13 +259,6 @@ struct D2SCompTermLinkStrc
     D2SCompTermLinkStrc* m_prevlink;
     char* m_next;
     D2SCompTermLinkStrc() { m_prevlink = 0; m_next = 0; }
-};
-
-struct D2SCompListStrc
-{
-    int m_linkoffset;
-    D2SCompTermLinkStrc m_terminator;
-    D2SCompListStrc();
 };
 
 struct D2StormZArenaStrc
@@ -248,10 +305,8 @@ struct SCompBufferState
     void* pMemory;
 };
 
-SCompBufferState gSCompBuffer_0077920C;         // 0x0077920C
+extern SCompBufferState gSCompBuffer_0077920C; // 0x0077920C
 
-
-void __stdcall SMemCopy(void* pDest, const void* pSource, unsigned int nSize); // 0x0041D2A0
 
 // 0x0041DEC0
 unsigned int __cdecl PkwareBufferRead(char* pBuffer, unsigned int* pSize, D2StormMemSourceStrc* pSource)
@@ -431,6 +486,114 @@ int __fastcall ZlibDecompress(unsigned char* pOut, unsigned long* pOutSize, cons
     return UncompressWithArena(pOut, pOutSize, pIn, nInSize);
 }
 
+// 0x0041D880
+CBitInput::CBitInput(void* pInputBuffer)
+{
+    pInput = (unsigned char*)pInputBuffer;
+    nBitBuffer = *(unsigned int*)pInput;
+    pInput += 4;
+    nBitCount = 32;
+}
+
+// 0x0041D8A0
+int CBitInput::sub_0041D8A0_ReadBit()
+{
+    int nBit = nBitBuffer & 1;
+    nBitBuffer >>= 1;
+    if (!--nBitCount)
+    {
+        nBitBuffer = *(unsigned int*)pInput;
+        pInput += 4;
+        nBitCount = 32;
+    }
+    return nBit;
+}
+
+// 0x0041D8D0
+unsigned int CBitInput::sub_0041D8D0_Peek(unsigned int nBits, unsigned int nMask)
+{
+    if (nBitCount <= nBits)
+    {
+        nBitBuffer |= *(unsigned short*)pInput << nBitCount;
+        nBitCount += 16;
+        pInput += 2;
+    }
+    return nBitBuffer & nMask;
+}
+
+// 0x0041D900
+void CBitInput::sub_0041D900_Skip(unsigned int nBits)
+{
+    nBitBuffer >>= nBits;
+    nBitCount -= nBits;
+}
+
+// 0x0041D920
+CBitOutput::CBitOutput(void* pOutputBuffer, unsigned int nOutputSize)
+{
+    pOutput = (unsigned char*)pOutputBuffer;
+    pOutputStart = (unsigned char*)pOutputBuffer;
+    nBytesLeft = nOutputSize;
+    nBitBuffer = 0;
+    nBitCount = 0;
+}
+
+// 0x0041D940
+unsigned int CBitOutput::sub_0041D940_GetSize()
+{
+    return pOutput - pOutputStart;
+}
+
+// 0x0041D950
+void CBitOutput::sub_0041D950_PutBits(unsigned int nValue, unsigned int nBits)
+{
+    nBitBuffer |= nValue << nBitCount;
+    nBitCount += nBits;
+    while (nBitCount >= 8)
+    {
+        if (nBytesLeft)
+        {
+            *pOutput++ = (unsigned char)nBitBuffer;
+            nBytesLeft--;
+        }
+        nBitBuffer >>= 8;
+        nBitCount -= 8;
+    }
+}
+
+// 0x0041D9A0
+void CBitOutput::Flush()
+{
+    while (nBitCount)
+    {
+        if (nBytesLeft)
+        {
+            *pOutput++ = (unsigned char)nBitBuffer;
+            nBytesLeft--;
+        }
+        nBitBuffer >>= 8;
+        nBitCount -= nBitCount > 8 ? 8 : nBitCount;
+    }
+}
+
+// 0x0041D9E0
+void CHuffman::sub_0041D9E0_EncodeOne(CBitOutput* pOutput, unsigned int nValue)
+{
+    HUFFNODE* pItem = pItemsByValue[nValue];
+    unsigned int nCode = 0;
+    unsigned int nBits = 0;
+    for (HUFFNODE* pParent = pItem->pParent; pParent; pParent = pParent->pParent)
+    {
+        nCode = (nCode << 1) | (pParent->pChild != pItem);
+        nBits++;
+        pItem = pParent;
+    }
+    pOutput->sub_0041D950_PutBits(nCode, nBits);
+}
+
+extern "C" int __cdecl abs(int);
+
+// 0x0041DA30
 static void sub_0041DA30_GetCompressionLevel(unsigned int nCmpLevel, unsigned char* pnLevel, int* pCmpType)
 {
     switch (nCmpLevel)
@@ -451,7 +614,8 @@ static void sub_0041DA30_GetCompressionLevel(unsigned int nCmpLevel, unsigned ch
     }
 }
 
-static int __stdcall ImaAdpcmCompress(int nOutSize, const short* pIn, int nInSize, unsigned int nChannels, unsigned char nLevel, unsigned char* pOut) // 0x0041DA60
+// 0x0041DA60
+static int __stdcall ImaAdpcmCompress(int nOutSize, const short* pIn, int nInSize, unsigned int nChannels, unsigned char nLevel, unsigned char* pOut)
 {
     unsigned char* pOutStart = pOut;
     if ((unsigned int)nOutSize < 2)
@@ -459,49 +623,42 @@ static int __stdcall ImaAdpcmCompress(int nOutSize, const short* pIn, int nInSiz
         return 2;
     }
     D2AdpcmHeaderStrc tHeader;
-    tHeader.nShift = nLevel - 1;
     tHeader.nZero = 0;
+    tHeader.nShift = nLevel - 1;
     *(D2AdpcmHeaderStrc*)pOut = tHeader;
     pOut += 2;
-    const int nHeader = nChannels * 2 + (pOut - pOutStart);
-    if (nHeader > nOutSize)
+    if (pOut + nChannels * 2 - pOutStart > nOutSize)
     {
-        return nHeader;
+        return pOut + nChannels * 2 - pOutStart;
     }
+    int aSample[2];
     int aPredicted[2];
     int aStepIndex[2];
     aStepIndex[0] = 0x2C;
     aStepIndex[1] = 0x2C;
-    for (unsigned int i = 0; i < nChannels; i++)
+    unsigned int i;
+    for (i = 0; i < nChannels; i++)
     {
-        const int nSample = *pIn++;
-        aPredicted[i] = nSample;
-        *(short*)pOut = nSample;
+        aPredicted[i] = *pIn++;
+        *(short*)pOut = (short)aPredicted[i];
         pOut += 2;
     }
-    int nGrowLeft = nInSize / 2 - (pOut - pOutStart);
-    nGrowLeft = nGrowLeft < 0 ? 0 : nGrowLeft;
-    unsigned int nIndex = nChannels;
-    const unsigned int nWords = (unsigned int)nInSize >> 1;
+    int nGrowLeft = (nInSize / 2 - (pOut - pOutStart) < 0) ? 0 : nInSize / 2 - (pOut - pOutStart);
     int nChannel = nChannels - 1;
-    if (nIndex >= nWords)
+    const unsigned int nWords = nInSize / sizeof(short);
+    for (i = nChannels; i < nWords; i++)
     {
-        return pOut - pOutStart;
-    }
-    do
-    {
-        if ((pOut - pOutStart) + 2 > nOutSize)
+        if (pOut + 2 - pOutStart > nOutSize)
         {
-            return (pOut - pOutStart) + 2;
+            return pOut + 2 - pOutStart;
         }
         if (nChannels == 2)
         {
             nChannel = nChannel == 0;
         }
-        const int nSample = *pIn++;
-        int nDifference = nSample - aPredicted[nChannel];
-        const unsigned int nAbs = nDifference < 0 ? -nDifference : nDifference;
-        const unsigned char nSignBit = nSample >= aPredicted[nChannel] ? 0 : 0x40;
+        aSample[nChannel] = *pIn++;
+        const unsigned int nAbs = abs(aSample[nChannel] - aPredicted[nChannel]);
+        const int nSignBit = aSample[nChannel] >= aPredicted[nChannel] ? 0 : 0x40;
         unsigned int nStepSize = gaADPCMStepTable_006CFD38[aStepIndex[nChannel]];
         if (nAbs < (nStepSize >> nLevel))
         {
@@ -510,76 +667,68 @@ static int __stdcall ImaAdpcmCompress(int nOutSize, const short* pIn, int nInSiz
                 aStepIndex[nChannel]--;
             }
             *pOut++ = 0x80;
+            continue;
         }
-        else
+        while (nAbs > nStepSize * 2 && aStepIndex[nChannel] < 0x58 && nGrowLeft)
         {
-            while (nAbs > nStepSize * 2 && aStepIndex[nChannel] < 0x58 && nGrowLeft)
-            {
-                aStepIndex[nChannel] += 8;
-                if (aStepIndex[nChannel] > 0x58)
-                {
-                    aStepIndex[nChannel] = 0x58;
-                }
-                nStepSize = gaADPCMStepTable_006CFD38[aStepIndex[nChannel]];
-                nGrowLeft--;
-                *pOut++ = 0x81;
-            }
-            const unsigned int nStepRest = nStepSize >> tHeader.nShift;
-            const unsigned int nMaxBit = 1 << (nLevel - 2);
-            unsigned int nTotal = 0;
-            unsigned int nMask = 0;
-            unsigned int nLimit = 0x20;
-            nInSize = 1;
-            if (nMaxBit <= 0x20)
-            {
-                nLimit = nMaxBit;
-            }
-            for (;;)
-            {
-                if (nTotal + nStepSize <= nAbs)
-                {
-                    nTotal += nStepSize;
-                    nMask |= nInSize;
-                }
-                if (nInSize == nLimit)
-                {
-                    break;
-                }
-                nStepSize >>= 1;
-                nInSize <<= 1;
-            }
-            const int nDelta = nTotal + nStepRest;
-            int nPredicted = aPredicted[nChannel];
-            if (nSignBit)
-            {
-                nPredicted -= nDelta;
-                if (nPredicted < -0x8000)
-                {
-                    nPredicted = -0x8000;
-                }
-            }
-            else
-            {
-                nPredicted += nDelta;
-                if (nPredicted > 0x7FFF)
-                {
-                    nPredicted = 0x7FFF;
-                }
-            }
-            *pOut++ = nSignBit | (unsigned char)nMask;
-            aStepIndex[nChannel] += gaADPCMIndexTable_006CFCB8[nMask & 0x1F];
-            aPredicted[nChannel] = nPredicted;
-            if (aStepIndex[nChannel] < 0)
-            {
-                aStepIndex[nChannel] = 0;
-            }
-            else if (aStepIndex[nChannel] > 0x58)
+            aStepIndex[nChannel] += 8;
+            if (aStepIndex[nChannel] > 0x58)
             {
                 aStepIndex[nChannel] = 0x58;
             }
+            nStepSize = gaADPCMStepTable_006CFD38[aStepIndex[nChannel]];
+            *pOut++ = 0x81;
+            nGrowLeft--;
         }
-        nIndex++;
-    } while (nIndex < nWords);
+        unsigned int nMask = 0;
+        unsigned int nTotal = 0;
+        const unsigned int nStepRest = nStepSize >> tHeader.nShift;
+        unsigned int nBit = 1;
+        const unsigned int nMaxBit = ((unsigned int)(1 << (nLevel - 2)) > 0x20) ? 0x20 : (1 << (nLevel - 2));
+        for (;;)
+        {
+            if (nTotal + nStepSize <= nAbs)
+            {
+                nMask |= nBit;
+                nTotal += nStepSize;
+            }
+            if (nBit == nMaxBit)
+            {
+                break;
+            }
+            nStepSize >>= 1;
+            nBit <<= 1;
+        }
+        nTotal += nStepRest;
+        int nPredicted = aPredicted[nChannel];
+        if (nSignBit)
+        {
+            nPredicted -= nTotal;
+            if (nPredicted < -0x8000)
+            {
+                nPredicted = -0x8000;
+            }
+        }
+        else
+        {
+            nPredicted += nTotal;
+            if (nPredicted > 0x7FFF)
+            {
+                nPredicted = 0x7FFF;
+            }
+        }
+        aPredicted[nChannel] = nPredicted;
+        *pOut++ = (unsigned char)(nSignBit | nMask);
+        aStepIndex[nChannel] += gaADPCMIndexTable_006CFCB8[nMask & 0x1F];
+        if (aStepIndex[nChannel] < 0)
+        {
+            aStepIndex[nChannel] = 0;
+        }
+        else if (aStepIndex[nChannel] > 0x58)
+        {
+            aStepIndex[nChannel] = 0x58;
+        }
+    }
     return pOut - pOutStart;
 }
 
@@ -591,27 +740,27 @@ void __fastcall ImaAdpcmMonoCompress(unsigned char* pvOutBuffer, int* pcbOutBuff
     *pcbOutBuffer = ImaAdpcmCompress(*pcbOutBuffer, pvInBuffer, cbInBuffer, 1, nLevel, pvOutBuffer);
 }
 
-static int __stdcall ImaAdpcmDecompress(short* pOut, int nInLength, unsigned int nOutSize, unsigned char* pIn, unsigned int nChannels) // 0x0041DCE0
+// 0x0041DCE0
+static int __stdcall ImaAdpcmDecompress(short* pOut, unsigned int nOutSize, unsigned char* pIn, int nInLength, unsigned int nChannels)
 {
     int aPredicted[2];
     int aStep[2];
+    unsigned char* pHeader = pIn;
+    short* pOutStart = pOut;
     aStep[0] = 0x2C;
     aStep[1] = 0x2C;
-    unsigned char* pHeader = pIn;
     unsigned char* pInEnd = pIn + nInLength;
-    short* pOutStart = pOut;
     pIn += 2;
     for (unsigned int i = 0; i < nChannels; i++)
     {
-        const int nSample = *(short*)pIn;
+        aPredicted[i] = *(short*)pIn;
         pIn += 2;
-        aPredicted[i] = nSample;
         if (nOutSize < 2)
         {
             return (char*)pOut - (char*)pOutStart;
         }
         nOutSize -= 2;
-        *pOut = nSample;
+        *pOut = aPredicted[i];
         pOut++;
     }
     int nChannel = nChannels - 1;
@@ -624,6 +773,7 @@ static int __stdcall ImaAdpcmDecompress(short* pOut, int nInLength, unsigned int
         const unsigned char nByte = *pIn++;
         if (nByte & 0x80)
         {
+            int bSameChannel = 0;
             switch (nByte & 0x7F)
             {
             case 0:
@@ -638,13 +788,14 @@ static int __stdcall ImaAdpcmDecompress(short* pOut, int nInLength, unsigned int
                 *pOut = aPredicted[nChannel];
                 pOut++;
                 nOutSize -= 2;
-                continue;
+                break;
             case 1:
                 aStep[nChannel] += 8;
                 if (aStep[nChannel] > 0x58)
                 {
                     aStep[nChannel] = 0x58;
                 }
+                bSameChannel = 1;
                 break;
             case 2:
                 aStep[nChannel] -= 8;
@@ -652,11 +803,12 @@ static int __stdcall ImaAdpcmDecompress(short* pOut, int nInLength, unsigned int
                 {
                     aStep[nChannel] = 0;
                 }
+                bSameChannel = 1;
                 break;
             default:
                 continue;
             }
-            if (nChannels == 2)
+            if (bSameChannel && nChannels == 2)
             {
                 nChannel = (nChannel == 0);
             }
@@ -719,7 +871,7 @@ static int __stdcall ImaAdpcmDecompress(short* pOut, int nInLength, unsigned int
 // 0x0041E3A0
 void __fastcall ImaAdpcmMonoDecompress(short* pOut, unsigned int* pOutSize, unsigned char* pIn, int nInLength, int nUnused)
 {
-    *pOutSize = ImaAdpcmDecompress(pOut, nInLength, *pOutSize, pIn, 1);
+    *pOutSize = ImaAdpcmDecompress(pOut, *pOutSize, pIn, nInLength, 1);
 }
 
 // 0x0041E3C0
@@ -733,7 +885,7 @@ void __fastcall ImaAdpcmStereoCompress(unsigned char* pvOutBuffer, int* pcbOutBu
 // 0x0041E400
 void __fastcall ImaAdpcmStereoDecompress(short* pOut, unsigned int* pOutSize, unsigned char* pIn, int nInLength, int nUnused)
 {
-    *pOutSize = ImaAdpcmDecompress(pOut, nInLength, *pOutSize, pIn, 2);
+    *pOutSize = ImaAdpcmDecompress(pOut, *pOutSize, pIn, nInLength, 2);
 }
 
 // 0x0041E420
@@ -1025,30 +1177,12 @@ void __fastcall sub_0041E9D0_SwapDwords(int* pA, int* pB)
     *pB = nTemp;
 }
 
-// 0x0041EA40
-char* D2SCompLinkNextBStrc::sub_0041EA40_Next() { return (int)tLink.m_next <= 0 ? 0 : tLink.m_next; }
-
-// 0x0041EA50
-char* D2SCompLinkRawBStrc::sub_0041EA50_RawNext() { return tLink.m_next; }
-
-// 0x0041EA60
-D2SCompLinkCtorAStrc::D2SCompLinkCtorAStrc() { m_prevlink = 0; m_next = 0; }
-
-// 0x0041EA70
-void D2SCompUnlinkBStrc::sub_0041EA70_Unlink() { tLink.Unlink(); }
-
-// 0x0041EAB0
-char* D2SCompListHeadStrc::sub_0041EAB0_Head() { return (int)tList.m_terminator.m_next <= 0 ? 0 : tList.m_terminator.m_next; }
-
 // 0x0041EAC0
 char* D2SCompListTailStrc::sub_0041EAC0_Tail()
 {
     D2SCompLinkStrc* pLink = tList.m_terminator.m_prevlink->m_prevlink;
     return (int)pLink->m_next <= 0 ? 0 : pLink->m_next;
 }
-
-// 0x0041EAE0
-void D2SCompUnlinkCStrc::sub_0041EAE0_Unlink() { tLink.Unlink(); }
 
 // 0x0041EB20
 void D2SCompListInitStrc::sub_0041EB20_Init()
@@ -1058,31 +1192,14 @@ void D2SCompListInitStrc::sub_0041EB20_Init()
     tList.m_terminator.m_next = (char*)~(unsigned int)&tList.m_terminator;
 }
 
-// 0x0041EBB0
-D2SCompLinkCtorBStrc::D2SCompLinkCtorBStrc() { m_prevlink = 0; m_next = 0; }
-
-// 0x0041ED30
-void D2SCompUnlinkDStrc::sub_0041ED30_Unlink() { tLink.Unlink(); }
-
-// 0x0041ED70
-D2SCompListStrc::D2SCompListStrc()
-{
-    m_linkoffset = 0;
-    m_terminator.m_prevlink = &m_terminator;
-    m_terminator.m_next = (char*)~(unsigned int)&m_terminator;
-}
-
 // 0x0041EE80
 HUFFNODE::HUFFNODE()
 {
-    tLink.m_prevlink = 0;
-    tLink.m_next = 0;
 }
 
 // 0x0041EE90
 HUFFNODE::~HUFFNODE()
 {
-    tLink.Unlink();
 }
 
 // List and bit-reader pieces of the run that no caller reaches, on placeholder types.
@@ -1095,42 +1212,6 @@ struct D2SCompPairStrc
 struct D2SCompNextLinkStrc : D2StormLinkStrc
 {
     D2StormLinkStrc* sub_0041E900_NextLink(int nLinkOffset);
-};
-
-struct D2SCompBitInputStrc
-{
-    unsigned char* pInput;
-    unsigned int nBitBuffer;
-    unsigned int nBitCount;
-
-    unsigned int Peek(unsigned int nBits, unsigned int nMask)
-    {
-        if (nBitCount <= nBits)
-        {
-            nBitBuffer |= *(unsigned short*)pInput << nBitCount;
-            nBitCount += 16;
-            pInput += 2;
-        }
-        return nBitBuffer & nMask;
-    }
-    void Skip(unsigned int nBits)
-    {
-        nBitBuffer >>= nBits;
-        nBitCount -= nBits;
-    }
-    unsigned int sub_0041E9E0_Get(unsigned int nBits, unsigned int nMask);
-};
-
-struct D2StormNodeListStrc
-{
-    int m_linkoffset;
-    D2StormLinkStrc m_terminator;
-
-    char* Head()
-    {
-        return m_terminator.Next();
-    }
-    void sub_0041EE40_UnlinkAll();
 };
 
 // 0x0041E8F0
@@ -1157,7 +1238,7 @@ D2StormLinkStrc* __fastcall sub_0041E9C0_Identity(D2StormLinkStrc* pLink)
 }
 
 // 0x0041E9E0
-unsigned int D2SCompBitInputStrc::sub_0041E9E0_Get(unsigned int nBits, unsigned int nMask)
+unsigned int CBitInput::sub_0041E9E0_Get(unsigned int nBits, unsigned int nMask)
 {
     unsigned int nValue = Peek(nBits, nMask);
     Skip(nBits);
@@ -1170,78 +1251,264 @@ int __stdcall sub_0041EA20_Forward(void* p1, unsigned int* p2, const void* p3, u
     return SCompDecompress(p1, p2, (unsigned char*)p3, n4, 0);
 }
 
-// 0x0041EB40
-D2StormLinkStrc* D2StormNodeListAStrc::sub_0041EB40_Link(char* pNode)
+// 0x0041EBC0
+unsigned int CHuffmanCache::sub_0041EBC0_DecodeOne(CBitInput* input)
 {
-    return pNode ? (D2StormLinkStrc*)pNode : &m_terminator;
+ unsigned int prefix=input->Peek7();
+ HUFFCACHE* entry=&aCache[prefix];
+ int cached=entry->nGeneration==nMinValidValue;
+ HUFFNODE* node;
+ if(cached) {
+  if(entry->nBits>7) { input->Skip(7); node=entry->pNode; }
+  else { input->Skip(entry->nBits); return entry->nValue; }
+ } else node=Root();
+ unsigned int depth=0;
+ HUFFNODE* seventh=0;
+ do {
+  node=node->pChild;
+  if(input->GetBit()) node=node->m_link.m_next;
+  ++depth;
+  if(depth==7) seventh=node;
+ } while(node->pChild);
+ if(!cached) {
+  if(depth>7) {
+   entry->nGeneration=nMinValidValue;
+   entry->nBits=depth;
+   entry->pNode=seventh;
+  } else {
+   unsigned int index=prefix&(0xFFFFFFFF>>(32-depth));
+   unsigned int step=1<<depth;
+   do {
+    HUFFCACHE* e=&aCache[index];
+    e->nGeneration=nMinValidValue;
+    e->nBits=depth;
+    e->nValue=node->nValue;
+    index+=step;
+   } while(index<=127);
+  }
+ }
+ return node->nValue;
 }
 
-// 0x0041EB60
-void D2StormNodeListAStrc::sub_0041EB60_UnlinkNode(char* pNode)
-{
-    Link(pNode)->Unlink();
-}
-
-// 0x0041ED90
-void D2StormNodeListAStrc::LinkNode(char* pNode, unsigned int nLinkType, char* pExisting)
-{
-    D2StormLinkStrc* pLink = Link(pNode);
-    pLink->Unlink();
-    D2StormLinkStrc* pExistingLink = Link(pExisting);
-    switch (nLinkType)
-    {
-    case 1:
-        pLink->m_prevlink = pExistingLink;
-        pLink->m_next = pExistingLink->m_next;
-        pExistingLink->NextLink(m_linkoffset)->m_prevlink = pLink;
-        pExistingLink->m_next = pNode;
-        break;
-    default:
-        {
-            D2StormLinkStrc* pPrev = pExistingLink->m_prevlink;
-            pLink->m_prevlink = pPrev;
-            pLink->m_next = pPrev->m_next;
-            pPrev->m_next = pNode;
-            pExistingLink->m_prevlink = pLink;
-        }
-        break;
-    }
-}
-
-// 0x0041EE40
-void D2StormNodeListStrc::sub_0041EE40_UnlinkAll()
-{
-    while (char* pNode = Head())
-        ((D2StormLinkStrc*)pNode)->Unlink();
-}
+// build: symbol ?Next@?$TSLink@UHUFFNODE@@@@QAEPAUHUFFNODE@@XZ 0x0041EA40
+// build: symbol ?RawNext@?$TSLink@UHUFFNODE@@@@QAEPAUHUFFNODE@@XZ 0x0041EA50
+// build: symbol ??0?$TSLink@UHUFFNODE@@@@QAE@XZ 0x0041EA60
+// build: symbol ?Unlink@?$TSLink@UHUFFNODE@@@@QAEXXZ 0x0041EA70
+// build: symbol ?Head@?$TSList@UHUFFNODE@@U?$TSGetLink@UHUFFNODE@@@@@@QAEPAUHUFFNODE@@XZ 0x0041EAB0
+// build: symbol ??1?$TSLink@UHUFFNODE@@@@QAE@XZ 0x0041EAE0
+// build: symbol ?Link@?$TSList@UHUFFNODE@@U?$TSGetLink@UHUFFNODE@@@@@@QAEPAU?$TSLink@UHUFFNODE@@@@PBUHUFFNODE@@@Z 0x0041EB40
+// build: symbol ?UnlinkNode@?$TSList@UHUFFNODE@@U?$TSGetLink@UHUFFNODE@@@@@@QAEXPAUHUFFNODE@@@Z 0x0041EB60
+// build: symbol ??0?$TSLinkedNode@UHUFFNODE@@@@QAE@XZ 0x0041EBB0
+// build: symbol ??1?$TSLinkedNode@UHUFFNODE@@@@QAE@XZ 0x0041ED30
+// build: symbol ??0?$TSList@UHUFFNODE@@U?$TSGetLink@UHUFFNODE@@@@@@QAE@XZ 0x0041ED70
+// build: symbol ?LinkNode@?$TSList@UHUFFNODE@@U?$TSGetLink@UHUFFNODE@@@@@@QAEXPAUHUFFNODE@@I0@Z 0x0041ED90
+// build: symbol ?UnlinkAll@?$TSList@UHUFFNODE@@U?$TSGetLink@UHUFFNODE@@@@@@QAEXXZ 0x0041EE40
+template HUFFNODE* TSLink<HUFFNODE>::Next();
+template HUFFNODE* TSLink<HUFFNODE>::RawNext();
+template TSLink<HUFFNODE>::TSLink();
+template void TSLink<HUFFNODE>::Unlink();
+template HUFFNODE* TSList<HUFFNODE>::Head();
+template TSLink<HUFFNODE>::~TSLink();
+template TSLink<HUFFNODE>* TSList<HUFFNODE>::Link(const HUFFNODE*);
+template void TSList<HUFFNODE>::UnlinkNode(HUFFNODE*);
+template TSList<HUFFNODE>::TSList();
+template void TSList<HUFFNODE>::LinkNode(HUFFNODE*, unsigned int, HUFFNODE*);
+template void TSList<HUFFNODE>::UnlinkAll();
 
 // 0x0041EED0
 HUFFNODE* CHuffman::NewItem(unsigned int nLinkType)
 {
-    HUFFNODE* pItem = (HUFFNODE*)tFreeList.Head();
+    HUFFNODE* pItem = tFreeList.Head();
     if (!pItem)
         pItem = &aItems[nItemsUsed++];
-    tItemList.LinkNode((char*)pItem, nLinkType, 0);
+    tItemList.LinkNode(pItem, nLinkType, 0);
     pItem->pParent = 0;
     pItem->pChild = 0;
     return pItem;
 }
 
-extern "C" const int gData_006CFCB8[32]; // 0x006CFCB8
-extern "C" const int gData_006CFD38[89]; // 0x006CFD38
+// 0x0041F350
+void CHuffman::sub_0041F350_IncWeights(HUFFNODE* pItem)
+{
+    for (; pItem; pItem = pItem->pParent)
+    {
+        pItem->nWeight++;
+        HUFFNODE* pCur = pItem;
+        HUFFNODE* pNext;
+        for (;;)
+        {
+            pNext = pCur->m_link.Next();
+            if (!pNext || pNext->nWeight >= pItem->nWeight)
+                break;
+            pCur = pNext;
+        }
+        if (pCur == pItem)
+            continue;
+        tItemList.LinkNode(pCur, 2, pItem);
+        tItemList.LinkNode(pItem, 2, pNext);
+        HUFFNODE* pCurParentChild = pCur->pParent->pChild;
+        if (pItem->pParent->pChild == pItem)
+            pItem->pParent->pChild = pCur;
+        if (pCurParentChild == pCur)
+            pCur->pParent->pChild = pItem;
+        HUFFNODE* pTemp = pItem->pParent;
+        pItem->pParent = pCur->pParent;
+        pCur->pParent = pTemp;
+        nMinValidValue++;
+    }
+}
 
-extern "C" const int gData_006CFCB8[32] = {
+// build: symbol ??1?$TSList@UHUFFNODE@@U?$TSGetLink@UHUFFNODE@@@@@@QAE@XZ 0x0041F460
+template TSList<HUFFNODE>::~TSList();
+
+// 0x0041F4A0
+CHuffman::CHuffman()
+{
+    nMinValidValue = 1;
+    nItemsUsed = 0;
+}
+
+// 0x0041F510
+void CHuffman::AddSymbol(unsigned int nValue)
+{
+    HUFFNODE* pFirst = tItemList.Head();
+    HUFFNODE* pItem = tFreeList.Head();
+    if (!pItem)
+        pItem = &aItems[nItemsUsed++];
+    tItemList.LinkNode(pItem, 1, 0);
+    pItem->pParent = 0;
+    pItem->pChild = 0;
+    pItem->nValue = pFirst->nValue;
+    pItem->nWeight = pFirst->nWeight;
+    pItem->pParent = pFirst;
+    pItemsByValue[pItem->nValue] = pItem;
+    pItem = tFreeList.Head();
+    if (!pItem)
+        pItem = &aItems[nItemsUsed++];
+    tItemList.LinkNode(pItem, 1, 0);
+    pItem->pParent = 0;
+    pItem->pChild = 0;
+    pItem->nValue = nValue;
+    pItem->nWeight = 0;
+    pItem->pParent = pFirst;
+    pItemsByValue[nValue] = pItem;
+    pFirst->pChild = pItem;
+    sub_0041F350_IncWeights(pItem);
+}
+
+// 0x0041F6A0
+CHuffman::~CHuffman()
+{
+}
+
+// 0x0041F740
+unsigned int CHuffmanCache::Decompress(void* pOutput, unsigned int nOutputSize, CBitInput* pInput)
+{
+    if (!nOutputSize)
+    {
+        return 0;
+    }
+    unsigned char nType = pInput->Get8Bits();
+    BuildTree(nType);
+    bIsCmp0 = nType == 0;
+    unsigned char* pbOut = (unsigned char*)pOutput;
+    for (;;)
+    {
+        unsigned int nValue = sub_0041EBC0_DecodeOne(pInput);
+        if (nValue == 0x101)
+        {
+            nValue = pInput->Get8Bits();
+            AddSymbol(nValue);
+            if (!bIsCmp0)
+            {
+                sub_0041F350_IncWeights(pItemsByValue[nValue]);
+            }
+        }
+        if (nValue == 0x100)
+        {
+            return (unsigned int)(pbOut - (unsigned char*)pOutput);
+        }
+        *pbOut++ = (unsigned char)nValue;
+        if (--nOutputSize == 0)
+        {
+            return (unsigned int)(pbOut - (unsigned char*)pOutput);
+        }
+        if (bIsCmp0)
+        {
+            sub_0041F350_IncWeights(pItemsByValue[nValue]);
+        }
+    }
+}
+
+// 0x0041F850
+unsigned int CHuffman::Compress(CBitOutput* pOutput, void* pvIn, int cbIn, unsigned char nCmpType)
+{
+    BuildTree(nCmpType);
+    bIsCmp0 = nCmpType == 0;
+    pOutput->sub_0041D950_PutBits(nCmpType, 8);
+    unsigned char* pbIn = (unsigned char*)pvIn;
+    while (cbIn != 0)
+    {
+        unsigned int nValue = *pbIn++;
+        cbIn--;
+        if (pItemsByValue[nValue] == 0)
+        {
+            sub_0041D9E0_EncodeOne(pOutput, 0x101);
+            pOutput->sub_0041D950_PutBits(nValue, 8);
+            AddSymbol(nValue);
+            if (!bIsCmp0)
+            {
+                sub_0041F350_IncWeights(pItemsByValue[nValue]);
+            }
+        }
+        else
+        {
+            sub_0041D9E0_EncodeOne(pOutput, nValue);
+        }
+        if (bIsCmp0)
+        {
+            sub_0041F350_IncWeights(pItemsByValue[nValue]);
+        }
+    }
+    sub_0041D9E0_EncodeOne(pOutput, 0x100);
+    pOutput->Flush();
+    return pOutput->sub_0041D940_GetSize();
+}
+
+// 0x0041F920
+CHuffmanEncoder::CHuffmanEncoder()
+{
+}
+
+// 0x0041F930
+CHuffmanEncoder::~CHuffmanEncoder()
+{
+}
+
+// 0x0041F940
+CHuffmanDecoder::~CHuffmanDecoder()
+{
+}
+
+// 0x0041F950
+CHuffmanCache::CHuffmanCache()
+{
+    for (int i = 0; i < 0x80; ++i)
+        aCache[i].nGeneration = 0;
+}
+
+extern "C" const int gData_006CFCB8[32] = { // 0x006CFCB8
     -1, 0, -1, 4, -1, 2, -1, 6, -1, 1, -1, 5, -1, 3, -1, 7,
     -1, 1, -1, 5, -1, 3, -1, 7, -1, 2, -1, 4, -1, 6, -1, 8
-}; // 0x006CFCB8
+};
 #pragma comment(linker, "/alternatename:?gaADPCMIndexTable_006CFCB8@@3QBHB=_gData_006CFCB8")
 
-extern "C" const int gData_006CFD38[89] = {
+extern "C" const int gData_006CFD38[89] = { // 0x006CFD38
     7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 21, 23, 25, 28, 31,
     34, 37, 41, 45, 50, 55, 60, 66, 73, 80, 88, 97, 107, 118, 130, 143,
     157, 173, 190, 209, 230, 253, 279, 307, 337, 371, 408, 449, 494, 544, 598, 658,
     724, 796, 876, 963, 1060, 1166, 1282, 1411, 1552, 1707, 1878, 2066, 2272, 2499, 2749, 3024,
     3327, 3660, 4026, 4428, 4871, 5358, 5894, 6484, 7132, 7845, 8630, 9493, 10442, 11487, 12635, 13899,
     15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767
-}; // 0x006CFD38
+};
 #pragma comment(linker, "/alternatename:?gaADPCMStepTable_006CFD38@@3QBHB=_gData_006CFD38")

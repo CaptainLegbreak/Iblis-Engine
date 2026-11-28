@@ -4,6 +4,7 @@
 #include "D2MissileIds.h"
 #include "D2LevelIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2Path.h"
 #include "D2Structs.h"
@@ -14,6 +15,10 @@
 #include "D2LevelTxt.h"
 #include "D2ClientUiRecords.h"
 #include "D2WinSplitText.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "D2CommonApi2.h"
 
 #define LEVEL_EFFECT_TICKS 30
 #define THRONE_MISSILE 0x27F
@@ -38,33 +43,14 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
 
 
-D2ActiveRoomStrc* __cdecl CUNIT_GetPlayerRoom(); // 0x004646A0
-void __fastcall SCMD_GetRoomLight(D2ActiveRoomStrc* pRoom, int* pLight, unsigned char* pRed, unsigned char* pGreen, unsigned char* pBlue, int nFlag); // 0x00474550
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
 
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-D2UnitStrc* __cdecl sub_00463DE0_GetPlayerUnit(); // 0x00463DE0
-void __fastcall VIEW_StartTimedBox(int nFadeIn, int nHold, int nFadeOut, int nLevelId, int bForce); // 0x0046AE50
 D2UnitStrc* __fastcall MISSILE_SubmitMissileRequest(D2UnitStrc* pUnit, int nRequest, int nX, int nY, int nA, int nB); // 0x004CDB40
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-D2UnitStrc* __stdcall UNITFINDS_FindUnitInNeighboredRooms(D2ActiveRoomStrc* pRoom, int nUnitType, int nClassId); // 0x0065A620
 
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
-void __fastcall GFX_AddUnitOverlay(D2UnitStrc* pUnit, int nOverlay, int nArg3, int nArg4, int nArg5, int nArg6, int nArg7, int nArg8); // 0x00470390
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams); // 0x004CD540
-void __stdcall GFXUTIL_SetMotionVectorA(D2UnitStrc* pUnit, int nX, int nY, int nZ); // 0x004DA1D0
-void __stdcall GFXUTIL_SetMotionVectorB(D2UnitStrc* pUnit, int nX, int nY, int nZ, int bShift); // 0x004DA200
-void __stdcall GFXUTIL_SetMotionVectorC(D2UnitStrc* pUnit, int nX, int nY, int nZ, int bShift); // 0x004DA2A0
-void __fastcall GFXUTIL_SetMotionFlagMask(D2UnitStrc* pUnit, int bSet); // 0x004DA6E0
 void __fastcall ITEM_ShowTimedHint(void* pOwner, int nDelayA, int nDelayC, unsigned int nIndex, int nArgE, int nDelayF, int nArgG); // 0x004DCD40
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
-void __stdcall MISSILE_SetTargetX(D2UnitStrc* pMissile, int nTargetX); // 0x0064A710
-void __stdcall MISSILE_SetTargetY(D2UnitStrc* pMissile, int nTargetY); // 0x0064A760
 int gbPulseDone; // 0x007A745C
 
 // build: symbol ?gnPulseTick@* 0x007129CC
@@ -73,23 +59,18 @@ extern int gbChaosLightEvent; // 0x007A7460
 extern int gnTimerEnd; // 0x007A7464
 extern int gbThroneEventPending; // 0x007A7468
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
-void __stdcall sub_0046AF70(D2ActiveRoomStrc* pRoom); // 0x0046AF70
+void __stdcall sub_0046AF70_CreateDenOfEvilLight(D2ActiveRoomStrc* pRoom); // 0x0046AF70
 void __cdecl sub_0046AD10_UpdateTimedBox(); // 0x0046AD10
-void __cdecl CUNIT_DrawCountdown(); // 0x0046C060
 extern D2DrlgActStrc* gpGlobal_007A0634; // 0x007A0634
 extern D2ClientTimedBoxStrc gtTimedBox; // 0x007A742C
 
 
 
 unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
-D2UnitStrc* __fastcall CUNIT_SpawnPresetUnit(int nClassId, int nX, int nY, int nUnitType, int nArg); // 0x00466730
-void __stdcall DUNGEON_GetRoomCoordinates(D2ActiveRoomStrc* pRoom, D2DrlgCoordsStrc* pCoords); // 0x00619730
 
 // 0x0046ACE0
-D2MissilesTxt* __fastcall sub_0046ACE0(int nMissileId)
+D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId)
 {
     if (nMissileId >= 0 && nMissileId < sgptDataTables->nMissilesTxtRecordCount)
     {
@@ -178,7 +159,7 @@ static inline D2MonStats2Txt* MONSTATS2_GetRecordInline(int nMonStatsEx)
 }
 
 // 0x0046AF70
-void __stdcall sub_0046AF70(D2ActiveRoomStrc* pRoom)
+void __stdcall sub_0046AF70_CreateDenOfEvilLight(D2ActiveRoomStrc* pRoom)
 {
     D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
     if (pPlayer)
@@ -235,7 +216,7 @@ typedef void (__cdecl* LEVELEVENT_Fn)();
 
 extern LEVELEVENT_Fn gpfnLevelEvents[];                                                            // 0x007129D8
 
-unsigned int gdwLevelEventBits;                                                                    // 0x007A7458
+extern unsigned int gdwLevelEventBits; // 0x007A7458
 
 // 0x0046B630
 void __fastcall sub_0046B630_FireLevelEvent(int nIndex)
@@ -441,7 +422,6 @@ int __fastcall UI_SetTimerUnitId(D2UnitStrc* pUnit)
     return nUnitId;
 }
 
-int __stdcall INV_GetTableByte(int nUnused, int nIndex);                                           // 0x004B92E0
 
 // 0x0046BD50
 int __stdcall ROSTERPETS_GetPulseColor(unsigned char* pRed, unsigned char* pGreen, unsigned char* pBlue)
@@ -506,7 +486,6 @@ void __fastcall sub_0046BFD0_StartTimer(int nDelay)
     }
 }
 
-void __fastcall sub_0046BF30_CheckThroneLevel(D2ActiveRoomStrc* pRoom); // 0x0046BF30
 
 // 0x0046BFF0
 void __fastcall sub_0046BFF0_UnitEventMissile271(D2UnitStrc* pUnit)
@@ -517,7 +496,7 @@ void __fastcall sub_0046BFF0_UnitEventMissile271(D2UnitStrc* pUnit)
         return;
     }
 
-    sub_004DA000(pUnit);
+    PARTICLE_ResetGfxMotion(pUnit);
     GFXUTIL_SetMotionVectorA(pUnit, 0, 0, 0x12C);
     GFXUTIL_SetMotionVectorB(pUnit, 0, 0, -2, 1);
     GFXUTIL_SetMotionVectorC(pUnit, 0, 0, 5, 0);
@@ -526,15 +505,10 @@ void __fastcall sub_0046BFF0_UnitEventMissile271(D2UnitStrc* pUnit)
     sub_0046BF30_CheckThroneLevel(CUNIT_GetPlayerRoom());
 }
 
-extern int gnScreenWidth; // 0x0071146C
 
-D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...); // 0x005269D0
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
-int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
 int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
 
@@ -554,7 +528,7 @@ void __cdecl CUNIT_DrawCountdown()
         return;
     for (int i = 0; i < 256; ++i)
         wszText[i].wChar = 0;
-    sub_005269D0(0x100, wszText, D2LANG_GetStringFromTblIndex(0x13E9), gnTimerEnd - nNow);
+    sub_005269D0_FormatText(0x100, wszText, D2LANG_GetStringFromTblIndex(0x13E9), gnTimerEnd - nNow);
     const int nOldFont = D2Win_10127_SetFont(13);
     const int nWidth = D2Win_10121_GetTextWidth(wszText);
     D2Win_10117_DrawText(wszText, gnScreenWidth / 2 - nWidth / 2, 0x177, 9, 1);
@@ -631,7 +605,7 @@ void __cdecl sub_0046B0D0_ApplyDenOfEvilRooms()
     {
         if (DUNGEON_GetLevelIdFromRoom(pRoom) == LEVEL_DENOFEVIL)
         {
-            sub_0046AF70(pRoom);
+            sub_0046AF70_CreateDenOfEvilLight(pRoom);
         }
     }
 }
@@ -869,7 +843,7 @@ void __fastcall sub_0046BE60_ApplyDenOfEvilRoom(D2ActiveRoomStrc* pRoom)
     D2_ASSERT(pRoom, 0x344);
     if (DUNGEON_GetLevelIdFromRoom(pRoom) == LEVEL_DENOFEVIL && gbPulseDone != 0)
     {
-        sub_0046AF70(pRoom);
+        sub_0046AF70_CreateDenOfEvilLight(pRoom);
     }
 }
 
@@ -916,7 +890,7 @@ void __fastcall sub_0046BF30_CheckThroneLevel(D2ActiveRoomStrc* pRoom)
             D2UnitStrc* pUnit = sub_00463DE0_GetPlayerUnit();
             if (pUnit)
             {
-                sub_004C5420_CreateFirstMissile(pUnit, THRONE_MISSILE, 0, 1);
+                AUTOMAP_RequestAtTarget(pUnit, THRONE_MISSILE, 0, 1);
                 gbThroneEventActive = 1;
             }
         }
@@ -1135,9 +1109,9 @@ void __fastcall sub_0046C460_PopulateRoom(D2ActiveRoomStrc* pRoom)
     }
 }
 
-extern int gnLevelEffectTick = -1; // 0x007129D0
-
 extern int gnTimerUnitId = -1; // 0x007129D4
+
+extern int gnLevelEffectTick = -1; // 0x007129D0
 
 extern LEVELEVENT_Fn gpfnLevelEvents[20] = {
     (LEVELEVENT_Fn)&sub_0046B0C0_ResetPulseTick, (LEVELEVENT_Fn)&sub_0046AEE0_ObjectMissileTimedBox, 0, (LEVELEVENT_Fn)&sub_0046B100_EventObject98Request, 0, 0, (LEVELEVENT_Fn)&sub_0046B1E0_EventObject95Request, 0, 0, 0, 0, 0, (LEVELEVENT_Fn)&sub_0046B290_EventLevel108Request, (LEVELEVENT_Fn)&sub_0046B3A0_StartTimer, (LEVELEVENT_Fn)&sub_0046B300_EventObject178Request, 0,

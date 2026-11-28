@@ -17,6 +17,7 @@
 #include "D2ObjModes.h"
 #include "D2GameCallbackArgs.h"
 #include "D2LanguageNames.h"
+#include "FogApi.h"
 // build: symbol _gaszLanguageNames 0x00741C48
 
 #define D2_ASSERT(expr,line) if(!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText,sub_00408090(),line);exit(-1); }
@@ -45,11 +46,12 @@ struct Obj005DD230;
 
 struct D2MonStatsTxt;
 
-int __fastcall SUNIT_IsDead(D2UnitStrc* pUnit); // 0x005541B0
+#include "D2GameFuncs.h"
+#include "D2CommonApi2.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi3.h"
 
 int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
-
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
 
 int __fastcall AIUTIL_GetDistanceToCoordinates_FullUnitSize(D2UnitStrc* pTarget, D2UnitStrc* pSource); // 0x005DC380
 
@@ -61,7 +63,6 @@ struct D2NearestRecord005DC870Strc
     int nMaxDistance;
 };
 
-int __fastcall SUNIT_AreUnitsHostile(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pTarget); // 0x00554200
 
 struct UnkAiStrc5
 {
@@ -80,12 +81,8 @@ struct D2AiCallback7ArgStrc
 {
     D2UnitStrc* pTarget;
     int nDistance;
-    D2UnitStrc* unk0x08;
+    D2UnitStrc* pExcludedUnit;
 };
-
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-
-int __stdcall DUNGEON_IsRoomInTown(D2ActiveRoomStrc* pRoom); // 0x0061AB00
 
 int __fastcall sub_00451F30_TestUnitFlag(D2UnitStrc* pUnit, int nFlag); // 0x00451F30
 
@@ -93,21 +90,15 @@ int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
 
 unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
 
-int __stdcall UNITS_IsInMeleeRange(D2UnitStrc* pUnit, D2UnitStrc* pTarget, int nRangeBonus); // 0x00622C40
-
-
 int __fastcall AIUTIL_GetThreat(D2UnitStrc* pUnit); // 0x005DC920
-
-int __stdcall UNITS_TestCollisionWithUnit(D2UnitStrc* pUnit1, D2UnitStrc* pUnit2, int nCollisionMask); // 0x00622AA0
 
 struct D2AiCallback11ArgStrc
 {
     D2UnitStrc* pTarget;
     int nDistance;
-    D2UnitStrc* unk0x08;
+    D2UnitStrc* pExcludedUnit;
 };
 
-int __fastcall AIUTIL_HasClearApproachToTarget(D2UnitStrc* pUnit, D2UnitStrc* pTarget); // 0x005DC640
 
 struct D2UbersAiCallbackArgStrc
 {
@@ -138,9 +129,6 @@ extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-
-extern "C" void __cdecl FOG_DisplayHalt(const char*,const char*,int); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int); // 0x00681E09
 
@@ -166,22 +154,16 @@ struct D2AiTargetSearchArgsStrc
     int nDistance;
     int bCheckTargetCollision;
     int nMaxDistance;
-    int unk0x10;
+    int nAreaTile;
     D2UnitStrc* pAlternativeTarget;
     int nAlternativeDistance;
 };
-
-int __stdcall STATLIST_GetUnitAlignment(D2UnitStrc* pUnit); // 0x006259B0
-
-int __stdcall MONSTERS_IsDead(D2UnitStrc* pMonster); // 0x0063EA40
 
 extern "C" unsigned int __fastcall sub_00541860(D2UnitStrc* pUnit); // 0x00541860
 
 int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
 int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-
-int __stdcall D2Common_10095(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x0061B130
 
 enum D2C_J07AiConstants
 {
@@ -204,37 +186,21 @@ struct D2FallenShamanAiCallbackArgStrc
 
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 
-D2UnitStrc* __fastcall AIGENERAL_GetMinionOwner(D2UnitStrc* pUnit); // 0x0058F0D0
 
 unsigned int __fastcall AIUTIL_GetDistanceToCoordinates(D2UnitStrc* pUnit, int nX, int nY); // 0x005DC5C0
 
-void __fastcall AITACTICS_SetAiParam(D2UnitStrc* pUnit, int nParam, int nValue, int nArg); // 0x005DE190
 
-int __fastcall AITACTICS_WalkToTargetCoordinatesNoSteps(D2GameStrc* pGame, D2UnitStrc* pUnit, int nX, int nY); // 0x005DEF30
-
-D2AiCmdStrc* __fastcall AIGENERAL_SetCurrentAiCommand(D2GameStrc* pGame, D2UnitStrc* pUnit, int nCmdParam, int bSet); // 0x0058EFA0
 
 D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
 
-int __stdcall MONSTERS_IsBoss(D2MonStatsTxt* pMonStatsTxtRecord, D2UnitStrc* pMonster); // 0x0063E9F0
-
 int __fastcall MONSTERUNIQUE_CheckMonTypeFlag(D2UnitStrc* pUnit, int nFlag); // 0x005A0180
 
-int __fastcall AITACTICS_ChangeModeAndTargetCoordinates(D2GameStrc* pGame, D2UnitStrc* pUnit, int nMode, int nX, int nY); // 0x005DDFC0
-
-int __fastcall AITACTICS_ChangeModeAndTargetUnit(D2GameStrc* pGame, D2UnitStrc* pUnit, int nMode, D2UnitStrc* pTargetUnit); // 0x005DDF90
-
-void __fastcall AITACTICS_IdleInNeutralMode(D2GameStrc* pGame, D2UnitStrc* pUnit, int nFrames); // 0x005DE080
-
-D2SkillStrc* __fastcall SKILLS_GetHighestLevelSkillFromUnitAndId(D2UnitStrc* pUnit, int nSkillId); // 0x006439F0
-
-void __stdcall UNITS_SetUsedSkill(D2UnitStrc* pUnit, D2SkillStrc* pUsedSkill); // 0x00620210
 
 int __fastcall sub_00451F30_HasFlags(D2UnitStrc* pUnit, unsigned int nFlags); // 0x00451F30
 
 int __fastcall sub_005A0180_HasMask(D2UnitStrc* pUnit, unsigned short wMask); // 0x005A0180
 
-int __fastcall AITHINK_CanUnitSwitchAi(D2UnitStrc* pUnit, D2MonStatsTxt* pMonStatsTxtRecord, int nAiMode, int a4); // 0x005B0DA0
+int __fastcall AITHINK_CanUnitSwitchAi(D2UnitStrc* pUnit, D2MonStatsTxt* pMonStatsTxtRecord, int nAiMode, int bCheckIfSuperUnique); // 0x005B0DA0
 
 struct D2AiTargetArgsStrc
 {
@@ -246,7 +212,7 @@ struct D2AiTargetArgsStrc
         {
             int bCheckTargetCollision;
             int nMaxDistance;
-            int unk0x10;
+            int nAreaTile;
             D2UnitStrc* pAlternativeTarget;
             int nAlternativeDistance;
         } tSearch;
@@ -262,33 +228,19 @@ struct D2AiTargetArgsStrc
 
 typedef D2UnitStrc* (__fastcall* AIUTIL_TargetCallback)(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pTarget, void* pCallbackArg);
 
-int __stdcall D2COMMON_10175_PathGetFirstPointX(D2DynamicPathStrc* pDynamicPath); // 0x00648A00
-
-int __stdcall D2COMMON_10176_PathGetFirstPointY(D2DynamicPathStrc* pDynamicPath); // 0x00648A10
-
-void __stdcall PATH_SetType(D2DynamicPathStrc* pPath, int nType); // 0x00648CF0
-
-void __stdcall D2Common_10142(D2DynamicPathStrc* pPath, D2UnitStrc* pUnit, int bAllowInTown); // 0x00649970
-
 void __stdcall D2COMMON_10170_PathSetTargetPos(D2DynamicPathStrc* pPath, int nX, int nY); // 0x00648AD0
 
-int __stdcall PATH_GetNumberOfPathPoints(D2DynamicPathStrc* pPath); // 0x00648780
-
-D2GameStrc* __fastcall SUNIT_GetGameFromUnit(D2UnitStrc* pUnit); // 0x00554010
-
-D2UnitStrc* __fastcall AIUTIL_FindTargetWithCallback(D2GameStrc* pGame, D2UnitStrc* pUnit, void* a3, AIUTIL_TargetCallback a4, int nCallbackId); // 0x005DD0B0
+D2UnitStrc* __fastcall AIUTIL_FindTargetWithCallback(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pCallbackArg, AIUTIL_TargetCallback pfFallbackCallback, int nCallbackId); // 0x005DD0B0
 
 int __fastcall MONSTERAI_GetTargetOverrideType(D2UnitStrc* pUnit); // 0x005730E0
 
 int __fastcall MONSTERAI_GetTargetOverrideGUID(D2UnitStrc* pUnit); // 0x00573100
 
-void __fastcall MONSTERAI_ClearTargetOverride(D2UnitStrc* pUnit); // 0x00573120
 
 D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 int __fastcall sub_00472210_SeedRollMasked(D2SeedStrc* pSeed, int nMax); // 0x00472210
 
-void __fastcall SUNIT_SetAlignment(D2UnitStrc* pUnit, unsigned char nAlignNew, int a3); // 0x005543B0
 
 static int __stdcall AIUTIL_ResolveTargetOverride(int bCheckCollision, int bUseEligibilityCheck, D2UnitStrc** ppUnit, int* pDistance, D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x005DD610
 
@@ -322,22 +274,11 @@ struct D2PartyCallbackArgStrc
     AIUTIL_TargetCallback pfCallback;
     D2GameStrc* pGame;
     D2UnitStrc* pUnit;
-    void* unk0x0C;
+    void* pCallbackArg;
 };
 
 void __stdcall DUNGEON_GetAdjacentRoomsListFromRoom(D2ActiveRoomStrc* pRoom, D2ActiveRoomStrc*** pppRoomList, unsigned int* pnNumRooms); // 0x00619790
 
-D2UnitStrc* __stdcall CLIENTS_GetPlayerFromClient(D2ClientStrc* pClient, int bIgnoreDeath); // 0x00537860
-
-D2StatListStrc* __fastcall SKILLS_ApplyStateEffect(D2CurseStrc* pCurse); // 0x0056E970
-
-void __stdcall UNITS_SetTargetUnitForDynamicUnit(D2UnitStrc* pUnit, D2UnitStrc* pTargetUnit); // 0x00620C10
-
-void __fastcall AITHINK_ExecuteAiFn(D2GameStrc* pGame, D2UnitStrc* pUnit, D2AiControlStrc* pAiControl, int nAiSpecialState); // 0x005B0E00
-
-void __fastcall D2GAME_EVENTS_Delete_6FC34840(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType, int nEventCustomId); // 0x00540E60
-
-void __fastcall EVENT_SetEvent(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType, int nExpireFrame, int dwEventCustomId, int dwEventCustomParam); // 0x005417D0
 
 struct D2UnkAiTableStrc
 {
@@ -347,29 +288,15 @@ struct D2UnkAiTableStrc
 
 extern const D2UnkAiTableStrc gaAiTargetSearchTable[]; // 0x006E3300
 
-void __fastcall AIGENERAL_ExecuteCallbackOnMinions(D2UnitStrc* pUnit, void* a2, void* a3, void(__fastcall* pfnParty)(D2UnitStrc*, void*, void*)); // 0x0058F380
+void __fastcall AIGENERAL_ExecuteCallbackOnMinions(D2UnitStrc* pUnit, void* pCallbackArg1, void* pCallbackArg2, void(__fastcall* pfnParty)(D2UnitStrc*, void*, void*)); // 0x0058F380
 
 void __fastcall AIUTIL_MinionCallback_FindTarget(D2UnitStrc* pUnit, void* pArg, void* ppUnit); // 0x005DD020
 
 D2UnitStrc* __stdcall AIUTIL_FindPlayerTargetInAdjacentRooms(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pCallbackArg, AIUTIL_TargetCallback pfCallback); // 0x005DCEE0
 
-int __stdcall D2GAME_ModeChange_6FC65220(D2GameStrc* pGame, D2ModeChangeStrc* pModeChange, int a3);       // 0x005A7C20
 
-void __stdcall MONSTERMODE_GetModeChangeInfo(D2UnitStrc* pUnit, int nMode, D2ModeChangeStrc* pModeChange);  // 0x005A7E60
 
-D2UnitStrc* __fastcall SUNIT_GetLastAttacker(D2GameStrc* pGame, D2UnitStrc* pUnit);                        // 0x00553010
 
-void __fastcall AITACTICS_Idle(D2GameStrc* pGame, D2UnitStrc* pUnit, int nFrames);                         // 0x005DE0F0
-
-void __stdcall COLLISION_ResetMask(D2ActiveRoomStrc* pRoom, int nX, int nY, unsigned short nMask);          // 0x0064CBE0
-
-void __stdcall COLLISION_SetMaskWithPattern(D2ActiveRoomStrc* pRoom, int nX, int nY, int nCollisionPattern, int nMask); // 0x0064EA90
-
-int __stdcall PATH_GetUnitCollisionPattern(D2UnitStrc* pUnit);                                              // 0x00649180
-
-void __stdcall PATH_SetMoveTestCollisionMask(D2DynamicPathStrc* pDynamicPath, int nMask);                   // 0x00648CE0
-
-int __fastcall SUNIT_TeleportUnit(D2GameStrc* pGame, D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, int nX, int nY, int a6, int a7); // 0x00554EA0
 
 struct D2GameStrc;
 
@@ -392,8 +319,6 @@ int __fastcall AIUTIL_GetMonsterVision(D2UnitStrc* pUnit)
     }
     return 0;
 }
-
-int __stdcall UNITS_GetUnitSizeX(D2UnitStrc* pUnit); // 0x00620510
 
 static __forceinline int MISSMODE_GetUnitX(D2UnitStrc* pUnit)
 {
@@ -880,7 +805,7 @@ D2UnitStrc* __fastcall AIUTIL_TargetCallback_SelectHostileTarget(D2GameStrc* pGa
         if (pTarget->dwUnitType == UNIT_MONSTER && (!pUnit || pUnit->dwUnitType != UNIT_PLAYER) && !STATLIST_GetUnitAlignment(pUnit) && pArg->bCheckTargetCollision && !MONSTERS_IsDead(pTarget))
         {
             D2AiControlStrc* pAiControl = (D2AiControlStrc*)sub_00541860(pTarget);
-            if ((pAiControl->nAiFlags & 8) && pArg->unk0x10 == D2Common_10095(UNITS_GetRoom(pTarget), CLIENTS_GetUnitX(pTarget), CLIENTS_GetUnitY(pTarget)))
+            if ((pAiControl->nAiFlags & 8) && pArg->nAreaTile == D2Common_10095(UNITS_GetRoom(pTarget), CLIENTS_GetUnitX(pTarget), CLIENTS_GetUnitY(pTarget)))
             {
                 pAiControl->nAiFlags |= 8;
                 pArg->bCheckTargetCollision = 0;
@@ -979,7 +904,7 @@ D2UnitStrc* __fastcall AIUTIL_TargetCallback_SelectHighThreatTarget(D2GameStrc* 
 {
     D2AiCallback7ArgStrc* pArg = (D2AiCallback7ArgStrc*)pCallbackArg;
 
-    if (pTarget == pArg->unk0x08)
+    if (pTarget == pArg->pExcludedUnit)
     {
         return 0;
     }
@@ -1009,7 +934,7 @@ D2UnitStrc* __fastcall AIUTIL_TargetCallback_SelectHighThreatTargetWithClearAppr
 {
     D2AiCallback11ArgStrc* pArg = (D2AiCallback11ArgStrc*)pCallbackArg;
 
-    if (pTarget == pArg->unk0x08 || !AIUTIL_IsHostileTarget(pGame, pUnit, pTarget))
+    if (pTarget == pArg->pExcludedUnit || !AIUTIL_IsHostileTarget(pGame, pUnit, pTarget))
     {
         return 0;
     }
@@ -1032,9 +957,6 @@ D2UnitStrc* __fastcall AIUTIL_TargetCallback_SelectHighThreatTargetWithClearAppr
 struct D2DoorObjectAiCallbackArgStrc;
 
 
-int __stdcall UnitIsDoor(D2UnitStrc* pUnit); // 0x00621A70
-
-int __fastcall AITHINK_GetSquaredDistance(D2UnitStrc* pUnit1, D2UnitStrc* pUnit2); // 0x005B0BD0
 
 // 0x005DCD50
 D2UnitStrc* __fastcall AIUTIL_TargetCallback_FindClosestClosedDoor(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pTarget, void* pCallbackArg)
@@ -1266,7 +1188,7 @@ void __fastcall AIUTIL_MinionCallback_FindTarget(D2UnitStrc* pUnit, void* pArg, 
     D2GameStrc* pGame = pPartyCallbackArg->pGame;
     D2UnitStrc* pOwner = pPartyCallbackArg->pUnit;
     AIUTIL_TargetCallback pfCallback = pPartyCallbackArg->pfCallback;
-    void* pCallbackArg = pPartyCallbackArg->unk0x0C;
+    void* pCallbackArg = pPartyCallbackArg->pCallbackArg;
     D2UnitStrc* pResult = pfCallback(pGame, pOwner, pUnit, pCallbackArg);
     if (pResult)
     {
@@ -1293,7 +1215,7 @@ static D2UnitStrc* __stdcall AIUTIL_FindTargetAmongMinions(D2GameStrc* pGame, vo
     partyCallbackArg.pfCallback = pfCallback;
     partyCallbackArg.pGame = pGame;
     partyCallbackArg.pUnit = pUnit;
-    partyCallbackArg.unk0x0C = pCallbackArg;
+    partyCallbackArg.pCallbackArg = pCallbackArg;
 
     AIGENERAL_ExecuteCallbackOnMinions(pOwner, &partyCallbackArg, &pTarget, AIUTIL_MinionCallback_FindTarget);
     return pTarget;
@@ -1407,7 +1329,9 @@ D2UnitStrc* __fastcall AIUTIL_TargetCallback_Ubers(D2GameStrc* pGame, D2UnitStrc
 
 // 0x005DD220
 extern "C" __declspec(dllexport) int __fastcall AIUTIL_CheckAiControlFlag(Obj005DD220* pObj, unsigned short wMask) {
-    return (pObj->wFlags08 & wMask) != 0;
+    if (pObj->wFlags08 & wMask)
+        return 1;
+    return 0;
 }
 
 // 0x005DD230
@@ -1443,8 +1367,6 @@ void __fastcall AIUTIL_ToggleAiControlFlag0x20(D2UnitStrc* pUnit, int bSet)
     else
         pAiControl->nAiFlags &= ~0x20;
 }
-
-int __stdcall UNITS_GetCurrentLifePercentage(D2UnitStrc* pUnit); // 0x00621F20
 
 // 0x005DD280
 int __fastcall AIUTIL_GetLifePercentage(D2UnitStrc* pArg)
@@ -1677,7 +1599,7 @@ static int __stdcall AIUTIL_ShouldUseAlternativeTarget(D2UnitStrc** ppTarget, in
     }
 
     D2DynamicPathStrc* pPath = pUnit->pDynamicPath;
-    const int nPathType = sub_00648E30_GetPathValue(pPath);
+    const int nPathType = PATH_GetType(pPath);
     D2UnitStrc* pPathTarget = PATH_GetTargetUnit(pPath);
     const int nX = D2COMMON_10175_PathGetFirstPointX(pPath);
     const int nY = D2COMMON_10176_PathGetFirstPointY(pPath);
@@ -1805,10 +1727,10 @@ static int __stdcall AIUTIL_ResolveTargetOverride(int bCheckCollision, int bUseE
         {
             arg.pTarget = 0;
             arg.nDistance = 0x7FFFFFFF;
-            const int nUnk = D2Common_10095(UNITS_GetRoom(pUnit), CLIENTS_GetUnitX(pUnit), CLIENTS_GetUnitY(pUnit));
+            const int nAreaTile = D2Common_10095(UNITS_GetRoom(pUnit), CLIENTS_GetUnitX(pUnit), CLIENTS_GetUnitY(pUnit));
             arg.tSearch.bCheckTargetCollision = bCheckCollision;
             arg.tSearch.nMaxDistance = 35;
-            arg.tSearch.unk0x10 = nUnk;
+            arg.tSearch.nAreaTile = nAreaTile;
             arg.tSearch.pAlternativeTarget = 0;
             arg.tSearch.nAlternativeDistance = 0x7FFFFFFF;
             AIUTIL_FindTargetWithCallback(pGame, pUnit, &arg, 0, 5);
@@ -1842,6 +1764,186 @@ static int __stdcall AIUTIL_ResolveTargetOverride(int bCheckCollision, int bUseE
 
     MONSTERAI_ClearTargetOverride(pUnit);
     return 0;
+}
+
+static inline int AIUTIL_GetMonsterVisionInline(D2UnitStrc* pUnit)
+{
+    if (pUnit && pUnit->dwUnitType == UNIT_MONSTER)
+    {
+        if (pUnit->pMonsterData)
+        {
+            return pUnit->pMonsterData->pVision;
+        }
+        return 0;
+    }
+    return 0;
+}
+
+// 0x005DD7F0
+D2UnitStrc* __fastcall AIUTIL_FindAiTarget(D2GameStrc* pGame, D2UnitStrc* pUnit, D2AiControlStrc* pAiControl, int* pDistance, int* pCombat)
+{
+    D2ActiveRoomStrc* pRoom = UNITS_GetRoom(pUnit);
+    if (!pRoom)
+        return 0;
+    int* pVision = 0;
+    int nOldVisionToggle = 0;
+    int bCheckCollision;
+    int bHadFlag = AIUTIL_CheckAiControlFlag((Obj005DD220*)pAiControl, 0x40);
+    if (bHadFlag)
+    {
+        bCheckCollision = 1;
+    }
+    else if (DUNGEON_CheckLOSDraw(pRoom))
+        bCheckCollision = 0;
+    else
+    {
+        bCheckCollision = !AIUTIL_CheckAiControlFlag((Obj005DD220*)pAiControl, 8);
+        const int nType = pUnit ? pUnit->dwUnitType : UNIT_INVALID;
+        if (nType == UNIT_MONSTER)
+        {
+            pVision = (int*)AIUTIL_GetMonsterVisionInline(pUnit);
+            if (bCheckCollision && pVision)
+            {
+                nOldVisionToggle = pVision[9];
+                bCheckCollision = nOldVisionToggle == 0;
+            }
+        }
+    }
+    if (bCheckCollision && bHadFlag)
+        AIUTIL_ToggleAiControlFlag((Obj005DD230*)pAiControl, 0x40, 0);
+
+    D2UnitStrc* pTarget = 0;
+    int nDistance;
+    unsigned int nMinDistance = 0x7FFFFFFF;
+    if (!AIUTIL_ResolveTargetOverride(bCheckCollision, 0, &pTarget, &nDistance, pGame, pUnit))
+    {
+        if (STATLIST_GetUnitAlignment(pUnit) == 0)
+        {
+            D2TargetNodeStrc** ppNode = pGame->pTargetNodes;
+            D2TargetNodeStrc* pNode = *ppNode;
+            pTarget = 0;
+            nDistance = 35;
+            D2MonStatsTxt* pMonStats = 0;
+            if (pUnit && pUnit->dwUnitType == 1 && pUnit->pMonsterData)
+                pMonStats = (D2MonStatsTxt*)pUnit->pMonsterData->pMonstatsTxt;
+            if (pMonStats)
+            {
+                unsigned char nThreat = pMonStats->nAiDist[pGame->nDifficulty];
+                if (nThreat)
+                    nDistance = nThreat;
+            }
+            const unsigned char nAct = pUnit->nAct;
+            const int nX = CLIENTS_GetUnitX(pUnit);
+            const int nY = CLIENTS_GetUnitY(pUnit);
+            for (int i = 0; i < 8; ++i)
+            {
+                if (pNode)
+                {
+                    D2UnitStrc* pCurrent = pNode->hUnit;
+                    D2_ASSERT(pCurrent && pCurrent->dwUnitType == 0, 0x5F6);
+                    if (nAct == pCurrent->nAct && UNITS_GetRoom(pCurrent) && !DUNGEON_IsRoomInTown(UNITS_GetRoom(pCurrent)))
+                    {
+                        unsigned int nCurrentDistance = (unsigned int)AIUTIL_GetDistanceToCoordinates_NoUnitSize(pCurrent, nX, nY);
+                        if (nCurrentDistance < nMinDistance)
+                            nMinDistance = nCurrentDistance;
+                        if (nCurrentDistance < 55)
+                        {
+                            if (SUNIT_IsDead(pCurrent))
+                                nCurrentDistance = 0x7FFFFFFF;
+                            for (;;)
+                            {
+                                if (nCurrentDistance < (unsigned int)nDistance && (!bCheckCollision || !UNITS_TestCollisionWithUnit(pUnit, pCurrent, 4)))
+                                {
+                                    nDistance = nCurrentDistance;
+                                    pTarget = pCurrent;
+                                }
+                                pNode = pNode->pNext;
+                                if (!pNode)
+                                    break;
+                                pCurrent = pNode->hUnit;
+                                nCurrentDistance = (unsigned int)AIUTIL_GetDistanceToCoordinates_NoUnitSize(pCurrent, nX, nY);
+                            }
+                        }
+                    }
+                }
+                pNode = *++ppNode;
+            }
+            while (pNode)
+            {
+                D2UnitStrc* pCurrent = pNode->hUnit;
+                if (nAct == pCurrent->nAct)
+                {
+                    const unsigned int nCurrentDistance = (unsigned int)AIUTIL_GetDistanceToCoordinates_NoUnitSize(pCurrent, nX, nY);
+                    if (nCurrentDistance < (unsigned int)nDistance && (!bCheckCollision || !UNITS_TestCollisionWithUnit(pUnit, pCurrent, 4)))
+                    {
+                        nDistance = nCurrentDistance;
+                        pTarget = pCurrent;
+                    }
+                }
+                pNode = pNode->pNext;
+            }
+            pNode = ppNode[1];
+            D2UnitStrc* pAlternative = 0;
+            unsigned int nAlternativeDistance = 0x7FFFFFFF;
+            while (pNode)
+            {
+                D2UnitStrc* pCurrent = pNode->hUnit;
+                if (nAct == pCurrent->nAct)
+                {
+                    const unsigned int nCurrentDistance = (unsigned int)AIUTIL_GetDistanceToCoordinates_NoUnitSize(pCurrent, nX, nY);
+                    if (nCurrentDistance < nAlternativeDistance && (!bCheckCollision || !UNITS_TestCollisionWithUnit(pUnit, pCurrent, 4)))
+                    {
+                        nAlternativeDistance = nCurrentDistance;
+                        pAlternative = pCurrent;
+                    }
+                }
+                pNode = pNode->pNext;
+            }
+            if (pAlternative && AIUTIL_ShouldUseAlternativeTarget(&pTarget, &nDistance, pAlternative, nAlternativeDistance, pUnit))
+            {
+                pTarget = pAlternative;
+                nDistance = nAlternativeDistance;
+            }
+        }
+        else
+        {
+            const int nCollision = D2Common_10095(pRoom, CLIENTS_GetUnitX(pUnit), CLIENTS_GetUnitY(pUnit));
+            D2AiTargetArgsStrc arg;
+            arg.pTarget = 0;
+            arg.nDistance = 0x7FFFFFFF;
+            arg.tSearch.bCheckTargetCollision = bCheckCollision;
+            arg.tSearch.nMaxDistance = 35;
+            arg.tSearch.nAreaTile = nCollision;
+            arg.tSearch.pAlternativeTarget = 0;
+            arg.tSearch.nAlternativeDistance = 0x7FFFFFFF;
+            AIUTIL_FindTargetWithCallback(pGame, pUnit, &arg, 0, 5);
+            if (arg.tSearch.pAlternativeTarget && AIUTIL_ShouldUseAlternativeTarget(&arg.pTarget, &arg.nDistance, arg.tSearch.pAlternativeTarget, arg.tSearch.nAlternativeDistance, pUnit))
+            {
+                pTarget = arg.tSearch.pAlternativeTarget;
+                nDistance = arg.tSearch.nAlternativeDistance;
+            }
+            else
+            {
+                pTarget = arg.pTarget;
+                nDistance = arg.nDistance;
+            }
+        }
+    }
+    if (!pTarget)
+    {
+        *pCombat = 0;
+        *pDistance = nMinDistance;
+        return 0;
+    }
+    if (STATLIST_GetUnitAlignment(pUnit) != 2)
+    {
+        pAiControl->nAiFlags |= 8;
+        if (pVision)
+            pVision[9] = nOldVisionToggle == 0;
+    }
+    *pCombat = UNITS_IsInMeleeRange(pUnit, pTarget, 0);
+    *pDistance = nDistance;
+    return pTarget;
 }
 
 // 0x005DDC30
@@ -1953,7 +2055,7 @@ void __fastcall AIUTIL_ApplyTerrorCurseState(D2GameStrc* pGame, D2UnitStrc* pUni
 
     D2AiControlStrc* pAiControl = (pTarget->dwUnitType == UNIT_MONSTER && pTarget->pMonsterData) ? pTarget->pMonsterData->pAiControl : 0;
     AITHINK_ExecuteAiFn(pGame, pTarget, pAiControl, AISPECIALSTATE_TERROR);
-    D2GAME_EVENTS_Delete_6FC34840(pGame, pTarget, EVENTTYPE_AITHINK, 0);
+    D2GAME_EVENTS_Delete(pGame, pTarget, EVENTTYPE_AITHINK, 0);
     EVENT_SetEvent(pGame, pTarget, EVENTTYPE_AITHINK, pGame->dwGameFrame + 1, 0, 0);
 }
 
@@ -1988,9 +2090,7 @@ extern "C" void __cdecl sub_005DCC60(); // 0x005DCC60
 extern "C" void __cdecl sub_005DCCC0(); // 0x005DCCC0
 extern "C" void __cdecl sub_005DCE10(); // 0x005DCE10
 
-extern "C" const D2UnkAiTableStrc gData_006E3300[13]; // 0x006E3300
-
-extern "C" const D2UnkAiTableStrc gData_006E3300[13] = {
+extern const D2UnkAiTableStrc gaAiTargetSearchTable[13] = {
     { 0 },
     { 0 },
     { 1 },
@@ -2005,4 +2105,3 @@ extern "C" const D2UnkAiTableStrc gData_006E3300[13] = {
     { 2, (D2UnitStrc *(__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, void*))&sub_005DCCC0 },
     { 0, (D2UnitStrc *(__fastcall *)(D2GameStrc *, D2UnitStrc *, D2UnitStrc *, void*))&sub_005DCE10 }
 }; // 0x006E3300
-#pragma comment(linker, "/alternatename:?gaAiTargetSearchTable@@3QBUD2UnkAiTableStrc@@B=_gData_006E3300")

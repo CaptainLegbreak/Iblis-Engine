@@ -30,13 +30,13 @@ struct D2SlotStrc;
 
 struct D2ClientNotifyStrc
 {
-    int unk0x00[5]; // 0x00
+    int unused0x00[5]; // 0x00
     void (__fastcall* pfnResign)(const char*); // 0x14
-    int unk0x18[3]; // 0x18
+    int unused0x18[3]; // 0x18
     int (__fastcall* pfnGetMessage)(int*, D2BnetChatPacketStrc*); // 0x24
-    int unk0x28[3]; // 0x28
+    int unused0x28[3]; // 0x28
     void (__fastcall* pfnCharUpdate)(char*, char*, char*, int); // 0x34
-    int unk0x38[22]; // 0x38
+    int unused0x38[22]; // 0x38
     void (__cdecl* pfnNotify)(void); // 0x90
 };
 
@@ -56,15 +56,15 @@ struct D2InvCompGridStrc
     D2InvRectStrc rect; // 0x00
     unsigned char nWidth; // 0x10
     unsigned char nHeight; // 0x11
-    unsigned short unk0x12; // 0x12
+    unsigned short pad0x12; // 0x12
 };
 
 struct D2TextListStrc
 {
     D2TextNodeStrc* pFirst; // 0x00
     unsigned short wCount; // 0x04
-    unsigned short unk0x06; // 0x06
-    int unk0x08[2]; // 0x08
+    unsigned short unused0x06; // 0x06
+    int unused0x08[2]; // 0x08
     unsigned short nWidth; // 0x10
     unsigned short nHeight; // 0x12
 };
@@ -112,7 +112,7 @@ struct D2DialogLineStrc
 struct D2ClientDialogStrc
 {
     unsigned long dwTick; // 0x00
-    int unk0x04; // 0x04
+    int unused0x04; // 0x04
     void* pCelFile; // 0x08
     int bDrawCel; // 0x0C
     int bActive; // 0x10
@@ -126,7 +126,7 @@ struct D2ClientDialogStrc
     int nY; // 0x30
     int nWidth; // 0x34
     int nHeight; // 0x38
-    int unk0x3C[2]; // 0x3C
+    int unused0x3C[2]; // 0x3C
     int nHover; // 0x44
     int nPressedItem; // 0x48
     int nEnabled; // 0x4C
@@ -151,10 +151,10 @@ struct D2UiRectStrc
 
 struct D2UiRecordStrc
 {
-    int unk0x00; // 0x00
+    int unused0x00; // 0x00
     unsigned char nBoxes; // 0x04
-    unsigned char unk0x05; // 0x05
-    unsigned short unk0x06; // 0x06
+    unsigned char pad0x05; // 0x05
+    unsigned short pad0x06; // 0x06
     D2UiRectStrc aRects[16]; // 0x08
 };
 

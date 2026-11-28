@@ -12,6 +12,7 @@ static void __stdcall QSERVER98_AddClient(D2QueueServerStrc* pServer, unsigned i
 
 #include "D2SysTypes.h"
 #include "D2NetTypes.h"
+#include "FogApi.h"
 
 
 struct D2SocketSetStrc { unsigned int count; int sockets[64]; };
@@ -35,7 +36,6 @@ int __fastcall QSERVER_BanAddress(D2QueueServerStrc*,unsigned int*,const char*,i
 void __fastcall QSERVER_HackListAddress(D2QueueServerStrc*,const char*,unsigned int,int); // 0x006BFEA0
 D2QClientStrc* __fastcall QSrvAddClient(D2QueueServerStrc*,int,unsigned int); // 0x006BFB70
 void __fastcall QSERVER_ProcessReceived(D2QueueServerStrc*,D2QClientStrc*); // 0x006C08A0
-int __fastcall FOG_SOCKET_CloseSocket(unsigned int s); // 0x0040D880
 void __fastcall ERRORMANAGER_UnregisterThread(unsigned int nId); // 0x00407F90
 int __stdcall sub_006B0186_Select(int,D2SocketSetStrc*,void*,D2SocketSetStrc*,D2TimevalStrc*); // 0x006B0186
 int __stdcall sub_006B0180_IsSocketSet(int,D2SocketSetStrc*); // 0x006B0180
@@ -249,11 +249,6 @@ void __cdecl QSERVER98_ServerThread(D2QueueServerStrc* server)
         }
     }
 }
-
-extern "C" const char gData_006FCB38[24]; // 0x006FCB38
-extern "C" const char gData_006FCB50[28]; // 0x006FCB50
-extern "C" const char gData_006FCB6C[60]; // 0x006FCB6C
-extern "C" const char gData_006FCBA8[24]; // 0x006FCBA8
 
 extern "C" const char gData_006FCB38[24] = "Server thread close #2\n"; // 0x006FCB38
 #pragma comment(linker, "/alternatename:?gszFatal@@3QBDB=_gData_006FCB38")

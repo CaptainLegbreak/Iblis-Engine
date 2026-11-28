@@ -27,8 +27,6 @@ extern "C" const char gszD2CompSourceFile[]; // 0x006DCC20
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 extern "C" const char gszMonstersDir[]; // 0x006D6CAC
 extern "C" const char gszDataGlobal[]; // 0x006D4118
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" int __cdecl isspace(int c); // 0x00687006
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 extern "C" int __cdecl sub_00517ABB_BitScanForward1(unsigned int nValue); // 0x00517ABB
 extern "C" unsigned int __security_cookie; // 0x00749DE0
@@ -41,14 +39,14 @@ extern int gbRenderPaused; // 0x007C9144
 extern int gnCurrentFont; // 0x0072DFFC
 extern int gnDDrawGammaScale; // 0x0072F7C8
 extern int gnDDrawGamma; // 0x0072F7CC
-extern int gnResolutionMode_007C8CC4; // 0x007C8CC4
+extern int gnViewMatrixAdjust; // 0x007C8CC4
 extern int ganRowOffsets[732]; // 0x007C97A8
 extern int gnRenderWidth; // 0x007C9138
 extern int ganSubtileRowSrcOffset[]; // 0x0072DBC0
 extern int ganSubtileRowWidth[]; // 0x0072DB84
 extern int ganSubtileRowXOffset[]; // 0x0072DB48
 extern int gnTextBoxLineGap; // 0x0072DE90
-extern int gnWinCallbackDepth_007D55C4; // 0x007D55C4
+extern int gnWinCallbackDepth; // 0x007D55C4
 extern unsigned char gaDirectionIndex[][64]; // 0x006DCA60
 extern unsigned int gdwBitMasks_006CE268[]; // 0x006CE268
 extern unsigned int gadwComponentTokens[]; // 0x0072E108
@@ -61,7 +59,6 @@ extern unsigned int gnUnitTokens; // 0x0072E04C
 extern unsigned int gnWClassTokens; // 0x0072E198
 extern void (__stdcall* gpfnGrTexDownloadMipMap)(int nTmu, int nStartAddress, int nEvenOdd, D2GrTexInfoStrc* pInfo); // 0x0087EAB8
 extern void (__stdcall* gpfnGrTexSource)(int nTmu, int nStartAddress, int nEvenOdd, D2GrTexInfoStrc* pInfo); // 0x0087EB98
-int __cdecl FOG_UseDirect(); // 0x00406D20
 int __cdecl FOG_IsExpansion(); // 0x00408F20
 int __cdecl CONTROL_GetFocusedEditBox(); // 0x004F9200
 int __cdecl D2Win_IsMouseButtonPressed(); // 0x004FA460
@@ -69,12 +66,10 @@ int __cdecl CONTROL_GetActiveControlList(); // 0x004FA4B0
 int __cdecl sub_00525150(); // 0x00525150
 int __fastcall SCROLLBAR_GetCurrentStep(D2WinScrollBarStrc* pScrollBar); // 0x00507FA0
 int __fastcall SCROLLBAR_GetMaxSteps(D2WinScrollBarStrc* pScrollBar); // 0x00507EF0
-int __fastcall FOG_FOpenFile(const char* szFileName, void** phFile); // 0x004068E0
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
+extern "C" int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int dwFlags); // 0x00412650
 int __stdcall SRegLoadValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long* pValue); // 0x00414F10
 int __stdcall WINDOW_GetState(); // 0x004F6070
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
-int __stdcall sub_004FE710_EditBoxMouseDownAlt(SMSGHANDLER_PARAMS* pMsg); // 0x004FE710
+int __stdcall EDITBOX_HandleMultiLineMouseDown(SMSGHANDLER_PARAMS* pMsg); // 0x004FE710
 int __stdcall sub_00504A20_CheckItemType(int nItemType, int nCheckType); // 0x00504A20
 int __stdcall sub_006001F0(D2GfxDataStrc* pContext, int nArg2, int nArg3); // 0x006001F0
 int __stdcall CelGetWidth(D2CelStrc* pCel); // 0x006018C0
@@ -82,15 +77,13 @@ int __stdcall CelGetOffsetX(D2CelStrc* pCel); // 0x00601920
 int __stdcall CelGetOffsetY(D2CelStrc* pCel); // 0x00601950
 unsigned char __stdcall D2Win_10034_MixRGB(unsigned char nRed, unsigned char nGreen, unsigned char nBlue); // 0x004FB180
 unsigned char* __fastcall D2COMP_GetComponentPalette(int nColor); // 0x005038D0
-void __cdecl LOGMANAGER_WriteLogLine(const char* szFormat, ...); // 0x00410610
-void __fastcall FOG_FCloseFile(void* hFile); // 0x004068F0
-void __fastcall sub_004FAAE0_FreeCellFile(D2CelFileStrc* pCellFile); // 0x004FAAE0
+int __fastcall FOG_FCloseFile(void* pArg); // 0x004068F0
+void __fastcall ARCHIVE_FreeCellFile(D2CelFileStrc* pCellFile); // 0x004FAAE0
 void __fastcall D2Win_10176_StartPaletteFlash(int bActive); // 0x004FB130
 void __stdcall D2GFX_SetPaletteTables(D2PaletteTableStrc* pPaletteTables); // 0x004F6410
-void __stdcall sub_004F6540(D2GfxDataStrc* pContext, int nX, int nY); // 0x004F6540
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
+void __stdcall TEXTURE_CelDrawShadow(D2GfxDataStrc* pContext, int nX, int nY); // 0x004F6540
 void* __fastcall sub_00517079_LoadFile(void* hArchive, const char* szFileName, unsigned int* pnSize, const char* szFile, int nLine); // 0x00517079
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags); // 0x00413020
+extern "C" void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int dwFlags); // 0x00413020
 void* __stdcall sub_004FAC80(); // 0x004FAC80
 
 #define BUTTONFLAG_HAS_DISABLED_FRAMES 0x20
@@ -132,3 +125,25 @@ struct D2WinAccountListDataStrc
 };
 
 #include "D2Win32Base.h"
+
+struct D2WinControlStrc;
+struct D2WinEditBoxStrc;
+struct D2WinSmackStrc;
+struct D2WinTextBoxStrc;
+
+D2CelFileStrc* __fastcall ARCHIVE_LoadCellFile(const char* szFile, int nType); // 0x004FA9B0
+int __cdecl ARCHIVE_ShowInsertExpansionDiscMessage(); // 0x004FAB00
+int __cdecl ARCHIVE_ShowInsertPlayDiscMessage(); // 0x004FAB30
+int __cdecl ARCHIVE_ShowInsertCinematicsDisc(); // 0x004FAB60
+int __cdecl ARCHIVE_LoadArchives(); // 0x004FAB90
+void* __stdcall D2Win_GetArchive(); // 0x004FAC80
+void __cdecl ARCHIVE_UnloadExpansionArchives(); // 0x004FAD70
+unsigned char* __fastcall D2Win_10175_GetPL2Shift(int nIndex); // 0x004FB0C0
+void __stdcall D2Win_10179_UpdatePaletteFlash(); // 0x004FB0D0
+int __fastcall D2Win_10053(D2WinTextBoxStrc* pTextBox, int nLine); // 0x004FBA30
+int __fastcall D2Win_10055(D2WinTextBoxStrc* pTextBox); // 0x004FBAB0
+void __fastcall EDITBOX_ClearSelection(D2WinEditBoxStrc* pEditBox); // 0x004FDCC0
+int __stdcall EDITBOX_PlaceMultiLineCaret(SMSGHANDLER_PARAMS* pMsg, int nX, int nY); // 0x004FE3B0
+int __stdcall D2Win_10125(); // 0x00501A40
+int __stdcall SMACK_DeleteFile(D2WinSmackStrc* pSmack); // 0x00506990
+int __fastcall POPUP_Draw(D2WinControlStrc* pControl); // 0x005087A0

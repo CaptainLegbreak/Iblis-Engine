@@ -14,6 +14,9 @@
 #include "D2LanguageNames.h"
 #include "D2NpcEvent.h"
 #include "D2ItemDataTbl.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -50,9 +53,6 @@ struct D2QuestGUIDStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -90,33 +90,17 @@ struct D2NpcControlStrc
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
-D2UnitStrc* __stdcall INVENTORY_GetFirstItem(D2InventoryStrc* pInventory); // 0x0063B2C0
 
-D2UnitStrc* __stdcall INVENTORY_UnitIsItem(D2UnitStrc* pItem); // 0x0063DFD0
-
-D2UnitStrc* __stdcall INVENTORY_GetNextItem(D2UnitStrc* pItem); // 0x0063DFA0
-
-D2InventoryStrc* __stdcall INVENTORY_AllocInventory(void* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
-
-void __fastcall SUNIT_RemoveUnit(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00555600
+#include "D2GameFuncs.h"
+#include "D2CommonApi3.h"
 
 D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
-void __fastcall ITEMS_RemoveFromAllPlayers(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00557FD0
-
-D2NpcRecordStrc* __fastcall SUNITPROXY_GetNpcRecordFromClassId(D2GameStrc* pGame, int nNpcClassId, int* pIndex); // 0x00535EA0
 
 D2MonsterInteractStrc* __fastcall sub_00535E80_GetMonInteract(D2UnitStrc* pUnit); // 0x00535E80
 
-int __stdcall ITEMS_GetItemQuality(D2UnitStrc*); // 0x00627E70
-
-void __fastcall SUNITNPC_RemoveStoreItem(D2UnitStrc*,D2UnitStrc*,D2GameStrc*,int); // 0x005766D0
-
-int __fastcall D2GAME_PlaceItem_6FC44410(const char*,int,D2GameStrc*,D2UnitStrc*,int,int,int,int,int,D2InventoryStrc*); // 0x00560200
 
 unsigned char __stdcall ITEMS_GetInvPage(D2UnitStrc*); // 0x00628250
-
-void __stdcall ITEMS_SetInvPage(D2UnitStrc*,unsigned char); // 0x00628280
 
 void __fastcall SUNITNPC_SetItemTradeFlags(D2UnitStrc*,D2UnitStrc*,D2GameStrc*,int,int); // 0x005762C0
 
@@ -188,7 +172,7 @@ struct Obj00536B40 {
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-unsigned char gbUnitProxyItemCacheInitialized[17]; // 0x00883E88
+extern unsigned char gbUnitProxyItemCacheInitialized[17]; // 0x00883E88
 
 enum
 {
@@ -199,13 +183,6 @@ enum
     MONSTATS2FLAGINDEX_SOFT = 12,
 };
 
-int __stdcall MONSTERS_IsDead(D2UnitStrc* pUnit); // 0x0063EA40
-
-int __stdcall STATLIST_GetUnitAlignment(D2UnitStrc* pUnit); // 0x006259B0
-
-int __fastcall AITHINK_GetSquaredDistance(D2UnitStrc* pUnit1, D2UnitStrc* pUnit2); // 0x005B0BD0
-
-extern const int gnDifficultyBonus[]; // 0x006E21F4
 
 #define MAX_NPC_INVENTORY 17
 
@@ -227,12 +204,6 @@ extern int gnCrossbowQuiverItemId; // 0x00883E9C
 
 extern int gnArrowQuiverItemId; // 0x00883EA0
 
-void __fastcall SEED_InitSeed(D2SeedStrc*); // 0x00650E30
-
-void __fastcall SEED_InitLowSeed(D2SeedStrc*,unsigned int); // 0x00650E40
-
-D2ItemsTxt* __stdcall DATATBLS_GetItemRecordFromItemCode(unsigned int dwCode, int* pItemId); // 0x00633640
-
 #define UNIT_MONSTER 1
 
 #define NPCREC_FIELD(type, cursor, offset) (*(type*)((cursor) + (offset) - 0x2C))
@@ -247,12 +218,9 @@ void __fastcall SUNITPROXY_AllocNpcInventory(D2GameStrc* pGame, D2NpcRecordStrc*
 
 void __fastcall SUNITPROXY_FreeNpcGamble(D2GameStrc* pGame, D2UnitStrc* pNpc, D2UnitStrc* pPlayer);
 
-void __fastcall SUNITPROXY_FreeNpcControl(D2GameStrc* pGame);
-
-void __fastcall SUNITPROXY_FreeVendorChain(D2GameStrc* pGame, D2UnitStrc* pPlayer, D2UnitStrc* pNpc);
 
 // 0x00535F30
-void __fastcall SUNITPROXY_AllocNpcEvent(D2UnitStrc* pNpc, D2GameStrc* pGame, D2UnitStrc* pPlayer, int a4)
+void __fastcall SUNITPROXY_AllocNpcEvent(D2UnitStrc* pNpc, D2GameStrc* pGame, D2UnitStrc* pPlayer, int bPending)
 {
     int nUnused;
     D2NpcEventStrc* pNpcEvent = (D2NpcEventStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2NpcEventStrc), ".\\UNIT\\sunitproxy.cpp", 133, 0);
@@ -263,7 +231,7 @@ void __fastcall SUNITPROXY_AllocNpcEvent(D2UnitStrc* pNpc, D2GameStrc* pGame, D2
         pNpcRecord->pEvent = pNpcEvent;
         pNpcEvent->field_C = 1;
         pNpcEvent->pUnit = pPlayer;
-        pNpcEvent->nParam = a4;
+        pNpcEvent->nParam = bPending;
     }
     else
     {
@@ -623,9 +591,6 @@ struct D2ActiveRoomStrc;
 
 struct D2UnitProxyArgStrc;
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
 
 // 0x00536820
 void __fastcall SUNITPROXY_CountPlayersInLevel(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pArg)
@@ -705,14 +670,14 @@ void __fastcall SUNITPROXY_ProcessNpcEvents(D2GameStrc* game,D2UnitStrc* npc)
  D2NpcEventStrc* event=record->pEvent;
  while(event) {
   if(event->field_C==1) {
-   int placed=D2GAME_PlaceItem_6FC44410(".\\UNIT\\sunitproxy.cpp",0x3cb,game,npc,!event->pUnit?-1:event->pUnit->dwUnitId,0,0,1,1,0);
+   int placed=D2GAME_PlaceItem(".\\UNIT\\sunitproxy.cpp",0x3cb,game,npc,!event->pUnit?-1:event->pUnit->dwUnitId,0,0,1,1,0);
    if(!placed) {
     if(ITEMS_GetInvPage(event->pUnit)==1){
      ITEMS_SetInvPage(event->pUnit,2);
-     placed=D2GAME_PlaceItem_6FC44410(".\\UNIT\\sunitproxy.cpp",0x3d1,game,npc,!event->pUnit?-1:event->pUnit->dwUnitId,0,0,1,1,0);
+     placed=D2GAME_PlaceItem(".\\UNIT\\sunitproxy.cpp",0x3d1,game,npc,!event->pUnit?-1:event->pUnit->dwUnitId,0,0,1,1,0);
     }else if(ITEMS_GetInvPage(event->pUnit)==2){
      ITEMS_SetInvPage(event->pUnit,1);
-     placed=D2GAME_PlaceItem_6FC44410(".\\UNIT\\sunitproxy.cpp",0x3d9,game,npc,!event->pUnit?-1:event->pUnit->dwUnitId,0,0,1,1,0);
+     placed=D2GAME_PlaceItem(".\\UNIT\\sunitproxy.cpp",0x3d9,game,npc,!event->pUnit?-1:event->pUnit->dwUnitId,0,0,1,1,0);
     }
    }
    if(!placed){prev=event;event=event->pNext;continue;}
@@ -928,7 +893,6 @@ void __stdcall SUNITPROXY_FillIGlobaltemCacheRecordForNpc(int nNpcId)
     }
 }
 
-void __fastcall SUNITPROXY_FillGlobalItemCache(); // 0x00536F80
 
 enum D2C_MonStatsTxtFlagIndices
 {
@@ -1112,12 +1076,10 @@ struct d2data_00731188_t
 };
 #pragma pack(pop)
 
-extern "C" const int gData_006E21F4[9]; // 0x006E21F4
 extern "C" struct d2data_00731184_t gData_00731184; // 0x00731184
 extern "C" struct d2data_00731188_t gData_00731188; // 0x00731188
 
-extern "C" const int gData_006E21F4[9] = { 0, 0, 8, 16, 24, 32, 40, 48, 56 }; // 0x006E21F4
-#pragma comment(linker, "/alternatename:?gnDifficultyBonus@@3QBHB=_gData_006E21F4")
+extern const int gnDifficultyBonus[9] = { 0, 0, 8, 16, 24, 32, 40, 48, 56 }; // 0x006E21F4
 
 extern "C" struct d2data_00731184_t gData_00731184 = {
     { 0x2B }

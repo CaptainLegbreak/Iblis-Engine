@@ -15,6 +15,7 @@
 #include "D2Txt.h"
 
 #include "D2LevelTxt.h"
+#include "StormApi.h"
 
 extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(D2CriticalSectionStrc* pLock);    // 0x006CC210
 
@@ -24,7 +25,6 @@ extern "C" _iobuf* __cdecl fopen(const char* szFileName, const char* szMode);   
 
 extern "C" int __cdecl fclose(_iobuf* pFile);                                                               // 0x00681FDC
 
-void __cdecl LOG_11100(int nThreadId, int nLogLevel, int nComponent, int nSubsystem, const char* szContext, int nSequence, const char* szFormat, ...); // 0x006248E0
 
 D2CriticalSectionStrc gLogLock;                                                                    // 0x0096CA30
 
@@ -52,11 +52,9 @@ extern unsigned int gdwInvBitMasks[];
 
 D2StatesTxt* __fastcall DATATBLS_GetStatesTxtRecord(int nStateId);
 
-int __stdcall STATES_CheckStateMaskOnUnit(D2UnitStrc* pUnit, int nStateMask);
 
 typedef char* va_list;
 
-extern "C" int __cdecl SStrPrintf(char* szDest, unsigned int nMaxCount, const char* szFormat, ...); // 0x00413A40
 
 extern "C" int __cdecl SStrVPrintf(char* szDest, unsigned int nMaxCount, const char* szFormat, va_list va); // 0x00413A80
 
@@ -70,12 +68,10 @@ void __fastcall LOGGING_SetLogValue(int nValue)
     gnLogValue = nValue;
 }
 
-extern int gdwGlobal_0096CA48; // 0x0096CA48
-
 // 0x00624710
-int __cdecl sub_00624710()
+_iobuf* __cdecl sub_00624710_GetLogFile()
 {
-    return gdwGlobal_0096CA48;
+    return gpLogFile;
 }
 
 // 0x00624720
@@ -223,15 +219,6 @@ void __fastcall LOGGING_SetLoggingEnabled(int bEnable)
     LOGGING_CloseLog();
 }
 
-static inline D2ItemStatCostTxt* ITEMS_GetItemStatCostTxtRecord(int nStatId)
-{
-    if (nStatId >= 0 && nStatId < sgptDataTables->nItemStatCostTxtRecordCount)
-    {
-        return &sgptDataTables->pItemStatCostTxt[nStatId];
-    }
-    return 0;
-}
-
 // build: symbol ?sub_00624B90_FindStatIndex@* 0x00624B90
 static int sub_00624B90_FindStatIndex(D2StatsArrayStrc* pStatsArray, int nLayer_StatId)
 {
@@ -289,87 +276,6 @@ static int __stdcall STATLIST_GetTotalStat(D2StatListStrc* pStatList, int nLayer
         }
     }
     return nValue;
-}
-
-int __stdcall STATLIST_GetTotalStatValue(D2StatListStrc* pStatList, int nStatId, unsigned short nLayer)
-{
-    if (!pStatList)
-    {
-        return 0;
-    }
-
-    D2ItemStatCostTxt* pItemStatCostTxtRecord = ITEMS_GetItemStatCostTxtRecord(nStatId);
-    if (!pItemStatCostTxtRecord)
-    {
-        return 0;
-    }
-
-    return STATLIST_GetTotalStat(pStatList, STAT_MAKE(nStatId, nLayer), pItemStatCostTxtRecord);
-}
-
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer)
-{
-    if (!pUnit)
-    {
-        return 0;
-    }
-
-    D2StatListStrc* pStatList = pUnit->pStatListEx;
-    if (!pStatList)
-    {
-        return 0;
-    }
-
-    D2ItemStatCostTxt* pItemStatCostTxtRecord = ITEMS_GetItemStatCostTxtRecord(nStatId);
-    if (!pItemStatCostTxtRecord)
-    {
-        return 0;
-    }
-
-    return STATLIST_GetTotalStat(pStatList, STAT_MAKE(nStatId, nLayer), pItemStatCostTxtRecord);
-}
-
-void __stdcall STATLIST_ToggleState(D2UnitStrc* pUnit, int nState, int bSet)
-{
-    if (pUnit)
-    {
-        D2StatListExStrc* pStatListEx = pUnit->pStatListEx;
-        if (pStatListEx && (pStatListEx->dwFlags & STATLIST_EXTENDED))
-        {
-            const unsigned int bWasSet = pStatListEx->StatFlags[nState >> 5] & gdwBitMasks[nState & 31];
-            if (bSet)
-                pStatListEx->StatFlags[nState >> 5] |= gdwBitMasks[nState & 31];
-            else
-                pStatListEx->StatFlags[nState >> 5] &= gdwInvBitMasks[nState & 31];
-
-            if (!bWasSet)
-            {
-                if (!bSet)
-                    return;
-            }
-            else
-            {
-                if (bSet)
-                    return;
-            }
-
-            pStatListEx->StatFlags[(nState >> 5) + (sgptDataTables->nStatesTxtRecordCount + 31) / 32] |= gdwBitMasks[nState & 31];
-
-            D2StatesTxt* pStatesTxtRecord = DATATBLS_GetStatesTxtRecord(nState);
-            if (pStatesTxtRecord)
-            {
-                if (bSet)
-                {
-                    if (STATES_CHECKFLAG(pStatesTxtRecord, STATEMASK_DISGUISE))
-                        pUnit->dwFlagEx |= UNITFLAGEX_ISSHAPESHIFTED;
-                }
-                else if (STATES_CHECKFLAG(pStatesTxtRecord, STATEMASK_DISGUISE) && !STATES_CheckStateMaskOnUnit(pUnit, STATEMASK_DISGUISE))
-                {
-                    pUnit->dwFlagEx &= ~UNITFLAGEX_ISSHAPESHIFTED;
-                }
-            }
-        }
-    }
 }
 
 #pragma pack(push, 1)

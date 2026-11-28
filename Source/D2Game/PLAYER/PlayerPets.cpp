@@ -10,6 +10,9 @@
 #include "D2GameAux.h"
 #include "D2LevelTxt.h"
 #include "D2LanguageNames.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
 // build: symbol _gaszLanguageNames 0x007328C8
 
 #define PETTYPE_SINGLE 1
@@ -51,7 +54,7 @@ struct D2PetUpdateStrc
 
 D2ClientStrc* __fastcall UnitGetClient(D2UnitStrc* pUnit, const char* szFile, int nLine); // 0x005531C0
 
-void __fastcall D2GAME_PACKETS_SendPacket0x7A_6FC3E100(D2ClientStrc* pClient, char a2, int nPetType, int nPetGUID, int nUnitGUID, unsigned short nPetClass); // 0x0053CB30
+void __fastcall D2GAME_PACKETS_SendPacket0x7A(D2ClientStrc* pClient, char bAdd, int nPetType, int nPetGUID, int nUnitGUID, unsigned short nPetClass); // 0x0053CB30
 
 extern const char gszPlayerPetsSourceFile[]; // 0x006E15D8
 
@@ -59,19 +62,15 @@ extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
-
-D2PlayerDataStrc* __stdcall UNITS_GetPlayerData(D2UnitStrc* pUnit); // 0x006221A0
 
 void __fastcall PLAYERPETS_RemovePet(D2GameStrc* pGame, D2UnitStrc* pPlayer, int nPetGUID, int bKillPet); // 0x005750E0
 
 static int PLAYERPETS_GetFirstPetGUID(D2UnitStrc* pPlayer, int nPetType);
 
-void __fastcall D2GAME_PACKETS_SendPacket0x81_6FC3E160(D2ClientStrc* pClient, char a2, int nPetType, int nPetGUID, int nUnitGUID, unsigned short nPetClass, int nSeed, int nName); // 0x0053CB80
+void __fastcall D2GAME_PACKETS_SendPacket0x81(D2ClientStrc* pClient, char nUnused, int nPetType, int nPetGUID, int nUnitGUID, unsigned short nPetClass, int nSeed, int nName); // 0x0053CB80
 
 typedef void (__fastcall* SUNIT_IterateFn)(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pArg);
 
@@ -83,7 +82,7 @@ void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, in
 
 void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
-void __fastcall D2GAME_PACKETS_SendPacket0x9B_6FC3FB30(D2ClientStrc* pClient, unsigned short nUnitGUID, int a3); // 0x0053E0E0
+void __fastcall D2GAME_PACKETS_SendPacket0x9B(D2ClientStrc* pClient, unsigned short nUnitGUID, int nReviveCost); // 0x0053E0E0
 
 D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
@@ -109,37 +108,15 @@ void __fastcall PLAYERPETS_UpdatePetLimits(D2GameStrc* pGame, D2UnitStrc* pPlaye
 
 void __fastcall SUNITDMG_KillMonster(D2GameStrc* pGame, D2UnitStrc* pDefender, D2UnitStrc* pAttacker, int bSendMsg); // 0x0057CCB0
 
-int __stdcall D2GAME_ModeChange_6FC65220(D2GameStrc* pGame, D2ModeChangeStrc* pModeChange, int a3); // 0x005A7C20
+int __stdcall D2GAME_ModeChange(D2GameStrc* pGame, D2ModeChangeStrc* pModeChange, int bClearUsedSkill); // 0x005A7C20
 
 void __stdcall MONSTERMODE_GetModeChangeInfo(D2UnitStrc* pUnit, int nMode, D2ModeChangeStrc* pModeChange); // 0x005A7E60
 
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
-
-void __stdcall DUNGEON_AllocDrlgDelete(D2ActiveRoomStrc* pRoom, int nUnitType, int nUnitGUID); // 0x0061A270
-
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-
-void __stdcall UNITS_SetCurrentRoomInvalid(D2UnitStrc* pUnit, int a2); // 0x00620FA0
-
-int __stdcall MONSTERS_IsDead(D2UnitStrc* pMonster); // 0x0063EA40
-
-unsigned char __stdcall DRLG_GetActNoFromLevelId(int nLevelId); // 0x006427F0
-
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
-
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
-
-void __stdcall PATH_SetFootprintCollisionMask(D2DynamicPathStrc* pDynamicPath, int nCollisionMask); // 0x00648C30
-
 int __stdcall PATH_ComputeSquaredDistance(int nX1, int nY1, int nX2, int nY2); // 0x006492A0
 
-void __stdcall UNITROOM_RefreshUnit(D2UnitStrc* pUnit); // 0x0064C040
+int __stdcall D2Common_10229(D2DynamicPathStrc* pDynamicPath, D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00650BE0
 
-int __stdcall sub_00650BE0_PlaceUnit(D2DynamicPathStrc* pDynamicPath, D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00650BE0
-
-int __stdcall MONSTERS_GetHirelingResurrectionCost(D2UnitStrc* pHireling); // 0x006637B0
-
-D2UnitStrc* __fastcall PLAYERPETS_GetFirstPetByType(D2GameStrc* pGame, D2UnitStrc* pPlayer, int nPetType, int a4);
+D2UnitStrc* __fastcall PLAYERPETS_GetFirstPetByType(D2GameStrc* pGame, D2UnitStrc* pPlayer, int nPetType, int bIncludeDead);
 
 struct D2UnitStrc;
 
@@ -151,19 +128,8 @@ struct D2SkillsTxt;
 
 extern "C" D2PetTypeTxt* __fastcall sub_00478A20_GetPetTypeTxtRecord(int nPetType);
 
-D2SkillStrc* __stdcall SKILLS_GetNextSkill(D2SkillStrc* pSkill); // 0x006438F0
-
-D2SkillStrc* __stdcall SKILLS_GetFirstSkillFromSkillList(D2SkillListStrc* pSkillList); // 0x00643910
-
-int __stdcall SKILLS_GetSkillIdFromSkill(D2SkillStrc* pSkill, const char* szFile, int nLine); // 0x00643CE0
-
-int __stdcall SKILLS_GetSkillLevel(D2UnitStrc* pUnit, D2SkillStrc* pSkill, int bBonus); // 0x006442A0
-
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646CA0
-
 struct D2ClientStrc;
 
-D2GameStrc* __fastcall SUNIT_GetGameFromUnit(D2UnitStrc* pUnit); // 0x00554010
 
 int __fastcall GAME_GetUnitGUID(D2UnitStrc*); // 0x00451F50
 
@@ -179,7 +145,7 @@ void __fastcall PLAYERPETS_InitPetTypeMax(D2GameStrc* pGame, D2UnitStrc* pPlayer
 
 int __fastcall SUNIT_IsDead(D2UnitStrc* pUnit); // 0x005541B0
 
-void __fastcall sub_6FC3E200(D2ClientStrc* pClient, D2UnitStrc* pUnit); // 0x0053CDF0
+void __fastcall SCMD_SendUnitLifeAndPositionUpdate(D2ClientStrc* pClient, D2UnitStrc* pUnit); // 0x0053CDF0
 
 #define PETFLAG_DEAD 1
 
@@ -192,7 +158,6 @@ static D2PetListStrc* __stdcall PLAYERPETS_GetPetListByType(D2PlayerPetStrc* pPl
 
 static void __stdcall PLAYERPETS_ClearPetList(D2UnitStrc* pPlayer, D2PetListStrc* pPetList, int bIsHirelingList, int bKeepHireling, D2GameStrc* pGame);
 
-void __fastcall PLAYERPETS_FreePetsFromPlayerData(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x005746D0
 
 
 static void __stdcall PLAYERPETS_KillPetList(D2PetListStrc* pPetList, D2GameStrc* pGame);
@@ -245,10 +210,10 @@ static void __stdcall PLAYERPETS_ClearPetList(D2UnitStrc* pPlayer, D2PetListStrc
                     {
                         MONSTERMODE_GetModeChangeInfo(pPet, 0, &modeChange);
                         modeChange.pTargetUnit = SUNIT_GetOwner(pGame, pPet);
-                        D2GAME_ModeChange_6FC65220(pGame, &modeChange, 1);
+                        D2GAME_ModeChange(pGame, &modeChange, 1);
                     }
 
-                    D2GAME_PACKETS_SendPacket0x9B_6FC3FB30(UnitGetClient(pPlayer, gszPlayerPetsSourceFile, 0xDB), (unsigned short)pPetData->petInfo.nName, MONSTERS_GetHirelingResurrectionCost(pPet));
+                    D2GAME_PACKETS_SendPacket0x9B(UnitGetClient(pPlayer, gszPlayerPetsSourceFile, 0xDB), (unsigned short)pPetData->petInfo.nName, MONSTERS_GetHirelingResurrectionCost(pPet));
                 }
             }
         }
@@ -298,7 +263,7 @@ static inline int sub_E09_CheckMonStatsFlag(int nMonsterId, int nFlag)
 // 0x00574410
 void __fastcall PLAYERPETS_PlayerIterate_SynchronizeWithClient(D2GameStrc* pGame, D2UnitStrc* pUnit, D2PetUpdateStrc* pData)
 {
-    D2GAME_PACKETS_SendPacket0x7A_6FC3E100(UnitGetClient(pUnit, gszPlayerPetsSourceFile, 0x43), 0, pData->nParam, pData->nUnitId, pData->nClassId, pData->nPetType);
+    D2GAME_PACKETS_SendPacket0x7A(UnitGetClient(pUnit, gszPlayerPetsSourceFile, 0x43), 0, pData->nParam, pData->nUnitId, pData->nClassId, pData->nPetType);
 }
 
 // 0x00574450
@@ -323,7 +288,7 @@ static void PLAYERPETS_KillPet(D2GameStrc* pGame, int nPetGUID)
         D2ModeChangeStrc modeChange;
         MONSTERMODE_GetModeChangeInfo(hPet, 0, &modeChange);
         modeChange.pTargetUnit = SUNIT_GetOwner(pGame, hPet);
-        D2GAME_ModeChange_6FC65220(pGame, &modeChange, 1);
+        D2GAME_ModeChange(pGame, &modeChange, 1);
     }
 
     D2PetArgStrc arg = {};
@@ -444,11 +409,11 @@ void __fastcall PLAYERPETS_PlayerIterate_UpdateClient(D2GameStrc* pGame, D2UnitS
 
     if (!pPetArg->nSeed && !pPetArg->nName)
     {
-        D2GAME_PACKETS_SendPacket0x7A_6FC3E100(UnitGetClient(pPlayer, gszPlayerPetsSourceFile, 830), 1, pPetArg->nPetType, pPetArg->nPetGUID, pPetArg->nUnitGUID, pPetArg->nPetClass);
+        D2GAME_PACKETS_SendPacket0x7A(UnitGetClient(pPlayer, gszPlayerPetsSourceFile, 830), 1, pPetArg->nPetType, pPetArg->nPetGUID, pPetArg->nUnitGUID, pPetArg->nPetClass);
     }
     else
     {
-        D2GAME_PACKETS_SendPacket0x81_6FC3E160(UnitGetClient(pPlayer, gszPlayerPetsSourceFile, 837), 1, pPetArg->nPetType, pPetArg->nPetGUID, pPetArg->nUnitGUID, pPetArg->nPetClass, pPetArg->nSeed, pPetArg->nName);
+        D2GAME_PACKETS_SendPacket0x81(UnitGetClient(pPlayer, gszPlayerPetsSourceFile, 837), 1, pPetArg->nPetType, pPetArg->nPetGUID, pPetArg->nUnitGUID, pPetArg->nPetClass, pPetArg->nSeed, pPetArg->nName);
     }
 }
 
@@ -585,11 +550,11 @@ static void __stdcall PLAYERPETS_RelocatePet(D2GameStrc* pGame, D2UnitStrc* pPet
     {
         if (pPet->nAct != DRLG_GetActNoFromLevelId(DUNGEON_GetLevelIdFromRoom(pRoom)))
         {
-            sub_00650BE0_PlaceUnit(pPet->pDynamicPath, pPet, 0, 0, 0);
+            D2Common_10229(pPet->pDynamicPath, pPet, 0, 0, 0);
         }
     }
 
-    sub_00650BE0_PlaceUnit(pPet->pDynamicPath, pPet, pRoom, nX, nY);
+    D2Common_10229(pPet->pDynamicPath, pPet, pRoom, nX, nY);
 
     if (pRoom != pPetRoom)
     {
@@ -755,7 +720,7 @@ static void __stdcall PLAYERPETS_RelocatePetList(D2GameStrc* pGame, D2PetListStr
 }
 
 // 0x00574DE0
-void __fastcall PLAYERPETS_IteratePets(D2GameStrc* pGame, D2UnitStrc* pPlayer, PetCallback pCallback, void* a4)
+void __fastcall PLAYERPETS_IteratePets(D2GameStrc* pGame, D2UnitStrc* pPlayer, PetCallback pCallback, void* pArg)
 {
     D2PlayerDataStrc* pPlayerData = UNITS_GetPlayerData(pPlayer);
 
@@ -779,7 +744,7 @@ void __fastcall PLAYERPETS_IteratePets(D2GameStrc* pGame, D2UnitStrc* pPlayer, P
                     D2UnitStrc* pPet = SUNIT_GetServerUnit(pGame, 1, pPetData->nUnitGUID);
                     if (pPet)
                     {
-                        pCallback(pGame, pPlayer, pPet, a4);
+                        pCallback(pGame, pPlayer, pPet, pArg);
                     }
                 }
             }
@@ -949,7 +914,7 @@ void __fastcall PLAYERPETS_HandlePetDeath(D2GameStrc* pGame, D2UnitStrc* pPlayer
         if (pPetData->nUnitGUID == nPetGUID)
         {
             pPetData->nFlags |= PETFLAG_DEAD;
-            D2GAME_PACKETS_SendPacket0x9B_6FC3FB30(UnitGetClient(pPlayer, gszPlayerPetsSourceFile, 698), pPetData->petInfo.nName, MONSTERS_GetHirelingResurrectionCost(pPet));
+            D2GAME_PACKETS_SendPacket0x9B(UnitGetClient(pPlayer, gszPlayerPetsSourceFile, 698), pPetData->petInfo.nName, MONSTERS_GetHirelingResurrectionCost(pPet));
             break;
         }
     }
@@ -1194,7 +1159,7 @@ void __fastcall PLAYERPETS_UpdatePetStates(D2GameStrc* pGame, D2UnitStrc* pPlaye
                         D2UnitStrc* pPet = SUNIT_GetServerUnit(pGame, UNIT_MONSTER, pPetData->nUnitGUID);
                         if (pPet)
                         {
-                            sub_6FC3E200(pClient, pPet);
+                            SCMD_SendUnitLifeAndPositionUpdate(pClient, pPet);
                         }
                     }
                 }
@@ -1318,7 +1283,7 @@ void __fastcall PLAYERPETS_UpdatePetLimits(D2GameStrc* pGame, D2UnitStrc* pPlaye
 }
 
 // 0x00574EC0
-D2UnitStrc* __fastcall PLAYERPETS_GetFirstPetByType(D2GameStrc* pGame, D2UnitStrc* pPlayer, int nPetType, int a4)
+D2UnitStrc* __fastcall PLAYERPETS_GetFirstPetByType(D2GameStrc* pGame, D2UnitStrc* pPlayer, int nPetType, int bIncludeDead)
 {
     D2PlayerDataStrc* pPlayerData = UNITS_GetPlayerData(pPlayer);
     if (pPlayerData)
@@ -1329,7 +1294,7 @@ D2UnitStrc* __fastcall PLAYERPETS_GetFirstPetByType(D2GameStrc* pGame, D2UnitStr
             D2PetDataStrc* pPetData;
             for (pPetData = pPetList->pPetData; pPetData; pPetData = pPetData->pNext)
             {
-                if (a4 || !(pPetData->nFlags & 1))
+                if (bIncludeDead || !(pPetData->nFlags & 1))
                 {
                     break;
                 }
@@ -1394,10 +1359,10 @@ void __fastcall PLAYERPETS_SendPetsToClient(D2ClientStrc* pClient, D2UnitStrc* p
                         switch (nPetType)
                         {
                         case 7:
-                            D2GAME_PACKETS_SendPacket0x81_6FC3E160(pClient, 1, 7, pPetData->nUnitGUID, nPlayerId, nClassId, pPetData->petInfo.nSeed, pPetData->petInfo.nName);
+                            D2GAME_PACKETS_SendPacket0x81(pClient, 1, 7, pPetData->nUnitGUID, nPlayerId, nClassId, pPetData->petInfo.nSeed, pPetData->petInfo.nName);
                             break;
                         default:
-                            D2GAME_PACKETS_SendPacket0x7A_6FC3E100(pClient, 1, nPetType, pPetData->nUnitGUID, nPlayerId, nClassId);
+                            D2GAME_PACKETS_SendPacket0x7A(pClient, 1, nPetType, pPetData->nUnitGUID, nPlayerId, nClassId);
                             break;
                         }
                     }

@@ -34,6 +34,10 @@ extern "C" __declspec(dllimport) int __stdcall GetThreadContext(void* hThread, D
 extern "C" __declspec(dllimport) unsigned long __stdcall ResumeThread(void* hThread);                          // 0x006CC28C
 
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject);                                  // 0x006CC134
+extern "C" __declspec(dllimport) unsigned long __stdcall WaitForSingleObject(void* hHandle, unsigned long dwMilliseconds); // 0x006CC230
+extern "C" __declspec(dllimport) int __stdcall SetEvent(void* hEvent); // 0x006CC130
+extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(); // 0x006CC284
+extern "C" __declspec(dllimport) void __stdcall RaiseException(unsigned long dwCode, unsigned long dwFlags, unsigned long nArgs, const unsigned long* pArgs); // 0x006CC224
 
 typedef int (__stdcall* SymGetSymFromAddr64Fn)(void* hProcess, unsigned __int64 qwAddr, unsigned __int64* pqwDisplacement, D2ImagehlpSymbol64Strc* pSymbol);
 
@@ -79,6 +83,8 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetCurrentProcessId(); 
 extern D2MiniDumpWriteDumpFn gpfnMiniDumpWriteDump; // 0x0098A6E0
 
 extern D2MiniDumpRequestStrc* gpMiniDumpRequest; // 0x0098A6E4
+extern void* ghDbgHelpWorkEvent; // 0x0098A6C0
+extern void* ghDbgHelpDoneEvent; // 0x0098A6BC
 
 typedef int (__stdcall* SymCleanupFn)(void* hProcess);
 
@@ -112,6 +118,26 @@ void __fastcall sub_00402D60_FormatStackFrame(const D2StackFrameStrc* frame,cons
 void __cdecl sub_00401A60_UnlockSymbols()
 {
     LeaveCriticalSection(&gtSymbolLock);
+}
+
+// 0x00401A70
+static void ERRORMANAGER_SetMiniDumpThreadName(unsigned long dwThreadID, const char* szThreadName)
+{
+    if (IsDebuggerPresent() == 1)
+    {
+        D2ThreadNameInfoStrc tInfo;
+        tInfo.dwType = 0x1000;
+        tInfo.szName = szThreadName;
+        tInfo.dwThreadID = dwThreadID;
+        tInfo.dwFlags = 0;
+        __try
+        {
+            RaiseException(0x406D1388, 0, sizeof(tInfo) / sizeof(unsigned long), (unsigned long*)&tInfo);
+        }
+        __except (-1)
+        {
+        }
+    }
 }
 
 // build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
@@ -320,6 +346,23 @@ void __cdecl sub_004026D0_WriteMiniDump()
         pRequest->bResult = gpfnMiniDumpWriteDump(ghProcess, GetCurrentProcessId(), pRequest->hFile, 0x40,
             pInfo->pExceptionPointers ? &tExceptionInfo : 0, &tStreamInfo, 0) != 0;
     }
+}
+
+// 0x004027C0
+unsigned long __stdcall LOGMANAGER_DbgHelpThreadProc(void* pParam)
+{
+    // the original's own: it stores 0 to this stack local and reads it back unused, which only a volatile read keeps
+    volatile int nDummy = 0;
+    nDummy;
+    ERRORMANAGER_SetMiniDumpThreadName((unsigned long)-1, "MiniDump Thread");
+    WaitForSingleObject(ghDbgHelpWorkEvent, 0xFFFFFFFF);
+    while (gpMiniDumpRequest)
+    {
+        sub_004026D0_WriteMiniDump();
+        SetEvent(ghDbgHelpDoneEvent);
+        WaitForSingleObject(ghDbgHelpWorkEvent, 0xFFFFFFFF);
+    }
+    return 0;
 }
 
 // build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc

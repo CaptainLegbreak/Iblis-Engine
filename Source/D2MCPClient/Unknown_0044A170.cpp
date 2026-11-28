@@ -2,6 +2,13 @@
 #include "D2Unicode.h"
 #include "D2McpPackets.h"
 #include "D2LaunchRequest.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "FogApi2.h"
+#include "StormApi2.h"
+#include "D2NetApi.h"
 
 typedef void (__fastcall* D2McpCallbackFn)(unsigned short wRequestId, unsigned char* pData);
 
@@ -77,17 +84,11 @@ extern "C" unsigned long __cdecl strtoul(const char* szString, char** ppEnd, int
 
 extern "C" char* __cdecl strcpy(char* szDst, const char* szSrc);
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
 
 void __fastcall GAME_CalcCdKeyChecksum(char* szKey, unsigned int* pChecksum); // 0x00449890
 
-int __stdcall SCmdRegisterArgList(const D2CmdArgStrc* pArgList, unsigned int nCount); // 0x006C4E50
-
 int __stdcall SCmdProcess(const char* szCmdLine, int bSkipProgName, int (__stdcall* pfnExtra)(const char*), int (__stdcall* pfnError)(const char*)); // 0x006C4FB0
 
-unsigned short __stdcall FOG_ConnectionReceive(void* pConnection, char* pBuffer, int nSize); // 0x006BC120
-
-int __fastcall GAME_DispatchMcpPacket(const char* pPacket, unsigned int nSize); // 0x0044B190
 
 int __fastcall GAME_RunInitHandlers(void* pArg); // 0x0044D9F0
 
@@ -96,10 +97,6 @@ int __stdcall WINMAIN_HandleExtraArgument(const char* szArgument); // 0x0044B5C0
 int __stdcall WINMAIN_HandleArgumentError(const char* szArgument); // 0x0044B5D0
 
 void __fastcall GAME_ShowLoadingMessage(int nError); // 0x0044E380
-
-int __stdcall CLIENT_DequeueGamePacket(unsigned char* pBuffer, unsigned int nBufferSize); // 0x0052A890
-
-int __stdcall CLIENT_DequeueSystemPacket(unsigned char* pBuffer, unsigned int nBufferSize); // 0x0052A8B0
 
 void __fastcall SCMD_HandleSystemPacket(unsigned char* pPacket, int nLength); // 0x0045C850
 
@@ -121,9 +118,7 @@ extern char gszClientCharName[]; // 0x007A05C4
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -155,13 +150,11 @@ struct D2McpInfoStrc
 
 void __stdcall sub_00449DD0_SetValue(int nValue); // 0x00449DD0
 
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
 
 void __stdcall GAME_StripColorCodes(Unicode* pText); // 0x0044B230
 
-char* __fastcall sub_00526F70(char* szDest, const Unicode* pSource, int nCount); // 0x00526F70
 
 extern int gnMcpGameToken; // 0x00798FB0
 
@@ -191,23 +184,14 @@ struct D2ClientInterfaceStrc;
 
 typedef void (__fastcall* D2McpCallback)(int nId, unsigned int nSize, const unsigned char* pData);
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);                               // 0x0040B380
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
 
 void __stdcall sub_00449E30_SetValue(int nValue);                                                           // 0x00449E30
 
-void __stdcall sub_00449E50_SetValue(int nValue);                                                           // 0x00449E50
 
 void __stdcall MCPCONNECT_SetPacket(const char* pData, int nSize);                                     // 0x00449E70
 
-void __cdecl sub_006115F0_Empty();                                                                          // 0x006115F0
 
-void __cdecl sub_0052BDA0_Empty();                                                                          // 0x0052BDA0
-
-void __cdecl sub_0052BDB0_Empty();                                                                          // 0x0052BDB0
-
-void __cdecl PROFCORE_CloseLog();                                                                                // 0x00611600
 
 int __stdcall WINMAIN_LauncherRun(void* hInstance, D2ClientCharRecordStrc* pRecord);                   // 0x0044B8A0
 
@@ -215,27 +199,13 @@ void __cdecl RECORD_ToggleRecordPlayback();                                     
 
 void __cdecl RECORD_StartPlayback();                                                                  // 0x004518E0
 
-int __cdecl CLIENT_GetConnectionStatus();                                                                   // 0x0052B050
-
 int __fastcall SCMD_RunMessageLoop(int (__stdcall* pfnIdle)(int));                                     // 0x00451BB0
-
-void __stdcall SERVER_Initialize(int a1, int a2);                                                           // 0x0052B7A0
-
-void __stdcall CLIENT_Initialize(int nArg, const char* szAddress);                                               // 0x0052A750
-
-void __stdcall SERVER_SetMaxClientsPerGame(int nArg1);                                                   // 0x0052B250
-
-int __stdcall SERVER_SetHackListEnabled(int nArg1);                                                    // 0x0052B280
 
 void __stdcall GAME_InitGameDataTable(D2GameDataTableStrc* pGameDataTbl, void* pGameList);                  // 0x0052C0A0
 
 int __stdcall WINMAIN_PollSystemPackets(int nUnused);                                                  // 0x0044BAD0
 
 int __stdcall WINMAIN_PumpSystemPackets(int nUnused);                                                  // 0x0044BD20
-
-void __cdecl CLIENT_Release();                                                                                // 0x0052A7E0
-
-void __cdecl SERVER_Release();                                                              // 0x0052B2A0
 
 int __cdecl WINMAIN_PopStateValue();                                                                        // 0x0044B480
 
@@ -324,7 +294,7 @@ struct D2ClientPacket19Strc
     unsigned char nValue3;
 };
 
-extern void* gpGlobal_00798FB4; // 0x00798FB4
+extern void* gpMcpConnection; // 0x00798FB4
 
 
 // 0x0044A980
@@ -335,7 +305,7 @@ void __cdecl sub_0044A980_SendPacket0D()
     CHATDLG_SetMcpResult(0);
     nHeader = 0x0D;
 // build: symbol ?D2QSSOCKET_SendPacket@* 0x006BC8A0
-    D2QSSOCKET_SendPacket(gpGlobal_00798FB4, &nHeader, 1);
+    D2QSSOCKET_SendPacket(gpMcpConnection, &nHeader, 1);
 }
 
 // 0x0044A9B0
@@ -344,7 +314,7 @@ void __cdecl sub_0044A9B0_SendPacket0F()
     unsigned char nHeader;
     CHATDLG_SetMcpResult(0);
     nHeader = 0x0F;
-    D2QSSOCKET_SendPacket(gpGlobal_00798FB4, &nHeader, 1);
+    D2QSSOCKET_SendPacket(gpMcpConnection, &nHeader, 1);
 }
 
 // 0x0044A9E0
@@ -353,7 +323,7 @@ void __cdecl sub_0044A9E0_SendPacket10()
     unsigned char nHeader;
     CHATDLG_SetMcpResult(0);
     nHeader = 0x10;
-    D2QSSOCKET_SendPacket(gpGlobal_00798FB4, &nHeader, 1);
+    D2QSSOCKET_SendPacket(gpMcpConnection, &nHeader, 1);
 }
 
 // 0x0044AA10
@@ -364,7 +334,7 @@ void __fastcall VIEW_SendMcpLadderRequest(unsigned char nArg1, unsigned short nA
     tPacket.nHeader = 0x11;
     tPacket.nArg1 = nArg1;
     tPacket.nArg2 = nArg2;
-    D2QSSOCKET_SendPacket(gpGlobal_00798FB4, (unsigned char*)&tPacket, 4);
+    D2QSSOCKET_SendPacket(gpMcpConnection, (unsigned char*)&tPacket, 4);
 }
 
 // 0x0044AA50
@@ -373,7 +343,7 @@ void __cdecl VIEW_SendMcpMotdRequest()
     unsigned char nHeader;
     CHATDLG_SetMcpResult(0);
     nHeader = 0x12;
-    D2QSSOCKET_SendPacket(gpGlobal_00798FB4, &nHeader, 1);
+    D2QSSOCKET_SendPacket(gpMcpConnection, &nHeader, 1);
 }
 
 // 0x0044AA80
@@ -382,7 +352,7 @@ void __cdecl VIEW_SendMcpCancelGameCreate()
     unsigned char nHeader;
     CHATDLG_SetMcpResult(0);
     nHeader = 0x13;
-    D2QSSOCKET_SendPacket(gpGlobal_00798FB4, &nHeader, 1);
+    D2QSSOCKET_SendPacket(gpMcpConnection, &nHeader, 1);
 }
 
 // 0x0044AAB0
@@ -392,7 +362,7 @@ void __cdecl VIEW_SendMcpCharListRequest()
     CHATDLG_SetMcpResult(0);
     tPacket.nHeader = 0x19;
     *(int*)&tPacket.nValue0 = 8;
-    D2QSSOCKET_SendPacket(gpGlobal_00798FB4, &tPacket.nHeader, 5);
+    D2QSSOCKET_SendPacket(gpMcpConnection, &tPacket.nHeader, 5);
 }
 
 // 0x0044AB70
@@ -411,7 +381,6 @@ int __fastcall sub_0044AB70_McpIncomingIgnore(void* pPacket, int nSize)
 
 extern "C" __declspec(dllimport) int __stdcall SetEvent(void* hEvent);                                      // 0x006CC130
 
-void __stdcall CHATDLG_SetCharLogonReceived(int nValue);                                                           // 0x00449C40
 
 void __stdcall CHATDLG_SetCharDeleteReceived(int nValue);                                                           // 0x00449C60
 
@@ -429,11 +398,11 @@ void __stdcall sub_00449DB0_SetValue(int nValue);                               
 
 extern void* ghConnectEvent;                                                                       // 0x007992EC
 
-unsigned short gwMcpReplyRequestId;                                                                        // 0x00798F80
+extern unsigned short gwMcpReplyRequestId; // 0x00798F80
 
-D2McpCallbackFn gpfnMcpPacket08Callback;                                                                   // 0x007992F8
+extern D2McpCallbackFn gpfnMcpPacket08Callback; // 0x007992F8
 
-D2McpCallbackFn gpfnMcpPacket09Callback;                                                                   // 0x007992FC
+extern D2McpCallbackFn gpfnMcpPacket09Callback; // 0x007992FC
 
 // 0x0044AB80
 int __fastcall sub_0044AB80_McpIncoming1B(D2McpPacketValueStrc* pPacket, int nSize)
@@ -504,11 +473,9 @@ int __fastcall sub_0044AC20_McpIncoming04(D2McpIncoming04Strc* pPacket, int nSiz
 
 extern "C" void* __cdecl memmove(void* pDst, const void* pSrc, unsigned int nSize); // 0x00683840
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
-Unicode* __fastcall sub_00526940_FindSubstring(const Unicode* pString, const Unicode* pPattern); // 0x00526940
 
 extern D2McpPacketHandler gpfnMcpPacketHandlers[]; // 0x0070ED00
 
@@ -970,12 +937,12 @@ void __fastcall GAME_SetMcpChatCallback(void (__fastcall* pfnCallback)(void* pAr
 // 0x0044B230
 void __stdcall GAME_StripColorCodes(Unicode* pString)
 {
-    D2_ASSERT(sub_00526800(pString) < 500, 0x342);
+    D2_ASSERT(UNICODE_StrLen(pString) < 500, 0x342);
     const Unicode* pPattern = D2LANG_GetStringFromTblIndex(0xF9A);
-    int nLength = sub_00526800(pPattern);
+    int nLength = UNICODE_StrLen(pPattern);
     for (Unicode* pFound = sub_00526940_FindSubstring(pString, pPattern); pFound && pFound[nLength].wChar; pFound = sub_00526940_FindSubstring(pString, pPattern))
     {
-        memmove(pFound, &pFound[nLength + 1], (sub_00526800(pFound) - nLength) * sizeof(Unicode));
+        memmove(pFound, &pFound[nLength + 1], (UNICODE_StrLen(pFound) - nLength) * sizeof(Unicode));
     }
 }
 
@@ -1009,7 +976,7 @@ int __fastcall WINMAIN_HandleMcpGameList(D2McpPacket05Strc* pPacket, int nSize)
     sub_00526F20_ToUnicode(wszText, szFirst, 0x240);
     GAME_StripColorCodes(wszText);
     char szText[0x400];
-    sub_00526F70(szText, wszText, 0x400);
+    UNICODE_ToAscii(szText, wszText, 0x400);
     SStrCopy(gtMcpInfo.unk0x18, szText, 0x10);
     SStrCopy(gtMcpInfo.szName, szSecond, 0x10);
     gdwGlobal_00799108 = (unsigned int)(szSecond + nSecondLength + 1 - (const char*)pPacket) < (unsigned int)nSize;
@@ -1107,54 +1074,53 @@ int __fastcall WINMAIN_HandleMcpMotd(const unsigned char* pPacket, unsigned int 
 }
 void __cdecl RECORD_StartPlayback(); // 0x004518E0
 
-extern "C" void __cdecl RECORD_RegisterLngArgument(); // 0x00451260
 extern "C" void __cdecl sub_0044AFC0(); // 0x0044AFC0
-extern "C" void __cdecl WINMAIN_SaveDefaultCmdLine(); // 0x0044B5E0
 
-#pragma pack(push, 1)
-struct d2data_0070ECC0_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
+extern "C" const char* gData_0070ECC0[15] = { // 0x0070ECC0
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
 };
-#pragma pack(pop)
 
-extern "C" struct d2data_0070ECC0_t gData_0070ECC0; // 0x0070ECC0
+D2McpPacketHandler gpfnMcpPacketHandlers[26] = { // 0x0070ED00
+    (D2McpPacketHandler)&sub_0044AB70_McpIncomingIgnore,
+    0,
+    (D2McpPacketHandler)&sub_0044ABA0_McpIncoming02,
+    (D2McpPacketHandler)&sub_0044ABE0_McpIncoming03,
+    (D2McpPacketHandler)&sub_0044AC20_McpIncoming04,
+    (D2McpPacketHandler)&WINMAIN_HandleMcpGameList,
+    (D2McpPacketHandler)&GAME_HandleMcpGameInfo,
+    (D2McpPacketHandler)&sub_0044ABC0_McpIncoming07,
+    (D2McpPacketHandler)&sub_0044ADF0_McpIncoming08,
+    (D2McpPacketHandler)&sub_0044AE10_McpIncoming09,
+    (D2McpPacketHandler)&sub_0044AE30_McpIncoming0A,
+    (D2McpPacketHandler)&sub_0044AE80_McpIncoming0B,
+    (D2McpPacketHandler)&sub_0044AEA0_McpIncoming0C,
+    (D2McpPacketHandler)&sub_0044AEF0_McpIncoming0D,
+    (D2McpPacketHandler)&sub_0044AEC0_McpIncoming0E,
+    (D2McpPacketHandler)&sub_0044AF10_McpIncoming0F,
+    (D2McpPacketHandler)&WINMAIN_HandleMcpServerAddress,
+    (D2McpPacketHandler)&sub_0044AFC0,
+    (D2McpPacketHandler)&WINMAIN_HandleMcpMotd,
+    0,
+    (D2McpPacketHandler)&WINMAIN_HandleMcpCreateQueue,
+    0,
+    0,
+    (D2McpPacketHandler)&WINMAIN_HandleMcpCharList,
+    (D2McpPacketHandler)&sub_0044AE60_McpIncoming18,
+    (D2McpPacketHandler)&WINMAIN_HandleMcpCharListExpanded
+};
 
-extern "C" struct d2data_0070ECC0_t gData_0070ECC0 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0070ECC0
-
-extern D2McpPacketHandler gpfnMcpPacketHandlers[26] = {
-    (D2McpPacketHandler)&sub_0044AB70_McpIncomingIgnore, 0, (D2McpPacketHandler)&sub_0044ABA0_McpIncoming02, (D2McpPacketHandler)&sub_0044ABE0_McpIncoming03, (D2McpPacketHandler)&sub_0044AC20_McpIncoming04, (D2McpPacketHandler)&WINMAIN_HandleMcpGameList, (D2McpPacketHandler)&GAME_HandleMcpGameInfo, (D2McpPacketHandler)&sub_0044ABC0_McpIncoming07, (D2McpPacketHandler)&sub_0044ADF0_McpIncoming08, (D2McpPacketHandler)&sub_0044AE10_McpIncoming09, (D2McpPacketHandler)&sub_0044AE30_McpIncoming0A, (D2McpPacketHandler)&sub_0044AE80_McpIncoming0B, (D2McpPacketHandler)&sub_0044AEA0_McpIncoming0C, (D2McpPacketHandler)&sub_0044AEF0_McpIncoming0D, (D2McpPacketHandler)&sub_0044AEC0_McpIncoming0E, (D2McpPacketHandler)&sub_0044AF10_McpIncoming0F,
-    (D2McpPacketHandler)&WINMAIN_HandleMcpServerAddress, (D2McpPacketHandler)&sub_0044AFC0, (D2McpPacketHandler)&WINMAIN_HandleMcpMotd, 0, (D2McpPacketHandler)&WINMAIN_HandleMcpCreateQueue, 0, 0, (D2McpPacketHandler)&WINMAIN_HandleMcpCharList, (D2McpPacketHandler)&sub_0044AE60_McpIncoming18, (D2McpPacketHandler)&WINMAIN_HandleMcpCharListExpanded
-}; // 0x0070ED00
-
-extern D2McpPacketHandler gpfnConnectPacketHandlers[26] = { 0, (D2McpPacketHandler)&sub_0044AB80_McpIncoming1B }; // 0x0070ED68
+D2McpPacketHandler gpfnConnectPacketHandlers[26] = { 0, (D2McpPacketHandler)&sub_0044AB80_McpIncoming1B }; // 0x0070ED68

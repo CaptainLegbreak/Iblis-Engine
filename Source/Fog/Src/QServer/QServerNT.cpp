@@ -2,6 +2,7 @@
 #include "D2QServer.h"
 #include "D2SysTypes.h"
 #include "D2NetTypes.h"
+#include "FogApi.h"
 
 extern "C" int __stdcall WSAStartup(unsigned short wVersionRequested, D2WSADataStrc* pData); // 0x006B0132
 
@@ -37,11 +38,7 @@ extern "C" __declspec(dllimport) int __stdcall ReadFile(void* hFile, void* pBuff
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
-
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
-
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 void __cdecl sub_006BE2F0_Nop(const char* szText, const char* szFormat, ...); // 0x006BE2F0
 
@@ -62,8 +59,6 @@ extern "C" int __stdcall WSAGetLastError(void); // 0x006B0168
 
 extern "C" char* __stdcall inet_ntoa(unsigned int nAddress); // 0x006B013E
 
-int __fastcall FOG_SOCKET_CloseSocket(unsigned int s); // 0x0040D880
-
 void __cdecl LOGMANAGER_LogWritePrefixedLine(const char* szChannel, const char* szFormat, ...); // 0x00410660
 
 int __fastcall QSERVER_CheckRecordThreshold(D2QueueServerStrc* pServer, const unsigned long* pAddress); // 0x006BE9F0
@@ -77,8 +72,6 @@ D2QClientStrc* __fastcall QSrvAddClient(D2QueueServerStrc* pServer, unsigned int
 extern "C" const char gszHack[]; // 0x006FC4A8
 
 static int QSERVERNT_PostRead(D2QueueServerStrc* pServer, D2QClientStrc* pClient); // 0x006C2280
-
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
@@ -153,8 +146,6 @@ extern "C" int __stdcall bind(unsigned int s, const D2SockAddrInStrc* name, int 
 
 extern "C" int __stdcall listen(unsigned int s, int backlog);                                               // 0x006C9B70
 
-void __cdecl LOGMANAGER_WriteLogLine(const char* format, ...);                                                             // 0x00410610
-
 void __fastcall ERRORMANAGER_RegisterThread(unsigned int nId, void* hThread); // 0x00407F80
 
 unsigned long __stdcall QSERVERNT_AcceptThread(void* pParam);                                              // 0x006C2860
@@ -203,13 +194,6 @@ static int QSERVERNT_PostRead(D2QueueServerStrc* pServer, D2QClientStrc* ptClien
     }
     LeaveCriticalSection(pLock);
     return bOk;
-}
-
-unsigned int __fastcall sub_Emit_006C2420(D2QueueServerStrc* pServer, int nSlot)
-{
-    D2SockAddrInStrc tAddr;
-    int nAddrLen;
-    return sQSNTAccept(nSlot, &nAddrLen, pServer, &tAddr);
 }
 
 // 0x006C23B0
@@ -340,7 +324,7 @@ static int sQSNTWriteFromQueue(D2QueueServerStrc* pServer, D2QClientStrc* ptClie
     if (!bWritten && nError != 0x3E5)
     {
         QSERVER_ReleaseClient(pServer, ptClient);
-        QSrvCloseRemoteConnection(pServer, ptClient->iId, gszQServerNT_006FC8A0, 0x527);
+        QSrvCloseRemoteConnection(pServer, ptClient->iId, gszQServerNTFile, 0x527);
         return 0;
     }
 
@@ -692,7 +676,7 @@ int __fastcall QSERVERNT_SendLocal(D2QueueServerStrc* pServer, D2QClientStrc* pC
         {
             nError = pClient->iId;
             LeaveCriticalSection(pLock);
-            QSrvCloseRemoteConnection(pServer, nError, gszQServerNT_006FC8A0, 0x220);
+            QSrvCloseRemoteConnection(pServer, nError, gszQServerNTFile, 0x220);
             QSERVER_ReleaseClient(pServer, pClient);
             return 0;
         }
@@ -705,7 +689,7 @@ int __fastcall QSERVERNT_SendLocal(D2QueueServerStrc* pServer, D2QClientStrc* pC
             {
                 nError = pClient->iId;
                 LeaveCriticalSection(pLock);
-                QSrvCloseRemoteConnection(pServer, nError, gszQServerNT_006FC8A0, 0x234);
+                QSrvCloseRemoteConnection(pServer, nError, gszQServerNTFile, 0x234);
                 return 0;
             }
             nBytesSent = 0;

@@ -3,6 +3,8 @@
 #include "D2GfxTypes.h"
 
 #include "D2Win32Types.h"
+#include "FogApi.h"
+#include "D2CMPApi.h"
 
 struct D2Palette256Strc
 {
@@ -16,15 +18,11 @@ struct D2TransPaletteStrc
 
 extern "C" void* __cdecl memcpy(void* pDest, const void* pSource, unsigned int nSize); // 0x006829C0
 
-void* __stdcall D2Win_GetArchive(); // 0x004FAC80
-
-unsigned char __stdcall GetClosestColor(const unsigned char* pPalette, unsigned int nCount, int nRed, int nGreen, int nBlue); // 0x00605210
 
 void __cdecl PALETTE_ApplyPaletteTables(); // 0x004FB010
 
 void __stdcall D2GFX_SetPalette(tagPALETTEENTRY* pPalette); // 0x004F63D0
 
-int __fastcall FOG_Free(void* pMemory, const char* szFile, int nLine, int nFlags); // 0x0040B3C0
 
 extern const char gszD2WinPaletteSourceFile[]; // 0x006DC828
 
@@ -62,11 +60,11 @@ D2Palette256Strc gatStandardShiftsPalette[13]; // 0x007D5668
 unsigned char gabPaletteRemap[256]; // 0x007D6368
 unsigned char gabScreenPalette[65536]; // 0x007DE468
 D2TransPaletteStrc gatTransPalette[3]; // 0x007EE468
-unsigned char gabDarkenPalette[256]; // 0x0081E468
-unsigned char gabRedPaletteMap[256]; // 0x0081E568
-D2Palette256Strc gatShadowsLightGammaPalette[49]; // 0x0081EA68
-unsigned char gabLuminancePalette[65536]; // 0x00821B68
-unsigned char gabDarkBlendPalette[65536]; // 0x00831B68
+extern unsigned char gabDarkenPalette[256]; // 0x0081E468
+extern unsigned char gabRedPaletteMap[256]; // 0x0081E568
+extern D2Palette256Strc gatShadowsLightGammaPalette[49]; // 0x0081EA68
+extern unsigned char gabLuminancePalette[65536]; // 0x00821B68
+extern unsigned char gabDarkBlendPalette[65536]; // 0x00831B68
 
 // 0x004FB010
 void __cdecl PALETTE_ApplyPaletteTables()
@@ -160,12 +158,12 @@ unsigned char __stdcall PALETTE_FindPaletteIndex(unsigned char nRed, unsigned ch
     return GetClosestColor((const unsigned char*)gatRGBAPalette, 0x100, nRed, nGreen, nBlue);
 }
 
-tagPALETTEENTRY gaPalette_0081E668[256]; // 0x0081E668
+extern tagPALETTEENTRY gatRGBAPalette[256]; // 0x0081E668
 
 // 0x004FB1B0
 void __cdecl PALETTE_ApplyScreenPalette()
 {
-    D2GFX_SetPalette(gaPalette_0081E668);
+    D2GFX_SetPalette(gatRGBAPalette);
 }
 
 // build: symbol ?FOG_IsExpansion@* 0x00408F20
@@ -251,6 +249,8 @@ struct d2data_0072DE14_t
 extern "C" const char gData_006DC828[24]; // 0x006DC828
 extern "C" struct d2data_0072DE14_t gData_0072DE14; // 0x0072DE14
 
+extern int gbPaletteFlash = 1; // 0x0072DE50
+
 extern "C" const char gData_006DC828[24] = ".\\Src\\D2WinPalette.cpp"; // 0x006DC828
 #pragma comment(linker, "/alternatename:?gszD2WinPaletteSourceFile@@3QBDB=_gData_006DC828")
 
@@ -271,5 +271,3 @@ extern "C" struct d2data_0072DE14_t gData_0072DE14 = {
     (const void*)"Unknown",
     (const void*)"14"
 }; // 0x0072DE14
-
-extern int gbPaletteFlash = 1; // 0x0072DE50

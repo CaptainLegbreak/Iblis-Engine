@@ -579,12 +579,20 @@ void __stdcall SErrReportResourceLeak(const char* szName)
     SErrReportNamedResourceLeak(szName, 0);
 }
 
-extern "C" const char* const gData_006CF2F4[12]; // 0x006CF2F4
-extern "C" const char gData_006CF330[12]; // 0x006CF330
-extern "C" const char gData_006CF33C[16]; // 0x006CF33C
-extern "C" const char gData_006CF34C[8]; // 0x006CF34C
-
-extern "C" const char* const gData_006CF2F4[12] = { "ERROR #%u (0x%08x)", "This application has encountered a critical error:\n\n%s\n", "Program:\t%s\n", "File:\t%s\nLine:\t%d\n", "Function:\t%s\n", "Object:\t%s\n", "Handle:\t%s\n", "Expr:\t%s\n\n", "\n%s\n\n", "Press OK to terminate the application.", "Do you wish to terminate the application?", "File:\t%s\n" }; // 0x006CF2F4
+extern "C" const char* const gData_006CF2F4[12] = { // 0x006CF2F4
+    "ERROR #%u (0x%08x)",
+    "This application has encountered a critical error:\n\n%s\n",
+    "Program:\t%s\n",
+    "File:\t%s\nLine:\t%d\n",
+    "Function:\t%s\n",
+    "Object:\t%s\n",
+    "Handle:\t%s\n",
+    "Expr:\t%s\n\n",
+    "\n%s\n\n",
+    "Press OK to terminate the application.",
+    "Do you wish to terminate the application?",
+    "File:\t%s\n"
+};
 #pragma comment(linker, "/alternatename:?gpszMessageFallback_006CF2F4@@3PAPBDA=_gData_006CF2F4")
 
 extern "C" const char gData_006CF330[12] = "%s %s:%i"; // 0x006CF330

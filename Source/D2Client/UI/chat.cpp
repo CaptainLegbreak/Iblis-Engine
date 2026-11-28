@@ -1,4 +1,5 @@
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Constants.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
@@ -15,6 +16,15 @@
 #include "D2Unicode.h"
 #include "D2WinSplitText.h"
 #include "D2ClientChatCommand.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "StormApi.h"
+#include "D2GfxApi.h"
+#include "D2WinApi.h"
+#include "D2CMPApi.h"
+#include "D2SoundApi.h"
 
 struct D2MsgHandlerEntryStrc;
 
@@ -247,7 +257,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 extern D2ClientFlagsLowStrc gtClientFlagsLow_00712EFC; // 0x00712EFC
 
@@ -266,9 +276,6 @@ Unicode gwszChatLine_007BB638[0x101]; // 0x007BB638
 
 void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
-bool __cdecl CHAT_IsImeLanguage(); // 0x0047B010
-
-int __cdecl WINDOW_GetWindow(); // 0x004F59A0
 
 extern "C" int __stdcall ImmSimulateHotKey(int hWnd, unsigned long nHotKey); // 0x006B00E4
 
@@ -296,11 +303,8 @@ struct CANDIDATELIST
     unsigned long dwCount;
 };
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
 extern "C" int __stdcall ImmReleaseContext(int hWnd, HIMC hImc); // 0x006B00B4
 
@@ -319,7 +323,7 @@ extern "C" int __stdcall ImmGetConversionStatus(HIMC hImc, unsigned long* pConve
 
 unsigned char gbImeOpen;        // 0x007BB5E0
 
-int gnImeState;        // 0x007BB5F0
+extern int gnImeState; // 0x007BB5F0
 
 static CANDIDATELIST* gpImeCandidateList; // 0x007BB5F4
 
@@ -370,13 +374,13 @@ void __stdcall CHAT_OnImeComposition(SMSGHANDLER_PARAMS* pMsg)
             szComp[199] = 0;
             MultiByteToWideChar(0, 1, szComp, -1, (wchar_t*)wszText, 32);
             wszText[31].wChar = 0;
-            const int nTextLength = sub_00526800(wszText);
-            if (sub_00526800(gwszChatLine_007BB638) + sub_00526800(gwszImeResult) < 0x7F)
+            const int nTextLength = UNICODE_StrLen(wszText);
+            if (UNICODE_StrLen(gwszChatLine_007BB638) + UNICODE_StrLen(gwszImeResult) < 0x7F)
             {
                 sub_00526700(gwszChatLine_007BB638, gwszImeResult);
-                gnChatCaret += sub_00526800(gwszImeResult);
+                gnChatCaret += UNICODE_StrLen(gwszImeResult);
             }
-            if (sub_00526800(gwszChatLine_007BB638) + nTextLength < 0x7F)
+            if (UNICODE_StrLen(gwszChatLine_007BB638) + nTextLength < 0x7F)
             {
                 sub_00526700(gwszChatLine_007BB638, wszText);
                 gnChatCaret += nTextLength;
@@ -397,7 +401,7 @@ void __stdcall CHAT_OnImeComposition(SMSGHANDLER_PARAMS* pMsg)
                 {
                     szComp[199] = 0;
                     MultiByteToWideChar(0, 1, szComp, -1, (wchar_t*)wszText, 32);
-                    const int nCount = sub_00526800(wszText);
+                    const int nCount = UNICODE_StrLen(wszText);
                     if (nCount < 31)
                         wszText[nCount].wChar = 0;
                     else
@@ -768,7 +772,6 @@ void __cdecl CHAT_CloseChatInput()
     }
 }
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
@@ -831,99 +834,59 @@ struct D2MenuItemStrc
     D2CelFileStrc* pChoices[4];
 };
 
-int __stdcall SRegSaveValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long nValue); // 0x004150E0
 
-int __stdcall SRegLoadValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long* pValue); // 0x00414F10
 
-int __cdecl sub_004DF880();
 
 int __cdecl sub_004DF980_IsSoundMode1Or2();
 
-void __fastcall sub_004776C0(void* pArg);
+void __fastcall sub_004776C0_SetGamma(void* pArg);
 
-int __cdecl D2GFX_GetDisplayType(); // 0x004F5140
 
-int __cdecl sub_004DF940(); // 0x004DF940
 
-int __cdecl sub_004DF960(); // 0x004DF960
 
-int __cdecl sub_004E00D0_ToggleSoundMode01(); // 0x004E00D0
 
-int __cdecl sub_004E0140_ToggleSoundMode12(); // 0x004E0140
-
-void __stdcall D2GFX_SetPerspective(int bPerspective); // 0x004F51E0
-
-void __stdcall D2GFX_SetBlendShadows(int bBlendedShadows); // 0x004F5200
-
-void __fastcall GAME_SetResolution(int nResolution); // 0x0044BA20
 
 void __fastcall AUTOMAP_SetAutomapMode(int nMode); // 0x0045A720
 
-int __fastcall AUTOMAP_SetAutomapFade(int nFade); // 0x004576F0
 
-int __cdecl AUTOMAP_GetAutomapCenters(); // 0x00457740
 
-int __fastcall AUTOMAP_SaveAutomapCenters(int nValue); // 0x00457750
 
-int __cdecl AUTOMAP_GetAutomapParty(); // 0x004577B0
 
-int __cdecl AUTOMAP_GetAutomapPartyNames(); // 0x004577E0
 
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
 extern D2ViewStrc* gpClientView; // 0x007A0640
 
-extern int gnAutomapHeight_007A521C; // 0x007A521C
 
-extern int gnAutomapWidth; // 0x007A5220
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-void __fastcall GAME_SetAlwaysRun(int bAlwaysRun); // 0x0044BE80
 
-int __cdecl AUTOMAP_GetAutomapFade(); // 0x004576C0
 
-int __cdecl UI_GetAutomapMode(); // 0x0045A710
 
 void __fastcall ARCHIVE_FreeClientCellFile(void* pCel); // 0x00478A00
 
-extern int gbSmallPanel; // 0x007BC978
 
 extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA(const char* szText); // 0x006CC200
 
-void __fastcall QUESTLOG_ToggleQuestLog(int nMode); // 0x004A3FE0
 
-int __fastcall UI_CloseUIVars(int bArg1, int nArg2); // 0x00456300
 
-void __cdecl UI_DisableUIVarDelay(); // 0x00453AC0
 
-void __cdecl UI_EnableUIVarDelay(); // 0x00453AD0
 
-void __cdecl UI_StartUIVarDelay(); // 0x00453AE0
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-D2UnitStrc* __stdcall INVENTORY_GetCursorItem(D2InventoryStrc* pInventory); // 0x0063C1E0
 
-int __cdecl sub_00468830(); // 0x00468830
 
-void __fastcall CURSOR_SetCursorItemState(D2UnitStrc* pItem); // 0x00468070
 
-int __cdecl HIREABLES_AreBeltRowsShown(); // 0x004979E0
 
-int __cdecl HIREABLES_GetBeltRowCount(); // 0x004979F0
 
-int __fastcall GAME_GetUnitTypeOrInvalid(D2UnitStrc* pUnit); // 0x0044BE50
 
 void __cdecl GAME_ResetMouseState(); // 0x0044DA40
 
-void __cdecl GAME_ResetMouseButtons(); // 0x0044DA70
 
 
 extern int gdwGlobal_007BC974; // 0x007BC974
@@ -934,26 +897,17 @@ extern int gbAnyPanelOpen; // 0x007BC96C
 
 void __fastcall WINMAIN_SetExitApplication(int nValue); // 0x0044B880
 
-void __fastcall GAME_SetCinematicExit(int nValue); // 0x0044C860
-
-void __fastcall sub_0047E200_CloseMenus(int bRestore); // 0x0047E200
-
-static inline int sub_0047D500(D2OptionEntryStrc* pEntry);
-
-void __fastcall sub_0047F310_ShowPage2(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg);
-
-void __fastcall sub_0047F340_ShowPage3(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg);
-
-void __fastcall sub_0047F3A0_ShowPage4(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg);
-
-void __fastcall sub_0047F400_OpenPanel(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg);
-
-void __fastcall sub_0047F430_ShowPage0(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg);
 
 
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
+static inline int sub_0047D500_IsOptionEnabled(D2OptionEntryStrc* pEntry);
 
-void __stdcall SStrTokenize(const char** pszString, char* szBuffer, unsigned int nBufferChars, const char* szWhitespace, int* pQuoted); // 0x00413B80
+
+
+
+
+
+
+
 
 extern D2ChatCommandStrc gaChatCommands[3]; // 0x00712F7C
 
@@ -965,21 +919,14 @@ extern D2CelFileStrc* gpSliderKnob_007BC958; // 0x007BC958
 
 void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nStyle); // 0x0046EFD0
 
-void __fastcall D2Win_10134_DrawCellFile(D2CelFileStrc* pCellFile, int nX, int nY, int nFrame, int nColor, int nArg6); // 0x00502680
-
-int __stdcall TEXTURE_CelDraw(D2CelContextStrc* pContext, int nX, int nY, int nArg4, int nColor, int nArg6); // 0x004F6480
-
 extern void* gpSlotCells; // 0x007BC964
 
-int __cdecl GAME_GetConnectionType(); // 0x0044DB30
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize);                // 0x004135D0
 
 extern "C" unsigned int __cdecl strlen(const char* szString);
 
 extern "C" char* __cdecl strncpy(char* szDest, const char* szSource, unsigned int nCount);                  // 0x00687330
 
-int __stdcall SStrCmpI(const char* szString1, const char* szString2, unsigned int nMaxChars); // 0x00413590
 
 struct D2CandidateListStrc
 {
@@ -1050,18 +997,14 @@ Unicode* __fastcall sub_00526790(Unicode* pDest, const Unicode* pSource, int nCo
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength);                   // 0x00526F20
 
-int __cdecl GAME_IsExitPending();                                                                                 // 0x0044DA30
 
 
-extern int gnImeLanguage_007BB5F0;                                                                          // 0x007BB5F0
+extern int gnImeState;                                                                          // 0x007BB5F0
 
 int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText);                                             // 0x00501820
 
-int __fastcall D2Win_10127_SetFont(int nArg);                                                                      // 0x00502EF0
 
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
 
-extern int gnScreenWidth;                                                                               // 0x0071146C
 
 // 0x0047B4F0
 void __stdcall CHAT_DrawImeText(int nX, int nY)
@@ -1069,7 +1012,7 @@ void __stdcall CHAT_DrawImeText(int nX, int nY)
     int nWidth = 0;
     int nTextX = nX;
     int nTextY = nY;
-    if (sub_00526800(gwszImeResult))
+    if (UNICODE_StrLen(gwszImeResult))
     {
         nWidth = D2Win_10121_GetTextWidth(gwszImeResult);
         if (nWidth + nTextX - 0x83 > gnScreenWidth - 0x109)
@@ -1081,7 +1024,7 @@ void __stdcall CHAT_DrawImeText(int nX, int nY)
     }
 
     const int nWidth2 = D2Win_10121_GetTextWidth(gwszImeComposition);
-    if (sub_00526800(gwszImeComposition))
+    if (UNICODE_StrLen(gwszImeComposition))
     {
         if (nWidth2 + nTextX + nWidth - 0x83 > gnScreenWidth - 0x109)
         {
@@ -1104,7 +1047,7 @@ void __cdecl CHAT_DrawChatPanel()
     {
         Unicode wszLanguage[20];
         memset(wszLanguage, 0, sizeof(wszLanguage));
-        switch (gnImeLanguage_007BB5F0)
+        switch (gnImeState)
         {
         case 0:
             sub_00526F20_ToUnicode(wszLanguage, "Alphanumeric", 20);
@@ -1147,7 +1090,7 @@ void __cdecl CHAT_DrawChatPanel()
     }
 
     int nRow = 0;
-    if (sub_00526800(gwszChatLine_007BB638) > 0)
+    if (UNICODE_StrLen(gwszChatLine_007BB638) > 0)
     {
         Unicode wszText[0x101];
         for (int i = 0; i < 0x101; ++i)
@@ -1297,9 +1240,7 @@ struct D2BnetChatPacketStrc;
 
 extern "C" int __cdecl strcmp(const char* a, const char* b);
 
-Unicode* __fastcall sub_00526E40_Utf8ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526E40
 
-int __cdecl UI_TickElapsed(); // 0x00454850
 
 extern int gnOptionArrowFrame; // 0x007BC944
 
@@ -1309,31 +1250,9 @@ extern int gnOptionLastY; // 0x007BC984
 
 
 
-int __cdecl D2SOUND_GetMasterVolumeOption(); // 0x00514CC0
 
-int __cdecl D2SOUND_GetMusicVolumeOption(); // 0x00514CF0
 
-int __cdecl D2SOUND_GetPositionalBiasOption(); // 0x00514D20
 
-int __cdecl D2SOUND_GetNpcSpeechOption(); // 0x00514D50
-
-int __fastcall D2SOUND_SetMasterVolumeOption(int nValue); // 0x00514CD0
-
-int __fastcall D2SOUND_SetMusicVolumeOption(int nValue); // 0x00514D00
-
-int __fastcall D2SOUND_SetPositionalBiasOption(int nValue); // 0x00514D30
-
-int __fastcall sub_00514D60_SetNpcSpeech(int nValue); // 0x00514D60
-
-int __cdecl sub_004DF9B0_IsSoundMode2(); // 0x004DF9B0
-
-void __fastcall sub_004E0690_SetSoundTableFlag(int nValue); // 0x004E0690
-
-void __fastcall TEXT_SaveTextDisplaySetting(unsigned long nValue); // 0x0049D570
-
-void __stdcall D2GFX_SetLowQuality(int bLowQuality); // 0x004F5220
-
-void __fastcall MISSILE_SetMissileLights(int nValue); // 0x004CCF20
 
 
 static void sub_0047D5C0_ActivateOption(SMSGHANDLER_PARAMS* pMsg);
@@ -1386,7 +1305,6 @@ static void CHAT_CopyCharacterPart(const char* szSource, char* szDest)
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource); // 0x00526700
 
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...); // 0x005269D0
 
 class D2SquelchListStrc
 {
@@ -1450,9 +1368,9 @@ int __cdecl CHAT_HandleBnetChatMessage()
             wszLine[0x153].wChar = 0;
             wszText[0x153].wChar = 0;
             if (nType == 10)
-                sub_005269D0(0x153, wszOut, D2LANG_GetStringFromTblIndex(0x14D5), wszLine, wszText);
+                sub_005269D0_FormatText(0x153, wszOut, D2LANG_GetStringFromTblIndex(0x14D5), wszLine, wszText);
             else
-                sub_005269D0(0x153, wszOut, D2LANG_GetStringFromTblIndex(0x14D4), wszLine, wszText);
+                sub_005269D0_FormatText(0x153, wszOut, D2LANG_GetStringFromTblIndex(0x14D4), wszLine, wszText);
             wszOut[0x153].wChar = 0;
             TEXT_PrintChatLine(wszOut, 2);
             break;
@@ -1475,9 +1393,9 @@ int __cdecl CHAT_HandleBnetChatMessage()
             sub_00526E40_Utf8ToUnicode(wszText, szText, 0x154);
             wszLine[0x153].wChar = 0;
             wszText[0x153].wChar = 0;
-            if (sub_00526800(wszText) + sub_00526800(wszLine) >= 0x154)
+            if (UNICODE_StrLen(wszText) + UNICODE_StrLen(wszLine) >= 0x154)
             {
-                const int nLength = sub_00526800(wszLine);
+                const int nLength = UNICODE_StrLen(wszLine);
                 if (nLength < 0x153)
                     wszText[0x153 - nLength].wChar = 0;
                 else
@@ -1500,7 +1418,7 @@ void __cdecl sub_0047B4D0_Nop()
 }
 
 // 0x0047B4E0
-void __cdecl sub_0047B4E0()
+void __cdecl sub_0047B4E0_Nop()
 {
 }
 
@@ -1510,7 +1428,7 @@ void __cdecl sub_0047B4E0()
 void __cdecl CHAT_RecallChatLine()
 {
     memcpy(gwszChatLine_007BB638, gawszChatHistory[gnChatHistoryCursor], sizeof(gawszChatHistory[0]));
-    gnChatCaret = sub_00526800(gawszChatHistory[gnChatHistoryCursor]);
+    gnChatCaret = UNICODE_StrLen(gawszChatHistory[gnChatHistoryCursor]);
 }
 
 struct D2OptionHeaderStrc;
@@ -1519,14 +1437,11 @@ struct D2OptionEntryStrc;
 
 struct D2EscMenuUIStateStrc;
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
-
-int __fastcall GAME_GetUIVarState(unsigned int nUIVar); // 0x004538D0
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 
-int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
-void __stdcall CHAT_StepChatIndex(int nDelta); // 0x0047BA80
+
 
 
 extern D2OptionHeaderStrc gtMainOptionHeader; // 0x00713044
@@ -1560,7 +1475,6 @@ extern D2OptionEntryStrc gaAutomapOptionEntries[]; // 0x0071D748
 extern D2OptionEntryStrc gaAutomapModeOptionEntries[]; // 0x0071F728
 
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
 
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
@@ -1584,31 +1498,21 @@ extern "C" int __cdecl atoi(const char* szString);                              
 
 
 
-void __cdecl sub_00477C60_CheckCacheStats();                                                                // 0x00477C60
 
-void __cdecl VIEW_ToggleCacheStats();                                                               // 0x00477C00
 
-int __cdecl GAME_GetConnectionType();                                                                                 // 0x0044DB30
 
-void __cdecl SOUNDINST_ToggleHints();                                                                    // 0x004BABC0
 
 int __stdcall CHAT_ParseChatCommand(char** ppText, char* pCode, char* szArgument);                  // 0x0047BAD0
 
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource);                                 // 0x00526700
 
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...);               // 0x005269D0
 
 void __fastcall TEXT_PrintChatLine(const Unicode* pText, char nColor);                              // 0x0049E3A0
 
-void __fastcall MSG_SendStrings(const unsigned char* pData);                                       // 0x004787B0
-
-unsigned int __fastcall D2Win_10128(unsigned char nChar);                                                   // 0x00502550
 
 D2SplittedTextStrc* __fastcall D2WINFONT_SplitText(Unicode* pText, unsigned int* pLineCount, int nWidth);    // 0x00502970
 
-extern int gbNoPickup;                                                                             // 0x007A6A90
 
 extern unsigned short gwChatHistoryCount;                                                          // 0x007BB5E4
 
@@ -1655,7 +1559,7 @@ static void CHAT_PushChatHistory(const Unicode* pText)
         if (--gnChatHistoryTail < 0)
             gnChatHistoryTail = 7;
     }
-    gnChatHistoryCursor_007BB5D8 = nIndex;
+    gnChatHistoryCursor = nIndex;
     memcpy(gawszChatHistory_007BB840[nIndex], pText, sizeof(gawszChatHistory_007BB840[0]));
 }
 
@@ -1664,21 +1568,13 @@ static void CHAT_PushChatHistory(const Unicode* pText)
 
 extern "C" char* __cdecl strncpy(char* szDest, const char* szSource, unsigned int nCount); // 0x00687330
 
-D2StoredUnitRecordStrc* __fastcall ROSTER_GetNextStoredUnit(D2StoredUnitRecordStrc* pEntry); // 0x004795A0
 
 extern "C" const char* __fastcall ROSTER_GetEntryName(D2StoredUnitRecordStrc* pEntry); // 0x004795C0
 
-void __fastcall sub_0047DBB0_LoadOptionCels(D2OptionHeaderStrc* pHeader, D2OptionEntryStrc* pEntries); // 0x0047DBB0
 
 D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nType); // 0x004788B0
 
 D2CelFileStrc* __cdecl UI_GetPentspinCel(); // 0x00453AA0
-
-int __stdcall CelFileGetCelsPerDirection(D2CelFileStrc* pCelFile); // 0x006019F0
-
-D2CelStrc* __stdcall CelGetHandle(D2CelContextStrc* pContext); // 0x00601840
-
-int __stdcall CelGetWidth(D2CelStrc* pCel); // 0x006018C0
 
 extern D2CelFileStrc* gpSliderDisabledCel; // 0x007BC950
 
@@ -1694,7 +1590,7 @@ void __cdecl CHAT_ResetChatHistory()
 {
     gnChatHistoryHead = 7;
     gnChatHistoryTail = 7;
-    gnChatHistoryCursor_007BB5D8 = 0;
+    gnChatHistoryCursor = 0;
     gwChatHistoryCount = 0;
     gnChatCaret = 0;
 }
@@ -1734,7 +1630,7 @@ static int CHAT_HandleHelpCommand(char* szInput, const char* szCommand)
                 D2ChatTextStrc tBuffer;
                 sprintf(tBuffer.sz, "<BattleNet>: Correct usage is: %s", szCommand);
                 tMessage.tText = tBuffer;
-                sub_0049F490_PrintChatMessage(&tMessage);
+                TEXT_HandleChatPacket(&tMessage);
                 return 1;
             }
             D2ClientNotifyStrc* pNotify = WINMAIN_GetClientNotify();
@@ -1751,19 +1647,14 @@ Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x00526
 
 void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
 
-unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB); // 0x00469AA0
 
 const Unicode* __fastcall CMDTBL_GetKeyText(int nKey, int nArg2); // 0x00469DE0
 
-int __cdecl sub_00468730(); // 0x00468730
 
-int __cdecl sub_00468740(); // 0x00468740
 
 void __stdcall sub_0047E9A0_DrawSlots(int bDraw); // 0x0047E9A0
 
-int __cdecl sub_0047EA60_IsAnyPanelOpen(); // 0x0047EA60
 
-int __cdecl sub_0047EB50_IsAnyLeftPanelOpen(); // 0x0047EB50
 
 extern void* gpMiniPanelCel; // 0x007BC960
 
@@ -1782,7 +1673,7 @@ extern void* gpMiniPanelCel; // 0x007BC960
 // 0x0047BD00
 bool __fastcall CHAT_IsNarrowText(const Unicode* pText)
 {
-    const int nLength = sub_00526800(pText);
+    const int nLength = UNICODE_StrLen(pText);
     for (int i = 0; i < nLength; i++)
     {
         if (pText[nLength].wChar > 0xFF)
@@ -1792,7 +1683,7 @@ bool __fastcall CHAT_IsNarrowText(const Unicode* pText)
 }
 
 // 0x0047C3F0
-static void __stdcall CHAT_CopyCommandArgs(char* szDest, const char* szSource, unsigned int nSize)
+static void __stdcall CHAT_CopyCommandArgs(const char* szSource, char* szDest, unsigned int nSize)
 {
     const char* pArgs = SStrChr(szSource, ' ');
     if (pArgs)
@@ -1838,7 +1729,7 @@ static int __stdcall CHAT_HandleWhisperCommand(int bCheckStored, char* szInput, 
                     tMessage.nColor = 3;
                     sprintf(szCopy, "<BattleNet>: Correct usage is: %s (name) (message)", szCommand);
                     memcpy(&tMessage.tText, szCopy, sizeof(tMessage.tText));
-                    sub_0049F490_PrintChatMessage(&tMessage);
+                    TEXT_HandleChatPacket(&tMessage);
                     return 1;
                 }
             }
@@ -1871,6 +1762,7 @@ static int __stdcall CHAT_HandleWhisperCommand(int bCheckStored, char* szInput, 
 }
 
 // build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
+// 0x0047C420
 static void __stdcall sub_0047C420_HandleChatCommand(const Unicode* pLine, char* szText, int nSkip)
 {
     D2ChatSendStrc tSend;
@@ -1944,9 +1836,9 @@ static void __stdcall sub_0047C420_HandleChatCommand(const Unicode* pLine, char*
                 sub_00526320_ToUnicode(wszLine, gszBattleNetPrefix, 0x208);
                 sub_00526320_ToUnicode(wszName, szName, 0x22);
                 if (sub_00611560_GetSquelchList()->Squelch(szName))
-                    sub_005269D0(0x208, wszText, D2LANG_GetStringFromTblIndex(0x2BA3), wszName);
+                    sub_005269D0_FormatText(0x208, wszText, D2LANG_GetStringFromTblIndex(0x2BA3), wszName);
                 else
-                    sub_005269D0(0x208, wszText, D2LANG_GetStringFromTblIndex(0x2BA4), wszName);
+                    sub_005269D0_FormatText(0x208, wszText, D2LANG_GetStringFromTblIndex(0x2BA4), wszName);
                 sub_00526700(wszLine, wszText);
             }
             TEXT_PrintChatLine(wszLine, 3);
@@ -1962,9 +1854,9 @@ static void __stdcall sub_0047C420_HandleChatCommand(const Unicode* pLine, char*
             sub_00526320_ToUnicode(wszLine, gszBattleNetPrefix, 0x208);
             sub_00526320_ToUnicode(wszName, szName, 0x22);
             if (sub_00611560_GetSquelchList()->Unsquelch(szName))
-                sub_005269D0(0x208, wszText, D2LANG_GetStringFromTblIndex(0x2BA5), wszName);
+                sub_005269D0_FormatText(0x208, wszText, D2LANG_GetStringFromTblIndex(0x2BA5), wszName);
             else
-                sub_005269D0(0x208, wszText, D2LANG_GetStringFromTblIndex(0x2BA6), wszName);
+                sub_005269D0_FormatText(0x208, wszText, D2LANG_GetStringFromTblIndex(0x2BA6), wszName);
             sub_00526700(wszLine, wszText);
             TEXT_PrintChatLine(wszLine, 3);
         }
@@ -2006,7 +1898,7 @@ static void __stdcall sub_0047C420_HandleChatCommand(const Unicode* pLine, char*
                     pNotify->pfnResign(pText);
             }
         }
-        else if (sub_00526800(pLine) > 0)
+        else if (UNICODE_StrLen(pLine) > 0)
         {
             memcpy(tSend.szText, pText, sizeof(tSend.szText) - 1);
             tSend.szText[sizeof(tSend.szText) - 1] = 0;
@@ -2054,7 +1946,7 @@ void __stdcall CHAT_OnChatChar(SMSGHANDLER_PARAMS* pMsg)
 {
     if (gnChatDrawCount < 1)
         return;
-    const int nLength = sub_00526800(gwszChatLine_007BB638);
+    const int nLength = UNICODE_StrLen(gwszChatLine_007BB638);
     switch (pMsg->wParam)
     {
     case 8:
@@ -2073,7 +1965,7 @@ void __stdcall CHAT_OnChatChar(SMSGHANDLER_PARAMS* pMsg)
         while (gwszChatLine_007BB638[nSkip].isWhitespace())
             ++nSkip;
         const Unicode* pText = &gwszChatLine_007BB638[nSkip];
-        if (!sub_00526800(pText))
+        if (!UNICODE_StrLen(pText))
         {
             UI_SetUIVar(5, 1, 0);
             break;
@@ -2160,9 +2052,7 @@ void __stdcall CHAT_OnChatChar(SMSGHANDLER_PARAMS* pMsg)
 
 
 
-int __cdecl GAME_GetAlwaysRun(); // 0x0044BE90
 
-void* __fastcall GAME_LoadUiCelFile(const char* szPath); // 0x004520C0
 
 extern int gbPanelFlag; // 0x0071315C
 
@@ -2174,19 +2064,7 @@ extern int gbPanelFlag; // 0x0071315C
 
 
 
-void __cdecl sub_M04_Emit_0047BD80(char* szDest, const char* szSource)
-{
-    CHAT_CopyCharacterPart(szSource, szDest);
-}
 
-int __fastcall sub_F07_Emit_0047C100(char* szInput)
-{
-    if (CHAT_HandleHelpCommand(szInput, "/help"))
-        return 1;
-    if (CHAT_HandleHelpCommand(szInput, "/?"))
-        return 1;
-    return 0;
-}
 
 
 
@@ -2237,20 +2115,7 @@ extern const char gszM134CmdB[];
 
 void __stdcall sub_M134_Use(const char* szText);
 
-void __fastcall sub_M134_Emit_0047C100(const char* szText)
-{
-    if (!CHAT_CompareCommand(szText, gszM134CmdA))
-        return;
-    if (!CHAT_CompareCommand(szText, gszM134CmdB))
-        sub_M134_Use(szText);
-}
 
-void sub_A23_Emit_0047BA00(int nSkip)
-{
-    const Unicode* pText = &gwszChatLine_007BB638[nSkip];
-    if (sub_00526800(pText))
-        CHAT_PushChatHistory(pText);
-}
 
 
 extern "C" void __cdecl sub_0047CD80(); // 0x0047CD80
@@ -2312,14 +2177,10 @@ struct d2data_00712FA8_t
 };
 #pragma pack(pop)
 
-extern "C" const char gData_006D72C0[12]; // 0x006D72C0
 extern "C" struct d2data_00712F08_t gData_00712F08; // 0x00712F08
 extern "C" struct d2data_00712F4C_t gData_00712F4C; // 0x00712F4C
 extern "C" struct d2data_00712FA8_t gData_00712FA8; // 0x00712FA8
 extern "C" char gData_00712FFC[4]; // 0x00712FFC
-
-extern "C" const char gData_006D72C0[12] = "%s (*%s)"; // 0x006D72C0
-#pragma comment(linker, "/alternatename:_gszNameAccountFormat=_gData_006D72C0")
 
 extern "C" struct d2data_00712F08_t gData_00712F08 = {
     (const void*)"English",
@@ -2339,10 +2200,6 @@ extern "C" struct d2data_00712F08_t gData_00712F08 = {
     (const void*)"14"
 }; // 0x00712F08
 
-extern int gnChatHistoryHead = 7; // 0x00712F44
-
-extern int gnChatHistoryTail = 7; // 0x00712F48
-
 extern "C" struct d2data_00712F4C_t gData_00712F4C = {
     { 0x00, 0x00, 0x00, 0x00, 0x02, 0x01 },
     (const void*)(unsigned int)&CHAT_OnChatChar,
@@ -2354,12 +2211,6 @@ extern "C" struct d2data_00712F4C_t gData_00712F4C = {
     (const void*)(unsigned int)&CHAT_CloseChatOnPanelClickMsg
 }; // 0x00712F4C
 #pragma comment(linker, "/alternatename:?gaChatHandlers@@3PAUD2MsgHandlerEntryStrc@@A=_gData_00712F4C")
-
-extern D2ChatCommandStrc gaChatCommands[3] = {
-    { (const char *)&gData_006D7284, 3 },
-    { (const char *)&gData_006D7280, 0, 0, 1 },
-    { (const char *)"@", 2, 1 }
-}; // 0x00712F7C
 
 extern "C" struct d2data_00712FA8_t gData_00712FA8 = {
     { 0x00, 0x00, 0x00, 0x00, 0x82, 0x02 },
@@ -2379,9 +2230,23 @@ extern "C" struct d2data_00712FA8_t gData_00712FA8 = {
 }; // 0x00712FA8
 #pragma comment(linker, "/alternatename:?gaChatInputHandlers@@3PAUD2MsgHandlerEntryStrc@@A=_gData_00712FA8")
 
-extern "C" char gData_00712FFC[4] = " "; // 0x00712FFC
-#pragma comment(linker, "/alternatename:_gszTokenSeparator=_gData_00712FFC")
-
 extern unsigned short gwBlinkDelay = 0x1F4; // 0x00713000
 
 extern int gnBlinkOn = 1; // 0x00713004
+
+extern int gnChatHistoryHead = 7; // 0x00712F44
+
+extern int gnChatHistoryTail = 7; // 0x00712F48
+
+extern D2ChatCommandStrc gaChatCommands[3] = {
+    { (const char *)&gData_006D7284, 3 },
+    { (const char *)&gData_006D7280, 0, 0, 1 },
+    { (const char *)"@", 2, 1 }
+}; // 0x00712F7C
+
+extern "C" const char gszNameAccountFormat[12] = "%s (*%s)"; // 0x006D72C0
+
+extern "C" char gData_00712FFC[4] = " "; // 0x00712FFC
+#pragma comment(linker, "/alternatename:_gszTokenSeparator=_gData_00712FFC")
+
+extern "C" const char gszBattleNetPrefix[14] = "<BattleNet>: "; // 0x006D72B0

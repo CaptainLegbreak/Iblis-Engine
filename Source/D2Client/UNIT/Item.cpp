@@ -16,6 +16,10 @@
 #include "D2ItemsWorld.h"
 #include "D2ClientSound.h"
 #include "D2UnitEventArgs.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
+#include "D2CommonApi3.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -105,15 +109,12 @@ struct D2GSPacketSrv9C
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
@@ -137,31 +138,9 @@ void __fastcall SKILLS_ApplyClientSkillCalc(D2UnitStrc* pUnit, int nValue); // 0
 
 void __fastcall sub_004E4050_Nothing(D2UnitStrc* pUnit, D2UnitStrc* pTarget); // 0x004E4050
 
-unsigned char __stdcall UNITS_GetObjectPortalFlags(D2UnitStrc* pUnit); // 0x006222C0
-
-void __stdcall UNITS_SetObjectPortalFlags(D2UnitStrc* pUnit, unsigned char nPortalFlag); // 0x00622300
-
-unsigned int __stdcall ITEMS_GetItemFlags(D2UnitStrc* pItem); // 0x00628110
-
 int __stdcall sub_006287A0_TestFlags(unsigned int dwFlags, unsigned int dwMask); // 0x006287A0
 
-int __stdcall ITEMS_DecodeItemFromBitstream(D2UnitStrc* pItem, unsigned char* pBitstream, int nSize, int bCheckForHeader, int* pSocketedItemCount, unsigned int dwVersion, int* pFail); // 0x0062E430
-
-D2UnitStrc* __stdcall INVENTORY_GetCursorItem(D2InventoryStrc* pInventory); // 0x0063C1E0
-
-int __stdcall D2COMMON_11039_CheckWeaponIsMissileBased(D2UnitStrc* pUnit, int* pValue); // 0x00645F00
-
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646CA0
-
 void __stdcall D2COMMON_10160_PathUpdateDirection(D2DynamicPathStrc* pDynamicPath, unsigned char nDirection); // 0x00648820
-
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
-
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
-
-int __stdcall D2COMMON_10175_PathGetFirstPointX(D2DynamicPathStrc* pDynamicPath); // 0x00648A00
-
-int __stdcall D2COMMON_10176_PathGetFirstPointY(D2DynamicPathStrc* pDynamicPath); // 0x00648A10
 
 struct D2PanelGfxStrc
 {
@@ -226,13 +205,13 @@ extern D2TimedHintStrc gtTimedHint; // 0x007C89E4
 
 extern void* gpGlobal_007A0634; // 0x007A0634
 
-int __cdecl sub_0044DB00(); // 0x0044DB00
+int __cdecl sub_0044DB00_GetTickCounter(); // 0x0044DB00
 
 int __cdecl CUNIT_IsPlayerDeadOrMissing(); // 0x00463DF0
 
 int __fastcall GFX_DrawItemCel(D2UnitStrc* pItem, int nX, int nY); // 0x0046EE80
 
-int __cdecl sub_004817F0(); // 0x004817F0
+int __cdecl sub_004817F0_GetSongMin(); // 0x004817F0
 
 int __cdecl sub_00481810(); // 0x00481810
 
@@ -240,9 +219,9 @@ int __cdecl DLIGHTMAP_GetSoundTick(); // 0x00481820
 
 D2SoundsTxt* __fastcall SOUNDHDR_GetSoundRecord(int nId); // 0x00481860
 
-int __fastcall sub_004B9590(void* pEntry); // 0x004B9590
+int __fastcall sub_004B9590_IsTypeOneSound(void* pEntry); // 0x004B9590
 
-void* __fastcall sub_004B9610(int nId); // 0x004B9610
+void* __fastcall sub_004B9610_GetSoundHandle(int nId); // 0x004B9610
 
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
@@ -262,25 +241,11 @@ D2TileStrc* __stdcall DUNGEON_GetTileDataFromAct(void* pAct); // 0x00619720
 
 int __stdcall UNITS_ChangeAnimMode(D2UnitStrc* pUnit, int nMode); // 0x00624690
 
-void __stdcall sub_006275B0(D2UnitStrc* pUnit); // 0x006275B0
-
-void __stdcall STATLIST_ExpireUnitStatlist(D2UnitStrc* pUnit, D2UnitStrc* pItem); // 0x006277F0
-
 int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile); // 0x006280A0
-
-D2UnitStrc* __stdcall INVENTORY_GetLeftHandWeapon(D2InventoryStrc* pInventory); // 0x0063BEF0
-
-D2UnitStrc* __stdcall INVENTORY_GetItemFromBodyLoc(D2InventoryStrc* pInventory, int nBodyLoc); // 0x0063BDE0
 
 void __stdcall DUNGEON_GameSubtileToClientCoords(int* pX, int* pY); // 0x00643260
 
-extern "C" int __fastcall sub_004D9FC0(D2UnitStrc* unit, D2SkillStrc* skill); // 0x004D9FC0
-
-int __stdcall ITEMS_CheckRequirements(D2UnitStrc* pItem, D2UnitStrc* pUnit, int bEquipping, int* bStrength, int* bDexterity, int* bLevel); // 0x0062EAF0
-
-int __stdcall ITEMS_GetQuiverType(D2UnitStrc* pItem); // 0x0062E740
-
-int __stdcall ITEMSIsA(D2UnitStrc* pItem, int nItemType); // 0x00629BB0
+extern "C" int __fastcall sub_004D9FC0_GetSkillUseState(D2UnitStrc* unit, D2SkillStrc* skill); // 0x004D9FC0
 
 #pragma pack(push, 1)
 
@@ -310,57 +275,7 @@ D2SkillStrc* __stdcall UNITS_GetLeftSkill(D2UnitStrc* pUnit); // 0x00620190
 
 D2SkillStrc* __stdcall UNITS_GetRightSkill(D2UnitStrc* pUnit); // 0x006201D0
 
-int __stdcall UNITS_CanDualWield(D2UnitStrc* pUnit); // 0x006235A0
-
-unsigned char __stdcall UNITS_GetItemComponentId(D2UnitStrc* pUnit, D2UnitStrc* pItem); // 0x00623D60
-
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
-
-D2UnitStrc* __stdcall STATLIST_GetOwner(D2UnitStrc* pUnit, int* pStatNotDynamic); // 0x00625820
-
-void __stdcall STATLIST_MergeStatLists(D2UnitStrc* pTarget, D2UnitStrc* pUnit, int bType); // 0x00627910
-
-unsigned char __stdcall ITEMS_GetBodyLocation(D2UnitStrc* pItem); // 0x00627D40
-
-int __stdcall ITEMS_GetItemQuality(D2UnitStrc* pItem); // 0x00627E70
-
-void __stdcall ITEMS_SetItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int bSet); // 0x006280D0
-
-int __stdcall ITEMS_GetGemApplyType(D2UnitStrc* pItem); // 0x00629A40
-
-int __stdcall ITEMS_IsCharmUsable(D2UnitStrc* pItem, D2UnitStrc* pPlayer); // 0x0062FF70
-
-D2ItemsTxt* __stdcall DATATBLS_GetItemsTxtRecord(int nItemId); // 0x006335F0
-
-D2GemsTxt* __stdcall DATATBLS_GetGemsTxtRecord(int nGemId); // 0x006372C0
-
-D2UnitStrc* __stdcall INVENTORY_GetFirstItem(D2InventoryStrc* pInventory); // 0x0063B2C0
-
-void __stdcall INVENTORY_UpdateWeaponGUIDOnInsert(D2InventoryStrc* pInventory, D2UnitStrc* pItem); // 0x0063D1D0
-
-void __stdcall INVENTORY_UpdateWeaponGUIDOnRemoval(D2InventoryStrc* pInventory, D2UnitStrc* pItem); // 0x0063D2B0
-
-D2UnitStrc* __stdcall INVENTORY_GetNextItem(D2UnitStrc* pItem); // 0x0063DFA0
-
-D2UnitStrc* __stdcall INVENTORY_UnitIsItem(D2UnitStrc* pItem); // 0x0063DFD0
-
-int __stdcall INVENTORY_GetItemNodePage(D2UnitStrc* pItem); // 0x0063E020
-
-D2SkillStrc* __fastcall SKILLS_GetSkillById(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID); // 0x006439B0
-
-int __stdcall SKILLS_GetOwnerGUIDFromSkill(D2SkillStrc* pSkill); // 0x00643AD0
-
-void __stdcall SKILLS_SetLeftActiveSkill(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID); // 0x00643BC0
-
-void __stdcall SKILLS_SetRightActiveSkill(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID); // 0x00643C50
-
-int __stdcall SKILLS_GetSkillIdFromSkill(D2SkillStrc* pSkill, const char* szFile, int nLine); // 0x00643CE0
-
 void __stdcall ITEMMODS_AssignProperty(int nType, D2UnitStrc* a2, D2UnitStrc* pItem, const void* pMods, int nPropSet, int nApplyType); // 0x0065FEC0
-
-int __stdcall ITEMS_UpdateSets(D2UnitStrc* pUnit, D2UnitStrc* pItem, int a3, int a4); // 0x00663CC0
-
-int __stdcall ITEMS_GetFileIndex(D2UnitStrc* pItem); // 0x00629DA0
 
 #pragma pack(push, 1)
 
@@ -397,15 +312,7 @@ extern int gaCursorKind[]; // 0x00727A40
 
 extern unsigned int gnCursorKindCount; // 0x00727A48
 
-void __fastcall sub_004B29E0(int nUnitId); // 0x004B29E0
-
-D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitAndState(D2UnitStrc* pUnit, int nState); // 0x006256B0
-
-void __stdcall D2Common_10474(D2UnitStrc* pUnit, D2StatListStrc* pStatList); // 0x006277E0
-
-void __stdcall STATES_ToggleState(D2UnitStrc* pUnit, int nState, int bSet); // 0x00639DB0
-
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
+void __fastcall sub_004B29E0_FinishPendingAction(int nUnitId); // 0x004B29E0
 
 int __fastcall UI_GetUIVarUnchecked(int nUIVar); // 0x00453A90
 
@@ -417,13 +324,9 @@ extern "C" int gnTable_00727A28[5]; // 0x00727A28
 
 extern "C" unsigned int gnTableCount; // 0x00727A3C
 
-extern "C" unsigned int __stdcall sub_006280A0(D2UnitStrc* pUnit, unsigned int dwMask, unsigned int dwUnused3, unsigned int dwUnused4); // 0x006280A0
+extern "C" unsigned int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pUnit, unsigned int dwMask, unsigned int dwUnused3, unsigned int dwUnused4); // 0x006280A0
 
 void __stdcall sub_0063BE30_Return(int nUnused1, int nUnused2);
-
-int __stdcall INVENTORY_GetBodyLocFromEquippedItem(D2InventoryStrc* pInventory, D2UnitStrc* pItem); // 0x0063C110
-
-int __stdcall INVENTORY_RemoveAllItems(D2InventoryStrc* pInventory); // 0x0063E0B0
 
 extern "C" const char szItemCppFile[];
 
@@ -470,9 +373,9 @@ void __fastcall MSG_SendDword(char nHeader, int nArg); // 0x00478680
 
 void __cdecl INV_ResetHover(); // 0x00487990
 
-void __fastcall sub_004B2A00(int nUnitId); // 0x004B2A00
+void __fastcall sub_004B2A00_FinishPendingAction(int nUnitId); // 0x004B2A00
 
-void __fastcall sub_004B2A40(int nUnitId); // 0x004B2A40
+void __fastcall sub_004B2A40_FinishPendingAction(int nUnitId); // 0x004B2A40
 
 void __fastcall ITEM_SetItemMode(D2UnitStrc* pItem, D2ActiveRoomStrc* pRoom, int nX, int nY, int nMode, int bArg); // 0x004C1910
 
@@ -480,15 +383,11 @@ int __fastcall ITEM_GetDropSound(D2UnitStrc* pItem); // 0x004C1D60
 
 int __stdcall UNITS_GetInventoryRecordId(D2UnitStrc* pUnit, unsigned char nInvPage, int bLoD); // 0x00621050
 
-void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStat, int nValue, int nLayer); // 0x00627260
-
 unsigned char __stdcall ITEMS_GetInvPage(D2UnitStrc* pItem); // 0x00628250
-
-int __stdcall ITEMS_GetCompactItemDataFromBitstreamDefault(unsigned char* pBitstream, unsigned int nSize, int bCheckForHeader, void* pItemSave); // 0x0062E410
 
 void __stdcall ITEM_HandleItemToBody(D2GSPacketSrv9D* pPacket, D2ItemSaveStrc* pItemSave); // 0x004C35F0
 
-void __fastcall sub_004B2640(D2UnitStrc* pUnit); // 0x004B2640
+void __fastcall sub_004B2640_SetInvRequest(D2UnitStrc* pUnit); // 0x004B2640
 
 void __fastcall NPCMENU_ResetHoverForItem(int nUnitId); // 0x004B2A80
 
@@ -500,7 +399,7 @@ void __fastcall VIEW_SetBeltSlotValue(int nX, int nArg); // 0x00498D50
 
 void __cdecl VIEW_ResetBeltHover(); // 0x00498D60
 
-void __fastcall sub_004B2A60(int nUnitId); // 0x004B2A60
+void __fastcall sub_004B2A60_FinishPendingAction(int nUnitId); // 0x004B2A60
 
 #define D2_MAX(a, b) ((a) > (b) ? (a) : (b))
 
@@ -509,16 +408,6 @@ void __fastcall sub_004B2A60(int nUnitId); // 0x004B2A60
 #define D2_ASSERT_LINE(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
 static void __stdcall ITEM_ApplyItemStats(D2UnitStrc* pItem, D2UnitStrc* pUnit, int bForce); // 0x004C0D20
-
-D2StatListStrc* __stdcall STATLIST_GetStatListFromFlag(D2StatListStrc* pStatList, int nFlag); // 0x00625730
-
-int __stdcall STATLIST_GetStatValue(D2StatListStrc* pStatList, int nStatId, unsigned short nLayer); // 0x00625D00
-
-void __stdcall STATLIST_SetBaseStat2(D2StatListStrc* pStatList, int nStatId, int nValue, int nLayer, D2UnitStrc* pUnit); // 0x00627220
-
-D2StatListStrc* __stdcall STATLIST_AllocStatList(void* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID); // 0x006251F0
-
-void __stdcall STATLIST_SetState(D2StatListStrc* pStatList, int nState); // 0x006252D0
 
 typedef void (__fastcall* StatListRemoveCallback)(D2UnitStrc* pUnit, int nState, D2StatListStrc* pStatList);
 
@@ -543,28 +432,11 @@ struct D2GameStrc;
 
 void __fastcall SOUNDINST_SetValue(int nKey, int nValue);                                            // 0x004B9B50
 
-void __stdcall UNITS_BlockCollisionPath(D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, int nX, int nY);        // 0x00620A70
-
 void __stdcall UNITS_InitializeStaticPath(D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, int nX, int nY);      // 0x00620AE0
 
 void __stdcall UNITS_FreeCollisionPath(D2UnitStrc* pUnit);                                                  // 0x00623830
 
-int __stdcall UNITS_SetAnimStartFrame(D2UnitStrc* ptUnit); // 0x00624390
-
-void __stdcall STATLIST_AllocStatListEx(D2UnitStrc* pUnit, int nFlags, void* pCallback, D2GameStrc* pGame);  // 0x00626D40
-
 void __stdcall D2COMMON_10475_PostStatToStatList(D2UnitStrc* pUnit, D2StatListStrc* pStatList, int bResetFlag); // 0x00626E10
-
-int __stdcall ITEMS_CheckIfSocketable(D2UnitStrc* pItem);                                                   // 0x00629900
-
-unsigned short __stdcall ITEMS_GetWeaponClassId(D2UnitStrc* pItem);                                         // 0x00629FE0
-
-D2InventoryStrc* __stdcall INVENTORY_AllocInventory(void* pMemPool, D2UnitStrc* pOwner);                    // 0x0063ABD0
-
-int __stdcall UNITROOM_AddUnitToRoom(D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom);                           // 0x0064C350
-
-void __stdcall UNITROOM_UpdatePath(D2UnitStrc* pUnit);                                                      // 0x0064C450
-
 
 void __fastcall INV_QuestCodeUpdate(int nCode); // 0x0048A540
 
@@ -585,9 +457,9 @@ static void ITEM_StoreHandWeaponClass(D2UnitStrc* pItem, unsigned char nType); /
 
 void __fastcall GFX_FillGfxEntries(D2UnitStrc* pUnit, unsigned char nValue);                        // 0x0046F020
 
-void __fastcall sub_004B2A20(int nUnitId);                                                                  // 0x004B2A20
+void __fastcall sub_004B2A20_FinishPendingAction(int nUnitId);                                                                  // 0x004B2A20
 
-void __fastcall sub_004B3C00(int nUnitId);                                                                  // 0x004B3C00
+void __fastcall sub_004B3C00_FinishPendingAction(int nUnitId);                                                                  // 0x004B3C00
 
 int __fastcall ITEM_PlaceBodyItem(D2InventoryStrc* pInventory, D2UnitStrc* pItem, int nBodyLoc);    // 0x004C1C50
 
@@ -680,12 +552,6 @@ inline D2SkillsTxt* DATATBLS_GetSkillsTxtRecord(int nSkillId)
 void __fastcall GFX_FreeGfxData(D2UnitStrc* pUnit);                                                // 0x0046EC10
 
 void __fastcall CUNIT_RemoveInventoryUnits(D2UnitStrc* pUnit, int nArg);                             // 0x00466CB0
-
-void __stdcall INVENTORY_FreeInventory(D2InventoryStrc* pInventory);                                        // 0x0063AC40
-
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit);                                               // 0x00620BB0
-
-int __stdcall UNITROOM_IsUnitInRoom(D2ActiveRoomStrc* pRoom, D2UnitStrc* pUnit);                            // 0x0064C260
 
 void __stdcall UNITROOM_RemoveUnitFromRoom(D2UnitStrc* pUnit);                                              // 0x0064C370
 
@@ -796,7 +662,7 @@ void __fastcall ITEM_UpdateItemLink(D2UnitStrc* pItem, D2UnitStrc* pUnit, int bF
 
     if (bClamp)
     {
-        sub_006275B0(pUnit);
+        STATLIST_ClampStaminaManaHP(pUnit);
     }
 }
 
@@ -863,7 +729,7 @@ struct D2SkillStrc;
 // 0x004C10C0
 int __fastcall ITEM_IsSkillStateUsable(D2UnitStrc* pUnit, D2SkillStrc* pSkill)
 {
-    switch (sub_004D9FC0(pUnit, pSkill))
+    switch (sub_004D9FC0_GetSkillUseState(pUnit, pSkill))
     {
     case 2:
     case 7:
@@ -1584,10 +1450,10 @@ void __fastcall ITEM_UpdateItemStat(unsigned int nA, unsigned char nB, unsigned 
     if ((int)nD <= 0)
         return;
 
-    if (sub_006280A0(pItem, 4, 0xA38, (unsigned int)".\\UNIT\\Item.cpp"))
+    if (ITEMS_CheckItemFlag(pItem, 4, 0xA38, (unsigned int)".\\UNIT\\Item.cpp"))
         ITEMS_SetItemFlag(pItem, 4, 0);
 
-    if (sub_006280A0(pItem, 0x4000, 0xA3C, (unsigned int)".\\UNIT\\Item.cpp"))
+    if (ITEMS_CheckItemFlag(pItem, 0x4000, 0xA3C, (unsigned int)".\\UNIT\\Item.cpp"))
         ITEMS_SetItemFlag(pItem, 0x4000, 0);
 }
 
@@ -1615,7 +1481,7 @@ void __fastcall ITEM_ClearCursorItemFromPacket(D2GSPacketSrv42Strc* pPacket)
     INVENTORY_SetCursorItem(pInventory, 0);
     CURSOR_SetCursorItemState(INVENTORY_GetCursorItem(pInventory));
     CUNIT_RemoveClientSideUnit(nItemId, pItem->dwUnitType);
-    sub_004B29E0(nItemId);
+    sub_004B29E0_FinishPendingAction(nItemId);
 }
 
 // 0x004C20B0
@@ -1783,7 +1649,7 @@ void __fastcall ITEM_RemoveEquippedItems(D2UnitStrc* pUnit)
             if (pUnit->dwUnitType == UNIT_PLAYER)
                 INVENTORY_GetLeftHandWeapon(pUnit->pInventory);
 
-            if (!sub_006280A0(pRemoved, 0x100, 0x96, (unsigned int)".\\UNIT\\Item.cpp"))
+            if (!ITEMS_CheckItemFlag(pRemoved, 0x100, 0x96, (unsigned int)".\\UNIT\\Item.cpp"))
                 STATLIST_ExpireUnitStatlist(pUnit, pRemoved);
 
             ITEM_RefreshEquippedItems(pUnit);
@@ -1794,7 +1660,7 @@ void __fastcall ITEM_RemoveEquippedItems(D2UnitStrc* pUnit)
 }
 
 // 0x004C2530
-int __cdecl sub_004C2530()
+int __cdecl sub_004C2530_Return0()
 {
     return 0;
 }
@@ -1983,7 +1849,8 @@ static void __stdcall ITEM_PlaceItemAt(unsigned short nY, unsigned char nPage, D
         return;
     }
 
-    if (!sub_0063BCC0_PlaceItem(hInventory, pItem, ITEMPKT_GetUnitX(pItem), ITEMPKT_GetUnitY(pItem), UNITS_GetInventoryRecordId(pUnit, nPage, GAME_IsExpansion()), 1, nPage))
+// build: symbol ?INVENTORY_PlaceItemAtInventoryPage@* 0x0063BCC0
+    if (!INVENTORY_PlaceItemAtInventoryPage(hInventory, pItem, ITEMPKT_GetUnitX(pItem), ITEMPKT_GetUnitY(pItem), UNITS_GetInventoryRecordId(pUnit, nPage, GAME_IsExpansion()), 1, nPage))
     {
         return;
     }
@@ -2078,7 +1945,7 @@ void __fastcall ITEM_HandleItemToStorage(D2GSPacketSrv9C* pPacket)
 
     UI_SendMouseMove();
     ITEM_ClearUninterruptableState(pItem);
-    sub_004B2A40(!pItem ? -1 : pItem->dwUnitId);
+    sub_004B2A40_FinishPendingAction(!pItem ? -1 : pItem->dwUnitId);
 }
 
 // 0x004C2C80
@@ -2169,7 +2036,7 @@ void __fastcall ITEM_HandleItemFromStorage(D2GSPacketSrv9D* pPacket)
 
     if (pOwner == sub_00463DD0_GetPlayerUnit())
     {
-        sub_004B2A00(pItem->dwUnitId);
+        sub_004B2A00_FinishPendingAction(pItem->dwUnitId);
     }
 }
 
@@ -2279,7 +2146,7 @@ void __fastcall ITEM_HandleEquipItem(D2GSPacketSrv9D* pPacket)
     ITEM_RefreshEquippedItems(pUnit);
     UI_SendMouseMove();
     ITEM_ClearUninterruptableState(pItem);
-    sub_004B3C00(!pItem ? -1 : pItem->dwUnitId);
+    sub_004B3C00_FinishPendingAction(!pItem ? -1 : pItem->dwUnitId);
 }
 
 static inline int ITEMPKT_UnitFlag9(D2UnitStrc* pUnit)
@@ -2493,7 +2360,7 @@ void __fastcall ITEM_HandleUnequipItem(D2GSPacketSrv9D* pPacket)
 
     if (pUnit == pPlayer)
     {
-        sub_004B2A20(!hItem ? -1 : hItem->dwUnitId);
+        sub_004B2A20_FinishPendingAction(!hItem ? -1 : hItem->dwUnitId);
         INV_ResetHover();
         if (tItemSave.nBodyloc == 4)
         {
@@ -2892,7 +2759,7 @@ void __fastcall ITEM_HandleShopItem(D2GSPacketSrv9C* pPacket)
     }
 
     ITEM_PlaceItemAt(tItemSave.nY, tItemSave.nStorePage, pUnit, pItem, tItemSave.nX);
-    sub_004B2640(pUnit);
+    sub_004B2640_SetInvRequest(pUnit);
     ITEM_ClearUninterruptableState(pItem);
 }
 
@@ -2982,7 +2849,7 @@ void __fastcall sub_004C2C80_ItemFromStorage9D(D2GSPacketSrv9D* pPacket)
 
     if (pUnit == sub_00463DD0_GetPlayerUnit())
     {
-        sub_004B2A00(pItem->dwUnitId);
+        sub_004B2A00_FinishPendingAction(pItem->dwUnitId);
     }
 }
 
@@ -3020,7 +2887,7 @@ static void ITEM_CursorItemToBelt(D2GSPacketSrv9C* pPacket, D2ItemSaveStrc* pIte
         return;
     }
 
-    D2_ASSERT(sub_0063BCC0_PlaceItem(pInventory, pItem, CLIENTS_GetUnitX(pItem), CLIENTS_GetUnitY(pItem), UNITS_GetInventoryRecordId(pPlayer, nPage, GAME_IsExpansion()), 1, nPage), 0x892);
+    D2_ASSERT(INVENTORY_PlaceItemAtInventoryPage(pInventory, pItem, CLIENTS_GetUnitX(pItem), CLIENTS_GetUnitY(pItem), UNITS_GetInventoryRecordId(pPlayer, nPage, GAME_IsExpansion()), 1, nPage), 0x892);
 
     if (ITEMS_IsCharmUsable(pItem, pPlayer))
     {
@@ -3143,7 +3010,7 @@ void __fastcall ITEM_HandlePutInBelt(D2GSPacketSrv9C* pPacket)
     VIEW_SetBeltSlotValue(ITEMPKT_GetUnitX(pItem), 1);
     UI_SendMouseMove();
     ITEM_ClearUninterruptableState(pItem);
-    sub_004B2A60(pItem->dwUnitId);
+    sub_004B2A60_FinishPendingAction(pItem->dwUnitId);
 }
 
 // 0x004C42A0
@@ -3406,7 +3273,7 @@ void __fastcall ITEM_HandleAutoUnequip(D2GSPacketSrv9D* pPacket)
         gwLeftHandWeaponClass = 0;
     }
 
-    if (sub_0063BCC0_PlaceItem(pInventory, pItem, tItemSave.nX, tItemSave.nY, nRecordId, 1, 0))
+    if (INVENTORY_PlaceItemAtInventoryPage(pInventory, pItem, tItemSave.nX, tItemSave.nY, nRecordId, 1, 0))
     {
         if (!INVENTORY_PlaceItemInSocket(pInventory, pItem, 1))
         {
@@ -3923,6 +3790,13 @@ int __fastcall ITEM_QueryCacheAddress(D2AddressQueryStrc* pQuery)
 extern "C" void __cdecl SKILLDESC_OwnerMissileEvent(); // 0x004E3D70
 
 #pragma pack(push, 1)
+struct d2data_00727A4C_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
 struct d2data_007279EC_t
 {
     const void* p0;
@@ -3943,15 +3817,18 @@ struct d2data_007279EC_t
 };
 #pragma pack(pop)
 
-#pragma pack(push, 1)
-struct d2data_00727A4C_t
-{
-    unsigned char b0[4];
-};
-#pragma pack(pop)
-
-extern "C" struct d2data_007279EC_t gData_007279EC; // 0x007279EC
 extern "C" struct d2data_00727A4C_t gData_00727A4C; // 0x00727A4C
+extern "C" struct d2data_007279EC_t gData_007279EC; // 0x007279EC
+
+extern void* gpfnClientStateEvents[2] = { 0, (void*)(unsigned int)&SKILLDESC_OwnerMissileEvent }; // 0x00727DB4
+
+extern int gaCursorKind[2] = { 0, 2 }; // 0x00727A40
+
+extern unsigned int gnCursorKindCount = 2; // 0x00727A48
+
+extern "C" struct d2data_00727A4C_t gData_00727A4C = {
+    { 0x00 }
+}; // 0x00727A4C
 
 extern "C" struct d2data_007279EC_t gData_007279EC = {
     (const void*)"English",
@@ -3974,13 +3851,3 @@ extern "C" struct d2data_007279EC_t gData_007279EC = {
 extern "C" int gnTable_00727A28[5] = { 0, 1, 4, 2, 6 }; // 0x00727A28
 
 extern "C" unsigned int gnTableCount = 5; // 0x00727A3C
-
-extern int gaCursorKind[2] = { 0, 2 }; // 0x00727A40
-
-extern unsigned int gnCursorKindCount = 2; // 0x00727A48
-
-extern "C" struct d2data_00727A4C_t gData_00727A4C = {
-    { 0x00 }
-}; // 0x00727A4C
-
-extern void* gpfnClientStateEvents[2] = { 0, (void*)(unsigned int)&SKILLDESC_OwnerMissileEvent }; // 0x00727DB4

@@ -1,6 +1,7 @@
 #include "D2ItemTypes.h"
 #include "D2StatIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2ClientTypes.h"
 #include "D2ClientMenus.h"
 #include "D2StormTypes.h"
@@ -8,6 +9,13 @@
 #include "D2ClientKeyConfig.h"
 #include "D2Structs.h"
 #include "D2PlayerModes.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2GfxApi.h"
+#include "D2HellApi.h"
 
 #pragma intrinsic(memcpy)
 
@@ -1236,17 +1244,13 @@ struct D2HotkeyCommandStrc
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(FARPROC lpfn); // 0x006CC34C
 
 extern "C" int __cdecl isalpha(int c); // 0x00686DA5
-
-int __cdecl WINDOW_GetWindow(); // 0x004F59A0
 
 void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
@@ -1262,15 +1266,15 @@ extern HOTKEYCOMMANDFN gpfnBoundCommand_007A7404; // 0x007A7404
 
 extern HOTKEYCOMMANDFN gpfnBoundCommand_007A7408; // 0x007A7408
 
-extern HOTKEYCOMMANDFN gpfnBoundCommand_007A6B10; // 0x007A6B10
+extern HOTKEYCOMMANDFN gpfnMButtonDownCommand; // 0x007A6B10
 
 extern HOTKEYCOMMANDFN gpfnBoundCommand_007A740C; // 0x007A740C
 
-extern HOTKEYCOMMANDFN gpfnBoundCommand_007A7414; // 0x007A7414
+extern HOTKEYCOMMANDFN gpfnXButton1DownCommand; // 0x007A7414
 
-extern HOTKEYCOMMANDFN gpfnBoundCommand_007A6B14; // 0x007A6B14
+extern HOTKEYCOMMANDFN gpfnXButton1UpCommand; // 0x007A6B14
 
-extern HOTKEYCOMMANDFN gpfnBoundCommand_007A7410; // 0x007A7410
+extern HOTKEYCOMMANDFN gpfnXButton2DownCommand; // 0x007A7410
 
 extern D2MsgHandlerEntryStrc gaHotkeyHandlers[4]; // 0x00712944
 
@@ -1286,7 +1290,6 @@ void __cdecl GAME_CloseAllPanels(); // 0x0044C6B0
 
 void __cdecl TEXT_ClearListFlags(); // 0x004A01E0
 
-void __fastcall GAME_SetStandStillHeld(int nValue); // 0x0044BEA0
 
 void __stdcall CMDTBL_LoadKeyConfig(int bInstallDir); // 0x004698D0
 
@@ -1305,13 +1308,11 @@ struct D2KeyBindingStrc { int nAction; unsigned short nKey; char unk_06[4]; };
 
 #pragma pack(pop)
 
-extern int gnMode_007A7418; // 0x007A7418
+extern int gnHotkeyMode; // 0x007A7418
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
 struct Unicode;
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
 // build: symbol ??__EgwszKeyText_007A741C@@YAXXZ 0x006CAAD0
 Unicode gwszKeyText_007A741C[4]; // 0x007A741C
@@ -1320,14 +1321,9 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
 const Unicode* __fastcall CMDTBL_GetKeyText(int nKey, int nArg2); // 0x00469DE0
 
-void* __fastcall ARCHIVE_AllocateBufferAndReadFile(void* hArchive, const char* szFileName, unsigned int* pnSize, const char* szFile, int nLine); // 0x00517079
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 extern "C" char* __cdecl strcat(char* szDst, const char* szSrc);
-void* __fastcall FOG_CreateFileA(const char* szFileName, unsigned long dwDesiredAccess, unsigned long dwShareMode, void* pSecurityAttributes, unsigned long dwCreationDisposition, unsigned long dwFlagsAndAttributes, void* hTemplateFile); // 0x00406960
-int __fastcall FOG_CloseFile(void* hFile); // 0x004069A0
 
-int __fastcall FOG_ReadFile(void* hFile, void* pBuffer, unsigned long nToRead, unsigned long* pnRead, void* pOverlapped); // 0x004069B0
 
 enum D2C_CmdTblConstants
 {
@@ -1335,81 +1331,47 @@ enum D2C_CmdTblConstants
     VK_F4 = 0x73,
 };
 
-unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB); // 0x00469AA0
 
 #define BODYLOC_BELT 8
 
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
 
-int __fastcall GAME_GetUIVarState(unsigned int nUIVar); // 0x004538D0
 
-int __cdecl GAME_GetConnectionType(); // 0x0044DB30
 
-int __cdecl GAME_IsExitPending(); // 0x0044DA30
 
-int __cdecl CUNIT_IsPlayerDeadOrMissing(); // 0x00463DF0
 
-void __fastcall QUESTLOG_ToggleQuestLog(int nMode); // 0x004A3FE0
 
-void __fastcall AUTOMAP_ResetBaseOffset(int bForce); // 0x00457640
 
-int __cdecl AUTOMAP_GetAutomapFade(); // 0x004576C0
 
-int __fastcall AUTOMAP_SetAutomapFade(int nFade); // 0x004576F0
 
-int __cdecl AUTOMAP_GetAutomapParty(); // 0x004577B0
 
-int __cdecl AUTOMAP_GetAutomapPartyNames(); // 0x004577E0
 
 int __cdecl AUTOMAP_GetAutomapLeft(); // 0x00457770
 
 int __fastcall AUTOMAP_SaveAutomapLeft(int nValue); // 0x00457780
 
-void __fastcall SPELLSEL_SetSkillSelectRight(int nValue); // 0x004A8CE0
 
-void __fastcall SPELLSEL_AssignHotkey(int nHotkey); // 0x004A9E60
 
-void __fastcall SPELLSEL_SelectHotkey(int nSlot); // 0x004AA030
 
-int __cdecl GAME_IsExpansion(); // 0x0044DCC0
 
-void __fastcall MSG_SendWord(unsigned char nCmd, unsigned short nArg); // 0x004785B0
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-D2UnitStrc* __stdcall INVENTORY_GetItemFromBodyLoc(D2InventoryStrc* pInventory, int nBodyLoc); // 0x0063BDE0
 
-int __stdcall ITEMSIsA(D2UnitStrc* pItem, int nItemType); // 0x00629BB0
 
 void __fastcall GAME_SetRunKeyHeld(int nValue); // 0x0044BE60
 
-int __cdecl GAME_GetAlwaysRun(); // 0x0044BE90
 
-void __fastcall GAME_SetAlwaysRun(int bAlwaysRun); // 0x0044BE80
 
-void __fastcall UNITMODE_SetUnitMode(D2UnitStrc* pUnit, int nMode); // 0x00480E70
 
-void __fastcall MSG_SendHeaderOnly(char nValue); // 0x00478590
 
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
 
-int __cdecl NPCMENU_IsAnyDialogOpen(); // 0x004B34A0
 
-int __cdecl TEXT_IsTextBoxOpen(); // 0x004A0000
 
-void __fastcall sub_0047E200_CloseMenus(int nArg); // 0x0047E200
 
-int __fastcall UI_CloseUIVars(int bArg1, int nArg2); // 0x00456300
 
-void __fastcall WARDENCLIENT_ToggleEscMenuUIState(int bSaveState, int nMenu); // 0x0047E090
-
-void __fastcall SPELLSEL_CycleHotkey(int nDelta); // 0x004AA740
 
 void __cdecl INV_ResetEquipSounds(); // 0x0048A730
 
-int __fastcall ROSTERPETS_FindPetIdByOwner(D2UnitStrc* pOwner, int nPetType, int bAny); // 0x00478F20
 
-void __cdecl SELECT_ClearSelection(); // 0x00466FE0
 
 void (__cdecl* gpfnMButtonDownCommand)(); // 0x007A6B10
 
@@ -1483,13 +1445,15 @@ void __cdecl CMDTBL_CycleSetting()
 // 0x00468A90
 void __cdecl sub_00468A90_ToggleSetting()
 {
-    sub_004577C0_SetValue(!AUTOMAP_GetAutomapParty());
+// build: symbol ?AUTOMAP_SaveAutomapParty@* 0x004577C0
+    AUTOMAP_SaveAutomapParty(!AUTOMAP_GetAutomapParty());
 }
 
 // 0x00468AB0
 void __cdecl sub_00468AB0_ToggleSetting()
 {
-    sub_004577F0_SetValue(!AUTOMAP_GetAutomapPartyNames());
+// build: symbol ?AUTOMAP_SaveAutomapPartyNames@* 0x004577F0
+    AUTOMAP_SaveAutomapPartyNames(!AUTOMAP_GetAutomapPartyNames());
 }
 
 // 0x00468AD0
@@ -1704,7 +1668,7 @@ void __cdecl CMDTBL_Hotkey15()
 }
 
 // 0x00468F00
-void __cdecl sub_00468F00()
+void __cdecl sub_00468F00_ShowBelt()
 {
     D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
     if (pPlayer)
@@ -1717,13 +1681,9 @@ void __cdecl sub_00468F00()
     }
 }
 
-void __cdecl PANEL_BeltHotkeyFirst(); // 0x00498C50
 
-void __cdecl PANEL_BeltHotkeySecond(); // 0x00498C90
 
-void __cdecl PANEL_BeltHotkeyThird(); // 0x00498CD0
 
-void __cdecl PANEL_BeltHotkeyFourth(); // 0x00498D10
 
 // 0x00468F40
 void __cdecl CMDTBL_BeltHotkey0()
@@ -1949,7 +1909,7 @@ void __cdecl CMDTBL_HotkeyUiVarOn()
 }
 
 // 0x00469230
-void __cdecl sub_00469230()
+void __cdecl sub_00469230_RunMButtonDown()
 {
     if (gpfnMButtonDownCommand)
     {
@@ -1959,7 +1919,7 @@ void __cdecl sub_00469230()
 }
 
 // 0x00469270
-void __cdecl sub_00469270()
+void __cdecl sub_00469270_RunMButtonUp()
 {
     if (gpfnMButtonUpCommand)
     {
@@ -1969,7 +1929,7 @@ void __cdecl sub_00469270()
 }
 
 // 0x004692B0
-void __cdecl sub_004692B0()
+void __cdecl sub_004692B0_RunXButton1Down()
 {
     if (gpfnXButton1DownCommand)
     {
@@ -1979,7 +1939,7 @@ void __cdecl sub_004692B0()
 }
 
 // 0x004692F0
-void __cdecl sub_004692F0()
+void __cdecl sub_004692F0_RunXButton1Up()
 {
     if (gpfnXButton1UpCommand)
     {
@@ -1989,7 +1949,7 @@ void __cdecl sub_004692F0()
 }
 
 // 0x00469330
-void __cdecl sub_00469330()
+void __cdecl sub_00469330_RunXButton2Down()
 {
     if (gpfnXButton2DownCommand)
     {
@@ -2023,9 +1983,9 @@ static inline int HOTKEY_CheckWheelKey(int nCommand, int nKey)
     return 1;
 }
 
-D2WheelCallbackFn gpfnWheelUp; // 0x007A7404
+extern D2WheelCallbackFn gpfnWheelUp; // 0x007A7404
 
-D2WheelCallbackFn gpfnWheelDown; // 0x007A7408
+extern D2WheelCallbackFn gpfnWheelDown; // 0x007A7408
 
 typedef int (__stdcall* D2FarProcFn)();
 
@@ -2079,6 +2039,7 @@ public:
 // 0x00469420
 // Kept out of line: 0x00469C20 calls it with its arguments in eax/edx/ecx, a convention only a static of this unit
 // gets, so it is this unit's function; with /Ob2 it would otherwise be inlined there.
+// noinline: the original calls this; without it the compiler expands it into 0x00469C20.
 static __declspec(noinline) int sub_00469420_CheckWheelKey(int nId, unsigned short nKey, unsigned short* pKey)
 {
     switch (nKey)
@@ -2123,11 +2084,11 @@ void __cdecl CMDTBL_BindMouseHotkeys()
 {
     gpfnBoundCommand_007A7404 = 0;
     gpfnBoundCommand_007A7408 = 0;
-    gpfnBoundCommand_007A6B10 = 0;
+    gpfnMButtonDownCommand = 0;
     gpfnBoundCommand_007A740C = 0;
-    gpfnBoundCommand_007A7414 = 0;
-    gpfnBoundCommand_007A6B14 = 0;
-    gpfnBoundCommand_007A7410 = 0;
+    gpfnXButton1DownCommand = 0;
+    gpfnXButton1UpCommand = 0;
+    gpfnXButton2DownCommand = 0;
     gpfnXButton2UpCommand = 0;
     for (int i = 0; i < NUM_HOTKEYS; ++i)
     {
@@ -2138,7 +2099,7 @@ void __cdecl CMDTBL_BindMouseHotkeys()
             case 0x100:
                 if (HOTKEY_CheckWheelKey(gtHotkeys_007A6F90[i].nCommand, gtHotkeys_007A6F90[i].nKey))
                 {
-                    gpfnBoundCommand_007A6B10 = gaHotkeyCommands[gtHotkeys_007A6F90[i].nCommand].pfnCommand;
+                    gpfnMButtonDownCommand = gaHotkeyCommands[gtHotkeys_007A6F90[i].nCommand].pfnCommand;
                     gpfnBoundCommand_007A740C = gaHotkeyCommands[gtHotkeys_007A6F90[i].nCommand].pfnUnk0x04;
                     break;
                 }
@@ -2147,8 +2108,8 @@ void __cdecl CMDTBL_BindMouseHotkeys()
             case 0x101:
                 if (HOTKEY_CheckWheelKey(gtHotkeys_007A6F90[i].nCommand, gtHotkeys_007A6F90[i].nKey))
                 {
-                    gpfnBoundCommand_007A7414 = gaHotkeyCommands[gtHotkeys_007A6F90[i].nCommand].pfnCommand;
-                    gpfnBoundCommand_007A6B14 = gaHotkeyCommands[gtHotkeys_007A6F90[i].nCommand].pfnUnk0x04;
+                    gpfnXButton1DownCommand = gaHotkeyCommands[gtHotkeys_007A6F90[i].nCommand].pfnCommand;
+                    gpfnXButton1UpCommand = gaHotkeyCommands[gtHotkeys_007A6F90[i].nCommand].pfnUnk0x04;
                     break;
                 }
                 gtHotkeys_007A6F90[i].nKey = 0xFFFF;
@@ -2156,7 +2117,7 @@ void __cdecl CMDTBL_BindMouseHotkeys()
             case 0x102:
                 if (HOTKEY_CheckWheelKey(gtHotkeys_007A6F90[i].nCommand, gtHotkeys_007A6F90[i].nKey))
                 {
-                    gpfnBoundCommand_007A7410 = gaHotkeyCommands[gtHotkeys_007A6F90[i].nCommand].pfnCommand;
+                    gpfnXButton2DownCommand = gaHotkeyCommands[gtHotkeys_007A6F90[i].nCommand].pfnCommand;
                     gpfnXButton2UpCommand = gaHotkeyCommands[gtHotkeys_007A6F90[i].nCommand].pfnUnk0x04;
                     break;
                 }
@@ -2209,11 +2170,8 @@ struct D2KeyConfigHeaderStrc
 
 #define FILE_ATTRIBUTE_NORMAL 0x80
 
-int __fastcall FOG_GetSavePath(char* szPath, int nSize); // 0x00407050
 
-int __fastcall FOG_CreatePathHierarchy(const char* szPath);                                        // 0x00406A10
 
-int __fastcall FOG_WriteFile(void* hFile, const void* pBuffer, unsigned long nSize, unsigned long* pWritten, void* pOverlapped); // 0x004069D0
 
 extern char gszRealm[];                                                                    // 0x007A0500
 
@@ -3061,7 +3019,7 @@ void __stdcall CMDTBL_DispatchHotkey(SMSGHANDLER_PARAMS* pMsg)
         int nAction = gaHotkeys[i].nAction;
         if (nAction != 0xFFFF && nAction < 0x39 && nAction <= 0xDF && gaHotkeyCommands[nAction].pfnUnk0x04)
         {
-            if (gnMode_007A7418 == 2 && !gaHotkeyCommands[gaHotkeys[i].nAction].nModeFlag)
+            if (gnHotkeyMode == 2 && !gaHotkeyCommands[gaHotkeys[i].nAction].nModeFlag)
                 return;
             D2_ASSERT(!IsBadCodePtr((FARPROC)gaHotkeyCommands[gaHotkeys[i].nAction].pfnUnk0x04), 0x81C);
             gaHotkeyCommands[gaHotkeys[i].nAction].pfnUnk0x04();
@@ -3120,6 +3078,92 @@ extern "C" struct d2data_007121E0_t gData_007121E0 = {
     { 0x72 }
 }; // 0x007121E0
 
+extern unsigned char gaKeyTable[0x474] = {
+    0, 0, 0, 0, 0x41, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0x43, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0x42, 0, 0, 0, 0, 0, 1, 0,
+    0, 0, 0x49, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0x50, 0, 1, 0,
+    0, 0, 2, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 3, 0, 0, 0,
+    0x4D, 0, 1, 0, 0, 0, 3, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    4, 0, 0, 0, 0x51, 0, 1, 0, 0, 0, 4, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 5, 0, 0, 0, 0xD, 0, 1, 0, 0, 0, 5, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 6, 0, 0, 0, 0x48, 0, 1, 0,
+    0, 0, 6, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 7, 0, 0, 0,
+    9, 0, 1, 0, 0, 0, 7, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    8, 0, 0, 0, 0x78, 0, 1, 0, 0, 0, 8, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 9, 0, 0, 0, 0x79, 0, 1, 0, 0, 0, 9, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0xA, 0, 0, 0, 0x7A, 0, 1, 0,
+    0, 0, 0xA, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0xB, 0, 0, 0,
+    0x7B, 0, 1, 0, 0, 0, 0xB, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0xC, 0, 0, 0, 0x54, 0, 1, 0, 0, 0, 0xC, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0xD, 0, 0, 0, 0x53, 0, 1, 0, 0, 0, 0xD, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0xE, 0, 0, 0, 0x70, 0, 1, 0,
+    0, 0, 0xE, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0xF, 0, 0, 0,
+    0x71, 0, 1, 0, 0, 0, 0xF, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x10, 0, 0, 0, 0x72, 0, 1, 0, 0, 0, 0x10, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x11, 0, 0, 0, 0x73, 0, 1, 0, 0, 0, 0x11, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x12, 0, 0, 0, 0x74, 0, 1, 0,
+    0, 0, 0x12, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x13, 0, 0, 0,
+    0x75, 0, 1, 0, 0, 0, 0x13, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x14, 0, 0, 0, 0x76, 0, 1, 0, 0, 0, 0x14, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x16, 0, 0, 0, 0xC0, 0, 1, 0, 0, 0, 0x16, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x17, 0, 0, 0, 0x31, 0, 1, 0,
+    0, 0, 0x17, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x18, 0, 0, 0,
+    0x32, 0, 1, 0, 0, 0, 0x18, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x19, 0, 0, 0, 0x33, 0, 1, 0, 0, 0, 0x19, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x1A, 0, 0, 0, 0x34, 0, 1, 0, 0, 0, 0x1A, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x1B, 0, 0, 0, 0x60, 0, 1, 0,
+    0, 0, 0x1B, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x1C, 0, 0, 0,
+    0x61, 0, 1, 0, 0, 0, 0x1C, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x1D, 0, 0, 0, 0x62, 0, 1, 0, 0, 0, 0x1D, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x1E, 0, 0, 0, 0x63, 0, 1, 0, 0, 0, 0x1E, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x1F, 0, 0, 0, 0x64, 0, 1, 0,
+    0, 0, 0x1F, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x20, 0, 0, 0,
+    0x65, 0, 1, 0, 0, 0, 0x20, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x21, 0, 0, 0, 0x66, 0, 1, 0, 0, 0, 0x21, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x22, 0, 0, 0, 0x11, 0, 1, 0, 0, 0, 0x22, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x23, 0, 0, 0, 0x52, 0, 1, 0,
+    0, 0, 0x23, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0x24, 0, 0, 0,
+    0x10, 0, 1, 0, 0, 0, 0x24, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x25, 0, 0, 0, 0x12, 0, 1, 0, 0, 0, 0x25, 0, 0, 0, 1, 1,
+    0, 0, 0, 0, 0x26, 0, 0, 0, 0x20, 0, 1, 0, 0, 0, 0x26, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x27, 0, 0, 0, 3, 1, 1, 0,
+    0, 0, 0x27, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x28, 0, 0, 0,
+    4, 1, 1, 0, 0, 0, 0x28, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x29, 0, 0, 0, 0x4E, 0, 1, 0, 0, 0, 0x29, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x2A, 0, 0, 0, 0x2C, 0, 1, 0, 0, 0, 0x2A, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x2B, 0, 0, 0, 0x5A, 0, 1, 0,
+    0, 0, 0x2B, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x2C, 0, 0, 0,
+    0x57, 0, 1, 0, 0, 0, 0x2C, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x2D, 0, 0, 0, 0x56, 0, 1, 0, 0, 0, 0x2D, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x15, 0, 0, 0, 0x77, 0, 1, 0, 0, 0, 0x15, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x2E, 0, 0, 0, 0xFF, 0xFF, 1, 0,
+    0, 0, 0x2E, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x2F, 0, 0, 0,
+    0xFF, 0xFF, 1, 0, 0, 0, 0x2F, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x30, 0, 0, 0, 0xFF, 0xFF, 1, 0, 0, 0, 0x30, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x31, 0, 0, 0, 0xFF, 0xFF, 1, 0, 0, 0, 0x31, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x32, 0, 0, 0, 0xFF, 0xFF, 1, 0,
+    0, 0, 0x32, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x33, 0, 0, 0,
+    0xFF, 0xFF, 1, 0, 0, 0, 0x33, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x34, 0, 0, 0, 0xFF, 0xFF, 1, 0, 0, 0, 0x34, 0, 0, 0, 0xFF, 0xFF,
+    0, 0, 0, 0, 0x35, 0, 0, 0, 0xFF, 0xFF, 1, 0, 0, 0, 0x35, 0,
+    0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x36, 0, 0, 0, 0x4F, 0, 1, 0,
+    0, 0, 0x36, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0, 0x37, 0, 0, 0,
+    0x67, 0, 1, 0, 0, 0, 0x37, 0, 0, 0, 0xFF, 0xFF, 0, 0, 0, 0,
+    0x38, 0, 0, 0, 0x1B, 0, 1, 0, 0, 0, 0x38, 0, 0, 0, 0xFF, 0xFF
+}; // 0x00712220
+
+extern D2MsgHandlerEntryStrc gaHotkeyHandlers[4] = {
+    { 0, 256, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&SCMD_HandleHotkeyMessage },
+    { 0, 260, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&SCMD_HandleHotkeyMessage },
+    { 0, 257, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&CMDTBL_DispatchHotkey },
+    { 0, 261, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&CMDTBL_DispatchHotkey }
+}; // 0x00712944
+
+extern D2MsgHandlerEntryStrc gaHotkeyUpHandlers[2] = {
+    { 0, 257, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&CMDTBL_DispatchHotkey },
+    { 0, 261, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&CMDTBL_DispatchHotkey }
+}; // 0x00712974
+
 extern D2HotkeyCommandStrc gaHotkeyCommands[57] = {
     { (void (__cdecl *)())&CMDTBL_SetUIVar2 },
     { (void (__cdecl *)())&CMDTBL_SetUIVar1 },
@@ -3143,7 +3187,7 @@ extern D2HotkeyCommandStrc gaHotkeyCommands[57] = {
     { (void (__cdecl *)())&CMDTBL_Hotkey5 },
     { (void (__cdecl *)())&CMDTBL_Hotkey6 },
     { (void (__cdecl *)())&CMDTBL_Hotkey7 },
-    { (void (__cdecl *)())&sub_00468F00, 0, 1 },
+    { (void (__cdecl *)())&sub_00468F00_ShowBelt, 0, 1 },
     { (void (__cdecl *)())&CMDTBL_BeltHotkey0 },
     { (void (__cdecl *)())&CMDTBL_BeltHotkey1 },
     { (void (__cdecl *)())&CMDTBL_BeltHotkey2 },
@@ -3179,15 +3223,3 @@ extern D2HotkeyCommandStrc gaHotkeyCommands[57] = {
     { (void (__cdecl *)())&CMDTBL_Phrase20, 0, 1 },
     { (void (__cdecl *)())&CMDTBL_HotkeyEscape }
 }; // 0x00712698
-
-extern D2MsgHandlerEntryStrc gaHotkeyHandlers[4] = {
-    { 0, 256, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&SCMD_HandleHotkeyMessage },
-    { 0, 260, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&SCMD_HandleHotkeyMessage },
-    { 0, 257, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&CMDTBL_DispatchHotkey },
-    { 0, 261, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&CMDTBL_DispatchHotkey }
-}; // 0x00712944
-
-extern D2MsgHandlerEntryStrc gaHotkeyUpHandlers[2] = {
-    { 0, 257, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&CMDTBL_DispatchHotkey },
-    { 0, 261, (void (__stdcall *)(SMSGHANDLER_PARAMS *))&CMDTBL_DispatchHotkey }
-}; // 0x00712974

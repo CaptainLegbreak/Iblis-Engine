@@ -17,7 +17,7 @@ unsigned char gaItemShiftMaps[9][105][256];                                     
 // build: symbol $SG2565 0x006DCD3C
 // build: symbol $SG2566 0x006DCD34
 // 0x006009C0
-void __fastcall sub_006009C0(const char* szName, int nIndex)
+void __fastcall D2CMP_LoadItemPalShift(const char* szName, int nIndex)
 {
     void* hFile;
     unsigned int nSize;

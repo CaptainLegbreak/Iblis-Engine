@@ -1,5 +1,9 @@
 #include "D2BNClient.h"
 #include "D2BnCryptTypes.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "StormApi.h"
+#include "StormApi2.h"
 
 struct D2BnHashCtxStrc;
 
@@ -9,25 +13,16 @@ typedef unsigned int UInt;
 
 void* __stdcall sub_00413020_Allocate(UInt size, const char* file, int line, UInt flags); // 0x00413020
 
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags); // 0x00413020
-
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
-
 void* __cdecl sub_006829C0_CopyBuffer(void* dest, const void* source, UInt size); // 0x006829C0
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
 
-unsigned int __stdcall SStrHash(const char* szString, unsigned int nFlags, unsigned int nSeed); // 0x00413CE0
 
-int __stdcall SFileLoadFile(const char* szFileName, void** ppBuffer, unsigned int* pSize, unsigned int nExtraSize, void* pOverlapped); // 0x0041B650
 
-int __stdcall SFileUnloadFile(void* pBuffer); // 0x00416710
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -48,7 +43,6 @@ static void __cdecl GRID_CopyDecodedKeys(Byte** first, Byte** second); // 0x0052
 static void* GRID_LoadKeyFile(const char* szFileName, unsigned int* pSize); // 0x00523480
 
 // build: base-profile
-extern "C" unsigned int __security_cookie; // 0x00749DE0
 
 extern "C" void __fastcall __security_check_cookie(unsigned int cookie); // 0x00681A48
 
@@ -92,6 +86,7 @@ static inline unsigned int sub_GetTerminatedLength(const unsigned char* pString,
     return 0;
 }
 
+// 0x005232B0
 static int __cdecl sub_005232B0_DecodeAndValidate(unsigned char* pBuffer, unsigned int nSize)
 {
     char aKey[20];
@@ -269,6 +264,12 @@ void __cdecl GRID_UnlockCDKeys()
     }
 }
 
+// 0x00523A00
+int __cdecl GAME_GetExeHash()
+{
+    return gdwGlobal_00730190;
+}
+
 // 0x00523A10
 unsigned int __cdecl GRID_HashCDKey()
 {
@@ -288,8 +289,15 @@ unsigned int __cdecl GRID_HashCDKey()
     return dwHash;
 }
 
+extern int gdwGlobal_00882750; // 0x00882750
+// 0x00523AA0
+int __cdecl GAME_GetExeInfo()
+{
+    return gdwGlobal_00882750;
+}
+
 // 0x00523AB0
-const char* __fastcall sub_00523AB0_GetCDKey(int nSlot)
+const char* __fastcall GRID_GetCDKey(int nSlot)
 {
     return nSlot ? (const char*)gpKeyFile3Data : (const char*)gpGidFileData;
 }
@@ -312,17 +320,6 @@ void __fastcall sub_M103_Emit_00523420(char* szFirst, char* szSecond, D2BnHashCt
     GRID_FreeKeyStrings(szFirst, szSecond);
 }
 
-#pragma pack(push, 1)
-struct d2data_00730194_t
-{
-    unsigned char b0[4];
-};
-#pragma pack(pop)
+int gdwGlobal_00730190 = 1; // 0x00730190
 
-extern "C" struct d2data_00730194_t gData_00730194; // 0x00730194
-
-extern int gdwGlobal_00730190 = 1; // 0x00730190
-
-extern "C" struct d2data_00730194_t gData_00730194 = {
-    { 0x00 }
-}; // 0x00730194
+extern "C" unsigned char gData_00730194[4] = { 0 }; // 0x00730194

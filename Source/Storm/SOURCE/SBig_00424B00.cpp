@@ -1,3 +1,8 @@
+// This piece stays apart from SBig.cpp (a declaration difference). sub_00424B00_BigSquare (0x424B00) reads each buffer's
+// limb count through a copy of a one-member count struct (BigBuffer::IsUsed below); read directly, as
+// SBig.cpp's shared types (Source/Include D2StormArrayA.h, D2StormBigBuffer.h) hold it, as a plain
+// unsigned int, the function no longer matches, here or in SBig.cpp. Every function in SBig.cpp is
+// built with the plain count.
 #include "Storm.h"
 #include "D2StormTypes.h"
 void __stdcall SMemZero(void* pDest, unsigned int nSize);                                                    // 0x0041D300

@@ -5,9 +5,8 @@
 #include "D2MonsterIds.h"
 #include "D2LanguageNames.h"
 
-void __fastcall QUESTS_InitScrollTextChain(D2QuestDataStrc* pQuest, D2TextHeaderStrc* pTextControl, int nNPCID, int nIndex); // 0x00543790
+#include "D2GameFuncs.h"
 
-int __fastcall PLRINTRO_GetQuestIntroFlag(D2UnitStrc* pUnit, D2GameStrc* pGame, int nNpcId); // 0x005723C0
 
 // 0x00586B50
 void __fastcall ACT5Intro_Callback00_NpcActivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg)
@@ -58,7 +57,7 @@ void __fastcall ACT5Intro_Callback00_NpcActivate(D2QuestDataStrc* pQuestData, D2
 }
 
 // 0x00586C40
-bool __fastcall sub_00586C40_StatusFilterCallback(D2QuestDataStrc* quest, D2UnitStrc* player, D2BitBufferStrc* globalFlags, D2BitBufferStrc* flags, unsigned char* status)
+bool __fastcall ACT5Intro_StatusFilterCallback(D2QuestDataStrc* quest, D2UnitStrc* player, D2BitBufferStrc* globalFlags, D2BitBufferStrc* flags, unsigned char* status)
 {
     *status = 0;
     return false;
@@ -75,7 +74,6 @@ bool __fastcall ACT5Intro_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpc
     return false;
 }
 
-void __fastcall PLRINTRO_SetQuestIntroFlag(D2UnitStrc* pUnit, D2GameStrc* pGame, int nNpcId); // 0x00572360
 
 D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId); // 0x00543640
 
@@ -180,7 +178,7 @@ struct D2QuestData0058EA50Strc
 extern unsigned char gaAct5IntroNpcMessages[]; // 0x00732FF8
 
 // 0x0058EA50
-void __fastcall sub_0058EA50_InitQuestCallbacks(D2QuestData0058EA50Strc* pQuestData)
+void __fastcall ACT5Intro_InitQuestData(D2QuestData0058EA50Strc* pQuestData)
 {
     memset(&pQuestData->tCallbacks, 0, sizeof(pQuestData->tCallbacks));
     pQuestData->tCallbacks.pfCallbackA0 = (void*)ACT5Intro_Callback00_NpcActivate;
@@ -191,7 +189,7 @@ void __fastcall sub_0058EA50_InitQuestCallbacks(D2QuestData0058EA50Strc* pQuestD
     pQuestData->nB = 0;
     pQuestData->n18 = 0;
     pQuestData->nE0 = 0x2A;
-    pQuestData->pfStatusFilterE8 = (void*)sub_00586C40_StatusFilterCallback;
+    pQuestData->pfStatusFilterE8 = (void*)ACT5Intro_StatusFilterCallback;
     pQuestData->pfActiveFilterEC = (void*)ACT5Intro_ActiveFilterCallback;
 }
 
@@ -209,56 +207,12 @@ struct d2data_00735EF4_t
 };
 #pragma pack(pop)
 
-extern "C" unsigned int gData_00732FEC[3]; // 0x00732FEC
-extern "C" unsigned int gData_00734270[37]; // 0x00734270
-extern "C" unsigned int gData_00734304[7]; // 0x00734304
 extern "C" struct d2data_00734AC8_t gData_00734AC8; // 0x00734AC8
-extern "C" unsigned int gData_007357E4[7]; // 0x007357E4
 extern "C" struct d2data_00735EF4_t gData_00735EF4; // 0x00735EF4
 
-extern "C" unsigned int gData_00732FEC[3] = { 0x20373072, 0x20383072, 0x20393072 }; // 0x00732FEC
-#pragma comment(linker, "/alternatename:?gdwAct5Q2RuneCodes@@3PAIA=_gData_00732FEC")
+extern unsigned int gnA5Q1NpcIndices[6] = { 0xFFFFFFFF, 0, 1, 2, 3, 4 }; // 0x00733928
 
-extern unsigned char gaAct5IntroNpcMessages[784] = {
-    0, 2, 0, 0, 0x2E, 0x4E, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0,
-    0x45, 0x4E, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0x55, 0x4E, 0, 0,
-    0, 0, 0, 0, 3, 2, 0, 0, 0x61, 0x4E, 0, 0, 0, 0, 0, 0,
-    8, 2, 0, 0, 0x23, 0x4E, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    5, 0, 0, 0, 0, 2, 0, 0, 0x2E, 0x4E, 0, 0, 0, 0, 0, 0,
-    1, 2, 0, 0, 0x47, 0x4E, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0,
-    0x56, 0x4E, 0, 0, 0, 0, 0, 0, 3, 2, 0, 0, 0x63, 0x4E, 0, 0,
-    0, 0, 0, 0, 8, 2, 0, 0, 0x23, 0x4E, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 5, 0, 0, 0, 0, 2, 0, 0, 0x2E, 0x4E, 0, 0,
-    0, 0, 0, 0, 1, 2, 0, 0, 0x46, 0x4E, 0, 0, 0, 0, 0, 0,
-    2, 2, 0, 0, 0x57, 0x4E, 0, 0, 0, 0, 0, 0, 3, 2, 0, 0,
-    0x62, 0x4E, 0, 0, 0, 0, 0, 0, 8, 2, 0, 0, 0x23, 0x4E, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF,
-    0, 0, 0, 0, 2
-}; // 0x00732FF8
+extern unsigned int gnA5Q4NpcIndices[6] = { 0xFFFFFFFF, 0, 1, 2, 3, 4 }; // 0x007350E8
 
 extern char gpAct5Q1NpcMessages[1568] = {
     -1, 1, 0, 0, 109, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -350,7 +304,13 @@ extern char gpAct5Q1NpcMessages[1568] = {
     0, 0, 0, 0, 2
 }; // 0x00733308
 
-extern unsigned int gnA5Q1NpcIndices[6] = { 0xFFFFFFFF, 0, 1, 2, 3, 4 }; // 0x00733928
+extern unsigned int gdwAct5Q2RuneCodes[3] = { 0x20373072, 0x20383072, 0x20393072 }; // 0x00732FEC
+
+extern "C" unsigned int gnA5Q2NpcActivateIndices[37] = {
+    0xFFFFFFFF, 0, 1, 2, 3, 4, 0x20313072, 0x20323072, 0x20333072, 0x20343072, 0x20353072, 0x20363072, 0x20373072, 0x20383072, 0x20393072, 0x20303172,
+    0x20313172, 0x20323172, 0x20333172, 0x20343172, 0x20353172, 0x20363172, 0x20373172, 0x20383172, 0x20393172, 0x20303272, 0x20313272, 0x20323272, 0x20333272, 0x20343272, 0x20353272, 0x20363272,
+    0x20373272, 0x20383272, 0x20393272, 0x20303372, 0x20313372
+}; // 0x00734270
 
 extern char gpAct5Q2NpcMessages[2352] = {
     3, 2, 0, 0, -128, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -491,15 +451,7 @@ extern char gpAct5Q2NpcMessages[2352] = {
     0, 0, 0, 0, 2
 }; // 0x00733940
 
-extern "C" unsigned int gData_00734270[37] = {
-    0xFFFFFFFF, 0, 1, 2, 3, 4, 0x20313072, 0x20323072, 0x20333072, 0x20343072, 0x20353072, 0x20363072, 0x20373072, 0x20383072, 0x20393072, 0x20303172,
-    0x20313172, 0x20323172, 0x20333172, 0x20343172, 0x20353172, 0x20363172, 0x20373172, 0x20383172, 0x20393172, 0x20303272, 0x20313272, 0x20323272, 0x20333272, 0x20343272, 0x20353272, 0x20363272,
-    0x20373272, 0x20383272, 0x20393272, 0x20303372, 0x20313372
-}; // 0x00734270
-#pragma comment(linker, "/alternatename:_gnA5Q2NpcActivateIndices=_gData_00734270")
-
-extern "C" unsigned int gData_00734304[7] = { 0xFFFFFFFF, 0, 1, 2, 3, 4, 5 }; // 0x00734304
-#pragma comment(linker, "/alternatename:?gnAct5Q3MessageIndices@@3PAIA=_gData_00734304")
+extern unsigned int gnAct5Q3MessageIndices[7] = { 0xFFFFFFFF, 0, 1, 2, 3, 4, 5 }; // 0x00734304
 
 extern char gpAct5Q3NpcMessages[1960] = {
     1, 2, 0, 0, -108, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -708,8 +660,6 @@ extern "C" struct d2data_00734AC8_t gData_00734AC8 = {
 }; // 0x00734AC8
 #pragma comment(linker, "/alternatename:?gpAct5Q4NpcMessages@@3UD2NPCMessageTableStrc@@A=_gData_00734AC8")
 
-extern unsigned int gnA5Q4NpcIndices[6] = { 0xFFFFFFFF, 0, 1, 2, 3, 4 }; // 0x007350E8
-
 extern int gpAct5Q5NpcMessages[441] = {
     515, 20153, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -738,8 +688,13 @@ extern int gpAct5Q5NpcMessages[441] = {
     0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 2
 }; // 0x00735100
 
-extern "C" unsigned int gData_007357E4[7] = { 0xFFFFFFFF, 0, 1, 2, 3, 4 }; // 0x007357E4
-#pragma comment(linker, "/alternatename:?gnA5Q5NpcActivateIndices@@3PAIA=_gData_007357E4")
+extern unsigned int gnA5Q5NpcActivateIndices[7] = { 0xFFFFFFFF, 0, 1, 2, 3, 4 }; // 0x007357E4
+
+extern unsigned int gnA5Q6NpcActivateIndices[4] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF }; // 0x00735EE4
+
+extern "C" struct d2data_00735EF4_t gData_00735EF4 = {
+    { 0x01, 0x00, 0x00, 0x00, 0x02 }
+}; // 0x00735EF4
 
 extern char gpAct5Q6NpcMessages[1764] = {
     -1, 1, 0, 0, -53, 78, 0, 0, 2, 0, 0, 0, 8, 2, 0, 0,
@@ -843,8 +798,43 @@ extern char gpAct5Q6NpcMessages[1764] = {
     -1, -1, -1, -1, 0, 0, 0, 0, 2
 }; // 0x00735800
 
-extern unsigned int gnA5Q6NpcActivateIndices[4] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF }; // 0x00735EE4
-
-extern "C" struct d2data_00735EF4_t gData_00735EF4 = {
-    { 0x01, 0x00, 0x00, 0x00, 0x02 }
-}; // 0x00735EF4
+extern unsigned char gaAct5IntroNpcMessages[784] = {
+    0, 2, 0, 0, 0x2E, 0x4E, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0,
+    0x45, 0x4E, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0x55, 0x4E, 0, 0,
+    0, 0, 0, 0, 3, 2, 0, 0, 0x61, 0x4E, 0, 0, 0, 0, 0, 0,
+    8, 2, 0, 0, 0x23, 0x4E, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    5, 0, 0, 0, 0, 2, 0, 0, 0x2E, 0x4E, 0, 0, 0, 0, 0, 0,
+    1, 2, 0, 0, 0x47, 0x4E, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0,
+    0x56, 0x4E, 0, 0, 0, 0, 0, 0, 3, 2, 0, 0, 0x63, 0x4E, 0, 0,
+    0, 0, 0, 0, 8, 2, 0, 0, 0x23, 0x4E, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 5, 0, 0, 0, 0, 2, 0, 0, 0x2E, 0x4E, 0, 0,
+    0, 0, 0, 0, 1, 2, 0, 0, 0x46, 0x4E, 0, 0, 0, 0, 0, 0,
+    2, 2, 0, 0, 0x57, 0x4E, 0, 0, 0, 0, 0, 0, 3, 2, 0, 0,
+    0x62, 0x4E, 0, 0, 0, 0, 0, 0, 8, 2, 0, 0, 0x23, 0x4E, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF,
+    0, 0, 0, 0, 2
+}; // 0x00732FF8

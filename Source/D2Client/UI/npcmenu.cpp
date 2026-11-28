@@ -2,6 +2,7 @@
 #include "D2ItemTypes.h"
 #include "D2StatIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Primitives.h"
 #include "D2DataTbls.h"
 #include "D2Unicode.h"
@@ -15,9 +16,13 @@
 #include "D2MonModes.h"
 #include "D2GameTypes.h"
 #include "D2NpcIndex.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
 
 // build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 #include <D2UnitData.h>
+#include "D2CommonApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -37,8 +42,6 @@ struct D2StringMapStrc;
 
 struct D2ClientStringListStrc;
 
-struct D2PartyRecordStrc;
-
 struct D2ClientObjectStrc;
 
 struct D2NpcQuestHandlerStrc;
@@ -49,7 +52,6 @@ struct Unicode;
 
 struct D2NpcMenuSlotStrc;
 
-struct D2NpcMenuEntryStrc;
 
 struct D2NpcPacketStrc;
 
@@ -75,39 +77,23 @@ struct D2ClientItemSlotStrc
     char unk0x0C[0x04];
 };
 
-unsigned char __cdecl GAME_GetDifficulty(); // 0x0044DCD0
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
-void __fastcall CUNIT_RemoveClientSideUnit(unsigned int nUnitId, int nUnitType); // 0x00465EE0
 
-void __fastcall AUTOMAP_RemoveUnitOverlay(D2UnitStrc* pUnit, int nArg, int nValue); // 0x0046F0C0
 
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
-void __fastcall SKILLS_StartUnitEffect(D2UnitStrc* pUnit, D2UnitStrc* pTarget, int nEffect, int nArg4, int nArg5, int nStatValue, int nVelocity); // 0x004C70D0
 
 int __fastcall MISSILE_SubmitMissileRequest(D2UnitStrc* pUnit, int nRequest, int nX, int nY, int nA, int nB); // 0x004CDB40
 
-D2UnitStrc* __fastcall MISSILE_SubmitOwnerRequest(D2UnitStrc* pUnit, int nArg0, int nArg5, int nArg6, int nArg3, int nArg4); // 0x004CDBA0
-
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
-
-D2UnitStrc* __stdcall INVENTORY_GetFirstItem(D2InventoryStrc* pInventory); // 0x0063B2C0
 
 void __stdcall D2COMMON_10251_Return(D2InventoryStrc* pInventory); // 0x0063BD00
 
-void __stdcall INVENTORY_RemoveInventoryItems(D2InventoryStrc* pInventory); // 0x0063CB70
 
-D2UnitStrc* __stdcall INVENTORY_GetNextItem(D2UnitStrc* pItem); // 0x0063DFA0
 
-D2UnitStrc* __stdcall INVENTORY_UnitIsItem(D2UnitStrc* pItem); // 0x0063DFD0
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
 
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
 
 extern const unsigned int gdwBitMasks[32]; // 0x006CE268
 
@@ -139,24 +125,15 @@ struct D2ClientStringListStrc
     unsigned short wCount;
 };
 
-struct D2PartyRecordStrc
-{
-    unsigned char nFlag0;
-    unsigned char nFlag1;
-    char unk0x02[0x14];
-};
-
 typedef void (__fastcall* UNITFN)(D2UnitStrc* pUnit);
 
 extern int gnStringMapCount; // 0x00725C04
 
 extern D2StringMapStrc gaStringMap[]; // 0x0072739C
 
-extern int gnPartyCount_0072554C; // 0x0072554C
 
-extern D2PartyRecordStrc gaNpcEntryFlags[]; // 0x00726861
 
-extern unsigned char gbNpcEntriesProcessed; // 0x007C0C6A
+unsigned char gbNpcEntriesProcessed; // 0x007C0C6A
 
 extern void* gpRes_007C0D63; // 0x007C0D63
 
@@ -166,19 +143,15 @@ extern void* gpRes_007C0D73; // 0x007C0D73
 
 extern void* gpRes_007C0D7B; // 0x007C0D7B
 
-extern D2ClientStringListStrc gtStringList; // 0x007C0D9A
+D2ClientStringListStrc gtStringList; // 0x007C0D9A
 
-D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
 void __fastcall CUNIT_ForEachObject(UNITFN pfnCallback); // 0x004649D0
 
-void __cdecl SELECT_ClearSelection(); // 0x00466FE0
 
 D2UnitStrc* __cdecl SELECT_GetSelectedUnit(); // 0x00467A10
 
-void __fastcall GFX_AddUnitOverlay(D2UnitStrc* pUnit, int nOverlay, int nArg3, int nArg4, int nArg5, int nArg6, int nArg7, int nArg8); // 0x00470390
 
-void __cdecl INV_ResetHover(); // 0x00487990
 
 void __cdecl INV_SetRequest(); // 0x00487B70
 
@@ -186,19 +159,14 @@ D2TextHeaderStrc* __cdecl DLIGHTMAP_GetTextHeader(); // 0x0049F900
 
 int __fastcall MONSTER_GetOwnerGUID(D2UnitStrc* pUnit); // 0x004AE130
 
-D2UnitStrc* __cdecl NPCMENU_GetInteractNpc(); // 0x004B1620
 
-void __cdecl TEXT_InitNpcMenu(); // 0x004B23E0
 
-void __cdecl NPCMENU_FreeNpcMenu(); // 0x004B24A0
 
 void __cdecl NPCMENU_FinishTransaction(); // 0x004B2940
 
 void __fastcall NPCMENU_CheckObjectFound(D2UnitStrc* pUnit); // 0x004B3360
 
-void __fastcall DIALOG_DestroyDialog(void* pRes); // 0x004B8020
 
-int __stdcall QUESTRECORD_GetQuestState(D2BitBufferStrc* pQuestFlags, int nQuestId, int nState); // 0x0065C310
 
 struct D2ClientObjectStrc
 {
@@ -209,7 +177,6 @@ extern D2ClientObjectStrc* gpObject_007C0D83; // 0x007C0D83
 
 void __fastcall ARCHIVE_FreeClientCellFile(void* pCel); // 0x00478A00
 
-void __stdcall QUESTRECORD_FreeRecord(void* pMemPool, D2BitBufferStrc* pQuestRecord); // 0x0065C490
 
 extern D2NpcQuestHandlerStrc gaNpcHandlers[]; // 0x007253E0
 
@@ -224,15 +191,13 @@ public:
     virtual void Draw(); virtual void Slot02(); virtual void Slot03(); virtual void Slot04(); virtual void Slot05();
     virtual void Slot06(); virtual void Slot07(); virtual void Slot08(); virtual void Slot09(); virtual void Slot10();
     virtual int GetCount();
-    virtual void sub_004BBFB0();
+    virtual void sub_004BBFB0_GetRepeatStep();
     virtual unsigned int GetAt(int nIndex);
 };
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -242,21 +207,14 @@ extern "C" __declspec(dllimport) int __stdcall SetRect(tagRECT* lprc, int xLeft,
 
 D2UnitStrc* __cdecl sub_00463DD0(); // 0x00463DD0
 
-void __stdcall UNITS_GetClientCoords(D2UnitStrc* pUnit, D2CoordStrc* pClientCoords); // 0x00620900
 
 void __fastcall sub_00476070_GetViewRect(D2ViewStrc* pView, long* pLeft, long* pTop, long* pRight, long* pBottom); // 0x00476070
 
-void __fastcall VIEW_GetViewOffset(D2ViewStrc* pView, int* pX, int* pY); // 0x004760C0
 
-void __fastcall MSG_SendDword(char nHeader, int nArg); // 0x00478680
 
-void __fastcall MSG_SendTwoDwords(unsigned char nHeader, unsigned int d1, unsigned int d5); // 0x004786A0
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
 const Unicode* __fastcall TEXT_GetTextString(unsigned short nStringId); // 0x0049F910
-
-unsigned int __stdcall ITEMS_GetBaseCode(D2UnitStrc* hItem); // 0x00628590
 
 // build: symbol ?DIALOG_CreateDialog@* 0x004B7EB0
 D2ClientDialogStrc* __fastcall DIALOG_CreateDialog(int nArg1, int nArg2, int (__cdecl* pfnArg8)(),
@@ -268,11 +226,10 @@ void __fastcall ROSTER_SetCtrlState(void* pPanel, int nValue); // 0x004B8370
 void __fastcall DIALOG_AddTextLine(void* pPanel, const Unicode* pText, int nArg3, int nArg4, int nArg5, int nArg6,
     int (__cdecl* pfnArg7)(), int nArg8); // 0x004B85F0
 
-int __cdecl sub_004B1DC0(); // 0x004B1DC0
 
 int __cdecl NPCMENU_CloseSubMenuToMain(); // 0x004B5810
 
-int __cdecl sub_004B5850(); // 0x004B5850
+int __cdecl sub_004B5850_CloseConfirmDialog(); // 0x004B5850
 
 extern D2ViewStrc* gpClientView; // 0x007A0640
 
@@ -286,25 +243,11 @@ extern D2ClientDialogStrc* gpNpcWaitDialog; // 0x007C0D67
 
 extern D2NpcEntryStrc gaNpcEntries[]; // 0x00726850
 
-unsigned int __stdcall ITEMS_CheckIfStackable(D2UnitStrc* pItem); // 0x006289F0
-
 D2UnitStrc* __stdcall sub_Z12_EmitNext(D2UnitStrc* pItem);
 
 void __stdcall sub_Z12_EmitUseItem(D2UnitStrc* pItem);
 
 #pragma pack(push, 1)
-
-struct D2NpcMenuEntryStrc
-{
-    int nType;
-    char unk0x04[2];
-    short wStringId;
-    short wSlot[3];
-    char unk0x0E[4];
-    int (__cdecl* pfnHandler)();
-    int nSlot[3];
-    char unk0x22[5];
-};
 
 struct D2NpcPacketStrc
 {
@@ -314,75 +257,60 @@ struct D2NpcPacketStrc
 
 #pragma pack(pop)
 
-int __cdecl GAME_GetConnectionType(); // 0x0044DB30
 
 void __cdecl INV_SelectFirstButton(); // 0x00487CC0
 
 int __cdecl NPCMENU_IdentifyItemsWait(); // 0x004B2020
 
-extern D2NpcMenuEntryStrc gaNpcMenuEntries[]; // 0x00726C4C
 
-extern int gnGlobal_007C0D39; // 0x007C0D39
+extern int gbNpcSubIdReceived; // 0x007C0D39
 
-extern short gwGlobal_007C0D3D; // 0x007C0D3D
+extern short gwNpcSubId; // 0x007C0D3D
 
-unsigned char g007C0D89; // 0x007C0D89
+// The last NPC transaction packet (0x2A); the pending-action checks compare the
+// unit id and action type it carried.
+#pragma pack(push, 1)
+struct D2GSPacketSrv2A
+{
+    unsigned char nHeader;
+    unsigned char unk0x01;
+    unsigned char nActionType;
+    unsigned int unk0x03;
+    int nUnitId;
+    unsigned int unk0x0B;
+};
+#pragma pack(pop)
+
+D2GSPacketSrv2A gtPacket2A; // 0x007C0D87
 
 int __cdecl NPCMENU_ResurrectMercWait(); // 0x004B1DD0
 
-void __fastcall MSG_SendDwords3(unsigned char nHeader, unsigned int d1, unsigned int d5, unsigned int d9); // 0x004786D0
 
-extern short gwGlobal_00726E01; // 0x00726E01
 
-extern int gnGlobal_00726E0F; // 0x00726E0F
 
-extern short gwGlobal_00726E4F; // 0x00726E4F
 
-extern int gnGlobal_00726E5D; // 0x00726E5D
 
-extern short gwGlobal_00726E9D; // 0x00726E9D
 
-extern int gnGlobal_00726EAB; // 0x00726EAB
 
-extern short gwGlobal_00726CCB; // 0x00726CCB
 
-extern int gnGlobal_00726CDB; // 0x00726CDB
 
-extern short gwGlobal_007272E1; // 0x007272E1
 
-extern int gnGlobal_007272EF; // 0x007272EF
 
-extern short gwGlobal_00727247; // 0x00727247
 
-extern int gnGlobal_00727257; // 0x00727257
 
-extern short gwGlobal_00727297; // 0x00727297
 
-extern int gnGlobal_007272A9; // 0x007272A9
 
-extern short gwGlobal_00726F87; // 0x00726F87
 
-extern int gnGlobal_00726F95; // 0x00726F95
 
-extern short gwGlobal_00726EC2; // 0x00726EC2
 
-extern int (__cdecl* gpfnGlobal_00726ECE)(); // 0x00726ECE
 
-extern short gwGlobal_00726EE9; // 0x00726EE9
 
-extern int (__cdecl* gpfnGlobal_00726EF5)(); // 0x00726EF5
 
-extern short gwGlobal_00726F10; // 0x00726F10
 
-extern int (__cdecl* gpfnGlobal_00726F1C)(); // 0x00726F1C
 
-extern short gwGlobal_00726F37; // 0x00726F37
 
-extern int (__cdecl* gpfnGlobal_00726F43)(); // 0x00726F43
 
-extern short gwGlobal_0072721C; // 0x0072721C
 
-extern int (__cdecl* gpfnGlobal_00727228)(); // 0x00727228
 
 #pragma pack(push, 1)
 
@@ -395,21 +323,18 @@ struct D2ClientValueBlockStrc
 
 #pragma pack(pop)
 
-void __cdecl TEXT_LoadPopupHireling(); // 0x004939B0
 
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
 
-void __fastcall NPCMENU_EndNpcInteraction(int nValue); // 0x004B3C20
 
-void __cdecl NPCMENU_ShowTradeDialog(); // 0x004B2F50
 
 extern "C" D2UnitStrc* __fastcall CUNIT_FindClientUnit(int nUnitId, int nUnitType); // 0x00463990
 
 void __fastcall NPCMENU_RemoveInventoryClientUnits(D2UnitStrc* pUnit); // 0x004B3790
 
-void __fastcall sub_004BA840(int nHandle);                                                                  // 0x004BA840
+void __fastcall sub_004BA840_StopSound(int nHandle);                                                                  // 0x004BA840
 
 static int gnHandlerCount = 9;                                                                  // 0x007253DC
+#include "D2CommonApi3.h"
 
 int gnNpcSoundActive; // 0x007C0DB4
 
@@ -419,15 +344,11 @@ char gbNpcMessageShown; // 0x007C0C69
 
 void __cdecl NPCMENU_CloseNpc(); // 0x004B3DE0
 
-void __cdecl NPCMENU_CloseNpcShop(); // 0x004B3ED0
 
 void __cdecl NPCMENU_FreeDialogs(); // 0x004B2110
 
-int __fastcall UI_CloseUIVars(int bArg1, int nArg2); // 0x00456300
 
-int __cdecl sub_004C0440_Thunk(); // 0x004C0440
 
-void __cdecl INV_ResetNpcCursor(); // 0x0048A6A0
 
 typedef int (__cdecl* Callback)();
 
@@ -435,17 +356,11 @@ void __cdecl INV_SetNpcStateMenuReturn(); // 0x00487D30
 
 int __cdecl NPCMENU_NpcMenuReturn(); // 0x004B4CF0
 
-int __cdecl sub_00468730(); // 0x00468730
 
-int __cdecl sub_00468740(); // 0x00468740
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-D2UnitStrc* __stdcall INVENTORY_GetCursorItem(D2InventoryStrc* pInventory); // 0x0063C1E0
 
-int __cdecl CURSOR_GetCursorItem(); // 0x004680A0
 
-void __fastcall CURSOR_SetCursorItemState(D2UnitStrc* pItem); // 0x00468070
 
 extern const char empty; // 0x006CC837
 
@@ -483,7 +398,7 @@ int __cdecl NPCMENU_MenuClose(); // 0x004B2F00
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
 
@@ -496,7 +411,6 @@ typedef char sub_I16_AssertUnitInventory[(int)&((D2UnitStrc*)0)->pInventory == 0
 
 const Unicode* __fastcall CUNIT_GetUnitName(D2UnitStrc* pUnit); // 0x00464A60
 
-void __fastcall sub_004B82F0_Select(D2ClientDialogStrc* pDialog, int nIndex); // 0x004B82F0
 
 int __cdecl NPCMENU_NpcMenuCancelText(); // 0x004B4670
 
@@ -508,13 +422,12 @@ void __fastcall TEXT_SetTextCallback(D2TextCallback pfnCallback, void* pContext)
 
 unsigned short __fastcall NPCMENU_GetFreeStringId(unsigned short wStringId); // 0x004B1830
 
-int __cdecl sub_004B5BC0_SelectNpcEntry(); // 0x004B5BC0
 
 int __fastcall sub_004B8580(D2ClientDialogStrc* pDialog); // 0x004B8580
 
 int __fastcall NPCMENU_NpcMessageCallback(void* pContext, int nArg, int nValue); // 0x004B18C0
 
-void __fastcall sub_004B8370(void* pPanel, int nValue); // 0x004B8370
+void __fastcall ROSTER_SetCtrlState(void* pPanel, int nValue); // 0x004B8370
 
 struct D2NpcMonListPacketStrc
 {
@@ -525,21 +438,16 @@ struct D2NpcMonListPacketStrc
 
 void __cdecl TEXT_ClearTextPanel();                                                                     // 0x004A1730
 
-void __fastcall UNITMODE_SetUnitMode(D2UnitStrc* pUnit, int nArg);                                         // 0x00480E70
 
-int __cdecl NPCMENU_ShowMainMenu();                                                                         // 0x004B5C60
 
 extern D2ClientDialogStrc* gpNpcSubMenuDialog;                                                               // 0x007C0D63
 
-extern int (__cdecl* gpfnGlobal_00726E0B)();                                                                // 0x00726E0B
 
-extern short gwGlobal_00726DFF;                                                                             // 0x00726DFF
 
 typedef char check_size_npcindex[(sizeof(D2NpcIndexStrc) == 0x27) ? 1 : -1];
 
 void __cdecl GAME_ResetMouseState();                                                                                // 0x0044DA40
 
-int __fastcall MONSTERUNIQUE_CheckMonStatsFlag(int nMonsterId, int nFlag);                                   // 0x00457490
 
 void __fastcall CUNIT_TurnTowardPlayer(D2UnitStrc* pUnit);                                                 // 0x00464420
 
@@ -547,7 +455,6 @@ void __fastcall CUNIT_PlayerFaceUnit(D2UnitStrc* pUnit);                        
 
 void __fastcall CUNIT_ForEachMonster(UNITFN pfnCallback);                                                           // 0x00464990
 
-void __fastcall MSG_SendWord(unsigned char nCmd, unsigned short nArg);                          // 0x004785B0
 
 void __cdecl NPCMENU_ResetHandlers();                                                                  // 0x004B2250
 
@@ -557,19 +464,14 @@ extern "C" void __fastcall NPCMENU_ClearNpcInventoryAndSound(int nUnitId); // 0x
 
 void __cdecl NPCMENU_OpenGreetingDialog();                                                             // 0x004B4DB0
 
-int __cdecl sub_004B1D70_FindNpcEntry(); // 0x004B1D70
 
 void __stdcall NPCMENU_OpenNpcWindow(D2UnitStrc* pUnit); // 0x004B4FD0
 
 int __cdecl NPCMENU_InitHireHandler();                                                                     // 0x004B6410
 
-void __fastcall UNITSND_ReleaseSkillSfx(D2UnitStrc* pUnit);                                            // 0x004CB190
 
-int __fastcall sub_004E0590_PickNpcSound(D2UnitStrc* pUnit, int nType);                                     // 0x004E0590
 
 void __stdcall D2Common_10153(D2DynamicPathStrc* pDynamicPath);                                             // 0x00648730
-
-short __stdcall TEXT_GetStringIdOfMenuType1Node(D2TextHeaderStrc* pTextHeader, int nNodeId); // 0x00661440
 
 extern char gabNpcMenuState[];                                                                            // 0x007C0C68
 
@@ -577,7 +479,7 @@ int gbGambleShop; // 0x007C0DB0
 
 int gnNpcMenuValue;        // 0x007C0DD0
 
-void __stdcall sub_004B1680(D2NpcEntryStrc* pEntry);
+void __stdcall sub_004B1680_PickNpcChoice(D2NpcEntryStrc* pEntry);
 
 D2UnitStrc* gpNpcPlayerUnit; // 0x007C0DD4
 
@@ -585,13 +487,10 @@ unsigned short gwGlobal_007C0DD8; // 0x007C0DD8
 
 void __fastcall WINMAIN_SetExitApplication(int nValue); // 0x0044B880
 
-void __fastcall GAME_SetCinematicExit(int nValue); // 0x0044C860
 
-void __cdecl GAME_RequestExit(); // 0x0044D520
 
 unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
-int __cdecl CUNIT_IsPlayerDeadOrMissing(); // 0x00463DF0
 
 void __cdecl INV_SendLeaveGame(); // 0x00477EE0
 
@@ -599,7 +498,7 @@ void __cdecl INV_EnterNpcMenuState(); // 0x0048A630
 
 void __cdecl NPCMENU_CloseWaitDialog(); // 0x004B2900
 
-void __fastcall sub_004B8100(void* pObj);
+void __fastcall DIALOG_DrawDialog(void* pObj); // 0x004B8100
 
 int gbWaitSoundPlayed; // 0x007C0DBC
 
@@ -621,23 +520,18 @@ void __cdecl INV_AdvancePendingNpcState(); // 0x00487C60
 
 int __cdecl VIEW_SetNpcMenuMode(); // 0x00487CA0
 
-int __cdecl sub_00489870(); // 0x00489870
+int __cdecl sub_00489870_GetNpcButtonHandled(); // 0x00489870
 
 void __cdecl INV_EnterNpcMenuState(); // 0x0048A630
 
-void __fastcall MSG_SendFourDwords(char nCommand, int nUnitId, int nArg1, int nArg2, int nArg3); // 0x00478700
 
-int __fastcall ITEM_GetDropSound(D2UnitStrc* pItem); // 0x004C1D60
 
-D2ItemsTxt* __stdcall DATATBLS_GetItemsTxtRecord(int nItemId); // 0x006335F0
 
-extern int gnGlobal_007C0D3F; // 0x007C0D3F
+extern int gbTradeItemOnCursor; // 0x007C0D3F
 
-extern int gnGlobal_007C0D5B; // 0x007C0D5B
+extern int gnTradeItemDropSound; // 0x007C0D5B
 
-extern int gnGlobal_007C0DB0; // 0x007C0DB0
 
-extern D2UnitStrc* gpPlayer_007C0DD4; // 0x007C0DD4
 
 extern unsigned long gdwGlobal_007C0DE9; // 0x007C0DE9
 
@@ -651,13 +545,11 @@ int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nL
 
 Unicode* __fastcall INV_PrefixColorCode(Unicode* pText, int nDigit); // 0x004521C0
 
-D2UnitStrc* __cdecl sub_00463DE0_GetPlayerUnit(); // 0x00463DE0
 
 int __stdcall ITEMS_GetAllRepairCosts(D2GameStrc* pGame, D2UnitStrc* pUnit, int nNpcId, int nDifficulty, D2BitBufferStrc* pQuestFlags, void (__fastcall* pfCallback)(D2GameStrc*, D2UnitStrc*, D2UnitStrc*)); // 0x0062FE60
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource); // 0x00526700
 
-void __fastcall SELECT_RefreshHoverUnit(D2UnitStrc* pUnit); // 0x00467A70
 
 #pragma pack(push, 1)
 
@@ -693,29 +585,21 @@ static int NPCMENU_ItemNeedsRepair(D2UnitStrc* pItem);
 
 void __cdecl NPCMENU_HireMercWait();
 
-void __stdcall NPCMENU_OpenNpcPanel(int nStringIndex, int nEntryIndex);
 
-void __stdcall NPCMENU_OpenConfirmDialog(int nStringIndex);
 
 unsigned char g007C0DE0; // 0x007C0DE0
 
 void __cdecl NPCMENU_BuildNpcMenu(); // 0x004B4830
 
-void __cdecl sub_004B5140(); // 0x004B5140
 
-extern void (__cdecl* gpfnCallback_00726E59)(); // 0x00726E59
 
-extern unsigned short gwGlobal_00726E4D; // 0x00726E4D
 
-int __cdecl GAME_IsExpansion();                                                                                 // 0x0044DCC0
 
 int __cdecl NPCMENU_TravelToKurastDocks();                                                                                 // 0x004B51A0
 
 int __cdecl NPCMENU_TravelToHarrogath();                                                                                 // 0x004B5200
 
-extern short gwGlobal_00726E9B;                                                                             // 0x00726E9B
 
-extern int (__cdecl* gpfnGlobal_00726EA7)();                                                                // 0x00726EA7
 
 static void NPCMENU_SetNpcInteract(D2UnitStrc* pRecord);
 
@@ -741,7 +625,6 @@ struct UnitView;
 
 struct TablesView;
 
-void __fastcall GFX_RemoveOverlays(D2UnitStrc* pUnit); // 0x0046F170
 
 void __fastcall sub_0046C320_SpawnAroundUnit(D2UnitStrc* pUnit, int nMonsterId, int nCount); // 0x0046C320
 
@@ -749,25 +632,16 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams); // 0x004CD540
 
-void __fastcall SKILLDESC_InitCappedChargedPath(D2UnitStrc* pMissile, int nArg); // 0x004E2ED0
 
-D2UnitStrc* __fastcall CUNIT_GetOwnerUnit(D2UnitStrc* pUnit); // 0x004639D0
 
-D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc* pUnit); // 0x004648F0
 
 extern "C" int __fastcall sub_004AC7E0(D2UnitStrc* pUnit, unsigned short wMask); // 0x004AC7E0
 
-int __stdcall D2COMMON_10175_PathGetFirstPointX(D2DynamicPathStrc* pPath); // 0x00648A00
 
-int __stdcall D2COMMON_10176_PathGetFirstPointY(D2DynamicPathStrc* pPath); // 0x00648A10
 
 extern "C" int __stdcall sub_0064A210(D2UnitStrc* pMissile); // 0x0064A210
 
 extern "C" int __stdcall sub_0064A280(D2UnitStrc* pMissile); // 0x0064A280
-
-void __fastcall SEED_InitSeed(D2SeedStrc* pSeed); // 0x00650E30
-
-void __fastcall SEED_InitLowSeed(D2SeedStrc* pSeed, unsigned int nLowSeed); // 0x00650E40
 
 struct RecordView
 {
@@ -825,35 +699,24 @@ typedef char TablesView_count_offset[(FIELD_OFFSET(TablesView,count)==0xa80)?1:-
 
 void __cdecl INV_ResetNpcButtonsFromPending(); // 0x00487C20
 
-void __cdecl UI_StartUIVarDelay(); // 0x00453AE0
 
-void __fastcall USEITEM_OpenNpcItemPanel(int nArg); // 0x004C0620
 
-int __fastcall ROSTERPETS_FindPetIdByOwner(D2UnitStrc* pOwner, int nPetType, int bAny); // 0x00478F20
 
-int __fastcall ROSTERPETS_CountPets(D2UnitStrc* pOwner, int nPetType); // 0x00478EE0
 
 void __cdecl NPCMENU_CloseTradeDialog(); // 0x004B3610
 
-extern int (__cdecl* gpfnGlobal_00726CD7)(); // 0x00726CD7
 
-extern short gwGlobal_00726CC9; // 0x00726CC9
 
-extern int (__cdecl* gpfnGlobal_00727253)(); // 0x00727253
 
-extern short gwGlobal_00727245; // 0x00727245
 
-extern int (__cdecl* gpfnGlobal_007272A5)(); // 0x007272A5
 
-extern short gwGlobal_00727295; // 0x00727295
 
-extern unsigned char gnPendingNpcActionType; // 0x007C0D89
 
 int __fastcall NPCMENU_NpcTextCallback(void* pContext, int nArg, int nValue); // 0x004B6A30
 
 void __cdecl INV_ResetButtonsFromMenuReturn(); // 0x00487D40
 
-void __cdecl sub_004B17A0();
+void __cdecl sub_004B17A0_ProcessNpcEntries();
 
 struct D2ClientDialogStrc;
 
@@ -861,7 +724,6 @@ typedef int (__cdecl* D2MenuHandler)();
 
 typedef char CheckNpcIndexSize[sizeof(D2NpcIndexStrc)==39?1:-1];
 
-extern int gnGlobal_007C0D2D; // 0x007C0D2D
 
 extern unsigned int gnHirelingName_00725494; // 0x00725494
 
@@ -869,13 +731,9 @@ int __cdecl NPCMENU_NpcMenuCancel(); // 0x004B45D0
 
 int __cdecl NPCMENU_NpcMenuCancelB(); // 0x004B4620
 
-void __cdecl sub_005269D0(int,Unicode*,const Unicode*,...); // 0x005269D0
 
-unsigned int __stdcall UNITS_GetHealingCost(D2UnitStrc* pUnit); // 0x00622DE0
 
-int __stdcall STATLIST_GetMaxLifeFromUnit(D2UnitStrc*); // 0x00625D10
 
-int __stdcall ITEMS_GetNoOfUnidItems(D2UnitStrc*); // 0x0062A530
 
 extern D2NpcChoiceStrc gaNpcChoices[];                                                             // 0x00725CB0
 
@@ -884,41 +742,10 @@ extern "C" const char gszNpcMenuFile[];                                         
 struct D2InventoryStrc;
 struct D2DynamicPathStrc;
 
-typedef int (__fastcall* D2TextCallback)(void* pContext, int nArg, int nValue);
-
-int __cdecl FOG_IsExpansion();                                                                 // 0x00408F20
-void __fastcall TEXT_ShowNpcMessage(D2UnitStrc* pUnit, unsigned short nMessage, int nArg);                         // 0x004A10E0
-void __stdcall QUESTRECORD_CopyBufferToRecord(D2BitBufferStrc* pQuestRecord, unsigned char* pBuffer, unsigned short nBufferSize, int bResetStates); // 0x0065C4D0
 
 static inline int NPC_GetUnitClassId(D2UnitStrc* pUnit)
 {
     return pUnit ? pUnit->dwClassId : -1;
-}
-
-static int GetUnitPathX(D2UnitStrc* pUnit)
-{
-    switch (pUnit->dwUnitType)
-    {
-    case UNIT_OBJECT:
-    case UNIT_ITEM:
-    case UNIT_TILE:
-        return pUnit->pStaticPath->nXPos;
-    default:
-        return pUnit->pDynamicPath ? PATH_GetXPosition(pUnit->pDynamicPath) : 0;
-    }
-}
-
-static int GetUnitPathY(D2UnitStrc* pUnit)
-{
-    switch (pUnit->dwUnitType)
-    {
-    case UNIT_OBJECT:
-    case UNIT_ITEM:
-    case UNIT_TILE:
-        return pUnit->pStaticPath->nYPos;
-    default:
-        return pUnit->pDynamicPath ? PATH_GetYPosition(pUnit->pDynamicPath) : 0;
-    }
 }
 
 static D2MonStatsTxt* GetMonStatsTxtRecord(int nMonsterId)
@@ -932,13 +759,9 @@ static D2MonStatsTxt* GetMonStatsTxtRecord(int nMonsterId)
 
 // build: symbol ??_FUnicode@@QAEXXZ 0x0042F530
 
-extern int gnGlobal_00726C4C;                                                                               // 0x00726C4C
 
-extern int (__cdecl* gpfnGlobal_00726C62)();                                                                // 0x00726C62
 
-extern short gwGlobal_00726C54;                                                                             // 0x00726C54
 
-D2BitBufferStrc* __stdcall QUESTRECORD_AllocRecord(void* pMemPool); // 0x0065C430
 
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
@@ -946,39 +769,20 @@ D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nTy
 
 extern void* gpGlobal_007C0D43; // 0x007C0D43
 
-void __fastcall sub_0046B3C0_UnitRequest25A(D2UnitStrc* pUnit);                                             // 0x0046B3C0
 
-void __fastcall sub_0046B530_SpawnMissileAtObject(D2UnitStrc* pUnit);                                       // 0x0046B530
 
-void __fastcall VIEW_SpawnBrDeathControl(D2UnitStrc* pUnit);                                           // 0x0046B680
 
 void __fastcall sub_0046B710_SpawnMissileAtObject173(D2UnitStrc* pUnit);                                                            // 0x0046B710
 
 void __fastcall VIEW_SpawnMissileNearObject(D2UnitStrc* pUnit);                                                            // 0x0046B850
 
-void __fastcall VIEW_SpawnMephistoDeath(D2UnitStrc* pUnit);                                          // 0x0046B9A0
 
-void __fastcall VIEW_SpawnAndarielDeath(D2UnitStrc* pUnit);                                               // 0x0046BA50
 
-void __fastcall sub_0046BA90_PlayerRequestAtUnit15B(D2UnitStrc* pUnit);                                     // 0x0046BA90
 
-void __fastcall sub_0046BB10_PlayerRequestAtUnit161(D2UnitStrc* pUnit);                                     // 0x0046BB10
 
-void __fastcall sub_0046BB90_PlayerRequestAtUnit16B(D2UnitStrc* pUnit);                                     // 0x0046BB90
 
-void __fastcall VIEW_SpawnIzualDeath(D2UnitStrc* pUnit);                                             // 0x0046BC10
 
-int __fastcall UI_SetTimerUnitId(D2UnitStrc* pUnit);                                              // 0x0046BC70
 
-void __fastcall sub_0046BC90_RequestAtMonster220(D2UnitStrc* pUnit);                                        // 0x0046BC90
-
-static inline unsigned __int64 SEED_RollRandomNumberForceInline(D2SeedStrc* pSeed)
-{
-    unsigned __int64 lSeed = pSeed->nHighSeed + 0x6AC690C5i64 * pSeed->nLowSeed;
-    pSeed->nHighSeed = (unsigned int)(lSeed >> 32);
-    pSeed->nLowSeed = (unsigned int)lSeed;
-    return lSeed;
-}
 
 static void __stdcall NPCMENU_StateMissileBurst(int nSkillLevel, D2UnitStrc* pUnit, int nMissile); // 0x004AD6E0
 
@@ -992,7 +796,6 @@ __forceinline D2MissilesTxt* SKILLS_GetMissilesTxtRecord(int nMissileId)
     return 0;
 }
 
-void __fastcall NPCMENU_StateRequests(D2UnitStrc* pUnit); // 0x004ADCE0
 
 // 0x004B1620
 D2UnitStrc* __cdecl NPCMENU_GetInteractNpc()
@@ -1053,7 +856,7 @@ int __cdecl NPCMENU_GetUseItemMode()
 }
 
 // 0x004B1680
-void __stdcall sub_004B1680(D2NpcEntryStrc* pEntry)
+void __stdcall sub_004B1680_PickNpcChoice(D2NpcEntryStrc* pEntry)
 {
     int* const pnSelected = &pEntry->nSelected;
     int nTries = 10;
@@ -1306,28 +1109,9 @@ static int NPCMENU_GetNpcDialogPos(D2CoordStrc* pCoords)
     return 0;
 }
 
-void __cdecl sub_F03_Emit_004B1640(D2UnitStrc* pRecord)
-{
-    NPCMENU_SetNpcInteract(pRecord);
-}
 
-int __cdecl sub_F03_Emit_004B19A0(int nNpcId)
-{
-// build: symbol ?gnHandlerCount@* 0x007253DC
-// build: symbol ?gpPlayerQuestFlags@* 0x007C0D43
-    return NPCMENU_RunNpcQuestHandlers(nNpcId, gpPlayerQuestFlags, gaNpcHandlers, gnHandlerCount);
-}
 
-void __cdecl sub_F03_Emit_004B1A10(int nClassId)
-{
-    if (NPCMENU_IsSpecialNpc(nClassId))
-        gbNpcInteracting = 1;
-}
 
-int __cdecl sub_F03_Emit_004B2E30(D2UnitStrc* pRecord)
-{
-    return NPCMENU_FindNpcIndex(pRecord);
-}
 
 // 0x004B1DD0
 int __cdecl NPCMENU_ResurrectMercWait()
@@ -1348,7 +1132,7 @@ int __cdecl NPCMENU_ResurrectMercWait()
     tCoords.nY = 0;
     NPCMENU_GetNpcDialogPos(&tCoords);
 
-    gpNpcWaitDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, sub_004B1DC0, 0, 0, 0, 1, 0, 0, 0, 1);
+    gpNpcWaitDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, sub_004B1DC0_Return0, 0, 0, 0, 1, 0, 0, 0, 1);
 // build: symbol ?gdwNpcRequestTimeout@* 0x007C0D53
     gdwNpcRequestTimeout = GetTickCount() + 60000;
 // build: symbol ?gdwNpcTransactionTick@* 0x007C0D57
@@ -1380,7 +1164,7 @@ void __cdecl NPCMENU_HireMercWait()
     tCoords.nY = 0;
     NPCMENU_GetNpcDialogPos(&tCoords);
 
-    gpNpcWaitDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, sub_004B1DC0, 0, 0, 0, 1, 0, 0, 0, 1);
+    gpNpcWaitDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, sub_004B1DC0_Return0, 0, 0, 0, 1, 0, 0, 0, 1);
     gdwNpcRequestTimeout = GetTickCount() + 60000;
     gdwNpcTransactionTick = 0;
     ROSTER_SetCtrlState(gpNpcWaitDialog, 0);
@@ -1398,7 +1182,8 @@ static int NPCMENU_ItemNeedsRepair(D2UnitStrc* pItem)
 {
     if (ITEMS_GetItemType(pItem) == ITEMTYPE_GOLD)
         return 0;
-    if (!sub_0062E660(pItem))
+// build: symbol ?ITEMS_IsRepairable@* 0x0062E660
+    if (!ITEMS_IsRepairable(pItem))
         return 0;
     if (ITEMS_HasDurability(pItem))
     {
@@ -1415,7 +1200,7 @@ static int NPCMENU_ItemNeedsRepair(D2UnitStrc* pItem)
 }
 
 // 0x004B2010
-int __cdecl sub_004B2010()
+int __cdecl sub_004B2010_Return0()
 {
     return 0;
 }
@@ -1436,7 +1221,7 @@ int __cdecl NPCMENU_IdentifyItemsWait()
     tCoords.nY = 0;
     NPCMENU_GetNpcDialogPos(&tCoords);
 
-    gpNpcWaitDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, sub_004B1DC0, 0, 0, 0, 1, 0, 0, 0, 1);
+    gpNpcWaitDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, sub_004B1DC0_Return0, 0, 0, 0, 1, 0, 0, 0, 1);
     gdwNpcRequestTimeout = GetTickCount() + 60000;
     gdwNpcTransactionTick = 0;
     ROSTER_SetCtrlState(gpNpcWaitDialog, 0);
@@ -1463,68 +1248,62 @@ void __cdecl NPCMENU_FreeDialogs()
     if (gpRes_007C0D77) { DIALOG_DestroyDialog(gpRes_007C0D77); gpRes_007C0D77 = 0; }
 }
 
-void __fastcall sub_Z12_EmitItemNeedsRepair(D2UnitStrc* pItem)
-{
-    for (; pItem; pItem = sub_Z12_EmitNext(pItem))
-        if (NPCMENU_ItemNeedsRepair(pItem))
-            sub_Z12_EmitUseItem(pItem);
-}
 
 // 0x004B21C0
 static inline void NPCMENU_SetEntryType2(int nIndex)
 {
-    gaNpcMenuEntries[nIndex].nType = 2;
-    gaNpcMenuEntries[nIndex].wSlot[0] = 0;
-    gaNpcMenuEntries[nIndex].nSlot[0] = 0;
+    gaNpcIndex[nIndex].nCount = 2;
+    gaNpcIndex[nIndex].awIds[2] = 0;
+    gaNpcIndex[nIndex].apfHandlers[2] = 0;
 }
 
 // 0x004B21E0
 static inline void NPCMENU_SetEntryType3(int nIndex)
 {
-    gaNpcMenuEntries[nIndex].nType = 3;
-    gaNpcMenuEntries[nIndex].wSlot[1] = 0;
-    gaNpcMenuEntries[nIndex].nSlot[1] = 0;
+    gaNpcIndex[nIndex].nCount = 3;
+    gaNpcIndex[nIndex].awIds[3] = 0;
+    gaNpcIndex[nIndex].apfHandlers[3] = 0;
 }
 
 // 0x004B2200
 static inline void NPCMENU_SetEntryType4(int nIndex)
 {
-    gaNpcMenuEntries[nIndex].nType = 4;
-    gaNpcMenuEntries[nIndex].wSlot[2] = 0;
-    gaNpcMenuEntries[nIndex].nSlot[2] = 0;
+    gaNpcIndex[nIndex].nCount = 4;
+    gaNpcIndex[nIndex].awIds[4] = 0;
+    gaNpcIndex[nIndex].apfHandlers[4] = 0;
 }
 
 // 0x004B2220
 static inline void NPCMENU_SetIdentifyEntry(int nIndex)
 {
-    gaNpcMenuEntries[nIndex].wStringId = 0xFB4;
-    gaNpcMenuEntries[nIndex].pfnHandler = NPCMENU_IdentifyItemsWait;
-    gaNpcMenuEntries[nIndex].nType = 3;
+    gaNpcIndex[nIndex].awIds[1] = 0xFB4;
+    gaNpcIndex[nIndex].apfHandlers[1] = NPCMENU_IdentifyItemsWait;
+    gaNpcIndex[nIndex].nCount = 3;
 }
 
 // 0x004B2250
 void __cdecl NPCMENU_ResetHandlers()
 {
-    gnGlobal_00726DF9 = 2; gwGlobal_00726E01 = 0; gnGlobal_00726E0F = 0;
-    gnGlobal_00726E47 = 2; gwGlobal_00726E4F = 0; gnGlobal_00726E5D = 0;
-    gnGlobal_00726E95 = 2; gwGlobal_00726E9D = 0; gnGlobal_00726EAB = 0;
-    gnGlobal_00726CC1 = 3; gwGlobal_00726CCB = 0; gnGlobal_00726CDB = 0;
-    gnGlobal_007272D9 = 2; gwGlobal_007272E1 = 0; gnGlobal_007272EF = 0;
-    if (gpfnGlobal_007272EB == NPCMENU_ResurrectMercWait)
+    gaNpcIndex[11].nCount = 2; gaNpcIndex[11].awIds[2] = 0; gaNpcIndex[11].apfHandlers[2] = 0;
+    gaNpcIndex[13].nCount = 2; gaNpcIndex[13].awIds[2] = 0; gaNpcIndex[13].apfHandlers[2] = 0;
+    gaNpcIndex[15].nCount = 2; gaNpcIndex[15].awIds[2] = 0; gaNpcIndex[15].apfHandlers[2] = 0;
+    gaNpcIndex[3].nCount = 3; gaNpcIndex[3].awIds[3] = 0; gaNpcIndex[3].apfHandlers[3] = 0;
+    gaNpcIndex[43].nCount = 2; gaNpcIndex[43].awIds[2] = 0; gaNpcIndex[43].apfHandlers[2] = 0;
+    if (gaNpcIndex[43].apfHandlers[1] == NPCMENU_ResurrectMercWait)
     {
-        gnGlobal_007272D9 = 3;
+        gaNpcIndex[43].nCount = 3;
     }
-    gwGlobal_00727247 = 0; gnGlobal_00727257 = 0;
-    gwGlobal_00727297 = 0; gnGlobal_007272A9 = 0;
-    gnGlobal_00726F7F = 2; gwGlobal_00726F87 = 0; gnGlobal_00726F95 = 0;
-    gwGlobal_00726F85 = 0; gpfnGlobal_00726F91 = 0;
-    gnGlobal_0072723D = 3;
-    gnGlobal_0072728B = 4;
-    gwGlobal_00726EC2 = 0xFB4; gpfnGlobal_00726ECE = NPCMENU_IdentifyItemsWait; gnGlobal_00726EBC = 3;
-    gwGlobal_00726EE9 = 0xFB4; gpfnGlobal_00726EF5 = NPCMENU_IdentifyItemsWait; gnGlobal_00726EE3 = 3;
-    gwGlobal_00726F10 = 0xFB4; gpfnGlobal_00726F1C = NPCMENU_IdentifyItemsWait; gnGlobal_00726F0A = 3;
-    gwGlobal_00726F37 = 0xFB4; gpfnGlobal_00726F43 = NPCMENU_IdentifyItemsWait; gnGlobal_00726F31 = 3;
-    gwGlobal_0072721C = 0xFB4; gpfnGlobal_00727228 = NPCMENU_IdentifyItemsWait; gnGlobal_00727216 = 3;
+    gaNpcIndex[39].awIds[3] = 0; gaNpcIndex[39].apfHandlers[3] = 0;
+    gaNpcIndex[41].awIds[4] = 0; gaNpcIndex[41].apfHandlers[4] = 0;
+    gaNpcIndex[21].nCount = 2; gaNpcIndex[21].awIds[2] = 0; gaNpcIndex[21].apfHandlers[2] = 0;
+    gaNpcIndex[21].awIds[1] = 0; gaNpcIndex[21].apfHandlers[1] = 0;
+    gaNpcIndex[39].nCount = 3;
+    gaNpcIndex[41].nCount = 4;
+    gaNpcIndex[16].awIds[1] = 0xFB4; gaNpcIndex[16].apfHandlers[1] = NPCMENU_IdentifyItemsWait; gaNpcIndex[16].nCount = 3;
+    gaNpcIndex[17].awIds[1] = 0xFB4; gaNpcIndex[17].apfHandlers[1] = NPCMENU_IdentifyItemsWait; gaNpcIndex[17].nCount = 3;
+    gaNpcIndex[18].awIds[1] = 0xFB4; gaNpcIndex[18].apfHandlers[1] = NPCMENU_IdentifyItemsWait; gaNpcIndex[18].nCount = 3;
+    gaNpcIndex[19].awIds[1] = 0xFB4; gaNpcIndex[19].apfHandlers[1] = NPCMENU_IdentifyItemsWait; gaNpcIndex[19].nCount = 3;
+    gaNpcIndex[38].awIds[1] = 0xFB4; gaNpcIndex[38].apfHandlers[1] = NPCMENU_IdentifyItemsWait; gaNpcIndex[38].nCount = 3;
 }
 
 // 0x004B2370
@@ -1627,8 +1406,8 @@ void __fastcall NPCMENU_OnNpcPacketStoreSubId(D2NpcPacketStrc* pPacket)
     D2_ASSERT(pPacket, 0xFC6);
     if (pPacket->wSubId == 3 && gbNpcInteracting && CUNIT_FindClientUnit(gnInteractNpcId, 1))
     {
-        gnGlobal_007C0D39 = 1;
-        gwGlobal_007C0D3D = pPacket->wSubId;
+        gbNpcSubIdReceived = 1;
+        gwNpcSubId = pPacket->wSubId;
     }
 }
 
@@ -1639,7 +1418,7 @@ void __fastcall NPCMENU_CopyQuestBuffer(unsigned char* pBuffer)
 }
 
 // 0x004B2640
-void __fastcall sub_004B2640(int nUnused)
+void __fastcall sub_004B2640_SetInvRequest(int nUnused)
 {
     INV_SetRequest();
 }
@@ -1701,7 +1480,7 @@ void __stdcall NPCMENU_SendTradeRequest(int bAlternate, int nFlags)
 // build: symbol ?gbNpcActionPending@* 0x007C0D96
     gbNpcActionPending = 0;
     D2UnitStrc* pUnit = 0;
-    if (sub_00489870())
+    if (sub_00489870_GetNpcButtonHandled())
     {
         if (GetTickCount() - gdwTradeThrottleTick < 2000)
         {
@@ -1719,8 +1498,8 @@ void __stdcall NPCMENU_SendTradeRequest(int bAlternate, int nFlags)
             nMode = (unsigned short)pUnit->dwAnimMode;
             if (gnNpcTradeMode == 2)
             {
-                D2InventoryStrc* const pInventory = gpPlayer_007C0DD4->pInventory;
-                gnGlobal_007C0D3F = INVENTORY_GetCursorItem(pInventory) == pUnit;
+                D2InventoryStrc* const pInventory = gpNpcPlayerUnit->pInventory;
+                gbTradeItemOnCursor = INVENTORY_GetCursorItem(pInventory) == pUnit;
             }
         }
         else
@@ -1748,7 +1527,7 @@ void __stdcall NPCMENU_SendTradeRequest(int bAlternate, int nFlags)
     gdwGlobal_007C0DF1 = GetTickCount();
     if (nCommand == 0x32)
     {
-        if (gnGlobal_007C0DB0)
+        if (gbGambleShop)
             nMode = ((unsigned int)(unsigned short)nMode << 16) | 2;
         else
             nMode = (unsigned int)(unsigned short)nMode << 16;
@@ -1762,11 +1541,11 @@ void __stdcall NPCMENU_SendTradeRequest(int bAlternate, int nFlags)
         }
 // build: symbol ?gnNpcTransactionCost@* 0x007C0D7F
         MSG_SendFourDwords(0x32, gnInteractNpcId, gnTradeItemUnitId, nMode, gnNpcTransactionCost);
-        gnGlobal_007C0D5B = ITEM_GetDropSound(pUnit);
+        gnTradeItemDropSound = ITEM_GetDropSound(pUnit);
     }
     else if (nCommand == 0x35)
     {
-        if (sub_00489870()) { MSG_SendFourDwords(nCommand, gnInteractNpcId, gnTradeItemUnitId, (unsigned short)nMode, 0x80000000); }
+        if (sub_00489870_GetNpcButtonHandled()) { MSG_SendFourDwords(nCommand, gnInteractNpcId, gnTradeItemUnitId, (unsigned short)nMode, 0x80000000); }
         else if (pUnit) { MSG_SendFourDwords(0x35, gnInteractNpcId, gnTradeItemUnitId, (unsigned short)nMode, STATLIST_UnitGetStatValue(pUnit, STAT_DURABILITY, 0)); }
         else { MSG_SendFourDwords(0x35, gnInteractNpcId, gnTradeItemUnitId, (unsigned short)nMode, 0); }
     }
@@ -1777,12 +1556,12 @@ void __stdcall NPCMENU_SendTradeRequest(int bAlternate, int nFlags)
     tCoords.nX = 0;
     tCoords.nY = 0;
     NPCMENU_GetNpcDialogPos(&tCoords);
-    gpNpcWaitDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, sub_004B1DC0, 0, 0, 0, 1, 0, 0, 0, 1);
+    gpNpcWaitDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, sub_004B1DC0_Return0, 0, 0, 0, 1, 0, 0, 0, 1);
 // build: symbol ?gdwNpcRequestTimeout@* 0x007C0D53
     gdwNpcRequestTimeout = GetTickCount() + 60000;
 // build: symbol ?gdwNpcTransactionTick@* 0x007C0D57
     gdwNpcTransactionTick = 0;
-    sub_004B8370(gpNpcWaitDialog, 0);
+    ROSTER_SetCtrlState(gpNpcWaitDialog, 0);
     DIALOG_AddTextLine(gpNpcWaitDialog, D2LANG_GetStringFromTblIndex(0xD19), 0x0F, 0, 0, 1, 0, 0);
 }
 
@@ -1796,7 +1575,8 @@ void __cdecl NPCMENU_CloseWaitDialog()
     }
     gnNpcMenuState = 3;
     INV_SelectFirstButton();
-    sub_00488F10();
+// build: symbol ?INV_RestoreSelectedShopButton@* 0x00488F10
+    INV_RestoreSelectedShopButton();
     SELECT_ClearSelection();
 }
 
@@ -1829,46 +1609,45 @@ void __cdecl NPCMENU_FinishTransaction()
 }
 
 // 0x004B29E0
-void __fastcall sub_004B29E0(int nUnitId)
+void __fastcall sub_004B29E0_FinishPendingAction(int nUnitId)
 {
-// build: symbol ?gnPendingNpcActionUnitId@* 0x007C0D8E
-    if (gbNpcActionPending && g007C0D89 == 1 && nUnitId == gnPendingNpcActionUnitId)
+    if (gbNpcActionPending && gtPacket2A.nActionType == 1 && nUnitId == gtPacket2A.nUnitId)
     {
         NPCMENU_FinishTransaction();
     }
 }
 
 // 0x004B2A00
-void __fastcall sub_004B2A00(int nUnitId)
+void __fastcall sub_004B2A00_FinishPendingAction(int nUnitId)
 {
-    if (gbNpcActionPending && g007C0D89 == 1 && nUnitId == gnPendingNpcActionUnitId)
+    if (gbNpcActionPending && gtPacket2A.nActionType == 1 && nUnitId == gtPacket2A.nUnitId)
     {
         NPCMENU_FinishTransaction();
     }
 }
 
 // 0x004B2A20
-void __fastcall sub_004B2A20(int nUnitId)
+void __fastcall sub_004B2A20_FinishPendingAction(int nUnitId)
 {
-    if (gbNpcActionPending && g007C0D89 == 1 && nUnitId == gnPendingNpcActionUnitId)
+    if (gbNpcActionPending && gtPacket2A.nActionType == 1 && nUnitId == gtPacket2A.nUnitId)
     {
         NPCMENU_FinishTransaction();
     }
 }
 
 // 0x004B2A40
-void __fastcall sub_004B2A40(int nUnitId)
+void __fastcall sub_004B2A40_FinishPendingAction(int nUnitId)
 {
-    if (gbNpcActionPending && g007C0D89 == 0 && nUnitId == gnPendingNpcActionUnitId)
+    if (gbNpcActionPending && gtPacket2A.nActionType == 0 && nUnitId == gtPacket2A.nUnitId)
     {
         NPCMENU_FinishTransaction();
     }
 }
 
 // 0x004B2A60
-void __fastcall sub_004B2A60(int nUnitId)
+void __fastcall sub_004B2A60_FinishPendingAction(int nUnitId)
 {
-    if (gbNpcActionPending && g007C0D89 == 0 && nUnitId == gnPendingNpcActionUnitId)
+    if (gbNpcActionPending && gtPacket2A.nActionType == 0 && nUnitId == gtPacket2A.nUnitId)
     {
         NPCMENU_FinishTransaction();
     }
@@ -1925,7 +1704,8 @@ int __fastcall NPCMENU_GetTradeCostText(D2UnitStrc* pItem, int bService, int* pC
         case 0x101:
         case 0x1FF:
         {
-            if (sub_00489860())
+// build: symbol ?INV_IsSellMode@* 0x00489860
+            if (INV_IsSellMode())
             {
                 if (!ITEMS_CheckItemFlag(pItem, 0x10, 0x147B, ".\\UI\\npcmenu.cpp"))
                 {
@@ -1955,7 +1735,8 @@ int __fastcall NPCMENU_GetTradeCostText(D2UnitStrc* pItem, int bService, int* pC
         case 0x201:
         case 0x202:
         {
-            if (!sub_0062A130(pItem))
+// build: symbol ?ITEMS_IsNotQuestItem@* 0x0062A130
+            if (!ITEMS_IsNotQuestItem(pItem))
                 return 0;
             D2UnitStrc* pVendor = NPCMENU_GetInteractNpc();
             *pCost = ITEMS_GetTransactionCost(sub_00463DE0_GetPlayerUnit(), pItem, GAME_GetDifficulty(), gpPlayerQuestFlags, !pVendor ? -1 : pVendor->dwClassId, 1);
@@ -1967,7 +1748,7 @@ int __fastcall NPCMENU_GetTradeCostText(D2UnitStrc* pItem, int bService, int* pC
     else
     {
         int nType = 0;
-        if (gnGlobal_007C0DB0)
+        if (gbGambleShop)
             nType = 2;
         D2UnitStrc* pVendor = GetInteractNpc_Inline();
         const int nVendorId = !pVendor ? -1 : pVendor->dwClassId;
@@ -1977,7 +1758,7 @@ int __fastcall NPCMENU_GetTradeCostText(D2UnitStrc* pItem, int bService, int* pC
     if (!nStringId)
         return 0;
     const Unicode* pString = D2LANG_GetStringFromTblIndex(nStringId);
-    if (sub_00526800(pString) + 10 > nMaxLength)
+    if (UNICODE_StrLen(pString) + 10 > nMaxLength)
         return 0;
     sub_005267E0(pText, pString);
     Unicode wszCost[20];
@@ -2030,7 +1811,7 @@ int __cdecl NPCMENU_MenuBack()
             DIALOG_DestroyDialog(gpRes_007C0D5F);
             gpRes_007C0D5F = 0;
         }
-        sub_004B2650(0, 0);
+        NPCMENU_SendTradeRequest(0, 0);
         return 1;
     }
     SELECT_ClearSelection();
@@ -2108,7 +1889,7 @@ void __cdecl NPCMENU_ShowTradeDialog()
 
         Unicode wszName[0xC0];
         INV_BuildItemName(pItem, wszName, 0xBF);
-        const int nLength = sub_00526800(wszName);
+        const int nLength = UNICODE_StrLen(wszName);
         int i = 0;
         int bDone = 0;
         while (!bDone)
@@ -2207,10 +1988,10 @@ void __cdecl NPCMENU_ResetNpcMenu()
     NPCMENU_FreeNpcMenu();
     TEXT_InitNpcMenu();
     gbNpcEntriesProcessed = 0;
-    for (int i = 0; i < gnPartyCount_0072554C; ++i)
+    for (int i = 0; i < gnNpcEntryCount; ++i)
     {
-        gaNpcEntryFlags[i].nFlag0 = 0;
-        gaNpcEntryFlags[i].nFlag1 = 0;
+        gaNpcEntries[i].bSelected = 0;
+        gaNpcEntries[i].bFlag = 0;
     }
 }
 
@@ -2405,27 +2186,27 @@ int __cdecl NPCMENU_HireMercHandler()
 // 0x004B3700
 int __cdecl NPCMENU_InitImbueHandler()
 {
-    gnGlobal_00726CC1 = 4;
-    gpfnGlobal_00726CD7 = NPCMENU_OpenItemServicePanel;
-    gwGlobal_00726CC9 = 0xFB1;
+    gaNpcIndex[3].nCount = 4;
+    gaNpcIndex[3].apfHandlers[2] = NPCMENU_OpenItemServicePanel;
+    gaNpcIndex[3].awIds[2] = 0xFB1;
     return 1;
 }
 
 // 0x004B3730
 int __cdecl NPCMENU_InitSocketHandler()
 {
-    gnGlobal_0072723D = 4;
-    gpfnGlobal_00727253 = NPCMENU_OpenItemServicePanel;
-    gwGlobal_00727245 = 0x58DC;
+    gaNpcIndex[39].nCount = 4;
+    gaNpcIndex[39].apfHandlers[2] = NPCMENU_OpenItemServicePanel;
+    gaNpcIndex[39].awIds[2] = 0x58DC;
     return 1;
 }
 
 // 0x004B3760
 int __cdecl NPCMENU_InitPersonalizeHandler()
 {
-    gnGlobal_0072728B = 5;
-    gpfnGlobal_007272A5 = NPCMENU_OpenItemServicePanel;
-    gwGlobal_00727295 = 0x58DD;
+    gaNpcIndex[41].nCount = 5;
+    gaNpcIndex[41].apfHandlers[3] = NPCMENU_OpenItemServicePanel;
+    gaNpcIndex[41].awIds[3] = 0x58DD;
     return 1;
 }
 
@@ -2473,7 +2254,7 @@ extern "C" void __fastcall NPCMENU_ClearNpcInventoryAndSound(int nUnitId)
     }
     if (gnNpcSoundActive)
     {
-        sub_004BA840(gnNpcSoundHandle);
+        sub_004BA840_StopSound(gnNpcSoundHandle);
     }
     gnNpcSoundActive = 0;
     gnNpcSoundHandle = 0;
@@ -2499,7 +2280,7 @@ int __fastcall NPCMENU_HandleTradeClick(D2UnitStrc* pPlayer, D2UnitStrc* pItem, 
         default:
             return 0;
         }
-        if (!sub_00489870())
+        if (!sub_00489870_GetNpcButtonHandled())
             return 1;
 // build: symbol ?gnNpcTransactionCost@* 0x007C0D7F
         gnNpcTransactionCost = ITEMS_GetAllRepairCosts(0, pPlayer, nNpcClass, GAME_GetDifficulty(), gpPlayerQuestFlags, 0);
@@ -2510,8 +2291,8 @@ int __fastcall NPCMENU_HandleTradeClick(D2UnitStrc* pPlayer, D2UnitStrc* pItem, 
 // build: symbol ?gnTradeItemUnitId@* 0x007C0DE5
         gnTradeItemUnitId = 0;
         SELECT_RefreshHoverUnit(0);
-        gnGlobal_007C0D4B = nX;
-        gnGlobal_007C0D4F = nY;
+        gnTradeClickX = nX;
+        gnTradeClickY = nY;
     }
     else
     {
@@ -2520,8 +2301,8 @@ int __fastcall NPCMENU_HandleTradeClick(D2UnitStrc* pPlayer, D2UnitStrc* pItem, 
 // build: symbol ?gdwLastTradeSendTick@* 0x007C0DF1
         if (bCheckTick && GetTickCount() - gdwLastTradeSendTick < 0x1F4)
             return 0;
-        gnGlobal_007C0D4B = nX;
-        gnGlobal_007C0D4F = nY;
+        gnTradeClickX = nX;
+        gnTradeClickY = nY;
         if (nMode == 1)
         {
             switch (nNpcClass)
@@ -2531,7 +2312,7 @@ int __fastcall NPCMENU_HandleTradeClick(D2UnitStrc* pPlayer, D2UnitStrc* pItem, 
             case 0xFD:
             case 0x101:
             case 0x1FF:
-                if (sub_00489860())
+                if (INV_IsSellMode())
                 {
                     if (!NPCMENU_ItemNeedsRepair(pItem))
                         return 0;
@@ -2540,7 +2321,7 @@ int __fastcall NPCMENU_HandleTradeClick(D2UnitStrc* pPlayer, D2UnitStrc* pItem, 
                     break;
                 }
                 gnNpcTransactionCost = ITEMS_GetTransactionCost(sub_00463DE0_GetPlayerUnit(), pItem, GAME_GetDifficulty(), gpPlayerQuestFlags, nNpcClass, 1);
-                if (!sub_0062A130(pItem))
+                if (!ITEMS_IsNotQuestItem(pItem))
                     return 0;
                 gnNpcTradeMode = 2;
                 break;
@@ -2557,7 +2338,7 @@ int __fastcall NPCMENU_HandleTradeClick(D2UnitStrc* pPlayer, D2UnitStrc* pItem, 
             case 0x201:
             case 0x202:
                 gnNpcTransactionCost = ITEMS_GetTransactionCost(sub_00463DE0_GetPlayerUnit(), pItem, GAME_GetDifficulty(), gpPlayerQuestFlags, nNpcClass, 1);
-                if (!sub_0062A130(pItem))
+                if (!ITEMS_IsNotQuestItem(pItem))
                     return 0;
                 gnNpcTradeMode = 2;
                 break;
@@ -2595,20 +2376,19 @@ int __fastcall NPCMENU_HandleTradeClick(D2UnitStrc* pPlayer, D2UnitStrc* pItem, 
             sub_004B9A00(1, 0, 0, 0, 0);
 // build: symbol ?gnNpcMenuState@* 0x007C0C6B
             gnNpcMenuState = 4;
-            sub_004B2F50();
+            NPCMENU_ShowTradeDialog();
             return 1;
         }
     }
-    sub_004B2650(1, nArg);
+    NPCMENU_SendTradeRequest(1, nArg);
     return 1;
 }
 
 // 0x004B3C00
-void __fastcall sub_004B3C00(int nUnitId)
+void __fastcall sub_004B3C00_FinishPendingAction(int nUnitId)
 {
-// build: symbol ?gnPendingNpcActionUnitId@* 0x007C0D8E
 // build: symbol ?gbNpcActionPending@* 0x007C0D96
-    if (gbNpcActionPending && gnPendingNpcActionType == 0 && nUnitId == gnPendingNpcActionUnitId)
+    if (gbNpcActionPending && gtPacket2A.nActionType == 0 && nUnitId == gtPacket2A.nUnitId)
     {
         NPCMENU_FinishTransaction();
     }
@@ -2637,7 +2417,7 @@ void __fastcall NPCMENU_EndNpcInteraction(int nValue)
 
     if (gnNpcSoundActive)
     {
-        sub_004BA840(gnNpcSoundHandle);
+        sub_004BA840_StopSound(gnNpcSoundHandle);
     }
 
     gnNpcSoundActive = 0;
@@ -2723,7 +2503,7 @@ void __fastcall NPCMENU_RefreshNpcEntries(D2UnitStrc* pUnit)
         {
             gaNpcEntries[i].bSelected = 0;
             D2_ASSERT(sub_00463DD0_GetPlayerUnit(), 0xFAB);
-            sub_004B1680(&gaNpcEntries[i]);
+            sub_004B1680_PickNpcChoice(&gaNpcEntries[i]);
         }
         gaNpcEntries[i].bRefreshed = 1;
     }
@@ -2762,7 +2542,7 @@ void __cdecl NPCMENU_CloseByState()
     else if (gnNpcMenuState >= 3 && gnNpcMenuState <= 6)
     {
         NPCMENU_CloseNpcShop();
-        sub_0048A6A0_ClearHover();
+        INV_ResetNpcCursor();
     }
     else if (gnNpcMenuState == 7)
     {
@@ -2788,7 +2568,7 @@ void __cdecl NPCMENU_CloseNpc2()
 }
 
 // 0x004B3FE0
-void __cdecl sub_004B3FE0()
+void __cdecl sub_004B3FE0_CloseNpcMenu()
 {
     gnNpcMenuState = 0;
     INV_ResetHover();
@@ -2859,7 +2639,7 @@ static void __stdcall NPCMENU_ShowNpcMessage(char bFlag, int nIndex)
     gpNpcEntry->bSelected = 1;
     if (!gbNpcEntriesProcessed)
     {
-        sub_004B17A0();
+        sub_004B17A0_ProcessNpcEntries();
         if (bFlag)
             nIndex = gpNpcEntry->nSelected;
     }
@@ -2920,7 +2700,7 @@ int __cdecl NPCMENU_GreetNpcMessage()
 // 0x004B4290
 int __cdecl NPCMENU_ConfirmNpcAction()
 {
-    sub_004B4070();
+    NPCMENU_CloseConfirmDialog();
     MSG_SendDwords3(0x38, 0, gnInteractNpcId, 0);
     return 1;
 }
@@ -2932,7 +2712,7 @@ int __cdecl NPCMENU_OpenTradeShop()
     {
         if (gnNpcSoundHandle)
         {
-            sub_004BA840(gnNpcSoundHandle);
+            sub_004BA840_StopSound(gnNpcSoundHandle);
             gnNpcSoundHandle = 0;
         }
         gnNpcSoundActive = 0;
@@ -2978,26 +2758,26 @@ void __cdecl NPCMENU_UpdateNpcInteract()
 
     if (gpNpcMessageDialog)
     {
-        sub_004B8100(gpNpcMessageDialog);
+        DIALOG_DrawDialog(gpNpcMessageDialog);
         return;
     }
 
     if (gpNpcConfirmDialog)
     {
-        sub_004B8100(gpNpcConfirmDialog);
+        DIALOG_DrawDialog(gpNpcConfirmDialog);
         return;
     }
 
     if (gpNpcMainMenuDialog)
     {
         GAME_ResetMouseState();
-        sub_004B8100(gpNpcMainMenuDialog);
+        DIALOG_DrawDialog(gpNpcMainMenuDialog);
         return;
     }
 
     if (gpNpcSubMenuDialog)
     {
-        sub_004B8100(gpNpcSubMenuDialog);
+        DIALOG_DrawDialog(gpNpcSubMenuDialog);
         return;
     }
 
@@ -3040,7 +2820,7 @@ void __cdecl NPCMENU_UpdateNpcInteract()
     {
         if (!INVENTORY_GetCursorItem(sub_00463DD0_GetPlayerUnit()->pInventory) && !CURSOR_GetCursorItem())
         {
-            sub_004B8100(gpTradeDialog);
+            DIALOG_DrawDialog(gpTradeDialog);
             return;
         }
 
@@ -3056,14 +2836,14 @@ void __cdecl NPCMENU_UpdateNpcInteract()
 
     if (gpNpcHireDialog)
     {
-        sub_004B8100(gpNpcHireDialog);
+        DIALOG_DrawDialog(gpNpcHireDialog);
         return;
     }
 
 // build: symbol ?gpNpcGreetingDialog@* 0x007C0D7B
     if (gpNpcGreetingDialog)
     {
-        sub_004B8100(gpNpcGreetingDialog);
+        DIALOG_DrawDialog(gpNpcGreetingDialog);
     }
 }
 
@@ -3187,7 +2967,7 @@ void __cdecl NPCMENU_BuildNpcMenu()
         UI_SetUIVar(8,1,0);
         return;
     }
-    if(gnGlobal_007C0D2D==252 || gnGlobal_007C0D2D==198 || gnGlobal_007C0D2D==515 || gnGlobal_007C0D2D==150)
+    if(gnInteractNpcClassId==252 || gnInteractNpcClassId==198 || gnInteractNpcClassId==515 || gnInteractNpcClassId==150)
     {
         D2UnitStrc* pPlayer=sub_00463DD0_GetPlayerUnit();
         MSG_SendDwords3(0x38,3,gnInteractNpcId,!pPlayer?-1:pPlayer->dwUnitId);
@@ -3197,10 +2977,10 @@ void __cdecl NPCMENU_BuildNpcMenu()
     tCoords.nY=0;
     NPCMENU_GetNpcDialogPos(&tCoords);
     gpNpcMainMenuDialog=DIALOG_CreateDialog(tCoords.nX,tCoords.nY,NPCMENU_NpcMenuCancel,NPCMENU_NpcMenuCancelB,0,0,1,0,0,0,1);
-    sub_004B8370(gpNpcMainMenuDialog,1);
+    ROSTER_SetCtrlState(gpNpcMainMenuDialog,1);
     Unicode wszName[80];
     sub_005267E0(wszName,CUNIT_GetUnitName(NPC_GetInteractUnit_Inline()));
-    sub_00526800(wszName);
+    UNICODE_StrLen(wszName);
     DIALOG_AddTextLine(gpNpcMainMenuDialog,wszName,21,0,4,1,0,0);
     int nIndex=NPC_FindIndex_Inline(NPC_GetInteractUnit_Inline());
     if(nIndex<0 || nIndex>=gnNpcIndexCount)return;
@@ -3214,7 +2994,7 @@ void __cdecl NPCMENU_BuildNpcMenu()
         {
             const Unicode* wszHireling=D2LANG_GetStringFromTblIndex(0x2B0D);
             if((unsigned short)gnHirelingName_00725494!=0x421)wszHireling=D2LANG_GetStringFromTblIndex((unsigned short)gnHirelingName_00725494);
-            sub_005269D0(512,wszLine,D2LANG_GetStringFromTblIndex(0x58A8),wszHireling,gnNpcMenuValue);
+            sub_005269D0_FormatText(512,wszLine,D2LANG_GetStringFromTblIndex(0x58A8),wszHireling,gnNpcMenuValue);
         }
         else if(nStringId==0xD09)
         {
@@ -3332,7 +3112,7 @@ void __cdecl NPCMENU_OpenGreetingDialog()
     }
 
     sub_005267E0(wszName, CUNIT_GetUnitName(NPC_GetInteractUnit_Inline()));
-    const int nLength = sub_00526800(wszName);
+    const int nLength = UNICODE_StrLen(wszName);
     for (int i = 0; i < nLength; ++i)
     {
         const unsigned short wChar = wszName[i].wChar;
@@ -3539,8 +3319,8 @@ void __fastcall NPCMENU_OnUnitRemoved(unsigned char nUnitType, int nUnitId)
 void __cdecl NPCMENU_OnTransactionResult()
 {
  D2InventoryStrc* inv=sub_00463DD0_GetPlayerUnit()->pInventory;
- if(g007C0D89<=6) {
-  switch(g007C0D89) {
+ if(gtPacket2A.nActionType<=6) {
+  switch(gtPacket2A.nActionType) {
    case 0:
     sub_004B9A00(g007C0D5B,0,0,0,0); g007C0D5B=0;
     if(!CUNIT_FindClientUnit(g007C0D8E,4)) { g007C0D96=1; return; }
@@ -3554,11 +3334,11 @@ void __cdecl NPCMENU_OnTransactionResult()
   g007C0D96=0;
   if(g007C0D67) { DIALOG_DestroyDialog(g007C0D67);g007C0D67=0; }
   SELECT_ClearSelection(); g007C0DE0=0;g007C0DE1=0;g007C0DE5=0;g007C0C6B=3;
-  INV_SelectFirstButton();sub_00488F10();return;
+  INV_SelectFirstButton();INV_RestoreSelectedShopButton();return;
  }
  if(g007C0D67) {DIALOG_DestroyDialog(g007C0D67);g007C0D67=0;}
  int text;
- switch(g007C0D89) {
+ switch(gtPacket2A.nActionType) {
  case 15:text=0xd23;break;
  case 16:text=0xd1d;break;
  case 12:text=0xd22;break;
@@ -3595,11 +3375,11 @@ static __forceinline void sub_004B5640_RefreshNpcMenu()
             case 0xF6:
             case 0x109:
             case 0x208:
-                gnGlobal_00726EBC = 2;
-                gnGlobal_00726EE3 = 2;
-                gnGlobal_00726F0A = 2;
-                gnGlobal_00726F31 = 2;
-                gnGlobal_00727216 = 2;
+                gaNpcIndex[16].nCount = 2;
+                gaNpcIndex[17].nCount = 2;
+                gaNpcIndex[18].nCount = 2;
+                gaNpcIndex[19].nCount = 2;
+                gaNpcIndex[38].nCount = 2;
                 break;
             }
         }
@@ -3617,7 +3397,7 @@ void __cdecl sub_004B5640_OpenNpcMenu()
         gpNpcWaitDialog = 0;
     }
 
-    const unsigned char nType = gnPendingNpcActionType;
+    const unsigned char nType = gtPacket2A.nActionType;
     if (nType != 5)
     {
         if (nType != 6 && nType != 3)
@@ -3689,7 +3469,6 @@ int __cdecl NPCMENU_CloseSubMenuToMain()
 
 struct Handler;
 
-struct HandlerNode;
 
 struct SelectionEntry;
 
@@ -3717,14 +3496,8 @@ struct Handler
     virtual int next1(Message*);
 };
 
-struct HandlerNode
-{
-    Handler* object;
-    HandlerNode* next;
-};
-
 // 0x004B5850
-int __cdecl sub_004B5850()
+int __cdecl sub_004B5850_CloseConfirmDialog()
 {
     if (gbNpcMessageShown)
     {
@@ -3753,7 +3526,7 @@ void __stdcall NPCMENU_OpenNpcPanel(int nStringIndex, int nEntryIndex)
     tCoords.nY = 0;
     NPCMENU_GetNpcDialogPos(&tCoords);
 
-    gpNpcMessageDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, NPCMENU_CloseSubMenuToMain, sub_004B4010, 0, 0, 1, 0, 0, 0, 1);
+    gpNpcMessageDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, NPCMENU_CloseSubMenuToMain, NPCMENU_CloseSubMenuDialog, 0, 0, 1, 0, 0, 0, 1);
     ROSTER_SetCtrlState(gpNpcMessageDialog, 1);
     DIALOG_AddTextLine(gpNpcMessageDialog, D2LANG_GetStringFromTblIndex(nStringIndex), 0x15, 0, 4, 1, 0, 0);
 
@@ -3769,20 +3542,20 @@ void __stdcall NPCMENU_OpenNpcPanel(int nStringIndex, int nEntryIndex)
     gnNpcEntryIndex = nEntryIndex;
     if (!gaNpcEntries[nEntryIndex].bFlag14)
     {
-        DIALOG_AddTextLine(gpNpcMessageDialog, D2LANG_GetStringFromTblIndex(0xD47), 0xF, 0, 0, 1, sub_004B41E0, 1);
+        DIALOG_AddTextLine(gpNpcMessageDialog, D2LANG_GetStringFromTblIndex(0xD47), 0xF, 0, 0, 1, NPCMENU_GreetNpcMessage, 1);
     }
 
-    DIALOG_AddTextLine(gpNpcMessageDialog, D2LANG_GetStringFromTblIndex(0xD43), 0xF, 0, 0, 1, sub_004B41C0, 1);
+    DIALOG_AddTextLine(gpNpcMessageDialog, D2LANG_GetStringFromTblIndex(0xD43), 0xF, 0, 0, 1, NPCMENU_NextNpcMessage, 1);
 
     for (int i = 0; i < nCount; ++i)
     {
         const unsigned short nStringId = TEXT_GetStringIdOfMenuType2Node(pTextHeader, i);
-        DIALOG_AddTextLine(gpNpcMessageDialog, TEXT_GetTextString(nStringId), 0xF, 0, 0, 1, sub_004B1A80, 1);
+        DIALOG_AddTextLine(gpNpcMessageDialog, TEXT_GetTextString(nStringId), 0xF, 0, 0, 1, NPCMENU_OnSelectMessage, 1);
     }
 
     if (gnInteractNpcClassId == 0xC9)
     {
-        DIALOG_AddTextLine(gpNpcMessageDialog, D2LANG_GetStringFromTblIndex(0xD40), 0xF, 0, 0, 1, sub_004B1B80, 1);
+        DIALOG_AddTextLine(gpNpcMessageDialog, D2LANG_GetStringFromTblIndex(0xD40), 0xF, 0, 0, 1, NPCMENU_PlayIntroMessage, 1);
     }
 
     if (gnInteractNpcClassId == 0x109 || gnInteractNpcClassId == 0xF4 || gnInteractNpcClassId == 0xF5 || gnInteractNpcClassId == 0x208 || gnInteractNpcClassId == 0xF6)
@@ -3795,7 +3568,7 @@ void __stdcall NPCMENU_OpenNpcPanel(int nStringIndex, int nEntryIndex)
                 D2UnitStrc* pCheck = INVENTORY_UnitIsItem(pItem);
                 if (pCheck && ITEMS_GetBaseCode(pCheck) == 0x20786F62)
                 {
-                    DIALOG_AddTextLine(gpNpcMessageDialog, D2LANG_GetStringFromTblIndex(0x8B7), 0xF, 0, 0, 1, sub_004B1C00, 1);
+                    DIALOG_AddTextLine(gpNpcMessageDialog, D2LANG_GetStringFromTblIndex(0x8B7), 0xF, 0, 0, 1, NPCMENU_PlayGossipMessage, 1);
                     break;
                 }
             }
@@ -3815,11 +3588,11 @@ void __stdcall NPCMENU_OpenConfirmDialog(int nStringIndex)
     tCoords.nY = 0;
     NPCMENU_GetNpcDialogPos(&tCoords);
 
-    gpNpcConfirmDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, sub_004B5850, sub_004B4070, 0, 0, 1, 0, 0, 0, 1);
+    gpNpcConfirmDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, sub_004B5850_CloseConfirmDialog, NPCMENU_CloseConfirmDialog, 0, 0, 1, 0, 0, 0, 1);
     ROSTER_SetCtrlState(gpNpcConfirmDialog, 1);
     DIALOG_AddTextLine(gpNpcConfirmDialog, D2LANG_GetStringFromTblIndex(nStringIndex), 0x15, 0, 4, 1, 0, 0);
-    DIALOG_AddTextLine(gpNpcConfirmDialog, D2LANG_GetStringFromTblIndex(0xD49), 0xF, 0, 0, 1, sub_004B4290, 1);
-    DIALOG_AddTextLine(gpNpcConfirmDialog, D2LANG_GetStringFromTblIndex(0xD48), 0xF, 0, 0, 1, sub_004B5850, 1);
+    DIALOG_AddTextLine(gpNpcConfirmDialog, D2LANG_GetStringFromTblIndex(0xD49), 0xF, 0, 0, 1, NPCMENU_ConfirmNpcAction, 1);
+    DIALOG_AddTextLine(gpNpcConfirmDialog, D2LANG_GetStringFromTblIndex(0xD48), 0xF, 0, 0, 1, sub_004B5850_CloseConfirmDialog, 1);
 }
 
 // 0x004B5C00
@@ -3846,20 +3619,6 @@ int __cdecl NPCMENU_CloseHireDialog()
     return 1;
 }
 
-#pragma pack(push, 1)
-struct D2GSPacketSrv2A
-{
-    unsigned char nHeader;
-    unsigned char unk0x01;
-    unsigned char unk0x02;
-    unsigned int unk0x03;
-    unsigned int unk0x07;
-    unsigned int unk0x0B;
-};
-#pragma pack(pop)
-
-extern D2GSPacketSrv2A gtPacket2A;                                                                  // 0x007C0D87
-
 // 0x004B6390
 void __fastcall NPCMENU_HandleNpcTransaction(D2GSPacketSrv2A* pPacket)
 {
@@ -3877,16 +3636,16 @@ void __fastcall NPCMENU_HandleNpcTransaction(D2GSPacketSrv2A* pPacket)
         sub_004B5640_OpenNpcMenu();
         return;
     }
-    if (pPacket->unk0x02 == 1)
+    if (pPacket->nActionType == 1)
         sub_004B9A00(0xDD, 0, 0, 0, 0);
 }
 
 // 0x004B6410
 int __cdecl NPCMENU_InitHireHandler()
 {
-    gnGlobal_00726DF9 = 3;
-    gpfnGlobal_00726E0B = NPCMENU_ShowMainMenu;
-    gwGlobal_00726DFF = 0xD45;
+    gaNpcIndex[11].nCount = 3;
+    gaNpcIndex[11].apfHandlers[1] = NPCMENU_ShowMainMenu;
+    gaNpcIndex[11].awIds[1] = 0xD45;
     return 1;
 }
 
@@ -3958,29 +3717,28 @@ static int __stdcall NPCMENU_ToggleNpcHandler(int bAdd, int nIndex)
 // 0x004B65F0
 int __cdecl NPCMENU_InitTravelLutGholeinHandler()
 {
-    gnGlobal_00726E47 = 3;
-    gpfnCallback_00726E59 = sub_004B5140;
-    gwGlobal_00726E4D = 0xD36;
+    gaNpcIndex[13].nCount = 3;
+    gaNpcIndex[13].apfHandlers[1] = NPCMENU_NpcMenuAction28;
+    gaNpcIndex[13].awIds[1] = 0xD36;
     return 1;
 }
 
 // 0x004B6620
 int __cdecl NPCMENU_InitTravelKurastDocksHandler()
 {
-    gnGlobal_00726E95 = 3;
-    gpfnGlobal_00726EA7 = NPCMENU_TravelToKurastDocks;
-    gwGlobal_00726E9B = 0xD38;
+    gaNpcIndex[15].nCount = 3;
+    gaNpcIndex[15].apfHandlers[1] = NPCMENU_TravelToKurastDocks;
+    gaNpcIndex[15].awIds[1] = 0xD38;
     return 1;
 }
 
-extern short gwGlobal_007272DF;                                                                             // 0x007272DF
 
 // 0x004B6650
 int __cdecl sub_004B6650_InitHandler()
 {
-    gnGlobal_007272D9 = 3;
-    gpfnGlobal_007272EB = NPCMENU_ShowMainMenu;
-    gwGlobal_007272DF = 0xD45;
+    gaNpcIndex[43].nCount = 3;
+    gaNpcIndex[43].apfHandlers[1] = NPCMENU_ShowMainMenu;
+    gaNpcIndex[43].awIds[1] = 0xD45;
     return 1;
 }
 
@@ -3989,9 +3747,9 @@ int __cdecl NPCMENU_InitTravelHarrogathHandler()
 {
     if (GAME_IsExpansion())
     {
-        gnGlobal_00726F7F = 3;
-        gpfnGlobal_00726F91 = NPCMENU_TravelToHarrogath;
-        gwGlobal_00726F85 = 0x58D2;
+        gaNpcIndex[21].nCount = 3;
+        gaNpcIndex[21].apfHandlers[1] = NPCMENU_TravelToHarrogath;
+        gaNpcIndex[21].awIds[1] = 0x58D2;
     }
     return 1;
 }
@@ -4043,7 +3801,7 @@ static void __stdcall NPCMENU_OpenNpcInteract(D2UnitStrc* pUnit, int bReopen)
     {
         if (gnNpcSoundHandle)
         {
-            sub_004BA840(gnNpcSoundHandle);
+            sub_004BA840_StopSound(gnNpcSoundHandle);
             gnNpcSoundHandle = 0;
         }
         gnNpcSoundActive = 0;
@@ -4279,11 +4037,32 @@ int __cdecl NPCMENU_OpenConfirm()
 // 0x004B6DA0
 int __cdecl sub_004B6DA0_InitHandler()
 {
-    gnGlobal_00726C4C = 4;
-    gpfnGlobal_00726C62 = NPCMENU_OpenConfirm;
-    gwGlobal_00726C54 = 0x2BA0;
+    gaNpcIndex[0].nCount = 4;
+    gaNpcIndex[0].apfHandlers[2] = NPCMENU_OpenConfirm;
+    gaNpcIndex[0].awIds[2] = 0x2BA0;
     return 1;
 }
+
+#pragma pack(push, 1)
+struct d2data_00725860_t
+{
+    unsigned char b0[200];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0072739C_t
+{
+    unsigned char b0[12];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00727398_t
+{
+    unsigned char b0[4];
+};
+#pragma pack(pop)
 
 #pragma pack(push, 1)
 struct d2data_007253A0_t
@@ -4524,524 +4303,15 @@ struct d2data_007267A8_t
 #pragma pack(pop)
 
 #pragma pack(push, 1)
-struct d2data_00726865_t
-{
-    unsigned char b0[6];
-    const void* p1;
-    unsigned char b2[18];
-    const void* p3;
-    unsigned char b4[18];
-    const void* p5;
-    unsigned char b6[18];
-    const void* p7;
-    unsigned char b8[18];
-    const void* p9;
-    unsigned char b10[18];
-    const void* p11;
-    unsigned char b12[18];
-    const void* p13;
-    unsigned char b14[18];
-    const void* p15;
-    unsigned char b16[18];
-    const void* p17;
-    unsigned char b18[18];
-    const void* p19;
-    unsigned char b20[18];
-    const void* p21;
-    unsigned char b22[18];
-    const void* p23;
-    unsigned char b24[18];
-    const void* p25;
-    unsigned char b26[18];
-    const void* p27;
-    unsigned char b28[18];
-    const void* p29;
-    unsigned char b30[18];
-    const void* p31;
-    unsigned char b32[18];
-    const void* p33;
-    unsigned char b34[18];
-    const void* p35;
-    unsigned char b36[18];
-    const void* p37;
-    unsigned char b38[18];
-    const void* p39;
-    unsigned char b40[18];
-    const void* p41;
-    unsigned char b42[18];
-    const void* p43;
-    unsigned char b44[18];
-    const void* p45;
-    unsigned char b46[18];
-    const void* p47;
-    unsigned char b48[18];
-    const void* p49;
-    unsigned char b50[18];
-    const void* p51;
-    unsigned char b52[18];
-    const void* p53;
-    unsigned char b54[18];
-    const void* p55;
-    unsigned char b56[18];
-    const void* p57;
-    unsigned char b58[18];
-    const void* p59;
-    unsigned char b60[18];
-    const void* p61;
-    unsigned char b62[18];
-    const void* p63;
-    unsigned char b64[18];
-    const void* p65;
-    unsigned char b66[18];
-    const void* p67;
-    unsigned char b68[18];
-    const void* p69;
-    unsigned char b70[18];
-    const void* p71;
-    unsigned char b72[18];
-    const void* p73;
-    unsigned char b74[18];
-    const void* p75;
-    unsigned char b76[18];
-    const void* p77;
-    unsigned char b78[18];
-    const void* p79;
-    unsigned char b80[18];
-    const void* p81;
-    unsigned char b82[18];
-    const void* p83;
-    unsigned char b84[18];
-    const void* p85;
-    unsigned char b86[18];
-    const void* p87;
-    unsigned char b88[18];
-    const void* p89;
-    unsigned char b90[17];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726C48_t
+struct d2data_00726C44_t
 {
     unsigned char b0[4];
 };
 #pragma pack(pop)
 
-#pragma pack(push, 1)
-struct d2data_00726C4C_t
-{
-    unsigned char b0[10];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726C56_t
-{
-    unsigned char b0[4];
-    const void* p1;
-    const void* p2;
-    unsigned char b3[12];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726C6E_t
-{
-    unsigned char b0[19];
-    const void* p1;
-    unsigned char b2[35];
-    const void* p3;
-    unsigned char b4[21];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726CC5_t
-{
-    unsigned char b0[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726CCD_t
-{
-    unsigned char b0[2];
-    const void* p1;
-    const void* p2;
-    unsigned char b3[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726CDF_t
-{
-    unsigned char b0[23];
-    const void* p1;
-    const void* p2;
-    unsigned char b3[31];
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    unsigned char b7[27];
-    const void* p8;
-    unsigned char b9[35];
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    unsigned char b13[27];
-    const void* p14;
-    const void* p15;
-    unsigned char b16[31];
-    const void* p17;
-    unsigned char b18[35];
-    const void* p19;
-    const void* p20;
-    unsigned char b21[17];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726DFD_t
-{
-    unsigned char b0[6];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726E03_t
-{
-    unsigned char b0[4];
-    const void* p1;
-    unsigned char b2[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726E13_t
-{
-    unsigned char b0[27];
-    const void* p1;
-    const void* p2;
-    unsigned char b3[17];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726E4B_t
-{
-    unsigned char b0[6];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726E51_t
-{
-    unsigned char b0[4];
-    const void* p1;
-    unsigned char b2[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726E61_t
-{
-    unsigned char b0[27];
-    const void* p1;
-    const void* p2;
-    unsigned char b3[17];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726E99_t
-{
-    unsigned char b0[6];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726E9F_t
-{
-    unsigned char b0[4];
-    const void* p1;
-    unsigned char b2[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726EAF_t
-{
-    unsigned char b0[13];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726EC0_t
-{
-    unsigned char b0[2];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726EC4_t
-{
-    unsigned char b0[6];
-    const void* p1;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726ED2_t
-{
-    unsigned char b0[17];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726EE7_t
-{
-    unsigned char b0[2];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726EEB_t
-{
-    unsigned char b0[6];
-    const void* p1;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726EF9_t
-{
-    unsigned char b0[17];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726F0E_t
-{
-    unsigned char b0[2];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726F12_t
-{
-    unsigned char b0[6];
-    const void* p1;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726F20_t
-{
-    unsigned char b0[17];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726F35_t
-{
-    unsigned char b0[2];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726F39_t
-{
-    unsigned char b0[6];
-    const void* p1;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726F47_t
-{
-    unsigned char b0[31];
-    const void* p1;
-    unsigned char b2[21];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726F83_t
-{
-    unsigned char b0[6];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726F89_t
-{
-    unsigned char b0[4];
-    const void* p1;
-    unsigned char b2[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00726F99_t
-{
-    unsigned char b0[27];
-    const void* p1;
-    unsigned char b2[35];
-    const void* p3;
-    const void* p4;
-    unsigned char b5[31];
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    unsigned char b9[27];
-    const void* p10;
-    const void* p11;
-    unsigned char b12[31];
-    const void* p13;
-    const void* p14;
-    const void* p15;
-    unsigned char b16[27];
-    const void* p17;
-    const void* p18;
-    unsigned char b19[31];
-    const void* p20;
-    unsigned char b21[35];
-    const void* p22;
-    unsigned char b23[35];
-    const void* p24;
-    const void* p25;
-    unsigned char b26[31];
-    const void* p27;
-    unsigned char b28[35];
-    const void* p29;
-    unsigned char b30[35];
-    const void* p31;
-    unsigned char b32[35];
-    const void* p33;
-    unsigned char b34[35];
-    const void* p35;
-    unsigned char b36[35];
-    const void* p37;
-    unsigned char b38[35];
-    const void* p39;
-    unsigned char b40[21];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0072721A_t
-{
-    unsigned char b0[2];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0072721E_t
-{
-    unsigned char b0[6];
-    const void* p1;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0072722C_t
-{
-    unsigned char b0[17];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00727241_t
-{
-    unsigned char b0[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00727249_t
-{
-    unsigned char b0[2];
-    const void* p1;
-    const void* p2;
-    unsigned char b3[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0072725B_t
-{
-    unsigned char b0[23];
-    const void* p1;
-    const void* p2;
-    unsigned char b3[17];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0072728F_t
-{
-    unsigned char b0[10];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00727299_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    unsigned char b3[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_007272AD_t
-{
-    unsigned char b0[19];
-    const void* p1;
-    const void* p2;
-    unsigned char b3[17];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_007272DD_t
-{
-    unsigned char b0[6];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_007272E3_t
-{
-    unsigned char b0[4];
-    const void* p1;
-    unsigned char b2[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_007272F3_t
-{
-    unsigned char b0[27];
-    const void* p1;
-    unsigned char b2[35];
-    const void* p3;
-    unsigned char b4[35];
-    const void* p5;
-    unsigned char b6[35];
-    const void* p7;
-    unsigned char b8[21];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0072739C_t
-{
-    unsigned char b0[12];
-};
-#pragma pack(pop)
-
+extern "C" struct d2data_00725860_t gData_00725860; // 0x00725860
+extern "C" struct d2data_0072739C_t gData_0072739C; // 0x0072739C
+extern "C" struct d2data_00727398_t gData_00727398; // 0x00727398
 extern "C" struct d2data_007253A0_t gData_007253A0; // 0x007253A0
 extern "C" struct d2data_00725498_t gData_00725498; // 0x00725498
 extern "C" struct d2data_00725550_t gData_00725550; // 0x00725550
@@ -5074,51 +4344,139 @@ extern "C" struct d2data_00726548_t gData_00726548; // 0x00726548
 extern "C" struct d2data_00726600_t gData_00726600; // 0x00726600
 extern "C" struct d2data_007266F0_t gData_007266F0; // 0x007266F0
 extern "C" struct d2data_007267A8_t gData_007267A8; // 0x007267A8
-extern "C" struct d2data_00726865_t gData_00726865; // 0x00726865
-extern "C" struct d2data_00726C48_t gData_00726C48; // 0x00726C48
-extern "C" struct d2data_00726C4C_t gData_00726C4C; // 0x00726C4C
-extern "C" struct d2data_00726C56_t gData_00726C56; // 0x00726C56
-extern "C" struct d2data_00726C6E_t gData_00726C6E; // 0x00726C6E
-extern "C" struct d2data_00726CC5_t gData_00726CC5; // 0x00726CC5
-extern "C" struct d2data_00726CCD_t gData_00726CCD; // 0x00726CCD
-extern "C" struct d2data_00726CDF_t gData_00726CDF; // 0x00726CDF
-extern "C" struct d2data_00726DFD_t gData_00726DFD; // 0x00726DFD
-extern "C" struct d2data_00726E03_t gData_00726E03; // 0x00726E03
-extern "C" struct d2data_00726E13_t gData_00726E13; // 0x00726E13
-extern "C" struct d2data_00726E4B_t gData_00726E4B; // 0x00726E4B
-extern "C" struct d2data_00726E51_t gData_00726E51; // 0x00726E51
-extern "C" struct d2data_00726E61_t gData_00726E61; // 0x00726E61
-extern "C" struct d2data_00726E99_t gData_00726E99; // 0x00726E99
-extern "C" struct d2data_00726E9F_t gData_00726E9F; // 0x00726E9F
-extern "C" struct d2data_00726EAF_t gData_00726EAF; // 0x00726EAF
-extern "C" struct d2data_00726EC0_t gData_00726EC0; // 0x00726EC0
-extern "C" struct d2data_00726EC4_t gData_00726EC4; // 0x00726EC4
-extern "C" struct d2data_00726ED2_t gData_00726ED2; // 0x00726ED2
-extern "C" struct d2data_00726EE7_t gData_00726EE7; // 0x00726EE7
-extern "C" struct d2data_00726EEB_t gData_00726EEB; // 0x00726EEB
-extern "C" struct d2data_00726EF9_t gData_00726EF9; // 0x00726EF9
-extern "C" struct d2data_00726F0E_t gData_00726F0E; // 0x00726F0E
-extern "C" struct d2data_00726F12_t gData_00726F12; // 0x00726F12
-extern "C" struct d2data_00726F20_t gData_00726F20; // 0x00726F20
-extern "C" struct d2data_00726F35_t gData_00726F35; // 0x00726F35
-extern "C" struct d2data_00726F39_t gData_00726F39; // 0x00726F39
-extern "C" struct d2data_00726F47_t gData_00726F47; // 0x00726F47
-extern "C" struct d2data_00726F83_t gData_00726F83; // 0x00726F83
-extern "C" struct d2data_00726F89_t gData_00726F89; // 0x00726F89
-extern "C" struct d2data_00726F99_t gData_00726F99; // 0x00726F99
-extern "C" struct d2data_0072721A_t gData_0072721A; // 0x0072721A
-extern "C" struct d2data_0072721E_t gData_0072721E; // 0x0072721E
-extern "C" struct d2data_0072722C_t gData_0072722C; // 0x0072722C
-extern "C" struct d2data_00727241_t gData_00727241; // 0x00727241
-extern "C" struct d2data_00727249_t gData_00727249; // 0x00727249
-extern "C" struct d2data_0072725B_t gData_0072725B; // 0x0072725B
-extern "C" struct d2data_0072728F_t gData_0072728F; // 0x0072728F
-extern "C" struct d2data_00727299_t gData_00727299; // 0x00727299
-extern "C" struct d2data_007272AD_t gData_007272AD; // 0x007272AD
-extern "C" struct d2data_007272DD_t gData_007272DD; // 0x007272DD
-extern "C" struct d2data_007272E3_t gData_007272E3; // 0x007272E3
-extern "C" struct d2data_007272F3_t gData_007272F3; // 0x007272F3
-extern "C" struct d2data_0072739C_t gData_0072739C; // 0x0072739C
+extern "C" struct d2data_00726C44_t gData_00726C44; // 0x00726C44
+
+extern int gnNpcEntryCount = 46; // 0x0072554C
+
+extern "C" struct d2data_00725860_t gData_00725860 = {
+    {
+        0x0B, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x0C,
+        0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x0D, 0x00,
+        0x00, 0x01, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x0E, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x0F, 0x00, 0x00, 0x01,
+        0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x01, 0x00,
+        0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x01, 0x00, 0x00,
+        0x00, 0x07, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x12, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x07, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x07,
+        0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x07, 0x00,
+        0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x15, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00,
+        0x00, 0x07, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00,
+        0x07, 0x00, 0x00, 0x00, 0x17, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x07
+    }
+}; // 0x00725860
+
+extern D2NpcEntryStrc gaNpcEntries[46] = {
+    { 148, 0, (D2NpcChoiceStrc*)&gData_00725860, 13, 0, 0, 0, 0, 0, 1 },
+    { 154, 0, (D2NpcChoiceStrc*)&gData_007257D8, 9, 0, 0, 0, 0, 0, 1 },
+    { 146, 0, (D2NpcChoiceStrc*)&gData_00725680, 7, 0, 0, 0, 0, 1, 1 },
+    { 147, 0, (D2NpcChoiceStrc*)&gData_007255F8, 9, 0, 0, 0, 0, 0, 1 },
+    { 150, 0, (D2NpcChoiceStrc*)&gData_00725498, 12, 0, 0, 0, 0, 0, 1 },
+    { 155, 0, (D2NpcChoiceStrc*)&gData_00725550, 11, 0, 0, 0, 1, 0, 1 },
+    { 331, 0, (D2NpcChoiceStrc*)&gData_00725550, 0, 0, 0, 0, 0, 0, 1 },
+    { 266, 0, (D2NpcChoiceStrc*)&gData_00725550, 0, 0, 0, 0, 0, 0, 1 },
+    { 408, 3, (D2NpcChoiceStrc*)&gData_00725550, 0, 0, 0, 0, 0, 0, 1 },
+    { 175, 1, (D2NpcChoiceStrc*)&gData_00725F60, 7, 0, 0, 0, 0, 1, 1 },
+    { 176, 1, (D2NpcChoiceStrc*)&gData_00725928, 10, 0, 0, 0, 0, 1, 1 },
+    { 177, 1, (D2NpcChoiceStrc*)&gData_007259C0, 12, 0, 0, 0, 0, 0, 1 },
+    { 199, 1, (D2NpcChoiceStrc*)&gData_00725B50, 12, 0, 0, 0, 0, 0, 1 },
+    { 200, 1, (D2NpcChoiceStrc*)&gData_00725C08, 11, 0, 0, 0, 0, 0, 1 },
+    { 198, 1, (D2NpcChoiceStrc*)&gData_00725A78, 14, 0, 0, 0, 0, 0, 1 },
+    { 201, 1, (D2NpcChoiceStrc*)&gData_00725CB0, 10, 0, 0, 0, 0, 0, 1 },
+    { 202, 1, (D2NpcChoiceStrc*)&gData_00725D48, 12, 0, 0, 0, 0, 0, 1 },
+    { 178, 1, (D2NpcChoiceStrc*)&gData_00725E00, 11, 0, 0, 0, 0, 0, 1 },
+    { 210, 1, (D2NpcChoiceStrc*)&gData_00725EA8, 12, 0, 0, 0, 1, 0, 1 },
+    { 265, 0, (D2NpcChoiceStrc*)&gData_00725680, 7, 0, 0, 0, 0, 1, 1 },
+    { 244, 1, (D2NpcChoiceStrc*)&gData_007256F0, 7, 0, 0, 0, 0, 1, 1 },
+    { 245, 2, (D2NpcChoiceStrc*)&gData_00725760, 8, 0, 0, 0, 0, 0, 1 },
+    { 246, 3, (D2NpcChoiceStrc*)&gData_00726344, 3, 0, 0, 0, 0, 0, 1 },
+    { 251, 1, (D2NpcChoiceStrc*)&gData_00726314, 3, 0, 0, 0, 0, 0, 1 },
+    { 252, 2, (D2NpcChoiceStrc*)&gData_00726130, 9, 0, 0, 0, 0, 0, 1 },
+    { 253, 2, (D2NpcChoiceStrc*)&gData_00726078, 12, 0, 0, 0, 0, 0, 1 },
+    { 254, 2, (D2NpcChoiceStrc*)&gData_007261B8, 11, 0, 0, 0, 0, 0, 1 },
+    { 255, 2, (D2NpcChoiceStrc*)&gData_00726260, 12, 0, 0, 0, 0, 0, 1 },
+    { 406, 2, (D2NpcChoiceStrc*)&gData_00725E00, 11, 0, 0, 0, 0, 0, 1 },
+    { 257, 2, (D2NpcChoiceStrc*)&gData_00725E00, 11, 0, 0, 0, 0, 0, 1 },
+    { 264, 2, (D2NpcChoiceStrc*)&gData_00725FD0, 11, 0, 0, 0, 0, 0, 1 },
+    { 297, 2, (D2NpcChoiceStrc*)&gData_00726378, 6, 0, 0, 0, 0, 0, 1 },
+    { 367, 3, (D2NpcChoiceStrc*)&gData_00726314, 3, 0, 0, 0, 1, 0, 1 },
+    { 405, 3, (D2NpcChoiceStrc*)&gData_00726314, 3, 0, 0, 0, 0, 0, 1 },
+    { 257, 3, (D2NpcChoiceStrc*)&gData_00726314, 3, 0, 0, 0, 0, 0, 1 },
+    { 511, 4, (D2NpcChoiceStrc*)&gData_00726548, 12, 0, 0, 0, 0, 0, 1 },
+    { 512, 4, (D2NpcChoiceStrc*)&gData_00726490, 12, 0, 0, 0, 0, 0, 1 },
+    { 513, 4, (D2NpcChoiceStrc*)&gData_00726600, 16, 0, 0, 0, 0, 0, 1 },
+    { 514, 4, (D2NpcChoiceStrc*)&gData_007266F0, 12, 0, 0, 0, 0, 0, 1 },
+    { 515, 4, (D2NpcChoiceStrc*)&gData_007267A8, 11, 0, 0, 0, 0, 0, 1 },
+    { 521, 4, (D2NpcChoiceStrc*)&gData_00726314, 3, 0, 0, 0, 1, 0, 1 },
+    { 520, 4, (D2NpcChoiceStrc*)&gData_007263D8, 12, 0, 0, 0, 0, 0, 1 },
+    { 527, 4, (D2NpcChoiceStrc*)&gData_00726490, 12, 0, 0, 0, 0, 0, 1 },
+    { 537, 4, (D2NpcChoiceStrc*)&gData_00726490, 12, 0, 0, 0, 0, 0, 1 },
+    { 538, 4, (D2NpcChoiceStrc*)&gData_00726490, 12, 0, 0, 0, 0, 0, 1 },
+    { 539, 4, (D2NpcChoiceStrc*)&gData_00726490, 12, 0, 0, 0, 0, 0, 1 }
+}; // 0x00726850
+
+extern int gnStringMapCount = 2; // 0x00725C04
+
+extern "C" struct d2data_0072739C_t gData_0072739C = {
+    { 0x7B, 0x00, 0x7E, 0x00, 0x09, 0x01, 0x00, 0x00, 0x7D, 0x00, 0x7E }
+}; // 0x0072739C
+#pragma comment(linker, "/alternatename:?gaStringMap@@3PAUD2StringMapStrc@@A=_gData_0072739C")
+
+extern int gnNpcIndexCount = 48; // 0x00725A74
+
+extern D2NpcIndexStrc gaNpcIndex[48] = {
+    { 148, 3, { 0xD35, 0xD44 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop }, 1 },
+    { 176, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 146, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu } },
+    { 154, 3, { 0xD35, 0xD06 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop }, 1 },
+    { 177, 3, { 0xD35, 0xD44 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop }, 1 },
+    { 199, 4, { 0xD35, 0xD44, 0xD46 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop, (int (__cdecl*)())&NPCMENU_OpenGambleShop }, 1 },
+    { 200, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 147, 4, { 0xD35, 0xD44, 0xD46 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop, (int (__cdecl*)())&NPCMENU_OpenGambleShop }, 1 },
+    { 198, 3, { 0xD35, 0xD45 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_ShowMainMenu }, 1 },
+    { 201, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 202, 3, { 0xD35, 0xD44 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop }, 1 },
+    { 150, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 178, 3, { 0xD35, 0xD06 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop }, 1 },
+    { 155, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 175, 3, { 0xD35, 0xD37 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_TravelToRogueEncampment }, 1 },
+    { 210, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 244, 3, { 0xD35, 0xFB4 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_IdentifyItemsWait }, 1 },
+    { 265, 3, { 0xD35, 0xFB4 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_IdentifyItemsWait }, 1 },
+    { 245, 3, { 0xD35, 0xFB4 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_IdentifyItemsWait }, 1 },
+    { 246, 3, { 0xD35, 0xFB4 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_IdentifyItemsWait }, 1 },
+    { 251, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu } },
+    { 367, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 257, 2, { 0xD06 }, { (int (__cdecl*)())&NPCMENU_OpenTradeShop }, 1 },
+    { 405, 3, { 0xD44, 0xD46 }, { (int (__cdecl*)())&NPCMENU_OpenTradeShop, (int (__cdecl*)())&NPCMENU_OpenGambleShop }, 1 },
+    { 252, 4, { 0xD35, 0xD45, 0xD44 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_ShowMainMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop }, 1 },
+    { 253, 3, { 0xD35, 0xD06 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop }, 1 },
+    { 254, 4, { 0xD35, 0xD44, 0xD46 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop, (int (__cdecl*)())&NPCMENU_OpenGambleShop }, 1 },
+    { 255, 3, { 0xD35, 0xD44 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop }, 1 },
+    { 406, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 257, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 264, 3, { 0xD35, 0xD39 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_NpcMenuAction28b }, 1 },
+    { 297, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 266, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 331, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 408, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 378, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 377, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 521, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 520, 3, { 0xD35, 0xFB4 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_IdentifyItemsWait }, 1 },
+    { 511, 3, { 0xD35, 0xD06 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop }, 1 },
+    { 513, 3, { 0xD35, 0xD44 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop }, 1 },
+    { 512, 4, { 0xD35, 0xD44, 0xD46 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenTradeShop, (int (__cdecl*)())&NPCMENU_OpenGambleShop }, 1 },
+    { 514, 3, { 0xD35, 0xD46 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu, (int (__cdecl*)())&NPCMENU_OpenGambleShop }, 1 },
+    { 515, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu }, 1 },
+    { 527, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu } },
+    { 537, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu } },
+    { 538, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu } },
+    { 539, 2, { 0xD35 }, { (int (__cdecl*)())&sub_004B6C70_OpenNpcMenu } }
+}; // 0x00726C48
+
+extern "C" struct d2data_00727398_t gData_00727398 = {
+    { 0x09, 0x01 }
+}; // 0x00727398
 
 extern "C" struct d2data_007253A0_t gData_007253A0 = {
     (const void*)"English",
@@ -5137,20 +4495,6 @@ extern "C" struct d2data_007253A0_t gData_007253A0 = {
     (const void*)"Unknown",
     (const void*)"14"
 }; // 0x007253A0
-
-extern D2NpcQuestHandlerStrc gaNpcHandlers[9] = {
-    { 155, 6, 0, 1, (int (__cdecl *)())&NPCMENU_InitTravelLutGholeinHandler },
-    { 210, 14, 0, 1, (int (__cdecl *)())&NPCMENU_InitTravelKurastDocksHandler },
-    { 150, 2, 0, 1, (int (__cdecl *)())&NPCMENU_InitHireHandler },
-    { 154, 3, 1, 1, (int (__cdecl *)())&NPCMENU_InitImbueHandler },
-    { 148, 1, 0, 1, (int (__cdecl *)())&sub_004B6DA0_InitHandler },
-    { 511, 35, 1, 1, (int (__cdecl *)())&NPCMENU_InitSocketHandler },
-    { 512, 38, 1, 1, (int (__cdecl *)())&NPCMENU_InitPersonalizeHandler },
-    { 515, 36, 0, 1, (int (__cdecl *)())&sub_004B6650_InitHandler },
-    { 367, 28, 0, 1, (int (__cdecl *)())&NPCMENU_InitTravelHarrogathHandler }
-}; // 0x007253E0
-
-extern unsigned short gnHirelingName = 0xFFFF; // 0x00725494
 
 extern "C" struct d2data_00725498_t gData_00725498 = {
     {
@@ -5282,8 +4626,6 @@ extern "C" struct d2data_007259C0_t gData_007259C0 = {
     }
 }; // 0x007259C0
 
-extern int gnNpcIndexCount = 48; // 0x00725A74
-
 extern "C" struct d2data_00725A78_t gData_00725A78 = {
     {
         0xBE, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x0F, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0xBE,
@@ -5318,8 +4660,6 @@ extern "C" struct d2data_00725B50_t gData_00725B50 = {
         0x07
     }
 }; // 0x00725B50
-
-extern int gnStringMapCount = 2; // 0x00725C04
 
 extern "C" struct d2data_00725C08_t gData_00725C08 = {
     {
@@ -5625,657 +4965,23 @@ extern "C" struct d2data_007267A8_t gData_007267A8 = {
     }
 }; // 0x007267A8
 
-extern "C" struct d2data_00726865_t gData_00726865 = {
-    { 0x01, 0x9A },
-    (const void*)&gData_007257D8,
-    { 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x92 },
-    (const void*)&gData_00725680,
-    { 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x93 },
-    (const void*)&gData_007255F8,
-    { 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x96 },
-    (const void*)&gData_00725498,
-    { 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x9B },
-    (const void*)&gData_00725550,
-    { 0x0B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x4B, 0x01 },
-    (const void*)&gData_00725550,
-    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x0A, 0x01 },
-    (const void*)&gData_00725550,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x98, 0x01, 0x00,
-        0x00, 0x03
-    },
-    (const void*)&gData_00725550,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xAF, 0x00, 0x00,
-        0x00, 0x01
-    },
-    (const void*)&gData_00725F60,
-    {
-        0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0xB0, 0x00, 0x00,
-        0x00, 0x01
-    },
-    (const void*)&gData_00725928,
-    {
-        0x0A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0xB1, 0x00, 0x00,
-        0x00, 0x01
-    },
-    (const void*)&gData_007259C0,
-    {
-        0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xC7, 0x00, 0x00,
-        0x00, 0x01
-    },
-    (const void*)&gData_00725B50,
-    {
-        0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xC8, 0x00, 0x00,
-        0x00, 0x01
-    },
-    (const void*)&gData_00725C08,
-    {
-        0x0B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xC6, 0x00, 0x00,
-        0x00, 0x01
-    },
-    (const void*)&gData_00725A78,
-    {
-        0x0E, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xC9, 0x00, 0x00,
-        0x00, 0x01
-    },
-    (const void*)&gData_00725CB0,
-    {
-        0x0A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xCA, 0x00, 0x00,
-        0x00, 0x01
-    },
-    (const void*)&gData_00725D48,
-    {
-        0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xB2, 0x00, 0x00,
-        0x00, 0x01
-    },
-    (const void*)&gData_00725E00,
-    {
-        0x0B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xD2, 0x00, 0x00,
-        0x00, 0x01
-    },
-    (const void*)&gData_00725EA8,
-    { 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x09, 0x01 },
-    (const void*)&gData_00725680,
-    {
-        0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0xF4, 0x00, 0x00,
-        0x00, 0x01
-    },
-    (const void*)&gData_007256F0,
-    {
-        0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0xF5, 0x00, 0x00,
-        0x00, 0x02
-    },
-    (const void*)&gData_00725760,
-    {
-        0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xF6, 0x00, 0x00,
-        0x00, 0x03
-    },
-    (const void*)&gData_00726344,
-    {
-        0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xFB, 0x00, 0x00,
-        0x00, 0x01
-    },
-    (const void*)&gData_00726314,
-    {
-        0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xFC, 0x00, 0x00,
-        0x00, 0x02
-    },
-    (const void*)&gData_00726130,
-    {
-        0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xFD, 0x00, 0x00,
-        0x00, 0x02
-    },
-    (const void*)&gData_00726078,
-    {
-        0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xFE, 0x00, 0x00,
-        0x00, 0x02
-    },
-    (const void*)&gData_007261B8,
-    {
-        0x0B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xFF, 0x00, 0x00,
-        0x00, 0x02
-    },
-    (const void*)&gData_00726260,
-    {
-        0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x96, 0x01, 0x00,
-        0x00, 0x02
-    },
-    (const void*)&gData_00725E00,
-    {
-        0x0B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x00,
-        0x00, 0x02
-    },
-    (const void*)&gData_00725E00,
-    {
-        0x0B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x08, 0x01, 0x00,
-        0x00, 0x02
-    },
-    (const void*)&gData_00725FD0,
-    {
-        0x0B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x29, 0x01, 0x00,
-        0x00, 0x02
-    },
-    (const void*)&gData_00726378,
-    {
-        0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x6F, 0x01, 0x00,
-        0x00, 0x03
-    },
-    (const void*)&gData_00726314,
-    {
-        0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x95, 0x01, 0x00,
-        0x00, 0x03
-    },
-    (const void*)&gData_00726314,
-    {
-        0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x00,
-        0x00, 0x03
-    },
-    (const void*)&gData_00726314,
-    {
-        0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xFF, 0x01, 0x00,
-        0x00, 0x04
-    },
-    (const void*)&gData_00726548,
-    {
-        0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02, 0x00,
-        0x00, 0x04
-    },
-    (const void*)&gData_00726490,
-    {
-        0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x02, 0x00,
-        0x00, 0x04
-    },
-    (const void*)&gData_00726600,
-    {
-        0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x02, 0x02, 0x00,
-        0x00, 0x04
-    },
-    (const void*)&gData_007266F0,
-    {
-        0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03, 0x02, 0x00,
-        0x00, 0x04
-    },
-    (const void*)&gData_007267A8,
-    {
-        0x0B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x09, 0x02, 0x00,
-        0x00, 0x04
-    },
-    (const void*)&gData_00726314,
-    {
-        0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x08, 0x02, 0x00,
-        0x00, 0x04
-    },
-    (const void*)&gData_007263D8,
-    {
-        0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x0F, 0x02, 0x00,
-        0x00, 0x04
-    },
-    (const void*)&gData_00726490,
-    {
-        0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x19, 0x02, 0x00,
-        0x00, 0x04
-    },
-    (const void*)&gData_00726490,
-    {
-        0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x1A, 0x02, 0x00,
-        0x00, 0x04
-    },
-    (const void*)&gData_00726490,
-    {
-        0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x1B, 0x02, 0x00,
-        0x00, 0x04
-    },
-    (const void*)&gData_00726490,
-    { 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }
-}; // 0x00726865
-
-extern "C" struct d2data_00726C48_t gData_00726C48 = {
-    { 0x94 }
-}; // 0x00726C48
-#pragma comment(linker, "/alternatename:?gaNpcIndex@@3PAUD2NpcIndexStrc@@A=_gData_00726C48")
-
-extern "C" struct d2data_00726C4C_t gData_00726C4C = {
-    { 0x03, 0x00, 0x00, 0x00, 0x35, 0x0D, 0x44, 0x0D }
-}; // 0x00726C4C
-#pragma comment(linker, "/alternatename:?gaNpcMenuEntries@@3PAUD2NpcMenuEntryStrc@@A=_gData_00726C4C")
-
-extern "C" struct d2data_00726C56_t gData_00726C56 = {
-    { 0x00 },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
+extern "C" struct d2data_00726C44_t gData_00726C44 = {
     { 0x00 }
-}; // 0x00726C56
-
-extern "C" struct d2data_00726C6E_t gData_00726C6E = {
-    { 0x01, 0xB0, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x92, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x9A
-    }
-}; // 0x00726C6E
-
-extern int gnGlobal_00726CC1 = 3; // 0x00726CC1
-
-extern "C" struct d2data_00726CC5_t gData_00726CC5 = {
-    { 0x35, 0x0D, 0x06, 0x0D }
-}; // 0x00726CC5
-
-extern "C" struct d2data_00726CCD_t gData_00726CCD = {
-    { 0x00 },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    { 0x00 }
-}; // 0x00726CCD
-
-extern "C" struct d2data_00726CDF_t gData_00726CDF = {
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0xB1, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x35, 0x0D, 0x44,
-        0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xC7, 0x00, 0x00,
-        0x00, 0x04, 0x00, 0x00, 0x00, 0x35, 0x0D, 0x44, 0x0D, 0x46, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    (const void*)(unsigned int)&NPCMENU_OpenGambleShop,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xC8, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00,
-        0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x93, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x35, 0x0D, 0x44, 0x0D, 0x46, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    (const void*)(unsigned int)&NPCMENU_OpenGambleShop,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xC6, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00,
-        0x00, 0x35, 0x0D, 0x45, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_ShowMainMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xC9, 0x00, 0x00,
-        0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0xCA, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x35, 0x0D, 0x44, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x96 }
-}; // 0x00726CDF
-
-extern int gnGlobal_00726DF9 = 2; // 0x00726DF9
-
-extern "C" struct d2data_00726DFD_t gData_00726DFD = {
-    { 0x35, 0x0D }
-}; // 0x00726DFD
-
-extern "C" struct d2data_00726E03_t gData_00726E03 = {
-    { 0x00 },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    { 0x00 }
-}; // 0x00726E03
-
-extern "C" struct d2data_00726E13_t gData_00726E13 = {
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xB2, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00,
-        0x00, 0x35, 0x0D, 0x06, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x9B }
-}; // 0x00726E13
-
-extern int gnGlobal_00726E47 = 2; // 0x00726E47
-
-extern "C" struct d2data_00726E4B_t gData_00726E4B = {
-    { 0x35, 0x0D }
-}; // 0x00726E4B
-
-extern "C" struct d2data_00726E51_t gData_00726E51 = {
-    { 0x00 },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    { 0x00 }
-}; // 0x00726E51
-
-extern "C" struct d2data_00726E61_t gData_00726E61 = {
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xAF, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00,
-        0x00, 0x35, 0x0D, 0x37, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_TravelToRogueEncampment,
-    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xD2 }
-}; // 0x00726E61
-
-extern int gnGlobal_00726E95 = 2; // 0x00726E95
-
-extern "C" struct d2data_00726E99_t gData_00726E99 = {
-    { 0x35, 0x0D }
-}; // 0x00726E99
-
-extern "C" struct d2data_00726E9F_t gData_00726E9F = {
-    { 0x00 },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    { 0x00 }
-}; // 0x00726E9F
-
-extern "C" struct d2data_00726EAF_t gData_00726EAF = {
-    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xF4 }
-}; // 0x00726EAF
-
-extern int gnGlobal_00726EBC = 3; // 0x00726EBC
-
-extern "C" struct d2data_00726EC0_t gData_00726EC0 = {
-    { 0x35, 0x0D }
-}; // 0x00726EC0
-
-extern short gwGlobal_00726EC2 = 4020; // 0x00726EC2
-
-extern "C" struct d2data_00726EC4_t gData_00726EC4 = {
-    { 0x00 },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu
-}; // 0x00726EC4
-
-extern int (__cdecl* gpfnGlobal_00726ECE)() = (int (__cdecl* )())&NPCMENU_IdentifyItemsWait; // 0x00726ECE
-
-extern "C" struct d2data_00726ED2_t gData_00726ED2 = {
-    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x09, 0x01 }
-}; // 0x00726ED2
-
-extern int gnGlobal_00726EE3 = 3; // 0x00726EE3
-
-extern "C" struct d2data_00726EE7_t gData_00726EE7 = {
-    { 0x35, 0x0D }
-}; // 0x00726EE7
-
-extern short gwGlobal_00726EE9 = 4020; // 0x00726EE9
-
-extern "C" struct d2data_00726EEB_t gData_00726EEB = {
-    { 0x00 },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu
-}; // 0x00726EEB
-
-extern int (__cdecl* gpfnGlobal_00726EF5)() = (int (__cdecl* )())&NPCMENU_IdentifyItemsWait; // 0x00726EF5
-
-extern "C" struct d2data_00726EF9_t gData_00726EF9 = {
-    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xF5 }
-}; // 0x00726EF9
-
-extern int gnGlobal_00726F0A = 3; // 0x00726F0A
-
-extern "C" struct d2data_00726F0E_t gData_00726F0E = {
-    { 0x35, 0x0D }
-}; // 0x00726F0E
-
-extern short gwGlobal_00726F10 = 4020; // 0x00726F10
-
-extern "C" struct d2data_00726F12_t gData_00726F12 = {
-    { 0x00 },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu
-}; // 0x00726F12
-
-extern int (__cdecl* gpfnGlobal_00726F1C)() = (int (__cdecl* )())&NPCMENU_IdentifyItemsWait; // 0x00726F1C
-
-extern "C" struct d2data_00726F20_t gData_00726F20 = {
-    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xF6 }
-}; // 0x00726F20
-
-extern int gnGlobal_00726F31 = 3; // 0x00726F31
-
-extern "C" struct d2data_00726F35_t gData_00726F35 = {
-    { 0x35, 0x0D }
-}; // 0x00726F35
-
-extern short gwGlobal_00726F37 = 4020; // 0x00726F37
-
-extern "C" struct d2data_00726F39_t gData_00726F39 = {
-    { 0x00 },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu
-}; // 0x00726F39
-
-extern int (__cdecl* gpfnGlobal_00726F43)() = (int (__cdecl* )())&NPCMENU_IdentifyItemsWait; // 0x00726F43
-
-extern "C" struct d2data_00726F47_t gData_00726F47 = {
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xFB, 0x00, 0x00,
-        0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x6F, 0x01
-    }
-}; // 0x00726F47
-
-extern int gnGlobal_00726F7F = 2; // 0x00726F7F
-
-extern "C" struct d2data_00726F83_t gData_00726F83 = {
-    { 0x35, 0x0D }
-}; // 0x00726F83
-
-extern "C" struct d2data_00726F89_t gData_00726F89 = {
-    { 0x00 },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    { 0x00 }
-}; // 0x00726F89
-
-extern "C" struct d2data_00726F99_t gData_00726F99 = {
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x00, 0x00, 0x02, 0x00, 0x00,
-        0x00, 0x06, 0x0D
-    },
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x95, 0x01, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x44, 0x0D, 0x46, 0x0D
-    },
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    (const void*)(unsigned int)&NPCMENU_OpenGambleShop,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xFC, 0x00, 0x00,
-        0x00, 0x04, 0x00, 0x00, 0x00, 0x35, 0x0D, 0x45, 0x0D, 0x44, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_ShowMainMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xFD, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00,
-        0x00, 0x35, 0x0D, 0x06, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xFE, 0x00, 0x00,
-        0x00, 0x04, 0x00, 0x00, 0x00, 0x35, 0x0D, 0x44, 0x0D, 0x46, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    (const void*)(unsigned int)&NPCMENU_OpenGambleShop,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xFF, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00,
-        0x00, 0x35, 0x0D, 0x44, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x96, 0x01, 0x00,
-        0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x01, 0x01, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x08, 0x01, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x35, 0x0D, 0x39, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_NpcMenuAction28b,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x29, 0x01, 0x00,
-        0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x0A, 0x01, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x4B, 0x01, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x98, 0x01, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x7A, 0x01, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x79, 0x01, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x09, 0x02, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x08, 0x02
-    }
-}; // 0x00726F99
-
-extern int gnGlobal_00727216 = 3; // 0x00727216
-
-extern "C" struct d2data_0072721A_t gData_0072721A = {
-    { 0x35, 0x0D }
-}; // 0x0072721A
-
-extern short gwGlobal_0072721C = 4020; // 0x0072721C
-
-extern "C" struct d2data_0072721E_t gData_0072721E = {
-    { 0x00 },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu
-}; // 0x0072721E
-
-extern int (__cdecl* gpfnGlobal_00727228)() = (int (__cdecl* )())&NPCMENU_IdentifyItemsWait; // 0x00727228
-
-extern "C" struct d2data_0072722C_t gData_0072722C = {
-    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xFF, 0x01 }
-}; // 0x0072722C
-
-extern int gnGlobal_0072723D = 3; // 0x0072723D
-
-extern "C" struct d2data_00727241_t gData_00727241 = {
-    { 0x35, 0x0D, 0x06, 0x0D }
-}; // 0x00727241
-
-extern "C" struct d2data_00727249_t gData_00727249 = {
-    { 0x00 },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    { 0x00 }
-}; // 0x00727249
-
-extern "C" struct d2data_0072725B_t gData_0072725B = {
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x02, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x35, 0x0D, 0x44,
-        0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02 }
-}; // 0x0072725B
-
-extern int gnGlobal_0072728B = 4; // 0x0072728B
-
-extern "C" struct d2data_0072728F_t gData_0072728F = {
-    { 0x35, 0x0D, 0x44, 0x0D, 0x46, 0x0D }
-}; // 0x0072728F
-
-extern "C" struct d2data_00727299_t gData_00727299 = {
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenTradeShop,
-    (const void*)(unsigned int)&NPCMENU_OpenGambleShop,
-    { 0x00 }
-}; // 0x00727299
-
-extern "C" struct d2data_007272AD_t gData_007272AD = {
-    { 0x01, 0x02, 0x02, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x35, 0x0D, 0x46, 0x0D },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    (const void*)(unsigned int)&NPCMENU_OpenGambleShop,
-    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03, 0x02 }
-}; // 0x007272AD
-
-extern int gnGlobal_007272D9 = 2; // 0x007272D9
-
-extern "C" struct d2data_007272DD_t gData_007272DD = {
-    { 0x35, 0x0D }
-}; // 0x007272DD
-
-extern "C" struct d2data_007272E3_t gData_007272E3 = {
-    { 0x00 },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    { 0x00 }
-}; // 0x007272E3
-
-extern "C" struct d2data_007272F3_t gData_007272F3 = {
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x0F, 0x02, 0x00, 0x00, 0x02, 0x00, 0x00,
-        0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x19, 0x02, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x1A, 0x02, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x1B, 0x02, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x35, 0x0D
-    },
-    (const void*)(unsigned int)&sub_004B6C70_OpenNpcMenu,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x09, 0x01
-    }
-}; // 0x007272F3
-
-extern "C" struct d2data_0072739C_t gData_0072739C = {
-    { 0x7B, 0x00, 0x7E, 0x00, 0x09, 0x01, 0x00, 0x00, 0x7D, 0x00, 0x7E }
-}; // 0x0072739C
-#pragma comment(linker, "/alternatename:?gaStringMap@@3PAUD2StringMapStrc@@A=_gData_0072739C")
+}; // 0x00726C44
+
+extern D2NpcQuestHandlerStrc gaNpcHandlers[9] = {
+    { 155, 6, 0, 1, (int (__cdecl *)())&NPCMENU_InitTravelLutGholeinHandler },
+    { 210, 14, 0, 1, (int (__cdecl *)())&NPCMENU_InitTravelKurastDocksHandler },
+    { 150, 2, 0, 1, (int (__cdecl *)())&NPCMENU_InitHireHandler },
+    { 154, 3, 1, 1, (int (__cdecl *)())&NPCMENU_InitImbueHandler },
+    { 148, 1, 0, 1, (int (__cdecl *)())&sub_004B6DA0_InitHandler },
+    { 511, 35, 1, 1, (int (__cdecl *)())&NPCMENU_InitSocketHandler },
+    { 512, 38, 1, 1, (int (__cdecl *)())&NPCMENU_InitPersonalizeHandler },
+    { 515, 36, 0, 1, (int (__cdecl *)())&sub_004B6650_InitHandler },
+    { 367, 28, 0, 1, (int (__cdecl *)())&NPCMENU_InitTravelHarrogathHandler }
+}; // 0x007253E0
+
+extern unsigned short gnHirelingName = 0xFFFF; // 0x00725494
 // 0x004B6DD0
 void __fastcall NPCMENU_NpcInteractPacket(unsigned char nUnitType, int nUnitId, unsigned char* pBuffer, unsigned char nArg)
 {

@@ -88,6 +88,7 @@ struct SEvtBreakCmdStrc
 void* __stdcall SMemAlloc(unsigned int nSize, const char* szLogName, int nLogLine, unsigned int nFlags); // 0x00413020
 
 
+#include "StormApi.h"
 // 0x0042B9D0
 void __cdecl sub_0042B9D0_Nop()
 {
@@ -126,8 +127,6 @@ inline void* __cdecl operator new(unsigned int nSize, void* pWhere) throw()
 extern TSList<BREAKCMD> gtSEvtBreakCmdList_007088E8; // 0x007088E8
 
 static long gnSEvtDispatchDepth_007792FC;                                                                   // 0x007792FC
-
-void __stdcall SMemCopy(void* pDest, const void* pSource, unsigned int nSize); // 0x0041D2A0
 
 void __stdcall CopyIdHashTable(_IDHASHTABLE* pDest, _IDHASHTABLE* pSource); // 0x00426180
 
@@ -457,14 +456,6 @@ struct D2SEvtCtorLinkStrc
     char* m_next;
 
     D2SEvtCtorLinkStrc();
-};
-
-struct D2SEvtAutoLinkStrc : D2StormLinkStrc
-{
-    ~D2SEvtAutoLinkStrc()
-    {
-        Unlink();
-    }
 };
 
 // 0x00426900

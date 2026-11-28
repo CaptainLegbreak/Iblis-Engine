@@ -10,6 +10,7 @@
 #include "D2TxtTables.h"
 
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 
 #include "D2Drlg.h"
 
@@ -17,14 +18,11 @@
 
 #include "D2DrlgRooms.h"
 #include "D2CommonLevelNode.h"
+#include "FogApi.h"
 
 struct D2DrlgStrc;
 
 struct D2DrlgTableRefStrc;
-
-struct D2Entry0061B7E0Strc;
-
-struct D2Owner0061B7E0Strc;
 
 struct D2ColorRecordStrc;
 
@@ -35,37 +33,12 @@ struct D2DrlgTableRefStrc
     int nIndex;
 };
 
-extern int gnTimeRates[]; // 0x007443E4
 
-int __fastcall DRLG_IsOnClient(D2DrlgStrc* pDrlg); // 0x00642A00
-
-int __fastcall DRLG_IsTownLevel(int nLevelId); // 0x006426A0
 
 void __fastcall DRLGACTIVATE_RoomExPropagateUnsetStatus(D2DrlgRoomStrc* pDrlgRoom, unsigned char nStatus); // 0x0061B5B0
 
 void __fastcall DRLGROOM_InitNearRooms(void* pContext, D2DrlgRoomStrc* pNode); // 0x0066C370
 
-void __fastcall DRLGROOMTILE_InitRoomGrids(D2DrlgRoomStrc* pDrlgRoom); // 0x0066EE40
-
-void __fastcall DRLG_CreateRoomForRoomEx(D2DrlgStrc* pDrlg, D2DrlgRoomStrc* pDrlgRoom); // 0x006422A0
-
-struct D2Entry0061B7E0Strc
-{
-    unsigned char unk_00[0x1C];
-    D2Entry0061B7E0Strc* pSelf1C;
-    unsigned char unk_20[0x10];
-    int nValue30;
-    unsigned char unk_34[0x10];
-    unsigned char nIndex44;
-    unsigned char unk_45[0xA3];
-    D2Entry0061B7E0Strc* pSelfE8;
-};
-
-struct D2Owner0061B7E0Strc
-{
-    unsigned char unk_00[0xA0];
-    D2Entry0061B7E0Strc pEntries[4];
-};
 
 struct D2ColorRecordStrc
 {
@@ -83,7 +56,6 @@ static int gnRoomStats_0096C8C0; // 0x0096C8C0
 
 static int gnRoomStats_0096C8C4; // 0x0096C8C4
 
-void __fastcall DRLGROOMTILE_LoadDT1FilesForRoom(D2DrlgRoomStrc* pDrlgRoom); // 0x0066F240
 
 static void DRLGACTIVATE_ForceRoomExStatusImpl(D2DrlgRoomStrc* pDrlgRoom, unsigned char nStatus); // 0x0061B210
 
@@ -108,27 +80,18 @@ enum D2C_J07DungeonConstants
     UNITFLAGEX_J07_REMOVED = 0x20,
 };
 
-void __stdcall UNITROOM_UpdatePath(D2UnitStrc* pUnit); // 0x0064C450
 
-void __fastcall COLLISION_FreeRoomCollisionGrid(void* pMemPool, D2ActiveRoomStrc* pRoom); // 0x0064CA10
 
-void __stdcall DUNGEON_FreeDrlgDelete(D2ActiveRoomStrc* pRoom); // 0x0061A2C0
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern const int gnTownLevelIdsByAct[5]; // 0x006E7D1C
 
 int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
-
-int __fastcall DRLG_GetHoradricStaffTombLevelId(D2DrlgStrc* pDrlg); // 0x00642230
-
-D2DrlgStrc* __fastcall DRLGROOM_GetDrlgFromRoomEx(D2DrlgRoomStrc* pRoom); // 0x0066C0B0
 
 static int DRLGACTIVATE_RoomEx_EnsureHasRoom(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom);
 
@@ -150,19 +113,11 @@ static int gStatsFreedRooms; // 0x0096C8C0
 
 static int gStatsAllocatedRooms; // 0x0096C8C4
 
-void __stdcall DRLGACTIVATE_Update(D2DrlgStrc* pDrlg);
-
-D2DrlgLevelStrc* __stdcall DRLG_GetLevel(D2DrlgStrc* pDrlg, int nLevelId); // 0x00642BB0
-
-D2DrlgRoomStrc* __fastcall DRLG_GetRoomExFromCoordinates(int nX, int nY, D2DrlgStrc* pDrlg, D2DrlgRoomStrc* pDrlgRoom, D2DrlgLevelStrc* pLevel); // 0x00642C30
-
-D2ActiveRoomStrc* __fastcall DRLGACTIVATE_InitializeRoomEx(D2DrlgRoomStrc* pDrlgRoom); // 0x0061B730
 
 static void DRLGACTIVATE_RoomSetAndPropagateStatus(D2DrlgRoomStrc* pDrlgRoom, unsigned char nStatus);
 
 void __fastcall DRLGACTIVATE_SetClientIsInSight(D2DrlgStrc* pDrlg, int nLevelId, int nX, int nY, D2DrlgRoomStrc* pDrlgRoomHint);
 
-void __fastcall DRLGACTIVATE_ChangeClientRoom(D2DrlgRoomStrc* pPreviousRoom, D2DrlgRoomStrc* pNewRoom);
 
 static void DRLGACTIVATE_RoomExStatusUnlink(D2DrlgRoomStrc* pDrlgRoom);
 
@@ -322,6 +277,7 @@ static bool RoomExHasRefCount(D2DrlgRoomStrc* pDrlgRoom, int nMaxStatus)
 
 typedef void (__fastcall* LEVELNODEFN)(D2CommonLevelNodeStrc* pNode);
 extern const LEVELNODEFN gpfnRoomExSetStatus[]; // 0x00744384
+typedef void (__fastcall* ROOMEXSTATUSFN)(D2DrlgRoomStrc* pDrlgRoom);
 void __fastcall DRLGROOM_InitNearRooms(void* pContext, D2CommonLevelNodeStrc* pNode); // 0x0066C370
 static inline int sub_F45_IsFirstAtLevel(D2CommonLevelNodeStrc* pNode, int nLevel)
 {
@@ -510,11 +466,6 @@ void __fastcall DRLGACTIVATE_ChangeClientRoom(D2DrlgRoomStrc* pPreviousRoom, D2D
     }
 }
 
-static inline void DUNGEON_GetClientUnitFlag(D2UnitStrc* pUnit, unsigned int dwFlags, int* pResult)
-{
-    *pResult = pUnit ? (dwFlags >> UNITFLAGINDEX_ISCLIENTUNIT) & 1 : 0;
-}
-
 // 0x0061B730
 D2ActiveRoomStrc* __fastcall DRLGACTIVATE_InitializeRoomEx(D2DrlgRoomStrc* pDrlgRoom)
 {
@@ -550,15 +501,15 @@ D2ActiveRoomStrc* __fastcall DRLGACTIVATE_StreamRoomAtCoords(D2DrlgStrc* pDrlg, 
 }
 
 // 0x0061B7E0
-void __fastcall DRLGACTIVATE_InitializeRoomExStatusLists(D2Owner0061B7E0Strc* pOwner)
+void __fastcall DRLGACTIVATE_InitializeRoomExStatusLists(D2DrlgStrc* pDrlg)
 {
     unsigned int i;
-    D2Entry0061B7E0Strc* pEntry;
-    for (i = 0, pEntry = pOwner->pEntries; i < 4; ++i, ++pEntry)
+    D2DrlgRoomStrc* pDrlgRoomStatusList;
+    for (i = 0, pDrlgRoomStatusList = pDrlg->tStatusRoomsLists; i < 4; ++i, ++pDrlgRoomStatusList)
     {
-        pEntry->nIndex44 = (unsigned char)i;
-        pEntry->pSelf1C = pEntry;
-        pEntry->pSelfE8 = pEntry;
+        pDrlgRoomStatusList->fRoomStatus = (unsigned char)i;
+        pDrlgRoomStatusList->pStatusNext = pDrlgRoomStatusList;
+        pDrlgRoomStatusList->pStatusPrev = pDrlgRoomStatusList;
     }
 }
 
@@ -585,39 +536,32 @@ D2ActiveRoomStrc* __fastcall DRLGACTIVATE_GetARoomInClientSight(D2DrlgStrc* pDrl
     return 0;
 }
 
-D2DrlgRoomStrc* __stdcall sub_M121_Emit_0061B810(D2DrlgStrc* pDrlg, unsigned char nStatus) { return DRLGACTIVATE_RoomExStatusList_GetFirst(pDrlg, nStatus); }
 
-static inline D2Entry0061B7E0Strc* sub_0061B870_GetFirst(D2Owner0061B7E0Strc* pOwner, unsigned char nIndex)
+static inline int DRLGACTIVATE_RoomExHasStatus(D2DrlgRoomStrc* pDrlgRoom, int nStatus)
 {
-    if (pOwner->pEntries[nIndex].pSelf1C != &pOwner->pEntries[nIndex])
-    {
-        return pOwner->pEntries[nIndex].pSelf1C;
-    }
-    return 0;
-}
-
-static inline int sub_0061B870_IsListHead(D2Owner0061B7E0Strc* pOwner, D2Entry0061B7E0Strc* pNext, unsigned char nIndex)
-{
-    return pNext == &pOwner->pEntries[nIndex];
-}
-
-static inline int sub_0061B870_IsStatus(D2Entry0061B7E0Strc* pEntry, int nStatus)
-{
-    if (pEntry->nIndex44 == nStatus)
+    if (pDrlgRoom->fRoomStatus == nStatus)
     {
         return 1;
     }
     return 0;
 }
 
-// 0x0061B870
-int __fastcall DRLGACTIVATE_GetNextValue(D2Owner0061B7E0Strc* pOwner, D2Entry0061B7E0Strc* pEntry)
+static inline int DRLGACTIVATE_IsStatusListHead(D2DrlgStrc* pDrlg, D2DrlgRoomStrc* pDrlgRoom, unsigned char nStatus)
 {
-    unsigned char nIndex = pEntry->nIndex44;
-    D2Entry0061B7E0Strc* pNext = pEntry->pSelf1C;
-    if (sub_0061B870_IsStatus(pEntry, 0) && sub_0061B870_IsListHead(pOwner, pNext, nIndex))
-        pNext = sub_0061B870_GetFirst(pOwner, 1);
-    return pNext ? pNext->nValue30 : 0;
+    return pDrlgRoom == &pDrlg->tStatusRoomsLists[nStatus];
+}
+
+// 0x0061B870
+D2ActiveRoomStrc* __fastcall DRLGACTIVATE_GetARoomInSightButWithoutClient(D2DrlgStrc* pDrlg, D2DrlgRoomStrc* pDrlgRoom)
+{
+    const unsigned char nStatus = pDrlgRoom->fRoomStatus;
+    D2DrlgRoomStrc* pNextStatusRoom = pDrlgRoom->pStatusNext;
+    if (DRLGACTIVATE_RoomExHasStatus(pDrlgRoom, 0) && DRLGACTIVATE_IsStatusListHead(pDrlg, pNextStatusRoom, nStatus))
+    {
+        pNextStatusRoom = DRLGACTIVATE_RoomExStatusList_GetFirst(pDrlg, 1);
+    }
+
+    return pNextStatusRoom ? pNextStatusRoom->pRoom : 0;
 }
 
 // 0x0061B8B0
@@ -805,26 +749,14 @@ struct d2data_00744348_t
 #pragma pack(pop)
 
 #pragma pack(push, 1)
-struct d2data_00744394_t
+struct d2data_007443A4_t
 {
-    const void* p0;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00744398_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    unsigned char b3[4];
+    unsigned char b0[4];
 };
 #pragma pack(pop)
 
 extern "C" struct d2data_00744348_t gData_00744348; // 0x00744348
-extern "C" const LEVELNODEFN gData_00744384[4]; // 0x00744384
-extern "C" struct d2data_00744394_t gpfnRoomExUnsetStatus; // 0x00744394
-extern "C" struct d2data_00744398_t gData_00744398; // 0x00744398
+extern "C" struct d2data_007443A4_t gData_007443A4; // 0x007443A4
 
 extern "C" struct d2data_00744348_t gData_00744348 = {
     (const void*)"English",
@@ -844,16 +776,11 @@ extern "C" struct d2data_00744348_t gData_00744348 = {
     (const void*)"14"
 }; // 0x00744348
 
-extern "C" const LEVELNODEFN gData_00744384[4] = { (LEVELNODEFN)&DRLGACTIVATE_RoomExSetStatus_ClientInRoom, (LEVELNODEFN)&DRLGACTIVATE_RoomExSetStatus_ClientInSight, (LEVELNODEFN)&DRLGACTIVATE_RoomExSetStatus_ClientOutOfSight, (LEVELNODEFN)&DRLGACTIVATE_RoomExSetStatus_Untile }; // 0x00744384
-#pragma comment(linker, "/alternatename:?gpfnRoomExSetStatus@@3QBQ6IXPAUD2CommonLevelNodeStrc@@@ZB=_gData_00744384")
+extern const LEVELNODEFN gpfnRoomExSetStatus[4] = { (LEVELNODEFN)&DRLGACTIVATE_RoomExSetStatus_ClientInRoom, (LEVELNODEFN)&DRLGACTIVATE_RoomExSetStatus_ClientInSight, (LEVELNODEFN)&DRLGACTIVATE_RoomExSetStatus_ClientOutOfSight, (LEVELNODEFN)&DRLGACTIVATE_RoomExSetStatus_Untile }; // 0x00744384
 
-extern "C" struct d2data_00744394_t gpfnRoomExUnsetStatus = {
-    (const void*)(unsigned int)&DRLGACTIVATE_RoomExStatusUnset_ClientInRoom
-}; // 0x00744394
+extern ROOMEXSTATUSFN gRoomExUnsetStatus[4] = { (ROOMEXSTATUSFN)&DRLGACTIVATE_RoomExStatusUnset_ClientInRoom, (ROOMEXSTATUSFN)&DRLGACTIVATE_RoomExStatusUnset_ClientInSight, (ROOMEXSTATUSFN)&DRLGACTIVATE_RoomExStatusUnset_ClientOutOfSight, (ROOMEXSTATUSFN)&DRLGACTIVATE_RoomExStatusUnset_Untile }; // 0x00744394
 
-extern "C" struct d2data_00744398_t gData_00744398 = {
-    (const void*)(unsigned int)&DRLGACTIVATE_RoomExStatusUnset_ClientInSight,
-    (const void*)(unsigned int)&DRLGACTIVATE_RoomExStatusUnset_ClientOutOfSight,
-    (const void*)(unsigned int)&DRLGACTIVATE_RoomExStatusUnset_Untile,
+extern "C" struct d2data_007443A4_t gData_007443A4 = {
     { 0x00 }
-}; // 0x00744398
+}; // 0x007443A4
+#include "D2CommonApi.h"

@@ -14,11 +14,11 @@ int gnErrorOutputMode_0077909C;         // 0x0077909C
 
 int gnOption_007790A0;         // 0x007790A0
 
-int gnFlag_00779098;         // 0x00779098
+int gnLeakReportMode;         // 0x00779098
 
 int gbAlignReads_007790A4;         // 0x007790A4
 
-extern int gbSLogDebugOutput_007790AC;  // 0x007790AC
+extern int gbSLogDebugOutput;  // 0x007790AC
 
 #define INPUT_INDEX 0
 
@@ -73,7 +73,7 @@ int __stdcall StormSetOption(unsigned int nOption, void* pOutput, unsigned int* 
         break;
     case 3 + OPTION_BIAS:
         if (*pSize < OUTPUT_BYTES) return 0;
-        *(int*)pOutput = gnFlag_00779098;
+        *(int*)pOutput = gnLeakReportMode;
         *pSize = OUTPUT_BYTES;
         break;
     case 4 + OPTION_BIAS:
@@ -83,7 +83,7 @@ int __stdcall StormSetOption(unsigned int nOption, void* pOutput, unsigned int* 
         break;
     case 5 + OPTION_BIAS:
         if (*pSize < OUTPUT_BYTES) return 0;
-        *(int*)pOutput = gbSLogDebugOutput_007790AC;
+        *(int*)pOutput = gbSLogDebugOutput;
         *pSize = OUTPUT_BYTES;
         break;
     }
@@ -114,7 +114,7 @@ int __stdcall StormGetOption(unsigned int nOption, const void* pInput, unsigned 
         }
     case 3 + OPTION_BIAS:
         if (nSize != sizeof(int)) return 0;
-        gnFlag_00779098 = ((const int*)pInput)[INPUT_INDEX];
+        gnLeakReportMode = ((const int*)pInput)[INPUT_INDEX];
         break;
     case 4 + OPTION_BIAS:
         if (nSize != sizeof(int)) return 0;
@@ -122,7 +122,7 @@ int __stdcall StormGetOption(unsigned int nOption, const void* pInput, unsigned 
         break;
     case 5 + OPTION_BIAS:
         if (nSize != sizeof(int)) return 0;
-        gbSLogDebugOutput_007790AC = ((const int*)pInput)[INPUT_INDEX];
+        gbSLogDebugOutput = ((const int*)pInput)[INPUT_INDEX];
         break;
     }
     sub_0041C340_SetLastError(0);

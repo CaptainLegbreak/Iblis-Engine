@@ -3,6 +3,7 @@
 #include "D2Win32StartupInfo.h"
 #include "D2StormLink.h"
 #include "D2SysTypes.h"
+#include "StormApi2.h"
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 extern "C" __declspec(dllimport) int __stdcall CreateProcessA(const char* szApplicationName, char* szCommandLine, void* pProcessAttributes, void* pThreadAttributes, int bInheritHandles, unsigned long dwCreationFlags, void* pEnvironment, const char* szCurrentDirectory, D2StartupInfoAStrc* pStartupInfo, D2ProcessInformationStrc* pProcessInformation); // 0x006CC33C
@@ -43,54 +44,51 @@ typedef void (__stdcall* B27RecordHandler)(int, int, int);
 typedef int (__cdecl* B27UIAction)();
 extern "C" int __cdecl NPCMENU_ResurrectMercWait(); // 0x004B1DD0
 extern "C" int __cdecl NPCMENU_IdentifyItemsWait(); // 0x004B2020
-extern "C" unsigned int gB27_00726CC1;
+extern "C" unsigned int gnImbueMenuState;
 extern "C" unsigned short gB27_00726CCB;
 extern "C" unsigned int gB27_00726CDB;
-extern "C" unsigned int gB27_00726DF9;
+extern "C" unsigned int gnHireMenuState;
 extern "C" unsigned short gB27_00726E01;
 extern "C" unsigned int gB27_00726E0F;
-extern "C" unsigned int gB27_00726E47;
+extern "C" unsigned int gnTravelLutGholeinState;
 extern "C" unsigned short gB27_00726E4F;
 extern "C" unsigned int gB27_00726E5D;
-extern "C" unsigned int gB27_00726E95;
+extern "C" unsigned int gnTravelKurastDocksState;
 extern "C" unsigned short gB27_00726E9D;
 extern "C" unsigned int gB27_00726EAB;
-extern "C" unsigned int gB27_00726EBC;
-extern "C" unsigned short gB27_00726EC2;
-extern "C" B27UIAction gB27_00726ECE;
-extern "C" unsigned int gB27_00726EE3;
-extern "C" unsigned short gB27_00726EE9;
-extern "C" B27UIAction gB27_00726EF5;
-extern "C" unsigned int gB27_00726F0A;
-extern "C" unsigned short gB27_00726F10;
-extern "C" B27UIAction gB27_00726F1C;
-extern "C" unsigned int gB27_00726F31;
-extern "C" unsigned short gB27_00726F37;
-extern "C" B27UIAction gB27_00726F43;
-extern "C" unsigned int gB27_00726F7F;
-extern "C" unsigned short gB27_00726F85;
+extern "C" unsigned int gnIdentifyMenu1State;
+extern "C" unsigned short gwIdentifyMenu1StringId;
+extern "C" B27UIAction gpfnIdentifyMenu1Handler;
+extern "C" unsigned int gnIdentifyMenu2State;
+extern "C" unsigned short gwIdentifyMenu2StringId;
+extern "C" B27UIAction gpfnIdentifyMenu2Handler;
+extern "C" unsigned int gnIdentifyMenu3State;
+extern "C" unsigned short gwIdentifyMenu3StringId;
+extern "C" B27UIAction gpfnIdentifyMenu3Handler;
+extern "C" unsigned int gnIdentifyMenu4State;
+extern "C" unsigned short gwIdentifyMenu4StringId;
+extern "C" B27UIAction gpfnIdentifyMenu4Handler;
+extern "C" unsigned int gnTravelHarrogathState;
+extern "C" unsigned short gwTravelHarrogathStringId;
 extern "C" unsigned short gB27_00726F87;
-extern "C" unsigned int gB27_00726F91;
+extern "C" unsigned int gpfnTravelHarrogathHandler;
 extern "C" unsigned int gB27_00726F95;
-extern "C" unsigned int gB27_00727216;
-extern "C" unsigned short gB27_0072721C;
-extern "C" B27UIAction gB27_00727228;
-extern "C" unsigned int gB27_0072723D;
+extern "C" unsigned int gnIdentifyMenu5State;
+extern "C" unsigned short gwIdentifyMenu5StringId;
+extern "C" B27UIAction gpfnIdentifyMenu5Handler;
+extern "C" unsigned int gnSocketMenuState;
 extern "C" unsigned short gB27_00727247;
 extern "C" unsigned int gB27_00727257;
-extern "C" unsigned int gB27_0072728B;
+extern "C" unsigned int gnPersonalizeMenuState;
 extern "C" unsigned short gB27_00727297;
 extern "C" unsigned int gB27_007272A9;
-extern "C" unsigned int gB27_007272D9;
+extern "C" unsigned int gnResurrectMenuState;
 extern "C" unsigned short gB27_007272E1;
-extern "C" B27UIAction gB27_007272EB;
+extern "C" B27UIAction gpfnResurrectMenuHandler;
 extern "C" unsigned int gB27_007272EF;
 extern "C" int gB27_007BCBF0;
-extern "C" int gB27_007BF298;
-extern "C" unsigned char gB27_007C025F;
-extern "C" unsigned int gB27_007C0265;
 extern "C" { B27RecordHandler gpfnRecordHandler; } // 0x00881834
-extern "C" unsigned int gB27_00883D70;
+extern "C" unsigned int gnVirtualPlayerCount;
 
 // build: symbol _CUNIT_IsInvPanelTradeMode 0x00489840
 extern "C" int __cdecl INV_IsInvPanelTradeMode()
@@ -108,50 +106,50 @@ extern "C" void __fastcall QUESTLOG_SetQuestPacketValue(unsigned int value); // 
 // build: symbol _NPCMENU_ResetHandlers 0x004B2250
 extern "C" void __cdecl NPCMENU_ResetHandlers()
 {
-    bool oldAction = (gB27_007272EB == NPCMENU_ResurrectMercWait);
-    gB27_00726DF9 = 2;
+    bool oldAction = (gpfnResurrectMenuHandler == NPCMENU_ResurrectMercWait);
+    gnHireMenuState = 2;
     gB27_00726E01 = 0;
     gB27_00726E0F = 0;
-    gB27_00726E47 = 2;
+    gnTravelLutGholeinState = 2;
     gB27_00726E4F = 0;
     gB27_00726E5D = 0;
-    gB27_00726E95 = 2;
+    gnTravelKurastDocksState = 2;
     gB27_00726E9D = 0;
     gB27_00726EAB = 0;
-    gB27_00726CC1 = 3;
+    gnImbueMenuState = 3;
     gB27_00726CCB = 0;
     gB27_00726CDB = 0;
-    gB27_007272D9 = 2;
+    gnResurrectMenuState = 2;
     gB27_007272E1 = 0;
     gB27_007272EF = 0;
     if (oldAction)
-        gB27_007272D9 = 3;
+        gnResurrectMenuState = 3;
     gB27_00727247 = 0;
     gB27_00727257 = 0;
     gB27_00727297 = 0;
     gB27_007272A9 = 0;
-    gB27_00726F7F = 2;
+    gnTravelHarrogathState = 2;
     gB27_00726F87 = 0;
     gB27_00726F95 = 0;
-    gB27_00726F85 = 0;
-    gB27_00726F91 = 0;
-    gB27_0072723D = 3;
-    gB27_0072728B = 4;
-    gB27_00726EC2 = 0xfb4;
-    gB27_00726ECE = NPCMENU_IdentifyItemsWait;
-    gB27_00726EBC = 3;
-    gB27_00726EE9 = 0xfb4;
-    gB27_00726EF5 = NPCMENU_IdentifyItemsWait;
-    gB27_00726EE3 = 3;
-    gB27_00726F10 = 0xfb4;
-    gB27_00726F1C = NPCMENU_IdentifyItemsWait;
-    gB27_00726F0A = 3;
-    gB27_00726F37 = 0xfb4;
-    gB27_00726F43 = NPCMENU_IdentifyItemsWait;
-    gB27_00726F31 = 3;
-    gB27_0072721C = 0xfb4;
-    gB27_00727228 = NPCMENU_IdentifyItemsWait;
-    gB27_00727216 = 3;
+    gwTravelHarrogathStringId = 0;
+    gpfnTravelHarrogathHandler = 0;
+    gnSocketMenuState = 3;
+    gnPersonalizeMenuState = 4;
+    gwIdentifyMenu1StringId = 0xfb4;
+    gpfnIdentifyMenu1Handler = NPCMENU_IdentifyItemsWait;
+    gnIdentifyMenu1State = 3;
+    gwIdentifyMenu2StringId = 0xfb4;
+    gpfnIdentifyMenu2Handler = NPCMENU_IdentifyItemsWait;
+    gnIdentifyMenu2State = 3;
+    gwIdentifyMenu3StringId = 0xfb4;
+    gpfnIdentifyMenu3Handler = NPCMENU_IdentifyItemsWait;
+    gnIdentifyMenu3State = 3;
+    gwIdentifyMenu4StringId = 0xfb4;
+    gpfnIdentifyMenu4Handler = NPCMENU_IdentifyItemsWait;
+    gnIdentifyMenu4State = 3;
+    gwIdentifyMenu5StringId = 0xfb4;
+    gpfnIdentifyMenu5Handler = NPCMENU_IdentifyItemsWait;
+    gnIdentifyMenu5State = 3;
 }
 
 // 0x005173D3
@@ -166,7 +164,7 @@ extern "C" B27RecordHandler __fastcall sub_005173D3_ExchangeRecordHandler(B27Rec
 extern "C" void __fastcall PLAYER_SetVirtualPlayerCount(unsigned int count)
 {
     if (count <= 8)
-        gB27_00883D70 = count;
+        gnVirtualPlayerCount = count;
 }
 
 extern "C" __declspec(dllimport) void* __stdcall GetCurrentProcess(); // 0x006CC13C
@@ -519,7 +517,7 @@ int __cdecl sub_00517ABB_FindLowestSetBit(unsigned int dwMask)
 }
 
 // 0x00517AD6
-int __fastcall sub_00517AD6(const char* szPath)
+int __fastcall sub_00517AD6_VerifyFileTrust(const char* szPath)
 {
     if (!szPath || !*szPath)
         return 4;
@@ -910,7 +908,6 @@ void __thiscall D2ListStrc::sub_0051763C_UnlinkAll()
     }
 }
 
-void* __stdcall SMemAlloc(unsigned int,const char*,int,unsigned int);  // 0x00413020
 int __stdcall SMemFree(void*,const char*,int,unsigned int);
 extern const char gszRecordType[];  // 0x0072F9FC
 // 0x00517669
@@ -943,7 +940,6 @@ struct TMESSAGESOURCE {
     void __thiscall Clear();
 };
 
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int dwFlags); // 0x00412650
 extern const char gszTMESSAGESOURCE[]; // 0x0072F9FC
 
 // 0x005176F8
@@ -958,7 +954,6 @@ void __thiscall TMESSAGESOURCE::Clear()
 }
 
 void* __stdcall SMemAlloc(unsigned int,const char*,int,unsigned int);
-int __stdcall SMemFree(void*,const char*,int,unsigned int);  // 0x00412650
 extern const char gszRecordType[];  // 0x0072F9FC
 // 0x0051772A
 char* D2StormListStrc::sub_0051772A_DeleteNode(char* node) {
@@ -971,14 +966,18 @@ char* D2StormListStrc::sub_0051772A_DeleteNode(char* node) {
 struct D2CriticalSectionStrc;
 struct TMESSAGESOURCE;
 
-extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC218
-extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC214
 extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC1FC
 
 
 extern TMESSAGESOURCE gFaultHandlerList_0072FA14; // 0x0072FA14
-extern D2CriticalSectionStrc gtErrorHandlerLock; // 0x00881818
-extern int gbFaultHandlerListInitialized; // 0x00881830
+// The fault handler list's lock, and whether it has been initialised.
+struct D2FaultHandlerLockStrc
+{
+    D2CriticalSectionStrc tLock; // 0x00
+    int bInitialized; // 0x18
+};
+
+D2FaultHandlerLockStrc gtFaultHandlerLock; // 0x00881818
 extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC210
 extern "C" int __cdecl atexit(void (__cdecl* callback)()); // 0x00683824
 void sub_0051775A_FreeFaultHandlerList(); // 0x0051775A
@@ -986,22 +985,21 @@ void sub_0051775A_FreeFaultHandlerList(); // 0x0051775A
 // 0x0051775A
 void sub_0051775A_FreeFaultHandlerList()
 {
-    EnterCriticalSection(&gtErrorHandlerLock);
+    EnterCriticalSection(&gtFaultHandlerLock.tLock);
     gFaultHandlerList_0072FA14.Clear();
-    LeaveCriticalSection(&gtErrorHandlerLock);
-    DeleteCriticalSection(&gtErrorHandlerLock);
-    gbFaultHandlerListInitialized = 0;
+    LeaveCriticalSection(&gtFaultHandlerLock.tLock);
+    DeleteCriticalSection(&gtFaultHandlerLock.tLock);
+    gtFaultHandlerLock.bInitialized = 0;
 }
 
-int gbFaultHandlerListInitialized; // 0x00881830
 
 // Body of 0x00517788; 0x005177B2 carries it inlined.
 static __forceinline void InitFaultHandlerListInline()
 {
-    if (!gbFaultHandlerListInitialized) {
-        InitializeCriticalSection(&gtErrorHandlerLock);
+    if (!gtFaultHandlerLock.bInitialized) {
+        InitializeCriticalSection(&gtFaultHandlerLock.tLock);
         atexit(sub_0051775A_FreeFaultHandlerList);
-        gbFaultHandlerListInitialized = 1;
+        gtFaultHandlerLock.bInitialized = 1;
     }
 }
 
@@ -1018,18 +1016,16 @@ extern "C" int __cdecl atexit(void (__cdecl* callback)()); // 0x00683824
 void sub_0051775A_FreeFaultHandlerList(); // 0x0051775A
 
 extern D2StormListStrc gtFaultHandlerRecords_0072FA14; // 0x0072FA14
-extern D2CriticalSectionStrc gtErrorHandlerLock; // 0x00881818
-extern int gbFaultHandlerListInitialized; // 0x00881830
 
 
 // 0x005177B2
 void __fastcall sub_005177B2_SetLoadStringFn(void* pfnLoadString)
 {
     InitFaultHandlerListInline();
-    EnterCriticalSection(&gtErrorHandlerLock);
+    EnterCriticalSection(&gtFaultHandlerLock.tLock);
     char* pNode = gtFaultHandlerRecords_0072FA14.sub_00517669_NewNode(1, 0, 0);
     *(void**)(pNode + 8) = pfnLoadString;
-    LeaveCriticalSection(&gtErrorHandlerLock);
+    LeaveCriticalSection(&gtFaultHandlerLock.tLock);
 }
 
 extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2CriticalSectionStrc* pLock);        // 0x006CC1FC
@@ -1049,23 +1045,20 @@ struct D2MessageList {
  D2MessageLink* Link(char* node) {return node?(D2MessageLink*)(node+m_linkoffset):&m_terminator;}
  D2MessageNode* Head(){return m_terminator.Next();}
 };
-struct D2MessageLock {D2CriticalSectionStrc lock;int enabled;};
 extern D2MessageList gtMessages;  // 0x0072FA14
-extern D2MessageLock gMessageLock_00881818;  // 0x00881818
 extern "C" const char gszFaultError[];  // 0x006DEBCC
-unsigned int __stdcall SStrCopy(char*,const char*,unsigned int);  // 0x004135D0
 // 0x00517804
 void __fastcall sub_00517804_GetMessage(unsigned int id,char* dest,unsigned int size) {
- if(gMessageLock_00881818.enabled) {
-  EnterCriticalSection(&gMessageLock_00881818.lock);
+ if(gtFaultHandlerLock.bInitialized) {
+  EnterCriticalSection(&gtFaultHandlerLock.tLock);
   D2MessageNode* p=gtMessages.Head();
   for(; (int)p>0; p=gtMessages.Link((char*)p)->m_next) {
    if(p->callback(id,dest,size)) {
-    LeaveCriticalSection(&gMessageLock_00881818.lock);
+    LeaveCriticalSection(&gtFaultHandlerLock.tLock);
     return;
    }
   }
-  LeaveCriticalSection(&gMessageLock_00881818.lock);
+  LeaveCriticalSection(&gtFaultHandlerLock.tLock);
  }
  SStrCopy(dest,gszFaultError,size);
 }
@@ -1134,62 +1127,10 @@ struct d2data_006DEBE8_t
 };
 #pragma pack(pop)
 
-#pragma pack(push, 1)
-struct d2data_0072F9F4_t
-{
-    const void* p0;
-    unsigned char b1[4];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0072FA20_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-    unsigned char b15[4];
-    const void* p16;
-    const void* p17;
-    const void* p18;
-    const void* p19;
-    const void* p20;
-    const void* p21;
-    const void* p22;
-    const void* p23;
-    const void* p24;
-    const void* p25;
-    const void* p26;
-    const void* p27;
-    const void* p28;
-    const void* p29;
-    const void* p30;
-    unsigned char b31[4];
-};
-#pragma pack(pop)
-
-extern "C" const char* const gData_006CC848; // 0x006CC848
-extern "C" const struct d2data_006DEBE8_t gData_006DEBE8; // 0x006DEBE8
-extern "C" struct d2data_0072F9F4_t gData_0072F9F4; // 0x0072F9F4
-extern "C" const char gData_0072F9FC[24]; // 0x0072F9FC
-extern "C" struct d2data_0072FA20_t gData_0072FA20; // 0x0072FA20
-
-extern "C" const char* const gData_006CC848 = (const char* const)"Diablo 2.EXE"; // 0x006CC848
+extern "C" const char* const gData_006CC848 = "Diablo 2.EXE"; // 0x006CC848
 #pragma comment(linker, "/alternatename:?gpszModuleName@@3QBDB=_gData_006CC848")
 
-extern "C" const struct d2data_006DEBE8_t gData_006DEBE8 = {
+extern "C" const struct d2data_006DEBE8_t gData_006DEBE8 = { // 0x006DEBE8
     {
         0x41, 0x6E, 0x20, 0x61, 0x73, 0x73, 0x65, 0x72, 0x74, 0x69, 0x6F, 0x6E, 0x20, 0x68, 0x61, 0x73,
         0x20, 0x66, 0x61, 0x69, 0x6C, 0x65, 0x64, 0x2E, 0x0A, 0x0A, 0x46, 0x69, 0x6C, 0x65, 0x3A, 0x09,
@@ -1197,54 +1138,51 @@ extern "C" const struct d2data_006DEBE8_t gData_006DEBE8 = {
         0x70, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6F, 0x6E, 0x3A, 0x09, 0x25, 0x73, 0x0A, 0x0A, 0x41, 0x62,
         0x6F, 0x72, 0x74, 0x20, 0x74, 0x6F, 0x20, 0x65, 0x78, 0x69, 0x74, 0x2C, 0x20, 0x52, 0x65, 0x74,
         0x72, 0x79, 0x20, 0x74, 0x6F, 0x20, 0x62, 0x72, 0x65, 0x61, 0x6B, 0x2C, 0x20, 0x49, 0x67, 0x6E,
-        0x6F, 0x72, 0x65, 0x20, 0x74, 0x6F, 0x20, 0x63, 0x6F, 0x6E, 0x74, 0x69, 0x6E, 0x75, 0x65
+        0x6F, 0x72, 0x65, 0x20, 0x74, 0x6F, 0x20, 0x63, 0x6F, 0x6E, 0x74, 0x69, 0x6E, 0x75, 0x65, 0x00
     },
-    (const void*)&sgszAssertFormatString,
-    (const void*)"D2Hell Fault.cpp error."
-}; // 0x006DEBE8
+    sgszAssertFormatString,
+    "D2Hell Fault.cpp error."
+};
 #pragma comment(linker, "/alternatename:?sgszAssertFormatString@@3QBDB=_gData_006DEBE8")
 
 extern const char* gpReference = "Blizzard Entertainment, Inc."; // 0x0072F9F0
 
-extern "C" struct d2data_0072F9F4_t gData_0072F9F4 = {
-    (const void*)"~Nh",
-    { 0x00 }
-}; // 0x0072F9F4
+extern "C" const char* gData_0072F9F4[2] = { "~Nh", 0 }; // 0x0072F9F4
 
 extern "C" const char gData_0072F9FC[24] = ".?AUTMESSAGESOURCE@@"; // 0x0072F9FC
 #pragma comment(linker, "/alternatename:?gszRecordType@@3QBDB=_gData_0072F9FC")
 
-extern "C" struct d2data_0072FA20_t gData_0072FA20 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14",
-    { 0x00 },
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14",
-    { 0x00 }
-}; // 0x0072FA20
+extern "C" const char* gData_0072FA20[32] = { // 0x0072FA20
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14",
+    0,
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14",
+    0
+};

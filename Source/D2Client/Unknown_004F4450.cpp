@@ -1,22 +1,15 @@
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2Path.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
 #include "D2Txt.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
-D2SkillStrc* __stdcall UNITS_GetUsedSkill(D2UnitStrc*); // 0x00620250
-int __fastcall SKILLS_GetExtendedMeleeRange(D2UnitStrc*); // 0x004C7BD0
-D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc*); // 0x004648F0
 D2UnitStrc* __fastcall sub_004C5EB0_FindDestination(D2UnitStrc*, int, int, int, int, int, int); // 0x004C5EB0
-void __stdcall SKILLS_SetParam1(D2SkillStrc*, int); // 0x00644560
-void __stdcall SKILLS_SetParam2(D2SkillStrc*, int); // 0x006445A0
-void __stdcall SKILLS_SetParam3(D2SkillStrc*, int); // 0x006445E0
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc*, unsigned int, int, int); // 0x00646CA0
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc*); // 0x006488C0
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc*); // 0x00648900
-void __stdcall D2Common_10216(D2DynamicPathStrc*, int, int, int); // 0x00649EF0
 
 inline D2SkillsTxt* DATATBLS_GetSkillsTxtRecord(int skillId)
 {

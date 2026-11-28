@@ -1,14 +1,15 @@
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2DataTbls.h"
 #include "D2CelContext.h"
 #include "D2TxtTables.h"
 #include "D2ClientGfx.h"
+#include "FogApi.h"
+#include "D2CommonApi2.h"
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
@@ -18,17 +19,10 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);    
 
 extern D2DataTablesStrc* sgptDataTables;                                                                    // 0x00744304
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
 
-D2GfxMotionStrc* __fastcall GFX_GetGfxMotion(D2UnitStrc* pUnit);                                   // 0x0046F060
 
 D2TokRecord* __stdcall DATATBLS_GetMonModeTxtRecord(unsigned int nIndex, int bGetMode);                     // 0x0065B500
 
-D2TokRecord* __stdcall DATATBLS_GetCompositTxtRecord(int nComposit);                                        // 0x0065B5E0
-
-D2TokRecord* __stdcall DATATBLS_GetArmTypeTxtRecord(int nId);                                               // 0x0065B620
-
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
 
 
@@ -44,7 +38,7 @@ extern "C" B28Waypoint* __stdcall WAYPOINTS_AllocWaypointData(void* pool); // 0x
 
 extern "C" void __fastcall sub_004786D0_SendPacket(unsigned char command, unsigned int arg1, unsigned int arg2, unsigned int arg3);
 
-extern "C" void __fastcall sub_004FAAE0_FreeArchive(void* archive);
+extern "C" void __fastcall ARCHIVE_FreeCellFile(void* archive); // 0x004FAAE0
 
 extern "C" void* __fastcall sub_0040B380_Alloc(int size, const char* file, int line, int flags);
 
@@ -145,7 +139,8 @@ void __stdcall PARTICLE_ResetGfxMotion(D2UnitStrc* pUnit)
         D2_ASSERT(pMotion, 74);
     }
     memset(pMotion, 0, sizeof(D2GfxMotionStrc));
-    sub_0046F070_SetGfxMotion(pUnit, pMotion);
+// build: symbol ?GFX_SetGfxMotionFlag@* 0x0046F070
+    GFX_SetGfxMotionFlag(pUnit, pMotion);
 }
 
 // 0x004DA070
@@ -161,7 +156,7 @@ void __stdcall PARTICLE_FreeGfxMotion(D2UnitStrc* pUnit)
     if (pMotion)
     {
         FOG_Free(pMotion, ".\\ENGINE\\Particle.cpp", 100, 0);
-        sub_0046F070_SetGfxMotion(pUnit, 0);
+        GFX_SetGfxMotionFlag(pUnit, 0);
     }
 }
 
@@ -218,6 +213,6 @@ int __stdcall PARTICLE_GetGfxClientZ(D2UnitStrc* pUnit)
 // build: symbol _LIST_UnloadPentspinCellfile 0x00507140
 extern "C" void __cdecl LIST_UnloadPentspinCellfile()
 {
-    sub_004FAAE0_FreeArchive(gB28Archive);
+    ARCHIVE_FreeCellFile(gB28Archive);
     gB28Archive = 0;
 }

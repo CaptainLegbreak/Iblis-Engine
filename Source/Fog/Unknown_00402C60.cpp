@@ -70,16 +70,6 @@ static bool sub_00404F20_EnumModules(D2CrashModuleListStrc* pList)
     return bResult;
 }
 
-void __stdcall sub_M01_Emit_00402C60(char* szOut, const D2CrashModuleStrc* pModule)
-{
-    sub_00402C60_FormatModule(szOut, pModule);
-}
-
-bool __stdcall sub_M01_Emit_00404F20(D2CrashModuleListStrc* pList)
-{
-    return sub_00404F20_EnumModules(pList);
-}
-
 // 0x00402EE0
 void __fastcall sub_00402EE0_DumpModules(D2CrashPrintFn pfnPrint, void* pContext)
 {

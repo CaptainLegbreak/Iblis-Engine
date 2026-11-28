@@ -7,6 +7,7 @@
 #include "D2Structs.h"
 #include "D2UnitData.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2MonModes.h"
 #include "D2Path.h"
 #include "D2DataTbls.h"
@@ -15,22 +16,22 @@
 #include "D2Constants.h"
 #include "D2ClientTypes.h"
 #include "D2ClientGame.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "D2CommonApi3.h"
 
 extern unsigned short gwUniqueModNameIds[];                                                       // 0x00725188
 
 extern "C" { Unicode gwszNameSeparator[1]; }                                                                // 0x007C0C58
 
-int __fastcall MONSTER_IsMinionMonster(D2UnitStrc* pUnit);                                             // 0x004AE380
 
 int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText);                                             // 0x00501820
 
-int __fastcall D2Win_10127_SetFont(int nArg);                                                                      // 0x00502EF0
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex);                              // 0x00524A30
 
 extern "C" unsigned short* __fastcall sub_005267E0(unsigned short* pDst, const unsigned short* pSrc);     // 0x005267E0
 
-extern "C" int __fastcall sub_00526800(const unsigned short* pText);                                      // 0x00526800
+extern "C" int __fastcall UNICODE_StrLen(const unsigned short* pText);                                      // 0x00526800
 
 typedef void (__fastcall* UMODCALLBACK)(void* pTarget, int nUMod, int bUnique);
 
@@ -67,53 +68,32 @@ static unsigned char* MONSTERUNIQUE_GetUMods(D2UnitStrc* pUnit)
     return 0;
 }
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
 int __fastcall MISSILE_SubmitMissileRequest(D2UnitStrc* pUnit, int nRequest, int nX, int nY, int nA, int nB); // 0x004CDB40
 
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
-void __fastcall VIEW_SpawnAndarielDeath(D2UnitStrc* pUnit);                                               // 0x0046BA50
 
 void __fastcall sub_0046B710_SpawnMissileAtObject173(D2UnitStrc* pUnit);                                                            // 0x0046B710
 
-void __fastcall sub_0046BA90_PlayerRequestAtUnit15B(D2UnitStrc* pUnit);                                     // 0x0046BA90
 
-void __fastcall sub_0046BB90_PlayerRequestAtUnit16B(D2UnitStrc* pUnit);                                     // 0x0046BB90
 
-void __fastcall VIEW_SpawnMephistoDeath(D2UnitStrc* pUnit);                                          // 0x0046B9A0
 
-int __fastcall UI_SetTimerUnitId(D2UnitStrc* pUnit);                                              // 0x0046BC70
 
-void __fastcall VIEW_SpawnIzualDeath(D2UnitStrc* pUnit);                                             // 0x0046BC10
 
 void __fastcall VIEW_SpawnMissileNearObject(D2UnitStrc* pUnit);                                                            // 0x0046B850
 
-void __fastcall sub_0046BB10_PlayerRequestAtUnit161(D2UnitStrc* pUnit);                                     // 0x0046BB10
 
-void __fastcall VIEW_SpawnBrDeathControl(D2UnitStrc* pUnit);                                           // 0x0046B680
 
-void __fastcall sub_0046B3C0_UnitRequest25A(D2UnitStrc* pUnit);                                             // 0x0046B3C0
 
-void __fastcall sub_0046BC90_RequestAtMonster220(D2UnitStrc* pUnit);                                        // 0x0046BC90
 
-void __fastcall sub_0046B530_SpawnMissileAtObject(D2UnitStrc* pUnit);                                       // 0x0046B530
 
-void __fastcall SKILLS_StartUnitEffect(D2UnitStrc* pUnit, D2UnitStrc* pTarget, int nEffect, int nArg4, int nArg5, int nStatValue, int nVelocity); // 0x004C70D0
 
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
 
-D2UnitStrc* __fastcall MISSILE_SubmitOwnerRequest(D2UnitStrc* pUnit, int nArg0, int nArg5, int nArg6, int nArg3, int nArg4); // 0x004CDBA0
 
-void __fastcall GFX_RemoveOverlays(D2UnitStrc* pUnit); // 0x0046F170
 
-void __fastcall GFX_AddUnitOverlay(D2UnitStrc* pUnit, int nOverlay, int nArg3, int nArg4, int nArg5, int nArg6, int nArg7, int nArg8); // 0x00470390
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
-
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
@@ -157,7 +137,6 @@ static int GetUnitPathY(D2UnitStrc* pUnit)
 
 D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams); // 0x004CD540
 
-D2UnitStrc* __fastcall CUNIT_GetOwnerUnit(D2UnitStrc* pUnit); // 0x004639D0
 
 __forceinline D2MissilesTxt* SKILLS_GetMissilesTxtRecord(int nMissileId)
 {
@@ -171,15 +150,8 @@ __forceinline D2MissilesTxt* SKILLS_GetMissilesTxtRecord(int nMissileId)
 
 extern "C" int __fastcall sub_004AC7E0(D2UnitStrc* pUnit, unsigned short wMask); // 0x004AC7E0
 
-D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc* pUnit); // 0x004648F0
 
-int __stdcall D2COMMON_10175_PathGetFirstPointX(D2DynamicPathStrc* pPath); // 0x00648A00
 
-int __stdcall D2COMMON_10176_PathGetFirstPointY(D2DynamicPathStrc* pPath); // 0x00648A10
-
-void __fastcall SEED_InitSeed(D2SeedStrc* pSeed); // 0x00650E30
-
-void __fastcall SEED_InitLowSeed(D2SeedStrc* pSeed, unsigned int nLowSeed); // 0x00650E40
 
 extern "C" int __stdcall sub_0064A280(D2UnitStrc* pMissile); // 0x0064A280
 
@@ -194,9 +166,7 @@ static D2MonStatsTxt* GetMonStatsTxtRecord(int nMonsterId)
     return 0;
 }
 
-unsigned char __cdecl GAME_GetDifficulty(); // 0x0044DCD0
 
-void __fastcall SKILLDESC_InitCappedChargedPath(D2UnitStrc* pMissile, int nArg); // 0x004E2ED0
 
 extern const unsigned int gdwBitMasks[32]; // 0x006CE268
 
@@ -800,7 +770,7 @@ void __fastcall MONSTER_GetMonsterName(D2UnitStrc* pUnit, Unicode* wszName, int 
     {
         nCount = 1;
         Unicode::strcat(wszName, D2LANG_GetStringFromTblIndex(nNameId));
-        nTextLength = sub_00526800((const unsigned short*)D2LANG_GetStringFromTblIndex(nNameId));
+        nTextLength = UNICODE_StrLen((const unsigned short*)D2LANG_GetStringFromTblIndex(nNameId));
         nWidth = D2Win_10121_GetTextWidth(D2LANG_GetStringFromTblIndex(nNameId));
     }
 
@@ -833,9 +803,9 @@ void __fastcall MONSTER_GetMonsterName(D2UnitStrc* pUnit, Unicode* wszName, int 
         if (nTextLength < nLength - 1)
         {
             const Unicode* wszMod = D2LANG_GetStringFromTblIndex(gwUniqueModNameIds[nMod]);
-            if (sub_00526800((const unsigned short*)wszMod) + nTextLength < nLength - 1)
+            if (UNICODE_StrLen((const unsigned short*)wszMod) + nTextLength < nLength - 1)
             {
-                nTextLength += sub_00526800((const unsigned short*)wszMod);
+                nTextLength += UNICODE_StrLen((const unsigned short*)wszMod);
                 nWidth += D2Win_10121_GetTextWidth(wszMod);
                 Unicode::strcat(wszName, wszMod);
                 ++nCount;
@@ -851,20 +821,6 @@ void __fastcall MONSTER_GetMonsterName(D2UnitStrc* pUnit, Unicode* wszName, int 
 
     D2Win_10127_SetFont(nOldFont);
 }
-
-// 0x004AE080
-extern "C" int __fastcall NPCMENU_GetMonsterTypeFlags(D2UnitStrc* pUnit, unsigned short nMask)
-{
-    if (pUnit && pUnit->dwUnitType == UNIT_MONSTER)
-    {
-        D2MonsterDataStrc* pMonsterData = pUnit->pMonsterData;
-        if (pMonsterData)
-            return pMonsterData->nClientFlags & nMask;
-    }
-    return 0;
-}
-
-
 
 extern D2UModCallbacksStrc gaUModCallbacks[43] = {
     { { 0 } },

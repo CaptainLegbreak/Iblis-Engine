@@ -5,13 +5,16 @@
 #include "D2GlideTypes.h"
 
 #include "D2Win32Types.h"
+#include "FogApi.h"
+#include "FogApi.h"
+#include "D2SoundApi.h"
+#include "StormApi2.h"
 
 extern int gbRenderPaused; // 0x007C9144
 extern int gnRenderWidth; // 0x007C9138
 
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x006CC134
 extern "C" __declspec(dllimport) long __stdcall DispatchMessageA(const tagMSG* pMsg); // 0x006CC478
-int __cdecl FOG_UseDirect(); // 0x00406D20
 extern "C" __declspec(dllimport) int __stdcall PeekMessageA(tagMSG* pMsg, void* hWnd, unsigned int uMsgFilterMin, unsigned int uMsgFilterMax, unsigned int wRemoveMsg); // 0x006CC480
 extern "C" __declspec(dllimport) void __stdcall Sleep(unsigned long dwMilliseconds); // 0x006CC258
 extern "C" __declspec(dllimport) int __stdcall TranslateMessage(const tagMSG* pMsg); // 0x006CC47C
@@ -22,17 +25,13 @@ extern void (__stdcall* gpfnGrTexSource)(int nTmu, int nStartAddress, int nEvenO
 
 struct D2DDrawSurfaceStrc;
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-void __fastcall GLCORE_SetTextureCombineMode(int nTmu); // 0x00509460
 
-void __fastcall GLSUBTILECACHE_TileCacheTouch(D2GlideTileCacheStrc* pCache, int nIndex); // 0x0050F0F0
 
-short __fastcall GLSUBTILECACHE_TileCacheAdd(D2GlideTileCacheStrc* pCache); // 0x0050F2B0
 
 extern D2GrTexInfoStrc gtGlideTileTexInfo; // 0x0072F6A8
 
@@ -56,24 +55,17 @@ extern "C" __declspec(dllimport) int __stdcall BinkSetSoundSystem(void* pfOpen, 
 
 extern "C" __declspec(dllimport) void* __stdcall BinkOpenDirectSound(unsigned long nParam); // 0x006CC5D8
 
-int __stdcall SFileOpenFileEx(unsigned int hMpq, const char* szFileName, unsigned int dwFlags, void** phFile); // 0x004192F0
-
 void __cdecl GLIDE_DrawVideoFrame(); struct D2CriticalSectionStrc;
 extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalSectionStrc* pCriticalSection); // 0x006CC214
-extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc* pCriticalSection); // 0x006CC218
 extern "C" __declspec(dllimport) void __stdcall BinkNextFrame(D2BinkStrc* pBink); // 0x006CC5BC
 extern "C" __declspec(dllimport) int __stdcall BinkCopyToBuffer(D2BinkStrc* pBink, void* pDest, int nDestPitch, unsigned int nDestHeight, unsigned int nDestX, unsigned int nDestY, unsigned int nFlags); // 0x006CC5C0
 extern "C" __declspec(dllimport) int __stdcall BinkDoFrame(D2BinkStrc* pBink); // 0x006CC5C4
-extern int (__stdcall* gpfnGrLfbLock)(int nType, int nBuffer, int nWriteMode, int nOrigin, int bPixelPipeline, D2GrLfbInfoStrc* pInfo); // 0x0087EADC
-extern int (__stdcall* gpfnGrLfbUnlock)(int nType, int nBuffer); // 0x0087EAD8
 extern D2CriticalSectionStrc* gpRenderCriticalSection; // 0x007C9134
 extern int gbSurfaceActive_007C9140; // 0x007C9140
 
 // 0x0050FD10
 
 void __cdecl DDRAW_DrawVideoFrame(); // 0x005136F0
-
-void __fastcall D2SOUNDSMP_SetMasterVolume(int nVolume); // 0x00515CE0
 
 extern int gnRenderHeight; // 0x007C913C
 
@@ -89,7 +81,7 @@ extern unsigned int gnDDrawBinkFlags; // 0x008816C8
 
 void __fastcall DDCORE_SetPalette(tagPALETTEENTRY* pPalette); // 0x00510160
 
-extern D2PaletteTableStrc* gpGfxPaletteView_007C9150; // 0x007C9150
+extern D2PaletteTableStrc* gpGfxPaletteView; // 0x007C9150
 
 extern tagPALETTEENTRY gaDDrawSavedPalette[256]; // 0x00880D40
 
@@ -157,20 +149,7 @@ void __fastcall sub_0050FBD0_GlideBindTileTexture(D2GlideTileStrc* pTile)
     GLCORE_SetTextureCombineMode(gnGlideTileTmu);
 }
 
-#pragma pack(push, 1)
-struct d2data_0072F6B4_t
-{
-    unsigned char b0[8];
-};
-#pragma pack(pop)
-
-extern "C" struct d2data_0072F6B4_t gData_0072F6B4; // 0x0072F6B4
-
-extern D2GrTexInfoStrc gtGlideTileTexInfo = { 5, 5 }; // 0x0072F6A8
-
-extern "C" struct d2data_0072F6B4_t gData_0072F6B4 = {
-    { 0x05 }
-}; // 0x0072F6B4
+D2GrTexInfoStrc gtGlideTileTexInfo = { 5, 5, 0, 5 }; // 0x0072F6A8
 
 unsigned int gnGlideBinkX; // 0x00880C08
 

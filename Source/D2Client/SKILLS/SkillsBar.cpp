@@ -1,10 +1,14 @@
 #include "D2StateIds.h"
 #include "D2MonsterIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2Path.h"
 #include "D2DataTbls.h"
 #include "D2Txt.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
+#include "D2CommonApi3.h"
 
 struct D2UnitStrc;
 
@@ -35,117 +39,65 @@ extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 
-D2SkillStrc* __stdcall UNITS_GetUsedSkill(D2UnitStrc* pUnit); // 0x00620250
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
 
-int __stdcall SKILLS_GetSkillIdFromSkill(D2SkillStrc* pSkill, const char* szFile, int nLine); // 0x00643CE0
 
-int __stdcall SKILLS_GetFlags(D2SkillStrc* pSkill); // 0x006446A0
 
-D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc* pUnit); // 0x004648F0
 
-int __fastcall ITEM_GetTargetPosition(D2UnitStrc* pUnit, int* pX, int* pY); // 0x004C52E0
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
-int __stdcall UNITS_GetUnitSizeX(D2UnitStrc* pUnit); // 0x00620510
 
-D2ActiveRoomStrc* __stdcall COLLISION_GetFreeCoordinates(D2ActiveRoomStrc* pRoom, D2CoordStrc* pSpawnPoint, int nUnitSize, unsigned int nMask, int bAllowNeighboringRooms); // 0x0064E7B0
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
 
-int __stdcall DUNGEON_IsRoomInTown(D2ActiveRoomStrc* pRoom); // 0x0061AB00
 
-int __stdcall PATH_GetUnitCollisionPattern(D2UnitStrc* pUnit); // 0x00649180
 
-void __stdcall SKILLS_SetParam1(D2SkillStrc* pSkill, int nValue); // 0x00644560
 
-void __stdcall SKILLS_SetParam2(D2SkillStrc* pSkill, int nValue); // 0x006445A0
 
-void __stdcall SKILLS_SetParam3(D2SkillStrc* pSkill, int nValue); // 0x006445E0
 
-void __stdcall SKILLS_SetParam4(D2SkillStrc* pSkill, int nValue); // 0x00644620
 
-void __stdcall SKILLS_SetFlags(D2SkillStrc* pSkill, int nValue); // 0x00644660
-
-void __fastcall SKILLS_AttachMoveSkillEndList(D2UnitStrc* pUnit); // 0x004C7950
-
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646CA0
-
-int __stdcall COLLISION_CheckAnyCollisionWithPattern(D2ActiveRoomStrc* pRoom, int nX, int nY, int nCollisionPattern, unsigned short nMask); // 0x0064D910
-
-int __stdcall D2Common_11025(int nX1, int nY1, int nX2, int nY2, D2ActiveRoomStrc* pRoom, int nMask); // 0x00645910
-
-void __fastcall UNITSND_PlayPlayerSpeech(D2UnitStrc* pUnit, unsigned short nStringId); // 0x004CB9C0
-
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pDynamicPath); // 0x006488C0
-
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pDynamicPath); // 0x00648900
 
 static int __stdcall SKILLSBAR_CanTargetRoom(int nSkillId, D2UnitStrc* pUnit, int nX, int nY); // 0x004C8350
 
 static int __stdcall SKILLS_AdjustTargetPosition(int nSkillId, D2UnitStrc* pUnit, int nSkillLevel, int* pX, int* pY); // 0x004C80D0
 
-void __stdcall PATH_SetFootprintCollisionMask(D2DynamicPathStrc* pDynamicPath, int nCollisionMask); // 0x00648C30
-
 void __stdcall D2COMMON_10170_PathSetTargetPos(D2DynamicPathStrc* pPath, int nX, int nY); // 0x00648AD0
 
-void __stdcall PATH_SetType(D2DynamicPathStrc* pDynamicPath, int nPathType); // 0x00648CF0
 
 void __stdcall PATH_SetVelocity(D2DynamicPathStrc* pDynamicPath, int nVelocity, const char* szFile, int nLine); // 0x00648690
 
-int __stdcall D2Common_10142(D2DynamicPathStrc* pPath, D2UnitStrc* pUnit, int bAllowInTown); // 0x00649970
 
 D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
 
 extern "C" D2CharStatsTxt* __fastcall sub_004833E0_GetCharStatsTxtRecord(int nClass); // 0x004833E0
 
-D2SkillStrc* __fastcall SKILLS_GetHighestLevelSkillFromUnitAndId(D2UnitStrc* pUnit, int nSkillId); // 0x006439F0
 
-D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
-void __stdcall PATH_RecacheRoomIfNeeded(D2DynamicPathStrc* pDynamicPath); // 0x00650590
-
-void __stdcall PATH_SetNewDistance(D2DynamicPathStrc* pDynamicPath, unsigned char nNewDistance); // 0x00648E70
 
 void __stdcall PATH_SetTargetUnit(D2DynamicPathStrc* pPath, D2UnitStrc* pTargetUnit); // 0x00648B90
 
 D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
-int __fastcall CUNIT_IsDeadOrDying(D2UnitStrc* pUnit); // 0x00464820
 
 void __stdcall PATH_SetUnitDeadCollision(D2UnitStrc* pUnit, int nArg); // 0x00649F70
 
-int __stdcall GFXUTIL_GetMotionAZ(D2UnitStrc* pUnit); // 0x004DA150
 
-void __stdcall GFXUTIL_SetMotionVectorA(D2UnitStrc* pUnit, int nX, int nY, int nZ); // 0x004DA1D0
 
-void __fastcall GFX_AddUnitOverlay(D2UnitStrc* pUnit, int nOverlay, int nArg3, int nArg4, int nArg5, int nArg6, int nArg7, int nArg8); // 0x00470390
 
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
-void __fastcall CUNIT_SetUnitPosition(D2UnitStrc* pUnit, int nX, int nY, int nFlags); // 0x004654C0
 
 D2UnitStrc* __fastcall sub_004C5EB0_FindDestination(D2UnitStrc* pUnit, int nX, int nY, int nRange, int nArg5, int nUnitId, int nArg7); // 0x004C5EB0
 
-int __fastcall UNITS_GetHitClass(D2UnitStrc* pUnit); // 0x00623C20
 
-int __fastcall UNITSND_GetDirectionRate(D2UnitStrc* pUnit, unsigned int nDirection); // 0x004CA4C0
 
 int __fastcall SKILLSBAR_SetRunPath(D2UnitStrc* pUnit, D2SkillStrc* pSkill); // 0x004C85B0
 
 void __fastcall SKILLSBAR_SetLobVelocity(D2UnitStrc* pUnit, D2SkillStrc* pSkill); // 0x004C8670
 
-int __stdcall SKILLS_CheckIfCanLeapTo(D2UnitStrc* pUnit1, D2UnitStrc* pUnit2, int* pX, int* pY); // 0x00645CA0
 
-int __stdcall UNITS_IsInMeleeRange(D2UnitStrc* pUnit1, D2UnitStrc* pUnit2, int nRangeBonus); // 0x00622C40
 
-int __fastcall SKILLS_RaiseTargetUnitEvent(D2UnitStrc* pUnit, D2UnitStrc* pTarget); // 0x004C7630
 
 static void __stdcall SKILLSBAR_LeapBounceFromTarget(D2UnitStrc* pUnit, D2SkillStrc* pSkill, int nX, int nY); // 0x004C8750
 
@@ -177,25 +129,14 @@ inline int UNITS_GetYInline(D2UnitStrc* pUnit)
     }
 }
 
-unsigned char __stdcall PATH_GetDirection(D2DynamicPathStrc* pPath); // 0x006487F0
-
 void __stdcall sub_006488A0_SetDirection(D2DynamicPathStrc* pPath, int nDirection); // 0x006488A0
-
-int __stdcall UNITS_GetPrecisionX(D2UnitStrc* pUnit); // 0x006203B0
-
-int __stdcall UNITS_GetPrecisionY(D2UnitStrc* pUnit); // 0x00620410
 
 extern "C" int __cdecl PLAYER_GetScreenOffsetX(); // 0x0045AFC0
 
 extern "C" int __cdecl PLAYER_GetScreenOffsetY(); // 0x0045AFD0
 
-int __stdcall UNITS_GetClientCoordX(D2UnitStrc* pUnit); // 0x00620650
-
-int __stdcall UNITS_GetClientCoordY(D2UnitStrc* pUnit); // 0x006206B0
-
 int __fastcall GFX_DrawUnit(D2UnitStrc* pUnit, unsigned int dwColor, int nX, int nY, int nArg, int bOverlay); // 0x00471EC0
 
-void __fastcall GFXUTIL_SetBallistic(D2UnitStrc* pUnit, int nSpeed, int nFrames); // 0x004DA5B0
 
 struct D2LobBracketStrc
 {
@@ -291,9 +232,8 @@ static int __stdcall SKILLS_AdjustTargetPosition(int nSkillId, D2UnitStrc* pUnit
     return 0;
 }
 
-void* __fastcall UNITSND_FindUnitSfxInRange(D2UnitStrc* pUnit, int nId); // 0x004CA900
 
-void __fastcall sub_004BA840(void* pUnitSfx); // 0x004BA840
+void __fastcall sub_004BA840_StopSound(void* pUnitSfx); // 0x004BA840
 
 // 0x004C83C0
 int __fastcall SKILLSBAR_SkillCltStartPosition(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
@@ -460,8 +400,8 @@ void __fastcall SKILLSBAR_SetLobVelocity(D2UnitStrc* pUnit, D2SkillStrc* pSkill)
         nVelocity = 0x1F4;
     }
 
-    sub_004DA000(pUnit);
-    sub_004DA250(pUnit, 0, 0, -nVelocity, 0);
+    PARTICLE_ResetGfxMotion(pUnit);
+    GFXUTIL_SetMotionVectorD(pUnit, 0, 0, -nVelocity, 0);
     GFXUTIL_SetBallistic(pUnit, 0, nFrames);
 }
 
@@ -628,13 +568,14 @@ static int __stdcall SKILLSBAR_UpdateLeap(D2UnitStrc* pUnit, D2SkillStrc* pSkill
 
     if (bMonster)
     {
-        sub_004B9A00(sub_004CAEB0(pUnit, 1), pUnit, 0, 0, 0);
+// build: symbol ?UNITSND_GetFootstepSound@* 0x004CAEB0
+        sub_004B9A00(UNITSND_GetFootstepSound(pUnit, 1), pUnit, 0, 0, 0);
         if (nBaseId == MONSTER_SANDLEAPER1)
             SKILLSBAR_LeapBounceFromTarget(pUnit, pSkill, nX, nY);
         return 1;
     }
 
-    sub_004B9A00(sub_004CAEB0(pUnit, 1), pUnit, 0, 0, 0);
+    sub_004B9A00(UNITSND_GetFootstepSound(pUnit, 1), pUnit, 0, 0, 0);
     sub_004B9A00(0x9D5, pUnit, 0, 0, 0);
     return 1;
 }
@@ -659,7 +600,6 @@ void __fastcall SKILLSBAR_ResetLeapCollision(D2UnitStrc* pUnit)
 
 static int __stdcall SKILLSBAR_UpdateLeap(D2UnitStrc* pUnit, D2SkillStrc* pSkill, int bOverlay); // 0x004C8970
 
-void __fastcall SKILLSBAR_ResetLeapCollision(D2UnitStrc* pUnit); // 0x004C8B80
 
 // 0x004C8C60
 int __fastcall SKILLSBAR_SkillCltDoLeap(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
@@ -777,7 +717,7 @@ int __fastcall SKILLSBAR_SkillCltDoLeapAttack(D2UnitStrc* pUnit, int nSkillId, i
             if (pTarget)
             {
                 UNITS_SetTargetUnitForDynamicUnit(pUnit, pTarget);
-                sub_00465BF0(pUnit, 0);
+                CUNIT_SetPathTargetToTargetUnit(pUnit, 0);
                 sub_004B9A00(UNITSND_GetDirectionRate(pUnit, UNITS_GetHitClass(pUnit)), pUnit, 0, 0, 0);
                 nResult = 1;
             }
@@ -959,7 +899,7 @@ int __fastcall SKILLSBAR_SkillCltDoCollide(D2UnitStrc* pUnit, int nSkillId, int 
         PATH_SetFootprintCollisionMask(pDynamicPath, nMask);
         PATH_SetMoveTestCollisionMask(pDynamicPath, bPlayer ? 0x1C09 : 0x3C01);
         SKILLS_SetFlags(pSkill, 0);
-        sub_004BA840(UNITSND_FindUnitSfxInRange(pUnit, 0x9E3));
+        sub_004BA840_StopSound(UNITSND_FindUnitSfxInRange(pUnit, 0x9E3));
     }
     else if (nFlags & 1)
     {

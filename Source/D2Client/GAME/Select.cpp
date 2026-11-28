@@ -1,5 +1,6 @@
 #include "D2SkillIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2Path.h"
 #include "D2Structs.h"
@@ -12,6 +13,9 @@
 #include "D2ClientTypes.h"
 #include "D2ClientUiRecords.h"
 #include "D2WinSplitText.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
 struct D2ActiveRoomStrc;
 struct D2SkillStrc;
 struct D2UnitStrc;
@@ -19,8 +23,6 @@ struct D2UnitStrc;
 typedef int (__fastcall* D2UnitFindCallback)(D2UnitStrc* pUnit, void* pArg);
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -35,7 +37,6 @@ static int gbHoverLocked;                                                       
 static int gbHasSelectedUnit;                                                                              // 0x007A6A94
 static int gnSelectedUnitType;                                                                     // 0x007A6A8C
 static unsigned int gnSelectedUnitId;                                                              // 0x007A6A78
-extern int gnScreenWidth;                                                                               // 0x0071146C
 int gbSelectionRectValid;                                                                   // 0x007A6A9C
 int gnSelectionLeft;                                                                        // 0x007A6A7C
 int gnSelectionRight;                                                                       // 0x007A6A84
@@ -43,47 +44,19 @@ int gnSelectionTop;                                                             
 int gnSelectionBottom;                                                                      // 0x007A6A88
 static int gbWarpTileHovered;                                                                              // 0x007A6AA0
 
-int __cdecl TEXT_IsTextBoxOpen();                                                                                 // 0x004A0000
 D2UnitStrc* __cdecl TEXT_GetTextUnit();                                                             // 0x0049E8B0
 void __fastcall TEXT_SetHoverUnit(D2UnitStrc* pUnit);                                                            // 0x0049DA30
 void __cdecl TEXT_ClearHoverUnit();                                                                      // 0x0049DA50
-D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType);                    // 0x00463990
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit);                                               // 0x00620BB0
 void __fastcall VIEW_SetViewDirty(D2ViewStrc* pView);                                               // 0x00475FF0
-void __fastcall MSG_SendDword(char nHeader, int nArg);                                           // 0x00478680
 D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId);                                    // 0x00451F80
-D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int nMonsterId);                        // 0x00451FE0
-int __fastcall CUNIT_IsPointInTileRect(D2UnitStrc* pUnit, int nX, int nY);                           // 0x00463EE0
 int __cdecl GAME_IsLeftButtonHeld();                                                                                 // 0x0044BF30
-int __cdecl GAME_GetCurrentTime(); // 0x0044DAA0
 unsigned int __cdecl GAME_GetInteractDeadline(); // 0x0044DAC0
-void __fastcall GAME_SetInteractDeadline(int nValue); // 0x0044DAD0
 extern "C" int __cdecl PLAYER_GetScreenOffsetX();                                                          // 0x0045AFC0
 extern "C" int __cdecl PLAYER_GetScreenOffsetY();                                                      // 0x0045AFD0
-int __cdecl sub_0045AE90();                                                                                 // 0x0045AE90
-int __cdecl sub_00468730();                                                                                 // 0x00468730
-int __cdecl sub_00468740();                                                                                 // 0x00468740
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit();                                                               // 0x00463DD0
-D2UnitStrc* __cdecl sub_00463DE0_GetPlayerUnit();                                                           // 0x00463DE0
-int __stdcall UNITS_GetClientCoordX(D2UnitStrc* pUnit);                                                     // 0x00620650
-int __stdcall UNITS_GetClientCoordY(D2UnitStrc* pUnit);                                                     // 0x006206B0
-int __fastcall CUNIT_IsDeadOrDying(D2UnitStrc* pUnit);                                               // 0x00464820
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath);                                                  // 0x006488C0
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath);                                                  // 0x00648900
-int __stdcall SKILLS_GetSkillIdFromSkill(D2SkillStrc* pSkill, const char* szFile, int nLine);              // 0x00643CE0
-int __stdcall ITEMS_IsMetalItem(int nItemId);                                                               // 0x00629CC0
-D2ActiveRoomStrc* __cdecl CUNIT_GetPlayerRoom(); // 0x004646A0
 void __stdcall UNITFINDS_InitializeUnitFindData(void* pMemPool, D2UnitFindDataStrc* pUnitFindData, D2ActiveRoomStrc* pRoom, int nX, int nY, int nSize, D2UnitFindCallback pfnUnitTest, D2UnitFindArgStrc* pUnitFindArg); // 0x0065A950
 int __fastcall SELECT_IsMetalItemUnit(D2UnitStrc* pUnit, void* pArg);                                    // 0x00467470
 D2UnitStrc* __stdcall D2Common_10407(D2ActiveRoomStrc* pRoom, int nX, int nY, D2UnitFindCallback pCallback, void* pArg, int nSize); // 0x00641CB0
-int __fastcall MONSTERREGION_CheckMonStats2Flag(int nMonsterId, int nFlag);                                  // 0x004638A0
-int __fastcall CUNIT_IsHostileTo(D2UnitStrc* pUnit, D2UnitStrc* pOther);                           // 0x00465C60
-D2SkillsTxt* __fastcall SKILLS_GetSkillsTxtRecordFromSkill(D2SkillStrc* pSkill);                           // 0x00644140
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit);                                                       // 0x0045ADF0
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit);                                                         // 0x0045AE20
-void __fastcall ITEM_GetAdjacentPosition(D2UnitStrc* pUnit, int* pX, int* pY);                     // 0x004C51E0
-extern "C" int __fastcall sub_004D9FC0(D2UnitStrc* unit,D2SkillStrc* skill); // 0x004D9FC0
-void __stdcall DUNGEON_GameSubtileToClientCoords(int* pX, int* pY);                                                   // 0x00643260
+extern "C" int __fastcall sub_004D9FC0_GetSkillUseState(D2UnitStrc* unit,D2SkillStrc* skill); // 0x004D9FC0
 
 inline int UNIT_HasFlag(D2UnitStrc* pUnit, unsigned int nFlag)
 {
@@ -186,7 +159,8 @@ static void SELECT_SetHoverUnit(D2UnitStrc* pUnit)
     unsigned int nHoverId;
     if (pUnit)
     {
-        D2_ASSERT(sub_00466870(pUnit, 0, 0, 0), 0x4F);
+// build: symbol ?CUNIT_IsUnitSelectable@* 0x00466870
+        D2_ASSERT(CUNIT_IsUnitSelectable(pUnit, 0, 0, 0), 0x4F);
         nHoverType = pUnit->dwUnitType;
         nHoverId = pUnit->dwUnitId;
     }
@@ -313,12 +287,6 @@ static int __stdcall SELECT_CheckWarpTileHover(D2UnitStrc* pPlayer, D2HoverCoord
     return 0;
 }
 
-int __stdcall sub_662F_Emit_00467AC0(D2UnitStrc* pPlayer, D2UnitStrc* pUnit, int nPX, int nPY, int nX, int nY)
-{
-    D2HoverCoordStrc tY1;
-    tY1.nValue = nPY;
-    return SELECT_CheckWarpTileHover(pPlayer, tY1, nX, nY, pUnit, nPX, &gbWarpTileHovered);
-}
 
 // 0x004670A0
 static void __stdcall SELECT_AdjustCursorPerspective(int* pnX, int* pnY)
@@ -334,36 +302,10 @@ static void __stdcall SELECT_AdjustCursorPerspective(int* pnX, int* pnY)
     *pnY += PLAYER_GetScreenOffsetY();
 }
 
-static inline void HOVER_ClearHoverUnit()
-{
-    if (gbHoverLocked)
-    {
-        return;
-    }
-
-    if (TEXT_IsTextBoxOpen() && !TEXT_GetTextUnit())
-    {
-        TEXT_SetHoverUnit(0);
-        return;
-    }
-
-    TEXT_ClearHoverUnit();
-    if (gbHasSelectedUnit && gnSelectedUnitType == 5)
-    {
-        D2UnitStrc* pOld = CUNIT_FindClientUnit(gnSelectedUnitId, 5);
-        if (pOld)
-        {
-            DUNGEON_UpdateWarpRoomDeselect(UNITS_GetRoom(pOld), pOld->dwClassId);
-            VIEW_SetViewDirty(gpClientView);
-        }
-    }
-    gbHasSelectedUnit = 0;
-}
-
 // 0x00467130
 static int SELECT_GetHoverCursorPos(int* pnX, int* pnY)
 {
-    const int nMode = sub_0045AE90();
+    const int nMode = sub_0045AE90_GetPanelSlideMode();
     if (nMode == 3)
     {
         if (gbHoverLocked)
@@ -609,7 +551,7 @@ static D2UnitStrc* __stdcall SELECT_FindSkillTarget(D2SkillStrc* pSkill, D2UnitS
     {
         D2UnitStrc* pCandidate = tFindData.pUnitsArray[i];
         const int nDistance = UNITS_GetDistanceToCoordinates(pCandidate, *pnX, *pnY);
-        if (sub_00466870(pCandidate, 0, 0, 0) && nDistance < nBestDistance)
+        if (CUNIT_IsUnitSelectable(pCandidate, 0, 0, 0) && nDistance < nBestDistance)
         {
             pUnit = pCandidate;
             nBestDistance = nDistance;
@@ -673,15 +615,6 @@ static D2UnitStrc* __stdcall SELECT_FindAdjacentTarget(D2SkillsTxt* pSkillsTxtRe
     return 0;
 }
 
-D2UnitStrc* __fastcall sub_807B_Emit_00467660(D2SkillsTxt* pSkillsTxtRecord, D2UnitStrc* pPlayer, int bArg)
-{
-    if (bArg && pPlayer->dwUnitType == UNIT_PLAYER)
-    {
-        return SELECT_FindAdjacentTarget(pSkillsTxtRecord, pPlayer);
-    }
-    UNITS_SetTargetUnitForDynamicUnit(pPlayer, 0);
-    return pPlayer;
-}
 
 // 0x004677B0
 static D2UnitStrc* __stdcall SELECT_FindFreeTargetCoords(int* pnX, int* pnY, D2UnitStrc* pUnit)
@@ -744,7 +677,7 @@ skip:
         return pUnit;
     }
 
-    if (sub_004D9FC0(pPlayer, pSkill))
+    if (sub_004D9FC0_GetSkillUseState(pPlayer, pSkill))
     {
         return pUnit;
     }
@@ -769,46 +702,6 @@ skip:
 }
 
 
-void __cdecl sub_E01_Emit_00467AC0(D2UnitStrc* pFirst)
-{
-    int nX = 0;
-    int nY = 0;
-    if (SELECT_GetHoverCursorPos(&nX, &nY))
-    {
-        return;
-    }
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
-    int nPX = CLIENTS_GetUnitX(pPlayer);
-    int nPY = CLIENTS_GetUnitY(pPlayer);
-    DUNGEON_GameSubtileToClientCoords(&nPX, &nPY);
-    D2UnitStrc* pBest = 0;
-    for (D2UnitStrc* pUnit = pFirst; pUnit; pUnit = pUnit->ptRoomNext)
-    {
-        D2HoverCoordStrc tPlayerY = { nPY };
-        if (SELECT_CheckWarpTileHover(pPlayer, tPlayerY, nX, nY, pUnit, nPX, &gbWarpTileHovered))
-        {
-            continue;
-        }
-        if (!pBest)
-        {
-            pBest = pUnit;
-            continue;
-        }
-        if (SELECT_CheckDoorSideA(pUnit, pBest))
-        {
-            pBest = pUnit;
-        }
-        else if (SELECT_CheckDoorSideB(pBest, pUnit))
-        {
-            pBest = pUnit;
-        }
-        else if (SELECT_GetDistanceSquared(pPlayer, pUnit) < SELECT_GetDistanceSquared(pPlayer, pBest))
-        {
-            pBest = pUnit;
-        }
-    }
-    SELECT_SetHoverUnit(pBest);
-}
 
 // 0x00467A00
 void __cdecl SELECT_ResetHoverClassIds()
@@ -825,7 +718,7 @@ D2UnitStrc* __cdecl SELECT_GetSelectedUnit()
     if (gbHasSelectedUnit)
     {
         D2UnitStrc* pUnit = CUNIT_FindClientUnit(gnSelectedUnitId, gnSelectedUnitType);
-        if (pUnit && sub_00466870(pUnit, 0, 0, 0))
+        if (pUnit && CUNIT_IsUnitSelectable(pUnit, 0, 0, 0))
         {
             return pUnit;
         }
@@ -843,7 +736,7 @@ void __fastcall SELECT_RefreshHoverUnit(D2UnitStrc* pUnit)
 {
     if (pUnit)
     {
-        if (sub_00466870(pUnit, 0, 0, 0))
+        if (CUNIT_IsUnitSelectable(pUnit, 0, 0, 0))
         {
             gbHoverLocked = 0;
             SELECT_SetHoverUnit(pUnit);
@@ -871,9 +764,6 @@ D2UnitStrc* __cdecl SELECT_GetSelectedUnit();                                   
 
 void __stdcall DUNGEON_GetAdjacentRoomsListFromRoom(D2ActiveRoomStrc* pRoom, D2ActiveRoomStrc*** pppRoomList, unsigned int* pnNumRooms); // 0x00619790
 
-int __stdcall MONSTERS_IsDead(D2UnitStrc* pMonster);                                                       // 0x0063EA40
-
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState);                                            // 0x00639DF0
 
 // 0x00467AC0
 void __cdecl SELECT_UpdateHoverUnit()
@@ -891,7 +781,7 @@ void __cdecl SELECT_UpdateHoverUnit()
     }
 
     D2UnitStrc* pSelected = SELECT_GetSelectedUnit();
-    if (pSelected && sub_00466870(pSelected, nX, nY, 1) && (pSelected->dwUnitType != UNIT_ITEM || !gdwGlobal_007A6A90))
+    if (pSelected && CUNIT_IsUnitSelectable(pSelected, nX, nY, 1) && (pSelected->dwUnitType != UNIT_ITEM || !gbNoPickup))
     {
         SELECT_SetHoverUnit(pSelected);
         return;
@@ -955,12 +845,12 @@ void __cdecl SELECT_UpdateHoverUnit()
                 continue;
             }
 
-            if (pUnit && pUnit->dwUnitType == UNIT_ITEM && gdwGlobal_007A6A90)
+            if (pUnit && pUnit->dwUnitType == UNIT_ITEM && gbNoPickup)
             {
                 continue;
             }
 
-            if (!sub_00466870(pUnit, nX, nY, 1))
+            if (!CUNIT_IsUnitSelectable(pUnit, nX, nY, 1))
             {
                 continue;
             }
@@ -1086,19 +976,9 @@ struct d2data_00711F54_t
 };
 #pragma pack(pop)
 
-extern "C" const int gData_006D6AF4[8]; // 0x006D6AF4
-extern "C" const int gData_006D6B14[8]; // 0x006D6B14
-extern "C" const int gData_006D6B34[7]; // 0x006D6B34
 extern "C" struct d2data_00711F54_t gData_00711F54; // 0x00711F54
 
-extern "C" const int gData_006D6AF4[8] = { 3, 2, 0, -2, -3, -2, 0, 2 }; // 0x006D6AF4
-#pragma comment(linker, "/alternatename:?gaDirectionDY@@3QBHB=_gData_006D6AF4")
-
-extern "C" const int gData_006D6B14[8] = { 0, -2, -3, -2, 0, 2, 3, 2 }; // 0x006D6B14
-#pragma comment(linker, "/alternatename:?gaDirectionDX@@3QBHB=_gData_006D6B14")
-
-extern "C" const int gData_006D6B34[7] = { 0, -1, 1, -2, 2, -3, 3 }; // 0x006D6B34
-#pragma comment(linker, "/alternatename:?gaAdjacentDirOffsets@@3QBHB=_gData_006D6B34")
+extern int gnHoverClassId = 19; // 0x00711F94
 
 extern "C" struct d2data_00711F54_t gData_00711F54 = {
     (const void*)"English",
@@ -1120,6 +1000,10 @@ extern "C" struct d2data_00711F54_t gData_00711F54 = {
 
 extern int gnHoverMonClassId = 19; // 0x00711F90
 
-extern int gnHoverClassId = 19; // 0x00711F94
+extern const int gaDirectionDY[8] = { 3, 2, 0, -2, -3, -2, 0, 2 }; // 0x006D6AF4
+
+extern const int gaDirectionDX[8] = { 0, -2, -3, -2, 0, 2, 3, 2 }; // 0x006D6B14
+
+extern const int gaAdjacentDirOffsets[7] = { 0, -1, 1, -2, 2, -3, 3 }; // 0x006D6B34
 
 extern int gaUnitHoverPriority[6] = { 0, 0, -6, 0, -4 }; // 0x00711F98

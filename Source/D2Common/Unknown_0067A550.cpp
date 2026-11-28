@@ -2,16 +2,16 @@
 #include "D2DrlgPresets.h"
 
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 
 #include "D2Path.h"
 
 #include "D2PathFind.h"
+#include "FogApi.h"
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
@@ -116,7 +116,7 @@ static void PATH_IDAStar_GetNextNeighborIndex(D2PathIDAStarNodeStrc* pNode, D2Pa
 }
 
 // 0x0067A690
-static D2PathIDAStarNodeStrc* __stdcall sub_6FDC0840(D2PathIDAStarContextStrc* pContext, D2PathIDAStarNodeStrc* pNode)
+static D2PathIDAStarNodeStrc* __stdcall sub_0067A690_NextNode(D2PathIDAStarContextStrc* pContext, D2PathIDAStarNodeStrc* pNode)
 {
     if (pNode->nEvaluationsCount < 4)
     {
@@ -258,7 +258,7 @@ static D2PathIDAStarNodeStrc* __stdcall PATH_IDAStar_VisitNodes(int nFScoreCutof
             }
         }
 
-        pCurrentNode = sub_6FDC0840(pContext, pCurrentNode);
+        pCurrentNode = sub_0067A690_NextNode(pContext, pCurrentNode);
         if (!pCurrentNode)
         {
             return 0;
@@ -276,8 +276,6 @@ struct D2PathRoomsAABBStrc : D2DrlgCoordsStrc
 #define D2_MAX(a, b) ((a) > (b) ? (a) : (b))
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);                         // 0x006829C0
-
-void __stdcall DUNGEON_GetRoomCoordinates(D2ActiveRoomStrc* pRoom, D2DrlgCoordsStrc* pCoords); // 0x00619730
 
 // 0x0067A9F0
 static int PATH_IDAStar_FlushNodeToDynamicPath(D2PathInfoStrc* pPathInfo, D2PathIDAStarNodeStrc* pNode)
@@ -406,7 +404,7 @@ int D2PathRoomsAABBStrc::PATH_IdaStar_ComputePathWithRooms(D2PathInfoStrc* pPath
 }
 
 // 0x0067AD00
-int __fastcall PATH_IdaStar_6FDA7970(D2PathInfoStrc* pPathInfo)
+int __fastcall PATH_IdaStar(D2PathInfoStrc* pPathInfo)
 {
     pPathInfo->field_14 *= 2;
     D2PathRoomsAABBStrc tPathRoomsAABB;
@@ -492,27 +490,7 @@ struct d2data_00749A98_t
 };
 #pragma pack(pop)
 
-extern "C" const int gData_006F18D8[32]; // 0x006F18D8
-extern "C" const D2CoordStrc gData_006F1958[8]; // 0x006F1958
 extern "C" struct d2data_00749A98_t gData_00749A98; // 0x00749A98
-
-extern "C" const int gData_006F18D8[32] = {
-    -2, -1, 0, 1, 2, -2, -1, 0, 1, 2, -2, -1, 0, 1, 2, -2,
-    -1, 0, 1, 2, -2, -1, 0, 1, 2, -2, -1, 0, 1, 2, -1, 1
-}; // 0x006F18D8
-#pragma comment(linker, "/alternatename:?gnIdaStarNeighborRandOffsets@@3QBHB=_gData_006F18D8")
-
-extern "C" const D2CoordStrc gData_006F1958[8] = {
-    { 1 },
-    { 1, 1 },
-    { 0, 1 },
-    { -1, 1 },
-    { -1 },
-    { -1, -1 },
-    { 0, -1 },
-    { 1, -1 }
-}; // 0x006F1958
-#pragma comment(linker, "/alternatename:?aCoordOffsets@@3QBUD2CoordStrc@@B=_gData_006F1958")
 
 extern "C" struct d2data_00749A98_t gData_00749A98 = {
     (const void*)"English",
@@ -531,3 +509,19 @@ extern "C" struct d2data_00749A98_t gData_00749A98 = {
     (const void*)"Unknown",
     (const void*)"14"
 }; // 0x00749A98
+
+extern const int gnIdaStarNeighborRandOffsets[32] = {
+    -2, -1, 0, 1, 2, -2, -1, 0, 1, 2, -2, -1, 0, 1, 2, -2,
+    -1, 0, 1, 2, -2, -1, 0, 1, 2, -2, -1, 0, 1, 2, -1, 1
+}; // 0x006F18D8
+
+extern const D2CoordStrc aCoordOffsets[8] = {
+    { 1 },
+    { 1, 1 },
+    { 0, 1 },
+    { -1, 1 },
+    { -1 },
+    { -1, -1 },
+    { 0, -1 },
+    { 1, -1 }
+}; // 0x006F1958

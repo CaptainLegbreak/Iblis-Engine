@@ -2,6 +2,7 @@
 #include "D2Structs.h"
 #include "D2DataTbls.h"
 #include "D2Txt.h"
+#include "FogApi.h"
 
 #define CP_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 #define COF_PAD 0x20
@@ -25,14 +26,10 @@ struct D2CompositStrc
     int nWeaponClassId;
 };
 
-int __stdcall UNITS_GetAnimOrSeqMode(D2UnitStrc* pUnit); // 0x00621190
-void __stdcall D2COMMON_11013_ConvertMode(D2UnitStrc* pUnit, int* pType, int* pClass, int* pMode, const char* szFile, int nLine); // 0x00645270
 int __stdcall COMPOSIT_GetWeaponClassCode(D2UnitStrc* pUnit, int nUnitType, int nClass, int nMode, D2InventoryStrc* pInventory, int* pWeaponClassId); // 0x0064F060
 extern const D2CompositStrc gaWeaponClassCodeTable[13]; // 0x006EB748
 extern "C" const char gszCompositSourceFile[]; // 0x006EB7B0
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 struct D2ModeTypeTxt {char pad[0x20]; unsigned int token;};
@@ -44,16 +41,15 @@ extern D2CompositStrc gaCompositPlayerModes[]; // 0x00745900
 extern unsigned int gnCompositPlayerModeCount; // 0x00745910
 extern D2CompositStrc gaCompositMonsterModes[]; // 0x00745914
 extern unsigned int gnCompositMonsterModeCount; // 0x0074591C
-extern const char gChars_006DCC34[]; // 0x006DCC34
-extern const char gMonsters_006D6CAC[]; // 0x006D6CAC
-extern const char gObjects_006E3628[]; // 0x006E3628
-extern const char gFormatPath_006D6C94[]; // 0x006D6C94
+extern const char gszCharsDir[]; // 0x006DCC34
+extern const char gszMonstersDir[]; // 0x006D6CAC
+extern const char gszObjectsDir[]; // 0x006E3628
+extern const char gszCofPathFormat[]; // 0x006D6C94
 extern const char gszCofTokenFormat[]; // 0x006D5514
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char*,const char*,...); // 0x006CC468
 D2ModeTypeTxt* __stdcall DATATBLS_GetPlrModeTypeTxtRecord(int,int); // 0x0065B480
 D2ModeTypeTxt* __stdcall DATATBLS_GetMonModeTxtRecord(int,int); // 0x0065B500
 D2ModeTypeTxt* __stdcall DATATBLS_GetObjModeTypeTxtRecord(int,int); // 0x0065B570
-int __fastcall MONSTERREGION_CheckMonStats2Flag(int,int); // 0x004638A0
 
 // 0x0064F020
 int __stdcall COMPOSIT_GetWeaponClassIdFromCode(int nWeaponClassCode)
@@ -182,7 +178,7 @@ static __forceinline void COMPOSIT_FormatPathInto(char* path,unsigned int classC
  m[1]=TOKEN_CHAR(((char*)&modeCode)[1]);
  m[2]=TOKEN_CHAR(((char*)&modeCode)[2]);
  m[3]=0;
- if(full)wsprintfA(path,gFormatPath_006D6C94,prefix,c,c,m,w);else wsprintfA(path,gszCofTokenFormat,c,m,w);
+ if(full)wsprintfA(path,gszCofPathFormat,prefix,c,c,m,w);else wsprintfA(path,gszCofTokenFormat,c,m,w);
 }
 
 // 0x0064F5B0
@@ -198,7 +194,7 @@ void __stdcall D2Common_10884_COMPOSIT_unk(D2UnitStrc* unit,int cls,int mode,int
   if(determine){if(mode && mode!=17){int weaponId;*weapon=COMPOSIT_GetWeaponClassCode(unit,0,cls,mode,inv,&weaponId);}else *weapon=0x20687468;}
   for(unsigned int i=0;i<gnCompositPlayerModeCount;++i)if(mode==gaCompositPlayerModes[i].nWeaponClassId)modeCode=gaCompositPlayerModes[i].code;
   if(mode==11 && *weapon!=0x20736831 && *weapon!=0x20746831 && *weapon!=0x20736A31 && *weapon!=0x20746A31 && *weapon!=0x20737331 && *weapon!=0x20747331)*weapon=0x20687468;
-  COMPOSIT_FormatPathInto(path,clsCode,modeCode,weapon,gChars_006DCC34,full,w,c,m);return;
+  COMPOSIT_FormatPathInto(path,clsCode,modeCode,weapon,gszCharsDir,full,w,c,m);return;
  }
  case 1:{
   char w[4],c[4],m[4];
@@ -208,7 +204,7 @@ void __stdcall D2Common_10884_COMPOSIT_unk(D2UnitStrc* unit,int cls,int mode,int
   if(mode && mode!=12){int weaponId;*weapon=COMPOSIT_GetWeaponClassCode(unit,1,cls,mode,inv,&weaponId);}
   else{if(MONSTERREGION_CheckMonStats2Flag(cls,16)){int weaponId;*weapon=COMPOSIT_GetWeaponClassCode(unit,1,cls,mode,inv,&weaponId);}else *weapon=0x20687468;}
   for(unsigned int i=0;i<gnCompositMonsterModeCount;++i)if(mode==gaCompositMonsterModes[i].nWeaponClassId)modeCode=gaCompositMonsterModes[i].code;
-  COMPOSIT_FormatPathInto(path,clsCode,modeCode,weapon,gMonsters_006D6CAC,full,w,c,m);return;
+  COMPOSIT_FormatPathInto(path,clsCode,modeCode,weapon,gszMonstersDir,full,w,c,m);return;
  }
  case 2:
   clsCode=DATATBLS_GetObjModeTypeTxtRecord(cls,0)->token;
@@ -218,11 +214,11 @@ void __stdcall D2Common_10884_COMPOSIT_unk(D2UnitStrc* unit,int cls,int mode,int
  default:
   return;
  }
- COMPOSIT_FormatPathInto(path,clsCode,modeCode,weapon,gObjects_006E3628,full,wo,co,mo);
+ COMPOSIT_FormatPathInto(path,clsCode,modeCode,weapon,gszObjectsDir,full,wo,co,mo);
 }
 
 // 0x0064FA00
-void __stdcall D2Common_10885_COMPOSIT_unk(D2UnitStrc* hUnit, char* szPath, int* pWeaponClassCode, int bAddPathPrefix, int a5, D2InventoryStrc* pInventory, int nAnimMode)
+void __stdcall D2Common_10885_COMPOSIT_unk(D2UnitStrc* hUnit, char* szPath, int* pWeaponClassCode, int bAddPathPrefix, int determine, D2InventoryStrc* pInventory, int nAnimMode)
 {
     int nClass;
     int nType;
@@ -241,7 +237,7 @@ void __stdcall D2Common_10885_COMPOSIT_unk(D2UnitStrc* hUnit, char* szPath, int*
         nAnimMode = nMode;
     }
 
-    D2Common_10884_COMPOSIT_unk(hUnit, nClass, nAnimMode, nType, pInventory, szPath, pWeaponClassCode, bAddPathPrefix, a5);
+    D2Common_10884_COMPOSIT_unk(hUnit, nClass, nAnimMode, nType, pInventory, szPath, pWeaponClassCode, bAddPathPrefix, determine);
 }
 
 #pragma pack(push, 1)
@@ -265,10 +261,9 @@ struct d2data_007458C4_t
 };
 #pragma pack(pop)
 
-extern "C" const D2CompositStrc gData_006EB748[13]; // 0x006EB748
 extern "C" struct d2data_007458C4_t gData_007458C4; // 0x007458C4
 
-extern "C" const D2CompositStrc gData_006EB748[13] = {
+extern const D2CompositStrc gaWeaponClassCodeTable[13] = {
     { 544434225, 2 },
     { 544499761, 3 },
     { 544698210, 1 },
@@ -283,7 +278,6 @@ extern "C" const D2CompositStrc gData_006EB748[13] = {
     { 540111976, 12 },
     { 540177512, 13 }
 }; // 0x006EB748
-#pragma comment(linker, "/alternatename:?gaWeaponClassCodeTable@@3QBUD2CompositStrc@@B=_gData_006EB748")
 
 extern "C" struct d2data_007458C4_t gData_007458C4 = {
     (const void*)"English",

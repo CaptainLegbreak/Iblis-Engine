@@ -10,16 +10,14 @@
 #include "D2WinControls.h"
 
 #include "D2Unicode.h"
+#include "FogApi.h"
+#include "D2GfxApi.h"
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
-void __stdcall D2GFX_DrawBox(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, int eDrawMode); // 0x004F6300
-
-int __stdcall D2Win_10125();                                                                                // 0x00501A40
 
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered);          // 0x00502320
 
@@ -62,7 +60,6 @@ enum D2ControlTypes
     D2WIN_IMAGE2 = 13,
 };
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
 
 extern "C" int __cdecl strcmp(const char* szString1, const char* szString2);
 
@@ -87,7 +84,7 @@ int __fastcall ACCOUNTLIST_GetTextFromSelectedEntry(D2WinAccountListStrc* ptList
     return 0;
 }
 
-tagPOINT gtMousePosition; // 0x007D55A4
+extern tagPOINT gtMousePosition; // 0x007D55A4
 struct Point { int x, y; };
 
 // 0x00507A10
@@ -233,14 +230,14 @@ void __fastcall ACCOUNTLIST_AllocData(D2WinAccountListStrc* ptListData, const ch
 }
 
 // 0x00507CA0
-D2WinAccountListStrc* __fastcall ACCOUNTLIST_Create(int nX, int nY, int nWidth, int nHeight, int a5, D2WinAccountListFontStrc* pFont)
+D2WinAccountListStrc* __fastcall ACCOUNTLIST_Create(int nX, int nY, int nWidth, int nHeight, int nField4C, D2WinAccountListFontStrc* pFont)
 {
     D2WinAccountListStrc* pAccountList = (D2WinAccountListStrc*)FOG_Alloc(sizeof(D2WinAccountListStrc), ".\\Src\\D2WinAccountList.cpp", 0x24, 0);
     memset(pAccountList, 0, sizeof(D2WinAccountListStrc));
     pAccountList->controlHeader.eType = D2WIN_ACCOUNTLIST;
     pAccountList->controlHeader.dwFlags |= gdwBitMasks[0];
     pAccountList->controlHeader.dwFlags |= gdwBitMasks[2];
-    pAccountList->unk0x4C = a5;
+    pAccountList->unk0x4C = nField4C;
     pAccountList->controlHeader.nImageX = nX;
     pAccountList->controlHeader.nImageY = nY;
     pAccountList->controlHeader.nWidth = nWidth;

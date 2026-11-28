@@ -2,10 +2,12 @@
 #include "D2DrlgPresets.h"
 #include "D2DrlgRooms.h"
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2Structs.h"
 #include "D2Path.h"
 #include "D2Drlg.h"
 #include "D2DrlgMaps.h"
+#include "FogApi.h"
 
 struct D2CoordStrc;
 
@@ -79,31 +81,22 @@ struct D2Act5LevelPresetStrc
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
-int __fastcall DRLGGRID_GetGridEntry(D2DrlgGridStrc* pGrid, int nX, int nY); // 0x0067C570
 
-void __fastcall DRLGGRID_AlterGridFlag(D2DrlgGridStrc* pGrid, int nX, int nY, int nFlag, int eOperation); // 0x0067C4F0
-
-void __fastcall DRLGVER_GetCoordDiff(D2DrlgVertexStrc* pVertex, int* pDirectionX, int* pDirectionY); // 0x0067D280
 
 D2LvlPrestRecordStrc* __stdcall sub_0061F0B0(int nPresetId); // 0x0061F0B0
 
-void __fastcall DRLGOUTDOORS_SpawnOutdoorLevelPresetEx(D2DrlgLevelStrc* pLevel, int nX, int nY, int nPresetId, int nDirection, int a6); // 0x006743C0
 
-int __fastcall DRLGOUTDOORS_SpawnOutdoorLevelPreset(D2DrlgLevelStrc* pLevel, int nPresetId, int nArg, int a4, int a5); // 0x00674730
+int __fastcall DRLGOUTDOORS_SpawnOutdoorLevelPreset(D2DrlgLevelStrc* pLevel, int nPresetId, int nArg, int nOffset, int nFlags); // 0x00674730
 
-void __fastcall DRLGOUTPLACE_SetOutGridLinkFlags(D2DrlgLevelStrc* pLevel); // 0x00675770
 
-void __fastcall sub_00670750(D2DrlgOutPlaceCtxStrc* pCtx); // 0x00670750
+void __fastcall DRLGTILESUB_ApplySubstitutionBorder(D2DrlgOutPlaceCtxStrc* pCtx); // 0x00670750
 
-unsigned int __fastcall DRLGOUTDOORS_TestGridCellNonLvlLink(D2DrlgLevelStrc* pLevel, int nX, int nY); // 0x006741E0
 
 int __fastcall DRLGOUTDOORS_GetPresetIndexFromGridCell(D2DrlgLevelStrc* pLevel, int nX, int nY); // 0x00674120
 
@@ -123,10 +116,6 @@ int __fastcall DRLGOUTDOORS_GetPresetIndexFromGridCell(D2DrlgLevelStrc* pLevel, 
 
 struct D2LvlPrestTxt;
 
-D2LvlPrestTxt* __stdcall DATATBLS_GetLvlPrestTxtRecord(int nId); // 0x0061F0B0
-
-void __fastcall sub_006743C0(D2DrlgLevelStrc* pLevel, int nX, int nY, int nPresetId, int nDirection, int a6);
-
 int __fastcall DRLGOUTDOORS_SpawnOutdoorLevelPreset(D2DrlgLevelStrc* pLevel, int nLevelPrestId, int nRand, int nOffset, char nFlags); // 0x00674730
 
 int __fastcall sub_006741E0(D2DrlgLevelStrc* pLevel, int nX, int nY);
@@ -139,7 +128,6 @@ void __stdcall DRLGOUTSIEGE_PlaceBarricadeEntrancesAndExits(D2DrlgLevelStrc* pLe
 
 void DRLGOUTSIEGE_MarkBottomRightLvlLinkCells(D2DrlgLevelStrc* pLevel);
 
-int __fastcall DRLGOUTSIEGE_GetBorderLookupId(D2DrlgLevelStrc* pLevel);
 
 int __fastcall DRLGOUTSIEGE_GetSecondaryBorderPresetId(D2DrlgLevelStrc* pLevel, int nType, int nIndex);
 
@@ -160,7 +148,6 @@ struct D2DrlgOutSiegeInitStrc
 
 extern const D2DrlgOutSiegeInitStrc gaOutSiegeCaves[3]; // 0x006F1F9C
 
-void __fastcall DRLGOUTPLACE_SetOutGridLinkFlags(D2DrlgLevelStrc* pLevel); // 0x00675770
 
 void __stdcall DRLGOUTSIEGE_PlaceSpecialPresets(D2DrlgLevelStrc* pLevel); // 0x0067E160
 
@@ -170,7 +157,6 @@ int DRLGACT5_ReplaceTransitionPreset(D2DrlgLevelStrc* pLevel, int nX, int nY);
 
 void __stdcall DRLGOUTSIEGE_PlaceSiegeToTownPresets(D2DrlgLevelStrc* pLevel);
 
-void __fastcall DRLGOUTSIEGE_InitAct5OutdoorLevel(D2DrlgLevelStrc* pLevel);
 
 static void DRLGOUTSIEGE_AddAct5SecondaryBorder(D2DrlgLevelStrc* pLevel);
 
@@ -180,9 +166,7 @@ static void DRLGOUTSIEGE_ConnectBarricadeAndSiege(D2DrlgLevelStrc* pLevel);
 
 extern const D2CoordStrc gaAct5WallSteps[12]; // 0x006F1FD8
 
-void __fastcall DRLGOUTDOORS_AddAct124SecondaryBorder(D2DrlgLevelStrc* pLevel, int nIndex, int nPresetId);                     // 0x006752A0
 
-void __fastcall DRLGOUTPLACE_PlaceAct1245OutdoorBorders(D2DrlgLevelStrc* pLevel);                                                  // 0x00675850
 
 static const int gAct4SecondPresetBase[3] = { 828, 832, 832 }; // 0x006F22A4
 
@@ -474,7 +458,7 @@ static void DRLGOUTSIEGE_AddAct5SecondaryBorder(D2DrlgLevelStrc* pLevel)
     tCtx.pfnGetPreset = DRLGOUTSIEGE_GetSecondaryBorderPresetId;
     tCtx.n14 = -1;
     tCtx.n18 = 12;
-    sub_00670750(&tCtx);
+    DRLGTILESUB_ApplySubstitutionBorder(&tCtx);
 }
 
 static const D2Act5LevelPresetStrc gAct5LevelPresets[15] = // 0x006F2100
@@ -542,11 +526,6 @@ static inline int DRLGOUTSIEGE_PlacePrisonAtCell(D2DrlgLevelStrc* pLevel, int nX
     return 0;
 }
 
-int __fastcall sub_M119_Emit_0067E210(D2DrlgLevelStrc* pLevel, int nX, int nY)
-{
-    return DRLGOUTSIEGE_PlacePrisonAtCell(pLevel, nY, nX);
-}
-
 static inline unsigned int SEED_RollRandomNumber_Inline(D2SeedStrc* pSeed)
 {
     unsigned __int64 lSeed = pSeed->nHighSeed + 0x6AC690C5i64 * pSeed->nLowSeed;
@@ -605,12 +584,6 @@ static void DRLGOUTSIEGE_PlacePrisons(D2DrlgLevelStrc* pLevel)
         FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 601);
         exit(-1);
     }
-}
-
-void __fastcall sub_Emit_0067E240(D2DrlgLevelStrc* pLevel)
-{
-    DRLGOUTSIEGE_PlacePrisons(pLevel);
-    DRLGOUTSIEGE_PlacePrisons(pLevel);
 }
 
 static int DRLGACT5_ReplaceTransitionPreset(D2DrlgLevelStrc* pLevel, int nX, int nY)
@@ -727,7 +700,7 @@ static const int gAct4Level108Presets[25] = // 0x006F22C0
 };
 
 // 0x0067E660
-static void sub_0067E660(D2DrlgLevelStrc* pLevel)
+static void sub_0067E660_SpawnEdgePresets(D2DrlgLevelStrc* pLevel)
 {
     D2DrlgOutdoorInfoStrc* pInfo = pLevel->pOutdoors;
     if (pInfo->dwFlags & 0x400000)
@@ -741,7 +714,7 @@ static void sub_0067E660(D2DrlgLevelStrc* pLevel)
 }
 
 // 0x0067E6A0
-static void sub_0067E6A0(D2DrlgLevelStrc* pLevel)
+static void sub_0067E6A0_SpawnAct4Presets(D2DrlgLevelStrc* pLevel)
 {
     if (pLevel->eLevelId == LEVEL_CITYOFTHEDAMNED)
     {
@@ -781,7 +754,7 @@ static void sub_0067E6A0(D2DrlgLevelStrc* pLevel)
 }
 
 // 0x0067E840
-static void sub_0067E840(D2DrlgLevelStrc* pLevel)
+static void sub_0067E840_SpawnSanctumPresets(D2DrlgLevelStrc* pLevel)
 {
     for (int i = 0; i < 25; ++i)
     {
@@ -790,7 +763,7 @@ static void sub_0067E840(D2DrlgLevelStrc* pLevel)
 }
 
 // 0x0067E890
-void __fastcall sub_0067E890(D2DrlgLevelStrc* pLevel)
+void __fastcall DRLGOUTDOORS_InitAct4OutdoorLevel(D2DrlgLevelStrc* pLevel)
 {
     if (pLevel->eLevelId == LEVEL_CHAOSSANCTUM)
     {
@@ -807,15 +780,15 @@ void __fastcall sub_0067E890(D2DrlgLevelStrc* pLevel)
     case 104:
     case 105:
     case 106:
-        sub_0067E660(pLevel);
+        sub_0067E660_SpawnEdgePresets(pLevel);
         DRLGOUTDOORS_AddAct124SecondaryBorder(pLevel, 1, 0x31F);
         DRLGOUTDOORS_AddAct124SecondaryBorder(pLevel, 2, 0x31F);
         DRLGOUTDOORS_AddAct124SecondaryBorder(pLevel, 3, 0x31F);
-        sub_0067E6A0(pLevel);
+        sub_0067E6A0_SpawnAct4Presets(pLevel);
         break;
 
     case 108:
-        sub_0067E840(pLevel);
+        sub_0067E840_SpawnSanctumPresets(pLevel);
         break;
     }
 }
@@ -848,16 +821,14 @@ struct d2data_00749C3C_t
 };
 #pragma pack(pop)
 
-extern "C" const D2DrlgOutSiegeInitStrc gData_006F1F9C[3]; // 0x006F1F9C
 extern "C" const struct d2data_006F1FD8_t gData_006F1FD8; // 0x006F1FD8
 extern "C" struct d2data_00749C3C_t gData_00749C3C; // 0x00749C3C
 
-extern "C" const D2DrlgOutSiegeInitStrc gData_006F1F9C[3] = {
+extern const D2DrlgOutSiegeInitStrc gaOutSiegeCaves[3] = {
     { 112, 0, 0, 913, 914 },
     { 117, 0, 1, 983, 984 },
     { 117, 0, 0, 985, 986 }
 }; // 0x006F1F9C
-#pragma comment(linker, "/alternatename:?gaOutSiegeCaves@@3QBUD2DrlgOutSiegeInitStrc@@B=_gData_006F1F9C")
 
 extern "C" const struct d2data_006F1FD8_t gData_006F1FD8 = {
     {

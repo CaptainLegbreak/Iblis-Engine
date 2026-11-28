@@ -52,32 +52,32 @@ extern "C" __declspec(dllimport) void* __stdcall OpenThread(unsigned long dwDesi
 extern "C" char* __cdecl _fullpath(char* szAbsPath, const char* szRelPath, unsigned int nMaxLength); // 0x006867F7
 extern "C" char* __cdecl strpbrk(const char* szString, const char* szCharSet); // 0x00686990
 extern "C" char* __cdecl strrchr(const char* szString, int nChar); // 0x00682990
-extern "C" const char gszAdvapi32_006CCA1C[]; // 0x006CCA1C
+extern "C" const char gszAdvapi32[]; // 0x006CCA1C
 extern "C" const char gszBackslash_006FF9B8[]; // 0x006FF9B8
-extern "C" const char gszBlockTableKey_006CF1C8[]; // 0x006CF1C8
-extern "C" const char gszCryptAcquireContextA_006CF174[]; // 0x006CF174
-extern "C" const char gszCryptContainer_006CF0A8[]; // 0x006CF0A8
-extern "C" const char gszCryptCreateHash_006CF164[]; // 0x006CF164
-extern "C" const char gszCryptDestroyHash_006CF150[]; // 0x006CF150
-extern "C" const char gszCryptDestroyKey_006CF140[]; // 0x006CF140
-extern "C" const char gszCryptHashData_006CF130[]; // 0x006CF130
-extern "C" const char gszCryptImportKey_006CF120[]; // 0x006CF120
-extern "C" const char gszCryptProvider_006CF0B8[]; // 0x006CF0B8
-extern "C" const char gszCryptReleaseContext_006CF10C[]; // 0x006CF10C
-extern "C" const char gszCryptSignHashA_006CF0FC[]; // 0x006CF0FC
-extern "C" const char gszCryptVerifySignatureA_006CF0E4[]; // 0x006CF0E4
+extern "C" const char gszBlockTableKey[]; // 0x006CF1C8
+extern "C" const char gszCryptAcquireContextA[]; // 0x006CF174
+extern "C" const char gszCryptContainer[]; // 0x006CF0A8
+extern "C" const char gszCryptCreateHash[]; // 0x006CF164
+extern "C" const char gszCryptDestroyHash[]; // 0x006CF150
+extern "C" const char gszCryptDestroyKey[]; // 0x006CF140
+extern "C" const char gszCryptHashData[]; // 0x006CF130
+extern "C" const char gszCryptImportKey[]; // 0x006CF120
+extern "C" const char gszCryptProvider[]; // 0x006CF0B8
+extern "C" const char gszCryptReleaseContext[]; // 0x006CF10C
+extern "C" const char gszCryptSignHashA[]; // 0x006CF0FC
+extern "C" const char gszCryptVerifySignatureA[]; // 0x006CF0E4
 extern "C" const char gszDelete_006CC824[]; // 0x006CC824
-extern "C" const char gszDot_006CCAD8[]; // 0x006CCAD8
-extern "C" const char gszDriveRoot_006CF09C[]; // 0x006CF09C
-extern "C" const char gszHashTableKey_006CF1D8[]; // 0x006CF1D8
-extern "C" const char gszKeyResourceType_006CF0A0[]; // 0x006CF0A0
+extern "C" const char gszDot[]; // 0x006CCAD8
+extern "C" const char gszDriveRoot[]; // 0x006CF09C
+extern "C" const char gszHashTableKey[]; // 0x006CF1D8
+extern "C" const char gszKeyResourceType[]; // 0x006CF0A0
 extern "C" const char gszNew[]; // 0x006CC82C
-extern "C" const char gszPathJoinFormat_006CE200[]; // 0x006CE200
+extern "C" const char gszPathJoinFormat[]; // 0x006CE200
 extern "C" const char gszSEvtCpp[]; // 0x006D0224
-extern "C" const char gszSLogNewline_006CFF08[]; // 0x006CFF08
-extern "C" const char gszSignatureName_006CF18C[]; // 0x006CF18C
+extern "C" const char gszSLogNewline[]; // 0x006CFF08
+extern "C" const char gszSignatureName[]; // 0x006CF18C
 extern "C" const char gszSpace[]; // 0x006FFC44
-extern "C" const char gszUncPrefix_006CF098[]; // 0x006CF098
+extern "C" const char gszUncPrefix[]; // 0x006CF098
 extern "C" int __cdecl _snprintf_s(char* szBuffer, unsigned int nSizeOfBuffer, unsigned int nCount, const char* szFormat, ...); // 0x006824CB
 extern "C" int __cdecl _strnicmp(const char* szString1, const char* szString2, unsigned int nCount); // 0x00686040
 extern "C" int __cdecl atexit(void (__cdecl* callback)()); // 0x00683824
@@ -86,23 +86,23 @@ extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x00
 extern "C" int __cdecl toupper(int nChar); // 0x00685385
 extern "C" int __stdcall Module32FirstW(void* hSnapshot, D2ModuleEntry32Strc* pEntry); // 0x006B15AE
 extern "C" int __stdcall Module32NextW(void* hSnapshot, D2ModuleEntry32Strc* pEntry); // 0x006B15B4
-extern "C" int gnFlag_007788DC; // 0x007788DC
+extern "C" int gfSStrInitialized; // 0x007788DC
 extern "C" void* __cdecl memmove(void* pDst, const void* pSrc, unsigned int nSize); // 0x00683840
 extern "C" void* __stdcall CreateToolhelp32Snapshot(unsigned long dwFlags, unsigned long dwProcessId); // 0x006B1446
 extern bool gbSymInitialized; // 0x0098A6B0
-extern char gszTypeNameChar_0070888C[]; // 0x0070888C
-extern char gszTypeNameUChar_00708880[]; // 0x00708880
-extern char gszTypeNameUInt_00708874[]; // 0x00708874
+extern char gszTypeNameChar[]; // 0x0070888C
+extern char gszTypeNameUChar[]; // 0x00708880
+extern char gszTypeNameUInt[]; // 0x00708874
 extern const char gszEmptyString[]; // 0x006CC837
 extern const char gszSBmpSource[]; // 0x006FCC58
-extern const char gszTypeBreakCmd_007088D8[]; // 0x007088D8
+extern const char gszBREAKCMDTypeName[]; // 0x007088D8
 extern const char* const z_errmsg[10]; // 0x006D3848
 extern const int gaADPCMIndexTable_006CFCB8[]; // 0x006CFCB8
 extern const int gaADPCMStepTable_006CFD38[]; // 0x006CFD38
-extern const unsigned char gCharacterClass_0074C5C8[]; // 0x0074C5C8
+extern const unsigned char gCharacterClass[]; // 0x0074C5C8
 extern const unsigned long crc_table[8][256]; // 0x006D17C8
-extern const unsigned short gWideTable_006FCFC0[]; // 0x006FCFC0
-extern const unsigned short gWideTable_006FD1C0[]; // 0x006FD1C0
+extern const unsigned short gawTranslateTable[]; // 0x006FCFC0
+extern const unsigned short gawDosTranslateTable[]; // 0x006FD1C0
 extern const unsigned short gawTranslateTable_006FCFC0[]; // 0x006FCFC0
 extern int gbAlignReads_007790A4; // 0x007790A4
 extern int gbRenderPaused; // 0x007C9144
@@ -113,24 +113,21 @@ extern int gnRenderWidth; // 0x007C9138
 extern int gnValueA_0070834C; // 0x0070834C
 extern int gnValue_00708350; // 0x00708350
 extern long gnErrorLockUsers_0070841C; // 0x0070841C
-extern unsigned char gCriticalSection_0096D610[]; // 0x0096D610
+extern unsigned char gLevelFilesCriticalSection[]; // 0x0096D610
 extern unsigned char gnPlatform_0077905E; // 0x0077905E
 extern unsigned int gdwBitMasks_006CE268[]; // 0x006CE268
-extern unsigned int gdwSStrScanWord_007788D8; // 0x007788D8
+extern unsigned int gdwSStrScanWord; // 0x007788D8
 extern unsigned int gnReadRate_0077904C; // 0x0077904C
 extern unsigned int gnReadUnit_00708348; // 0x00708348
 extern unsigned int gnRenderFlags_0096F3A8; // 0x0096F3A8
 extern unsigned short gwLocale_0077905C; // 0x0077905C
 extern void* ghDbgHelp; // 0x0098A680
 extern void* ghProcess; // 0x0074C6F0
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 int __fastcall deflate(z_stream* strm, int flush); // 0x00428C60
-int __fastcall FOG_CreatePathHierarchy(const char* szPath); // 0x00406A10
 int __stdcall GetCmdIndex(const char* s); // 0x00405570
 unsigned long __stdcall SFileSetFilePointer(void* hFile, long lDistanceToMove, long* plDistanceToMoveHigh, unsigned long dwMoveMethod); // 0x004165A0
 void __stdcall SErrSetLastError(unsigned int); // 0x0041C340
-void __stdcall sub_0041D300_ZeroMemory(void* pDest, unsigned int nSize); // 0x0041D300
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
+void __stdcall SMemZero(void* pDest, unsigned int nSize); // 0x0041D300
 
 // build: symbol ?FOG_DisplayHalt@* 0x00408A60
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }

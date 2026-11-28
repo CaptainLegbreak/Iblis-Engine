@@ -9,6 +9,9 @@
 #include "D2WinTypes.h"
 
 #include "D2WinControls.h"
+#include "FogApi.h"
+#include "D2LangApi.h"
+#include "D2SoundApi.h"
 
 enum D2ControlTypes
 {
@@ -21,7 +24,6 @@ enum D2ControlTypes
 
 #define DRAWMODE_NORMAL 5
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
@@ -35,15 +37,13 @@ extern tagPOINT gtMousePosition;                                                
 
 int __fastcall D2Win_10127_SetFont(int nArg);                                                                      // 0x00502EF0
 
-int __stdcall D2Win_10125();                                                                                // 0x00501A40
 
 int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
 void __fastcall D2Win_10118_DrawBlendedText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered, int eDrawMode); // 0x00502360
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 static int BUTTON_IsPointInside(D2WinButtonStrc* pButton, int nX, int nY); // 0x00500C20
 
@@ -60,8 +60,6 @@ int __stdcall BUTTON_HandleMouseDown(SMSGHANDLER_PARAMS* pMsg);                 
 int __stdcall BUTTON_HandleMouseUp(SMSGHANDLER_PARAMS* pMsg);                                               // 0x00501150
 
 int __stdcall BUTTON_HandleVirtualKeyInput(SMSGHANDLER_PARAMS* pMsg);                                       // 0x005011F0
-
-void __fastcall D2SOUND_10039(const char* szFile);                                                          // 0x00514EC0
 
 int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl);                                           // 0x004F9310
 
@@ -80,6 +78,7 @@ extern "C" void __fastcall BUTTON_SetBaseFrame(D2WinButtonStrc* ptBtnData, int n
     ptBtnData->nBaseFrame = nValue;
 }
 
+// Kept noinline: a static that takes its arguments in registers; BUTTON_Draw (0x500DB0) calls it out of line in the image (the #368 case).
 // 0x00500C20
 static __declspec(noinline) int BUTTON_IsPointInside(D2WinButtonStrc* pButton, int nX, int nY)
 {
@@ -189,9 +188,9 @@ int __fastcall BUTTON_Draw(D2WinButtonStrc* pButton)
         const int nRows = ((pButton->controlHeader.nHeight + 0xFF) >> 8) - 1;
         const int nColumns = (pButton->controlHeader.nWidth + 0xFF) >> 8;
 
-        D2CelContextStrc tContext;
+        D2GfxDataStrc tContext;
         memset(&tContext, 0, sizeof(tContext));
-        tContext.pCellFile = pButton->controlHeader.pCellFile;
+        tContext.pCelFile = pButton->controlHeader.pCellFile;
         tContext.nDirection = 0;
 
         for (int i = 0; i < nRows; ++i)
@@ -263,9 +262,9 @@ int __fastcall BUTTON_Draw(D2WinButtonStrc* pButton)
         SMSGHANDLER_PARAMS tMsg;
         tMsg.hWnd = pButton;
         tMsg.lParam = pButton->isButtonHovered;
-        ++gnWinCallbackDepth_007D55C4;
+        ++gnWinCallbackDepth;
         pButton->pfUpdateHoverState(&tMsg);
-        --gnWinCallbackDepth_007D55C4;
+        --gnWinCallbackDepth;
     }
 
     return 1;
@@ -337,9 +336,9 @@ int __fastcall BUTTON_OnMouseWheelScrolled(D2WinButtonStrc* ptBtnData, int nMous
 
     if (ptBtnData->controlHeader.field_34)
     {
-        ++gnWinCallbackDepth_007D55C4;
+        ++gnWinCallbackDepth;
         ptBtnData->controlHeader.field_34(&msg);
-        --gnWinCallbackDepth_007D55C4;
+        --gnWinCallbackDepth;
     }
 
     return 0;
@@ -365,9 +364,9 @@ void __fastcall BUTTON_SimulateClick(SMSGHANDLER_PARAMS* pMsg)
         {
             SMSGHANDLER_PARAMS tMsg;
             tMsg.hWnd = pMsg->hWnd;
-            ++gnWinCallbackDepth_007D55C4;
+            ++gnWinCallbackDepth;
             ptBtnData->controlHeader.pfHandleMouseUp(&tMsg);
-            --gnWinCallbackDepth_007D55C4;
+            --gnWinCallbackDepth;
         }
     }
 }
@@ -430,7 +429,7 @@ int __stdcall BUTTON_HandleMouseDown(SMSGHANDLER_PARAMS* pMsg)
         D2SOUND_10039("data\\global\\sfx\\cursor\\button.wav");
     if ((pButton->dwButtonFlags & 3) && pButton->controlHeader.field_34)
     {
-        D2_ASSERT(gnWinCallbackDepth_007D55C4 > 0, 0x221);
+        D2_ASSERT(gnWinCallbackDepth > 0, 0x221);
         pButton->controlHeader.field_34(pMsg);
     }
     return 1;
@@ -453,7 +452,7 @@ int __stdcall BUTTON_HandleMouseUp(SMSGHANDLER_PARAMS* pMsg)
         pButton->bIsPressed = 0;
         if (pButton->bIsCallbackPending && pButton->controlHeader.field_34)
         {
-            D2_ASSERT(gnWinCallbackDepth_007D55C4 > 0, 0x243);
+            D2_ASSERT(gnWinCallbackDepth > 0, 0x243);
             nResult = pButton->controlHeader.field_34(pMsg);
         }
         pButton->bIsCallbackPending = 0;
@@ -471,15 +470,15 @@ int __stdcall BUTTON_HandleVirtualKeyInput(SMSGHANDLER_PARAMS* pMsg)
     if (pMsg->uMessage != 0x102 && pButton->nActivationVirtualKey == pMsg->wParam && pButton->controlHeader.pfHandleMouseDown)
     {
         pButton->nActivationCounter = 1;
-        D2_ASSERT(gnWinCallbackDepth_007D55C4 > 0, 0x263);
+        D2_ASSERT(gnWinCallbackDepth > 0, 0x263);
         nResult = pButton->controlHeader.pfHandleMouseDown(pMsg);
         if (pButton->controlHeader.pfHandleMouseUp)
         {
             SMSGHANDLER_PARAMS msg;
             msg.hWnd = pMsg->hWnd;
-            ++gnWinCallbackDepth_007D55C4;
+            ++gnWinCallbackDepth;
             pButton->controlHeader.pfHandleMouseUp(&msg);
-            --gnWinCallbackDepth_007D55C4;
+            --gnWinCallbackDepth;
         }
     }
     return nResult;

@@ -1,6 +1,7 @@
 #include "D2Direct3D.h"
 #include "D2DDrawTypes.h"
 #include "D2D3DTypes.h"
+#include "FogApi.h"
 
 #define ASSERT(expr,line) if (!(expr)) { FOG_DisplayHalt(gszEmptyString,sub_00408090(),line); exit(-1); }
 #define MIN(a,b) ((a)<(b)?(a):(b))
@@ -52,8 +53,6 @@ extern "C" __declspec(dllimport) int __stdcall GetCharWidthA(void* hDC, unsigned
 extern "C" __declspec(dllimport) int __stdcall DeleteObject(void* hObject);
 extern "C" __declspec(dllimport) int __stdcall DeleteDC(void* hDC);
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 extern unsigned long gdwFontTextColor; // 0x0074C0CC
@@ -85,9 +84,6 @@ struct D2Device006B77B0Strc
 {
     D2DeviceVtbl006B77B0Strc* lpVtbl;
 };
-void __fastcall D3DCORE_SetColorCombineMode(int nState); // 0x006B1EA0
-void __fastcall D3DCORE_SetAlphaBlendMode(int nBlend); // 0x006B1F40
-void __fastcall D3DCORE_SetTextureFilterMode(int nMode); // 0x006B2030
 
 void __fastcall sub_006B7B30_DrawLine(int x1,int y1,int x2,int y2,unsigned char index,unsigned char alpha); // 0x006B7B30
 extern const char gszEmptyString[]; // 0x006CC837
@@ -110,7 +106,7 @@ struct D2Direct3DDevice006B7F70Strc
 {
     D2Direct3DDeviceVtbl006B7F70Strc* lpVtbl;
 };
-extern D2Direct3DDevice006B7F70Strc* gpDevice_00970E7C; // 0x00970E7C
+extern D2Direct3DDevice006B7F70Strc* gpViewport; // 0x00970E7C
 
 struct D2GridVertexStrc { float x,y,unknown08,unknown0C,s,t,unknown18,unknown1C; };
 
@@ -118,7 +114,6 @@ struct D2FixedPointStrc { int x,y,unknown08; };
 
 struct D2FixedShapeStrc { D2FixedPointStrc points[6]; };
 
-extern D2GridVertexStrc gaGridVertices[5][3]; // 0x00971458
 extern int gaFixedShapes[10][6][3]; // 0x0074C100
 
 struct D2ResourceInterface {
@@ -137,8 +132,8 @@ extern unsigned char gbD3DColorRed; // 0x0097173A
 extern unsigned char gbD3DColorGreen; // 0x00971738
 extern unsigned char gbD3DColorBlue; // 0x00971739
 extern unsigned char gabMultiplyTable[][256]; // 0x00971740
-extern int gaScaleTable_00981748[0x2000]; // 0x00981748
-extern int gnScaleTableReady_00989748; // 0x00989748
+extern int ganPerspectiveTable[0x2000]; // 0x00981748
+extern int gnPerspectiveScale; // 0x00989748
 extern int gnD3DOriginX; // 0x00981740
 extern int gnOriginY; // 0x00981744
 extern int gnPerspective_00981748[]; // 0x00981748
@@ -239,7 +234,7 @@ void __cdecl sub_006B72A0_CreateFontTextures()
     DeleteDC(hDC);
 }
 
-extern unsigned long gdwFontTextColor = 0xFFFFFF; // 0x0074C0CC
+unsigned long gdwFontTextColor = 0xFFFFFF; // 0x0074C0CC
 
 D2SurfaceStrc* gaSurfaces_00971150[96]; // 0x00971150
 
@@ -445,8 +440,12 @@ void __cdecl sub_006B7F70_ClearTarget()
     tRect.y1 = 0;
     tRect.x2 = gnWidth_007C9138;
     tRect.y2 = gnHeight_007C913C;
-    gpDevice_00970E7C->lpVtbl->Clear(gpDevice_00970E7C, 1, &tRect, 1, 0xFF000000, 0.0f, 0);
+    gpViewport->lpVtbl->Clear(gpViewport, 1, &tRect, 1, 0xFF000000, 0.0f, 0);
 }
+
+// The 5 x 3 vertex grid the perspective floor quads are drawn with, then the 4
+// corners of a flat quad.
+D2TLVertexStrc gaPerspectiveVertices[15]; // 0x00971450
 
 D2TLVertexStrc gaQuadVertices[4]; // 0x00971630
 
@@ -464,10 +463,10 @@ void __cdecl sub_006B80A0_InitializeDrawingGeometry()
  for(int row=0;row<5;++row) {
   float t=(float)(row*0.984375*0.25+0.015625);
   for(int column=0;column<3;++column) {
-   gaGridVertices[row][column].x=0.5f;
-   gaGridVertices[row][column].y=1.0f;
-   gaGridVertices[row][column].s=(float)(column*0.984375*0.5+0.015625);
-   gaGridVertices[row][column].t=t;
+   gaPerspectiveVertices[row*3+column].fZ=0.5f;
+   gaPerspectiveVertices[row*3+column].fRhw=1.0f;
+   gaPerspectiveVertices[row*3+column].fU=(float)(column*0.984375*0.5+0.015625);
+   gaPerspectiveVertices[row*3+column].fV=t;
   }
  }
  for(int index=0;index<10;++index) {
@@ -539,9 +538,9 @@ void __cdecl sub_006B97D0_BuildScaleTable()
     {
         const int i = j - 0x1000;
         const int nValue = D2_MIN(D2_MAX(i, -2999), 2999);
-        gaScaleTable_00981748[j] = 3072000 / (nValue - 3000);
+        ganPerspectiveTable[j] = 3072000 / (nValue - 3000);
     }
-    gnScaleTableReady_00989748 = 256;
+    gnPerspectiveScale = 256;
 }
 
 // 0x006B9830
@@ -578,16 +577,11 @@ void __fastcall sub_006B9860_Project(int x, int y, int z, int* outX, int* outY)
 // 0x006B9A00
 void __cdecl sub_006B9A00_ResetScale()
 {
-    gnScaleTableReady_00989748 = 256;
+    gnPerspectiveScale = 256;
 }
 
 struct D2Point006B7F20Strc;
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char*, const char*, int); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int); // 0x00681E09
-void __fastcall D3DCORE_SetColorCombineMode(int state); // 0x006B1EA0
-void __fastcall D3DCORE_SetAlphaBlendMode(int mode); // 0x006B1F40
-void __fastcall D3DCORE_SetTextureFilterMode(int mode); // 0x006B2030
 
 int __fastcall sub_006B77B0_Call(int nLeft, int nTop, int nRight, int nBottom, int nValue, int nMode); // 0x006B77B0
 
@@ -679,9 +673,6 @@ void __fastcall sub_006B7F20_CallSquare(D2Point006B7F20Strc* pPoint, unsigned ch
     }
 }
 
-void __fastcall D3DCORE_SetColorCombineMode(int mode); // 0x006B1EA0
-void __fastcall D3DCORE_SetAlphaBlendMode(int mode); // 0x006B1F40
-void __fastcall D3DCORE_SetTextureFilterMode(int mode); // 0x006B2030
 // 0x006B7B30
 void __fastcall sub_006B7B30_DrawLine(int x1,int y1,int x2,int y2,unsigned char index,unsigned char alpha)
 {

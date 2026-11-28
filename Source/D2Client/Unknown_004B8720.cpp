@@ -1,5 +1,9 @@
+#include "D2LanguageNames.h"
+// build: symbol _gaszLanguageNames 0x007274B0
+
 #include "D2StatIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2ClientGame.h"
 #include "D2Unicode.h"
@@ -7,6 +11,10 @@
 #include "D2StormTypes.h"
 #include "D2ClientSound.h"
 #include "D2HintKeyList.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "D2CommonApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -15,36 +23,25 @@ struct D2HintKeyListStrc;
 struct D2TimedHintNodeStrc;
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
-int __fastcall GAME_GetUIVarState(unsigned int nUIVar); // 0x004538D0
-int __cdecl CUNIT_IsPlayerDeadOrMissing(); // 0x00463DF0
 void __cdecl INV_ClearTradeFlag(); // 0x0048A6F0
-void __fastcall MSG_SendShorts(char nHeader, short nArg1, short nArg2, short nArg3); // 0x00478600
-void __fastcall DIALOG_DestroyDialog(void* pRes); // 0x004B8020
 // build: symbol ?DIALOG_CreateDialog@* 0x004B7EB0
 D2ClientDialogStrc* __fastcall DIALOG_CreateDialog(int nArg1, int nArg2, int (__cdecl* pfnArg8)(),
     int (__cdecl* pfnArgC)(), int nArg10, int nArg14, int nArg18, int nArg1C, int nArg20, int nArg24, int nArg28); // 0x004B7EB0
-void __fastcall sub_004B8370(void* pPanel, int nValue); // 0x004B8370
+void __fastcall ROSTER_SetCtrlState(void* pPanel, int nValue); // 0x004B8370
 // build: symbol ?DIALOG_AddTextLine@* 0x004B85F0
 void __fastcall DIALOG_AddTextLine(void* pPanel, const Unicode* pText, int nArg3, int nArg4, int nArg5, int nArg6,
     int (__cdecl* pfnArg7)(), int nArg8); // 0x004B85F0
-void __fastcall sub_004B82F0_Select(D2ClientDialogStrc* pDialog, int nIndex); // 0x004B82F0
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 int __cdecl sub_004B8A30_OnCancel(); // 0x004B8A30
 int __cdecl sub_004B8A80_OnClose(); // 0x004B8A80
 extern D2ClientDialogStrc* gpTradeWaitDialog; // 0x007C0E6C
 extern unsigned long gdwTradeTimeoutTick; // 0x007C0E70
 extern unsigned long gdwSecondaryTradeGold; // 0x007C0E78
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 int __cdecl sub_004B8BA0_OnClose2(); // 0x004B8BA0
 
 
 int __cdecl DLIGHTMAP_GetSoundTick(); // 0x00481820
-D2SoundsTxt* __fastcall SOUNDHDR_GetSoundRecord(int nId); // 0x00481860
-void __fastcall SOUNDINST_SetValue(int nKey, int nValue); // 0x004B9B50
 extern D2TimedHintNodeStrc* gpClientSoundList; // 0x007C5458
 
 D2ClientDialogStrc* gpTradeRequestDialog; // 0x007C0E64
@@ -67,31 +64,21 @@ void __cdecl INV_ResetStashPanel(); // 0x00489F50
 
 void __fastcall INV_SetTradePanelOpen(int bOpen); // 0x00489360
 
-void __fastcall UNITSND_PlayPlayerSpeech(D2UnitStrc* pUnit, unsigned short nStringId); // 0x004CB9C0
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
-D2UnitStrc* __stdcall INVENTORY_GetCursorItem(D2InventoryStrc* pInventory); // 0x0063C1E0
 
-int __cdecl sub_004B85E0(); // 0x004B85E0
 
 void __fastcall INV_UpdateTradeAcceptSound(int nArg1, int nArg2); // 0x004897E0
 
-int __fastcall UI_GetUIVarUnchecked(int nUIVar); // 0x00453A90
 
 void __cdecl INV_SetTradeFlag(); // 0x0048A6E0
 
 extern "C" void __fastcall sub_00478600_SendPacket(unsigned char command, unsigned short value, unsigned short first, unsigned short second);
 
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
-
 void __fastcall WINMAIN_SetExitApplication(int nValue); // 0x0044B880
 
-void __fastcall GAME_SetCinematicExit(int nValue); // 0x0044C860
 
-void __cdecl GAME_RequestExit(); // 0x0044D520
 
 extern int gnTradePartnerUnitId; // 0x007C0E60
 
@@ -112,30 +99,21 @@ extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, size_t nSize); // 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
 
 
-int __cdecl sub_00468730(); // 0x00468730
 
-int __cdecl sub_00468740(); // 0x00468740
 
 int __cdecl UI_IsGoldPanelOpen(); // 0x004549C0
 
 void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nTextColor, int nAlign); // 0x00502280
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
 
-int __stdcall DUNGEON_IsTownLevelId(int nLevelId); // 0x0061AAF0
 
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
-
-void __cdecl INV_ResetNpcState(); // 0x00487B30
 
 void __fastcall DIALOG_DrawDialog(D2ClientDialogStrc* pDialog); // 0x004B8100
 
-extern int gnPanelOffsetX; // 0x007A2858
 
-extern int gnPanelOffsetY; // 0x007A285C
 
 // 0x004B8720
-void __cdecl sub_004B8720()
+void __cdecl sub_004B8720_ResetTradeState()
 {
     gnTradeState = 0;
     gbGlobal_007C0E74 = 0;
@@ -191,7 +169,7 @@ void __cdecl sub_004B8730_DrawDialogHover()
 
 
 // 0x004B8920
-void __cdecl sub_004B8920()
+void __cdecl sub_004B8920_ClearTradeGold()
 {
     gdwSecondaryTradeGold = 0;
     gdwPrimaryTradeGold = 0;
@@ -223,7 +201,7 @@ void __fastcall sub_004B8940_CloseWait(int bReopen)
     {
         UI_SetUIVar(0x17, 1, 0);
         INV_ClearTradeFlag();
-        sub_00487B30();
+        INV_ResetNpcState();
         if (!CUNIT_IsPlayerDeadOrMissing() && bReopen)
         {
             UI_SetUIVar(1, 2, 0);
@@ -251,7 +229,7 @@ int __cdecl sub_004B8AD0_OpenWait()
     }
 
     gpTradeRequestDialog = DIALOG_CreateDialog(0x140, 0x64, sub_004B8A80_OnClose, sub_004B8A80_OnClose, 0, 1, 1, 0, 0, 0, 1);
-    sub_004B8370(gpTradeRequestDialog, 1);
+    ROSTER_SetCtrlState(gpTradeRequestDialog, 1);
     DIALOG_AddTextLine(gpTradeRequestDialog, D2LANG_GetStringFromTblIndex(0xFCA), 0xF, 0, 0, 1, 0, 0);
     DIALOG_AddTextLine(gpTradeRequestDialog, D2LANG_GetStringFromTblIndex(0xD49), 0xF, 0, 0, 1, sub_004B8A30_OnCancel, 1);
     DIALOG_AddTextLine(gpTradeRequestDialog, D2LANG_GetStringFromTblIndex(0xD48), 0xF, 0, 0, 1, sub_004B8A80_OnClose, 1);
@@ -260,7 +238,7 @@ int __cdecl sub_004B8AD0_OpenWait()
 }
 
 // 0x004B8CB0
-void __cdecl sub_004B8CB0()
+void __cdecl sub_004B8CB0_BeginTradeWait()
 {
     MSG_SendShorts(0x4F, 2, 0, 0);
     if (gnTradeState != 7)
@@ -286,7 +264,7 @@ void __cdecl sub_004B8BF0_OpenWait2()
 {
     D2_ASSERT(!gpTradeWaitDialog, 0x13D);
     gpTradeWaitDialog = DIALOG_CreateDialog(0x140, 0x64, sub_004B8BA0_OnClose2, sub_004B8BA0_OnClose2, 0, 1, 1, 0, 0, 0, 1);
-    sub_004B8370(gpTradeWaitDialog, 1);
+    ROSTER_SetCtrlState(gpTradeWaitDialog, 1);
     DIALOG_AddTextLine(gpTradeWaitDialog, D2LANG_GetStringFromTblIndex(0xFCB), 0xF, 0, 0, 1, 0, 0);
     DIALOG_AddTextLine(gpTradeWaitDialog, D2LANG_GetStringFromTblIndex(0xD48), 0xF, 0, 0, 1, sub_004B8BA0_OnClose2, 1);
     sub_004B82F0_Select(gpTradeWaitDialog, -1);
@@ -379,7 +357,7 @@ void __fastcall sub_004B8CF0_HandleTradePacket(const unsigned char* pPacket)
             {
                 if (!UI_SetUIVar(0x17, 0, 0))
                 {
-                    sub_004B8CB0();
+                    sub_004B8CB0_BeginTradeWait();
                     return;
                 }
 
@@ -393,7 +371,7 @@ void __fastcall sub_004B8CF0_HandleTradePacket(const unsigned char* pPacket)
             return;
         }
 
-        sub_004B8CB0();
+        sub_004B8CB0_BeginTradeWait();
         return;
 
     case 9:
@@ -420,7 +398,7 @@ void __fastcall sub_004B8CF0_HandleTradePacket(const unsigned char* pPacket)
                 return;
             }
 
-            if (sub_004B85E0() || !sub_004B8AD0_OpenWait() || GAME_GetUIVarState(5))
+            if (sub_004B85E0_GetDialogCount() || !sub_004B8AD0_OpenWait() || GAME_GetUIVarState(5))
             {
                 MSG_SendShorts(0x4F, 2, 0, 0);
                 return;
@@ -430,7 +408,7 @@ void __fastcall sub_004B8CF0_HandleTradePacket(const unsigned char* pPacket)
             {
                 if (!UI_SetUIVar(0x17, 0, 0))
                 {
-                    sub_004B8CB0();
+                    sub_004B8CB0_BeginTradeWait();
                     return;
                 }
 
@@ -442,7 +420,7 @@ void __fastcall sub_004B8CF0_HandleTradePacket(const unsigned char* pPacket)
             return;
         }
 
-        sub_004B8CB0();
+        sub_004B8CB0_BeginTradeWait();
         return;
 
     case 2:
@@ -476,7 +454,7 @@ void __fastcall sub_004B8CF0_HandleTradePacket(const unsigned char* pPacket)
             return;
 
         default:
-            sub_004B8CB0();
+            sub_004B8CB0_BeginTradeWait();
             return;
         }
 
@@ -516,7 +494,7 @@ void __fastcall sub_004B8CF0_HandleTradePacket(const unsigned char* pPacket)
             return;
 
         default:
-            sub_004B8CB0();
+            sub_004B8CB0_BeginTradeWait();
             return;
         }
 
@@ -599,7 +577,8 @@ int __cdecl sub_004B9180_PollWait()
     {
         if (gdwTradeTimeoutTick != 0xFFFFFFFF && GetTickCount() > gdwTradeTimeoutTick + 30000)
         {
-            sub_0048A6A0_ClearHover();
+// build: symbol ?INV_ResetNpcCursor@* 0x0048A6A0
+            INV_ResetNpcCursor();
             gnTradeState = 0;
             sub_004B8940_CloseWait(0);
             sub_00477EE0();
@@ -615,7 +594,7 @@ int __cdecl sub_004B9180_PollWait()
 }
 
 // 0x004B91F0
-void __cdecl sub_004B91F0()
+void __cdecl sub_004B91F0_CloseWait()
 {
     sub_004B8940_CloseWait(0);
 }
@@ -632,43 +611,4 @@ void __fastcall TEXT_SetNameFromPacket(D2NamePacketStrc* pPacket)
 
 
 
-#pragma pack(push, 1)
-struct d2data_007274B0_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
 
-extern "C" struct d2data_007274B0_t gData_007274B0; // 0x007274B0
-
-extern "C" struct d2data_007274B0_t gData_007274B0 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x007274B0

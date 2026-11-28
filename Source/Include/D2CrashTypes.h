@@ -2,6 +2,7 @@
 // Crash handler (Fog, Storm): the dbghelp records and lock, the module list of a crash report and memory region info.
 
 #include "D2Check.h"
+#include "CCritSect.h"
 
 struct D2CrashGuidStrc;
 struct D2CrashModuleStrc;
@@ -15,9 +16,6 @@ struct D2SymbolBufferStrc;
 struct D2SymbolInfoStrc;
 struct D2SymbolLockGuardStrc;
 struct D2CriticalSectionStrc;
-
-extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc* pLock);
-extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalSectionStrc* pLock);
 
 // The lock that serialises every dbghelp call.
 // build: symbol ?gtSymbolLock@* 0x0098A6F0

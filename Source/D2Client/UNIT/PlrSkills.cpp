@@ -1,6 +1,7 @@
 #include "D2SkillIds.h"
 #include "D2StatIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
 #include "D2GameTypes.h"
@@ -10,6 +11,9 @@
 #include "D2MonModes.h"
 #include "D2Path.h"
 #include "D2UnitEventArgs.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
+#include "D2CommonApi3.h"
 
 #define UNIT_PLAYER 0
 #define UNIT_MONSTER 1
@@ -36,59 +40,22 @@ struct D2ItemStatCostTxt;
 
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
-D2SkillStrc* __stdcall UNITS_GetUsedSkill(D2UnitStrc* pUnit); // 0x00620250
-int __stdcall SKILLS_GetSkillIdFromSkill(D2SkillStrc* pSkill, const char* szFile, int nLine); // 0x00643CE0
-int __stdcall SKILLS_GetFlags(D2SkillStrc* pSkill); // 0x006446A0
-void __fastcall SKILLSBAR_RotateUnitDirection(D2UnitStrc* pUnit, int nArg, int bForward); // 0x004C9060
 
 
 extern unsigned int gdwBitMasks_006CE268[]; // 0x006CE268
 void __fastcall GFX_ResetGfx(D2UnitStrc* pUnit); // 0x0046F000
-void __fastcall AUTOMAP_RemoveUnitOverlay(D2UnitStrc* pUnit, int nArg, int nValue); // 0x0046F0C0
-void __fastcall GFX_AddUnitOverlay(D2UnitStrc* pUnit, int nOverlay, int nArg3, int nArg4, int nArg5, int nArg6, int nArg7, int nArg8); // 0x00470390
-void __fastcall GFX_RefreshUnitGfx(D2UnitStrc* pUnit, int nArg); // 0x00470610
-void __fastcall UNITMODE_SetUnitMode(D2UnitStrc* pUnit, int nMode); // 0x00480E70
-int __fastcall CUNIT_IsDeadOrDying(D2UnitStrc* pUnit); // 0x00464820
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 void __stdcall PLRSKILLS_UpdateStateColor(D2UnitStrc* pUnit); // 0x004D97F0
 void __fastcall PLRSKILLS_StartStateOverlays(D2UnitStrc* pUnit, int nState); // 0x004D9920
 unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
-void __stdcall UNITS_SetUsedSkill(D2UnitStrc* pUnit, D2SkillStrc* pUsedSkill); // 0x00620210
-int __stdcall UNITS_SetAnimStartFrame(D2UnitStrc* ptUnit); // 0x00624390
-int __stdcall STATLIST_GetState(D2StatListStrc* pStatList); // 0x006252F0
-D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitAndState(D2UnitStrc* pUnit, int nState); // 0x006256B0
-int __stdcall STATLIST_GetStatValue(D2StatListStrc* pStatList, int nStatId, unsigned short nLayer); // 0x00625D00
 void __stdcall STATLIST_SetStat(D2StatListStrc* pStatList, int nStatId, int nValue, unsigned short nLayer); // 0x00627150
-void __stdcall STATLIST_RemoveAllStats(D2StatListStrc* pStatList); // 0x00627340
-void __stdcall D2Common_10474(D2UnitStrc* pUnit, D2StatListStrc* pStatList); // 0x006277E0
-void __stdcall STATES_ToggleState(D2UnitStrc* pUnit, int nState, int bSet); // 0x00639DB0
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
-unsigned int __stdcall DATATBLS_Get1OfNFromOverlayTxt(int nOverlayId); // 0x00664740
-void __stdcall UNITS_StoreOwnerTypeAndGUID(D2UnitStrc* pUnit, int nOwnerType, int nOwnerId); // 0x00621CC0
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
-void __fastcall VIEW_StartTimedBox(int nFadeIn, int nHold, int nFadeOut, int nLevelId, int bForce); // 0x0046AE50
 int __fastcall SPELLSEL_GetSkillMaxLevel(int nSkillId); // 0x004AA8B0
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-D2SkillStrc* __fastcall SKILLS_GetSkillById(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID); // 0x006439B0
-int __stdcall SKILLS_GetSkillLevel(D2UnitStrc* pUnit, D2SkillStrc* pSkill, int bBonus); // 0x006442A0
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646CA0
-void __stdcall SKILLS_AssignSkill(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int bRemove, const char* szFile, int nLine); // 0x00647280
 int __stdcall sub_K06_EmitGettier1(int nValue);
 void __stdcall sub_K06_EmitPuttier1(int nValue, int nOther);
 int __stdcall sub_K06_EmitGettier2(int nValue);
 void __stdcall sub_K06_EmitPuttier2(int nValue, int nOther);
 void __fastcall sub_004BA790_ReleaseUnitSfx(void* pUnitSfx, D2UnitStrc* pUnit, int bForce); // 0x004BA790
-void* __fastcall UNITSND_FindUnitSfxInRange(D2UnitStrc* pUnit, int nId); // 0x004CA900
-void __stdcall PARTICLE_ResetGfxMotion(D2UnitStrc* pUnit); // 0x004DA000
-void __stdcall GFXUTIL_SetMotionVectorA(D2UnitStrc* pUnit, int nX, int nY, int nZ); // 0x004DA1D0
-int __stdcall STATES_CheckStateMaskAuraByStateId(int nState); // 0x0063A210
-void __stdcall SKILLS_SetParam2(D2SkillStrc* pSkill, int nValue); // 0x006445A0
-void __stdcall SKILLS_SetParam3(D2SkillStrc* pSkill, int nValue); // 0x006445E0
 D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
-void __fastcall NPCMENU_StateRequests(D2UnitStrc* pUnit); // 0x004ADCE0
-void __fastcall GAME_SetSkillDelayUntil(int nValue); // 0x0044CE40
 
 
 
@@ -98,35 +65,10 @@ typedef void (__fastcall* MissileInitFunc)(D2UnitStrc* pMissile, int nArg);
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 extern const unsigned char gabFrameDirections[8][9]; // 0x006DBA08
 extern const unsigned char gabBaseDirections[8]; // 0x006DBA50
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int nMonsterId); // 0x00451FE0
-int __fastcall MONSTERREGION_CheckMonStats2Flag(int nMonsterId, int nFlag); // 0x004638A0
-D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc* pUnit); // 0x004648F0
-void __fastcall sub_00472C50(int nArg); // 0x00472C50
-int __fastcall ITEM_GetTargetPosition(D2UnitStrc* pUnit, int* pX, int* pY); // 0x004C52E0
 D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams); // 0x004CD540
-D2UnitStrc* __fastcall MISSILE_SubmitOwnerRequest(D2UnitStrc* pUnit, int nArg0, int nArg5, int nArg6, int nArg3, int nArg4); // 0x004CDBA0
-void __stdcall GFXUTIL_SetMotionVectorB(D2UnitStrc* pUnit, int nX, int nY, int nZ, int bShift); // 0x004DA200
-int __stdcall STATLIST_UnitGetItemStatOrSkillStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625500
-D2UnitStrc* __stdcall STATLIST_GetOwner(D2UnitStrc* pUnit, int* pStatNotDynamic); // 0x00625820
-void __stdcall STATLIST_ExpireUnitStatlist(D2UnitStrc* pUnused, D2UnitStrc* pUnit); // 0x006277F0
-void __stdcall STATLIST_MergeStatLists(D2UnitStrc* pTarget, D2UnitStrc* pUnit, int bType); // 0x00627910
-D2UnitStrc* __stdcall INVENTORY_GetLeftHandWeapon(D2InventoryStrc* pInventory); // 0x0063BEF0
-unsigned char __stdcall INVENTORY_GetEightWayDirection(unsigned char nIndex); // 0x0063E7A0
-int __stdcall MONSTERS_GetSpawnMode_XY(D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4, int* pMode, int* pX, int* pY); // 0x0063EA70
-int __stdcall D2COMMON_10175_PathGetFirstPointX(D2DynamicPathStrc* pDynamicPath); // 0x00648A00
-int __stdcall D2COMMON_10176_PathGetFirstPointY(D2DynamicPathStrc* pDynamicPath); // 0x00648A10
-void __stdcall D2Common_10216(D2DynamicPathStrc* pPath, int nX, int nY, int bSetBothDirections); // 0x00649EF0
-void __stdcall MISSILE_SetTargetX(D2UnitStrc* pMissile, int nTargetX); // 0x0064A710
-
-
 void __fastcall SCMD_HandleMonsterModeChange(D2UnitStrc* pUnit, unsigned char nOldMode, unsigned char nNewMode); // 0x00463C00
-D2StatListStrc* __stdcall STATLIST_AllocStatList(void* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID); // 0x006251F0
-void __stdcall STATLIST_SetState(D2StatListStrc* pStatList, int nState); // 0x006252D0
 void __stdcall D2COMMON_10475_PostStatToStatList(D2UnitStrc* pUnit, D2StatListStrc* pStatList, int bResetFlag); // 0x00626E10
 
-int __fastcall SKILLS_CallClientStateEvent(void* pArg1, int nArg2, int nArg3, int nArg4, unsigned int nIndex, int nArg6, int nArg7); // 0x004C7C40
 
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 
@@ -134,7 +76,6 @@ typedef void (__fastcall* CLIENTSTATEFN)(D2UnitStrc* pUnit, int nState);
 
 extern CLIENTSTATEFN gpfnClientStateSetFuncs[]; // 0x0072A690
 
-void __fastcall CUNITEVENT_RemoveCltUnitEvents(D2UnitStrc* pUnit, int nParam4, int nParam5); // 0x004DC190
 
 extern CLIENTSTATEFN gpfnClientStateRemFuncs[]; // 0x0072A710
 
@@ -142,19 +83,11 @@ typedef char check_pointer_width[sizeof(void*)==4?1:-1];
 
 typedef char check_scalar_width[sizeof(unsigned int)==4?1:-1];
 
-extern "C" int __stdcall SKILLS_GetUseState(D2UnitStrc* unit,D2SkillStrc* skill); // 0x00647960
 
-D2UnitStrc* __cdecl sub_00463DE0_GetPlayerUnit(); // 0x00463DE0
+int __cdecl sub_0044DA90_GetTickCounter(); // 0x0044DA90
 
-int __cdecl sub_0044DA90(); // 0x0044DA90
-
-int __cdecl GAME_GetSkillDelayUntil(); // 0x0044CE50
 
 void __fastcall SCMD_SetLightColorBytes(D2GfxLightStrc* pLight, unsigned char nValue0, unsigned char nValue1, unsigned char nValue2); // 0x00474390
-
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
-void __stdcall D2COMMON_10160_PathUpdateDirection(D2DynamicPathStrc* pDynamicPath, unsigned char nDirection); // 0x00648820
 
 
 int __fastcall sub_00480C10_DispatchUnitEvent(int nEvent, D2UnitStrc* pUnit, D2UnitEventArgsStrc* pArgs, int nArg); // 0x00480C10
@@ -306,7 +239,7 @@ void __fastcall PLRSKILLS_StateSkillLevel(D2UnitStrc* pUnit, int nState)
     if (nLevel > nMax)
     {
         SKILLS_AssignSkill(pUnit, nSkillId, nMax, 0, ".\\UNIT\\PlrSkills.cpp", 0x11B);
-        sub_00647AA0_SetSkillBonusLevel(pUnit, nSkillId, nLevel - nMax);
+        D2Common_11030(pUnit, nSkillId, nLevel - nMax);
     }
     else
     {
@@ -361,7 +294,8 @@ void __fastcall PLRSKILLS_ApplyStateMonster(D2UnitStrc* pUnit, int nState)
 
     const int nValue = STATLIST_GetStatValue(pStatList, STAT_SHORTPARAM1, 0);
     const int nMode = pUnit->dwAnimMode;
-    sub_004AEDD0(pUnit, nValue);
+// build: symbol ?MONSTER_ChangeMonsterClass@* 0x004AEDD0
+    MONSTER_ChangeMonsterClass(pUnit, nValue);
     if (nMode == 8)
     {
         UNITMODE_SetUnitMode(pUnit, 8);
@@ -800,13 +734,14 @@ void __fastcall PLRSKILLS_StateClearFlags(D2UnitStrc* pUnit, int nState)
 void __fastcall PLRSKILLS_StateResetGfxMotion(D2UnitStrc* pUnit, int nState)
 {
     PARTICLE_ResetGfxMotion(pUnit);
-    sub_004DA620(pUnit, 1);
+// build: symbol ?GFXUTIL_SetMotionFlag10@* 0x004DA620
+    GFXUTIL_SetMotionFlag10(pUnit, 1);
 }
 
 // 0x004D9380
 void __fastcall PLRSKILLS_StateClearMotion(D2UnitStrc* pUnit, int nState)
 {
-    sub_004DA620(pUnit, 0);
+    GFXUTIL_SetMotionFlag10(pUnit, 0);
     GFXUTIL_SetMotionVectorA(pUnit, 0, 0, 0);
 }
 
@@ -1137,13 +1072,13 @@ void __stdcall PLRSKILLS_UpdateStateColor(D2UnitStrc* pUnit)
 }
 
 // 0x004D9160
-void __fastcall sub_004D9160(D2UnitStrc* pArg)
+void __fastcall sub_004D9160_RefreshPassiveSkills(D2UnitStrc* pArg)
 {
     SKILLS_RefreshPassiveSkills(pArg);
 }
 
 // 0x004D9170
-void __fastcall sub_004D9170(D2UnitStrc* pArg)
+void __fastcall sub_004D9170_RefreshPassiveSkills(D2UnitStrc* pArg)
 {
     SKILLS_RefreshPassiveSkills(pArg);
 }
@@ -1226,24 +1161,7 @@ struct d2data_0072A650_t
 };
 #pragma pack(pop)
 
-extern "C" const unsigned char gData_006DBA08[8][9]; // 0x006DBA08
-extern "C" const unsigned char gData_006DBA50[8]; // 0x006DBA50
 extern "C" struct d2data_0072A650_t gData_0072A650; // 0x0072A650
-
-extern "C" const unsigned char gData_006DBA08[8][9] = {
-    { 0x1B, 0xE, 0xF, 3, 0x63, 7, 0x15, 0x16, 0x1F },
-    { 0x1A, 0xC, 0xD, 2, 0x63, 6, 0x13, 0x14, 0x1E },
-    { 0x19, 0xA, 0xB, 1, 0x63, 5, 0x11, 0x12, 0x1D },
-    { 0x18, 8, 9, 0, 0x63, 4, 0xF, 0x10, 0x1C },
-    { 0x1F, 0x16, 0x17, 7, 0x63, 3, 0xD, 0xE, 0x1B },
-    { 0x1E, 0x14, 7, 6, 0x63, 2, 1, 0xC, 0x1A },
-    { 0x1D, 0x12, 0x13, 5, 0x63, 1, 9, 0xA, 0x19 },
-    { 0x1C, 0x10, 0x11, 4, 0x63, 0, 0x17, 8, 0x18 }
-}; // 0x006DBA08
-#pragma comment(linker, "/alternatename:?gabFrameDirections@@3QAY08$$CBEA=_gData_006DBA08")
-
-extern "C" const unsigned char gData_006DBA50[8] = { 0x1D, 0x1C, 0x1B, 0x1A, 0x19, 0x18, 0x1F, 0x1E }; // 0x006DBA50
-#pragma comment(linker, "/alternatename:?gabBaseDirections@@3QBEB=_gData_006DBA50")
 
 extern "C" struct d2data_0072A650_t gData_0072A650 = {
     (const void*)"English",
@@ -1264,13 +1182,26 @@ extern "C" struct d2data_0072A650_t gData_0072A650 = {
     { 0x00 }
 }; // 0x0072A650
 
+extern const unsigned char gabFrameDirections[8][9] = {
+    { 0x1B, 0xE, 0xF, 3, 0x63, 7, 0x15, 0x16, 0x1F },
+    { 0x1A, 0xC, 0xD, 2, 0x63, 6, 0x13, 0x14, 0x1E },
+    { 0x19, 0xA, 0xB, 1, 0x63, 5, 0x11, 0x12, 0x1D },
+    { 0x18, 8, 9, 0, 0x63, 4, 0xF, 0x10, 0x1C },
+    { 0x1F, 0x16, 0x17, 7, 0x63, 3, 0xD, 0xE, 0x1B },
+    { 0x1E, 0x14, 7, 6, 0x63, 2, 1, 0xC, 0x1A },
+    { 0x1D, 0x12, 0x13, 5, 0x63, 1, 9, 0xA, 0x19 },
+    { 0x1C, 0x10, 0x11, 4, 0x63, 0, 0x17, 8, 0x18 }
+}; // 0x006DBA08
+
+extern const unsigned char gabBaseDirections[8] = { 0x1D, 0x1C, 0x1B, 0x1A, 0x19, 0x18, 0x1F, 0x1E }; // 0x006DBA50
+
 extern CLIENTSTATEFN gpfnClientStateSetFuncs[32] = {
-    0, (CLIENTSTATEFN)&PLRSKILLS_StatePrgOverlayLevel, (CLIENTSTATEFN)&PLRSKILLS_StateAuraEffect, (CLIENTSTATEFN)&PLRSKILLS_StateSkillLevel, (CLIENTSTATEFN)&PLRSKILLS_StateStoreOwner, (CLIENTSTATEFN)&PLRSKILLS_ApplyStateMonster, (CLIENTSTATEFN)&PLRSKILLS_StateTieredOverlays, (CLIENTSTATEFN)&PLRSKILLS_StatePlaySkillSound, (CLIENTSTATEFN)&PLRSKILLS_StateTieredOverlayPairs, (CLIENTSTATEFN)&sub_004D9160, (CLIENTSTATEFN)&PLRSKILLS_StateStartMissile, (CLIENTSTATEFN)&PLRSKILLS_StateSetFlagEx, (CLIENTSTATEFN)&PLRSKILLS_StateSetFlags, (CLIENTSTATEFN)&PLRSKILLS_StateResetGfxMotion, (CLIENTSTATEFN)&PLRSKILLS_SendPositionEvent, (CLIENTSTATEFN)&PLRSKILLS_StateSetMode,
+    0, (CLIENTSTATEFN)&PLRSKILLS_StatePrgOverlayLevel, (CLIENTSTATEFN)&PLRSKILLS_StateAuraEffect, (CLIENTSTATEFN)&PLRSKILLS_StateSkillLevel, (CLIENTSTATEFN)&PLRSKILLS_StateStoreOwner, (CLIENTSTATEFN)&PLRSKILLS_ApplyStateMonster, (CLIENTSTATEFN)&PLRSKILLS_StateTieredOverlays, (CLIENTSTATEFN)&PLRSKILLS_StatePlaySkillSound, (CLIENTSTATEFN)&PLRSKILLS_StateTieredOverlayPairs, (CLIENTSTATEFN)&sub_004D9160_RefreshPassiveSkills, (CLIENTSTATEFN)&PLRSKILLS_StateStartMissile, (CLIENTSTATEFN)&PLRSKILLS_StateSetFlagEx, (CLIENTSTATEFN)&PLRSKILLS_StateSetFlags, (CLIENTSTATEFN)&PLRSKILLS_StateResetGfxMotion, (CLIENTSTATEFN)&PLRSKILLS_SendPositionEvent, (CLIENTSTATEFN)&PLRSKILLS_StateSetMode,
     (CLIENTSTATEFN)&PLRSKILLS_StateOverlaySpread, (CLIENTSTATEFN)&PLRSKILLS_StateMissile, (CLIENTSTATEFN)&PLRSKILLS_StateCreateMissile, (CLIENTSTATEFN)&PLRSKILLS_StateResetValue
 }; // 0x0072A690
 
 extern CLIENTSTATEFN gpfnClientStateRemFuncs[150] = {
-    0, (CLIENTSTATEFN)&PLRSKILLS_StatePrgOverlays, (CLIENTSTATEFN)&PLRSKILLS_StateClearOwner, (CLIENTSTATEFN)&PLRSKILLS_StateOverlays, (CLIENTSTATEFN)&PLRSKILLS_StateStopSkillSound, (CLIENTSTATEFN)&PLRSKILLS_StateOverlayPairs, (CLIENTSTATEFN)&sub_004D9170, (CLIENTSTATEFN)&PLRSKILLS_StateClearCollision, (CLIENTSTATEFN)&PLRSKILLS_StateClearFlags, (CLIENTSTATEFN)&PLRSKILLS_StateClearMotion, (CLIENTSTATEFN)&PLRSKILLS_StateEndRequests, (CLIENTSTATEFN)&PLRSKILLS_StateOverlayRanges, (CLIENTSTATEFN)&PLRSKILLS_StateResetValue, 0, 0, 0,
+    0, (CLIENTSTATEFN)&PLRSKILLS_StatePrgOverlays, (CLIENTSTATEFN)&PLRSKILLS_StateClearOwner, (CLIENTSTATEFN)&PLRSKILLS_StateOverlays, (CLIENTSTATEFN)&PLRSKILLS_StateStopSkillSound, (CLIENTSTATEFN)&PLRSKILLS_StateOverlayPairs, (CLIENTSTATEFN)&sub_004D9170_RefreshPassiveSkills, (CLIENTSTATEFN)&PLRSKILLS_StateClearCollision, (CLIENTSTATEFN)&PLRSKILLS_StateClearFlags, (CLIENTSTATEFN)&PLRSKILLS_StateClearMotion, (CLIENTSTATEFN)&PLRSKILLS_StateEndRequests, (CLIENTSTATEFN)&PLRSKILLS_StateOverlayRanges, (CLIENTSTATEFN)&PLRSKILLS_StateResetValue, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, (CLIENTSTATEFN)(void*)"English", (CLIENTSTATEFN)(void*)"Spanish",
     (CLIENTSTATEFN)(void*)"German", (CLIENTSTATEFN)(void*)"French", (CLIENTSTATEFN)(void*)"Portuguese", (CLIENTSTATEFN)(void*)"Italian", (CLIENTSTATEFN)(void*)"Japanese", (CLIENTSTATEFN)(void*)"Korean", (CLIENTSTATEFN)(void*)"Simplified Chinese", (CLIENTSTATEFN)(void*)"Traditional Chinese", (CLIENTSTATEFN)(void*)"Polish", (CLIENTSTATEFN)(void*)"Russian", (CLIENTSTATEFN)(void*)"English with Korean Chat", (CLIENTSTATEFN)(void*)"Unknown", (CLIENTSTATEFN)(void*)"14", (CLIENTSTATEFN)(void*)"English", (CLIENTSTATEFN)(void*)"Spanish", (CLIENTSTATEFN)(void*)"German",
     (CLIENTSTATEFN)(void*)"French", (CLIENTSTATEFN)(void*)"Portuguese", (CLIENTSTATEFN)(void*)"Italian", (CLIENTSTATEFN)(void*)"Japanese", (CLIENTSTATEFN)(void*)"Korean", (CLIENTSTATEFN)(void*)"Simplified Chinese", (CLIENTSTATEFN)(void*)"Traditional Chinese", (CLIENTSTATEFN)(void*)"Polish", (CLIENTSTATEFN)(void*)"Russian", (CLIENTSTATEFN)(void*)"English with Korean Chat", (CLIENTSTATEFN)(void*)"Unknown", (CLIENTSTATEFN)(void*)"14", (CLIENTSTATEFN)(void*)"English", (CLIENTSTATEFN)(void*)"Spanish", (CLIENTSTATEFN)(void*)"German", (CLIENTSTATEFN)(void*)"French",
@@ -1295,7 +1226,7 @@ static D2StatesTxt* STATES_GetStatesTxtRecord_J03(int nState)
 // 0x004D9740
 void __fastcall PLRSKILLS_StateCreateMissile(D2UnitStrc* pUnit, int nState)
 {
-    sub_004AF890(pUnit, 5, 0);
+    MONSTER_SpawnBloodMissiles(pUnit, 5, 0);
 
     D2StatesTxt* pStatesTxt = STATES_GetStatesTxtRecord_J03(nState);
     if (!pStatesTxt)
@@ -1356,7 +1287,8 @@ void __fastcall PLRSKILLS_StartStateOverlays(D2UnitStrc* pUnit, int nState)
     if (bMask)
     {
         STATES_ToggleState(pUnit, nState, 0);
-        if (sub_0063A250(pUnit))
+// build: symbol ?STATES_CheckStateMaskAuraOnUnit@* 0x0063A250
+        if (STATES_CheckStateMaskAuraOnUnit(pUnit))
         {
             nCastOverlay = -1;
         }
@@ -1782,7 +1714,8 @@ int __fastcall PLRSKILLS_MissileByOverlay(D2UnitStrc* pUnit, int nSkillId, int n
         return 0;
     }
 
-    if (!sub_004B11F0(pTarget))
+// build: symbol ?MONSTER_IsConvertible@* 0x004B11F0
+    if (!MONSTER_IsConvertible(pTarget))
     {
         return 0;
     }

@@ -5,6 +5,8 @@
 #include "D2DrlgPresets.h"
 #include "D2DrlgTiles.h"
 #include "D2Common.h"
+#include "D2CommonInternal.h"
+#include "FogApi.h"
 
 #pragma function(memset)
 
@@ -76,9 +78,7 @@ extern "C" const int gnLogicTileIndex[]; // 0x006EEEA0
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -86,21 +86,11 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-int __fastcall DRLG_CheckNotOverlappingUsingManhattanDistance(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2, int nMaxDistance); // 0x0066B860
 
-int __fastcall DRLGROOM_AreXYInsideCoordinatesOrOnBorder(D2DrlgCoordStrc* pDrlgCoord, int nX, int nY); // 0x0066B9D0
 
-int __fastcall DRLGGRID_IsGridValid(D2DrlgGridStrc* pGrid); // 0x0067C480
 
-void __fastcall DRLGGRID_AlterGridFlag(D2DrlgGridStrc* pGrid, int nX, int nY, int nFlag, int nOperation); // 0x0067C4F0
 
-int __fastcall DRLGGRID_GetGridEntry(D2DrlgGridStrc* pGrid, int nX, int nY); // 0x0067C570
 
-void __fastcall DRLGGRID_InitializeGridCells(void* pMemPool, D2DrlgGridStrc* pGrid, int nWidth, int nHeight); // 0x0067CB80
-
-void __fastcall DRLGGRID_FillGrid(D2DrlgGridStrc* pGrid, int nWidth, int nHeight, int* pCellPos, int* pCellFlags); // 0x0067CBF0
-
-void __fastcall DRLGGRID_ResetGrid(D2DrlgGridStrc* pGrid); // 0x0067CDC0
 
 static void __stdcall DRLGLOGIC_MarkBlockingTilesInGrid(D2DrlgRoomStrc* pDrlgRoom, D2DrlgGridStrc* pDrlgGrid);
 
@@ -111,7 +101,6 @@ void __stdcall DRLGLOGIC_AssignCoordListsForGrids(D2DrlgRoomStrc* pDrlgRoom, D2D
 
 void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
-void __fastcall DRLGGRID_FreeGrid(void* pMemPool, D2DrlgGridStrc* pGrid); // 0x0067CD90
 
 D2RoomCoordListStrc* __fastcall DRLGLOGIC_GetRoomCoordListAtSubtile(D2DrlgRoomStrc* pDrlgRoom, int nX, int nY);
 
@@ -122,9 +111,9 @@ enum D2C_U04DrlgLogicConstants
 
 void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);    // 0x0040B430
 
-void __fastcall DRLGLOGIC_SetTileGridFlags(D2UnkDrlgLogicStrc* a1, int nX, int nY, int a4);
+void __fastcall DRLGLOGIC_SetTileGridFlags(D2UnkDrlgLogicStrc* pLogic, int nX, int nY, int nFromDirection);
 
-static void DRLGLOGIC_FloodFillUnassignedTiles(D2UnkDrlgLogicStrc* a1);
+static void DRLGLOGIC_FloodFillUnassignedTiles(D2UnkDrlgLogicStrc* pLogic);
 
 D2DrlgLogicalRoomInfoStrc* __fastcall DRLGLOGIC_AllocLogicalRoomInfo(void* pMemPool, int nUnused, D2DrlgRoomStrc* pDrlgRoom);
 
@@ -134,72 +123,64 @@ void __fastcall DRLGLOGIC_ReplaceCoordListIndex(D2DrlgRoomStrc* pDrlgRoom, int n
 
 static void __stdcall DRLGLOGIC_MarkWallTilesInGrid(D2DrlgRoomStrc* pDrlgRoom, D2DrlgGridStrc* pWallGrid);
 
-void __fastcall DRLGLOGIC_AllocCoordLists(D2DrlgRoomStrc* pDrlgRoom);
 
-int __fastcall DRLGLOGIC_GetRoomCoordListIndex(D2DrlgRoomStrc* pDrlgRoom, int nX, int nY);
 
 static void __stdcall DRLGLOGIC_MergeCoordListsAtPoint(D2DrlgRoomStrc* pDrlgRoom1, D2DrlgRoomStrc* pDrlgRoom2, int nX, int nY);
 
 static void DRLGLOGIC_MergeCoordListsWithNearRooms(D2DrlgRoomStrc* pDrlgRoom);
 
-void __fastcall DRLGLOGIC_InitializeDrlgCoordList(D2DrlgRoomStrc* pDrlgRoom, D2DrlgGridStrc* pTileTypeGrid, D2DrlgGridStrc* pFloorGrid, D2DrlgGridStrc* pWallGrid);
-
-inline int HasMapTileLayer(unsigned int dwFlags)
-{
-    return (dwFlags & 0x1C000) != 0;
-}
 
 // 0x0066C3D0
-void __fastcall DRLGLOGIC_SetTileGridFlags(D2UnkDrlgLogicStrc* a1, int nX, int nY, int a4)
+void __fastcall DRLGLOGIC_SetTileGridFlags(D2UnkDrlgLogicStrc* pLogic, int nX, int nY, int nFromDirection)
 {
-    while (DRLGROOM_AreXYInsideCoordinatesOrOnBorder(&a1->pDrlgRoom->pDrlgCoord, nX + a1->pDrlgRoom->pDrlgCoord.nPosX, nY + a1->pDrlgRoom->pDrlgCoord.nPosY))
+    while (DRLGROOM_AreXYInsideCoordinatesOrOnBorder(&pLogic->pDrlgRoom->pDrlgCoord, nX + pLogic->pDrlgRoom->pDrlgCoord.nPosX, nY + pLogic->pDrlgRoom->pDrlgCoord.nPosY))
     {
-        if (DRLGGRID_GetGridEntry(a1->field_4, nX, nY) & 0x10000000)
+        if (DRLGGRID_GetGridEntry(pLogic->field_4, nX, nY) & 0x10000000)
         {
             return;
         }
 
-        if (!DRLGGRID_GetGridEntry(a1->field_14, nX, nY))
+        if (!DRLGGRID_GetGridEntry(pLogic->field_14, nX, nY))
         {
-            DRLGGRID_AlterGridFlag(a1->field_4, nX, nY, a1->nFlags, 0);
+            DRLGGRID_AlterGridFlag(pLogic->field_4, nX, nY, pLogic->nFlags, 0);
 
             for (int i = 0; i < 4; ++i)
             {
-                DRLGLOGIC_SetTileGridFlags(a1, nX + gLogicDirections[i].nX, nY + gLogicDirections[i].nY, i);
+                DRLGLOGIC_SetTileGridFlags(pLogic, nX + gLogicDirections[i].nX, nY + gLogicDirections[i].nY, i);
             }
             return;
         }
 
         int nIndex = 0;
-        if (DRLGGRID_IsGridValid(a1->pTileTypeGrid))
+        if (DRLGGRID_IsGridValid(pLogic->pTileTypeGrid))
         {
-            nIndex = DRLGGRID_GetGridEntry(a1->pTileTypeGrid, nX, nY);
+            nIndex = DRLGGRID_GetGridEntry(pLogic->pTileTypeGrid, nX, nY);
         }
 
-        const int nFlags = gnLogicTileFlags[a4 + 5 * gnLogicTileIndex[nIndex] + 1];
+        const int nFlags = gnLogicTileFlags[nFromDirection + 5 * gnLogicTileIndex[nIndex] + 1];
         if (nFlags & 1)
         {
-            DRLGGRID_AlterGridFlag(a1->field_4, nX, nY, a1->nFlags, 0);
+            DRLGGRID_AlterGridFlag(pLogic->field_4, nX, nY, pLogic->nFlags, 0);
         }
 
-        if (nFlags & 2 && a4 != 2)
+        if (nFlags & 2 && nFromDirection != 2)
         {
-            DRLGLOGIC_SetTileGridFlags(a1, nX + 1, nY, 0);
+            DRLGLOGIC_SetTileGridFlags(pLogic, nX + 1, nY, 0);
         }
 
-        if (nFlags & 4 && a4 != 3)
+        if (nFlags & 4 && nFromDirection != 3)
         {
-            DRLGLOGIC_SetTileGridFlags(a1, nX, nY + 1, 1);
+            DRLGLOGIC_SetTileGridFlags(pLogic, nX, nY + 1, 1);
         }
 
-        if (nFlags & 8 && a4 != 0)
+        if (nFlags & 8 && nFromDirection != 0)
         {
-            DRLGLOGIC_SetTileGridFlags(a1, nX - 1, nY, 2);
+            DRLGLOGIC_SetTileGridFlags(pLogic, nX - 1, nY, 2);
         }
 
-        if (nFlags & 16 && a4 != 1)
+        if (nFlags & 16 && nFromDirection != 1)
         {
-            DRLGLOGIC_SetTileGridFlags(a1, nX, nY - 1, 3);
+            DRLGLOGIC_SetTileGridFlags(pLogic, nX, nY - 1, 3);
         }
 
         if (!(nFlags & 32))
@@ -210,33 +191,33 @@ void __fastcall DRLGLOGIC_SetTileGridFlags(D2UnkDrlgLogicStrc* a1, int nX, int n
         ++nY;
         ++nX;
 
-        a4 = -1;
+        nFromDirection = -1;
     }
 }
 
 // 0x0066C580
-static void DRLGLOGIC_FloodFillUnassignedTiles(D2UnkDrlgLogicStrc* a1)
+static void DRLGLOGIC_FloodFillUnassignedTiles(D2UnkDrlgLogicStrc* pLogic)
 {
-    const int nWidth = a1->pDrlgRoom->pDrlgCoord.nWidth;
-    const int nHeight = a1->pDrlgRoom->pDrlgCoord.nHeight;
+    const int nWidth = pLogic->pDrlgRoom->pDrlgCoord.nWidth;
+    const int nHeight = pLogic->pDrlgRoom->pDrlgCoord.nHeight;
 
     for (int j = 0; j <= nHeight; ++j)
     {
         for (int i = 0; i <= nWidth; ++i)
         {
-            if (!(DRLGGRID_GetGridEntry(a1->field_4, i, j) & 0x10000000))
+            if (!(DRLGGRID_GetGridEntry(pLogic->field_4, i, j) & 0x10000000))
             {
-                ++a1->field_18;
-                a1->nFlags = (a1->field_18 & 0xFFFFFFF) | 0x10000000;
+                ++pLogic->field_18;
+                pLogic->nFlags = (pLogic->field_18 & 0xFFFFFFF) | 0x10000000;
 
                 D2PackedFloorStrc tFloor;
-                tFloor.nPackedValue = DRLGGRID_GetGridEntry(a1->pFloorGrid, i, j);
+                tFloor.nPackedValue = DRLGGRID_GetGridEntry(pLogic->pFloorGrid, i, j);
                 if ((tFloor.nPackedValue & 0x1E0FF00) == 0x1E00000 || tFloor.bHidden)
                 {
-                    a1->nFlags |= 0x20000000;
+                    pLogic->nFlags |= 0x20000000;
                 }
 
-                DRLGLOGIC_SetTileGridFlags(a1, i, j, -1);
+                DRLGLOGIC_SetTileGridFlags(pLogic, i, j, -1);
             }
         }
     }
@@ -722,27 +703,7 @@ struct d2data_0074987C_t
 };
 #pragma pack(pop)
 
-extern "C" const D2CoordStrc gData_006EEE14[4]; // 0x006EEE14
-extern "C" const int gData_006EEE38[26]; // 0x006EEE38
-extern "C" const int gData_006EEEA0[20]; // 0x006EEEA0
 extern "C" struct d2data_0074987C_t gData_0074987C; // 0x0074987C
-
-extern "C" const D2CoordStrc gData_006EEE14[4] = {
-    { 1 },
-    { 0, 1 },
-    { -1 },
-    { 0, -1 }
-}; // 0x006EEE14
-#pragma comment(linker, "/alternatename:_gLogicDirections=_gData_006EEE14")
-
-extern "C" const int gData_006EEE38[26] = {
-    23, 0, 5, 21, 17, 15, 3, 0, 9, 7, 39, 0, 0, 5, 3, 31,
-    31, 31, 31, 31, 31, 31, 31, 31, 31
-}; // 0x006EEE38
-#pragma comment(linker, "/alternatename:_gnLogicTileFlags=_gData_006EEE38")
-
-extern "C" const int gData_006EEEA0[20] = { -1, 0, 1, 2, 2, 0, 1, 3, 0, 1, 0, 1, 4, -1, 4 }; // 0x006EEEA0
-#pragma comment(linker, "/alternatename:_gnLogicTileIndex=_gData_006EEEA0")
 
 extern "C" struct d2data_0074987C_t gData_0074987C = {
     (const void*)"English",
@@ -761,3 +722,17 @@ extern "C" struct d2data_0074987C_t gData_0074987C = {
     (const void*)"Unknown",
     (const void*)"14"
 }; // 0x0074987C
+
+extern "C" const D2CoordStrc gLogicDirections[4] = {
+    { 1 },
+    { 0, 1 },
+    { -1 },
+    { 0, -1 }
+}; // 0x006EEE14
+
+extern "C" const int gnLogicTileFlags[26] = {
+    23, 0, 5, 21, 17, 15, 3, 0, 9, 7, 39, 0, 0, 5, 3, 31,
+    31, 31, 31, 31, 31, 31, 31, 31, 31
+}; // 0x006EEE38
+
+extern "C" const int gnLogicTileIndex[20] = { -1, 0, 1, 2, 2, 0, 1, 3, 0, 1, 0, 1, 4, -1, 4 }; // 0x006EEEA0

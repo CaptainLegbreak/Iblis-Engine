@@ -1,39 +1,31 @@
+#include "D2LanguageNames.h"
+// build: symbol _gaszLanguageNames 0x00727E34
+
 #include "D2StateIds.h"
 #include "D2GameTypes.h"
 #include "D2StatIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
 #include "D2Txt.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
+#include "D2GfxApi.h"
+#include "D2CommonApi3.h"
 struct D2CharStatsTxt;
 
 struct D2GameStrc;
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
-int __fastcall CUNIT_GetMonsterBaseId(D2UnitStrc* pUnit); // 0x00463860
-int __fastcall CUNIT_ValidateMonsterId(int nMonsterId); // 0x00463900
 int __fastcall DATATBLS_ApplyRatio(int nValue, int nMultiplier, int nDivisor); // 0x00483360
 extern "C" D2CharStatsTxt* __fastcall sub_004833E0_GetCharStatsTxtRecord(int nClass); // 0x004833E0
-int __fastcall SKILLS_GetFirstSkillParam(int nSkillId); // 0x004C9460
 D2UnitStrc* __stdcall SUNIT_GetTargetUnit(D2GameStrc*, D2UnitStrc*); // 0x00553540
 void __fastcall SUNIT_SetCombatMode(D2GameStrc*, D2UnitStrc*, int); // 0x00553570
 int __fastcall SKILLS_StartBasicAttack(D2GameStrc*, D2UnitStrc*, D2UnitStrc*); // 0x0056E230
-int __stdcall D2GAME_ModeChange_6FC65220(D2GameStrc*, D2ModeChangeStrc*, int); // 0x005A7C20
+int __stdcall D2GAME_ModeChange(D2GameStrc*, D2ModeChangeStrc*, int); // 0x005A7C20
 void __stdcall MONSTERMODE_GetModeChangeInfo(D2UnitStrc*, int, D2ModeChangeStrc*); // 0x005A7E60
-void __stdcall UNITS_SetUsedSkill(D2UnitStrc*, D2SkillStrc*); // 0x00620210
-D2SkillStrc* __stdcall UNITS_GetUsedSkill(D2UnitStrc*); // 0x00620250
-int __stdcall UNITS_IsInMeleeRange(D2UnitStrc*, D2UnitStrc*, int); // 0x00622C40
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc*, int, int); // 0x00625480
-void __stdcall STATES_ToggleState(D2UnitStrc*, int, int); // 0x00639DB0
-int __stdcall STATES_CheckState(D2UnitStrc*, int); // 0x00639DF0
-void __stdcall SKILLS_SetParam1(D2SkillStrc*, int); // 0x00644560
-void __stdcall SKILLS_SetParam2(D2SkillStrc*, int); // 0x006445A0
-void __stdcall SKILLS_SetParam4(D2SkillStrc*, int); // 0x00644620
-void __stdcall SKILLS_SetFlags(D2SkillStrc*, int); // 0x00644660
 void __stdcall PATH_SetVelocity(D2DynamicPathStrc*, int, const char*, int); // 0x00648690
-void __stdcall PATH_SetNewDistance(D2DynamicPathStrc*, unsigned char); // 0x00648E70
-void __stdcall PATH_ClearPreviousTargetPoint(D2DynamicPathStrc*); // 0x00649050
-int __stdcall D2Common_10142(D2DynamicPathStrc*, D2UnitStrc*, int); // 0x00649970
 static inline int UNITS_GetUnitTypeChecked(D2UnitStrc* pUnit)
 {
     if (pUnit)
@@ -58,23 +50,8 @@ inline D2SkillsTxt* SKILLS_GetSkillsTxtRecord(int nSkillId) {
     return 0;
 }
 
-int __stdcall SKILLS_GetSkillIdFromSkill(D2SkillStrc*,const char*,int); // 0x00643CE0
-int __stdcall SKILLS_GetFlags(D2SkillStrc*); // 0x006446A0
-void __stdcall SKILLS_SetParam3(D2SkillStrc*,int); // 0x006445E0
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
-D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc*); // 0x004648F0
-int __fastcall SKILLS_RaiseTargetUnitEvent(D2UnitStrc*,D2UnitStrc*); // 0x004C7630
-int __fastcall SKILLDESC_GetMonSkillSound(D2UnitStrc*,int); // 0x004F4F40
 void __fastcall sub_004B9A00(int,D2UnitStrc*,int,int,int); // 0x004B9A00
-void __fastcall CUNIT_SetPathTargetToTargetUnit(D2UnitStrc*,int); // 0x00465BF0
-void __fastcall SKILLS_AttachMoveSkillEndList(D2UnitStrc*); // 0x004C7950
 
-int __stdcall D2GFX_CheckPerspective(); // 0x004F51D0
-void __stdcall PATH_GetClientCoordsVelocity(D2UnitStrc* pUnit, int* pX, int* pY); // 0x00648300
-int __stdcall UNITS_GetClientCoordX(D2UnitStrc* pUnit); // 0x00620650
-int __stdcall UNITS_GetClientCoordY(D2UnitStrc* pUnit); // 0x006206B0
-int __stdcall UNITS_GetPrecisionX(D2UnitStrc* pUnit); // 0x006203B0
-int __stdcall UNITS_GetPrecisionY(D2UnitStrc* pUnit); // 0x00620410
 extern "C" int __cdecl PLAYER_GetScreenOffsetX(); // 0x0045AFC0
 extern "C" int __cdecl PLAYER_GetScreenOffsetY(); // 0x0045AFD0
 int __fastcall GFX_DrawUnit(D2UnitStrc* pUnit, unsigned int dwColor, int nX, int nY, int nArg, int bOverlay); // 0x00471EC0
@@ -217,43 +194,4 @@ int __fastcall SKILLSPAL_StartCharge(D2UnitStrc* pUnit,int nSkillId,int nSkillLe
  return 1;
 }
 
-#pragma pack(push, 1)
-struct d2data_00727E34_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
 
-extern "C" struct d2data_00727E34_t gData_00727E34; // 0x00727E34
-
-extern "C" struct d2data_00727E34_t gData_00727E34 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00727E34

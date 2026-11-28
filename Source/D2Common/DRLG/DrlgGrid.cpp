@@ -1,4 +1,5 @@
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 
 #include "D2Structs.h"
 
@@ -36,15 +37,11 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 
-int __fastcall DRLGGRID_IsPointInsideGridArea(D2DrlgGridStrc* pGrid, int nX, int nY);
 
 int* __fastcall DRLGGRID_GetGridCellPtr(D2DrlgGridStrc* pGrid, int nX, int nY);
 
-int __fastcall sub_0067C570(D2DrlgGridStrc* pGrid, int nX, int nY);
-
 void __fastcall DRLGGRID_AssignSubArea(D2DrlgGridStrc* pGrid, int* pCellsFlags, D2DrlgCoordsStrc* pCoords, int nStride, int* pCellsRowOffsets);
 
-void __fastcall DRLGGRID_FreeGrid(void* pMemPool, D2DrlgGridStrc* pGrid);
 
 extern "C" const char gszDrlgGridSourceFile;
 
@@ -60,37 +57,26 @@ void __fastcall DRLGGRID_OverwriteFlagIfZero(int* pFlag, int nFlag);
 
 void __fastcall DRLGGRID_AndNegatedFlag(int* pFlag, int nFlag);
 
-int __fastcall DRLGGRID_IsGridValid(D2DrlgGridStrc* pGrid);
 
 static int* __stdcall DRLGGRID_GetCellFlagsPointer(D2DrlgGridStrc* pGrid, int nX, int nY);
 
-void __fastcall DRLGGRID_AlterGridFlag(D2DrlgGridStrc* pGrid, int nX, int nY, int nFlag, int eOperation);
 
-void __fastcall DRLGGRID_AlterEdgeGridFlags(D2DrlgGridStrc* pGrid, int nFlag, int eOperation); // 0x0067C600
 
 void __fastcall DRLGGRID_AlterGridFlagAtCoord(D2DrlgGridStrc* pGrid, D2CoordStrc* pCoord, int nFlag, int eOperation);
 
-void __fastcall DRLGGRID_AlterAllGridFlags(D2DrlgGridStrc* pGrid, int nFlag, int eOperation);
 
 void __fastcall DRLGGRID_AlterBottomAndRightEdgeFlags(D2DrlgGridStrc* pGrid, int nFlag, int eOperation);
-
-void __fastcall DRLGGRID_AlterFlagsAlongVertexEdge(D2DrlgGridStrc* pGrid, D2DrlgVertexStrc* pVertex, int nFlag, int eOperation, int bAlterNextVertex); // 0x0067C760
-
-void __fastcall DRLGGRID_SetVertexGridFlags(D2DrlgGridStrc* pGrid, D2DrlgVertexStrc* pVertex, int nFlag); // 0x0067C890
 
 void __fastcall DRLGGRID_AlterFlagsAlongVertexLine(D2DrlgGridStrc* pGrid, D2DrlgVertexStrc* pVertex, D2DrlgCoordsStrc* pCoords, int nFlag, int eOperation, int nSize); // 0x0067C8E0
 
 void __fastcall DRLGGRID_CopyGridFlags(D2DrlgGridStrc* pDstGrid, D2DrlgGridStrc* pSrcGrid);
 
-void __fastcall DRLGGRID_InitializeGridCells(void* pMemPool, D2DrlgGridStrc* pGrid, int nWidth, int nHeight);
 
-void __fastcall DRLGGRID_FillGrid(D2DrlgGridStrc* pGrid, int nWidth, int nHeight, int* pCellsFlags, int* pCellsRowOffsets);
 
 void __fastcall DRLGGRID_InitializeGridRowOffsets(void* pMemPool, D2DrlgGridStrc* pGrid, int* pCellsFlags, int nWidth, int nHeight);
 
 void __fastcall DRLGGRID_FillNewCellFlags(void* pMemPool, D2DrlgGridStrc* pGrid, int* pCellsFlags, D2DrlgCoordsStrc* pCoords, int nStride);
 
-void __fastcall DRLGGRID_ResetGrid(D2DrlgGridStrc* pGrid);
 
 // 0x0067C420
 static void __fastcall DRLGGRID_OverwriteFlag(int* pFlag, int nFlag)

@@ -1,8 +1,16 @@
+#include "D2LanguageNames.h"
+// build: symbol _gaszLanguageNames 0x00727688
+
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2CelContext.h"
 #include "D2Unicode.h"
 #include "D2StormTypes.h"
 #include "D2WinSplitText.h"
+#include "FogApi.h"
+#include "D2LangApi.h"
+#include "StormApi.h"
+#include "StormApi2.h"
 
 struct Unicode;
 struct D2ButtonStringStrc;
@@ -14,10 +22,6 @@ class EditBoxImplementation;
 class ButtonWrapper;
 class EditBoxWrapper;
 class SpinnerImplementation;
-
-void* __stdcall SMemAlloc(size_t nSize, const char* szFile, int nLine, int nFlags); // 0x00413020
-
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, int nFlags); // 0x00412650
 
 // build: symbol ??1ButtonWrapper@@UAE@XZ 0x004BADD0
 // build: symbol ??1EditBoxImplementation@@UAE@XZ 0x004BB170
@@ -88,7 +92,7 @@ public:
     virtual int OnKeyRight(SMSGHANDLER_PARAMS* pMsg);
     virtual int OnKeyLeft(SMSGHANDLER_PARAMS* pMsg);
     virtual int GetValue();
-    virtual int sub_004BBFB0();
+    virtual int sub_004BBFB0_GetRepeatStep();
 
     int HitTestUpArrow(SMSGHANDLER_PARAMS* pMsg);
     int HitTestDownArrow(SMSGHANDLER_PARAMS* pMsg);
@@ -99,17 +103,17 @@ public:
     int nUpY;
     int nDownX;
     int nDownY;
-    int unk0x20;
+    int bWheelStep;
     int nArrowHeight;
     int nArrowWidth;
     int f_2C;
-    int unk0x30;
-    int unk0x34;
-    int unk0x38;
+    int bMouseDown;
+    int bUpPressed;
+    int bDownPressed;
     void (__cdecl* pfUnk0x3C)();
     unsigned int nUnk0x3CCalls;
     unsigned int unk0x44;
-    unsigned int unk0x48;
+    unsigned int dwLastStepTick;
     int unk0x4C;
     void* pCellFile;
 };
@@ -140,15 +144,10 @@ public:
 
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
-int __cdecl sub_00468730(); // 0x00468730
-int __cdecl sub_00468740(); // 0x00468740
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
-int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
-char* __fastcall sub_005263E0(char* szDest, const Unicode* pSource, int nMaxLength); // 0x005263E0
 extern D2ButtonStringStrc gaButtonStrings[]; // 0x007275A8
 
 
@@ -158,7 +157,7 @@ extern D2ButtonStringStrc gaButtonStrings[]; // 0x007275A8
 
 
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
 
@@ -194,7 +193,6 @@ extern "C" void _ReadWriteBarrier(void);
 
 #pragma intrinsic(_ReadWriteBarrier)
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
 
 void __fastcall ARCHIVE_FreeClientCellFile(void* pCel);                                                                   // 0x00478A00
 
@@ -220,11 +218,10 @@ struct SMSGHANDLER_PARAMS;
 
 
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);                               // 0x0040B380
 
 D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nType); // 0x004788B0
 
-extern "C" D2CelStrc* __stdcall CelGetHandle(D2CelContextStrc* pContext);                                        // 0x00601840
+extern "C" D2CelStrc* __stdcall CelGetHandle(D2GfxDataStrc* pContext);                                        // 0x00601840
 
 extern "C" int __stdcall CelGetWidth(D2CelStrc* pCel);                                                                 // 0x006018C0
 
@@ -295,19 +292,19 @@ SpinnerImplementation::~SpinnerImplementation()
 // 0x004BBE70
 void SpinnerImplementation::Draw()
 {
-    if (unk0x38 || unk0x34)
+    if (bDownPressed || bUpPressed)
     {
         ++nUnk0x3CCalls;
         pfUnk0x3C();
     }
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = pCellFile;
-    tContext.nFrame = 2 * unk0x34;
+    tContext.pCelFile = pCellFile;
+    tContext.nFrame = 2 * bUpPressed;
     tContext.nDirection = 0;
     sub_004F6480(&tContext, nUpX, nUpY, -1, 5, 0);
-    tContext.nFrame = 2 * unk0x38 + 1;
+    tContext.nFrame = 2 * bDownPressed + 1;
     sub_004F6480(&tContext, nDownX, nDownY, -1, 5, 0);
 }
 
@@ -343,42 +340,41 @@ int SpinnerImplementation::HitTestDownArrow(SMSGHANDLER_PARAMS* pMsg)
 
 
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
 // build: symbol ?GetValue@SpinnerImplementation@@UAEHXZ 0x004BBF90
 int SpinnerImplementation::GetValue()
 {
-    if (unk0x34)
+    if (bUpPressed)
         return 1;
-    return unk0x38 ? 2 : 0;
+    return bDownPressed ? 2 : 0;
 }
 
 // 0x004BBFB0
-int SpinnerImplementation::sub_004BBFB0()
+int SpinnerImplementation::sub_004BBFB0_GetRepeatStep()
 {
-    if (!unk0x34 && !unk0x38)
+    if (!bUpPressed && !bDownPressed)
         return 0;
 
-    if (unk0x20)
+    if (bWheelStep)
     {
-        unk0x34 = 0;
-        unk0x38 = 0;
-        unk0x20 = 0;
+        bUpPressed = 0;
+        bDownPressed = 0;
+        bWheelStep = 0;
         return 1;
     }
 
     unsigned long dwNow = GetTickCount();
     if (unk0x4C)
     {
-        unk0x48 = dwNow;
+        dwLastStepTick = dwNow;
         return 1;
     }
 
     unsigned long dwElapsed = dwNow - unk0x44;
-    if (dwNow - unk0x48 < 0x46)
+    if (dwNow - dwLastStepTick < 0x46)
         return 0;
 
-    unk0x48 = dwNow;
+    dwLastStepTick = dwNow;
     if (dwElapsed > 0x1000)
         return (dwElapsed >> 11) * nUnk0x3CCalls;
     if (dwElapsed > 0xBB8)
@@ -396,15 +392,15 @@ int SpinnerImplementation::OnMouseWheel(SMSGHANDLER_PARAMS* pMsg)
 {
     if ((short)pMsg->wParamHigh > 0)
     {
-        unk0x34 = 1;
-        unk0x38 = 0;
-        unk0x20 = 1;
+        bUpPressed = 1;
+        bDownPressed = 0;
+        bWheelStep = 1;
     }
     else if ((short)pMsg->wParamHigh < 0)
     {
-        unk0x34 = 0;
-        unk0x38 = 1;
-        unk0x20 = 1;
+        bUpPressed = 0;
+        bDownPressed = 1;
+        bWheelStep = 1;
     }
 
     pMsg->bReturn = 1;
@@ -458,22 +454,22 @@ int __fastcall EDITBOX_HandleSpinnerPress(D2ButtonPairStrc* pButtons, int nUnuse
 // 0x004BC160
 int SpinnerImplementation::OnLButtonUp(SMSGHANDLER_PARAMS* pMsg)
 {
-    if (!unk0x30)
+    if (!bMouseDown)
     {
         return 0;
     }
 
     nUnk0x3CCalls = 0;
-    unk0x30 = 0;
-    if (unk0x34 == 1)
+    bMouseDown = 0;
+    if (bUpPressed == 1)
     {
-        unk0x34 = 0;
+        bUpPressed = 0;
         return 1;
     }
 
-    if (unk0x38 == 1)
+    if (bDownPressed == 1)
     {
-        unk0x38 = 0;
+        bDownPressed = 0;
         return 1;
     }
 
@@ -603,7 +599,7 @@ int SpinnerWrapper::GetValue()
 // 0x004BC330
 int SpinnerWrapper::sub_004BC330_ForwardSlot30(int nArg)
 {
-    return pImpl->sub_004BBFB0();
+    return pImpl->sub_004BBFB0_GetRepeatStep();
 }
 
 // build: symbol ??_GSpinnerImplementation@@UAEPAXI@Z 0x004BC450
@@ -618,14 +614,14 @@ SpinnerImplementation::SpinnerImplementation(int nX, int nY, int bHorizontal, in
     this->nY = nY;
     pfUnk0x3C = (void (__cdecl*)())nArg0C;
     this->f_2C = bHorizontal;
-    unk0x34 = 0;
-    unk0x38 = 0;
-    unk0x30 = 0;
+    bUpPressed = 0;
+    bDownPressed = 0;
+    bMouseDown = 0;
     unk0x4C = 0;
     nUnk0x3CCalls = 0;
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = pFile;
+    tContext.pCelFile = pFile;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
     D2CelStrc* pCel = CelGetHandle(&tContext);
@@ -653,46 +649,7 @@ SpinnerWrapper::SpinnerWrapper(int nX, int nY, int bHorizontal, int nArg0C)
 
 struct D2CelFileStrc;
 
-#pragma pack(push, 1)
-struct d2data_00727688_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
 
-extern "C" struct d2data_00727688_t gData_00727688; // 0x00727688
-
-extern "C" struct d2data_00727688_t gData_00727688 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00727688
 
 
 

@@ -1,7 +1,7 @@
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2Records.h"
 
-void* __stdcall DATATBLS_CompileTxt(void* hArchive, const char* szName, D2BinFieldStrc* pTbl, int* pRecordCount, int nRecordSize);// 0x006122F0
 extern void* gpObjgroupTxt;                                                                                 // 0x0096D478
 extern int gnObjgroupTxtRecordCount;                                                                        // 0x0096D47C
 

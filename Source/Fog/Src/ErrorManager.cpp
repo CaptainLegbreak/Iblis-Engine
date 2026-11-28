@@ -8,6 +8,9 @@
 #include "D2CmdArg.h"
 #include "D2FogSystemInfo.h"
 #include "D2Win32SystemInfo.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "StormApi2.h"
 
 typedef unsigned int size_t;
 
@@ -84,8 +87,6 @@ extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject);      
 
 struct D2HostentStrc;
 
-struct D2ThreadNameInfoStrc;
-
 
 struct D2ListEntryStrc;
 
@@ -134,8 +135,6 @@ typedef void* HKEY;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
-
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, size_t nSize); // 0x006829C0
@@ -149,8 +148,6 @@ extern "C" __declspec(dllimport) int __stdcall WSAStartup(unsigned short wVersio
 extern "C" __declspec(dllimport) D2HostentStrc* __stdcall gethostbyname(const char* szName); // 0x006CC57C
 
 extern "C" __declspec(dllimport) int __stdcall WSACleanup(); // 0x006CC58C
-
-extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(); // 0x006CC284
 
 extern "C" __declspec(dllimport) void __stdcall RaiseException(unsigned long dwCode, unsigned long dwFlags, unsigned long nArgs, const unsigned long* pArgs); // 0x006CC224
 
@@ -170,11 +167,7 @@ extern "C" int __stdcall Process32First(void* hSnapshot, D2ProcessEntryStrc* pEn
 
 extern "C" int __stdcall Process32Next(void* hSnapshot, D2ProcessEntryStrc* pEntry); // 0x006B143A
 
-const char* __stdcall SStrChr(const char* szString, char nChar); // 0x00413490
-
 bool __fastcall ERRORMANAGER_CreateDirectoryWide(wchar_t* wszPath); // 0x00404560
-
-int __fastcall FOG_GetInstallPath(char* szPath, unsigned int nSize); // 0x00406BA0
 
 extern "C" const char gszInternalCheckHost[]; // 0x006FF994
 
@@ -192,13 +185,7 @@ struct D2Storm408ElemStrc;
 
 struct D2StormArray408Strc;
 
-int __stdcall SFileSetBasePath(const char* szPath); // 0x004164B0
-
-int __stdcall SFileOpenFile(const char* szFileName, void** phFile); // 0x00419980
-
 int __stdcall SFileReadFileEx2(void* hFile, void* pBuffer, int nToRead, int* pnRead, void* pOverlapped, int nArg6, int nArg7); // 0x0041AAD0
-
-int __stdcall SFileGetFileSize(void* hFile, unsigned int* pnSizeHigh); // 0x00416370
 
 struct D2FindDataStrc
 {
@@ -228,25 +215,13 @@ extern "C" __declspec(dllimport) int __stdcall RemoveDirectoryA(const char* szPa
 
 extern "C" __declspec(dllimport) int __stdcall DeleteFileA(const char* lpFileName); // 0x006CC1A0
 
-extern "C" int __cdecl SStrPrintf(char* szDest, unsigned int nMaxCount, const char* szFormat, ...); // 0x00413A40
-
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
-
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
-
-unsigned int __stdcall SStrPack(char* szDest, const char* szSource, unsigned int nDestSize); // 0x00413800
-
 int __fastcall ERRORMANAGER_GetJulianDay(int nYear, int nMonth, int nDay); // 0x00407370
 
 void __fastcall ERRORMANAGER_JulianDayToDate(long nJulian, int* pYear, int* pMonth, int* pDay); // 0x00407440
 
 int __fastcall EXCEPTIONS_GetAppPath(char* szPath, unsigned int nSize); // 0x0040C220
 
-const char* __fastcall FOG_GetHostIPAddress(); // 0x0040DF60
-
 void __stdcall ERRORMANAGER_WriteProcessorReport(); // 0x0040EA00
-
-void __cdecl LOGMANAGER_WriteLogLine(const char* szFormat, ...); // 0x00410610
 
 extern int gnOsKind; // 0x0074D890
 
@@ -346,15 +321,11 @@ extern "C" const char gszUnknownUpper[];                                        
 
 extern "C" const char gszUnknownTitle[];// 0x006CCBE8
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
-
 bool __stdcall ERRORMANAGER_GetKnownFolderPathA(char* szPath, int nSize);                                   // 0x004067D0
 
 int __fastcall ERRORMANAGER_AppendBackslash(char* szPath, size_t nSize);                                // 0x00406B20
 
 int __fastcall ERRORMANAGER_MoveDirectoryTree(const char* szPathA, const char* szPathB);                         // 0x00406DE0
-
-int __stdcall SRegSaveString(const char* szKeyName, const char* szValueName, unsigned int nFlags, const char* szString); // 0x00415070
 
 struct D2ThreadContextStrc;
 
@@ -399,8 +370,6 @@ unsigned long __cdecl ERRORMANAGER_GetCurrentThreadId(); // 0x00401690
 
 void __fastcall ERRORMANAGER_TerminateCurrentProcess(unsigned int nCode); // 0x004013C0
 
-int __stdcall SFileCloseFile(void* pArg);    // 0x004198D0
-
 struct AsyncDataEventSlot;
 
 struct D2CriticalSectionStrc;
@@ -441,8 +410,6 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetFileAttributesW(cons
 
 extern "C" wchar_t* __cdecl wcsrchr(const wchar_t* szString, wchar_t nChar); // 0x00685DF7
 
-const char* __stdcall SStrChrR(const char* szString, char nChar); // 0x004134D0
-
 long __stdcall sub_00403E90_UnhandledExceptionFilter(void* pExceptionPointers); // 0x00403E90
 
 void __fastcall LOGMANAGER_SetLogPrefix(const char* szName); // 0x0040F5A0
@@ -451,7 +418,7 @@ extern D2CriticalSectionStrc gtSymbolLock; // 0x0098A6F0
 
 extern void* gpfnCrashHandler; // 0x00992B10
 
-extern D2FogSystemInfoStrc gtSystemInfo_0074D88C; // 0x0074D88C
+extern D2FogSystemInfoStrc gbSystemInfoCaptured; // 0x0074D88C
 
 extern "C" int __stdcall Process32FirstW(void* hSnapshot, D2ProcessEntryWStrc* pEntry); // 0x006B1524
 
@@ -487,13 +454,7 @@ struct AsyncDataEventSlot
     AsyncData* pAsyncOp;
 };
 
-int __fastcall FOG_FOpenFile(const char* szFileName, void** phFile); // 0x004068E0
-
 int __fastcall FOG_FCloseFile(void* pArg); // 0x004068F0
-
-int __fastcall FOG_FReadFile(void* hFile, void* pBuffer, int nToRead, int* pnRead, void* pOverlapped, int nArg7, int nArg6); // 0x00406900
-
-int __fastcall FOG_FGetFileSize(void* hFile, unsigned int* pnSizeHigh); // 0x00406930
 
 int __fastcall FOG_FSetFilePointer(void* hFile, long nOffset, long* pnOffsetHigh, int nMethod); // 0x00406940
 
@@ -607,8 +568,6 @@ void __fastcall ERRORMANAGER_SetReportText(const char* szText); // 0x00401740
 
 void __fastcall ERRORMANAGER_SetCrashHandler(void* pfnHandler, void* pContext, int nUnused); // 0x00403F60
 
-int __fastcall ERRORMANAGER_GetModuleDirectory(char* szPath, unsigned int nSize); // 0x00406B60
-
 void __cdecl ERRORMANAGER_LogSystemInfo(); // 0x004076B0
 
 void __cdecl ERRORMANAGER_ExitHandler(); // 0x00407F20
@@ -645,6 +604,12 @@ void __fastcall ERRORMANAGER_PoolFree(D2PoolSystemStrc* pSystem, void** ppMemory
 static int __cdecl ERRORMANAGER_ConvertLocalTime(tm* pTm, const __int64* pTime)
 {
     return _localtime64_s(pTm, pTime);
+}
+
+// 0x0040EB10
+int __cdecl sub_0040EB10()
+{
+    return 0;
 }
 
 // calling-convention shim (not game code)
@@ -874,7 +839,8 @@ int D2ThreadContextStrc::sub_00405060_CaptureFrames(unsigned long dwThreadId, D2
 }
 
 // 0x004016A0
-void __cdecl ERRORMANAGER_StartDbgHelpThread()
+// noinline: FOG_InitErrorMgr (0x408CE0) calls it out of line in the image
+__declspec(noinline) void __cdecl ERRORMANAGER_StartDbgHelpThread()
 {
     sub_00402980_StartDbgHelpWorker();
 }
@@ -901,26 +867,6 @@ bool __cdecl ERRORMANAGER_IsInternalCheckLoopback()
     }
     WSACleanup();
     return bResult;
-}
-
-// 0x00401A70
-void __cdecl ERRORMANAGER_SetMiniDumpThreadName()
-{
-    if (IsDebuggerPresent() == 1)
-    {
-        D2ThreadNameInfoStrc tInfo;
-        tInfo.dwType = 0x1000;
-        tInfo.szName = "MiniDump Thread";
-        tInfo.dwThreadID = -1;
-        tInfo.dwFlags = 0;
-        __try
-        {
-            RaiseException(0x406D1388, 0, 4, (unsigned long*)&tInfo);
-        }
-        __except (-1)
-        {
-        }
-    }
 }
 
 // 0x00403070
@@ -1777,7 +1723,8 @@ void __stdcall sub_K01_Emit_00407FC0(const char* szPrefix, const char* szText, i
 }
 
 // 0x004013C0
-void __fastcall ERRORMANAGER_TerminateCurrentProcess(unsigned int nExitCode)
+// noinline: ERRORMANAGER_CrashHandler (0x4082E0) calls it out of line in the image
+__declspec(noinline) void __fastcall ERRORMANAGER_TerminateCurrentProcess(unsigned int nExitCode)
 {
     TerminateProcess(GetCurrentProcess(), nExitCode);
 }
@@ -1805,7 +1752,8 @@ int __cdecl ERRORMANAGER_GetProcessThreadCount()
 }
 
 // 0x00401690
-unsigned long __cdecl ERRORMANAGER_GetCurrentThreadId()
+// noinline: ERRORMANAGER_CrashHandler (0x4082E0) calls it out of line in the image
+__declspec(noinline) unsigned long __cdecl ERRORMANAGER_GetCurrentThreadId()
 {
     return GetCurrentThreadId();
 }
@@ -1896,7 +1844,8 @@ void __fastcall ERRORMANAGER_DumpOtherThreads(D2CrashPrintFn pfnPrint, void* pCo
 }
 
 // 0x00403F60
-void __fastcall ERRORMANAGER_SetCrashHandler(void* pfnHandler, void* pContext, int nUnused)
+// noinline: FOG_InitErrorMgr (0x408CE0) calls it out of line in the image
+__declspec(noinline) void __fastcall ERRORMANAGER_SetCrashHandler(void* pfnHandler, void* pContext, int nUnused)
 {
     gpfnCrashHandler = pfnHandler;
     gpCrashContext = pContext;
@@ -1983,37 +1932,10 @@ bool __fastcall ERRORMANAGER_CreateDirectoryWide(wchar_t* wszPath)
     return CreateDirectoryW(wszPath, 0) != 0;
 }
 
-// 0x00405570
-int __stdcall GetCmdIndex(const char* s)
-{
-    for (size_t i = 0; i < ARRAY_SIZE(gaCmdArguments); i++)
-    {
-        if (0 == strcmp(gaCmdArguments[i].szCommand, s))
-        {
-            return (int)i;
-        }
-    }
-    return -1;
-}
-
-// 0x004055D0
-int __fastcall ERRORMANAGER_IsCmdSeparator(char c)
-{
-    const char aSeparators[4] = { ' ', '\t', '\n', ':' };
-    for (int i = 0; i < 4; i++)
-    {
-        if (aSeparators[i] == c)
-        {
-            return 1;
-        }
-    }
-    return 0;
-}
-
 // 0x00407360
 D2FogSystemInfoStrc* __cdecl FOG_GetSystemInfo()
 {
-    return gtSystemInfo_0074D88C.bCaptured ? &gtSystemInfo_0074D88C : 0;
+    return gbSystemInfoCaptured.bCaptured ? &gbSystemInfoCaptured : 0;
 }
 
 // 0x00407440
@@ -2181,6 +2103,173 @@ void __cdecl ERRORMANAGER_DebugPrintLog(const char* szFormat, ...)
     ERRORMANAGER_DebugPrintV(1, szFormat, (va_list)(&szFormat + 1));
 }
 
+extern long volatile gnReportBusy;                                                                 // 0x007076B8
+
+extern "C" const char gszCrashFile[];                                                              // 0x006CD1C0
+
+extern "C" const char gszAssertionBegin[];                                                         // 0x006CD170
+
+extern "C" const char gszAssertionEnd[];                                                           // 0x006CD158
+
+extern "C" const char gszRegisters[];                                                              // 0x006CD14C
+
+extern "C" const char gszThreads[];                                                                // 0x006CD140
+
+
+struct D2ExceptionPointersStrc { void* pRecord; D2ThreadContextStrc* pContext; };
+
+void __fastcall sub_00402EE0_DumpModules(D2CrashPrintFn pfnPrint,void* pContext); // 0x00402EE0
+
+bool __fastcall sub_00402820_WriteMiniDump(const char* szPath,const char* szComment,void* pExceptionPointers,unsigned long dwThreadId); // 0x00402820
+
+extern const char gszCrashSummary[]; // 0x006CD1A8
+
+extern const char gszCrashDetail[]; // 0x006CD1A0
+
+extern const char gszCrashNewline[]; // 0x006CD188
+
+extern const char gszModules[]; // 0x006CD124
+
+extern const char gszMore1[]; // 0x006CD108
+
+extern const char gszMore2[]; // 0x006CD0F0
+
+extern const char gszMore3[]; // 0x006CD0D4
+
+extern const char gszMore4[]; // 0x006CD0C4
+
+extern const char gszMinidump[]; // 0x006CD0B4
+
+extern const char gszMore5[]; // 0x006CD09C
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+extern "C" int __cdecl atexit(void (__cdecl* pfnExit)()); // 0x00683824
+
+void __cdecl AUTOMAP_CaptureSystemInfo(); // 0x00407DE0
+
+int __fastcall ERRORMANAGER_CrashHandler(D2CrashInputStrc* pInput); // 0x004082E0
+
+int __cdecl EXCEPTIONS_LoadImageHlp(); // 0x0040D5B0
+
+void __cdecl LOGMANAGER_InitLogSystem(); // 0x00410540
+
+int __cdecl SYSTEM_IsPlatformNT(); // 0x00410960
+
+void __cdecl SYSTEM_InitTimeBase(); // 0x004109D0
+
+void __cdecl sub_00411210_InitTimer(); // 0x00411210
+
+extern unsigned int gdwBitMasks_006CE268[]; // 0x006CE268
+
+
+
+
+
+
+
+// build: symbol ?BNNEWS_CopyNewsItem@* 0x0051D350
+
+// build: symbol ?strrchr@@YAPADPADH@Z 0x00401A30
+
+char gszVersion[4096]; // 0x0074C848
+
+char gszInspectorVersion[4096]; // 0x0074D8C8
+
+int gbIsPlatformNT; // 0x0074F0CC
+
+unsigned long gdwRegValue; // 0x0074F0E0
+
+
+// 0x004082E0
+int __fastcall ERRORMANAGER_CrashHandler(D2CrashInputStrc* pInput)
+{
+    D2ThreadContextStrc* pThread = pInput->pException->pContext;
+    const long nBusy = InterlockedIncrement(&gnReportBusy);
+    if (nBusy == 0)
+    {
+        gbWritingCrashReport = 1;
+        crashy::Report report;
+        if (!report.OpenReport(gszCrashFile))
+        {
+            gbWritingCrashReport = 0;
+        }
+        else
+        {
+            report.WriteInspectorHeader();
+            report.sub_00401380(gszCrashSummary,pInput->szSummary);
+            if (pInput->szDetail[0]) report.sub_00401380(gszCrashDetail,pInput->szDetail);
+            report.sub_00401380(gszCrashNewline);
+            report.sub_00401380(gszAssertionBegin);
+            int nSkip = 0;
+            if (!pThread && !pInput->pFrames)
+            {
+                nSkip = pInput->nSkip;
+                if (pInput->dwThreadId == ERRORMANAGER_GetCurrentThreadId()) nSkip += 2;
+            }
+            if (pInput->pFrames)
+                sub_00403100_PrintFrames(pInput->dwThreadId,pInput->pFrames,pInput->nFrames,ERRORMANAGER_ReportPrint,&report,0,1);
+            else
+                ERRORMANAGER_DumpThread(pInput->dwThreadId,pThread,ERRORMANAGER_ReportPrint,&report,0,1,nSkip);
+            report.sub_00401380(gszAssertionEnd);
+            report.sub_00401380(gszRegisters);
+            sub_004032F0_DumpRegisters(pInput->dwThreadId,ERRORMANAGER_ReportPrint,&report);
+            report.sub_00401380(gszThreads);
+            ERRORMANAGER_DumpOtherThreads(ERRORMANAGER_ReportPrint,&report,pInput->dwThreadId);
+            report.sub_00401380(gszModules);
+            sub_00402EE0_DumpModules(ERRORMANAGER_ReportPrint,&report);
+            report.sub_00401380(gszMore1);
+            report.sub_00401380(gszMore2);
+            report.sub_00401380(gszMore3);
+            if (pInput->pFrames)
+                sub_00403100_PrintFrames(pInput->dwThreadId,pInput->pFrames,pInput->nFrames,ERRORMANAGER_ReportPrint,&report,0,0);
+            else
+                ERRORMANAGER_DumpThread(pInput->dwThreadId,pThread,ERRORMANAGER_ReportPrint,&report,0,0,nSkip);
+            report.sub_00401380(gszMore4);
+            SStrCopy(gszProcessPath,report.m_szText408,0x800);
+            SStrPack(gszProcessPath,gszMinidump,0x800);
+            if (sub_00402820_WriteMiniDump(gszProcessPath,&gszEmptyAssertText,pInput->pException,0))
+                report.sub_00401220_AddFile(gszProcessPath,false);
+            report.sub_00401380(gszMore5);
+            report.sub_004011F0_Close();
+            D2CrashSubmitInfoStrc info;
+            memset(&info,0,sizeof(info));
+            info.szName=gtInspectorInfo.szUnused04;
+            for (int i=0;i<report.m_nLineCount;++i)
+            {
+                if (i < sizeof(info.apszLines)/sizeof(info.apszLines[0]))
+                {
+                    info.apszLines[i]=report.m_aszLines[i];
+                    ++info.nLines;
+                }
+            }
+            sub_00401790_SubmitReport(report.m_szText08,&info);
+            gbWritingCrashReport=0;
+        }
+        InterlockedDecrement(&gnReportBusy);
+        ERRORMANAGER_TerminateCurrentProcess(-1);
+    }
+    return 2;
+}
+
 // 0x00409770
 void* __fastcall ERRORMANAGER_PoolAllocLarge(D2PoolSystemStrc* pSystem, int nSize, const char* szFile, int nLine)
 {
@@ -2328,7 +2417,7 @@ void __cdecl sub_0040ADA0_Nop()
 
 typedef unsigned char Byte;
 
-extern Byte gnSymbolCodes_0075B6A0[256]; // 0x0075B6A0
+extern Byte gabHuffmanCode[256]; // 0x0075B6A0
 extern Byte* gpDecodeTable_0075AFA0[256]; // 0x0075AFA0
 extern Byte gabDecodeStorage[768]; // 0x0075B3A0
 
@@ -2372,10 +2461,10 @@ int __fastcall FOG_10219(Byte* lengths)
         sortedLengths[i] = lengths[sortedSymbols[i]];
         gabHuffmanCodeLength[i] = lengths[i];
     }
-    gnSymbolCodes_0075B6A0[sortedSymbols[0]] = 0;
+    gabHuffmanCode[sortedSymbols[0]] = 0;
     for (i = 1; i < 256; ++i)
-        gnSymbolCodes_0075B6A0[sortedSymbols[i]] =
-            (Byte)((gnSymbolCodes_0075B6A0[sortedSymbols[i - 1]] + 1) >> (sortedLengths[i - 1] - sortedLengths[i]));
+        gabHuffmanCode[sortedSymbols[i]] =
+            (Byte)((gabHuffmanCode[sortedSymbols[i - 1]] + 1) >> (sortedLengths[i - 1] - sortedLengths[i]));
     Byte* storage = gabDecodeStorage;
     for (i = 255; i >= 0; --i)
     {
@@ -2383,7 +2472,7 @@ int __fastcall FOG_10219(Byte* lengths)
         if (length <= 8)
         {
             Byte symbol = sortedSymbols[i];
-            int prefix = gnSymbolCodes_0075B6A0[symbol] << (8 - length);
+            int prefix = gabHuffmanCode[symbol] << (8 - length);
             int count = 1u << (8 - length);
             Byte** ppEntry = &gpDecodeTable_0075AFA0[prefix];
             *ppEntry = storage;
@@ -2396,7 +2485,7 @@ int __fastcall FOG_10219(Byte* lengths)
         else
         {
             Byte* pSymbol = &sortedSymbols[i];
-            unsigned int code = gnSymbolCodes_0075B6A0[*pSymbol];
+            unsigned int code = gabHuffmanCode[*pSymbol];
             unsigned int prefix = code >> ((Byte)(length - 8));
             if ((code & ((1 << (length - 8)) - 1)) == 0)
             {
@@ -2803,6 +2892,18 @@ bool __fastcall ERRORMANAGER_ShowErrorReport(const char* szSummary, const char* 
     return bResult;
 }
 
+// 0x004088C0
+// noinline: ERRORMANAGER_RaiseErrorReport (0x408900) calls it out of line in the image
+__declspec(noinline) int __fastcall ERRORMANAGER_ReportNestedError(const char* szFile, int nLine, const char* szMessage)
+{
+    if (gbWritingCrashReport)
+    {
+        LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, "\n***** ENCOUNTERED ERROR DURING ERROR HANDLING!!!\n%s,%d\n%s\n*****", ERRORMANAGER_StripSourcePath(szFile), nLine, szMessage);
+        return 1;
+    }
+    return 0;
+}
+
 // 0x00406B20
 int __fastcall ERRORMANAGER_AppendBackslash(char* szPath, unsigned int nSize)
 {
@@ -2824,7 +2925,8 @@ int __fastcall ERRORMANAGER_AppendBackslash(char* szPath, unsigned int nSize)
 }
 
 // 0x00406B60
-int __fastcall ERRORMANAGER_GetModuleDirectory(char* szPath, unsigned int nSize)
+// noinline: FOG_InitErrorMgr (0x408CE0) calls it out of line in the image
+__declspec(noinline) int __fastcall ERRORMANAGER_GetModuleDirectory(char* szPath, unsigned int nSize)
 {
     const unsigned long nLength = GetModuleFileNameA(0, szPath, nSize);
     if (nLength && nLength != nSize)
@@ -3206,13 +3308,70 @@ void __fastcall ERRORMANAGER_ShowErrorBox(int nType, const char* szFile, int nLi
     MessageBoxA(0, szBoxText, szCaption, 0x30);
 }
 
-char gszVersion[4096]; // 0x0074C848
+// 0x00408CE0
+void __fastcall FOG_InitErrorMgr(const char* szProgramName, const char* szVersion, int bLogToFile)
+{
+    char szPath[0x1000];
+    if (gbErrorMgrInit)
+    {
+        if (bLogToFile)
+        {
+            ERRORMANAGER_LogSystemInfo();
+        }
+        return;
+    }
+    ERRORMANAGER_StartDbgHelpThread();
+    ERRORMANAGER_SetCrashHandler(ERRORMANAGER_CrashHandler, 0, 0);
+    if (ERRORMANAGER_GetModuleDirectory(szPath, 0x1000))
+    {
+        ERRORMANAGER_SetReportText(szPath);
+    }
+    gtInspectorInfo.nProjectId = 0x108;
+    gtInspectorInfo.szUnused04 = "Diablo II";
+    gtInspectorInfo.szApplication = "Diablo II";
+    gtInspectorInfo.szModule = "Diablo II";
+    sprintf(gszInspectorVersion, "D2 %i.%i%c", 1, 14, 'd');
+    gtInspectorInfo.szMilestone = gszInspectorVersion;
+    gtInspectorInfo.szBuildNumber = "77";
+    gtInspectorInfo.szPlatform = "Windows";
+    gtInspectorInfo.szPrimaryAssignment = ".ClassicErrorReporter";
+    gtInspectorInfo.szAssignments = ".ClassicErrorReporter";
+    if (szVersion)
+    {
+        SStrCopy(gszVersion, szVersion, 0x1000);
+    }
+    gbIsPlatformNT = SYSTEM_IsPlatformNT();
+    InitializeCriticalSection(&gtLock_0074C830);
+    InitializeCriticalSection(&gtLock_0074D848);
+    gbErrorMgrInit = 1;
+    SYSTEM_InitTimeBase();
+    unsigned long dwValue = 0;
+    SRegLoadValue("Diablo II", "TraceUnfreedMemory", 0, &dwValue);
+    gdwRegValue = dwValue;
+// build: symbol ?FOG_CreateNewPoolSystem@* 0x00409DD0
+    FOG_CreateNewPoolSystem(0, "Global Pool System", 0x40000, 0x8000);
+    sub_00411210_InitTimer();
+    for (int i = 0; i < 0x20; ++i)
+    {
+        const unsigned int nMask = 1 << i;
+        FOG_ASSERT(gdwBitMasks_006CE268[i] == nMask, 0x576);
+        FOG_ASSERT(gdwInvBitMasks[i] == ~nMask, 0x577);
+    }
+    AUTOMAP_CaptureSystemInfo();
+    LOGMANAGER_InitLogSystem();
+    if (bLogToFile)
+    {
+        ERRORMANAGER_LogSystemInfo();
+    }
+    atexit(ERRORMANAGER_ExitHandler);
+    EXCEPTIONS_LoadImageHlp();
+// build: symbol ?ERRORMANAGER_ShowErrorReport@* 0x00408660
+    SetErrorReportCallback(ERRORMANAGER_ShowErrorReport);
+}
 
-char gszInspectorVersion[4096]; // 0x0074D8C8
 
-int gbIsPlatformNT; // 0x0074F0CC
 
-unsigned long gdwRegValue; // 0x0074F0E0
+
 
 static int gbExpansionChecked; // 0x0074F0DC
 
@@ -3336,11 +3495,6 @@ static int ERRORMANAGER_GetPoolIndex(int nSize)
     return Log2Ceil(nSize) - 4;
 }
 
-int __fastcall sub_M289_Emit_004091B0(int nUnused, int nSize)
-{
-    return ERRORMANAGER_GetPoolIndex(nSize);
-}
-
 // 0x00409200
 static int ERRORMANAGER_GetPoolBlockSize(int nIndex)
 {
@@ -3410,6 +3564,15 @@ void __cdecl FOG_DisplayAssert(const char* szMsg, const char* szFile, int nLine)
 {
     FOG_SOCKET_WSACleanup();
     ERRORMANAGER_RaiseErrorReport(5, &gszEmptyAssertText, nLine, "Unrecoverable internal error %08x", szFile);
+    LOGMANAGER_CloseLogFiles();
+}
+
+// 0x00408A60
+// noinline: the image calls it out of line from the D2_ASSERT expansions in this file (0x406D30, 0x409370 and the rest)
+extern "C" __declspec(noinline) void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine)
+{
+    FOG_SOCKET_WSACleanup();
+    ERRORMANAGER_RaiseErrorReport(6, &gszEmptyAssertText, nLine, "Unrecoverable internal error %08x", szFile);
     LOGMANAGER_CloseLogFiles();
 }
 
@@ -3579,7 +3742,7 @@ void __fastcall ERRORMANAGER_PoolFree(D2PoolSystemStrc* pSystem, void** ppMemory
         const int nIndex = ((char*)*ppMemory - (char*)pBlock->pMemory) / pPool->nBlockSize;
         if (nIndex >= pPool->nBlocksPerChunk)
         {
-            sub_00409810_FreeLarge(pSystem, *ppMemory, szFile, nLine);
+            ERRORMANAGER_PoolFreeLarge(pSystem, *ppMemory, szFile, nLine);
             return;
         }
         EnterCriticalSection(&pPool->tLock);
@@ -3592,7 +3755,7 @@ void __fastcall ERRORMANAGER_PoolFree(D2PoolSystemStrc* pSystem, void** ppMemory
         LeaveCriticalSection(&pPool->tLock);
         return;
     }
-    sub_00409810_FreeLarge(pSystem, *ppMemory, szFile, nLine);
+    ERRORMANAGER_PoolFreeLarge(pSystem, *ppMemory, szFile, nLine);
 }
 
 void* __fastcall ERRORMANAGER_PoolRealloc(D2PoolSystemStrc* pPool, void* pMemory, int nSize, const char* szFile, int nLine); // 0x0040A1F0
@@ -3847,13 +4010,13 @@ void* __fastcall ERRORMANAGER_PoolRealloc(D2PoolSystemStrc* pPool, void* pMemory
     D2MemPoolBlockStrc* pBlock = ERRORMANAGER_FindPoolBlock(pMemory, pSystem);
     if (!pBlock)
     {
-        void* pNew = sub_004098B0_ReallocLarge(pSystem, pMemory, nSize, szFile, nLine);
+        void* pNew = ERRORMANAGER_PoolReallocLarge(pSystem, pMemory, nSize, szFile, nLine);
         D2_ASSERT(pNew, 0x635);
         return pNew;
     }
     if (pMemory < pBlock->pMemory)
     {
-        void* pNew = sub_004098B0_ReallocLarge(pSystem, pMemory, nSize, szFile, nLine);
+        void* pNew = ERRORMANAGER_PoolReallocLarge(pSystem, pMemory, nSize, szFile, nLine);
         D2_ASSERT(pNew, 0x63C);
         return pNew;
     }
@@ -3861,7 +4024,7 @@ void* __fastcall ERRORMANAGER_PoolRealloc(D2PoolSystemStrc* pPool, void* pMemory
     const int nIndex = ((char*)pMemory - (char*)pBlock->pMemory) / pBlockPool->nBlockSize;
     if (nIndex >= pBlockPool->nBlocksPerChunk)
     {
-        void* pNew = sub_004098B0_ReallocLarge(pSystem, pMemory, nSize, szFile, nLine);
+        void* pNew = ERRORMANAGER_PoolReallocLarge(pSystem, pMemory, nSize, szFile, nLine);
         D2_ASSERT(pNew, 0x648);
         return pNew;
     }
@@ -4111,8 +4274,11 @@ struct d2data_007077C0_t
 #pragma pack(pop)
 
 extern "C" const struct d2data_006CCA6B_t gData_006CCA6B; // 0x006CCA6B
+extern "C" const char gData_006FF988[12]; // 0x006FF988
 extern "C" const D2GuidStrc gData_006CCA6C; // 0x006CCA6C
-extern "C" const char gData_006CCBE8[8]; // 0x006CCBE8
+extern "C" const char gData_006FF994[36]; // 0x006FF994
+extern "C" struct d2data_007077C0_t gData_007077C0; // 0x007077C0
+extern "C" const char* const gData_00706618[15]; // 0x00706618
 extern "C" const char gData_006CD09C[24]; // 0x006CD09C
 extern "C" const char gData_006CD0B4[16]; // 0x006CD0B4
 extern "C" const char gData_006CD0C4[16]; // 0x006CD0C4
@@ -4124,20 +4290,42 @@ extern "C" const char gData_006CD188[24]; // 0x006CD188
 extern "C" const char gData_006CD1A0[8]; // 0x006CD1A0
 extern "C" const char gData_006CD1A8[24]; // 0x006CD1A8
 extern "C" const unsigned int gData_006CD490[33]; // 0x006CD490
-extern "C" const char gData_006FF988[12]; // 0x006FF988
-extern "C" const char gData_006FF994[36]; // 0x006FF994
-extern "C" const char* const gData_00706618[15]; // 0x00706618
-extern "C" struct d2data_007077C0_t gData_007077C0; // 0x007077C0
+extern "C" const char gData_006CCBE8[8]; // 0x006CCBE8
 
 extern "C" const struct d2data_006CCA6B_t gData_006CCA6B = {
     { 0x00 }
 }; // 0x006CCA6B
 
+extern const char* gaszErrorTypeNames[1049] = {
+    "No Error", "Unknown Error", "Out of Memory Error", "File Read Error", "File Write Error", "Assertion Failure", "Halt", "Warning", "Missing Dll", "Registry Error", "Deadlock", "?\?\?", (const char*)&gData_006CCB2C, (const char*)&gData_006CCB28, (const char*)&gData_006CCB24, (const char*)&gData_006CCB20,
+    (const char*)&gData_006CCB1C, (const char*)&gData_006CCB18, (const char*)&gData_006CCB14, (const char*)&gData_006CCB10, (const char*)&gData_006CCB0C, (const char*)&gData_006CCB08, (const char*)&gData_006CCB04, (const char*)&gData_006CCB00, 0, (const char*)0x3244
+}; // 0x00706654
+
+extern "C" const char gData_006FF988[12] = "Main Thread"; // 0x006FF988
+#pragma comment(linker, "/alternatename:_gszMainThread=_gData_006FF988")
+
 extern "C" const D2GuidStrc gData_006CCA6C = { 0x4C5C32FF, 0xBB9D, 0x43B0, { 0xB5, 0xB4, 0x2D, 0x72, 0xE5, 0x4E, 0xAA, 0xA4 } }; // 0x006CCA6C
 #pragma comment(linker, "/alternatename:_gtKnownFolderId=_gData_006CCA6C")
 
-extern "C" const char gData_006CCBE8[8] = "Unknown"; // 0x006CCBE8
-#pragma comment(linker, "/alternatename:_gszUnknownTitle=_gData_006CCBE8")
+extern "C" const char gData_006FF994[36] = {
+    105, 110, 116, 101, 114, 110, 97, 108, 99, 104, 101, 99, 107, 46, 99, 111,
+    114, 112, 46, 98, 108, 105, 122, 122, 97, 114, 100, 46, 110, 101, 116, 0,
+    127, 0, 0, 1
+}; // 0x006FF994
+#pragma comment(linker, "/alternatename:_gszInternalCheckHost=_gData_006FF994")
+
+extern "C" struct d2data_007077C0_t gData_007077C0 = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00,
+        0x0F, 0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x7F, 0x00, 0x00, 0x00,
+        0xFF, 0x00, 0x00, 0x00, 0xFF, 0x01, 0x00, 0x00, 0xFF, 0x03, 0x00, 0x00, 0xFF, 0x07, 0x00, 0x00,
+        0xFF, 0x0F, 0x00, 0x00, 0xFF, 0x1F, 0x00, 0x00, 0xFF, 0x3F, 0x00, 0x00, 0xFF, 0x7F
+    }
+}; // 0x007077C0
+#pragma comment(linker, "/alternatename:?gadwHuffmanMask@@3PAIA=_gData_007077C0")
+
+extern "C" const char* const gData_00706618[15] = { (const char* const)"English", (const char* const)"Spanish", (const char* const)"German", (const char* const)"French", (const char* const)"Portuguese", (const char* const)"Italian", (const char* const)"Japanese", (const char* const)"Korean", (const char* const)"Simplified Chinese", (const char* const)"Traditional Chinese", (const char* const)"Polish", (const char* const)"Russian", (const char* const)"English with Korean Chat", (const char* const)"Unknown", (const char* const)"14" }; // 0x00706618
+#pragma comment(linker, "/alternatename:?gaszLanguageNames@@3QBQBDB=_gData_00706618")
 
 extern "C" const char gData_006CD09C[24] = "<:Inspector.HashBlock>\n"; // 0x006CD09C
 #pragma comment(linker, "/alternatename:?gszMore5@@3QBDB=_gData_006CD09C")
@@ -4169,63 +4357,16 @@ extern "C" const char gData_006CD1A0[8] = " (%s)"; // 0x006CD1A0
 extern "C" const char gData_006CD1A8[24] = "<Inspector.Summary:>\n%s"; // 0x006CD1A8
 #pragma comment(linker, "/alternatename:?gszCrashSummary@@3QBDB=_gData_006CD1A8")
 
+extern long volatile gnReportBusy = -1; // 0x007076B8
+
+extern long volatile gnCrashReportBusy = -1; // 0x007076BC
+
 extern "C" const unsigned int gData_006CD490[33] = {
     0, 1, 3, 7, 0xF, 0x1F, 0x3F, 0x7F, 0xFF, 0x1FF, 0x3FF, 0x7FF, 0xFFF, 0x1FFF, 0x3FFF, 0x7FFF,
     0xFFFF, 0x1FFFF, 0x3FFFF, 0x7FFFF, 0xFFFFF, 0x1FFFFF, 0x3FFFFF, 0x7FFFFF, 0xFFFFFF, 0x1FFFFFF, 0x3FFFFFF, 0x7FFFFFF, 0xFFFFFFF, 0x1FFFFFFF, 0x3FFFFFFF, 0x7FFFFFFF,
     0xFFFFFFFF
 }; // 0x006CD490
 #pragma comment(linker, "/alternatename:?gadwLowBitMasks@@3QBIB=_gData_006CD490")
-
-extern "C" const char gData_006FF988[12] = "Main Thread"; // 0x006FF988
-#pragma comment(linker, "/alternatename:_gszMainThread=_gData_006FF988")
-
-extern "C" const char gData_006FF994[36] = {
-    105, 110, 116, 101, 114, 110, 97, 108, 99, 104, 101, 99, 107, 46, 99, 111,
-    114, 112, 46, 98, 108, 105, 122, 122, 97, 114, 100, 46, 110, 101, 116, 0,
-    127, 0, 0, 1
-}; // 0x006FF994
-#pragma comment(linker, "/alternatename:_gszInternalCheckHost=_gData_006FF994")
-
-extern "C" const char* const gData_00706618[15] = { (const char* const)"English", (const char* const)"Spanish", (const char* const)"German", (const char* const)"French", (const char* const)"Portuguese", (const char* const)"Italian", (const char* const)"Japanese", (const char* const)"Korean", (const char* const)"Simplified Chinese", (const char* const)"Traditional Chinese", (const char* const)"Polish", (const char* const)"Russian", (const char* const)"English with Korean Chat", (const char* const)"Unknown", (const char* const)"14" }; // 0x00706618
-#pragma comment(linker, "/alternatename:?gaszLanguageNames@@3QBQBDB=_gData_00706618")
-
-extern const char* gaszErrorTypeNames[1049] = {
-    "No Error", "Unknown Error", "Out of Memory Error", "File Read Error", "File Write Error", "Assertion Failure", "Halt", "Warning", "Missing Dll", "Registry Error", "Deadlock", "?\?\?", (const char*)&gData_006CCB2C, (const char*)&gData_006CCB28, (const char*)&gData_006CCB24, (const char*)&gData_006CCB20,
-    (const char*)&gData_006CCB1C, (const char*)&gData_006CCB18, (const char*)&gData_006CCB14, (const char*)&gData_006CCB10, (const char*)&gData_006CCB0C, (const char*)&gData_006CCB08, (const char*)&gData_006CCB04, (const char*)&gData_006CCB00, 0, (const char*)0x3244
-}; // 0x00706654
-
-extern long volatile gnReportBusy = -1; // 0x007076B8
-
-extern long volatile gnCrashReportBusy = -1; // 0x007076BC
-
-extern unsigned char gabHuffmanCodeLength[256] = {
-    1, 4, 6, 7, 7, 6, 7, 7, 7, 8, 7, 8, 8, 7, 9, 8,
-    8, 8, 7, 6, 6, 7, 8, 8, 8, 9, 9, 0xA, 0xA, 8, 7, 8,
-    8, 0xA, 0xA, 0xA, 0xA, 9, 0xA, 0xA, 9, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xB,
-    9, 9, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 9, 0xA, 0xA, 0xA, 0xA,
-    9, 0xA, 0xA, 9, 0xA, 9, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 9, 9, 0xA, 0xB,
-    9, 8, 9, 0xA, 0xB, 9, 9, 0xA, 9, 0xA, 0xA, 0xA, 0xB, 0xA, 0xA, 0xA,
-    0xA, 0xA, 9, 9, 9, 0xA, 0xA, 7, 7, 7, 0xA, 9, 8, 7, 0xA, 0xA,
-    0xA, 0xB, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xB, 0xA, 0xA, 0xA, 0xA,
-    7, 0xA, 0xA, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xA, 0xB, 0xB, 0xB, 0xB, 0xA,
-    9, 0xB, 0xB, 0xA, 0xB, 9, 9, 9, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
-    0xA, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
-    0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
-    0xA, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xB,
-    0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
-    0xA, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
-    0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 6
-}; // 0x007076C0
-
-extern "C" struct d2data_007077C0_t gData_007077C0 = {
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00,
-        0x0F, 0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x7F, 0x00, 0x00, 0x00,
-        0xFF, 0x00, 0x00, 0x00, 0xFF, 0x01, 0x00, 0x00, 0xFF, 0x03, 0x00, 0x00, 0xFF, 0x07, 0x00, 0x00,
-        0xFF, 0x0F, 0x00, 0x00, 0xFF, 0x1F, 0x00, 0x00, 0xFF, 0x3F, 0x00, 0x00, 0xFF, 0x7F
-    }
-}; // 0x007077C0
-#pragma comment(linker, "/alternatename:?gadwHuffmanMask@@3PAIA=_gData_007077C0")
 
 extern float gafSinTable[512] = {
     0.0f, 0.012271538f, 0.024541229f, 0.036807224f, 0.049067676f, 0.061320737f, 0.07356457f, 0.08579732f, 0.09801714f, 0.11022221f, 0.12241068f, 0.13458072f, 0.14673048f, 0.15885815f, 0.17096189f, 0.18303989f,
@@ -4264,4 +4405,26 @@ extern float gafSinTable[512] = {
 
 extern int gbUsePools = 1; // 0x00708000
 
+extern unsigned char gabHuffmanCodeLength[256] = {
+    1, 4, 6, 7, 7, 6, 7, 7, 7, 8, 7, 8, 8, 7, 9, 8,
+    8, 8, 7, 6, 6, 7, 8, 8, 8, 9, 9, 0xA, 0xA, 8, 7, 8,
+    8, 0xA, 0xA, 0xA, 0xA, 9, 0xA, 0xA, 9, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xB,
+    9, 9, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 9, 0xA, 0xA, 0xA, 0xA,
+    9, 0xA, 0xA, 9, 0xA, 9, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 9, 9, 0xA, 0xB,
+    9, 8, 9, 0xA, 0xB, 9, 9, 0xA, 9, 0xA, 0xA, 0xA, 0xB, 0xA, 0xA, 0xA,
+    0xA, 0xA, 9, 9, 9, 0xA, 0xA, 7, 7, 7, 0xA, 9, 8, 7, 0xA, 0xA,
+    0xA, 0xB, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xA, 0xB, 0xA, 0xA, 0xA, 0xA,
+    7, 0xA, 0xA, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xA, 0xB, 0xB, 0xB, 0xB, 0xA,
+    9, 0xB, 0xB, 0xA, 0xB, 9, 9, 9, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
+    0xA, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
+    0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
+    0xA, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xB,
+    0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
+    0xA, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB,
+    0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xA, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 6
+}; // 0x007076C0
+
 extern const char* gaszCpuVendorNames[5] = { "Unknown", "Intel", "AMD", "Cyrix" }; // 0x00708004
+
+extern "C" const char gData_006CCBE8[8] = "Unknown"; // 0x006CCBE8
+#pragma comment(linker, "/alternatename:_gszUnknownTitle=_gData_006CCBE8")

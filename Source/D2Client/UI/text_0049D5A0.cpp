@@ -1,6 +1,9 @@
 #include "D2Unicode.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2WinSplitText.h"
+#include "FogApi.h"
+#include "D2SoundApi.h"
 struct D2SelectionRectStrc;
 #pragma pack(push, 2)
 struct D2TextScrollStrc
@@ -20,8 +23,6 @@ struct D2TextScrollStrc
 #pragma pack(pop)
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -29,17 +30,11 @@ extern "C" __declspec(dllimport) unsigned long __stdcall timeGetTime(void);     
 
 void __fastcall UI_DrawRectangleBorder(D2RectStrc* pRect);                                               // 0x00452E50
 void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nArg6); // 0x0046EFD0
-int __stdcall D2Win_10125();                                                                                // 0x00501A40
 void __fastcall D2WINFONT_DrawClippedFontText(const Unicode* pText, int nX, int nY, int nTextColor, int nSkipLines, int nDrawLines); // 0x00501DF0
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered);          // 0x00502320
-int __fastcall D2Win_10127_SetFont(int nArg);                                                                      // 0x00502EF0
 
-extern int gnTextTop;                                                                               // 0x007225FC
-extern unsigned long gnTextDisplaySetting;                                                                     // 0x007BF1F6
-extern int gbTextPanelOpen;                                                                               // 0x007BF1FA
 extern int gbTextSide;                                                                             // 0x007BF236
 extern int gnGlobal_007BF264;                                                                               // 0x007BF264
-extern int gnTextLeft;                                                                               // 0x007BF278
 
 // 0x0049D590
 unsigned int __fastcall TEXT_CalcTextOffset(unsigned int nValue)
@@ -224,27 +219,18 @@ static int TEXT_UpdateScrollText(D2TextScrollStrc* pRec)
 }
 
 #pragma pack(push, 1)
-typedef int(__fastcall* PANELCLOSEFN)(void* pArg, int a2, int a3);
 #pragma pack(pop)
 
 extern D2TextScrollStrc* gpTextBox; // 0x007BF0A4
-extern int gnPanelOpen_007BF1BC; // 0x007BF1BC
-extern int gnPending_007BF1C4; // 0x007BF1C4
 extern void* gpHint_007BF202; // 0x007BF202
-extern int gbHintActive_007BF20A; // 0x007BF20A
 extern void* gpHint_007BF24B; // 0x007BF24B
-extern PANELCLOSEFN gpfnClose_007BF258; // 0x007BF258
-extern void* gpCloseArg_007BF25C; // 0x007BF25C
-extern int gbHandlers_007BF27C; // 0x007BF27C
-extern char gHandlerTable_00722600[]; // 0x00722600
+extern D2TextCallback gpfnTextCallback; // 0x007BF258
+extern int gbTextHandlersRegistered; // 0x007BF27C
+extern char gaTextMsgHandlers[]; // 0x00722600
 
-int __cdecl D2SOUND_GetMasterVolumeOption(); // 0x00514CC0
-int __fastcall sub_004B95C0_IsHintPlaying(void* pHint); // 0x004B95C0
 void __stdcall TEXT_FreeTextBox(D2TextScrollStrc* pTextBox); // 0x0049D410
 void __fastcall SELECT_SetSelectionRect(const D2SelectionRectStrc* pRect); // 0x00467430
-void __cdecl TEXT_ResetTextBox(); // 0x0049F960
 void __fastcall NPCMENU_CancelNpcAndFlag(void* pHint); // 0x004B3D10
-void __cdecl UI_StartUIVarDelay(); // 0x00453AE0
 void* __stdcall WINDOW_GetWindow(); // 0x004F59A0
 void __fastcall AUTOMAP_UnregisterHandlerTable(void* hWnd, void* pTable, int nCount); // 0x00451E10
 
@@ -263,8 +249,8 @@ static int __stdcall TEXT_AdvanceTextBox(int bIgnore, D2TextScrollStrc* pTextBox
         gpHint_007BF24B = 0;
         if (TEXT_UpdateScrollText(pTextBox))
         {
-            gnPanelOpen_007BF1BC = 1;
-            if (!gbHintActive_007BF20A && gpTextBox)
+            gbTextBoxDone = 1;
+            if (!gbTextFromObject && gpTextBox)
             {
                 TEXT_FreeTextBox(gpTextBox);
                 gpTextBox = 0;
@@ -272,27 +258,27 @@ static int __stdcall TEXT_AdvanceTextBox(int bIgnore, D2TextScrollStrc* pTextBox
             }
 
             TEXT_ResetTextBox();
-            if (gpfnClose_007BF258)
+            if (gpfnTextCallback)
             {
-                return gpfnClose_007BF258(gpCloseArg_007BF25C, 0, 0);
+                return gpfnTextCallback(gpTextCallbackContext, 0, 0);
             }
 
-            if (gnPending_007BF1C4 == 1)
+            if (gbTextBoxPending == 1)
             {
-                gnPending_007BF1C4 = 0;
+                gbTextBoxPending = 0;
             }
-            else if (gbHintActive_007BF20A)
+            else if (gbTextFromObject)
             {
                 NPCMENU_CancelNpcAndFlag(gpHint_007BF202);
             }
 
             UI_StartUIVarDelay();
-            gbHintActive_007BF20A = 0;
+            gbTextFromObject = 0;
             SELECT_SetSelectionRect(0);
-            if (gbHandlers_007BF27C == 1)
+            if (gbTextHandlersRegistered == 1)
             {
-                gbHandlers_007BF27C = 0;
-                AUTOMAP_UnregisterHandlerTable(WINDOW_GetWindow(), gHandlerTable_00722600, 7);
+                gbTextHandlersRegistered = 0;
+                AUTOMAP_UnregisterHandlerTable(WINDOW_GetWindow(), gaTextMsgHandlers, 7);
             }
 
             return 0;
@@ -308,7 +294,7 @@ int __stdcall sub_004A0770_Shim()
     D2TextScrollStrc* pTextBox = gpTextBox;
     if (pTextBox && (pTextBox->nState == 1 || pTextBox->nState == 0))
     {
-        return TEXT_AdvanceTextBox(gnPanelOpen_007BF1BC, pTextBox);
+        return TEXT_AdvanceTextBox(gbTextBoxDone, pTextBox);
     }
 
     return 0;

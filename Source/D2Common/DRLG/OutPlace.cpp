@@ -1,4 +1,5 @@
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 
 #include "D2LevelIds.h"
 
@@ -14,6 +15,7 @@
 
 #include "D2DrlgPresets.h"
 #include "D2DrlgOutdoor.h"
+#include "FogApi.h"
 
 #define DRLGTYPE_OUTDOOR 3
 
@@ -44,21 +46,15 @@ struct D2UnkOutdoorStrc3;
 struct D2PosStrc;
 
 
-void __fastcall DRLGGRID_AlterGridFlag(D2DrlgGridStrc* pGrid, int nX, int nY, int nFlag, int eOperation); // 0x0067C4F0
 
-int __fastcall DRLGGRID_GetGridEntry(D2DrlgGridStrc* pDrlgGrid, int nX, int nY); // 0x0067C570
 
-static void __stdcall DRLGOUTPLACE_PlaceCoordBeside(D2DrlgCoordStrc* pLinkCoord, D2DrlgCoordStrc* pCoord, int nDirection, int a4); // 0x00675EB0
+static void __stdcall DRLGOUTPLACE_PlaceCoordBeside(D2DrlgCoordStrc* pLinkCoord, D2DrlgCoordStrc* pCoord, int nDirection, int nOffsetMode); // 0x00675EB0
 
-static void __stdcall DRLGOUTPLACE_PlaceCoordCentered(D2DrlgCoordStrc* pLinkCoord, D2DrlgCoordStrc* pCoord, int nDirection, int a4); // 0x00675F80
-
-D2LevelDefBin* __fastcall DATATBLS_GetLevelDefRecord(int nLevelId); // 0x0061E470
+static void __stdcall DRLGOUTPLACE_PlaceCoordCentered(D2DrlgCoordStrc* pLinkCoord, D2DrlgCoordStrc* pCoord, int nDirection, int nOffsetMode); // 0x00675F80
 
 extern D2DrlgLinkStrc gAct1MonasteryDrlgLink[]; // 0x006F0840
 
 extern D2DrlgLinkStrc gAct2OutdoorDrlgLink[]; // 0x006F0930
-
-int __fastcall DRLG_CheckNotOverlappingUsingManhattanDistance(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2, int nMaxDistance); // 0x0066B860
 
 struct D2UnkOutdoorStrc3
 {
@@ -80,12 +76,6 @@ extern D2DrlgLinkStrc gAct4ChaosSanctumDrlgLink[15]; // 0x006F0CF0
 
 extern const D2UnkOutdoorStrc3 gaAct1OutdoorRandFlags[15]; // 0x006F1258
 
-D2DrlgLevelStrc* __stdcall DRLG_GetLevel(D2DrlgStrc* pDrlg, int nLevelId); // 0x00642BB0
-
-int __fastcall DRLG_GetDirectionFromCoordinates(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2); // 0x00642240
-
-void __fastcall DRLGROOM_AddOrth(D2DrlgOrthStrc** ppDrlgOrth, D2DrlgLevelStrc* pLevel, int nDirection, int bIsPreset); // 0x0066B790
-
 struct D2PosStrc
 {
     int nX;
@@ -97,9 +87,7 @@ static int DRLGOUTPLACE_IsYGreater(const D2PosStrc* pPos1, const D2PosStrc* pPos
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -189,14 +177,14 @@ void __fastcall EmitPlacement(D2DrlgCoordStrc* src,int mode,int side,D2DrlgCoord
 #undef SMALL_SHIFT
 
 // 0x00675EB0
-static void __stdcall DRLGOUTPLACE_PlaceCoordBeside(D2DrlgCoordStrc* pLinkCoord, D2DrlgCoordStrc* pCoord, int nDirection, int a4)
+static void __stdcall DRLGOUTPLACE_PlaceCoordBeside(D2DrlgCoordStrc* pLinkCoord, D2DrlgCoordStrc* pCoord, int nDirection, int nOffsetMode)
 {
     switch (nDirection)
     {
     case 0:
         pCoord->nPosX = pLinkCoord->nWidth - pCoord->nWidth + pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nHeight + pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosX += 16;
         }
@@ -204,11 +192,11 @@ static void __stdcall DRLGOUTPLACE_PlaceCoordBeside(D2DrlgCoordStrc* pLinkCoord,
     case 1:
         pCoord->nPosX = pLinkCoord->nPosX - pCoord->nWidth;
         pCoord->nPosY = pLinkCoord->nHeight - pCoord->nHeight + pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosY += 16;
         }
-        else if (a4 == 2)
+        else if (nOffsetMode == 2)
         {
             pCoord->nPosY -= 8;
         }
@@ -216,7 +204,7 @@ static void __stdcall DRLGOUTPLACE_PlaceCoordBeside(D2DrlgCoordStrc* pLinkCoord,
     case 2:
         pCoord->nPosX = pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nPosY - pCoord->nHeight;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosX -= 16;
         }
@@ -224,15 +212,15 @@ static void __stdcall DRLGOUTPLACE_PlaceCoordBeside(D2DrlgCoordStrc* pLinkCoord,
     case 3:
         pCoord->nPosX = pLinkCoord->nWidth + pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosY -= 16;
         }
-        else if (a4 == 2)
+        else if (nOffsetMode == 2)
         {
             pCoord->nPosY += 8;
         }
-        else if (a4 == 3)
+        else if (nOffsetMode == 3)
         {
             pCoord->nPosY -= 8;
         }
@@ -250,14 +238,14 @@ void __fastcall sub_00675EB0_Shim(D2DrlgCoordStrc* pCoords, int nCount)
 }
 
 // 0x00675F80
-static void __stdcall DRLGOUTPLACE_PlaceCoordCentered(D2DrlgCoordStrc* pLinkCoord, D2DrlgCoordStrc* pCoord, int nDirection, int a4)
+static void __stdcall DRLGOUTPLACE_PlaceCoordCentered(D2DrlgCoordStrc* pLinkCoord, D2DrlgCoordStrc* pCoord, int nDirection, int nOffsetMode)
 {
     switch (nDirection)
     {
     case 0:
         pCoord->nPosX = pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nHeight + pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosX -= pCoord->nWidth / 2 + 8;
         }
@@ -265,7 +253,7 @@ static void __stdcall DRLGOUTPLACE_PlaceCoordCentered(D2DrlgCoordStrc* pLinkCoor
     case 1:
         pCoord->nPosX = pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nHeight + pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosX += pCoord->nWidth / 2 + 8;
         }
@@ -273,7 +261,7 @@ static void __stdcall DRLGOUTPLACE_PlaceCoordCentered(D2DrlgCoordStrc* pLinkCoor
     case 2:
         pCoord->nPosX = pLinkCoord->nPosX - pCoord->nWidth;
         pCoord->nPosY = pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosY -= pCoord->nHeight / 2 + 8;
         }
@@ -281,7 +269,7 @@ static void __stdcall DRLGOUTPLACE_PlaceCoordCentered(D2DrlgCoordStrc* pLinkCoor
     case 3:
         pCoord->nPosX = pLinkCoord->nPosX - pCoord->nWidth;
         pCoord->nPosY = pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosY += pCoord->nHeight / 2 + 8;
         }
@@ -289,7 +277,7 @@ static void __stdcall DRLGOUTPLACE_PlaceCoordCentered(D2DrlgCoordStrc* pLinkCoor
     case 4:
         pCoord->nPosX = pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nPosY - pCoord->nHeight;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosX -= pCoord->nWidth / 2 + 8;
         }
@@ -297,7 +285,7 @@ static void __stdcall DRLGOUTPLACE_PlaceCoordCentered(D2DrlgCoordStrc* pLinkCoor
     case 5:
         pCoord->nPosX = pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nPosY - pCoord->nHeight;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosX += pCoord->nWidth / 2 + 8;
         }
@@ -305,7 +293,7 @@ static void __stdcall DRLGOUTPLACE_PlaceCoordCentered(D2DrlgCoordStrc* pLinkCoor
     case 6:
         pCoord->nPosX = pLinkCoord->nWidth + pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosY -= pCoord->nHeight / 2 + 8;
         }
@@ -313,7 +301,7 @@ static void __stdcall DRLGOUTPLACE_PlaceCoordCentered(D2DrlgCoordStrc* pLinkCoor
     case 7:
         pCoord->nPosX = pLinkCoord->nWidth + pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosY += pCoord->nHeight / 2 + 8;
         }
@@ -338,14 +326,14 @@ static inline unsigned int SEED_RollRandomNumber(D2SeedStrc* pSeed)
     return (unsigned int)lSeed;
 }
 
-static void __fastcall sub_6FD815E0(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2, int a3, int a4)
+static void __fastcall DRLGOUTPLACE_PlaceLinkedCoordCentered(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2, int nDirection, int nOffsetMode)
 {
-    switch (a3)
+    switch (nDirection)
     {
     case 0:
         pDrlgCoord2->nPosX = pDrlgCoord1->nPosX;
         pDrlgCoord2->nPosY = pDrlgCoord1->nPosY + pDrlgCoord1->nHeight;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pDrlgCoord2->nPosX -= pDrlgCoord2->nWidth / 2 + 8;
         }
@@ -353,7 +341,7 @@ static void __fastcall sub_6FD815E0(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStr
     case 1:
         pDrlgCoord2->nPosX = pDrlgCoord1->nPosX;
         pDrlgCoord2->nPosY = pDrlgCoord1->nPosY + pDrlgCoord1->nHeight;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pDrlgCoord2->nPosX += pDrlgCoord2->nWidth / 2 + 8;
         }
@@ -361,7 +349,7 @@ static void __fastcall sub_6FD815E0(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStr
     case 2:
         pDrlgCoord2->nPosX = pDrlgCoord1->nPosX - pDrlgCoord2->nWidth;
         pDrlgCoord2->nPosY = pDrlgCoord1->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pDrlgCoord2->nPosY -= pDrlgCoord2->nHeight / 2 + 8;
         }
@@ -369,7 +357,7 @@ static void __fastcall sub_6FD815E0(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStr
     case 3:
         pDrlgCoord2->nPosX = pDrlgCoord1->nPosX - pDrlgCoord2->nWidth;
         pDrlgCoord2->nPosY = pDrlgCoord1->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pDrlgCoord2->nPosY += pDrlgCoord2->nHeight / 2 + 8;
         }
@@ -377,7 +365,7 @@ static void __fastcall sub_6FD815E0(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStr
     case 4:
         pDrlgCoord2->nPosX = pDrlgCoord1->nPosX;
         pDrlgCoord2->nPosY = pDrlgCoord1->nPosY - pDrlgCoord2->nHeight;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pDrlgCoord2->nPosX -= pDrlgCoord2->nWidth / 2 + 8;
         }
@@ -385,7 +373,7 @@ static void __fastcall sub_6FD815E0(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStr
     case 5:
         pDrlgCoord2->nPosX = pDrlgCoord1->nPosX;
         pDrlgCoord2->nPosY = pDrlgCoord1->nPosY - pDrlgCoord2->nHeight;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pDrlgCoord2->nPosX += pDrlgCoord2->nWidth / 2 + 8;
         }
@@ -393,7 +381,7 @@ static void __fastcall sub_6FD815E0(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStr
     case 6:
         pDrlgCoord2->nPosX = pDrlgCoord1->nPosX + pDrlgCoord1->nWidth;
         pDrlgCoord2->nPosY = pDrlgCoord1->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pDrlgCoord2->nPosY -= pDrlgCoord2->nHeight / 2 + 8;
         }
@@ -401,7 +389,7 @@ static void __fastcall sub_6FD815E0(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStr
     case 7:
         pDrlgCoord2->nPosX = pDrlgCoord1->nPosX + pDrlgCoord1->nWidth;
         pDrlgCoord2->nPosY = pDrlgCoord1->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pDrlgCoord2->nPosY += pDrlgCoord2->nHeight / 2 + 8;
         }
@@ -499,14 +487,14 @@ int __fastcall DRLGOUTPLACE_LinkStepDirectionSide(D2DrlgLevelLinkDataStrc* pData
     return 1;
 }
 
-static inline void DRLGOUTPLACE_PlaceCoordSide1(D2DrlgCoordStrc* pLinkCoord, D2DrlgCoordStrc* pCoord, int nDirection, int a4)
+static inline void DRLGOUTPLACE_PlaceCoordSide1(D2DrlgCoordStrc* pLinkCoord, D2DrlgCoordStrc* pCoord, int nDirection, int nOffsetMode)
 {
     switch (nDirection)
     {
     case 0:
         pCoord->nPosX = pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nHeight + pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosX -= 16;
         }
@@ -514,7 +502,7 @@ static inline void DRLGOUTPLACE_PlaceCoordSide1(D2DrlgCoordStrc* pLinkCoord, D2D
     case 1:
         pCoord->nPosX = pLinkCoord->nPosX - pCoord->nWidth;
         pCoord->nPosY = pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosY -= 16;
         }
@@ -522,7 +510,7 @@ static inline void DRLGOUTPLACE_PlaceCoordSide1(D2DrlgCoordStrc* pLinkCoord, D2D
     case 2:
         pCoord->nPosX = pLinkCoord->nWidth - pCoord->nWidth + pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nPosY - pCoord->nHeight;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosX += 16;
         }
@@ -530,7 +518,7 @@ static inline void DRLGOUTPLACE_PlaceCoordSide1(D2DrlgCoordStrc* pLinkCoord, D2D
     case 3:
         pCoord->nPosX = pLinkCoord->nWidth + pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nHeight - pCoord->nHeight + pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosY += 16;
         }
@@ -538,14 +526,14 @@ static inline void DRLGOUTPLACE_PlaceCoordSide1(D2DrlgCoordStrc* pLinkCoord, D2D
     }
 }
 
-static inline void DRLGOUTPLACE_PlaceCoordSide0(D2DrlgCoordStrc* pLinkCoord, D2DrlgCoordStrc* pCoord, int nDirection, int a4)
+static inline void DRLGOUTPLACE_PlaceCoordSide0(D2DrlgCoordStrc* pLinkCoord, D2DrlgCoordStrc* pCoord, int nDirection, int nOffsetMode)
 {
     switch (nDirection)
     {
     case 0:
         pCoord->nPosX = pLinkCoord->nWidth - pCoord->nWidth + pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nHeight + pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosX += 16;
         }
@@ -553,7 +541,7 @@ static inline void DRLGOUTPLACE_PlaceCoordSide0(D2DrlgCoordStrc* pLinkCoord, D2D
     case 1:
         pCoord->nPosX = pLinkCoord->nPosX - pCoord->nWidth;
         pCoord->nPosY = pLinkCoord->nHeight - pCoord->nHeight + pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosY += 16;
         }
@@ -561,7 +549,7 @@ static inline void DRLGOUTPLACE_PlaceCoordSide0(D2DrlgCoordStrc* pLinkCoord, D2D
     case 2:
         pCoord->nPosX = pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nPosY - pCoord->nHeight;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosX -= 16;
         }
@@ -569,7 +557,7 @@ static inline void DRLGOUTPLACE_PlaceCoordSide0(D2DrlgCoordStrc* pLinkCoord, D2D
     case 3:
         pCoord->nPosX = pLinkCoord->nWidth + pLinkCoord->nPosX;
         pCoord->nPosY = pLinkCoord->nPosY;
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pCoord->nPosY -= 16;
         }
@@ -647,15 +635,15 @@ int __fastcall DRLGOUTPLACE_PlaceLevel(D2DrlgLevelLinkDataStrc* pData)
     return 1;
 }
 
-static inline void sub_6FD81430(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2, int a3, int a4)
+static inline void DRLGOUTPLACE_PlaceLinkedCoord(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2, int nDirection, int nOffsetMode)
 {
-	switch (a3)
+	switch (nDirection)
 	{
 	case 0:
 		pDrlgCoord2->nPosX = pDrlgCoord1->nPosX;
 		pDrlgCoord2->nPosY = pDrlgCoord1->nPosY + pDrlgCoord1->nHeight;
 
-		if (a4 == 1)
+		if (nOffsetMode == 1)
 		{
 			pDrlgCoord2->nPosX -= 16;
 		}
@@ -665,11 +653,11 @@ static inline void sub_6FD81430(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* p
 		pDrlgCoord2->nPosX = pDrlgCoord1->nPosX - pDrlgCoord2->nWidth;
 		pDrlgCoord2->nPosY = pDrlgCoord1->nPosY;
 
-		if (a4 == 1)
+		if (nOffsetMode == 1)
 		{
 			pDrlgCoord2->nPosY -= 16;
 		}
-		else if (a4 == 2)
+		else if (nOffsetMode == 2)
 		{
 			pDrlgCoord2->nPosY += 8;
 		}
@@ -679,7 +667,7 @@ static inline void sub_6FD81430(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* p
 		pDrlgCoord2->nPosX = pDrlgCoord1->nPosX + pDrlgCoord1->nWidth - pDrlgCoord2->nWidth;
 		pDrlgCoord2->nPosY = pDrlgCoord1->nPosY - pDrlgCoord2->nHeight;
 
-		if (a4 == 1)
+		if (nOffsetMode == 1)
 		{
 			pDrlgCoord2->nPosX += 16;
 		}
@@ -689,7 +677,7 @@ static inline void sub_6FD81430(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* p
 		pDrlgCoord2->nPosX = pDrlgCoord1->nPosX + pDrlgCoord1->nWidth;
 		pDrlgCoord2->nPosY = pDrlgCoord1->nPosY + pDrlgCoord1->nHeight - pDrlgCoord2->nHeight;
 
-		switch (a4)
+		switch (nOffsetMode)
 		{
 		case 1:
 			pDrlgCoord2->nPosY += 16;
@@ -712,15 +700,15 @@ static inline void sub_6FD81430(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* p
 	}
 }
 
-static inline void sub_6FD81850(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2, int a3, int a4)
+static inline void DRLGOUTPLACE_PlaceLinkedCoordFar(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2, int nDirection, int nOffsetMode)
 {
-	switch (a3)
+	switch (nDirection)
 	{
 	case 0:
 		pDrlgCoord2->nPosX = pDrlgCoord1->nPosX + pDrlgCoord1->nWidth - pDrlgCoord2->nWidth;
 		pDrlgCoord2->nPosY = pDrlgCoord1->nPosY + pDrlgCoord1->nHeight;
 
-		if (a4 == 1)
+		if (nOffsetMode == 1)
 		{
 			pDrlgCoord2->nPosX += 16;
 		}
@@ -730,11 +718,11 @@ static inline void sub_6FD81850(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* p
 		pDrlgCoord2->nPosX = pDrlgCoord1->nPosX - pDrlgCoord2->nWidth;
 		pDrlgCoord2->nPosY = pDrlgCoord1->nPosY + pDrlgCoord1->nHeight - pDrlgCoord2->nHeight;
 
-		if (a4 == 1)
+		if (nOffsetMode == 1)
 		{
 			pDrlgCoord2->nPosY += 16;
 		}
-		else if (a4 == 2)
+		else if (nOffsetMode == 2)
 		{
 			pDrlgCoord2->nPosY -= 8;
 		}
@@ -744,7 +732,7 @@ static inline void sub_6FD81850(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* p
 		pDrlgCoord2->nPosX = pDrlgCoord1->nPosX;
 		pDrlgCoord2->nPosY = pDrlgCoord1->nPosY - pDrlgCoord2->nHeight;
 
-		if (a4 == 1)
+		if (nOffsetMode == 1)
 		{
 			pDrlgCoord2->nPosX -= 16;
 		}
@@ -754,7 +742,7 @@ static inline void sub_6FD81850(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* p
 		pDrlgCoord2->nPosX = pDrlgCoord1->nPosX + pDrlgCoord1->nWidth;
 		pDrlgCoord2->nPosY = pDrlgCoord1->nPosY;
 
-		switch (a4)
+		switch (nOffsetMode)
 		{
 		case 1:
 			pDrlgCoord2->nPosY -= 16;
@@ -778,7 +766,7 @@ static inline void sub_6FD81850(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* p
 }
 
 // 0x006769A0
-int __fastcall sub_6FD81B30(D2DrlgLevelLinkDataStrc* pLevelLinkData)
+int __fastcall sub_006769A0_RollLinkDirection(D2DrlgLevelLinkDataStrc* pLevelLinkData)
 {
     int nRand = 0;
 
@@ -804,11 +792,11 @@ int __fastcall sub_6FD81B30(D2DrlgLevelLinkDataStrc* pLevelLinkData)
     const int nDirection = pLevelLinkData->nRand[0][pLevelLinkData->nIteration];
     if (nDirection == 1)
     {
-        sub_6FD81430(pDrlgCoord1, pDrlgCoord2, 1, 0);
+        DRLGOUTPLACE_PlaceLinkedCoord(pDrlgCoord1, pDrlgCoord2, 1, 0);
     }
     else
     {
-        sub_6FD81850(pDrlgCoord1, pDrlgCoord2, nDirection, 0);
+        DRLGOUTPLACE_PlaceLinkedCoordFar(pDrlgCoord1, pDrlgCoord2, nDirection, 0);
     }
 
     return 1;
@@ -836,20 +824,20 @@ int __fastcall DRLGOUTPLACE_TryNextCenteredSide(D2DrlgLevelLinkDataStrc* pLevelL
         pLevelLinkData->nRand[0][pLevelLinkData->nIteration] = nRand;
     }
 
-    sub_6FD815E0(&pLevelLinkData->pLevelCoord[pLevelLinkData->pLink[pLevelLinkData->nIteration].nLevelLink], &pLevelLinkData->pLevelCoord[pLevelLinkData->nIteration], pLevelLinkData->nRand[0][pLevelLinkData->nIteration], 0);
+    DRLGOUTPLACE_PlaceLinkedCoordCentered(&pLevelLinkData->pLevelCoord[pLevelLinkData->pLink[pLevelLinkData->nIteration].nLevelLink], &pLevelLinkData->pLevelCoord[pLevelLinkData->nIteration], pLevelLinkData->nRand[0][pLevelLinkData->nIteration], 0);
 
     return 1;
 }
 
-static inline void DRLGOUTPLACE_PlaceCoord(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2, int a3, int a4)
+static inline void DRLGOUTPLACE_PlaceCoord(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2, int nDirection, int nOffsetMode)
 {
-    switch (a3)
+    switch (nDirection)
     {
     case 0:
         pDrlgCoord2->nPosX = pDrlgCoord1->nPosX;
         pDrlgCoord2->nPosY = pDrlgCoord1->nPosY + pDrlgCoord1->nHeight;
 
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pDrlgCoord2->nPosX -= 16;
         }
@@ -859,11 +847,11 @@ static inline void DRLGOUTPLACE_PlaceCoord(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgC
         pDrlgCoord2->nPosX = pDrlgCoord1->nPosX - pDrlgCoord2->nWidth;
         pDrlgCoord2->nPosY = pDrlgCoord1->nPosY;
 
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pDrlgCoord2->nPosY -= 16;
         }
-        else if (a4 == 2)
+        else if (nOffsetMode == 2)
         {
             pDrlgCoord2->nPosY += 8;
         }
@@ -873,7 +861,7 @@ static inline void DRLGOUTPLACE_PlaceCoord(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgC
         pDrlgCoord2->nPosX = pDrlgCoord1->nPosX + pDrlgCoord1->nWidth - pDrlgCoord2->nWidth;
         pDrlgCoord2->nPosY = pDrlgCoord1->nPosY - pDrlgCoord2->nHeight;
 
-        if (a4 == 1)
+        if (nOffsetMode == 1)
         {
             pDrlgCoord2->nPosX += 16;
         }
@@ -883,7 +871,7 @@ static inline void DRLGOUTPLACE_PlaceCoord(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgC
         pDrlgCoord2->nPosX = pDrlgCoord1->nPosX + pDrlgCoord1->nWidth;
         pDrlgCoord2->nPosY = pDrlgCoord1->nPosY + pDrlgCoord1->nHeight - pDrlgCoord2->nHeight;
 
-        switch (a4)
+        switch (nOffsetMode)
         {
         case 1:
             pDrlgCoord2->nPosY += 16;
@@ -953,12 +941,12 @@ int __fastcall DRLGOUTPLACE_TryNextCenteredSideOffset(D2DrlgLevelLinkDataStrc* p
         pLevelLinkData->nRand[0][pLevelLinkData->nIteration] = nRand;
     }
 
-    sub_6FD815E0(&pLevelLinkData->pLevelCoord[pLevelLinkData->pLink[pLevelLinkData->nIteration].nLevelLink], &pLevelLinkData->pLevelCoord[pLevelLinkData->nIteration], pLevelLinkData->nRand[0][pLevelLinkData->nIteration], 1);
+    DRLGOUTPLACE_PlaceLinkedCoordCentered(&pLevelLinkData->pLevelCoord[pLevelLinkData->pLink[pLevelLinkData->nIteration].nLevelLink], &pLevelLinkData->pLevelCoord[pLevelLinkData->nIteration], pLevelLinkData->nRand[0][pLevelLinkData->nIteration], 1);
 
     return 1;
 }
 
-static int gnDrlgLinkFlags_0096D66C; // 0x0096D66C
+static int gnDrlgLinkFlags; // 0x0096D66C
 
 // 0x00676C00
 int __fastcall DRLGOUTPLACE_PlaceLevelNextTo(D2DrlgLevelLinkDataStrc* pLevelLinkData)
@@ -990,7 +978,7 @@ int __fastcall DRLGOUTPLACE_PlaceLevelNextTo(D2DrlgLevelLinkDataStrc* pLevelLink
             pDst->nPosY = pSrc->nHeight - pDst->nHeight + pSrc->nPosY + 8;
             break;
         }
-        gnDrlgLinkFlags_0096D66C = 0x800000;
+        gnDrlgLinkFlags = 0x800000;
     }
     else
     {
@@ -1014,7 +1002,7 @@ int __fastcall DRLGOUTPLACE_PlaceLevelNextTo(D2DrlgLevelLinkDataStrc* pLevelLink
             pDst->nPosY = pSrc->nPosY - 8;
             break;
         }
-        gnDrlgLinkFlags_0096D66C = 0x400000;
+        gnDrlgLinkFlags = 0x400000;
     }
 
     return 1;
@@ -1202,30 +1190,9 @@ extern "C" void __cdecl DRLGOUTROOM_LinkLevelsByOffsetCoords(); // 0x0067D980
 extern "C" void __cdecl sub_00676AE0(); // 0x00676AE0
 
 #pragma pack(push, 1)
-struct d2data_006F0620_t
+struct d2data_006F1500_t
 {
-    unsigned char b0[16];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_006F0FC0_t
-{
-    unsigned char b0[16];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_006F1258_t
-{
-    unsigned char b0[356];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_006F13BC_t
-{
-    unsigned char b0[52];
+    unsigned char b0[24];
 };
 #pragma pack(pop)
 
@@ -1233,13 +1200,6 @@ struct d2data_006F13BC_t
 struct d2data_006F13F0_t
 {
     unsigned char b0[272];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_006F1500_t
-{
-    unsigned char b0[24];
 };
 #pragma pack(pop)
 
@@ -1264,8 +1224,42 @@ struct d2data_007499E4_t
 };
 #pragma pack(pop)
 
+#pragma pack(push, 1)
+struct d2data_006F1258_t
+{
+    unsigned char b0[356];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006F13BC_t
+{
+    unsigned char b0[52];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006F0620_t
+{
+    unsigned char b0[16];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006F0FC0_t
+{
+    unsigned char b0[16];
+};
+#pragma pack(pop)
+
+extern "C" const struct d2data_006F1500_t gData_006F1500; // 0x006F1500
+extern "C" const struct d2data_006F13F0_t gData_006F13F0; // 0x006F13F0
+extern "C" struct d2data_007499E4_t gData_007499E4; // 0x007499E4
+extern "C" const struct d2data_006F1258_t gData_006F1258; // 0x006F1258
+extern "C" const struct d2data_006F13BC_t gData_006F13BC; // 0x006F13BC
 extern "C" const struct d2data_006F0620_t gData_006F0620; // 0x006F0620
 extern "C" const int gData_006F06F0[12][2]; // 0x006F06F0
+extern "C" const int gData_006F1088[41]; // 0x006F1088
 extern "C" const D2DrlgLinkStrc gData_006F0750[15]; // 0x006F0750
 extern "C" const D2DrlgLinkStrc gData_006F0840[15]; // 0x006F0840
 extern "C" const D2DrlgLinkStrc gData_006F0930[15]; // 0x006F0930
@@ -1276,14 +1270,89 @@ extern "C" const D2DrlgLinkStrc gData_006F0CF0[15]; // 0x006F0CF0
 extern "C" const D2DrlgLinkStrc gData_006F0DE0[15]; // 0x006F0DE0
 extern "C" const D2DrlgLinkStrc gData_006F0ED0[15]; // 0x006F0ED0
 extern "C" const struct d2data_006F0FC0_t gData_006F0FC0; // 0x006F0FC0
-extern "C" const int gData_006F1088[41]; // 0x006F1088
-extern "C" const int gData_006F112C[5][2]; // 0x006F112C
-extern "C" const int gData_006F1158[64]; // 0x006F1158
-extern "C" const struct d2data_006F1258_t gData_006F1258; // 0x006F1258
-extern "C" const struct d2data_006F13BC_t gData_006F13BC; // 0x006F13BC
-extern "C" const struct d2data_006F13F0_t gData_006F13F0; // 0x006F13F0
-extern "C" const struct d2data_006F1500_t gData_006F1500; // 0x006F1500
-extern "C" struct d2data_007499E4_t gData_007499E4; // 0x007499E4
+
+extern "C" const struct d2data_006F1500_t gData_006F1500 = {
+    {
+        0x2E, 0x5C, 0x44, 0x52, 0x4C, 0x47, 0x5C, 0x4F, 0x75, 0x74, 0x50, 0x6C, 0x61, 0x63, 0x65, 0x2E,
+        0x63, 0x70, 0x70
+    }
+}; // 0x006F1500
+
+extern "C" const struct d2data_006F13F0_t gData_006F13F0 = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x21, 0x02, 0x00, 0x00, 0x22, 0x02, 0x00, 0x00, 0x23, 0x02, 0x00, 0x00,
+        0x24, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x25, 0x02, 0x00, 0x00, 0x26, 0x02, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x27, 0x02, 0x00, 0x00, 0x28, 0x02, 0x00, 0x00,
+        0x29, 0x02, 0x00, 0x00, 0x2A, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2B, 0x02, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x2C, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2D, 0x02, 0x00, 0x00,
+        0x2E, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2F, 0x02, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x30, 0x02, 0x00, 0x00,
+        0x31, 0x02, 0x00, 0x00, 0x32, 0x02, 0x00, 0x00, 0x33, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x34, 0x02, 0x00, 0x00, 0x35, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x36, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x37, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x38, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x39, 0x02, 0x00, 0x00, 0x3A, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x3B, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x3C, 0x02
+    }
+}; // 0x006F13F0
+
+extern "C" struct d2data_007499E4_t gData_007499E4 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007499E4
+
+extern "C" const struct d2data_006F1258_t gData_006F1258 = {
+    {
+        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+        0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+        0x11, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+        0x11, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+        0x02
+    }
+}; // 0x006F1258
+#pragma comment(linker, "/alternatename:?gaAct1OutdoorRandFlags@@3QBUD2UnkOutdoorStrc3@@B=_gData_006F1258")
+
+extern "C" const struct d2data_006F13BC_t gData_006F13BC = {
+    {
+        0x00, 0x01, 0x00, 0x00, 0x3F, 0x02, 0x00, 0x00, 0x40, 0x02, 0x00, 0x00, 0x41, 0x02, 0x00, 0x00,
+        0x42, 0x02, 0x00, 0x00, 0x43, 0x02, 0x00, 0x00, 0x44, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x45, 0x02, 0x00, 0x00, 0x46, 0x02, 0x00, 0x00, 0x47, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x48, 0x02
+    }
+}; // 0x006F13BC
 
 extern "C" const struct d2data_006F0620_t gData_006F0620 = {
     { 0x00, 0x20, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x80 }
@@ -1305,6 +1374,21 @@ extern "C" const int gData_006F06F0[12][2] = {
 }; // 0x006F06F0
 #pragma comment(linker, "/alternatename:?gaBarricadeCliffBorderIds@@3PAY01HA=_gData_006F06F0")
 
+extern "C" const int gData_006F1088[41] = {
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 11, 11, 3, 12, -1,
+    -1, -1, -1, 12, 4, 4, 7, -1, -1, 2, 10, -1, -1, -1, -1, 10,
+    -1, -1, 6, 3, -1, -1, 11, 11, 3
+}; // 0x006F1088
+#pragma comment(linker, "/alternatename:?gaBorderIndicesByDelta@@3PAHA=_gData_006F1088")
+
+extern const int gaDesertBorderIds[5][2] = {
+    { 373, 372 },
+    { 372, 375 },
+    { 0 },
+    { 373, 374 },
+    { 374, 375 }
+}; // 0x006F112C
+
 extern "C" const D2DrlgLinkStrc gData_006F0750[15] = {
     { (void*)(unsigned int)&sub_006760F0, 4, -1, -1 },
     { (void*)(unsigned int)&DRLGOUTPLACE_TryNextSideOffset, 3, 0, -1 },
@@ -1314,6 +1398,13 @@ extern "C" const D2DrlgLinkStrc gData_006F0750[15] = {
     { 0, 0, -1, -1 }
 }; // 0x006F0750
 #pragma comment(linker, "/alternatename:?gAct1WildernessDrlgLink@@3PAUD2DrlgLinkStrc@@A=_gData_006F0750")
+
+extern const int gnAct1WildernessLinkTable[64] = {
+    1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1,
+    0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1
+}; // 0x006F1158
 
 extern "C" const D2DrlgLinkStrc gData_006F0840[15] = {
     { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_006760F0, 39, -1, -1 },
@@ -1327,7 +1418,7 @@ extern "C" const D2DrlgLinkStrc gData_006F0840[15] = {
 
 extern "C" const D2DrlgLinkStrc gData_006F0930[15] = {
     { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_006760F0, 40, -1, -1 },
-    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_6FD81B30, 41, 0, -1 },
+    { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&sub_006769A0_RollLinkDirection, 41, 0, -1 },
     { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTPLACE_TryNextCenteredSideOffset, 42, 1, -1 },
     { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTPLACE_TryNextCenteredSideOffset, 43, 2, -1 },
     { (int (__fastcall *)(D2DrlgLevelLinkDataStrc *))&DRLGOUTPLACE_TryNextCenteredSideOffset, 44, 3, -1 },
@@ -1383,113 +1474,6 @@ extern "C" const struct d2data_006F0FC0_t gData_006F0FC0 = {
     { 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF }
 }; // 0x006F0FC0
 
-extern "C" const int gData_006F1088[41] = {
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 11, 11, 3, 12, -1,
-    -1, -1, -1, 12, 4, 4, 7, -1, -1, 2, 10, -1, -1, -1, -1, 10,
-    -1, -1, 6, 3, -1, -1, 11, 11, 3
-}; // 0x006F1088
-#pragma comment(linker, "/alternatename:?gaBorderIndicesByDelta@@3PAHA=_gData_006F1088")
-
-extern "C" const int gData_006F112C[5][2] = {
-    { 373, 372 },
-    { 372, 375 },
-    { 0 },
-    { 373, 374 },
-    { 374, 375 }
-}; // 0x006F112C
-#pragma comment(linker, "/alternatename:?gaDesertBorderIds@@3PAY01HA=_gData_006F112C")
-
-extern "C" const int gData_006F1158[64] = {
-    1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1,
-    0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1
-}; // 0x006F1158
-#pragma comment(linker, "/alternatename:?gnAct1WildernessLinkTable@@3QBHB=_gData_006F1158")
-
-extern "C" const struct d2data_006F1258_t gData_006F1258 = {
-    {
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
-        0x02
-    }
-}; // 0x006F1258
-#pragma comment(linker, "/alternatename:?gaAct1OutdoorRandFlags@@3QBUD2UnkOutdoorStrc3@@B=_gData_006F1258")
-
-extern "C" const struct d2data_006F13BC_t gData_006F13BC = {
-    {
-        0x00, 0x01, 0x00, 0x00, 0x3F, 0x02, 0x00, 0x00, 0x40, 0x02, 0x00, 0x00, 0x41, 0x02, 0x00, 0x00,
-        0x42, 0x02, 0x00, 0x00, 0x43, 0x02, 0x00, 0x00, 0x44, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x45, 0x02, 0x00, 0x00, 0x46, 0x02, 0x00, 0x00, 0x47, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x48, 0x02
-    }
-}; // 0x006F13BC
-
-extern "C" const struct d2data_006F13F0_t gData_006F13F0 = {
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x21, 0x02, 0x00, 0x00, 0x22, 0x02, 0x00, 0x00, 0x23, 0x02, 0x00, 0x00,
-        0x24, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x25, 0x02, 0x00, 0x00, 0x26, 0x02, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x27, 0x02, 0x00, 0x00, 0x28, 0x02, 0x00, 0x00,
-        0x29, 0x02, 0x00, 0x00, 0x2A, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2B, 0x02, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x2C, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2D, 0x02, 0x00, 0x00,
-        0x2E, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2F, 0x02, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x30, 0x02, 0x00, 0x00,
-        0x31, 0x02, 0x00, 0x00, 0x32, 0x02, 0x00, 0x00, 0x33, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x34, 0x02, 0x00, 0x00, 0x35, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x36, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x37, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x38, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x39, 0x02, 0x00, 0x00, 0x3A, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x3B, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x3C, 0x02
-    }
-}; // 0x006F13F0
-
-extern "C" const struct d2data_006F1500_t gData_006F1500 = {
-    {
-        0x2E, 0x5C, 0x44, 0x52, 0x4C, 0x47, 0x5C, 0x4F, 0x75, 0x74, 0x50, 0x6C, 0x61, 0x63, 0x65, 0x2E,
-        0x63, 0x70, 0x70
-    }
-}; // 0x006F1500
-
-extern "C" struct d2data_007499E4_t gData_007499E4 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x007499E4
-
 typedef int (__fastcall* DRLGLINKFN)(D2DrlgLevelLinkDataStrc* pLevelLinkData);
 extern "C" const char gszOutPlaceFile[];                                                                    // 0x006F1500
 
@@ -1517,10 +1501,6 @@ typedef void (__fastcall* FLAGFN)(D2DrlgLevelStrc* pLevel, int nIteration, int* 
 D2DrlgWarpStrc* __fastcall DRLG_GetDrlgWarpFromLevelId(D2DrlgStrc* pDrlg, int nLevelId);                    // 0x00642860
 D2DrlgWarpStrc* __fastcall DRLG_SetWarpId(D2DrlgWarpStrc* pDrlgWarp, int nVis, int nWarp, int nShift);      // 0x00642920
 int __fastcall DRLG_CheckOverlappingWithOrthogonalMargin(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2, int nMargin); // 0x0066B880
-int __fastcall DRLG_GetDirectionFromCoordinates(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2); // 0x00642240
-int* __fastcall DRLGWARP_GetWarpIdArrayFromLevelId(D2DrlgStrc* pDrlg, int nLevelId);                        // 0x0066AEC0
-int* __fastcall DRLGROOM_GetVisArrayFromLevelId(D2DrlgStrc* pDrlg, int nLevelId);                           // 0x0066C040
-void __fastcall DRLGROOM_AddOrth(D2DrlgOrthStrc** ppDrlgOrth, D2DrlgLevelStrc* pLevel, int nDirection, int bIsPreset);
 
 int __fastcall DRLGOUTPLACE_LinkAct1Wilderness(D2DrlgLevelLinkDataStrc* pLevelLinkData, int nIteration);    // 0x00676DD0
 int __fastcall DRLGOUTPLACE_LinkAct1Monastery(D2DrlgLevelLinkDataStrc* pLevelLinkData, int nIteration);                       // 0x00676EB0
@@ -1540,14 +1520,6 @@ extern D2DrlgLinkStrc gAct4OutdoorDrlgLink[15];                                 
 extern D2DrlgLinkStrc gAct4ChaosSanctumDrlgLink[15];                                                        // 0x006F0CF0
 extern D2DrlgLinkStrc gAct5OutdoorDrlgLink[15];                                                             // 0x006F0DE0
 extern D2DrlgLinkStrc gAct5TundraDrlgLink[15];                                                              // 0x006F0ED0
-
-static inline unsigned int SEED_RollRandomNumber_Links(D2SeedStrc* pSeed)
-{
-    unsigned __int64 lSeed = (unsigned __int64)pSeed->nHighSeed + (unsigned __int64)pSeed->nLowSeed * 0x6AC690C5;
-    pSeed->nLowSeed = (unsigned int)lSeed;
-    pSeed->nHighSeed = (unsigned int)(lSeed >> 32);
-    return (unsigned int)lSeed;
-}
 
 void __stdcall DRLGOUTPLACE_InitLevelLinks(D2DrlgLinkStrc* pDrlgLink, LINKFN pfLink, FLAGFN pfFlag, D2DrlgStrc* pDrlg); // 0x006772C0
 
@@ -1866,11 +1838,14 @@ static D2DrlgLevelStrc* DRLG_GenerateJungles(D2DrlgLevelStrc* pLevel);
 
 static D2DrlgLevelStrc* DRLG_GenerateJungles(D2DrlgLevelStrc* pLevel); // 0x00677880
 
+// 0x00677880
 static D2DrlgLevelStrc* DRLG_GenerateJungles(D2DrlgLevelStrc* pLevel)
 {
     D2LevelDefBin* pLevelDef = DATATBLS_GetLevelDefRecord(LEVEL_SPIDERFOREST);
     int nIdx = 1;
     D2DrlgStrc* pDrlg = pLevel->pDrlg;
+    int x = 0;
+    int y = 0;
     void* pMemPool = pDrlg->pMempool;
     int nSizeX = pLevelDef->dwSizeX[pDrlg->nDifficulty];
     int nSizeY = pLevelDef->dwSizeY[pDrlg->nDifficulty];
@@ -1930,8 +1905,6 @@ static D2DrlgLevelStrc* DRLG_GenerateJungles(D2DrlgLevelStrc* pLevel)
     D2_ASSERT((nMaxX - nMinX) % 32 == 0, 0x64D);
     D2_ASSERT((nMaxY - nMinY) % 32 == 0, 0x64E);
 
-    int x;
-    int y;
     int nColumnSize;
     int nW = (nMaxX - nMinX) / 32 + 2;
     int nH = (nMaxY - nMinY) / 32 + 2;
@@ -1960,7 +1933,12 @@ RESTART:
         int bOffset;
         if (nJ == 0)
         {
-            bOffset = SEED_RollLimitedRandomNumber(&pDrlg->pSeed, 2);
+            D2SeedStrc* pSeed = &pDrlg->pSeed;
+            unsigned int nHighSeed = pSeed->nHighSeed;
+            unsigned __int64 lSeed = nHighSeed + 0x6AC690C5i64 * pSeed->nLowSeed;
+            pSeed->nLowSeed = (unsigned int)lSeed;
+            pSeed->nHighSeed = (unsigned int)(lSeed >> 32);
+            bOffset = (unsigned int)lSeed & 1;
         }
         else
         {
@@ -1970,7 +1948,7 @@ RESTART:
         int nAttach;
         do
         {
-            for (int y = 0; y < nBlocksY; y++)
+            for (y = 0; y < nBlocksY; y++)
             {
                 for (int x = 0; x < nBlocksX; x++)
                 {
@@ -2017,7 +1995,7 @@ RESTART:
             while (y >= nBY)
             {
                 const int nRow = nW * y;
-                pPreset1[x + nRow] = (nJ + 1) * 100 + nStep;
+                pPreset1[nW * y + x] = (nJ + 1) * 100 + nStep;
                 ++nStep;
 
                 if (nColumnSize == 0 || y == nBY || SEED_RollLimitedRandomNumber(&pDrlg->pSeed, 3))
@@ -2051,26 +2029,25 @@ RESTART:
         }
         while (nAttach < 2);
 
-        int nCount = nAttach;
-        while (nCount > 3)
+        while (nAttach > 3)
         {
             unsigned int nRemove;
-            SEED_ROLL_LIMITED(&pDrlg->pSeed, nCount, nRemove);
+            SEED_ROLL_LIMITED(&pDrlg->pSeed, nAttach, nRemove);
             int bFinished = 0;
-            nColumnSize = 0;
-            for (int y = 0; y < nBlocksY && !bFinished; y++)
+            int nFound = 0;
+            for (y = 0; y < nBlocksY && !bFinished; y++)
             {
-                for (int x = 0; x < nBlocksX && !bFinished; x++)
+                for (x = 0; x < nBlocksX && !bFinished; x++)
                 {
                     if (pPreset2[(nBY + y) * nW + nBX + x] == 2)
                     {
-                        if (nRemove == nColumnSize)
+                        if (nRemove == nFound)
                         {
                             pPreset2[(nBY + y) * nW + nBX + x] = 0;
                             bFinished = 1;
-                            --nCount;
+                            --nAttach;
                         }
-                        ++nColumnSize;
+                        ++nFound;
                     }
                 }
             }
@@ -2175,7 +2152,7 @@ RESTART:
 
             const int nP0 = pPreset0[y * nW + x];
             int nLevelPreset = pLevelPresetId[y * nW + x];
-            nColumnSize = SEED_RollLimitedRandomNumber(&pDrlg->pSeed, 4);
+            int nDirection = SEED_RollLimitedRandomNumber(&pDrlg->pSeed, 4);
             const int bHadNoPreset = nLevelPreset == 0;
             if (pPreset2[y * nW + x] == 2)
             {
@@ -2183,7 +2160,7 @@ RESTART:
                 int bLook = 1;
                 for (; nJ < 4 && bLook; nJ++)
                 {
-                    switch ((nColumnSize + nJ) % 4)
+                    switch ((nDirection + nJ) % 4)
                     {
                     case 0:
                         if (pPreset0[(y - 1) * nW + x] == nP0 && pLevelPresetId[(y - 1) * nW + x] && pLevelPresetId[(y - 1) * nW + x] < 15)
@@ -2227,7 +2204,7 @@ RESTART:
                     bLook = 1;
                     for (; nJ < 4 && bLook; nJ++)
                     {
-                        switch ((nColumnSize + nJ) % 4)
+                        switch ((nDirection + nJ) % 4)
                         {
                         case 0:
                             if (pPreset0[(y - 1) * nW + x] != nP0 && pPreset2[(y - 1) * nW + x] == 2)
@@ -2261,11 +2238,11 @@ RESTART:
                     }
 
                     bLook = SEED_RollLimitedRandomNumber(&pDrlg->pSeed, 2) != 0 && bLook;
-                    nColumnSize = SEED_RollLimitedRandomNumber(&pDrlg->pSeed, 4);
+                    nDirection = SEED_RollLimitedRandomNumber(&pDrlg->pSeed, 4);
 
                     for (nJ = 0; nJ < 4 && bLook; nJ++)
                     {
-                        switch ((nColumnSize + nJ) % 4)
+                        switch ((nDirection + nJ) % 4)
                         {
                         case 0:
                             if (pLevelPresetId[(y - 1) * nW + x] && pLevelPresetId[(y - 1) * nW + x] < 15 && !(nLevelPreset & 0x80))
@@ -2329,7 +2306,7 @@ RESTART:
         {
             const int nId = pLevelPresetId[y * nW + x];
             int nPDef = nId % 16;
-            if (nPDef != 0)
+            if (nId % 16 != 0)
             {
                 if (nId >= 16)
                 {
@@ -2353,7 +2330,7 @@ RESTART:
                 }
                 else
                 {
-                    nPDef += 0x211;
+                    nPDef = nId % 16 + 0x211;
                 }
             }
             else if (nId >= 16)
@@ -2389,6 +2366,7 @@ RESTART:
         bSwapped = 0;
         for (nJ = 0; nJ < 2; nJ++)
         {
+            tJungles[nJ + 1].tCoord.nY = tJungles[nJ + 1].tCoord.nY;
             if (tJungles[nJ + 1].tCoord.nY > tJungles[nJ].tCoord.nY)
             {
                 D2JungleStrc tTemp = tJungles[nJ + 1];
@@ -2471,7 +2449,7 @@ static void DRLGOUTPLACE_CreateAct4LevelConnections(D2DrlgStrc* pDrlg)
     DRLGOUTPLACE_InitLevelLinks(gAct4OutdoorDrlgLink, DRLGOUTPLACE_LinkAct4Outdoors, 0, pDrlg);
     DRLGOUTPLACE_InitLevelLinks(gAct4ChaosSanctumDrlgLink, DRLGOUTPLACE_LinkAct4ChaosSanctum, 0, pDrlg);
 
-    DRLG_GetLevel(pDrlg, LEVEL_OUTERSTEPPES)->pOutdoors->dwFlags |= gnDrlgLinkFlags_0096D66C;
+    DRLG_GetLevel(pDrlg, LEVEL_OUTERSTEPPES)->pOutdoors->dwFlags |= gnDrlgLinkFlags;
 
     DRLGOUTPLACE_AddLevelOrths(pDrlg, 0x6A, 0x67);
 }

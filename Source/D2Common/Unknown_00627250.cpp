@@ -15,11 +15,8 @@ struct D2ItemStatCostTxt;
 
 
 
-typedef void (__fastcall* StatListValueChangeFunc)(D2GameStrc* pGame, D2UnitStrc* pOwner, D2UnitStrc* pUnit, int nLayer_StatId, int nPreviousValue, int nNewValue);
 
 
-int __stdcall STATLIST_SetStatValue(D2StatListStrc* pStatList, int nStatId, int nValue, unsigned short nLayer); // 0x006270B0
-void __stdcall STATLIST_AddStat(D2StatListStrc* pStatList, int nStatId, int nValue, unsigned short nLayer); // 0x00627030
 
 
 typedef void (__fastcall* StatListUnitCallback)(D2UnitStrc* pUnit1, int nStatId, int nValue, D2UnitStrc* pUnit2);
@@ -30,7 +27,6 @@ typedef void (__fastcall* StatListUnitCallback)(D2UnitStrc* pUnit1, int nStatId,
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 extern unsigned int gdwBitMasks[]; // 0x006CE268
-int __stdcall STATLIST_GetMaxLifeFromUnit(D2UnitStrc* pUnit); // 0x00625D10
 int __stdcall STATLIST_GetMaxManaFromUnit(D2UnitStrc* pUnit); // 0x00625D60
 int __stdcall STATLIST_GetMaxStaminaFromUnit(D2UnitStrc* pUnit); // 0x00625DB0
 
@@ -101,7 +97,7 @@ static int __stdcall STATLIST_GetTotalStat(D2StatListStrc* pStatList, int nLayer
     return nValue;
 }
 
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer)
+static int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer)
 {
     if (!pUnit)
     {
@@ -124,7 +120,7 @@ int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, unsigned
 }
 
 // 0x006275B0
-void __stdcall sub_006275B0(D2UnitStrc* pUnit)
+void __stdcall STATLIST_ClampStaminaManaHP(D2UnitStrc* pUnit)
 {
     if (!pUnit || !pUnit->pStatListEx)
     {

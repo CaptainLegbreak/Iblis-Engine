@@ -15,6 +15,10 @@
 #include "D2SpriteCache.h"
 
 #include "D2FogSystemInfo.h"
+#include "FogApi.h"
+#include "FogApi.h"
+#include "FogApi2.h"
+#include "D2HellApi.h"
 
 #pragma intrinsic(strcpy)
 
@@ -81,7 +85,6 @@ struct D2CmpSpriteEntryStrc;
 
 struct D2CmpDC6FrameStrc;
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -91,9 +94,6 @@ extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalS
 
 extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC1FC
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
-
-int __cdecl sub_00517ABB_FindLowestSetBit(unsigned int dwMask); // 0x00517ABB
 
 extern D2CmpPoolStrc gCmpPool; // 0x0088CAE0
 
@@ -103,13 +103,9 @@ D2SpriteCacheStrc gCmpTileCache;                                                
 
 D2SpriteCacheNodeStrc* __fastcall D2CMPSpriteCacheEvict(D2SpriteCacheStrc* pCache, D2SpriteCacheNodeStrc* pNode, int bLocked); // 0x005FF4A0
 
-extern D2CmpCacheListEntryStrc* gpCmpCacheEntries; // 0x0089DB7C
 
-void __fastcall sub_0040AB00_FreeAsyncData(AsyncData* pAsync); // 0x0040AB00
 
-void __fastcall CelDrawRleShadow(D2CelStrc* pCel, unsigned char* pDst, int nX, int nClipLeft, int nClipRight, int nPitch, int nSkip, int nLines, int nTable, int nColor); // 0x00608D60
 
-void __fastcall FindTileAddTile(D2TileLibraryHashStrc* pHash, D2CmpTileBlockStrc* pTile); // 0x0060CFA0
 
 struct D2CmpBlockTableAStrc
 {
@@ -131,7 +127,6 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, size_t nSize); // 0x0068
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 struct D2SpriteFileStrc
 {
@@ -151,7 +146,7 @@ struct D2SpriteLoadRequestStrc
 {
     int unk0x00;
     D2SpriteFileStrc* pFile;
-    D2SpriteEntryStrc* f_8;
+    D2SpriteEntryStrc* pEntry;
     int nArg0C;
     int nArg10;
     int nResult;
@@ -168,7 +163,6 @@ extern int gnCmpTilePoolBlocks; // 0x00741EF8
 
 void __cdecl CodecInitLock(); // 0x0060CD30
 
-D2FogSystemInfoStrc* __cdecl FOG_GetSystemInfo(); // 0x00407360
 
 void __fastcall CelDataHashInit(D2CmpBlockTableAStrc* pTable); // 0x0060AEE0
 
@@ -198,13 +192,12 @@ void __fastcall D2CMPSpriteCacheFreeAll(D2SpriteCacheStrc* pCache); // 0x005FFBE
 
 void __fastcall D2CMPSpriteCacheCreate(D2SpriteCacheStrc* pCache, void* pMemPool, unsigned int nMaxSize, int nArg); // 0x005FEE90
 
-void __fastcall sub_005FE170_SpriteCacheFreeCallback(void* pNode); // 0x005FE170
+void __fastcall SPRITECACHE_SpriteCacheFreeCallback(void* pNode); // 0x005FE170
 
 extern int gaDirectionIndex64A[8][64]; // 0x006E4DA0
 
 extern int gaDirectionIndex64B[8][64]; // 0x006E55A0
 
-void __fastcall CelIterateRgbPixels(D2CelStrc* pCel, int nArg, int nTermination); // 0x0060D110
 
 typedef void(__fastcall* CELFILECELLOPFN)(D2CelStrc* pCel, int nArg);
 
@@ -216,7 +209,6 @@ extern CELDRAWFN gpfnCelDraw[]; // 0x006E3688
 
 typedef void(__fastcall* PixelDataFreeCallback)(void* pData);
 
-void __stdcall D2CMPLoadProjectRecord(D2TileLibraryHeaderStrc** ppLibrary, const char* szFilePath); // 0x00600790
 
 extern "C" char* __cdecl strcpy(char* szDst, const char* szSrc);
 
@@ -224,7 +216,6 @@ extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* 
 
 int __stdcall SStrCmpI(const char* szString1, const char* szString2, int nMaxChars); // 0x00413590
 
-void* __fastcall FOG_AsyncDataGetBuffer(AsyncData* pAsync); // 0x0040A9E0
 
 // build: symbol _gszFmtDcc4 0x006E3618
 extern "C" const char gszFmtDcc4[];
@@ -256,11 +247,10 @@ extern "C" const char gszDataGlobal[]; // 0x006D4118
 
 struct D2CmpDC6CelStrc { char unk0x00[0x2C]; };
 
-int gdwGlobal_0089DB64; // 0x0089DB64
 
-int gdwGlobal_0088DB28; // 0x0088DB28
+int gnCelDataCacheUsedMemory; // 0x0088DB28
 
-int gdwGlobal_0088DB24; // 0x0088DB24
+int gnCelDataCacheMaxMemory; // 0x0088DB24
 
 struct D2CmpCelFileViewStrc;
 
@@ -277,19 +267,14 @@ static D2SpriteCacheNodeStrc* __stdcall D2CMPSpriteCacheTakeNode(unsigned int nS
 
 struct D2CmpGfxHashEntryStrc;
 
-extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
 
-extern int gbCmpCompressedDataMode;                                                                         // 0x00741EFC
 
 extern "C" const char gszMonstersDir[];                                                            // 0x006D6CAC
 
 extern "C" const char gszCharsDir[];                                                               // 0x006DCC34
 
-extern "C" const char gszSpriteCacheSourceFile[];                                                           // 0x006E364C
 
 static int D2CMPSpriteBuildName(D2CmpSpriteContextStrc* pContext, char* szOut); // 0x005FE2B0
 
@@ -297,9 +282,7 @@ void __stdcall D2CMPSpriteInitFrames(D2CmpSpriteFileStrc* pFile, D2CmpSpriteCont
 
 D2SpriteCacheNodeStrc* __fastcall D2CMPSpriteCacheAlloc(D2SpriteCacheStrc* pCache, unsigned int nSize, unsigned int nKey, int bLocked); // 0x005FFC40
 
-AsyncData* __fastcall sub_0040A620(void* pMemPool, const char* szFileName, int bAllowAsync, long nFileOffset, int nFileSize, void* pBuffer, D2CmpLoadDescStrc* pAsyncOpDesc, int nPriority, const char* szFile, int nLine); // 0x0040A620
-
-unsigned int __fastcall FOG_AsyncDataGetBufferSize(AsyncData* pAsyncData); // 0x0040AA40
+AsyncData* __fastcall FOG_AsyncDataLoadFileEx(void* pMemPool, const char* szFileName, int bAllowAsync, long nFileOffset, int nFileSize, void* pBuffer, D2CmpLoadDescStrc* pAsyncOpDesc, int nPriority, const char* szFile, int nLine); // 0x0040A620
 
 int __stdcall D2CMPSpriteAsyncLoadCallback(void* hArg, int nArg, D2SpriteLoadRequestStrc* pRequest);    // 0x005FF6E0
 
@@ -307,7 +290,7 @@ int __stdcall CelGameDirToFileDir(int nDirection, unsigned int nDirections);    
 
 D2CmpGfxHashEntryStrc* __fastcall GfxHashAdd(void* pMemPool, D2CmpBlockTableBStrc* pHash, D2CmpSpriteEntryStrc* pEntry, D2CmpSpriteContextStrc* pContext, D2CmpSpriteFileStrc* pFile); // 0x0060ADC0
 
-static void* sub_005FEC50_GetCachedDC6Frame(D2CmpSpriteContextStrc* pContext, D2CmpSpriteEntryStrc* pEntry);
+static void* SPRITECACHE_GetCachedDC6Frame(D2CmpSpriteContextStrc* pContext, D2CmpSpriteEntryStrc* pEntry); // 0x005FEC50
 
 static int __stdcall D2CMPSpriteReadFrames(D2CmpSpriteContextStrc* pContext, int nDirection, int nFrames, const char* szName, D2CmpSpriteFileStrc* pFile, D2CmpSpriteEntryStrc* pEntry);
 
@@ -346,8 +329,6 @@ extern SpriteCache gCache_0089DB60; // 0x0089DB60
 
 extern int gnWarn; // 0x008ADBB0
 
-extern int __fastcall FOG_AsyncDataTestLoaded(AsyncData*); // 0x0040A7F0
-
 extern void* __stdcall CelGetHandle(D2CmpSpriteContextStrc*); // 0x00601840
 
 void __fastcall D2CMPSpriteCacheTouch(D2SpriteCacheStrc* pCache, D2SpriteCacheNodeStrc* pNode); // 0x005FF5B0
@@ -374,11 +355,7 @@ int __fastcall CodecLoadTileHeader(const char*, SpriteFile*); // 0x0060BF20
 
 int __fastcall FOG_FOpenFile(const char*, char**); // 0x004068E0
 
-int __fastcall FOG_FReadFile(void* hFile, void* pBuffer, int nToRead, int* pnRead, void* pOverlapped, int nArg7, int nArg6); // 0x00406900
 
-int __fastcall FOG_FGetFileSize(void* hFile, unsigned int* pnSizeHigh); // 0x00406930
-
-int __fastcall FOG_FCloseFile(void* pArg); // 0x004068F0
 
 static SpriteFile* __stdcall D2CMPSpriteLoadFile(D2CmpSpriteContextStrc*, char*, char*); // 0x005FE990
 
@@ -423,9 +400,9 @@ extern "C" int ganSlotArrayA[94];
 // build: symbol _ganSlotArrayB 0x008822A8
 extern "C" int ganSlotArrayB[94];
 
-extern "C" int gnValue_00882744;
+extern "C" int gpGidFileData;
 
-extern "C" int gnValue_0088274C;
+extern "C" int gpKeyFile3Data;
 
 extern "C" int gnValue_0088CB0C; // 0x0088CB0C
 
@@ -469,7 +446,8 @@ extern "C" void __cdecl D2CMPResetTileCacheHits()
 // 0x005FE070
 void __cdecl D2CMPTileFreeAsyncLoads()
 {
-    sub_006093E0_PoolFreeAll(&gCmpPool);
+// build: symbol ?LRUCacheDestroy@* 0x006093E0
+    LRUCacheDestroy(&gCmpPool);
 }
 
 // 0x005FE0E0
@@ -521,7 +499,7 @@ void (__fastcall* gpfnCmpFreeCallback)(int nKeyA, int nKeyC, int nKeyB);        
 void __fastcall GfxHashRemove(void* pMemPool, D2CmpGfxHashStrc* pHash, D2CmpGfxHashEntryStrc* pEntry); // 0x0060AB10
 
 // 0x005FE170
-void __fastcall sub_005FE170_SpriteCacheFreeCallback(void* pNode)
+void __fastcall SPRITECACHE_SpriteCacheFreeCallback(void* pNode)
 {
     D2SpriteFreeNodeStrc* pFreeNode = (D2SpriteFreeNodeStrc*)pNode;
     if (gpfnCmpFreeCallback)
@@ -777,29 +755,6 @@ static int D2CMPSpriteBuildName(D2CmpSpriteContextStrc* pContext, char* szOut)
     return 0;
 }
 
-static inline int SpriteCache_CopyName(char* szDst, const char* szSrc)
-{
-    strcpy(szDst, szSrc);
-    return 1;
-}
-
-static inline int SpriteCache_BuildDccOrDc6Path(char* szOut, const char* szDir, const char* szName, D2CmpSpriteContextStrc* pContext, int bAllowDcc)
-{
-    if (bAllowDcc)
-    {
-        if (gbCmpCompressedDataMode)
-        {
-            wsprintfA(szOut, gszFmtDcc2, szDir, szName);
-            pContext->dwGfxFlags |= 1;
-            return 1;
-        }
-        wsprintfA(szOut, gszFmtDc62, szDir, szName);
-        return 1;
-    }
-    wsprintfA(szOut, gszFmtDc62, szDir, szName);
-    return 1;
-}
-
 // 0x005FEC90
 static void __stdcall D2CMPSpriteInitFrames(D2CmpSpriteFileStrc* pFile, D2CmpSpriteContextStrc* pContext, D2CmpSpriteEntryStrc* pEntry)
 {
@@ -839,7 +794,8 @@ static void __stdcall D2CMPSpriteInitFrames(D2CmpSpriteFileStrc* pFile, D2CmpSpr
 // 0x005FEE00
 void __cdecl D2CMPSpriteCacheDumpHashTableStats()
 {
-    gCmpBlockTableB.sub_0060AB70_Destroy();
+// build: symbol ?GfxHashDumpStats@* 0x0060AB70
+    gCmpBlockTableB.GfxHashDumpStats();
 }
 
 // 0x005FEE10
@@ -854,7 +810,7 @@ unsigned int __cdecl D2CMPSpriteCacheGetUsedMemory()
 // 0x005FEE40
 int __cdecl D2CMPSpriteCacheGetMaxMemory()
 {
-    return gdwGlobal_0089DB64;
+    return gCmpTileCache.nMaxSize;
 }
 
 // 0x005FEE50
@@ -866,13 +822,13 @@ void __cdecl D2CMPCelDataCacheDumpHashTableStats()
 // 0x005FEE60
 int __cdecl D2CMPCelDataCacheGetUsedMemory()
 {
-    return gdwGlobal_0088DB28;
+    return gnCelDataCacheUsedMemory;
 }
 
 // 0x005FEE70
 int __cdecl D2CMPCelDataCacheGetMaxMemory()
 {
-    return gdwGlobal_0088DB24;
+    return gnCelDataCacheMaxMemory;
 }
 
 // 0x005FEE80
@@ -1085,16 +1041,17 @@ static void D2CMPSpriteCacheUnlink(D2SpriteCacheStrc* pCache, D2SpriteCacheNodeS
     ptBlock->pPrev = 0;
 }
 
+// 0x005FF2A0
 int __cdecl D2CMPSpriteNumAsyncLoads()
 {
     int nCount = 0;
-    for (D2CmpCacheListEntryStrc* pEntry = gpCmpCacheEntries; pEntry; pEntry = pEntry->pNext)
+    for (D2SpriteCacheNodeStrc* pNode = gCmpTileCache.pHeadB; pNode; pNode = pNode->pNext)
     {
-        D2CmpCacheKeyStrc* pKey = pEntry->pKey;
+        D2CmpSpriteEntryStrc* pKey = pNode->pEntry;
         if (pKey && !(pKey->nFlags & 1))
         {
-            D2_ASSERT(pKey->pAsyncData, 0xB5B);
-            if (!sub_0040A7F0_AsyncDataCheck(pKey->pAsyncData))
+            D2_ASSERT(pKey->pAsync, 0xB5B);
+            if (!FOG_AsyncDataTestLoaded(pKey->pAsync))
             {
                 nCount += 1;
             }
@@ -1104,9 +1061,46 @@ int __cdecl D2CMPSpriteNumAsyncLoads()
     return nCount;
 }
 
+// 0x005FF300
+int __stdcall D2CMPSpriteFindAsynchSiblings(int nKeyA, int nKeyB, int nKeyC)
+{
+    for (D2SpriteCacheNodeStrc* pNode = gCmpTileCache.pHeadB; pNode; pNode = pNode->pNext)
+    {
+        D2CmpSpriteEntryStrc* pKey = pNode->pEntry;
+        if (pKey && !(pKey->nFlags & 1) && pKey->nArg08 == nKeyC && pKey->nArg04 == nKeyB && pKey->nType == nKeyA)
+        {
+            D2_ASSERT(pKey->pAsync, 0xB7B);
+            if (!FOG_AsyncDataTestLoaded(pKey->pAsync))
+            {
+                return 1;
+            }
+        }
+    }
+
+    return 0;
+}
+
 // 0x005FF390
 void __cdecl sub_005FF390_Nop()
 {
+}
+
+// 0x005FF3A0
+void __cdecl D2CMPSpriteFreeAsyncLoads()
+{
+    for (D2SpriteCacheNodeStrc* pNode = gCmpTileCache.pHeadB; pNode; pNode = pNode->pNext)
+    {
+        D2CmpSpriteEntryStrc* pKey = pNode->pEntry;
+        if (pKey)
+        {
+            AsyncData* pAsyncData = pKey->pAsync;
+            if (pAsyncData && !FOG_AsyncDataTestLoaded(pAsyncData))
+            {
+                FOG_AsyncDataFree(pAsyncData);
+                pKey->pAsync = 0;
+            }
+        }
+    }
 }
 
 // 0x005FF3F0
@@ -1249,23 +1243,6 @@ void __fastcall D2CMPSpriteCacheTouch(D2SpriteCacheStrc* pCache, D2SpriteCacheNo
     LeaveCriticalSection(&pCache->tLock);
 }
 
-void __cdecl D2CMPSpriteFreeAsyncLoads()
-{
-    for (D2CmpCacheListEntryStrc* pEntry = gpCmpCacheEntries; pEntry; pEntry = pEntry->pNext)
-    {
-        D2CmpCacheKeyStrc* pKey = pEntry->pKey;
-        if (pKey)
-        {
-            AsyncData* pAsyncData = pKey->pAsyncData;
-            if (pAsyncData && !sub_0040A7F0_AsyncDataCheck(pAsyncData))
-            {
-                sub_0040AB00_FreeAsyncData(pAsyncData);
-                pKey->pAsyncData = 0;
-            }
-        }
-    }
-}
-
 D2SpriteCacheNodeStrc* __fastcall sub_M110_Emit_005FF0D0(D2SpriteCacheStrc* pCache, D2SpriteCacheNodeStrc* pNode)
 {
     D2CMPSpriteCachePushFree(pCache, pNode);
@@ -1284,9 +1261,10 @@ void __stdcall D2CMPSpriteCacheInit(void* pMemPool, unsigned int nMaxSize, int n
     }
     gbCmpSmallCelCache = nCacheSize < 0x4000000;
     CelDataHashInit(&gCmpBlockTableA);
-    sub_006093E0_PoolFreeAll(&gCmpTilePool);
+    LRUCacheDestroy(&gCmpTilePool);
     memset(&gCmpTilePool, 0, sizeof(gCmpTilePool));
-    sub_00609020_PoolInit(&gCmpTilePool, pMemPool, nArg, D2CMPTileFreePoolEntry, gnCmpTilePoolBlocks);
+// build: symbol ?LRUCacheInit@* 0x00609020
+    LRUCacheInit(&gCmpTilePool, pMemPool, nArg, D2CMPTileFreePoolEntry, gnCmpTilePoolBlocks);
     memset(&gCmpBlockTableB, 0, sizeof(gCmpBlockTableB));
     GfxHashInit(&gCmpBlockTableB);
     if (gCmpTileCache.nArg)
@@ -1294,11 +1272,11 @@ void __stdcall D2CMPSpriteCacheInit(void* pMemPool, unsigned int nMaxSize, int n
         D2CMPSpriteCacheFreeAll(&gCmpTileCache);
         memset(&gCmpTileCache, 0, sizeof(gCmpTileCache));
     }
-    D2CMPSpriteCacheCreate(&gCmpTileCache, pMemPool, nMaxSize, (int)sub_005FE170_SpriteCacheFreeCallback);
+    D2CMPSpriteCacheCreate(&gCmpTileCache, pMemPool, nMaxSize, (int)SPRITECACHE_SpriteCacheFreeCallback);
 }
 
 // 0x005FEB80
-static void* __stdcall sub_005FEB80_FindDC6Frame(void* pData, D2CmpSpriteContextStrc* pContext, D2CmpDC6HeaderStrc* pHeader)
+static void* __stdcall SPRITECACHE_FindDC6Frame(void* pData, D2CmpSpriteContextStrc* pContext, D2CmpDC6HeaderStrc* pHeader)
 {
     if (!pData)
         return 0;
@@ -1344,7 +1322,7 @@ static void* __stdcall sub_005FEB80_FindDC6Frame(void* pData, D2CmpSpriteContext
 }
 
 // 0x005FEC50
-static void* sub_005FEC50_GetCachedDC6Frame(D2CmpSpriteContextStrc* pContext, D2CmpSpriteEntryStrc* pEntry)
+static void* SPRITECACHE_GetCachedDC6Frame(D2CmpSpriteContextStrc* pContext, D2CmpSpriteEntryStrc* pEntry)
 {
     if (pEntry && pEntry->pAsync)
     {
@@ -1353,7 +1331,7 @@ static void* sub_005FEC50_GetCachedDC6Frame(D2CmpSpriteContextStrc* pContext, D2
         if (pData)
         {
             pContext->nFrames = pHeader->nFrames;
-            return sub_005FEB80_FindDC6Frame(pData, pContext, pHeader);
+            return SPRITECACHE_FindDC6Frame(pData, pContext, pHeader);
         }
 
         return 0;
@@ -1401,7 +1379,7 @@ static int __stdcall D2CMPSpriteLoadDc6Entry(D2CmpSpriteFileStrc* pFile, int nAr
     if (!pEntry->bFramesInitialized)
         D2CMPSpriteInitFrames(pFile, pContext, pEntry);
 
-    pContext->pFrame = sub_005FEC50_GetCachedDC6Frame(pContext, pEntry);
+    pContext->pFrame = SPRITECACHE_GetCachedDC6Frame(pContext, pEntry);
     return pContext->pFrame != 0;
 }
 
@@ -1458,7 +1436,7 @@ static int __stdcall D2CMPSpriteLoadDc6CacheEntry(D2CmpSpriteFileStrc* pFile, in
 int __stdcall D2CMPSpriteAsyncLoadCallback(void* hArg, int nArg, D2SpriteLoadRequestStrc* pRequest)
 {
     D2SpriteFileStrc* pFile = pRequest->pFile;
-    D2SpriteEntryStrc* pEntry = pRequest->f_8;
+    D2SpriteEntryStrc* pEntry = pRequest->pEntry;
     D2SpriteCacheNodeStrc* pNode = pEntry->pNode;
     pNode->dwFlags |= 2;
     pRequest->nResult = CodecDecodeDccData(hArg, gCmpTileCache.pMemPool, nArg, pFile, pEntry, pRequest->nArg0C, pRequest->nArg10, &pRequest->nSize, pFile->pData);
@@ -1470,11 +1448,6 @@ int __stdcall D2CMPSpriteAsyncLoadCallback(void* hArg, int nArg, D2SpriteLoadReq
         pFile->nFlags |= 1;
     }
     return 1;
-}
-
-int __stdcall sub_R04_Emit_005FFFA0(D2CmpSpriteFileStrc* pFile, int nDirection, int nFrames, const char* szName, D2CmpSpriteContextStrc* pContext)
-{
-    return D2CMPSpriteLoadDc6CacheEntry(pFile, nDirection, nFrames, szName, pContext);
 }
 
 // 0x005FF760
@@ -1562,12 +1535,12 @@ static int __stdcall D2CMPSpriteReadFrames(D2CmpSpriteContextStrc* pContext, int
         tDesc.nFirstFrame = nDirection * nFrames;
         tDesc.nFrames = nFrames;
         pEntry->nFlags |= 4;
-        pEntry->pAsync = sub_0040A620(gCmpTileCache.pMemPool, szName, 0, pFile->aOffsets[nStart], nSize, 0, &tDesc, -2, gszSpriteCacheSourceFile, 0x369);
+        pEntry->pAsync = FOG_AsyncDataLoadFileEx(gCmpTileCache.pMemPool, szName, 0, pFile->aOffsets[nStart], nSize, 0, &tDesc, -2, gszSpriteCacheSourceFile, 0x369);
         nSize = FOG_AsyncDataGetBufferSize(pEntry->pAsync);
     }
     else
     {
-        pEntry->pAsync = sub_0040A620(gCmpTileCache.pMemPool, szName, 0, pFile->aOffsets[nStart], nSize, 0, 0, -2, gszSpriteCacheSourceFile, 0x379);
+        pEntry->pAsync = FOG_AsyncDataLoadFileEx(gCmpTileCache.pMemPool, szName, 0, pFile->aOffsets[nStart], nSize, 0, 0, -2, gszSpriteCacheSourceFile, 0x379);
     }
 
     D2_ASSERT(pEntry->pAsync, 0x37D);
@@ -1623,11 +1596,11 @@ static int __stdcall D2CMPSpriteReadFramesAsync(D2CmpSpriteFileStrc* pFile, int 
         tDesc.nFirstFrame = nDirection * nFrames;
         tDesc.nFrames = nFrames;
         pEntry->nFlags |= 4;
-        pEntry->pAsync = sub_0040A620(gCmpTileCache.pMemPool, szName, 1, pFile->aOffsets[nStart], nSize, 0, (int)&tDesc, -2, gszSpriteCacheSourceFile, 0x3DA);
+        pEntry->pAsync = FOG_AsyncDataLoadFileEx(gCmpTileCache.pMemPool, szName, 1, pFile->aOffsets[nStart], nSize, 0, (int)&tDesc, -2, gszSpriteCacheSourceFile, 0x3DA);
     }
     else
     {
-        pEntry->pAsync = sub_0040A620(gCmpTileCache.pMemPool, szName, 1, pFile->aOffsets[nStart], nSize, 0, 0, -2, gszSpriteCacheSourceFile, 0x3E6);
+        pEntry->pAsync = FOG_AsyncDataLoadFileEx(gCmpTileCache.pMemPool, szName, 1, pFile->aOffsets[nStart], nSize, 0, 0, -2, gszSpriteCacheSourceFile, 0x3E6);
     }
 
     if (!pEntry->pAsync)
@@ -1888,7 +1861,7 @@ int __stdcall D2CMPSpriteValidate(D2CmpSpriteContextStrc* context, int async, in
         D2CMPSpriteCacheTouch(&gCmpTileCache, (D2SpriteCacheNodeStrc*)node->link);
         if (*(int*)((char*)entry + 0x28) == 0)
             D2CMPSpriteInitFrames((D2CmpSpriteFileStrc*)file, context, entry);
-        context->pFrame = sub_005FEC50_GetCachedDC6Frame(context, entry);
+        context->pFrame = SPRITECACHE_GetCachedDC6Frame(context, entry);
         if (!context->pFrame)
         {
             if (!gnWarn)
@@ -1982,151 +1955,9 @@ int __stdcall CelGameDirToNormalDir(unsigned int nIndex, unsigned int nDirection
     return gaDirectionIndex64B[sub_00517ABB_FindLowestSetBit(nDirections)][nIndex];
 }
 
-// 0x00601180
-void __stdcall CelFileIteratePixels(D2CelFileStrc* pCelFile, int nArg)
-{
-    D2_ASSERT(pCelFile->dwFlags & 4, 0x322);
-    for (unsigned int nDirection = 0; nDirection < pCelFile->nDirections; nDirection++)
-    {
-        for (unsigned int nFrame = 0; nFrame < pCelFile->nCelsPerDirection; nFrame++)
-        {
-            CelIterateRgbPixels(pCelFile->pCels[nDirection * pCelFile->nCelsPerDirection + nFrame], nArg, pCelFile->nTermination);
-        }
-    }
-}
 
-// 0x00601450
-void __stdcall CelFileTransform(D2CelFileStrc* pCelFile, int nArg)
-{
-    D2_ASSERT(pCelFile, 0x431);
-    for (unsigned int i = 0; i < pCelFile->nDirections * pCelFile->nCelsPerDirection; i++)
-    {
-        gpfnCelFileCellOp[pCelFile->nFormat](pCelFile->pCels[i], nArg);
-    }
-}
 
-// 0x00601650
-void __stdcall CelDrawEx(D2CmpCelContextStrc* pContext, int nX, int nY, int nArg4, int nArg5, unsigned char* pBuffer, int nHeight, int nPitch, int nArg9, int nArg10, int nClipTop, int nClipRows, int nArg13)
-{
-    D2CelFileStrc* pCelFile = pContext->pCelFile;
-    if (pCelFile)
-    {
-        D2_ASSERT(pCelFile->dwVersion == 6, 0x4C6);
-        D2_ASSERT(!(pCelFile->dwFlags & 4), 0x4C7);
-    }
-    D2_ASSERT(pBuffer, 0x4CA);
-    D2CelStrc* pCel = pContext->pCel;
-    D2_ASSERT(pCel, 0x4CD);
-    nY += pCel->nYOffset;
-    int nEnd = nY - nClipTop;
-    nX += pCel->nXOffset;
-    int nStart = nEnd - nClipRows;
-    if (nEnd < 0 || nStart >= nHeight)
-    {
-        return;
-    }
-    if (nStart < 0)
-    {
-        nStart = 0;
-    }
-    if (nEnd >= nHeight)
-    {
-        nEnd = nHeight - 1;
-    }
-    const int nRows = nEnd - nStart;
-    if (!nRows)
-    {
-        return;
-    }
-    CELDRAWFN pfnDraw = gpfnCelDraw[pCelFile->nFormat];
-    D2_ASSERT(pfnDraw, 0x4E9);
-    pfnDraw(pCel, &pBuffer[nEnd * nPitch + nX], nX, nArg4, nArg5, nPitch, nY - nEnd, nRows, nArg9, nArg10, nArg13);
-}
 
-// 0x00601810
-int __stdcall CelValidateContext(D2CmpCelContextStrc* pContext)
-{
-    D2CmpCelFileViewStrc* pCelFile = (D2CmpCelFileViewStrc*)pContext->pCelFile;
-    if (!pCelFile)
-    {
-        return 0;
-    }
-
-    if (pCelFile->nVersion != 6)
-    {
-        return 0;
-    }
-
-    if (pContext->nDirection >= 0x40)
-    {
-        return 0;
-    }
-
-    return pContext->nFrame <= pCelFile->nFrames;
-}
-
-void __stdcall CelDrawShadow(D2CmpCelContextStrc* pContext, int nX, int nY, int nClipLeft, int nClipRight, unsigned char* pBuffer, int nHeightLimit, int nPitch, int nTable, int nColor)
-{
-    D2CelFileStrc* pCelFile = pContext->pCelFile;
-    if (pCelFile)
-    {
-        D2_ASSERT(pCelFile->dwVersion == 6, 0x50D);
-        D2_ASSERT(!(pCelFile->dwFlags & 4), 0x50E);
-    }
-
-    D2_ASSERT(pBuffer, 0x511);
-    D2CelStrc* pCel = pContext->pCel;
-    D2_ASSERT(pCel, 0x514);
-
-    nX += pCel->nXOffset + pCel->nYOffset / 2;
-    nY += pCel->nYOffset / 2;
-    int nLines = (unsigned int)pCel->nHeight / 2;
-    int nSkip = 0;
-    if (nY - pCel->nHeight / 2 < 0)
-    {
-        nLines = nY + 1;
-    }
-
-    if (nLines <= 0)
-    {
-        return;
-    }
-
-    if (nY >= nHeightLimit)
-    {
-        nSkip = nY - nHeightLimit + 1;
-        nLines -= nSkip;
-        if (nLines <= 0)
-        {
-            return;
-        }
-        nY = nHeightLimit - 1;
-    }
-
-    const int nStart = nX - nSkip;
-    CelDrawRleShadow(pCel, pBuffer + nY * nPitch + nStart, nStart, nClipLeft, nClipRight, nPitch, nSkip, nLines, nTable, nColor);
-}
-
-int __stdcall CelGetHeight(D2CelStrc* pCel)
-{
-    D2_ASSERT(pCel, 0x589);
-
-    return pCel->nHeight;
-}
-
-int __stdcall CelGetOffsetX(D2CelStrc* pCel)
-{
-    D2_ASSERT(pCel, 0x597);
-
-    return pCel->nXOffset;
-}
-
-int __stdcall CelGetOffsetY(D2CelStrc* pCel)
-{
-    D2_ASSERT(pCel, 0x5A5);
-
-    return pCel->nYOffset;
-}
 
 const char* __fastcall CelSkipRleLines(const char* pData, int nLines)
 {
@@ -2184,115 +2015,144 @@ D2TileLibraryHashStrc* __fastcall TileProjectBuildFindTable(D2CmpTileLibraryStrc
     return pHash;
 }
 
-void __stdcall sub_M320_Emit_005FEC90(D2CmpSpriteFileStrc* pFile, D2CmpSpriteContextStrc* pContext, D2CmpSpriteEntryStrc* pEntry)
-{
-    D2CMPSpriteInitFrames(pFile, pContext, pEntry);
-}
-
-int __stdcall sub_Emit_005FFE90(D2CmpSpriteFileStrc* pFile, int nArg2, int nArg3, const char* szName, D2CmpSpriteContextStrc* pContext)
-{
-    return D2CMPSpriteLoadDc6Entry(pFile, nArg2, nArg3, szName, pContext);
-}
-
 extern "C" void __cdecl CelRemapRlePixels(); // 0x00606B00
 
-extern "C" const CELFILECELLOPFN gData_006E3698[226]; // 0x006E3698
-extern "C" const int gData_006E4DA0[8][64]; // 0x006E4DA0
-extern "C" const int gData_006E55A0[8][64]; // 0x006E55A0
-
-extern "C" const CELFILECELLOPFN gData_006E3698[226] = {
-    (CELFILECELLOPFN)&CelRemapRlePixels, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, (CELFILECELLOPFN)0x1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, (CELFILECELLOPFN)0x2, (CELFILECELLOPFN)0x1, (CELFILECELLOPFN)0x3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, (CELFILECELLOPFN)0x4, (CELFILECELLOPFN)0x2, (CELFILECELLOPFN)0x5, (CELFILECELLOPFN)0x1, (CELFILECELLOPFN)0x6, (CELFILECELLOPFN)0x3, (CELFILECELLOPFN)0x7, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, (CELFILECELLOPFN)0x8, (CELFILECELLOPFN)0x4, (CELFILECELLOPFN)0x9, (CELFILECELLOPFN)0x2, (CELFILECELLOPFN)0xA, (CELFILECELLOPFN)0x5, (CELFILECELLOPFN)0xB, (CELFILECELLOPFN)0x1, (CELFILECELLOPFN)0xC, (CELFILECELLOPFN)0x6, (CELFILECELLOPFN)0xD, (CELFILECELLOPFN)0x3, (CELFILECELLOPFN)0xE,
-    (CELFILECELLOPFN)0x7, (CELFILECELLOPFN)0xF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, (CELFILECELLOPFN)0x10, (CELFILECELLOPFN)0x8, (CELFILECELLOPFN)0x11, (CELFILECELLOPFN)0x4, (CELFILECELLOPFN)0x12, (CELFILECELLOPFN)0x9, (CELFILECELLOPFN)0x13, (CELFILECELLOPFN)0x2, (CELFILECELLOPFN)0x14, (CELFILECELLOPFN)0xA, (CELFILECELLOPFN)0x15, (CELFILECELLOPFN)0x5, (CELFILECELLOPFN)0x16,
-    (CELFILECELLOPFN)0xB, (CELFILECELLOPFN)0x17, (CELFILECELLOPFN)0x1, (CELFILECELLOPFN)0x18, (CELFILECELLOPFN)0xC, (CELFILECELLOPFN)0x19, (CELFILECELLOPFN)0x6, (CELFILECELLOPFN)0x1A, (CELFILECELLOPFN)0xD, (CELFILECELLOPFN)0x1B, (CELFILECELLOPFN)0x3, (CELFILECELLOPFN)0x1C, (CELFILECELLOPFN)0xE, (CELFILECELLOPFN)0x1D, (CELFILECELLOPFN)0x7, (CELFILECELLOPFN)0x1E,
+extern "C" const CELFILECELLOPFN gData_006E3698[226] = { // 0x006E3698
+    (CELFILECELLOPFN)&CelRemapRlePixels, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, (CELFILECELLOPFN)0x1,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, (CELFILECELLOPFN)0x2,
+    (CELFILECELLOPFN)0x1, (CELFILECELLOPFN)0x3, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, (CELFILECELLOPFN)0x4,
+    (CELFILECELLOPFN)0x2, (CELFILECELLOPFN)0x5, (CELFILECELLOPFN)0x1, (CELFILECELLOPFN)0x6,
+    (CELFILECELLOPFN)0x3, (CELFILECELLOPFN)0x7, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, (CELFILECELLOPFN)0x8,
+    (CELFILECELLOPFN)0x4, (CELFILECELLOPFN)0x9, (CELFILECELLOPFN)0x2, (CELFILECELLOPFN)0xA,
+    (CELFILECELLOPFN)0x5, (CELFILECELLOPFN)0xB, (CELFILECELLOPFN)0x1, (CELFILECELLOPFN)0xC,
+    (CELFILECELLOPFN)0x6, (CELFILECELLOPFN)0xD, (CELFILECELLOPFN)0x3, (CELFILECELLOPFN)0xE,
+    (CELFILECELLOPFN)0x7, (CELFILECELLOPFN)0xF, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, (CELFILECELLOPFN)0x10,
+    (CELFILECELLOPFN)0x8, (CELFILECELLOPFN)0x11, (CELFILECELLOPFN)0x4, (CELFILECELLOPFN)0x12,
+    (CELFILECELLOPFN)0x9, (CELFILECELLOPFN)0x13, (CELFILECELLOPFN)0x2, (CELFILECELLOPFN)0x14,
+    (CELFILECELLOPFN)0xA, (CELFILECELLOPFN)0x15, (CELFILECELLOPFN)0x5, (CELFILECELLOPFN)0x16,
+    (CELFILECELLOPFN)0xB, (CELFILECELLOPFN)0x17, (CELFILECELLOPFN)0x1, (CELFILECELLOPFN)0x18,
+    (CELFILECELLOPFN)0xC, (CELFILECELLOPFN)0x19, (CELFILECELLOPFN)0x6, (CELFILECELLOPFN)0x1A,
+    (CELFILECELLOPFN)0xD, (CELFILECELLOPFN)0x1B, (CELFILECELLOPFN)0x3, (CELFILECELLOPFN)0x1C,
+    (CELFILECELLOPFN)0xE, (CELFILECELLOPFN)0x1D, (CELFILECELLOPFN)0x7, (CELFILECELLOPFN)0x1E,
     (CELFILECELLOPFN)0xF, (CELFILECELLOPFN)0x1F
-}; // 0x006E3698
+};
 #pragma comment(linker, "/alternatename:?gpfnCelFileCellOp@@3PAP6IXPAUD2CelStrc@@H@ZA=_gData_006E3698")
 
-extern "C" const int gData_006E4DA0[8][64] = {
+extern "C" const int gData_006E4DA0[8][64] = { // 0x006E4DA0
     { 0 },
     { 0 },
     {
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-    32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32
-},
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+        32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32
+    },
     {
-    0, 0, 0, 0, 0, 0, 0, 0, 16, 16, 16, 16, 16, 16, 16, 16,
-    16, 16, 16, 16, 16, 16, 16, 16, 32, 32, 32, 32, 32, 32, 32, 32,
-    32, 32, 32, 32, 32, 32, 32, 32, 48, 48, 48, 48, 48, 48, 48, 48,
-    48, 48, 48, 48, 48, 48, 48, 48
-},
+        0, 0, 0, 0, 0, 0, 0, 0, 16, 16, 16, 16, 16, 16, 16, 16,
+        16, 16, 16, 16, 16, 16, 16, 16, 32, 32, 32, 32, 32, 32, 32, 32,
+        32, 32, 32, 32, 32, 32, 32, 32, 48, 48, 48, 48, 48, 48, 48, 48,
+        48, 48, 48, 48, 48, 48, 48, 48
+    },
     {
-    0, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 16, 16, 16, 16,
-    16, 16, 16, 16, 24, 24, 24, 24, 24, 24, 24, 24, 32, 32, 32, 32,
-    32, 32, 32, 32, 40, 40, 40, 40, 40, 40, 40, 40, 48, 48, 48, 48,
-    48, 48, 48, 48, 56, 56, 56, 56, 56, 56, 56, 56
-},
+        0, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 16, 16, 16, 16,
+        16, 16, 16, 16, 24, 24, 24, 24, 24, 24, 24, 24, 32, 32, 32, 32,
+        32, 32, 32, 32, 40, 40, 40, 40, 40, 40, 40, 40, 48, 48, 48, 48,
+        48, 48, 48, 48, 56, 56, 56, 56, 56, 56, 56, 56, 0, 0, 0, 0
+    },
     {
-    4, 4, 8, 8, 8, 8, 12, 12, 12, 12, 16, 16, 16, 16, 20, 20,
-    20, 20, 24, 24, 24, 24, 28, 28, 28, 28, 32, 32, 32, 32, 36, 36,
-    36, 36, 40, 40, 40, 40, 44, 44, 44, 44, 48, 48, 48, 48, 52, 52,
-    52, 52, 56, 56, 56, 56, 60, 60, 60, 60, 0, 0, 0, 0, 4, 4
-},
+        4, 4, 8, 8, 8, 8, 12, 12, 12, 12, 16, 16, 16, 16, 20, 20,
+        20, 20, 24, 24, 24, 24, 28, 28, 28, 28, 32, 32, 32, 32, 36, 36,
+        36, 36, 40, 40, 40, 40, 44, 44, 44, 44, 48, 48, 48, 48, 52, 52,
+        52, 52, 56, 56, 56, 56, 60, 60, 60, 60, 0, 0, 0, 0, 4, 4
+    },
     {
-    2, 4, 4, 6, 6, 8, 8, 10, 10, 12, 12, 14, 14, 16, 16, 18,
-    18, 20, 20, 22, 22, 24, 24, 26, 26, 28, 28, 30, 30, 32, 32, 34,
-    34, 36, 36, 38, 38, 40, 40, 42, 42, 44, 44, 46, 46, 48, 48, 50,
-    50, 52, 52, 54, 54, 56, 56, 58, 58, 60, 60, 62, 62, 0, 0, 2
-}
-}; // 0x006E4DA0
+        2, 4, 4, 6, 6, 8, 8, 10, 10, 12, 12, 14, 14, 16, 16, 18,
+        18, 20, 20, 22, 22, 24, 24, 26, 26, 28, 28, 30, 30, 32, 32, 34,
+        34, 36, 36, 38, 38, 40, 40, 42, 42, 44, 44, 46, 46, 48, 48, 50,
+        50, 52, 52, 54, 54, 56, 56, 58, 58, 60, 60, 62, 62, 0, 0, 2
+    },
+    { 0 }
+};
 #pragma comment(linker, "/alternatename:?gaDirectionIndex64A@@3PAY0EA@HA=_gData_006E4DA0")
 
-extern "C" const int gData_006E55A0[8][64] = {
+extern "C" const int gData_006E55A0[8][64] = { // 0x006E55A0
     { 0 },
     { 0 },
     {
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-},
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    },
     {
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2,
-    2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 3, 3, 3
-},
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2,
+        2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
+        3, 3, 3, 3, 3, 3, 3, 3
+    },
     {
-    0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2,
-    2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4,
-    4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6,
-    6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7
-},
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2,
+        2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4,
+        4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6,
+        6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0
+    },
     {
-    0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4,
-    4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8,
-    8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12,
-    12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 15
-},
+        0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4,
+        4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8,
+        8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12,
+        12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 15, 0, 0
+    },
     {
-    0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8,
-    8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16,
-    16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24,
-    24, 25, 25, 26, 26, 27, 27, 28, 28, 29, 29, 30, 30, 31, 31
-},
+        0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8,
+        8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16,
+        16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24,
+        24, 25, 25, 26, 26, 27, 27, 28, 28, 29, 29, 30, 30, 31, 31, 0
+    },
     {
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-    16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-    32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
-    48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63
-}
-}; // 0x006E55A0
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+        16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+        32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+        48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63
+    }
+};
 #pragma comment(linker, "/alternatename:?gaDirectionIndex64B@@3PAY0EA@HA=_gData_006E55A0")
 
-extern int gnCmpTilePoolBlocks = 4096; // 0x00741EF8
+int gnCmpTilePoolBlocks = 4096; // 0x00741EF8

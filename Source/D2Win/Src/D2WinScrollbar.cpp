@@ -15,6 +15,7 @@
 
 #include "D2StormTypes.h"
 #include "D2WinPopupLine.h"
+#include "FogApi.h"
 
 #define WM_LBUTTONDOWN 0x201
 
@@ -24,7 +25,7 @@ struct D2WinControlStrc;
 
 struct D2WinTextBoxStrc;
 
-struct D2CelContextStrc;
+struct D2GfxDataStrc;
 
 struct SMSGHANDLER_PARAMS;
 
@@ -40,7 +41,6 @@ typedef int (__stdcall* D2WinMsgHandler)(SMSGHANDLER_PARAMS* pMsg);
 
 typedef int (__fastcall* D2WinControlFn)(D2WinControlStrc* pControl);
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -48,13 +48,12 @@ extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 extern tagPOINT gtMousePosition; // 0x007D55A4
 
-int __fastcall D2Win_10053(D2WinTextBoxStrc* pTextBox, int nLine); // 0x004FBA30
 
 extern "C" void* __cdecl memset(void* destination, int value, unsigned int size); // 0x00681EF0
 
 int __stdcall SCROLLBAR_HandleMouseDown(SMSGHANDLER_PARAMS* pMsg); // 0x00508120
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 enum D2C_WinControlTypes
 {
@@ -77,7 +76,6 @@ int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl); // 0x004F9310
 
 int __fastcall POPUP_UpdateHoveredLine(D2WinControlStrc* pControl); // 0x00508710
 
-int __fastcall POPUP_Draw(D2WinControlStrc* pControl); // 0x005087A0
 
 extern D2WinPopUpStrc* gpPopUp; // 0x0087E974
 
@@ -103,21 +101,21 @@ extern "C" int __fastcall SCROLLBAR_SetScrollCallback(D2WinScrollBarStrc* pScrol
     return 1;
 }
 
-int __fastcall SCROLLBAR_HandleMouseWheel(SMSGHANDLER_PARAMS* pMsg, D2WinScrollBarStrc* pScrollBar, int a3); // 0x00508030
+int __fastcall SCROLLBAR_HandleMouseWheel(SMSGHANDLER_PARAMS* pMsg, D2WinScrollBarStrc* pScrollBar, int nWheelDelta); // 0x00508030
 
 // 0x00508030
-int __fastcall SCROLLBAR_HandleMouseWheel(SMSGHANDLER_PARAMS* pMsg, D2WinScrollBarStrc* ptScrollbarData, int a3)
+int __fastcall SCROLLBAR_HandleMouseWheel(SMSGHANDLER_PARAMS* pMsg, D2WinScrollBarStrc* ptScrollbarData, int nWheelDelta)
 {
     D2_ASSERT(ptScrollbarData->controlHeader.eType == D2WIN_SCROLLBAR, 0x99);
 
     if (!ptScrollbarData->bIsStepIndicatorDragged)
     {
-        if (a3 > 0)
+        if (nWheelDelta > 0)
         {
             --ptScrollbarData->nCurrentStep;
             ptScrollbarData->bIsUpperArrowPressed = 1;
         }
-        else if (a3 < 0)
+        else if (nWheelDelta < 0)
         {
             ++ptScrollbarData->nCurrentStep;
             ptScrollbarData->bIsLowerArrowPressed = 1;
@@ -186,9 +184,9 @@ int __fastcall SCROLLBAR_Draw(D2WinControlStrc* pControl)
             SCROLLBAR_HandleMouseDown(&msg);
         }
 
-        D2CelContextStrc context;
+        D2GfxDataStrc context;
         memset(&context, 0, sizeof(context));
-        context.pCellFile = pCellFile;
+        context.pCelFile = pCellFile;
         context.nDirection = 0;
         context.nFrame = pScrollBar->bIsLowerArrowPressed ? 3 : 1;
         sub_004F6480(&context, nX, nY, -1, 5, 0);

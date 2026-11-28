@@ -1,6 +1,7 @@
 #include "D2MonsterIds.h"
 #include "D2LevelIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2ClientUi.h"
 #include "D2TxtItems.h"
 #include "D2Structs.h"
@@ -13,6 +14,10 @@
 #include "D2Primitives.h"
 #include "D2UnitData.h"
 #include "D2GameTypes.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
 
 struct D2AutomapCellStrc;
 
@@ -20,7 +25,6 @@ struct AUTOMAP_SetUnitFlag;
 
 struct Obj00457460;
 
-int __stdcall SRegSaveValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long dwValue); // 0x004150E0
 
 extern int gbAutomapLeftPrev; // 0x007A51E4
 
@@ -78,9 +82,7 @@ struct D2ShrineHandlerStrc
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
@@ -88,29 +90,21 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                   
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                               // 0x00681EF0
 
-extern D2DrlgActStrc* gpAct;                                                                       // 0x007A0634
 
 extern D2ShrineHandlerStrc gaShrineHandlers[];                                                      // 0x006DA8C0
 
 extern int gnShrineHandlerCount;                                                                   // 0x0072779C
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);                               // 0x0040B380
 
 void __fastcall AUTOMAP_SetUnitFlag(D2UnitStrc* pUnit, int nArg, int nValue);                                      // 0x00457460
 
 void __fastcall sub_0046C320_SpawnAroundUnit(D2UnitStrc* pUnit, int nMonsterId, int nCount);               // 0x0046C320
 
-void __fastcall AUTOMAP_RemoveUnitOverlay(D2UnitStrc* pUnit, int nArg, int nValue);                                      // 0x0046F0C0
 
-char __fastcall OBJECT_RunClientFunction(D2UnitStrc* pUnit); // 0x004BDEE0
 
-D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
-void __fastcall CUNIT_FreeLight(D2UnitStrc* pUnit);                                                  // 0x00464930
 
-void __fastcall GFX_AddUnitOverlay(D2UnitStrc* pUnit, int nOverlay, int nArg3, int nArg4, int nArg5, int nArg6, int nArg7, int nArg8); // 0x00470390
 
-void __fastcall GFX_RefreshUnitGfx(D2UnitStrc* pUnit, int nArg);                                          // 0x00470610
 
 D2GfxLightStrc* __fastcall DLIGHTMAP_MakeLightEntry(D2UnitStrc* pUnit, int nArg1, int nArg2, int nArg3, int nArg4, int nArg5, int nArg6); // 0x00474160
 
@@ -118,59 +112,27 @@ void __fastcall sub_00474290(D2GfxLightStrc* pLight, int nRadius);              
 
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4);           // 0x004B9A00
 
-void __fastcall UNITSND_UpdateModeSound(D2UnitStrc* pUnit);                                                            // 0x004CB460
 
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom);                                          // 0x0061A1B0
 
-int __stdcall DUNGEON_GetTownLevelIdFromActNo(unsigned char nAct);                                          // 0x0061AB70
-
-int __stdcall ENVIRONMENT_GetPeriodOfDayFromAct(D2DrlgActStrc* pAct, int* pBaseTime);                       // 0x0061C100
-
-void __stdcall UNITS_BlockCollisionPath(D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, int nX, int nY);        // 0x00620A70
 
 void __stdcall UNITS_InitializeStaticPath(D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, int nX, int nY);      // 0x00620AE0
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit);                                               // 0x00620BB0
 
-D2ShrinesTxt* __stdcall UNITS_GetShrineTxtRecordFromObject(D2UnitStrc* pUnit);                              // 0x00621B70
 
-void __stdcall UNITS_SetShrineTxtRecordInObjectData(D2UnitStrc* pUnit, D2ShrinesTxt* pShrinesTxtRecord);    // 0x00621BB0
 
-void __stdcall UNITS_FreeCollisionPath(D2UnitStrc* pUnit);                                                  // 0x00623830
 
-int __stdcall UNITS_SetAnimStartFrame(D2UnitStrc* ptUnit); // 0x00624390
 
-int __stdcall UNITS_ChangeAnimMode(D2UnitStrc* pUnit, int nMode);                                           // 0x00624690
 
-D2ObjectsTxt* __stdcall DATATBLS_GetObjectsTxtRecord(int nObjectId);                                        // 0x00640E90
 
-D2ShrinesTxt* __stdcall DATATBLS_GetShrinesTxtRecord(int nShrineId);                                        // 0x006414B0
 
-unsigned char __stdcall DRLG_GetActNoFromLevelId(int nLevelId);                                             // 0x006427F0
-
-int __stdcall UNITROOM_AddUnitToRoom(D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom);                           // 0x0064C350
-
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit);                                                         // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit);                                                         // 0x0045AE20
 
 typedef char (__fastcall* D2ObjectClientFn)(D2UnitStrc* pUnit);
 
-void __fastcall GFX_FreeGfxData(D2UnitStrc* pUnit);                                                // 0x0046EC10
 
-void __stdcall UNITROOM_RemoveUnitFromRoom(D2UnitStrc* pUnit);                                              // 0x0064C370
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
-unsigned int __stdcall SStrCopy(char* dest,const char* source,unsigned int limit); // 0x004135D0
 
-int __stdcall ITEMS_CheckIfSocketable(D2UnitStrc* pItem);                                                   // 0x00629900
 
-void __fastcall CUNIT_RemoveInventoryUnits(D2UnitStrc* pUnit, int nArg);                             // 0x00466CB0
-
-void __stdcall INVENTORY_FreeInventory(D2InventoryStrc* pInventory);                                        // 0x0063AC40
-
-int __stdcall UNITROOM_IsUnitInRoom(D2ActiveRoomStrc* pRoom, D2UnitStrc* pUnit);                            // 0x0064C260
 
 extern void* gpGlobal_007A0634;                                                                             // 0x007A0634
 
@@ -197,9 +159,7 @@ struct D2MissileStrc;
 // build: symbol _gszUnitSourceFile 0x006DAA8C
 extern "C" const char gszUnitSourceFile[];
 
-void __fastcall UNITSND_UpdateModeSound(D2UnitStrc* pUnit); // 0x004CB460
 
-int __stdcall sub_00621B00_IsShrine(D2UnitStrc* pUnit);
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
@@ -207,41 +167,24 @@ extern "C" char* __cdecl strncpy(char* szDest, const char* szSource, unsigned in
 
 extern "C" char* __cdecl _strrev(char* szString); // 0x00687860
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
 void __fastcall UNITMODE_DoUnitAction(int nMode, D2UnitStrc* pUnit, int nArg1, int nArg2, int nArg3); // 0x00481030
 
-void __cdecl QUESTLOG_LoadDurielCofsOnce(); // 0x004A30A0
 
-void __cdecl QUESTLOG_LoadAncientsCofsOnce(); // 0x004A30C0
 
 D2BitBufferStrc* __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
 
-int __fastcall OBJECTS_RollRandomNumber(D2SeedStrc* pSeed, int nMin, int nMax); // 0x004BC500
 
-int __fastcall OBJECT_UpdateEnvObject(D2UnitStrc* pUnit, int bNoRefresh); // 0x004BC5E0
 
-D2PlayerDataStrc* __stdcall UNITS_GetPlayerData(D2UnitStrc* pUnit); // 0x006221A0
 
-int __stdcall DRLG_UnitEdgeDistance(D2UnitStrc* pUnit, D2UnitStrc* pOther); // 0x006416D0
 
 void __stdcall D2Common_10153(D2DynamicPathStrc* pDynamicPath); // 0x00648730
 
-int __stdcall QUESTRECORD_GetQuestState(D2BitBufferStrc* pQuestFlags, int nQuestId, int nState); // 0x0065C310
-
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
-
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pDynamicPath); // 0x006488C0
-
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pDynamicPath); // 0x00648900
 
 D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams); // 0x004CD540
 
-char __cdecl QUESTLOG_HasQuestPacketValue(); // 0x004A3110
 
-char __cdecl QUESTLOG_IsQuestUnitPresent(); // 0x004A3120
 
-void __fastcall QUESTLOG_SpawnQuestUnits(int nX, int nY); // 0x004A3150
 
 static void OBJECT_FinishDoorMode(D2UnitStrc* pUnit); // 0x004BCA90
 
@@ -261,11 +204,8 @@ static void __stdcall OBJECT_PlayShrineSound(D2UnitStrc* pPlayer, D2UnitStrc* pU
 
 static void OBJECT_InitShrine(D2UnitStrc* pUnit); // 0x004BD650
 
-void __fastcall OBJECT_SetShrine(D2UnitStrc* pUnit); // 0x004BD6B0
 
-void __fastcall OBJECT_HandleObjectCommand(int nCommand, D2UnitStrc* pUnit, D2UnitTargetStrc* pTarget); // 0x004BD6D0
 
-void __fastcall OBJECT_UpdateObject(D2UnitStrc* pUnit); // 0x004BDFF0
 
 
 static void OBJECT_SetObjectMode(D2UnitStrc* pUnit, D2UnitTargetStrc* pTarget); // 0x004BCF60
@@ -289,9 +229,7 @@ struct D2GSPacketSrv60
     char dwUnitGUID[4];
 };
 
-unsigned char __stdcall UNITS_GetObjectPortalFlags(D2UnitStrc* pUnit); // 0x006222C0
 
-void __stdcall UNITS_SetObjectPortalFlags(D2UnitStrc* pUnit, unsigned char nPortalFlag); // 0x00622300
 
 // 0x00457810
 static inline void OBJECT_SubtractAutomapOffset(int* pX, int* pY)
@@ -763,10 +701,6 @@ static void OBJECT_SetObjectMode(D2UnitStrc* pUnit, D2UnitTargetStrc* pTarget)
         pUnit->dwFlags &= ~0x20;
 }
 
-void __fastcall sub_M256_Emit_004BCB20(D2UnitStrc* pUnit)
-{
-    OBJECT_StepDoorFrame(pUnit);
-}
 
 static inline unsigned int SEED_RollRandomNumberLoFirst(D2SeedStrc* pSeed)
 {
@@ -1229,7 +1163,7 @@ char __fastcall OBJECT_RemoveWhenFar(D2UnitStrc* pUnit)
 
         if (DRLG_UnitEdgeDistance(pUnit, sub_00463DD0_GetPlayerUnit()) > 25)
         {
-            sub_00465F00_RemoveClientUnit(pUnit->dwUnitId, 2);
+            CUNIT_RemoveServerSideUnit(pUnit->dwUnitId, 2);
             return 0;
         }
     }
@@ -1420,7 +1354,7 @@ void __fastcall ITEM_ApplyTownPortalState(D2GSPacketSrv60* pPacket)
 
 
 // 0x004BDFD0
-char* __fastcall sub_004BDFD0(D2UnitStrc* pUnit)
+char* __fastcall sub_004BDFD0_GetObjectOwner(D2UnitStrc* pUnit)
 {
     return pUnit->pObjectData->szOwner;
 }

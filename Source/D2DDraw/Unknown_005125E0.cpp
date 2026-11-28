@@ -7,6 +7,7 @@
 #include "D2DrlgMaps.h"
 #include "D2CoordPair.h"
 #include "D2TileLight.h"
+#include "D2CMPApi.h"
 
 struct D2CoordPairStrc;
 
@@ -25,8 +26,6 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
 extern D2DDrawSurfaceStrc* gpDDrawOffscreenSurface; // 0x00881280
 
-
-int __stdcall D2CMPTileValidate(D2TileLibraryEntryStrc* pTile, int bAsync, int nFlags); // 0x005FDEA0
 
 int gaDDrawDebugFontCharWidths[96]; // 0x00881428
 
@@ -134,13 +133,13 @@ void __fastcall sub_00512ED0_ClearScreen(int bPartial)
             }
             else
             {
-                sub_005103B0("Blit (screen clear) failed!", nResult);
+// build: symbol ?DDCORE_DDrawLogError@* 0x005103B0
+                DDCORE_DDrawLogError("Blit (screen clear) failed!", nResult);
             }
         }
     }
 }
 
-int __cdecl DDCORE_GetBlendedShadows(); // 0x00512700
 
 // 0x00512F90
 int __fastcall sub_00512F90_DrawWallTile(D2TileLibraryEntryStrc* pTile, int nPosX, int nPosY, void* pLight, int nScreenPanels)
