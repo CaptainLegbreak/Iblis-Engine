@@ -77,6 +77,12 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Findings
 
+- 2026-11-27 19:45 PT, item 6c after the sync to Codex 0bf13c4 (#494, PR #11): 59 unresolved symbols resolved,
+  one new. **D2Client (the lane that made d5f903fe6):** `gpNpcPlayerUnit` (0x007C0DD4) is now a member of
+  `gtNpcMenu` (UI/npcmenu.cpp), but D2ClientFuncs.h:906 still declares it on its own and UNIT/Monster.cpp:3035
+  writes it through that: it should go through gtNpcMenu (D2ClientNpcMenu.h). The 23 `D2PoolSystemStrc*`
+  disagreements from the 19:00 line are still open (lane 12).
+
 - 2026-11-27 19:00 PT, item 6c after the sync to Codex 19eef12 (#493, PR #10): 23 symbols became unresolved,
   21 of them because a declaration now takes `D2PoolSystemStrc*` where its definition (or another file's
   declaration) still takes `void*`, the pool retyping part way, **Codex lane 12**: `CodecDecodeDccData`, `DRLGACTIVATE_RoomExPropagateSetStatus`, `DRLGGRID_FillNewCellFlags`, `DRLGROOM_AllocPresetUnit`, `DUNGEON_AllocAct`, `FOG_AsyncDataLoadFileEx`, `FOG_FreePool`, `FOG_FreeServerMemory`, `GFXUTIL_GetNextRosterInfo`, `GfxHashAdd`, `GfxHashFreeEntry`, `LRUCacheInit`, `QUESTRECORD_FreeRecord`, `UNITFINDS_InitializeUnitFindData`, `WAYPOINTS_FreeWaypointData`, `sub_0040B430`, `sub_0040B480`.
@@ -209,6 +215,10 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
   entries after the file merges, worth a fix in Codex.
 
 ## Status
+
+- 2026-11-27 19:45 PT: board check. No new answers. Codex main moved to 0bf13c4 (#494): 6b in PR #11 (stacked
+  on #10), clean, data checked against Game.exe again (1,693/1,693). 538/538 compile; link 4,140 unresolved
+  (-58). Open: #8, #9, #10, #11.
 
 - 2026-11-27 19:00 PT: board check. Codex main moved to 19eef12 (#493): 6b in PR #10, clean, and checked
   against Game.exe this time: all 1,693 records Codex renders from the user's Game.exe are identical in the
