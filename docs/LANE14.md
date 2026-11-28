@@ -77,6 +77,18 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Findings
 
+- 2026-11-27 18:00 PT, proposal for item 6, for the coordinator to decide (no PR; branch lane14/link-aliases,
+  on #7 with #6 merged in). The user had said to keep going without the coordinator; I started item 6, then
+  the user said to rely on the coordinator again, so it's parked here. tools/link_aliases.py writes
+  Source/Main/link_aliases.cpp: /alternatename pragmas that bind each reference named differently from its
+  definition (type, ident, placeholder) to the definition at the address its declaration names, as Codex's
+  linker binds by address. No game source edit; regenerated after each sync; an alias drops out when Codex
+  fixes the declaration. On Codex 7442280: 3,054 aliases, unresolved 4,193 -> 1,139. Checked against Codex's
+  own LINK_DEBT.json (linkdebt.py now runs here with the user's Game.exe and the 2005 CRT): 3,023 agree, 6 bind
+  the same address through another symbol, 25 aren't in Codex's list. Codex linkdebt on 7442280: 21,648 refs,
+  4,374 targets (one data cluster, 0x0096BC30-0x0096D66C, 231 globals, 1,384 refs). Question: take this
+  approach for item 6, or wait for Codex lanes 11/12 to bring the debt down first?
+
 - 2026-11-27 17:00 PT, fixes for the Codex lanes from the compile report (docs/PORT_COMPILE.md, PR #5). All 538
   files compile with v143; these are the warnings where behaviour can depend on the compiler:
   - **D2Client:** UNIT/MonUnique.cpp `MONUNIQUE_ApplyResistantMod` can end without a return value (C4715): write
@@ -118,6 +130,10 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
   entries after the file merges, worth a fix in Codex.
 
 ## Status
+
+- 2026-11-27 18:00 PT: waiting on the coordinator. Open: #6 (link report + PKWARE MPQ test), #7 (sync to
+  7442280). Item 6 proposal above. Codex's linkdebt.py and build now run in this sandbox (MSVC 2005 SP1 + CRT
+  fetched by setup.py), so lane 14 can produce LINK_DEBT.json or shortdata.py output on request.
 
 - 2026-11-27 17:50 PT: 6a done (see the 17:30 line). 6b: PR #7 syncs to Codex 7442280 (#492), clean (every
   old record re-renders, no missing bytes). Still 538/538 compile, same 59 warnings; the link has 4,193
