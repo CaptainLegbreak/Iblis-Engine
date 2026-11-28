@@ -134,10 +134,6 @@ extern "C" int __fastcall UNICODE_StrLen(const unsigned short* pText);
 
 static int FONT_GetTextHeight(const Unicode* pText); // 0x005019C0
 
-#define D2_MAX(a, b) ((a) > (b) ? (a) : (b))
-
-#define D2_MIN(a, b) ((a) < (b) ? (a) : (b))
-
 extern unsigned int gaFontCharValidBits[8]; // 0x006DC9B8
 
 unsigned char __stdcall PALETTE_FindPaletteIndex(unsigned char nRed, unsigned char nGreen, unsigned char nBlue); // 0x004FB180

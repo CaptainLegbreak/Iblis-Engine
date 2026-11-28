@@ -38,7 +38,7 @@ static __declspec(noinline) void sub_006BB150_AppendTail(D2FloorPoolStrc* pList,
 
 D2FloorPoolEntryStrc* __fastcall D3DFLOORCACHE_FloorCacheUnlink(D2FloorPoolStrc* pList, int nIndex); // 0x006BB1F0
 
-#define RELEASE(p) if (p) { p->lpVtbl->Release((D2ComObject006BB640Strc*)p); p = 0; }
+#define FLOORCACHE_RELEASE(p) if (p) { p->lpVtbl->Release((D2ComObject006BB640Strc*)p); p = 0; }
 
 struct D2ComObject006BB640Strc;
 
@@ -510,10 +510,10 @@ void __cdecl D3DFLOORCACHE_CreateTileSurfaces()
 // 0x006BB640
 void __cdecl D3DFLOORCACHE_ReleaseTileSurfaces()
 {
-    RELEASE(gpMemoryTexture);
-    RELEASE(gpMemorySurface);
-    RELEASE(gpMemoryTexture32);
-    RELEASE(gpSurface_00989C00);
+    FLOORCACHE_RELEASE(gpMemoryTexture);
+    FLOORCACHE_RELEASE(gpMemorySurface);
+    FLOORCACHE_RELEASE(gpMemoryTexture32);
+    FLOORCACHE_RELEASE(gpSurface_00989C00);
 }
 
 // 0x006BB6B0

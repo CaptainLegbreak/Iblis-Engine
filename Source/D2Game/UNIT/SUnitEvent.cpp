@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2Structs.h"
 #include "D2GameStrc.h"
 #include "D2ObjectIds.h"
@@ -105,10 +106,6 @@ void __fastcall D2GAME_PACKETS_SendPacketSize06(D2ClientStrc* pClient, unsigned 
 
 typedef void(__fastcall* StatListRemoveCallback)(D2UnitStrc*, int, D2StatListStrc*);
 
-enum D2C_Z09ItemConstants
-{
-    EVENTTYPE_REMOVESTATE = 0x0C,
-};
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
@@ -140,7 +137,6 @@ enum D2C_Y09SkillConstants
 {
     SKILLSFLAGINDEX_AURA = 5,
     SKILLSFLAGINDEX_IMMEDIATE = 15,
-    EVENTTYPE_PERIODICSTATS = 9,
 };
 
 extern unsigned int gdwBitMasks[]; // 0x006CE268
@@ -256,7 +252,7 @@ int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char*
 struct D2ModeChangeStrc;
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nType, int nGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 
@@ -396,17 +392,11 @@ D2UnitEventStrc* __fastcall SUNITEVENT_GetEvent(D2GameStrc* pGame, D2UnitStrc* p
 
 #define STAT_LEVEL 12
 
-#define EVENTTYPE_AITHINK 2
 
-#define EVENTTYPE_STATREGEN 3
 
-#define EVENTTYPE_TRAP 4
 
-#define EVENTTYPE_RESET 5
 
-#define EVENTTYPE_REMOVESTATE 12
 
-#define EVENTTYPE_COUNT 15
 
 #define DAMAGERESULTFLAG_WILLDIE 0x02
 
@@ -436,7 +426,7 @@ extern "C" const char gszEmptyAssertText; // 0x006CC837
 
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 

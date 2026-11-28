@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2LevelIds.h"
 #include "D2ObjModes.h"
 #include "D2Game.h"
@@ -144,7 +145,7 @@ void __fastcall QUESTS_CreateTimer(D2QuestDataStrc* pQuest, QUESTUPDATE pfnCallb
 
 void __fastcall D2Game_10034_Return(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg, int nValue); // 0x00545990
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 void __fastcall SUNIT_AttachSound(D2UnitStrc* pUnit, int nUpdateType, D2UnitStrc* pUpdateUnit); // 0x00553380
 
@@ -193,7 +194,6 @@ enum D2C_P08QuestConstants
     QFLAG_CUSTOM2 = 6,
     QFLAG_CUSTOM6 = 10,
     QFLAG_PRIMARYGOALDONE = 13,
-    EVENTTYPE_QUESTFN = 7,
 };
 
 void __fastcall QUESTS_QuickRemovePlayerGUID(D2QuestDataStrc* pQuest, D2QuestArgStrc* pQuestArg); // 0x00545310
@@ -1041,10 +1041,6 @@ unsigned char __fastcall ACT2Q6_IsTombOpen(D2QuestArgStrc* pQuestArg)
 
 D2UnitStrc* __fastcall SUNIT_AllocUnitData(int nUnitType, int nClassId, int nX, int nY, D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, char nAllocFlags, int nMode, unsigned int nOverrideUnitGUID); // 0x00555230
 
-enum D2C_Q05QuestConstants
-{
-    EVENTTYPE_ENDANIM = 1,
-};
 
 // 0x0059D870
 bool __fastcall ACT2Q6_Timer_UpdateObjects(D2GameStrc* pGame, D2QuestDataStrc* pQuestData)

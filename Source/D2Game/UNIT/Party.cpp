@@ -40,7 +40,7 @@ void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char
 
 void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 void __fastcall D2GAME_PACKETS_SendPacket0x8D(D2UnitStrc* pUnit, D2UnitStrc* pPlayer); // 0x0053DF00
 

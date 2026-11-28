@@ -174,6 +174,8 @@ struct d2data_007496CC_t
 
 extern "C" struct d2data_007496CC_t gData_007496CC; // 0x007496CC
 
+extern "C" const char gszExcelDirectory[18] = "DATA\\GLOBAL\\EXCEL"; // 0x006D8ED4
+
 extern "C" struct d2data_007496CC_t gData_007496CC = {
     (const void*)"English",
     (const void*)"Spanish",

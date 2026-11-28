@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ObjectIds.h"
 #include "D2ItemTypes.h"
 #include "D2StateIds.h"
@@ -43,7 +44,6 @@
 
 #define SKILLSFLAGINDEX_PERIODIC 6
 
-#define EVENTTYPE_PERIODICSTATS 9
 
 struct D2PoolSystemStrc;
 struct D2SkillListStrc;
@@ -154,7 +154,7 @@ struct D2AuraNextTargetArgsStrc
     int nTargetCount;
 };
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 int __fastcall D2GAME_SKILLS_BloodMana(D2UnitStrc* pUnit, int nManaCost); // 0x005D2B60
 
@@ -330,7 +330,6 @@ static int __stdcall SKILLS_CheckUsedSkillTarget(D2GameStrc* pGame, D2UnitStrc* 
 
 #define EVENTFN_COUNT 50
 
-#define EVENTTYPE_AITHINK 2
 
 #define UNITFLAG_NOTC 0x00020000
 
@@ -420,7 +419,6 @@ extern SKILLSTARTFUNC gpfnSkillSrvStartFunctions[];                             
 D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId);                          // 0x0046ACE0
 
 
-#define EVENTTYPE_REMOVESTATE 12
 
 #define SKILLSFLAGINDEX_DECQUANT 0
 
@@ -434,13 +432,8 @@ void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char
 
 #define MONTYPEFLAG_UNIQUE 8
 
-#define EVENTTYPE_REMOVESTATE 0x0C
 
 #define UNITFLAG_DOUPDATE 1
-
-#define D2_MIN(a,b) ((a)<(b)?(a):(b))
-
-#define D2_MAX(a,b) ((a)>(b)?(a):(b))
 
 struct D2ServerCallbacks;
 

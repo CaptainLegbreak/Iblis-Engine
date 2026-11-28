@@ -4345,6 +4345,8 @@ extern "C" struct d2data_007447CC_t gData_007447CC; // 0x007447CC
 extern "C" struct d2data_00744760_t gData_00744760; // 0x00744760
 extern "C" struct d2data_00745600_t gData_00745600; // 0x00745600
 
+extern "C" const char gszInventorySourceFile[26] = ".\\INVENTORY\\Inventory.cpp"; // 0x006EA918
+
 extern "C" struct d2data_007455C0_t gData_007455C0 = {
     {
         0x00, 0x00, 0x01, 0x01, 0x01, 0x01, 0x02, 0x02, 0x02, 0x02, 0x03, 0x03, 0x03, 0x03, 0x04, 0x04,

@@ -54,14 +54,14 @@ struct D2GfxListNodeStrc
         D2GfxNodeTargetStrc* pTarget; // 0x08
         D2HashedFileEntryStrc* pFileEntry; // 0x08
     };
-    int unk0x0C; // 0x0C
+    int unused0x0C; // 0x0C
     D2GfxListNodeStrc* pNext; // 0x10
 };
 
 struct D2GfxLayerHeaderStrc
 {
     unsigned char nLayers; // 0x00
-    unsigned char unk0x01; // 0x01
+    unsigned char unused0x01; // 0x01
     unsigned char nArg; // 0x02
 };
 
@@ -92,7 +92,7 @@ struct D2HashedFileEntryStrc
     unsigned char* pData; // 0x14
     unsigned char aHeader[2]; // 0x18
     unsigned char nCheck; // 0x1A
-    unsigned char unk0x1B; // 0x1B
+    unsigned char pad0x1B; // 0x1B
 };
 
 D2_CHECK_SIZE(D2MotionVectorStrc, 0xC);

@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2StatIds.h"
 #include "D2StateIds.h"
 #include "D2Game.h"
@@ -80,7 +81,7 @@ int __fastcall SKILLS_CountAuraTargets(D2GameStrc* pGame, D2UnitStrc* pUnit, int
 
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc*, int, int); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 void __fastcall SUNITDMG_DrainItemDurability(D2GameStrc* pGame, D2UnitStrc* pAttacker, D2UnitStrc* pDefender, int nUnused); // 0x0057D4F0
@@ -99,7 +100,6 @@ enum
 {
     UNITFLAG_SKSRVDOFUNC = 0x40,
     AISPECIALSTATE_NONE = 0,
-    EVENTTYPE_AITHINK = 2,
 };
 
 static inline unsigned int sub_M401_RollUnitSeed(D2UnitStrc* pUnit)

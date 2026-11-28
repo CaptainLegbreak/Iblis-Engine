@@ -96,9 +96,9 @@ int __fastcall SKILLDESC_ValidateMonsterId(int nMonsterId);                     
 
 
 
-int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pCoords, int nX, int nY);                   // 0x0066B980
+int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pDrlgCoord, int nX, int nY); // 0x0066B980
 
-void __fastcall DRLGROOM_AllocPresetUnit(D2DrlgRoomStrc* pDrlgRoom, D2PoolSystemStrc* pMemPool, int nUnitType, int nIndex, int nMode, int nX, int nY); // 0x0066BF30
+D2PresetUnitStrc* __fastcall DRLGROOM_AllocPresetUnit(D2DrlgRoomStrc* pDrlgRoom, D2PoolSystemStrc* pMemPool, int nUnitType, int nIndex, int nMode, int nX, int nY); // 0x0066BF30
 
 void __fastcall DRLGROOMTILE_InitTileData(D2DrlgRoomStrc* pDrlgRoom, D2DrlgTileDataStrc* pTileData, int nX, int nY, unsigned int nPackedTileInformation, D2TileLibraryEntryStrc* pTileLibraryEntry); // 0x0066DDE0
 

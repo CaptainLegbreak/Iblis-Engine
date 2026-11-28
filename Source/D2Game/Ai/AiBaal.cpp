@@ -79,7 +79,7 @@ static int __stdcall AIBAAL_RollRangedAiParam(D2GameStrc*, D2UnitStrc*, int, int
 
 int __stdcall PATH_GetY(void* pPath); // 0x00648900
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nType, int nId); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 

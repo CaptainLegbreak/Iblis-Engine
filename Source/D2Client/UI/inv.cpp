@@ -1500,7 +1500,6 @@ int __stdcall ITEMS_GetAllRepairCosts(void* pGame, D2UnitStrc* pUnit, int nNpcId
 
 D2UnitStrc* __cdecl sub_00463DD0();
 #define _INTSIZEOF(n) ((sizeof(n) + sizeof(int) - 1) & ~(sizeof(int) - 1))
-#define va_start(ap, v) (ap = (va_list)&v + _INTSIZEOF(v))
 #define va_arg(ap, t) (*(t*)((ap += _INTSIZEOF(t)) - _INTSIZEOF(t)))
 struct D2DynamicPathStrc;
 extern int gnAutomapHeight_007A521C; // 0x007A521C

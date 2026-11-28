@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2SkillIds.h"
 #include "D2GameObjs.h"
 #include "D2StatIds.h"
@@ -98,7 +99,7 @@ D2ClientStrc* gpClientList[256]; // 0x008842A8
 extern D2CriticalSectionStrc gClientListLock; // 0x008846A8
 int gbClientListInitialized; // 0x008846D8
 extern D2CriticalSectionStrc gSrvClientListByNameLock; // 0x008846C0
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 typedef int (__stdcall* FARPROC)();
 
@@ -640,15 +641,10 @@ static inline void CLIENTS_UpdatePlayerPortalFlags(D2ClientStrc* pClient)
 
 #define STAT_LEVEL 12
 
-#define EVENTTYPE_STATREGEN 3
 
-#define EVENTTYPE_TRAP 4
 
-#define EVENTTYPE_RESET 5
 
-#define EVENTTYPE_REMOVESTATE 12
 
-#define EVENTTYPE_COUNT 15
 
 #define UNITEVENTFLAG_IN_CALLBACK 0x01
 
@@ -1988,7 +1984,6 @@ struct D2PoolSystemStrc;
 
 
 
-#define EVENTTYPE_DELAYEDPORTAL 11
 
 struct D2InactiveItemNodeStrc;
 

@@ -2222,3 +2222,5 @@ extern "C" char gData_00712FFC[4] = " "; // 0x00712FFC
 #pragma comment(linker, "/alternatename:_gszTokenSeparator=_gData_00712FFC")
 
 extern "C" const char gszBattleNetPrefix[14] = "<BattleNet>: "; // 0x006D72B0
+
+extern "C" const char gszSpace[2] = " "; // 0x006FFC44

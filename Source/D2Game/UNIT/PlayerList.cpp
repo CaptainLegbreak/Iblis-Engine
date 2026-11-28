@@ -78,7 +78,7 @@ void __fastcall D2GAME_PACKETS_SendPacket0x8C(D2UnitStrc* pUnit, int dwPlayerId1
 
 short __fastcall PARTY_GetPartyIdForUnitOwner(D2GameStrc* pGame, D2UnitStrc* pUnit);                        // 0x00540710
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID);                // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 // 0x0055B1E0

@@ -460,7 +460,7 @@ int __stdcall CHAT_ParseChatCommand(char** ppText, char* pCode, char* szArgument
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource);                                 // 0x00526700
 
 
-int __fastcall UNICODE_StrLen(const Unicode* pString);                                                      // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 void __fastcall TEXT_PrintChatLine(const Unicode* pText, char nColor);                              // 0x0049E3A0
 

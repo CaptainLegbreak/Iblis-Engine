@@ -51,7 +51,7 @@ struct D2DrlgFileStrc
 {
     int nSubstMethod; // 0x00
     void* pDS1File; // 0x04
-    int unk0x08; // 0x08
+    int unused0x08; // 0x08
     int nWidth; // 0x0C
     int nHeight; // 0x10
     int nWallLayers; // 0x14
@@ -114,9 +114,9 @@ struct D2TileLibraryEntryStrc
     int nRarity; // 0x20
     int transparentColorRGB24; // 0x24
     unsigned char aSubtileFlags[25]; // 0x28
-    unsigned char unk0x41; // 0x41
+    unsigned char pad0x41; // 0x41
     short nCacheIndex; // 0x42
-    int unk0x44; // 0x44
+    int unused0x44; // 0x44
     int nFileOffset; // 0x48
     unsigned int nSize; // 0x4C
     int nBlocks; // 0x50

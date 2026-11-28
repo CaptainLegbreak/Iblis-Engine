@@ -1911,6 +1911,8 @@ struct d2data_00745888_t
 
 extern "C" struct d2data_00745888_t gData_00745888; // 0x00745888
 
+extern "C" const char gszCollisnSourceFile[22] = ".\\COLLISN\\Collisn.cpp"; // 0x006EB730
+
 extern "C" struct d2data_00745888_t gData_00745888 = {
     (const void*)"English",
     (const void*)"Spanish",

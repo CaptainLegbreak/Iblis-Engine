@@ -81,7 +81,7 @@ void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const ch
 
 
 
-struct D2PresetUnitStrc* __fastcall DRLGROOM_AllocPresetUnit(D2DrlgRoomStrc* pDrlgRoom, D2PoolSystemStrc* pMemPool, int nUnitType, int nIndex, int nMode, int nX, int nY);   // 0x0066BF30
+D2PresetUnitStrc* __fastcall DRLGROOM_AllocPresetUnit(D2DrlgRoomStrc* pDrlgRoom, D2PoolSystemStrc* pMemPool, int nUnitType, int nIndex, int nMode, int nX, int nY); // 0x0066BF30
 
 
 void __fastcall DRLGGRID_AssignCellsOffsetsAndFlags(D2DrlgGridStrc* pGrid, int* pCellFlags, D2DrlgCoordStrc* pCoord, int nWidth, int* pBuffer);   // 0x0067CD30
@@ -89,7 +89,7 @@ void __fastcall DRLGGRID_AssignCellsOffsetsAndFlags(D2DrlgGridStrc* pGrid, int* 
 
 void __fastcall DRLGPRESET_AddPresetUnitToDrlgMap(D2PoolSystemStrc* pMemPool, D2DrlgMapStrc* pDrlgMap, D2SeedStrc* pSeed);                    // 0x00667620
 
-int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pCoord, int nX, int nY);                                          // 0x0066B980
+int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pDrlgCoord, int nX, int nY); // 0x0066B980
 
 
 

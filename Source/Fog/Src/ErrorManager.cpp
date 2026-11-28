@@ -4376,3 +4376,21 @@ extern unsigned char gabHuffmanCodeLength[256] = {
 extern const char* gaszCpuVendorNames[5] = { "Unknown", "Intel", "AMD", "Cyrix" }; // 0x00708004
 
 extern "C" const char gszUnknownTitle[8] = "Unknown"; // 0x006CCBE8
+
+extern "C" const char gszUnknownUpper[8] = "UNKNOWN"; // 0x006CCED8
+
+extern "C" const char gszThreads[10] = "Threads:\n"; // 0x006CD140
+
+extern "C" const char gszRegisters[12] = "Registers:\n"; // 0x006CD14C
+
+extern "C" const char gszAssertionEnd[24] = "<:Inspector.Assertion>\n"; // 0x006CD158
+
+extern "C" const char gszAssertionBegin[24] = "<Inspector.Assertion:>\n"; // 0x006CD170
+
+extern "C" const char gszCrashFile[10] = "Crash.txt"; // 0x006CD1C0
+
+extern "C" const char gszExpansionMpq[10] = "d2exp.mpq"; // 0x006CD3A0
+
+extern "C" const char gszStringFormat[3] = "%s"; // 0x006FFC58
+
+extern "C" const char gszNewline[2] = "\n"; // 0x006FFCB0

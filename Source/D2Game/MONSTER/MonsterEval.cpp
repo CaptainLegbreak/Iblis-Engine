@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2StatIds.h"
 #include "D2MissileIds.h"
 #include "D2GameClient.h"
@@ -64,9 +65,7 @@ enum { RANGE_OVERRIDE = 0 };
 
 #define UNIT_ALIGNMENT_GOOD 2
 
-#define EVENTTYPE_AITHINK 2
 
-#define EVENTTYPE_MONUMOD 7
 
 #define MONTYPEFLAG_RESURRECTED 8
 

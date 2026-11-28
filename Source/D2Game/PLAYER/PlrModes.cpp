@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ItemTypes.h"
 #include "D2StateIds.h"
 #include "D2StatIds.h"
@@ -15,7 +16,6 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 
-#define EVENTTYPE_ENDANIM 1
 
 #define STAT_HITPOINTS 6
 
@@ -112,7 +112,7 @@ D2SkillsTxt* __fastcall SKILLS_GetSkillsTxtRecordFromSkill(D2SkillStrc* pSkill);
 int __fastcall PLRMODE_IsEndAnimDue(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x0057ED70
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 void __cdecl LOG_11100(int nA, int nB, int nC, int nFlags, const char* szFile, int nLine, const char* szFormat, ...); // 0x006248E0
 
@@ -236,7 +236,7 @@ D2UnitStrc* __fastcall SUNIT_AllocUnitData(int,int,int,int,D2GameStrc*,D2ActiveR
 int __fastcall CLIENTS_GetExperienceLoss(D2ClientStrc*); // 0x00539210
 
 
-void __stdcall ITEMS_SetInvPage(D2UnitStrc*,unsigned char); // 0x00628280
+void __stdcall ITEMS_SetInvPage(D2UnitStrc* pItem, unsigned char nPage); // 0x00628280
 
 int __stdcall UNITS_GetInventoryRecordId(D2UnitStrc* hUnit, int nInvPage, int bLoD); // 0x00621050
 

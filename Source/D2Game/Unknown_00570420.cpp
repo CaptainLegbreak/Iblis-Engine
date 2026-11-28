@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2StateIds.h"
 #include "D2StatIds.h"
 #include "D2Game.h"
@@ -17,7 +18,6 @@
 #include "FogApi.h"
 #include "D2CommonApi2.h"
 #define MONTYPEFLAG_UNIQUE 8
-#define EVENTTYPE_REMOVESTATE 0x0C
 
 #define UNITFLAG_DOUPDATE 1
 #define D2_MIN(a,b) ((a)<(b)?(a):(b))

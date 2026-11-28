@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ObjectIds.h"
 #include "D2MissileIds.h"
 #include "D2MonsterIds.h"
@@ -38,7 +39,6 @@ struct D2UnitStrc;
 
 #define PORTAL_RETRY_STEP 3
 
-#define EVENTTYPE_QUESTFN 7
 
 #define QUESTFN_DELAY 25
 
@@ -98,14 +98,13 @@ enum D2C_Q05QuestConstants
     QUESTSTATEFLAG_A1Q4 = 4,
     QUESTSTATEFLAG_A4Q2 = 26,
     QUESTSTATEFLAG_A5Q6 = 40,
-    EVENTTYPE_ENDANIM = 1,
     QFLAG_REWARDGRANTED = 0,
     QFLAG_PRIMARYGOALDONE = 13,
     QFLAG_CUSTOM6 = 10,
     QFLAG_CUSTOM7 = 11,
 };
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 void __fastcall SUNIT_AttachSound(D2UnitStrc* pUnit, int nSoundId, D2UnitStrc* pOrigin); // 0x00553380

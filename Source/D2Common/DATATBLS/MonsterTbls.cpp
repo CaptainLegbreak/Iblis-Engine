@@ -674,8 +674,6 @@ int __fastcall DATATBLS_CheckNestedMonsterTypes(int nMonType1, int nMonType2);
 
 #define FIELD_TEXT(x) (x)
 
-#define FIXTURE_LINE(x) (x)
-
 
 D2TxtLinkStrc* gpHireDescLinker;                                                                   // 0x0096BCE8
 
@@ -685,8 +683,6 @@ extern D2TxtLinkStrc* gpSkillsLinker_0096C7CC;                                  
 extern "C" const char gszTxtField_gold[]; // 0x006DCD90
 
 extern "C" const char gszField_006D9060[]; // 0x006D9060
-
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), FIXTURE_LINE(line)); exit(-1); }
 
 #include "D2HirelingTableGlobals.h"
 

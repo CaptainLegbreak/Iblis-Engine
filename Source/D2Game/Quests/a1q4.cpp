@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2MissileIds.h"
 #include "D2MonsterIds.h"
 #include "D2LevelIds.h"
@@ -103,7 +104,7 @@ D2BitBufferStrc* __fastcall sub_00543520(D2GameStrc* pGame, D2UnitStrc* pPlayer)
 int __fastcall QUESTS_QuickCheckPlayerGUID(D2QuestGUIDStrc* pGUIDs, int dwGUID); // 0x00545290
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 void __fastcall SUNIT_AttachSound(D2UnitStrc* pUnit, int nUpdateType, D2UnitStrc* pUpdateUnit); // 0x00553380
 
@@ -1818,7 +1819,6 @@ int __fastcall ACT1Q4_CreateUberFinalePortal(D2GameStrc* pGame, D2UnitStrc* pUni
     return 0;
 }
 
-#define EVENTTYPE_QUESTFN 7
 
 #define QUESTFN_DELAY 25
 

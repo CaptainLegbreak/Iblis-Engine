@@ -91,7 +91,7 @@ struct D2UnkDrlgRoomTileStrc2;
 
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szDst, const char* szFormat, ...); // 0x006CC468
 
-int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pCoord, int nX, int nY); // 0x0066B980
+int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pDrlgCoord, int nX, int nY); // 0x0066B980
 
 extern "C" void* __fastcall sub_0040B430_Allocate(void*, unsigned, const char*, int, int); // 0x0040B430
 

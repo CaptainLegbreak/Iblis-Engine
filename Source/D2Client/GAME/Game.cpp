@@ -5466,6 +5466,12 @@ extern "C" struct d2data_0070EED0_t gData_0070EED0; // 0x0070EED0
 extern "C" struct d2data_0070F2D0_t gData_0070F2D0; // 0x0070F2D0
 extern "C" struct d2data_0070F378_t gData_0070F378; // 0x0070F378
 
+extern "C" const char gszDataGlobal[12] = "DATA\\GLOBAL"; // 0x006D4118
+
+extern "C" const char gszDataLocal[11] = "DATA\\LOCAL"; // 0x006D41A8
+
+extern "C" const char gszFormatD[3] = "%d"; // 0x006D57BC
+
 extern int gnLeftClickState = 16; // 0x0070F234
 
 extern int gnQServerThreshold = 4; // 0x0070F560

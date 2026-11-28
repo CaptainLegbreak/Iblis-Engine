@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2MissileIds.h"
 #include "D2StateIds.h"
 #include "D2SkillIds.h"
@@ -30,7 +31,6 @@ struct D2PoolSystemStrc;
 enum D2C_P08MonsterConstants
 {
     MONLVL_DM = 6,
-    EVENTTYPE_MONUMOD = 7,
 };
 
 typedef void (__fastcall* MonEventFunc)(D2GameStrc* pGame, D2UnitStrc* pUnit, int nSkillId, int nSkillLevel);
@@ -148,7 +148,7 @@ void __stdcall MONSTERMODE_DropTreasure(D2GameStrc* pGame, D2UnitStrc* pUnit, in
 unsigned char __fastcall MONSTERMODE_GetHpPercent128(D2UnitStrc* pUnit); // 0x005A5650
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 D2UnitStrc* __fastcall SKILLS_CreateMissileAtOffset(D2GameStrc* pGame, int nMissileId, D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int nX, int nY, int nTargetX, int nTargetY, int bCheckItemQuantity); // 0x0056ECB0
@@ -281,7 +281,6 @@ struct D2MonModeCallbackTableStrc
 
 #define UNITEVENT_DEATH 13
 
-#define EVENTTYPE_AITHINK 2
 
 struct D2StatListStrc;
 
@@ -1003,15 +1002,10 @@ void __fastcall MONSTERMODE_EventClearTargetOverride(D2GameStrc* pGame, D2UnitSt
     MONSTERAI_ClearTargetOverride(pUnit);
 }
 
-#define EVENTTYPE_STATREGEN 3
 
-#define EVENTTYPE_TRAP 4
 
-#define EVENTTYPE_RESET 5
 
-#define EVENTTYPE_REMOVESTATE 12
 
-#define EVENTTYPE_COUNT 15
 
 // 0x005A7F80
 void __fastcall MONSTERMODE_EventHandler(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEvent, int nSkillId, int nSkillLevel)

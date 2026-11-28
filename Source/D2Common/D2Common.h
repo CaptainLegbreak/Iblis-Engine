@@ -200,7 +200,7 @@ void __stdcall BITMANIP_GoToNextByte(D2BitBufferStrc* pBuffer); // 0x00411070
 void __stdcall BITMANIP_Initialize(D2BitBufferStrc* pBuffer, unsigned char* pBitStream, int nSize); // 0x00410E40
 void __stdcall BITMANIP_Write(D2BitBufferStrc* pBuffer, int nValue, int nBits); // 0x00410EB0
 void __stdcall COLLISION_ResetMaskWithSizeXY(D2ActiveRoomStrc* pRoom, int nX, int nY, unsigned int nSizeX, unsigned int nSizeY, unsigned short nMask); // 0x0064DC00
-void __stdcall COLLISION_SetMaskWithSizeXY(D2ActiveRoomStrc* pRoom, int nX, int nY, unsigned int nSizeX, unsigned int nSizeY, unsigned short nMask); // 0x0064DE30
+void __stdcall COLLISION_SetMaskWithSizeXY(D2ActiveRoomStrc* pRoom, int nX, int nY, unsigned int nSizeX, unsigned int nSizeY, int nMask); // 0x0064DE30
 void __stdcall D2COMMON_10170_PathSetTargetPos(D2DynamicPathStrc* pPath, int nX, int nY); // 0x00648AD0
 void __stdcall DRLG_InitLevel(D2DrlgLevelStrc* pLevel); // 0x006424A0
 void __stdcall TileLibraryAddProject(D2TileLibraryHeaderStrc** ppList, const char* szFilePath); // 0x00604A40

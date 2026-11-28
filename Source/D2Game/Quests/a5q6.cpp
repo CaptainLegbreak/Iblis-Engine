@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2MonsterIds.h"
 #include "D2LevelIds.h"
 #include "D2Game.h"
@@ -160,8 +161,6 @@ enum D2C_F33QuestConstants
     OBJMODE_OPENED = 2,
     OBJMODE_SPECIAL1 = 3,
     MONMODE_NEUTRAL = 1,
-    EVENTTYPE_ENDANIM = 1,
-    EVENTTYPE_QUESTFN = 7,
     STAT_LEVEL = 12,
     ITEMQUAL_NORMAL = 2,
     MONSTATSFLAGINDEX_ZOO = 22,

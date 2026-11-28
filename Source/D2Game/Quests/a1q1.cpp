@@ -122,7 +122,7 @@ void __fastcall PARTY_IteratePartyMembers(D2GameStrc* pGame, unsigned short nPar
 
 void __fastcall SUNIT_AttachSound(D2UnitStrc* pUnit, int nUpdateType, D2UnitStrc* pUpdateUnit);             // 0x00553380
 
-short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer);                                                     // 0x00554630
+short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer); // 0x00554630
 
 
 #define QFLAG_CUSTOM7 11

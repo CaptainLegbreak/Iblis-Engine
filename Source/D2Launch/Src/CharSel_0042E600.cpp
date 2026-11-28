@@ -125,7 +125,7 @@ struct D2ListMsgStrc
     void* hWnd;
     unsigned int uMessage;
 };
-int __stdcall CHARSEL_OnCharSelectOk(D2ListMsgStrc* pMsg); // 0x00439840
+int __stdcall CHARSEL_OnCharSelectOk(int nArg); // 0x00439840
 char* __cdecl CHARSEL_StrStr(char* szString, const char* szSubString); // 0x0042E5B0
 // This piece stays apart from CharSel.cpp. It supplies the out-of-line Unicode::Unicode(unsigned short)
 // at 0x42E600, a COMDAT the linker takes from the first unit that emits it; CharSel.cpp inlines that

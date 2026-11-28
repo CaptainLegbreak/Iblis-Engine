@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2MissileIds.h"
 #include "D2StateIds.h"
 #include "D2SkillIds.h"
@@ -262,10 +263,6 @@ int __fastcall SKILLS_AuraCallback_CloakOfShadows(D2AuraCallbackStrc* pAuraCallb
 
 void __stdcall STATES_ToggleGfxStateFlag(D2UnitStrc* pUnit, int nState, int bSet); // 0x00639E30
 
-enum D2C_Z09St26Constants
-{
-    EVENTTYPE_REMOVESTATE = 0x0C,
-};
 
 
 void __fastcall SKILLS_StatRemoveCallback_BladeFury(D2UnitStrc* pUnit, int nState, D2StatListStrc* pStatList); // 0x005D69B0
@@ -316,10 +313,6 @@ int __fastcall SKILLS_SrvDo052_DragonFlight(D2GameStrc* pGame, D2UnitStrc* pUnit
 int __fastcall SKILLS_SrvSt27_DragonTail(D2GameStrc* pGame, D2UnitStrc* pUnit, int nSkillId, int nSkillLevel);
 
 struct D2ActiveRoomStrc;
-
-#define D2_MAX(a, b) ((a) > (b) ? (a) : (b))
-
-#define D2_MIN(a, b) ((a) < (b) ? (a) : (b))
 
 struct Skills;
 

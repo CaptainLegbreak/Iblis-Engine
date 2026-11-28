@@ -738,6 +738,8 @@ void __fastcall USEITEM_OpenNpcItemPanel(int nValue)
     USEITEM_OpenPanel();
 }
 
+extern const char gszUseItemCpp[17] = ".\\UI\\UseItem.cpp"; // 0x006DAB50
+
 extern int gnHotspotCount = 2; // 0x007278FC
 
 extern D2HotspotStrc gaUseItemHotspots[2] = {

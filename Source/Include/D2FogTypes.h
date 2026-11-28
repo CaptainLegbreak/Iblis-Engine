@@ -251,19 +251,23 @@ struct D2LdrEntryStrc
 
 struct D2LdrDataStrc
 {
-    char unk0x00[0x14]; // 0x00
+    unsigned char Reserved1[8]; // 0x00
+    void* Reserved2[3]; // 0x08
     D2ListEntryStrc InMemoryOrderModuleList; // 0x14
 };
 
 struct D2PebStrc
 {
-    char unk0x00[0x0C]; // 0x00
+    unsigned char Reserved1[2]; // 0x00
+    unsigned char BeingDebugged; // 0x02
+    unsigned char Reserved2[1]; // 0x03
+    void* Reserved3[2]; // 0x04
     D2LdrDataStrc* Ldr; // 0x0C
 };
 
 struct D2TebStrc
 {
-    char unk0x00[0x30]; // 0x00
+    void* Reserved1[12]; // 0x00
     D2PebStrc* ProcessEnvironmentBlock; // 0x30
 };
 

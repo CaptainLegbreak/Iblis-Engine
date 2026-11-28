@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2MonsterIds.h"
 #include "D2StatIds.h"
 #include "D2PlayerModes.h"
@@ -735,7 +736,7 @@ struct D2GameStatisticsStrc
     int nPlayersCount;
 };
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 extern "C" const char gszGameSourceFile; // 0x006D5D1C
 
@@ -761,9 +762,7 @@ static void GAME_UpdateAllClients(D2GameStrc* pGame);
 
 static void GAME_UpdateFrameRate(D2GameStrc* pGame);
 
-#define EVENTTYPE_STATREGEN 3
 
-#define EVENTTYPE_DELAYEDPORTAL 11
 
 struct D2SaveHeaderStrc;
 
@@ -864,7 +863,7 @@ D2PacketDataStrc* __fastcall CLIENTS_PacketDataList_GetHead(D2ClientStrc* pClien
 
 extern "C" const char gszSGameDataTypeName[];                                                               // 0x0070F56C
 
-void __cdecl FOG_CreateNewPoolSystem(void* pReserved, const char* szName, int nSize, int nBlockSize); // 0x00409DD0
+int __cdecl FOG_CreateNewPoolSystem(D2PoolSystemStrc** ppPoolSystem, const char* szName, int nSize, int nUnused); // 0x00409DD0
 
 
 unsigned short __cdecl sub_0052C170_AllocGameId();

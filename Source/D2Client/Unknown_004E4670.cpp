@@ -99,7 +99,7 @@ extern "C" const char gszEmptyAssertText; // 0x006CC837
 
 
 
-int __fastcall UNICODE_StrLen(const Unicode* wszText); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 
 

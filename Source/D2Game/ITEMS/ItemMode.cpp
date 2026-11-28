@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ItemTypes.h"
 #include "D2StateIds.h"
 #include "D2SkillIds.h"
@@ -42,9 +43,7 @@
 
 #define IFLAG_IDENTIFIED 0x10
 
-#define EVENTTYPE_AITHINK 2
 
-#define EVENTTYPE_STATREGEN 3
 
 #define IFLAG_QUANTITY 0x20
 
@@ -229,7 +228,7 @@ int __stdcall ITEMMODS_UpdateItemWithSkillCharges(D2UnitStrc* pItem, int nSkillI
 
 
 
-extern "C" char __stdcall ITEMS_GetInventoryPage(D2UnitStrc* pUnit); // 0x00628250
+char __stdcall ITEMS_GetInventoryPage(D2UnitStrc* pItem); // 0x00628250
 
 void __stdcall ITEMS_SetItemCell(D2UnitStrc* pItem, unsigned char nItemCell); // 0x00628320
 
@@ -274,7 +273,7 @@ int __stdcall ITEMMODS_UpdateRuneword(D2UnitStrc* pUnit, D2UnitStrc* pItem, int 
 int __stdcall STATLIST_GetMaxDurabilityFromUnit(D2UnitStrc* pUnit); // 0x00625E00
 
 
-short __fastcall SUNIT_GetPartyId(D2UnitStrc* pUnit); // 0x00554630
+short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer); // 0x00554630
 
 
 void __fastcall ITEMS_DropGoldPileExt(D2GameStrc* pGame, D2UnitStrc* pUnit, unsigned int nValue); // 0x0055B030

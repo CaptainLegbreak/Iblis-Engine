@@ -3027,6 +3027,10 @@ extern "C" void __cdecl BNDOWNLOAD_HandleRequiredWork(); // 0x00521AE0
 extern "C" void __cdecl sub_00520C40_AlwaysOne(); // 0x00520C40
 extern "C" void __cdecl sub_005210E0_AlwaysOne(); // 0x005210E0
 
+extern "C" const char gszKernel32[13] = "kernel32.dll"; // 0x006CD6E4
+
+extern "C" const char gszSemicolon[2] = ";"; // 0x006CDA54
+
 extern const char gacCDKeyMap[256] = {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,

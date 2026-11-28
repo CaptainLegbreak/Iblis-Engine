@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2Game.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
@@ -260,8 +261,6 @@ int __fastcall MONSTER_SetVelocityAndPosition(D2GameStrc* pGame, D2UnitStrc* pMo
 
 D2UnitStrc* __stdcall SUNIT_GetTargetUnit(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00553540
 
-#define EVENTTYPE_AITHINK 2
-#define EVENTTYPE_STATREGEN 3
 
 // 0x00573640
 void __fastcall MONSTER_RemoveAll(D2GameStrc* pGame)

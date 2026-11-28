@@ -13,7 +13,7 @@ static D2DrlgPathNodeStrc* __stdcall DRLGOUTDOORS_SearchRoad(D2DrlgPathSearchStr
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
 
-int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pCoords, int nX, int nY);          // 0x0066B980
+int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pDrlgCoord, int nX, int nY); // 0x0066B980
 
 extern const unsigned char gPathTurns[4][4]; // 0x006F2840
 

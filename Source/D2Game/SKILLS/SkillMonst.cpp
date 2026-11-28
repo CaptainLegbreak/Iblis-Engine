@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2MissileIds.h"
 #include "D2StateIds.h"
 #include "D2MonsterIds.h"
@@ -78,7 +79,7 @@ int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 void __stdcall D2COMMON_10170_PathSetTargetPos(D2DynamicPathStrc* pPath, int nX, int nY); // 0x00648AD0
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 int __fastcall D2GAME_RollElementalDamage(D2UnitStrc* pUnit, D2DamageStrc* pDamage, int nSkillId, int nSkillLevel); // 0x0056E0C0
 
@@ -138,7 +139,6 @@ enum D2C_F39Constants
     DAMAGERESULTFLAG_WILLDIE = 2,
     SKILLSFLAGINDEX_01 = 1,
     UNITFLAG_NOTC = 0x20000,
-    EVENTTYPE_ENDANIM = 1,
     STATLIST_FLAG_8 = 8,
 };
 
@@ -228,8 +228,6 @@ typedef void(__fastcall* StatListRemoveCallback)(D2UnitStrc* pUnit, int nState, 
 
 enum
 {
-    EVENTTYPE_ACTIVESTATE = 5,
-    EVENTTYPE_REMOVESTATE = 12,
 };
 
 
@@ -286,11 +284,6 @@ enum { UNIT_FLAGS = 0xE };
 
 struct Monster;
 
-enum D2C_Y09ImpInfernoConstants
-{
-    EVENTTYPE_MODECHANGE = 0,
-    EVENTTYPE_AITHINK = 2,
-};
 
 struct Game
 {

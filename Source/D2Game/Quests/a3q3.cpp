@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ObjModes.h"
 #include "D2MonsterIds.h"
 #include "D2Game.h"
@@ -13,7 +14,6 @@
 #include "D2CommonApi.h"
 
 
-#define EVENTTYPE_ENDANIM 1
 
 #define QUEST_A3Q3_GIDBINN 17
 
@@ -40,7 +40,7 @@ D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId); // 
 #include "D2CommonApi2.h"
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitId); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 void __fastcall QUESTS_StatusCyclerEx(D2GameStrc* game,D2UnitStrc* player,unsigned char id); // 0x00544190

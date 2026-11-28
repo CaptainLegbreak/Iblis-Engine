@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2MissileIds.h"
 #include "D2GameClient.h"
 #include "D2StateIds.h"
@@ -37,9 +38,7 @@
 
 #define UNIT_ALIGNMENT_GOOD 2
 
-#define EVENTTYPE_AITHINK 2
 
-#define EVENTTYPE_MONUMOD 7
 
 #define MONTYPEFLAG_RESURRECTED 8
 

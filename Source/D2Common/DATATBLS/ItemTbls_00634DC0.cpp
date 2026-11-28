@@ -399,6 +399,92 @@ void __fastcall DATATBLS_LoadSets_SetItemsTxt(void* hArchive)
     }
 }
 
+extern "C" const char gszTxtField_set[4] = "set"; // 0x006D5BCC
+
+extern "C" const char gszTxtField_cost_add[9] = "cost add"; // 0x006E6854
+
+extern "C" const char gszTxtField_cost_mult[10] = "cost mult"; // 0x006E6860
+
+extern "C" const char gszTxtField_max9[5] = "max9"; // 0x006E9B60
+
+extern "C" const char gszTxtField_min9[5] = "min9"; // 0x006E9B68
+
+extern "C" const char gszTxtField_par9[5] = "par9"; // 0x006E9B70
+
+extern "C" const char gszTxtField_prop9[6] = "prop9"; // 0x006E9B78
+
+extern "C" const char gszTxtField_max8[5] = "max8"; // 0x006E9B80
+
+extern "C" const char gszTxtField_min8[5] = "min8"; // 0x006E9B88
+
+extern "C" const char gszTxtField_par8[5] = "par8"; // 0x006E9B90
+
+extern "C" const char gszTxtField_prop8[6] = "prop8"; // 0x006E9B98
+
+extern "C" const char gszTxtField_max7[5] = "max7"; // 0x006E9BA0
+
+extern "C" const char gszTxtField_min7[5] = "min7"; // 0x006E9BA8
+
+extern "C" const char gszTxtField_par7[5] = "par7"; // 0x006E9BB0
+
+extern "C" const char gszTxtField_prop7[6] = "prop7"; // 0x006E9BB8
+
+extern "C" const char gszTxtField_max6[5] = "max6"; // 0x006E9BC0
+
+extern "C" const char gszTxtField_min6[5] = "min6"; // 0x006E9BC8
+
+extern "C" const char gszTxtField_par6[5] = "par6"; // 0x006E9BD0
+
+extern "C" const char gszTxtField_prop6[6] = "prop6"; // 0x006E9BD8
+
+extern "C" const char gszTxtField_max5[5] = "max5"; // 0x006E9BE0
+
+extern "C" const char gszTxtField_min5[5] = "min5"; // 0x006E9BE8
+
+extern "C" const char gszTxtField_par5[5] = "par5"; // 0x006E9BF0
+
+extern "C" const char gszTxtField_prop5[6] = "prop5"; // 0x006E9BF8
+
+extern "C" const char gszTxtField_max4[5] = "max4"; // 0x006E9C00
+
+extern "C" const char gszTxtField_min4[5] = "min4"; // 0x006E9C08
+
+extern "C" const char gszTxtField_par4[5] = "par4"; // 0x006E9C10
+
+extern "C" const char gszTxtField_prop4[6] = "prop4"; // 0x006E9C18
+
+extern "C" const char gszTxtField_max3[5] = "max3"; // 0x006E9C20
+
+extern "C" const char gszTxtField_min3[5] = "min3"; // 0x006E9C28
+
+extern "C" const char gszTxtField_par3[5] = "par3"; // 0x006E9C30
+
+extern "C" const char gszTxtField_prop3[6] = "prop3"; // 0x006E9C38
+
+extern "C" const char gszTxtField_max2[5] = "max2"; // 0x006E9C40
+
+extern "C" const char gszTxtField_min2[5] = "min2"; // 0x006E9C48
+
+extern "C" const char gszTxtField_par2[5] = "par2"; // 0x006E9C50
+
+extern "C" const char gszTxtField_prop2[6] = "prop2"; // 0x006E9C58
+
+extern "C" const char gszTxtField_max1[5] = "max1"; // 0x006E9C60
+
+extern "C" const char gszTxtField_min1[5] = "min1"; // 0x006E9C68
+
+extern "C" const char gszTxtField_par1[5] = "par1"; // 0x006E9C70
+
+extern "C" const char gszTxtField_prop1[6] = "prop1"; // 0x006E9C78
+
+extern "C" const char gszTxtField_invtransform[13] = "invtransform"; // 0x006E9C80
+
+extern "C" const char gszTxtField_chrtransform[13] = "chrtransform"; // 0x006E9C90
+
+extern "C" const char gszTxtField_lvl_req[8] = "lvl req"; // 0x006E9CB0
+
+extern "C" const char gszTxtField_lvl[4] = "lvl"; // 0x006E9CB8
+
 extern "C" const char gszTxtName_setitems[12] = "setitems"; // 0x006E9CD4
 
 extern "C" const char gszTxtField_amax5b[8] = "amax5b"; // 0x006E9CE0

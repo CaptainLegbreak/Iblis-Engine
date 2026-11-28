@@ -68,6 +68,10 @@ struct d2data_00748848_t
 
 extern "C" struct d2data_00748848_t gData_00748848; // 0x00748848
 
+extern "C" const char gszTxtField_Filename[9] = "Filename"; // 0x006D90F4
+
+extern "C" const char gszTxtField_version[8] = "version"; // 0x006DCCF0
+
 extern "C" struct d2data_00748848_t gData_00748848 = {
     (const void*)"English",
     (const void*)"Spanish",

@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ObjectIds.h"
 #include "D2StateIds.h"
 #include "D2SkillIds.h"
@@ -151,8 +152,6 @@ enum D2C_F42AiConstants
 {
 
     AISPECIALSTATE_NONE = 0,
-    EVENTTYPE_MODECHANGE = 0,
-    EVENTTYPE_AITHINK = 2,
 
     UNITFLAG_NOTC = 0x00020000,
     UNITFLAG_NOXP = 0x04000000,
@@ -213,7 +212,7 @@ struct D2DynamicPathStrc;
 extern const char gszAiThink4Source[]; // 0x006E3500
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc*,int,int); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 unsigned int __fastcall AIUTIL_GetDistanceToCoordinates_FullUnitSize(D2UnitStrc*,D2UnitStrc*); // 0x005DC380
@@ -769,10 +768,6 @@ enum D2C_M144SandMaggotAi
     SANDMAGGOT_AI_PARAM_MIN_UP_DOWN_TIME = 4,
 };
 
-enum D2C_M75ThornHulkConstants
-{
-    EVENTTYPE_ENDANIM = 1,
-};
 
 enum D2C_M408CorruptArcherAi
 {

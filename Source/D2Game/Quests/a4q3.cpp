@@ -79,7 +79,7 @@ void __fastcall SUNIT_AttachSound(D2UnitStrc*,int,D2UnitStrc*); // 0x00553380
 
 D2BitBufferStrc* __fastcall sub_00543520(D2GameStrc*,D2UnitStrc*); // 0x00543520
 
-short __fastcall SUNIT_GetPartyId(D2UnitStrc*); // 0x00554630
+short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer); // 0x00554630
 
 void __fastcall PARTY_IteratePartyMembers(D2GameStrc*,unsigned short,PartyCallback,void*); // 0x00540510
 

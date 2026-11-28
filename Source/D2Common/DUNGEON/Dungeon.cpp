@@ -235,7 +235,7 @@ void __stdcall UNITROOM_SortUnitListByTargetY(D2ActiveRoomStrc* pRoom); // 0x006
 
 
 
-void __fastcall DRLGROOM_InitNearRooms(void* pContext, D2CommonLevelNodeStrc* pNode); // 0x0066C370
+void __fastcall DRLGROOM_InitNearRooms(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom); // 0x0066C370
 
 
 D2UniqueNameTxt* gpUniqueNameTxtTables[4]; // 0x0096D488

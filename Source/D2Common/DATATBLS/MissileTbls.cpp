@@ -719,13 +719,87 @@ struct d2data_0074669C_t
 extern "C" struct d2data_00746660_t gData_00746660; // 0x00746660
 extern "C" struct d2data_0074669C_t gData_0074669C; // 0x0074669C
 
+extern "C" const char gszTxtField_ELevLen3[9] = "ELevLen3"; // 0x006E68B0
+
+extern "C" const char gszTxtField_ELevLen2[9] = "ELevLen2"; // 0x006E68BC
+
+extern "C" const char gszTxtField_ELevLen1[9] = "ELevLen1"; // 0x006E68C8
+
+extern "C" const char gszTxtField_ELen[5] = "ELen"; // 0x006E68D4
+
+extern "C" const char gszTxtField_EDmgSymPerCalc[15] = "EDmgSymPerCalc"; // 0x006E68DC
+
+extern "C" const char gszTxtField_EMax[5] = "EMax"; // 0x006E6928
+
+extern "C" const char gszTxtField_EMin[5] = "EMin"; // 0x006E696C
+
+extern "C" const char gszTxtField_EType[6] = "EType"; // 0x006E6974
+
+extern "C" const char gszTxtField_DmgSymPerCalc[14] = "DmgSymPerCalc"; // 0x006E697C
+
+extern "C" const char gszTxtField_MaxLevDam5[11] = "MaxLevDam5"; // 0x006E698C
+
+extern "C" const char gszTxtField_MaxLevDam4[11] = "MaxLevDam4"; // 0x006E6998
+
+extern "C" const char gszTxtField_MaxLevDam3[11] = "MaxLevDam3"; // 0x006E69A4
+
+extern "C" const char gszTxtField_MaxLevDam2[11] = "MaxLevDam2"; // 0x006E69B0
+
+extern "C" const char gszTxtField_MaxLevDam1[11] = "MaxLevDam1"; // 0x006E69BC
+
+extern "C" const char gszTxtField_MinLevDam5[11] = "MinLevDam5"; // 0x006E69D0
+
+extern "C" const char gszTxtField_MinLevDam4[11] = "MinLevDam4"; // 0x006E69DC
+
+extern "C" const char gszTxtField_MinLevDam3[11] = "MinLevDam3"; // 0x006E69E8
+
+extern "C" const char gszTxtField_MinLevDam2[11] = "MinLevDam2"; // 0x006E69F4
+
+extern "C" const char gszTxtField_MinLevDam1[11] = "MinLevDam1"; // 0x006E6A00
+
+extern "C" const char gszTxtField_HitShift[9] = "HitShift"; // 0x006E6A1C
+
+extern "C" const char gszTxtField_ToHit[6] = "ToHit"; // 0x006E6A40
+
+extern "C" const char gszTxtField_Param5[7] = "Param5"; // 0x006E6A80
+
+extern "C" const char gszTxtField_Param4[7] = "Param4"; // 0x006E6A88
+
+extern "C" const char gszTxtField_Param3[7] = "Param3"; // 0x006E6A90
+
+extern "C" const char gszTxtField_Param2[7] = "Param2"; // 0x006E6A98
+
+extern "C" const char gszTxtField_Param1[7] = "Param1"; // 0x006E6AA0
+
+extern "C" const char gszTxtField_HitClass[9] = "HitClass"; // 0x006E6D10
+
+extern "C" const char gszTxtField_HitFlags[9] = "HitFlags"; // 0x006E6D1C
+
+extern "C" const char gszTxtField_ResultFlags[12] = "ResultFlags"; // 0x006E6D28
+
+extern "C" const char gszTxtField_Blue[5] = "Blue"; // 0x006E8520
+
+extern "C" const char gszTxtField_Green[6] = "Green"; // 0x006E8528
+
+extern "C" const char gszTxtField_Red[4] = "Red"; // 0x006E8530
+
+extern "C" const char gszTxtField_Trans[6] = "Trans"; // 0x006EAC64
+
+extern "C" const char gszTxtField_HitSound[9] = "HitSound"; // 0x006ECE08
+
 extern "C" const char gszMissCodeName[12] = "misscode"; // 0x006EDEB8
 
 extern "C" const char gszMissilesTxtName[12] = "missiles"; // 0x006EDEC4
 
 extern "C" const char gszTxtField_DamageRate[12] = "DamageRate"; // 0x006EDED0
 
+extern "C" const char gszTxtField_LocalBlood[11] = "LocalBlood"; // 0x006EDEDC
+
 extern "C" const char gszTxtField_AnimSpeed[12] = "AnimSpeed"; // 0x006EDEE8
+
+extern "C" const char gszMissileTblsSourceFile[27] = ".\\DATATBLS\\MissileTbls.cpp"; // 0x006EDEF4
+
+extern "C" const char gszTxtField_NumDirections[14] = "NumDirections"; // 0x006EDF10
 
 extern "C" const char gszTxtField_SpecialSetup[16] = "SpecialSetup"; // 0x006EDF20
 

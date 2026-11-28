@@ -18,7 +18,7 @@ struct D2OutdoorOffsetStrc { int nX; int nY; };
 
 extern D2OutdoorOffsetStrc gaOutLinkVisOffsets[]; // 0x006F05D8
 
-int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pCoords, int nX, int nY); // 0x0066B980
+int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pDrlgCoord, int nX, int nY); // 0x0066B980
 
 int __fastcall DATATBLS_GetVisFlagToLevel(D2DrlgLevelStrc* pLevel, D2DrlgLevelStrc* pOtherLevel); // 0x00673FF0
 

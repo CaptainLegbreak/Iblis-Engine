@@ -1310,6 +1310,10 @@ extern "C" const char gData_006E899C[8]; // 0x006E899C
 extern "C" const char gData_006E89A4[8]; // 0x006E89A4
 extern "C" struct d2data_007444C8_t gData_007444C8; // 0x007444C8
 
+extern "C" const char gszTxtField_end[4] = "end"; // 0x006D9060
+
+extern "C" const char gszTxtField_Expansion[10] = "Expansion"; // 0x006DCF44
+
 extern "C" const struct d2data_006E867A_t gData_006E867A = {
     { 0x00 }
 }; // 0x006E867A

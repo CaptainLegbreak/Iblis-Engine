@@ -1103,6 +1103,8 @@ struct d2data_00724A80_t
 
 extern "C" struct d2data_00724A80_t gData_00724A80; // 0x00724A80
 
+extern "C" const char gszFormatI[3] = "%i"; // 0x006D6454
+
 extern D2UiCelFileStrc gaSkillIconCels[7] = {
     { 0, "Spells\\AmSkillicon" },
     { 0, "Spells\\SoSkillicon" },

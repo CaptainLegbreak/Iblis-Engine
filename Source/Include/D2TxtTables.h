@@ -96,7 +96,7 @@ struct D2BooksTxt
 {
     unsigned short wStr; // 0x00
     unsigned char nSpellIcon; // 0x02
-    unsigned char unk0x03; // 0x03
+    unsigned char pad0x03; // 0x03
     int dwPSpell; // 0x04
     int dwScrollSkillId; // 0x08
     int dwBookSkillId; // 0x0C
@@ -144,7 +144,7 @@ struct D2MonUModTxt
     short wExclude[2]; // 0x0A
     unsigned short wCPick[3]; // 0x0E
     unsigned short wUPick[3]; // 0x14
-    unsigned short unk0x1A; // 0x1A
+    unsigned short pad0x1A; // 0x1A
     unsigned int dwConstants; // 0x1C
 };
 

@@ -6651,11 +6651,19 @@ struct d2data_0072D724_t
 extern "C" const struct d2data_006DBF4C_t gData_006DBF4C; // 0x006DBF4C
 extern "C" struct d2data_0072D724_t gData_0072D724; // 0x0072D724
 
+extern "C" const char gszFmtRange[6] = "%d-%d"; // 0x006D9D70
+
 extern "C" const struct d2data_006DBF4C_t gData_006DBF4C = {
     { 0x00 }
 }; // 0x006DBF4C
 
 extern const unsigned short gawPeriodOfDayStr[4] = { 0x52F3, 0x52F5, 0x52F2, 0x52F4 }; // 0x006DBD88
+
+extern "C" const char gszFmtRangeKK[10] = "%s%dK-%dK"; // 0x006DBEAC
+
+extern "C" const char gszFmtRangeK[9] = "%s%d-%dK"; // 0x006DBEB8
+
+extern "C" const char gszPlus[2] = "+"; // 0x006DBEC4
 
 extern unsigned int gnFileIndexTextCount = 6; // 0x0072D720
 

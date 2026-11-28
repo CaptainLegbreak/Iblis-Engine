@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2MissileIds.h"
 #include "D2StateIds.h"
 #include "D2MonsterIds.h"
@@ -75,7 +76,6 @@ enum D2C_F39Constants
     DAMAGERESULTFLAG_WILLDIE = 2,
     SKILLSFLAGINDEX_01 = 1,
     UNITFLAG_NOTC = 0x20000,
-    EVENTTYPE_ENDANIM = 1,
     STATLIST_FLAG_8 = 8,
 };
 
@@ -94,7 +94,7 @@ int __fastcall GAME_GetUnitTypeOrInvalid(D2UnitStrc* pUnit); // 0x0044BE50
 #include "D2CommonApi3.h"
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 D2UnitStrc* __stdcall SUNIT_GetTargetUnit(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00553540
 
@@ -457,7 +457,6 @@ void __fastcall SKILLS_CurseStateCallback_BasicAura(D2UnitStrc* pUnit, int nStat
     SKILLS_ClampVitalsAndUpdateAnimRate(pUnit);
 }
 
-#define EVENTTYPE_REMOVESTATE 12
 
 int __stdcall D2COMMON_10473(D2StatListStrc* pStatList); // 0x00626090
 
