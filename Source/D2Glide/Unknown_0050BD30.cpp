@@ -1075,23 +1075,6 @@ int __fastcall sub_0050CD40_GlideShadowTileDraw(D2TileLibraryEntryStrc* pTile, i
     return nResult;
 }
 
-extern "C" char gData_00880474[]; // 0x00880474
-extern "C" char gData_00880490[]; // 0x00880490
-extern "C" char gData_008804AC[]; // 0x008804AC
-extern "C" char gData_008804C8[]; // 0x008804C8
-extern "C" char gData_008804E4[]; // 0x008804E4
-extern "C" char gData_00880500[]; // 0x00880500
-extern "C" char gData_0088051C[]; // 0x0088051C
-extern "C" char gData_00880538[]; // 0x00880538
-extern "C" char gData_00880554[]; // 0x00880554
-extern "C" char gData_00880570[]; // 0x00880570
-extern "C" char gData_0088058C[]; // 0x0088058C
-extern "C" char gData_008805A8[]; // 0x008805A8
-extern "C" char gData_008805C4[]; // 0x008805C4
-extern "C" char gData_008805E0[]; // 0x008805E0
-extern "C" char gData_00880704[]; // 0x00880704
-extern "C" char gData_008809C0[]; // 0x008809C0
-extern "C" char gData_00880A4C[]; // 0x00880A4C
 
 int gaGlideCrossOffsetX[8] = { 1, 2, 0, 1, 2, 3, 1, 2 }; // 0x0072F2C8
 
@@ -1104,15 +1087,15 @@ unsigned int gaGlideLightPalette[18] = { // 0x0072F308
 };
 
 void* gapGlideTileStripA[10] = { // 0x0072F350
-    gaGlideTileGrid, gData_00880474, gData_008804AC, gData_008804C8,
-    gData_00880500, gData_0088051C, gData_00880554, gData_00880570,
-    gData_008805A8, gData_008805C4
+    gaGlideTileGrid, &gaGlideTileGrid[1], &gaGlideTileGrid[3], &gaGlideTileGrid[4],
+    &gaGlideTileGrid[6], &gaGlideTileGrid[7], &gaGlideTileGrid[9], &gaGlideTileGrid[10],
+    &gaGlideTileGrid[12], &gaGlideTileGrid[13]
 };
 
 void* gapGlideTileStripB[10] = { // 0x0072F378
-    gData_00880474, gData_00880490, gData_008804C8, gData_008804E4,
-    gData_0088051C, gData_00880538, gData_00880570, gData_0088058C,
-    gData_008805C4, gData_008805E0
+    &gaGlideTileGrid[1], &gaGlideTileGrid[2], &gaGlideTileGrid[4], &gaGlideTileGrid[5],
+    &gaGlideTileGrid[7], &gaGlideTileGrid[8], &gaGlideTileGrid[10], &gaGlideTileGrid[11],
+    &gaGlideTileGrid[13], &gaGlideTileGrid[14]
 };
 
 int gaGlideWallCorner[10][6][3] = { // 0x0072F3A0
@@ -1128,4 +1111,6 @@ int gaGlideWallCorner[10][6][3] = { // 0x0072F3A0
     { { 0, 5, -40 }, { 2, 5, -24 }, { 4, 5, -8 }, { 5, 4, -8 }, { 5, 2, -24 }, { 5, 0, -40 } }
 };
 
-void* gapGlideTileFan[4] = { gatGlideTileVertices, gData_00880704, gData_00880A4C, gData_008809C0 }; // 0x0072F670
+void* gapGlideTileFan[4] = { // 0x0072F670
+    gatGlideTileVertices, &gatGlideTileVertices[5], &gatGlideTileVertices[35], &gatGlideTileVertices[30]
+};

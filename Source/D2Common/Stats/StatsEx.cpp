@@ -157,7 +157,7 @@ struct D2StatesTxt;
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern unsigned int gdwInvBitMasks[]; // 0x006CE2E8
 
@@ -572,7 +572,7 @@ static void __stdcall STATLIST_UpdateUnitStat(D2StatListExStrc* pStatListEx, int
 // 0x006251F0
 D2StatListStrc* __stdcall STATLIST_AllocStatList(D2PoolSystemStrc* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID)
 {
-    D2StatListStrc* pStatList = (D2StatListStrc*)sub_0040B430(pMemPool, 0x3C, ".\\Stats\\StatsEx.cpp", 1386, 0);
+    D2StatListStrc* pStatList = (D2StatListStrc*)FOG_AllocPool(pMemPool, 0x3C, ".\\Stats\\StatsEx.cpp", 1386, 0);
     memset(pStatList, 0x00, 0x3C);
 
     pStatList->dwOwnerType = nUnitType;
@@ -2290,7 +2290,7 @@ void __stdcall STATLIST_AllocStatListEx(D2UnitStrc* pUnit, int nFlags, void* pCa
         pUnit->pStatListEx = 0;
     }
 
-    D2StatListExStrc* pStatListEx = (D2StatListExStrc*)sub_0040B430(pUnit->pMemoryPool, sizeof(D2StatListExStrc), ".\\Stats\\StatsEx.cpp", 0x586, 0);
+    D2StatListExStrc* pStatListEx = (D2StatListExStrc*)FOG_AllocPool(pUnit->pMemoryPool, sizeof(D2StatListExStrc), ".\\Stats\\StatsEx.cpp", 0x586, 0);
     memset(pStatListEx, 0, sizeof(D2StatListExStrc));
     pStatListEx->pMemPool = pUnit->pMemoryPool;
     pStatListEx->dwOwnerType = !pUnit ? 6 : pUnit->dwUnitType;
@@ -2300,7 +2300,7 @@ void __stdcall STATLIST_AllocStatListEx(D2UnitStrc* pUnit, int nFlags, void* pCa
     pStatListEx->pGame = (D2GameStrc*)pGame;
     pStatListEx->pOwner = pUnit;
     const int nSize = sizeof(unsigned int) * 2 * ((sgptDataTables->nStatesTxtRecordCount + 31) / 32);
-    pStatListEx->StatFlags = (unsigned int*)sub_0040B430(pUnit->pMemoryPool, nSize, ".\\Stats\\StatsEx.cpp", 0x593, 0);
+    pStatListEx->StatFlags = (unsigned int*)FOG_AllocPool(pUnit->pMemoryPool, nSize, ".\\Stats\\StatsEx.cpp", 0x593, 0);
     memset(pStatListEx->StatFlags, 0, nSize);
     pUnit->pStatListEx = pStatListEx;
 }

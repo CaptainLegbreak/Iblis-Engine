@@ -23,7 +23,7 @@ extern D2DataTablesStrc* sgptDataTables;                                        
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);    // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);    // 0x0040B430
 
 void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
@@ -330,7 +330,7 @@ void __stdcall MISSILE_AllocMissileData(D2UnitStrc* pMissile)
 {
     if (pMissile && pMissile->dwUnitType == UNIT_MISSILE && !pMissile->pMissileData)
     {
-        D2MissileDataStrc* pMissileData = (D2MissileDataStrc*)sub_0040B430(pMissile->pMemoryPool, sizeof(D2MissileDataStrc), ".\\UNITS\\Missile.cpp", 34, 0);
+        D2MissileDataStrc* pMissileData = (D2MissileDataStrc*)FOG_AllocPool(pMissile->pMemoryPool, sizeof(D2MissileDataStrc), ".\\UNITS\\Missile.cpp", 34, 0);
         memset(pMissileData, 0x00, sizeof(D2MissileDataStrc));
         pMissileData->dwOwnerGUID = D2UnitInvalidGUID;
         pMissile->pMissileData = pMissileData;

@@ -73,7 +73,7 @@ struct D2RoomStrc;
 struct D2DrlgRoomStrc;
 
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);          // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);          // 0x0040B430
 
 void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);         // 0x0040B480
 
@@ -748,8 +748,8 @@ void __fastcall DRLGPRESET_LoadDrlgFile(D2DrlgFileStrc** ppDrlgFile, void* hArch
         while (pLevelFile);
     }
 
-    D2LevelFileListStrc* pNewFile = (D2LevelFileListStrc*)sub_0040B430(0, sizeof(D2LevelFileListStrc), &gszDrlgPresetSourceFile, 1248, 0);
-    *ppDrlgFile = (D2DrlgFileStrc*)sub_0040B430(0, sizeof(D2DrlgFileStrc), &gszDrlgPresetSourceFile, 1249, 0);
+    D2LevelFileListStrc* pNewFile = (D2LevelFileListStrc*)FOG_AllocPool(0, sizeof(D2LevelFileListStrc), &gszDrlgPresetSourceFile, 1248, 0);
+    *ppDrlgFile = (D2DrlgFileStrc*)FOG_AllocPool(0, sizeof(D2DrlgFileStrc), &gszDrlgPresetSourceFile, 1249, 0);
     memset(*ppDrlgFile, 0, sizeof(D2DrlgFileStrc));
     strcpy(pNewFile->szPath, szFile);
     D2LevelFileListStrc* pHead = gpLevelFilesList;
@@ -780,10 +780,10 @@ static inline void DRLGPRESET_FindLevelFileListEntry(D2DrlgFileStrc** ppDrlgFile
 // 0x006660B0
 D2MapAIStrc* __fastcall DRLGPRESET_CreateCopyOfMapAI(D2PoolSystemStrc* pMemPool, D2MapAIStrc* pMapAI)
 {
-    D2MapAIStrc* pNewMapAI = (D2MapAIStrc*)sub_0040B430(pMemPool, sizeof(D2MapAIStrc), &gszDrlgPresetSourceFile, 1396, 0);
+    D2MapAIStrc* pNewMapAI = (D2MapAIStrc*)FOG_AllocPool(pMemPool, sizeof(D2MapAIStrc), &gszDrlgPresetSourceFile, 1396, 0);
     memset(pNewMapAI, 0, sizeof(D2MapAIStrc));
     pNewMapAI->nPathNodes = pMapAI->nPathNodes;
-    pNewMapAI->pPosition = (D2MapAIPathPositionStrc*)sub_0040B430(pMemPool, sizeof(D2MapAIPathPositionStrc) * pNewMapAI->nPathNodes, &gszDrlgPresetSourceFile, 1401, 0);
+    pNewMapAI->pPosition = (D2MapAIPathPositionStrc*)FOG_AllocPool(pMemPool, sizeof(D2MapAIPathPositionStrc) * pNewMapAI->nPathNodes, &gszDrlgPresetSourceFile, 1401, 0);
     memcpy(pNewMapAI->pPosition, pMapAI->pPosition, sizeof(D2MapAIPathPositionStrc) * pNewMapAI->nPathNodes);
     return pNewMapAI;
 }
@@ -985,7 +985,7 @@ void __fastcall DRLGPRESET_FreeDrlgGridsFromPresetRoom(D2DrlgRoomStrc* pDrlgRoom
 // 0x00666630
 void __fastcall DRLGPRESET_AllocPresetRoomData(D2DrlgRoomStrc* pDrlgRoom)
 {
-    D2DrlgPresetRoomStrc* pMaze = (D2DrlgPresetRoomStrc*)sub_0040B430(pDrlgRoom->ptDrlgLevel->pDrlg->pMempool, sizeof(D2DrlgPresetRoomStrc), &gszDrlgPresetSourceFile, 1807, 0);
+    D2DrlgPresetRoomStrc* pMaze = (D2DrlgPresetRoomStrc*)FOG_AllocPool(pDrlgRoom->ptDrlgLevel->pDrlg->pMempool, sizeof(D2DrlgPresetRoomStrc), &gszDrlgPresetSourceFile, 1807, 0);
     memset(pMaze, 0, sizeof(D2DrlgPresetRoomStrc));
     pDrlgRoom->pMaze = pMaze;
 }
@@ -1601,7 +1601,7 @@ static inline int DRLGPRESET_GetFileCount(D2LvlPrestTxt* pLvlPrestTxtRecord)
 // 0x00667510
 D2PresetUnitStrc* __fastcall DRLGPRESET_CopyPresetUnit(D2PoolSystemStrc* pMemPool, D2PresetUnitStrc* pPresetUnit, int nX, int nY)
 {
-    D2PresetUnitStrc* pNewPresetUnit = (D2PresetUnitStrc*)sub_0040B430(pMemPool, sizeof(D2PresetUnitStrc), &gszDrlgPresetSourceFile, 1354, 0);
+    D2PresetUnitStrc* pNewPresetUnit = (D2PresetUnitStrc*)FOG_AllocPool(pMemPool, sizeof(D2PresetUnitStrc), &gszDrlgPresetSourceFile, 1354, 0);
     memset(pNewPresetUnit, 0, sizeof(D2PresetUnitStrc));
     pNewPresetUnit->nUnitType = pPresetUnit->nUnitType;
     pNewPresetUnit->nIndex = pPresetUnit->nIndex;

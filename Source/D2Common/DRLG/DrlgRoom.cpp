@@ -58,7 +58,7 @@ enum D2C_J11DrlgConstants
     DRLGROOMFLAG_AUTOMAP_REVEAL = 0x40000,
 };
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 
 
@@ -129,7 +129,7 @@ inline unsigned __int64 SEED_RollRandomNumber(D2SeedStrc* pSeed)
 // 0x0066B3E0
 D2DrlgRoomStrc* __fastcall DRLGROOM_AllocRoomEx(D2DrlgLevelStrc* pLevel, int nType)
 {
-    D2DrlgRoomStrc* pDrlgRoom = (D2DrlgRoomStrc*)sub_0040B430(pLevel->pDrlg->pMempool, sizeof(D2DrlgRoomStrc), ".\\DRLG\\DrlgRoom.cpp", 32, 0);
+    D2DrlgRoomStrc* pDrlgRoom = (D2DrlgRoomStrc*)FOG_AllocPool(pLevel->pDrlg->pMempool, sizeof(D2DrlgRoomStrc), ".\\DRLG\\DrlgRoom.cpp", 32, 0);
     memset(pDrlgRoom, 0, sizeof(D2DrlgRoomStrc));
     pDrlgRoom->nType = nType;
     pDrlgRoom->ptDrlgLevel = pLevel;
@@ -241,7 +241,7 @@ int __fastcall DRLG_CheckOverlappingWithOrthogonalMargin(D2DrlgCoordStrc* pDrlgC
 // 0x0066BE10
 static void __stdcall DRLGROOM_AddWarpRoomTile(D2DrlgRoomStrc* pDrlgRoom1, D2DrlgRoomStrc* pDrlgRoom2, unsigned char nWarpId)
 {
-    D2RoomTileStrc* pRoomTile = (D2RoomTileStrc*)sub_0040B430(pDrlgRoom1->ptDrlgLevel->pDrlg->pMempool, sizeof(D2RoomTileStrc), ".\\DRLG\\DrlgRoom.cpp", 802, 0);
+    D2RoomTileStrc* pRoomTile = (D2RoomTileStrc*)FOG_AllocPool(pDrlgRoom1->ptDrlgLevel->pDrlg->pMempool, sizeof(D2RoomTileStrc), ".\\DRLG\\DrlgRoom.cpp", 802, 0);
     memset(pRoomTile, 0, sizeof(D2RoomTileStrc));
     pRoomTile->pUnused = pDrlgRoom2;
     pRoomTile->pLvlWarpTxtRecord = DRLGWARP_GetLvlWarpTxtRecordFromWarpIdAndDirection(pDrlgRoom1->ptDrlgLevel, nWarpId, 'b');
@@ -261,7 +261,7 @@ void __fastcall DRLGROOM_AllocDrlgOrthForRoom(D2DrlgRoomStrc* pDrlgRoom1, D2Drlg
         }
     }
 
-    D2DrlgOrthStrc* pNew = (D2DrlgOrthStrc*)sub_0040B430(pDrlgRoom1->ptDrlgLevel->pDrlg->pMempool, sizeof(D2DrlgOrthStrc), ".\\DRLG\\DrlgRoom.cpp", 212, 0);
+    D2DrlgOrthStrc* pNew = (D2DrlgOrthStrc*)FOG_AllocPool(pDrlgRoom1->ptDrlgLevel->pDrlg->pMempool, sizeof(D2DrlgOrthStrc), ".\\DRLG\\DrlgRoom.cpp", 212, 0);
     memset(pNew, 0, sizeof(D2DrlgOrthStrc));
     pNew->pNext = pDrlgRoom1->pDrlgOrth;
     pDrlgRoom1->pDrlgOrth = pNew;
@@ -372,7 +372,7 @@ static void __stdcall DRLGROOM_InsertOrthSorted(D2DrlgOrthStrc** ppDrlgOrth, D2D
 // 0x0066B790
 void __fastcall DRLGROOM_AddOrth(D2DrlgOrthStrc** ppDrlgOrth, D2DrlgLevelStrc* pLevel, int nDirection, int bIsPreset)
 {
-    D2DrlgOrthStrc* pNew = (D2DrlgOrthStrc*)sub_0040B430(pLevel->pDrlg->pMempool, sizeof(D2DrlgOrthStrc), ".\\DRLG\\DrlgRoom.cpp", 351, 0);
+    D2DrlgOrthStrc* pNew = (D2DrlgOrthStrc*)FOG_AllocPool(pLevel->pDrlg->pMempool, sizeof(D2DrlgOrthStrc), ".\\DRLG\\DrlgRoom.cpp", 351, 0);
     memset(pNew, 0, sizeof(D2DrlgOrthStrc));
     pNew->pLevel = pLevel;
     pNew->nDirection = nDirection;
@@ -860,7 +860,7 @@ static void __stdcall DRLGROOM_CollectNearRooms(D2PoolSystemStrc* pMemPool, D2Dr
     int nRoomsNear = pDrlgRoom->nRoomsNear;
     DRLGROOM_SortRoomListByPosition(ppNearRooms, nRoomsNear);
 
-    pDrlgRoom->ppRoomsNear = (D2DrlgRoomStrc**)sub_0040B430(pMemPool, sizeof(D2DrlgRoomStrc*) * nRoomsNear, ".\\DRLG\\DrlgRoom.cpp", 715, 0);
+    pDrlgRoom->ppRoomsNear = (D2DrlgRoomStrc**)FOG_AllocPool(pMemPool, sizeof(D2DrlgRoomStrc*) * nRoomsNear, ".\\DRLG\\DrlgRoom.cpp", 715, 0);
 
     for (int i = 0; i < pDrlgRoom->nRoomsNear; ++i)
     {
@@ -997,7 +997,7 @@ int __fastcall DRLGROOM_ReorderNearRoomList(D2DrlgRoomStrc* pDrlgRoom, void** pp
 // 0x0066BF30
 D2PresetUnitStrc* __fastcall DRLGROOM_AllocPresetUnit(D2DrlgRoomStrc* pDrlgRoom, D2PoolSystemStrc* pMemPool, int nUnitType, int nIndex, int nMode, int nX, int nY)
 {
-    D2PresetUnitStrc* pPresetUnit = (D2PresetUnitStrc*)sub_0040B430(pMemPool, sizeof(D2PresetUnitStrc), ".\\DRLG\\DrlgRoom.cpp", 950, 0);
+    D2PresetUnitStrc* pPresetUnit = (D2PresetUnitStrc*)FOG_AllocPool(pMemPool, sizeof(D2PresetUnitStrc), ".\\DRLG\\DrlgRoom.cpp", 950, 0);
     memset(pPresetUnit, 0, sizeof(D2PresetUnitStrc));
     pPresetUnit->nUnitType = nUnitType;
     pPresetUnit->nIndex = nIndex;

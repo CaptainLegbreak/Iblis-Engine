@@ -141,7 +141,7 @@ extern D2AnimUnkStrc gaMonModesAnimModulators[]; // 0x006E8B90
 
 extern D2AnimUnkStrc gaMonModesAnimModulatorsExpansion[]; // 0x006E8CD0
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern void __stdcall STATLIST_FreeStatListEx(D2UnitStrc*); // 0x00626D10
 
@@ -517,7 +517,7 @@ D2SkillStrc* __stdcall UNITS_GetUsedSkill(D2UnitStrc* hUnit)
 // 0x00620290
 D2UnitStrc* __stdcall UNITS_AllocUnit(D2PoolSystemStrc* pMemPool, int nUnitType)
 {
-    D2UnitStrc* pUnit = (D2UnitStrc*)sub_0040B430(pMemPool, 0xF4, ".\\UNITS\\Units.cpp", 1646, 0);
+    D2UnitStrc* pUnit = (D2UnitStrc*)FOG_AllocPool(pMemPool, 0xF4, ".\\UNITS\\Units.cpp", 1646, 0);
     memset(pUnit, 0, 0xF4);
 
     pUnit->dwUnitType = nUnitType;
@@ -526,7 +526,7 @@ D2UnitStrc* __stdcall UNITS_AllocUnit(D2PoolSystemStrc* pMemPool, int nUnitType)
     switch (nUnitType)
     {
     case UNIT_MONSTER:
-        pUnit->pMonsterData = (D2MonsterDataStrc*)sub_0040B430(pMemPool, 0x60, ".\\UNITS\\Units.cpp", 1659, 0);
+        pUnit->pMonsterData = (D2MonsterDataStrc*)FOG_AllocPool(pMemPool, 0x60, ".\\UNITS\\Units.cpp", 1659, 0);
         memset(pUnit->pMonsterData, 0, 0x60);
         break;
     }
@@ -3582,7 +3582,7 @@ void __stdcall UNITS_AllocStaticPath(D2UnitStrc* pUnit)
 {
     if (!pUnit->pStaticPath)
     {
-        pUnit->pStaticPath = (D2StaticPathStrc*)sub_0040B430(pUnit->pMemoryPool, sizeof(D2StaticPathStrc), ".\\UNITS\\Units.cpp", 5406, 0);
+        pUnit->pStaticPath = (D2StaticPathStrc*)FOG_AllocPool(pUnit->pMemoryPool, sizeof(D2StaticPathStrc), ".\\UNITS\\Units.cpp", 5406, 0);
         memset(pUnit->pStaticPath, 0x00, sizeof(D2StaticPathStrc));
     }
 }

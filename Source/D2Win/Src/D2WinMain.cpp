@@ -266,7 +266,7 @@ void __fastcall D2SOUND_10049(int nState); // 0x00514D00
 
 void __fastcall D2SOUND_10070(int nArg); // 0x00514D90
 
-D2ArchiveHandleStrc* __fastcall sub_00517332_LoadMpqFile(const char* szFileName, void* hFile, void* pfShowMessage, int nPriority); // 0x00517332
+D2ArchiveHandleStrc* __fastcall ARCHIVE_LoadMPQFile(const char* szFileName, void* hFile, void* pfShowMessage, int nPriority); // 0x00517332
 
 extern "C" const char gszD2XVideoMpq[]; // 0x006DC788
 
@@ -488,7 +488,7 @@ void __fastcall sub_0042E6B0(int nValue); // 0x0042E6B0
 
 void __fastcall sub_0042E6A0(void (__cdecl* pfnCallback)()); // 0x0042E6A0
 
-int __cdecl sub_004F5D60(); // 0x004F5D60
+int __cdecl WINDOW_PlayCutscene(); // 0x004F5D60
 
 extern D2WinControlStrc* gpButton; // 0x007799E4
 
@@ -656,7 +656,7 @@ int __stdcall D2Win_CloseSpriteCache()
 int __cdecl D2Win_10003()
 {
     gnResolution = 0x0;
-    return sub_004F5D60();
+    return WINDOW_PlayCutscene();
 }
 
 // 0x004F9060
@@ -2066,16 +2066,16 @@ void __stdcall D2Win_COMMANDS_MouseButton(SMSGHANDLER_PARAMS* pMsg)
 
 int __fastcall SCROLLBAR_HandleMouseWheel(SMSGHANDLER_PARAMS* pMsg, D2WinScrollBarStrc* ptScrollbarData, int nWheelDelta); // 0x00508030
 
-extern "C" void __cdecl sub_004F9B60(); // 0x004F9B60
-extern "C" void __cdecl sub_004F9BF0(); // 0x004F9BF0
-extern "C" void __cdecl sub_004F9C80(); // 0x004F9C80
-extern "C" void __cdecl sub_004F9CA0(); // 0x004F9CA0
-extern "C" void __cdecl sub_004F9F20(); // 0x004F9F20
-extern "C" void __cdecl sub_004FA340(); // 0x004FA340
-extern "C" void __cdecl sub_004FA6B0(); // 0x004FA6B0
-extern "C" void __cdecl sub_004FA760(); // 0x004FA760
-extern "C" void __cdecl sub_004FA840(); // 0x004FA840
-extern "C" void __cdecl sub_004FA860(); // 0x004FA860
+extern "C" void __cdecl D2Win_COMMANDS_Char(); // 0x004F9B60
+extern "C" void __cdecl D2Win_COMMANDS_VirtualKey(); // 0x004F9BF0
+extern "C" void __cdecl D2Win_COMMANDS_ControlDown(); // 0x004F9C80
+extern "C" void __cdecl D2Win_COMMANDS_ControlUp(); // 0x004F9CA0
+extern "C" void __cdecl D2Win_COMMANDS_ActivateApp(); // 0x004F9F20
+extern "C" void __cdecl D2Win_COMMANDS_MouseWheel(); // 0x004FA340
+extern "C" void __cdecl D2Win_COMMANDS_MouseMove(); // 0x004FA6B0
+extern "C" void __cdecl D2Win_COMMANDS_Escape(); // 0x004FA760
+extern "C" void __cdecl D2Win_COMMANDS_Snapshot(); // 0x004FA840
+extern "C" void __cdecl D2Win_COMMANDS_MouseButton(); // 0x004FA860
 
 extern "C" const char* gData_0072DC00[15] = { // 0x0072DC00
     "English",

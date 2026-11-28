@@ -11,7 +11,7 @@ struct D2DrlgOrthStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
@@ -37,7 +37,7 @@ void __fastcall DRLGVER_GetCoordDiff(D2DrlgVertexStrc* pVertex, int* pDirectionX
 
 D2DrlgVertexStrc* __fastcall DRLGVER_AllocVertex(D2PoolSystemStrc* pMemPool, unsigned char nDirection)
 {
-    D2DrlgVertexStrc* pVertex = (D2DrlgVertexStrc*)sub_0040B430(pMemPool, sizeof(D2DrlgVertexStrc), ".\\DRLG\\DrlgVer.cpp", 19, 0);
+    D2DrlgVertexStrc* pVertex = (D2DrlgVertexStrc*)FOG_AllocPool(pMemPool, sizeof(D2DrlgVertexStrc), ".\\DRLG\\DrlgVer.cpp", 19, 0);
     memset(pVertex, 0, sizeof(D2DrlgVertexStrc));
     pVertex->nDirection = nDirection;
     return pVertex;

@@ -272,7 +272,7 @@ static int __stdcall PLRTRADE_RemoveCubeInputs(D2GameStrc* game,D2UnitStrc* unit
 
 extern "C" const char szPlrTradeCpp[];                                                                      // 0x006E11D8
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 
 
 
@@ -2515,7 +2515,7 @@ static void __stdcall PLRTRADE_AddItemTrade(D2GameStrc* pGame, int nItemGUID1, i
         D2PlayerTradeStrc* pTrade = pPlayerData->hTrade;
         if (pTrade)
         {
-            D2ItemTradeStrc* pItemTrade = (D2ItemTradeStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2ItemTradeStrc), ".\\PLAYER\\PlrTrade.cpp", 0xC5B, 0);
+            D2ItemTradeStrc* pItemTrade = (D2ItemTradeStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2ItemTradeStrc), ".\\PLAYER\\PlrTrade.cpp", 0xC5B, 0);
             pItemTrade->nItemGUID1 = nItemGUID1;
             pItemTrade->nItemGUID2 = nItemGUID2;
             pItemTrade->pNext = (D2ItemTradeStrc*)pTrade->pItemTrade;

@@ -16,7 +16,7 @@ struct D2LanguageInfoStrc;
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-D2ArchiveHandleStrc* __fastcall sub_00517332_LoadMpqFile(const char* szFileName, void* hFile, void* pfShowMessage, int nPriority); // 0x00517332
+D2ArchiveHandleStrc* __fastcall ARCHIVE_LoadMPQFile(const char* szFileName, void* hFile, void* pfShowMessage, int nPriority); // 0x00517332
 
 extern "C" const char gszExpansionMpq[]; // 0x006CD3A0
 
@@ -159,17 +159,17 @@ wchar_t gwszEmptyString[2]; // 0x008829E8
 int __cdecl STRTABLE_OpenArchives()
 {
     D2_ASSERT(!ghD2DataMpq, 0x8A);
-    ghD2DataMpq = sub_00517332_LoadMpqFile(gszD2DataMpq, 0, 0, 1000);
+    ghD2DataMpq = ARCHIVE_LoadMPQFile(gszD2DataMpq, 0, 0, 1000);
     if (!ghD2DataMpq)
         return 0;
-    ghPatchD2Mpq = sub_00517332_LoadMpqFile(gszPatchD2Mpq, 0, 0, 1000);
+    ghPatchD2Mpq = ARCHIVE_LoadMPQFile(gszPatchD2Mpq, 0, 0, 1000);
     if (!ghPatchD2Mpq)
     {
         ARCHIVE_UnloadMPQFile((D2ArchiveHandleStrc*)ghD2DataMpq);
         ghD2DataMpq = 0;
         return 0;
     }
-    ghExpansionMpq = sub_00517332_LoadMpqFile(gszExpansionMpq, 0, 0, 1000);
+    ghExpansionMpq = ARCHIVE_LoadMPQFile(gszExpansionMpq, 0, 0, 1000);
     if (!ghExpansionMpq)
     {
         ARCHIVE_UnloadMPQFile((D2ArchiveHandleStrc*)ghD2DataMpq);

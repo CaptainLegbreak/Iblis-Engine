@@ -37,7 +37,7 @@ D2SetsTxt* __fastcall DATATBLS_GetSetsTxtRecord(int nSetId); // 0x00483410
 D2SkillDescTxt* __fastcall sub_004A89D0(int nSkillId); // 0x004A89D0
 D2SkillStrc* __fastcall SKILLS_GetSkill(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID); // 0x006439B0
 D2TxtLinkStrc* __stdcall FOG_AllocLinker(const char* szFile, int nLine); // 0x006BD040
-D2TxtLinkStrc* __stdcall sub_006BD040(const char* szFile, int nLine); // 0x006BD040
+D2TxtLinkStrc* __stdcall FOG_AllocLinker(const char* szFile, int nLine); // 0x006BD040
 D2TxtLinkStrc* __stdcall FOG_AllocLinker(const char* szFile, int nLine); // 0x006BD040
 char* __stdcall SStrDup(const char* szString); // 0x00414310
 extern "C" SkillRecord* __fastcall sub_0045C4B0_GetSkillRecord(int); // 0x0045C4B0

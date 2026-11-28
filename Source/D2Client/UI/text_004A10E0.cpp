@@ -1,5 +1,6 @@
 #include "D2Client.h"
 #include "D2ClientFuncs.h"
+#include "D2ClientTextState.h"
 #include "D2Unicode.h"
 #include "D2Structs.h"
 #include "FogApi.h"
@@ -19,7 +20,7 @@ D2TextBlockStrc* __fastcall TEXT_CreateTextBox(const Unicode* pText, int nMode);
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 int __fastcall sub_004B9A00(int nSound, D2UnitStrc* pUnit, int nMode, int nZero, int nZero2); // 0x004B9A00
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
-void* __stdcall WINDOW_GetWindow(); // 0x004F59A0
+void* __cdecl WINDOW_GetWindow(); // 0x004F59A0
 void __fastcall SCMD_RegisterMsgHandlers(void* hWnd, void* pHandlers, int nCount); // 0x00451DB0
 
 extern const char gszTextSourceFile[]; // 0x006DA13C
@@ -28,10 +29,6 @@ extern D2TextBlockStrc* gpTextBox; // 0x007BF0A4
 extern D2TextBlockStrc* gpMainTextBox; // 0x007BF1A8
 extern int gbTextBoxDone; // 0x007BF1BC
 extern int gnPreviousTextActive_007BF1C4; // 0x007BF1C4
-extern unsigned int gnNpcId_007BF202; // 0x007BF202
-extern int gnHasNpc_007BF20A; // 0x007BF20A
-extern int gbTextSide; // 0x007BF236
-extern int gnSoundPlaying_007BF24B; // 0x007BF24B
 static int gnHandlersSet_007BF27C; // 0x007BF27C
 
 // 0x0049D370
@@ -59,10 +56,10 @@ __forceinline void __stdcall TEXT_FreeTextBox(D2TextBlockStrc* pBox)
 // 0x004A10E0
 void __fastcall TEXT_ShowNpcMessage(D2UnitStrc* pUnit, unsigned short nMessage, int nUnused)
 {
-    gbTextSide = 0;
+    gtTextState.bTextSide = 0;
     gnTextTop = 12;
     gnTextLeft = (gnScreenWidth_0071146C - 325) / 2;
-    gbTextSound = 0;
+    gtTextState.bTextSound = 0;
     GAME_ResetMouseState();
     if (gnHintId)
     {
@@ -71,7 +68,7 @@ void __fastcall TEXT_ShowNpcMessage(D2UnitStrc* pUnit, unsigned short nMessage, 
             SOUNDINST_ArmHint(pSound, 0, 0, 4);
         gnHintId = 0;
     }
-    gnSoundPlaying_007BF24B = 0;
+    gtTextState.hHintSound = 0;
     if (!pUnit)
     {
         if (gnPreviousTextActive_007BF1C4)
@@ -83,22 +80,22 @@ void __fastcall TEXT_ShowNpcMessage(D2UnitStrc* pUnit, unsigned short nMessage, 
             }
             gnPreviousTextActive_007BF1C4 = 0;
         }
-        gnHasNpc_007BF20A = 0;
-        gnNpcId_007BF202 = 0;
+        gtTextState.bTextFromObject = 0;
+        gtTextState.nTextNpcId = 0;
     }
     else
     {
-        if (gnHasNpc_007BF20A)
+        if (gtTextState.bTextFromObject)
         {
-            D2UnitStrc* pPreviousNpc = CUNIT_FindClientUnit(gnNpcId_007BF202, 1);
+            D2UnitStrc* pPreviousNpc = CUNIT_FindClientUnit(gtTextState.nTextNpcId, 1);
             if (pPreviousNpc && pPreviousNpc != pUnit)
             {
-                MSG_SendTwoDwords(0x30, 1, gnNpcId_007BF202);
-                NPCMENU_ClearNpcInventoryAndSound(gnNpcId_007BF202);
+                MSG_SendTwoDwords(0x30, 1, gtTextState.nTextNpcId);
+                NPCMENU_ClearNpcInventoryAndSound(gtTextState.nTextNpcId);
             }
         }
-        gnHasNpc_007BF20A = 1;
-        gnNpcId_007BF202 = pUnit->dwUnitId;
+        gtTextState.bTextFromObject = 1;
+        gtTextState.nTextNpcId = pUnit->dwUnitId;
     }
     D2RectStrc tRect;
     tRect.nTop = gnTextTop;
@@ -108,7 +105,7 @@ void __fastcall TEXT_ShowNpcMessage(D2UnitStrc* pUnit, unsigned short nMessage, 
     tRect.nRight = gnTextLeft + 335;
     SELECT_SetSelectionRect(&tRect);
     SELECT_ClearSelection();
-    gwTextStringId = nMessage;
+    gtTextState.wTextStringId = nMessage;
     if (!gpTextBox)
     {
         gbTextBoxDone = 0;
@@ -121,12 +118,12 @@ void __fastcall TEXT_ShowNpcMessage(D2UnitStrc* pUnit, unsigned short nMessage, 
         }
         D2Win_10127_SetFont(nPreviousFont);
         SOUNDINST_LockSpeechSounds();
-        gnSoundPlaying_007BF24B = 0;
+        gtTextState.hHintSound = 0;
         int nSound = sub_004E0650_GetStringSound(nMessage);
         if (nSound)
         {
             UNITSND_ReleaseSkillSfx(pUnit);
-            gnSoundPlaying_007BF24B = sub_004B9A00(nSound, sub_00463DD0_GetPlayerUnit(), 5, 0, 0);
+            gtTextState.hHintSound = sub_004B9A00(nSound, sub_00463DD0_GetPlayerUnit(), 5, 0, 0);
             gnHintId = nSound;
         }
         gpTextBox->unknown16 = 0;
@@ -134,7 +131,7 @@ void __fastcall TEXT_ShowNpcMessage(D2UnitStrc* pUnit, unsigned short nMessage, 
         if (!gnHandlersSet_007BF27C)
         {
             gnHandlersSet_007BF27C = 1;
-            gnStartTick = GetTickCount();
+            gtTextState.nStartTick = GetTickCount();
             SCMD_RegisterMsgHandlers(WINDOW_GetWindow(), gaHandlers_00722600, 7);
         }
     }

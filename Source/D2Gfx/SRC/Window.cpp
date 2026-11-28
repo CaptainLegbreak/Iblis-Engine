@@ -815,12 +815,11 @@ void __stdcall WINDOW_SetPaused(int bPaused)
     gbPaused = bPaused;
 }
 
-extern int gdwGlobal_007C8CBC; // 0x007C8CBC
 
 // 0x004F59A0
-int __cdecl WINDOW_GetWindow()
+void* __cdecl WINDOW_GetWindow()
 {
-    return gdwGlobal_007C8CBC;
+    return ghWnd;
 }
 
 // 0x004F59B0

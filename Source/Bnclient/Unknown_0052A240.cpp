@@ -2,9 +2,9 @@ struct D2StormBigStrc;
 
 int __stdcall SBigNew(void** phBig); // 0x00423950
 int __stdcall SBigFromUnsigned(void* hBig, unsigned int nValue); // 0x004238B0
-int __stdcall sub_00423850(void* hBig, const void* pData, unsigned int nSize); // 0x00423850
+int __stdcall SBigFromBinary(void* hBig, const void* pData, unsigned int nSize); // 0x00423850
 void __stdcall SBigToBinaryBuffer(void* hBig, void* pBuffer, unsigned int nSize, unsigned int* pRead); // 0x00423B30
-void __stdcall sub_00424E40(void* hBig); // 0x00424E40
+void __stdcall SBigDel(void* hBig); // 0x00424E40
 int __stdcall SBigCompare(void* hLeft, void* hRight); // 0x00421530
 int __stdcall SBigShl(void* hResult, void* hLeft, void* hRight); // 0x00423A80
 int __stdcall SBigAdd(void* hResult, void* hLeft, void* hRight); // 0x00423790
@@ -30,7 +30,7 @@ void* __fastcall sub_0052A270_BigFromBinary(const void* pData, unsigned int nSiz
 {
     void* hBig;
     SBigNew(&hBig);
-    sub_00423850(hBig, pData, nSize);
+    SBigFromBinary(hBig, pData, nSize);
     return hBig;
 }
 
@@ -51,7 +51,7 @@ int __fastcall sub_0052A2F0_BigCompareUnsigned(void* hBig, unsigned int nValue)
     SBigNew(&hValue);
     SBigFromUnsigned(hValue, nValue);
     const int nResult = SBigCompare(hBig, hValue);
-    sub_00424E40(hValue);
+    SBigDel(hValue);
     return nResult;
 }
 
@@ -74,7 +74,7 @@ void __fastcall sub_0052A370_BigOpUnsigned_423790(void* hResult, void* hLeft, un
     SBigNew(&hValue);
     SBigFromUnsigned(hValue, nValue);
     SBigAdd(hResult, hLeft, hValue);
-    sub_00424E40(hValue);
+    SBigDel(hValue);
 }
 
 // 0x0052A3B0
@@ -90,7 +90,7 @@ void __fastcall sub_0052A3D0_BigOpUnsigned_423AC0(void* hResult, void* hLeft, un
     SBigNew(&hValue);
     SBigFromUnsigned(hValue, nValue);
     SBigSub(hResult, hLeft, hValue);
-    sub_00424E40(hValue);
+    SBigDel(hValue);
 }
 
 // 0x0052A410
@@ -106,7 +106,7 @@ void __fastcall sub_0052A430_BigOpUnsigned_424F10(void* hResult, void* hLeft, un
     SBigNew(&hValue);
     SBigFromUnsigned(hValue, nValue);
     SBigMul(hResult, hLeft, hValue);
-    sub_00424E40(hValue);
+    SBigDel(hValue);
 }
 
 // 0x0052A470
@@ -116,7 +116,7 @@ void __fastcall sub_0052A470_BigOpUnsigned_424E70(void* hResult, void* hLeft, un
     SBigNew(&hValue);
     SBigFromUnsigned(hValue, nValue);
     SBigDiv(hResult, hLeft, hValue);
-    sub_00424E40(hValue);
+    SBigDel(hValue);
 }
 
 // 0x0052A4B0
@@ -140,8 +140,8 @@ unsigned int __fastcall sub_0052A4D0_BigOpUnsignedToUInt_424ED0(void* hLeft, uns
     abResult[1] = 0;
     abResult[0] = 0;
     SBigToBinaryBuffer(hResult, abResult, sizeof(abResult), 0);
-    sub_00424E40(hValue);
-    sub_00424E40(hResult);
+    SBigDel(hValue);
+    SBigDel(hResult);
     return (((abResult[3] << 8 | abResult[2]) << 8 | abResult[1]) << 8) | abResult[0];
 }
 
@@ -165,7 +165,7 @@ void __fastcall sub_0052A5B0_BigOpUnsigned_425330(void* hResult, void* hArg1, un
     SBigNew(&hValue);
     SBigFromUnsigned(hValue, nValue);
     SBigPowMod(hResult, hArg1, hValue, hArg3);
-    sub_00424E40(hValue);
+    SBigDel(hValue);
 }
 
 // 0x0052A2E0

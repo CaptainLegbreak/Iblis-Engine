@@ -112,11 +112,11 @@ struct D2PetArgStrc
     int nPetGUID; // 0x00
     int nUnitGUID; // 0x04
     unsigned short nPetClass; // 0x08
-    unsigned short unk0x0A; // 0x0A
+    unsigned short pad0x0A; // 0x0A
     int nPetType; // 0x0C
     int nSeed; // 0x10
     int nName; // 0x14
-    int unk0x18; // 0x18
+    int unused0x18; // 0x18
 };
 
 struct D2TargetNodeStrc
@@ -195,9 +195,9 @@ struct D2MonsterEquipmentStrc
 {
 	int nItemCode; // 0x00
 	unsigned char nBodyLoc; // 0x04
-	unsigned char unk0x05; // 0x05
-	unsigned char unk0x06; // 0x06
-	unsigned char unk0x07; // 0x07
+	unsigned char pad0x05; // 0x05
+	unsigned char pad0x06; // 0x06
+	unsigned char pad0x07; // 0x07
 };
 
 struct D2MissileUnitFindArgStrc
@@ -223,7 +223,7 @@ typedef int (__fastcall* PSPELLFN)(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitS
 struct D2UnitEventStrc
 {
     unsigned char nUnitEvent; // 0x00
-    unsigned char unk0x01; // 0x01
+    unsigned char pad0x01; // 0x01
     unsigned short nFlags; // 0x02
     unsigned int nEventGroup; // 0x04
     int nEventKey; // 0x08
@@ -249,7 +249,7 @@ struct D2EffectStrc
     int nY; // 0x10
     int nParam; // 0x14
     int nSkillLevel; // 0x18
-    int unk0x1C; // 0x1C
+    int nCallbackParam; // 0x1C
     void* pfAreaEffect; // 0x20
 };
 

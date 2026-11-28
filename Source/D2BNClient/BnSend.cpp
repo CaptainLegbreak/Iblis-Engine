@@ -1564,7 +1564,7 @@ unsigned long __stdcall BNSEND_ResolveHostThread(void* pArguments)
 // 0x0051C170
 int __cdecl BNSEND_RequestBnServerIni()
 {
-    return sub_0051E3D0_PostMessage("bnserver-D2DV.ini", 0x80000004);
+    return BNDOWNLOAD_SendGetFileTime("bnserver-D2DV.ini", 0x80000004);
 }
 
 // 0x0051C180
@@ -2085,7 +2085,7 @@ int __stdcall sFastestConnect(char* szServerList)
     BNMESSQUEUE_GetState(&tState);
     if (!tState.nState && BNDOWNLOAD_GetReplyValue(0x51))
     {
-        sub_0051E3D0_PostMessage("bnserver-D2DV.ini", 0x80000004);
+        BNDOWNLOAD_SendGetFileTime("bnserver-D2DV.ini", 0x80000004);
         BNDOWNLOAD_LogPrintf("Connected to Battle.net");
     }
     return 1;
@@ -2707,7 +2707,7 @@ int __fastcall BNSEND_SendAccountLogon(const char* szName, const char* szPasswor
     SStrCopy(szPasswordUpper, szPassword, 0x100);
     SStrUpper(szPasswordUpper);
     gtBigPair.sub_005286D0_InitLogin(&gtLoginRecord, szNameUpper, szPasswordUpper);
-    sub_0041D2A0_MemCopy(tPacket.abPublic, gtLoginRecord.abPublic, sizeof(tPacket.abPublic));
+    SMemCopy(tPacket.abPublic, gtLoginRecord.abPublic, sizeof(tPacket.abPublic));
     unsigned int nLength = SStrCopy(tPacket.szName, szName, 0x100);
     BNSEND_SendPacket(0x53, &tPacket, nLength + 0x21);
     return 1;
@@ -2721,7 +2721,7 @@ int __fastcall BNSEND_SendAccountLogonProof(const unsigned char* pSalt, const un
     SMemZero(gtLoginRecord.szPassword, sizeof(gtLoginRecord.szPassword));
     if (bResult)
     {
-        sub_0041D2A0_MemCopy(abProof, gtLoginRecord.abProof, sizeof(abProof));
+        SMemCopy(abProof, gtLoginRecord.abProof, sizeof(abProof));
         BNSEND_SendPacket(0x54, abProof, sizeof(abProof));
         return 1;
     }
@@ -2761,7 +2761,7 @@ int __fastcall BNSEND_SendAccountChange(const char* szAccountName, const char* s
     SStrUpper(szNewUpper);
     gtBigPair.MakeVerifier(szAccountUpper, szNewUpper, gabNewVerifier, &gabNewVerifier[0x20]);
     gtBigPair.sub_005286D0_InitLogin(&gtLoginRecord, szAccountUpper, szOldUpper);
-    sub_0041D2A0_MemCopy(tPacket.abPublic, gtLoginRecord.abPublic, sizeof(tPacket.abPublic));
+    SMemCopy(tPacket.abPublic, gtLoginRecord.abPublic, sizeof(tPacket.abPublic));
     unsigned int nLength = SStrCopy(tPacket.szName, szAccountName, 0x100);
     BNSEND_SendPacket(0x55, &tPacket, nLength + 0x21);
     return 0;
@@ -2775,8 +2775,8 @@ int __fastcall BNSEND_SendAccountChangeProof(const unsigned char* pSalt, const u
     SMemZero(gtLoginRecord.szPassword, sizeof(gtLoginRecord.szPassword));
     if (bResult)
     {
-        sub_0041D2A0_MemCopy(tPacket.abProof, gtLoginRecord.abProof, sizeof(tPacket.abProof));
-        sub_0041D2A0_MemCopy(tPacket.abVerifier, gabNewVerifier, sizeof(tPacket.abVerifier));
+        SMemCopy(tPacket.abProof, gtLoginRecord.abProof, sizeof(tPacket.abProof));
+        SMemCopy(tPacket.abVerifier, gabNewVerifier, sizeof(tPacket.abVerifier));
         SMemZero(gabNewVerifier, sizeof(gabNewVerifier));
         BNSEND_SendPacket(0x56, &tPacket, sizeof(tPacket));
         return 1;
@@ -2796,7 +2796,7 @@ int __fastcall BNSEND_SendAccountUpgradeProof(unsigned int nServerToken)
     BNDOWNLOAD_HashBuffer(tInput.abDigest, szPassword, SStrLen(szPassword));
     tPacket.nTick = tInput.nTick;
     BNDOWNLOAD_HashBuffer(tPacket.abProof, &tInput, sizeof(tInput));
-    sub_0041D2A0_MemCopy(tPacket.abVerifier, gabNewVerifier, sizeof(tPacket.abVerifier));
+    SMemCopy(tPacket.abVerifier, gabNewVerifier, sizeof(tPacket.abVerifier));
     SMemZero(gabNewVerifier, sizeof(gabNewVerifier));
     BNSEND_SendPacket(0x58, &tPacket, sizeof(tPacket));
     return 0;
@@ -2838,7 +2838,7 @@ extern "C" void __cdecl BNDOWNLOAD_HandleStartAdvex(); // 0x00520D60
 extern "C" void __cdecl BNDOWNLOAD_HandleLogonChallengeEx(); // 0x00520D70
 extern "C" void __cdecl BNDOWNLOAD_HandleLogonResponse(); // 0x00520DA0
 extern "C" void __cdecl BNDOWNLOAD_HandleStatus(); // 0x00520DC0
-extern "C" void __cdecl sub_00520E50(); // 0x00520E50
+extern "C" void __cdecl BNDOWNLOAD_HandleReportVersion(); // 0x00520E50
 extern "C" void __cdecl BNDOWNLOAD_HandleStartVersioning(); // 0x00520F60
 extern "C" void __cdecl BNDOWNLOAD_HandlePing(); // 0x00520FC0
 extern "C" void __cdecl BNDOWNLOAD_HandleCdKeyReply(); // 0x00520FE0
@@ -2880,7 +2880,7 @@ D2BnPacketHandler gapfnPacketHandlers[94] = { // 0x0072FFB0
     (D2BnPacketHandler)&BNDOWNLOAD_HandleServerList,
     (D2BnPacketHandler)&BNDOWNLOAD_HandleClientId,
     (D2BnPacketHandler)&BNDOWNLOAD_HandleStartVersioning,
-    (D2BnPacketHandler)&sub_00520E50,
+    (D2BnPacketHandler)&BNDOWNLOAD_HandleReportVersion,
     0,
     (D2BnPacketHandler)&BNDOWNLOAD_HandleGetAdvListEx,
     (D2BnPacketHandler)&BNDOWNLOAD_HandleEnterChat,
@@ -3027,9 +3027,7 @@ extern "C" void __cdecl BNDOWNLOAD_HandleRequiredWork(); // 0x00521AE0
 extern "C" void __cdecl sub_00520C40_AlwaysOne(); // 0x00520C40
 extern "C" void __cdecl sub_005210E0_AlwaysOne(); // 0x005210E0
 
-extern "C" const char gData_006DF238[256]; // 0x006DF238
-
-extern "C" const char gData_006DF238[256] = {
+extern const char gacCDKeyMap[256] = {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -3047,4 +3045,3 @@ extern "C" const char gData_006DF238[256] = {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
 }; // 0x006DF238
-#pragma comment(linker, "/alternatename:?gacCDKeyMap@@3QBDB=_gData_006DF238")

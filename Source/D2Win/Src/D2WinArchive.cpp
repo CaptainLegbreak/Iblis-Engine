@@ -48,7 +48,7 @@ void __fastcall ARCHIVE_FreeCellFile(D2CelFileStrc* pCellFile)
 
 extern "C" __declspec(dllimport) int __stdcall MessageBoxA(void* hWnd, const char* szText, const char* szCaption, unsigned int nType); // 0x006CC464
 
-D2ArchiveHandleStrc* __fastcall sub_00517332_LoadMpqFile(const char* szFileName, void* hFile, void* pfShowMessage, int nPriority); // 0x00517332
+D2ArchiveHandleStrc* __fastcall ARCHIVE_LoadMPQFile(const char* szFileName, void* hFile, void* pfShowMessage, int nPriority); // 0x00517332
 
 extern "C" const char gszExpansionMpq[]; // 0x006CD3A0
 
@@ -93,13 +93,13 @@ int __cdecl ARCHIVE_ShowInsertCinematicsDisc()
 // 0x004FAB90
 int __cdecl ARCHIVE_LoadArchives()
 {
-    gpD2DataMPQ = sub_00517332_LoadMpqFile(gszD2DataMpq, 0, 0, 1000);
-    gpD2SfxMPQ = sub_00517332_LoadMpqFile(gszD2SfxMpq, 0, 0, 1000);
-    gpD2SpeechMPQ = sub_00517332_LoadMpqFile("d2speech.mpq", 0, 0, 1000);
-    gpD2DeltaMPQ = sub_00517332_LoadMpqFile("d2delta.mpq", 0, 0, 1000);
-    gpD2kfixupMPQ = sub_00517332_LoadMpqFile("d2kfixup.mpq", 0, 0, 1000);
-    gpD2PatchMPQ = sub_00517332_LoadMpqFile(gszPatchD2Mpq, 0, 0, 5000);
-    gpD2ExpMPQ = sub_00517332_LoadMpqFile(gszExpansionMpq, 0, 0, 3000);
+    gpD2DataMPQ = ARCHIVE_LoadMPQFile(gszD2DataMpq, 0, 0, 1000);
+    gpD2SfxMPQ = ARCHIVE_LoadMPQFile(gszD2SfxMpq, 0, 0, 1000);
+    gpD2SpeechMPQ = ARCHIVE_LoadMPQFile("d2speech.mpq", 0, 0, 1000);
+    gpD2DeltaMPQ = ARCHIVE_LoadMPQFile("d2delta.mpq", 0, 0, 1000);
+    gpD2kfixupMPQ = ARCHIVE_LoadMPQFile("d2kfixup.mpq", 0, 0, 1000);
+    gpD2PatchMPQ = ARCHIVE_LoadMPQFile(gszPatchD2Mpq, 0, 0, 5000);
+    gpD2ExpMPQ = ARCHIVE_LoadMPQFile(gszExpansionMpq, 0, 0, 3000);
 
     return FOG_UseDirect() || gpD2DataMPQ && gpD2SfxMPQ && gpD2SpeechMPQ && (!FOG_IsExpansion() || gpD2ExpMPQ);
 }
@@ -160,7 +160,7 @@ int __fastcall ARCHIVE_LoadVideoArchives(void* pfShowMessage, void* hFile, int b
 
     if (bExpansion)
     {
-        gpD2XVideoMPQ = sub_00517332_LoadMpqFile(gszD2XVideoMpq, hFile, pfShowMessage, 1000);
+        gpD2XVideoMPQ = ARCHIVE_LoadMPQFile(gszD2XVideoMpq, hFile, pfShowMessage, 1000);
         if (!gpD2XVideoMPQ)
         {
             return 0;
@@ -168,7 +168,7 @@ int __fastcall ARCHIVE_LoadVideoArchives(void* pfShowMessage, void* hFile, int b
     }
     else
     {
-        gpD2VideoMPQ = sub_00517332_LoadMpqFile("d2video.mpq", hFile, pfShowMessage, 1000);
+        gpD2VideoMPQ = ARCHIVE_LoadMPQFile("d2video.mpq", hFile, pfShowMessage, 1000);
         if (!gpD2VideoMPQ)
         {
             return 0;
@@ -278,17 +278,17 @@ int __fastcall ARCHIVE_LoadExpansionArchives(DiscCallback play,DiscCallback expa
     ghXVideoMpq=0;
     int bOk;
     if (!(FOG_IsExpansion() && (!config || config->pfnAllowExpansion()))) {
-        ghCharMpq=sub_00517332_LoadMpqFile("d2char.mpq",file,play,1000);
-        ghMusicMpq=sub_00517332_LoadMpqFile("d2music.mpq",file,play,1000);
+        ghCharMpq=ARCHIVE_LoadMPQFile("d2char.mpq",file,play,1000);
+        ghMusicMpq=ARCHIVE_LoadMPQFile("d2music.mpq",file,play,1000);
         ghXMusicMpq=0;
         ghXTalkMpq=0;
         bOk = ghCharMpq && ghMusicMpq;
     } else {
-        ghCharMpq=sub_00517332_LoadMpqFile("d2char.mpq",0,play,1000);
-        ghMusicMpq=sub_00517332_LoadMpqFile("d2music.mpq",0,play,1000);
-        ghXMusicMpq=sub_00517332_LoadMpqFile("d2Xmusic.mpq",file,expansion,3000);
-        ghXTalkMpq=sub_00517332_LoadMpqFile("d2Xtalk.mpq",file,expansion,3000);
-        ghXVideoMpq=sub_00517332_LoadMpqFile("d2Xvideo.mpq",file,expansion,3000);
+        ghCharMpq=ARCHIVE_LoadMPQFile("d2char.mpq",0,play,1000);
+        ghMusicMpq=ARCHIVE_LoadMPQFile("d2music.mpq",0,play,1000);
+        ghXMusicMpq=ARCHIVE_LoadMPQFile("d2Xmusic.mpq",file,expansion,3000);
+        ghXTalkMpq=ARCHIVE_LoadMPQFile("d2Xtalk.mpq",file,expansion,3000);
+        ghXVideoMpq=ARCHIVE_LoadMPQFile("d2Xvideo.mpq",file,expansion,3000);
         bOk = ghCharMpq && ghMusicMpq && ghXMusicMpq && ghXTalkMpq && ghXVideoMpq;
     }
     if (!bOk) { ARCHIVE_UnloadExpansionArchives(); return 0; }

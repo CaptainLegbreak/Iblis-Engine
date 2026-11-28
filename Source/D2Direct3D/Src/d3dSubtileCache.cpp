@@ -53,7 +53,7 @@ static void D3DSUBTILECACHE_SubtileCacheAppendUsed(D2SubtilePoolStrc* pList, D2S
 // Kept noinline: a static whose callers here pass its arguments in registers (the #368 case).
 static __declspec(noinline) void sub_006BAB30_AppendTail(D2SubtilePoolStrc* pList, D2SubtilePoolEntryStrc* pNode);
 
-D2SubtilePoolEntryStrc* __fastcall sub_006BABD0_Unlink(D2SubtilePoolStrc* pList, int nIndex);
+D2SubtilePoolEntryStrc* __fastcall D3DSUBTILECACHE_SubtileCacheUnlink(D2SubtilePoolStrc* pList, int nIndex);
 
 D2SubtilePoolEntryStrc* __fastcall D3DSUBTILECACHE_SubtileCacheUnlink(D2SubtilePoolStrc* pList); // 0x006BABD0
 
@@ -293,7 +293,7 @@ void __fastcall D3DSUBTILECACHE_SubtileCacheTouch(D2SubtilePoolStrc* pList, int 
         LRU_ASSERT(nIndex, 199);
         LRU_ASSERT(nIndex <= pList->nCapacity, 200);
         LRU_ASSERT(nIndex >= 1, 201);
-        sub_006BAB30_AppendTail(pList, sub_006BABD0_Unlink(pList, nIndex - 1));
+        sub_006BAB30_AppendTail(pList, D3DSUBTILECACHE_SubtileCacheUnlink(pList, nIndex - 1));
     }
 }
 

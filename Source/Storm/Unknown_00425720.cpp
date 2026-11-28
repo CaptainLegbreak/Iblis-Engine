@@ -5,7 +5,7 @@ struct D2StormBigStrc;
 
 void __stdcall SBigNew(D2StormBigStrc** ppBig);                                                             // 0x00423950
 void __stdcall SBigDel(D2StormBigStrc* pBig);                                                               // 0x00424E40
-int __stdcall sub_00423850(D2StormBigStrc* pBig, const void* pData, unsigned int nSize);                    // 0x00423850
+int __stdcall SBigFromBinary(D2StormBigStrc* pBig, const void* pData, unsigned int nSize);                    // 0x00423850
 void __stdcall SBigToBinaryBuffer(D2StormBigStrc* pBig, void* pBuffer, unsigned int nSize, unsigned int* pRead); // 0x00423B30
 void __stdcall SBigPowMod(D2StormBigStrc* pResult, D2StormBigStrc* pBase, D2StormBigStrc* pExponent, D2StormBigStrc* pModulus); // 0x00425330
 
@@ -271,7 +271,7 @@ void* BigNum::sub_00426010_ReadFill(void* pBuffer, unsigned int nSize)
 // 0x00426050
 int BigNum::sub_00426050_Call(const void* pData, unsigned int nSize)
 {
-    return sub_00423850(hHandle, pData, nSize);
+    return SBigFromBinary(hHandle, pData, nSize);
 }
 
 // 0x00426070

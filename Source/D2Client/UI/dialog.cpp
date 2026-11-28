@@ -115,7 +115,7 @@ extern "C" void* __cdecl memset(void* pDest, int nValue, unsigned int nSize); //
 
 void __cdecl GAME_ResetMouseState(); // 0x0044DA40
 
-void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
+void __fastcall SCMD_RegisterMsgHandlers(void* hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
 
 
@@ -134,7 +134,7 @@ void __stdcall ROSTERPETS_HandleDialogEscape(SMSGHANDLER_PARAMS* pMsg);         
 struct D2RectStrc;
 
 
-void __fastcall sub_00451E10_RegisterHandlerTable(int hWnd, D2MsgHandlerEntryStrc* pTable, int nCount); // 0x00451E10
+void __fastcall sub_00451E10_RegisterHandlerTable(void* hWnd, D2MsgHandlerEntryStrc* pTable, int nCount); // 0x00451E10
 
 void __fastcall sub_00467430(D2RectStrc* pRect); // 0x00467430
 

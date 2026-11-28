@@ -30,7 +30,7 @@ void __stdcall WINDOW_GetResolutionSize(int nResolution, long* pWidth, long* pHe
 int __stdcall WINDOW_Create(int bWindowed, int nResolution); // 0x004F5610
 int __stdcall WINDOW_Destroy(); // 0x004F5900
 void __stdcall WINDOW_SetPaused(int bPaused); // 0x004F5990
-int __cdecl WINDOW_GetWindow(); // 0x004F59A0
+void* __cdecl WINDOW_GetWindow(); // 0x004F59A0
 int __stdcall WINDOW_GetDimensions(int* pWidth, int* pHeight); // 0x004F59B0
 void __stdcall WINDOW_ShowCursor(int bShow); // 0x004F59F0
 int __stdcall WINDOW_IsFullScreen(); // 0x004F5A30

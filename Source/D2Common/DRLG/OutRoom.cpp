@@ -30,7 +30,7 @@ struct D2DrlgOutdoorTileCtxStrc
     int n38;
 };
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);    // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);    // 0x0040B430
 
 void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);  // 0x0040B480
 
@@ -245,7 +245,7 @@ void __fastcall DRLGOUTROOM_FreeDrlgOutdoorRoomData(D2DrlgRoomStrc* pRoom)
 // 0x0067D6D0
 void __fastcall DRLGOUTROOM_AllocDrlgOutdoorRoom(D2DrlgRoomStrc* pRoom)
 {
-    D2DrlgOutdoorRoomStrc* pOutdoor = (D2DrlgOutdoorRoomStrc*)sub_0040B430(pRoom->ptDrlgLevel->pDrlg->pMempool, sizeof(D2DrlgOutdoorRoomStrc), ".\\DRLG\\OutRoom.cpp", 197, 0);
+    D2DrlgOutdoorRoomStrc* pOutdoor = (D2DrlgOutdoorRoomStrc*)FOG_AllocPool(pRoom->ptDrlgLevel->pDrlg->pMempool, sizeof(D2DrlgOutdoorRoomStrc), ".\\DRLG\\OutRoom.cpp", 197, 0);
     memset(pOutdoor, 0, sizeof(D2DrlgOutdoorRoomStrc));
     pRoom->pOutdoor = pOutdoor;
 }

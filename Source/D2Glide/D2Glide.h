@@ -44,8 +44,8 @@ extern int gaGlideCrossOffsetY[8]; // 0x0072F2E8
 extern int gaGlideWallCorner[10][6][3]; // 0x0072F3A0
 extern int gbGlidePaletteTable; // 0x0087EFC8
 extern int gbSurfaceActive_007C9140; // 0x007C9140
-extern int gnRenderHeight_007C913C; // 0x007C913C
-extern int gnRenderWidth_007C9138; // 0x007C9138
+extern int gnRenderHeight; // 0x007C913C
+extern int gnRenderWidth; // 0x007C9138
 extern int gnRenderHeight; // 0x007C913C
 extern unsigned int gaGlideDebugLight[0x400]; // 0x0087F0D0
 extern unsigned int gaGlideLightPalette[]; // 0x0072F308

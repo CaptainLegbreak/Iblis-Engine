@@ -272,7 +272,7 @@ int __stdcall STATLIST_CopyStats(D2UnitStrc* pUnit, int nStatId, D2StatStrc* pBu
 
 inline int ITEMS_CheckItemFlagData_Inl(D2UnitStrc* pItem, unsigned int dwFlag);
 
-unsigned int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile); // 0x006280A0
+int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile); // 0x006280A0
 
 #define LEVEL_LOW 25
 
@@ -832,7 +832,7 @@ void __stdcall ITEMS_AssignRareSuffix(D2UnitStrc* pItem, unsigned short nSuffix)
 
 // Kept noinline: ITEMS_CalculateTransactionCost (0x0062EFB0) calls it twice out of line in the image, and inlining it here changes that caller.
 // 0x006280A0
-__declspec(noinline) unsigned int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile)
+__declspec(noinline) int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile)
 {
     if (pItem && pItem->dwUnitType == UNIT_ITEM && pItem->pItemData)
     {

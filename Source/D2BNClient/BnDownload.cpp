@@ -307,7 +307,6 @@ extern "C" const char gszAdListRegKey[];                                        
 extern "C" const char gszAdListRegValue[];                                                         // 0x006DF464
 
 
-int __stdcall sub_004192F0_OpenArchiveFile(void*, const char*, unsigned int, void**); // 0x004192F0
 
 void* __stdcall sub_00413020_Alloc(unsigned int, const char*, int, unsigned int); // 0x00413020
 
@@ -369,7 +368,7 @@ struct D2BnReplyStrc
     char szText[0x100];
 };
 
-extern char gszReplyText_00882428[0x100]; // 0x00882428
+extern char gszReplyText[0x100]; // 0x00882428
 
 int gnReplyReady; // 0x008823B0
 
@@ -487,7 +486,7 @@ void __fastcall sub_0051A560_SetValue(int nValue); // 0x0051A560
 
 int __fastcall BNDOWNLOAD_SetArchiveName(const char* szName); // 0x0051EA80
 
-extern int gnGlobal_008823B0; // 0x008823B0
+extern int gnReplyReady; // 0x008823B0
 
 int __fastcall BNSEND_SendAccountLogonProof(const unsigned char* pSalt, const unsigned char* pServerKey); // 0x005220B0
 
@@ -587,7 +586,7 @@ __declspec(noinline) int __cdecl BNDOWNLOAD_ConfigureLog(int nMode, int nValue)
     }
     else if (nMode == 2)
     {
-        sub_00420120_LogAdjust(BNDOWNLOAD_GetLog().hLog, nValue);
+        SLogSetIndent(BNDOWNLOAD_GetLog().hLog, nValue);
     }
     LeaveCriticalSection(&gtBnLogLock);
     return nResult;
@@ -915,7 +914,7 @@ static void __fastcall BNDOWNLOAD_ExtractFile(const char* member, void* archive,
 {
     void* output;
     void* source;
-    if (!sub_004192F0_OpenArchiveFile(archive, member, 0, &source)) return;
+    if (!SFileOpenFileEx(archive, member, 0, &source)) return;
     unsigned int size = SFileGetFileSize(source, 0);
     void* data = sub_00413020_Alloc(size, gszBnDownloadFile, 0x583, 0);
     if (SFileReadFile(source, data, size, 0, 0)) {
@@ -1995,7 +1994,7 @@ int __fastcall BNDOWNLOAD_HandleLogonResponse(const int* pData, unsigned int nSi
     return 1;
 }
 
-extern int gnLastStatus_0072FFA8; // 0x0072FFA8
+extern int gnLastStatus; // 0x0072FFA8
 
 int __fastcall BNSEND_SetErrorText(int nError, const char* szText); // 0x005204D0
 
@@ -2009,7 +2008,7 @@ struct D2BnReply00520DC0Strc
 int __fastcall BNDOWNLOAD_HandleStatus(D2BnReply00520DC0Strc* pReply)
 {
     const int nStatus = pReply->nStatus;
-    gnLastStatus_0072FFA8 = nStatus;
+    gnLastStatus = nStatus;
     switch (nStatus)
     {
     case 0:
@@ -2103,7 +2102,7 @@ int __fastcall BNDOWNLOAD_HandleCdKeyReply(D2BnReplyStrc* pReply)
 {
     const unsigned int nResult = pReply->nResult;
     gnReplyResult = nResult;
-    gszReplyText_00882428[0] = 0;
+    gszReplyText[0] = 0;
     gnReplyReady = 0;
     switch (nResult)
     {
@@ -2121,8 +2120,8 @@ int __fastcall BNDOWNLOAD_HandleCdKeyReply(D2BnReplyStrc* pReply)
         break;
     case 4:
         BNMESSQUEUE_SetState(6);
-        SStrCopy(gszReplyText_00882428, pReply->szText, 0x100);
-        BNMESSQUEUE_SetStateArg(gszReplyText_00882428);
+        SStrCopy(gszReplyText, pReply->szText, 0x100);
+        BNMESSQUEUE_SetStateArg(gszReplyText);
         break;
     }
     return 1;
@@ -2302,7 +2301,7 @@ int __fastcall BNDOWNLOAD_HandleAuthCheck(const unsigned char* pData, unsigned i
     }
 
     gszReplyText[0] = 0;
-    gnGlobal_008823B0 = 0;
+    gnReplyReady = 0;
     SRegSaveData("Patch", "Patches", 0x82, &gszEmptyAssertText, 1);
 
     switch (nCode)
@@ -2324,7 +2323,7 @@ int __fastcall BNDOWNLOAD_HandleAuthCheck(const unsigned char* pData, unsigned i
         break;
     }
     case 0:
-        gnGlobal_008823B0 = 1;
+        gnReplyReady = 1;
         gnGlobal_008823EC = 1;
         sub_0051A480_DebugLog("User has latest version and a valid cdkey");
         break;
@@ -2687,7 +2686,7 @@ unsigned int __cdecl BNDOWNLOAD_GetUILanguageId()
 int __cdecl BNDOWNLOAD_ResendAccountLogon()
 {
     D2BnAccountLogonStrc tPacket;
-    sub_0041D2A0_MemCopy(tPacket.abPublic, gtLoginRecord.abPublic, sizeof(tPacket.abPublic));
+    SMemCopy(tPacket.abPublic, gtLoginRecord.abPublic, sizeof(tPacket.abPublic));
     const unsigned int nLength = SStrCopy(tPacket.szAccountName, gszAccountName, sizeof(tPacket.szAccountName));
     BNSEND_SendPacket(0x53, &tPacket, sizeof(tPacket.abPublic) + nLength + 1);
     return 1;

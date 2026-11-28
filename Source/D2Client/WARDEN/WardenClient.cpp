@@ -1,5 +1,6 @@
 #include "D2Client.h"
 #include "D2ClientFuncs.h"
+#include "D2ClientTextState.h"
 #include "D2Constants.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
@@ -122,7 +123,7 @@ extern "C" int __cdecl PLAYER_GetScreenOffsetY(); // 0x0045AFD0
 
 
 
-void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
+void __fastcall SCMD_RegisterMsgHandlers(void* hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
 
 
@@ -242,7 +243,6 @@ extern D2TextBoxStrc* gpTextBox; // 0x007BF0A4
 
 
 
-extern int gbTextSide; // 0x007BF236
 
 extern int gnGlobal_007BEEE8; // 0x007BEEE8
 
@@ -402,7 +402,6 @@ static int gnPetIconPopupState; // 0x007BEECC
 
 D2WaypointMenuEntryStrc gaWaypointEntries[9]; // 0x007BF03C
 
-unsigned short gwTextStringId; // 0x007BF212
 
 int gnHintId; // 0x007BF260
 
@@ -849,7 +848,7 @@ void WardenClient::WARDENCLIENT_SetWardenBuffer(const void* pData, unsigned int 
     }
     gpWardenBuffer = SMemAlloc(nSize, ".\\WARDEN\\WardenClient.cpp", 0x284, 0);
     gnWardenBufferSize = nSize;
-    sub_0041D2A0_MemCopy(gpWardenBuffer, pData, nSize);
+    SMemCopy(gpWardenBuffer, pData, nSize);
 }
 
 // 0x00480150
@@ -862,7 +861,7 @@ bool WardenClient::WARDENCLIENT_TakeWardenBuffer(void* pDst, unsigned int* pSize
     }
     unsigned int nSize = *pSize < gnWardenBufferSize ? *pSize : gnWardenBufferSize;
     *pSize = nSize;
-    sub_0041D2A0_MemCopy(pDst, pBuffer, nSize);
+    SMemCopy(pDst, pBuffer, nSize);
     SMemFree(gpWardenBuffer, ".\\WARDEN\\WardenClient.cpp", 0x292, 0);
     gpWardenBuffer = 0;
     gnWardenBufferSize = 0;
@@ -974,13 +973,13 @@ void __fastcall WARDENCLIENT_OpenTextPanel(unsigned short nStringId, int bSide, 
 {
     if (!bSide)
     {
-        gbTextSide = 0;
+        gtTextState.bTextSide = 0;
         gnTextTop = 0x0C;
         gnTextLeft = (gnScreenWidth - 0x145) / 2;
     }
     else
     {
-        gbTextSide = 1;
+        gtTextState.bTextSide = 1;
         gnTextTop = 0x105 - gnPanelOffsetY;
         gnTextLeft = gnPanelOffsetX;
     }
@@ -997,8 +996,8 @@ void __fastcall WARDENCLIENT_OpenTextPanel(unsigned short nStringId, int bSide, 
         gnHintId = 0;
     }
 
-    ghHintSound = 0;
-    gbTextFromObject = 0;
+    gtTextState.hHintSound = 0;
+    gtTextState.bTextFromObject = 0;
 
     D2RectStrc tRect;
     const int nScreenBottom = gnScreenHeight - 0x35;
@@ -1013,7 +1012,7 @@ void __fastcall WARDENCLIENT_OpenTextPanel(unsigned short nStringId, int bSide, 
     sub_00467430(&tRect);
     SELECT_ClearSelection();
 
-    gwTextStringId = nStringId;
+    gtTextState.wTextStringId = nStringId;
     if (gpTextBox)
     {
         return;
@@ -1027,24 +1026,24 @@ void __fastcall WARDENCLIENT_OpenTextPanel(unsigned short nStringId, int bSide, 
 
     *(int*)gpTextBox->nScroll = 0;
     gnTextActive = 1;
-    gbTextPanelOpen = 1;
+    gtTextState.bTextPanelOpen = 1;
     if (!gbTextHandlersRegistered)
     {
         gbTextHandlersRegistered = 1;
-        gnStartTick = GetTickCount();
+        gtTextState.nStartTick = GetTickCount();
         SCMD_RegisterMsgHandlers(WINDOW_GetWindow(), gaTextMsgHandlers, 7);
     }
 
     const int nSoundId = sub_004E0650_GetStringSound(nStringId);
     if (nSoundId)
     {
-        ghHintSound = sub_004B9A00(nSoundId, sub_00463DD0_GetPlayerUnit(), 5, 0, 0);
+        gtTextState.hHintSound = sub_004B9A00(nSoundId, sub_00463DD0_GetPlayerUnit(), 5, 0, 0);
         gnHintId = nSoundId;
     }
 
     if ((nStringId == 0x7F || nStringId == 0x4E22 || nStringId == 0x4EC9 || nStringId == 0x4EA3 || nStringId == 0x18C) && bSound)
     {
-        gbTextSound = 1;
+        gtTextState.bTextSound = 1;
     }
 }
 

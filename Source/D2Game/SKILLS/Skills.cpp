@@ -3244,7 +3244,7 @@ void __fastcall SKILLS_ApplyAreaEffect(D2GameStrc* pGame, D2EffectStrc* pEffect)
 
         for (int i = 0; i < unitFindData.nIndex; ++i)
         {
-            ((SKILLS_AREAEFFECTFN)pEffect->pfAreaEffect)(pGame, pEffect->pUnit, unitFindData.pUnitsArray[i], pEffect->nSkillLevel, pEffect->unk0x1C);
+            ((SKILLS_AREAEFFECTFN)pEffect->pfAreaEffect)(pGame, pEffect->pUnit, unitFindData.pUnitsArray[i], pEffect->nSkillLevel, pEffect->nCallbackParam);
         }
 
         UNITFINDS_FreeUnitFindData(&unitFindData);

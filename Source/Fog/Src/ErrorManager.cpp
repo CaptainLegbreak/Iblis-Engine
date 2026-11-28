@@ -4254,23 +4254,7 @@ struct d2data_007077C0_t
 #pragma pack(pop)
 
 extern "C" const struct d2data_006CCA6B_t gData_006CCA6B; // 0x006CCA6B
-extern "C" const char gData_006FF988[12]; // 0x006FF988
-extern "C" const D2GuidStrc gData_006CCA6C; // 0x006CCA6C
-extern "C" const char gData_006FF994[36]; // 0x006FF994
 extern "C" struct d2data_007077C0_t gData_007077C0; // 0x007077C0
-extern "C" const char* const gData_00706618[15]; // 0x00706618
-extern "C" const char gData_006CD09C[24]; // 0x006CD09C
-extern "C" const char gData_006CD0B4[16]; // 0x006CD0B4
-extern "C" const char gData_006CD0C4[16]; // 0x006CD0C4
-extern "C" const char gData_006CD0D4[28]; // 0x006CD0D4
-extern "C" const char gData_006CD0F0[24]; // 0x006CD0F0
-extern "C" const char gData_006CD108[28]; // 0x006CD108
-extern "C" const char gData_006CD124[28]; // 0x006CD124
-extern "C" const char gData_006CD188[24]; // 0x006CD188
-extern "C" const char gData_006CD1A0[8]; // 0x006CD1A0
-extern "C" const char gData_006CD1A8[24]; // 0x006CD1A8
-extern "C" const unsigned int gData_006CD490[33]; // 0x006CD490
-extern "C" const char gData_006CCBE8[8]; // 0x006CCBE8
 
 extern "C" const struct d2data_006CCA6B_t gData_006CCA6B = {
     { 0x00 }
@@ -4281,18 +4265,15 @@ extern const char* gaszErrorTypeNames[1049] = {
     (const char*)&gData_006CCB1C, (const char*)&gData_006CCB18, (const char*)&gData_006CCB14, (const char*)&gData_006CCB10, (const char*)&gData_006CCB0C, (const char*)&gData_006CCB08, (const char*)&gData_006CCB04, (const char*)&gData_006CCB00, 0, (const char*)0x3244
 }; // 0x00706654
 
-extern "C" const char gData_006FF988[12] = "Main Thread"; // 0x006FF988
-#pragma comment(linker, "/alternatename:_gszMainThread=_gData_006FF988")
+extern "C" const char gszMainThread[12] = "Main Thread"; // 0x006FF988
 
-extern "C" const D2GuidStrc gData_006CCA6C = { 0x4C5C32FF, 0xBB9D, 0x43B0, { 0xB5, 0xB4, 0x2D, 0x72, 0xE5, 0x4E, 0xAA, 0xA4 } }; // 0x006CCA6C
-#pragma comment(linker, "/alternatename:_gtKnownFolderId=_gData_006CCA6C")
+extern "C" const D2GuidStrc gtKnownFolderId = { 0x4C5C32FF, 0xBB9D, 0x43B0, { 0xB5, 0xB4, 0x2D, 0x72, 0xE5, 0x4E, 0xAA, 0xA4 } }; // 0x006CCA6C
 
-extern "C" const char gData_006FF994[36] = {
+extern "C" const char gszInternalCheckHost[36] = {
     105, 110, 116, 101, 114, 110, 97, 108, 99, 104, 101, 99, 107, 46, 99, 111,
     114, 112, 46, 98, 108, 105, 122, 122, 97, 114, 100, 46, 110, 101, 116, 0,
     127, 0, 0, 1
 }; // 0x006FF994
-#pragma comment(linker, "/alternatename:_gszInternalCheckHost=_gData_006FF994")
 
 extern "C" struct d2data_007077C0_t gData_007077C0 = {
     {
@@ -4304,49 +4285,37 @@ extern "C" struct d2data_007077C0_t gData_007077C0 = {
 }; // 0x007077C0
 #pragma comment(linker, "/alternatename:?gadwHuffmanMask@@3PAIA=_gData_007077C0")
 
-extern "C" const char* const gData_00706618[15] = { (const char* const)"English", (const char* const)"Spanish", (const char* const)"German", (const char* const)"French", (const char* const)"Portuguese", (const char* const)"Italian", (const char* const)"Japanese", (const char* const)"Korean", (const char* const)"Simplified Chinese", (const char* const)"Traditional Chinese", (const char* const)"Polish", (const char* const)"Russian", (const char* const)"English with Korean Chat", (const char* const)"Unknown", (const char* const)"14" }; // 0x00706618
-#pragma comment(linker, "/alternatename:?gaszLanguageNames@@3QBQBDB=_gData_00706618")
+extern const char* const gaszLanguageNames[15] = { (const char* const)"English", (const char* const)"Spanish", (const char* const)"German", (const char* const)"French", (const char* const)"Portuguese", (const char* const)"Italian", (const char* const)"Japanese", (const char* const)"Korean", (const char* const)"Simplified Chinese", (const char* const)"Traditional Chinese", (const char* const)"Polish", (const char* const)"Russian", (const char* const)"English with Korean Chat", (const char* const)"Unknown", (const char* const)"14" }; // 0x00706618
 
-extern "C" const char gData_006CD09C[24] = "<:Inspector.HashBlock>\n"; // 0x006CD09C
-#pragma comment(linker, "/alternatename:?gszMore5@@3QBDB=_gData_006CD09C")
+extern const char gszMore5[24] = "<:Inspector.HashBlock>\n"; // 0x006CD09C
 
-extern "C" const char gData_006CD0B4[16] = "/Minidump.dmp"; // 0x006CD0B4
-#pragma comment(linker, "/alternatename:?gszMinidump@@3QBDB=_gData_006CD0B4")
+extern const char gszMinidump[16] = "/Minidump.dmp"; // 0x006CD0B4
 
-extern "C" const char gData_006CD0C4[16] = "DBG-OPTIONS<>\n"; // 0x006CD0C4
-#pragma comment(linker, "/alternatename:?gszMore4@@3QBDB=_gData_006CD0C4")
+extern const char gszMore4[16] = "DBG-OPTIONS<>\n"; // 0x006CD0C4
 
-extern "C" const char gData_006CD0D4[28] = "DBG-OPTIONS<FunctionsOnly>\n"; // 0x006CD0D4
-#pragma comment(linker, "/alternatename:?gszMore3@@3QBDB=_gData_006CD0D4")
+extern const char gszMore3[28] = "DBG-OPTIONS<FunctionsOnly>\n"; // 0x006CD0D4
 
-extern "C" const char gData_006CD0F0[24] = "<Inspector.HashBlock:>\n"; // 0x006CD0F0
-#pragma comment(linker, "/alternatename:?gszMore2@@3QBDB=_gData_006CD0F0")
+extern const char gszMore2[24] = "<Inspector.HashBlock:>\n"; // 0x006CD0F0
 
-extern "C" const char gData_006CD108[28] = "<:Inspector.DebugModules>\n"; // 0x006CD108
-#pragma comment(linker, "/alternatename:?gszMore1@@3QBDB=_gData_006CD108")
+extern const char gszMore1[28] = "<:Inspector.DebugModules>\n"; // 0x006CD108
 
-extern "C" const char gData_006CD124[28] = "<Inspector.DebugModules:>\n"; // 0x006CD124
-#pragma comment(linker, "/alternatename:?gszModules@@3QBDB=_gData_006CD124")
+extern const char gszModules[28] = "<Inspector.DebugModules:>\n"; // 0x006CD124
 
-extern "C" const char gData_006CD188[24] = "\n<:Inspector.Summary>\n"; // 0x006CD188
-#pragma comment(linker, "/alternatename:?gszCrashNewline@@3QBDB=_gData_006CD188")
+extern const char gszCrashNewline[24] = "\n<:Inspector.Summary>\n"; // 0x006CD188
 
-extern "C" const char gData_006CD1A0[8] = " (%s)"; // 0x006CD1A0
-#pragma comment(linker, "/alternatename:?gszCrashDetail@@3QBDB=_gData_006CD1A0")
+extern const char gszCrashDetail[8] = " (%s)"; // 0x006CD1A0
 
-extern "C" const char gData_006CD1A8[24] = "<Inspector.Summary:>\n%s"; // 0x006CD1A8
-#pragma comment(linker, "/alternatename:?gszCrashSummary@@3QBDB=_gData_006CD1A8")
+extern const char gszCrashSummary[24] = "<Inspector.Summary:>\n%s"; // 0x006CD1A8
 
 extern long volatile gnReportBusy = -1; // 0x007076B8
 
 extern long volatile gnCrashReportBusy = -1; // 0x007076BC
 
-extern "C" const unsigned int gData_006CD490[33] = {
+extern const unsigned int gadwLowBitMasks[33] = {
     0, 1, 3, 7, 0xF, 0x1F, 0x3F, 0x7F, 0xFF, 0x1FF, 0x3FF, 0x7FF, 0xFFF, 0x1FFF, 0x3FFF, 0x7FFF,
     0xFFFF, 0x1FFFF, 0x3FFFF, 0x7FFFF, 0xFFFFF, 0x1FFFFF, 0x3FFFFF, 0x7FFFFF, 0xFFFFFF, 0x1FFFFFF, 0x3FFFFFF, 0x7FFFFFF, 0xFFFFFFF, 0x1FFFFFFF, 0x3FFFFFFF, 0x7FFFFFFF,
     0xFFFFFFFF
 }; // 0x006CD490
-#pragma comment(linker, "/alternatename:?gadwLowBitMasks@@3QBIB=_gData_006CD490")
 
 extern float gafSinTable[512] = {
     0.0f, 0.012271538f, 0.024541229f, 0.036807224f, 0.049067676f, 0.061320737f, 0.07356457f, 0.08579732f, 0.09801714f, 0.11022221f, 0.12241068f, 0.13458072f, 0.14673048f, 0.15885815f, 0.17096189f, 0.18303989f,
@@ -4406,5 +4375,4 @@ extern unsigned char gabHuffmanCodeLength[256] = {
 
 extern const char* gaszCpuVendorNames[5] = { "Unknown", "Intel", "AMD", "Cyrix" }; // 0x00708004
 
-extern "C" const char gData_006CCBE8[8] = "Unknown"; // 0x006CCBE8
-#pragma comment(linker, "/alternatename:_gszUnknownTitle=_gData_006CCBE8")
+extern "C" const char gszUnknownTitle[8] = "Unknown"; // 0x006CCBE8

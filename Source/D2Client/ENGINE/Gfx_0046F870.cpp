@@ -46,7 +46,7 @@ D2UnitGfxDataStrc* __fastcall CUNIT_GetGfxData(D2UnitStrc* pUnit); // 0x00463E10
 int __fastcall GFX_GetNodeValue(D2UnitStrc* pUnit, int nMode); // 0x0046E570
 extern "C" D2GfxLayerHeaderStrc* __fastcall GFXUTIL_identity(void* pGfx); // 0x004DB040
 int __fastcall GFXUTIL_InitMonsterCelContext(D2GfxDataStrc* pContext, int nA, int nB, unsigned char nLayer, int nMode, unsigned int dwCode, D2HashedFileEntryStrc* pEntry, D2MonCofInfoStrc* pInfo, D2MonStatsTxt* pMonStats, int nIndex); // 0x004DBCF0
-int __stdcall sub_006001F0(D2GfxDataStrc* pContext, int nArg2, int nArg3); // 0x006001F0
+int __stdcall D2CMPSpriteValidate(D2GfxDataStrc* pContext, int nArg2, int nArg3); // 0x006001F0
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 extern D2CofModeEntryStrc gaCofModeCodes[]; // 0x00712B04
@@ -208,7 +208,7 @@ static void __stdcall GFX_LoadMonsterCof(D2MonStatsTxt* pMonStatsTxtRecord, int 
                 {
                     if (bLoadNow)
                     {
-                        if (!sub_006001F0(&tContext, 1, 1))
+                        if (!D2CMPSpriteValidate(&tContext, 1, 1))
                         {
                             tContext.nArg34 = 0;
                             D2CMPSpriteRequest(&tContext);
@@ -216,7 +216,7 @@ static void __stdcall GFX_LoadMonsterCof(D2MonStatsTxt* pMonStatsTxtRecord, int 
                     }
                     else
                     {
-                        sub_006001F0(&tContext, 0, 0);
+                        D2CMPSpriteValidate(&tContext, 0, 0);
                     }
                 }
             }
@@ -229,7 +229,7 @@ static void __stdcall GFX_LoadMonsterCof(D2MonStatsTxt* pMonStatsTxtRecord, int 
             {
                 if (bLoadNow)
                 {
-                    if (!sub_006001F0(&tContext, 1, 1))
+                    if (!D2CMPSpriteValidate(&tContext, 1, 1))
                     {
                         tContext.nArg34 = 0;
                         D2CMPSpriteRequest(&tContext);
@@ -237,7 +237,7 @@ static void __stdcall GFX_LoadMonsterCof(D2MonStatsTxt* pMonStatsTxtRecord, int 
                 }
                 else
                 {
-                    sub_006001F0(&tContext, 0, 0);
+                    D2CMPSpriteValidate(&tContext, 0, 0);
                 }
             }
         }

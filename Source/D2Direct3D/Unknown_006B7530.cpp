@@ -88,7 +88,7 @@ struct D2GridPointStrc { unsigned char nScale,nRed,nGreen,nBlue; int nX,nY; };
 struct D2RendererSettingsStrc { int unknown00,unknown04; int bFlat; };
 
 extern D2RendererSettingsStrc* gpRendererSettings_007C9148; // 0x007C9148
-extern D2VertexBufferStrc* gpGridBuffer_00971734; // 0x00971734
+extern D2VertexBufferStrc* gpGridBuffer; // 0x00971734
 extern unsigned short gaFlatIndices[4]; // 0x0074C3D0
 extern unsigned short gaGridIndices[65]; // 0x009716B0
 extern unsigned char gabMultiplyTable[256][256]; // 0x00971740
@@ -680,19 +680,19 @@ void __fastcall sub_006B9170_DrawGrid(D2TileLibraryEntryStrc* pTexture,D2GridPoi
     D2TLVertexStrc* pVertices;
     if(gpRendererSettings_007C9148->bFlat)
     {
-        long nResult=gpGridBuffer_00971734->lpVtbl->Lock(gpGridBuffer_00971734,0x21,(void**)&pVertices,0);
+        long nResult=gpGridBuffer->lpVtbl->Lock(gpGridBuffer,0x21,(void**)&pVertices,0);
         if(nResult) { D3DCORE_LogDDrawError(gLockFailure,nResult);return; }
         WRITE_CORNER(0)
         WRITE_CORNER(5)
         WRITE_CORNER(35)
         WRITE_CORNER(30)
-        nResult=gpGridBuffer_00971734->lpVtbl->Unlock(gpGridBuffer_00971734);
+        nResult=gpGridBuffer->lpVtbl->Unlock(gpGridBuffer);
         if(nResult) { D3DCORE_LogDDrawError(gUnlockFailure,nResult);return; }
-        gpD3DDevice_00970E78->lpVtbl->DrawIndexedPrimitiveVB(gpD3DDevice_00970E78,6,gpGridBuffer_00971734,gaFlatIndices,4,0x1c);
+        gpD3DDevice_00970E78->lpVtbl->DrawIndexedPrimitiveVB(gpD3DDevice_00970E78,6,gpGridBuffer,gaFlatIndices,4,0x1c);
     }
     else
     {
-        long nResult=gpGridBuffer_00971734->lpVtbl->Lock(gpGridBuffer_00971734,0x21,(void**)&pVertices,0);
+        long nResult=gpGridBuffer->lpVtbl->Lock(gpGridBuffer,0x21,(void**)&pVertices,0);
         if(nResult) { D3DCORE_LogDDrawError(gLockFailure,nResult);return; }
         const D2GridPointStrc* pPoint=pPoints;
         for(int nPoint=0;nPoint<36;++nPoint)
@@ -703,9 +703,9 @@ void __fastcall sub_006B9170_DrawGrid(D2TileLibraryEntryStrc* pTexture,D2GridPoi
             ++pVertices;
             ++pPoint;
         }
-        nResult=gpGridBuffer_00971734->lpVtbl->Unlock(gpGridBuffer_00971734);
+        nResult=gpGridBuffer->lpVtbl->Unlock(gpGridBuffer);
         if(nResult) { D3DCORE_LogDDrawError(gUnlockFailure,nResult);return; }
-        gpD3DDevice_00970E78->lpVtbl->DrawIndexedPrimitiveVB(gpD3DDevice_00970E78,5,gpGridBuffer_00971734,gaGridIndices,65,0x1c);
+        gpD3DDevice_00970E78->lpVtbl->DrawIndexedPrimitiveVB(gpD3DDevice_00970E78,5,gpGridBuffer,gaGridIndices,65,0x1c);
     }
     }
     }

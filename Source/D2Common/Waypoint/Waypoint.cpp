@@ -25,7 +25,7 @@ struct D2WaypointBitStrc
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 extern "C" int gnWaypointBits; // 0x00746424
 extern "C" D2WaypointBitStrc gaWaypointBits[]; // 0x00746428
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 extern "C" const char gszEmptyAssertText; // 0x006CC837
@@ -110,7 +110,7 @@ void __stdcall WAYPOINTS_ActivateWaypoint(D2WaypointDataStrc* pData, unsigned sh
 // 0x00660F30
 D2WaypointDataStrc* __stdcall WAYPOINTS_AllocWaypointData(void* pMemPool)
 {
-    D2WaypointDataStrc* pData = (D2WaypointDataStrc*)sub_0040B430(pMemPool, sizeof(D2WaypointDataStrc), ".\\WayPoint\\Waypoint.cpp", 252, 0);
+    D2WaypointDataStrc* pData = (D2WaypointDataStrc*)FOG_AllocPool(pMemPool, sizeof(D2WaypointDataStrc), ".\\WayPoint\\Waypoint.cpp", 252, 0);
     memset(pData, 0, sizeof(D2WaypointDataStrc));
     pData->nFlags[0] = 0x102;
     WAYPOINTS_SetWaypointBit(pData, 0);

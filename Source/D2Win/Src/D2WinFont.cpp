@@ -130,7 +130,7 @@ static void __stdcall FONT_DrawTextLineWithDrawMode(const Unicode* wszText, int 
 
 int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
-extern "C" int __fastcall sub_00526800_2(const unsigned short* pText);
+extern "C" int __fastcall UNICODE_StrLen(const unsigned short* pText);
 
 static int FONT_GetTextHeight(const Unicode* pText); // 0x005019C0
 

@@ -504,6 +504,7 @@ void __fastcall AITACTICS_ScheduleEarlierAiThink(D2GameStrc* pGame, D2UnitStrc* 
     }
 }
 
+// The callers in the other files pass an int for nArg (each unit had its own declaration).
 // 0x005DE190
 void __fastcall AITACTICS_SetAiParam(D2UnitStrc* pUnit, int nParam, int nValue, unsigned char nArg)
 {

@@ -243,7 +243,7 @@ void __cdecl HIREABLES_LoadHirelingIcons()
         }
     }
     const int nSize = sgptDataTables->nPetTypeTxtRecordCount * sizeof(D2HirelingIconRecordStrc);
-    gpHirelingRecords_007BEEAC = (D2HirelingIconRecordStrc*)sub_0040B430(0, nSize, ".\\UI\\Hireables.cpp", 0x96, 0);
+    gpHirelingRecords_007BEEAC = (D2HirelingIconRecordStrc*)FOG_AllocPool(0, nSize, ".\\UI\\Hireables.cpp", 0x96, 0);
     memset(gpHirelingRecords_007BEEAC, 0, nSize);
 }
 

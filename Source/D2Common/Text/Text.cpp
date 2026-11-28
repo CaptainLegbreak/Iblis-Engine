@@ -39,7 +39,7 @@ struct D2MessageListStrc
     D2MessageStrc pMessages[8];
 };
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 extern "C" const char gszEmptyAssertText; // 0x006CC837
@@ -48,7 +48,7 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 // 0x00661240
 D2TextHeaderStrc* __stdcall TEXT_AllocTextHeader(D2PoolSystemStrc* pMemPool)
 {
-    D2TextHeaderStrc* pTextHeader = (D2TextHeaderStrc*)sub_0040B430(pMemPool, sizeof(D2TextHeaderStrc), ".\\Text\\Text.cpp", 43, 0);
+    D2TextHeaderStrc* pTextHeader = (D2TextHeaderStrc*)FOG_AllocPool(pMemPool, sizeof(D2TextHeaderStrc), ".\\Text\\Text.cpp", 43, 0);
     pTextHeader->pMemPool = pMemPool;
     pTextHeader->pNode = 0;
     pTextHeader->nCount = 0;
@@ -80,7 +80,7 @@ void __stdcall TEXT_FreeTextHeader(D2TextHeaderStrc* pTextHeader)
 void __stdcall TEXT_AddNodeToTextList(D2TextHeaderStrc* pTextHeader, short nStringId, int nMenu)
 {
     D2TextNodeStrc* pNext = pTextHeader->pNode;
-    D2TextNodeStrc* pNode = (D2TextNodeStrc*)sub_0040B430(pTextHeader->pMemPool, sizeof(D2TextNodeStrc), ".\\Text\\Text.cpp", 90, 0);
+    D2TextNodeStrc* pNode = (D2TextNodeStrc*)FOG_AllocPool(pTextHeader->pMemPool, sizeof(D2TextNodeStrc), ".\\Text\\Text.cpp", 90, 0);
     pNode->pNext = pNext;
     pNode->nStringId = nStringId;
     pNode->nMenu = nMenu;
@@ -309,7 +309,7 @@ void __stdcall TEXT_SortTextNodeListByStringId(D2TextHeaderStrc* pTextHead)
     }
 
     D2TextNodeStrc* pNode = pTextHead->pNode;
-    D2TextNodeStrc* pNodeList = (D2TextNodeStrc*)sub_0040B430(pTextHead->pMemPool, sizeof(D2TextNodeStrc) * pTextHead->nCount, ".\\Text\\Text.cpp", 364, 0);
+    D2TextNodeStrc* pNodeList = (D2TextNodeStrc*)FOG_AllocPool(pTextHead->pMemPool, sizeof(D2TextNodeStrc) * pTextHead->nCount, ".\\Text\\Text.cpp", 364, 0);
 
     D2TextNodeStrc* pCopy = pNodeList;
     for (; pNode; pNode = pNode->pNext)

@@ -32,7 +32,7 @@ extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szDest, const char*
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
-void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
+void __fastcall SCMD_RegisterMsgHandlers(void* hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
 D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nType); // 0x004788B0
 
@@ -65,7 +65,7 @@ static unsigned short gwGlobal_007A6AE4; // 0x007A6AE4
 
 void __fastcall ARCHIVE_FreeClientCellFile(void* pCel); // 0x00478A00
 
-void __fastcall sub_00451E10_RegisterHandlerTable(int hWnd, D2MsgHandlerEntryStrc* pTable, int nCount); // 0x00451E10
+void __fastcall sub_00451E10_RegisterHandlerTable(void* hWnd, D2MsgHandlerEntryStrc* pTable, int nCount); // 0x00451E10
 
 struct D2CelFileStrc;
 
@@ -89,7 +89,7 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                   
 void __cdecl CURSOR_UpdateCursor();                                                                // 0x00468310
 
 
-int __stdcall sub_006001F0(D2GfxDataStrc* pContext, int nArg2, int nArg3);                // 0x006001F0
+int __stdcall D2CMPSpriteValidate(D2GfxDataStrc* pContext, int nArg2, int nArg3);                // 0x006001F0
 
 unsigned int __stdcall CelGetWidth(D2CelStrc* pCel);                                                        // 0x006018C0
 
@@ -447,7 +447,7 @@ void __cdecl CURSOR_DrawCursor()
         D2GfxDataStrc tContext;
         int nOut;
         memset(&tContext, 0, sizeof(tContext));
-        if (GFXUTIL_InitUnitCelContext(&tContext, pItem, 0, 0, 0, &nOut, 1, -1) && sub_006001F0(&tContext, 0, 1))
+        if (GFXUTIL_InitUnitCelContext(&tContext, pItem, 0, 0, 0, &nOut, 1, -1) && D2CMPSpriteValidate(&tContext, 0, 1))
         {
             D2_ASSERT(tContext.pCel, 0x27D);
             GFX_DrawItemCel(gpCursorItem, gnCursorX - CelGetWidth(tContext.pCel) / 2 + gnCursorOffsetX,
@@ -473,7 +473,7 @@ void __cdecl CURSOR_PaintCursorItem()
     {
         int nOut;
         memset(&tContext, 0, sizeof(tContext));
-        if (GFXUTIL_InitUnitCelContext(&tContext, pItem, 0, 0, 0, &nOut, 1, -1) && sub_006001F0(&tContext, 0, 1))
+        if (GFXUTIL_InitUnitCelContext(&tContext, pItem, 0, 0, 0, &nOut, 1, -1) && D2CMPSpriteValidate(&tContext, 0, 1))
         {
             D2_ASSERT(tContext.pCel, 0x2BB);
             GFX_DrawItemCel(gpCursorItem, gnCursorX - CelGetWidth(tContext.pCel) / 2 + gnCursorOffsetX,
