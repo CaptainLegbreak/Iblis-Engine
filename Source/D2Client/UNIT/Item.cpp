@@ -65,19 +65,11 @@ struct D2SlotStrc;
 
 struct D2SkillStateStrc;
 
-struct D2GSPacketSrv7DStrc;
-
 struct D2UniqueItemsTxt;
 
 struct D2SetItemsTxt;
 
-struct D2PacketRecord8Strc;
-
 struct D2PacketRecord13Strc;
-
-struct D2GSPacketSrv42Strc;
-
-struct D2PacketRecord11Strc;
 
 struct D2CoordStrc;
 
@@ -241,16 +233,6 @@ extern "C" int __fastcall PLRSKILLS_GetSkillUseState(D2UnitStrc* unit, D2SkillSt
 
 #pragma pack(push, 1)
 
-struct D2GSPacketSrv7DStrc
-{
-    unsigned char nHeader;
-    unsigned char nUnitType;
-    int dwUnitId;
-    int dwItemId;
-    int dwAction;
-    int bSet;
-};
-
 #pragma pack(pop)
 
 void __fastcall GFX_ClearGfxBytes(D2UnitStrc* pUnit, int nComponent); // 0x0046F280
@@ -271,27 +253,12 @@ void __stdcall ITEMMODS_AssignProperty(int nType, D2UnitStrc* a2, D2UnitStrc* pI
 
 #pragma pack(push, 1)
 
-struct D2PacketRecord8Strc
-{
-    unsigned char nHeader;
-    unsigned char nCursor;
-    unsigned int dwItemId;
-    unsigned short nSkill;
-};
-
 struct D2PacketRecord13Strc
 {
     unsigned char nHeader;
     unsigned int nItemGUID;
     unsigned int dwFlag;
     unsigned int bSet;
-};
-
-struct D2GSPacketSrv42Strc
-{
-    unsigned char nHeader;
-    unsigned char nUnitType;
-    unsigned int dwUnitGUID;
 };
 
 #pragma pack(pop)
@@ -323,15 +290,6 @@ void __stdcall sub_0063BE30_Return(int nUnused1, int nUnused2); // 0x0063BE30
 extern "C" const char szItemCppFile[];
 
 #pragma pack(push, 1)
-
-struct D2PacketRecord11Strc
-{
-    unsigned char nHeader;
-    unsigned char nUnitType;
-    unsigned char unk0x02[1];
-    unsigned int dwUnitId;
-    unsigned char unk0x07[4];
-};
 
 #pragma pack(pop)
 
@@ -479,7 +437,7 @@ D2UnitStrc* __fastcall ITEM_HandleBodyGridSwap(D2GSPacketSrv9D* pPacket); // 0x0
 
 static void __stdcall ITEM_ReattachItemComponent(int nMode, int nComponent, D2UnitStrc* pUnit, D2UnitStrc* pItem);
 
-void __fastcall ITEM_HandleItemStatePacket(D2GSPacketSrv7DStrc* pPacket);
+void __fastcall ITEM_HandleItemStatePacket(D2GSPacketSrv7D* pPacket);
 
 
 int __fastcall ITEM_SetChargedSkill(D2UnitStrc* pItem, int nSkillId, int nSkillLevel, int nCharges); // 0x004C1E40
@@ -1220,9 +1178,9 @@ void __fastcall ITEM_HandleItemCommand(int nEvent, D2UnitStrc* pUnit, int bSet, 
 }
 
 // 0x004C1BC0
-void __fastcall ITEM_RefreshUnitItemsFromPacket(D2PacketRecord11Strc* pPacket, int nArg)
+void __fastcall ITEM_RefreshUnitItemsFromPacket(D2GSPacketSrv47* pPacket, int nArg)
 {
-    D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->dwUnitId, pPacket->nUnitType);
+    D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->nUnitGUID, pPacket->nUnitType);
     if (pUnit)
         ITEM_RefreshUnitItems(pUnit);
 }
@@ -1234,9 +1192,9 @@ static void sub_004C1BE0_RefreshUnitItems(D2UnitStrc* pUnit)
 }
 
 // 0x004C1BF0
-void __fastcall ITEM_RefreshUnitItemsFromRecord(D2PacketRecord11Strc* pPacket)
+void __fastcall ITEM_RefreshUnitItemsFromRecord(D2GSPacketSrv48* pPacket)
 {
-    D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->dwUnitId, pPacket->nUnitType);
+    D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->nUnitGUID, pPacket->nUnitType);
     if (pUnit)
         sub_004C1BE0_RefreshUnitItems(pUnit);
 }
@@ -1447,7 +1405,7 @@ void __fastcall ITEM_SetItemFlagFromPacket(D2PacketRecord13Strc* pPacket)
 }
 
 // 0x004C2050
-void __fastcall ITEM_ClearCursorItemFromPacket(D2GSPacketSrv42Strc* pPacket)
+void __fastcall ITEM_ClearCursorItemFromPacket(D2GSPacketSrv42* pPacket)
 {
     D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->dwUnitGUID, pPacket->nUnitType);
     if (!pUnit)
@@ -1546,19 +1504,19 @@ int __fastcall ITEM_IsItemActionBlocked(D2UnitStrc* pUnit)
 }
 
 // 0x004C2270
-void __fastcall ITEM_HandleItemStatePacket(D2GSPacketSrv7DStrc* pPacket)
+void __fastcall ITEM_HandleItemStatePacket(D2GSPacketSrv7D* pPacket)
 {
-    D2UnitStrc* pItem = CUNIT_FindClientUnit(pPacket->dwItemId, 4);
+    D2UnitStrc* pItem = CUNIT_FindClientUnit(pPacket->nUnitGUID2, 4);
     if (!pItem)
         return;
 
-    D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->dwUnitId, pPacket->nUnitType);
+    D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->nUnitGUID1, pPacket->nUnitType);
     if (!pUnit)
         return;
 
     const int nComponent = UNITS_GetItemComponentId(pUnit, pItem);
     const int nMode = pItem->dwAnimMode;
-    if (pPacket->dwAction == 0x100)
+    if (pPacket->nItemFlag == 0x100)
     {
         ITEMS_SetItemFlag(pItem, 0x100, pPacket->bSet);
         GFX_RequeuePlayerMode(pUnit);
@@ -1567,7 +1525,7 @@ void __fastcall ITEM_HandleItemStatePacket(D2GSPacketSrv7DStrc* pPacket)
         ITEMS_UpdateSets(pUnit, pItem, 1, 1);
         ITEM_RefreshEquippedItems(pUnit);
     }
-    else if (pPacket->dwAction == 0x200)
+    else if (pPacket->nItemFlag == 0x200)
     {
         ITEMS_SetItemFlag(pItem, 0x100, 0);
         ITEM_ReattachItemComponent(nMode, nComponent, pUnit, pItem);
@@ -3137,7 +3095,7 @@ void __fastcall ITEM_HandleBeltSwap(D2GSPacketSrv9C* pPacket)
 }
 
 // 0x004C4620
-void __fastcall ITEM_HandleUseStackableItem(D2PacketRecord8Strc* pPacket)
+void __fastcall ITEM_HandleUseStackableItem(D2GSPacketSrv3F* pPacket)
 {
     if (pPacket->nSkill != 0xFFFF)
     {

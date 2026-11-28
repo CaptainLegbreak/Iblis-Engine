@@ -91,7 +91,6 @@ struct D2CommonRecord610610Strc;
 
 struct D2ProfileCounterStrc;
 
-struct D2CompCodeTxt;
 
 struct D2ExperienceTxt;
 
@@ -653,11 +652,6 @@ struct D2CommonRecord610610Strc
     D2CommonRecord610610Strc(int nValue);
 };
 
-
-struct D2CompCodeTxt
-{
-    unsigned int dwCode;
-};
 
 
 

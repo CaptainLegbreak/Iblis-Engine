@@ -10,19 +10,7 @@
 #include "D2HellApi.h"
 #include "D2WinApi2.h"
 
-struct D2TileLibraryBlockStrc
-{
-    short nPosX;
-    short nPosY;
-    short nCacheIndex;
-    unsigned char nGridX;
-    unsigned char nGridY;
-    unsigned char nFormat;
-    unsigned char nFormatHigh;
-    unsigned short nLength;
-    int nReserved;
-    unsigned char* pData;
-};
+#include "D2TileLibraryBlock.h"
 
 #define D2_MAX(a, b) (((a) > (b)) ? (a) : (b))
 

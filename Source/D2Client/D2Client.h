@@ -195,7 +195,6 @@ extern "C" int __stdcall sub_00420290_QueueMessage(Message*); // 0x00420290
 extern "C" int gnSubsystemActive; // 0x007A0458
 extern D2BitBufferStrc* gpPlayerQuestFlags; // 0x007C0D43
 extern D2BitBufferStrc* gpGameQuestFlags; // 0x007C0D47
-extern D2CelFileStrc* gpAutomapCels_007A5168[4]; // 0x007A5168
 extern D2ClientDialogStrc* gpTradeDialog; // 0x007C0D5F
 extern D2ClientDialogStrc* gpNpcMainMenuDialog; // 0x007C0D6B
 extern D2ClientDialogStrc* gpNpcMessageDialog; // 0x007C0D6F
@@ -253,7 +252,6 @@ extern const int gaDirectionDX[]; // 0x006D6B14
 extern const int gaDirectionDY[]; // 0x006D6AF4
 extern const int gaUnitTypes[6]; // 0x006D6ABC
 extern const unsigned char gabCdKeyMap[256]; // 0x006D59F0
-extern const unsigned int gdwMask_006CE26C; // 0x006CE26C
 extern const unsigned int gdwBitMask7; // 0x006CE284
 extern const unsigned short gawPeriodOfDayStr[]; // 0x006DBD88
 extern float gfPhaseLevel; // 0x007A89A0
@@ -267,8 +265,6 @@ extern int gaBeltKeys[4]; // 0x00722404
 extern int gaCofModes[]; // 0x00712AC4
 extern int gaPlayerModes[]; // 0x00712AA0
 extern int gaSetPropIds[]; // 0x006DBD70
-extern int ganGlobal_007C0225[6]; // 0x007C0225
-extern int ganGlobal_007C023D[6]; // 0x007C023D
 extern int gaQuestPageSelection[]; // 0x007BF2BD
 extern int ganRowValues_007799FC[]; // 0x007799FC
 extern int gbMiniPanelButtonDown; // 0x007BEFD0
@@ -338,17 +334,6 @@ extern int gnQuestIconOffsetY; // 0x0072421C
 extern int gnQuestAnimOffsetY; // 0x00724220
 extern int gnKeyConfigColumn; // 0x007246D4
 extern int gbKeyConfigReady; // 0x00724728
-extern int gnGlobal_00726CC1; // 0x00726CC1
-extern int gnGlobal_00726DF9; // 0x00726DF9
-extern int gnGlobal_00726E47; // 0x00726E47
-extern int gnGlobal_00726E95; // 0x00726E95
-extern int gnGlobal_00726EBC; // 0x00726EBC
-extern int gnGlobal_00726EE3; // 0x00726EE3
-extern int gnGlobal_00726F0A; // 0x00726F0A
-extern int gnGlobal_00726F31; // 0x00726F31
-extern int gnGlobal_00726F7F; // 0x00726F7F
-extern int gnGlobal_00727216; // 0x00727216
-extern int gnGlobal_0072723D; // 0x0072723D
 extern int gnGlobal_0072728B; // 0x0072728B
 extern int gnGlobal_007272D9; // 0x007272D9
 extern int gnHotspotCount; // 0x007278FC
@@ -1550,15 +1535,6 @@ struct D2CursorAnimStrc
     const char* szName;
 };
 
-struct D2DialogItemStrc
-{
-    int nHeight;
-    char unk0x04[0x14];
-    int (__cdecl* pfnCallback)();
-    int nType;
-    char unk0x20[0xF0];
-};
-
 struct D2DirRateStrc
 {
     int nValue;
@@ -1670,27 +1646,6 @@ struct D2HoverCoordStrc
     int nValue;
 };
 
-struct D2ItemPacket9CStrc
-{
-    unsigned char nHeader;
-    unsigned char nAction;
-    unsigned char nSize;
-    unsigned char nCategory;
-    int dwUnitId;
-    unsigned char pData[1];
-};
-
-struct D2ItemPacket9DStrc
-{
-    unsigned char nHeader;
-    unsigned char nAction;
-    unsigned char nSize;
-    unsigned char nCategory;
-    int dwUnitId;
-    unsigned char unk0x08[5];
-    unsigned char pData[1];
-};
-
 struct D2LaunchAddressStrc
 {
     int nData0;
@@ -1717,13 +1672,6 @@ struct D2LightOffsetStrc
 struct D2LightOffsetsStrc
 {
     D2LightOffsetStrc aOffset[6];
-};
-
-struct D2ListBoxEntryStrc
-{
-    char unk0x0000[0x3006];
-    char nData[4];
-    char unk0x300A[4];
 };
 
 typedef void (__fastcall* D2McpCallbackFn)(unsigned short wRequestId, unsigned char* pData);
@@ -1769,7 +1717,7 @@ struct D2MonCompInfoStrc
 
 struct D2MonModeTxt
 {
-    char unk0x00[0x20];
+    char szName[0x20];
     unsigned int dwToken;
 };
 
@@ -1983,9 +1931,9 @@ typedef int (__fastcall* D2TextCallback)(void* pContext, int nArg, int nValue);
 
 struct D2TokRecord
 {
-    char unk0x00[0x20];
+    char szName[0x20];
     unsigned int dwCode;
-    char unk0x24[0x10];
+    char nDirs[0x10];
 };
 
 struct D2UiEntry10Strc

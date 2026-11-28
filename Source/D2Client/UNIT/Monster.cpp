@@ -252,6 +252,7 @@ extern int gdwPrimaryTradeGold; // 0x007C0E68
 int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile); // 0x006280A0
 
 #include "D2ClientNpcMenu.h"
+#include "D2Packets.h"
 
 
 
@@ -478,13 +479,6 @@ static __forceinline void sub_b1_WalkTo(D2UnitStrc* pUnit, D2MonCommandStrc* pCo
 
 
 #pragma pack(push, 1)
-
-struct D2ClientPacket7Strc
-{
-    unsigned char nHeader;
-    int dwUnitId;
-    unsigned short f_5;
-};
 
 #pragma pack(pop)
 
@@ -2781,12 +2775,12 @@ int __fastcall MONSTER_IsConvertible(D2UnitStrc* pUnit)
 }
 
 // 0x004B1240
-void __fastcall MONSTER_SetMinionSpawnClass(D2ClientPacket7Strc* pPacket)
+void __fastcall MONSTER_SetMinionSpawnClass(D2GSPacketSrv98* pPacket)
 {
-    D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->dwUnitId, 1);
+    D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->nUnitGUID, 1);
     if (pUnit)
     {
-        const unsigned short wClassId = pPacket->f_5;
+        const unsigned short wClassId = pPacket->nMinionSpawnClassId;
         const int nClassId = wClassId == 0xFFFF ? -1 : wClassId;
         if (pUnit->dwUnitType == UNIT_MONSTER && pUnit->pMonsterData)
         {

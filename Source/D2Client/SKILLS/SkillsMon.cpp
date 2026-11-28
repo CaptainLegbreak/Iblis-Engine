@@ -1435,24 +1435,6 @@ struct Unicode;
 
 struct D2MonStatsTxt;
 
-struct D2RequestStrc;
-
-struct D2RequestStrc
-{
-    int nType;
-    D2UnitStrc* pUnit;
-    int unk0x08[2];
-    int nMissile;
-    int nX;
-    int nY;
-    int unk0x1C[4];
-    int nSkill;
-    int nSkillLevel;
-    int unk0x34[10];
-};
-
-D2UnitStrc* __fastcall sub_004CD540_HandleRequest(D2RequestStrc* pRequest); // 0x004CD540
-
 
 
 static D2MonStatsTxt* MONSTATS_GetTxtRecord(int nMonsterId)
@@ -1495,23 +1477,23 @@ int __fastcall SKILLSMON_CreateSkillMissiles(D2UnitStrc* pUnit, int nSkillId, in
         pUnit->dwFlags |= 0x40;
     }
 
-    D2RequestStrc tRequest;
+    D2MissileStrc tRequest;
     memset(&tRequest, 0, sizeof(tRequest));
-    tRequest.nType = 0x2001;
-    tRequest.pUnit = pUnit;
+    tRequest.dwFlags = 0x2001;
+    tRequest.pOwner = pUnit;
     tRequest.nX = nX;
     tRequest.nY = nY;
     tRequest.nSkill = nSkillId;
     tRequest.nSkillLevel = nArg4;
     tRequest.nMissile = nMissile;
-    D2UnitStrc* pMissile = sub_004CD540_HandleRequest(&tRequest);
+    D2UnitStrc* pMissile = MISSILE_CreateClientMissile(&tRequest);
 
     const int nMissileC = pSkillsTxt->wCltMissileC;
     if (nMissileC > 0 && nMissileC < sgptDataTables->nMissilesTxtRecordCount)
     {
         tRequest.nSkillLevel = 2;
         tRequest.nMissile = nMissileC;
-        sub_004CD540_HandleRequest(&tRequest);
+        MISSILE_CreateClientMissile(&tRequest);
     }
 
     const int nMissileB = pSkillsTxt->wCltMissileB;

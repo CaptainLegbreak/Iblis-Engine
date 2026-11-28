@@ -105,17 +105,7 @@ struct D2CropRectStrc
     int nY1;
 };
 
-struct D2TileLibraryBlockStrc
-{
-    short nPosX;
-    short nPosY;
-    short unk0x04;
-    unsigned char nGridX;
-    unsigned char nGridY;
-    unsigned char nFormat;
-    char unk0x09[0x07];
-    unsigned char* pData;
-};
+#include "D2TileLibraryBlock.h"
 
 struct D2WinAccountListDataStrc
 {

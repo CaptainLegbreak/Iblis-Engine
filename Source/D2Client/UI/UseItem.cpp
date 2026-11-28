@@ -150,17 +150,6 @@ void __cdecl INV_SetNpcStateTrade(); // 0x00487B80
 void __cdecl GAME_ResetMouseState(); // 0x0044DA40
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
-struct D2PacketRecord7Strc;
-
-#pragma pack(push, 1)
-struct D2PacketRecord7Strc
-{
-    unsigned char nHeader;
-    int nValue;
-    unsigned char nType;
-    unsigned char bFlag;
-};
-
 void __cdecl NPCMENU_CloseNpc2(); // 0x004B3FB0
 
 static int gnFlag_007C5470; // 0x007C5470
@@ -679,14 +668,16 @@ void __stdcall USEITEM_OnHotspotClick(SMSGHANDLER_PARAMS* pMsg)
     USEITEM_ClickHotspots(nX, nY);
 }
 
+#include "D2Packets.h"
+
 // 0x004C0550
-void __fastcall USEITEM_HandleUseItemPacket(D2PacketRecord7Strc* pPacket)
+void __fastcall USEITEM_HandleUseItemPacket(D2GSPacketSrv58* pPacket)
 {
-    switch (pPacket->nType)
+    switch (pPacket->nAction)
     {
     case 0:
         gnFlag_007C5470 = 0;
-        gnValue_007C547C = pPacket->nValue;
+        gnValue_007C547C = pPacket->nUnitId;
         USEITEM_OpenPanel();
         return;
 
@@ -708,7 +699,7 @@ void __fastcall USEITEM_HandleUseItemPacket(D2PacketRecord7Strc* pPacket)
         D2InventoryStrc* pInventory = CUNIT_GetPlayerUnit()->pInventory;
         INVENTORY_SetCursorItem(pInventory, 0);
     }
-        if (pPacket->bFlag)
+        if (pPacket->nResult)
         {
             sub_004B9A00(5, 0, 0, 0, 0);
         }
