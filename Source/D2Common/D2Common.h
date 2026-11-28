@@ -1,5 +1,6 @@
 #pragma once
 
+struct D2PoolSystemStrc;
 struct D2ActiveRoomStrc;
 struct D2BitBufferStrc;
 struct D2CriticalSectionStrc;
@@ -180,7 +181,7 @@ unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
 unsigned int __stdcall sub_00411020_ReadBits(D2BitBufferStrc* pBuffer, int nBits); // 0x00411020
 unsigned int __stdcall SStrPack(char* dest, const char* source, unsigned int limit); // 0x00413800
 void __cdecl sub_0063D710_InitCodes(); // 0x0063D710
-void __fastcall DRLGACTIVATE_RoomExPropagateSetStatus(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom, unsigned char nStatus); // 0x0061B390
+void __fastcall DRLGACTIVATE_RoomExPropagateSetStatus(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom, unsigned char nStatus); // 0x0061B390
 void __fastcall DRLGGRID_FillGrid(D2DrlgGridStrc* pGrid, int nWidth, int nHeight, int* pCellPos, int* pCellFlags); // 0x0067CBF0
 void __fastcall DRLGOUTDESR_InitAct2OutdoorLevel(D2DrlgLevelStrc* pLevel); // 0x0067F980
 void __fastcall DRLGPRESET_LoadDrlgFile(D2DrlgFileStrc** ppDrlgFile, void* hArchive, const char* szFile); // 0x00665F40
@@ -188,10 +189,10 @@ void __fastcall DRLGPRESET_SpawnHardcodedPresetUnits(D2DrlgRoomStrc* pDrlgRoom);
 void __fastcall DRLGROOMTILE_AddRoomMapTiles(D2DrlgRoomStrc* pDrlgRoom); // 0x0066EE70
 void __fastcall DRLGROOMTILE_FreeRoom(D2DrlgRoomStrc* pDrlgRoom, int bKeepRoom); // 0x0066F1A0
 void __fastcall DRLGROOMTILE_InitTileShadow(D2DrlgRoomStrc* pDrlgRoom, int nX, int nY, unsigned int nFlags); // 0x0066E060
-void __fastcall DRLGROOMTILE_ReallocRoofTileGrid(void* pMemPool, D2DrlgTileGridStrc* pTileGrid, int nCount); // 0x0066EFB0
+void __fastcall DRLGROOMTILE_ReallocRoofTileGrid(D2PoolSystemStrc* pMemPool, D2DrlgTileGridStrc* pTileGrid, int nCount); // 0x0066EFB0
 void __fastcall DRLGROOM_AllocDrlgOrthsForRooms(D2DrlgRoomStrc* pDrlgRoom1, D2DrlgRoomStrc* pDrlgRoom2, int nDirection); // 0x0066B5E0
-void __fastcall DRLGROOM_FreeRoomTiles(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom); // 0x0066B4F0
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall DRLGROOM_FreeRoomTiles(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom); // 0x0066B4F0
+void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 void __fastcall PATHUTIL_AdvanceTowardsTarget(D2DynamicPathStrc* pPath); // 0x00679190
 void __fastcall PATH_CheckPathInRoom(D2DynamicPathStrc* pPath); // 0x00647FB0
 void __fastcall PATH_GetAltDirectionTriplet(int* pTestDir, D2PathPointStrc tPoint1, D2PathPointStrc tPoint2); // 0x00678DF0
@@ -411,10 +412,10 @@ extern "C" void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int
 
 typedef unsigned char u8;
 
-void __fastcall COLLISION_AllocRoomCollisionGrid(void* pMemPool, D2ActiveRoomStrc* pRoom); // 0x0064C900
+void __fastcall COLLISION_AllocRoomCollisionGrid(D2PoolSystemStrc* pMemPool, D2ActiveRoomStrc* pRoom); // 0x0064C900
 unsigned short __stdcall COLLISION_CheckMask(D2ActiveRoomStrc* pRoom, int nX, int nY, unsigned short nMask); // 0x0064CB30
 unsigned short __stdcall COLLISION_CheckMaskWithSize(D2ActiveRoomStrc* pRoom, int nX, int nY, int nUnitSize, unsigned short nMask); // 0x0064D9B0
-void __fastcall COLLISION_FreeRoomCollisionGrid(void* pMemPool, D2ActiveRoomStrc* pRoom); // 0x0064CA10
+void __fastcall COLLISION_FreeRoomCollisionGrid(D2PoolSystemStrc* pMemPool, D2ActiveRoomStrc* pRoom); // 0x0064CA10
 void __stdcall COLLISION_SetMaskWithSize(D2ActiveRoomStrc* pRoom, int nX, int nY, int nUnitSize, unsigned short nMask); // 0x0064EA00
 int __stdcall D2COMMON_10175_PathGetFirstPointX(D2DynamicPathStrc* pDynamicPath); // 0x00648A00
 int __stdcall D2COMMON_10176_PathGetFirstPointY(D2DynamicPathStrc* pDynamicPath); // 0x00648A10
@@ -444,10 +445,10 @@ void __fastcall DRLGGRID_AlterAllGridFlags(D2DrlgGridStrc* pGrid, int nFlag, int
 void __fastcall DRLGGRID_AlterEdgeGridFlags(D2DrlgGridStrc* pGrid, int nFlag, int eOperation); // 0x0067C600
 void __fastcall DRLGGRID_AlterGridFlag(D2DrlgGridStrc* pGrid, int nX, int nY, int nFlag, int eOperation); // 0x0067C4F0
 void __fastcall DRLGGRID_FillGrid(D2DrlgGridStrc* pGrid, int nWidth, int nHeight, int* pCellsFlags, int* pCellsRowOffsets); // 0x0067CBF0
-void __fastcall DRLGGRID_FreeGrid(void* pMemPool, D2DrlgGridStrc* pDrlgGrid); // 0x0067CD90
+void __fastcall DRLGGRID_FreeGrid(D2PoolSystemStrc* pMemPool, D2DrlgGridStrc* pDrlgGrid); // 0x0067CD90
 int __fastcall DRLGGRID_GetGridEntry(D2DrlgGridStrc* pDrlgGrid, int nX, int nY); // 0x0067C570
 int* __fastcall DRLGGRID_GetGridFlagsPointer(D2DrlgGridStrc* pDrlgGrid, int nX, int nY); // 0x0067C550
-void __fastcall DRLGGRID_InitializeGridCells(void* pMemPool, D2DrlgGridStrc* pGrid, int nWidth, int nHeight); // 0x0067CB80
+void __fastcall DRLGGRID_InitializeGridCells(D2PoolSystemStrc* pMemPool, D2DrlgGridStrc* pGrid, int nWidth, int nHeight); // 0x0067CB80
 int __fastcall DRLGGRID_IsGridValid(D2DrlgGridStrc* pGrid); // 0x0067C480
 int __fastcall DRLGGRID_IsPointInsideGridArea(D2DrlgGridStrc* pDrlgGrid, int nX, int nY); // 0x0067C4A0
 void __fastcall DRLGGRID_ResetGrid(D2DrlgGridStrc* pGrid); // 0x0067CDC0
@@ -571,7 +572,7 @@ int __stdcall STATES_CheckStateMaskUdeadOnUnit(D2UnitStrc* pUnit); // 0x0063A770
 int __stdcall STATES_IsUnitShapeShifted(D2UnitStrc* pUnit); // 0x0063A400
 void __stdcall STATES_ToggleState(D2UnitStrc* pUnit, int nState, int bSet); // 0x00639DB0
 void __stdcall STATLIST_AddStat(D2StatListStrc* pStatList, int nStatId, int nValue, unsigned short nLayer); // 0x00627030
-D2StatListStrc* __stdcall STATLIST_AllocStatList(void* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID); // 0x006251F0
+D2StatListStrc* __stdcall STATLIST_AllocStatList(D2PoolSystemStrc* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID); // 0x006251F0
 void __stdcall STATLIST_FreeStatList(D2StatListStrc* pStatList); // 0x00626CD0
 int __stdcall STATLIST_GetBaseStatValue(D2StatListStrc* pStatList, int nStatId, unsigned short nLayer); // 0x00625350
 int __stdcall STATLIST_GetMaxDurabilityFromUnit(D2UnitStrc* pUnit); // 0x00625E00

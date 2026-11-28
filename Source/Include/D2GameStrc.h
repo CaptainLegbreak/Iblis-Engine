@@ -1,5 +1,6 @@
 // A game in progress on the server: its clients, acts, units, seeds and controllers.
 #pragma once
+struct D2PoolSystemStrc;
 
 #include "D2Structs.h"
 
@@ -31,7 +32,7 @@ struct D2GameStrc
     D2GameLinkStrc tLinkToFull; // 0x0C
     unsigned char unk0x14[0x4]; // 0x14
     D2CriticalSectionStrc* lpCriticalSection; // 0x18
-    void* pMemoryPool; // 0x1C
+    D2PoolSystemStrc* pMemoryPool; // 0x1C
     D2ClientInfoStrc* pClientInfo; // 0x20
     int unk0x24; // 0x24
     unsigned short nGameId; // 0x28

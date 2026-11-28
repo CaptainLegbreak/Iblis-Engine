@@ -23,6 +23,7 @@
 
 #define D2_ABS(x) ((x) >= 0 ? (x) : -(x))
 
+struct D2PoolSystemStrc;
 struct D2DrlgStrc;
 
 struct D2DrlgOrthStrc;
@@ -1473,8 +1474,8 @@ extern "C" const struct d2data_006F0FC0_t gData_006F0FC0 = {
 typedef int (__fastcall* DRLGLINKFN)(D2DrlgLevelLinkDataStrc* pLevelLinkData);
 extern "C" const char gszOutPlaceFile[];                                                                    // 0x006F1500
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
-void __fastcall FOG_FreePool(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);         // 0x0040B480
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
+void __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);         // 0x0040B480
 extern "C" void* __cdecl sub_00681EF0_Memset(void* pDst, int nValue, unsigned int nSize);                   // 0x00681EF0
 
 
@@ -1842,7 +1843,7 @@ static D2DrlgLevelStrc* DRLG_GenerateJungles(D2DrlgLevelStrc* pLevel)
     D2DrlgStrc* pDrlg = pLevel->pDrlg;
     int x = 0;
     int y = 0;
-    void* pMemPool = pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pDrlg->pMempool;
     int nSizeX = pLevelDef->dwSizeX[pDrlg->nDifficulty];
     int nSizeY = pLevelDef->dwSizeY[pDrlg->nDifficulty];
     int nBlocksX = nSizeX / 32;

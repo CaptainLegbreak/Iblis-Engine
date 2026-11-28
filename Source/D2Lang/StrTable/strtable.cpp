@@ -6,6 +6,7 @@
 
 #pragma intrinsic(strcmp)
 
+struct D2PoolSystemStrc;
 struct D2ArchiveHandleStrc;
 
 struct D2StrCacheNodeStrc;
@@ -527,7 +528,7 @@ static inline const Unicode* D2LANG_GetStringFromTblIndex_Inline(unsigned short 
 }
 
 // 0x005259C0
-int __fastcall STRTABLE_LoadStringTables(void* pMemPool, const char* szLanguage, int bExpansion)
+int __fastcall STRTABLE_LoadStringTables(D2PoolSystemStrc* pMemPool, const char* szLanguage, int bExpansion)
 {
     char szLang[4];
     char szMapPath[0x104];

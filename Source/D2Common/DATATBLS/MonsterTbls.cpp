@@ -24,6 +24,7 @@
 #include "D2CommonApi.h"
 #include "FogApi2.h"
 #include "StormApi.h"
+struct D2PoolSystemStrc;
 extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
@@ -570,7 +571,7 @@ extern int gnSoundsGuard; // 0x0096C8B4
 
 D2TxtLinkStrc* gpMonSeqLinker; // 0x0096C7AC
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
@@ -738,7 +739,7 @@ struct D2MonItemPercentTxt
 
 D2MonItemPercentDataTbl gMonItemPercentDataTables; // 0x0096D480
 
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 int __stdcall FOG_GetLinkIndex(D2TxtLinkStrc* pLinker, unsigned int dwCode, int bLogError);                 // 0x006BD130
 

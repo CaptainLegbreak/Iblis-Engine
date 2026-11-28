@@ -29,6 +29,7 @@
 
 #define QFLAG_COMPLETEDBEFORE 15
 
+struct D2PoolSystemStrc;
 struct D2PlayerDataStrc;
 
 struct D2Act4Quest1Strc;
@@ -94,7 +95,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern int gpAct4Q2NpcMessages[]; // 0x0073DBB8
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 bool __fastcall ACT4Q2_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId, D2UnitStrc* pPlayer, D2BitBufferStrc* pQuestFlags, D2UnitStrc* pNPC); // 0x005B4450
 

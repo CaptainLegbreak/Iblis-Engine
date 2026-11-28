@@ -80,6 +80,7 @@
 
 #define D2_MIN(a, b) ((a) < (b) ? (a) : (b))
 
+struct D2PoolSystemStrc;
 struct D2TCExShortStrc;
 
 struct D2SkillsTxt;
@@ -179,11 +180,11 @@ struct D2SkillCalcStrc
     int nSkillLevel;
 };
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
-void* __fastcall GFXUTIL_GetNextRosterInfo(D2UnitStrc* pUnit); // 0x004DC0B0
+D2PoolSystemStrc* __fastcall GFXUTIL_GetNextRosterInfo(D2UnitStrc* pUnit); // 0x004DC0B0
 
 
 
@@ -227,7 +228,7 @@ int __stdcall COLLISION_CheckAnyCollisionWithPattern(D2ActiveRoomStrc* pRoom, in
 
 struct D2SkillFormulaCtxStrc { D2UnitStrc* pUnit; int nSkillId; int nSkillLevel; };
 
-int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 extern "C" const char gszSkillsSourceFile;
 
@@ -298,7 +299,7 @@ static BOOL SKILLS_HasChargesLeft(D2UnitStrc* pUnit, D2SkillStrc* pSkill);
 
 int __stdcall SKILLS_GetUseState(D2UnitStrc* pUnit, D2SkillStrc* pSkill);
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __stdcall sub_00646010_Empty(int nUnused1, int nUnused2, int nUnused3);
 
@@ -534,7 +535,7 @@ void __stdcall sub_00643610_Nop(int nUnused)
 {
 }
 
-inline void* UNITS_GetMemoryPool(D2UnitStrc* pUnit)
+inline D2PoolSystemStrc* UNITS_GetMemoryPool(D2UnitStrc* pUnit)
 {
     return !pUnit ? 0 : pUnit->pMemoryPool;
 }
@@ -753,7 +754,7 @@ int __stdcall SKILLS_GetRange(D2SkillStrc* pSkill)
 }
 
 // 0x006438B0
-D2SkillListStrc* __stdcall SKILLS_AllocSkillList(void* pMemPool)
+D2SkillListStrc* __stdcall SKILLS_AllocSkillList(D2PoolSystemStrc* pMemPool)
 {
     D2SkillListStrc* pSkillList = (D2SkillListStrc*)sub_0040B430(pMemPool, sizeof(D2SkillListStrc), ".\\SKILLS\\Skills.cpp", 895, 0);
     memset(pSkillList, 0x00, sizeof(D2SkillListStrc));

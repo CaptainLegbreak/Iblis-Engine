@@ -7,6 +7,7 @@
 // Ai/AiThink4_005E17E0.cpp, Ai/AiThink4_005ED2A0.cpp, MISSILES/MissMode_005ADF10.cpp, MONSTER/MonsterUnique_005A49B0.cpp, MONSTER/Monster_00573CB0.cpp, PLAYER/PlayerPets.cpp, Quests/QUESTS.CPP, SKILLS/SkillItem_005C1560.cpp, SKILLS/SkillNec.cpp, UNIT/Party.cpp.
 // Their code depends on how many declarations precede it, and this header changes that.
 
+struct D2PoolSystemStrc;
 struct D2Act1Quest5Strc;
 struct D2Act4Quest2Strc;
 struct D2ActiveRoomStrc;
@@ -341,7 +342,7 @@ void __fastcall QUESTS_SequenceCycler(D2GameStrc* pGame, D2UnitStrc* pPlayer, in
 D2UnitStrc* __fastcall QUESTS_CreateItem(D2GameStrc* pGame, D2UnitStrc* pPlayer, unsigned int dwCode, int nLevel, int nQuality, int bDroppable); // 0x005466B0
 void __fastcall OBJRGN_FreeObjectControl(D2GameStrc* ptGame); // 0x00546E90
 void __fastcall MONSTERREGION_InitializeAll(void* pool,D2MonsterRegionStrc** regions,D2SeedStrc* seed,unsigned int lowSeed,unsigned char difficulty,int expansion); // 0x005479C0
-void __fastcall MONSTERREGION_FreeAll(void* pMemPool, D2MonsterRegionStrc** ppMonsterRegion); // 0x00547B50
+void __fastcall MONSTERREGION_FreeAll(D2PoolSystemStrc* pMemPool, D2MonsterRegionStrc** ppMonsterRegion); // 0x00547B50
 D2MonsterRegionStrc* __fastcall MONSTERREGION_GetMonsterRegionFromLevelId(D2MonsterRegionStrc** ppMonsterRegion, int nLevelId); // 0x00547BB0
 void __fastcall MONSTERREGION_InitializeForGame(D2GameStrc* pGame); // 0x00547D20
 void __fastcall MONSTERREGION_UndoMonsterKill(D2MonsterRegionStrc** ppMonsterRegion, D2UnitStrc* pUnit); // 0x00547E90

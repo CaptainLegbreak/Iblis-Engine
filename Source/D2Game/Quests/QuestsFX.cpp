@@ -21,6 +21,7 @@
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 #define MAX(a, b) ((a) < (b) ? (b) : (a))
 
+struct D2PoolSystemStrc;
 union D2SeedStrc;
 struct D2StaticPathStrc;
 struct D2UnitFindArgStrc;
@@ -43,7 +44,7 @@ enum D2C_M96QuestsFxConstants
 };
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
-void __stdcall UNITFINDS_InitializeUnitFindData(void* pMemPool, D2UnitFindDataStrc* pUnitFindData, D2ActiveRoomStrc* pRoom, int nX, int nY, int nSize, void* pfnUnitTest, D2UnitFindArgStrc* pUnitFindArg); // 0x0065A950
+void __stdcall UNITFINDS_InitializeUnitFindData(D2PoolSystemStrc* pMemPool, D2UnitFindDataStrc* pUnitFindData, D2ActiveRoomStrc* pRoom, int nX, int nY, int nSize, void* pfnUnitTest, D2UnitFindArgStrc* pUnitFindArg); // 0x0065A950
 unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"

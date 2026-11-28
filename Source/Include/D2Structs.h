@@ -1,6 +1,7 @@
 // Shared layouts of the game's core structures (names after D2MOO, MIT; see NOTICE-D2MOO).
 // Offsets are 1.14d's. A field the game uses in more than one way is a union; unknown bytes are unk0xNN.
 #pragma once
+struct D2PoolSystemStrc;
 
 #include "D2Constants.h"
 
@@ -79,7 +80,7 @@ typedef void (__fastcall* StatListValueChangeFunc)(D2GameStrc* pGame, D2UnitStrc
 
 struct D2StatListStrc
 {
-    void* pMemPool; // 0x00
+    D2PoolSystemStrc* pMemPool; // 0x00
     D2UnitStrc* pUnit; // 0x04
     int dwOwnerType; // 0x08
     int dwOwnerId; // 0x0C
@@ -115,7 +116,7 @@ struct D2UnitStrc
 {
     int dwUnitType; // 0x00
     int dwClassId; // 0x04
-    void* pMemoryPool; // 0x08
+    D2PoolSystemStrc* pMemoryPool; // 0x08
     unsigned int dwUnitId; // 0x0C
     union // 0x10
     {
@@ -260,7 +261,7 @@ struct D2CorpseStrc
 struct D2InventoryStrc
 {
     unsigned int dwSignature; // 0x00
-    void* pMemPool; // 0x04
+    D2PoolSystemStrc* pMemPool; // 0x04
     D2UnitStrc* pOwner; // 0x08
     D2UnitStrc* pFirstItem; // 0x0C
     D2UnitStrc* pLastItem; // 0x10

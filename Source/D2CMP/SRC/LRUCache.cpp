@@ -2,9 +2,10 @@
 #include "D2CmpCache.h"
 #include "FogApi.h"
 
+struct D2PoolSystemStrc;
 struct D2LRUCacheStrc
 {
-    void* pMemPool;
+    D2PoolSystemStrc* pMemPool;
     unsigned int nCostLimit;
     unsigned int nCostInUse;
     unsigned int nNodesInUse;
@@ -21,9 +22,9 @@ struct D2LRUCacheStrc
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 extern "C" const char gszLRUCacheSourceFile[];                                                              // 0x006E5F1C
 
@@ -48,10 +49,10 @@ static D2LRUNodeStrc* __fastcall LRUCacheUnlinkUsed(D2LRUCacheStrc* pCache, D2LR
 
 static D2LRUNodeStrc* __fastcall LRUCacheTakeFreeNode(D2LRUCacheStrc* pCache, unsigned int nSize);
 
-void __fastcall LRUCacheInit(D2LRUCacheStrc* pCache, void* pMemPool, unsigned int nMaxSize, void (__fastcall* pfnRelease)(D2LRUNodeStrc*), unsigned int nNodes);
+void __fastcall LRUCacheInit(D2LRUCacheStrc* pCache, D2PoolSystemStrc* pMemPool, unsigned int nMaxSize, void (__fastcall* pfnRelease)(D2LRUNodeStrc*), unsigned int nNodes);
 
 // 0x00609020
-void __fastcall LRUCacheInit(D2LRUCacheStrc* pCache, void* pMemPool, unsigned int nCostLimit, void (__fastcall* pfnRelease)(D2LRUNodeStrc*), unsigned int nNodes)
+void __fastcall LRUCacheInit(D2LRUCacheStrc* pCache, D2PoolSystemStrc* pMemPool, unsigned int nCostLimit, void (__fastcall* pfnRelease)(D2LRUNodeStrc*), unsigned int nNodes)
 {
     pCache->pMemPool = pMemPool;
     pCache->nCostLimit = nCostLimit;

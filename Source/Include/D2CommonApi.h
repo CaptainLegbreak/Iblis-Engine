@@ -2,6 +2,7 @@
 // D2Common's exports that the other modules call most: units, rooms, paths, stats, states, quests, skills
 // and the data tables.
 
+struct D2PoolSystemStrc;
 struct D2ActiveRoomStrc;
 struct D2BitBufferStrc;
 struct D2CoordStrc;
@@ -71,7 +72,7 @@ D2ObjectsTxt* __stdcall DATATBLS_GetObjectsTxtRecord(int nObjectId); // 0x00640E
 D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitAndState(D2UnitStrc* pUnit, int nState); // 0x006256B0
 int __stdcall STATLIST_GetMaxLifeFromUnit(D2UnitStrc* pUnit); // 0x00625D10
 void __stdcall DUNGEON_GetAdjacentRoomsListFromRoom(D2ActiveRoomStrc* ptRoom, D2ActiveRoomStrc*** pppRoomList, int* pNumRooms); // 0x00619790
-D2StatListStrc* __stdcall STATLIST_AllocStatList(void* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID); // 0x006251F0
+D2StatListStrc* __stdcall STATLIST_AllocStatList(D2PoolSystemStrc* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID); // 0x006251F0
 void __stdcall STATLIST_SetStatIfListIsValid(D2StatListStrc* pStatList, int nStatId, int nValue, int nLayer); // 0x00627150
 D2UnitStrc* __stdcall INVENTORY_GetFirstItem(D2InventoryStrc* pInventory); // 0x0063B2C0
 D2UnitStrc* __stdcall INVENTORY_GetNextItem(D2UnitStrc* pItem); // 0x0063DFA0
@@ -180,7 +181,7 @@ int __stdcall STATLIST_GetDefenseFromUnit(D2UnitStrc* pUnit); // 0x00626020
 int __stdcall ITEMS_GetTotalMaxStack(D2UnitStrc* hItem); // 0x006295B0
 int __stdcall ITEMS_HasDurability(D2UnitStrc* pItem); // 0x00629930
 int __stdcall INVENTORY_CompareWithItemsParentInventory(D2InventoryStrc* pInventory, D2UnitStrc* pItem); // 0x0063AD50
-void __stdcall QUESTRECORD_FreeRecord(void* pMemPool, D2BitBufferStrc* pQuestRecord); // 0x0065C490
+void __stdcall QUESTRECORD_FreeRecord(D2PoolSystemStrc* pMemPool, D2BitBufferStrc* pQuestRecord); // 0x0065C490
 unsigned int __fastcall SEED_GetLowSeed(D2SeedStrc* pSeed); // 0x00650E50
 int __stdcall DATATBLS_CalculateMonsterStatsByLevel(int nMonsterId, int nGameType, int nDifficulty, int nLevel, short nFlags, D2MonStatsInitStrc* pMonStatsInit); // 0x006538A0
 int __stdcall STATLIST_GetBaseStatsData(D2StatListStrc* pStatList, D2StatStrc* pOutStatBuffer, int nBufferSize); // 0x00625C90
@@ -193,7 +194,7 @@ void __stdcall DUNGEON_UpdateAndFreeInactiveRooms(D2DrlgActStrc* pAct); // 0x006
 D2UnitStrc* __stdcall UNITFINDS_FindUnitInNeighboredRooms(D2ActiveRoomStrc* hRoom, int nUnitType, int nClassId); // 0x0065A620
 int __fastcall UNITS_GetHitClass(D2UnitStrc* pUnit); // 0x00623C20
 int __stdcall SKILLS_GetSkillModeFromUnit(D2UnitStrc* pUnit, D2SkillStrc* pSkill); // 0x00643860
-void __stdcall PATH_AllocDynamicPath(void* pMemPool, D2ActiveRoomStrc* pRoom, int nX, int nY, D2UnitStrc* pUnit, int bSetFlag); // 0x00649D00
+void __stdcall PATH_AllocDynamicPath(D2PoolSystemStrc* pMemPool, D2ActiveRoomStrc* pRoom, int nX, int nY, D2UnitStrc* pUnit, int bSetFlag); // 0x00649D00
 void __stdcall MISSILE_AllocMissileData(D2UnitStrc* pMissile); // 0x0064A100
 D2SkillStrc* __stdcall SKILLS_GetFirstSkillFromSkillList(D2SkillListStrc* pSkillList); // 0x00643910
 int __stdcall D2Common_10399(D2UnitStrc* a,D2UnitStrc* b); // 0x00641530
@@ -206,7 +207,7 @@ int __stdcall ITEMS_GetTransactionCost(D2UnitStrc* pUnit, D2UnitStrc* pItem, int
 int __stdcall INVENTORY_CanItemsBeExchanged(D2InventoryStrc* pInventory, D2UnitStrc* pItem, int nX, int nY, int nInventoryRecordId, D2UnitStrc** ppOtherItem, unsigned char nPage, int bExcludeCube); // 0x0063BB20
 D2UnitStrc* __stdcall INVENTORY_GetItemFromInventoryPage(D2InventoryStrc* pInventory, int nGridX, int nGridY, int* pX, int* pY, int nInventoryRecordId, unsigned char nPage); // 0x0063BD10
 D2UnitStrc* __stdcall INVENTORY_GetItemFromBeltSlot(D2InventoryStrc* pInventory, int nSlotId); // 0x0063C7F0
-void __stdcall CHAT_FreeHoverMsg(void* pMemPool, D2HoverTextStrc* pHoverMsg); // 0x006611A0
+void __stdcall CHAT_FreeHoverMsg(D2PoolSystemStrc* pMemPool, D2HoverTextStrc* pHoverMsg); // 0x006611A0
 int __stdcall MISSILE_GetCurrentFrame(D2UnitStrc* pMissile); // 0x0064A380
 int __stdcall MISSILE_GetRemainingFrames(D2UnitStrc* pMissile); // 0x0064A3B0
 int __stdcall UNITS_IsObjectInInteractRange(D2UnitStrc* pUnit, D2UnitStrc* pObject); // 0x00623660
@@ -234,14 +235,14 @@ unsigned int __stdcall ITEMS_CheckIfBeltable(D2UnitStrc* pItem); // 0x0062BAD0
 int __stdcall ITEMS_GetClassOfClassSpecificItem(D2UnitStrc* pItem); // 0x0062C0B0
 unsigned char __stdcall CHAT_GetLangIdFromHoverMsg(D2HoverTextStrc* pHoverMsg); // 0x00661220
 int __stdcall UNITS_GetBlockRate(D2UnitStrc* pUnit, int bExpansion); // 0x00622720
-void __stdcall WAYPOINTS_FreeWaypointData(void* pMemPool, D2WaypointDataStrc* pData); // 0x00660FD0
+void __stdcall WAYPOINTS_FreeWaypointData(D2PoolSystemStrc* pMemPool, D2WaypointDataStrc* pData); // 0x00660FD0
 void __stdcall UNITS_InitializeStaticPath(D2UnitStrc* ptUnit, D2ActiveRoomStrc* pRoom, D2CoordStrc tCoord); // 0x00620AE0
 int __stdcall UNITROOM_AddUnitToRoom(D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom); // 0x0064C350
 void __stdcall UNITS_SetObjectPortalFlags(D2UnitStrc* pUnit, unsigned char nPortalFlag); // 0x00622300
 int __stdcall ITEMS_IsCharmUsable(D2UnitStrc* pItem, D2UnitStrc* pPlayer); // 0x0062FF70
 void __stdcall INVENTORY_FreeInventory(D2InventoryStrc* pInventory); // 0x0063AC40
 void __stdcall D2Common_10228(D2UnitStrc* pUnit); // 0x00649F50
-void __stdcall PATH_FreeDynamicPath(void* pMemPool, D2DynamicPathStrc* pDynamicPath); // 0x00648460
+void __stdcall PATH_FreeDynamicPath(D2PoolSystemStrc* pMemPool, D2DynamicPathStrc* pDynamicPath); // 0x00648460
 int __stdcall SKILLS_GetPlayerSkillCount(int nClassId); // 0x00646140
 D2SkillStrc* __stdcall SKILLS_GetNextSkill(D2SkillStrc* pSkill); // 0x006438F0
 const D2RunesTxt* __stdcall ITEMS_GetRunesTxtRecordFromItem(D2UnitStrc* pItem); // 0x0062BED0
@@ -279,7 +280,7 @@ int __stdcall ITEMS_GetLevelRequirement(D2UnitStrc* pItem, D2UnitStrc* pUnit); /
 int __stdcall ITEMS_IsClassValid(D2UnitStrc* pItem); // 0x0062C060
 void __stdcall CHAT_SetUsedInHoverMsg(D2HoverTextStrc* pHoverMsg, int bUsed); // 0x00661210
 unsigned int __stdcall CHAT_GetTimeoutFromHoverMsg(D2HoverTextStrc* pHoverMsg); // 0x006611D0
-D2TextHeaderStrc* __stdcall TEXT_AllocTextHeader(void* pMemPool); // 0x00661240
+D2TextHeaderStrc* __stdcall TEXT_AllocTextHeader(D2PoolSystemStrc* pMemPool); // 0x00661240
 void __stdcall TEXT_SortTextNodeListByStringId(D2TextHeaderStrc* pTextHead); // 0x006616E0
 void __stdcall STATLIST_FreeModStats(D2UnitStrc* pUnit); // 0x00625960
 void __stdcall DUNGEON_UpdatePops(D2ActiveRoomStrc* ptRoom, int nX, int nY, int bOtherRoom); // 0x0061ACD0
@@ -317,7 +318,7 @@ D2BookDataTbl* __fastcall DATATBLS_GetBookDataTables(); // 0x006374A0
 int __stdcall STATLIST_SetStatValue(D2StatListStrc* pStatList, int nStatId, int nValue, unsigned short nLayer); // 0x006270B0
 void __stdcall TEXT_AddNodeToTextList(D2TextHeaderStrc* pTextHeader, short nStringId, int nMenu); // 0x006612F0
 void __stdcall WAYPOINTS_ActivateWaypoint(D2WaypointDataStrc* pData, unsigned short wField); // 0x00660EC0
-D2SkillListStrc* __stdcall SKILLS_AllocSkillList(void* pMemPool); // 0x006438B0
+D2SkillListStrc* __stdcall SKILLS_AllocSkillList(D2PoolSystemStrc* pMemPool); // 0x006438B0
 int __stdcall ITEMS_GetSpellIcon(D2UnitStrc* hItem); // 0x0062BB20
 D2MagicAffixDataTbl* __stdcall DATATBLS_GetMagicAffixDataTables(); // 0x00633ED0
 int __stdcall ITEMMODS_CanItemHaveMagicAffix(D2UnitStrc* pItem, const D2MagicAffixTxt* pMagicAffixTxtRecord); // 0x0065E620
@@ -406,7 +407,7 @@ D2UnitStrc* __stdcall DUNGEON_GetWarpTileFromRoomAndSourceLevelId(D2ActiveRoomSt
 void __stdcall ITEMS_SetOwnerId(D2UnitStrc* pItem, int nOwnerGUID); // 0x00629ED0
 void __stdcall WAYPOINTS_CopyAndValidateWaypointData(D2WaypointDataStrc* pDestination, D2WaypointDataStrc* pSource); // 0x00661030
 int __stdcall MONSTERS_GetHirelingExpForNextLevel(int nLevel, int nExpPerLevel); // 0x00663790
-D2MapAIStrc* __fastcall DRLGPRESET_CreateCopyOfMapAI(void* pMemPool, D2MapAIStrc* pMapAI); // 0x006660B0
+D2MapAIStrc* __fastcall DRLGPRESET_CreateCopyOfMapAI(D2PoolSystemStrc* pMemPool, D2MapAIStrc* pMapAI); // 0x006660B0
 int __stdcall STATLIST_GetSkillLevel(D2StatListStrc* pStatList); // 0x00626100
 int __stdcall UNITS_IsInMovingMode(D2UnitStrc* hUnit); // 0x00622D00
 int __stdcall D2COMMON_11021(D2UnitStrc* pUnit); // 0x00645680

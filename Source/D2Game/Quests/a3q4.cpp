@@ -14,6 +14,7 @@
 
 #define QFLAG_PRIMARYGOALDONE 13
 
+struct D2PoolSystemStrc;
 struct D2ActiveRoomStrc;
 
 struct D2GameStrc;
@@ -48,7 +49,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern char gpAct3Q4NpcMessages[]; // 0x007401D0
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId); // 0x00543640
 

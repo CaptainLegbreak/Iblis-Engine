@@ -26,6 +26,7 @@
 
 #define STATLIST_SET 0x2000
 
+struct D2PoolSystemStrc;
 struct D2GameStrc;
 
 struct D2DrlgActStrc;
@@ -64,7 +65,7 @@ extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 extern "C" void* __cdecl memmove(void* pDst, const void* pSrc, unsigned int nSize); // 0x00683840
 
-void* __fastcall FOG_ReallocPool(void* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
+void* __fastcall FOG_ReallocPool(D2PoolSystemStrc* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
 
 int __stdcall ENVIRONMENT_GetPeriodOfDayFromAct(D2DrlgActStrc* pAct, int* pBaseTime); // 0x0061C100
 
@@ -107,7 +108,7 @@ int __stdcall STATLIST_GetBaseStat(D2StatListStrc* pStatList, int nLayer_StatId,
 
 int __stdcall STATLIST_GetTotalStat(D2StatListStrc* pStatList, int nLayer_StatId, D2ItemStatCostTxt* pItemStatCostTxtRecord); // 0x00624F60
 
-int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0);            // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0);            // 0x0040B480
 
 void __stdcall D2Common_ExpireStatList(D2StatListStrc* pStatList);                                 // 0x006269F0
 
@@ -156,7 +157,7 @@ struct D2StatesTxt;
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern unsigned int gdwInvBitMasks[]; // 0x006CE2E8
 
@@ -182,9 +183,9 @@ static int STATLIST_FindStatInsertIndex(D2StatsArrayStrc* pStatsArray, int nLaye
 
 static int __stdcall STATLIST_FindFirstStatIndex(D2StatsArrayStrc* pStatsArray, int nLayer_StatId);
 
-static D2StatStrc* __stdcall STATLIST_InsertStatOrFail(void* pMemPool, D2StatsArrayStrc* pStatsArray, int nLayer_StatId);
+static D2StatStrc* __stdcall STATLIST_InsertStatOrFail(D2PoolSystemStrc* pMemPool, D2StatsArrayStrc* pStatsArray, int nLayer_StatId);
 
-static void __stdcall STATLIST_RemoveStat(void* pMemPool, D2StatsArrayStrc* pStatsArray, D2StatStrc* pStat);
+static void __stdcall STATLIST_RemoveStat(D2PoolSystemStrc* pMemPool, D2StatsArrayStrc* pStatsArray, D2StatStrc* pStat);
 
 static int STATLIST_FindModStatInsertIndex(D2ModStatsArrayStrc* pStatsArray, int nLayer_StatId);
 
@@ -308,7 +309,7 @@ static D2StatStrc* STATLIST_FindStat(D2StatsArrayStrc* pStatsArray, int nLayer_S
 }
 
 // 0x00624C80
-static D2StatStrc* __stdcall STATLIST_InsertStatOrFail(void* pMemPool, D2StatsArrayStrc* pStatsArray, int nLayer_StatId)
+static D2StatStrc* __stdcall STATLIST_InsertStatOrFail(D2PoolSystemStrc* pMemPool, D2StatsArrayStrc* pStatsArray, int nLayer_StatId)
 {
     const int nIndex = STATLIST_FindStatInsertIndex(pStatsArray, nLayer_StatId);
     if (nIndex < 0)
@@ -335,7 +336,7 @@ static D2StatStrc* __stdcall STATLIST_InsertStatOrFail(void* pMemPool, D2StatsAr
 }
 
 // 0x00624D10
-static void __stdcall STATLIST_RemoveStat(void* pMemPool, D2StatsArrayStrc* pStatsArray, D2StatStrc* pStat)
+static void __stdcall STATLIST_RemoveStat(D2PoolSystemStrc* pMemPool, D2StatsArrayStrc* pStatsArray, D2StatStrc* pStat)
 {
     const int nIndex = pStat - pStatsArray->pStat;
     if (nIndex < pStatsArray->nStatCount)
@@ -569,7 +570,7 @@ static void __stdcall STATLIST_UpdateUnitStat(D2StatListExStrc* pStatListEx, int
 }
 
 // 0x006251F0
-D2StatListStrc* __stdcall STATLIST_AllocStatList(void* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID)
+D2StatListStrc* __stdcall STATLIST_AllocStatList(D2PoolSystemStrc* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID)
 {
     D2StatListStrc* pStatList = (D2StatListStrc*)sub_0040B430(pMemPool, 0x3C, ".\\Stats\\StatsEx.cpp", 1386, 0);
     memset(pStatList, 0x00, 0x3C);

@@ -11,6 +11,7 @@
 #include "FogApi.h"
 #include "FogApi2.h"
 
+struct D2PoolSystemStrc;
 static int DccTestBit(const unsigned int* pBits, int nBit);
 
 static unsigned int __stdcall CodecReadBits(int nNumBits, D2CmpBitCursorStrc* pBitState); // 0x0060B200
@@ -690,7 +691,7 @@ static inline void __stdcall sub_0060B140_BitBufferInit(int nSize, unsigned int*
 }
 
 // 0x0060BFF0
-int __fastcall CodecDecodeDccData(unsigned char* pData, void* pMemPool, int nSize, unsigned int dwFile, D2DccOutTableStrc* pTable, int nFirstDir, int nDirs, int* pnOutSize, const char* szFile)
+int __fastcall CodecDecodeDccData(unsigned char* pData, D2PoolSystemStrc* pMemPool, int nSize, unsigned int dwFile, D2DccOutTableStrc* pTable, int nFirstDir, int nDirs, int* pnOutSize, const char* szFile)
 {
     D2CmpBitCursorStrc tCursor;
     D2CmpBitCursorStrc tEqual;

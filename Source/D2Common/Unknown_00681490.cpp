@@ -7,6 +7,7 @@
 
 #include "D2DrlgRooms.h"
 
+struct D2PoolSystemStrc;
 static D2DrlgPathNodeStrc* __stdcall sub_00681630_SearchRoad(D2DrlgPathSearchStrc* pSearch, int nMaxCost, D2DrlgLevelStrc* pLevel, D2DrlgVertexStrc* pGoal);
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
@@ -249,7 +250,7 @@ D2DrlgPathNodeStrc* __stdcall sub_M_Emit_006814E0(D2DrlgPathSearchStrc* pSearch,
 // 0x006817D0
 int __fastcall sub_006817D0_BuildRoad(D2DrlgLevelStrc* pLevel, int nRoad)
 {
-    void* pMemPool = pLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pLevel->pDrlg->pMempool;
     D2DrlgVertexStrc tGoal = {};
 
     D2DrlgOutdoorInfoStrc* pInfo = pLevel->pOutdoors;

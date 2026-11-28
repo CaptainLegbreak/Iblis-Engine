@@ -670,7 +670,7 @@ int __fastcall sub_00663B40_SetBonusStatList(D2UnitStrc* pUnit, D2UnitStrc* pIte
 
     nState = gnItemSetStates[nIndex];
     int const nItemId = pItem->dwUnitId;
-    void* const pPool = pUnit->pMemoryPool;
+    D2PoolSystemStrc* const pPool = pUnit->pMemoryPool;
     pStatList = STATLIST_AllocStatList(pPool, 0, 0, !pItem ? 6 : pItem->dwUnitType, nItemId);
     D2COMMON_10475_PostStatToStatList(pUnit, pStatList, 1);
     STATLIST_SetState(pStatList, nState);

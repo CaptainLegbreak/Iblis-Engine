@@ -91,6 +91,7 @@
 
 #define STAT_LEVEL 12
 
+struct D2PoolSystemStrc;
 struct D2InventoryStrc;
 
 struct D2ItemDataStrc;
@@ -161,7 +162,7 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
@@ -430,7 +431,7 @@ static int ITEMS_HasSocketedItem(D2UnitStrc* pItem);
 
 int __stdcall ITEMS_IsSocketable(D2UnitStrc* pItem);
 
-void* __fastcall GFXUTIL_GetNextRosterInfo(D2UnitStrc* pUnit);                                         // 0x004DC0B0
+D2PoolSystemStrc* __fastcall GFXUTIL_GetNextRosterInfo(D2UnitStrc* pUnit);                                         // 0x004DC0B0
 
 void __stdcall UNITS_SetXForStaticUnit(D2UnitStrc* pUnit, int nX);                                          // 0x00620470
 
@@ -589,7 +590,7 @@ extern "C" int __fastcall sub_0045AE20_GetY(D2UnitStrc* pItem);
 extern "C" const char gszInventorySource_006EA918;
 
 // 0x00627C90
-void __stdcall ITEMS_AllocItemData(void* pMemPool, D2UnitStrc* pItem)
+void __stdcall ITEMS_AllocItemData(D2PoolSystemStrc* pMemPool, D2UnitStrc* pItem)
 {
     if (pItem && pItem->dwUnitType == UNIT_ITEM)
     {
@@ -627,7 +628,7 @@ inline unsigned char ITEMS_GetInvPage(D2UnitStrc* pItem)
 }
 
 // 0x00627D00
-void __stdcall ITEMS_FreeItemData(void* pMemPool, D2UnitStrc* pItem)
+void __stdcall ITEMS_FreeItemData(D2PoolSystemStrc* pMemPool, D2UnitStrc* pItem)
 {
     if (pItem && pItem->dwUnitType == UNIT_ITEM)
     {

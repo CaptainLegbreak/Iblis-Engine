@@ -20,6 +20,7 @@
 #include "D2LanguageNames.h"
 #include "StormApi.h"
 #include "D2CommonApi.h"
+struct D2PoolSystemStrc;
 extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
@@ -83,7 +84,7 @@ extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 int gbEnableAllCubeRecipes; // 0x0088CAC0
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 
 void __fastcall D2GAME_PACKETS_SendPacket0x63_WaypointMenu(D2ClientStrc* pClient, D2GSPacketSrv78* pPacket); // 0x0053CAD0
@@ -271,7 +272,7 @@ static int __stdcall PLRTRADE_RemoveCubeInputs(D2GameStrc* game,D2UnitStrc* unit
 
 extern "C" const char szPlrTradeCpp[];                                                                      // 0x006E11D8
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 
 
 
@@ -317,7 +318,7 @@ static int PLRTRADE_HasItemsInCube(D2UnitStrc* pPlayer);
 
 
 
-void __fastcall FOG_FreePool(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 #define PACKETSIZE06_HEADER 0x92
 

@@ -11,6 +11,7 @@
 #include "FogApi.h"
 #include "D2ClientApi.h"
 
+struct D2PoolSystemStrc;
 extern "C" const char gszEmptyAssertText;                                                     // 0x006CC837
 
 
@@ -72,7 +73,7 @@ static void __stdcall DRLGMAZE_InitBasicMazeLayout(int nRoomsPerDirection, D2Drl
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 // Kept noinline: a static whose callers here pass its arguments in registers (the #368 case).
 static __declspec(noinline) int __stdcall DRLGMAZE_LinkMazeRooms(D2DrlgRoomStrc* pDrlgRoom, int nDirection, D2DrlgRoomStrc* pNewRoomEx);
@@ -113,7 +114,7 @@ void __fastcall DRLGMAZE_PlaceSummonerPreset(D2DrlgLevelStrc* pLevel);
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);          // 0x0045C390
 
@@ -852,7 +853,7 @@ void __stdcall DRLGMAZE_BuildBasicMaze(D2DrlgLevelStrc* pLevel)
 // 0x00671320
 static void __stdcall DRLGMAZE_FillBlankMazeSpaces(D2DrlgLevelStrc* pLevel, int nLevelPrest, D2DrlgRoomStrc* pIgnoreRoomEx)
 {
-    void* pMemPool = pLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pLevel->pDrlg->pMempool;
     D2DrlgRoomStrc** ppDrlgRooms = (D2DrlgRoomStrc**)FOG_AllocPool(pMemPool, sizeof(D2DrlgRoomStrc*) * pLevel->nRooms, ".\\DRLG\\Maze.cpp", 625, 0);
 
     D2DrlgRoomStrc* pTemp = pLevel->ptRoomFirst;
@@ -1026,7 +1027,7 @@ static int DRLGMAZE_CheckIfMayPlaceAdjacentPresetRoom(D2DrlgRoomStrc* pDrlgRoom,
 
 static void __stdcall DRLGMAZE_PickDrlgMapFile(D2DrlgMapStrc* pDrlgMap, int nPickedFile, D2DrlgLevelStrc* pLevel)
 {
-    void* pMemPool = pLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pLevel->pDrlg->pMempool;
     if (nPickedFile != -1)
     {
         pDrlgMap->nPickedFile = nPickedFile;

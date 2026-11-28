@@ -62,6 +62,7 @@
 #define CLIENTSAVEFLAG_INVALID_10 0x10
 #define PREVIEW_STRING_LENGTH 0x21
 
+struct D2PoolSystemStrc;
 struct D2CorpseStrc;
 struct D2SkillListStrc;
 struct D2ServerCallbackFunctions;
@@ -488,7 +489,7 @@ struct D2QuestGUIDStrc;
 
 D2UnitProxyStrc gaUnitProxyItemCache[17]; // 0x00883D78
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
@@ -588,7 +589,7 @@ enum
 
 extern "C" const char szSUnitProxyCppFile[];                                                                // 0x006E0A30
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 
 
 
@@ -682,7 +683,7 @@ extern EventCallbackFunction gpfnObjectEventFunctions[15]; // 0x006E19B0
 
 extern MonEventFunc const gpMonsterEventFunctions[16]; // 0x006E2490
 
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 
 void __fastcall PARTY_IteratePartyMembersInSameLevel(D2GameStrc* pGame, D2UnitStrc* pUnit, PartyCallbackFunction pCallback, void* pArgs); // 0x005405A0

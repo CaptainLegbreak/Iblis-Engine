@@ -20,6 +20,7 @@
 #include "FogApi.h"
 #include "D2CommonApi2.h"
 
+struct D2PoolSystemStrc;
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 extern const unsigned int gdwBitMasks[32]; // 0x006CE268
@@ -125,11 +126,11 @@ struct D2UnitPacketPrecacheStrc
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
-void* __fastcall GFXUTIL_GetNextRosterInfo(D2UnitStrc* pUnit); // 0x004DC0B0
+D2PoolSystemStrc* __fastcall GFXUTIL_GetNextRosterInfo(D2UnitStrc* pUnit); // 0x004DC0B0
 
 
 void __fastcall D2GAME_PACKETS_SendPacket0x11(D2ClientStrc* pClient, int nUnitType, int nUnitGUID, int nOverlay); // 0x0053D850
@@ -206,7 +207,7 @@ void __fastcall MISSILES_SyncToClient(D2ClientStrc*, D2GameStrc*, D2UnitStrc*, i
 
 #define MESSAGE_HEADER 0xA1
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 
 struct D2UnitPacketListStrc
 {

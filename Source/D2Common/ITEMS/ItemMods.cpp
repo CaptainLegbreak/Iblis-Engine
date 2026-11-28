@@ -60,6 +60,7 @@
 
 #define D2_MIN(a, b) ((a) < (b) ? (a) : (b))
 
+struct D2PoolSystemStrc;
 union D2SeedStrc;
 
 struct D2PropertyStrc;
@@ -733,7 +734,7 @@ static D2StatListStrc* __stdcall ITEMMODS_GetOrCreateStatList(D2UnitStrc* pUnit,
         if (!hStatsList)
         {
             int nUnitGUID = pUnit->dwUnitId;
-            void* pMemPool = pUnit->pMemoryPool;
+            D2PoolSystemStrc* pMemPool = pUnit->pMemoryPool;
             hStatsList = STATLIST_AllocStatList(pMemPool, fFilter, 0, 4, nUnitGUID);
             D2COMMON_10475_PostStatToStatList(pUnit, hStatsList, 1);
             STATLIST_SetState(hStatsList, nState);

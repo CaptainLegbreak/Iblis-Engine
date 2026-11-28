@@ -11,6 +11,7 @@
 #include "D2CMPApi.h"
 #include "D2ClientApi.h"
 
+struct D2PoolSystemStrc;
 #define RAYTRACE_LOAD_ROOM() \
     nRoomX = pRoom->tCoords.nSubtileX; \
     nRoomY = pRoom->tCoords.nSubtileY; \
@@ -61,7 +62,7 @@ void __fastcall DUNGEON_SetCollisionGridInRoom(D2ActiveRoomStrc* pRoom, void* pC
 
 int __fastcall DUNGEON_AreSubtileCoordinatesInsideRoom(D2DrlgCoordsStrc* pDrlgCoords, int nX, int nY); // 0x00619DF0
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
@@ -339,7 +340,7 @@ void __fastcall COLLISION_ReplaceTileCollision(D2ActiveRoomStrc* pRoom, D2DrlgTi
 extern "C" unsigned __cdecl COLLISION_ReturnZero() { return 0; }
 
 // 0x0064C900
-void __fastcall COLLISION_AllocRoomCollisionGrid(void* pMemPool, D2ActiveRoomStrc* pRoom)
+void __fastcall COLLISION_AllocRoomCollisionGrid(D2PoolSystemStrc* pMemPool, D2ActiveRoomStrc* pRoom)
 {
     D2DrlgCoordsStrc pDrlgCoords;
     D2ActiveRoomStrc** ppRoomList;
@@ -369,7 +370,7 @@ void __fastcall COLLISION_AllocRoomCollisionGrid(void* pMemPool, D2ActiveRoomStr
 }
 
 // 0x0064CA10
-void __fastcall COLLISION_FreeRoomCollisionGrid(void* pMemPool, D2ActiveRoomStrc* pRoom)
+void __fastcall COLLISION_FreeRoomCollisionGrid(D2PoolSystemStrc* pMemPool, D2ActiveRoomStrc* pRoom)
 {
     if (pRoom)
     {

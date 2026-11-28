@@ -19,6 +19,7 @@
 
 #pragma function(memset)
 
+struct D2PoolSystemStrc;
 struct D2DrlgTileDataStrc;
 
 union D2SeedStrc;
@@ -60,7 +61,7 @@ int __stdcall TileLibraryGetTiles(D2TileLibraryHeaderStrc** ppTiles, int nTileTy
 
 void __fastcall sub_0040B480(void*,void*,const char*,int,int); // 0x0040B480
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 
 
@@ -97,7 +98,7 @@ int __fastcall SKILLDESC_ValidateMonsterId(int nMonsterId);                     
 
 int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pCoords, int nX, int nY);                   // 0x0066B980
 
-void __fastcall DRLGROOM_AllocPresetUnit(D2DrlgRoomStrc* pDrlgRoom, void* pMemPool, int nUnitType, int nIndex, int nMode, int nX, int nY); // 0x0066BF30
+void __fastcall DRLGROOM_AllocPresetUnit(D2DrlgRoomStrc* pDrlgRoom, D2PoolSystemStrc* pMemPool, int nUnitType, int nIndex, int nMode, int nX, int nY); // 0x0066BF30
 
 void __fastcall DRLGROOMTILE_InitTileData(D2DrlgRoomStrc* pDrlgRoom, D2DrlgTileDataStrc* pTileData, int nX, int nY, unsigned int nPackedTileInformation, D2TileLibraryEntryStrc* pTileLibraryEntry); // 0x0066DDE0
 
@@ -119,12 +120,12 @@ static D2DrlgTileDataStrc* __stdcall DRLGROOMTILE_FindLinkedTileInRoom(D2DrlgRoo
 
 static D2DrlgTileDataStrc* __stdcall DRLGROOMTILE_GetLinkedTileData(int bFloor, int nX, int nY, D2DrlgRoomStrc** ppDrlgRoom, D2DrlgRoomStrc* pDrlgRoom, unsigned int nPackedTileInformation);
 
-static D2DrlgTileDataStrc* __stdcall DRLGROOMTILE_AddLinkedTileData(void* pMemPool, unsigned int nPackedTileInformation, int nX, int nY, D2DrlgRoomStrc* pDrlgRoom, int nTileType);
+static D2DrlgTileDataStrc* __stdcall DRLGROOMTILE_AddLinkedTileData(D2PoolSystemStrc* pMemPool, unsigned int nPackedTileInformation, int nX, int nY, D2DrlgRoomStrc* pDrlgRoom, int nTileType);
 
 
-static void __stdcall DRLGROOMTILE_GetCreateLinkedTileData(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom, int nTileType, unsigned int nPackedTileInformation, int nX, int nY); // 0x0066E940
+static void __stdcall DRLGROOMTILE_GetCreateLinkedTileData(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom, int nTileType, unsigned int nPackedTileInformation, int nX, int nY); // 0x0066E940
 
-static void __stdcall DRLGROOMTILE_LoadInitRoomTile(void* pMemPool, int nX, int nY, int bFillBlanks, D2DrlgRoomStrc* pDrlgRoom, unsigned int nPackedTileInformation, int nTileType);
+static void __stdcall DRLGROOMTILE_LoadInitRoomTile(D2PoolSystemStrc* pMemPool, int nX, int nY, int bFillBlanks, D2DrlgRoomStrc* pDrlgRoom, unsigned int nPackedTileInformation, int nTileType);
 
 static void __stdcall DRLGROOMTILE_SetTileDataPosition(D2DrlgTileDataStrc* pTileData, D2DrlgRoomStrc* pDrlgRoom, int nX, int nY);
 
@@ -152,7 +153,7 @@ static int __stdcall sub_0066F350_GetFloorGridEntry(D2LvlSubTxt* pLvlSubTxtRecor
 
 static int __stdcall sub_0066F380_GetWallGridEntry(D2LvlSubTxt* pLvlSubTxtRecord, int nX, int nY);
 
-static void __stdcall DRLGROOMTILE_LinkedTileDataManager(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom1, D2DrlgRoomStrc* pDrlgRoom2, D2DrlgTileDataStrc* pTileData, int nTileType, unsigned int nPackedTileInformation, int nX, int nY);
+static void __stdcall DRLGROOMTILE_LinkedTileDataManager(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom1, D2DrlgRoomStrc* pDrlgRoom2, D2DrlgTileDataStrc* pTileData, int nTileType, unsigned int nPackedTileInformation, int nX, int nY);
 
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* szFormat, ...);             // 0x006CC468
 
@@ -162,9 +163,9 @@ void __fastcall sub_006707A0_SubstWaypointShrine(D2UnkOutdoorStrc2* pOutdoor);
 
 
 
-static void __stdcall sub_0066FA10_AddPresetUnits(int nX, int nY, D2DrlgSubstGroupStrc* pSubstGroup, D2UnkOutdoorStrc2* pOutdoor, void* pMemPool, D2LvlSubTxt* pLvlSubTxtRecord);
+static void __stdcall sub_0066FA10_AddPresetUnits(int nX, int nY, D2DrlgSubstGroupStrc* pSubstGroup, D2UnkOutdoorStrc2* pOutdoor, D2PoolSystemStrc* pMemPool, D2LvlSubTxt* pLvlSubTxtRecord);
 
-void __stdcall sub_0066FAD0_PlaceSubstGroup(void* pMemPool, int nX, int nY, D2UnkOutdoorStrc2* pOutdoor, D2DrlgSubstGroupStrc* pSubstGroup, D2LvlSubTxt* pLvlSubTxtRecord, int nPick); // 0x0066FAD0
+void __stdcall sub_0066FAD0_PlaceSubstGroup(D2PoolSystemStrc* pMemPool, int nX, int nY, D2UnkOutdoorStrc2* pOutdoor, D2DrlgSubstGroupStrc* pSubstGroup, D2LvlSubTxt* pLvlSubTxtRecord, int nPick); // 0x0066FAD0
 
 
 
@@ -173,7 +174,7 @@ static int __stdcall DRLGTILESUB_TestSubstGroupTiles(int nX, int nY, D2UnkOutdoo
 static void __stdcall DRLGTILESUB_DoSubstitutions(D2UnkOutdoorStrc2* pOutdoor, D2LvlSubTxt* pRecord);
 
 
-void __stdcall sub_0066FAD0_PlaceSubstGroup(void* pMemPool, int nX, int nY, D2UnkOutdoorStrc2* pOutdoor, D2DrlgSubstGroupStrc* pSubstGroup, D2LvlSubTxt* pLvlSubTxtRecord, int nOffset);
+void __stdcall sub_0066FAD0_PlaceSubstGroup(D2PoolSystemStrc* pMemPool, int nX, int nY, D2UnkOutdoorStrc2* pOutdoor, D2DrlgSubstGroupStrc* pSubstGroup, D2LvlSubTxt* pLvlSubTxtRecord, int nOffset);
 
 static inline unsigned int SEED_RollRandomNumberHighFirst(D2SeedStrc* pSeed)
 {
@@ -405,7 +406,7 @@ static void __stdcall DRLGTILESUB_ApplySecondaryGroups(D2UnkOutdoorStrc* pOutdoo
 }
 
 // 0x0066FA10
-static void __stdcall sub_0066FA10_AddPresetUnits(int nX, int nY, D2DrlgSubstGroupStrc* pSubstGroup, D2UnkOutdoorStrc2* pOutdoor, void* pMemPool, D2LvlSubTxt* pLvlSubTxtRecord)
+static void __stdcall sub_0066FA10_AddPresetUnits(int nX, int nY, D2DrlgSubstGroupStrc* pSubstGroup, D2UnkOutdoorStrc2* pOutdoor, D2PoolSystemStrc* pMemPool, D2LvlSubTxt* pLvlSubTxtRecord)
 {
     int nSubX = nX;
     int nSubY = nY;
@@ -438,7 +439,7 @@ static int __stdcall DRLGTILESUB_GetTileTypeEntry(D2LvlSubTxt* pLvlSubTxtRecord,
 }
 
 // 0x0066FAD0
-void __stdcall sub_0066FAD0_PlaceSubstGroup(void* pMemPool, int nX, int nY, D2UnkOutdoorStrc2* pOutdoor, D2DrlgSubstGroupStrc* pSubstGroup, D2LvlSubTxt* pLvlSubTxtRecord, int nOffset)
+void __stdcall sub_0066FAD0_PlaceSubstGroup(D2PoolSystemStrc* pMemPool, int nX, int nY, D2UnkOutdoorStrc2* pOutdoor, D2DrlgSubstGroupStrc* pSubstGroup, D2LvlSubTxt* pLvlSubTxtRecord, int nOffset)
 {
     const int nBaseX = pSubstGroup->tBox.nPosX + nOffset;
     const int nWallLayers = pLvlSubTxtRecord->pDrlgFile->nWallLayers;
@@ -597,7 +598,7 @@ static inline int SEED_RollLimitedRandomNumberU(D2SeedStrc* pSeed, unsigned int 
 void __stdcall sub_0066FF50_SubstituteAll(D2UnkOutdoorStrc2* pOutdoor, D2LvlSubTxt* pLvlSubTxtRecord)
 {
     D2DrlgRoomStrc* pDrlgRoom = pOutdoor->pDrlgRoom;
-    void* pMemPool = pDrlgRoom->ptDrlgLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pDrlgRoom->ptDrlgLevel->pDrlg->pMempool;
     D2DrlgFileStrc* pDrlgFile = pLvlSubTxtRecord->pDrlgFile;
 
     for (int nGroup = 0; nGroup < pDrlgFile->nSubstGroups; ++nGroup)
@@ -648,7 +649,7 @@ void __stdcall sub_0066FF50_SubstituteAll(D2UnkOutdoorStrc2* pOutdoor, D2LvlSubT
 static void __stdcall DRLGTILESUB_DoSubstitutions(D2UnkOutdoorStrc2* pOutdoor, D2LvlSubTxt* pRecord)
 {
     D2DrlgRoomStrc* pRoom = pOutdoor->pDrlgRoom;
-    void* pMemPool = pRoom->ptDrlgLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pRoom->ptDrlgLevel->pDrlg->pMempool;
     D2DrlgFileStrc* pFile = pRecord->pDrlgFile;
     const int nMax = pRecord->nMax[pOutdoor->nSubTheme];
     if (!pFile->nSubstGroups) return;

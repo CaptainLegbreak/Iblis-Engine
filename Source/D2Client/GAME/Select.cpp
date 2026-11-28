@@ -16,6 +16,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 #include "D2CommonApi2.h"
+struct D2PoolSystemStrc;
 struct D2ActiveRoomStrc;
 struct D2SkillStrc;
 struct D2UnitStrc;
@@ -53,7 +54,7 @@ int __cdecl GAME_IsLeftButtonHeld();                                            
 unsigned int __cdecl GAME_GetInteractDeadline(); // 0x0044DAC0
 extern "C" int __cdecl PLAYER_GetScreenOffsetX();                                                          // 0x0045AFC0
 extern "C" int __cdecl PLAYER_GetScreenOffsetY();                                                      // 0x0045AFD0
-void __stdcall UNITFINDS_InitializeUnitFindData(void* pMemPool, D2UnitFindDataStrc* pUnitFindData, D2ActiveRoomStrc* pRoom, int nX, int nY, int nSize, D2UnitFindCallback pfnUnitTest, D2UnitFindArgStrc* pUnitFindArg); // 0x0065A950
+void __stdcall UNITFINDS_InitializeUnitFindData(D2PoolSystemStrc* pMemPool, D2UnitFindDataStrc* pUnitFindData, D2ActiveRoomStrc* pRoom, int nX, int nY, int nSize, D2UnitFindCallback pfnUnitTest, D2UnitFindArgStrc* pUnitFindArg); // 0x0065A950
 int __fastcall SELECT_IsMetalItemUnit(D2UnitStrc* pUnit, void* pArg);                                    // 0x00467470
 D2UnitStrc* __stdcall D2Common_10407(D2ActiveRoomStrc* pRoom, int nX, int nY, D2UnitFindCallback pCallback, void* pArg, int nSize); // 0x00641CB0
 extern "C" int __fastcall sub_004D9FC0_GetSkillUseState(D2UnitStrc* unit,D2SkillStrc* skill); // 0x004D9FC0

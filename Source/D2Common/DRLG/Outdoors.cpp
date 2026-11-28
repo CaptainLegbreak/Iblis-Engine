@@ -49,6 +49,7 @@
 
 #define D2_ABS(x) ((x) < 0 ? -(x) : (x))
 
+struct D2PoolSystemStrc;
 struct D2DrlgOutdoorInfoStrc;
 
 union D2SeedStrc;
@@ -128,13 +129,13 @@ void __fastcall DRLGOUTPLACE_InitAct3OutdoorLevel(D2DrlgLevelStrc* pLevel); // 0
 
 void __fastcall DRLGOUTWILD_InitAct1OutdoorLevel(D2DrlgLevelStrc* pLevel); // 0x006807F0
 
-static void DRLGOUTDOORS_ScaleAndMergeVertices(void* pMemPool, D2DrlgVertexStrc** ppVertex);
+static void DRLGOUTDOORS_ScaleAndMergeVertices(D2PoolSystemStrc* pMemPool, D2DrlgVertexStrc** ppVertex);
 
 
 // 0x00674320
 static int __cdecl DRLGOUTDOORS_PickNextPresetFile(D2DrlgLevelStrc* pLevel, int nPresetId)
 {
-    void* pMemPool = pLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pLevel->pDrlg->pMempool;
     D2DrlgBuildStrc* pFile = pLevel->pBuild;
     while (pFile)
     {
@@ -491,7 +492,7 @@ void __fastcall DRLGOUTDOORS_SpawnAct12Shrines(D2DrlgLevelStrc* pLevel, int nShr
 }
 
 // 0x00675080
-static void DRLGOUTDOORS_ScaleAndMergeVertices(void* pMemPool, D2DrlgVertexStrc** ppVertex)
+static void DRLGOUTDOORS_ScaleAndMergeVertices(D2PoolSystemStrc* pMemPool, D2DrlgVertexStrc** ppVertex)
 {
     D2DrlgVertexStrc* pVertex = *ppVertex;
     do
@@ -638,7 +639,7 @@ void __fastcall DRLGOUTDOORS_AllocOutdoorInfo(D2DrlgLevelStrc* pLevel)
 // 0x00675360
 void __fastcall DRLGOUTDOORS_GenerateLevel(D2DrlgLevelStrc* pLevel)
 {
-    void* pMemPool = pLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pLevel->pDrlg->pMempool;
     D2DrlgOutdoorInfoStrc* pOutdoors = pLevel->pOutdoors;
 
     pOutdoors->nWidth = 0;
@@ -688,7 +689,7 @@ void __fastcall DRLGOUTDOORS_GenerateLevel(D2DrlgLevelStrc* pLevel)
 // 0x006754C0
 void __fastcall DRLGOUTDOORS_FreeOutdoorInfo(D2DrlgLevelStrc* pLevel, int bKeepRoomData)
 {
-    void* pMemPool = pLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pLevel->pDrlg->pMempool;
     D2DrlgOutdoorInfoStrc* pOutdoors = pLevel->pOutdoors;
 
     if (pOutdoors->dwFlags & 0x20)

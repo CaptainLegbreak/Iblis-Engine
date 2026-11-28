@@ -12,6 +12,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 #include "FogApi.h"
+struct D2PoolSystemStrc;
 struct D2DrlgActStrc;
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
@@ -41,7 +42,7 @@ typedef void (__fastcall* AUTOMAPFN)(void*);
 typedef void (__fastcall* TOWNAUTOMAPFN)(void*);
 
 int __fastcall ARENA_GetAlternateStartTown(D2GameStrc* pGame); // 0x0053F5D0
-D2DrlgActStrc* __stdcall DUNGEON_AllocAct(unsigned char nAct, unsigned int nInitSeed, int bClient, D2GameStrc* pGame, unsigned char nDifficulty, void* pMemPool, int nTownLevelId, AUTOMAPFN pfAutoMap, TOWNAUTOMAPFN pfTownAutoMap); // 0x006194A0
+D2DrlgActStrc* __stdcall DUNGEON_AllocAct(unsigned char nAct, unsigned int nInitSeed, int bClient, D2GameStrc* pGame, unsigned char nDifficulty, D2PoolSystemStrc* pMemPool, int nTownLevelId, AUTOMAPFN pfAutoMap, TOWNAUTOMAPFN pfTownAutoMap); // 0x006194A0
 void __fastcall ACT2Q3_ApplyPendingDarkness(D2GameStrc* pGame, unsigned char nAct); // 0x0059AC40
 
 int __stdcall D2Common_10229(D2DynamicPathStrc* pDynamicPath, D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, unsigned int nX, unsigned int nY); // 0x00650BE0

@@ -37,6 +37,7 @@
 
 #define D2_MAX(a, b) ((a) > (b) ? (a) : (b))
 
+struct D2PoolSystemStrc;
 struct D2ItemsTxt;
 
 struct D2MonStatsTxt;
@@ -107,7 +108,7 @@ D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitAndState(D2UnitStrc* pUnit
 
 int __stdcall D2COMMON_10473(D2StatListStrc* pStatList); // 0x00626090
 
-D2StatListStrc* __stdcall STATLIST_AllocStatList(void* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID); // 0x006251F0
+D2StatListStrc* __stdcall STATLIST_AllocStatList(D2PoolSystemStrc* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID); // 0x006251F0
 
 void __stdcall STATLIST_SetState(D2StatListStrc* pStatList, int nState); // 0x006252D0
 

@@ -25,6 +25,7 @@
 #include "D2ItemDataTbl.h"
 #include "FogApi.h"
 #include "D2CommonApi.h"
+struct D2PoolSystemStrc;
 struct D2MapAIStrc;
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
@@ -265,7 +266,7 @@ void __fastcall OBJECTS_FreeHoverMessage(D2GameStrc* pGame, D2UnitStrc* pObject)
 
 void __stdcall UNITS_FreeStaticPath(D2UnitStrc* pUnit); // 0x00623570
 
-int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 void __fastcall MISSILES_Free(D2GameStrc* pGame, D2UnitStrc* pMissile); // 0x0059F8E0
 
@@ -341,7 +342,7 @@ enum D2C_M192SUnitAlloc
 
 #pragma function(memset)
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
 
 
 void __fastcall PLAYER_Create(D2GameStrc* pGame, D2UnitStrc* pPlayer, int nPlayerGUID);                     // 0x005348C0
@@ -361,7 +362,7 @@ void __fastcall MISSILES_Initialize(D2GameStrc* pGame, D2UnitStrc* pMissile, int
 
 void __fastcall TARGETS_AllocPlayerNode(D2GameStrc* pGame, D2UnitStrc* pUnit, int nNodeData);                 // 0x005B1880
 
-D2UnitStrc* __stdcall UNITS_AllocUnit(void* pMemPool, int nUnitType);                                       // 0x00620290
+D2UnitStrc* __stdcall UNITS_AllocUnit(D2PoolSystemStrc* pMemPool, int nUnitType);                                       // 0x00620290
 
 void __stdcall UNITS_AllocStaticPath(D2UnitStrc* pUnit);                                                    // 0x00623520
 

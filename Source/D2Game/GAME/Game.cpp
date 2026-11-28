@@ -48,6 +48,7 @@
 
 #define PCLASS_ASSASSIN 6
 
+struct D2PoolSystemStrc;
 struct D2MonsterRegionStrc;
 
 struct D2CorpseStrc;
@@ -143,7 +144,7 @@ extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalS
 
 extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC214
 
-int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 void __fastcall GAME_ForEachIngameClient(D2GameStrc* pGame, GAME_ForEachIngameClientCallbackPtr pFn, void* pContext); // 0x0052DED0
 
@@ -221,7 +222,7 @@ extern "C" void* __cdecl memset(void* pDest, int nValue, unsigned int nSize); //
 
 extern UnitDescriptionFunction gpfnGetDescription[5]; // 0x0073107C
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
@@ -559,7 +560,7 @@ struct D2GameInfoStrc
     unsigned char nMaxPlayers;
     unsigned char padding0xA7;
     unsigned int nArenaFlags;
-    void* pMemoryPool;
+    D2PoolSystemStrc* pMemoryPool;
 };
 
 #define PATHTYPE_ASTAR 1
@@ -624,7 +625,7 @@ struct D2GameListStrc
 
 extern "C" __declspec(dllimport) void* __stdcall CreateThread(void* lpThreadAttributes, unsigned long dwStackSize, unsigned long (__stdcall* lpStartAddress)(D2MessageThreadArgsStrc*), D2MessageThreadArgsStrc* lpParameter, unsigned long dwCreationFlags, unsigned long* lpThreadId); // 0x006CC250
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);          // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);          // 0x0040B430
 
 
 int gnGlobal_00883D3C;                                                                                         // 0x00883D3C

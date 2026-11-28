@@ -111,4 +111,4 @@ void __cdecl WINDOW_LoadGammaSettings()
     D2GFX_SetGamma(nGamma);
 }
 
-extern int gnViewMatrixAdjustDefault = -1; // 0x0072DBFC
+int gnViewMatrixAdjustDefault = -1; // 0x0072DBFC

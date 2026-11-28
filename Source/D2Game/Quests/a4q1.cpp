@@ -24,6 +24,7 @@
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
+struct D2PoolSystemStrc;
 struct D2StaticPathStrc;
 
 struct D2UnkMonCreateStrc3;
@@ -244,7 +245,7 @@ void __fastcall QUESTS_WarrivSpawn(D2GameStrc* pGame, void* pRoom, int nXpos, in
 
 extern const D2MonsterEquipmentStrc gtAncientEquipment[12]; // 0x006E2C90
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern "C" const char gszAct4Q2SourceFile[]; // 0x006E2DA4
 

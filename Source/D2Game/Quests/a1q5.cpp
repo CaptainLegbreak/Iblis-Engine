@@ -17,6 +17,7 @@
 #include "D2CommonApi.h"
 #include "D2ClientApi.h"
 
+struct D2PoolSystemStrc;
 struct D2ActiveRoomStrc;
 
 struct D2CoordStrc;
@@ -135,7 +136,7 @@ extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(FARPROC lpfn); // 0x
 
 extern char gpAct1Q5NpcMessages[]; // 0x00737ED8
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall PARTY_IteratePartyMembers(D2GameStrc* pGame, unsigned short nPartyId, PartyCallbackFunction pCallback, void* pArgs); // 0x00540510
 

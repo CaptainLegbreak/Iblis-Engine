@@ -11,6 +11,7 @@
 #define LVLPREST_ACT3_JUNGLE_HEAD 573
 #define LVLPREST_ACT3_JUNGLE_TAIL 574
 
+struct D2PoolSystemStrc;
 union D2SeedStrc;
 struct D2DrlgStrc;
 struct D2LevelDefBin;
@@ -29,8 +30,8 @@ void __fastcall DRLGOUTJUNG_BuildJungle(D2DrlgLevelStrc* pLevel); // 0x0067E910
 void __fastcall DRLGOUTJUNG_SpawnRandomPreset(D2DrlgLevelStrc* pLevel, int nLevelPrestId1, int nLevelPrestId2, int nMaxSpawns); // 0x0067EED0
 
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
-int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 int __fastcall DRLGOUTDOORS_TestOutdoorLevelPreset(D2DrlgLevelStrc* pLevel, int nX, int nY, int nLevelPrestId, int nOffset, int nFlags); // 0x00674230
 
 // 0x0067E910
@@ -366,7 +367,7 @@ static inline unsigned int OUTJUNG_RollLimitedInline(D2SeedStrc* pSeed, int nMax
 // 0x0067EED0
 void __fastcall DRLGOUTJUNG_SpawnRandomPreset(D2DrlgLevelStrc* pLevel, int nLevelPrestId1, int nLevelPrestId2, int nMaxSpawns)
 {
-    void* pMemPool = pLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pLevel->pDrlg->pMempool;
     D2DrlgOutdoorInfoStrc* pOutdoors = pLevel->pOutdoors;
     int nVariants = nLevelPrestId2 - nLevelPrestId1 + 1;
     int nSpawned = 0;

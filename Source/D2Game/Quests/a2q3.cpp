@@ -48,6 +48,7 @@
 
 #define MONSTER_ANCIENTSTATUE3 541
 
+struct D2PoolSystemStrc;
 union D2SeedStrc;
 
 struct D2ObjInitFnStrc;
@@ -110,7 +111,7 @@ enum
 
 extern char gpAct2Q3NpcMessages[]; // 0x0073A188
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall QUESTS_StatusCyclerEx(D2GameStrc* game,D2UnitStrc* player,unsigned char id); // 0x00544190
 

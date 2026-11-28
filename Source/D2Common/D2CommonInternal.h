@@ -1,6 +1,7 @@
 #pragma once
 // D2Common functions that several D2Common units call. Include after D2Common.h.
 
+struct D2PoolSystemStrc;
 struct D2BinFieldStrc;
 struct D2CoordStrc;
 struct D2DrlgActStrc;
@@ -79,7 +80,7 @@ D2DrlgMapStrc* __fastcall DRLGPRESET_AllocDrlgMap(D2DrlgLevelStrc* pLevel, int n
 D2DrlgRoomStrc* __fastcall DRLGPRESET_BuildArea(D2DrlgLevelStrc* pLevel, D2DrlgMapStrc* pDrlgMap, int nFlags, int bSingleRoom); // 0x00667ED0
 int __stdcall D2Common_11098(D2FieldStrc*,int*,int*); // 0x0066A5D0
 int* __fastcall DRLGWARP_GetWarpIdArrayFromLevelId(D2DrlgStrc* pDrlg, int nLevelId); // 0x0066AEC0
-void __fastcall DRLGROOM_FreeRoomData(void* pMemPool, D2DrlgOrthStrc* pDrlgOrth);                           // 0x0066B530
+void __fastcall DRLGROOM_FreeRoomData(D2PoolSystemStrc* pMemPool, D2DrlgOrthStrc* pDrlgOrth);                           // 0x0066B530
 void __fastcall DRLGROOM_AddOrth(D2DrlgOrthStrc** ppDrlgOrth, D2DrlgLevelStrc* pLevel, int nDirection, int bIsPreset); // 0x0066B790
 int __fastcall DRLG_GetRectanglesManhattanDistanceAndCheckNotOverlapping(D2DrlgCoordStrc* pDrlgCoord1, D2DrlgCoordStrc* pDrlgCoord2, int nMaxDistance, int* pDistanceX, int* pDistanceY); // 0x0066B800
 int __fastcall DRLG_CheckNotOverlappingUsingManhattanDistance(D2DrlgCoordStrc* pCoord1, D2DrlgCoordStrc* pCoord2, int nDistance);    // 0x0066B860
@@ -99,10 +100,10 @@ void __fastcall DRLGOUTDOORS_SpawnAct12Shrines(D2DrlgLevelStrc* pLevel, int nShr
 int __fastcall sub_00679B30_ComputeOffsetPath(D2PathInfoStrc* pPathInfo); // 0x00679B30
 void __fastcall DRLGGRID_AlterFlagsAlongVertexEdge(D2DrlgGridStrc* pGrid, D2DrlgVertexStrc* pVertex, int nFlag, int eOperation, int bAlterNextVertex); // 0x0067C760
 void __fastcall DRLGGRID_SetVertexGridFlags(D2DrlgGridStrc* pGrid, D2DrlgVertexStrc* pVertex, int nFlag); // 0x0067C890
-void __fastcall DRLGGRID_FillNewCellFlags(void* pMemPool, D2DrlgGridStrc* pGrid, int* pCellFlags, D2DrlgCoordStrc* pCoord, int nWidth); // 0x0067CCC0
-D2DrlgVertexStrc* __fastcall DRLGVER_AllocVertex(void* pMemPool, unsigned char nDirection); // 0x0067CDD0
-void __fastcall DRLGVER_CreateVertices(void* pMemPool, D2DrlgVertexStrc** ppVertices, D2DrlgCoordStrc* pDrlgCoord, unsigned char nDirection, D2DrlgOrthStrc* pDrlgOrth); // 0x0067D050
-void __fastcall DRLGVER_FreeVertices(void* pMemPool, D2DrlgVertexStrc** ppVertex); // 0x0067D1E0
+void __fastcall DRLGGRID_FillNewCellFlags(D2PoolSystemStrc* pMemPool, D2DrlgGridStrc* pGrid, int* pCellFlags, D2DrlgCoordStrc* pCoord, int nWidth); // 0x0067CCC0
+D2DrlgVertexStrc* __fastcall DRLGVER_AllocVertex(D2PoolSystemStrc* pMemPool, unsigned char nDirection); // 0x0067CDD0
+void __fastcall DRLGVER_CreateVertices(D2PoolSystemStrc* pMemPool, D2DrlgVertexStrc** ppVertices, D2DrlgCoordStrc* pDrlgCoord, unsigned char nDirection, D2DrlgOrthStrc* pDrlgOrth); // 0x0067D050
+void __fastcall DRLGVER_FreeVertices(D2PoolSystemStrc* pMemPool, D2DrlgVertexStrc** ppVertex); // 0x0067D1E0
 void __fastcall DRLGVER_GetCoordDiff(D2DrlgVertexStrc* pVertex, int* pDirectionX, int* pDirectionY); // 0x0067D280
 void __fastcall DRLGOUTPLACE_InitOutdoorRoomGrids(D2DrlgRoomStrc* pDrlgRoom); // 0x0067D2D0
 void __stdcall DRLGOUTDESR_PlaceColumns(D2DrlgLevelStrc* pLevel, int nColumn); // 0x0067FE90

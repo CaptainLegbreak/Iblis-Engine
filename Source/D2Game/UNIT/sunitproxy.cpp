@@ -20,6 +20,7 @@
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
+struct D2PoolSystemStrc;
 struct D2NpcRecordStrc;
 
 struct D2ItemCacheStrc;
@@ -58,7 +59,7 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 D2UnitProxyStrc gaUnitProxyItemCache[17]; // 0x00883D78
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
@@ -188,7 +189,7 @@ enum
 
 extern "C" const char szSUnitProxyCppFile[];                                                                // 0x006E0A30
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 
 static void SUNITPROXY_InitializeItemCache(D2GameStrc* pGame, D2UnitProxyStrc* pUnitProxy, int nNpcInventoryId);
 
@@ -318,7 +319,7 @@ void __fastcall SUNITPROXY_InitializeNpcControl(D2GameStrc* pGame)
             pNpc->bTrader = gaNpcConfig[nConfig].bTrader;
             pNpc->bRepair = 0;
             pNpc->bVendor = 0;
-            pNpc->unk0x26 = gaNpcConfig[nConfig].unknown06;
+            pNpc->bForceVendor = gaNpcConfig[nConfig].unknown06;
             pNpc->bRefreshInventory = 0;
             if (pNpc->bTrader == 1)
             {

@@ -2,6 +2,7 @@
 
 #include "D2Win32Base.h"
 
+struct D2PoolSystemStrc;
 struct D2MemoryBasicInfoStrc;
 struct D2ModuleInfoStrc;
 struct D2PoolSystemStrc;
@@ -83,7 +84,7 @@ unsigned short __stdcall sub_006B019E(unsigned short nValue); // 0x006B019E
 void __cdecl ERRORMANAGER_LogPoolError(const char* szFormat, ...); // 0x00409020
 void __cdecl FOG_CreateNewPoolSystem(void* pReserved, const char* szName, int nSize, int nBlockSize); // 0x00409DD0
 void __cdecl LOGMANAGER_LogWritePrefixed(const char* szPrefix, const char* szFormat, ...); // 0x00410740
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 bool __fastcall ERRORMANAGER_ShowErrorReport(const char* szSummary, const char* szUnused, const char** ppszFiles, int nFiles, unsigned int nLine, bool bFlag); // 0x00408660
 void __fastcall ERRORMANAGER_PoolFreeLarge(D2PoolSystemStrc* pSystem, void* pMemory, const char* szFile, int nLine); // 0x00409810
 void __fastcall QSERVER_ProcessReceived(D2QueueServerStrc* pServer, D2QClientStrc* pClient); // 0x006C08A0

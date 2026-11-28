@@ -259,7 +259,7 @@ struct D2SkillPairStrc
     int nB;
 };
 
-void* __fastcall GFXUTIL_GetNextRosterInfo(D2UnitStrc*); // 0x004DC0B0
+D2PoolSystemStrc* __fastcall GFXUTIL_GetNextRosterInfo(D2UnitStrc*); // 0x004DC0B0
 
 
 

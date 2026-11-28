@@ -453,7 +453,6 @@ int __stdcall D2GFX_GetBackBuffer(unsigned char* pBuffer); // 0x004F6250
 
 extern int gnMouseX_007D55A4; // 0x007D55A4
 
-extern int gnMouseY; // 0x007D55A8
 
 unsigned long gdwLastScreenshotTick; // 0x007D5600
 
@@ -1623,7 +1622,7 @@ static D2WinControlStrc* __stdcall CONTROL_PickClosestToMouse(D2WinControlStrc* 
     if (!first) return second;
     if (!second) return first;
     int mouseX = gnMouseX_007D55A4;
-    int mouseY = gnMouseY;
+    int mouseY = gtMousePosition.y;
     int dx1, dy1, dx2, dy2;
     if (mouseX < first->nImageX)
         dx1 = mouseX - first->nImageX;
@@ -2078,52 +2077,42 @@ extern "C" void __cdecl sub_004FA760(); // 0x004FA760
 extern "C" void __cdecl sub_004FA840(); // 0x004FA840
 extern "C" void __cdecl sub_004FA860(); // 0x004FA860
 
-#pragma pack(push, 1)
-struct d2data_0072DC00_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
+extern "C" const char* gData_0072DC00[15] = { // 0x0072DC00
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
 };
-#pragma pack(pop)
 
-extern "C" struct d2data_0072DC00_t gData_0072DC00; // 0x0072DC00
+int gbDrawCursor = 1; // 0x0072DC3C
 
-extern "C" struct d2data_0072DC00_t gData_0072DC00 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0072DC00
+int gnScreenshotIndex = 1; // 0x0072DC40
 
-extern int gbDrawCursor = 1; // 0x0072DC3C
+int gbAppActive = 1; // 0x0072DC44
 
-extern int gbAppActive = 1; // 0x0072DC44
+int gbRunMessageLoop = 1; // 0x0072DDD4
 
-extern int gbRunMessageLoop = 1; // 0x0072DDD4
+extern "C" void __cdecl sub_004F9B60(); // 0x004F9B60
+extern "C" void __cdecl sub_004F9BF0(); // 0x004F9BF0
+extern "C" void __cdecl sub_004F9C80(); // 0x004F9C80
+extern "C" void __cdecl sub_004F9CA0(); // 0x004F9CA0
+extern "C" void __cdecl sub_004F9F20(); // 0x004F9F20
+extern "C" void __cdecl sub_004FA340(); // 0x004FA340
+extern "C" void __cdecl sub_004FA6B0(); // 0x004FA6B0
+extern "C" void __cdecl sub_004FA760(); // 0x004FA760
+extern "C" void __cdecl sub_004FA840(); // 0x004FA840
+extern "C" void __cdecl sub_004FA860(); // 0x004FA860
 
 extern D2WinCommandRegisterStrc gatCommandRegister[0x21] = {
     { 0, 512, (void*)(unsigned int)&sub_004FA6B0 },
@@ -2160,5 +2149,3 @@ extern D2WinCommandRegisterStrc gatCommandRegister[0x21] = {
     { 2, 17, (void*)(unsigned int)&sub_004F9CA0 },
     { 0, 522, (void*)(unsigned int)&sub_004FA340 }
 }; // 0x0072DC48
-
-extern int gnScreenshotIndex = 1; // 0x0072DC40

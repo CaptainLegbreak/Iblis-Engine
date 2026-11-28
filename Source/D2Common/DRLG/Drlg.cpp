@@ -26,6 +26,7 @@
 #include "D2GfxApi.h"
 #include "D2ClientApi.h"
 
+struct D2PoolSystemStrc;
 unsigned __int64 SEED_RollRandomNumber(D2SeedStrc* pSeed);
 
 struct D2ObjGroupTxt
@@ -114,7 +115,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, size_t nSize); // 0x0068
 
 extern const int gnTileTypeMappingTable[]; // 0x006EEF20
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall DRLG_AddLevelActivity(D2DrlgLevelStrc* pLevel, int nDelta); // 0x00642F70
 
@@ -134,7 +135,7 @@ struct D2DrlgLevelStrc;
 
 typedef char D2DrlgLevelStrc_size_check[(sizeof(D2DrlgLevelStrc) == 0x230) ? 1 : -1];
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);            // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);            // 0x0040B430
 
 void __fastcall DRLGMAZE_InitLevelData(D2DrlgLevelStrc* pLevel);                                            // 0x00673B10
 
@@ -155,7 +156,7 @@ typedef void (__stdcall* AUTOMAPFN)(D2RoomStrc*);
 
 typedef void (__stdcall* TOWNAUTOMAPFN)(int, int, int, int);
 
-void* __fastcall DUNGEON_GetMemPoolFromAct(D2DrlgActStrc* pAct); // 0x00619550
+D2PoolSystemStrc* __fastcall DUNGEON_GetMemPoolFromAct(D2DrlgActStrc* pAct); // 0x00619550
 
 void __fastcall DRLGACTIVATE_InitializeRoomExStatusLists(D2DrlgStrc* pDrlg); // 0x0061B7E0
 
@@ -685,7 +686,7 @@ void __fastcall DRLG_LoadTownTiles(D2DrlgStrc* pDrlg)
 }
 
 // 0x00642010
-static void __stdcall DRLG_FreeLevel(void* pMemPool, int bAlloc, D2DrlgLevelStrc* pLevel)
+static void __stdcall DRLG_FreeLevel(D2PoolSystemStrc* pMemPool, int bAlloc, D2DrlgLevelStrc* pLevel)
 {
     if (bAlloc)
     {
@@ -1371,7 +1372,7 @@ void __fastcall DRLG_SetLevelPositionAndSize(D2DrlgStrc* pDrlg,D2DrlgLevelStrc* 
 // 0x00642DA0
 D2DrlgStrc* __fastcall DRLG_AllocDrlg(D2DrlgActStrc* pAct, unsigned char nActNo, void* hArchive, unsigned int nInitSeed, int nTownLevelId, unsigned int nFlags, D2GameStrc* pGame, unsigned char nDifficulty, AUTOMAPFN pfAutoMap, TOWNAUTOMAPFN pfTownAutoMap)
 {
-    void* pMemPool = DUNGEON_GetMemPoolFromAct(pAct);
+    D2PoolSystemStrc* pMemPool = DUNGEON_GetMemPoolFromAct(pAct);
     D2DrlgStrc* pDrlg = (D2DrlgStrc*)FOG_AllocPool(pMemPool, sizeof(D2DrlgStrc), ".\\DRLG\\Drlg.cpp", 0x3A, 0);
     memset(pDrlg, 0, sizeof(D2DrlgStrc));
 
@@ -1472,7 +1473,7 @@ void __fastcall DRLG_UpdateLevelActivityOnRoomChange(D2DrlgRoomStrc* pDrlgRoom1,
 // 0x00643060
 int __stdcall DRLG_FreeInactiveVisRoomTiles(D2DrlgLevelStrc* pLevel)
 {
-    void* pMemPool = pLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pLevel->pDrlg->pMempool;
 
     for (D2DrlgRoomStrc* pRoom = pLevel->ptRoomFirst; pRoom; pRoom = pRoom->pDrlgRoomNext)
     {
@@ -1533,7 +1534,7 @@ int __stdcall DRLG_FreeInactiveVisRoomTiles(D2DrlgLevelStrc* pLevel)
 void __fastcall DRLG_UpdateAndFreeInactiveRooms(D2DrlgStrc* pDrlg)
 {
     D2DrlgLevelStrc* pLevel = pDrlg->pLevel;
-    void* pMemPool = pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pDrlg->pMempool;
     while (pLevel)
     {
         if (!pLevel->bActive && pLevel->ptRoomFirst)

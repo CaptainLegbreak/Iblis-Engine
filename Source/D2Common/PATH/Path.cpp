@@ -60,6 +60,7 @@
 
 #define PATH_CORPSE_SIZE 3
 
+struct D2PoolSystemStrc;
 struct D2CoordStrc;
 
 union D2FP32_16;
@@ -169,7 +170,7 @@ extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 int __stdcall D2Common_11281_CollisionPatternFromSize(D2UnitStrc* pUnit, int nSize); // 0x00648580
 
@@ -239,7 +240,7 @@ inline unsigned int PATH_InlineGetUnitY(D2UnitStrc* pUnit)
     return pUnit->pDynamicPath ? PATH_GetYPosition(pUnit->pDynamicPath) : 0;
 }
 
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 
 
@@ -636,7 +637,7 @@ inline int UNIT_HasFlagEx(D2UnitStrc* pUnit, unsigned int nFlag)
 }
 
 // 0x00648460
-void __stdcall PATH_FreeDynamicPath(void* pMemPool, D2DynamicPathStrc* pDynamicPath)
+void __stdcall PATH_FreeDynamicPath(D2PoolSystemStrc* pMemPool, D2DynamicPathStrc* pDynamicPath)
 {
     sub_0040B480(pMemPool, pDynamicPath, ".\\PATH\\Path.cpp", 985, 0);
 }
@@ -1782,7 +1783,7 @@ inline unsigned int PATH_ToFP16Center(int nValue)
 }
 
 // 0x00649D00
-void __stdcall PATH_AllocDynamicPath(void* pMemPool, D2ActiveRoomStrc* pRoom, int nX, int nY, D2UnitStrc* pUnit, int bSetFlag)
+void __stdcall PATH_AllocDynamicPath(D2PoolSystemStrc* pMemPool, D2ActiveRoomStrc* pRoom, int nX, int nY, D2UnitStrc* pUnit, int bSetFlag)
 {
     D2DynamicPathStrc* pDynamicPath = (D2DynamicPathStrc*)FOG_AllocPool(pMemPool, sizeof(D2DynamicPathStrc), ".\\PATH\\Path.cpp", 1107, 0);
     memset(pDynamicPath, 0, sizeof(D2DynamicPathStrc));

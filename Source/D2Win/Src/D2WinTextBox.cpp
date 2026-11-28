@@ -1656,59 +1656,35 @@ struct d2data_006DC7FC_t
 };
 #pragma pack(pop)
 
-#pragma pack(push, 1)
-struct d2data_0072DE54_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
-
-extern "C" const struct d2data_006DC7FC_t gData_006DC7FC; // 0x006DC7FC
-extern "C" struct d2data_0072DE54_t gData_0072DE54; // 0x0072DE54
-
-extern int gnTextBoxLineGap = 4; // 0x0072DE90
-
-extern "C" const struct d2data_006DC7FC_t gData_006DC7FC = {
+extern "C" const struct d2data_006DC7FC_t gData_006DC7FC = { // 0x006DC7FC
     {
         0x70, 0x61, 0x6C, 0x65, 0x74, 0x74, 0x65, 0x5C, 0x61, 0x63, 0x74, 0x31, 0x5C, 0x70, 0x61, 0x6C,
-        0x2E, 0x64, 0x61, 0x74
+        0x2E, 0x64, 0x61, 0x74, 0x00, 0x00, 0x00, 0x00
     },
-    (const void*)&gszPalDat,
-    (const void*)"palette\\act1\\pal.pl2",
-    (const void*)"%s\\palette\\act%d\\%s",
-    (const void*)"pal.dat",
-    (const void*)"pal.pl2"
-}; // 0x006DC7FC
+    gszPalDat,
+    "palette\\act1\\pal.pl2",
+    "%s\\palette\\act%d\\%s",
+    "pal.dat",
+    "pal.pl2"
+};
 #pragma comment(linker, "/alternatename:_gszPalDat=_gData_006DC7FC")
 
-extern "C" struct d2data_0072DE54_t gData_0072DE54 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0072DE54
+extern "C" const char* gData_0072DE54[15] = { // 0x0072DE54
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
+};
+
+int gnTextBoxLineGap = 4; // 0x0072DE90

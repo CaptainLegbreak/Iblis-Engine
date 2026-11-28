@@ -26,6 +26,7 @@
 
 #define D2_MIN(a, b) ((a) < (b) ? (a) : (b))
 
+struct D2PoolSystemStrc;
 enum D2C_P08MonsterConstants
 {
     MONLVL_DM = 6,
@@ -99,7 +100,7 @@ extern const D2MonModeCallbackTableStrc gShadowMasterWarrior_Skill4_Callbacks; /
 
 
 
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 
 struct D2Field14Strc

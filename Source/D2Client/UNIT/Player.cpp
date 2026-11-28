@@ -19,6 +19,7 @@
 #include "D2GfxApi.h"
 #include "D2CommonApi.h"
 
+struct D2PoolSystemStrc;
 struct D2SkillStrc;
 
 struct D2UnitStrc;
@@ -145,7 +146,7 @@ void __stdcall STATLIST_AllocStatListEx(D2UnitStrc* pUnit, int nFlags, STATLIST_
 
 void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStatId, int nValue, int nLayer); // 0x00627260
 
-D2InventoryStrc* __stdcall INVENTORY_AllocInventory(void* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
+D2InventoryStrc* __stdcall INVENTORY_AllocInventory(D2PoolSystemStrc* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
 
 void __stdcall PATH_SetDirection(D2DynamicPathStrc* pDynamicPath, unsigned char nDirection); // 0x006488A0
 
@@ -262,7 +263,7 @@ int __stdcall UNITS_GetUnitSizeX(D2UnitStrc* pUnit);                            
 
 int __stdcall UNITS_IsCurrentRoomInvalid(D2UnitStrc* pUnit);                                                // 0x00620F50
 
-void __stdcall UNITS_FreePlayerData(void* pMemPool, D2UnitStrc* pPlayer);                                   // 0x00622060
+void __stdcall UNITS_FreePlayerData(D2PoolSystemStrc* pMemPool, D2UnitStrc* pPlayer);                                   // 0x00622060
 
 void __stdcall UNITS_SetPlayerPortalFlags(D2UnitStrc* pUnit, int nPortalFlags);                             // 0x006221E0
 

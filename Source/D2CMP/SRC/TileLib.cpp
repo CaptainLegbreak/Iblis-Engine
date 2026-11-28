@@ -5,6 +5,7 @@
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
+struct D2PoolSystemStrc;
 struct D2CmpTileStrc;
 struct D2CmpTileProjectStrc;
 struct D2CmpTileBlockStrc;
@@ -28,7 +29,7 @@ int __fastcall FindTileGetTiles(D2CmpTileProjectStrc* pProject, D2CmpTileStrc** 
 
 struct D2CmpGfxHashStrc
 {
-    void GfxHashFreeEntry(void* pMemPool, D2CmpGfxHashEntryStrc* pEntry);                               // 0x0060A9D0
+    void GfxHashFreeEntry(D2PoolSystemStrc* pMemPool, D2CmpGfxHashEntryStrc* pEntry);                               // 0x0060A9D0
 };
 
 
@@ -101,7 +102,7 @@ void __stdcall TileLibraryReleaseProject(int* pSlots, char* pEntry)
 }
 
 // 0x0060AB10
-void __fastcall GfxHashRemove(void* pMemPool, D2CmpGfxHashStrc* pHash, D2CmpGfxHashEntryStrc* pEntry)
+void __fastcall GfxHashRemove(D2PoolSystemStrc* pMemPool, D2CmpGfxHashStrc* pHash, D2CmpGfxHashEntryStrc* pEntry)
 {
     D2_ASSERT(pEntry, 0x141);
     if (pEntry->pPrev)

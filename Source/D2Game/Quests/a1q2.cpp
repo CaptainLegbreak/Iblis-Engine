@@ -20,6 +20,7 @@
 
 #define GLOBAL_STATE 13
 
+struct D2PoolSystemStrc;
 struct D2GameStrc;
 
 typedef int(__fastcall* QUESTUNITITERATE)(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData);
@@ -101,7 +102,7 @@ typedef void(__fastcall* PartyCallbackFunction)(D2GameStrc* pGame, D2UnitStrc* p
 
 D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId); // 0x00543640
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern char gpAct1Q2NpcMessages[]; // 0x00736CE8
 

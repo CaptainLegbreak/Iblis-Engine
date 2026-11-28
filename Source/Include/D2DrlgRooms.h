@@ -1,4 +1,5 @@
 #pragma once
+struct D2PoolSystemStrc;
 // Level generation: outdoor room data, substitution groups, maze build lists, acts and room tile links
 
 #include "D2Check.h"
@@ -62,7 +63,7 @@ struct D2DrlgActStrc
     int bClient; // 0x50
     int bHasPendingRoomsUpdates; // 0x54
     int bHasPendingRoomDeletions; // 0x58
-    void* pMemPool; // 0x5C
+    D2PoolSystemStrc* pMemPool; // 0x5C
 };
 
 struct D2UnkDrlgRoomTileStrc2

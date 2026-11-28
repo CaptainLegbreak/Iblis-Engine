@@ -9,6 +9,7 @@
 #include "D2Txt.h"
 #include "FogApi.h"
 
+struct D2PoolSystemStrc;
 struct D2BinFieldStrc;
 
 struct D2SkillsTxt;
@@ -42,7 +43,7 @@ extern void* gpSkillDescCode; // 0x0096BC7C
 
 void __stdcall sub_006BD230_AddRecordToLinker(D2TxtLinkStrc* pLinker, int nCode); // 0x006BD230
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 
 

@@ -52,7 +52,6 @@ extern D2UnitSndPlayerStrc* gapUnitSndPlayers[]; // 0x0072A008
 
 extern D2UnitSndObjectStrc* gapUnitSndObjects[]; // 0x007295F8
 
-extern D2UnitSndObjectStrc gtUnitSndObject; // 0x00729328
 
 extern D2UnitSndObjectStrc gaUnitSndObjects[]; // 0x00727F48
 
@@ -1236,7 +1235,7 @@ static int __stdcall UNITSND_GetObjectStopSound(D2UnitStrc* pUnit, int nMode, in
         D2UnitSndObjectStrc* pRecord = gapUnitSndObjects[nClass];
         if (!pRecord)
             return 0;
-        if (pRecord == &gtUnitSndObject && nOldMode > nMode)
+        if (pRecord == &gaUnitSndObjects[106] && nOldMode > nMode)
             return 0;
         return pRecord->nModeSound[nMode];
     }

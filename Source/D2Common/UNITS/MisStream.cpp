@@ -4,6 +4,7 @@
 #include "D2Structs.h"
 #include "FogApi.h"
 #include "D2CommonApi.h"
+struct D2PoolSystemStrc;
 struct D2ActiveRoomStrc;
 
 #define MS_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
@@ -30,9 +31,9 @@ typedef void(__fastcall* MISSTREAM_RELEASE)(int nHandle);
 
 D2MissileStreamStrc* __fastcall MISSILE_GetStream(D2UnitStrc* pMissile); // 0x0064A6F0
 void __fastcall MISSILE_SetStream(D2UnitStrc* pMissile, D2MissileStreamStrc* pStream); // 0x0064A6D0
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
-void __fastcall FOG_FreePool(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
-void* __fastcall FOG_ReallocPool(void* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void* __fastcall FOG_ReallocPool(D2PoolSystemStrc* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
 int __stdcall PATH_GetPathPoints(D2DynamicPathStrc* pPath, D2PathPointStrc** ppPathPoints); // 0x006487D0
 D2UnitStrc* __stdcall D2Common_10407(D2ActiveRoomStrc* pRoom, int nX, int nY, MISSTREAM_TEST pfTest, void* pArg, int nPattern); // 0x00641CB0
 extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(void* lpfn); // 0x006CC34C
@@ -123,11 +124,11 @@ void __stdcall MISSTREAM_Update(D2UnitStrc* pUnit, D2UnitStrc* pMissile, int nAm
         if (!ptStream->nCapacity) {
             unsigned int nSize = sizeof(int) * nPoints;
             ptStream->nCapacity = nPoints;
-            void* const pPool = pMissile->pMemoryPool;
+            D2PoolSystemStrc* const pPool = pMissile->pMemoryPool;
             ptStream->pData = (int*)FOG_AllocPool(pPool, nSize, gszMisStreamSourceFile, 151, 0);
             memset(ptStream->pData, 0, nSize);
         } else if (ptStream->nCapacity < nPoints) {
-            void* const pPool = pMissile->pMemoryPool;
+            D2PoolSystemStrc* const pPool = pMissile->pMemoryPool;
             ptStream->pData = (int*)FOG_ReallocPool(pPool, ptStream->pData, sizeof(int) * nPoints, gszMisStreamSourceFile, 154, 0);
         }
         int nMax = nTemp / nRatio;

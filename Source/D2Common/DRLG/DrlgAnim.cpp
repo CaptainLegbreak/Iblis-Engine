@@ -7,6 +7,7 @@
 #include "FogApi.h"
 #include "FogApi2.h"
 #include "D2CMPApi.h"
+struct D2PoolSystemStrc;
 extern const int gnTileTypeMappingTable[]; // 0x006EEF20
 
 struct D2TileLibraryEntryStrc;
@@ -33,7 +34,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);    
 
 extern "C" const char gszDrlgAnimSourceFile[];                                                              // 0x006EEF08
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
 
 static void __fastcall DRLGANIM_AllocAnimationTileGrid(D2DrlgRoomStrc* pDrlgRoom, int nAnimationSpeed, D2DrlgTileDataStrc* pTiles, int nTiles, D2DrlgGridStrc* pDrlgGrid, int nUnused);
 
@@ -159,7 +160,7 @@ void __fastcall DRLGANIM_AnimateTiles(D2DrlgRoomStrc* pRoom)
 static void __fastcall DRLGANIM_AllocAnimationTileGrid(D2DrlgRoomStrc* pDrlgRoom, int nAnimationSpeed, D2DrlgTileDataStrc* pTiles, int nTiles, D2DrlgGridStrc* pDrlgGrid, int nUnused)
 {
     (void)nUnused;
-    void* pMemPool = pDrlgRoom->ptDrlgLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pDrlgRoom->ptDrlgLevel->pDrlg->pMempool;
 
     if (!pTiles)
     {

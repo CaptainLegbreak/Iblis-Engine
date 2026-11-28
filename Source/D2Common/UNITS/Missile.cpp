@@ -18,13 +18,14 @@
 #include "D2MissileData.h"
 #include "D2ClientApi.h"
 
+struct D2PoolSystemStrc;
 extern D2DataTablesStrc* sgptDataTables;                                                                    // 0x00744304
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);    // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);    // 0x0040B430
 
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 

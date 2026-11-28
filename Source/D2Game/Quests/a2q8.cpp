@@ -6,10 +6,11 @@
 #include "D2QuestData.h"
 #include "D2CommonApi.h"
 
+struct D2PoolSystemStrc;
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 
 #include "D2GameFuncs.h"
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 
 
 

@@ -37,6 +37,7 @@
 #include "D2CommonApi2.h"
 #include "D2CommonApi3.h"
 
+struct D2PoolSystemStrc;
 union D2SeedStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
@@ -194,7 +195,7 @@ extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalS
 
 extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC214
 
-int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 void __fastcall GAME_SendUnitRemovalToClient(D2ClientStrc* pClient, void* pUnit); // 0x0052DFB0
 
@@ -252,7 +253,7 @@ typedef void(__fastcall* UnitDescriptionFunction)(char* szDescription, int nClas
 
 extern UnitDescriptionFunction gpfnGetDescription[5]; // 0x0073107C
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 
 extern unsigned short gwValue_0077905C;
@@ -576,7 +577,7 @@ extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 extern D2UnkPlrMsgStrc gaUnitModeMessages[20]; // 0x007319E8
 
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 D2UnitStrc* __stdcall SUNIT_GetTargetUnit(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00553540
 

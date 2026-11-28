@@ -43,6 +43,7 @@
 
 #define TOKEN_CHAR(c) ((char)(c) == COF_PAD ? 0 : (char)(c))
 
+struct D2PoolSystemStrc;
 #define REMAP_COMPONENT(pComponent, nFallback)                                                              \
     {                                                                                                       \
         const int nItems = gnItems;                                                                \
@@ -134,7 +135,7 @@ extern void* sghPentagram; // 0x0087E96C
 
 extern "C" int __cdecl _stricmp(const char* szString1, const char* szString2); // 0x006841E9
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void* __stdcall D2COMP_LoadExcelFile(void* hArchive, const char* szName, const char* szExtension, unsigned int* pnFileSize); // 0x005043E0
 
@@ -178,7 +179,7 @@ extern "C" const char gszItemsTableWeapons[]; // 0x006DCCF8
 
 D2TxtLinkStrc* gpCompItemTypesLinker; // 0x0087D828
 
-int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
@@ -2391,52 +2392,73 @@ int __stdcall SMACK_SetCoordinates(D2WinSmackStrc* pSmack, int nX, int nY)
     return 1;
 }
 
-#pragma pack(push, 1)
-struct d2data_0072EF24_t
-{
-    unsigned char b0[8];
+extern "C" const unsigned char gData_006DCA60[7][64] = { // 0x006DCA60
+    { 0 },
+    { 0 },
+    { 0, 32 },
+    { 0, 16, 32, 48 },
+    { 0, 8, 16, 24, 32, 40, 48, 56 },
+    { 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60 },
+    { 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62 }
 };
-#pragma pack(pop)
+#pragma comment(linker, "/alternatename:?gaDirectionIndex@@3PAY0EA@EA=_gData_006DCA60")
 
-#pragma pack(push, 1)
-struct d2data_0072E010_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
+extern "C" const char gData_006DCE64[4] = "}"; // 0x006DCE64
+#pragma comment(linker, "/alternatename:?gszGuildSuffix@@3QBDB=_gData_006DCE64")
+
+extern "C" const char gData_006DCE68[4] = " {"; // 0x006DCE68
+#pragma comment(linker, "/alternatename:?gszGuildPrefix@@3QBDB=_gData_006DCE68")
+
+extern "C" const char* gData_0072E010[15] = { // 0x0072E010
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
 };
-#pragma pack(pop)
 
-#pragma pack(push, 1)
-struct d2data_0072E1BA_t
-{
-    unsigned char b0[2];
+unsigned int gnUnitTokens = 25; // 0x0072E04C
+
+unsigned int gadwUnitTokens[25] = { // 0x0072E050
+    0x20204D41, 0x20204F53, 0x2020454E, 0x20204150, 0x20204142, 0x20205A44, 0x20204941, 0x20204F52,
+    0x20204852, 0x20204852, 0x2020314F, 0x2020324F, 0x2020334F, 0x2020344F, 0x2020444D, 0x2020394F,
+    0x2020594F, 0x2020594F, 0x2020354F, 0x2020374F, 0x2020384F, 0x2020364F, 0x2020304F, 0x20204354,
+    0x20204F52
 };
-#pragma pack(pop)
 
-extern "C" const unsigned char gData_006DCA60[7][64]; // 0x006DCA60
-extern "C" struct d2data_0072EF24_t gData_0072EF24; // 0x0072EF24
-extern "C" const char gData_006DCE64[4]; // 0x006DCE64
-extern "C" const char gData_006DCE68[4]; // 0x006DCE68
-extern "C" struct d2data_0072E010_t gData_0072E010; // 0x0072E010
-extern "C" struct d2data_0072E1BA_t gData_0072E1BA; // 0x0072E1BA
+unsigned int gnModeTokens = 20; // 0x0072E0B4
 
-extern unsigned int gnCompPairs = 0xD; // 0x0072EFD0
+unsigned int gadwModeTokens[20] = { // 0x0072E0B8
+    0x20205444, 0x2020554E, 0x20204C57, 0x20204E52, 0x20204847, 0x20204E54, 0x20205754, 0x20203141,
+    0x20203241, 0x20204C42, 0x20204353, 0x20204854, 0x20204B4B, 0x20203153, 0x20203253, 0x20203353,
+    0x20203453, 0x20204444, 0x20204847, 0x20204847
+};
 
-extern D2EmblemColorStrc gaEmblemColorRGB1[10] = {
-    { 0xBC },
+unsigned int gadwComponentTokens[21] = { // 0x0072E108
+    0x20204448, 0x20205254, 0x2020474C, 0x20204152, 0x2020414C, 0x20204852, 0x2020484C, 0x20204853,
+    0x20203153, 0x20203253, 0x20203353, 0x20203453, 0x20203553, 0x20203653, 0x20203753, 0x20203853,
+    16, 0x2074696C, 0x2064656D, 0x20797668, 3
+};
+
+unsigned int gadwWClassTokens[15] = { // 0x0072E15C
+    0, 0x20687468, 0x20746831, 0x20746832, 0x20736831, 0x20736832, 0x20776F62, 0x20776278,
+    0x20667473, 0x20736A31, 0x20746A31, 0x20737331, 0x20747331, 0x20317468, 0x20327468
+};
+
+unsigned int gnWClassTokens = 15; // 0x0072E198
+
+D2EmblemColorStrc gaEmblemColorRGB1[10] = { // 0x0072E19C
+    { 0xBC, 0, 0 },
     { 0xE0, 0x70, 0x20 },
     { 0xFC, 0xD4, 0x5C },
     { 0xFC, 0xE4, 0xA4 },
@@ -2446,58 +2468,24 @@ extern D2EmblemColorStrc gaEmblemColorRGB1[10] = {
     { 0x4C, 0x6C, 0xAC },
     { 0x58, 0x90, 0x4C },
     { 0xB2, 0x7C, 0x58 }
-}; // 0x0072E19C
+};
 
-extern D2EmblemColorStrc gaEmblemColorRGB2[10] = {
-    { 0x5C },
-    { 0x90 },
+extern "C" unsigned char gData_0072E1BA[2] = { 0 }; // 0x0072E1BA
+
+D2EmblemColorStrc gaEmblemColorRGB2[10] = { // 0x0072E1BC
+    { 0x5C, 0, 0 },
+    { 0x90, 0, 0 },
     { 0x30, 0x1C, 0x10 },
-    { 0x5C, 0x24, 8 },
-    { 4, 0x24, 0x10 },
+    { 0x5C, 0x24, 0x8 },
+    { 0x4, 0x24, 0x10 },
     { 0x24, 0x5C, 0x24 },
     { 0, 0, 0x58 },
     { 0x28, 0x28, 0x78 },
-    { 0x40, 0x40, 0x40 }
-}; // 0x0072E1BC
+    { 0x40, 0x40, 0x40 },
+    { 0 }
+};
 
-extern "C" const unsigned char gData_006DCA60[7][64] = {
-    { 0 },
-    { 0 },
-    { 0, 0x20 },
-    { 0, 0x10, 0x20, 0x30 },
-    { 0, 8, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38 },
-    { 0, 4, 8, 0xC, 0x10, 0x14, 0x18, 0x1C, 0x20, 0x24, 0x28, 0x2C, 0x30, 0x34, 0x38, 0x3C },
-    {
-    0, 2, 4, 6, 8, 0xA, 0xC, 0xE, 0x10, 0x12, 0x14, 0x16, 0x18, 0x1A, 0x1C, 0x1E,
-    0x20, 0x22, 0x24, 0x26, 0x28, 0x2A, 0x2C, 0x2E, 0x30, 0x32, 0x34, 0x36, 0x38, 0x3A, 0x3C, 0x3E
-}
-}; // 0x006DCA60
-#pragma comment(linker, "/alternatename:?gaDirectionIndex@@3PAY0EA@EA=_gData_006DCA60")
-
-extern unsigned int gnUnitTokens = 0x19; // 0x0072E04C
-
-extern unsigned int gadwUnitTokens[25] = {
-    0x20204D41, 0x20204F53, 0x2020454E, 0x20204150, 0x20204142, 0x20205A44, 0x20204941, 0x20204F52, 0x20204852, 0x20204852, 0x2020314F, 0x2020324F, 0x2020334F, 0x2020344F, 0x2020444D, 0x2020394F,
-    0x2020594F, 0x2020594F, 0x2020354F, 0x2020374F, 0x2020384F, 0x2020364F, 0x2020304F, 0x20204354, 0x20204F52
-}; // 0x0072E050
-
-extern unsigned int gnModeTokens = 0x14; // 0x0072E0B4
-
-extern unsigned int gadwModeTokens[20] = {
-    0x20205444, 0x2020554E, 0x20204C57, 0x20204E52, 0x20204847, 0x20204E54, 0x20205754, 0x20203141, 0x20203241, 0x20204C42, 0x20204353, 0x20204854, 0x20204B4B, 0x20203153, 0x20203253, 0x20203353,
-    0x20203453, 0x20204444, 0x20204847, 0x20204847
-}; // 0x0072E0B8
-
-extern unsigned int gadwComponentTokens[21] = {
-    0x20204448, 0x20205254, 0x2020474C, 0x20204152, 0x2020414C, 0x20204852, 0x2020484C, 0x20204853, 0x20203153, 0x20203253, 0x20203353, 0x20203453, 0x20203553, 0x20203653, 0x20203753, 0x20203853,
-    0x10, 0x2074696C, 0x2064656D, 0x20797668, 3
-}; // 0x0072E108
-
-extern unsigned int gadwWClassTokens[15] = { 0, 0x20687468, 0x20746831, 0x20746832, 0x20736831, 0x20736832, 0x20776F62, 0x20776278, 0x20667473, 0x20736A31, 0x20746A31, 0x20737331, 0x20747331, 0x20317468, 0x20327468 }; // 0x0072E15C
-
-extern unsigned int gnWClassTokens = 0xF; // 0x0072E198
-
-extern D2CompItemStrc gaCompItems[283] = {
+D2CompItemStrc gaCompItems[283] = { // 0x0072E1E0
     { 0, 0, 1 },
     { 0x2074696C, 0, 1 },
     { 0x2064656D, 0, 1 },
@@ -2781,23 +2769,15 @@ extern D2CompItemStrc gaCompItems[283] = {
     { 0x206B7078, 0, 2 },
     { 0x20316671, 4, 36 },
     { 0x20326671, 4, 36 }
-}; // 0x0072E1E0
+};
 
-extern "C" struct d2data_0072EF24_t gData_0072EF24 = {
-    { 0x1B, 0x01, 0x00, 0x00, 0x01 }
-}; // 0x0072EF24
+extern "C" unsigned char gData_0072EF24[8] = { 0x1B, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00 }; // 0x0072EF24
 
-extern int gbD2WinBinMode = 1; // 0x0072EF2C
+int gbD2WinBinMode = 1; // 0x0072EF2C
 
-extern "C" const char gData_006DCE64[4] = "}"; // 0x006DCE64
-#pragma comment(linker, "/alternatename:?gszGuildSuffix@@3QBDB=_gData_006DCE64")
+int gaWClassTokens[14] = { 1, 6, 4, 2, 8, 5, 3, 7, 9, 10, 11, 12, 13, 14 }; // 0x0072EF30
 
-extern "C" const char gData_006DCE68[4] = " {"; // 0x006DCE68
-#pragma comment(linker, "/alternatename:?gszGuildPrefix@@3QBDB=_gData_006DCE68")
-
-extern int gaWClassTokens[14] = { 1, 6, 4, 2, 8, 5, 3, 7, 9, 10, 11, 12, 13, 14 }; // 0x0072EF30
-
-extern D2CompPairStrc gaCompPairs[13] = {
+D2CompPairStrc gaCompPairs[13] = { // 0x0072EF68
     { 0x20776F62, 1 },
     { 0x20736831, 2 },
     { 0x20746831, 3 },
@@ -2811,26 +2791,6 @@ extern D2CompPairStrc gaCompPairs[13] = {
     { 0x20747331, 11 },
     { 0x20317468, 12 },
     { 0x20327468, 13 }
-}; // 0x0072EF68
+};
 
-extern "C" struct d2data_0072E010_t gData_0072E010 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0072E010
-
-extern "C" struct d2data_0072E1BA_t gData_0072E1BA = {
-    { 0x00 }
-}; // 0x0072E1BA
+unsigned int gnCompPairs = 13; // 0x0072EFD0

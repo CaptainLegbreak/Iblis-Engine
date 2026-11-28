@@ -29,6 +29,7 @@
 
 #define D2CMP_BITCOUNT(x) (((D2CMP_BITCOUNT_BX(x) + (D2CMP_BITCOUNT_BX(x) >> 4)) & 0x0F0F0F0F) % 255)
 
+struct D2PoolSystemStrc;
 #define APPEND_CODE(q, dw) \
     if ((char)(dw) != 0x20) { *q++ = (char)(dw); \
         if ((char)((dw) >> 8) != 0x20) { *q++ = (char)((dw) >> 8); \
@@ -154,7 +155,7 @@ struct D2SpriteLoadRequestStrc
     int nSize;
 };
 
-int __fastcall CodecDecodeDccData(void* hArg, void* pMemPool, int nArg, D2SpriteFileStrc* pFile, D2SpriteEntryStrc* pEntry, int nArg0C, int nArg10, int* pSize, char* pData); // 0x0060BFF0
+int __fastcall CodecDecodeDccData(void* hArg, D2PoolSystemStrc* pMemPool, int nArg, D2SpriteFileStrc* pFile, D2SpriteEntryStrc* pEntry, int nArg0C, int nArg10, int* pSize, char* pData); // 0x0060BFF0
 
 void __fastcall D2CMPSpriteCacheResize(D2SpriteCacheStrc* pCache, D2SpriteCacheNodeStrc* pNode, int nDelta, int nArg); // 0x005FF630
 
@@ -187,11 +188,11 @@ struct D2CelDataViewStrc
     int nRef;
 };
 
-void __fastcall CelDataHashRemove(void* pMemPool, D2CelDataHashStrc* pHash, D2CelDataHashEntryStrc* pEntry); // 0x0060B0B0
+void __fastcall CelDataHashRemove(D2PoolSystemStrc* pMemPool, D2CelDataHashStrc* pHash, D2CelDataHashEntryStrc* pEntry); // 0x0060B0B0
 
 void __fastcall D2CMPSpriteCacheFreeAll(D2SpriteCacheStrc* pCache); // 0x005FFBE0
 
-void __fastcall D2CMPSpriteCacheCreate(D2SpriteCacheStrc* pCache, void* pMemPool, unsigned int nMaxSize, int nArg); // 0x005FEE90
+void __fastcall D2CMPSpriteCacheCreate(D2SpriteCacheStrc* pCache, D2PoolSystemStrc* pMemPool, unsigned int nMaxSize, int nArg); // 0x005FEE90
 
 void __fastcall SPRITECACHE_SpriteCacheFreeCallback(void* pNode); // 0x005FE170
 
@@ -247,7 +248,7 @@ int gnCelDataCacheMaxMemory; // 0x0088DB24
 
 struct D2CmpCelFileViewStrc;
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 struct D2CmpCelFileViewStrc
 {
@@ -275,13 +276,13 @@ void __stdcall D2CMPSpriteInitFrames(D2CmpSpriteFileStrc* pFile, D2CmpSpriteCont
 
 D2SpriteCacheNodeStrc* __fastcall D2CMPSpriteCacheAlloc(D2SpriteCacheStrc* pCache, unsigned int nSize, unsigned int nKey, int bLocked); // 0x005FFC40
 
-AsyncData* __fastcall FOG_AsyncDataLoadFileEx(void* pMemPool, const char* szFileName, int bAllowAsync, long nFileOffset, int nFileSize, void* pBuffer, D2CmpLoadDescStrc* pAsyncOpDesc, int nPriority, const char* szFile, int nLine); // 0x0040A620
+AsyncData* __fastcall FOG_AsyncDataLoadFileEx(D2PoolSystemStrc* pMemPool, const char* szFileName, int bAllowAsync, long nFileOffset, int nFileSize, void* pBuffer, D2CmpLoadDescStrc* pAsyncOpDesc, int nPriority, const char* szFile, int nLine); // 0x0040A620
 
 int __stdcall D2CMPSpriteAsyncLoadCallback(void* hArg, int nArg, D2SpriteLoadRequestStrc* pRequest);    // 0x005FF6E0
 
 int __stdcall CelGameDirToFileDir(int nDirection, unsigned int nDirections);                   // 0x00600C90
 
-D2CmpGfxHashEntryStrc* __fastcall GfxHashAdd(void* pMemPool, D2CmpBlockTableBStrc* pHash, D2CmpSpriteEntryStrc* pEntry, D2CmpSpriteContextStrc* pContext, D2CmpSpriteFileStrc* pFile); // 0x0060ADC0
+D2CmpGfxHashEntryStrc* __fastcall GfxHashAdd(D2PoolSystemStrc* pMemPool, D2CmpBlockTableBStrc* pHash, D2CmpSpriteEntryStrc* pEntry, D2CmpSpriteContextStrc* pContext, D2CmpSpriteFileStrc* pFile); // 0x0060ADC0
 
 static void* SPRITECACHE_GetCachedDC6Frame(D2CmpSpriteContextStrc* pContext, D2CmpSpriteEntryStrc* pEntry); // 0x005FEC50
 
@@ -475,7 +476,7 @@ struct D2SpriteFreeNodeStrc
     D2SpriteKeyStrc* pKey;
 };
 void (__fastcall* gpfnCmpFreeCallback)(int nKeyA, int nKeyC, int nKeyB);                           // 0x0089DB5C
-void __fastcall GfxHashRemove(void* pMemPool, D2CmpGfxHashStrc* pHash, D2CmpGfxHashEntryStrc* pEntry); // 0x0060AB10
+void __fastcall GfxHashRemove(D2PoolSystemStrc* pMemPool, D2CmpGfxHashStrc* pHash, D2CmpGfxHashEntryStrc* pEntry); // 0x0060AB10
 
 // 0x005FE170
 void __fastcall SPRITECACHE_SpriteCacheFreeCallback(void* pNode)
@@ -816,7 +817,7 @@ int __fastcall D2CMPSpriteCacheIsInitialized(D2CmpValueObjStrc* pObject)
 }
 
 // 0x005FEE90
-void __fastcall D2CMPSpriteCacheCreate(D2SpriteCacheStrc* pCache, void* pMemPool, unsigned int nMaxSize, int nArg)
+void __fastcall D2CMPSpriteCacheCreate(D2SpriteCacheStrc* pCache, D2PoolSystemStrc* pMemPool, unsigned int nMaxSize, int nArg)
 {
     pCache->nMaxSize = nMaxSize;
     pCache->nArg = nArg;
@@ -1228,7 +1229,7 @@ D2SpriteCacheNodeStrc* __fastcall sub_M110_Emit_005FF0D0(D2SpriteCacheStrc* pCac
 }
 
 // 0x005FFD40
-void __stdcall D2CMPSpriteCacheInit(void* pMemPool, unsigned int nMaxSize, int nArg, unsigned int nCacheSize)
+void __stdcall D2CMPSpriteCacheInit(D2PoolSystemStrc* pMemPool, unsigned int nMaxSize, int nArg, unsigned int nCacheSize)
 {
     CodecInitLock();
     if (!nCacheSize)

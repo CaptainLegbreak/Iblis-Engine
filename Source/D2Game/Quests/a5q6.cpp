@@ -17,6 +17,7 @@
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
 
+struct D2PoolSystemStrc;
 D2UnitStrc* __fastcall SUNIT_AllocUnitData(int nUnitType, int nClassId, int nX, int nY, D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, char nAllocFlags, int nMode, unsigned int nOverrideUnitGUID); // 0x00555230
 
 #define QUESTSTATEFLAG_A5Q6 40
@@ -68,7 +69,7 @@ struct D2QuestDataStrc;
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
 
 extern "C" const char gszA5Q6SourceFile[];                                                                  // 0x006E1AF0
 

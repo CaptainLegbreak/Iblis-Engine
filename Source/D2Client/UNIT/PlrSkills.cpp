@@ -1483,7 +1483,7 @@ D2StatListStrc* __fastcall PLRSKILLS_SetStateStat(D2UnitStrc* pUnit, D2StatListS
         pStatList = STATLIST_GetStatListFromUnitAndState(pUnit, nState);
         if (!pStatList)
         {
-            pStatList = STATLIST_AllocStatList(pStatList, (unsigned int)pStatList, (unsigned int)pStatList, (!pUnit ? 6 : pUnit->dwUnitType), (!pUnit ? -1 : pUnit->dwUnitId));
+            pStatList = STATLIST_AllocStatList(0, 0, 0, (!pUnit ? 6 : pUnit->dwUnitType), (!pUnit ? -1 : pUnit->dwUnitId));
             STATLIST_SetState(pStatList, nState);
             D2COMMON_10475_PostStatToStatList(pUnit, pStatList, 1);
         }

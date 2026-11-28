@@ -1,4 +1,5 @@
 #pragma once
+struct D2PoolSystemStrc;
 // D2CMP sprite cache: the cache record shared by SpriteCache and CelCmp.
 
 #include "D2SysTypes.h"
@@ -7,7 +8,7 @@ struct D2SpriteCacheNodeStrc;
 
 struct D2SpriteCacheStrc
 {
-    void* pMemPool; // 0x00
+    D2PoolSystemStrc* pMemPool; // 0x00
     unsigned int nMaxSize; // 0x04
     unsigned int nTotalSize; // 0x08
     unsigned int nCount; // 0x0C
