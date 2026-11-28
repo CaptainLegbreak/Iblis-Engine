@@ -51,9 +51,37 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Claimed
 
-- 2: CMake and VS 2022 x86 (lane14/cmake), started 2026-11-27.
+- 5: link report (docs/PORT_LINK.md), started 2026-11-27 17:00 PT.
 
 ## Findings
+
+- 2026-11-27 17:00 PT, fixes for the Codex lanes from the compile report (docs/PORT_COMPILE.md, PR #5). All 538
+  files compile with v143; these are the warnings where behaviour can depend on the compiler:
+  - **D2Client:** UNIT/MonUnique.cpp `MONUNIQUE_ApplyResistantMod` can end without a return value (C4715): write
+    the return 1.14d's code gives on that path. UI/inv.cpp defines its own `va_start` (C4005): drop it, use
+    <stdarg.h>'s. SKILLS/Skills.cpp:1121 narrows int to unsigned int in a brace initialiser (C4838).
+    UNIT/UnitSnd.cpp:209, 211 `extern` on a struct definition with no variable (C4091).
+  - **D2Common:** DATATBLS/MonsterTbls.cpp:688 redefines `D2_ASSERT` (C4005): one definition, in one header.
+  - **D2Direct3D:** Src/d3dSprite.cpp `D3DSPRITE_DrawSpriteQuad` can end without a return value (C4715).
+    Src/d3dFloorCache.cpp:41 redefines `RELEASE` (C4005).
+  - **D2Game:** GAME/SCmd.cpp `D2GAME_PACKETS_SendPacket0xAE` ends without a return after the failed size
+    assertion (C4715). MONSTER/MonsterUnique.cpp `MONSTERUNIQUE_UMod8_Resistant` likewise (C4715).
+    `D2_MIN`/`D2_MAX` redefined in SKILLS/SkillAss.cpp:342-344 and SKILLS/Skills.cpp:441-443,
+    `EVENTTYPE_REMOVESTATE` in SKILLS/Skills.cpp:437, `UNITFLAG_TARGETABLE` in OBJECTS/ObjMode.cpp:464,
+    `EVENTTYPE_STATREGEN` in PLAYER/Player.cpp:577 (C4005): one definition each. Quests/a1q4.cpp:1253 a type
+    qualifier twice (C4114). GAME/Game.cpp:2075 `sprintf("~%d", szGameName, 0)` prints an address: very likely
+    1.14d's own code, keep it, just don't "fix" it.
+  - **D2Win:** Src/D2WinFont.cpp:137-139 redefines `D2_MAX`/`D2_MIN` (C4005).
+  - **Fog:** Unknown_00401DF0.cpp:321, 324, 362 `%p` given an unsigned long (C4477): same output on x86, only
+    matters for 64-bit (M7).
+  - **Storm:** SOURCE/SCOMP.CPP and SOURCE/SFILE.CPP call the PKWARE routines by placeholders
+    (`sub_006B01B0_Explode`, `sub_006B0870_Implode`) with two different declarations: their names are
+    `explode` and `implode` (PKWARE DCL's API), one declaration in a header. The engine answers to both names
+    meanwhile (Source/Storm/pklib/codex_names.cpp).
+- 2026-11-27 17:00 PT, question for the user (item 2, parked): the PKWARE test against data the original
+  library compressed needs the user's own MPQs. Could the user attach one or two (d2speech.mpq is small; any
+  of d2data/d2exp/d2char will do), or run `pklib_test.exe d2data.mpq d2exp.mpq` from the build in their
+  Diablo II folder and paste the output? Nothing from them goes into the repo.
 
 - 2026-11-27, question for the user (item 0, parked, not blocking): I need the user's 1.14d Game.exe in the
   sandbox for Codex's tools (linkdebt.py for item 3, shortdata.py for item 4) and to check 16 data bytes.
@@ -68,6 +96,12 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
   entries after the file merges, worth a fix in Codex.
 
 ## Status
+
+- 2026-11-27 17:00 PT: on the new queue. PR #2 replaces #1 (same tree, made by tools/codex_sync.py, which now
+  drops the `// build:` markers itself: item 4; #1 can be closed unmerged). PR #3 pklib (item 2; the MPQ run is
+  parked for the user's archives), PR #4 resources (item 3), PR #5 CMake + docs/PORT_COMPILE.md (item 1: all 538
+  files compile; findings above). The stack merges in order #2, #3, #4, #5. Starting item 5, the link report.
+  (Correction: my 17:40 status line below was 16:40 PT.)
 
 - 2026-11-27 17:40 PT: item 0 done, PR #1 (Source/ = Codex main 09eccff; data carried over exactly without
   Game.exe, by inverting gendata's rendering, checked by re-rendering all 2,481 old records). Toolchain in the
