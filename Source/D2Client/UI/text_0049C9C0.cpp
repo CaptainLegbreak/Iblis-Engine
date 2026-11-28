@@ -23,7 +23,7 @@ void* __cdecl sub_00454600_GetCloseButtonCell(); // 0x00454600
 int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc*); // 0x0061A1B0
 const Unicode* __fastcall UI_GetLevelName(int nLevelId); // 0x00453E70
 void __fastcall D2Win_10117_DrawText(const Unicode*,int,int,int,int); // 0x00502320
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short); // 0x00524A30
+const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 int __fastcall D2Win_10121_GetTextWidth(const Unicode*); // 0x00501820
 void __stdcall D2GFX_DrawBox(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, int eDrawMode); // 0x004F6300
 extern int gnScreenHeight; // 0x00711470

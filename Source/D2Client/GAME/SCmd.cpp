@@ -422,7 +422,7 @@ void __fastcall TEXT_HandleNpcTextPacket(D2GSPacketSrv27Strc* pPacket); // 0x004
 
 
 
-int __fastcall MISSILE_SubmitMissileRequest(D2UnitStrc* pUnit, int nRequest, int nX, int nY, int nA, int nB); // 0x004CDB40
+D2UnitStrc* __fastcall MISSILE_SubmitMissileRequest(D2UnitStrc* pUnit, int nRequest, int nX, int nY, int nA, int nB); // 0x004CDB40
 
 
 int __fastcall PLRSKILLS_SetStateStat(D2UnitStrc* pUnit, int nPrev, int nState, int nStatId, int nValue, int nLayer); // 0x004D9D70
@@ -1006,7 +1006,7 @@ extern "C" __declspec(dllimport) short __stdcall GetKeyState(int nVirtKey); // 0
 
 void __fastcall sub_0049EB10(D2GSPacket5AStrc* pPacket); // 0x0049EB10
 
-void __fastcall NPCMENU_HandleNpcTransaction(D2PacketRecord15Strc* pPacket); // 0x004B6390
+void __fastcall NPCMENU_HandleNpcTransaction(D2PacketSrv2AStrc* pPacket); // 0x004B6390
 
 
 
@@ -2572,9 +2572,9 @@ void __fastcall SCMD_HandleHoverText(const D2GSPacketSrv27Strc* pPacket)
 }
 
 // 0x0045E0D0
-void __fastcall SCMD_HandleNpcTransaction(const D2PacketRecord15Strc* pPacket)
+void __fastcall SCMD_HandleNpcTransaction(const D2PacketSrv2AStrc* pPacket)
 {
-    D2PacketRecord15Strc tPacket = *pPacket;
+    D2PacketSrv2AStrc tPacket = *pPacket;
     NPCMENU_HandleNpcTransaction(&tPacket);
 }
 

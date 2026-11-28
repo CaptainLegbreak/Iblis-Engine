@@ -817,15 +817,7 @@ struct D2PacketInteractStrc
     unsigned char unused0x06; // 0x06
 };
 
-struct D2PacketSrv2AStrc
-{
-    unsigned char nHeader; // 0x00
-    unsigned char nTransactionType; // 0x01
-    unsigned char nResult; // 0x02
-    unsigned int unused0x03; // 0x03
-    int nUnitGUID; // 0x07
-    int nGold; // 0x0B
-};
+#include "D2PacketSrv2A.h"
 
 struct D2GSPacketSrv65Strc
 {

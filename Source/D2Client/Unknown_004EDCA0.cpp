@@ -47,7 +47,7 @@ int __stdcall SKILLDESC_AddSummonDamageBonus(D2UnitStrc* pUnit, Unicode* wszText
 // noinline: the original calls this; without it the compiler expands it into 0x004EDCA0.
 static __declspec(noinline) unsigned short SKILLDESC_GetETypeDamageStr(int nEType);
 static int __stdcall SKILLDESC_AddSkillElemRate(D2UnitStrc* pUnit, Unicode* wszText, int nSkillId, int nSkillLevel); // 0x004EC6F0
-D2UnitStrc* __fastcall MISSILE_SubmitMissileRequest(D2UnitStrc* pUnit, int nRequest, int nX, int nY, int nSkillId, int nSkillLevel); // 0x004CDB40
+D2UnitStrc* __fastcall MISSILE_SubmitMissileRequest(D2UnitStrc* pUnit, int nRequest, int nX, int nY, int nA, int nB); // 0x004CDB40
 extern "C" int __stdcall sub_0064A300(Unit0064A300* pUnit); // 0x0064A300
 
 static inline int ApplyPercent(int nValue, int nPercent)

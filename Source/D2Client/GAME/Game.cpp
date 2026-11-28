@@ -1571,7 +1571,7 @@ int __cdecl RECORD_IsRecordingEnabled(); // 0x00451910
 
 int __cdecl RECORD_IsPlaybackEnabled(); // 0x00451980
 
-extern "C" void __fastcall SCMD_RegisterMsgHandlers(void* hwnd, D2MsgHandlerEntryStrc* table, unsigned int count); // 0x00451DB0
+void __fastcall SCMD_RegisterMsgHandlers(void* hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
 void __fastcall AUTOMAP_UnregisterHandlerTable(void* hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451E10
 

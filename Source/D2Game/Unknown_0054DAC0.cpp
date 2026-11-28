@@ -70,7 +70,7 @@ int __fastcall SKILLS_GetMonsterClassFromChain(int nMonsterId, int nNoInChain)
 }
 
 // 0x0054DAC0
-static void __stdcall sub_0054DAC0_GetSpawnBounds(D2ActiveRoomStrc* pRoom, int* pWidth, D2RoomCoordListStrc* pArea, int* pX, int* pY, int* pHeight)
+static void __stdcall MONSTERREGION_GetSpawnBounds(D2ActiveRoomStrc* pRoom, int* pWidth, D2RoomCoordListStrc* pArea, int* pX, int* pY, int* pHeight)
 {
     if (!pArea)
     {
@@ -118,7 +118,7 @@ D2RoomWarpCoordsStrc* __stdcall DUNGEON_GetWarpCoordinatesFromRoom(D2ActiveRoomS
 D2LevelsTxt* __stdcall DATATBLS_GetLevelsTxtRecord(int nLevelId); // 0x0061DB70
 
 
-static int __stdcall sub_0054DB50_IsNearWarpOrSpawn(D2GameStrc* pGame, int nX, int nY, D2ActiveRoomStrc* pRoom);
+static int __stdcall MONSTERREGION_IsNearWarpOrSpawn(D2GameStrc* pGame, int nX, int nY, D2ActiveRoomStrc* pRoom); // 0x0054DB50
 
 static inline unsigned int SEED_RollRandomNumber(D2SeedStrc* pSeed)
 {
@@ -145,7 +145,7 @@ static inline unsigned int SEED_RollLimitedRandomNumber_Inline(D2SeedStrc* pSeed
 
 
 // 0x0054DB50
-static int __stdcall sub_0054DB50_IsNearWarpOrSpawn(D2GameStrc* pGame, int nX, int nY, D2ActiveRoomStrc* pRoom)
+static int __stdcall MONSTERREGION_IsNearWarpOrSpawn(D2GameStrc* pGame, int nX, int nY, D2ActiveRoomStrc* pRoom)
 {
     if (!pRoom)
     {
@@ -196,7 +196,7 @@ static int __stdcall sub_0054DB50_IsNearWarpOrSpawn(D2GameStrc* pGame, int nX, i
 int __fastcall MONSTERREGION_FindSpawnLocation(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, D2RoomCoordListStrc* pArea, int nClassId, int* pX, int* pY, int bAvoidWarps)
 {
     int nX, nY, nWidth, nHeight;
-    sub_0054DAC0_GetSpawnBounds(pRoom, &nWidth, pArea, &nX, &nY, &nHeight);
+    MONSTERREGION_GetSpawnBounds(pRoom, &nWidth, pArea, &nX, &nY, &nHeight);
 
     int bHasArea = 0;
     int nAreaIndex = 0;
@@ -212,7 +212,7 @@ int __fastcall MONSTERREGION_FindSpawnLocation(D2GameStrc* pGame, D2ActiveRoomSt
         const int nPosX = SEED_RollLimitedRandomNumber_Inline(pSeed, nWidth) + nX;
         const int nPosY = SEED_RollLimitedRandomNumber_Inline(pSeed, nHeight) + nY;
 
-        if (bAvoidWarps && sub_0054DB50_IsNearWarpOrSpawn(pGame, nPosX, nPosY, pRoom))
+        if (bAvoidWarps && MONSTERREGION_IsNearWarpOrSpawn(pGame, nPosX, nPosY, pRoom))
         {
             continue;
         }
@@ -261,7 +261,7 @@ struct D2FormationOffsetStrc
 int __stdcall MONSTERREGION_FindFormationSpawnLocation(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, D2RoomCoordListStrc* pArea, int nClassId, int* pFormation, int* pX, int* pY)
 {
     int nX, nY, nWidth, nHeight;
-    sub_0054DAC0_GetSpawnBounds(pRoom, &nWidth, pArea, &nX, &nY, &nHeight);
+    MONSTERREGION_GetSpawnBounds(pRoom, &nWidth, pArea, &nX, &nY, &nHeight);
 
     int bHasArea = 0;
     int nAreaIndex = 0;
@@ -360,7 +360,7 @@ static D2UnitStrc* __stdcall MONSTERREGION_SpawnMonsterGroup(D2GameStrc* pGame, 
 }
 
 // 0x0054E090
-static D2UnitStrc* __stdcall sub_0054E090_SpawnGroupAtPoint(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nMonsterId, int nX, int nY)
+static D2UnitStrc* __stdcall MONSTERREGION_SpawnGroupAtPoint(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nMonsterId, int nX, int nY)
 {
     D2MonStatsTxt* pMonStatsTxtRecord = DATATBLS_GetMonStatsTxtRecord_Inline(nMonsterId);
     unsigned char nMinGrp = pMonStatsTxtRecord->nMinGrp;
@@ -383,9 +383,9 @@ static D2UnitStrc* __stdcall sub_0054E090_SpawnGroupAtPoint(D2GameStrc* pGame, D
     return pMonster;
 }
 
-// noinline: D2GAME_PopulateRoom (0x0054EC90) calls sub_0054E190_SpawnMonsterAtFreePosition (0x0054E190); the image calls it out of line there.
+// noinline: D2GAME_PopulateRoom (0x0054EC90) calls MONSTERREGION_SpawnMonsterAtFreePosition (0x0054E190); the image calls it out of line there.
 // 0x0054E190
-static __declspec(noinline) int __stdcall sub_0054E190_SpawnMonsterAtFreePosition(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nClassId, D2UnkMonCreateStrc2* pCreate)
+static __declspec(noinline) int __stdcall MONSTERREGION_SpawnMonsterAtFreePosition(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nClassId, D2UnkMonCreateStrc2* pCreate)
 {
     int nX;
     int nY;
@@ -396,7 +396,7 @@ static __declspec(noinline) int __stdcall sub_0054E190_SpawnMonsterAtFreePositio
 }
 
 // 0x0054E1E0
-static void __stdcall sub_0054E1E0_SpawnChampionMinions(D2RoomCoordListStrc* pCoordList, int nMonsterId, D2GameStrc* pGame, D2UnitStrc* pMonster)
+static void __stdcall MONSTERREGION_SpawnChampionMinions(D2RoomCoordListStrc* pCoordList, int nMonsterId, D2GameStrc* pGame, D2UnitStrc* pMonster)
 {
     if (!MONSTERUNIQUE_CheckMonTypeFlag(pMonster, 4))
         return;
@@ -411,18 +411,18 @@ static void __stdcall sub_0054E1E0_SpawnChampionMinions(D2RoomCoordListStrc* pCo
 }
 
 // 0x0054E260
-static int __stdcall sub_0054E260_SpawnMonsterWithMinions(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, D2RoomCoordListStrc* pCoordList, int nMonsterId)
+static int __stdcall MONSTERREGION_SpawnMonsterWithMinions(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, D2RoomCoordListStrc* pCoordList, int nMonsterId)
 {
     D2UnitStrc* pMonster = MONSTERUNIQUE_SpawnUniqueGroup(pGame, pRoom, pCoordList, nMonsterId, 1, 0, 0, 1);
     if (!pMonster)
         return 0;
 
-    sub_0054E1E0_SpawnChampionMinions(pCoordList, nMonsterId, pGame, pMonster);
+    MONSTERREGION_SpawnChampionMinions(pCoordList, nMonsterId, pGame, pMonster);
     return 1;
 }
 
 // 0x0054E2A0
-static int sub_0054E2A0_GetFallenVariantForLevel(int nLevelId, int nMonsterId)
+static int MONSTERREGION_GetFallenVariantForLevel(int nLevelId, int nMonsterId)
 {
     D2MonStatsTxt* pMonStatsTxtRecord = DATATBLS_GetMonStatsTxtRecord_Inline(nMonsterId);
     const int nBaseId = !pMonStatsTxtRecord ? nMonsterId : pMonStatsTxtRecord->nBaseId;
@@ -458,7 +458,7 @@ static int sub_0054E2A0_GetFallenVariantForLevel(int nLevelId, int nMonsterId)
 }
 
 // 0x0054E490
-static D2UnitStrc* __stdcall sub_0054E490_SpawnRegularPresetMonster(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nX, int nY, int nMode, int nClassId)
+static D2UnitStrc* __stdcall MONSTERREGION_SpawnRegularPresetMonster(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nX, int nY, int nMode, int nClassId)
 {
     D2MonStatsTxt* pMonStatsTxtRecord = DATATBLS_GetMonStatsTxtRecord_Inline(nClassId);
     if (!pMonStatsTxtRecord)
@@ -561,7 +561,7 @@ D2UnitStrc* __fastcall D2GAME_SpawnPresetMonster(D2GameStrc* pGame, D2ActiveRoom
             }
         }
 
-        return sub_0054E490_SpawnRegularPresetMonster(pGame, pRoom, nX, nY, nMode, nClassId);
+        return MONSTERREGION_SpawnRegularPresetMonster(pGame, pRoom, nX, nY, nMode, nClassId);
     }
 
     switch (nClassId)
@@ -626,7 +626,7 @@ D2UnitStrc* __fastcall D2GAME_SpawnPresetMonster(D2GameStrc* pGame, D2ActiveRoom
             break;
 
         MONSTERUNIQUE_PromoteToChampion(pGame, pMonster, 0x10);
-        sub_0054E1E0_SpawnChampionMinions(0, nClassId, pGame, pMonster);
+        MONSTERREGION_SpawnChampionMinions(0, nClassId, pGame, pMonster);
         break;
     }
     case 4:
@@ -685,7 +685,7 @@ D2UnitStrc* __fastcall D2GAME_SpawnPresetMonster(D2GameStrc* pGame, D2ActiveRoom
             return 0;
         }
 
-        nMonsterId = sub_0054E2A0_GetFallenVariantForLevel(nLevelId, D2Common_11063(pRoom, SKILLDESC_ValidateMonsterId(nMonsterId)));
+        nMonsterId = MONSTERREGION_GetFallenVariantForLevel(nLevelId, D2Common_11063(pRoom, SKILLDESC_ValidateMonsterId(nMonsterId)));
 
         int nFlags = 0;
         D2MonStatsTxt* pMonStatsTxtRecord = DATATBLS_GetMonStatsTxtRecord(nMonsterId);
@@ -728,7 +728,7 @@ D2UnitStrc* __fastcall D2GAME_SpawnPresetMonster(D2GameStrc* pGame, D2ActiveRoom
         }
 
         nMonsterId = D2Common_11063(pRoom, SKILLDESC_ValidateMonsterId(nMonsterId));
-        sub_0054E090_SpawnGroupAtPoint(pGame, pRoom, nMonsterId, nX, nY);
+        MONSTERREGION_SpawnGroupAtPoint(pGame, pRoom, nMonsterId, nX, nY);
         break;
     }
     }
@@ -737,7 +737,7 @@ D2UnitStrc* __fastcall D2GAME_SpawnPresetMonster(D2GameStrc* pGame, D2ActiveRoom
 }
 
 // 0x0054EBC0
-static int sub_0054EBC0_CanPopulateRoom(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom)
+static int MONSTERREGION_CanPopulateRoom(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom)
 {
     D2MonsterRegionStrc* pRegion = MONSTERREGION_GetMonsterRegionFromLevelId(pGame->pMonReg, DUNGEON_GetLevelIdFromRoom(pRoom));
     if (!pRegion)
@@ -776,9 +776,9 @@ static inline D2MonStatsTxt* GetMonStatsRecord(D2DataTablesStrc* pDataTables, in
     return pRecord;
 }
 
-// noinline: D2GAME_PopulateRoom (0x0054EC90) calls sub_0054EC40_IsSpecialBaseMonster (0x0054EC40); the image calls it out of line there.
+// noinline: D2GAME_PopulateRoom (0x0054EC90) calls MONSTERREGION_IsSpecialBaseMonster (0x0054EC40); the image calls it out of line there.
 // 0x0054EC40
-__declspec(noinline) int __fastcall sub_0054EC40_IsSpecialBaseMonster(int nClassId)
+__declspec(noinline) int __fastcall MONSTERREGION_IsSpecialBaseMonster(int nClassId)
 {
     D2DataTablesStrc* pDataTables = sgptDataTables;
     if (nClassId < 0)
@@ -824,13 +824,13 @@ D2UnkMonCreateStrc2* __fastcall MONSTERCHOOSE_RollFormation(D2ActiveRoomStrc* pR
 
 int __fastcall sub_H05_Emit_0054E260(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, D2RoomCoordListStrc* pCoordList, int nMonsterId)
 {
-    return sub_0054E260_SpawnMonsterWithMinions(pGame, pRoom, pCoordList, nMonsterId);
+    return MONSTERREGION_SpawnMonsterWithMinions(pGame, pRoom, pCoordList, nMonsterId);
 }
 
 // 0x0054EC90
 void __fastcall D2GAME_PopulateRoom(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom)
 {
-    if (!sub_0054EBC0_CanPopulateRoom(pGame, pRoom))
+    if (!MONSTERREGION_CanPopulateRoom(pGame, pRoom))
     {
         return;
     }
@@ -882,19 +882,19 @@ void __fastcall D2GAME_PopulateRoom(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom)
                             D2UnitStrc* pChampion = MONSTERUNIQUE_SpawnUniqueGroup(pGame, pRoom, pRoomCoordList, nChampionId, 1, 0, 0, 1);
                             if (pChampion)
                             {
-                                sub_0054E1E0_SpawnChampionMinions(pRoomCoordList, nChampionId, pGame, pChampion);
+                                MONSTERREGION_SpawnChampionMinions(pRoomCoordList, nChampionId, pGame, pChampion);
                                 bSpawned = 1;
                             }
                             break;
                         }
                         case 1:
-                            bSpawned = sub_0054E190_SpawnMonsterAtFreePosition(pGame, pRoom, nMonsterId, MONSTERCHOOSE_RollFormation(pRoom));
+                            bSpawned = MONSTERREGION_SpawnMonsterAtFreePosition(pGame, pRoom, nMonsterId, MONSTERCHOOSE_RollFormation(pRoom));
                             break;
                         default:
                         {
                             unsigned char nMinGrp = 1;
                             unsigned char nMaxGrp = 1;
-                            if (!sub_0054EC40_IsSpecialBaseMonster(nMonsterId))
+                            if (!MONSTERREGION_IsSpecialBaseMonster(nMonsterId))
                             {
                                 nMinGrp = pMonStatsTxtRecord->nMinGrp;
                                 nMaxGrp = pMonStatsTxtRecord->nMaxGrp;
@@ -930,7 +930,7 @@ void __fastcall D2GAME_PopulateRoom(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom)
 }
 
 // 0x0054EF50
-static void __stdcall sub_0054EF50_SpawnWandering(
+static void __stdcall MONSTERREGION_SpawnWandering(
     D2MonsterRegionStrc* pRegion, D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, D2LevelsTxt* pLevels)
 {
     unsigned char nAct = pLevels->nAct;
@@ -954,7 +954,7 @@ static void __stdcall sub_0054EF50_SpawnWandering(
 }
 
 // 0x0054EFF0
-static void __stdcall sub_0054EFF0_CheckWandering(
+static void __stdcall MONSTERREGION_CheckWandering(
     D2GameStrc* pGame, int nLevel, D2LevelsTxt* pLevels, D2ActiveRoomStrc* pRoom)
 {
     D2SeedStrc* pSeed = pRoom ? &pRoom->pSeed : 0;
@@ -962,7 +962,7 @@ static void __stdcall sub_0054EFF0_CheckWandering(
     {
         D2MonsterRegionStrc* pRegion = MONSTERREGION_GetMonsterRegionFromLevelId(pGame->pMonReg, nLevel);
         if (pRegion->nWanderingCount < 3)
-            sub_0054EF50_SpawnWandering(pRegion, pGame, pRoom, pLevels);
+            MONSTERREGION_SpawnWandering(pRegion, pGame, pRoom, pLevels);
     }
 }
 
@@ -974,7 +974,7 @@ void __fastcall MONSTERREGION_TrySpawnWanderingMonster(D2GameStrc* pGame, D2Acti
         int nLevel = DUNGEON_GetLevelIdFromRoom(pRoom);
         D2LevelsTxt* pLevels = DATATBLS_GetLevelsTxtRecord(nLevel);
         if (pLevels->nWandering && pLevels->dwMonDen)
-            sub_0054EFF0_CheckWandering(pGame, nLevel, pLevels, pRoom);
+            MONSTERREGION_CheckWandering(pGame, nLevel, pLevels, pRoom);
     }
 }
 

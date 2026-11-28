@@ -1,6 +1,8 @@
 #pragma once
 // D2Client: the NPC menu's state (npcmenu.cpp's gtNpcMenu) and the records it holds.
 
+#include "D2PacketSrv2A.h"
+
 struct D2BitBufferStrc;
 struct D2ClientDialogStrc;
 struct D2ClientObjectStrc;
@@ -24,20 +26,6 @@ struct D2ClientStringListStrc
     unsigned short awStrings[10];
     unsigned short wCount;
 };
-
-// The last NPC transaction packet (0x2A); the pending-action checks compare the
-// unit id and action type it carried.
-#pragma pack(push, 1)
-struct D2GSPacketSrv2A
-{
-    unsigned char nHeader;
-    unsigned char unk0x01;
-    unsigned char nActionType;
-    unsigned int unk0x03;
-    int nUnitId;
-    unsigned int unk0x0B;
-};
-#pragma pack(pop)
 
 // The NPC menu's state, one packed block at 0x007C0C68 (NPCMENU_InitNpcMenu clears its first 0x160 bytes).
 #pragma pack(push, 1)
@@ -80,7 +68,7 @@ struct D2NpcMenuStateStrc
     D2ClientDialogStrc* pGreetingDialog; // 0x113
     int nTransactionCost; // 0x117
     union { D2NpcTradeObjStrc* pTradeObj; D2ClientObjectStrc* pObject; ListBoxWrapper* pListBox; }; // 0x11B
-    D2GSPacketSrv2A tPacket2A; // 0x11F
+    D2PacketSrv2AStrc tPacket2A; // 0x11F the last NPC transaction result
     int bActionPending; // 0x12E
     D2ClientStringListStrc tStringList; // 0x132
     int bGambleShop; // 0x148
@@ -106,3 +94,6 @@ struct D2NpcMenuStateStrc
 #pragma pack(pop)
 
 extern D2NpcMenuStateStrc gtNpcMenu; // 0x007C0C68
+
+// The NPC the menu is talking to, or 0 when it isn't talking to one.
+#define NPC_GET_INTERACT_UNIT() (gtNpcMenu.bInteracting ? CUNIT_FindClientUnit(gtNpcMenu.nInteractNpcId, 1) : 0)

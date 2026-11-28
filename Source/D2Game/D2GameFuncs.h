@@ -346,7 +346,7 @@ void __fastcall MONSTERREGION_FreeAll(D2PoolSystemStrc* pMemPool, D2MonsterRegio
 D2MonsterRegionStrc* __fastcall MONSTERREGION_GetMonsterRegionFromLevelId(D2MonsterRegionStrc** ppMonsterRegion, int nLevelId); // 0x00547BB0
 void __fastcall MONSTERREGION_InitializeForGame(D2GameStrc* pGame); // 0x00547D20
 void __fastcall MONSTERREGION_UndoMonsterKill(D2MonsterRegionStrc** ppMonsterRegion, D2UnitStrc* pUnit); // 0x00547E90
-D2WaypointDataStrc* __fastcall sub_00547F50_GetWaypointData(D2GameStrc* pGame, D2UnitStrc* pPlayer); // 0x00547F50
+D2WaypointDataStrc* __fastcall PLRMSG_GetWaypointData(D2GameStrc* pGame, D2UnitStrc* pPlayer); // 0x00547F50
 void __fastcall PLRMSG_SendWalkMode(D2GameStrc* pGame, D2UnitStrc* pUnit, D2ClientStrc* pClient, int nAnimMode); // 0x00548180
 void __fastcall PLRMSG_SendUnitMode(D2GameStrc* pGame, D2UnitStrc* pUnit, D2ClientStrc* pClient); // 0x005484B0
 int __fastcall PLRMSG_SendPlayerStatUpdates(D2UnitStrc* pUnit, D2UnitStrc* pPlayer, int bSkipHpCheck); // 0x00548760
@@ -532,7 +532,7 @@ void __fastcall SKILLS_ResetSkillsAndRefundPoints(D2GameStrc* pGame, D2UnitStrc*
 void __fastcall PLAYERSTATS_SetStatsForStartingAct(D2GameStrc* pGame, D2UnitStrc* pPlayer, unsigned char nAct); // 0x005706D0
 void __fastcall PLAYERSTATS_OnPlayerLeveledUp(void* pUnused, D2UnitStrc* pUnit, int nArg); // 0x00570850
 void __fastcall PLAYERSTATS_LevelUp(D2GameStrc* game,D2UnitStrc* unit); // 0x00570880
-void __fastcall sub_00570C80_PLAYERSTATS_ResetToBaseStats(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00570C80
+void __fastcall PLAYERSTATS_ResetToBaseStats(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00570C80
 void __fastcall D2GAME_STATES_SendUnitStates(D2UnitStrc* pUnit, D2ClientStrc* pClient); // 0x00570E30
 void __fastcall D2GAME_STATES_SendStates(D2UnitStrc* pUnit, D2ClientStrc* pClient, int bPlayer); // 0x00571580
 void __fastcall SUNITMSG_SendOverlay(D2UnitStrc* pUnit, D2ClientStrc* pClient); // 0x005715A0

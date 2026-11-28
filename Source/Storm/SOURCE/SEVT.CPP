@@ -81,7 +81,7 @@ struct SEvtBreakCmdStrc
     void* pData;
 };
 
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szLogName, int nLogLine, unsigned int nFlags); // 0x00413020
+extern "C" void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int dwFlags); // 0x00413020
 
 
 #include "StormApi.h"

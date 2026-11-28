@@ -3486,7 +3486,7 @@ int __stdcall SrvCreateNewEmptyGame(char* szGameName, const char* szPassword, co
     memset(pGame->dwUniqueFlags, 0, sizeof(pGame->dwUniqueFlags));
 
     pGame->nGameId = nGameId;
-    pGame->unk0x24 = 1;
+    pGame->unused0x24 = 1;
 
     GAME_ResolveGameNameConflict(pGame, szGameName, 0);
     SStrCopy(pGame->szGamePassword, szPassword, 16);
@@ -3581,7 +3581,7 @@ void __fastcall sSrvSendGameInit(int nClientId, char* szGameName, unsigned char 
     memset(pGame->pUnitList[4], 0, sizeof(pGame->pUnitList[4]));
     memset(pGame->dwUniqueFlags, 0, sizeof(pGame->dwUniqueFlags));
 
-    pGame->unk0x24 = 1;
+    pGame->unused0x24 = 1;
 
     pGame->nGameId = sub_0052C170_AllocGameId();
     GAME_ResolveGameNameConflict(pGame, szGameName, nClientId);

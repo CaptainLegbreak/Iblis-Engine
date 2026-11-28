@@ -300,7 +300,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x00
 
 int __cdecl GAME_GetConnectionType(); // 0x0044DB30
 
-D2CelFileStrc* __fastcall GAME_LoadUiCelFile(const char* szPath); // 0x004520C0
+void* __fastcall GAME_LoadUiCelFile(const char* szFile); // 0x004520C0
 
 int __cdecl sub_00468830_GetCursorState(); // 0x00468830
 
@@ -862,21 +862,13 @@ extern D2CelFileStrc* gpHeadCell_007BCE74; // 0x007BCE74
 
 extern D2CelFileStrc* gpArmCell_007BCE7C; // 0x007BCE7C
 
-extern int gnRectHeadLeft; // 0x007BCD4C
 
-extern int gnRectHeadBottom; // 0x007BCD58
 
-extern int gnRectTorsoLeft; // 0x007BCD74
 
-extern int gnRectTorsoBottom; // 0x007BCD80
 
-extern int gnRectRArmLeft; // 0x007BCD88
 
-extern int gnRectRArmBottom; // 0x007BCD94
 
-extern int gnRectLArmLeft; // 0x007BCD9C
 
-extern int gnRectLArmBottom; // 0x007BCDA8
 
 extern D2CoordStrc gtOffsetTorso; // 0x007220B0
 extern D2CoordStrc gtOffsetHead; // 0x007220C8
@@ -6517,14 +6509,14 @@ void __stdcall INV_DrawMercEmptyBodyLocs(D2UnitStrc* pUnit)
     {
         tGfx.pCelFile = gpTorsoCell_007BCE68;
         tGfx.nFrame = 0;
-        TEXTURE_CelDraw(&tGfx, gnRectTorsoLeft + gtOffsetTorso.nX, gnRectTorsoBottom + gtOffsetTorso.nY, -1, 5, 0);
+        TEXTURE_CelDraw(&tGfx, gaBodyLocRects[3].rect.nLeft + gtOffsetTorso.nX, gaBodyLocRects[3].rect.nBottom + gtOffsetTorso.nY, -1, 5, 0);
     }
 
     if (!pInventory || !INVENTORY_GetItemFromBodyLoc(pInventory, 1))
     {
         tGfx.pCelFile = gpHeadCell_007BCE74;
         tGfx.nFrame = 1;
-        TEXTURE_CelDraw(&tGfx, gnRectHeadLeft + gtOffsetHead.nX, gnRectHeadBottom + gtOffsetHead.nY, -1, 5, 0);
+        TEXTURE_CelDraw(&tGfx, gaBodyLocRects[1].rect.nLeft + gtOffsetHead.nX, gaBodyLocRects[1].rect.nBottom + gtOffsetHead.nY, -1, 5, 0);
     }
 
     D2UnitStrc* pRightItem = pInventory ? INVENTORY_GetItemFromBodyLoc(pInventory, 4) : 0;
@@ -6539,12 +6531,12 @@ void __stdcall INV_DrawMercEmptyBodyLocs(D2UnitStrc* pUnit)
         {
             if (!bTwoHanded)
             {
-                TEXTURE_CelDraw(&tGfx, gnRectLArmLeft + gtOffsetLArm.nX, gnRectLArmBottom + gtOffsetLArm.nY, -1, 5, 0);
+                TEXTURE_CelDraw(&tGfx, gaBodyLocRects[5].rect.nLeft + gtOffsetLArm.nX, gaBodyLocRects[5].rect.nBottom + gtOffsetLArm.nY, -1, 5, 0);
             }
         }
         else
         {
-            TEXTURE_CelDraw(&tGfx, gnRectLArmLeft + gtOffsetLArm.nX, gnRectLArmBottom + gtOffsetLArm.nY, -1, 5, 0);
+            TEXTURE_CelDraw(&tGfx, gaBodyLocRects[5].rect.nLeft + gtOffsetLArm.nX, gaBodyLocRects[5].rect.nBottom + gtOffsetLArm.nY, -1, 5, 0);
         }
     }
 
@@ -6556,12 +6548,12 @@ void __stdcall INV_DrawMercEmptyBodyLocs(D2UnitStrc* pUnit)
         {
             if (!bTwoHanded)
             {
-                TEXTURE_CelDraw(&tGfx, gnRectRArmLeft + gtOffsetRArm.nX, gnRectRArmBottom + gtOffsetRArm.nY, -1, 5, 0);
+                TEXTURE_CelDraw(&tGfx, gaBodyLocRects[4].rect.nLeft + gtOffsetRArm.nX, gaBodyLocRects[4].rect.nBottom + gtOffsetRArm.nY, -1, 5, 0);
             }
         }
         else
         {
-            TEXTURE_CelDraw(&tGfx, gnRectRArmLeft + gtOffsetRArm.nX, gnRectRArmBottom + gtOffsetRArm.nY, -1, 5, 0);
+            TEXTURE_CelDraw(&tGfx, gaBodyLocRects[4].rect.nLeft + gtOffsetRArm.nX, gaBodyLocRects[4].rect.nBottom + gtOffsetRArm.nY, -1, 5, 0);
         }
     }
 }

@@ -192,7 +192,7 @@ struct gz_header
     int done;
 };
 
-unsigned long __fastcall crc32(unsigned long crc, const unsigned char* buf, unsigned int len); // 0x0042DC00
+extern "C" unsigned long __fastcall crc32(unsigned long crc, const unsigned char* buf, unsigned int len); // 0x0042DC00
 void __fastcall inflate_fast(z_stream* strm, unsigned start); // 0x0042DCA0
 int __fastcall inflate_table(codetype type, unsigned short* lens, unsigned codes, code** table, unsigned* bits, unsigned short* work); // 0x0042E120
 extern const code lenfix[512]; // 0x006D0300

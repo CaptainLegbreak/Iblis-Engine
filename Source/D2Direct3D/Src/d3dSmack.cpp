@@ -25,6 +25,8 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 // The smacker frame goes through two halves (0x100 x 0x40 each): a system-memory surface and its texture, which
 // the decoder writes, and a device surface and its texture, which are drawn.
+extern unsigned int gdwBitMasks[]; // 0x006CE268
+
 D2DDSurfaceStrc* gapSmackSurfaces[2]; // 0x009897D4
 
 D2D3DTextureStrc* gapSmackSourceTextures[2]; // 0x009897DC
@@ -132,7 +134,7 @@ void __cdecl D3DSMACK_UploadSmackTextures()
 {
     if (gapSmackSurfaces[0])
     {
-        if (gnRenderFlags_0096F3A8 & gnRenderFlag)
+        if (gnRenderFlags_0096F3A8 & gdwBitMasks[10])
         {
             D3DCORE_CopySurface(gapSmackDeviceSurfaces[0], gapSmackSurfaces[0], 0x40);
             D3DCORE_CopySurface(gapSmackDeviceSurfaces[1], gapSmackSurfaces[1], 0x40);

@@ -2960,7 +2960,7 @@ void __fastcall OBJMODE_TravelViaWaypoint(D2GameStrc* pGame, D2UnitStrc* pPlayer
         return;
     }
 
-    D2WaypointDataStrc* pWaypointData = sub_00547F50_GetWaypointData(pGame, pPlayer);
+    D2WaypointDataStrc* pWaypointData = PLRMSG_GetWaypointData(pGame, pPlayer);
     int nWaypointNo;
     if (!WAYPOINTS_GetWaypointNoFromLevelId(nDestLevelId, (unsigned short*)&nWaypointNo) || !WAYPOINTS_IsActivated(pWaypointData, nWaypointNo))
     {

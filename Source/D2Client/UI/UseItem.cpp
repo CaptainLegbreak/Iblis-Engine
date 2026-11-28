@@ -41,7 +41,7 @@ struct D2HotspotStrc
 
 #pragma pack(pop)
 
-void* __fastcall GAME_LoadUiCelFile(const char* szPath); // 0x004520C0
+void* __fastcall GAME_LoadUiCelFile(const char* szFile); // 0x004520C0
 
 void __fastcall ARCHIVE_FreeClientCellFile(void* pCel); // 0x00478A00
 
@@ -117,9 +117,9 @@ extern "C" void* __cdecl memset(void*,int,unsigned int);
 
 D2CelFileStrc* __cdecl GAME_GetBuySellButtonCells(); // 0x00454600
 
-void __fastcall AUTOMAP_DrawFramedBox(int,int,int,int,int,int); // 0x0046EFD0
+void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nArg6); // 0x0046EFD0
 
-void __fastcall DIALOG_DrawDialog(void*); // 0x004B8100
+void __fastcall DIALOG_DrawDialog(D2ClientDialogStrc* pDialog); // 0x004B8100
 
 int __stdcall sub_004F6480(D2GfxDataStrc*,int,int,int,int,int); // 0x004F6480
 

@@ -811,7 +811,7 @@ void __cdecl INV_ChainCinematic(); // 0x00483340
 
 
 
-D2BitBufferStrc* __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
+int __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
 
 
 static int TEXT_FindQuestIndex(int nKey);

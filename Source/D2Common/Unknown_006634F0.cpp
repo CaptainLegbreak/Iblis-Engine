@@ -120,12 +120,12 @@ D2UnitStrc* __stdcall INVENTORY_IsItemInInventory(D2InventoryStrc* pInventory, D
 
 
 
-int __fastcall sub_00663A20_SetItemBonusStates(D2UnitStrc* pItem, unsigned int nSetItemMask); // 0x00663A20
+int __fastcall ITEMS_SetItemBonusStates(D2UnitStrc* pItem, unsigned int nSetItemMask); // 0x00663A20
 
-int __fastcall sub_00663B40_SetBonusStatList(D2UnitStrc* pUnit, D2UnitStrc* pItem, int nUpdateMode); // 0x00663B40
+int __fastcall ITEMS_SetBonusStatList(D2UnitStrc* pUnit, D2UnitStrc* pItem, int nUpdateMode); // 0x00663B40
 
 // 0x006634F0
-int __fastcall sub_006634F0_RollSeededRecord(int nSeed, D2Rolled6634F0Strc* pOut, unsigned char nLevel)
+int __fastcall MONSTERS_RollSeededRecord(int nSeed, D2Rolled6634F0Strc* pOut, unsigned char nLevel)
 {
     if (!nSeed)
         return 0;
@@ -494,7 +494,7 @@ int __fastcall MONSTERS_HirelingInit(int bExpansion, D2UnitStrc* pMonster, int n
 }
 
 // 0x00663A10
-static int sub_00663A10_GetSetBonusCount(unsigned int nSetItemMask)
+static int ITEMS_GetSetBonusCount(unsigned int nSetItemMask)
 {
     if (nSetItemMask >= sizeof(gnSetMaskToBonusMappingTable) / sizeof(gnSetMaskToBonusMappingTable[0]))
         return 0;
@@ -503,7 +503,7 @@ static int sub_00663A10_GetSetBonusCount(unsigned int nSetItemMask)
 
 void __stdcall sub_M102_Emit_00663A10(int nUnused, unsigned int nSetItemMask)
 {
-    sub_M102_UseBonusCount_00663A10(sub_00663A10_GetSetBonusCount(nSetItemMask));
+    sub_M102_UseBonusCount_00663A10(ITEMS_GetSetBonusCount(nSetItemMask));
 }
 
 __forceinline unsigned int ITEMS_GetStoreSetItemsMaskInline(D2UnitStrc* pUnit, D2UnitStrc* pItem)
@@ -530,7 +530,7 @@ extern const int gnItemSetStates[]; // 0x006EE424
 int __stdcall D2Common_10574(D2UnitStrc* pUnit, int nStateId, int bSet); // 0x006279A0
 
 // 0x00663A20
-int __fastcall sub_00663A20_SetItemBonusStates(D2UnitStrc* pItem, unsigned int nSetItemMask)
+int __fastcall ITEMS_SetItemBonusStates(D2UnitStrc* pItem, unsigned int nSetItemMask)
 {
     const int nType = pItem ? pItem->dwUnitType : UNIT_INVALID;
     if (nType == 4 && ITEMS_GetItemQuality(pItem) == ITEMQUAL_SET)
@@ -602,7 +602,7 @@ extern D2DataTablesStrc* sgptDataTables;                                        
 D2SetItemsTxt* __fastcall DATATBLS_GetSetItemsTxtRecord(int nIndex);                                    // 0x00483440
 
 // 0x00663B40
-int __fastcall sub_00663B40_SetBonusStatList(D2UnitStrc* pUnit, D2UnitStrc* pItem, int nUpdateMode)
+int __fastcall ITEMS_SetBonusStatList(D2UnitStrc* pUnit, D2UnitStrc* pItem, int nUpdateMode)
 {
     if (nUpdateMode > 1)
     {
@@ -709,10 +709,10 @@ int __stdcall ITEMS_UpdateSets(D2UnitStrc* pUnit, D2UnitStrc* pItem, int nUpdate
 
     if (bForceStateUpdate || !nUpdateMode)
     {
-        sub_00663A20_SetItemBonusStates(pItem, nSetItemMask);
+        ITEMS_SetItemBonusStates(pItem, nSetItemMask);
     }
 
-    sub_00663B40_SetBonusStatList(pUnit, pItem, nUpdateMode);
+    ITEMS_SetBonusStatList(pUnit, pItem, nUpdateMode);
 
     return 1;
 }

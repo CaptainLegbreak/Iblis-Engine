@@ -910,7 +910,7 @@ extern D2CelFileStrc* gpSliderEnabledCell_007BC954; // 0x007BC954
 
 extern D2CelFileStrc* gpSliderKnob_007BC958; // 0x007BC958
 
-void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nStyle); // 0x0046EFD0
+void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nArg6); // 0x0046EFD0
 
 extern void* gpSlotCells; // 0x007BC964
 

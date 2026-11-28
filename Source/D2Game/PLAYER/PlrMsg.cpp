@@ -592,7 +592,7 @@ int __fastcall D2GAME_PACKETCALLBACK_Rcv0x61_DropPickupMercItem(D2GameStrc* pGam
 
 
 // 0x00547F50
-D2WaypointDataStrc* __fastcall sub_00547F50_GetWaypointData(D2GameStrc* pGame, D2UnitStrc* pPlayer)
+D2WaypointDataStrc* __fastcall PLRMSG_GetWaypointData(D2GameStrc* pGame, D2UnitStrc* pPlayer)
 {
     return UNITS_GetPlayerData(pPlayer)->pWaypointData[pGame->nDifficulty];
 }
@@ -1746,7 +1746,7 @@ static int __stdcall PLRMSG_CheckWaypointObject(D2GameStrc* pGame, unsigned shor
 
     if (WAYPOINTS_GetWaypointNoFromLevelId(nLevelId, &tLocal.nWaypointNo))
     {
-        return WAYPOINTS_IsActivated(sub_00547F50_GetWaypointData(pGame, pUnit), tLocal.nWaypointNo) ? 0 : 2;
+        return WAYPOINTS_IsActivated(PLRMSG_GetWaypointData(pGame, pUnit), tLocal.nWaypointNo) ? 0 : 2;
     }
 
     return 3;

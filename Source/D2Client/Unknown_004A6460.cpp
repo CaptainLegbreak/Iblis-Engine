@@ -124,7 +124,7 @@ extern int gnPetIconPopupState; // 0x007BEECC
 
 void __fastcall AUTOMAP_UnregisterHandlerTable(void* hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451E10
 
-void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
+void __fastcall SCMD_RegisterMsgHandlers(void* hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
 
 extern D2MsgHandlerEntryStrc gaTextMsgHandlers[]; // 0x00722600
@@ -772,7 +772,7 @@ void __cdecl INV_ChainCinematic(); // 0x00483340
 
 
 
-D2BitBufferStrc* __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
+int __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
 
 
 static int TEXT_FindQuestIndex(int nKey);
