@@ -2174,7 +2174,7 @@ void __stdcall TEXT_ApplyEntryMsg(SMSGHANDLER_PARAMS* pMsg)
 }
 
 // 0x004A6000
-void __stdcall sub_004A6000_RegisterPressMsgHandler(SMSGHANDLER_PARAMS* pMsg)
+void __stdcall TEXT_RegisterPressMsgHandler(SMSGHANDLER_PARAMS* pMsg)
 {
     if (GAME_IsExitPending())
     {
@@ -2205,7 +2205,7 @@ int __fastcall CMDTBL_QueryKey(int nId, int nMode, int nCommand, unsigned short*
 unsigned long gdwMessageTick;                                                                            // 0x007C02C8
 
 // 0x004A60B0
-void __stdcall sub_004A60B0_KeyDownMsgHandler(SMSGHANDLER_PARAMS* pMsg)
+void __stdcall TEXT_KeyDownMsgHandler(SMSGHANDLER_PARAMS* pMsg)
 {
     if (GAME_IsExitPending())
     {
@@ -2250,7 +2250,7 @@ store_key:
 }
 
 // 0x004A61A0
-void __stdcall sub_004A61A0_KeyUpMsgHandler(SMSGHANDLER_PARAMS* pMsg)
+void __stdcall TEXT_KeyUpMsgHandler(SMSGHANDLER_PARAMS* pMsg)
 {
     if (GAME_IsExitPending())
     {
@@ -2491,12 +2491,12 @@ extern D2ClientListEntryStrc gaKeyConfigEntriesExp[62] = {
 extern D2MsgHandlerEntryStrc gaKeyCaptureMButtonHandlers[1] = { { 0, 519, (void*)(unsigned int)&TEXT_WheelCaptureMsg } }; // 0x0072472C
 
 extern D2MsgHandlerEntryStrc gaKeyCaptureHandlers[6] = {
-    { 0, 513, (void*)(unsigned int)&sub_004A6000_RegisterPressMsgHandler },
-    { 0, 516, (void*)(unsigned int)&sub_004A6000_RegisterPressMsgHandler },
-    { 0, 256, (void*)(unsigned int)&sub_004A60B0_KeyDownMsgHandler },
-    { 0, 260, (void*)(unsigned int)&sub_004A60B0_KeyDownMsgHandler },
-    { 0, 257, (void*)(unsigned int)&sub_004A61A0_KeyUpMsgHandler },
-    { 0, 261, (void*)(unsigned int)&sub_004A61A0_KeyUpMsgHandler }
+    { 0, 513, (void*)(unsigned int)&TEXT_RegisterPressMsgHandler },
+    { 0, 516, (void*)(unsigned int)&TEXT_RegisterPressMsgHandler },
+    { 0, 256, (void*)(unsigned int)&TEXT_KeyDownMsgHandler },
+    { 0, 260, (void*)(unsigned int)&TEXT_KeyDownMsgHandler },
+    { 0, 257, (void*)(unsigned int)&TEXT_KeyUpMsgHandler },
+    { 0, 261, (void*)(unsigned int)&TEXT_KeyUpMsgHandler }
 }; // 0x00724738
 
 extern D2MsgHandlerEntryStrc gaKeyCaptureXButtonHandlers[1] = { { 0, 523, (void*)(unsigned int)&TEXT_ButtonCaptureMsg } }; // 0x00724780

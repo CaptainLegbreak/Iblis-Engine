@@ -160,7 +160,7 @@ unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax
 
 unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                         // 0x0045C3E0
 
-int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode);                              // 0x0046C140
+int __fastcall MONSTERUNIQUE_TestMonModeFlag(int nMonsterId, int nMode);                              // 0x0046C140
 
 int __fastcall GAME_GetUnitGUID(D2UnitStrc* pUnit);                                                  // 0x00451F50
 
@@ -666,7 +666,7 @@ static int __stdcall MONSTERUNIQUE_CanAssignUMod(D2UnitStrc* pUnit, D2MonUModTxt
     switch (pMonUModTxtRecord->nFPick)
     {
     case 1:
-        if (!sub_0046C140_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, 4))
+        if (!MONSTERUNIQUE_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, 4))
         {
             return 0;
         }
@@ -688,7 +688,7 @@ static int __stdcall MONSTERUNIQUE_CanAssignUMod(D2UnitStrc* pUnit, D2MonUModTxt
         break;
 
     case 3:
-        if (!sub_0046C140_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, 2))
+        if (!MONSTERUNIQUE_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, 2))
         {
             return 0;
         }

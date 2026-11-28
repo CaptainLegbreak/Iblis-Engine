@@ -101,7 +101,7 @@ int __fastcall SKILLS_GetFirstSkillParam(int nSkillId)
 }
 
 // 0x004C9490
-int __fastcall sub_004C9490_MissileAroundUnit(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
+int __fastcall SKILLS_MissileAroundUnit(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
 {
     D2SkillsTxt* pSkillsTxtRecord = SKILLS_GetSkillsTxtRecord(nSkillId);
     if (!pSkillsTxtRecord)
@@ -211,7 +211,7 @@ int __fastcall MISSILE_SkillStartAtTargetPos(D2UnitStrc* pUnit, int nSkillId, in
 }
 
 // 0x004C96D0
-int __fastcall sub_004C96D0_CreateMissileAtTarget(D2UnitStrc* pUnit,int nSkillId,int nSkillLevel)
+int __fastcall SKILLS_CreateMissileAtTarget(D2UnitStrc* pUnit,int nSkillId,int nSkillLevel)
 {
  if(!SKILLS_GetSkillsTxtRecord(nSkillId)) return 0;
  const int nMissile=SKILLDESC_GetCltMissileId(pUnit,nSkillId);

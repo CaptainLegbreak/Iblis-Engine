@@ -109,7 +109,7 @@ int __fastcall sub_004E40A0_RollPlayerSeed(int nRange); // 0x004E40A0
 
 extern "C" int __fastcall SKILLDESC_RandomInRange(int nMin, int nMax); // 0x004E4100
 
-int __fastcall sub_004E4180_GetCyclicDistance(int nFrame, int nOffset, int nStepLength); // 0x004E4180
+int __fastcall SKILLDESC_GetCyclicDistance(int nFrame, int nOffset, int nStepLength); // 0x004E4180
 
 int __fastcall UNITSND_GetModeSound(D2UnitStrc* pUnit, int nMode); // 0x004CA810
 
@@ -859,9 +859,9 @@ void __fastcall UNITSND_UpdateFootsteps(D2UnitStrc* pUnit)
         return;
 
     const unsigned int nStepLength = nFrameCount / nSteps;
-    const int nDist = sub_004E4180_GetCyclicDistance(nFrame, nOffset, nStepLength);
-    const int nDistNext = sub_004E4180_GetCyclicDistance(nFrame + nSpeed, nOffset, nStepLength);
-    const int nDistPrev = sub_004E4180_GetCyclicDistance(nFrame - nSpeed, nOffset, nStepLength);
+    const int nDist = SKILLDESC_GetCyclicDistance(nFrame, nOffset, nStepLength);
+    const int nDistNext = SKILLDESC_GetCyclicDistance(nFrame + nSpeed, nOffset, nStepLength);
+    const int nDistPrev = SKILLDESC_GetCyclicDistance(nFrame - nSpeed, nOffset, nStepLength);
     if (nDist >= nDistNext || nDist >= nDistPrev)
         return;
 

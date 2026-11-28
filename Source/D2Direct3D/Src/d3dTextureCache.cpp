@@ -75,7 +75,7 @@ static D2TexPoolEntryStrc* D3DTEXTURECACHE_PopInUse(D2TexPoolStrc* pPool); // 0x
 
 static D2TexPoolEntryStrc* D3DTEXTURECACHE_PopSpare(D2TexPoolStrc* pPool); // 0x006BA630
 
-static int sub_006BA6D0_Alloc(D2TexPoolStrc* pPool);
+static int D3DTEXTURECACHE_Alloc(D2TexPoolStrc* pPool); // 0x006BA6D0
 
 void __fastcall sub_006BA830_Destroy(D2TexPoolStrc* pPool, int bReleaseAll);
 
@@ -275,7 +275,7 @@ D2TexPoolEntryStrc* __fastcall sub_006BA660_Unlink(D2TexPoolStrc* pList, int nIn
 }
 
 // 0x006BA6D0
-static int sub_006BA6D0_Alloc(D2TexPoolStrc* pPool)
+static int D3DTEXTURECACHE_Alloc(D2TexPoolStrc* pPool)
 {
 	if (pPool->nInUse == pPool->nCapacity)
 	{
@@ -426,11 +426,11 @@ void __fastcall sub_006BA830_Destroy(D2TexPoolStrc* pPool, int bReleaseAll)
 // 0x006BA920
 int __fastcall D3DTEXTURECACHE_AllocOrEvict(D2TexPoolStrc* pPool)
 {
-	int nId = sub_006BA6D0_Alloc(pPool);
+	int nId = D3DTEXTURECACHE_Alloc(pPool);
 	while (!nId)
 	{
 		sub_006BA7C0_ReleaseOldest(pPool);
-		nId = sub_006BA6D0_Alloc(pPool);
+		nId = D3DTEXTURECACHE_Alloc(pPool);
 	}
 	return nId;
 }

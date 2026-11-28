@@ -62,7 +62,7 @@ struct Unicode
 };
 
 
-int __fastcall sub_00527D50_GetCodePageCharCount(const char* szSource, int nLength); // 0x00527D50
+int __fastcall UNISYS_GetCodePageCharCount(const char* szSource, int nLength); // 0x00527D50
 
 extern const unsigned short gawCrc16Table[256]; // 0x007301D8
 
@@ -287,7 +287,7 @@ wchar_t* __fastcall STRTABLE_GetUntranslatedString(const char* szKey)
     char* szText = (char*)FOG_Alloc(nLength + 1, ".\\StrTable\\strtable.cpp", 0x26C, 0);
     strcpy(szText, szKey);
     strcat(szText, gszNotTranslated);
-    const int nChars = sub_00527D50_GetCodePageCharCount(szText, nLength);
+    const int nChars = UNISYS_GetCodePageCharCount(szText, nLength);
     pNode->pText = (wchar_t*)FOG_Alloc(nChars * 2 + 2, ".\\StrTable\\strtable.cpp", 0x271, 0);
     sub_00526320_ToUnicode((Unicode*)pNode->pText, szText, nChars);
     FOG_Free(szText, ".\\StrTable\\strtable.cpp", 0x277, 0);
@@ -585,7 +585,7 @@ int __fastcall STRTABLE_LoadStringTables(D2PoolSystemStrc* pMemPool, const char*
     for (i = 0; i < pTbl->nHashTableSize; i++)
     {
         const char* szText = (char*)sghStringTable + pNodes[i].dwKeyOffset;
-        nTotal += sub_00527D50_GetCodePageCharCount(szText, pNodes[i].nNameLen) + 1;
+        nTotal += UNISYS_GetCodePageCharCount(szText, pNodes[i].nNameLen) + 1;
     }
 
     gpStringData = (Unicode*)FOG_Alloc(nTotal * sizeof(Unicode), ".\\StrTable\\strtable.cpp", 0x1A9, 0);
@@ -594,7 +594,7 @@ int __fastcall STRTABLE_LoadStringTables(D2PoolSystemStrc* pMemPool, const char*
     {
         gppStringIndex[i] = pText;
         const char* szText = (char*)sghStringTable + pNodes[i].dwKeyOffset;
-        const int nCount = sub_00527D50_GetCodePageCharCount(szText, pNodes[i].nNameLen) + 1;
+        const int nCount = UNISYS_GetCodePageCharCount(szText, pNodes[i].nNameLen) + 1;
         sub_00526320_ToUnicode(gppStringIndex[i], szText, nCount);
         pText += nCount;
     }
@@ -616,7 +616,7 @@ int __fastcall STRTABLE_LoadStringTables(D2PoolSystemStrc* pMemPool, const char*
     for (i = 0; i < pTbl->nHashTableSize; i++)
     {
         const char* szText = (char*)sghPatchStringTable + pNodes[i].dwKeyOffset;
-        nTotal += sub_00527D50_GetCodePageCharCount(szText, pNodes[i].nNameLen) + 1;
+        nTotal += UNISYS_GetCodePageCharCount(szText, pNodes[i].nNameLen) + 1;
     }
 
     gpPatchStringData = (Unicode*)FOG_Alloc(nTotal * sizeof(Unicode), ".\\StrTable\\strtable.cpp", 0x1DC, 0);
@@ -625,7 +625,7 @@ int __fastcall STRTABLE_LoadStringTables(D2PoolSystemStrc* pMemPool, const char*
     {
         gppPatchStringIndex[i] = pText;
         const char* szText = (char*)sghPatchStringTable + pNodes[i].dwKeyOffset;
-        const int nCount = sub_00527D50_GetCodePageCharCount(szText, pNodes[i].nNameLen) + 1;
+        const int nCount = UNISYS_GetCodePageCharCount(szText, pNodes[i].nNameLen) + 1;
         sub_00526320_ToUnicode(gppPatchStringIndex[i], szText, nCount);
         pText += nCount;
     }
@@ -649,7 +649,7 @@ int __fastcall STRTABLE_LoadStringTables(D2PoolSystemStrc* pMemPool, const char*
         for (i = 0; i < pTbl->nHashTableSize; i++)
         {
             const char* szText = (char*)sghExpansionStringTable + pNodes[i].dwKeyOffset;
-            nTotal += sub_00527D50_GetCodePageCharCount(szText, pNodes[i].nNameLen) + 1;
+            nTotal += UNISYS_GetCodePageCharCount(szText, pNodes[i].nNameLen) + 1;
         }
 
         gpExpansionStringData = (Unicode*)FOG_Alloc(nTotal * sizeof(Unicode), ".\\StrTable\\strtable.cpp", 0x20F, 0);
@@ -658,7 +658,7 @@ int __fastcall STRTABLE_LoadStringTables(D2PoolSystemStrc* pMemPool, const char*
         {
             gppExpansionStringIndex[i] = pText;
             const char* szText = (char*)sghExpansionStringTable + pNodes[i].dwKeyOffset;
-            const int nCount = sub_00527D50_GetCodePageCharCount(szText, pNodes[i].nNameLen) + 1;
+            const int nCount = UNISYS_GetCodePageCharCount(szText, pNodes[i].nNameLen) + 1;
             sub_00526320_ToUnicode(gppExpansionStringIndex[i], szText, nCount);
             pText += nCount;
         }

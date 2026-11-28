@@ -696,7 +696,7 @@ void __cdecl INV_DrawKeyBindingPopup()
 }
 
 // 0x00497440
-static int __cdecl sub_00497440_Bounds(int nX,int nY)
+static int __cdecl PANEL_Bounds(int nX,int nY)
 {
     int nHalf=gnScreenWidth / 2;
     if (nX >= nHalf + -145 && nX <= nHalf + -128
@@ -922,7 +922,7 @@ void __stdcall PANEL_OnMouseClick(SMSGHANDLER_PARAMS* pMsg)
             gbControlPanelClicked=1;
             sub_004B9A00_Sound(4,0,0,0,0);
         }
-        else if (sub_00497440_Bounds(nX,nY))
+        else if (PANEL_Bounds(nX,nY))
         {
             gbRunButtonDown=1;
             gbControlPanelClicked=1;

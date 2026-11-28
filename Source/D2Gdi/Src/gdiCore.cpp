@@ -177,7 +177,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall SetBkColor(void* hdc, u
 extern "C" __declspec(dllimport) int __stdcall SetBkMode(void* hdc, int mode); // 0x006CC0B4
 extern "C" __declspec(dllimport) int __stdcall DrawTextA(void* hdc, const char* lpchText, int cchText, tagRECT* lprc, unsigned int format); // 0x006CC534
 extern "C" __declspec(dllimport) int __stdcall DeleteDC(void* hdc); // 0x006CC0D8
-void* __cdecl sub_006C8020_GetBufferBitmap(); // 0x006C8020
+void* __cdecl GDICORE_GetBufferBitmap(); // 0x006C8020
 extern unsigned long gdwGdiDebugTextColor; // 0x0074C5C0
 extern void* ghGdiDebugFont; // 0x0098A170
 
@@ -212,7 +212,7 @@ void __stdcall GDICORE_SetAmbientColor(int nUnused1); // 0x006C8060
 int __cdecl GDICORE_ActivateWindow(); // 0x006C80F0
 int __cdecl GDICORE_SetOption(); // 0x006C8100
 int __cdecl GDICORE_GetCacheResults(); // 0x006C8190
-int __cdecl sub_006C8240_GetTileDrawFunctions(); // 0x006C8240
+int __cdecl GDICORE_GetTileDrawFunctions(); // 0x006C8240
 void __stdcall GDICORE_CelDrawHilight(int nUnused1, int nUnused2); // 0x006C88A0
 void __stdcall GDICORE_DebugDraw(int nUnused1, int nUnused2); // 0x006C8A40
 
@@ -492,7 +492,7 @@ int __fastcall GDICORE_CreateSurface(int nValue, int nArg)
 }
 
 // 0x006C7C90
-void __cdecl sub_006C7C90_Release()
+void __cdecl GDICORE_Release()
 {
     DeleteObject(ghBufferBitmap);
     gnValue_007C9154 = 0;
@@ -599,7 +599,7 @@ void __fastcall GDICORE_SetPalette(D2PaletteEntry006C7C10Strc* pEntries)
 }
 
 // 0x006C8020
-void* __cdecl sub_006C8020_GetBufferBitmap()
+void* __cdecl GDICORE_GetBufferBitmap()
 {
     return ghBufferBitmap;
 }
@@ -665,7 +665,7 @@ void __fastcall GDICORE_GetValues(int* pA, int* pB, int* pC)
 }
 
 // 0x006C8240
-int __cdecl sub_006C8240_GetTileDrawFunctions()
+int __cdecl GDICORE_GetTileDrawFunctions()
 {
     return gpTileDrawFunctions;
 }
@@ -941,7 +941,7 @@ void __fastcall GDICORE_GdiDebugPrintf(int nX, int nY, const char* szFormat, cha
     wvsprintfA((char*)anText, szFormat, args);
     void* hScreenDC = GetDC(0);
     void* hDC = CreateCompatibleDC(hScreenDC);
-    SelectObject(hDC, sub_006C8020_GetBufferBitmap());
+    SelectObject(hDC, GDICORE_GetBufferBitmap());
     SelectObject(hDC, ghGdiDebugFont);
     SetTextColor(hDC, gdwGdiDebugTextColor);
     SetBkColor(hDC, gdwGdiDebugBkColor);

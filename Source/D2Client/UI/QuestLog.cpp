@@ -1235,7 +1235,7 @@ void __cdecl TEXT_ClearQuestFlags()
 }
 
 // 0x004A3050
-void __cdecl sub_004A3050_ResetQuestPages()
+void __cdecl QUESTLOG_ResetQuestPages()
 {
     gaQuestPageDefault[0] = -1;
     gaQuestPageDefault[1] = -1;

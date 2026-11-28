@@ -8,7 +8,7 @@ fixes come back with the next sync. Remeasure after each sync:
     ninja -C build -k 0 2> link.log                       # or the Visual Studio build's output
     python tools/link_report.py build link.log ../Iblis-Codex --md links.md
 
-Last measured: 2026-11-27, Source/ at Codex baf537f (#497) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
+Last measured: 2026-11-27, Source/ at Codex 3f6ca97 (#498) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
 docs/PORT_COMPILE.md (every object of the 22 module libraries and the program, `/WHOLEARCHIVE`).
 
 ## Result
@@ -40,7 +40,7 @@ on calling convention, argument bytes and return register (`tools/abi.py`); a re
 of function pointers) is bound for its address alone. No game source is changed, and an alias drops out when Codex
 fixes the declaration.
 
-At Codex baf537f: **2807 aliases** (1132 of them address-only), unresolved symbols **4,031 → 1224**. Checked against
+At Codex 3f6ca97: **2807 aliases** (1132 of them address-only), unresolved symbols **4,031 → 1224**. Checked against
 Codex's own `LINK_DEBT.json` (linkdebt.py with the user's Game.exe): 2803 agree; 3 bind the same address through the
 one external definition where Codex names it differently (`gpHoverItem`, `gbGoldButtonDisabled`); 25 aren't in Codex's
 list (references in code Codex's ordinary link leaves out, or tables the engine holds as source) and were checked by

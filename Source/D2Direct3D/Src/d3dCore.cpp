@@ -38,7 +38,7 @@ public:
     }
 };
 
-void __cdecl sub_006B1A30_ThrowAtlException(long error);
+void __cdecl D3DCORE_ThrowAtlException(long error); // 0x006B1A30
 
 class CRegKey
 {
@@ -396,7 +396,7 @@ void __fastcall D3DCORE_LogDDrawError(const char* szWhere, int hResult); // 0x00
 
 void __cdecl D3DCORE_ReleaseResources(); // 0x006B3320
 
-void __cdecl sub_006B3080_InitBufferPools(); // 0x006B3080
+void __cdecl D3DCORE_InitBufferPools(); // 0x006B3080
 
 
 void __cdecl sub_006B8F10_CreateGridVertexBuffer(); // 0x006B8F10
@@ -1062,7 +1062,7 @@ extern D2TextureCacheStrc gTextureCache_00970F00; // 0x00970F00
 
 extern int gbD3DBusy; // 0x00970E50
 // 0x006B1A30
-void __cdecl ATL::sub_006B1A30_ThrowAtlException(long error)
+void __cdecl ATL::D3DCORE_ThrowAtlException(long error)
 {
     throw CAtlException(error);
 }
@@ -1122,7 +1122,7 @@ long ATL::CRegKey::SetDWORDValue(const char* pszValueName, unsigned long dwValue
 long ATL::CRegKey::SetStringValue(const char* pszValueName, const char* pszValue, unsigned long dwType) throw()
 {
     if (!pszValue)
-        sub_006B1A30_ThrowAtlException(0x80004005);
+        D3DCORE_ThrowAtlException(0x80004005);
     return RegSetValueExA(m_hKey, pszValueName, 0, dwType, (const unsigned char*)pszValue, (lstrlenA(pszValue) + 1) * sizeof(char));
 }
 
@@ -2188,7 +2188,7 @@ static int D3DCORE_InitFullscreen(void* window,int mode)
     gpDevice->SetTextureStageState(0,3,0);
     gpDevice->SetTextureStageState(0,5,2);
     gpDevice->SetTextureStageState(0,6,0);
-    sub_006B3080_InitBufferPools(); D3DFLOORCACHE_CreateTileSurfaces(); sub_006B8F10_CreateGridVertexBuffer();
+    D3DCORE_InitBufferPools(); D3DFLOORCACHE_CreateTileSurfaces(); sub_006B8F10_CreateGridVertexBuffer();
     return 1;
 D3DFail:
     D3DCORE_ShowD3DError(msg,error);
@@ -2562,7 +2562,7 @@ void __fastcall D3DCORE_ClearCaches(); // 0x006B1BC0
 int gnModeFlag;        // 0x00970E8C
 
 // 0x006B2F20
-int __cdecl sub_006B2F20_GetModeFlag()
+int __cdecl D3DCORE_GetModeFlag()
 {
     return gnModeFlag;
 }
@@ -2704,7 +2704,7 @@ D2ComObjectStrc* gpViewport; // 0x00970E7C
 char gabGammaRamp[1536]; // 0x0096FCB8
 
 // 0x006B3080
-void __cdecl sub_006B3080_InitBufferPools()
+void __cdecl D3DCORE_InitBufferPools()
 {
  unsigned int memory;
  gBufferCopies=2;

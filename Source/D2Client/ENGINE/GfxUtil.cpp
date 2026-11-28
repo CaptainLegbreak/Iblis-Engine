@@ -1201,7 +1201,7 @@ int __fastcall GFXUTIL_SkillStartPlace(D2UnitStrc* pUnit, int nSkillId, int nSki
 
 enum { SUCCESS_VALUE = 1 };
 // 0x004E0BD0
-int __fastcall sub_004E0BD0_CltStartClearCollision(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
+int __fastcall GFXUTIL_CltStartClearCollision(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
 {
     if (pUnit)
     {
@@ -1228,7 +1228,7 @@ int __fastcall GFXUTIL_CltDoResetActionFrame(D2UnitStrc* pUnit, int nSkillId, in
 }
 
 // 0x004E0C90
-int __fastcall sub_004E0C90_SetSkillTargetPos(D2UnitStrc* unit, int skillId, int skillLevel)
+int __fastcall GFXUTIL_SetSkillTargetPos(D2UnitStrc* unit, int skillId, int skillLevel)
 {
     D2UnitStrc* target = CUNIT_GetPathTargetUnit(unit);
     if (!target) return 0;
@@ -1316,7 +1316,7 @@ int __fastcall GFXUTIL_SkillDoFrameOffset(D2UnitStrc* pUnit, int nSkillId, int n
 }
 
 // 0x004E0EB0
-int __fastcall sub_004E0EB0_CltStartPathToTarget(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
+int __fastcall GFXUTIL_CltStartPathToTarget(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
 {
     if (!CUNIT_GetPathTargetUnit(pUnit))
     {

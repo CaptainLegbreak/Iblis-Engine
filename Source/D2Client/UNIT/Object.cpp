@@ -98,7 +98,7 @@ extern int gnShrineHandlerCount;                                                
 
 void __fastcall AUTOMAP_SetUnitFlag(D2UnitStrc* pUnit, int nArg, int nValue);                                      // 0x00457460
 
-void __fastcall sub_0046C320_SpawnAroundUnit(D2UnitStrc* pUnit, int nMonsterId, int nCount);               // 0x0046C320
+void __fastcall VIEW_SpawnAroundUnit(D2UnitStrc* pUnit, int nMonsterId, int nCount);               // 0x0046C320
 
 
 
@@ -547,9 +547,9 @@ static void OBJECT_UpdateObjectFrame(D2UnitStrc* pUnit)
             if (pTxt->dwParm[7])
             {
                 if (pTxt->dwParm[7] == 0xFF)
-                    sub_0046C320_SpawnAroundUnit(pUnit, MONSTER_MINISPIDER, 4);
+                    VIEW_SpawnAroundUnit(pUnit, MONSTER_MINISPIDER, 4);
                 else
-                    sub_0046C320_SpawnAroundUnit(pUnit, MONSTER_RAT, 4);
+                    VIEW_SpawnAroundUnit(pUnit, MONSTER_RAT, 4);
             }
 
             pUnit->nSeqCurrentFramePrecise = pTxt->nStart[2] << 8;
@@ -1353,7 +1353,7 @@ void __fastcall ITEM_ApplyTownPortalState(D2GSPacketSrv60* pPacket)
 
 
 // 0x004BDFD0
-char* __fastcall sub_004BDFD0_GetObjectOwner(D2UnitStrc* pUnit)
+char* __fastcall OBJECT_GetObjectOwner(D2UnitStrc* pUnit)
 {
     return pUnit->pObjectData->szOwner;
 }

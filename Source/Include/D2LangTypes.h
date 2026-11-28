@@ -15,7 +15,7 @@ struct D2LangByteRangeStrc
     unsigned char nLow; // 0x00
     unsigned char nHigh; // 0x01
 
-    int sub_005276C0_Contains(unsigned char nValue) const;
+    int UNISYS_Contains(unsigned char nValue) const; // 0x005276C0
 };
 
 struct D2UtfConvertSpecStrc

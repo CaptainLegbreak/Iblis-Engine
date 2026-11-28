@@ -437,7 +437,7 @@ void __cdecl GAME_InitGameState()
     gnSkillDelayUntil = 0;
     CUNIT_ClearAiTargets();
     sub_00473CE0_Nop();
-    sub_0046BF90_ResetLevelEffects();
+    VIEW_ResetLevelEffects();
     gpAutomapRecord = (D2AutomapRecordStrc*)FOG_Alloc(8, ".\\GAME\\Game.cpp", 0x546, 0);
     CUNIT_ClearUnitTables();
     DLIGHTMAP_ClearLightGrid();

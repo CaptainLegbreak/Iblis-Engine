@@ -1012,7 +1012,7 @@ void __fastcall MONSTER_InitMonster(D2UnitStrc* pUnit, D2RoomStrc* pRoom, int nX
     if(MONSTERS_GetFlagInline(pUnit,8)) return;
     D2DirectionArgStrc tDirection; tDirection.nDirection=0;
     int nBaseId=MONSTERS_GetUnitBaseIdInline(pUnit);
-    if(sub_0046C140_TestMonModeFlag(pUnit->dwClassId,2)) tDirection.nDirection=sub_I07_SeedRoll(&pUnit->pSeed)&0x3F;
+    if(MONSTERUNIQUE_TestMonModeFlag(pUnit->dwClassId,2)) tDirection.nDirection=sub_I07_SeedRoll(&pUnit->pSeed)&0x3F;
     if(nBaseId==MONSTER_MUMMY1) tDirection.nDirection=7;
     else if(nBaseId==MONSTER_VILECHILD1) tDirection.nDirection=GFXUTIL_ForEachUnitInAdjacentRooms(pUnit,0,0,MONSTER_CheckMonsterFacing);
     if(nClassId==0x15F) tDirection.nDirection=0x18;
@@ -2032,7 +2032,7 @@ void __fastcall MONSTER_HandleMonsterCommand(int nCommand, D2UnitStrc* pUnit, D2
     case 0x17:
         D2_ASSERT(pCommand, 0x6E2);
         D2COMMON_10212_PATH_SetMoveFlags(pUnit, 1);
-        if (NPCMENU_GetMonsterTypeFlags(pUnit, 1) || !sub_004804A0_SetPathTargetPos(pUnit, pCommand->nX, pCommand->nY))
+        if (NPCMENU_GetMonsterTypeFlags(pUnit, 1) || !UNITMODE_SetPathTargetPos(pUnit, pCommand->nX, pCommand->nY))
         {
             MONSTER_RefreshMonsterMode(pUnit);
             break;
@@ -2131,7 +2131,7 @@ void __fastcall MONSTER_HandleMonsterCommand(int nCommand, D2UnitStrc* pUnit, D2
 
         UNITMODE_SetUnitMode(pUnit, pRecord->nIndex);
         if (MONSTER_HasMonStatsFlag(pUnit, pRecord))
-            sub_004804A0_SetPathTargetPos(pUnit, pCommand->nX, pCommand->nY);
+            UNITMODE_SetPathTargetPos(pUnit, pCommand->nX, pCommand->nY);
 
         if (nMonId == MONSTER_VULTURE1)
             MONSTER_UpdateCollisionForMode(pUnit, nCommand);
@@ -2750,8 +2750,8 @@ int __fastcall CUNIT_GetMonsterBaseId(D2UnitStrc* pUnit); // 0x00463860
 
 static __forceinline void sub_b1_WalkTo(D2UnitStrc* pUnit, D2MonCommandStrc* pCommand, int nMode)
 {
-    if (NPCMENU_GetMonsterTypeFlags(pUnit, 1) || !sub_004804A0_SetPathTargetPos(pUnit, pCommand->nX, pCommand->nY)
-        || STATES_CheckState(pUnit, STATE_ATTACHED) || !sub_0046C140_TestMonModeFlag(pUnit->dwClassId, nMode))
+    if (NPCMENU_GetMonsterTypeFlags(pUnit, 1) || !UNITMODE_SetPathTargetPos(pUnit, pCommand->nX, pCommand->nY)
+        || STATES_CheckState(pUnit, STATE_ATTACHED) || !MONSTERUNIQUE_TestMonModeFlag(pUnit->dwClassId, nMode))
     {
         MONSTER_RefreshMonsterMode(pUnit);
         return;

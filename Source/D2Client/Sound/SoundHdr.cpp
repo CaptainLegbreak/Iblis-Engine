@@ -146,19 +146,19 @@ int __cdecl sub_004817D0()
 }
 
 // 0x004817E0
-int __cdecl sub_004817E0_GetSoundEnvironCount()
+int __cdecl SOUNDHDR_GetSoundEnvironCount()
 {
     return gnSoundEnvironTxtRecordCount;
 }
 
 // 0x004817F0
-int __cdecl sub_004817F0_GetSongMin()
+int __cdecl SOUNDHDR_GetSongMin()
 {
     return gnSongMin;
 }
 
 // 0x00481800
-int __cdecl sub_00481800_GetSongMax()
+int __cdecl SOUNDHDR_GetSongMax()
 {
     return gnSongMax;
 }

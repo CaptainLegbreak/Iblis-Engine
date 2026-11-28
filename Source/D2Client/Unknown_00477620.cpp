@@ -28,7 +28,7 @@ static inline int UNITS_GetWeaponClass(D2UnitStrc* pUnit)
 }
 
 // 0x00477620
-int __fastcall sub_00477620_RollUnitValue(D2UnitStrc* pUnit, unsigned short nOffset)
+int __fastcall INV_RollUnitValue(D2UnitStrc* pUnit, unsigned short nOffset)
 {
     if (!pUnit)
     {
@@ -49,19 +49,19 @@ int __cdecl DLIGHTMAP_GetLocalBloodPalette()
 }
 
 // 0x00477690
-int __cdecl sub_00477690_TogglePerspective()
+int __cdecl INV_TogglePerspective()
 {
     return D2GFX_TogglePerspective();
 }
 
 // 0x004776A0
-int __cdecl sub_004776A0_ToggleBlendedShadows()
+int __cdecl INV_ToggleBlendedShadows()
 {
     return D2GFX_ToggleBlendedShadows();
 }
 
 // 0x004776B0
-int __cdecl sub_004776B0_ToggleLowQuality()
+int __cdecl INV_ToggleLowQuality()
 {
     return D2GFX_ToggleLowQuality();
 }
@@ -82,7 +82,7 @@ extern "C" { int gnFlag_007BB3A8; }                                             
 extern int gdwGlobal_007BB38C; // 0x007BB38C
 
 // 0x004776D0
-void __fastcall sub_004776D0_SetModeValues(int nModeValue, int nValue)
+void __fastcall INV_SetModeValues(int nModeValue, int nValue)
 {
     gnLightmapRenderMode = nModeValue;
     gdwGlobal_007BB38C = nValue;
@@ -169,7 +169,7 @@ extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x00
 void __stdcall D2CMPGetTileCacheHits(unsigned int* pSize, int* pMisses, int* pTotal, int* pUtilized); // 0x005FE010
 
 // 0x00477760
-void __cdecl sub_00477760_DrawCacheStats()
+void __cdecl INV_DrawCacheStats()
 {
     char szText[0x400];
     int nTotal;
@@ -494,7 +494,7 @@ void __fastcall sub_00477980_DrawFpsStats()
         D2GFX_OutputString(SCREEN_X,156,"Async Files->%i",sub_0040ABE0());
         D2GFX_OutputString(SCREEN_X,168,"CelData Cache Memory->%i of %i",D2CMPCelDataCacheGetUsedMemory(),D2CMPCelDataCacheGetMaxMemory());
         sub_00481850_Nop();
-        sub_00477760_DrawCacheStats();
+        INV_DrawCacheStats();
     }
 }
 
@@ -528,7 +528,7 @@ void __cdecl VIEW_ToggleCacheStats()
 }
 
 // 0x00477C60
-void __cdecl sub_00477C60_CheckCacheStats()
+void __cdecl INV_CheckCacheStats()
 {
     if (gbCacheStatsChecked || !gbCacheStats)
         VIEW_ToggleCacheStats();

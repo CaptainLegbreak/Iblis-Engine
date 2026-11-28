@@ -14,6 +14,24 @@ struct D2DDSurfaceStrc;
 struct D2DDrawObjectVtblStrc;
 struct D2DDrawObjectStrc;
 
+struct D2DDColorKeyStrc
+{
+    unsigned int dwColorSpaceLowValue; // 0x00
+    unsigned int dwColorSpaceHighValue; // 0x04
+};
+
+struct D2DDPixelFormatStrc
+{
+    unsigned int dwSize; // 0x00
+    unsigned int dwFlags; // 0x04
+    unsigned int dwFourCC; // 0x08
+    unsigned int dwRGBBitCount; // 0x0C
+    unsigned int dwRBitMask; // 0x10
+    unsigned int dwGBitMask; // 0x14
+    unsigned int dwBBitMask; // 0x18
+    unsigned int dwRGBAlphaBitMask; // 0x1C
+};
+
 struct D2DDSurfaceDescStrc
 {
     unsigned int dwSize; // 0x00
@@ -26,7 +44,11 @@ struct D2DDSurfaceDescStrc
     unsigned int dwAlphaBitDepth; // 0x1C
     unsigned int dwReserved; // 0x20
     void* lpSurface; // 0x24
-    unsigned int unk0x28[16]; // 0x28
+    D2DDColorKeyStrc ddckCKDestOverlay; // 0x28
+    D2DDColorKeyStrc ddckCKDestBlt; // 0x30
+    D2DDColorKeyStrc ddckCKSrcOverlay; // 0x38
+    D2DDColorKeyStrc ddckCKSrcBlt; // 0x40
+    D2DDPixelFormatStrc ddpfPixelFormat; // 0x48
     unsigned int dwCaps; // 0x68
 };
 
@@ -42,15 +64,43 @@ struct D2DDSurfaceDesc2Strc
     unsigned int dwAlphaBitDepth; // 0x1C
     unsigned int dwReserved; // 0x20
     void* lpSurface; // 0x24
-    unsigned int unk0x28[21]; // 0x28
+    D2DDColorKeyStrc ddckCKDestOverlay; // 0x28
+    D2DDColorKeyStrc ddckCKDestBlt; // 0x30
+    D2DDColorKeyStrc ddckCKSrcOverlay; // 0x38
+    D2DDColorKeyStrc ddckCKSrcBlt; // 0x40
+    D2DDPixelFormatStrc ddpfPixelFormat; // 0x48
+    unsigned int dwCaps; // 0x68
+    unsigned int dwCaps2; // 0x6C
+    unsigned int dwCaps3; // 0x70
+    unsigned int dwCaps4; // 0x74
+    unsigned int dwTextureStage; // 0x78
 };
 
 struct D2DDBltFxStrc
 {
     unsigned int dwSize; // 0x00
-    unsigned int unk0x04[19]; // 0x04
+    unsigned int dwDDFX; // 0x04
+    unsigned int dwROP; // 0x08
+    unsigned int dwDDROP; // 0x0C
+    unsigned int dwRotationAngle; // 0x10
+    unsigned int dwZBufferOpCode; // 0x14
+    unsigned int dwZBufferLow; // 0x18
+    unsigned int dwZBufferHigh; // 0x1C
+    unsigned int dwZBufferBaseDest; // 0x20
+    unsigned int dwZDestConstBitDepth; // 0x24
+    unsigned int dwZDestConst; // 0x28
+    unsigned int dwZSrcConstBitDepth; // 0x2C
+    unsigned int dwZSrcConst; // 0x30
+    unsigned int dwAlphaEdgeBlendBitDepth; // 0x34
+    unsigned int dwAlphaEdgeBlend; // 0x38
+    unsigned int dwReserved; // 0x3C
+    unsigned int dwAlphaDestConstBitDepth; // 0x40
+    unsigned int dwAlphaDestConst; // 0x44
+    unsigned int dwAlphaSrcConstBitDepth; // 0x48
+    unsigned int dwAlphaSrcConst; // 0x4C
     unsigned int dwFillColor; // 0x50
-    unsigned int unk0x54[4]; // 0x54
+    D2DDColorKeyStrc ddckDestColorkey; // 0x54
+    D2DDColorKeyStrc ddckSrcColorkey; // 0x5C
 };
 
 struct D2DDrawSurfaceVtblStrc

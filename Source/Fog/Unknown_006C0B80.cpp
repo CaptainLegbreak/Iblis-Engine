@@ -403,14 +403,14 @@ static const char* __stdcall DATATABLS_ParseExpressionToken(FOGExpressionParserC
 }
 
 
-int __stdcall sub_006C1820_GetOperandCount( unsigned char nToken, CalcGetFunctionParameterCount_t pfnGetOperandCount, int nFunctionId); // 0x006C1820
+int __stdcall DATATBLS_GetOperandCount( unsigned char nToken, CalcGetFunctionParameterCount_t pfnGetOperandCount, int nFunctionId); // 0x006C1820
 int DATATABLS_CheckPrecendence(unsigned char nPreviousCalcType, unsigned char nNewCalcType); // 0x006C1800
 
 FOGASTNodeStrc* __stdcall DATATBLS_ExpressionBuffer_PushRawConstant(FOGASTNodeStrc* pExpressionBufferPos, FOGASTNodeStrc* pExpressionBufferStart, int szBufferSize, FOGExpressionParserContextStrc* pCalc, int nValue); // 0x006C19C0
 FOGASTNodeStrc* __stdcall DATATBLS_ExpressionBuffer_PushCallbackConstant(FOGASTNodeStrc* pExpressionBufferPos, FOGASTNodeStrc* pExpressionBufferStart, int szBufferSize, FOGExpressionParserContextStrc* pCalc, int nValue); // 0x006C1A50
 
 // 0x006C1820
-static int __stdcall sub_006C1820_GetOperandCount(
+static int __stdcall DATATBLS_GetOperandCount(
     unsigned char nToken, CalcGetFunctionParameterCount_t pfnGetOperandCount, int nFunctionId)
 {
     switch (nToken)
@@ -556,7 +556,7 @@ static FOGASTNodeStrc* __stdcall DATATBLS_Evaluate_HandleNewOp(FOGASTNodeStrc* p
             break;
         }
 
-        const int nParams = sub_006C1820_GetOperandCount(nPreviousASTType, pfnGetFunctionParametersCount, nTokenAssociatedValue);
+        const int nParams = DATATBLS_GetOperandCount(nPreviousASTType, pfnGetFunctionParametersCount, nTokenAssociatedValue);
         if (pContext->nPendingParameters < nParams)
         {
             pASTBufferStart->nType = 0;
@@ -655,7 +655,7 @@ int __stdcall DATATBLS_CompileExpression(const char* szFormulaString, FOGASTNode
 					break;
 				}
 				const int nLinkerIndex = tContext.tLinkerIndex[nPendingOps - 1];
-				const int nParams = sub_006C1820_GetOperandCount(nPreviousASTType, pfnGetFunctionParameterCount, nLinkerIndex);
+				const int nParams = DATATBLS_GetOperandCount(nPreviousASTType, pfnGetFunctionParameterCount, nLinkerIndex);
 				if (tContext.nPendingParameters < nParams || (pASTBufferPos - pOutASTBuffer) >= nOutASTBufferSize)
 				{
 					goto Error;

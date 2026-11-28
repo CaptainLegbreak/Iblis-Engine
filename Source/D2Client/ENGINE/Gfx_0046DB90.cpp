@@ -651,7 +651,7 @@ static inline D2MonStats2Txt* CLIENT_GetMonStats2TxtRecord(int nMonsterId)
     return 0;
 }
 
-int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode)
+int __fastcall MONSTERUNIQUE_TestMonModeFlag(int nMonsterId, int nMode)
 {
     D2MonStats2Txt* pMonStats2TxtRecord = CLIENT_GetMonStats2TxtRecord(nMonsterId);
     if (!pMonStats2TxtRecord)
@@ -685,7 +685,7 @@ static void GFX_LoadMonsterModeGfx(D2UnitStrc* pUnit, int nIndex)
         nIndex = nConvertedMode;
     }
 
-    if (!sub_0046C140_TestMonModeFlag(nClassId, nIndex))
+    if (!MONSTERUNIQUE_TestMonModeFlag(nClassId, nIndex))
     {
         return;
     }

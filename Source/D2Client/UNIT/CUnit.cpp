@@ -221,7 +221,7 @@ struct D2HirelingInfoStrc
 
 
 
-int __fastcall sub_00477620_RollUnitValue(D2UnitStrc* pUnit, unsigned short nOffset); // 0x00477620
+int __fastcall INV_RollUnitValue(D2UnitStrc* pUnit, unsigned short nOffset); // 0x00477620
 
 
 
@@ -323,7 +323,7 @@ extern D2DrlgActStrc* gpDrlgAct_007A0634; // 0x007A0634
 
 void __fastcall UNITMODE_UpdateUnit(D2UnitStrc* pUnit); // 0x00480810
 
-void __fastcall sub_0046D780_RunClientAi(D2UnitStrc* pUnit); // 0x0046D780
+void __fastcall GFX_RunClientAi(D2UnitStrc* pUnit); // 0x0046D780
 
 
 int __fastcall GFX_GetGfxBasePalShift(D2UnitGfxDataStrc* pGfxData); // 0x0046F1F0
@@ -906,7 +906,7 @@ void __stdcall CUNIT_FreeUnitTable(D2UnitStrc** ppTable)
             {
                 if (pFound->dwUnitType == UNIT_MONSTER)
                 {
-                    sub_0046D780_RunClientAi(pFound);
+                    GFX_RunClientAi(pFound);
                 }
                 else if (pFound->dwUnitType == UNIT_OBJECT)
                 {
@@ -2998,7 +2998,7 @@ D2UnitStrc* __fastcall CUNIT_AddClientMonster(D2UnitSpawnStrc* pSpawn, void* pAr
 
     if (MONSTER_IsUniqueMonster(pUnit) && !MONSTERREGION_CheckMonStats2Flag(nClassId, 15))
     {
-        nMode = sub_00477620_RollUnitValue(pUnit, nArg4);
+        nMode = INV_RollUnitValue(pUnit, nArg4);
     }
 
     D2MonStats2Txt* pModeTxtRecord = sub_F4B0_GetMonStats2TxtFromMonsterId(nClassId);
@@ -3293,7 +3293,7 @@ D2UniqueItemsTxt* __fastcall DATATBLS_GetUniqueItemsTxtRecord(int nIndex)
 
 
 // 0x004898A0
-void __fastcall sub_004898A0_DisableGoldButton(int nMode)
+void __fastcall CUNIT_DisableGoldButton(int nMode)
 {
     gbGoldButtonDisabled = 1;
     if (gnInvPanelMode == 13)

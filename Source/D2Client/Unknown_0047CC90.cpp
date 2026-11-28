@@ -384,7 +384,7 @@ int __fastcall sub_0047CEE0()
 // 0x0047CEF0
 void __fastcall sub_0047CEF0_NpcSpeechSelect(D2MenuItemStrc* pItem, SMSGHANDLER_PARAMS* pMsg)
 {
-    sub_00514D60_SetNpcSpeech(pItem->dwMoveCount);
+    D2SOUND_SetNpcSpeech(pItem->dwMoveCount);
     switch (pItem->dwMoveCount)
     {
     case 0:

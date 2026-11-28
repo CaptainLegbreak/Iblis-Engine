@@ -55,10 +55,10 @@ struct D2SmackStrc
     int nWidth; // 0x04
     int nHeight; // 0x08
     int nFrames; // 0x0C
-    int unk0x10[22]; // 0x10
+    int unused0x10[22]; // 0x10
     int bNewPalette; // 0x68
     D2RgbColorStrc aPalette[256]; // 0x6C
-    int unk0x36C[2]; // 0x36C
+    int unused0x36C[2]; // 0x36C
     int nFrameNum; // 0x374
 };
 
@@ -100,7 +100,7 @@ struct D2ClipStrc
 
 struct D2GlideRectViewStrc
 {
-    int unk0x00; // 0x00
+    int unused0x00; // 0x00
     int nLeft; // 0x04
     int nTop; // 0x08
     int nOffsetX; // 0x0C
@@ -111,7 +111,7 @@ struct D2TileDrawFunctionsStrc
 {
     void (__fastcall* pfFillYBufferTable)(unsigned char* pBits, int nWidth, int nHeight, int); // 0x00
     void (__fastcall* pfDrawWallBlock)(void* pData, int nX, int nY); // 0x04
-    void* unk0x08; // 0x08
+    void* unused0x08; // 0x08
     int (__fastcall* pfDrawFloorTile)(D2TileLibraryEntryStrc* pTile, int nPosX, int nPosY, D2GfxLightExStrc* pLight); // 0x0C
     void (__fastcall* pfDrawBlock)(unsigned char* pData, int nX, int nY, D2TileLightStrc* pLight); // 0x10
     void (__fastcall* pfDrawShadowBlock)(void* pData, int nX, int nY, int nAlpha); // 0x14

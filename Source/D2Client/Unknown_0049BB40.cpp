@@ -34,7 +34,7 @@ int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg
 extern D2WaypointLayoutStrc gaLayouts[9]; // 0x007224E8
 extern bool gbWaypointClosePressed; // 0x007BF06C
 // 0x0049BB40
-static inline void sub_0049BB40_SetSlotCount(D2PartyRowStrc* pRow, int nSlot)
+static inline void TEXT_SetSlotCount(D2PartyRowStrc* pRow, int nSlot)
 {
     if (pRow->aSlots[nSlot].nState != 1)
         pRow->aSlots[nSlot].nFrame = 1;
@@ -42,7 +42,7 @@ static inline void sub_0049BB40_SetSlotCount(D2PartyRowStrc* pRow, int nSlot)
 
 void __fastcall sub_M110_Emit_0049BB40(D2PartyRowStrc* pRow, int nSlot)
 {
-    sub_0049BB40_SetSlotCount(pRow, nSlot + 1);
+    TEXT_SetSlotCount(pRow, nSlot + 1);
 }
 
 int gbRosterButtonDown; // 0x007BF030
@@ -57,7 +57,7 @@ static inline int sub_M165_InSlot(int nSlotX, int nSlotY, int nWidth)
 }
 
 // 0x0049BB60
-void __stdcall sub_0049BB60_OnRosterMouseDown(SMSGHANDLER_PARAMS* pMsg)
+void __stdcall TEXT_OnRosterMouseDown(SMSGHANDLER_PARAMS* pMsg)
 {
     const int nX = sub_00468730();
     D2StoredUnitRecordStrc* pEntry = ROSTER_GetNextStoredUnit(0);
@@ -143,7 +143,7 @@ void __stdcall sub_0049BB60_OnRosterMouseDown(SMSGHANDLER_PARAMS* pMsg)
 char gbGlobal_007BF06C; // 0x007BF06C
 
 // 0x0049C470
-static inline bool sub_0049C470_IsPointInRect(int nX, int nY)
+static inline bool TEXT_IsPointInRect(int nX, int nY)
 {
     if (nX >= 0x111 && nX <= 0x134 && nY >= 0x183 && nY <= 0x1A4)
         return true;
@@ -152,18 +152,18 @@ static inline bool sub_0049C470_IsPointInRect(int nX, int nY)
 
 int __stdcall sub_M113_Emit_0049C470(int nX, int nY)
 {
-    return sub_0049C470_IsPointInRect(nX, nY) ? 3 : 7;
+    return TEXT_IsPointInRect(nX, nY) ? 3 : 7;
 }
 
 // 0x0049C560
-void __cdecl sub_0049C560_ResetSelection()
+void __cdecl TEXT_ResetSelection()
 {
     gbGlobal_007BF06C = 0;
     gnWaypointSelected = -1;
 }
 
 // 0x0049C490
-static int sub_0049C490_GetActTabAtPoint(int nX, int nY)
+static int TEXT_GetActTabAtPoint(int nX, int nY)
 {
     if (FOG_IsExpansion() && GAME_IsExpansion())
     {
@@ -299,7 +299,7 @@ void __cdecl TEXT_CloseWaypointPanel()
 }
 
 // 0x0049C760
-static void sub_0049C760_SetWaypointAct(int nAct)
+static void TEXT_SetWaypointAct(int nAct)
 {
     if (nAct >= gnWaypointActCount)
         nAct = 0;
@@ -428,7 +428,7 @@ void __cdecl WARDENCLIENT_BuildWaypointList()
 }
 
 // 0x0049C980
-void __cdecl sub_0049C980_UpdateWaypointAct()
+void __cdecl TEXT_UpdateWaypointAct()
 {
     D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
     if (pPlayer)
@@ -439,7 +439,7 @@ void __cdecl sub_0049C980_UpdateWaypointAct()
             const int nLevelId = DUNGEON_GetLevelIdFromRoom(pRoom);
             if (nLevelId)
             {
-                sub_0049C760_SetWaypointAct(DRLG_GetActNoFromLevelId(nLevelId));
+                TEXT_SetWaypointAct(DRLG_GetActNoFromLevelId(nLevelId));
                 WARDENCLIENT_BuildWaypointList();
                 return;
             }
@@ -489,12 +489,12 @@ void __cdecl sub_0049CF50_SendWaypointClose()
 }
 
 // 0x0049CF90
-void __fastcall sub_0049CF90_OpenWaypointPanel(D2PacketRecord21Strc* pPacket)
+void __fastcall TEXT_OpenWaypointPanel(D2PacketRecord21Strc* pPacket)
 {
     if (UI_SetUIVar(0x14, 0, 1) == 1)
     {
         GAME_ResetMouseState();
-        sub_0049C980_UpdateWaypointAct();
+        TEXT_UpdateWaypointAct();
         gnWaypointId = *(int*)pPacket->nUnitGUID;
         WAYPOINTS_CopyAndValidateWaypointData(gpWaypointData, pPacket->pWaypointData);
         gbSent = 0;
@@ -553,7 +553,7 @@ void __stdcall TEXT_OnWaypointMouseUp(SMSGHANDLER_PARAMS* pMsg)
 }
 
 // 0x0049D160
-void __stdcall sub_0049D160_WaypointMouseDown(SMSGHANDLER_PARAMS* pMsg)
+void __stdcall TEXT_WaypointMouseDown(SMSGHANDLER_PARAMS* pMsg)
 {
     int nX = (unsigned short)pMsg->lParam;
     int nY = (unsigned short)((unsigned int)pMsg->lParam >> 16);
@@ -573,12 +573,12 @@ void __stdcall sub_0049D160_WaypointMouseDown(SMSGHANDLER_PARAMS* pMsg)
 
     nX -= gnPanelOffsetX;
     nY += gnPanelOffsetY;
-    const int nTab = sub_0049C490_GetActTabAtPoint(nX, nY);
+    const int nTab = TEXT_GetActTabAtPoint(nX, nY);
     if (nTab != -1)
     {
         if (nTab != gnWaypointAct)
             sub_004B9A00(6, 0, 0, 0, 0);
-        sub_0049C760_SetWaypointAct(nTab);
+        TEXT_SetWaypointAct(nTab);
         WARDENCLIENT_BuildWaypointList();
         pMsg->bReturn = 1;
         pMsg->lResult = 0;

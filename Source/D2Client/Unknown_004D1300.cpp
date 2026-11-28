@@ -356,7 +356,7 @@ static __forceinline unsigned int SEED_RollLimitedRandomNumberForceInl(D2SeedStr
 }
 
 // 0x004D6130
-void __fastcall sub_004D6130_CltDoRandomSubMissile3(D2UnitStrc* pMissile)
+void __fastcall MISSILE_CltDoRandomSubMissile3(D2UnitStrc* pMissile)
 {
     D2MissilesTxt* pMissilesTxtRecord = MISSILE_GetMissilesTxtRecordFromUnit(pMissile);
     if (!pMissilesTxtRecord)

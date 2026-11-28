@@ -142,7 +142,7 @@ D2UnitStrc* __fastcall MISSILE_SubmitMissileRequest(D2UnitStrc* pUnit, int nRequ
 
 
 
-int __fastcall sub_004E60A0_AddSetPropText(D2UnitStrc* pItem, int nArg1, int nArg2, int nArg3, int nProp, int nArg5, int nArg6, int nArg7); // 0x004E60A0
+int __fastcall SKILLDESC_AddSetPropText(D2UnitStrc* pItem, int nArg1, int nArg2, int nArg3, int nProp, int nArg5, int nArg6, int nArg7); // 0x004E60A0
 
 
 void __stdcall D2COMMON_10170_PathSetTargetPos(D2DynamicPathStrc* pPath, int nX, int nY); // 0x00648AD0
@@ -1442,7 +1442,7 @@ int __fastcall MISSILE_CltHitForward(D2UnitStrc* pMissile, D2UnitStrc* pUnit)
 }
 
 // 0x004D04D0
-int __fastcall sub_004D04D0_HitRing64(D2UnitStrc* pMissile, D2UnitStrc* pUnit)
+int __fastcall MISSILE_HitRing64(D2UnitStrc* pMissile, D2UnitStrc* pUnit)
 {
     D2MissilesTxt* pMissilesTxtRecord = DATATBLS_GetMissilesTxtRecord(pMissile ? pMissile->dwClassId : -1);
     if (pMissilesTxtRecord && pMissilesTxtRecord->wCltHitSubMissile[0] >= 0)
@@ -7902,7 +7902,7 @@ extern int gnCltHitFuncCount = 81; // 0x0072A504
 
 extern CLTHITFUNC gpfnCltHitFuncs[82] = {
     0, (CLTHITFUNC)&MISSILE_CltHitSubMissileBurst, (CLTHITFUNC)&MISSILE_CltHitEffect, (CLTHITFUNC)&MISSILE_CltHitTwoSubMissiles, (CLTHITFUNC)&sub_004D05E0_HitRing64, 0, 0, 0, 0, (CLTHITFUNC)&MISSILE_CltHitUnit, (CLTHITFUNC)&MISSILE_CltHitProgOverlay, 0, (CLTHITFUNC)&MISSILE_CltHitSpawnSubMissiles, (CLTHITFUNC)&MISSILE_UpdateGuidedMissile, (CLTHITFUNC)&MISSILE_CltHitPatternSubMissiles, 0,
-    (CLTHITFUNC)&sub_004CF800, 0, (CLTHITFUNC)&MISSILE_CltHitRingSubMissiles, (CLTHITFUNC)&MISSILE_CltHitRandomSubMissile, 0, 0, 0, 0, (CLTHITFUNC)&MISSILE_CltHitOwnerRequest, (CLTHITFUNC)&MISSILE_ScanAreaCreateMissiles, (CLTHITFUNC)&MISSILE_CltHitScanArea, 0, (CLTHITFUNC)&MISSILE_CltHitForward, (CLTHITFUNC)&MISSILE_CreateChildMissile, (CLTHITFUNC)&sub_004D04D0_HitRing64, (CLTHITFUNC)&MISSILE_CltHitFollowUp,
+    (CLTHITFUNC)&sub_004CF800, 0, (CLTHITFUNC)&MISSILE_CltHitRingSubMissiles, (CLTHITFUNC)&MISSILE_CltHitRandomSubMissile, 0, 0, 0, 0, (CLTHITFUNC)&MISSILE_CltHitOwnerRequest, (CLTHITFUNC)&MISSILE_ScanAreaCreateMissiles, (CLTHITFUNC)&MISSILE_CltHitScanArea, 0, (CLTHITFUNC)&MISSILE_CltHitForward, (CLTHITFUNC)&MISSILE_CreateChildMissile, (CLTHITFUNC)&MISSILE_HitRing64, (CLTHITFUNC)&MISSILE_CltHitFollowUp,
     (CLTHITFUNC)&MISSILE_CltHitSubMissiles, (CLTHITFUNC)&MISSILE_CltHitScatter, (CLTHITFUNC)&MISSILE_CltHitFlagOwner, 0, (CLTHITFUNC)&MISSILE_CltHitCollisionBurst, (CLTHITFUNC)&sub_004D1BD0, (CLTHITFUNC)&MISSILE_CltHitLinkMissile, (CLTHITFUNC)&MISSILE_CltHitRolledRequest, (CLTHITFUNC)&MISSILE_IsOwnersPet, (CLTHITFUNC)&MISSILE_CltHitSpawnRequest, (CLTHITFUNC)&MISSILE_SpawnOwnerSubMissile, (CLTHITFUNC)&MISSILE_SpawnHellfireFragments, (CLTHITFUNC)&MISSILE_CltHitSubMissileOwner, 0, (CLTHITFUNC)&MISSILE_CltHitSpiral, (CLTHITFUNC)&MISSILE_CltHitBurst,
     (CLTHITFUNC)&MISSILE_CltDoEightWaySpawn, 0, (CLTHITFUNC)&MISSILE_CltHitParamBurst, (CLTHITFUNC)&MISSILE_CltHitSpiralGrid, (CLTHITFUNC)&MISSILE_CltHitBurstSub, (CLTHITFUNC)&MISSILE_CltHitLob, (CLTHITFUNC)&MISSILE_CltHitCreateSubMissile, (CLTHITFUNC)&MISSILE_CltHitTripleSubMissiles, (CLTHITFUNC)&MISSILE_CltHitSubMissileDir, (CLTHITFUNC)&MISSILE_CltHitBurstNoUnit, 0, 0, (CLTHITFUNC)&MISSILE_CltHitSubMissilesWithMotion, (CLTHITFUNC)&MISSILE_CltHitClearGlobals, (CLTHITFUNC)&MISSILE_CltDoScatterHit, (CLTHITFUNC)&MISSILE_CltHitSubMissile,
     (CLTHITFUNC)&MISSILE_CltHitRing

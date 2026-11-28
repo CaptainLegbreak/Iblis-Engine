@@ -41,15 +41,15 @@ struct D2SkillDescTxt
     unsigned short wStrMana; // 0x10
     unsigned short wDescDam; // 0x12
     unsigned short wDescFunc; // 0x14
-    unsigned short unk0x16; // 0x16
+    unsigned short pad0x16; // 0x16
     unsigned int dwDamCalc[2]; // 0x18
     unsigned char nPrgDamElem[3]; // 0x20
-    unsigned char unk0x23; // 0x23
+    unsigned char pad0x23; // 0x23
     int dwProgDmgMin[3]; // 0x24
     int dwProgDmgMax[3]; // 0x30
     short wDescMissile[3]; // 0x3C
     unsigned char nDescLine[17]; // 0x42
-    unsigned char unk0x53; // 0x53
+    unsigned char pad0x53; // 0x53
     unsigned short wDescTextA[17]; // 0x54
     unsigned short wDescTextB[17]; // 0x76
     int dwDescCalcA[17]; // 0x98
@@ -62,7 +62,7 @@ struct D2SetItemsTxt
     char szName[32]; // 0x02
     unsigned short wVersion; // 0x22
     unsigned short wTblIndex; // 0x24
-    unsigned short unk0x26; // 0x26
+    unsigned short pad0x26; // 0x26
     unsigned int dwItemCode; // 0x28
     short nSetId; // 0x2C
     short nSetItems; // 0x2E

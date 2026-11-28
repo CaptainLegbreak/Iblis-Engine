@@ -37,7 +37,7 @@ void __stdcall sub_006B9F00_PresentFrame(); // 0x006B9F00
 
 // Moved from Storm.h (used by D2Direct3D units).
 struct D2FogSystemInfoStrc;
-__declspec(noreturn) void __cdecl sub_006B1A30_ThrowAtlException(long error); // 0x006B1A30
+__declspec(noreturn) void __cdecl D3DCORE_ThrowAtlException(long error); // 0x006B1A30
 void __fastcall D3DCORE_LogDDrawError(const char* szWhere, int hResult); // 0x006B20E0
 extern "C" __declspec(dllimport) long __stdcall RegSetValueExA(void* hKey, const char* szValueName, unsigned long nReserved, unsigned long dwType, const unsigned char* pData, unsigned long cbData); // 0x006CC034
 extern "C" __declspec(dllimport) int __stdcall lstrlenA(const char* sz); // 0x006CC154

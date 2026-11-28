@@ -72,9 +72,9 @@ extern "C" char* __cdecl strcat(char* szDest, const char* szSource);
 
 extern "C" int __stdcall DirectSoundEnumerateA(void* pfCallback, void* pContext);                           // 0x006B134A
 
-int __stdcall sub_00513A20_EnumCallback(void* pGuid, const char* szDescription, const char* szModule, void* pContext); // 0x00513A20
+int __stdcall D2SOUND_EnumCallback(void* pGuid, const char* szDescription, const char* szModule, void* pContext); // 0x00513A20
 
-void __cdecl sub_005140D0_InitDirectSound(); // 0x005140D0
+void __cdecl D2SOUND_InitDirectSound(); // 0x005140D0
 
 int __fastcall D2SOUNDUTIL_GetVxdFileVersion(const char* szPath, unsigned int* pMajor, unsigned int* pMinor, unsigned int* pBuild); // 0x00516CA0
 
@@ -103,7 +103,7 @@ extern const D2GuidStrc gtEaxListener20PropertySet;                             
 int gbEaxRoomOff;                                                                                  // 0x00881778
 
 // 0x00513BC0
-int __fastcall sub_00513BC0_SetEaxRoomOff(int nEaxVersion)
+int __fastcall D2SOUND_SetEaxRoomOff(int nEaxVersion)
 {
     if (!gpEaxListenerPropertySet)
     {
@@ -444,7 +444,7 @@ void __cdecl D2SOUND_CloseSoundSystem()
 }
 
 // 0x005140D0
-void __cdecl sub_005140D0_InitDirectSound()
+void __cdecl D2SOUND_InitDirectSound()
 {
     if (gb3DSound && gbOldSoundDriver)
     {
@@ -541,7 +541,7 @@ void __cdecl sub_005140D0_InitDirectSound()
                 && gp3DBuffer->QueryInterface(gtIidKsPropertySet, (void**)&gpPropertySet_008816D8) >= 0
                 && gpPropertySet_008816D8->QuerySupport(gDSPROPSETID_EAX20_ListenerProperties_006DE460, 1, &nSupport) >= 0
                 && (nSupport & 3) == 3
-                && sub_00513BC0_SetEaxRoomOff(2))
+                && D2SOUND_SetEaxRoomOff(2))
             {
                 gnEaxVersion = 2;
             }
@@ -557,7 +557,7 @@ void __cdecl sub_005140D0_InitDirectSound()
                 && gp3DBuffer->QueryInterface(gtIidKsPropertySet, (void**)&gpPropertySet_008816D8) >= 0
                 && gpPropertySet_008816D8->QuerySupport(gDSPROPSETID_EAX_ReverbProperties_006DE480, 0, &nSupport) >= 0
                 && (nSupport & 3) == 3
-                && sub_00513BC0_SetEaxRoomOff(1))
+                && D2SOUND_SetEaxRoomOff(1))
             {
                 gnEaxVersion = 1;
             }
@@ -588,12 +588,12 @@ void __cdecl sub_005140D0_InitDirectSound()
 }
 
 // 0x00514530
-void __fastcall sub_00514530_InitSound(int nArg1, int nArg2)
+void __fastcall D2SOUND_InitSound(int nArg1, int nArg2)
 {
     gfSoundExpansion = nArg1;
     gnChannelArg = nArg2;
     gbSoundEnumDone = 0;
-    DirectSoundEnumerateA(sub_00513A20_EnumCallback, 0);
+    DirectSoundEnumerateA(D2SOUND_EnumCallback, 0);
 
     char szPath[260];
     unsigned int nMajor;
@@ -637,17 +637,17 @@ void __fastcall sub_00514530_InitSound(int nArg1, int nArg2)
     {
         gfPositionalSound = 1;
         gbEaxEnabled = 1;
-        sub_005140D0_InitDirectSound();
+        D2SOUND_InitDirectSound();
         if (!gbSoundReady)
         {
             gfPositionalSound = 1;
             gbEaxEnabled = 0;
-            sub_005140D0_InitDirectSound();
+            D2SOUND_InitDirectSound();
             if (!gbSoundReady)
             {
                 gfPositionalSound = 0;
                 gbEaxEnabled = 0;
-                sub_005140D0_InitDirectSound();
+                D2SOUND_InitDirectSound();
                 if (!gbSoundReady)
                 {
                     LOGMANAGER_WriteLogLine("\tCouldn't initialize DirectSound");
@@ -657,7 +657,7 @@ void __fastcall sub_00514530_InitSound(int nArg1, int nArg2)
     }
 }
 
-// Kept noinline: a static that takes its arguments in registers; sub_00514990_PickRandomChannel (0x514990) calls it out of line in the image (the #368 case).
+// Kept noinline: a static that takes its arguments in registers; D2SOUND_PickRandomChannel (0x514990) calls it out of line in the image (the #368 case).
 // 0x00514710
 __declspec(noinline) static D2SoundChannelEntryStrc* D2SOUND_GetChannelEntry(int nIndex)
 {
@@ -786,7 +786,7 @@ void __cdecl D2SOUND_FadeOutStreamChannel()
 }
 
 // 0x00514990
-int __cdecl sub_00514990_PickRandomChannel()
+int __cdecl D2SOUND_PickRandomChannel()
 {
     D2SoundChannelEntryStrc* pEntry;
     const char* szFile;

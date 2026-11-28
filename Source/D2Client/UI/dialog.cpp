@@ -107,7 +107,7 @@ struct SelectionState
     HandlerNode* handlers;
 };
 
-static void __cdecl sub_004B7100_Select(SelectionState* state, int step); // 0x004B7100
+static void __cdecl DIALOG_Select(SelectionState* state, int step); // 0x004B7100
 
 extern "C" void* __cdecl memset(void* pDest, int nValue, unsigned int nSize); // 0x00681EF0
 
@@ -481,9 +481,9 @@ extern "C" void __stdcall DIALOG_WheelMsg(Message* message)
                 return;
             }
             if (turns > 0)
-                sub_004B7100_Select(state, -1);
+                DIALOG_Select(state, -1);
             else
-                sub_004B7100_Select(state, 1);
+                DIALOG_Select(state, 1);
         }
     }
     message->handled = 1;
@@ -532,11 +532,11 @@ extern "C" void __stdcall DIALOG_SelectPreviousMsg(Message* message)
     for (HandlerNode* node = gVar_007C0E54->handlers; node; node = node->next)
         if (node->object && node->object->previous1(message) == 1)
             return;
-    sub_004B7100_Select(state, -1);
+    DIALOG_Select(state, -1);
 }
 
 // 0x004B7100
-static void __cdecl sub_004B7100_Select(SelectionState* state, int step)
+static void __cdecl DIALOG_Select(SelectionState* state, int step)
 {
     if (state->activeCount > 1)
     {
@@ -565,7 +565,7 @@ extern "C" void __stdcall DIALOG_SelectNextMsg(Message* message)
     for (HandlerNode* node = gVar_007C0E54->handlers; node; node = node->next)
         if (node->object && node->object->next1(message) == 1)
             return;
-    sub_004B7100_Select(state, 1);
+    DIALOG_Select(state, 1);
 }
 
 // 0x004B7870
@@ -579,7 +579,7 @@ extern "C" void __stdcall DIALOG_SelectPreviousAltMsg(Message* message)
     for (HandlerNode* node = gVar_007C0E54->handlers; node; node = node->next)
         if (node->object && node->object->previous2(message) == 1)
             return;
-    sub_004B7100_Select(state, -1);
+    DIALOG_Select(state, -1);
 }
 
 // 0x004B78F0
@@ -593,7 +593,7 @@ extern "C" void __stdcall DIALOG_SelectNextAltMsg(Message* message)
     for (HandlerNode* node = gVar_007C0E54->handlers; node; node = node->next)
         if (node->object && node->object->next2(message) == 1)
             return;
-    sub_004B7100_Select(state, 1);
+    DIALOG_Select(state, 1);
 }
 
 // 0x004B7970
@@ -1095,7 +1095,7 @@ void __fastcall DIALOG_GetRect(D2ClientDialogStrc* pDialog, D2RectStrc* pRect)
 }
 
 // 0x004B85E0
-int __cdecl sub_004B85E0_GetDialogCount()
+int __cdecl DIALOG_GetDialogCount()
 {
     return gdwGlobal_007C0E5C;
 }
@@ -1141,7 +1141,7 @@ void __fastcall DIALOG_AddTextLine(D2ClientDialogStrc* pDialog, const Unicode* w
 }
 
 // 0x004B70F0
-int __cdecl sub_004B70F0_GetDialogList()
+int __cdecl DIALOG_GetDialogList()
 {
     return gdwGlobal_007C0E54;
 }

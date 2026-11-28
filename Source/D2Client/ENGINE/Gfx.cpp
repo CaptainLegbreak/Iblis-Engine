@@ -487,7 +487,7 @@ static inline int AI_GetUnitMode_Inline(D2UnitStrc* pUnit)
     return !pUnit ? 0 : pUnit->dwAnimMode;
 }
 
-static void __stdcall sub_0046CA60_CommandToXY(int nCommand, D2UnitStrc* pUnit, int nX, int nArg, int nY);
+static void __stdcall GFX_CommandToXY(int nCommand, D2UnitStrc* pUnit, int nX, int nArg, int nY); // 0x0046CA60
 
 
 
@@ -569,10 +569,10 @@ static inline unsigned int SEED_RollUnitLH_0046C960(D2UnitStrc* pUnit)
 
 
 
-static void sub_0046CBD0_SetAiTimerClamped(D2UnitStrc* pUnit, int nTicks);
+static void GFX_SetAiTimerClamped(D2UnitStrc* pUnit, int nTicks); // 0x0046CBD0
 
 
-static int __stdcall sub_0046C7D0_StepAwayFromUnit(D2UnitStrc* pUnit, unsigned char nScale, int nCommand, int nArg, D2UnitStrc* pTarget);
+static int __stdcall GFX_StepAwayFromUnit(D2UnitStrc* pUnit, unsigned char nScale, int nCommand, int nArg, D2UnitStrc* pTarget); // 0x0046C7D0
 
 static void __stdcall GFX_StepRandom(unsigned char nScale, int nCommand, int nArg, D2UnitStrc* pUnit); // 0x0046C960
 
@@ -582,7 +582,7 @@ static void sub_0046CAB0_CommandMode8(D2UnitStrc* pUnit);
 
 static void sub_0046CB40_CommandMode7(D2UnitStrc* pUnit);
 
-static int sub_0046CBF0_IsSamePosition(D2UnitStrc* pTarget, D2UnitStrc* pUnit);
+static int GFX_IsSamePosition(D2UnitStrc* pTarget, D2UnitStrc* pUnit); // 0x0046CBF0
 
 
 
@@ -1043,7 +1043,7 @@ static void __stdcall GFX_CommandOnUnit(int nCommand, int nArg, D2UnitStrc* pUni
 }
 
 // 0x0046C7D0
-static int __stdcall sub_0046C7D0_StepAwayFromUnit(D2UnitStrc* pUnit, unsigned char nScale, int nCommand, int nArg, D2UnitStrc* pTarget)
+static int __stdcall GFX_StepAwayFromUnit(D2UnitStrc* pUnit, unsigned char nScale, int nCommand, int nArg, D2UnitStrc* pTarget)
 {
     const int nUnitX = CLIENTS_GetUnitXInline(pUnit);
     const int nUnitY = CLIENTS_GetUnitYInline(pUnit);
@@ -1116,7 +1116,7 @@ static void __stdcall GFX_StepRandom(unsigned char nScale, int nCommand, int nAr
 }
 
 // 0x0046CA60
-static void __stdcall sub_0046CA60_CommandToXY(int nCommand, D2UnitStrc* pUnit, int nX, int nArg, int nY)
+static void __stdcall GFX_CommandToXY(int nCommand, D2UnitStrc* pUnit, int nX, int nArg, int nY)
 {
     D2DynamicPathStrc* pPath = pUnit->pDynamicPath;
     D2MonCommandStrc tCommand;
@@ -1151,7 +1151,7 @@ static void sub_0046CB40_CommandMode7(D2UnitStrc* pUnit)
 // Kept out of line: the original calls it from 0x0046D780 with its arguments in ecx/eax, a convention only a
 // static of this unit gets, so it is this unit's function; with /Ob2 it would otherwise be inlined there.
 // noinline: the original calls this; without it the compiler expands it into 0x0046D780.
-static __declspec(noinline) void sub_0046CBD0_SetAiTimerClamped(D2UnitStrc* pUnit, int nTicks)
+static __declspec(noinline) void GFX_SetAiTimerClamped(D2UnitStrc* pUnit, int nTicks)
 {
     if (nTicks >= 200)
     {
@@ -1166,7 +1166,7 @@ static __declspec(noinline) void sub_0046CBD0_SetAiTimerClamped(D2UnitStrc* pUni
 }
 
 // 0x0046CBF0
-static int sub_0046CBF0_IsSamePosition(D2UnitStrc* pTarget, D2UnitStrc* pUnit)
+static int GFX_IsSamePosition(D2UnitStrc* pTarget, D2UnitStrc* pUnit)
 {
     const int nUnitX = CLIENTS_GetUnitXInline(pUnit);
     const int nUnitY = CLIENTS_GetUnitYInline(pUnit);
@@ -1195,7 +1195,7 @@ static void sub_0046CCD0_AiType1(D2UnitStrc* pUnit)
             if (nDistance < 4)
             {
                 PATH_SetFootprintCollisionMask(pPath, 0xC01);
-                if (!sub_0046C7D0_StepAwayFromUnit(pUnit, 4, 0xC, 0x78, pFound))
+                if (!GFX_StepAwayFromUnit(pUnit, 4, 0xC, 0x78, pFound))
                 {
                     GFX_StepRandom(4, 0xC, 0x78, pUnit);
                 }
@@ -1222,7 +1222,7 @@ static void __stdcall sub_0046CDC0_AiType2(D2UnitStrc* pTarget, unsigned int nDi
         {
             if (SEED_RollPercentage_Inline(&pUnit->pSeed) < 66)
             {
-                sub_0046C7D0_StepAwayFromUnit(pUnit, 8, 1, 30, pTarget);
+                GFX_StepAwayFromUnit(pUnit, 8, 1, 30, pTarget);
             }
             else
             {
@@ -1284,7 +1284,7 @@ static void GFX_AiType3(D2UnitStrc* pUnit)
             const int nUnitX = CLIENTS_GetUnitXInline(pUnit);
             const int nUnitY = CLIENTS_GetUnitYInline(pUnit);
             PATH_SetNewDistance(pUnit->pDynamicPath, 90);
-            sub_0046CA60_CommandToXY(1, pUnit, 3 * nTargetX - 2 * nUnitX, 0, 3 * nTargetY - 2 * nUnitY);
+            GFX_CommandToXY(1, pUnit, 3 * nTargetX - 2 * nUnitX, 0, 3 * nTargetY - 2 * nUnitY);
         }
     }
 }
@@ -1298,7 +1298,7 @@ static void __stdcall sub_0046D070_AiType4(D2UnitStrc* pTarget, D2UnitStrc* pUni
         return;
     }
 
-    if (sub_0046CBF0_IsSamePosition(pTarget, pUnit))
+    if (GFX_IsSamePosition(pTarget, pUnit))
     {
         sub_0046CAB0_CommandMode8(pUnit);
         return;
@@ -1331,7 +1331,7 @@ static void __stdcall GFX_AiType5(unsigned int nDistance, D2UnitStrc* pUnit, D2U
         return;
     }
 
-    if (nDistance < 2 && sub_0046CBF0_IsSamePosition(pTarget, pUnit))
+    if (nDistance < 2 && GFX_IsSamePosition(pTarget, pUnit))
     {
         sub_0046CAB0_CommandMode8(pUnit);
         return;
@@ -1344,7 +1344,7 @@ static void __stdcall GFX_AiType5(unsigned int nDistance, D2UnitStrc* pUnit, D2U
 
     if (nDistance < 4)
     {
-        sub_0046C7D0_StepAwayFromUnit(pUnit, 6, 1, 0, pTarget);
+        GFX_StepAwayFromUnit(pUnit, 6, 1, 0, pTarget);
         return;
     }
 
@@ -1412,7 +1412,7 @@ static void __stdcall sub_0046D280_AiType6(unsigned int nDistance, D2UnitStrc* p
         return;
     }
 
-    if (sub_0046CBF0_IsSamePosition(pTarget, pUnit))
+    if (GFX_IsSamePosition(pTarget, pUnit))
     {
         sub_0046CAB0_CommandMode8(pUnit);
         return;
@@ -1422,7 +1422,7 @@ static void __stdcall sub_0046D280_AiType6(unsigned int nDistance, D2UnitStrc* p
     {
         if (nDistance <= 1)
         {
-            sub_0046C7D0_StepAwayFromUnit(pUnit, 4, 1, 0, pTarget);
+            GFX_StepAwayFromUnit(pUnit, 4, 1, 0, pTarget);
             return;
         }
 
@@ -1459,7 +1459,7 @@ static void sub_0046D310_AiType7(D2UnitStrc* pUnit)
             if (nDistance < 6)
             {
                 PATH_SetFootprintCollisionMask(pPath, 0xC01);
-                if (!sub_0046C7D0_StepAwayFromUnit(pUnit, 6, 1, 0x78, pFound))
+                if (!GFX_StepAwayFromUnit(pUnit, 6, 1, 0x78, pFound))
                 {
                     GFX_StepRandom(6, 1, 0x78, pUnit);
                 }
@@ -1556,7 +1556,7 @@ static void sub_0046D660_AiFlagged(D2UnitStrc* pTarget, D2UnitStrc* pUnit)
 
     if (nRoll < 80 && pTarget)
     {
-        sub_0046C7D0_StepAwayFromUnit(pUnit, 8, 1, 4, pTarget);
+        GFX_StepAwayFromUnit(pUnit, 8, 1, 4, pTarget);
         return;
     }
 
@@ -1564,7 +1564,7 @@ static void sub_0046D660_AiFlagged(D2UnitStrc* pTarget, D2UnitStrc* pUnit)
 }
 
 // 0x0046D780
-void __fastcall sub_0046D780_RunClientAi(D2UnitStrc* pUnit)
+void __fastcall GFX_RunClientAi(D2UnitStrc* pUnit)
 {
     int* pTimer = sub_004AE110_GetAiTimer(pUnit);
     if (!pTimer)
@@ -1593,7 +1593,7 @@ void __fastcall sub_0046D780_RunClientAi(D2UnitStrc* pUnit)
 
     if (nDistance > 30)
     {
-        sub_0046CBD0_SetAiTimerClamped(pUnit, nDistance - 15);
+        GFX_SetAiTimerClamped(pUnit, nDistance - 15);
         sub_0046CB40_CommandMode7(pUnit);
         return;
     }

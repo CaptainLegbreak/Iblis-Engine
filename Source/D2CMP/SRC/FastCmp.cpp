@@ -91,7 +91,7 @@ struct D2CelStrc { unsigned int flags,width,height; unsigned char unknown0C[0x14
 extern const char gszEmptyAssert[]; // 0x006CC837
 
 
-int __fastcall sub_0060D280_ScanSameRun(const unsigned char* pData, const unsigned char* pEnd, int nMax, int* pbRunReachedEnd, int* pbRestReachedEnd); // 0x0060D280
+int __fastcall FASTCMP_ScanSameRun(const unsigned char* pData, const unsigned char* pEnd, int nMax, int* pbRunReachedEnd, int* pbRestReachedEnd); // 0x0060D280
 
 
 typedef unsigned char (__stdcall* D2CmpMapColorFn)(unsigned char nRed, unsigned char nGreen, unsigned char nBlue);
@@ -965,7 +965,7 @@ static void __stdcall CelEncodeRle(const unsigned char* pSrc, unsigned int nWidt
     {
         if (*pSrc == 0)
         {
-            const int nRun = sub_0060D280_ScanSameRun(pSrc, pRowEnd, 0x7F, &nRunReachedEnd, &nRestReachedEnd);
+            const int nRun = FASTCMP_ScanSameRun(pSrc, pRowEnd, 0x7F, &nRunReachedEnd, &nRestReachedEnd);
             if (!nRestReachedEnd && !nRunReachedEnd)
             {
                 *pOut++ = (unsigned char)(nRun | 0x80);
@@ -982,7 +982,7 @@ static void __stdcall CelEncodeRle(const unsigned char* pSrc, unsigned int nWidt
         }
         else
         {
-            const unsigned int nRun = sub_0060D3A0_ScanOtherRun(pSrc, pRowEnd, 0, 0x7F, &nRunReachedEnd, &nRestReachedEnd);
+            const unsigned int nRun = FASTCMP_ScanOtherRun(pSrc, pRowEnd, 0, 0x7F, &nRunReachedEnd, &nRestReachedEnd);
             *pOut++ = (unsigned char)nRun;
             for (unsigned int i = 0; i < nRun; ++i)
             {
@@ -2400,7 +2400,7 @@ unsigned char __fastcall FindTileHash(unsigned char a, unsigned char b, unsigned
 }
 
 // 0x0060D280
-int __fastcall sub_0060D280_ScanSameRun(const unsigned char* pData, const unsigned char* pEnd, int nMax, int* pbRunReachedEnd, int* pbRestReachedEnd)
+int __fastcall FASTCMP_ScanSameRun(const unsigned char* pData, const unsigned char* pEnd, int nMax, int* pbRunReachedEnd, int* pbRestReachedEnd)
 {
     D2_ASSERT(pData < pEnd, 0x19);
     unsigned char nValue = *pData;
@@ -2447,7 +2447,7 @@ int __fastcall CmpScanRun(unsigned char nValue, const unsigned char* pData, cons
 }
 
 // 0x0060D3A0
-int __fastcall sub_0060D3A0_ScanOtherRun(const unsigned char* pData, const unsigned char* pEnd, unsigned char nValue, int nMax, int* pbRunReachedEnd, int* pbRestReachedEnd)
+int __fastcall FASTCMP_ScanOtherRun(const unsigned char* pData, const unsigned char* pEnd, unsigned char nValue, int nMax, int* pbRunReachedEnd, int* pbRestReachedEnd)
 {
     D2_ASSERT(pData < pEnd, 0x6F);
     int nCount = 0;

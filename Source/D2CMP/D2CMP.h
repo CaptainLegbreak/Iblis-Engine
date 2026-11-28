@@ -448,4 +448,4 @@ void __fastcall CelDrawRleShadow(D2CelStrc* pCel, unsigned char* pDst, int nX, i
 unsigned char __fastcall FindTileHash(int a, int b, int c); // 0x0060CD70
 void __fastcall FindTileAddTile(D2TileLibraryHashStrc* pHash, D2CmpTileBlockStrc* pTile); // 0x0060CFA0
 void __fastcall CelIterateRgbPixels(D2CelStrc* pCel, int nArg, int nTermination); // 0x0060D110
-int __fastcall sub_0060D3A0_ScanOtherRun(const unsigned char* pData, const unsigned char* pEnd, unsigned char nValue, int nMax, int* pbRunReachedEnd, int* pbRestReachedEnd); // 0x0060D3A0
+int __fastcall FASTCMP_ScanOtherRun(const unsigned char* pData, const unsigned char* pEnd, unsigned char nValue, int nMax, int* pbRunReachedEnd, int* pbRestReachedEnd); // 0x0060D3A0

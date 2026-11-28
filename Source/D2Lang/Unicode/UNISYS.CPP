@@ -20,7 +20,7 @@ struct D2LangCharRangeStrc
     unsigned short wLow;
     unsigned short wHigh;
 
-    void sub_005276A0_SetFromBytes(const unsigned char* pBytes);
+    void UNISYS_SetFromBytes(const unsigned char* pBytes); // 0x005276A0
 };
 
 char gszCodePageName[0x28];                                                                        // 0x00882AF8
@@ -46,14 +46,14 @@ void* __cdecl operator new[](size_t nSize)
 }
 
 // 0x005276A0
-void D2LangCharRangeStrc::sub_005276A0_SetFromBytes(const unsigned char* pBytes)
+void D2LangCharRangeStrc::UNISYS_SetFromBytes(const unsigned char* pBytes)
 {
     wLow = pBytes[0];
     wHigh = pBytes[2];
 }
 
 // 0x005276C0
-int D2LangByteRangeStrc::sub_005276C0_Contains(unsigned char nValue) const
+int D2LangByteRangeStrc::UNISYS_Contains(unsigned char nValue) const
 {
     if (nLow <= nValue && nValue <= nHigh)
         return 1;
@@ -61,7 +61,7 @@ int D2LangByteRangeStrc::sub_005276C0_Contains(unsigned char nValue) const
 }
 
 // 0x005276E0
-static int sub_005276E0_IsLeadByte(unsigned char nByte)
+static int UNISYS_IsLeadByte(unsigned char nByte)
 {
     if (nByte < 0x20)
     {
@@ -226,13 +226,13 @@ static int UNISYS_MapCodePageChar(unsigned short wChar)
 }
 
 // 0x00527AE0
-int __cdecl sub_00527AE0_CompareKey(const void* pLeft, const void* pRight)
+int __cdecl UNISYS_CompareKey(const void* pLeft, const void* pRight)
 {
     return ((const D2LangCharMapEntryStrc*)pLeft)->wChar - ((const D2LangCharMapEntryStrc*)pRight)->wChar;
 }
 
 // 0x00527B00
-static int sub_00527B00_MapUnicodeChar(unsigned short wChar)
+static int UNISYS_MapUnicodeChar(unsigned short wChar)
 {
     if (wChar < 0x20)
     {
@@ -240,7 +240,7 @@ static int sub_00527B00_MapUnicodeChar(unsigned short wChar)
     }
     D2LangCharMapEntryStrc tKey;
     tKey.wChar = wChar;
-    const D2LangCharMapEntryStrc* pEntry = (const D2LangCharMapEntryStrc*)bsearch(&tKey, gpCharMap, gnCharMapCount, sizeof(D2LangCharMapEntryStrc), sub_00527AE0_CompareKey);
+    const D2LangCharMapEntryStrc* pEntry = (const D2LangCharMapEntryStrc*)bsearch(&tKey, gpCharMap, gnCharMapCount, sizeof(D2LangCharMapEntryStrc), UNISYS_CompareKey);
     if (!pEntry)
     {
         return -1;
@@ -249,7 +249,7 @@ static int sub_00527B00_MapUnicodeChar(unsigned short wChar)
 }
 
 // 0x00527B50
-Unicode* __fastcall sub_00527B50_CodePageToUnicode(Unicode* pDest, const char* szSrc, int nCount)
+Unicode* __fastcall UNISYS_CodePageToUnicode(Unicode* pDest, const char* szSrc, int nCount)
 {
     if (!gpCharMapIndex)
     {
@@ -264,7 +264,7 @@ Unicode* __fastcall sub_00527B50_CodePageToUnicode(Unicode* pDest, const char* s
             goto terminate;
         }
         unsigned short wChar;
-        if (sub_005276E0_IsLeadByte(nByte))
+        if (UNISYS_IsLeadByte(nByte))
         {
             wChar = (unsigned short)((nByte << 8) | (unsigned char)szSrc[1]);
             szSrc += 2;
@@ -297,7 +297,7 @@ terminate:
 }
 
 // 0x00527BE0
-char* __fastcall sub_00527BE0_UnicodeToCodePage(char* szDest, const Unicode* pSrc, int nCount)
+char* __fastcall UNISYS_UnicodeToCodePage(char* szDest, const Unicode* pSrc, int nCount)
 {
     if (!gpCharMap)
     {
@@ -310,12 +310,12 @@ char* __fastcall sub_00527BE0_UnicodeToCodePage(char* szDest, const Unicode* pSr
         {
             goto terminate;
         }
-        const int nCodePage = sub_00527B00_MapUnicodeChar(pSrc->wChar);
+        const int nCodePage = UNISYS_MapUnicodeChar(pSrc->wChar);
         if (nCodePage < 0)
         {
             continue;
         }
-        if ((nCodePage & 0xFF00) || sub_005276E0_IsLeadByte((unsigned char)nCodePage))
+        if ((nCodePage & 0xFF00) || UNISYS_IsLeadByte((unsigned char)nCodePage))
         {
             szDest[i++] = (char)((unsigned short)nCodePage >> 8);
         }
@@ -334,7 +334,7 @@ terminate:
 }
 
 // 0x00527CA0
-int __fastcall sub_00527CA0_GetCodePageLength(const Unicode* pSrc, int nCount)
+int __fastcall UNISYS_GetCodePageLength(const Unicode* pSrc, int nCount)
 {
     if (!gpCharMap)
     {
@@ -347,12 +347,12 @@ int __fastcall sub_00527CA0_GetCodePageLength(const Unicode* pSrc, int nCount)
         {
             goto terminate;
         }
-        const int nCodePage = sub_00527B00_MapUnicodeChar(pSrc[i].wChar);
+        const int nCodePage = UNISYS_MapUnicodeChar(pSrc[i].wChar);
         if (nCodePage < 0)
         {
             continue;
         }
-        if ((nCodePage & 0xFF00) || sub_005276E0_IsLeadByte((unsigned char)nCodePage))
+        if ((nCodePage & 0xFF00) || UNISYS_IsLeadByte((unsigned char)nCodePage))
         {
             nLength += 2;
         }
@@ -366,7 +366,7 @@ terminate:
 }
 
 // 0x00527D50
-int __fastcall sub_00527D50_GetCodePageCharCount(const char* szSrc, int nCount)
+int __fastcall UNISYS_GetCodePageCharCount(const char* szSrc, int nCount)
 {
     if (!gpCharMapIndex)
     {
@@ -380,7 +380,7 @@ int __fastcall sub_00527D50_GetCodePageCharCount(const char* szSrc, int nCount)
         {
             break;
         }
-        if (sub_005276E0_IsLeadByte(nByte))
+        if (UNISYS_IsLeadByte(nByte))
         {
             i += 2;
         }

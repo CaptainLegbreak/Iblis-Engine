@@ -227,7 +227,7 @@ void __fastcall SPELLSEL_UpdateSkillButtonHover(short* pId, int nState, int nA, 
     nMouseY = sub_00468740();
     if (nMouseX >= nX && nMouseX <= nX + 48 && nMouseY >= nY - 48 && nMouseY <= nY)
     {
-        sub_004EF990_SetSkillPopUpText(sub_00463DD0_GetPlayerUnit(), *pId, nA, nB, nState, nX, nY);
+        SKILLDESC_SetSkillPopUpText(sub_00463DD0_GetPlayerUnit(), *pId, nA, nB, nState, nX, nY);
     }
 }
 
@@ -248,7 +248,7 @@ static int __stdcall SPELLSEL_AddSkillSlot(int nX, int bLeft, int nY, D2SkillStr
 }
 
 // 0x004A9A90
-int __fastcall sub_004A9A90_FindSkill(D2UnitStrc* pUnit, int nSkillId)
+int __fastcall SPELLSEL_FindSkill(D2UnitStrc* pUnit, int nSkillId)
 {
     if (!pUnit)
     {

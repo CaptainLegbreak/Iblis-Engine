@@ -211,7 +211,7 @@ int __cdecl CUNIT_IsPlayerDeadOrMissing(); // 0x00463DF0
 
 int __fastcall GFX_DrawItemCel(D2UnitStrc* pItem, int nX, int nY); // 0x0046EE80
 
-int __cdecl sub_004817F0_GetSongMin(); // 0x004817F0
+int __cdecl SOUNDHDR_GetSongMin(); // 0x004817F0
 
 int __cdecl sub_00481810(); // 0x00481810
 
@@ -219,7 +219,7 @@ int __cdecl DLIGHTMAP_GetSoundTick(); // 0x00481820
 
 D2SoundsTxt* __fastcall SOUNDHDR_GetSoundRecord(int nId); // 0x00481860
 
-int __fastcall sub_004B9590_IsTypeOneSound(void* pEntry); // 0x004B9590
+int __fastcall SOUNDINST_IsTypeOneSound(void* pEntry); // 0x004B9590
 
 void* __fastcall sub_004B9610_GetSoundHandle(int nId); // 0x004B9610
 
@@ -312,7 +312,7 @@ extern int gaCursorKind[]; // 0x00727A40
 
 extern unsigned int gnCursorKindCount; // 0x00727A48
 
-void __fastcall sub_004B29E0_FinishPendingAction(int nUnitId); // 0x004B29E0
+void __fastcall NPCMENU_FinishPendingAction(int nUnitId); // 0x004B29E0
 
 int __fastcall UI_GetUIVarUnchecked(int nUIVar); // 0x00453A90
 
@@ -387,7 +387,7 @@ unsigned char __stdcall ITEMS_GetInvPage(D2UnitStrc* pItem); // 0x00628250
 
 void __stdcall ITEM_HandleItemToBody(D2GSPacketSrv9D* pPacket, D2ItemSaveStrc* pItemSave); // 0x004C35F0
 
-void __fastcall sub_004B2640_SetInvRequest(D2UnitStrc* pUnit); // 0x004B2640
+void __fastcall NPCMENU_SetInvRequest(D2UnitStrc* pUnit); // 0x004B2640
 
 void __fastcall NPCMENU_ResetHoverForItem(int nUnitId); // 0x004B2A80
 
@@ -995,7 +995,7 @@ static void ITEM_RefreshEquippedItems(D2UnitStrc* pUnit)
 }
 
 // 0x004C16C0
-static void sub_004C16C0_RefreshUnitItems(D2UnitStrc* pUnit)
+static void ITEM_RefreshUnitItems(D2UnitStrc* pUnit)
 {
     ITEM_RefreshEquippedItems(pUnit);
 }
@@ -1243,7 +1243,7 @@ void __fastcall ITEM_RefreshUnitItemsFromPacket(D2PacketRecord11Strc* pPacket, i
 {
     D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->dwUnitId, pPacket->nUnitType);
     if (pUnit)
-        sub_004C16C0_RefreshUnitItems(pUnit);
+        ITEM_RefreshUnitItems(pUnit);
 }
 
 // 0x004C1BE0
@@ -1481,7 +1481,7 @@ void __fastcall ITEM_ClearCursorItemFromPacket(D2GSPacketSrv42Strc* pPacket)
     INVENTORY_SetCursorItem(pInventory, 0);
     CURSOR_SetCursorItemState(INVENTORY_GetCursorItem(pInventory));
     CUNIT_RemoveClientSideUnit(nItemId, pItem->dwUnitType);
-    sub_004B29E0_FinishPendingAction(nItemId);
+    NPCMENU_FinishPendingAction(nItemId);
 }
 
 // 0x004C20B0
@@ -2758,7 +2758,7 @@ void __fastcall ITEM_HandleShopItem(D2GSPacketSrv9C* pPacket)
     }
 
     ITEM_PlaceItemAt(tItemSave.nY, tItemSave.nStorePage, pUnit, pItem, tItemSave.nX);
-    sub_004B2640_SetInvRequest(pUnit);
+    NPCMENU_SetInvRequest(pUnit);
     ITEM_ClearUninterruptableState(pItem);
 }
 

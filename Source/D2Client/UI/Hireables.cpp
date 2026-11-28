@@ -1524,7 +1524,7 @@ void __fastcall WARDENCLIENT_DrawSkillInfo(D2UnitStrc* pUnit, D2SkillStrc* pSkil
 
 
 // 0x00493A00
-static void __stdcall sub_00493A00_DrawLifeBar(int nPetType, int nUnitId, int nX)
+static void __stdcall HIREABLES_DrawLifeBar(int nPetType, int nUnitId, int nX)
 {
     int nLife = nPetType ? ROSTER_GetPetLife(nUnitId) : ROSTER_GetPartyLife(nUnitId);
     if (!nLife)
@@ -1744,7 +1744,7 @@ int __cdecl HIREABLES_GetHelpMenuSetting()
 }
 
 // 0x00493B50
-static int __stdcall sub_00493B50_DrawRosterIcons(int* pnY, int* pbAlternate, D2UnitStrc* pPlayer, int* pnX)
+static int __stdcall HIREABLES_DrawRosterIcons(int* pnY, int* pbAlternate, D2UnitStrc* pPlayer, int* pnX)
 {
     int bDrawn = 0;
     const unsigned short nIndex = CUNIT_GetPlayerPartyId(pPlayer);
@@ -1797,7 +1797,7 @@ static int __stdcall sub_00493B50_DrawRosterIcons(int* pnY, int* pbAlternate, D2
             if (!pCelFile)
                 continue;
 
-            sub_00493A00_DrawLifeBar(0, nUnitId, *pnX);
+            HIREABLES_DrawLifeBar(0, nUnitId, *pnX);
             HIREABLES_DrawRosterName(ROSTER_GetEntryName(pEntry), *pnX, *pnY);
             if (*pbAlternate)
             {
@@ -1825,7 +1825,7 @@ static int __stdcall sub_00493B50_DrawRosterIcons(int* pnY, int* pbAlternate, D2
 }
 
 // 0x00493CE0
-static int __stdcall sub_00493CE0_DrawSummonIcon(D2UnitStrc* pPlayer, int* pbAlternate, int* pnX, int* pnY)
+static int __stdcall HIREABLES_DrawSummonIcon(D2UnitStrc* pPlayer, int* pbAlternate, int* pnX, int* pnY)
 {
     D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
@@ -1834,7 +1834,7 @@ static int __stdcall sub_00493CE0_DrawSummonIcon(D2UnitStrc* pPlayer, int* pbAlt
     if (!tContext.pCelFile)
         return 0;
 
-    sub_00493A00_DrawLifeBar(7, nUnitId, *pnX);
+    HIREABLES_DrawLifeBar(7, nUnitId, *pnX);
     HIREABLES_DrawUnitName(CUNIT_FindClientUnit(nUnitId, 1), *pnX, *pnY);
     if (*pbAlternate)
     {
@@ -1861,7 +1861,7 @@ static int __stdcall sub_00493CE0_DrawSummonIcon(D2UnitStrc* pPlayer, int* pbAlt
 }
 
 // 0x00493E10
-static int __stdcall sub_00493E10_DrawPetIcon(D2UnitStrc* pPlayer, int* pnX, int* pbAlternate, int nPetType, int* pnY)
+static int __stdcall HIREABLES_DrawPetIcon(D2UnitStrc* pPlayer, int* pnX, int* pbAlternate, int nPetType, int* pnY)
 {
     D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
@@ -1870,7 +1870,7 @@ static int __stdcall sub_00493E10_DrawPetIcon(D2UnitStrc* pPlayer, int* pnX, int
     if (!tContext.pCelFile)
         return 0;
 
-    sub_00493A00_DrawLifeBar(nPetType, nUnitId, *pnX);
+    HIREABLES_DrawLifeBar(nPetType, nUnitId, *pnX);
     HIREABLES_DrawPetTypeName(*pnX, *pnY, nPetType);
     if (*pbAlternate)
     {
@@ -1888,7 +1888,7 @@ static int __stdcall sub_00493E10_DrawPetIcon(D2UnitStrc* pPlayer, int* pnX, int
 }
 
 // 0x00493EB0
-static int __stdcall sub_00493EB0_DrawPetCountIcon(D2UnitStrc* pPlayer, int* pnY, int* pbAlternate, int nPetType, int* pnX)
+static int __stdcall HIREABLES_DrawPetCountIcon(D2UnitStrc* pPlayer, int* pnY, int* pbAlternate, int nPetType, int* pnX)
 {
     const int nCount = ROSTERPETS_CountPets(pPlayer, nPetType);
     if (!nCount)
@@ -1903,7 +1903,7 @@ static int __stdcall sub_00493EB0_DrawPetCountIcon(D2UnitStrc* pPlayer, int* pnY
         return 0;
 
     if (nCount == 1 && bSingle)
-        sub_00493A00_DrawLifeBar(nPetType, ROSTERPETS_FindPetIdByOwner(pPlayer, nPetType, 0), *pnX);
+        HIREABLES_DrawLifeBar(nPetType, ROSTERPETS_FindPetIdByOwner(pPlayer, nPetType, 0), *pnX);
 
     INV_DrawIconNumber(nCount, *pnX);
     HIREABLES_DrawPetTypeName(*pnX, *pnY, nPetType);
@@ -1923,7 +1923,7 @@ static int __stdcall sub_00493EB0_DrawPetCountIcon(D2UnitStrc* pPlayer, int* pnY
 }
 
 // 0x00493F80
-static int __stdcall sub_00493F80_DrawPetIcon3(D2UnitStrc* pPlayer, int* pnX, int* pbAlternate, int nPetType, int* pnY)
+static int __stdcall HIREABLES_DrawPetIcon3(D2UnitStrc* pPlayer, int* pnX, int* pbAlternate, int nPetType, int* pnY)
 {
     D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
@@ -1932,7 +1932,7 @@ static int __stdcall sub_00493F80_DrawPetIcon3(D2UnitStrc* pPlayer, int* pnX, in
     if (!tContext.pCelFile)
         return 0;
 
-    sub_00493A00_DrawLifeBar(nPetType, nUnitId, *pnX);
+    HIREABLES_DrawLifeBar(nPetType, nUnitId, *pnX);
     HIREABLES_DrawPetTypeName(*pnX, *pnY, nPetType);
     if (*pbAlternate)
     {
@@ -1950,7 +1950,7 @@ static int __stdcall sub_00493F80_DrawPetIcon3(D2UnitStrc* pPlayer, int* pnX, in
 }
 
 // 0x00494020
-void __cdecl sub_00494020_DrawPetIcons()
+void __cdecl HIREABLES_DrawPetIcons()
 {
     D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
     int nY = 0x48;
@@ -1962,8 +1962,8 @@ void __cdecl sub_00494020_DrawPetIcons()
         if (GAME_IsExpansion() && !GAME_GetUIVarState(0x23) && gnPetIconPopupState != 2 && ROSTERPETS_FindPetIdByOwner(pPlayer, 7, 0) != -1)
             UI_SetUIVar(0x23, 0, 0);
 
-        int bAny = sub_00493B50_DrawRosterIcons(&nY, &bAlternate, pPlayer, &nX);
-        bAny |= sub_00493CE0_DrawSummonIcon(pPlayer, &bAlternate, &nX, &nY);
+        int bAny = HIREABLES_DrawRosterIcons(&nY, &bAlternate, pPlayer, &nX);
+        bAny |= HIREABLES_DrawSummonIcon(pPlayer, &bAlternate, &nX, &nY);
         for (int i = 0; i < sgptDataTables->nPetTypeTxtRecordCount; ++i)
         {
             D2PetTypeTxt* pPetTypeTxt = (i >= 0 && i < sgptDataTables->nPetTypeTxtRecordCount) ? &sgptDataTables->pPetTypeTxt[i] : 0;
@@ -1973,13 +1973,13 @@ void __cdecl sub_00494020_DrawPetIcons()
             switch (pPetTypeTxt->nIconType)
             {
             case 1:
-                bAny |= sub_00493E10_DrawPetIcon(pPlayer, &nX, &bAlternate, i, &nY);
+                bAny |= HIREABLES_DrawPetIcon(pPlayer, &nX, &bAlternate, i, &nY);
                 break;
             case 2:
-                bAny |= sub_00493EB0_DrawPetCountIcon(pPlayer, &nY, &bAlternate, i, &nX);
+                bAny |= HIREABLES_DrawPetCountIcon(pPlayer, &nY, &bAlternate, i, &nX);
                 break;
             case 3:
-                bAny |= sub_00493F80_DrawPetIcon3(pPlayer, &nX, &bAlternate, i, &nY);
+                bAny |= HIREABLES_DrawPetIcon3(pPlayer, &nX, &bAlternate, i, &nY);
                 break;
             }
         }

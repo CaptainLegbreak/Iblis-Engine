@@ -5368,7 +5368,7 @@ extern "C" int __cdecl INV_GetPanelY()
 }
 
 extern "C" void __cdecl sub_0045FDE0_DrawLoadingScreen(); // 0x0045FDE0
-extern "C" void __cdecl sub_00460190_DrawFrame(); // 0x00460190
+extern "C" void __cdecl UI_DrawFrame(); // 0x00460190
 extern "C" void __cdecl sub_0044AB70_McpIncomingIgnore(); // 0x0044AB70
 extern "C" void __cdecl sub_0044ABA0_McpIncoming02(); // 0x0044ABA0
 extern "C" void __cdecl sub_0044ABC0_McpIncoming07(); // 0x0044ABC0
@@ -5470,7 +5470,7 @@ extern int gnLeftClickState = 16; // 0x0070F234
 
 extern int gnQServerThreshold = 4; // 0x0070F560
 
-extern D2ClientCallbackFn gpfnClientCallbacks[3] = { (D2ClientCallbackFn)&GAME_DrawGameView, (D2ClientCallbackFn)&sub_0045FDE0_DrawLoadingScreen, (D2ClientCallbackFn)&sub_00460190_DrawFrame }; // 0x0070EF0C
+extern D2ClientCallbackFn gpfnClientCallbacks[3] = { (D2ClientCallbackFn)&GAME_DrawGameView, (D2ClientCallbackFn)&sub_0045FDE0_DrawLoadingScreen, (D2ClientCallbackFn)&UI_DrawFrame }; // 0x0070EF0C
 
 extern int gnRightClickState = 16; // 0x0070F2BC
 
