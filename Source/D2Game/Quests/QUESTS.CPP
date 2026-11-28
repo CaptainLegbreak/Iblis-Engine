@@ -25,6 +25,7 @@
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
 #include "D2CommonApi3.h"
+#include "D2ClientApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -199,10 +200,6 @@ void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int
 void __fastcall SUNIT_IterateUnitsOfType(D2GameStrc* pGame, int nType, void* pArg, int(__fastcall* pfIterate)(D2GameStrc*, D2UnitStrc*, void*)); // 0x005537D0
 
 
-
-
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
 
 

@@ -113,6 +113,8 @@ int __stdcall sub_0063E510_InventoryGridQuery(D2UnitStrc* pUnit, unsigned char* 
 #include "D2GameFuncs.h"
 #include "FogApi2.h"
 #include "D2CommonApi2.h"
+#include "D2ClientApi.h"
+#include "D2BNClientApi.h"
 
 struct D2ClientUnitUpdateSortStrc
 {
@@ -120,10 +122,6 @@ struct D2ClientUnitUpdateSortStrc
     unsigned int nDistance;
     int nNextIndex;
 };
-
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-
 
 D2ActiveRoomStrc* __fastcall SUNIT_GetRoom(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x005545C0
 
@@ -1714,22 +1712,6 @@ struct D2GameDataTableStrc;
 
 union D2LargeIntegerUnion;
 
-
-extern char gszInfoText[]; // 0x00882028
-
-extern int gdwGlobal_00882528; // 0x00882528
-
-extern int gnLastStatus; // 0x0072FFA8
-
-extern char gszReplyText[]; // 0x00882428
-
-extern int gnCreateAccountResult; // 0x008822A4
-
-extern int gnChangePasswordResult; // 0x008822A0
-
-extern int gnLoginRetryCount; // 0x00882538
-
-extern int gdwGlobal_00730190; // 0x00730190
 
 extern int gdwGlobal_00882750; // 0x00882750
 

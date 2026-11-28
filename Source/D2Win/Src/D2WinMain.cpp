@@ -27,6 +27,7 @@
 #include "D2CMPApi.h"
 #include "D2SoundApi.h"
 #include "D2HellApi.h"
+#include "D2LaunchApi.h"
 
 typedef long (__stdcall* WNDPROC)(void* hWnd, unsigned int uMsg, unsigned int wParam, long lParam);
 
@@ -462,13 +463,6 @@ struct D2ComInterfaceStrc;
 
 typedef void (__cdecl* D2LaunchDoneFn)();
 
-void __cdecl CHARSEL_CreateBaseScreen(); // 0x0043C4F0
-
-D2WinControlStrc* __fastcall MAINMENUS_CreateControl(int nId); // 0x0042F430
-
-D2WinControlStrc* __fastcall MAINMENUS_CreateFromTemplate(int nTemplateId); // 0x0042F3A0
-
-
 void __fastcall D2Win_10044(D2WinControlStrc* pControl, const Unicode* pText); // 0x004FD060
 
 int __fastcall D2Win_10051(D2WinControlStrc* pTextBox, const Unicode* wszText, int nColor, char bIsWrapped, int nIndent); // 0x004FC9B0
@@ -487,73 +481,15 @@ void __fastcall sub_004FDDD0_LinkTab(D2WinControlStrc* pControl, D2WinControlStr
 
 void __fastcall MAINMENUS_ShowText(const Unicode* pText, D2LaunchDoneFn pfnDone); // 0x00433450
 
-void __cdecl MAINMENUS_ShowMainMenu(); // 0x004336C0
-
 int __stdcall D2Win_10033(D2WinControlStrc* pControl, int nArg); // 0x004FA470
 
 void __stdcall D2Win_10030_CONTROL_ToggleFourthFlag(D2WinControlStrc* pControl, int bSet); // 0x004FA420
-
-void __cdecl MAINMENUS_DestroyControls(); // 0x0042F3F0
 
 void __fastcall sub_0042E6B0(int nValue); // 0x0042E6B0
 
 void __fastcall sub_0042E6A0(void (__cdecl* pfnCallback)()); // 0x0042E6A0
 
-void __cdecl CHARSEL_SetCancelled(); // 0x0043B810
-
-void __cdecl MAINMENUS_UpdateStatus(); // 0x00436AD0
-
 int __cdecl sub_004F5D60(); // 0x004F5D60
-
-int __stdcall MAINMENUS_FilterLoginChar(D2WinControlStrc* pControl, int nUnused, const char* pChar); // 0x0042FE70
-
-int __stdcall MAINMENUS_FilterRestrictedChar(D2WinControlStrc* pControl, int nUnused, const char* pChar); // 0x0042FEF0
-
-int __stdcall sub_0042FF00_FilterChar(D2WinControlStrc* pControl, int nUnused, const char* pChar); // 0x0042FF00
-
-int __stdcall MAINMENUS_OnEditChange(int nArg); // 0x00436F20
-
-int __stdcall sub_004372A0_OnEnter(int nArg); // 0x004372A0
-
-void __cdecl MAINMENUS_UpdateEmailOk(); // 0x00436EB0
-
-void __cdecl MAINMENUS_UpdatePasswordOk(); // 0x004371E0
-
-extern D2ComInterfaceStrc* gpFuncTable; // 0x0077ABF0
-
-extern D2ConfigStrc* gpLaunchRecord; // 0x007795D4
-
-extern D2WinControlStrc* gpPasswordEdit; // 0x00779334
-
-extern D2WinControlStrc* gpCreatePasswordEdit; // 0x00779340
-
-extern D2WinControlStrc* gpAccountEdit; // 0x0077958C
-
-extern D2WinControlStrc* gpCreatePasswordConfirmEdit; // 0x007795A8
-
-extern D2WinControlStrc* gpPasswordOk; // 0x007799A4
-
-extern D2WinControlStrc* gpStatusText; // 0x007799A8
-
-extern D2WinControlStrc* gpCounterText; // 0x007799AC
-
-extern int gnStatusStringId; // 0x007799B0
-
-extern int gnStatusDots; // 0x007799B4
-
-extern unsigned long gdwStatusStart; // 0x007799B8
-
-extern D2WinControlStrc* gpChangePwAccountEdit; // 0x007799BC
-
-extern D2WinControlStrc* gpOldPasswordEdit; // 0x007799C0
-
-extern D2WinControlStrc* gpNewPasswordConfirmEdit; // 0x007799C4
-
-extern D2WinControlStrc* gpNewPasswordEdit; // 0x007799C8
-
-extern D2WinControlStrc* gpEdit_007799DC; // 0x007799DC
-
-extern D2WinControlStrc* gpEdit_007799E0; // 0x007799E0
 
 extern D2WinControlStrc* gpButton; // 0x007799E4
 

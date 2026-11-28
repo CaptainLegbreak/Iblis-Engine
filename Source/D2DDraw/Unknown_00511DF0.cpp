@@ -4,6 +4,7 @@
 #include "D2Win32Base.h"
 #include "FogApi.h"
 #include "D2CMPApi.h"
+#include "D2GlideApi.h"
 
 struct D2CelStrc;
 struct D2DDrawClipRectStrc;
@@ -201,7 +202,6 @@ int __fastcall sub_005120A0_DrawImagePalette(void* pData, int nX, int nY, unsign
 
 struct D2CelStrc;
 int __stdcall D2CMPSpriteValidate(D2CmpCelContextStrc*, int, int); // 0x006001F0
-extern int gnRenderWidth; // 0x007C9138
 extern int gnRenderHeight; // 0x007C913C
 extern unsigned char* gpScreenBuffer_007C9154; // 0x007C9154
 

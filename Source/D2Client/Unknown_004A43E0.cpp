@@ -35,6 +35,8 @@
 #include "D2CMPApi.h"
 #include "D2SoundApi.h"
 #include "StormApi2.h"
+#include "D2GameApi.h"
+#include "D2WinApi2.h"
 
 #define OFFSET(T,F) ((unsigned int)&(((T*)0)->F))
 
@@ -102,11 +104,6 @@ void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, i
 
 
 void __cdecl INV_SetupPanelButtons(); // 0x00487ED0
-
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
-
-
 
 
 extern int gbNpcTradeClicked; // 0x007BCBEC
@@ -184,10 +181,6 @@ D2SplittedTextStrc* __stdcall TEXT_BuildTextLines(const Unicode* wszText, int* p
 
 
 void __fastcall SOUNDINST_ArmHint(int nKey, int nGroup, int nOffset, unsigned int nCount); // 0x004B9EF0
-
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
-
-D2SplittedTextStrc* __fastcall D2WINFONT_SplitText(const Unicode* pText, int* pLineCount, int nWidth); // 0x00502970
 
 int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
@@ -488,8 +481,6 @@ public:
 Unicode* __fastcall sub_00526790(Unicode* pDest, const Unicode* pSource, int nCount); // 0x00526790
 
 
-int __fastcall D2Win_10123(const Unicode* wszText, int nLength); // 0x00501730
-
 D2TextNodeStrc* __fastcall TEXT_CloneStringList(D2TextNodeStrc* pSource); // 0x0049DB10
 
 extern D2TextListStrc gtOverheadTextList; // 0x007BF1EA
@@ -712,12 +703,6 @@ D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00
 
 
 
-void __fastcall D2Win_10132(const Unicode* wszText, int nX, int nY, unsigned int dwColor, int eDrawMode, int nColor); // 0x005023B0
-
-
-
-
-
 #define STAT_STATPTS 4
 
 #define STAT_NEWSKILLS 5
@@ -735,15 +720,6 @@ enum { REPEAT_MASK = 0x40000000, UI_VARIABLE = 11 };
 extern "C" int gnFlag_007C02EC; // 0x007C02EC
 
 void __stdcall CURSOR_HandleButtonUp(SMSGHANDLER_PARAMS* pMsg); // 0x00467FA0
-
-
-
-void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
-
-
-
-
-
 
 
 
@@ -906,11 +882,6 @@ struct D2GSPacketSrv5A
 extern "C" char* __cdecl strcpy(char* szDst, const char* szSrc);
 
 extern "C" int __cdecl strcmp(const char* sz1, const char* sz2);
-
-extern "C" const char* __fastcall ROSTER_GetEntryName(D2StoredUnitRecordStrc* pEntry); // 0x004795C0
-
-
-
 
 void __fastcall TEXT_PrintPartyText(const Unicode* wszText, char nColor); // 0x0049E5C0
 

@@ -19,6 +19,7 @@
 #include "D2WinSplitText.h"
 #include "D2CommonApi.h"
 #include "D2CommonApi3.h"
+#include "D2ClientApi.h"
 
 struct D2UnitStrc;
 
@@ -315,7 +316,6 @@ enum
     SKILLDO_FRAME_C_STATE = 12,
 };
 
-int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 void __stdcall SKILLS_SetParam3(D2SkillStrc* pSkill, int nValue); // 0x006445E0
 
 // 0x004E1FF0

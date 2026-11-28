@@ -75,6 +75,7 @@ void* gpSpriteOutlineBuffer; // 0x00970F38
 #include "D2ClientTypes.h"
 #include "FogApi.h"
 #include "FogApi.h"
+#include "D2GlideApi.h"
 
 struct D2CelStrc;
 
@@ -123,7 +124,7 @@ int __fastcall D3DTEXTURECACHE_AllocOrEvict(D2TexturePoolStrc* pPool); // 0x006B
 
 extern unsigned int gnRenderFlags_0096F3A8; // 0x0096F3A8
 
-extern const unsigned int gnRenderFlag; // 0x006CE290
+extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 extern D2TexturePoolStrc gaTexturePools[]; // 0x00970EAC
 
@@ -186,8 +187,6 @@ static void __stdcall D3DSPRITE_DrawTexturedQuad(int nOffsetX, int nOffsetY, uns
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 
 void __fastcall sub_006B9860_Project(int nX, int nY, int nZ, int* pScreenX, int* pScreenY);                  // 0x006B9860
-
-extern int gnRenderWidth; // 0x007C9138
 
 extern int gnRenderHeight; // 0x007C913C
 
@@ -449,7 +448,7 @@ static int __stdcall D3DSPRITE_UploadTexture(D2SpriteInfoStrc* ptInfo, int nMode
         D3DCORE_LogDDrawError(gszFailedToUnlockMemorySurface, hResult);
     }
 
-    if (gnRenderFlags_0096F3A8 & gnRenderFlag)
+    if (gnRenderFlags_0096F3A8 & gdwBitMasks[10])
     {
         D3DCORE_CopySurface(pEntry->pTarget, pSurface, ptInfo->nTexHeight);
     }

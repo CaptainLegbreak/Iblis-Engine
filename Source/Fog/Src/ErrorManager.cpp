@@ -11,6 +11,7 @@
 #include "FogApi.h"
 #include "StormApi.h"
 #include "StormApi2.h"
+#include "D2ClientApi.h"
 
 typedef unsigned int size_t;
 
@@ -529,8 +530,6 @@ extern "C" __declspec(dllimport) void __stdcall GlobalMemoryStatus(D2MemoryStatu
 char* __fastcall Int64ToString(char* szBuffer, unsigned int nBufferSize, __int64 nValue); // 0x00411540
 
 int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0);            // 0x0040B480
-
-unsigned __int64 __cdecl AUTOMAP_ReadTimeStampCounter(); // 0x0040E850
 
 extern "C" const char gszNewline[];                                                                // 0x006FFCB0
 

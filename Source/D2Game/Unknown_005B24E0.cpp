@@ -174,11 +174,8 @@ static void MONSTERSPAWN_SpawnMinionParty(D2UnkMonCreateStrc* pMonCreate, D2Unit
 
 int __fastcall GAME_GetUnitTypeOrInvalid(D2UnitStrc* pUnit); // 0x0044BE50
 
-extern unsigned char gbNeverCount_006CE270; // 0x006CE270
 
-extern unsigned int gdwSetBoss_006CE278; // 0x006CE278
 
-extern unsigned int gdwBossTransfer_006CE27C; // 0x006CE27C
 
 extern "C" __declspec(dllimport) int __stdcall PtInRect(const tagRECT*,tagPOINT);
 
@@ -1003,7 +1000,7 @@ D2UnitStrc* __fastcall D2GAME_SpawnNormalMonster(D2UnkMonCreateStrc* pCreate)
     if(pMonster)
     {
         int bNeverCount=nFlags&8;
-        if(pRecord->nMonStatsFlags[2]&gbNeverCount_006CE270) bNeverCount=1;
+        if(pRecord->nMonStatsFlags[2]&gdwBitMasks[2]) bNeverCount=1;
         MONSTERREGION_RegisterSpawnedMonster(pCreate->pGame->pMonReg,pRoom,pMonster,bNeverCount);
         D2RoomCoordListStrc* pList=pCreate->pRoomCoordList;
         if(!pList) pList=D2Common_10096(pRoom,nSpawnX,nSpawnY);

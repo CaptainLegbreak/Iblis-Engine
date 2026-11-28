@@ -19,14 +19,11 @@
 #include "D2CommonApi.h"
 #include "D2LangApi.h"
 #include "D2CommonApi3.h"
+#include "D2WinApi2.h"
 
 extern unsigned short gwUniqueModNameIds[];                                                       // 0x00725188
 
 extern "C" { Unicode gwszNameSeparator[1]; }                                                                // 0x007C0C58
-
-
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText);                                             // 0x00501820
-
 
 
 extern "C" unsigned short* __fastcall sub_005267E0(unsigned short* pDst, const unsigned short* pSrc);     // 0x005267E0

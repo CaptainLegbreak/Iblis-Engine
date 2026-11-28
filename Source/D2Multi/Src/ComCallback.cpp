@@ -29,6 +29,9 @@
 #include "FogApi.h"
 #include "D2WinApi.h"
 #include "D2MCPClientApi.h"
+#include "D2ClientApi.h"
+#include "D2WinApi2.h"
+#include "D2LaunchApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -63,15 +66,7 @@ extern "C" size_t __cdecl strlen(const char* szString);
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, size_t nSize); // 0x006829C0
 
-D2WinControlStrc* __fastcall MAINMENUS_CreateControl(int nId); // 0x0042F430
-
 void __fastcall MAINMENUS_ShowText(const Unicode* pText, D2LaunchDoneFn pfnDone); // 0x00433450
-
-int __stdcall MAINMENUS_Back(int nArg); // 0x00435E00
-
-void __fastcall CHARSEL_PickClass(int nClass, int bExpansion); // 0x00439780
-
-void __cdecl CHARSEL_CreateBaseScreen(); // 0x0043C4F0
 
 int __fastcall CHATDLG_SetMainControlState(int bSet); // 0x0043DAD0
 
@@ -80,12 +75,6 @@ int __fastcall CHATDLG_PrintText(Unicode* pText, int nColor); // 0x0043E610
 void __stdcall COMCALLBACK_RemoveTableString(Unicode* pText); // 0x00446A90
 
 void __fastcall sub_004FC9B0_SetText(D2WinControlStrc* pControl, const Unicode* pText, int nA, int nB, int nC); // 0x004FC9B0
-
-void __fastcall D2Win_10044(D2WinControlStrc* pControl, const Unicode* pText); // 0x004FD060
-
-int __stdcall IMAGE_SetFrame(D2WinControlStrc* pBar, int nValue); // 0x004FD110
-
-int __stdcall IMAGE_ForceNormalDrawMode(D2WinControlStrc* pBar, int nMode); // 0x004FD170
 
 int __stdcall IMAGE_GetFrameCount(D2WinControlStrc* pBar); // 0x004FD1B0
 
@@ -114,8 +103,6 @@ extern D2WinControlInitStrc gtPanelCancelButtonInit; // 0x0070EB30
 
 extern D2WinControlInitStrc gtResetBuildPanelTimerInit; // 0x0070EB60
 
-extern int gnLaunchMode; // 0x007795EC
-
 extern D2WinControlStrc* gpControlMain; // 0x0077BC4C
 
 extern D2WinControlStrc* gpNamesButton; // 0x0077BD08
@@ -127,7 +114,7 @@ extern "C" char* __cdecl strcpy(char* szDst, const char* szSrc);
 
 void __fastcall BUTTON_SetIsPressed(D2WinControlStrc* pButton, int bIsPressed); // 0x005009A0
 
-int __fastcall MAINMENUS_RequestProfile(const char* szName, char* szA, char* szB, char* szC); // 0x00440CA0
+int __fastcall MAINMENUS_RequestProfile(int nA, int nB, int nC, int nD); // 0x00440CA0
 
 void __cdecl CHATDLG_CreateProfileControls(); // 0x00443D50
 
@@ -203,11 +190,6 @@ public:
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
 char* __stdcall SStrChr(const char* szString, char nChar); // 0x00413490
-
-const Unicode* __fastcall D2Win_10077_EDITBOX_GetText(D2WinEditBoxStrc* pEditBox); // 0x004FDD90
-
-int __fastcall EDITBOX_SetText(D2WinEditBoxStrc* pEditBox, const Unicode* pText); // 0x004FF5A0
-
 
 void __fastcall CHATDLG_ShowError(const Unicode* pText, D2LaunchCallback pfnDone); // 0x00440140
 
@@ -338,7 +320,7 @@ struct D2ChannelEntryStrc;
 D2MultiChannelUserStrc* __stdcall COMCALLBACK_AddChannelUser(const char* szName, const unsigned char* pStat, unsigned int nFlags); // 0x00449050
 int __stdcall sub_005041B0_Destroy(D2CompositeStrc* pComposite, int nFlag); // 0x005041B0
 
-extern D2WinControlStrc* gapChatButtons[]; // 0x0077AD78
+extern D2WinControlStrc* gapChatButtons[11]; // 0x0077AD78
 
 extern D2WinControlStrc* gpChatControl_0077BC44; // 0x0077BC44
 
@@ -437,7 +419,6 @@ int __stdcall SRegSaveValue(const char* szKeyName, const char* szValueName, unsi
 
 int __stdcall SMsgDispatchMessage(void* hWnd, unsigned int uMessage, unsigned int wParam, int lParam, int* pUseResult, int* pResult); // 0x00420B00
 
-int __fastcall D2Win_10076(D2WinEditBoxStrc* pEditBox, const char* szText); // 0x004FFE10
 
 unsigned int __stdcall sub_00505330_GetCompositeFlags(D2CompositeStrc* pComposite); // 0x00505330
 
@@ -446,14 +427,6 @@ void __cdecl CHATDLG_UpdateLevelControls(); // 0x004451C0
 void __stdcall COMCALLBACK_RemoveChannelUser(const char* szName); // 0x004493E0
 
 int __stdcall SErrGetErrorStr(unsigned long error, char* buffer, unsigned long size); // 0x0041C430
-
-void __cdecl RECORD_AddRecordChunk(); // 0x00451400
-
-int __cdecl sub_0044DA90_GetTickCounter(); // 0x0044DA90
-
-int __cdecl RECORD_IsReplayActive(); // 0x00451990
-
-void __fastcall RECORD_RecordInputMessage(unsigned int uMessage, unsigned int wParam, int lParam); // 0x004514B0
 
 void __fastcall SCMD_RegisterMsgHandler(void* hWnd, int nType, int nId, SMSGHANDLER pfnHandler); // 0x00451C70
 
@@ -510,11 +483,11 @@ extern int gnChannelScroll; // 0x00798F44
 extern unsigned int gdwSelectionTick; // 0x00798F4C
 
 
-void __fastcall CHATDLG_ShowProfileDialog(const char*,int,int); // 0x00445A80
+void __fastcall CHATDLG_ShowProfileDialog(const char* szText, int nA, int nB); // 0x00445A80
 
-void __fastcall CHATDLG_ShowUserInfoDialog(const char*,const char*,int,int); // 0x00445C70
+void __fastcall CHATDLG_ShowUserInfoDialog(const char* szUser, const char* szText, int nA, int nB); // 0x00445C70
 
-void __fastcall CHATDLG_ShowWait(const Unicode* pText, D2LaunchCallback pfnDone);                      // 0x0043FB50
+int __fastcall CHATDLG_ShowWait(const Unicode* pText, D2LaunchCallback pfnDone); // 0x0043FB50
 
 void __fastcall sub_004FDAD0_SetKeyCallback(D2WinControlStrc* pControl, int (__stdcall* pfnCallback)(D2WinControlStrc*, int, const char*)); // 0x004FDAD0
 
@@ -2745,20 +2718,20 @@ void* __fastcall sub_M109_Emit_00449320(const char* szName, const unsigned char*
 
 extern "C" char gData_0070CD94[]; // 0x0070CD94
 extern "C" char gpBnetCancelButtonBlankCelFileB[]; // 0x0077BD2C
-extern "C" void __cdecl sub_004438C0_OnCancel(); // 0x004438C0
+int __stdcall sub_004438C0_OnCancel(int nArg); // 0x004438C0
 extern "C" char gData_0070CD84[]; // 0x0070CD84
 extern "C" char gpPlayerProfileBckgCelFileA[]; // 0x0077BD3C
 extern "C" char gpPlayerProfileBckgCelFileB[]; // 0x0077BD40
-extern "C" void __cdecl CHATDLG_OnLadderSelect(); // 0x00443EF0
-extern "C" void __cdecl CHARSEL_SubmitProfile(); // 0x00443F80
+int __stdcall CHATDLG_OnLadderSelect(int nArg); // 0x00443EF0
+int __stdcall CHARSEL_SubmitProfile(int nArg); // 0x00443F80
 extern "C" char gFirstRecordBlock_007A0818[]; // 0x007A0818
 extern "C" char gData_0077BD84[]; // 0x0077BD84
 extern "C" char gpBnetJoinGameScrollBarsCelFile[]; // 0x0077BC20
 extern "C" char gpJoinGameBckgCelFile[]; // 0x0077BC50
 extern "C" char gpGameButtonBlankCelFile[]; // 0x0077BC5C
 extern "C" char gpJoinGameClickBoxCelFile[]; // 0x0077BC60
-extern "C" void __cdecl sub_00443C10_AlwaysOne(); // 0x00443C10
-extern "C" void __cdecl sub_004450D0_OnGameListEvent(); // 0x004450D0
+int __stdcall sub_00443C10_AlwaysOne(int nArg); // 0x00443C10
+int __stdcall sub_004450D0_OnGameListEvent(SMSGHANDLER_PARAMS* pMsg); // 0x004450D0
 extern "C" char gpGreyLevelBoxCelFile[]; // 0x0077BC64
 extern "C" char gpRadioButtonCelFile[]; // 0x0077BC68
 extern "C" char gpNumberArrowsCelFileA[]; // 0x0077BCC0
@@ -2769,22 +2742,21 @@ extern "C" char gpNumberGreyArrowsCelFile[]; // 0x0077BCD0
 extern "C" char gpCreateGameBckgCelFile[]; // 0x0077BD0C
 extern "C" char gpBnetWideButtonBlankCelFile[]; // 0x0077BD18
 extern "C" char gpLadderChoiceExpCelFile[]; // 0x0077BD34
-extern "C" void __cdecl CHATDLG_OnResetCallback(); // 0x004403E0
-extern "C" void __cdecl CHATDLG_ShowStandardLadder(); // 0x00440C10
-extern "C" void __cdecl CHATDLG_ShowExpansionLadder(); // 0x00440C40
-extern "C" void __cdecl CHATDLG_ShowExpansionHardcoreLadder(); // 0x00440C70
-extern "C" void __cdecl CHATDLG_OpenLadderScreen(); // 0x00442350
+int __stdcall CHATDLG_OnResetCallback(int nArg); // 0x004403E0
+int __stdcall CHATDLG_ShowStandardLadder(int nArg); // 0x00440C10
+int __stdcall CHATDLG_ShowExpansionLadder(int nArg); // 0x00440C40
+int __stdcall CHATDLG_ShowExpansionHardcoreLadder(int nArg); // 0x00440C70
+int __stdcall CHATDLG_OpenLadderScreen(int nArg); // 0x00442350
 extern "C" void __cdecl sub_004456D0(); // 0x004456D0
-extern "C" void __cdecl CHATDLG_JoinByName(); // 0x004439F0
-extern "C" void __cdecl CHATDLG_IncrementMaxPlayers(); // 0x004433C0
-extern "C" void __cdecl CHATDLG_DecrementMaxPlayers(); // 0x00443420
-extern "C" void __cdecl CHATDLG_IncrementLevelRange(); // 0x00443480
-extern "C" void __cdecl CHATDLG_DecrementLevelRange(); // 0x004434E0
-extern "C" void __cdecl CHATDLG_ResetBuildPanel(); // 0x00445530
-extern "C" void __cdecl CHATDLG_OnRefresh(); // 0x00443F70
-extern "C" void __cdecl CHATDLG_SelectNormal(); // 0x00443C20
-extern "C" void __cdecl CHATDLG_SelectNightmare(); // 0x00443C70
-extern "C" void __cdecl CHATDLG_SelectHell(); // 0x00443CC0
+int __stdcall CHATDLG_IncrementMaxPlayers(int nArg); // 0x004433C0
+int __stdcall CHATDLG_DecrementMaxPlayers(int nArg); // 0x00443420
+int __stdcall CHATDLG_IncrementLevelRange(int nArg); // 0x00443480
+int __stdcall CHATDLG_DecrementLevelRange(int nArg); // 0x004434E0
+int __stdcall CHATDLG_ResetBuildPanel(int nArg); // 0x00445530
+int __stdcall CHATDLG_OnRefresh(int nArg); // 0x00443F70
+int __stdcall CHATDLG_SelectNormal(int nArg); // 0x00443C20
+int __stdcall CHATDLG_SelectNightmare(int nArg); // 0x00443C70
+int __stdcall CHATDLG_SelectHell(int nArg); // 0x00443CC0
 
 extern "C" const char* gData_0070EBE0[15] = { // 0x0070EBE0
     "English",

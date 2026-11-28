@@ -1,7 +1,6 @@
 #include "Storm.h"
+#include "D2ClientApi.h"
 
-
-extern int gnTextLeft; // 0x007BF278
 
 extern "C" char gData_006F28F8[]; // 0x006F28F8
 

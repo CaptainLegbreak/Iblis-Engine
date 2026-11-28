@@ -6,6 +6,7 @@
 #include "D2ItemsWorld.h"
 #include "D2Txt.h"
 #include "FogApi.h"
+#include "D2ClientApi.h"
 
 #define UF_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -63,13 +64,11 @@ struct D2UnitFindArgStrc
     UnitFilter pfnUnitTest; // 0x24
 };
 
-extern const unsigned char gMissileMask_006CE26C; // 0x006CE26C
+extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 
 
 int __stdcall MONSTERS_IsUndead(D2UnitStrc*); // 0x0063E990
-
-D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int); // 0x0046ACE0
 
 int __fastcall sub_00451F30_TestUnitFlag(D2UnitStrc*,int); // 0x00451F30
 
@@ -371,7 +370,7 @@ int __stdcall UNITFINDS_TestUnit(D2UnitStrc* unit,D2UnitFindArgStrc* args)
   case UNIT_MISSILE: {
    if(!(args->nFlags&8))return 0;
    D2MissilesTxt* record=sub_0046ACE0_GetMissilesTxtRecord(unit->dwClassId);
-   if(!record || (record->nMissileFlags[0]&gMissileMask_006CE26C))return 0;
+   if(!record || (record->nMissileFlags[0]&gdwBitMasks[1]))return 0;
    break;
   }
   case UNIT_ITEM:if(!(args->nFlags&32))return 0;break;

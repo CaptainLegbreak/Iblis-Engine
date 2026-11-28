@@ -25,12 +25,10 @@ struct D2LevelsTxt;
 
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
+#include "D2ClientApi.h"
 
 
 typedef D2UnitStrc* (__fastcall* AITARGETCALLBACK)(D2GameStrc*, D2UnitStrc*, D2UnitStrc*, void*);
-
-
-int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
 
 
 int __fastcall AITHINK_TryBossTauntOnSight(D2GameStrc* pGame, D2UnitStrc* pUnit, D2AiTickParamStrc* pAiTickParam); // 0x005B1140
@@ -97,10 +95,6 @@ extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(void*);
 const D2AiTableStrc* __fastcall AITHINK_GetAiTableRecord(D2UnitStrc*,int); // 0x005B15D0
 
 
-D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
-
-D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int nMonsterId); // 0x00451FE0
-
 void __fastcall AITHINK_Fn001_100_Idle_Buffy(D2GameStrc*,D2UnitStrc*,D2AiTickParamStrc*); // 0x005B0CD0
 
 void __fastcall AITHINK_Fn051_Diablo(D2GameStrc* pGame, D2UnitStrc* pUnit, D2AiTickParamStrc* pTick); // 0x005E9170
@@ -111,16 +105,9 @@ void __fastcall AITHINK_Fn132_AncientStatue(D2GameStrc* pGame, D2UnitStrc* pUnit
 
 void __fastcall AITHINK_Fn134_BaalThrone(D2GameStrc* pGame, D2UnitStrc* pUnit, D2AiTickParamStrc* pAiTickParam); // 0x005EF320
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc*); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc*); // 0x0045AE20
-
 D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc*, int, int); // 0x00552F60
 
 void __fastcall AITACTICS_SetAiParam(D2UnitStrc* pUnit, int nParam, int nValue, int nArg); // 0x005DE190
-
-
-int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
 
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
@@ -454,9 +441,6 @@ int __fastcall AITHINK_TryBossTauntOnSight(D2GameStrc* pGame, D2UnitStrc* pUnit,
     }
     return 0;
 }
-
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
 
 
 int __fastcall sub_0054DC40_FindSpawnPosition(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, D2RoomCoordListStrc* pCoordList, int nMonsterId, int* pX, int* pY, int bAvoidWarps); // 0x0054DC40

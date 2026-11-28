@@ -96,6 +96,7 @@ extern D2UnkPlrMsgStrc gaUnitModeMessages[20]; // 0x007319E8
 
 #include "D2GameFuncs.h"
 #include "D2CommonApi3.h"
+#include "D2ClientApi.h"
 
 
 int __stdcall UNITS_GetCurrentLifePercentage(D2UnitStrc* pUnit); // 0x00621F20
@@ -149,10 +150,6 @@ int __stdcall D2COMMON_10473(D2StatListStrc* pStatList); // 0x00626090
 
 void* __fastcall CLIENTS_GetClientPlayerData(D2ClientStrc* pClient); // 0x00539330
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-
 void __fastcall SCMD_SendVitalsAndPotionPrediction(D2ClientStrc* pClient, unsigned short nHitpoints, unsigned short nMana, unsigned short nStamina, unsigned char nPotionLifePercent, unsigned char nPotionManaPercent, unsigned short nPosX, unsigned short nPosY, unsigned char nTargetOffsetX, unsigned char nTargetOffsetY); // 0x0053C230
 
 void __fastcall SCMD_SendVitals(D2ClientStrc* pClient, unsigned short nHitpoints, unsigned short nMana, unsigned short nStamina, unsigned short nPosX, unsigned short nPosY, unsigned char nTargetOffsetX, unsigned char nTargetOffsetY); // 0x0053C320
@@ -173,9 +170,6 @@ extern "C" const char gszPlrMsgSourceFile[]; // 0x006E1050
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(void); // 0x006CC260
-
-D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
-
 
 D2MonsterInteractStrc* __fastcall sub_00535E80_GetMonInteract(D2UnitStrc* pUnit); // 0x00535E80
 
@@ -271,9 +265,6 @@ int __fastcall D2GAME_CheckSkillIfUnitsClassSkill(D2UnitStrc* pUnit, int nSkillI
 int __stdcall SKILLS_CheckRequiredSkills(D2UnitStrc* pUnit, int nSkillId); // 0x006447D0
 
 int __stdcall SKILLS_CheckRequiredAttributes(D2UnitStrc* pUnit, int nSkillId); // 0x00644920
-
-
-int __fastcall SPELLSEL_GetSkillMaxLevel(int nSkillId); // 0x004AA8B0
 
 
 void __fastcall sub_0055F4F0_Nop(D2GameStrc* pGame, D2UnitStrc* pUnit, int nUnused); // 0x0055F4F0
@@ -481,9 +472,6 @@ int __fastcall CLIENTS_ShouldDelayWarpAttempt(D2GameStrc* pGame, D2UnitStrc* pUn
 
 
 int __fastcall SUNIT_TeleportUnit(D2GameStrc* pGame, D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, int nX, int nY, int bSkipCollisionSearch, int bSyncOtherPlayersOnly); // 0x00554EA0
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
-
 
 extern "C" void __stdcall STATLIST_SetStatRemoveCallback(D2StatListStrc* pStatList, unsigned int dwValue); // 0x00625CE0
 

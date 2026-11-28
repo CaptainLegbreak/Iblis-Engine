@@ -30,6 +30,9 @@
 #include "D2CMPApi.h"
 #include "D2HellApi.h"
 #include "D2CommonApi3.h"
+#include "D2WinApi2.h"
+#include "D2BNClientApi.h"
+#include "D2DDrawApi.h"
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
@@ -314,7 +317,6 @@ struct D2ItemsTxt;
 
 struct D2PresetUnitStrc;
 
-extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 extern D2DrlgActStrc* gpDrlgAct_007A0634; // 0x007A0634
 
@@ -409,10 +411,6 @@ extern D2TextHeaderStrc* gpTextHeader; // 0x007BF250
 
 extern int gnTradeState; // 0x007C0E7C
 
-extern unsigned char* gpDDrawDebugFontGlyphs; // 0x008815AC
-
-extern void* gpReply; // 0x008818D0
-
 extern "C" void* gpGidFileData; // 0x00882744
 
 extern "C" void* gpClhFileData; // 0x00882750
@@ -496,7 +494,7 @@ void __fastcall CUNIT_SyncFromServerUnit(D2UnitStrc* pUnit); // 0x00465070
 D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int id); // 0x0045C4B0
 
 
-extern const unsigned char gdwBitMask1; // 0x006CE26C
+extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 
 
@@ -568,10 +566,6 @@ D2ActiveRoomStrc* __stdcall DUNGEON_FindRoomBySubtileCoordinates(D2DrlgActStrc* 
 
 
 
-
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
 extern int gnTimerEnd; // 0x007A7464
 
@@ -1808,14 +1802,14 @@ int __fastcall CUNIT_IsPetSkillTarget(D2UnitStrc* unit, D2UnitStrc* target)
         if (skill)
         {
             D2SkillsTxt* record = sub_0045C4B0_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(skill, ".\\UNIT\\CUnit.cpp", 0xB4A));
-            if (record && (record->nFlags[3] & gdwBitMask1))
+            if (record && (record->nFlags[3] & gdwBitMasks[1]))
                 enabled = 1;
         }
         skill = UNITS_GetRightSkill(unit);
         if (skill)
         {
             D2SkillsTxt* record = sub_0045C4B0_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(skill, ".\\UNIT\\CUnit.cpp", 0xB55));
-            if (record && (record->nFlags[3] & gdwBitMask1))
+            if (record && (record->nFlags[3] & gdwBitMasks[1]))
                 enabled = 1;
         }
         if (enabled)

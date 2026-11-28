@@ -37,6 +37,11 @@
 #include "D2GfxApi.h"
 #include "D2SoundApi.h"
 #include "D2LangApi2.h"
+#include "D2ClientApi.h"
+#include "D2MCPClientApi.h"
+#include "D2MCPClientApi2.h"
+#include "D2WinApi2.h"
+#include "D2LaunchApi.h"
 
 static int CHATDLG_ReplyCommand(const char* szText, const char* szCommand); // 0x00442180
 
@@ -272,7 +277,7 @@ unsigned char gab_0077BD74[16]; // 0x0077BD74
 
 D2WinControlStrc* gpChatTextBox; // 0x0077BD8C
 
-extern char gszLastWhisperer[]; // 0x0077B0D0
+extern char gszLastWhisperer[256]; // 0x0077B0D0
 
 extern D2LaunchFuncsStrc* gpLaunchFuncs; // 0x0077B09C
 
@@ -294,8 +299,6 @@ void __fastcall BUTTON_SetIsPressed(D2WinControlStrc* pButton, int bIsPressed); 
 
 Unicode* __fastcall D2Win_10196(D2WinControlStrc* pTextBox, int nLineNum, int nColumnNum); // 0x004FBB90
 
-
-void __fastcall VIEW_SendMcpLadderRequest(unsigned char nArg1, unsigned short nArg2); // 0x0044AA10
 
 D2WinControlStrc* gbSelectActive; // 0x0077BD00
 
@@ -323,15 +326,9 @@ int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 int __fastcall D2Win_StopMessageLoop(); // 0x004F9190
 
 
-int __fastcall WINMAIN_SendMcpCharRank(const char* szName, int nB, int nC); // 0x0044AAE0
-
-int __fastcall WINMAIN_SendMcpCharCreate(int nA, int nB, int nC); // 0x0044A2E0
-
-int __fastcall WINMAIN_SendMcpCharLogon(int nA); // 0x0044A380
-
 int __fastcall CHATDLG_ShowWait(const Unicode* pText, D2LaunchCallback pfnDone); // 0x0043FB50
 
-void* __stdcall COMCALLBACK_AddChannelUser(const char* szText, int nLength, int nA); // 0x00449050
+D2MultiChannelUserStrc* __stdcall COMCALLBACK_AddChannelUser(const char* szName, const unsigned char* pStat, unsigned int nFlags); // 0x00449050
 
 extern char gKey_0070CD54; // 0x0070CD54
 
@@ -348,30 +345,6 @@ extern int gbCheck; // 0x0077BD58
 extern int gbSelectActive_0077BD00; // 0x0077BD00
 
 static int gbDone;                                                                                 // 0x0077BDA0
-
-extern int gbMcpPacket0FReceived; // 0x00798F5C
-
-extern int gbMcpCreateQueued; // 0x00798F7C
-
-extern int gbMcpServerAddressReceived; // 0x00798F84
-
-extern int gbMcpPacket0BReceived; // 0x00799100
-
-extern int gnMcpCreateQueuePosition; // 0x00799104
-
-extern int gbMcpCharDeleteReceived; // 0x00799298
-
-extern int gnConnectError; // 0x0079929C
-
-extern int gbMcpPacket0CReceived; // 0x007992A0
-
-extern int gbMcpPacket0DReceived; // 0x007992A8
-
-extern int gbMcpCharLogonReceived; // 0x007992E0
-
-extern int gbMcpCharCreateReceived; // 0x007992E8
-
-extern int gbMcpCharUpgradeReceived; // 0x007992F0
 
 D2WinControlStrc* gpControl_0077BD98; // 0x0077BD98
 
@@ -443,11 +416,6 @@ struct UnicodeChar;
 
 int __stdcall D2Win_10033(D2WinControlStrc* pControl, int nArg); // 0x004FA470
 
-int __fastcall D2Win_10051(D2WinTextBoxStrc* ptTextData, const Unicode* wszText, int nColor, char bIsWrapped, int nIndent); // 0x004FC9B0
-
-void __fastcall D2Win_10044(D2WinControlStrc* pControl, const Unicode* pText); // 0x004FD060
-
-
 void __fastcall sub_004FC720(D2WinControlStrc* pList, int nValue); // 0x004FC720
 
 void __fastcall sub_004FB740(D2WinControlStrc* pList, int nA, int nB); // 0x004FB740
@@ -515,8 +483,6 @@ void __fastcall sub_004FB870_InsertRow(D2WinControlStrc* pControl, int nRow);   
 
 int __fastcall D2Win_10188(D2WinControlStrc* pTextBox, int nLineNum, int nColor);                               // 0x004FBDE0
 
-int __fastcall D2Win_10058(D2WinControlStrc* pControl, const Unicode* pText, int nLineNum, int nColumn); // 0x004FCD90
-
 const char* __stdcall D2Win_10161(int nA, int nB, int nC, int nD);                                         // 0x005068A0
 
 void __stdcall STR_GroupUint64DigitsWithSuffix(Unicode* wszOut, int nA, int nB, int nMaxLength);                   // 0x005255C0
@@ -571,16 +537,6 @@ void __cdecl CHATDLG_DestroyJoinControls();                                     
 
 int __cdecl COMCALLBACK_PumpMessages();                                                                            // 0x00447A10
 
-void* __cdecl GAME_GetMcpGameServerIP();                                                                               // 0x00449BC0
-
-unsigned short __cdecl CHATDLG_GetRequestId();                                                         // 0x00449BD0
-
-void* __cdecl GAME_GetMcpReply();                                                                               // 0x00449D50
-
-void __cdecl CHATDLG_ClearReply();                                                                     // 0x00449D60
-
-int __cdecl GAME_GetMcpGameHash();                                                                                 // 0x00449DE0
-
 unsigned short gwOtherRequestId;                                                                   // 0x0077BBE0
 
 static int gnLoopValueOut_0077BC14; // 0x0077BC14
@@ -619,17 +575,9 @@ void __cdecl CHATDLG_ClearHistory(); // 0x0043F4D0
 
 void __fastcall GAME_SetMcpChatCallback(void (__fastcall* pfnCallback)(void* pArg)); // 0x0044B220
 
-void __cdecl VIEW_SendMcpMotdRequest(); // 0x0044AA50
-
 int __cdecl CHATDLG_ConnectRealm(); // 0x00441A90
 
-void __stdcall sub_00449E50_SetValue(int nValue); // 0x00449E50
-
 void __stdcall sub_004FA590_RunLoop(D2LaunchCallback pfnCallback); // 0x004FA590
-
-void __cdecl VIEW_SendMcpCancelGameCreate(); // 0x0044AA80
-
-void __cdecl D2MCPClientCloseMCP(); // 0x00449AD0
 
 void __cdecl COMCALLBACK_ClearChannel(); // 0x004495A0
 
@@ -758,8 +706,6 @@ struct D2CelFileStrc;
 
 extern D2ModuleInterfaceStrc gtInterface; // 0x0070CD14
 
-void* __cdecl sub_0044DA90_GetTickCounter(); // 0x0044DA90
-
 struct D2WinMsgStrc
 {
     void* hWnd;
@@ -769,12 +715,6 @@ struct D2WinMsgStrc
 };
 
 void __fastcall ARCHIVE_FreeCellFile(D2CelFileStrc* pCellFile); // 0x004FAAE0
-
-int __cdecl GAME_GetWaitHandle(); // 0x00449AC0
-
-int __cdecl GAME_IsMcpCharLogonReceived(); // 0x00449C30
-
-void __stdcall CHATDLG_SetCharLogonReceived(int nValue); // 0x00449C40
 
 extern D2WinControlStrc* gpChannelListBox; // 0x0077BCFC
 
@@ -824,10 +764,6 @@ extern char gszPendingEntryName[16];                                            
 extern int gnPendingValueA;                                                                               // 0x00798CE4
 
 extern int gnPendingValueB;                                                                               // 0x00798CE8
-
-int __cdecl WINMAIN_PollMcpConnection();                                                               // 0x00449B70
-
-
 
 void __fastcall CHATDLG_SelectEntry(const char* szName, int nValueA, int nValueB);                    // 0x0043EC60
 
@@ -886,11 +822,7 @@ int __stdcall sub_0043DBF0(int nArg);                                           
 
 int __stdcall CHATDLG_RequestCharLogon(const char* szName);                                                    // 0x00449E10
 
-void __stdcall CHATDLG_StartThread(D2LaunchThreadRecordStrc* pRecord);                                 // 0x0044A130
-
 int __fastcall WINMAIN_SendMcpCreateGame(D2LaunchLoginStrc* pLogin, unsigned short wRequestId);                // 0x0044A400
-
-int __fastcall WINMAIN_SendMcpGameInfoRequest(char* szText, unsigned short wRequestId);                              // 0x0044A610
 
 extern "C" const char gszPassword[];                                                               // 0x006D423C
 
@@ -1025,14 +957,6 @@ extern int gfGameListControlsCreated;                                           
 extern int gnChannelUserCount;                                                                         // 0x00798F40
 
 int gnChannelScroll;                                                                               // 0x00798F44
-
-extern unsigned short gwMcpReplyRequestId;                                                                 // 0x00798F80
-
-extern void* gpMcpConnection;                                                                         // 0x00798FB4
-
-extern char gabMcpReply[];                                                                               // 0x00799108
-
-extern void* ghConnectEvent;                                                                       // 0x007992EC
 
 static __forceinline int CONSOLE_FindSecondTokenInline(const char* szText, char* szCopy, const char** ppArg)
 {
@@ -1717,8 +1641,6 @@ extern D2WinControlStrc* gpControl_0077BCE4; // 0x0077BCE4
 
 extern D2WinControlStrc* gpControl_0077BCE8; // 0x0077BCE8
 
-extern D2WinControlStrc* gpChannelOkButton; // 0x0077BCEC
-
 extern D2WinControlStrc* gpControl_0077BCF0; // 0x0077BCF0
 
 // 0x0043DB20
@@ -2203,8 +2125,6 @@ int __fastcall sub_M110_Emit_0043E180(unsigned int nTime, _FILETIME* pFileTime)
 }
 
 
-extern D2WinControlStrc* gpChannelOkButton; // 0x0077BCEC
-
 // 0x0043E660
 void __cdecl CHATDLG_UpdateOkEnabled()
 {
@@ -2272,8 +2192,6 @@ static int CHATDLG_NotifyCommand(const char* szText, const char* szCommand)
     }
     return 0;
 }
-
-int __fastcall WINMAIN_DecodeCdKey(const char* szCdKey, unsigned int* pProduct, unsigned int* pValue); // 0x00449920
 
 // 0x0043E860
 static int __stdcall CHATDLG_FindHashedWord(char* szText, unsigned int nHash, int nLength)
@@ -2891,8 +2809,6 @@ static inline void CHATDLG_SaveDefaultChannel(const char* szChannel)
 }
 
 void __cdecl CHATDLG_DestroyDialogControls();                                                                // 0x0043DB20
-
-extern D2WinControlStrc* gpControl_0077BD90; // 0x0077BD90
 
 extern int gdwGlobal_00798CC0;                                                                              // 0x00798CC0
 
@@ -3525,7 +3441,6 @@ int __stdcall CHATDLG_ShowExpansionHardcoreLadder(int nArg)
 }
 
 
-extern int gbFlag_0077ADA4; // 0x0077ADA4
 
 extern D2LaunchRecord3Strc gtRecord_0077B0A8; // 0x0077B0A8
 
@@ -3664,8 +3579,6 @@ extern D2WinControlInitStrc gtChannelListInit; // 0x0070D9F0
 extern D2WinControlInitStrc gtChannelOkButtonInit; // 0x0070DA20
 
 extern D2WinControlInitStrc gtControlInit_0070E110; // 0x0070E110
-
-extern D2WinControlStrc* gpChannelOkButton; // 0x0077BCEC
 
 D2WinControlStrc* gpCreateJoinBckgImage; // 0x0077BCDC
 
@@ -4695,9 +4608,7 @@ int __fastcall D2Win_10057(D2WinControlStrc* pControl, const char* szText, int n
 extern D2LaunchGameRecStrc gaGames[]; // 0x0078A440
 
 
-extern D2WinControlStrc* gpGameList; // 0x00798BC0
 
-extern int gnLastGameCount; // 0x00798CC8
 
 
 // 0x00442C20
@@ -5188,7 +5099,6 @@ void __cdecl CHATDLG_UpdateCreateButton()
         CONTROL_SetEnabled(gpCreateButton, 0);
 }
 
-extern D2WinControlStrc* gpJoinButton; // 0x00798BCC
 
 // 0x004437E0
 void __cdecl CHATDLG_UpdateJoinButtonState()
@@ -5947,8 +5857,6 @@ void __cdecl CHATDLG_LoadLevelRestriction()
     CHATDLG_UpdateLevelControls();
 }
 
-int __cdecl GAME_GetMcpCharLevel(); // 0x00449E20
-
 extern D2WinControlInitStrc gtPanelTitleInit; // 0x0070EAA0
 
 extern D2WinControlInitStrc gtPanelTextInit; // 0x0070EAD0
@@ -5959,11 +5867,8 @@ extern D2WinControlInitStrc gtResetBuildPanelTimerInit; // 0x0070EB60
 
 extern D2WinControlStrc* gpPanelBackground; // 0x00798BEC
 
-extern D2WinControlStrc* gpPanelTitle; // 0x00798BF0
 
-extern D2WinControlStrc* gpPanelText; // 0x00798BF4
 
-extern D2WinControlStrc* gpPanelCancelButton; // 0x00798C48
 
 // 0x004453B0
 void __cdecl COMCALLBACK_BuildCreateGamePanel()
@@ -6257,16 +6162,15 @@ void __fastcall CHATDLG_MixChar(char* pChar, int nBits, unsigned int* pPool)
 
 int __stdcall CHATDLG_RequestCharLogon(int nA); // 0x00449E10
 
-extern "C" void __cdecl CHARSEL_SendChatLine(); // 0x00446890
-extern "C" void __cdecl COMCALLBACK_SendChatLine(); // 0x004468F0
-extern "C" void __cdecl COMCALLBACK_OnChatPanelClick(); // 0x00446950
-extern "C" void __cdecl COMCALLBACK_SendEmoteLine(); // 0x00446970
-extern "C" void __cdecl COMCALLBACK_SquelchSelectedUser(); // 0x00448E30
-extern "C" void __cdecl COMCALLBACK_UnsquelchSelectedUser(); // 0x00448F60
+int __stdcall COMCALLBACK_SendChatLine(int nUnused); // 0x004468F0
+int __stdcall COMCALLBACK_OnChatPanelClick(int nArg); // 0x00446950
+int __stdcall COMCALLBACK_SendEmoteLine(int nUnused); // 0x00446970
+int __stdcall COMCALLBACK_SquelchSelectedUser(int nUnused); // 0x00448E30
+int __stdcall COMCALLBACK_UnsquelchSelectedUser(int nUnused); // 0x00448F60
 extern "C" void __cdecl sub_00441320(); // 0x00441320
-extern "C" void __cdecl COMCALLBACK_OpenJoinScreen(); // 0x00446780
-extern "C" void __cdecl COMCALLBACK_OpenCreateScreen(); // 0x004467D0
-extern "C" void __cdecl COMCALLBACK_OnActivate(); // 0x00447A90
+int __stdcall COMCALLBACK_OpenJoinScreen(int nArg); // 0x00446780
+int __stdcall COMCALLBACK_OpenCreateScreen(int nArg); // 0x004467D0
+int __stdcall COMCALLBACK_OnActivate(SMSGHANDLER_PARAMS* pMsg); // 0x00447A90
 extern "C" char gData_0077BD84[]; // 0x0077BD84
 extern "C" void __cdecl sub_004456D0(); // 0x004456D0
 

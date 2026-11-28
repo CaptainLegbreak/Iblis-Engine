@@ -36,6 +36,7 @@
 #include "D2GfxApi.h"
 #include "D2WinApi.h"
 #include "FogApi2.h"
+#include "D2WinApi2.h"
 
 struct D2ClientInterfaceStrc;
 
@@ -531,11 +532,6 @@ int __stdcall ITEMS_CheckIfThrowable(D2UnitStrc* pItem); // 0x0062BA80
 
 
 
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
-
-
 extern D2CelFileStrc* gpGoldButtonCel_007BCC34; // 0x007BCC34
 
 extern int gbGoldButtonDown_007BCE30; // 0x007BCE30
@@ -932,11 +928,6 @@ unsigned int __stdcall INVENTORY_GetItemCount(D2InventoryStrc* pInventory);     
 void __fastcall INV_BuildItemName(D2UnitStrc* pItem, Unicode* pText, int nMaxLength); // 0x0048C060
 
 int __fastcall NPCMENU_GetTradeCostText(D2UnitStrc* pItem, int nArg, int* pOut, Unicode* pName, int nMaxLength); // 0x004B2AD0
-
-void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
-
-void __fastcall D2Win_10131_GetTextDimensions(const Unicode* pText, int* pWidth, int* pHeight); // 0x00502520
-
 
 extern int gbHoverPlayerItem; // 0x00721E38
 

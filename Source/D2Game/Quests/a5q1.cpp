@@ -82,6 +82,7 @@ struct D2Act4Quest3Strc;
 
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
+#include "D2ClientApi.h"
 
 D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId); // 0x00543640
 
@@ -96,10 +97,6 @@ typedef int(__fastcall* QUESTUNITITERATE)(D2GameStrc* pGame, D2UnitStrc* pUnit, 
 
 extern unsigned int gnA5Q1NpcIndices[]; // 0x00733928
 
-
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
 void __fastcall QUESTS_CreateTimer(D2QuestDataStrc* pQuest, QUESTUPDATE pfnCallback, int nTicks); // 0x00543F10
 

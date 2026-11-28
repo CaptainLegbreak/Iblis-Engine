@@ -13,6 +13,11 @@
 #include "FogApi.h"
 #include "FogApi.h"
 #include "StormApi2.h"
+#include "D2GfxApi2.h"
+#include "D2SoundApi2.h"
+#include "D2WinApi2.h"
+#include "D2BNClientApi.h"
+#include "D2DDrawApi.h"
 
 extern int gbGlideDrawing; // 0x0087EFE4
 
@@ -26,16 +31,11 @@ struct D2GlideHwQueryStrc;
 
 extern int gnDisplayType; // 0x007C8CB0
 
-extern int gbIsWindowed; // 0x007C8CB4
-
 extern int gfFixedAspectRatio; // 0x0072DA7C
 
 
 extern int gnScaleFactor; // 0x0072DB44
 
-
-
-extern int gbIsMouseButtonPressed; // 0x007D55E0
 
 
 void __stdcall CONTROL_RemoveFromList(void* pArg); // 0x004F9310
@@ -45,43 +45,9 @@ extern int gbGlidePlayingVideo; // 0x0087EFD0
 
 int gbFloorTiles; // 0x0087EFE8
 
-extern int gbDDrawPlayingVideo; // 0x0088126C
-
-extern int gpDirectSound; // 0x00881768
-
 extern int gfPositionalSound; // 0x0088176C
 
-extern int gbEaxEnabled; // 0x00881770
-
-extern int gnEaxVersion; // 0x00881774
-
-extern int gbEaxRoomOff; // 0x00881778
-
-
-extern int gnChannelValue; // 0x00881798
-
-extern int gnSoundMode; // 0x008817AC
-
-extern int gnMasterVolume; // 0x008817B0
-
-extern int gnMusicVolume; // 0x008817B4
-
-extern int gnPositionalBias; // 0x008817B8
-
-extern int gnNpcSpeech; // 0x008817BC
-
-extern int gnOptionsMusic; // 0x008817C0
-
-extern int gbWaveSlotsInit; // 0x008817FC
-
 extern char gData_0072FAA0[]; // 0x0072FAA0
-
-extern int gdwServerToken; // 0x008818BC
-
-extern int gnLogonType; // 0x008818C0
-
-extern int gfSetEmailRequested; // 0x00881C04
-
 
 int __cdecl GLCORE_Close(); // 0x00509E10
 
@@ -209,10 +175,6 @@ int __fastcall GLCORE_CreateSurface(void* hWnd, int nResolution); // 0x00509E90
 
 
 
-void __fastcall sub_00512D90_DDrawUtilFilledRect(tagRECT* pRect, unsigned char nColor);                     // 0x00512D90
-
-
-
 extern const double gdGlideGammaScale;                                                             // 0x006CD038
 
 extern tagPALETTEENTRY gatGamePalette[256];                                                     // 0x007C8CC8
@@ -242,17 +204,9 @@ extern "C" __declspec(dllimport) int __stdcall BinkDoFrame(D2BinkStrc* pBink);  
 
 
 
-void __cdecl DDCORE_ReleaseSurfaces();                                                           // 0x00511A80
-
-int __fastcall DDCORE_CreateSurface(void* hWnd, int nResolutionMode);                           // 0x005115E0
-
-void __fastcall sub_00512710_DDrawDrawBox(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, int nDrawMode); // 0x00512710
-
 extern "C" const char gszDisplay[];                                                                // 0x006DE1E8
 
 extern "C" const char gszDdDebugFontSourceFile[];                                                  // 0x006DE1D0
-
-extern unsigned long gdwDDrawDebugFontTextColor;                                                    // 0x0072F7F0
 
 extern unsigned char* gpScreenBuffer_007C9154;                                                              // 0x007C9154
 
@@ -262,42 +216,13 @@ extern void (__stdcall* gpfnGrTexDownloadTable)(int nType, void* pData);        
 
 void (__stdcall* gpfnGrChromakeyMode)(int bEnable);                                                       // 0x0087EB8C
 
-extern int gnGlideDebugX;                                                                          // 0x008800D0
-
-extern int gnGlideDebugY;                                                                          // 0x008800D4
-
-extern void** gppGlideDebugBuffer;                                                                 // 0x00880454
-
-extern unsigned int gnGlideBinkY;                                                                  // 0x00880C04
-
 extern unsigned int gnGlideBinkX;                                                                  // 0x00880C08
 
 extern D2BinkStrc* gpGlideBink;                                                                    // 0x00880C0C
 
-extern unsigned int gnGlideBinkFlags;                                                              // 0x00880C14
-
 extern int gbGlideBinkDone;                                                                        // 0x00880C18
 
-extern D2DDrawObjectStrc* gpDDrawPalette;                                                           // 0x00881290
-
-extern int gaDDrawDebugFontGlyphOffsets[96];                                                       // 0x008812A8
-
 extern int gaDDrawDebugFontCharWidths[96];                                                         // 0x00881428
-
-extern unsigned long gdwDDrawDebugFontBkColor;                                                     // 0x008815A8
-
-extern unsigned char* gpDDrawDebugFontGlyphs;                                                      // 0x008815AC
-
-extern unsigned int gnDDrawBinkY;                                                                  // 0x008816B8
-
-extern unsigned int gnDDrawBinkX;                                                                  // 0x008816BC
-
-extern D2BinkStrc* gpDDrawBink;                                                                    // 0x008816C0
-
-extern unsigned int gnDDrawBinkFlags;                                                              // 0x008816C8
-
-extern int gbDDrawBinkDone;                                                                        // 0x008816CC
-
 
 int __fastcall GLSMACK_SetSmackTexAddresses(int nBase, int nAlign); // 0x0050DFE0
 

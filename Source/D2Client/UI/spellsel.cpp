@@ -19,6 +19,7 @@
 #include "StormApi.h"
 #include "D2CommonApi2.h"
 #include "D2GfxApi.h"
+#include "D2WinApi2.h"
 
 struct D2SkillStrc;
 
@@ -138,13 +139,6 @@ unsigned short gawIconValues[8]; // 0x007C07A8
 extern "C" char* __cdecl _itoa(int nValue, char* szOut, int nRadix);
 
 int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
-
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
-
-
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
-
 
 const Unicode* __fastcall CMDTBL_GetKeyName(int nA, int nB);                                          // 0x0046A530
 
@@ -535,8 +529,6 @@ Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x00526
 Unicode* __fastcall sub_00526700(Unicode* pDst, const Unicode* pSrc); // 0x00526700
 
 
-
-void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
 
 static inline int IsMouseInSquare(int nX, int nY)
 {

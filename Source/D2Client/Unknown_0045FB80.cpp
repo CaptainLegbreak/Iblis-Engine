@@ -12,6 +12,7 @@
 #include "D2LangApi.h"
 #include "D2CommonApi2.h"
 #include "D2GfxApi.h"
+#include "D2WinApi2.h"
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szBuffer, const char* szFormat, ...);
@@ -42,8 +43,6 @@ int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int n
 void __fastcall SKILLDESC_ShowSkillPopup(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int nArg, int nX, int nY);
 void __fastcall SKILLDESC_ShowSkillPopupB(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int nArg, int nX, int nY);
 void __fastcall sub_00502280_SetPopUpText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5);
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
-
 #define BITARRAY_CHECK(pBytes, nBit) ((pBytes)[(nBit) >> 3] & gdwBitMasks[(nBit) & 7])
 
 static inline D2SkillsTxt* SKILLTREE_GetSkillsTxtRecord(int nSkillId)

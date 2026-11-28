@@ -8,6 +8,7 @@
 #include "D2CommonApi.h"
 #include "D2LangApi.h"
 #include "StormApi.h"
+#include "D2WinApi2.h"
 struct D2StoredUnitRecordStrc;
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
@@ -20,9 +21,7 @@ struct D2ClientNotifyStrc;
 
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
 void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nArg6); // 0x0046EFD0
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 extern "C" const char* __fastcall ROSTER_GetEntryName(D2StoredUnitRecordStrc* pEntry); // 0x004795C0
 int __fastcall ROSTER_IsMaleClass(D2StoredUnitRecordStrc* pEntry); // 0x0047A670
 int __cdecl WINMAIN_IsHardcore(); // 0x0044B850

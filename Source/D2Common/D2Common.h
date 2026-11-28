@@ -67,7 +67,7 @@ extern "C" double __cdecl sin(double x); // 0x00688590
 extern "C" int __cdecl _stricmp(const char* szString1, const char* szString2); // 0x006841E9
 extern "C" int __cdecl atoi(const char* szString); // 0x00681EBB
 extern "C" int __cdecl fflush(_iobuf* pFile); // 0x00688927
-extern "C" int __fastcall DATATBLS_ApplyRatio(int, int, int); // 0x00483360
+int __fastcall DATATBLS_ApplyRatio(int nValue, int nMultiplier, int nDivisor); // 0x00483360
 extern "C" int __stdcall sub_006289C0_IsWeapon(Unit*); // 0x006289C0
 extern "C" int __stdcall sub_00629BB0_IsItemType(Unit*, int); // 0x00629BB0
 extern "C" int __stdcall sub_0062BA80_UsesThrowDamage(Unit*); // 0x0062BA80

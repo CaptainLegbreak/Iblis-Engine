@@ -35,6 +35,9 @@
 #include "D2SoundApi.h"
 #include "StormApi2.h"
 #include "D2LangApi2.h"
+#include "D2GameApi.h"
+#include "D2CMPApi.h"
+#include "D2WinApi2.h"
 
 #define OFFSET(T,F) ((unsigned int)&(((T*)0)->F))
 
@@ -102,11 +105,6 @@ void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, i
 
 
 void __cdecl INV_SetupPanelButtons(); // 0x00487ED0
-
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
-
-
 
 
 extern int gbNpcTradeClicked; // 0x007BCBEC
@@ -184,10 +182,6 @@ D2SplittedTextStrc* __stdcall TEXT_BuildTextLines(const Unicode* wszText, int* p
 
 
 void __fastcall SOUNDINST_ArmHint(int nKey, int nGroup, int nOffset, unsigned int nCount); // 0x004B9EF0
-
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
-
-D2SplittedTextStrc* __fastcall D2WINFONT_SplitText(const Unicode* pText, int* pLineCount, int nWidth); // 0x00502970
 
 int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
@@ -488,8 +482,6 @@ public:
 Unicode* __fastcall sub_00526790(Unicode* pDest, const Unicode* pSource, int nCount); // 0x00526790
 
 
-int __fastcall D2Win_10123(const Unicode* wszText, int nLength); // 0x00501730
-
 D2TextNodeStrc* __fastcall TEXT_CloneStringList(D2TextNodeStrc* pSource); // 0x0049DB10
 
 extern D2TextListStrc gtOverheadTextList; // 0x007BF1EA
@@ -691,12 +683,6 @@ D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00
 
 
 
-void __fastcall D2Win_10132(const Unicode* wszText, int nX, int nY, unsigned int dwColor, int eDrawMode, int nColor); // 0x005023B0
-
-
-
-
-
 #define STAT_STATPTS 4
 
 #define STAT_NEWSKILLS 5
@@ -717,11 +703,7 @@ void __stdcall CURSOR_HandleButtonUp(SMSGHANDLER_PARAMS* pMsg); // 0x00467FA0
 
 
 
-void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
-
 D2CelStrc* __stdcall CelGetHandle(D2GfxDataStrc* pContext); // 0x00601840
-
-int __stdcall CelGetWidth(D2CelStrc* pCel); // 0x006018C0
 
 void* gpLevelCel; // 0x007C02DC
 
@@ -796,13 +778,8 @@ D2BitBufferStrc* __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
 static int TEXT_FindQuestIndex(int nKey);
 
 
-void __fastcall DATATBLS_CallFree(void* pMemory); // 0x00600C60
-
 struct D2StringSoundStrc;
 
-
-
-int __stdcall CelGetHeight(D2CelStrc* pCel); // 0x006018F0
 
 
 extern D2MsgHandlerEntryStrc gaDialogWheelHandlers[]; // 0x007273E4
@@ -896,11 +873,6 @@ struct D2GSPacketSrv5A
 extern "C" char* __cdecl strcpy(char* szDst, const char* szSrc);
 
 extern "C" int __cdecl strcmp(const char* sz1, const char* sz2);
-
-extern "C" const char* __fastcall ROSTER_GetEntryName(D2StoredUnitRecordStrc* pEntry); // 0x004795C0
-
-
-
 
 void __fastcall TEXT_PrintPartyText(const Unicode* wszText, char nColor); // 0x0049E5C0
 
@@ -2213,8 +2185,6 @@ void* __cdecl GAME_GetBuySellButtonCells(); // 0x00454600
 
 
 
-
-void __fastcall D2Win_10131_GetTextDimensions(const Unicode* pText, int* pWidth, int* pHeight); // 0x00502520
 
 Unicode* __fastcall win2Unicode(Unicode* pDest, const char* szSource, int nCount); // 0x00526F20
 

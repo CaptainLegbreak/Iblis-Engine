@@ -179,28 +179,27 @@ static void __stdcall sub_00681240_PlaceRoadVertices(D2DrlgLevelStrc* pLevel, in
         return;
     }
 
-    D2DrlgRoadStrc* pRoad = (D2DrlgRoadStrc*)((char*)pOutdoors + 20 * nRoad);
-    if (pRoad->nStartType != 4)
+    if (pOutdoors->pVertices[18 + nRoad].nDirection != 4)
     {
         D2DrlgVertexStrc* pNew = DRLGVER_AllocVertex(pMemPool, 0);
-        pNew->nPosX = pRoad->tStart.nX;
-        pNew->nPosY = pRoad->tStart.nY;
+        pNew->nPosX = pOutdoors->pVertices[18 + nRoad].nPosX;
+        pNew->nPosY = pOutdoors->pVertices[18 + nRoad].nPosY;
         pNew->pNext = pVertex;
         pOutdoors->pRoads[nRoad] = pNew;
     }
 
-    pVertex->nPosX = pRoad->tStartInner.nX;
-    pVertex->nPosY = pRoad->tStartInner.nY;
+    pVertex->nPosX = pOutdoors->pVertices[12 + nRoad].nPosX;
+    pVertex->nPosY = pOutdoors->pVertices[12 + nRoad].nPosY;
 
     for (pVertex = pVertex->pNext; pVertex; pVertex = pVertex->pNext)
     {
         if (!pVertex->pNext)
         {
-            pVertex->nPosX = pRoad->tEndInner.nX;
-            pVertex->nPosY = pRoad->tEndInner.nY;
+            pVertex->nPosX = pOutdoors->pVertices[6 + nRoad].nPosX;
+            pVertex->nPosY = pOutdoors->pVertices[6 + nRoad].nPosY;
             D2DrlgVertexStrc* pNew = DRLGVER_AllocVertex(pMemPool, 0);
-            pNew->nPosX = pRoad->tEnd.nX;
-            pNew->nPosY = pRoad->tEnd.nY;
+            pNew->nPosX = pOutdoors->pVertices[nRoad].nPosX;
+            pNew->nPosY = pOutdoors->pVertices[nRoad].nPosY;
             pVertex->pNext = pNew;
             return;
         }

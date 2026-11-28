@@ -25,6 +25,7 @@
 #include "D2WinApi.h"
 #include "D2CMPApi.h"
 #include "D2SoundApi.h"
+#include "D2WinApi2.h"
 
 struct D2MsgHandlerEntryStrc;
 
@@ -139,8 +140,6 @@ Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc);           
 
 
 
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
@@ -260,8 +259,6 @@ extern D2CelFileStrc* gpSliderKnob_007BC958; // 0x007BC958
 
 void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nStyle); // 0x0046EFD0
 
-int __stdcall TEXTURE_CelDraw(D2GfxDataStrc* pContext, int nX, int nY, int nArg4, int nColor, int nArg6); // 0x004F6480
-
 extern void* gpSlotCells; // 0x007BC964
 
 
@@ -284,18 +281,6 @@ void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMa
 extern unsigned char gbGlobal_007BB5E0;                                                                     // 0x007BB5E0
 
 extern int gnImeState;                                                                          // 0x007BB5F0
-
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText);                                             // 0x00501820
-
-
-
-
-
-D2SplittedTextStrc* __fastcall D2WINFONT_SplitText(const Unicode* pText, int* pLineCount, int nWidth);       // 0x00502970
-
-
-
-
 
 struct D2BnetChatPacketStrc;
 
@@ -679,9 +664,6 @@ Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource);       
 void __fastcall TEXT_PrintChatLine(const Unicode* pText, char nColor);                              // 0x0049E3A0
 
 
-D2SplittedTextStrc* __fastcall D2WINFONT_SplitText(Unicode* pText, unsigned int* pLineCount, int nWidth);    // 0x00502970
-
-
 extern unsigned short gwChatHistoryCount;                                                          // 0x007BB5E4
 
 extern Unicode gawszChatHistory_007BB840[8][257];                                                           // 0x007BB840
@@ -717,9 +699,6 @@ int gnOptionMaxWidth; // 0x007BC95C
 
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
-
-void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
-
 
 const Unicode* __fastcall CMDTBL_GetKeyText(int nKey, int nArg2); // 0x00469DE0
 

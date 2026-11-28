@@ -12,6 +12,7 @@
 #include "D2WinApi.h"
 #include "D2CMPApi.h"
 #include "StormApi2.h"
+#include "D2WinApi2.h"
 
 struct Unicode;
 struct D2ButtonStringStrc;
@@ -220,8 +221,6 @@ public:
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 extern D2ButtonStringStrc gaButtonStrings[]; // 0x007275A8
 
 
@@ -327,8 +326,6 @@ extern "C" int __cdecl atoi(const char* szString);                              
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...);                                    // 0x006823FD
 
 void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nArg6); // 0x0046EFD0
-
-D2SplittedTextStrc* __fastcall D2WINFONT_SplitText(const Unicode* pText, int* pLineCount, int nWidth); // 0x00502970
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
 

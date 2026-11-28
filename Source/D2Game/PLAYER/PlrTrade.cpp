@@ -58,6 +58,7 @@ void __stdcall SUNIT_ResetInteractInfo(D2UnitStrc* pUnit); // 0x00554190
 
 #include "D2GameFuncs.h"
 #include "D2CommonApi3.h"
+#include "D2ClientApi.h"
 
 enum
 {
@@ -221,9 +222,6 @@ static int __stdcall PLRTRADE_CanPickUpTradeItems(D2GameStrc* pGame, D2UnitStrc*
 static void __stdcall PLRTRADE_AcceptTrade(D2GameStrc* pGame, D2UnitStrc* pInteractPlayer, D2PlayerDataStrc* pPlayerData, D2PlayerDataStrc* pInteractPlayerData, D2UnitStrc* pPlayer); // 0x00567C70
 
 void __fastcall PLRTRADE_RefreshTradeSnapshot(D2GameStrc* pGame, D2UnitStrc* pPlayer); // 0x00568D10
-
-int __fastcall ITEMS_CheckUnitFlagEx(D2UnitStrc* pUnit, unsigned int dwMask);                         // 0x00463720
-
 
 #define CUBE_MAX(a,b) ((a)>(b)?(a):(b))
 

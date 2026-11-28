@@ -11,6 +11,7 @@
 #include "D2SoundApi.h"
 #include "D2HellApi.h"
 #include "D2MCPClientApi.h"
+#include "D2LaunchApi.h"
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
@@ -22,7 +23,6 @@ extern "C" __declspec(dllimport) void* __stdcall LoadLibraryA(const char* szLibF
 extern "C" int __cdecl fclose(_iobuf* pFile); // 0x00681FDC
 extern "C" _iobuf* __cdecl fopen(const char* szFileName, const char* szMode); // 0x0068239A
 extern "C" int __cdecl fputc(int nChar, _iobuf* pFile); // 0x00682058
-void __fastcall MAINMENUS_InitStorm(int nDirectFlags, int nValue); // 0x00406870
 int __fastcall ARCHIVE_LoadExpansionArchives(int (__cdecl* pfnPlayDisc)(), int (__cdecl* pfnExpansionDisc)(), int nUnused, D2ConfigStrc* pCfg); // 0x004FAEC0
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }

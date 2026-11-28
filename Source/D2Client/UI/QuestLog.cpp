@@ -19,6 +19,7 @@
 #include "StormApi.h"
 #include "D2GfxApi.h"
 #include "D2CMPApi.h"
+#include "D2WinApi2.h"
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
@@ -52,10 +53,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);    
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount();
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4);                   // 0x004B9A00
 int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText);                                      // 0x00501820
 void __fastcall sub_00502280_SetPopUpText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered);   // 0x00502320
-D2SplittedTextStrc* __fastcall D2WINFONT_SplitText(const Unicode* pText, int* pLineCount, int nWidth); // 0x00502970
 extern D2QuestPosStrc gaQuestPos[];                                                                // 0x00723EA8
 
 

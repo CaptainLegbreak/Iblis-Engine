@@ -12,6 +12,7 @@
 #include "D2WinApi.h"
 #include "D2NetApi.h"
 #include "D2MCPClientApi.h"
+#include "D2MCPClientApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -1496,8 +1497,6 @@ int __stdcall SCmdRegisterArgList(const D2CmdArgStrc* pArgList, unsigned int nCo
 
 int __stdcall SCmdProcess(const char* szCmdLine, int bSkipProgName, int (__stdcall* pfnExtra)(const char*), int (__stdcall* pfnError)(const char*)); // 0x006C4FB0
 
-int __fastcall GAME_DispatchMcpPacket(const char* pPacket, unsigned int nSize); // 0x0044B190
-
 int __fastcall GAME_RunInitHandlers(void* pArg); // 0x0044D9F0
 
 int __stdcall WINMAIN_HandleExtraArgument(const char* szArgument); // 0x0044B5C0
@@ -1555,9 +1554,6 @@ struct D2McpInfoStrc
 
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
-
-void __stdcall GAME_StripColorCodes(Unicode* pText); // 0x0044B230
-
 
 extern int gnMcpGameToken; // 0x00798FB0
 
@@ -1745,28 +1741,6 @@ extern unsigned char gabChunkBuffer[]; // 0x00799318
 
 
 extern "C" __declspec(dllimport) int __stdcall SetEvent(void* hEvent);                                      // 0x006CC130
-
-extern void* ghConnectEvent;                                                                       // 0x007992EC
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 int gaStateStack[4]; // 0x007A0424
 

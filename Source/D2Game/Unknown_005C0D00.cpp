@@ -70,6 +70,7 @@ struct D2ItemStatCostTxt;
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
 #include "D2CommonApi3.h"
+#include "D2ClientApi.h"
 
 
 
@@ -136,14 +137,6 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 typedef void (__fastcall* RemoveCallback)(D2UnitStrc*,int,D2StatListStrc*);
 
 
-int __fastcall GAME_GetUnitGUID(D2UnitStrc*); // 0x00451F50
-
-
-
-
-unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
-
-
 #define UNIT_PLAYER 0
 
 #define UNIT_MONSTER 1
@@ -168,14 +161,6 @@ enum D2C_J10SkillItemConstants
     DAMAGEHITFLAG_0x20 = 0x20,
     SKILLSFLAGINDEX_ITEMTGTDO = 29,
 };
-
-
-int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                                   // 0x0045C3E0
-
-
-
-
-
 
 
 void __fastcall D2GAME_PACKETS_SendPacketSize06(D2ClientStrc* client,unsigned char code); // 0x0053B3D0
@@ -249,8 +234,6 @@ struct D2AffixIndexAndPtrStrc
     D2MagicAffixTxt* pAffix;
 };
 
-
-int __fastcall sub_00472280_RollInRange(D2SeedStrc*, int, int); // 0x00472280
 
 static inline int ClampLevel(int v) { if (v <= 1) return 1; if (v >= 99) return 99; return v; }
 

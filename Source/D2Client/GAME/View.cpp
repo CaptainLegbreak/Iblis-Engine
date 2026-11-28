@@ -29,6 +29,8 @@
 #include "D2WinApi.h"
 #include "D2CMPApi.h"
 #include "D2CommonApi3.h"
+#include "D2ClientApi.h"
+#include "D2WinApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -145,8 +147,6 @@ void __cdecl INV_DrawKeyBindingPopup(); // 0x00497300
 
 void __cdecl HIREABLES_DrawKeyHelp(); // 0x00495030
 
-extern void* gpMcpConnection; // 0x00798FB4
-
 extern void* gpOkCancelButtonCel; // 0x007A5240
 
 
@@ -236,8 +236,6 @@ static int gnViewEffectMagnitude;                                               
 unsigned char** gppLerpRows;        // 0x007B953C
 
 extern int gbCacheStatsChecked; // 0x007BB3AC
-
-extern D2CelFileStrc* sghPentagram; // 0x0087E96C
 
 extern unsigned char gabBeltHotkey[]; // 0x007BEFB0
 

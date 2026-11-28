@@ -13,6 +13,7 @@
 #include "D2LangApi.h"
 #include "StormApi.h"
 #include "D2GfxApi.h"
+#include "D2WinApi2.h"
 
 struct D2StoredUnitRecordStrc;
 
@@ -87,13 +88,7 @@ Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource); // 0x0
 
 int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
-
-
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
-
 
 void __stdcall PARTY_DrawPanelIcons(D2PartyRowStrc* pRow); // 0x0049A690
 
@@ -1226,8 +1221,6 @@ extern int gdwGlobal_007BF024; // 0x007BF024
 void __fastcall ARCHIVE_FreeClientCellFile(void* pCel); // 0x00478A00
 
 void __cdecl PARTY_DrawRosterHoverHints(); // 0x0049ABD0
-
-void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
 
 extern void* gpInvGoldBtnCel; // 0x007BF024
 

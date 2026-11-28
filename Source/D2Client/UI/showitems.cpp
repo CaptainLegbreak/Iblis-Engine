@@ -9,6 +9,7 @@
 #include "D2CommonApi.h"
 #include "D2CommonApi2.h"
 #include "D2GfxApi.h"
+#include "D2WinApi2.h"
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
@@ -51,19 +52,7 @@ extern "C" int __cdecl PLAYER_GetScreenOffsetY(); // 0x0045AFD0
 
 void __fastcall UI_BuildItemHoverName(D2UnitStrc*,Unicode*,int); // 0x004527D0
 
-void __fastcall D2Win_10131_GetTextDimensions(const Unicode*,int*,int*); // 0x00502520
-
-
-void __fastcall D2Win_10129_DrawFramedText(const Unicode*,int,int,int,int); // 0x00502280
-
-
 int __stdcall ITEMS_CheckItemFlag(D2UnitStrc*,unsigned int,int,const char*); // 0x006280A0
-
-
-void __fastcall D2Win_10132(const Unicode* wszText, int nX, int nY, unsigned int dwColor, int eDrawMode, int nColor); // 0x005023B0
-
-
-
 
 
 static inline void sub_004C0640_ClampToScreen(int* pLeft, int* pTop, int* pRight, int* pBottom, int nMaxX, int nMinX, int nMaxY)

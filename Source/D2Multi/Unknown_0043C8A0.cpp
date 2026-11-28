@@ -12,6 +12,7 @@
 #include "D2Win32Types.h"
 #include "D2Win32System.h"
 #include "D2MultiCharSave.h"
+#include "D2SaveHeader.h"
 #include "FogApi.h"
 #include "StormApi.h"
 #include "FogApi.h"
@@ -70,21 +71,22 @@ int __fastcall sub_0043C8A0_ReadSaveSummary(const char* szName, unsigned char* p
 
     unsigned char aBuffer[0x2000];
     unsigned int nRead = fread(aBuffer, 1, 0x2000, pFile);
-    if (nRead >= 8 && *(unsigned int*)aBuffer == 0xAA55AA55)
+    const D2SaveHeaderStrc* pHeader = (const D2SaveHeaderStrc*)aBuffer;
+    if (nRead >= 8 && pHeader->dwHeaderMagic == 0xAA55AA55)
     {
-        unsigned int nVersion = *(unsigned int*)(aBuffer + 4);
-        const char* pCharName;
+        unsigned int nVersion = pHeader->dwVersion;
+        const unsigned char* pComponents;
         unsigned char nLevel;
         unsigned short nFlags;
         unsigned char nClass;
-        const char* pTitle;
+        const unsigned char* pCompColors;
 
         if (nVersion <= 0x5B)
         {
             if (nRead < 0x82 || nVersion < 0x47)
                 goto close_dialog;
-            pCharName = (const char*)aBuffer + 0x26;
-            pTitle = (const char*)aBuffer + 0x36;
+            pComponents = aBuffer + 0x26;
+            pCompColors = aBuffer + 0x36;
             nClass = aBuffer[0x22];
             nLevel = aBuffer[0x24];
             nFlags = *(unsigned short*)(aBuffer + 0x18);
@@ -93,27 +95,27 @@ int __fastcall sub_0043C8A0_ReadSaveSummary(const char* szName, unsigned char* p
         {
             if (nRead < 0x14F || nVersion > 0x60)
                 goto close_dialog;
-            pCharName = (const char*)aBuffer + 0x88;
-            pTitle = (const char*)aBuffer + 0x98;
-            nClass = aBuffer[0x28];
-            nLevel = aBuffer[0x2B];
-            nFlags = *(unsigned short*)(aBuffer + 0x24);
+            pComponents = pHeader->nComponent;
+            pCompColors = pHeader->nCompColor;
+            nClass = pHeader->nClass;
+            nLevel = pHeader->nLevel;
+            nFlags = (unsigned short)pHeader->dwSaveFlags;
         }
 
         FOG_Encode14BitsToString(pOut, 0xE);
         pOut += 2;
-        if (!pCharName[0])
+        if (!pComponents[0])
         {
             for (int i = 0; i < 11; ++i)
                 *pOut++ = gszDefaultSaveName_0070CCC8[i];
         }
         else
         {
-            memcpy(pOut, pCharName, 11);
+            memcpy(pOut, pComponents, 11);
             pOut += 11;
         }
         *pOut++ = nClass + 1;
-        memcpy(pOut, pTitle, 11);
+        memcpy(pOut, pCompColors, 11);
         pOut += 11;
         *pOut++ = nLevel;
         FOG_Encode14BitsToString(pOut, nFlags);

@@ -15,6 +15,7 @@
 #include "D2ObjModes.h"
 #include "FogApi.h"
 #include "D2CommonApi.h"
+#include "D2ClientApi.h"
 
 struct D2ActiveRoomStrc;
 
@@ -69,8 +70,6 @@ typedef int(__fastcall* QUESTUNITITERATE)(D2GameStrc* pGame, D2UnitStrc* pUnit, 
 
 typedef void(__fastcall* PartyCallbackFunction)(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pArgs);
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
-
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
 
@@ -107,10 +106,6 @@ enum D2C_Q05QuestConstants
 
 D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
-
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
 void __fastcall SUNIT_AttachSound(D2UnitStrc* pUnit, int nSoundId, D2UnitStrc* pOrigin); // 0x00553380
 

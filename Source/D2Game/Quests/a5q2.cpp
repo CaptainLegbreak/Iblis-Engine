@@ -71,6 +71,7 @@ extern unsigned int gdwAct5Q2RuneCodes[3]; // 0x00732FEC
 
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
+#include "D2ClientApi.h"
 
 void __fastcall QUESTS_UnitIterate(D2QuestDataStrc* pQuest, int nIterateState, D2UnitStrc* pUnit, QUESTUNITITERATE pfIterate, bool bIterate); // 0x00544300
 
@@ -819,9 +820,6 @@ void __fastcall ACT5Q2_UpdateWussieCounters(D2GameStrc* pGame, int nUnused, D2Un
 }
 
 struct D2CoordStrc;
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc*,int,int); // 0x00463740
-
 
 D2UnitStrc* __fastcall SUNIT_AllocUnitData(int nUnitType, int nClassId, int nX, int nY, D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, char nAllocFlags, int nMode, unsigned int nOverrideUnitGUID); // 0x00555230
 

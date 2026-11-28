@@ -4,6 +4,7 @@
 #include "D2StormLink.h"
 #include "D2SysTypes.h"
 #include "StormApi2.h"
+#include "D2ClientApi.h"
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 extern "C" __declspec(dllimport) int __stdcall CreateProcessA(const char* szApplicationName, char* szCommandLine, void* pProcessAttributes, void* pThreadAttributes, int bInheritHandles, unsigned long dwCreationFlags, void* pEnvironment, const char* szCurrentDirectory, D2StartupInfoAStrc* pStartupInfo, D2ProcessInformationStrc* pProcessInformation); // 0x006CC33C
@@ -42,8 +43,6 @@ bool __fastcall sub_00516DE1_Verify(void* pContext)
 
 typedef void (__stdcall* B27RecordHandler)(int, int, int);
 typedef int (__cdecl* B27UIAction)();
-extern "C" int __cdecl NPCMENU_ResurrectMercWait(); // 0x004B1DD0
-extern "C" int __cdecl NPCMENU_IdentifyItemsWait(); // 0x004B2020
 extern "C" unsigned int gnImbueMenuState;
 extern "C" unsigned short gB27_00726CCB;
 extern "C" unsigned int gB27_00726CDB;
@@ -97,10 +96,6 @@ extern "C" int __cdecl INV_IsInvPanelTradeMode()
         return 1;
     return 0;
 }
-
-extern "C" void __cdecl QUESTLOG_ResetQuestButtonState(); // 0x004A3000
-
-extern "C" void __fastcall QUESTLOG_SetQuestPacketValue(unsigned int value); // 0x004A3100
 
 extern "C" void __cdecl NPCMENU_ResetHandlers()
 {

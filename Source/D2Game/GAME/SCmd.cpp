@@ -27,6 +27,7 @@ struct D2MonsterDataStrc;
 #include "D2GameFuncs.h"
 #include "D2CommonApi.h"
 #include "FogApi2.h"
+#include "D2ClientApi.h"
 
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
@@ -166,11 +167,6 @@ struct D2GSPacketSrv27
 unsigned short __fastcall PARTY_GetPartyIdForUnitOwner(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00540710
 
 int __stdcall UNITS_GetCurrentLifePercentage(D2UnitStrc* pUnit); // 0x00621F20
-
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-
 
 void __fastcall SCMD_WriteVariableValue(D2BitBufferStrc* pBuffer, unsigned int nValue); // 0x0053B0E0
 

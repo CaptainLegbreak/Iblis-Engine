@@ -25,6 +25,8 @@
 #include "D2CMPApi.h"
 #include "StormApi2.h"
 #include "D2CommonApi3.h"
+#include "D2WinApi2.h"
+#include "D2LaunchApi.h"
 
 struct D2CelFileStrc;
 
@@ -302,17 +304,11 @@ void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMa
 
 int __fastcall UI_GetHoverRect(D2RectStrc* pRect); // 0x00454880
 
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
-
-void __fastcall D2Win_10130_DrawFramedTextEx(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5, int nArg6); // 0x005022F0
-
 int __fastcall AUTOMAP_GetHoverMonsterName(D2UnitStrc* pUnit, unsigned short nArg); // 0x00452580
 
 void __fastcall GAME_SetHoverLine(const Unicode* pText, int nColor); // 0x00452520
 
 
-
-void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
@@ -369,8 +365,6 @@ extern "C" const char gszFormatD[]; // 0x006D57BC
 
 
 int __fastcall ROSTER_GetKillCount(D2StoredUnitRecordStrc* pRecord); // 0x00479B80
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
 struct D2TileRectStrc
 {
@@ -813,8 +807,6 @@ void __fastcall sub_004898A0_DisableGoldButton(int nMode);                      
 void* __fastcall DIALOG_CreateDialogFromFile(int nX, int nY, int (__cdecl* pfnCallback)(), int nArg4, int nArg5, int nArg6); // 0x004B7CD0
 
 void __fastcall ROSTER_SetCtrlState(void* pPanel, int nValue);                                                     // 0x004B8370
-
-D2SplittedTextStrc* __fastcall D2WINFONT_SplitText(Unicode* pText, int* pLineCount, int nWidth);             // 0x00502970
 
 void __fastcall DIALOG_AddTextLine(void* pPanel, Unicode* pText, int nArg3, int nArg4, int nArg5, int nArg6, int nArg7, int nArg8); // 0x004B85F0
 
@@ -1306,10 +1298,6 @@ extern int gnProgressiveStatesRight; // 0x007111D0
 extern int gnProgressiveStatesBottom; // 0x007111D4
 
 extern void* gpGlobal_007A0634; // 0x007A0634
-
-extern int gbOverlaysEnabled; // 0x007A289C
-
-extern int gnOverlayStep; // 0x007A3138
 
 // 0x00453470
 void __cdecl UI_DrawProgressiveStates()
@@ -3467,7 +3455,7 @@ void __fastcall UI_DrawUnitHoverName(D2UnitStrc* pUnit)
     unsigned short wszText[0x800];
     for (int i = 0; i < 0x800; i++)
         wszText[i] = 0;
-    if (!(gdwMask_006CE26C & pMonStatsTxt->nMonStatsFlags[1]) && (gdwBitMask7 & pMonStatsTxt->nMonStatsFlags[1]) && pMonStatsTxt->wNameStr)
+    if (!(gdwBitMasks[1] & pMonStatsTxt->nMonStatsFlags[1]) && (gdwBitMasks[7] & pMonStatsTxt->nMonStatsFlags[1]) && pMonStatsTxt->wNameStr)
     {
         pMonStats2Txt = UNITS_GetMonStats2TxtRecordFromMonsterId(!pUnit ? -1 : pUnit->dwClassId);
         if (pMonStats2Txt)

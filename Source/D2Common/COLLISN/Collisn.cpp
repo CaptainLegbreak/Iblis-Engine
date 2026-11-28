@@ -9,6 +9,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 #include "D2CMPApi.h"
+#include "D2ClientApi.h"
 
 #define RAYTRACE_LOAD_ROOM() \
     nRoomX = pRoom->tCoords.nSubtileX; \
@@ -57,8 +58,6 @@ enum
 D2RoomCollisionGridStrc* __fastcall DUNGEON_GetCollisionGridFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A010
 
 void __fastcall DUNGEON_SetCollisionGridInRoom(D2ActiveRoomStrc* pRoom, void* pCollisionGrid); // 0x0061A040
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
 
 int __fastcall DUNGEON_AreSubtileCoordinatesInsideRoom(D2DrlgCoordsStrc* pDrlgCoords, int nX, int nY); // 0x00619DF0
 

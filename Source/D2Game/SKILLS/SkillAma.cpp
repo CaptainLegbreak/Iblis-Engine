@@ -26,6 +26,7 @@ struct D2DataTablesStrc;
 
 
 #include "D2GameFuncs.h"
+#include "D2ClientApi.h"
 
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
@@ -43,9 +44,6 @@ void __fastcall SUNITDMG_AllocCombat(D2GameStrc* pGame, D2UnitStrc* pAttacker, D
 
 
 static void __stdcall SKILLS_DamageImpaleWeapon(D2GameStrc* pGame, int nChance, int nAmount, D2UnitStrc* pItem, D2UnitStrc* pUnit); // 0x005DAA40
-
-unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
-
 
 struct Skills;
 
@@ -83,17 +81,6 @@ int __fastcall SKILLS_CountAuraTargets(D2GameStrc* pGame, D2UnitStrc* pUnit, int
 
 
 D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc*, int, int); // 0x00552F60
-
-
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc*); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc*); // 0x0045AE20
-
-
-int __fastcall SKILLDESC_GetSkillParamSix(int); // 0x004F4110
-
-
-int __fastcall SKILLDESC_GetSkillParamTwo(int nSkillId); // 0x004EFC20
 
 
 void __fastcall SUNITDMG_DrainItemDurability(D2GameStrc* pGame, D2UnitStrc* pAttacker, D2UnitStrc* pDefender, int nUnused); // 0x0057D4F0

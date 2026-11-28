@@ -36,9 +36,7 @@ extern tagPALETTEENTRY gatRGBAPalette[256]; // 0x0081E668
 
 extern D2Palette256Strc gatShadowsLightGammaPalette[49]; // 0x0081EA68
 
-extern D2Palette256Strc gatLightPalette[16]; // 0x00820A68
 
-extern unsigned char gabPalette[256]; // 0x00821A68
 
 extern unsigned char gabLuminancePalette[65536]; // 0x00821B68
 
@@ -192,8 +190,8 @@ int __stdcall PALETTE_LoadPaletteFiles(const char* szDatFileName, const char* sz
     memcpy(gatShadowsLightGammaPalette, pTables + 0x400, sizeof(gatShadowsLightGammaPalette));
     memcpy(gabLuminancePalette, pTables + 0x43500, sizeof(gabLuminancePalette));
     memcpy(gabScreenPalette, pTables + 0x33500, sizeof(gabScreenPalette));
-    memcpy(gatLightPalette, pTables + 0x2400, sizeof(gatLightPalette));
-    memcpy(gabPalette, pTables + 0x3400, sizeof(gabPalette));
+    memcpy(&gatShadowsLightGammaPalette[32], pTables + 0x2400, 16 * sizeof(D2Palette256Strc));
+    memcpy(&gatShadowsLightGammaPalette[48], pTables + 0x3400, sizeof(D2Palette256Strc));
     memcpy(gabStatesPalette, pTables + 0x53500, sizeof(gabStatesPalette));
     memcpy(gabDarkBlendPalette, pTables + 0x5B500, sizeof(gabDarkBlendPalette));
     memcpy(gabDarkenPalette, pTables + 0x6B500, sizeof(gabDarkenPalette));

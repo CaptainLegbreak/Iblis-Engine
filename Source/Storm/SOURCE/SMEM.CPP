@@ -2,6 +2,7 @@
 #include "D2StormTypes.h"
 #include "D2Win32SystemInfo.h"
 #include "StormApi.h"
+#include "D2ClientApi.h"
 
 enum D2SMemBlockFlags
 {
@@ -29,8 +30,6 @@ void __stdcall SMemZero(void* pDest, unsigned int nSize);                       
 void __cdecl SMemInitialize();                                                                      // 0x00411CD0
 void __cdecl InitPageSize();                                                                   // 0x00411A20
 void __fastcall UnlinkAndFreeHeap(D2SMemHeapStrc** ppLink);                                         // 0x00411A80
-void __cdecl AUTOMAP_ReleaseFreeBlocks();                                                              // 0x00412000
-
 extern int gbCallerFirst;                                                                          // 0x00708340
 extern unsigned int gnHeapId;                                                                      // 0x00708344
 extern unsigned int gdwCallerId;                                                                   // 0x007768A8
@@ -43,7 +42,6 @@ extern unsigned long gnFlag2;                                                   
 D2CriticalSectionStrc gaFreeBlockLocks_00776CC0[0x100];                                                     // 0x00776CC0
 extern int gnFlag1;                                                                                // 0x007784C0
 extern unsigned long gnFlag0;                                                                                // 0x007784C4
-extern int gabFreeBlockDirty[0x100];                                                               // 0x007784C8
 extern D2SMemHeapStrc* gpFreeBlockSweep;                                                           // 0x007788C8
 int gnFlag3;                                                                                       // 0x007788CC
 int gbHeapInitialized;                                                                             // 0x007788D0

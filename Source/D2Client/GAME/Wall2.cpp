@@ -115,11 +115,9 @@ extern "C" __declspec(dllimport) unsigned int __stdcall GetTickCount(); // 0x006
 
 extern int gVar_0072A968_Mode; // 0x0072A968
 
-extern unsigned int gVar_006CE268_Flags; // 0x006CE268
+extern unsigned int gdwBitMasks[]; // 0x006CE268
 
-extern unsigned int gVar_006CE26C_Flags; // 0x006CE26C
 
-extern unsigned int gVar_006CE274_Flags; // 0x006CE274
 
 extern int __fastcall CUNIT_IsUnitDead(D2UnitStrc*); // 0x00464860
 
@@ -489,7 +487,7 @@ static void __stdcall WALL2_AddUpper(Cell* cell,D2ActiveRoomStrc* room,Context* 
         node->x=8*(coordinates.nSubtileX+5*FIELD(int,tile,8));
         node->y=8*(coordinates.nSubtileY+5*FIELD(int,tile,12));
     }
-    FIELD(unsigned int,context,0)|=gVar_006CE268_Flags;
+    FIELD(unsigned int,context,0)|=gdwBitMasks[0];
     sub_004DD460_InsertSorted(&FIELD(Node*,cell,32),node);
 }
 
@@ -509,7 +507,7 @@ static void __stdcall WALL2_AddRoof(Cell* cell,D2ActiveRoomStrc* room,Context* c
         node->x=8*(coordinates.nSubtileX+5*FIELD(int,tile,8));
         node->y=8*(coordinates.nSubtileY+5*FIELD(int,tile,12));
     }
-    FIELD(unsigned int,context,0)|=gVar_006CE26C_Flags;
+    FIELD(unsigned int,context,0)|=gdwBitMasks[1];
     sub_004DD460_InsertSorted(&FIELD(Node*,cell,28),node);
 }
 
@@ -532,7 +530,7 @@ static void __stdcall WALL2_AddFloor(Cell* cell, D2ActiveRoomStrc* room, Context
         node->x = 8 * (coordinates.nSubtileX + 5 * FIELD(int, tile, 8));
         node->y = 8 * (coordinates.nSubtileY + 5 * FIELD(int, tile, 12));
     }
-    FIELD(unsigned int, context, 0) |= gVar_006CE274_Flags;
+    FIELD(unsigned int, context, 0) |= gdwBitMasks[3];
     Node* last = FIELD(Node*, cell, 16);
     if (!last)
     {
@@ -566,7 +564,7 @@ static void __stdcall WALL2_AddSpecial(Cell* cell,Context* context,D2UnitStrc* u
     if(type==2 || (type>3 && type<=5)) y=FIELD(int,FIELD(D2DynamicPathStrc*,unit,44),16);
     else { D2DynamicPathStrc* path=FIELD(D2DynamicPathStrc*,unit,44); y=path ? PATH_GetYPosition(path) : 0; }
     node->y=8*y;
-    FIELD(unsigned int,context,0)|=gVar_006CE274_Flags;
+    FIELD(unsigned int,context,0)|=gdwBitMasks[3];
     Node* last=FIELD(Node*,cell,16);
     if(!last) { FIELD(Node*,cell,16)=node; return; }
     while(last)
@@ -596,7 +594,7 @@ static void __stdcall WALL2_AddOverlay(Cell* cell,Context* context,D2UnitStrc* u
     if(type==2 || (type>3 && type<=5)) y=FIELD(int,FIELD(Path*,unit,44),16);
     else { Path* path=FIELD(Path*,unit,44); y=path ? PATH_GetYPosition(path) : 0; }
     node->y=8*y;
-    FIELD(unsigned int,context,0)|=gVar_006CE274_Flags;
+    FIELD(unsigned int,context,0)|=gdwBitMasks[3];
     Node* last=FIELD(Node*,cell,16);
     if(!last) { FIELD(Node*,cell,16)=node; return; }
     while(last->next) last=last->next;

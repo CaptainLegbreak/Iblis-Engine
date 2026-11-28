@@ -22,6 +22,7 @@
 
 #include "D2Skills.h"
 #include "FogApi.h"
+#include "D2ClientApi.h"
 
 #define STATLIST_SET 0x2000
 
@@ -65,16 +66,10 @@ extern "C" void* __cdecl memmove(void* pDst, const void* pSrc, unsigned int nSiz
 
 void* __fastcall FOG_ReallocPool(void* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
 
-D2ItemStatCostTxt* __fastcall PLAYER_GetItemStatCostTxtRecord(int nStatId); // 0x0045C4F0
-
-extern "C" D2CharStatsTxt* __fastcall sub_004833E0_GetCharStatsTxtRecord(int nClass); // 0x004833E0
-
 int __stdcall ENVIRONMENT_GetPeriodOfDayFromAct(D2DrlgActStrc* pAct, int* pBaseTime); // 0x0061C100
 
 
 int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
-unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
-
 static inline int STATLIST_GetTotalStatValue_Inl(D2StatListStrc* pStatList, int nStatId, unsigned short nLayer);
 
 int __fastcall STATLIST_GetStatFromLayer(D2StatListStrc* pStatListEx, int nLayer_StatId);
@@ -164,10 +159,6 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern unsigned int gdwInvBitMasks[]; // 0x006CE2E8
-
-extern "C" D2StatesTxt* __fastcall GAME_GetStatesTxtRecord(int nStateId); // 0x00452040
-
-
 
 D2StatListStrc* __stdcall D2Common_GetStateFromStatListEx(D2StatListStrc* pStatListEx, int nStateId); // 0x00625650
 

@@ -29,6 +29,7 @@
 #include "D2NetApi.h"
 #include "D2HellApi.h"
 #include "D2MCPClientApi.h"
+#include "D2WinApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -171,10 +172,6 @@ void __cdecl CHAT_ResetChatHistory();                                           
 
 
 
-
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText);                                             // 0x00501820
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered);         // 0x00502320
 
 D2RecordHandlerFn __fastcall sub_005173D3_SetRecordHandler(D2RecordHandlerFn pfnHandler);                  // 0x005173D3
 

@@ -9,6 +9,7 @@
 #include "D2Structs.h"
 #include "D2LevelTxt.h"
 #include "FogApi.h"
+#include "D2ClientApi.h"
 
 extern "C" const char gszEmptyAssertText;                                                     // 0x006CC837
 
@@ -72,8 +73,6 @@ static void __stdcall DRLGMAZE_InitBasicMazeLayout(int nRoomsPerDirection, D2Drl
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
-
-unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
 // Kept noinline: a static whose callers here pass its arguments in registers (the #368 case).
 static __declspec(noinline) int __stdcall DRLGMAZE_LinkMazeRooms(D2DrlgRoomStrc* pDrlgRoom, int nDirection, D2DrlgRoomStrc* pNewRoomEx);

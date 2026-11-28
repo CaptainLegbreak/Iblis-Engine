@@ -48,6 +48,7 @@ int __fastcall D2GAME_GetSummonIdFromSkill(D2UnitStrc* pUnit, int bFromMonster, 
 
 #include "D2GameFuncs.h"
 #include "D2CommonApi3.h"
+#include "D2ClientApi.h"
 
 
 void __fastcall D2GAME_SetSummonPassiveStats(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pPet, int nSkillId, int nSkillLevel, int nItemLevel); // 0x005C4470
@@ -82,9 +83,6 @@ void __stdcall MISSILE_SetTargetY(D2UnitStrc* pMissile, int nTargetY); // 0x0064
 
 typedef void(__fastcall* MissileInitFunc)(D2UnitStrc* pMissile, int nInitSeed);
 
-unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
-
-
 enum
 {
     EVENTTYPE_ACTIVESTATE = 5,
@@ -96,14 +94,6 @@ void __stdcall D2COMMON_10476(D2StatListStrc* pStatList, int nExpireFrame); // 0
 
 
 extern const unsigned int gdwBitMasks[32]; // 0x006CE268
-
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
-
 
 void __stdcall STATLIST_FreeStatList(D2StatListStrc* pStatList); // 0x00626CD0
 
@@ -196,11 +186,6 @@ struct D2MonsterRegionStrc;
 typedef int (__fastcall* AURACALLBACK)(D2AuraCallbackStrc* pAuraCallback, D2UnitStrc* pUnit);
 
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId);                                      // 0x0045C4B0
-
-
-
-
 int __fastcall SUNIT_TeleportUnit(D2GameStrc* pGame, D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, int nX, int nY, int bSkipCollisionSearch, int bSyncOtherPlayersOnly); // 0x00554EA0
 
 
@@ -284,8 +269,6 @@ int __fastcall AIUTIL_GetDistanceToCoordinates_FullUnitSize(D2UnitStrc*, D2UnitS
 
 void __fastcall AITACTICS_SetAiParam(D2UnitStrc* pUnit, int nParam, int nValue, int nArg); // 0x005DE190
 
-
-int __fastcall sub_00472210_SeedRollMasked(D2SeedStrc*, int); // 0x00472210
 
 D2AiCmdStrc* __fastcall AIGENERAL_GetCurrentAiCommandFromUnit(D2UnitStrc*); // 0x0058EE80
 

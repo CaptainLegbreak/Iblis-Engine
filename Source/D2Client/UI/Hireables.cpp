@@ -14,6 +14,7 @@
 #include "D2LangApi.h"
 #include "StormApi.h"
 #include "D2CommonApi2.h"
+#include "D2WinApi2.h"
 
 #define D2_FREE_PANEL_CEL(pCel) if (pCel) { ARCHIVE_FreeClientCellFile(pCel); pCel = 0; }
 
@@ -147,15 +148,6 @@ const Unicode* __fastcall CMDTBL_GetKeyName(int nA, int nB);                    
 int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 void __stdcall D2GFX_DrawBox(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned char nColor, int eDrawMode); // 0x004F6300
-
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText);                                             // 0x00501820
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered);          // 0x00502320
-
-
-void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5);    // 0x00502280
-
-
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource);                                 // 0x00526700
 

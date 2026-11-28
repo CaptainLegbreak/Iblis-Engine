@@ -5,6 +5,7 @@
 #include "D2GameTypes.h"
 #include "D2QuestData.h"
 #include "D2CommonApi.h"
+#include "D2ClientApi.h"
 #pragma function(memset)
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 
@@ -32,7 +33,6 @@ enum
 };
 
 extern char gpAct2Q7NpcMessages[];                                                                          // 0x0073B8C0
-unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                          // 0x0045C390
 D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId);                                // 0x00543640
 #include "D2GameFuncs.h"
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430

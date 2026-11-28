@@ -46,6 +46,7 @@
 #include "D2Txt.h"
 #include "FogApi.h"
 #include "D2CommonApi.h"
+#include "D2ClientApi.h"
 
 #define PATH_UNKNOWN_FLAG_0x00001 0x00001
 
@@ -102,12 +103,6 @@ extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(void* lpfn); // 0x00
 extern const D2CoordStrc gaDirectionToOffset[8]; // 0x006EB398
 
 extern PATH_FUNCTION const gpfnPathFunctions[]; // 0x006EB6D8
-
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
 
 int __stdcall UnitIsDoor(D2UnitStrc* pUnit); // 0x00621A70
 
@@ -177,8 +172,6 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 int __stdcall D2Common_11281_CollisionPatternFromSize(D2UnitStrc* pUnit, int nSize); // 0x00648580
-
-int __fastcall MONSTERUNIQUE_CheckMonStatsFlag(int nMonsterId, int nFlag); // 0x00457490
 
 int __stdcall D2Common_10227(D2UnitStrc* pUnit); // 0x00650540
 

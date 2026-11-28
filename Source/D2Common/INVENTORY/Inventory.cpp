@@ -33,6 +33,7 @@
 #include "D2ItemModes.h"
 #include "D2InventoryPair.h"
 #include "FogApi.h"
+#include "D2ClientApi.h"
 
 #define STATEMASK_BLUE 18
 
@@ -167,8 +168,6 @@ extern "C" __declspec(noreturn) void __cdecl exit(int); // 0x00681E09
 
 extern CodeEntry gTable_0096CC68[]; // 0x0096CC68
 
-s32 __fastcall GAME_GetUnitClassId(D2UnitStrc*); // 0x00451F60
-
 u8 __stdcall ITEMS_GetBodyLocation(D2UnitStrc*); // 0x00627D40
 
 u8 __stdcall ITEMS_GetComponent(D2UnitStrc*); // 0x00628660
@@ -275,8 +274,6 @@ static int gnComponentArrayRecordCount; // 0x0096D460
 
 static int gbComponentArrayInitialized; // 0x0096D464
 
-int __fastcall ITEMS_CheckUnitFlagEx(D2UnitStrc* pUnit, unsigned int dwMask); // 0x00463720
-
 void __stdcall DUNGEON_AllocDrlgDelete(D2ActiveRoomStrc* pRoom, int nUnitType, int nUnitGUID); // 0x0061A270
 
 void __stdcall UNITS_SetXForStaticUnit(D2UnitStrc* pUnit, int nX); // 0x00620470
@@ -298,11 +295,6 @@ void __stdcall DATATBLS_GetInventoryGridInfo(int nInventoryRecordId, int nUnused
 static BOOL __stdcall INVENTORY_PlaceItemInGrid(D2InventoryStrc* pInventory, D2UnitStrc* pItem, int nXPos, int nYPos, int nInventoryGrid, int nInventoryRecordId); // 0x0063AFD0
 
 static unsigned char __stdcall INVENTORY_GetPlacementWeight(D2InventoryGridStrc* pInventoryGrid, int nXPos, int nYPos, unsigned char nItemWidth, unsigned char nItemHeight); // 0x0063B340
-
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-
 
 int __stdcall ITEMS_CheckWeaponClass(D2UnitStrc* pItem, int nWeaponClass); // 0x00628950
 
@@ -357,8 +349,6 @@ static void __stdcall INVENTORY_FillItemComponentGfxInfo(D2UnitStrc* unit, u8* f
 
 int __stdcall ITEMS_CheckBodyLocation(D2UnitStrc* pItem, int nBodyLoc);                                     // 0x0062ED50
 
-
-int __fastcall CUNIT_ValidateMonsterId(int nMonsterId);                                             // 0x00463900
 
 int __stdcall INVENTORY_IsItemBodyLocFree(D2InventoryStrc* pInventory, D2UnitStrc* pItem, int nBodyLoc, int nInventoryRecordId); // 0x0063CB00
 

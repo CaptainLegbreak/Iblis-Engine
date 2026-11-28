@@ -49,6 +49,8 @@ void* __fastcall FOG_AllocPool(void* pPool, int nSize, const char* szFile, int n
 #include "FogApi2.h"
 #include "D2NetApi.h"
 #include "StormApi2.h"
+#include "D2ClientApi.h"
+#include "D2BNClientApi.h"
 extern "C" char* __cdecl strcpy(char* pDestination, const char* pSource);
 
 typedef void (__fastcall* GAME_ForEachIngameClientCallbackPtr)(D2ClientStrc*, void*);
@@ -183,22 +185,6 @@ struct D2DataTablesStrc;
 struct D2FileTimeStrc;
 
 
-extern char gszInfoText[]; // 0x00882028
-
-extern int gdwGlobal_00882528; // 0x00882528
-
-extern int gnLastStatus; // 0x0072FFA8
-
-extern char gszReplyText[]; // 0x00882428
-
-extern int gnCreateAccountResult; // 0x008822A4
-
-extern int gnChangePasswordResult; // 0x008822A0
-
-extern int gnLoginRetryCount; // 0x00882538
-
-extern int gdwGlobal_00730190; // 0x00730190
-
 extern int gdwGlobal_00882750; // 0x00882750
 
 int __stdcall SBigDel(void* pArg); // 0x00424E40
@@ -209,8 +195,6 @@ extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalS
 extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC214
 
 int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
-
-int __fastcall GAME_GetUnitGUID(D2UnitStrc* pUnit); // 0x00451F50
 
 void __fastcall GAME_SendUnitRemovalToClient(D2ClientStrc* pClient, void* pUnit); // 0x0052DFB0
 
@@ -594,11 +578,6 @@ extern D2UnkPlrMsgStrc gaUnitModeMessages[20]; // 0x007319E8
 
 void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-
-
 D2UnitStrc* __stdcall SUNIT_GetTargetUnit(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00553540
 
 
@@ -833,9 +812,6 @@ struct D2GSPacketSrv27
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* szFormat, ...); // 0x006CC468
 
 int gbQuestDebug; // 0x008846DC
-
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
 
 void __fastcall MONSTER_SetLevelId(D2UnitStrc* pUnit, int nLevelId); // 0x00573500

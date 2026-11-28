@@ -14,6 +14,8 @@
 #include "D2CommonApi.h"
 #include "StormApi.h"
 #include "D2WinApi.h"
+#include "D2ClientApi.h"
+#include "D2BNClientApi.h"
 
 struct D2PlayerDataStrc;
 
@@ -31,14 +33,6 @@ typedef int (__stdcall* D2FarProcFn)();
 
 extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(D2FarProcFn lpfn);                              // 0x006CC34C
 
-void __fastcall DLIGHTMAP_ReleaseLight(void* pResource);                                       // 0x004743D0
-
-void __cdecl TEXT_ResetTextBox();                                                                   // 0x0049F960
-
-
-
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
-
 extern D2DataTablesStrc* sgptDataTables;                                                                    // 0x00744304
 
 extern D2WheelCallbackFn gpfnWheelUp;                                                              // 0x007A7404
@@ -47,13 +41,7 @@ extern D2WheelCallbackFn gpfnWheelDown;                                         
 
 extern D2HotkeyStrc gtHotkeys_007A6F90[NUM_HOTKEYS];                                                        // 0x007A6F90
 
-extern D2UnitStrc* gapAiTargets[];                                                                  // 0x007A7470
-
 extern unsigned char gabColors_007BCAD8[5];                                                                 // 0x007BCAD8
-
-extern int gnInvPanelMode;                                                                              // 0x007BCBF0
-
-extern int gbGoldButtonDisabled;                                                                               // 0x007BCE2C
 
 extern int gnDialogState;                                                                               // 0x00721E34
 
@@ -69,23 +57,13 @@ extern int gnHoverCellX;                                                        
 
 extern int gnHoverCellY;                                                                               // 0x00721E50
 
-extern int gbHoverInGrid;                                                                              // 0x007BCBE4
-
 extern int gbHoverInBodyLoc;                                                                              // 0x007BCBE8
-
-extern int gpHoverItem;                                                                              // 0x007BCBF4
 
 extern int gpLastHoverItem;                                                                              // 0x007BCBF8
 
 extern int gbTextPanelOpen;                                                                               // 0x007BF1FA
 
-extern D2TextHeaderStrc* gpTextHeader;                                                             // 0x007BF250
-
-extern int gnTradeState;                                                                               // 0x007C0E7C
-
 unsigned char* gpDDrawDebugFontGlyphs;                                                             // 0x008815AC
-
-extern void* gpReply;                                                                              // 0x008818D0
 
 extern "C" void* gpGidFileData;                                                                    // 0x00882744
 

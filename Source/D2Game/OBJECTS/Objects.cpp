@@ -23,6 +23,7 @@
 #include "FogApi.h"
 #include "D2CommonApi2.h"
 #include "D2TxtItems.h"
+#include "D2ClientApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -99,16 +100,7 @@ extern const D2ObjectTableStrc gaShrineObjectTable[6]; // 0x006E1080
 
 D2UnitStrc* __fastcall SUNIT_AllocUnitData(int nUnitType, int nClassId, int nX, int nY, D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, char nAllocFlags, int nMode, unsigned int nOverrideUnitGUID); // 0x00555230
 
-unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
-
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
-
-
 D2UnitStrc* __fastcall ITEMS_DropGoldAtCoordinates(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, D2CoordStrc* pCoords); // 0x00559300
-
-
-int __fastcall OBJECTS_RollRandomNumber(D2SeedStrc* pSeed, int nMin, int nMax); // 0x004BC500
 
 
 D2ObjectControlStrc* __fastcall OBJRGN_GetObjectControlFromGame(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom); // 0x00546FA0
@@ -141,11 +133,6 @@ struct D2WarpEventArgStrc
 };
 
 extern "C" const char gszSUnitSourceFile[]; // 0x006E10F8
-
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-
 
 int __fastcall SUNIT_TeleportUnit(D2GameStrc* pGame, D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, int nX, int nY, int bSkipCollisionSearch, int bSyncOtherPlayersOnly); // 0x00554EA0
 
@@ -268,9 +255,6 @@ struct D2Unk0056DCC0Strc;
 typedef void (__fastcall* D2ObjInitFn)(D2ObjInitFnStrc* pOp);
 
 extern D2ObjInitFn sgInitTable[80]; // 0x00731BC0
-
-unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
-
 
 D2TimerArgStrc* __fastcall OBJECTS_AllocTimerArg(D2GameStrc* pGame); // 0x0054F520
 

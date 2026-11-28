@@ -6,6 +6,7 @@
 #include "D2DataTbls.h"
 #include "D2Txt.h"
 #include "D2CommonApi.h"
+#include "D2ClientApi.h"
 struct D2InventoryStrc;
 
 struct D2CompositStrc
@@ -18,7 +19,6 @@ extern D2DataTablesStrc* sgptDataTables;                                        
 extern unsigned int gdwBitMasks[];                                                                          // 0x006CE268
 extern const D2CompositStrc gaWeaponClassCodeTable[13];                                                     // 0x006EB748
 
-D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int nMonsterId);                       // 0x00451FE0
 unsigned int __stdcall ITEMS_GetWeaponClassCode(D2UnitStrc* pItem); // 0x00628500
 unsigned int __stdcall ITEMS_Get2HandWeaponClassCode(D2UnitStrc* hItem); // 0x00628530
 unsigned char __stdcall ITEMS_GetComponent(D2UnitStrc* pUnit);                                              // 0x00628660

@@ -1,6 +1,8 @@
 #include "D2BNClient.h"
 #include "FogApi.h"
 #include "FogApi2.h"
+#include "BnclientApi.h"
+#include "D2GlideApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -29,8 +31,6 @@ void __cdecl BNMESSQUEUE_InitMessageQueue(); // 0x005201E0
 int __cdecl BNMESSQUEUE_FreeAllMessages(); // 0x00520440
 
 extern "C" int __cdecl BNDOWNLOAD_SetDisconnected(); // 0x00520AD0
-
-void __cdecl sub_00521B90_ClearSrpState(); // 0x00521B90
 
 extern BnClientInterface gtBnClientInterface; // 0x0072FAA0
 
@@ -139,10 +139,8 @@ extern "C" int __fastcall BNSEND_ChangePassword(const char* szAccountName, const
 int __fastcall BNSEND_GetChangePasswordResult(int* pResult); // 0x0051C3B0
 extern "C" int __fastcall BNDOWNLOAD_EnterChat(const char* szArg1, const char* szArg2, int nArg3, const char* szText, int nFlags); // 0x0051C3E0
 int __cdecl BNSEND_LeaveChat(); // 0x0051C460
-extern "C" int __cdecl sub_0051CA10_Return14(); // 0x0051CA10
 char __cdecl BNSEND_GetGatewayLetter(); // 0x0051CA20
 extern "C" int __cdecl BNDOWNLOAD_IsReady(); // 0x0051CA30
-extern "C" int __cdecl BNCLIENT_IsSetEmailRequested(); // 0x0051CA70
 extern "C" void* __cdecl BNSEND_OpenBNetConnection(); // 0x0051D1C0
 int __cdecl BNNEWS_UnloadBNetNews(); // 0x0051D750
 extern "C" int __fastcall BNSEND_LoadBNetNews(int (__fastcall* pfnMessage)(unsigned int nStamp, const char* szText), int (__cdecl* pfnRefresh)()); // 0x0051DBF0

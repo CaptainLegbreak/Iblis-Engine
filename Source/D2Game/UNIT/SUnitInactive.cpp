@@ -68,6 +68,7 @@ void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* 
 
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
+#include "D2ClientApi.h"
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
@@ -118,8 +119,6 @@ D2MapAIStrc* __fastcall DRLGPRESET_ChangeMapAI(D2MapAIStrc** ppMapAI1, D2MapAISt
 
 int __fastcall PLAYERPETS_HandlePetDeactivation(D2GameStrc* pGame, D2UnitStrc* pOwner, D2UnitStrc* pUnit); // 0x005752B0
 
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
 
 static int SUNITINACTIVE_IsItemNodeAlive(D2InactiveItemNodeStrc* pNode, D2GameStrc* pGame);
 

@@ -49,6 +49,7 @@ struct D2MonStatsTxt;
 #include "D2CommonApi2.h"
 #include "D2CommonApi.h"
 #include "D2CommonApi3.h"
+#include "D2ClientApi.h"
 
 int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
 
@@ -86,8 +87,6 @@ struct D2AiCallback7ArgStrc
 int __fastcall sub_00451F30_TestUnitFlag(D2UnitStrc* pUnit, int nFlag); // 0x00451F30
 
 int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
-
-unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
 
 int __fastcall AIUTIL_GetThreat(D2UnitStrc* pUnit); // 0x005DC920
 
@@ -131,8 +130,6 @@ extern "C" const char gszEmptyAssertText; // 0x006CC837
 
 extern "C" __declspec(noreturn) void __cdecl exit(int); // 0x00681E09
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc*,int,int); // 0x00463740
-
 struct D2UnitStrc;
 
 struct D2AiTargetSearchArgsStrc;
@@ -160,10 +157,6 @@ struct D2AiTargetSearchArgsStrc
 
 extern "C" unsigned int __fastcall sub_00541860(D2UnitStrc* pUnit); // 0x00541860
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-
 enum D2C_J07AiConstants
 {
     UNITFLAG_NOTC = 0x20000,
@@ -189,8 +182,6 @@ extern unsigned int gdwBitMasks[]; // 0x006CE268
 unsigned int __fastcall AIUTIL_GetDistanceToCoordinates(D2UnitStrc* pUnit, int nX, int nY); // 0x005DC5C0
 
 
-
-D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
 
 int __fastcall MONSTERUNIQUE_CheckMonTypeFlag(D2UnitStrc* pUnit, int nFlag); // 0x005A0180
 
@@ -237,9 +228,6 @@ int __fastcall MONSTERAI_GetTargetOverrideGUID(D2UnitStrc* pUnit); // 0x00573100
 
 
 D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
-
-int __fastcall sub_00472210_SeedRollMasked(D2SeedStrc* pSeed, int nMax); // 0x00472210
-
 
 static int __stdcall AIUTIL_ResolveTargetOverride(int bCheckCollision, int bUseEligibilityCheck, D2UnitStrc** ppUnit, int* pDistance, D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x005DD610
 

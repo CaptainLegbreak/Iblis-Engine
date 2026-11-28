@@ -13,6 +13,7 @@
 #include "D2CMPApi.h"
 #include "D2SoundApi.h"
 #include "StormApi2.h"
+#include "D2GlideApi.h"
 
 struct D2CriticalSectionStrc;
 
@@ -64,16 +65,6 @@ extern "C" __declspec(dllimport) int __stdcall BinkDoFrame(D2BinkStrc* pBink); /
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
-unsigned int __fastcall GLCORE_GetPaletteColor(int nPaletteIndex); // 0x005093F0
-
-void __fastcall GLCORE_SetColorCombineMode(int nState); // 0x005094B0
-
-void __fastcall GLCORE_SetAlphaBlendMode(int nMode); // 0x00509500
-
-void __cdecl sub_0050BE20_GlideDebugRefresh(); // 0x0050BE20
-
-void __fastcall GLVERTEX_SetAmbientColor(int nRed, int nGreen, int nBlue); // 0x0050DBC0
-
 void __cdecl DDCORE_ReleaseSurfaces(); // 0x00511A80
 
 int __fastcall DDCORE_CreateSurface(void* hWnd, int nResolutionMode); // 0x005115E0
@@ -95,25 +86,7 @@ extern void (__stdcall* gpfnGrBufferClear)(unsigned int dwColor, unsigned int nA
 
 extern void (__stdcall* gpfnGrChromakeyMode)(int bEnable); // 0x0087EB8C
 
-extern unsigned int gaGlidePalette[256]; // 0x0087EBA0
-
 extern void (__stdcall* gpfnGrConstantColorValue)(unsigned int dwColor); // 0x0087EFA0
-
-extern int gbGlidePaletteTable; // 0x0087EFC8
-
-extern int gnGlideColorCombineState; // 0x0087EFD8
-
-extern int gnGlideAlphaCombineMode; // 0x0087EFDC
-
-extern int gnGlideTexFilterMode; // 0x0087EFE0
-
-extern int gbGlideDrawing; // 0x0087EFE4
-
-extern unsigned int gnGlideBinkX; // 0x00880C08
-
-extern D2BinkStrc* gpGlideBink; // 0x00880C0C
-
-extern int gbGlideBinkDone; // 0x00880C18
 
 D2DDrawSurfaceClass* gpDDrawPrimarySurface;                                                               // 0x00881278
 
@@ -130,8 +103,6 @@ extern D2BinkStrc* gpDDrawBink; // 0x008816C0
 extern int gbDDrawBinkDone; // 0x008816CC
 
 int __fastcall DDCORE_Close(); // 0x00511B80
-
-extern D2CriticalSectionStrc* gpRenderCriticalSection; // 0x007C9134
 
 unsigned int gaGlideDebugLight[0x400]; // 0x0087F0D0
 
@@ -304,8 +275,6 @@ int gbDDrawPlatformFlag; // 0x0088125C
 char gszDDrawDeviceName[256]; // 0x00881154
 
 
-void __fastcall GLCORE_SetPalette(const tagPALETTEENTRY* pPalette); // 0x00509300
-
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
 struct D2FogSystemInfoStrc;
@@ -315,10 +284,6 @@ struct D2FogSystemInfoStrc;
 unsigned long gdwVideoFlags; // 0x00881140
 
 tagPALETTEENTRY gaDDrawSavedPalette[256]; // 0x00880D40
-
-void __fastcall sub_0050BF50_GlideDrawBox(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, int nDrawMode); // 0x0050BF50
-
-void __fastcall sub_0050C0F0_GlideDrawBoxAlpha(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, unsigned char nAlpha); // 0x0050C0F0
 
 extern "C" char* __cdecl strcpy(char* szDest, const char* szSource);
 
@@ -1006,19 +971,9 @@ struct D2DDrawSurfaceStrc;
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-void __fastcall GLCORE_SetTextureCombineMode(int nTmu); // 0x00509460
-
-void __fastcall GLSUBTILECACHE_TileCacheTouch(D2GlideTileCacheStrc* pCache, int nIndex); // 0x0050F0F0
-
-short __fastcall GLSUBTILECACHE_TileCacheAdd(D2GlideTileCacheStrc* pCache); // 0x0050F2B0
-
 extern D2GrTexInfoStrc gtGlideTileTexInfo; // 0x0072F6A8
 
 extern D2GlideTileCacheStrc gtGlideTileCache; // 0x0087EB48
-
-extern int gnGlideTileTmu; // 0x00880BF8
-
-extern unsigned char* gpGlideTileDecodeBuffer; // 0x00880BFC
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
@@ -1033,8 +988,6 @@ extern "C" __declspec(dllimport) unsigned int __stdcall BinkDDSurfaceType(D2DDra
 extern "C" __declspec(dllimport) int __stdcall BinkSetSoundSystem(void* pfOpen, unsigned long nParam); // 0x006CC5D4
 
 extern "C" __declspec(dllimport) void* __stdcall BinkOpenDirectSound(unsigned long nParam); // 0x006CC5D8
-
-void __cdecl GLIDE_DrawVideoFrame(); // 0x0050FD10
 
 void __cdecl DDRAW_DrawVideoFrame(); // 0x005136F0
 

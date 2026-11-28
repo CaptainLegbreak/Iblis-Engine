@@ -19,6 +19,7 @@
 #include "D2LangApi.h"
 #include "D2CommonApi2.h"
 #include "D2CommonApi3.h"
+#include "D2WinApi2.h"
 
 #define UNIT_ITEM 4
 
@@ -204,8 +205,6 @@ extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* 
 extern "C" const char szFmtD_006D57BC[];                                                                    // 0x006D57BC
 
 extern "C" const char gszFmtRange[];                                                                // 0x006D9D70
-
-void __fastcall D2Win_10131_GetTextDimensions(const Unicode* pText, int* pWidth, int* pHeight);             // 0x00502520
 
 void __fastcall SKILLDESC_DrawTwoTexts(const Unicode* wszText1, const Unicode* wszText2, int nLeft, int nY, int nRight, int nColor1, int nColor2); // 0x004E9870
 

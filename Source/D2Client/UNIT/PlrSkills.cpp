@@ -14,6 +14,7 @@
 #include "D2CommonApi.h"
 #include "D2CommonApi2.h"
 #include "D2CommonApi3.h"
+#include "D2ClientApi.h"
 
 #define UNIT_PLAYER 0
 #define UNIT_MONSTER 1
@@ -47,7 +48,6 @@ void __fastcall GFX_ResetGfx(D2UnitStrc* pUnit); // 0x0046F000
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 void __stdcall PLRSKILLS_UpdateStateColor(D2UnitStrc* pUnit); // 0x004D97F0
 void __fastcall PLRSKILLS_StartStateOverlays(D2UnitStrc* pUnit, int nState); // 0x004D9920
-unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 void __stdcall STATLIST_SetStat(D2StatListStrc* pStatList, int nStatId, int nValue, unsigned short nLayer); // 0x00627150
 int __fastcall SPELLSEL_GetSkillMaxLevel(int nSkillId); // 0x004AA8B0
 int __stdcall sub_K06_EmitGettier1(int nValue);

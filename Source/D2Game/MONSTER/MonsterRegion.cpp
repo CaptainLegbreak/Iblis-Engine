@@ -349,7 +349,6 @@ void __fastcall MONSTER_ToggleSummonerFlag(D2UnitStrc* pUnit, int nFlag, int bSe
 
 extern const unsigned char gnSpawnMask; // 0x006CE268
 
-extern const unsigned char gnRangedMask; // 0x006CE278
 
 extern "C" void* __cdecl memmove(void*,const void*,unsigned int); // 0x00683840
 
@@ -409,7 +408,7 @@ static void __stdcall MONSTERREGION_SelectMonsters(D2SeedStrc* pSeed, int bHighe
             for (int j = 0; j < 20; ++j)
             {
                 D2MonStatsTxt* pMonStatsTxtRecord = MonStats(nMonsterId);
-                if (pMonStatsTxtRecord && (pMonStatsTxtRecord->nMonStatsFlags[3] & gnRangedMask))
+                if (pMonStatsTxtRecord && (pMonStatsTxtRecord->nMonStatsFlags[3] & gdwBitMasks[4]))
                     break;
 
                 nIndex = RollLimited(pSeed, nAvailable);

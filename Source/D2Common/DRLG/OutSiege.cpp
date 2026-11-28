@@ -8,6 +8,7 @@
 #include "D2Drlg.h"
 #include "D2DrlgMaps.h"
 #include "FogApi.h"
+#include "D2ClientApi.h"
 
 struct D2CoordStrc;
 
@@ -132,8 +133,6 @@ void DRLGOUTSIEGE_MarkBottomRightLvlLinkCells(D2DrlgLevelStrc* pLevel);
 int __fastcall DRLGOUTSIEGE_GetSecondaryBorderPresetId(D2DrlgLevelStrc* pLevel, int nType, int nIndex);
 
 int __fastcall DRLGOUTSIEGE_TestSecondaryBorderCell(D2DrlgLevelStrc* pLevel, int nX, int nY, int nPresetId, int nUnused, unsigned int dwCellFlags);
-
-unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
 
 static int DRLGOUTSIEGE_PlacePrisonAtCell(D2DrlgLevelStrc* pLevel, int nX, int nY);
 

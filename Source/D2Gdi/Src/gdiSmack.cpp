@@ -3,6 +3,7 @@
 #include "D2Win32Types.h"
 #include "StormApi.h"
 #include "StormApi2.h"
+#include "D2GlideApi.h"
 
 
 extern "C" __declspec(dllimport) void __stdcall SmackClose(D2SmackStrc* hSmack); // 0x006CC608
@@ -15,7 +16,6 @@ extern unsigned char gabGdiSmackPaletteMap[256]; // 0x0098A178
 int gbRemapValid; // 0x0098A27C
 extern unsigned char gabGamePalette_007C8CC8[]; // 0x007C8CC8
 extern int gbSurfaceActive_007C9140; // 0x007C9140
-extern int gbRenderPaused; // 0x007C9144
 static void __stdcall GDISMACK_RemapRows(int nWidth, D2SmackRecordStrc* pRect, unsigned int nRows); // 0x006C9690
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0

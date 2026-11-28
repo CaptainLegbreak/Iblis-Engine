@@ -15,6 +15,7 @@
 #include "D2SoundTypes.h"
 #include "FogApi.h"
 #include "StormApi.h"
+#include "D2GlideApi.h"
 
 
 
@@ -92,8 +93,6 @@ int gbOldSoundDriver;                                                           
 int gbCheckEmu10k1;                                                                                // 0x00881788
 
 extern int gbCheckCrlds3d;                                                                         // 0x0088178C
-
-extern int gfSoundExpansion;                                                                              // 0x00881790
 
 extern D2KsPropertySetStrc* gpEaxListenerPropertySet;                                              // 0x008816D8
 

@@ -26,6 +26,7 @@
 #include "D2GfxApi.h"
 #include "D2WinApi.h"
 #include "StormApi2.h"
+#include "D2WinApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -465,10 +466,6 @@ int __fastcall UNICODE_StrLen(const Unicode* pString);                          
 void __fastcall TEXT_PrintChatLine(const Unicode* pText, char nColor);                              // 0x0049E3A0
 
 
-D2SplittedTextStrc* __fastcall D2WINFONT_SplitText(Unicode* pText, unsigned int* pLineCount, int nWidth);    // 0x00502970
-
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText);                                             // 0x00501820
-
 extern int gnLanguageId;                                                                           // 0x007BB5DC
 
 extern unsigned char gbChatInputOpen;                                                              // 0x007BB5E1
@@ -486,9 +483,6 @@ extern Unicode gwszChatLine_007BB638[];                                         
 int __stdcall CHAT_HandleWhisperCommand(int bCheckStored, char* szInput, const char* szCommand); // 0x0047C1F0
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
-
-void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
-
 
 const Unicode* __fastcall CMDTBL_GetKeyText(int nKey, int nArg2); // 0x00469DE0
 

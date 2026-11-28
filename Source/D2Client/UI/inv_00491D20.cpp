@@ -691,10 +691,7 @@ extern D2PanelTabStrc gaNpcTabs[]; // 0x00722110
 extern int gdwNpcPanelDelayTick; // 0x007BCC08
 extern int gnInvMouseX; // 0x007BCA4C
 extern int gnInvMouseY; // 0x007BCBD8
-extern int gnGlobal_007BCBB0; // 0x007BCBB0
-extern int gnGlobal_007BCBB4; // 0x007BCBB4
-extern int gnNpcInvRectTop; // 0x007BCBB8
-extern int gnGlobal_007BCBBC; // 0x007BCBBC
+extern D2InvRectStrc gtNpcInvRect; // 0x007BCBB0
 extern int gbPanelButtonClicked; // 0x007BCE9C
 extern D2InventoryGridInfoStrc gtNpcInvGrid; // 0x007BCB58
 int __cdecl INV_IsNpcStateIdle(); // 0x00483E10
@@ -760,10 +757,10 @@ void __stdcall INV_HandleNpcClick(SMSGHANDLER_PARAMS* msg)
         }
         msg->bReturn=1;msg->lResult=0;sub_00420290_BreakHandlerChain(msg);return;
     }
-    if(x<gnGlobal_007BCBB0 || x>gnGlobal_007BCBB4) goto OUTSIDE;
+    if(x<gtNpcInvRect.nLeft || x>gtNpcInvRect.nRight) goto OUTSIDE;
     {
         const int top=gnScreenHeight+gnPanelOffsetY-0x6D;
-        if(y>=top && y<=gnGlobal_007BCBBC) {
+        if(y>=top && y<=gtNpcInvRect.nBottom) {
             int hasSelected=0;int selected=0;int clicked=-1;
             for(int i=0;i<gnButtonCount;++i) {
                 if(gaPanelButtons_007BC9E0[i].nValue==1) {selected=i;hasSelected=1;}
@@ -789,7 +786,7 @@ void __stdcall INV_HandleNpcClick(SMSGHANDLER_PARAMS* msg)
             msg->bReturn=1;msg->lResult=0;sub_00420290_BreakHandlerChain(msg);return;
         }
     }
-    if(y<gnNpcInvRectTop || y>gnGlobal_007BCBBC) goto OUTSIDE;
+    if(y<gtNpcInvRect.nTop || y>gtNpcInvRect.nBottom) goto OUTSIDE;
     {
     int nArg;
     if((gnInvPanelMode==1 || gnInvPanelMode==2) && x>=gtNpcInvGrid.nGridLeft && x<=gtNpcInvGrid.nGridRight && y>=gtNpcInvGrid.nGridTop && y<=gtNpcInvGrid.nGridBottom && NPCMENU_GetInteractNpcId(&nArg)) {

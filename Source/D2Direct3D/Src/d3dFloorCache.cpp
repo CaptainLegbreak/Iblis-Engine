@@ -116,7 +116,7 @@ extern "C" const char gszFailedToUnlockMemorySurface[]; // 0x006FC284
 
 extern "C" const char gszFailedToLockMemorySurface[]; // 0x006FC2A4
 
-extern const unsigned int gnRenderFlag; // 0x006CE290
+extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 extern D2D3DDeviceStrc* gpD3DDevice_00970E78; // 0x00970E78
 
@@ -623,7 +623,7 @@ int __fastcall sub_006BB870_BindTileTexture(D2TileLibraryEntryStrc* pTile)
                 hResult = ((D2DDSurfaceStrc*)gpMemorySurface)->lpVtbl->Unlock((D2DDSurfaceStrc*)gpMemorySurface, 0);
                 if (hResult) D3DCORE_LogDDrawError(gszFailedToUnlockMemorySurface, hResult);
             }
-            if (gnRenderFlags_0096F3A8 & gnRenderFlag)
+            if (gnRenderFlags_0096F3A8 & gdwBitMasks[10])
                 D3DCORE_CopySurface(pNode->pSurface, (D2DDSurfaceStrc*)gpMemorySurface, gnHeight_009702B8);
             else
                 pNode->pTexture->lpVtbl->Load(pNode->pTexture, (D2D3DTextureStrc*)gpMemoryTexture);
@@ -673,7 +673,7 @@ void __fastcall D3DFLOORCACHE_BindTileTexture(D2CacheBindingStrc* pTile)
             D3DCORE_LogDDrawError(gszFailedToUnlockMemorySurface, hResult);
         }
 
-        if (gnRenderFlags_0096F3A8 & gnRenderFlag)
+        if (gnRenderFlags_0096F3A8 & gdwBitMasks[10])
         {
             D3DCORE_CopySurface(pNode->pSurface, gpMemorySurface32, 0x20);
         }
