@@ -11,6 +11,11 @@ unsigned int __stdcall sub_00410F60_ReadBits(D2BitBufferStrc* pBuffer, int nBits
 int __stdcall BITMANIP_ReadSigned(D2BitBufferStrc* pBuffer, int nBits);
 void __stdcall BITMANIP_GoToNextByte(D2BitBufferStrc* pBuffer);
 int __stdcall FOG_ComputeChecksum(unsigned char* pData, int nSize);
+int __stdcall SFileOpenArchive(const char* szMpqName, int nPriority, unsigned int dwFlags, void** phMpq);
+int __stdcall SFileOpenFileEx(void* hMpq, const char* szFileName, unsigned int dwFlags, void** phFile);
+int __stdcall SFileGetFileSize(void* hFile, unsigned int* pdwFileSizeHigh);
+int __stdcall SFileReadFile(void* hFile, void* pBuffer, int nToRead, int* pnRead, void* pOverlapped);
+int __stdcall SFileCloseFile(void* hFile);
 
 bool replay::Bind(Functions* f, int, char**)
 {

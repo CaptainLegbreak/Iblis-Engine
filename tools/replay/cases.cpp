@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <string>
+#include <vector>
 
 namespace
 {
@@ -80,6 +82,81 @@ void CaseBitBuffer(const replay::Functions& f)
     }
 }
 
+std::vector<const char*> gMpqs;                 // --mpq PATH, for the cases that read the game's archives
+
+unsigned int Crc32(const unsigned char* p, size_t n)
+{
+    unsigned int c = 0xFFFFFFFF;
+    for (size_t i = 0; i < n; ++i)
+    {
+        c ^= p[i];
+        for (int k = 0; k < 8; ++k)
+            c = (c >> 1) ^ (0xEDB88320 & (0 - (c & 1)));
+    }
+    return ~c;
+}
+
+bool ReadWhole(const replay::Functions& f, void* hMpq, const char* szName, std::vector<unsigned char>* pOut)
+{
+    void* hFile = 0;
+    if (!f.SFileOpenFileEx(hMpq, szName, 0, &hFile) || !hFile)
+        return false;
+    const int nSize = f.SFileGetFileSize(hFile, 0);
+    pOut->assign(nSize > 0 ? nSize : 0, 0);
+    int nRead = 0;
+    const int ok = nSize <= 0 || f.SFileReadFile(hFile, pOut->data(), nSize, &nRead, 0);
+    f.SFileCloseFile(hFile);
+    if (ok && nRead < nSize)
+        pOut->resize(nRead);
+    return ok != 0;
+}
+
+// Level 1: Storm reading the player's archives (--mpq PATH, repeatable): each archive's (listfile), then every
+// 25th file it lists (and the first 40), as name, size and CRC32. Through Storm's own SFile functions, so the
+// engine side runs the engine's Storm and its open PKWARE explode.
+void CaseSFile(const replay::Functions& f)
+{
+    for (size_t m = 0; m < gMpqs.size(); ++m)
+    {
+        void* hMpq = 0;
+        if (!f.SFileOpenArchive(gMpqs[m], 0, 0, &hMpq) || !hMpq)
+        {
+            printf("sfile archive %u: can't open\n", (unsigned)m);
+            continue;
+        }
+        std::vector<unsigned char> list, data;
+        if (!ReadWhole(f, hMpq, "(listfile)", &list))
+        {
+            printf("sfile archive %u: no (listfile)\n", (unsigned)m);
+            continue;
+        }
+        printf("sfile archive %u listfile %u bytes crc %08X\n", (unsigned)m, (unsigned)list.size(),
+               Crc32(list.data(), list.size()));
+        std::string name;
+        int n = 0;
+        for (size_t i = 0; i <= list.size(); ++i)
+        {
+            const char c = i < list.size() ? (char)list[i] : '\n';
+            if (c != '\r' && c != '\n' && c != ';')
+            {
+                name += c;
+                continue;
+            }
+            if (!name.empty() && (n < 40 || n % 25 == 0))
+            {
+                if (ReadWhole(f, hMpq, name.c_str(), &data))
+                    printf("sfile archive %u file %s size %u crc %08X\n", (unsigned)m, name.c_str(),
+                           (unsigned)data.size(), Crc32(data.data(), data.size()));
+                else
+                    printf("sfile archive %u file %s unreadable\n", (unsigned)m, name.c_str());
+            }
+            if (!name.empty())
+                ++n;
+            name.clear();
+        }
+    }
+}
+
 // Level 1: proves the oracle's startup (Game.exe's own C runtime) and that the cases still run after it.
 void CaseStartup(const replay::Functions& f)
 {
@@ -95,7 +172,8 @@ struct Case
     int nLevel;
 };
 
-const Case kCases[] = {{"rng", CaseRng, 0}, {"bitbuf", CaseBitBuffer, 0}, {"startup", CaseStartup, 1}};
+const Case kCases[] = {{"rng", CaseRng, 0}, {"bitbuf", CaseBitBuffer, 0}, {"startup", CaseStartup, 1},
+                       {"sfile", CaseSFile, 1}};
 
 replay::Functions gFunctions;
 const Case* gpCase;
@@ -112,9 +190,12 @@ int main(int argc, char** argv)
     for (int i = 1; i + 1 < argc; ++i)
         if (!strcmp(argv[i], "--case"))
             szCase = argv[i + 1];
+    for (int i = 1; i + 1 < argc; ++i)
+        if (!strcmp(argv[i], "--mpq"))
+            gMpqs.push_back(argv[i + 1]);
     if (!szCase)
     {
-        fprintf(stderr, "usage: %s [--game PATH\\Game.exe] --case NAME   (cases: rng, bitbuf, startup)\n", argv[0]);
+        fprintf(stderr, "usage: %s [--game PATH\\Game.exe] --case NAME   (cases: rng, bitbuf, startup, sfile [--mpq PATH ...])\n", argv[0]);
         return 2;
     }
     if (!replay::Bind(&gFunctions, argc, argv))

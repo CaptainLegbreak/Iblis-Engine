@@ -19,7 +19,12 @@ namespace replay
     X(sub_00410F60_ReadBits, 0x00410F60, unsigned int(__stdcall*)(D2BitBufferStrc*, int))                     \
     X(BITMANIP_ReadSigned, 0x00411030, int(__stdcall*)(D2BitBufferStrc*, int))                                \
     X(BITMANIP_GoToNextByte, 0x00411070, void(__stdcall*)(D2BitBufferStrc*))                                  \
-    X(FOG_ComputeChecksum, 0x00411130, int(__stdcall*)(unsigned char*, int))
+    X(FOG_ComputeChecksum, 0x00411130, int(__stdcall*)(unsigned char*, int))                                 \
+    X(SFileOpenArchive, 0x0041BA60, int(__stdcall*)(const char*, int, unsigned int, void**))                  \
+    X(SFileOpenFileEx, 0x004192F0, int(__stdcall*)(void*, const char*, unsigned int, void**))                 \
+    X(SFileGetFileSize, 0x00416370, int(__stdcall*)(void*, unsigned int*))                                    \
+    X(SFileReadFile, 0x0041B050, int(__stdcall*)(void*, void*, int, int*, void*))                             \
+    X(SFileCloseFile, 0x004198D0, int(__stdcall*)(void*))
 
 template <class T> using Type = T;     // lets a function-pointer type be written before its name
 
