@@ -20,6 +20,7 @@
 #include "D2ExperienceTxt.h"
 #include "D2HellApi.h"
 
+struct D2PoolSystemStrc;
 struct D2SkillListStrc;
 
 struct D2InventoryStrc;
@@ -68,9 +69,9 @@ extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* 
 
 unsigned short __stdcall STRTABLE_FindString(const char* szKey, const wchar_t** ppText); // 0x00524D30
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-void* __fastcall FOG_ReallocPool(void* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
+void* __fastcall FOG_ReallocPool(D2PoolSystemStrc* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
 
 extern "C" const char gszFileModeWb[]; // 0x006D69E0
 
@@ -145,7 +146,7 @@ extern D2ObjectsTxt* gpObjectsTxt; // 0x0096D470
 void __stdcall D2Common_10884_COMPOSIT_unk(D2UnitStrc* pUnit, int nClassId, int nMode, int nUnitType, D2InventoryStrc* pInventory, char* szPath, int* pWeaponClassCode, int bAddPathPrefix, int bDetermine); // 0x0064F5B0
 
 
-int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 void* __fastcall DATATBLS_ReadExcelFile(void* hArchive, const char* szName, const char* szExtension, int* pSize, const char* szFile, int nLine); // 0x00612280
 
@@ -193,7 +194,7 @@ extern "C" char* __cdecl strcpy(char* szDest, const char* szSource);
 
 extern "C" char* __cdecl strcat(char* szDest, const char* szSource);
 
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 void __stdcall DATATBLS_WriteBinFile(char* szFileName, void* pWriteBuffer, unsigned int nBufferSize, int nRecordCount); // 0x006121F0
 

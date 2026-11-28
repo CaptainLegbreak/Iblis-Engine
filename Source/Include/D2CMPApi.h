@@ -1,6 +1,7 @@
 #pragma once
 // D2CMP's exports that the other modules call: cel files, tiles and the sprite cache.
 
+struct D2PoolSystemStrc;
 struct D2CelFileStrc;
 struct D2CelStrc;
 struct D2CmpCelContextStrc;
@@ -12,7 +13,7 @@ void __fastcall D2CMPTileCacheSetFreeCallback(void* pfnCallback); // 0x005FE000
 void __stdcall D2CMPGetTileCacheHits(int* pnArg, int* pnCountB, int* pnCountA, int* pnHitPercent); // 0x005FE010
 extern "C" void __cdecl D2CMPResetTileCacheHits(); // 0x005FE060
 void __cdecl D2CMPTileFreeAsyncLoads(); // 0x005FE070
-void __stdcall D2CMPTileCacheInit(void* pMemPool, int nArg); // 0x005FE120
+void __stdcall D2CMPTileCacheInit(D2PoolSystemStrc* pMemPool, int nArg); // 0x005FE120
 const char* __stdcall D2CMPGetGfxFileExtension(int bAllowCompressed); // 0x005FE1F0
 void __stdcall D2CMPSetNoCompress(int bAllowCompressed); // 0x005FE280
 unsigned int __cdecl D2CMPSpriteCacheGetUsedMemory(); // 0x005FEE10
@@ -20,7 +21,7 @@ int __cdecl D2CMPSpriteCacheGetMaxMemory(); // 0x005FEE40
 int __cdecl D2CMPCelDataCacheGetUsedMemory(); // 0x005FEE60
 int __cdecl D2CMPCelDataCacheGetMaxMemory(); // 0x005FEE70
 void __cdecl D2CMPSpriteFreeAsyncLoads(); // 0x005FF3A0
-void __stdcall D2CMPSpriteCacheInit(void* pMemPool, unsigned int nMaxSize, int nArg, unsigned int nCacheSize); // 0x005FFD40
+void __stdcall D2CMPSpriteCacheInit(D2PoolSystemStrc* pMemPool, unsigned int nMaxSize, int nArg, unsigned int nCacheSize); // 0x005FFD40
 void __stdcall D2CMPSpriteCacheDestroy(int bFree); // 0x005FFE30
 void __cdecl D2CMP_LoadItemPalShifts(); // 0x00600B80
 int __fastcall DATATBLS_CallFree(void* pMemory); // 0x00600C60

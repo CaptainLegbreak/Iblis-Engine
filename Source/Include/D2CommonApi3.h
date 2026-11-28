@@ -1,6 +1,7 @@
 #pragma once
 // D2Common's exports that the other modules call; included only by the units that use it.
 
+struct D2PoolSystemStrc;
 struct D2ActiveRoomStrc;
 struct D2ArenaTxt;
 struct D2BitBufferStrc;
@@ -176,7 +177,7 @@ void __stdcall ITEMMODS_ApplyEthereality(D2UnitStrc* hItem); // 0x0065E4D0
 int __stdcall ITEMMODS_CanItemHaveRareAffix(D2UnitStrc* pItem, const D2RareAffixTxt* pRareAffixTxtRecord); // 0x0065E710
 int __stdcall ITEMMODS_CanItemBeHighQuality(D2UnitStrc* pItem, const D2QualityItemsTxt* pQualityItemsTxtRecord); // 0x0065E7D0
 void __stdcall WAYPOINTS_ValidateAndCopyWaypointData(D2WaypointDataStrc* pSource, D2WaypointDataStrc* pDestination); // 0x006610B0
-D2HoverTextStrc* __stdcall CHAT_AllocHoverMsg(void* pMemPool, const char* szText, int nTimeout); // 0x00661110
+D2HoverTextStrc* __stdcall CHAT_AllocHoverMsg(D2PoolSystemStrc* pMemPool, const char* szText, int nTimeout); // 0x00661110
 int __stdcall TEXT_GetMenuType2NodeCount(D2TextHeaderStrc* pTextHeader); // 0x00661390
 short __stdcall TEXT_GetStringIdOfMenuType2Node(D2TextHeaderStrc* pTextHeader, int nNodeId); // 0x006613C0
 short __stdcall TEXT_GetStringIdOfMenuType0Node(D2TextHeaderStrc* pTextHeader, int nNodeId); // 0x00661400

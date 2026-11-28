@@ -1,4 +1,5 @@
 #pragma once
+struct D2PoolSystemStrc;
 
 struct D2CmpPoolStrc;
 struct D2TileLibraryHashStrc;
@@ -6,7 +7,7 @@ struct AsyncData;
 struct D2CriticalSectionStrc;
 
 D2TileLibraryHashStrc* __cdecl sub_0060CDB0_AllocTileHash(); // 0x0060CDB0
-AsyncData* __fastcall FOG_AsyncDataLoadFileEx(void* hArchive, const char* szFileName, int nArg3, int nArg4, int nArg5, int nArg6, int nArg7, int nArg8, const char* szFile, int nLine); // 0x0040A620
+AsyncData* __fastcall FOG_AsyncDataLoadFileEx(D2PoolSystemStrc* pMemPool, const char* szFileName, int nArg3, int nArg4, int nArg5, int nArg6, int nArg7, int nArg8, const char* szFile, int nLine); // 0x0040A620
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x006CC134
 extern "C" __declspec(dllimport) int __stdcall ReadFile(void* hFile, void* pBuffer, unsigned long nToRead, unsigned long* pnRead, void* pOverlapped); // 0x006CC1A4
 extern "C" __declspec(dllimport) unsigned int __stdcall GetTickCount(); // 0x006CC260
@@ -25,16 +26,16 @@ extern int gaDirectionIndex64[][64]; // 0x006E45A0
 extern int gbCmpCompressedDataMode; // 0x00741EFC
 extern unsigned int gdwBitMasks_006CE268[]; // 0x006CE268
 int __fastcall ARCHIVE_OpenFile(void* hArchive, const char* szFilePath, void** phFile, int bFileNotFoundLogSkipped); // 0x00516E46
-int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 int __fastcall FOG_AsyncDataTestLoaded(AsyncData* ptAsyncData); // 0x0040A7F0
 unsigned int __stdcall SStrHash(const char* szString, unsigned int nFlags, unsigned int nSeed); // 0x00413CE0
 void __fastcall ARCHIVE_CloseFile(void* hArchive, void* hFile); // 0x00516E84
 void __fastcall ARCHIVE_ReadFileToBuffer(void* hArchive, void* hFile, void* pBuffer, unsigned int dwBytesToRead); // 0x00516F85
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
-void __fastcall LRUCacheInit(D2CmpPoolStrc* pPool, void* pMemPool, int nArg, void (__fastcall* pfnFree)(void*), int nBlocks); // 0x00609020
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall LRUCacheInit(D2CmpPoolStrc* pPool, D2PoolSystemStrc* pMemPool, int nArg, void (__fastcall* pfnFree)(void*), int nBlocks); // 0x00609020
 void __fastcall LRUCacheRelease(D2CmpPoolStrc* pPool, void* pMemory); // 0x006092D0
 void __fastcall LRUCacheDestroy(D2CmpPoolStrc* pPool); // 0x006093E0
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 void* __fastcall SubTileCompress(const void* pSrc, int* pLength); // 0x0060D430
 
 #define gnSquareTableCenter_008E9430 (ganSquareTable + 255)
@@ -268,7 +269,7 @@ struct D2CmpPoolStrc
         unsigned char unk0x00[0x34];
         struct
         {
-            void* pMemPool;                                         // 0x00
+            D2PoolSystemStrc* pMemPool;                                         // 0x00
             unsigned int nTotal;                                    // 0x04
             unsigned int nHits;                                     // 0x08
         };

@@ -19,6 +19,7 @@
 #include "StormApi.h"
 #include "StormApi2.h"
 
+struct D2PoolSystemStrc;
 __declspec(nothrow) char* __stdcall SStrDup(const char* szString);                                                             // 0x00414310
 
 
@@ -669,9 +670,9 @@ extern D2CompCodeTxt* gpCompCodeTxt; // 0x0096BCAC
 extern int gbCompileTxt; // 0x0096C8B4
 
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-void __fastcall FOG_FreePool(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 
 

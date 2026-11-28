@@ -10,6 +10,7 @@
 #include "D2CommonApi.h"
 #define QFLAG_PRIMARYGOALDONE 13
 
+struct D2PoolSystemStrc;
 struct D2UnitStrc;
 struct D2QuestDataStrc;
 struct D2Act3Quest5Strc;
@@ -47,7 +48,7 @@ typedef void (__fastcall* PartyCallbackFunction)(D2GameStrc* pGame, D2UnitStrc* 
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 extern char gpAct2Q5NpcMessages[]; // 0x0073AF68
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 void __fastcall QUESTS_CreateTimer(D2QuestDataStrc* pQuest, QUESTUPDATE pfnCallback, int nTicks); // 0x00543F10
 void __fastcall QUESTS_StatusCyclerEx(D2GameStrc* game,D2UnitStrc* player,unsigned char id); // 0x00544190
 void __fastcall QUESTS_QuickRemovePlayerGUID(D2QuestDataStrc* pQuest, D2QuestArgStrc* pQuestArg); // 0x00545310

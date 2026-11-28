@@ -19,6 +19,7 @@
 #include "D2CommonApi.h"
 #include "FogApi.h"
 
+struct D2PoolSystemStrc;
 struct D2StatListStrc;
 
 struct D2UnitStrc;
@@ -117,7 +118,7 @@ void __fastcall SKILLS_ApplyAreaEffect(D2GameStrc* pGame, D2EffectStrc* pEffect)
 int __fastcall SKILLS_AreaEffect_BaalCorpseExplode(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pTarget, int nSkillLevel, int nUnused); // 0x005D2E50
 
 
-void __stdcall UNITFINDS_InitializeUnitFindData(void* pMemPool, D2UnitFindDataStrc* pUnitFindData, D2ActiveRoomStrc* pRoom, int nX, int nY, int nSize, int pfnUnitTest, D2UnitFindArgStrc* pUnitFindArg); // 0x0065A950
+void __stdcall UNITFINDS_InitializeUnitFindData(D2PoolSystemStrc* pMemPool, D2UnitFindDataStrc* pUnitFindData, D2ActiveRoomStrc* pRoom, int nX, int nY, int nSize, int pfnUnitTest, D2UnitFindArgStrc* pUnitFindArg); // 0x0065A950
 
 void __fastcall SUNITDMG_DrainItemDurability(D2GameStrc* pGame, D2UnitStrc* pAttacker, D2UnitStrc* pDefender, int nUnused); // 0x0057D4F0
 

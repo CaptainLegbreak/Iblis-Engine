@@ -1,4 +1,5 @@
 #pragma once
+struct D2PoolSystemStrc;
 // A unit's skills: the skill record and the per-unit skill list
 
 #include "D2Check.h"
@@ -29,7 +30,7 @@ struct D2SkillStrc
 
 struct D2SkillListStrc
 {
-    void* pMemPool; // 0x00
+    D2PoolSystemStrc* pMemPool; // 0x00
     D2SkillStrc* pFirstSkill; // 0x04
     D2SkillStrc* pLeftSkill; // 0x08
     D2SkillStrc* pRightSkill; // 0x0C

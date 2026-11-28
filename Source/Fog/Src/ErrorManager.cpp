@@ -13,6 +13,7 @@
 #include "StormApi2.h"
 #include "D2ClientApi.h"
 
+struct D2PoolSystemStrc;
 typedef unsigned int size_t;
 
 typedef char* va_list;
@@ -434,7 +435,7 @@ bool __cdecl sub_004013A0_IsDebuggerAttached(); // 0x004013A0
 struct AsyncData
 {
     void* hFile;
-    void* pMemPool;
+    D2PoolSystemStrc* pMemPool;
     D2OverlappedStrc tOverlapped;
     AsyncDataLoadFileCallback pAsyncOpDesc;
     AsyncDataEventSlot* pEventSlot;
@@ -529,7 +530,7 @@ extern "C" __declspec(dllimport) void __stdcall GlobalMemoryStatus(D2MemoryStatu
 
 char* __fastcall Int64ToString(char* szBuffer, unsigned int nBufferSize, __int64 nValue); // 0x00411540
 
-int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0);            // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0);            // 0x0040B480
 
 extern "C" const char gszNewline[];                                                                // 0x006FFCB0
 

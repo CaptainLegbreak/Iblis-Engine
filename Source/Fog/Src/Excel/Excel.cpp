@@ -5,6 +5,7 @@
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText_006CC837, sub_00408090(), line); exit(-1); }
 
+struct D2PoolSystemStrc;
 struct D2SNameNodeStrc;
 
 struct D2TxtLinkEntryStrc;
@@ -23,7 +24,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
 extern "C" void* __cdecl memmove(void* pDst, const void* pSrc, unsigned int nSize);
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 struct D2TxtLinkEntryStrc { union { char code[4]; unsigned int nCode; }; int index; };
 
@@ -55,7 +56,7 @@ extern "C" int __cdecl strcmp(const char* szLeft, const char* szRight);
 
 void __fastcall sub_004113C0(char* szText, int nLength); // 0x004113C0
 
-void __fastcall FOG_FreePool(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 static void EXCEL_InsertLinkNode(D2TxtLinkNodeStrc** ppNode, D2TxtLinkNodeStrc* pNew); // 0x006BD490
 
@@ -85,7 +86,7 @@ static int __stdcall EXCEL_MapColumns(unsigned short* pOut, D2BinFileStrc* pList
 
 int __stdcall sub_006BD230_AddCode(void*,unsigned); // 0x006BD230
 
-void* __fastcall FOG_ReallocPool(void* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
+void* __fastcall FOG_ReallocPool(D2PoolSystemStrc* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
 
 int __stdcall FOG_10216_AddRecordToLinkingTable(D2TxtLinkStrc* pLinker, const char* szCode); // 0x006BD500
 

@@ -13,6 +13,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 
+struct D2PoolSystemStrc;
 struct D2UnitStrc;
 
 struct D2BitBufferStrc;
@@ -74,7 +75,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern char gpAct3Q5NpcMessages[]; // 0x007408B8
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall QUESTS_StatusCyclerEx(D2GameStrc* game,D2UnitStrc* player,unsigned char id); // 0x00544190
 

@@ -100,6 +100,7 @@
 
 #define PLRSAVE2ERROR_BAD_PLAYERINTRO 11
 
+struct D2PoolSystemStrc;
 struct D2CorpseStrc;
 
 struct D2SaveHeaderStrc;
@@ -598,7 +599,7 @@ void __stdcall UNITS_SetSwitchLeftSkill(D2UnitStrc* pUnit, int nSkillId, int nOw
 void __stdcall UNITS_SetSwitchRightSkill(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID); // 0x00623350
 
 
-D2InventoryStrc* __stdcall INVENTORY_AllocInventory(void* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
+D2InventoryStrc* __stdcall INVENTORY_AllocInventory(D2PoolSystemStrc* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
 
 
 

@@ -32,6 +32,7 @@
 
 #define UNIT_INVALID 6
 
+struct D2PoolSystemStrc;
 struct D2CorpseStrc;
 
 struct D2ItemsTxt;
@@ -53,7 +54,7 @@ struct D2CoordStrc;
 struct D2DataTablesStrc;
 
 
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 
 void __fastcall PLRINTRO_Destroy(D2GameStrc* pGame, D2PlrIntroStrc* pPlayerIntro); // 0x00572620

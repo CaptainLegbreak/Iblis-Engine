@@ -23,6 +23,7 @@
 
 #define UNIT_MONSTER 1
 
+struct D2PoolSystemStrc;
 struct D2MinionListStrc;
 
 struct D2InactiveMonsterNodeStrc;
@@ -64,7 +65,7 @@ struct D2MapAIStrc;
 
 struct D2DataTablesStrc;
 
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
@@ -83,7 +84,7 @@ int __stdcall INVENTORY_PlaceItemInSocket(D2InventoryStrc* pInventory, D2UnitStr
 void __fastcall D2GAME_ITEMS_UpdateStatList(D2GameStrc* pGame, D2UnitStrc* pSocketable, D2UnitStrc* pItem); // 0x0055FE60
 
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 

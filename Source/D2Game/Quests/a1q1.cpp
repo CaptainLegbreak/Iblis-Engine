@@ -44,6 +44,7 @@
 
 #define QFLAG_COMPLETEDBEFORE 15
 
+struct D2PoolSystemStrc;
 struct D2PlayerDataStrc;
 
 struct D2Act2Quest4Strc;
@@ -138,7 +139,7 @@ typedef int (__fastcall* SUNIT_ITERATEFN)(D2GameStrc* pGame, D2UnitStrc* pUnit, 
 
 extern D2NPCMessageTableStrc gpAct1Q1NpcMessages; // 0x007366B0
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall QUESTS_CreateTimer(D2QuestDataStrc* pQuest, QUESTUPDATE pfnCallback, int nTicks); // 0x00543F10
 

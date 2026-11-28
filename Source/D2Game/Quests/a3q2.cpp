@@ -36,6 +36,7 @@
 
 #define QFLAG_CUSTOM2 6
 
+struct D2PoolSystemStrc;
 union D2SeedStrc;
 
 struct D2PlayerDataStrc;
@@ -98,7 +99,7 @@ extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(FARPROC lpfn); // 0x
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern char gpAct3Q2NpcMessages[]; // 0x0073F1A0
 

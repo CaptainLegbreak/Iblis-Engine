@@ -46,6 +46,7 @@
 
 #define MONSTATS2FLAGINDEX_SOFT 0xC
 
+struct D2PoolSystemStrc;
 struct D2SkillListStrc;
 
 struct D2WaypointDataStrc;
@@ -140,7 +141,7 @@ extern D2AnimUnkStrc gaMonModesAnimModulators[]; // 0x006E8B90
 
 extern D2AnimUnkStrc gaMonModesAnimModulatorsExpansion[]; // 0x006E8CD0
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern void __stdcall STATLIST_FreeStatListEx(D2UnitStrc*); // 0x00626D10
 
@@ -348,7 +349,7 @@ struct D2BitBufferStrc;
 
 struct D2RosterInfoStrc;
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
 
 int __stdcall DUNGEON_GetPortalFlagFromLevelId(int nLevelId);                                               // 0x0061AE30
 
@@ -514,7 +515,7 @@ D2SkillStrc* __stdcall UNITS_GetUsedSkill(D2UnitStrc* hUnit)
 }
 
 // 0x00620290
-D2UnitStrc* __stdcall UNITS_AllocUnit(void* pMemPool, int nUnitType)
+D2UnitStrc* __stdcall UNITS_AllocUnit(D2PoolSystemStrc* pMemPool, int nUnitType)
 {
     D2UnitStrc* pUnit = (D2UnitStrc*)sub_0040B430(pMemPool, 0xF4, ".\\UNITS\\Units.cpp", 1646, 0);
     memset(pUnit, 0, 0xF4);
@@ -2004,7 +2005,7 @@ static inline int sub_T03_GetUnitId(D2UnitStrc* pUnit)
     return pUnit->dwUnitId;
 }
 
-static inline void* sub_M442_GetMemPool(D2UnitStrc* pUnit)
+static inline D2PoolSystemStrc* sub_M442_GetMemPool(D2UnitStrc* pUnit)
 {
     if (!pUnit)
         return 0;
@@ -2185,7 +2186,7 @@ void __stdcall UNITS_AllocPlayerData(D2UnitStrc* ptUnit)
 }
 
 // 0x00622060
-void __stdcall UNITS_FreePlayerData(void* pMemPool, D2UnitStrc* ptUnit)
+void __stdcall UNITS_FreePlayerData(D2PoolSystemStrc* pMemPool, D2UnitStrc* ptUnit)
 {
     D2_ASSERT(ptUnit, 3947);
     D2_ASSERT(ptUnit->pPlayerData, 3949);

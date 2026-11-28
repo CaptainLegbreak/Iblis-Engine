@@ -24,6 +24,7 @@
 #include "D2CommonApi.h"
 #include "FogApi.h"
 
+struct D2PoolSystemStrc;
 struct D2ClientStrc;
 
 struct D2InventoryStrc;
@@ -342,7 +343,7 @@ struct D2MercSaveDataStrc
 };
 
 
-D2InventoryStrc* __stdcall INVENTORY_AllocInventory(void* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
+D2InventoryStrc* __stdcall INVENTORY_AllocInventory(D2PoolSystemStrc* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
 
 
 int __fastcall PLRTRADE_FindTerminator(const char* szText, int nSize)

@@ -10,6 +10,7 @@
 #include "D2DrlgPresets.h"
 #include "D2CommonApi.h"
 
+struct D2PoolSystemStrc;
 struct D2DrlgOutdoorTileCtxStrc
 {
     struct D2DrlgRoomStrc* pRoom;
@@ -29,9 +30,9 @@ struct D2DrlgOutdoorTileCtxStrc
     int n38;
 };
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);    // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);    // 0x0040B430
 
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);  // 0x0040B480
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);  // 0x0040B480
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
@@ -58,7 +59,7 @@ int __fastcall DRLGTILESUB_PickSubThemes(D2DrlgRoomStrc* pRoom, int nSubType, in
 void __fastcall DRLGOUTROOM_InitOutdoorRoomGrids(D2DrlgRoomStrc* pRoom)
 {
     D2DrlgLevelStrc* pLevel = pRoom->ptDrlgLevel;
-    void* pMemPool = pLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pLevel->pDrlg->pMempool;
     int nLevelId = pLevel->eLevelId;
     unsigned char bSkip = DRLG_GetActNoFromLevelId(nLevelId);
     D2DrlgOutdoorRoomStrc* pOutdoor = pRoom->pOutdoor;
@@ -156,7 +157,7 @@ void __fastcall DRLGOUTROOM_InitOutdoorRoomGrids(D2DrlgRoomStrc* pRoom)
 }
 
 
-void DRLGOUTROOM_FreeOutdoorRoomGrids(void* pMemPool, D2DrlgOutdoorRoomStrc* pOutdoor);
+void DRLGOUTROOM_FreeOutdoorRoomGrids(D2PoolSystemStrc* pMemPool, D2DrlgOutdoorRoomStrc* pOutdoor);
 
 
 
@@ -209,7 +210,7 @@ D2DrlgRoomStrc* __fastcall DRLGOUTPLACE_CreateOutdoorRoomEx(D2DrlgLevelStrc* pLe
 }
 
 // 0x0067D5D0
-static void DRLGOUTROOM_FreeOutdoorRoomGrids(void* pMemPool, D2DrlgOutdoorRoomStrc* pOutdoor)
+static void DRLGOUTROOM_FreeOutdoorRoomGrids(D2PoolSystemStrc* pMemPool, D2DrlgOutdoorRoomStrc* pOutdoor)
 {
     DRLGGRID_FreeGrid(pMemPool, &pOutdoor->pTileTypeGrid);
     DRLGGRID_FreeGrid(pMemPool, &pOutdoor->tGrid14);
@@ -221,7 +222,7 @@ static void DRLGOUTROOM_FreeOutdoorRoomGrids(void* pMemPool, D2DrlgOutdoorRoomSt
 // 0x0067D610
 void __fastcall DRLGOUTROOM_FreeDrlgOutdoorRoom(D2DrlgRoomStrc* pRoom)
 {
-    void* pMemPool = pRoom->ptDrlgLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pRoom->ptDrlgLevel->pDrlg->pMempool;
     D2DrlgOutdoorRoomStrc* pOutdoor = pRoom->pOutdoor;
     if (pOutdoor)
     {

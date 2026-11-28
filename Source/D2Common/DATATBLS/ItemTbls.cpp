@@ -11,6 +11,7 @@
 
 #define NULL 0
 
+struct D2PoolSystemStrc;
 struct D2ItemRatioTxt;
 
 struct D2RunesTxt;
@@ -79,7 +80,7 @@ unsigned short __fastcall DATATBLS_GetStringIdFromReferenceString(char* szRefere
 
 void __fastcall DATATBLS_ItemCalcLinker(char* pSrc, void* pRecord, int nOffset, int nPosition, int nTxtRow, int nTxtColumn); // 0x00631530
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
@@ -173,7 +174,7 @@ extern "C" const char gszEmptyAssertText; // 0x006CC837
 
 int __stdcall FOG_GetLinkIndex(D2TxtLinkStrc* pLinker, unsigned int dwCode, int bLogError); // 0x006BD130
 
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 

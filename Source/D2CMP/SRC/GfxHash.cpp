@@ -7,6 +7,7 @@
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
+struct D2PoolSystemStrc;
 struct D2AsyncLoadStrc;
 
 struct D2CmpGfxFrameStrc;
@@ -32,7 +33,7 @@ void* __fastcall FOG_AsyncDataGetBuffer(D2AsyncLoadStrc* pAsync); // 0x0040A9E0
 
 void __fastcall FOG_AsyncDataFree(D2AsyncLoadStrc* pAsync); // 0x0040AB00
 
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 PixelDataFreeCallback __fastcall CelGetHardwareFreeCallback(struct D2CmpGfxHashStrc* pHash); // 0x00601A40
 
@@ -223,7 +224,7 @@ D2CmpGfxHashEntryStrc* __fastcall GfxHashFind(D2CmpGfxHashStrc* pHash, D2CmpGfxK
 }
 
 // 0x0060ADC0
-D2CmpGfxHashEntryStrc* __fastcall GfxHashAdd(void* pMemPool, D2CmpGfxHashStrc* pHash, int nArg, D2CmpGfxKeyStrc* pKey, void* pCel)
+D2CmpGfxHashEntryStrc* __fastcall GfxHashAdd(D2PoolSystemStrc* pMemPool, D2CmpGfxHashStrc* pHash, int nArg, D2CmpGfxKeyStrc* pKey, void* pCel)
 {
     D2CmpGfxHashEntryStrc* pEntry = (D2CmpGfxHashEntryStrc*)FOG_AllocPool(pMemPool, sizeof(D2CmpGfxHashEntryStrc), ".\\SRC\\GfxHash.cpp", 0xEF, 0);
     pEntry->nArg = nArg;
@@ -268,7 +269,7 @@ void __cdecl CodecReleaseLock()
 }
 
 // 0x0060A9D0
-void __fastcall GfxHashFreeEntry(D2CmpGfxHashStrc* pHash, int nUnused, void* pMemPool, D2CmpGfxHashEntryStrc* pEntry)
+void __fastcall GfxHashFreeEntry(D2CmpGfxHashStrc* pHash, int nUnused, D2PoolSystemStrc* pMemPool, D2CmpGfxHashEntryStrc* pEntry)
 {
     void* pBlocks = 0;
     D2CmpGfxHashEntryStrc* pEntryCopy = pEntry;

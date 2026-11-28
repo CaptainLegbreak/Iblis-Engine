@@ -1,4 +1,5 @@
 #pragma once
+struct D2PoolSystemStrc;
 // Items and the world: an item's data and drop parameters, preset units, object control and monster regions, unit-finding data, curses and pets.
 
 #include "D2Check.h"
@@ -175,7 +176,7 @@ struct D2MonsterRegionStrc
 
 struct D2UnitFindDataStrc
 {
-    void* pMemPool; // 0x00
+    D2PoolSystemStrc* pMemPool; // 0x00
     D2UnitStrc** pUnitsArray; // 0x04
     D2ActiveRoomStrc* pRoom; // 0x08
     void* pfnUnitTest; // 0x0C

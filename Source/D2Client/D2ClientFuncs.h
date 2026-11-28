@@ -8,6 +8,7 @@
 // UI/UseItem.cpp, UNIT/Item.cpp and UNIT/UnitSnd.cpp. Their code depends on how many declarations
 // precede it, and a header that grows changes that.
 
+struct D2PoolSystemStrc;
 struct D2ClientEntryStrc;
 struct D2GSPacketSrv26;
 struct D2GfxListNodeStrc;
@@ -138,7 +139,7 @@ int __cdecl UI_TickElapsed(); // 0x00454850
 void __cdecl UI_RegisterKeyConfigHandlers(); // 0x00454980
 void __cdecl GAME_LoadLoadingScreen(); // 0x00456550
 void __cdecl UI_ShutdownUI(); // 0x00456D80
-void __fastcall SKILLS_InitGfxCaches(void* pMemPool, int bCelPool); // 0x00457300
+void __fastcall SKILLS_InitGfxCaches(D2PoolSystemStrc* pMemPool, int bCelPool); // 0x00457300
 void __fastcall AUTOMAP_FreeCaches(int nArg); // 0x00457420
 void __fastcall sub_00457440_Nop(int nResolution); // 0x00457440
 int __fastcall MONSTERUNIQUE_CheckMonStatsFlag(int nMonsterId, int nFlag); // 0x00457490

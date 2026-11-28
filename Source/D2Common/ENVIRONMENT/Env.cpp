@@ -8,6 +8,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 
+struct D2PoolSystemStrc;
 struct D2DrlgActStrc;
 
 
@@ -21,7 +22,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern "C" __declspec(dllimport) unsigned int __stdcall GetTickCount(); // 0x006CC260
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 
 
@@ -57,10 +58,10 @@ enum D2C_J07DungeonConstants
 
 extern const int gnTownLevelIdsByAct[5]; // 0x006E7D1C
 
-int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 
-void __fastcall DRLGROOM_InitNearRooms(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom); // 0x0066C370
+void __fastcall DRLGROOM_InitNearRooms(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom); // 0x0066C370
 
 
 
@@ -208,7 +209,7 @@ static void ENVIRONMENT_SetCycleState(D2DrlgEnvironmentStrc* pEnvironment)
 }
 
 // 0x0061BE40
-D2DrlgEnvironmentStrc* __fastcall ENVIRONMENT_AllocDrlgEnvironment(void* pMemPool)
+D2DrlgEnvironmentStrc* __fastcall ENVIRONMENT_AllocDrlgEnvironment(D2PoolSystemStrc* pMemPool)
 {
     D2DrlgEnvironmentStrc* pEnvironment = (D2DrlgEnvironmentStrc*)FOG_AllocPool(pMemPool, sizeof(D2DrlgEnvironmentStrc), ".\\ENVIRONMENT\\Env.cpp", 298, 0);
     memset(pEnvironment, 0, sizeof(D2DrlgEnvironmentStrc));
@@ -226,7 +227,7 @@ D2DrlgEnvironmentStrc* __fastcall ENVIRONMENT_AllocDrlgEnvironment(void* pMemPoo
 }
 
 // 0x0061BEC0
-void __fastcall ENVIRONMENT_FreeDrlgEnvironment(void* pMemPool, D2DrlgEnvironmentStrc* pEnvironment)
+void __fastcall ENVIRONMENT_FreeDrlgEnvironment(D2PoolSystemStrc* pMemPool, D2DrlgEnvironmentStrc* pEnvironment)
 {
     FOG_FreePool(pMemPool, pEnvironment, ".\\ENVIRONMENT\\Env.cpp", 0x13F, 0);
 }

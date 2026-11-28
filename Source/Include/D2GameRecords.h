@@ -23,7 +23,7 @@ struct D2MagicAffixTxt;
 struct D2UnitFindArgStrc
 {
     int nFlags; // 0x00
-    int unk0x04; // 0x04
+    int unused0x04; // 0x04
     D2UnitStrc* pUnit; // 0x08
     int nX; // 0x0C
     int nY; // 0x10
@@ -32,7 +32,7 @@ struct D2UnitFindArgStrc
     int nIndex; // 0x1C
     void* pField; // 0x20
     void* pfnUnitTest; // 0x24
-    int unk0x28[4]; // 0x28
+    int unused0x28[4]; // 0x28
 };
 
 struct D2ItemSaveStrc
@@ -53,7 +53,7 @@ struct D2ItemSaveStrc
 struct D2MercDataStrc
 {
     unsigned short nMercName; // 0x00
-    unsigned short unk0x02; // 0x02
+    unsigned short pad0x02; // 0x02
     int dwSeed; // 0x04
     int bHired; // 0x08
     int bAvailable; // 0x0C
@@ -75,7 +75,7 @@ struct D2NpcTradeDataStrc
     unsigned char bTrader; // 0x03
     unsigned char bRepair; // 0x04
     unsigned char bVendor; // 0x05
-    unsigned char unk0x06; // 0x06
+    unsigned char bForceVendor; // 0x06
     unsigned char bRefreshInventory; // 0x07
     unsigned int dwTicks; // 0x08
     D2NpcItemProxyStrc tProxy; // 0x0C
@@ -101,7 +101,7 @@ struct D2NpcRecordStrc
             unsigned char bTrader; // 0x23
             unsigned char bRepair; // 0x24
             unsigned char bVendor; // 0x25
-            unsigned char unk0x26; // 0x26
+            unsigned char bForceVendor; // 0x26
             unsigned char bRefreshInventory; // 0x27
             unsigned int dwTicks; // 0x28
             union
@@ -122,7 +122,7 @@ struct D2NpcRecordStrc
         };
         D2NpcTradeDataStrc tTrade; // 0x20
     };
-    int unk0x3C; // 0x3C
+    int unused0x3C; // 0x3C
     int dwNPCGUID; // 0x40
 };
 
@@ -140,9 +140,9 @@ struct D2MagicAffixTxt
     unsigned short wVersion; // 0x22
     D2PropertyStrc pProperties[3]; // 0x24
     unsigned char bSpawnable; // 0x54
-    unsigned char unk0x55; // 0x55
+    unsigned char unused0x55; // 0x55
     unsigned char nTransformColor; // 0x56
-    unsigned char unk0x57; // 0x57
+    unsigned char pad0x57; // 0x57
     int nLevel; // 0x58
     int dwGroup; // 0x5C
     int nMaxLevel; // 0x60
@@ -151,11 +151,11 @@ struct D2MagicAffixTxt
     unsigned char nClass; // 0x66
     unsigned char characterClass; // 0x67
     unsigned char classLevelReq; // 0x68
-    unsigned char unk0x69; // 0x69
+    unsigned char pad0x69; // 0x69
     short wIType[7]; // 0x6A
     short wEType[5]; // 0x78
     unsigned char nFrequency; // 0x82
-    unsigned char unk0x83; // 0x83
+    unsigned char pad0x83; // 0x83
     int dwDivide; // 0x84
     int dwMultiply; // 0x88
     int dwAdd; // 0x8C

@@ -1,4 +1,5 @@
 #pragma once
+struct D2PoolSystemStrc;
 // Level generation (DRLG): the generator, its levels and rooms, their grids and coordinates, and the active (loaded) room.
 
 #include "D2Check.h"
@@ -208,7 +209,7 @@ struct D2DrlgStrc
     D2DrlgActStrc* pAct; // 0x46C
     unsigned int dwStartSeed; // 0x470
     int bJungleInterlink; // 0x474
-    void* pMempool; // 0x478
+    D2PoolSystemStrc* pMempool; // 0x478
     D2DrlgLevelStrc* pLevel; // 0x47C
     unsigned char nAct; // 0x480
     unsigned char pad0x481; // 0x481

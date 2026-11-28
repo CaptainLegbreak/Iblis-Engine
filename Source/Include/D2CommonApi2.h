@@ -2,6 +2,7 @@
 // D2Common's exports that the other modules call and D2CommonApi.h doesn't declare. A separate header because
 // adding to D2CommonApi.h clashes with private copies in its includers; included only by the units that use it.
 
+struct D2PoolSystemStrc;
 struct B25DistancePath;
 struct B25Path;
 struct B25TargetUnit;
@@ -139,7 +140,7 @@ int __fastcall DATATBLS_GetAutomapCellId(int nLevelNo, int nTileType, int nStyle
 D2SkillStrc* __stdcall UNITS_GetLeftSkill(D2UnitStrc* hUnit); // 0x00620190
 D2SkillStrc* __stdcall UNITS_GetRightSkill(D2UnitStrc* hUnit); // 0x006201D0
 void __stdcall UNITS_SetUsedSkill(D2UnitStrc* hUnit, D2SkillStrc* pUsedSkill); // 0x00620210
-D2UnitStrc* __stdcall UNITS_AllocUnit(void* pMemPool, int nUnitType); // 0x00620290
+D2UnitStrc* __stdcall UNITS_AllocUnit(D2PoolSystemStrc* pMemPool, int nUnitType); // 0x00620290
 void __stdcall UNITS_FreeUnit(D2UnitStrc* unit); // 0x00620300
 int __stdcall UNITS_GetPrecisionX(D2UnitStrc* ptUnit); // 0x006203B0
 int __stdcall UNITS_GetPrecisionY(D2UnitStrc* ptUnit); // 0x00620410
@@ -162,7 +163,7 @@ void __stdcall UNITS_SetOverlay(D2UnitStrc* pUnit, int nOverlay, int nUnused); /
 int __stdcall UNITS_GetBeltType(D2UnitStrc* pUnit); // 0x00621ED0
 int __stdcall UNITS_GetCurrentLifePercentage(D2UnitStrc* pUnit); // 0x00621F20
 int __stdcall UNITS_IsSoftMonster(D2UnitStrc* pUnit); // 0x00621F60
-void __stdcall UNITS_FreePlayerData(void* pMemPool, D2UnitStrc* ptUnit); // 0x00622060
+void __stdcall UNITS_FreePlayerData(D2PoolSystemStrc* pMemPool, D2UnitStrc* ptUnit); // 0x00622060
 char* __stdcall UNITS_GetPlayerName(D2UnitStrc* pUnit); // 0x00622150
 int __stdcall UNITS_GetPlayerPortalFlags(D2UnitStrc* pUnit); // 0x00622230
 int __stdcall UNITS_CheckObjectPortalFlag(D2UnitStrc* pUnit, unsigned char nFlag); // 0x00622350
@@ -218,8 +219,8 @@ void __stdcall STATLIST_UpdateStatListsExpiration(D2UnitStrc* pUnit, int nFrame)
 void __stdcall D2Common_10469(D2UnitStrc* pUnit); // 0x00627540
 void __stdcall D2Common_10525(D2UnitStrc* pUnit1, D2UnitStrc* pUnit2); // 0x006276C0
 void __stdcall STATLIST_MergeStatLists(D2UnitStrc* pTarget, D2UnitStrc* pUnit, int bType); // 0x00627910
-void __stdcall ITEMS_AllocItemData(void* pMemPool, D2UnitStrc* pItem); // 0x00627C90
-void __stdcall ITEMS_FreeItemData(void* pMemPool, D2UnitStrc* pItem); // 0x00627D00
+void __stdcall ITEMS_AllocItemData(D2PoolSystemStrc* pMemPool, D2UnitStrc* pItem); // 0x00627C90
+void __stdcall ITEMS_FreeItemData(D2PoolSystemStrc* pMemPool, D2UnitStrc* pItem); // 0x00627D00
 unsigned char __stdcall ITEMS_GetBodyLocation(D2UnitStrc* pItem); // 0x00627D40
 void __stdcall ITEMS_InitItemSeed(D2UnitStrc* pItem); // 0x00627DC0
 unsigned int __stdcall ITEMS_GetItemStartSeed(D2UnitStrc* pItem); // 0x00627DF0
@@ -291,7 +292,7 @@ int __stdcall STATES_CheckStateMaskShatterOnUnit(D2UnitStrc* pUnit); // 0x0063A6
 int __stdcall STATES_CheckStateMaskLifeOnUnit(D2UnitStrc* pUnit); // 0x0063A750
 int __stdcall STATES_CheckStateMaskUdeadOnUnit(D2UnitStrc* pUnit); // 0x0063A770
 int __stdcall STATES_CheckStateMaskOnUnit(D2UnitStrc* pUnit, int nStateMask); // 0x0063A7B0
-D2InventoryStrc* __stdcall INVENTORY_AllocInventory(void* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
+D2InventoryStrc* __stdcall INVENTORY_AllocInventory(D2PoolSystemStrc* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
 void __stdcall INVENTORY_Return(const char* szFile, int nLine, D2InventoryStrc* pInventory, int nX, int nY, int nInventoryRecordId, int bClient, unsigned char nPage); // 0x0063BCF0
 void __stdcall sub_0063BE30_Return(int nUnused1, int nUnused2); // 0x0063BE30
 D2UnitStrc* __stdcall INVENTORY_GetLeftHandWeapon(D2InventoryStrc* pInventory); // 0x0063BEF0
@@ -445,7 +446,7 @@ unsigned int __stdcall MONSTERS_GetHirelingResurrectionCost(D2UnitStrc* pHirelin
 int __fastcall MONSTERS_HirelingInit(int bExpansion, D2UnitStrc* pMonster, int nLowSeed, int nAct, int nDifficulty, D2HirelingInitStrc* pHirelingInit); // 0x006637F0
 void __stdcall MISSTREAM_FreeMissileStream(D2UnitStrc* pMissile); // 0x00663D90
 unsigned int __stdcall DATATBLS_Get1OfNFromOverlayTxt(int nOverlayId); // 0x00664740
-void __fastcall DRLGPRESET_FreeMapAI(void* pMemPool, D2MapAIStrc* pMapAI); // 0x00666130
+void __fastcall DRLGPRESET_FreeMapAI(D2PoolSystemStrc* pMemPool, D2MapAIStrc* pMapAI); // 0x00666130
 D2CubeMainTxt* __stdcall DATATBLS_GetCubemainTxtRecord(int nIndex); // 0x0066A1B0
 int __fastcall DATATBLS_GetCubemainTxtRecordCount(); // 0x0066A200
 int* __fastcall DRLGWARP_GetWarpIdArrayFromLevelId(D2DrlgStrc* pDrlg, int nLevelId); // 0x0066AEC0

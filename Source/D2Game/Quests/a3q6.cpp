@@ -37,6 +37,7 @@
 
 #define QUESTSTATEFLAG_A3COMPLETED 23
 
+struct D2PoolSystemStrc;
 struct D2MapAIPathPositionStrc;
 
 struct D2PlayerDataStrc;
@@ -114,7 +115,7 @@ extern "C" const char gszAct3Q5SourceFile[];
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
 

@@ -26,6 +26,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 
+struct D2PoolSystemStrc;
 struct D2MonStatsTxt;
 
 struct D2LevelsTxt;
@@ -625,7 +626,7 @@ int __fastcall AITHINK_UnitFindCallback_Willowisp(D2UnitStrc* pUnit); // 0x005F3
 void __stdcall D2COMMON_10475_PostStatToStatList(D2UnitStrc* pUnit, D2StatListStrc* pStatList, int bResetFlag); // 0x00626E10
 
 
-void __stdcall UNITFINDS_InitializeUnitFindData(void* pMemPool, D2UnitFindDataStrc* pUnitFindData, D2ActiveRoomStrc* pRoom, int nX, int nY, int nSize, UNITFINDTEST pfnUnitTest, D2UnitFindArgStrc* pUnitFindArg); // 0x0065A950
+void __stdcall UNITFINDS_InitializeUnitFindData(D2PoolSystemStrc* pMemPool, D2UnitFindDataStrc* pUnitFindData, D2ActiveRoomStrc* pRoom, int nX, int nY, int nSize, UNITFINDTEST pfnUnitTest, D2UnitFindArgStrc* pUnitFindArg); // 0x0065A950
 
 
 struct Target005F6630

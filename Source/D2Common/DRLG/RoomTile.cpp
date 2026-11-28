@@ -19,6 +19,7 @@
 
 #pragma function(memset)
 
+struct D2PoolSystemStrc;
 struct D2DrlgTileDataStrc;
 
 union D2SeedStrc;
@@ -62,7 +63,7 @@ void __fastcall sub_0040B480(void*,void*,const char*,int,int); // 0x0040B480
 
 void* __fastcall FOG_ReallocPool(void*,void*,int,const char*,int,int); // 0x0040B4B0
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 
 
@@ -93,7 +94,7 @@ extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pCoords, int nX, int nY);                   // 0x0066B980
 
-void __fastcall DRLGROOM_AllocPresetUnit(D2DrlgRoomStrc* pDrlgRoom, void* pMemPool, int nUnitType, int nIndex, int nMode, int nX, int nY); // 0x0066BF30
+void __fastcall DRLGROOM_AllocPresetUnit(D2DrlgRoomStrc* pDrlgRoom, D2PoolSystemStrc* pMemPool, int nUnitType, int nIndex, int nMode, int nX, int nY); // 0x0066BF30
 
 void __fastcall DRLGROOMTILE_InitTileData(D2DrlgRoomStrc* pDrlgRoom, D2DrlgTileDataStrc* pTileData, int nX, int nY, unsigned int nPackedTileInformation, D2TileLibraryEntryStrc* pTileLibraryEntry); // 0x0066DDE0
 
@@ -118,12 +119,12 @@ static D2DrlgTileDataStrc* __stdcall DRLGROOMTILE_FindLinkedTileInRoom(D2DrlgRoo
 
 static D2DrlgTileDataStrc* __stdcall DRLGROOMTILE_GetLinkedTileData(int bFloor, int nX, int nY, D2DrlgRoomStrc** ppDrlgRoom, D2DrlgRoomStrc* pDrlgRoom, unsigned int nPackedTileInformation);
 
-static D2DrlgTileDataStrc* __stdcall DRLGROOMTILE_AddLinkedTileData(void* pMemPool, unsigned int nPackedTileInformation, int nX, int nY, D2DrlgRoomStrc* pDrlgRoom, int nTileType);
+static D2DrlgTileDataStrc* __stdcall DRLGROOMTILE_AddLinkedTileData(D2PoolSystemStrc* pMemPool, unsigned int nPackedTileInformation, int nX, int nY, D2DrlgRoomStrc* pDrlgRoom, int nTileType);
 
 
-static void __stdcall DRLGROOMTILE_GetCreateLinkedTileData(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom, int nTileType, unsigned int nPackedTileInformation, int nX, int nY); // 0x0066E940
+static void __stdcall DRLGROOMTILE_GetCreateLinkedTileData(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom, int nTileType, unsigned int nPackedTileInformation, int nX, int nY); // 0x0066E940
 
-static void __stdcall DRLGROOMTILE_LoadInitRoomTile(void* pMemPool, int nX, int nY, int bFillBlanks, D2DrlgRoomStrc* pDrlgRoom, unsigned int nPackedTileInformation, int nTileType);
+static void __stdcall DRLGROOMTILE_LoadInitRoomTile(D2PoolSystemStrc* pMemPool, int nX, int nY, int bFillBlanks, D2DrlgRoomStrc* pDrlgRoom, unsigned int nPackedTileInformation, int nTileType);
 
 static void __stdcall DRLGROOMTILE_SetTileDataPosition(D2DrlgTileDataStrc* pTileData, D2DrlgRoomStrc* pDrlgRoom, int nX, int nY);
 
@@ -152,7 +153,7 @@ static int __stdcall sub_0066F350_GetFloorGridEntry(D2LvlSubTxt* pLvlSubTxtRecor
 
 static int __stdcall sub_0066F380_GetWallGridEntry(D2LvlSubTxt* pLvlSubTxtRecord, int nX, int nY);
 
-static void __stdcall DRLGROOMTILE_LinkedTileDataManager(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom1, D2DrlgRoomStrc* pDrlgRoom2, D2DrlgTileDataStrc* pTileData, int nTileType, unsigned int nPackedTileInformation, int nX, int nY);
+static void __stdcall DRLGROOMTILE_LinkedTileDataManager(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom1, D2DrlgRoomStrc* pDrlgRoom2, D2DrlgTileDataStrc* pTileData, int nTileType, unsigned int nPackedTileInformation, int nX, int nY);
 
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* szFormat, ...);             // 0x006CC468
 
@@ -583,7 +584,7 @@ void __fastcall DRLGROOMTILE_InitTileShadow(D2DrlgRoomStrc* pDrlgRoom, int nX, i
 // 0x0066E090
 void __fastcall DRLGROOMTILE_ShrinkRoofTilesToShadowCount(D2DrlgRoomStrc* pDrlgRoom)
 {
-    void* pMemPool = pDrlgRoom->ptDrlgLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pDrlgRoom->ptDrlgLevel->pDrlg->pMempool;
     D2DrlgTileGridStrc* pTileGrid = pDrlgRoom->ptDrlgTiles;
     if (!pTileGrid->nShadows)
     {
@@ -813,7 +814,7 @@ static D2DrlgTileDataStrc* __stdcall DRLGROOMTILE_GetLinkedTileData(int bFloor, 
 }
 
 // 0x0066E5E0
-static D2DrlgTileLinkStrc* __stdcall DRLGROOMTILE_AllocTileLink(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom, int bFloor)
+static D2DrlgTileLinkStrc* __stdcall DRLGROOMTILE_AllocTileLink(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom, int bFloor)
 {
     D2DrlgTileLinkStrc* pTileLink = (D2DrlgTileLinkStrc*)FOG_AllocPool(pMemPool, sizeof(D2DrlgTileLinkStrc), ".\\DRLG\\RoomTile.cpp", 891, 0);
     pTileLink->bFloor = bFloor;
@@ -824,7 +825,7 @@ static D2DrlgTileLinkStrc* __stdcall DRLGROOMTILE_AllocTileLink(void* pMemPool, 
 }
 
 // 0x0066E620
-static D2DrlgTileDataStrc* __stdcall DRLGROOMTILE_AddLinkedTileData(void* pMemPool, unsigned int nPackedTileInformation, int nX, int nY, D2DrlgRoomStrc* pDrlgRoom, int nTileType)
+static D2DrlgTileDataStrc* __stdcall DRLGROOMTILE_AddLinkedTileData(D2PoolSystemStrc* pMemPool, unsigned int nPackedTileInformation, int nX, int nY, D2DrlgRoomStrc* pDrlgRoom, int nTileType)
 {
     if ((nTileType == 11 || nTileType == 10) && !DRLGROOM_AreXYInsideCoordinates(&pDrlgRoom->pDrlgCoord, nX, nY))
     {
@@ -875,7 +876,7 @@ static inline bool TileTypeIsAWallWithDoor(int nTileType)
 }
 
 // 0x0066E740
-static void __stdcall DRLGROOMTILE_LinkedTileDataManager(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom1, D2DrlgRoomStrc* pDrlgRoom2, D2DrlgTileDataStrc* pTileData, int nTileType, unsigned int nPackedTileInformation, int nX, int nY)
+static void __stdcall DRLGROOMTILE_LinkedTileDataManager(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom1, D2DrlgRoomStrc* pDrlgRoom2, D2DrlgTileDataStrc* pTileData, int nTileType, unsigned int nPackedTileInformation, int nX, int nY)
 {
     int nNewTileType;
     const int nRemapIndex = gnWallRemapIndices[nTileType];
@@ -958,7 +959,7 @@ TileTypeChosen:
 }
 
 // 0x0066E940
-static void __stdcall DRLGROOMTILE_GetCreateLinkedTileData(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom, int nTileType, unsigned int nPackedTileInformation, int nX, int nY)
+static void __stdcall DRLGROOMTILE_GetCreateLinkedTileData(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom, int nTileType, unsigned int nPackedTileInformation, int nX, int nY)
 {
     D2DrlgRoomStrc* pLinkedRoom = 0;
     D2DrlgTileDataStrc* pLinkedTileData = DRLGROOMTILE_GetLinkedTileData(nTileType == 0, nX, nY, &pLinkedRoom, pDrlgRoom, nPackedTileInformation);
@@ -973,7 +974,7 @@ static void __stdcall DRLGROOMTILE_GetCreateLinkedTileData(void* pMemPool, D2Drl
 }
 
 // 0x0066E9B0
-static void __stdcall DRLGROOMTILE_LoadInitRoomTile(void* pMemPool, int nX, int nY, int bFillBlanks, D2DrlgRoomStrc* pDrlgRoom, unsigned int nPackedTileInformation, int nTileType)
+static void __stdcall DRLGROOMTILE_LoadInitRoomTile(D2PoolSystemStrc* pMemPool, int nX, int nY, int bFillBlanks, D2DrlgRoomStrc* pDrlgRoom, unsigned int nPackedTileInformation, int nTileType)
 {
     const unsigned char nTileStyle = (unsigned char)((nPackedTileInformation >> 20) & 0x3F);
     const unsigned char nTileSequence = (unsigned char)(nPackedTileInformation >> 8);
@@ -1089,7 +1090,7 @@ static void __stdcall DRLGROOMTILE_LoadInitRoomTile(void* pMemPool, int nX, int 
 // 0x0066EC10
 void __fastcall DRLGROOMTILE_LoadInitRoomTiles(D2DrlgRoomStrc* pDrlgRoom, D2DrlgGridStrc* pGrid, D2DrlgGridStrc* pTileTypeGrid, int bCheckCoordinatesValidity, int bKillEdgeX, int bKillEdgeY)
 {
-    void* pMemPool = pDrlgRoom->ptDrlgLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pDrlgRoom->ptDrlgLevel->pDrlg->pMempool;
 
     const int nTileCountX = pDrlgRoom->pDrlgCoord.nWidth + (bKillEdgeX == 0);
     const int nTileCountY = pDrlgRoom->pDrlgCoord.nHeight + (bKillEdgeY == 0);
@@ -1226,7 +1227,7 @@ void __fastcall DRLGROOMTILE_AllocTileGrid(D2DrlgRoomStrc* pDrlgRoom)
 // 0x0066EEE0
 void __fastcall DRLGROOMTILE_AllocTileData(D2DrlgRoomStrc* pDrlgRoom)
 {
-    void* pMemPool = pDrlgRoom->ptDrlgLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pDrlgRoom->ptDrlgLevel->pDrlg->pMempool;
     D2DrlgRoomTilesStrc* pRoomTiles = &pDrlgRoom->ptDrlgTiles->pTiles;
 
     if (pRoomTiles->nFloors)
@@ -1249,7 +1250,7 @@ void __fastcall DRLGROOMTILE_AllocTileData(D2DrlgRoomStrc* pDrlgRoom)
 }
 
 // 0x0066EFB0
-void __fastcall DRLGROOMTILE_ReallocRoofTileGrid(void* pMemPool, D2DrlgTileGridStrc* pTileGrid, int nAdditionalRoofs)
+void __fastcall DRLGROOMTILE_ReallocRoofTileGrid(D2PoolSystemStrc* pMemPool, D2DrlgTileGridStrc* pTileGrid, int nAdditionalRoofs)
 {
     if (nAdditionalRoofs)
     {
@@ -1277,7 +1278,7 @@ int __fastcall DRLGROOMTILE_GetNumberOfShadowsFromRoom(D2ActiveRoomStrc* pRoom)
 }
 
 // 0x0066F050
-static void DRLGROOMTILE_FreeTileArrays(D2DrlgRoomStrc* pDrlgRoom, void* pMemPool)
+static void DRLGROOMTILE_FreeTileArrays(D2DrlgRoomStrc* pDrlgRoom, D2PoolSystemStrc* pMemPool)
 {
     D2DrlgRoomTilesStrc* pRoomTiles = pDrlgRoom->ptDrlgTiles ? &pDrlgRoom->ptDrlgTiles->pTiles : 0;
     if (pRoomTiles)
@@ -1302,7 +1303,7 @@ static void DRLGROOMTILE_FreeTileArrays(D2DrlgRoomStrc* pDrlgRoom, void* pMemPoo
 // 0x0066F0B0
 void __fastcall DRLGROOMTILE_FreeTileGrid(D2DrlgRoomStrc* pDrlgRoom)
 {
-    void* pMemPool = pDrlgRoom->ptDrlgLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pDrlgRoom->ptDrlgLevel->pDrlg->pMempool;
 
     DRLGROOMTILE_FreeTileArrays(pDrlgRoom, pMemPool);
 

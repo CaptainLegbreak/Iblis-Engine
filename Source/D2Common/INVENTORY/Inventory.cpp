@@ -53,6 +53,7 @@
 
 #define ITEMCODE_TSC 0x20637374
 
+struct D2PoolSystemStrc;
 struct D2InventoryStrc;
 
 struct Inventory;
@@ -127,12 +128,12 @@ void __stdcall STATLIST_ExpireUnitStatlist(D2UnitStrc* pOwner, D2UnitStrc* pItem
 
 extern "C" const char gszInventorySource_006EA918; // 0x006EA918
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
 
-void __fastcall FOG_FreePool(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 
 
@@ -205,7 +206,7 @@ int __stdcall ITEMS_Is1Or2Handed(D2UnitStrc* pPlayer, D2UnitStrc* pItem); // 0x0
 
 typedef int BOOL;
 
-void* __fastcall FOG_ReallocPool(void* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
+void* __fastcall FOG_ReallocPool(D2PoolSystemStrc* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
 
 int __stdcall UNITS_GetInventoryRecordId(D2UnitStrc* pUnit, int nInvPage, int bLoD); // 0x00621050
 
@@ -262,7 +263,7 @@ static D2InventoryGridStrc* __stdcall INVENTORY_GetGrid(D2InventoryStrc* invento
 
 D2UnitStrc* __stdcall INVENTORY_GetItemFromBeltSlot(D2InventoryStrc* inventory, int slot); // 0x0063C7F0
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 
 int __stdcall INVENTORY_CompareWithItemsParentInventory(D2InventoryStrc* pInventory, D2UnitStrc* pItem);    // 0x0063AD50
 
@@ -323,11 +324,11 @@ struct D2BeltsTxtLayout
     D2InvRectStrc beltBoxes[16];
 };
 
-void* __fastcall FOG_ReallocPool(void* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
+void* __fastcall FOG_ReallocPool(D2PoolSystemStrc* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
 
 #define BODYLOC_LAST (13 - 1)
 
-D2InventoryStrc* __stdcall INVENTORY_AllocInventory(void* pMemPool, D2UnitStrc* pOwner);
+D2InventoryStrc* __stdcall INVENTORY_AllocInventory(D2PoolSystemStrc* pMemPool, D2UnitStrc* pOwner);
 
 inline D2ItemExtraDataStrc* INVENTORY_GetItemExtraDataFromItem(D2UnitStrc* pItem);
 
@@ -734,7 +735,7 @@ int __fastcall INVENTORY_RemoveItem(D2UnitStrc* pItem)
 }
 
 // 0x0063ABD0
-D2InventoryStrc* __stdcall INVENTORY_AllocInventory(void* pMemPool, D2UnitStrc* pOwner)
+D2InventoryStrc* __stdcall INVENTORY_AllocInventory(D2PoolSystemStrc* pMemPool, D2UnitStrc* pOwner)
 {
     if (!pMemPool && pOwner)
     {
@@ -936,7 +937,7 @@ BOOL __stdcall INVENTORY_GetFreePosition(D2InventoryStrc* pInventory, D2UnitStrc
 // 0x0063ADD0
 D2InventoryGridStrc* __stdcall INVENTORY_GetGrid(D2InventoryStrc* pInventory, int nInventoryGrid, D2InventoryGridInfoStrc* pInventoryGridInfo)
 {
-    void** const pInventoryMemPool = &pInventory->pMemPool;
+    D2PoolSystemStrc** const pInventoryMemPool = &pInventory->pMemPool;
     D2InventoryGridStrc* pInventoryGrid;
     if (pInventory->nGridCount > nInventoryGrid)
     {
@@ -4256,7 +4257,7 @@ static BOOL __stdcall INVENTORY_CanItemBePlacedInTradeInventory(D2UnitStrc* pPla
 }
 
 // 0x0063E370
-BOOL __stdcall INVENTORY_CanItemsBeTraded(void* pMemPool, D2UnitStrc* pPlayer1, D2UnitStrc* pPlayer2, int* pTradeState)
+BOOL __stdcall INVENTORY_CanItemsBeTraded(D2PoolSystemStrc* pMemPool, D2UnitStrc* pPlayer1, D2UnitStrc* pPlayer2, int* pTradeState)
 {
     BOOL bResult = FALSE;
     D2InventoryStrc* pTradeInventory1 = INVENTORY_AllocInventory(pMemPool, 0);

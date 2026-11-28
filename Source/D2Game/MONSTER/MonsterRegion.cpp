@@ -23,6 +23,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 
+struct D2PoolSystemStrc;
 struct D2DifficultyLevelsTxt;
 
 struct D2MonsterRegionStrc;
@@ -57,7 +58,7 @@ void __stdcall MONSTERCHOOSE_GenerateComponentVariants(D2SeedStrc*,D2MonRegDataS
 
 static void __stdcall MONSTERREGION_SelectMonsters(D2SeedStrc* pSeed, int bHigher, D2LevelsTxt* pLevels, D2MonsterRegionStrc* pRegion); // 0x005475E0
 
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -458,7 +459,7 @@ void __fastcall MONSTERREGION_InitializeAll(void* pool,D2MonsterRegionStrc** reg
 }
 
 // 0x00547B50
-void __fastcall MONSTERREGION_FreeAll(void* pMemPool, D2MonsterRegionStrc** ppMonsterRegion)
+void __fastcall MONSTERREGION_FreeAll(D2PoolSystemStrc* pMemPool, D2MonsterRegionStrc** ppMonsterRegion)
 {
     ++ppMonsterRegion;
     for (int i = 1; i < sgptDataTables->nLevelsTxtRecordCount; ++i, ++ppMonsterRegion)

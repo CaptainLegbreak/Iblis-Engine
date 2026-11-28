@@ -1,4 +1,5 @@
 #pragma once
+struct D2PoolSystemStrc;
 struct D2ItemTypesTxt;
 struct D2MapAIPathPositionStrc;
 struct D2PresetUnitStrc;
@@ -97,7 +98,7 @@ D2GameStrc* __cdecl sub_0052F6E0_LockFirstGame(); // 0x0052F6E0
 D2GameStrc* __fastcall GAME_GetGameByClientId(int nClientId); // 0x0052FEE0
 D2GameStrc* __fastcall SUNIT_GetGameFromUnit(D2UnitStrc* pUnit); // 0x00554010
 D2HirelingTxt* __stdcall DATATBLS_GetHirelingTxtRecordFromIdAndLevel(int bExpansion, int nId, int nLevel); // 0x006562F0
-D2HoverTextStrc* __stdcall CHAT_AllocHoverMsg(void* pMemPool, const char* szText, int nTimeout); // 0x00661110
+D2HoverTextStrc* __stdcall CHAT_AllocHoverMsg(D2PoolSystemStrc* pMemPool, const char* szText, int nTimeout); // 0x00661110
 D2ItemDataTbl* __stdcall DATATBLS_GetItemDataTables(); // 0x00633590
 D2ItemStatCostTxt* __fastcall PLAYER_GetItemStatCostTxtRecord(int nStatId); // 0x0045C4F0
 D2ObjGroupTxt* __stdcall DATATBLS_GetObjGroupTxtRecord(int nId); // 0x006412F0
@@ -337,7 +338,7 @@ int __stdcall DUNGEON_GetPortalFlagFromLevelId(int nPortalLevelId); // 0x0061AE3
 int __stdcall DUNGEON_GetTownLevelIdFromAct(D2DrlgActStrc* pAct); // 0x0061AE80
 int __stdcall DUNGEON_HasWaypoint(D2ActiveRoomStrc* ptRoom); // 0x0061A210
 int __stdcall DUNGEON_IsTownLevelId(int nLevelId); // 0x0061AAF0
-int __stdcall INVENTORY_CanItemsBeTraded(void* pMemPool, D2UnitStrc* pPlayer1, D2UnitStrc* pPlayer2, int* pTradeState); // 0x0063E370
+int __stdcall INVENTORY_CanItemsBeTraded(D2PoolSystemStrc* pMemPool, D2UnitStrc* pPlayer1, D2UnitStrc* pPlayer2, int* pTradeState); // 0x0063E370
 int __stdcall INVENTORY_GetBodyLocFromEquippedItem(D2InventoryStrc* pInventory, D2UnitStrc* pItem); // 0x0063C110
 int __stdcall INVENTORY_GetEquippedWeapon(D2InventoryStrc* pInventory, D2UnitStrc** ppItem, int* pBodyLoc, int* pIsLeftHand); // 0x0063C9B0
 int __stdcall INVENTORY_GetItemNodePage(D2UnitStrc* pItem); // 0x0063E020
@@ -444,7 +445,7 @@ void __fastcall D2GAME_PACKETS_SendPacket0xA0_A1_A2(D2ClientStrc* pClient, D2Uni
 void __fastcall D2GAME_PopulateRoom(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom); // 0x0054EC90
 void __fastcall D2GAME_RepairBrokenItem(D2GameStrc* pGame, D2UnitStrc* pOwner, D2UnitStrc* pItem); // 0x0055F900
 void __fastcall D2GAME_UpdatePlayerVitals(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x0055F500
-void __fastcall DRLGPRESET_FreeMapAI(void* pMemPool, D2MapAIStrc* pMapAI); // 0x00666130
+void __fastcall DRLGPRESET_FreeMapAI(D2PoolSystemStrc* pMemPool, D2MapAIStrc* pMapAI); // 0x00666130
 void __fastcall ITEMS_AssignStaffModsForFormat(D2UnitStrc* pItem, D2ItemDropStrc* pItemDrop); // 0x005C1260
 void __fastcall MISSMODE_CatapultChargedBall_LightningTrailingJavelin_SubmissileInitFunc(D2UnitStrc* pMissile, int nUnused); // 0x005AC040
 void __fastcall MISSMODE_ToggleStateOff(D2UnitStrc* pUnit, int nState, D2StatListStrc* pStatList); // 0x005ADAF0
@@ -459,7 +460,7 @@ void __fastcall SUNITDMG_CalculateTotalDamage(D2GameStrc* pGame, D2UnitStrc* pAt
 void __fastcall SUNITINACTIVE_RestoreInactiveUnits(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom); // 0x00542B40
 void __fastcall SUNIT_ResetRecurringModeChangeEvent(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00553F00
 void __fastcall SUNIT_SetTimerOnUnit(D2UnitStrc* pUnit, D2EventTimerStrc* pTimer); // 0x00553970
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 void __fastcall GAME_RemoveUnit(D2UnitStrc*,D2GameStrc*); // 0x0052E050
 void __fastcall sub_00539230_SetWeaponSwitch(D2ClientStrc*, unsigned char); // 0x00539230
 void __fastcall D2GAME_PACKETS_SendGameExit(int nClientId); // 0x0053B240
@@ -539,7 +540,7 @@ void __stdcall SKILLS_SetSkillMode(D2SkillStrc* pSkill, unsigned int nSkillMode)
 void __stdcall STATES_UpdateStayDeathFlags(D2UnitStrc* pUnit, int bIsBoss); // 0x00639FB0
 void __stdcall STATLIST_AddStat(D2StatListStrc* pStatList, int nStatId, int nValue, unsigned short nLayer); // 0x00627030
 void __stdcall STATLIST_UpdateStatListsExpiration(D2UnitStrc* pUnit, int nFrame); // 0x00627460
-void __stdcall UNITS_FreePlayerData(void* pMemPool, D2UnitStrc* ptUnit); // 0x00622060
+void __stdcall UNITS_FreePlayerData(D2PoolSystemStrc* pMemPool, D2UnitStrc* ptUnit); // 0x00622060
 void __stdcall UNITS_GetLeftSkillData(D2UnitStrc* pUnit, int* pLeftSkillId, int* pLeftSkillFlags); // 0x006230C0
 void __stdcall UNITS_GetRightSkillData(D2UnitStrc* pUnit, int* pRightSkillId, int* pRightSkillFlags); // 0x00623060
 void __stdcall UNITS_InitLeftSkill(D2UnitStrc* pUnit); // 0x00622F10

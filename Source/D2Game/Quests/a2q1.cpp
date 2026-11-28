@@ -12,6 +12,7 @@
 
 #define CHECK(p,line) if(!(p)){FOG_DisplayHalt(text_006CC837,sub_00408090(),line);sub_00681E09(-1);}
 
+struct D2PoolSystemStrc;
 struct D2BitBufferStrc;
 
 struct D2ActiveRoomStrc;
@@ -54,7 +55,7 @@ bool __fastcall ACT2Intro_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpc
 bool __fastcall ACT3Q7_StatusFilterCallback(D2QuestDataStrc* pQuest, D2UnitStrc* pPlayer, D2BitBufferStrc* pGlobalFlags, D2BitBufferStrc* pFlags, unsigned char* pStatus); // 0x00598770
 
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall QUESTS_ResetPlayerGUIDCount(D2QuestGUIDStrc* pQuestGUID); // 0x00545300
 

@@ -9,6 +9,7 @@
 
 #include "D2DrlgMaps.h"
 
+struct D2PoolSystemStrc;
 struct D2CoordStrc;
 
 struct D2DrlgCoordsStrc;
@@ -27,9 +28,9 @@ enum D2DrlgGridFlagOperation
     DRLGGRID_FLAG_AND_NEGATED = 5
 };
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordsStrc* pCoords, int nX, int nY); // 0x0066B980
 
@@ -73,9 +74,9 @@ void __fastcall DRLGGRID_CopyGridFlags(D2DrlgGridStrc* pDstGrid, D2DrlgGridStrc*
 
 
 
-void __fastcall DRLGGRID_InitializeGridRowOffsets(void* pMemPool, D2DrlgGridStrc* pGrid, int* pCellsFlags, int nWidth, int nHeight);
+void __fastcall DRLGGRID_InitializeGridRowOffsets(D2PoolSystemStrc* pMemPool, D2DrlgGridStrc* pGrid, int* pCellsFlags, int nWidth, int nHeight);
 
-void __fastcall DRLGGRID_FillNewCellFlags(void* pMemPool, D2DrlgGridStrc* pGrid, int* pCellsFlags, D2DrlgCoordsStrc* pCoords, int nStride);
+void __fastcall DRLGGRID_FillNewCellFlags(D2PoolSystemStrc* pMemPool, D2DrlgGridStrc* pGrid, int* pCellsFlags, D2DrlgCoordsStrc* pCoords, int nStride);
 
 
 // 0x0067C420
@@ -430,7 +431,7 @@ void __fastcall DRLGGRID_CopyGridFlags(D2DrlgGridStrc* pDstGrid, D2DrlgGridStrc*
 }
 
 // 0x0067CB80
-void __fastcall DRLGGRID_InitializeGridCells(void* pMemPool, D2DrlgGridStrc* pGrid, int nWidth, int nHeight)
+void __fastcall DRLGGRID_InitializeGridCells(D2PoolSystemStrc* pMemPool, D2DrlgGridStrc* pGrid, int nWidth, int nHeight)
 {
     pGrid->nWidth = nWidth;
     pGrid->nHeight = nHeight;
@@ -470,7 +471,7 @@ void __fastcall DRLGGRID_FillGrid(D2DrlgGridStrc* pGrid, int nWidth, int nHeight
 }
 
 // 0x0067CC60
-void __fastcall DRLGGRID_InitializeGridRowOffsets(void* pMemPool, D2DrlgGridStrc* pGrid, int* pCellsFlags, int nWidth, int nHeight)
+void __fastcall DRLGGRID_InitializeGridRowOffsets(D2PoolSystemStrc* pMemPool, D2DrlgGridStrc* pGrid, int* pCellsFlags, int nWidth, int nHeight)
 {
     pGrid->nWidth = nWidth;
     pGrid->nHeight = nHeight;
@@ -488,7 +489,7 @@ void __fastcall DRLGGRID_InitializeGridRowOffsets(void* pMemPool, D2DrlgGridStrc
 }
 
 // 0x0067CCC0
-void __fastcall DRLGGRID_FillNewCellFlags(void* pMemPool, D2DrlgGridStrc* pGrid, int* pCellsFlags, D2DrlgCoordsStrc* pCoords, int nStride)
+void __fastcall DRLGGRID_FillNewCellFlags(D2PoolSystemStrc* pMemPool, D2DrlgGridStrc* pGrid, int* pCellsFlags, D2DrlgCoordsStrc* pCoords, int nStride)
 {
     pGrid->nWidth = pCoords->nSubtileWidth;
     pGrid->nHeight = pCoords->nSubtileHeight;
@@ -524,7 +525,7 @@ void __fastcall DRLGGRID_AssignCellsOffsetsAndFlags(D2DrlgGridStrc* pDrlgGrid, i
 }
 
 // 0x0067CD90
-void __fastcall DRLGGRID_FreeGrid(void* pMemPool, D2DrlgGridStrc* pDrlgGrid)
+void __fastcall DRLGGRID_FreeGrid(D2PoolSystemStrc* pMemPool, D2DrlgGridStrc* pDrlgGrid)
 {
     if (pDrlgGrid->pCellsRowOffsets)
     {

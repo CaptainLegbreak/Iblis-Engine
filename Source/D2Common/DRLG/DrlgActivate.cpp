@@ -20,6 +20,7 @@
 #include "D2CommonLevelNode.h"
 #include "FogApi.h"
 
+struct D2PoolSystemStrc;
 struct D2DrlgStrc;
 
 struct D2DrlgTableRefStrc;
@@ -91,9 +92,9 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern const int gnTownLevelIdsByAct[5]; // 0x006E7D1C
 
-int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
-static int DRLGACTIVATE_RoomEx_EnsureHasRoom(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom);
+static int DRLGACTIVATE_RoomEx_EnsureHasRoom(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom);
 
 static int gnStatsClientAllocatedRooms; // 0x0096C8B8
 
@@ -154,7 +155,7 @@ static inline void DRLGACTIVATE_InitRoomsInitTimeout(D2DrlgStrc* pDrlg)
 }
 
 // 0x0061B190
-static int DRLGACTIVATE_RoomEx_EnsureHasRoom(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom)
+static int DRLGACTIVATE_RoomEx_EnsureHasRoom(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom)
 {
     D2DrlgStrc* pDrlg = pDrlgRoom->ptDrlgLevel->pDrlg;
     if (!pDrlgRoom->nRoomsNear)

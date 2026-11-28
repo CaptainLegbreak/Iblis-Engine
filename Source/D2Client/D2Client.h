@@ -1,5 +1,6 @@
 #pragma once
 
+struct D2PoolSystemStrc;
 class D2NpcTradeObjStrc;
 class D2SquelchListStrc;
 struct D2ActiveRoomStrc;
@@ -86,14 +87,14 @@ D2ClientServiceStrc* __cdecl BNCLIENT_GetInterfaceTable(); // 0x00518C10
 D2ClientSoundStrc* __cdecl SOUNDINST_AllocSoundEntry(); // 0x004B93F0
 D2CommonIgnoreListStrc* IGNORELIST_GetOrCreateIgnoreList(); // 0x00611560
 D2DrlgTileDataStrc* __stdcall DUNGEON_GetFloorTilesFromRoom(D2ActiveRoomStrc* pRoom, unsigned int* pCount); // 0x00619660
-D2HoverTextStrc* __stdcall CHAT_AllocHoverMsg(void* pMemPool, const char* szText, int nTimeout); // 0x00661110
+D2HoverTextStrc* __stdcall CHAT_AllocHoverMsg(D2PoolSystemStrc* pMemPool, const char* szText, int nTimeout); // 0x00661110
 D2ItemsTxt* __stdcall DATATBLS_GetItemRecordFromItemCode(unsigned int dwCode, int* pItemId); // 0x00633640
 D2LevelDefBin* __fastcall DATATBLS_GetLevelDefRecord(int nLevelId); // 0x0061E470
 D2LevelsTxt* __stdcall DATATBLS_GetLevelsTxtRecord(int nLevelId); // 0x0061DB70
 D2MonModeTxt* __stdcall DATATBLS_GetMonModeTxtRecord(int nMode, int nType); // 0x0065B500
 D2ObjectsTxt* __stdcall UNITS_GetObjectTxtRecordFromObject(D2UnitStrc* pUnit); // 0x00621B30
 D2PresetUnitStrc* __stdcall DUNGEON_GetPresetUnitsFromRoom(D2ActiveRoomStrc* ptRoom); // 0x00619FD0
-D2SkillListStrc* __stdcall SKILLS_AllocSkillList(void* pMemPool); // 0x006438B0
+D2SkillListStrc* __stdcall SKILLS_AllocSkillList(D2PoolSystemStrc* pMemPool); // 0x006438B0
 D2SkillStrc* __stdcall SKILLS_AddSkill(D2UnitStrc* pUnit, int nSkillId); // 0x00647110
 D2SkillStrc* __stdcall SKILLS_GetNextSkill(D2SkillStrc* pSkill); // 0x006438F0
 D2SkillStrc* __stdcall UNITS_GetStartSkill(D2UnitStrc* hUnit); // 0x00620150
@@ -111,7 +112,7 @@ D2UnitStrc* __fastcall MISSILE_SubmitTargetRequest(D2UnitStrc* pUnit, int nMissi
 D2UnitStrc* __stdcall D2Common_10434(D2UnitStrc* pUnit, int a2); // 0x00623990
 D2UnitStrc* __stdcall INVENTORY_RemoveItemFromInventory(D2InventoryStrc* pInventory, D2UnitStrc* pItem); // 0x0063AD90
 D2UnitStrc* __stdcall PATH_GetTargetUnit(D2DynamicPathStrc* pDynamicPath); // 0x00648BF0
-D2UnitStrc* __stdcall UNITS_AllocUnit(void* pMemPool, int nUnitType); // 0x00620290
+D2UnitStrc* __stdcall UNITS_AllocUnit(D2PoolSystemStrc* pMemPool, int nUnitType); // 0x00620290
 D2UnitStrc* __stdcall D2Common_10434(D2UnitStrc* pUnit, int a2); // 0x00623990
 D2WinControlStrc* __fastcall MAINMENUS_CreateFromTemplate(int nTemplateId); // 0x0042F3A0
 D2WinControlStrc* __fastcall MAINMENUS_CreateControl(int nId); // 0x0042F430
@@ -783,7 +784,7 @@ void __fastcall D2Win_10045(D2WinControlStrc* pControl, const char* szText); // 
 void __fastcall FOG_GetInstallPath(char* szPath, int nBufferSize); // 0x00406BA0
 int __fastcall FOG_FCloseFile(void* pArg); // 0x004068F0
 void __fastcall FOG_AsyncDataFree(AsyncData* ptAsyncData); // 0x0040AB00
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 void __fastcall CHARSEL_SetFlagBit2(int bSet); // 0x0043C6A0
 void __fastcall UI_BuildItemHoverName(D2UnitStrc* pUnit, int nA, int nB); // 0x004527D0
 void __fastcall UI_TogglePanelHandlers(int bSet); // 0x004545C0
@@ -890,8 +891,8 @@ void __stdcall GAME_SetInitSeed(int nInitSeed); // 0x0052C320
 void __stdcall INVENTORY_GetSecondWieldingWeapon(D2UnitStrc* pPlayer, D2InventoryStrc* pInventory, D2UnitStrc** ppItem, int nBodyLoc); // 0x0063E490
 void __stdcall INVENTORY_Return(const char* szFile, int nLine, D2InventoryStrc* pInventory, int nX, int nY, int nInventoryRecordId, int bClient, unsigned char nPage); // 0x0063BCF0
 void __stdcall INVENTORY_SetCursorItem(D2InventoryStrc* pInventory, D2UnitStrc* pItem); // 0x0063C180
-void __stdcall ITEMS_AllocItemData(void* pMemPool, D2UnitStrc* pItem); // 0x00627C90
-void __stdcall ITEMS_FreeItemData(void* pMemPool, D2UnitStrc* pItem); // 0x00627D00
+void __stdcall ITEMS_AllocItemData(D2PoolSystemStrc* pMemPool, D2UnitStrc* pItem); // 0x00627C90
+void __stdcall ITEMS_FreeItemData(D2PoolSystemStrc* pMemPool, D2UnitStrc* pItem); // 0x00627D00
 void __stdcall ITEMS_InitItemSeed(D2UnitStrc* pItem); // 0x00627DC0
 void __stdcall ITEMS_SetBodyLocation(D2UnitStrc* pItem, unsigned char nBodyLoc); // 0x00627D70
 void __stdcall ITEMS_SetInvPage(D2UnitStrc* pItem, unsigned char nPage); // 0x00628280
@@ -981,10 +982,10 @@ void __stdcall PATH_SetUnitAliveCollision(D2UnitStrc* pUnit, int bSkip); // 0x00
 void __stdcall MISSILE_SetAnimSpeed(D2UnitStrc* pMissile, int nAnimSpeed); // 0x0064A690
 void __stdcall PATH_RecacheRoomIfNeeded(D2DynamicPathStrc* pPath); // 0x00650590
 void* __cdecl sub_00454600(); // 0x00454600
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 void* __fastcall FOG_AsyncDataGetBuffer(AsyncData* pAsyncData); // 0x0040A9E0
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
-void* __fastcall GFXUTIL_GetNextRosterInfo(D2UnitStrc* pUnit); // 0x004DC0B0
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+D2PoolSystemStrc* __fastcall GFXUTIL_GetNextRosterInfo(D2UnitStrc* pUnit); // 0x004DC0B0
 void* __fastcall sub_00517993_VirtualAlloc(unsigned int nSize); // 0x00517993
 void* __stdcall D2Win_GetArchive(); // 0x004FAC80
 extern "C" void* __stdcall SMemReAlloc(void* pMemory, unsigned int nSize, const char* szFile, int nLine, unsigned int dwFlags); // 0x004133D0

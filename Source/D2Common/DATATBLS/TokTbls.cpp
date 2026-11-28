@@ -1,6 +1,7 @@
 #include "D2Common.h"
 #include "D2Records.h"
 
+struct D2PoolSystemStrc;
 struct D2BinFieldStrc;
 
 void* __stdcall DATATBLS_CompileTxt(void* hArchive, const char* szName, D2BinFieldStrc* pTbl, int* pRecordCount, int nRecordSize); // 0x006122F0
@@ -34,7 +35,7 @@ D2ObjModeTypeTxt* gpObjType;                                                    
 D2ObjModeTypeTxt* gpObjMode;                                                                                // 0x0096D4D4
 
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);                          // 0x006829C0
 
@@ -64,7 +65,7 @@ D2PlrModeDataTbl gPlrModeDataTables;                                            
 
 D2TokRecord* gpArmTypeTxt;                                                                                  // 0x0096D4E8
 
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 #define TOK_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 

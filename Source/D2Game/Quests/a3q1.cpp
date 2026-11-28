@@ -12,6 +12,7 @@
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
+struct D2PoolSystemStrc;
 struct D2PlayerDataStrc;
 struct D2QuestGUIDStrc;
 struct D2ObjInitFnStrc;
@@ -46,7 +47,7 @@ typedef void (__fastcall* PartyCallbackFunction)(D2GameStrc* pGame, D2UnitStrc* 
 
 
 extern char gpAct3Q1NpcMessages[]; // 0x0073ECF0
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId); // 0x00543640
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"

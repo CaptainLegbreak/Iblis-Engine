@@ -4,6 +4,7 @@
 #pragma intrinsic(memset)
 
 #define FIELD_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+struct D2PoolSystemStrc;
 #define FIELD_CELL(pFieldArg, nPosX, nPosY) \
     *reinterpret_cast<unsigned char*>(gtCollisionField.nCenterX \
         + ((((nPosY - (pFieldArg)->nY + gtCollisionField.nCenterY) << 8) - (pFieldArg)->nX + nPosX) \
@@ -25,8 +26,8 @@ struct D2FieldStrc
 extern D2DataTablesStrc sgtDataTables; // 0x0096BC30
 extern const int gnFieldXOffsets[9]; // 0x00749780
 extern const int gnFieldYOffsets[9]; // 0x007497A4
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 unsigned short __stdcall COLLISION_CheckMask(D2ActiveRoomStrc* pRoom, int nX, int nY, unsigned short nMask); // 0x0064CB30

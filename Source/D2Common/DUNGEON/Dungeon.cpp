@@ -30,6 +30,7 @@
 #include "D2LangApi.h"
 #include "D2ClientApi.h"
 
+struct D2PoolSystemStrc;
 struct D2DrlgRoomStrc;
 
 #pragma function(memset)
@@ -96,11 +97,11 @@ typedef void (__stdcall* TOWNAUTOMAPFN)(int nLevelId, int nPickedFile, int nX, i
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 D2DrlgStrc* __fastcall DRLG_AllocDrlg(D2DrlgActStrc* pAct, unsigned char nActNo, void* hArchive, unsigned int nInitSeed, int nTownLevelId, unsigned int nFlags, D2GameStrc* pGame, unsigned char nDifficulty, AUTOMAPFN pfAutoMap, TOWNAUTOMAPFN pfTownAutoMap); // 0x00642DA0
 
-D2DrlgEnvironmentStrc* __fastcall ENVIRONMENT_AllocDrlgEnvironment(void* pMemPool); // 0x0061BE40
+D2DrlgEnvironmentStrc* __fastcall ENVIRONMENT_AllocDrlgEnvironment(D2PoolSystemStrc* pMemPool); // 0x0061BE40
 
 void __fastcall DRLGANIM_InitCache(D2DrlgStrc* pDrlg, void** ppTileData); // 0x00642A30
 
@@ -189,11 +190,11 @@ void __fastcall DRLGROOM_SetRoom(D2DrlgRoomStrc* pDrlgRoom, D2ActiveRoomStrc* pR
 
 
 
-void __fastcall FOG_FreePool(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 unsigned char __fastcall DRLGACTIVATE_GetRoomStatusFlags(D2DrlgRoomStrc*); // 0x0061BAE0
 
-void* __fastcall FOG_ReallocPool(void* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
+void* __fastcall FOG_ReallocPool(D2PoolSystemStrc* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
 
 D2SeedStrc* __stdcall ITEMS_GetItemSeed(D2UnitStrc* pItem); // 0x00627D90
 
@@ -222,9 +223,9 @@ extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(FARPROC lpfn); // 0x
 
 extern const LEVELNODEFN gpfnRoomExSetStatus[]; // 0x00744384
 
-void __fastcall DUNGEON_FreeRoom(void* pMemPool, D2ActiveRoomStrc* pRoom); // 0x0061A840
+void __fastcall DUNGEON_FreeRoom(D2PoolSystemStrc* pMemPool, D2ActiveRoomStrc* pRoom); // 0x0061A840
 
-void __fastcall ENVIRONMENT_FreeDrlgEnvironment(void* pMemPool, D2DrlgEnvironmentStrc* pEnvironment); // 0x0061BEC0
+void __fastcall ENVIRONMENT_FreeDrlgEnvironment(D2PoolSystemStrc* pMemPool, D2DrlgEnvironmentStrc* pEnvironment); // 0x0061BEC0
 
 void __fastcall DRLG_FreeDrlg(D2DrlgStrc* pDrlg); // 0x00642190
 
@@ -276,11 +277,11 @@ enum D2C_J07DungeonConstants
 extern const int gnTownLevelIdsByAct[5]; // 0x006E7D1C
 
 
-void __fastcall DRLGROOM_InitNearRooms(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom); // 0x0066C370
+void __fastcall DRLGROOM_InitNearRooms(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom); // 0x0066C370
 
 
 // 0x006194A0
-D2DrlgActStrc* __stdcall DUNGEON_AllocAct(unsigned char nAct, unsigned int nInitSeed, int bClient, D2GameStrc* pGame, unsigned char nDifficulty, void* pMemPool, int nTownLevelId, AUTOMAPFN pfAutoMap, TOWNAUTOMAPFN pfTownAutoMap)
+D2DrlgActStrc* __stdcall DUNGEON_AllocAct(unsigned char nAct, unsigned int nInitSeed, int bClient, D2GameStrc* pGame, unsigned char nDifficulty, D2PoolSystemStrc* pMemPool, int nTownLevelId, AUTOMAPFN pfAutoMap, TOWNAUTOMAPFN pfTownAutoMap)
 {
     D2DrlgActStrc* pAct = (D2DrlgActStrc*)FOG_AllocPool(pMemPool, sizeof(D2DrlgActStrc), ".\\DUNGEON\\Dungeon.cpp", 0x19, 0);
     memset(pAct, 0, sizeof(D2DrlgActStrc));
@@ -306,7 +307,7 @@ D2DrlgActStrc* __stdcall DUNGEON_AllocAct(unsigned char nAct, unsigned int nInit
 }
 
 // 0x00619550
-void* __fastcall DUNGEON_GetMemPoolFromAct(D2DrlgActStrc* pAct)
+D2PoolSystemStrc* __fastcall DUNGEON_GetMemPoolFromAct(D2DrlgActStrc* pAct)
 {
     return pAct->pMemPool;
 }
@@ -409,7 +410,7 @@ void __stdcall DUNGEON_GetAdjacentRoomsListFromRoom(D2ActiveRoomStrc* ptRoom, D2
 }
 
 // 0x006197D0
-void* __fastcall DUNGEON_AllocZeroedBlock(void* pMemPool)
+void* __fastcall DUNGEON_AllocZeroedBlock(D2PoolSystemStrc* pMemPool)
 {
     void* pBlock = FOG_AllocPool(pMemPool, 0x80, ".\\DUNGEON\\Dungeon.cpp", 0xF5, 0);
     memset(pBlock, 0, 0x80);
@@ -417,7 +418,7 @@ void* __fastcall DUNGEON_AllocZeroedBlock(void* pMemPool)
 }
 
 // 0x00619800
-static void __stdcall DUNGEON_InitAdjacentRoomList(void* pMemory, D2ActiveRoomStrc* pRoom)
+static void __stdcall DUNGEON_InitAdjacentRoomList(D2PoolSystemStrc* pMemory, D2ActiveRoomStrc* pRoom)
 {
     const int nNear = DRLGROOM_GetNumberOfNearRooms(pRoom->pDrlgRoom);
     pRoom->ppRoomList = (D2ActiveRoomStrc**)FOG_AllocPool(pMemory, sizeof(D2ActiveRoomStrc*) * nNear, ".\\DUNGEON\\Dungeon.cpp", 256, 0);
@@ -1017,7 +1018,7 @@ static inline void DUNGEON_GetClientUnitFlag(D2UnitStrc* pUnit, unsigned int dwF
 }
 
 // 0x0061A840
-void __fastcall DUNGEON_FreeRoom(void* pMemPool, D2ActiveRoomStrc* pRoom)
+void __fastcall DUNGEON_FreeRoom(D2PoolSystemStrc* pMemPool, D2ActiveRoomStrc* pRoom)
 {
     for (D2UnitStrc* pUnit = pRoom->pUnitFirst; pUnit; pUnit = pRoom->pUnitFirst)
     {
@@ -1051,7 +1052,7 @@ void __stdcall DUNGEON_FreeDrlgDelete(D2ActiveRoomStrc* ptRoom)
     D2_ASSERT(ptRoom, 912);
 
     D2DrlgDeleteStrc* pDrlgDelete = ptRoom->pDrlgDelete;
-    void* pMemPool = ptRoom->pAct->pMemPool;
+    D2PoolSystemStrc* pMemPool = ptRoom->pAct->pMemPool;
     if (pDrlgDelete)
     {
         do
@@ -1318,7 +1319,7 @@ D2RoomCoordListStrc* __stdcall DUNGEON_GetRoomCoordList(D2ActiveRoomStrc* pRoom)
 }
 
 // 0x0061AD70
-void __stdcall DUNGEON_GetPortalLevelArrayFromPortalFlags(void* pMemPool, int nFlags, int** ppLevels, int* pnLevels)
+void __stdcall DUNGEON_GetPortalLevelArrayFromPortalFlags(D2PoolSystemStrc* pMemPool, int nFlags, int** ppLevels, int* pnLevels)
 {
     int pLevels[32];
     int nPortalLevels;

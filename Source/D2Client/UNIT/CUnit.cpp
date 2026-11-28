@@ -34,6 +34,7 @@
 #include "D2BNClientApi.h"
 #include "D2DDrawApi.h"
 
+struct D2PoolSystemStrc;
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
 
@@ -241,7 +242,7 @@ void __fastcall MONSTER_InitMonster(D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, 
 
 int __stdcall UNITS_ChangeAnimMode(D2UnitStrc* pUnit, int nMode);                                           // 0x00624690
 
-D2InventoryStrc* __stdcall INVENTORY_AllocInventory(void* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
+D2InventoryStrc* __stdcall INVENTORY_AllocInventory(D2PoolSystemStrc* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
 
 int __stdcall MONSTERS_GetHirelingTypeId(D2UnitStrc* pUnit);                                                // 0x0063EE90
 

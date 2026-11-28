@@ -40,6 +40,7 @@
 
 #define ITEMCODE_DEFROST_POTION 0x20656369
 
+struct D2PoolSystemStrc;
 struct D2ObjectControlStrc;
 
 struct D2PlayerDataStrc;
@@ -126,7 +127,7 @@ D2MapAIStrc** __stdcall AIGENERAL_GetMapAiFromUnit(D2UnitStrc* pUnit); // 0x0058
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);
 
 extern "C" const char gszAct4Q3SourceFile[];
 
@@ -183,7 +184,7 @@ typedef void (__fastcall* PartyCallbackFunction)(D2GameStrc* pGame, D2UnitStrc* 
 
 extern char gpAct5Q1NpcMessages[]; // 0x00733308
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall PARTY_IteratePartyMembers(D2GameStrc* pGame, unsigned short nPartyId, PartyCallbackFunction pCallback, void* pArgs); // 0x00540510
 

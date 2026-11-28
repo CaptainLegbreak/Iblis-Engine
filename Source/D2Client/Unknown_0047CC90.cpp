@@ -1054,7 +1054,6 @@ void __stdcall sub_0047D840_OptionMouseUp(SMSGHANDLER_PARAMS* pMsg)
 
 
 
-extern int gbPanelFlag; // 0x0071315C
 
 // 0x0047D8A0
 void __stdcall sub_0047D8A0_SelectNextOption(SMSGHANDLER_PARAMS* pMsg)
@@ -1960,7 +1959,7 @@ void __cdecl sub_0047F0C0_LoadMiniPanel()
 void __cdecl sub_0047F130_SaveMiniPanel()
 {
     int bValue = 0;
-    if (!gbPanelFlag)
+    if (!gaEscMenuUIState[21].nSaved) // the mini panel's UI var
         bValue = 1;
     SRegSaveValue("Diablo II", "Mini Panel", 1, bValue);
     if (gpMiniPanelCel)

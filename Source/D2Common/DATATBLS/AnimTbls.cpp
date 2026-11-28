@@ -3,6 +3,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 #include "D2HellApi.h"
+struct D2PoolSystemStrc;
 struct D2InventoryStrc;
 struct D2UnitStrc;
 
@@ -21,8 +22,8 @@ struct D2AnimDataTableStrc
 
 extern "C" const char gszDataGlobalPath[];                                                                      // 0x006D4118
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szBuffer, const char* szFormat, ...);           // 0x006CC468
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);               // 0x0040B430
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);             // 0x0040B480
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);               // 0x0040B430
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);             // 0x0040B480
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                  // 0x00681EF0
 #pragma function(memset)
 unsigned int __fastcall sub_006C9A38(const char* szString);                                                    // 0x006C9A38

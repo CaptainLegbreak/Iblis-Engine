@@ -27,6 +27,7 @@
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
+struct D2PoolSystemStrc;
 struct D2CmpCellStrc;
 
 struct D2DrlgLevelStrc;
@@ -3157,7 +3158,7 @@ void __fastcall D2CMPSpriteCacheResize(D2CmpCacheStrc* pCache, D2CmpCacheNodeStr
 }
 
 // 0x005FE120
-void __stdcall D2CMPTileCacheInit(void* pMemPool, int nArg)
+void __stdcall D2CMPTileCacheInit(D2PoolSystemStrc* pMemPool, int nArg)
 {
     gnCmpPoolArg = nArg;
     memset(&gCmpPool, 0, sizeof(gCmpPool));

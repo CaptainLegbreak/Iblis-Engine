@@ -3,6 +3,7 @@
 
 #define TEXT_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
+struct D2PoolSystemStrc;
 struct D2TextNodeStrc;
 struct D2TextHeaderStrc;
 struct D2MessageStrc;
@@ -18,7 +19,7 @@ struct D2TextNodeStrc
 
 struct D2TextHeaderStrc
 {
-    void* pMemPool;
+    D2PoolSystemStrc* pMemPool;
     unsigned short nCount;
     unsigned short pad0x06;
     D2TextNodeStrc* pNode;
@@ -38,14 +39,14 @@ struct D2MessageListStrc
     D2MessageStrc pMessages[8];
 };
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 // 0x00661240
-D2TextHeaderStrc* __stdcall TEXT_AllocTextHeader(void* pMemPool)
+D2TextHeaderStrc* __stdcall TEXT_AllocTextHeader(D2PoolSystemStrc* pMemPool)
 {
     D2TextHeaderStrc* pTextHeader = (D2TextHeaderStrc*)sub_0040B430(pMemPool, sizeof(D2TextHeaderStrc), ".\\Text\\Text.cpp", 43, 0);
     pTextHeader->pMemPool = pMemPool;

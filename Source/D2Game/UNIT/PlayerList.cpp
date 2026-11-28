@@ -7,6 +7,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 
+struct D2PoolSystemStrc;
 struct D2PlayerListStrc;
 
 struct D2PlayerDataStrc;
@@ -14,7 +15,7 @@ struct D2PlayerDataStrc;
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer); // 0x00554630
 
@@ -69,7 +70,7 @@ void __fastcall PLAYERLIST_FreePlayerListCallback(D2GameStrc* pGame, D2UnitStrc*
     PLAYERLIST_IterateCallback_FreePlayerList(pGame, pPlayer, pArg);
 }
 
-void __fastcall FOG_FreePool(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);         // 0x0040B480
+void __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);         // 0x0040B480
 
 void __fastcall D2GAME_PACKETS_SendPacket0x8C(D2UnitStrc* pUnit, int dwPlayerId1, int dwPlayerId2, unsigned short wRelationState); // 0x0053DE50
 
@@ -214,7 +215,7 @@ void __fastcall D2GAME_PACKETS_SendPacket0x8B(D2ClientStrc* pClient, int nUnitGU
 
 void __fastcall SUNIT_IterateLivingPlayers(D2GameStrc* pGame, SUNIT_IterateFn pfIterate, void* pArg);       // 0x005538D0
 
-void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 void __fastcall PLAYERLIST_IterateCallback_InitializePlayerRelation(D2GameStrc* pGame, D2UnitStrc* pPlayer, void* pArg); // 0x0055B540
 

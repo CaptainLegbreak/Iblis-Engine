@@ -39,6 +39,7 @@
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
+struct D2PoolSystemStrc;
 struct PairStrc_0044BE20;
 
 struct PairStrc_0044DE50;
@@ -1103,7 +1104,7 @@ void __cdecl GFX_FreeActHashedFile(); // 0x0046F440
 
 void __cdecl DLIGHTMAP_InitLightTables(); // 0x00475B40
 
-D2DrlgActStrc* __stdcall DUNGEON_AllocAct(unsigned char nAct, unsigned int nInitSeed, int bClient, D2GameStrc* pGame, unsigned char nDifficulty, void* pMemPool, int nTownLevelId, AUTOMAPFN pfAutoMap, TOWNAUTOMAPFN pfTownAutoMap); // 0x006194A0
+D2DrlgActStrc* __stdcall DUNGEON_AllocAct(unsigned char nAct, unsigned int nInitSeed, int bClient, D2GameStrc* pGame, unsigned char nDifficulty, D2PoolSystemStrc* pMemPool, int nTownLevelId, AUTOMAPFN pfAutoMap, TOWNAUTOMAPFN pfTownAutoMap); // 0x006194A0
 
 int gbBattleNetConnected; // 0x0077AC08
 

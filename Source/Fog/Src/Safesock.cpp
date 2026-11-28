@@ -14,6 +14,7 @@
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
+struct D2PoolSystemStrc;
 struct AsyncDataEventSlot;
 
 struct D2CriticalSectionStrc;
@@ -60,7 +61,7 @@ void __cdecl LOGMANAGER_CloseLogFiles(); // 0x0040F960
 struct AsyncData
 {
     void* hFile;
-    void* pMemPool;
+    D2PoolSystemStrc* pMemPool;
     D2OverlappedStrc tOverlapped;
     AsyncDataLoadFileCallback pAsyncOpDesc;
     AsyncDataEventSlot* pEventSlot;

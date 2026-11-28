@@ -10,6 +10,7 @@
 #include "D2GameStrc.h"
 #include "D2DataTbls.h"
 
+struct D2PoolSystemStrc;
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 #include "D2Txt.h"
 #include "D2UnitData.h"
@@ -131,7 +132,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern int gpAct5Q5NpcMessages[]; // 0x00735100
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall ACT5Q5_Callback02_NpcDeactivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x0058BE80
 

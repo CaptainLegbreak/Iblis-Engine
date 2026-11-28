@@ -43,6 +43,7 @@
 
 #define LINE_INIT_ALLOC 0x3AE
 
+struct D2PoolSystemStrc;
 struct D2PlayerDataStrc;
 
 struct D2QuestGUIDStrc;
@@ -87,7 +88,7 @@ short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer); // 0x00554630
 
 
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall ACT1Q3_Callback00_NpcActivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005916A0
 

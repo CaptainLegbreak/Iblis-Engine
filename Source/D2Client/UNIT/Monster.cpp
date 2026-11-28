@@ -31,6 +31,7 @@
 
 #define H12_OFFSET(s, m) ((unsigned int)&((s*)0)->m)
 
+struct D2PoolSystemStrc;
 struct D2GfxLightStrc;
 
 struct Unicode;
@@ -132,7 +133,7 @@ void __stdcall INVENTORY_FreeInventory(D2InventoryStrc* pInventory); // 0x0063AC
 
 D2GfxLightStrc* __stdcall D2Common_10958(D2UnitStrc* pUnit, void* pValue); // 0x00643A00
 
-void __stdcall PATH_FreeDynamicPath(void* pMemPool, D2DynamicPathStrc* pDynamicPath); // 0x00648460
+void __stdcall PATH_FreeDynamicPath(D2PoolSystemStrc* pMemPool, D2DynamicPathStrc* pDynamicPath); // 0x00648460
 
 void __stdcall D2Common_10228(D2UnitStrc* pUnit); // 0x00649F50
 
@@ -314,7 +315,7 @@ void __stdcall STATLIST_AllocStatListEx(D2UnitStrc* pUnit, int nFlags, void* pCa
 
 void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStatId, int nValue, int nLayer); // 0x00627260
 
-D2InventoryStrc* __stdcall INVENTORY_AllocInventory(void* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
+D2InventoryStrc* __stdcall INVENTORY_AllocInventory(D2PoolSystemStrc* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
 
 void __stdcall PATH_SetVelocity(D2DynamicPathStrc* pDynamicPath, int nVelocity, const char* szFile, int nLine); // 0x00648690
 

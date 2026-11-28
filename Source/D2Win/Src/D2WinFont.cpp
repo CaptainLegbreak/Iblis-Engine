@@ -1485,31 +1485,35 @@ void __stdcall D2Win_10124()
     }
 }
 
-#pragma pack(push, 1)
-struct d2data_0072E00C_t
-{
-    unsigned char b0[4];
+extern "C" const char* const gData_006DC980[14] = { // 0x006DC980
+    "Font8",
+    "Font16",
+    "Font30",
+    "Font42",
+    "FontFormal10",
+    "FontFormal12",
+    "Font6",
+    "Font24",
+    "FontFormal11",
+    "FontExocet10",
+    "FontRidiculous",
+    "FontExocet8",
+    "ReallyTheLastSucker",
+    "FontInGameChat"
 };
-#pragma pack(pop)
-
-extern "C" const char* const gData_006DC980[14]; // 0x006DC980
-extern "C" const unsigned int gData_006DC9B8[8]; // 0x006DC9B8
-extern "C" struct d2data_0072E00C_t gData_0072E00C; // 0x0072E00C
-
-extern "C" const char* const gData_006DC980[14] = { "Font8", "Font16", "Font30", "Font42", "FontFormal10", "FontFormal12", "Font6", "Font24", "FontFormal11", "FontExocet10", "FontRidiculous", "FontExocet8", "ReallyTheLastSucker", "FontInGameChat" }; // 0x006DC980
 #pragma comment(linker, "/alternatename:?gaFontNames@@3PAPBDA=_gData_006DC980")
 
-extern "C" const unsigned int gData_006DC9B8[8] = { 0, 0xFFFFFFFF, 0xFFFFFFFF, 0x7FFFFFFF, 0x60000, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF }; // 0x006DC9B8
+extern "C" const unsigned int gData_006DC9B8[8] = { // 0x006DC9B8
+    0x00000000, 0xFFFFFFFF, 0xFFFFFFFF, 0x7FFFFFFF, 0x00060000, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF
+};
 #pragma comment(linker, "/alternatename:?gaFontCharValidBits@@3PAIA=_gData_006DC9B8")
 
-extern int gnFontMetric1 = 16; // 0x0072E000
+int gnCurrentFont = 1; // 0x0072DFFC
 
-extern int gnFontMetric2 = 17; // 0x0072E004
+int gnFontMetric1 = 16; // 0x0072E000
 
-extern int gnFontMetric3 = 3; // 0x0072E008
+int gnFontMetric2 = 17; // 0x0072E004
 
-extern int gnCurrentFont = 1; // 0x0072DFFC
+int gnFontMetric3 = 3; // 0x0072E008
 
-extern "C" struct d2data_0072E00C_t gData_0072E00C = {
-    { 0x00 }
-}; // 0x0072E00C
+extern "C" unsigned char gData_0072E00C[4] = { 0 }; // 0x0072E00C

@@ -51,6 +51,7 @@
 #define EVENTTYPE_PERIODICSTATS 9
 
 
+struct D2PoolSystemStrc;
 struct D2ObjectControlStrc;
 
 union D2SeedStrc;
@@ -494,7 +495,7 @@ struct D2SfxArgStrc
 };
 
 
-void __stdcall UNITFINDS_InitializeUnitFindData(void* pMemPool, D2UnitFindDataStrc* pFind, D2ActiveRoomStrc* pRoom, int nX, int nY, int nSize, void* pfnTest, D2UnitFindArgStrc* pArg); // 0x0065A950
+void __stdcall UNITFINDS_InitializeUnitFindData(D2PoolSystemStrc* pMemPool, D2UnitFindDataStrc* pFind, D2ActiveRoomStrc* pRoom, int nX, int nY, int nSize, void* pfnTest, D2UnitFindArgStrc* pArg); // 0x0065A950
 
 int __fastcall OBJMODE_IsLivingPlayerOrMonster(D2UnitStrc* unit, void* unused); // 0x00582710
 

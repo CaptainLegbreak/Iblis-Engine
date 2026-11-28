@@ -2,6 +2,7 @@
 #include "D2DrlgMaps.h"
 #include "FogApi.h"
 
+struct D2PoolSystemStrc;
 struct D2DrlgCoordStrc;
 
 struct D2DrlgVertexStrc;
@@ -10,9 +11,9 @@ struct D2DrlgOrthStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
 
 
@@ -20,21 +21,21 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode);
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
-void __stdcall DRLGVER_SplitVerticesAtOrths(void* pMemPool, D2DrlgVertexStrc* pCurrentVertex, D2DrlgCoordStrc* pDrlgCoord, unsigned char nDirection, D2DrlgOrthStrc* pCurrentRoomData); // 0x0067CE20
+void __stdcall DRLGVER_SplitVerticesAtOrths(D2PoolSystemStrc* pMemPool, D2DrlgVertexStrc* pCurrentVertex, D2DrlgCoordStrc* pDrlgCoord, unsigned char nDirection, D2DrlgOrthStrc* pCurrentRoomData); // 0x0067CE20
 
-D2DrlgVertexStrc* __fastcall DRLGVER_AllocVertex(void* pMemPool, unsigned char nDirection);
+D2DrlgVertexStrc* __fastcall DRLGVER_AllocVertex(D2PoolSystemStrc* pMemPool, unsigned char nDirection);
 
 static void __stdcall DRLGVER_MarkVertex(D2DrlgVertexStrc* pVertex, int bInit);
 
 static void __fastcall DRLGVER_MakeVerticesRelative(D2DrlgCoordStrc* pCoords, D2DrlgVertexStrc* pFirst);
 
-void __fastcall DRLGVER_CreateVertices(void* pMemPool, D2DrlgVertexStrc** ppVertex, D2DrlgCoordStrc* pCoords, unsigned char nDirection, D2DrlgOrthStrc* pOrth); // 0x0067D050
+void __fastcall DRLGVER_CreateVertices(D2PoolSystemStrc* pMemPool, D2DrlgVertexStrc** ppVertex, D2DrlgCoordStrc* pCoords, unsigned char nDirection, D2DrlgOrthStrc* pOrth); // 0x0067D050
 
 void __fastcall DRLGVER_ReverseVertexList(D2DrlgVertexStrc** ppVertex);
 
 void __fastcall DRLGVER_GetCoordDiff(D2DrlgVertexStrc* pVertex, int* pDirectionX, int* pDirectionY);
 
-D2DrlgVertexStrc* __fastcall DRLGVER_AllocVertex(void* pMemPool, unsigned char nDirection)
+D2DrlgVertexStrc* __fastcall DRLGVER_AllocVertex(D2PoolSystemStrc* pMemPool, unsigned char nDirection)
 {
     D2DrlgVertexStrc* pVertex = (D2DrlgVertexStrc*)sub_0040B430(pMemPool, sizeof(D2DrlgVertexStrc), ".\\DRLG\\DrlgVer.cpp", 19, 0);
     memset(pVertex, 0, sizeof(D2DrlgVertexStrc));
@@ -53,7 +54,7 @@ static void __stdcall DRLGVER_MarkVertex(D2DrlgVertexStrc* pVertex, int bInit)
 }
 
 // 0x0067CE20
-void __stdcall DRLGVER_SplitVerticesAtOrths(void* pMemPool, D2DrlgVertexStrc* pCurrentVertex, D2DrlgCoordStrc* pDrlgCoord, unsigned char nDirection, D2DrlgOrthStrc* pCurrentRoomData)
+void __stdcall DRLGVER_SplitVerticesAtOrths(D2PoolSystemStrc* pMemPool, D2DrlgVertexStrc* pCurrentVertex, D2DrlgCoordStrc* pDrlgCoord, unsigned char nDirection, D2DrlgOrthStrc* pCurrentRoomData)
 {
     int nSign = 0;
     D2DrlgVertexStrc* pNextVertex = pCurrentVertex->pNext;
@@ -198,7 +199,7 @@ static void __fastcall DRLGVER_MakeVerticesRelative(D2DrlgCoordStrc* pCoords, D2
 }
 
 // 0x0067D050
-void __fastcall DRLGVER_CreateVertices(void* pMemPool, D2DrlgVertexStrc** ppVertex, D2DrlgCoordStrc* pCoords, unsigned char nDirection, D2DrlgOrthStrc* pOrth)
+void __fastcall DRLGVER_CreateVertices(D2PoolSystemStrc* pMemPool, D2DrlgVertexStrc** ppVertex, D2DrlgCoordStrc* pCoords, unsigned char nDirection, D2DrlgOrthStrc* pOrth)
 {
     --pCoords->nWidth;
     --pCoords->nHeight;
@@ -242,7 +243,7 @@ void __fastcall DRLGVER_CreateVertices(void* pMemPool, D2DrlgVertexStrc** ppVert
 }
 
 // 0x0067D1E0
-void __fastcall DRLGVER_FreeVertices(void* pMemPool, D2DrlgVertexStrc** ppVertex)
+void __fastcall DRLGVER_FreeVertices(D2PoolSystemStrc* pMemPool, D2DrlgVertexStrc** ppVertex)
 {
     if (*ppVertex)
     {

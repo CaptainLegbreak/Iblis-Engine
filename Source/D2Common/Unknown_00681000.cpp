@@ -6,6 +6,7 @@
 #include "D2Path.h"
 #include "D2DrlgRooms.h"
 
+struct D2PoolSystemStrc;
 struct D2DrlgVertexStrc;
 
 struct D2DrlgOrthStrc;
@@ -170,7 +171,7 @@ static inline unsigned int SEED_RollRandomNumber(D2SeedStrc* pSeed)
 // 0x00681240
 static void __stdcall sub_00681240_PlaceRoadVertices(D2DrlgLevelStrc* pLevel, int nRoad)
 {
-    void* pMemPool = pLevel->pDrlg->pMempool;
+    D2PoolSystemStrc* pMemPool = pLevel->pDrlg->pMempool;
     D2DrlgOutdoorInfoStrc* pOutdoors = pLevel->pOutdoors;
     D2DrlgVertexStrc* pVertex = pOutdoors->pRoads[nRoad];
     int nRand = SEED_RollRandomNumber(&pLevel->pSeed) & 3;

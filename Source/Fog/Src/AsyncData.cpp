@@ -4,6 +4,7 @@
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
+struct D2PoolSystemStrc;
 struct AsyncDataEventSlot;
 struct D2OverlappedStrc;
 struct AsyncData;
@@ -15,7 +16,7 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 struct AsyncData
 {
     void* hFile;
-    void* pMemPool;
+    D2PoolSystemStrc* pMemPool;
     D2OverlappedStrc tOverlapped;
     AsyncDataLoadFileCallback pAsyncOpDesc;
     AsyncDataEventSlot* pEventSlot;
@@ -49,7 +50,7 @@ int gnAsyncDataPostponeCount; // 0x0075AF8C
 
 AsyncData* gpAsyncDataPostponed; // 0x0075AF90
 
-int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0);            // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0);            // 0x0040B480
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
@@ -57,7 +58,7 @@ int __fastcall FOG_FSetFilePointer(void* hFile, long nOffset, long* pnOffsetHigh
 
 void* __fastcall ERRORMANAGER_PoolAlloc(void* pPool, int nSize, const char* szFile, int nLine); // 0x0040A080
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 // 0x0040A850
 void __fastcall FOG_AsyncDataSetPriority(AsyncData* pAsyncData, int nPriority)
@@ -231,7 +232,7 @@ AsyncDataEventSlot* __cdecl ASYNCDATA_GetEventSlot()
 }
 
 // 0x0040A620
-AsyncData* __fastcall FOG_AsyncDataLoadFileEx(void* pMemPool, const char* szFileName, int bAllowAsync, long nFileOffset, int nFileSize, void* pBuffer, AsyncDataLoadFileCallback* pAsyncOpDesc, int nPriority, const char* szFile, int nLine)
+AsyncData* __fastcall FOG_AsyncDataLoadFileEx(D2PoolSystemStrc* pMemPool, const char* szFileName, int bAllowAsync, long nFileOffset, int nFileSize, void* pBuffer, AsyncDataLoadFileCallback* pAsyncOpDesc, int nPriority, const char* szFile, int nLine)
 {
     AsyncData* pAsync = (AsyncData*)sub_0040B430(pMemPool, sizeof(AsyncData), ".\\Src\\AsyncData.cpp", 296, 0);
     memset(pAsync, 0, sizeof(AsyncData));

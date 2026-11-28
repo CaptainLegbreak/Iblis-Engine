@@ -25,6 +25,7 @@
 
 #define QFLAG_COMPLETEDBEFORE 15
 
+struct D2PoolSystemStrc;
 struct D2Act3Quest2Strc;
 
 union D2SeedStrc;
@@ -73,7 +74,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern char gpAct3Q3NpcMessages[]; // 0x0073FB98
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall QUESTS_CreateTimer(D2QuestDataStrc* pQuest, QUESTUPDATE pfnCallback, int nTicks); // 0x00543F10
 
