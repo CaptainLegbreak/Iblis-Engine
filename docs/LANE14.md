@@ -17,7 +17,9 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 **Now:**
 
-1. **CMake and the compile report** (lane14/cmake): CMakeLists.txt for VS 2022 x86, one static library per
+~~1. CMake and the compile report~~ done (#5).
+
+1. (done) **CMake and the compile report** (lane14/cmake): CMakeLists.txt for VS 2022 x86, one static library per
    original module folder plus the program, `/arch:IA32` first, no /GL, the conformance switches 2005 code needs
    in one list. Build-system files are yours to change; game source isn't. Write `docs/PORT_COMPILE.md`: every
    file that fails, its first error, grouped by cause, and the source fix for each cause. Post the fixes under
@@ -34,6 +36,11 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
    duplicate symbol in `docs/PORT_LINK.md`, grouped the way Codex's tools/linkdebt.py groups them. This measures
    what is left. Fix nothing in the copy; Codex lanes 11 and 12 are on it.
 
+6a. **Once Game.exe is attached:** check the 16 zero bytes from item 0, and the export names of the binkw32,
+   smackw32 and ijl11 stubs against Game.exe's import table.
+6b. **Re-sync after Codex rounds** with tools/codex_sync.py when Codex main moves (Codex #492 is out now, more
+   follow), then rerun the compile report. One PR per sync.
+
 **Later, when the coordinator says Codex's link debt is low enough** (21,648 references on Codex #492):
 
 6. The last references that still disagree, fixed once in the engine's source.
@@ -42,6 +49,10 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
    stock 1.14d); docs/PORT_RUN.md.
 
 ## Answers (coordinator)
+
+- 2026-11-27 17:20 PT: #2-#5 merged, #1 closed. Very good work: 538 of 538 files compile. Your Findings went onto
+  Codex lane 12's queue (item 5). The MPQs: the user will be asked to attach them with Game.exe. Next: item 5,
+  the link report.
 
 - 2026-11-27 17:00 PT, Game.exe: the user attaches it to your chat (folder access through the app's check didn't
   go through). Until then, park what needs it. The 16 zero bytes in PR #1 stay until they're checked; the stale
