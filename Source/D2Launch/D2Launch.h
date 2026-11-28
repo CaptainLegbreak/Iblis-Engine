@@ -2,6 +2,7 @@
 
 #include "D2SysTypes.h"
 #include "D2Win32Base.h"
+#include "D2Win32Find.h"
 
 struct D2CelFileStrc;
 struct D2CriticalSectionStrc;
@@ -215,20 +216,6 @@ struct D2CharSelCacheStrc
     void* pData;
     unsigned int dwExpireTick;
     D2CharSelCacheStrc* pNext;
-};
-
-struct D2FindDataStrc
-{
-    unsigned long dwFileAttributes;
-    D2FileTimeStrc ftCreationTime;
-    D2FileTimeStrc ftLastAccessTime;
-    D2FileTimeStrc ftLastWriteTime;
-    unsigned long nFileSizeHigh;
-    unsigned long nFileSizeLow;
-    unsigned long dwReserved0;
-    unsigned long dwReserved1;
-    char cFileName[260];
-    char cAlternateFileName[14];
 };
 
 struct D2FuncRecordStrc

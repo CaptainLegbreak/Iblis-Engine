@@ -11,55 +11,70 @@ struct D2LaunchPayloadStrc;
 struct D2MenuListStrc;
 struct D2StatusStrc;
 
+typedef int (__fastcall* D2BnNewsCallback)(unsigned long, unsigned long);
+
 struct D2ComInterfaceStrc
 {
-    int (__fastcall* pfnInit)(D2ConfigStrc*); // 0x00
-    void* (__fastcall* pfnSlot04)(void); // 0x04
-    void (__fastcall* pfnSlot08)(char*, char*); // 0x08
-    int (__fastcall* pfnSlot0C)(void); // 0x0C
+    int (__fastcall* pfnInitialize)(D2ConfigStrc*); // 0x00
+    void* (__fastcall* pfnOpenBNetConnection)(void); // 0x04
+    void (__fastcall* pfnLogon)(char*, char*); // 0x08
+    int (__fastcall* pfnGetLogonInfo)(void); // 0x0C
     union
     {
-        void (__fastcall* pfnSlot10)(void); // 0x10
-        int (__fastcall* pfnSlot10Result)(void);
+        void (__fastcall* pfnCloseBNetConnection)(void); // 0x10
+        int (__fastcall* pfnCloseBNetConnectionResult)(void);
     };
-    void (__fastcall* pfnResign)(const char*); // 0x14
-    int unk0x18; // 0x18
-    int unk0x1C; // 0x1C
-    int unk0x20; // 0x20
-    int (__fastcall* pfnGetMessage)(int*, D2BnetChatPacketStrc*); // 0x24
-    int (__fastcall* pfnSlot28)(D2StatusStrc*); // 0x28
-    int unk0x2C[2]; // 0x2C
-    void (__fastcall* pfnCharUpdate)(char*, char*, char*, int); // 0x34
-    int unk0x38[2]; // 0x38
-    D2MenuListStrc* (__fastcall* pfnGetMenuList)(int); // 0x40
-    D2LaunchPayloadStrc* (__fastcall* pfn0x44)(const char*, const char*); // 0x44
-    int (__fastcall* pfnSlot48)(int*); // 0x48
-    int (__fastcall* pfnSlot4C)(void); // 0x4C
-    void (__fastcall* pfnRequest)(const char*, int); // 0x50
-    int unk0x54[3]; // 0x54
-    void (__fastcall* pfnSlot60)(char*, char*); // 0x60
-    int (__fastcall* pfnSlot64)(int*); // 0x64
-    int (__fastcall* pfnSlot68)(void); // 0x68
-    int unk0x6C; // 0x6C
-    int (__fastcall* pfnSlot70)(void); // 0x70
-    int unk0x74[3]; // 0x74
-    void (__fastcall* pfnSlot80)(int*); // 0x80
-    int unk0x84[3]; // 0x84
-    void (__cdecl* pfnNotify)(void); // 0x90
-    int unk0x94; // 0x94
+    void (__fastcall* pfnChatCommand)(const char*); // 0x14
+    char* (__stdcall* pfnGetUniqueName)(void); // 0x18
+    int (__fastcall* pfnJoinChannel)(const char* szChannel, int bForce, int bOpen); // 0x1C
+    const void* (__fastcall* pfnGetChannelList)(int bOpen); // 0x20
+    int (__fastcall* pfnBnMessQueueRead)(int*, D2BnetChatPacketStrc*); // 0x24
+    int (__fastcall* pfnBnMessageQueueGetLastError)(D2StatusStrc*); // 0x28
+    int (__fastcall* pfn0x2C)(const char* szFileName, unsigned int nRequestId); // 0x2C
+    int (__stdcall* pfnCheckAd)(void); // 0x30
+    void (__fastcall* pfnRefreshGame)(char*, char*, char*, int); // 0x34
+    void* (__fastcall* pfnGetGamesList)(const char* szGameName, const char* szGamePassword, int nUnused1, int nUnused2); // 0x38
+    int (__fastcall* pfnNotifyJoinedGame)(const char* szGameName, const char* szGamePassword); // 0x3C
+    D2MenuListStrc* (__fastcall* pfnSendRealmList)(int); // 0x40
+    D2LaunchPayloadStrc* (__fastcall* pfnLogonRealm)(const char*, const char*); // 0x44
+    int (__fastcall* pfn0x48)(int*); // 0x48
+    int (__fastcall* pfnGetPatchState)(void); // 0x4C
+    void (__fastcall* pfn0x50)(const char*, int); // 0x50
+    int (__fastcall* pfnEnterChat)(const char* szName, const char* szStats, int nUnused, const char* szChannel, char nFlags); // 0x54
+    int (__stdcall* pfnLeaveChat)(void); // 0x58
+    int (__stdcall* pfnGetVersion)(void); // 0x5C
+    void (__fastcall* pfnCreateAccount)(char*, char*); // 0x60
+    int (__fastcall* pfnGetCreateAccountResult)(int*); // 0x64
+    int (__fastcall* pfnIsSocketConnected)(void); // 0x68
+    int (__fastcall* pfnOnAdClick)(unsigned int nAdId, int nFlags); // 0x6C
+    int (__fastcall* pfn0x70)(void); // 0x70
+    int (__fastcall* pfnBattleWriteUserData)(const char* szAccount, unsigned int nKeys, const char* const* ppKeys, const char* const* ppValues); // 0x74
+    int (__fastcall* pfnBattleRequestReadUserData)(const char* szAccount, unsigned int nKeys, unsigned int nCookie, const char* const* ppKeys); // 0x78
+    int (__fastcall* pfnGetBattleReadUserData)(unsigned int nKeys, unsigned int nCookie, char* const* ppValues, const unsigned int* pLengths); // 0x7C
+    void (__fastcall* pfnGetConnectionState)(int*); // 0x80
+    void (__cdecl* pfnLogWrite)(const char* szFormat, ...); // 0x84
+    int (__cdecl* pfnStartLogging)(int nArg1, int nArg2); // 0x88
+    int (__fastcall* pfnGetCreateGameResult)(int* pResult); // 0x8C
+    void (__cdecl* pfnSendKeepAlivePacket)(void); // 0x90
+    int (__stdcall* pfn0x94)(void); // 0x94
     union
     {
-        D2FuncRecordStrc* (__cdecl* pfnGetRecord)(void); // 0x98
-        int (__fastcall* pfnSlot98)(void);
+        D2FuncRecordStrc* (__cdecl* pfnGetBnGatewayAccess)(void); // 0x98
+        int (__fastcall* pfnGetBnGatewayAccessResult)(void);
     };
-    void (__fastcall* pfnSlot9C)(char*, char*, char*); // 0x9C
-    int (__fastcall* pfnSlotA0)(int*); // 0xA0
-    int unk0xA4[4]; // 0xA4
-    int (__fastcall* pfnSlotB4)(void); // 0xB4
-    void (__fastcall* pfnSlotB8)(char*); // 0xB8
-    int (__fastcall* pfnSlotBC)(char*, char*); // 0xBC
-    int (__fastcall* pfnSlotC0)(char*, char*, char*); // 0xC0
-    void (__stdcall* pfnClose)(void); // 0xC4
+    void (__fastcall* pfnChangePassword)(char*, char*, char*); // 0x9C
+    int (__fastcall* pfnGetChangePasswordResult)(int*); // 0xA0
+    const char* (__fastcall* pfnQueryAdUrl)(unsigned int nAdId); // 0xA4
+    int (__fastcall* pfnLoadBNetNews)(D2BnNewsCallback pfnOnNews, int (__cdecl* pfnOnDone)(void)); // 0xA8
+    int (__stdcall* pfnFreeBNetNews)(void); // 0xAC
+    char (__stdcall* pfnGetBuild)(void); // 0xB0
+    int (__fastcall* pfn0xB4)(void); // 0xB4
+    void (__fastcall* pfnSetEmail)(char*); // 0xB8
+    int (__fastcall* pfnResetPassword)(char*, char*); // 0xBC
+    int (__fastcall* pfnChangeEmail)(char*, char*, char*); // 0xC0
+    void (__stdcall* pfnLeaveGame)(void); // 0xC4
 };
 
 D2_CHECK_SIZE(D2ComInterfaceStrc, 0xC8);
+D2_CHECK_OFFSET(D2ComInterfaceStrc, pfnIsSocketConnected, 0x68);
+D2_CHECK_OFFSET(D2ComInterfaceStrc, pfnGetBnGatewayAccess, 0x98);

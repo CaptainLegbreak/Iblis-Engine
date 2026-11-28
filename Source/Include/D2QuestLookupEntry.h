@@ -7,6 +7,6 @@ struct D2QuestLookupEntryStrc
 {
     int nKey;
     int nValue;
-    int unk0x08;
-    int unk0x0C;
+    int unused0x08;
+    int unused0x0C;
 };

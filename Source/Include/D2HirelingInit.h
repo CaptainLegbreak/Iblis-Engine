@@ -19,5 +19,5 @@ struct D2HirelingInitStrc
     int nHireDesc;
     int field_34;
     short nFlags;
-    short unk0x3A;
+    short pad0x3A;
 };

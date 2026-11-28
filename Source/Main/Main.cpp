@@ -76,9 +76,8 @@ int gnMode; // 0x0074C704
 int gbUseKeyhook; // 0x0074C708
 void* ghModKeyhook; // 0x0074C70C
 
-// Kept noinline: GameInit (0x4064C0) calls this out of line in the image; without it the compiler inlines it there.
 // 0x00405C30
-__declspec(noinline) int __fastcall GameStart(void* hInstance, D2ConfigStrc* pCfg, int nModType)
+int __fastcall GameStart(void* hInstance, D2ConfigStrc* pCfg, int nModType)
 {
     if (pCfg->bCrashApp == 1)
     {
@@ -242,7 +241,7 @@ __declspec(noinline) int __fastcall GameStart(void* hInstance, D2ConfigStrc* pCf
     D2ComInterfaceStrc* pComInterface = pCfg->pComInterface;
     if (pComInterface)
     {
-        pComInterface->pfnSlot10();
+        pComInterface->pfnCloseBNetConnection();
     }
 
     IGNORELIST_FreeIgnoreList();

@@ -36,7 +36,7 @@ struct D2MonStatsTxt;
 
 struct D2ItemStatCostTxt;
 
-struct D2PacketBufferStrc;
+struct D2PacketListStrc;
 
 
 struct D2MsgFilterStrc;
@@ -82,7 +82,7 @@ extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 D2PacketListStrc* __fastcall CUNIT_GetPacketList(D2UnitStrc* pUnit); // 0x00464770
 
-void __fastcall CUNIT_SetPacketList(void* pArg, D2PacketBufferStrc* pBuffer); // 0x004647A0
+void __fastcall CUNIT_SetPacketList(void* pArg, D2PacketListStrc* pBuffer); // 0x004647A0
 
 
 D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0

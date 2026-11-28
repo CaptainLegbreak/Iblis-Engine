@@ -5,6 +5,6 @@
 
 struct D2MonTypeTxt
 {
-    char unk0x00[0x0A];
+    char unused0x00[0x0A];
     unsigned short wStrPlur;
 };

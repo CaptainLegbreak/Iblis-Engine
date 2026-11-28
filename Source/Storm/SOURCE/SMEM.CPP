@@ -32,10 +32,10 @@ void __cdecl InitPageSize();                                                    
 void __fastcall UnlinkAndFreeHeap(D2SMemHeapStrc** ppLink);                                         // 0x00411A80
 extern int gbCallerFirst;                                                                          // 0x00708340
 extern unsigned int gnHeapId;                                                                      // 0x00708344
-extern unsigned int gdwCallerId;                                                                   // 0x007768A8
-extern unsigned int gdwCallerWord;                                                                 // 0x007768AC
-extern int gnCallerLine;                                                                           // 0x007768B0
-extern const char* gszCallerFile;                                                                  // 0x007768B4
+unsigned int gdwCallerId;                                                                          // 0x007768A8
+unsigned int gdwCallerWord;                                                                        // 0x007768AC
+int gnCallerLine;                                                                                  // 0x007768B0
+const char* gszCallerFile;                                                                         // 0x007768B4
 extern D2SMemHeapStrc* gapFreeBlocks_007768B8[0x100];                                                       // 0x007768B8
 static unsigned int gnPageSize;                                                                    // 0x00776CB8
 extern unsigned long gnFlag2;                                                                                // 0x00776CBC

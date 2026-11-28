@@ -15,7 +15,7 @@ typedef void(__fastcall* EventTimerCallback)(D2GameStrc*, D2UnitStrc*, int, int,
 struct D2EventTimerStrc
 {
     unsigned char nEventType; // 0x00
-    unsigned char unk0x01; // 0x01
+    unsigned char pad0x01; // 0x01
     unsigned short nFlags; // 0x02
     int nExpireFrame; // 0x04
     D2UnitStrc* pUnit; // 0x08

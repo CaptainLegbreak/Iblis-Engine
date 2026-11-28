@@ -6,7 +6,7 @@
 
 struct D2MissileDataStrc
 {
-    unsigned int unk0x00; // 0x00
+    unsigned int unused0x00; // 0x00
     short nStreamMissile; // 0x04
     short nStreamRange; // 0x06
     short nActivateFrame; // 0x08
@@ -14,7 +14,7 @@ struct D2MissileDataStrc
     short nLevel; // 0x0C
     short nTotalFrames; // 0x0E
     short nCurrentFrame; // 0x10
-    unsigned short unk0x12; // 0x12
+    unsigned short pad0x12; // 0x12
     unsigned int fFlags; // 0x14
     int nOwnerType; // 0x18
     int dwOwnerGUID; // 0x1C

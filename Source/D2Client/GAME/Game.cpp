@@ -2711,9 +2711,9 @@ void __cdecl GAME_InitRooms()
     {
         if (!(pRoom->dwFlags & 1))
         {
-            sub_0046C460_PopulateRoom(pRoom);
+            VIEW_PopulateRoom(pRoom);
             VIEW_SpawnRoomPresets(pRoom);
-            sub_0046BE60_ApplyDenOfEvilRoom(pRoom);
+            VIEW_ApplyDenOfEvilRoom(pRoom);
             pRoom->dwFlags |= 1;
         }
     }
@@ -2726,7 +2726,7 @@ void __cdecl GAME_UpdateGameState()
     GAME_InitRooms();
     CUNIT_ResetUnitTables();
     DUNGEON_AnimateTiles(CUNIT_GetPlayerRoom());
-    sub_0046BEB0_UpdateTimers();
+    VIEW_UpdateTimers();
     GFX_PreloadTick(1);
     if (ENVIRONMENT_UpdatePeriodOfDay(gpAct, CUNIT_GetPlayerRoom()))
         CUNIT_UpdateObjectsForPeriod();
@@ -5048,7 +5048,7 @@ int __cdecl GAME_RunGameSession()
         GAME_UnregisterMouseHandlers();
     }
     if(gnGameType==2 || gnGameType==6 || gnGameType==3 || gnGameType==7)
-        if(gpComInterface)gpComInterface->pfnClose();
+        if(gpComInterface)gpComInterface->pfnLeaveGame();
     return 6;
 }
 

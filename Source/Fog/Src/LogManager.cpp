@@ -1,24 +1,11 @@
 #include "Fog.h"
 #include "D2GameTypes.h"
 #include "D2FogTypes.h"
+#include "D2Win32Find.h"
 #include "D2StormLink.h"
 #include "stpl.h"
 #include "FogApi.h"
 #include "StormApi.h"
-
-struct D2FindDataStrc
-{
-    unsigned long dwFileAttributes;
-    D2FileTimeStrc ftCreationTime;
-    D2FileTimeStrc ftLastAccessTime;
-    D2FileTimeStrc ftLastWriteTime;
-    unsigned long nFileSizeHigh;
-    unsigned long nFileSizeLow;
-    unsigned long dwReserved0;
-    unsigned long dwReserved1;
-    char cFileName[260];
-    char cAlternateFileName[14];
-};
 
 extern "C" __declspec(dllimport) void* __stdcall FindFirstFileA(const char* szFileName, D2FindDataStrc* pFindData); // 0x006CC1CC
 

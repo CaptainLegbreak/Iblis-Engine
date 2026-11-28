@@ -215,13 +215,13 @@ void __cdecl CMDTBL_SaveAndBindHotkeys(); // 0x00469D40
 int __fastcall CUNIT_HasHotkeyBinding(int nA, int nB); // 0x00469D90
 void __fastcall VIEW_StartTimedBox(int nFadeIn, int nHold, int nFadeOut, int nLevelId, int bForce); // 0x0046AE50
 int __stdcall ROSTERPETS_GetPulseColor(unsigned char* pRed, unsigned char* pGreen, unsigned char* pBlue); // 0x0046BD50
-void __fastcall sub_0046BE60_ApplyDenOfEvilRoom(D2ActiveRoomStrc* pRoom); // 0x0046BE60
-void __cdecl sub_0046BEB0_UpdateTimers(); // 0x0046BEB0
+void __fastcall VIEW_ApplyDenOfEvilRoom(D2ActiveRoomStrc* pRoom); // 0x0046BE60
+void __cdecl VIEW_UpdateTimers(); // 0x0046BEB0
 void __fastcall VIEW_CheckThroneLevel(D2ActiveRoomStrc* pRoom); // 0x0046BF30
 void __cdecl VIEW_ResetLevelEffects(); // 0x0046BF90
 void __fastcall sub_0046BFD0_StartTimer(int nDelay); // 0x0046BFD0
 void __cdecl CUNIT_DrawCountdown(); // 0x0046C060
-void __fastcall sub_0046C460_PopulateRoom(D2ActiveRoomStrc* pRoom); // 0x0046C460
+void __fastcall VIEW_PopulateRoom(D2ActiveRoomStrc* pRoom); // 0x0046C460
 void __fastcall GFX_RemoveAiTargetUnit(D2UnitStrc* pUnit); // 0x0046C700
 void __cdecl CUNIT_ClearAiTargets(); // 0x0046D750
 int __fastcall GFX_GetConvertedUnitType(D2UnitStrc* pUnit); // 0x0046D9F0
@@ -440,17 +440,17 @@ void __cdecl GAME_SetClickHandled(); // 0x0044BEF0
 int __fastcall GAME_DispatchMcpPacket(const unsigned char* pPacket, unsigned int nSize); // 0x0044B190
 int __cdecl GAME_GetSkillDelayUntil(); // 0x0044CE50
 void __fastcall CUNIT_ClearHotkeyBinding(int nId, int nB); // 0x00469D70
-void __fastcall sub_0046B3C0_UnitRequest25A(D2UnitStrc* pUnit); // 0x0046B3C0
+void __fastcall VIEW_UnitRequest25A(D2UnitStrc* pUnit); // 0x0046B3C0
 void __fastcall VIEW_SpawnMissileAtObject(D2UnitStrc* pUnit); // 0x0046B530
 void __fastcall VIEW_SpawnBrDeathControl(D2UnitStrc* pUnit); // 0x0046B680
 void __fastcall VIEW_SpawnMephistoDeath(D2UnitStrc* pUnit); // 0x0046B9A0
 void __fastcall VIEW_SpawnAndarielDeath(D2UnitStrc* pUnit); // 0x0046BA50
-void __fastcall sub_0046BA90_PlayerRequestAtUnit15B(D2UnitStrc* pUnit); // 0x0046BA90
-void __fastcall sub_0046BB10_PlayerRequestAtUnit161(D2UnitStrc* pUnit); // 0x0046BB10
-void __fastcall sub_0046BB90_PlayerRequestAtUnit16B(D2UnitStrc* pUnit); // 0x0046BB90
+void __fastcall VIEW_PlayerRequestAtUnit15B(D2UnitStrc* pUnit); // 0x0046BA90
+void __fastcall VIEW_PlayerRequestAtUnit161(D2UnitStrc* pUnit); // 0x0046BB10
+void __fastcall VIEW_PlayerRequestAtUnit16B(D2UnitStrc* pUnit); // 0x0046BB90
 void __fastcall VIEW_SpawnIzualDeath(D2UnitStrc* pUnit); // 0x0046BC10
 int __fastcall UI_SetTimerUnitId(D2UnitStrc* pUnit); // 0x0046BC70
-void __fastcall sub_0046BC90_RequestAtMonster220(D2UnitStrc* pUnit); // 0x0046BC90
+void __fastcall VIEW_RequestAtMonster220(D2UnitStrc* pUnit); // 0x0046BC90
 void __fastcall GFX_RemoveOverlays(D2UnitStrc* pUnit); // 0x0046F170
 void __fastcall GFX_GetUnitCelOffsets(D2UnitStrc* pUnit, int nComponent, int* pOffsetX, int* pOffsetY); // 0x004706E0
 void __fastcall sub_00472C50_StartLightning(int nArg); // 0x00472C50

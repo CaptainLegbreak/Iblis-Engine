@@ -6,7 +6,7 @@
 // in Codex's source (one name, one declaration); it drops out of this file when that fix arrives with a
 // sync.
 //
-// 2807 aliases. Not aliased, by reason: abi: argument bytes 36, abi: calling convention 74, abi: return eax 38, bound_differently_by_file 2, definition_not_one_symbol 341, duplicate_data 84, interior 6, local_copy 324, no_address 231, renamed_definition 101, runtime_library 2, unsourced_data 875
+// 2805 aliases. Not aliased, by reason: abi: argument bytes 36, abi: calling convention 74, abi: return eax 38, bound_differently_by_file 2, definition_not_one_symbol 341, duplicate_data 84, interior 6, local_copy 324, no_address 231, renamed_definition 101, runtime_library 2, unsourced_data 863
 
 #pragma comment(linker, "/alternatename:??0D2UiControlAStrc@@QAE@HHHP6AHXZ@Z=??0SpinnerWrapper@@QAE@HHHH@Z")
 #pragma comment(linker, "/alternatename:??0D2UiControlBStrc@@QAE@HHHHHHP6AHXZH@Z=??0EditBoxWrapper@@QAE@HHHHHGHH@Z")
@@ -97,10 +97,8 @@
 #pragma comment(linker, "/alternatename:?CUNIT_AddClientMonster@@YIPAUD2UnitStrc@@PAUD2UnitSpawnStrc@@PAE1GHH@Z=?CUNIT_AddClientMonster@@YIPAUD2UnitStrc@@PAUD2UnitSpawnStrc@@PAXPAEHHH@Z")
 #pragma comment(linker, "/alternatename:?CUNIT_CanUseSkill@@YIHPAUD2UnitStrc@@PAUD2SkillStrc@@@Z=?CUNIT_CanUseSkill@@YIHPAUD2UnitStrc@@H@Z")
 #pragma comment(linker, "/alternatename:?CUNIT_FreeUnitModStats@@YIXPAUD2UnitStrc@@@Z=?CUNIT_FreeUnitModStats@@YIXPAX@Z")
-#pragma comment(linker, "/alternatename:?CUNIT_GetPacketList@@YIPAUD2PacketBufferStrc@@PAUD2UnitStrc@@@Z=?CUNIT_GetPacketList@@YIPAUD2PacketListStrc@@PAUD2UnitStrc@@@Z")
-#pragma comment(linker, "/alternatename:?CUNIT_GetPacketList@@YIPAUD2PacketBufferStrc@@PAX@Z=?CUNIT_GetPacketList@@YIPAUD2PacketListStrc@@PAUD2UnitStrc@@@Z")
+#pragma comment(linker, "/alternatename:?CUNIT_GetPacketList@@YIPAUD2PacketListStrc@@PAX@Z=?CUNIT_GetPacketList@@YIPAUD2PacketListStrc@@PAUD2UnitStrc@@@Z")
 #pragma comment(linker, "/alternatename:?CUNIT_GetPlayerPartyId@@YIGPAUD2UnitStrc@@@Z=?CUNIT_GetPlayerPartyId@@YIFPAUD2UnitStrc@@@Z")
-#pragma comment(linker, "/alternatename:?CUNIT_SetPacketList@@YIXPAUD2UnitStrc@@PAUD2PacketBufferStrc@@@Z=?CUNIT_SetPacketList@@YIXPAUD2UnitStrc@@PAUD2PacketListStrc@@@Z")
 #pragma comment(linker, "/alternatename:?CUNIT_SetPlayerUnit@@YIXH@Z=?CUNIT_SetPlayerUnit@@YIXPAUD2UnitStrc@@@Z")
 #pragma comment(linker, "/alternatename:?CURSOR_GetCursorItem@@YAPAUD2UnitStrc@@XZ=?CURSOR_GetCursorItem@@YAHXZ")
 #pragma comment(linker, "/alternatename:?CelDataHashAdd@@YIPAUHashNode@@PAXPAUHashTable@@HPBD@Z=?CelDataHashAdd@@YIPAUD2CelDataHashEntryStrc@@PAUD2PoolSystemStrc@@PAUD2CelDataHashStrc@@HPBD@Z")

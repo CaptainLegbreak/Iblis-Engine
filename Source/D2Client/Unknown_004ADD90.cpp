@@ -72,7 +72,7 @@ D2UnitStrc* __fastcall MISSILE_SubmitMissileRequest(D2UnitStrc* pUnit, int nRequ
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
 
-void __fastcall sub_0046B710_SpawnMissileAtObject173(D2UnitStrc* pUnit);                                                            // 0x0046B710
+void __fastcall VIEW_SpawnMissileAtObject173(D2UnitStrc* pUnit);                                                            // 0x0046B710
 
 
 
@@ -255,21 +255,21 @@ void __fastcall NPCMENU_HandleUnitClassEvent(D2UnitStrc* pUnit, int nUnused, int
     case 0x2D:
         if (pUnit->dwAnimMode == 0)
         {
-            sub_0046B710_SpawnMissileAtObject173(pUnit);
+            VIEW_SpawnMissileAtObject173(pUnit);
         }
         break;
 
     case 0xE5:
         if (pUnit->dwAnimMode == 0)
         {
-            sub_0046BA90_PlayerRequestAtUnit15B(pUnit);
+            VIEW_PlayerRequestAtUnit15B(pUnit);
         }
         break;
 
     case 0xD3:
         if (pUnit->dwAnimMode == 0)
         {
-            sub_0046BB90_PlayerRequestAtUnit16B(pUnit);
+            VIEW_PlayerRequestAtUnit16B(pUnit);
         }
         break;
 
@@ -304,7 +304,7 @@ void __fastcall NPCMENU_HandleUnitClassEvent(D2UnitStrc* pUnit, int nUnused, int
     case 0x11C:
         if (pUnit->dwAnimMode == 0x0E)
         {
-            sub_0046BB10_PlayerRequestAtUnit161(pUnit);
+            VIEW_PlayerRequestAtUnit161(pUnit);
         }
         break;
 
@@ -318,14 +318,14 @@ void __fastcall NPCMENU_HandleUnitClassEvent(D2UnitStrc* pUnit, int nUnused, int
     case 0x1DF:
         if (pUnit->dwAnimMode == 0)
         {
-            sub_0046B3C0_UnitRequest25A(pUnit);
+            VIEW_UnitRequest25A(pUnit);
         }
         break;
 
     case 0x220:
         if (pUnit->dwAnimMode == 0)
         {
-            sub_0046BC90_RequestAtMonster220(pUnit);
+            VIEW_RequestAtMonster220(pUnit);
         }
         break;
 

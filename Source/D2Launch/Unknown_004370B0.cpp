@@ -142,7 +142,7 @@ void __cdecl MAINMENUS_UpdateStatus()
     int nState;
     if (!gpStatusText)
         return;
-    gpFuncTable->pfnSlot80(&nState);
+    gpFuncTable->pfnGetConnectionState(&nState);
     switch (nState)
     {
     case 0:
@@ -198,7 +198,7 @@ static int MAINMENUS_CheckAtAndDot(const char* szText)
 // 0x00436C70
 int __stdcall MAINMENUS_DeclineEmail(int nArg)
 {
-    gpFuncTable->pfnSlotB8((char*)&gszEmptyAssertText);
+    gpFuncTable->pfnSetEmail((char*)&gszEmptyAssertText);
     D2Win_StopMessageLoop();
     return 1;
 }
@@ -299,7 +299,7 @@ int __stdcall MAINMENUS_OnEditChange(int nArg)
 // 0x00436F30
 void __cdecl MAINMENUS_CreateEmailScreen()
 {
-    if (!gpFuncTable->pfnSlot68())
+    if (!gpFuncTable->pfnIsSocketConnected())
     {
         MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), MAINMENUS_ShowMainMenu);
         return;
@@ -340,7 +340,7 @@ int __stdcall sub_004370B0_ShowLoginScreen(int unused)
 // 0x004370C0
 void __cdecl MAINMENUS_CreateInfoScreen()
 {
-    if (!gpFuncTable->pfnSlot68())
+    if (!gpFuncTable->pfnIsSocketConnected())
     {
         MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), MAINMENUS_ShowMainMenu);
         return;
@@ -419,7 +419,7 @@ int __stdcall sub_004372A0_OnEnter(int nArg)
 // 0x004372B0
 void __cdecl MAINMENUS_CreatePasswordScreen()
 {
-    if (!gpFuncTable->pfnSlot68())
+    if (!gpFuncTable->pfnIsSocketConnected())
     {
         MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), MAINMENUS_ShowMainMenu);
         return;
@@ -476,7 +476,7 @@ int __stdcall sub_004374F0_UpdateStatusWait(int nArg)
     if (!gnStatusDots)
     {
         CHARSEL_ClearCancelled();
-        gnStatusDots = (int)gpFuncTable->pfnSlot04();
+        gnStatusDots = (int)gpFuncTable->pfnOpenBNetConnection();
         if (!gnStatusDots)
         {
             D2Win_StopMessageLoop();
@@ -491,7 +491,7 @@ int __stdcall sub_004374F0_UpdateStatusWait(int nArg)
 
     if (sub_0043B830_IsCancelled())
     {
-        gpFuncTable->pfnSlot10();
+        gpFuncTable->pfnCloseBNetConnection();
         D2Win_StopMessageLoop();
     }
 
@@ -538,7 +538,7 @@ int __stdcall MAINMENUS_ConfirmText(int nArg)
             MAINMENUS_ShowMessageBox(D2LANG_GetStringFromTblIndex(0x2B5C), D2LANG_GetStringFromTblIndex(0x2B5D), 0x13EE, 0, MAINMENUS_OnCloseBox, 0, 1, 0);
             return 1;
         }
-        gpFuncTable->pfnSlotB8(szText);
+        gpFuncTable->pfnSetEmail(szText);
         D2Win_StopMessageLoop();
         return 1;
     }
@@ -593,7 +593,7 @@ int __stdcall MAINMENUS_ChangePassword(int bOk)
                 char szConfirm[0x100];
                 UNICODE_ToUtf8(szConfirm, pNew, 0x100);
             }
-            if (gpFuncTable->pfnSlot68() && gpFuncTable->pfnSlotC0(szName, szOld, szNew))
+            if (gpFuncTable->pfnIsSocketConnected() && gpFuncTable->pfnChangeEmail(szName, szOld, szNew))
             {
                 MAINMENUS_ShowLoginScreen();
                 return 1;
@@ -635,7 +635,7 @@ int __stdcall CHARSEL_SubmitPasswordReset(int nArg)
     UNICODE_ToUtf8(szA, pTextA, 0x100);
     UNICODE_ToUtf8(szB, pTextB, 0x100);
 
-    if (gpFuncTable->pfnSlot68() && gpFuncTable->pfnSlotBC(szA, szB))
+    if (gpFuncTable->pfnIsSocketConnected() && gpFuncTable->pfnResetPassword(szA, szB))
     {
         MAINMENUS_ShowMessageBox(0, D2LANG_GetStringFromTblIndex(0x2B60), 0x13EE, 0, sub_004370B0_ShowLoginScreen, 0, 1, 0);
         return 1;

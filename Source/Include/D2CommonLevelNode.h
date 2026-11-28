@@ -5,10 +5,10 @@
 
 struct D2CommonLevelNodeStrc
 {
-    char unk0x00[0x8];
+    char unused0x00[0x8];
     D2CommonLevelNodeStrc** ppChildren;
     unsigned short wLevelCounts[16];
     int nChildren;
-    char unk0x30[0x14];
+    char unused0x30[0x14];
     unsigned char nMaxLevel;
 };

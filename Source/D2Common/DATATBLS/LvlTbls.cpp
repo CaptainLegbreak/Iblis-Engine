@@ -576,10 +576,10 @@ void __fastcall DATATBLS_LoadLevelTypesTxt(void* hArchive)
         { gszTxtField_Expansion, 2, 0, 0x784, 0 },
         { gszTxtField_end, 0, 0, 0, 0 },
     };
-    D2LvlTypesTxt* pLvlTypesTxt = (D2LvlTypesTxt*)DATATBLS_CompileTxt(hArchive, "lvltypes", pTbl, &sgtDataTables.nLvlTypesTxtRecordCount, sizeof(D2LvlTypesTxt));
-    sgtDataTables.pLvlTypesTxt = pLvlTypesTxt;
+    D2LvlTypesTxt* pLvlTypesTxt = (D2LvlTypesTxt*)DATATBLS_CompileTxt(hArchive, "lvltypes", pTbl, &gnLvlTypesTxtRecordCount, sizeof(D2LvlTypesTxt));
+    gpLvlTypesTxt = pLvlTypesTxt;
     D2LvlTypesTxt* pRecord = pLvlTypesTxt;
-    for (int i = 0; i < sgtDataTables.nLvlTypesTxtRecordCount; ++i)
+    for (int i = 0; i < gnLvlTypesTxtRecordCount; ++i)
     {
         for (int j = 0; j < 0x20; ++j)
         {
@@ -657,8 +657,8 @@ void __fastcall DATATBLS_LoadLvlPrestTxt(void* hArchive, int bLoadFiles)
     if (bLoadFiles)
     {
         const int nSize = sizeof(D2DrlgFileStrc*) * 6 * sgptDataTables->nLvlPrestTxtRecordCount;
-        sgtDataTables.ppLvlPrestFiles = (D2DrlgFileStrc**)FOG_Alloc(nSize, ".\\DATATBLS\\LvlTbls.cpp", 0x2A7, 0);
-        memset(sgtDataTables.ppLvlPrestFiles, 0, nSize);
+        gppLvlPrestDrlgFiles = (D2DrlgFileStrc**)FOG_Alloc(nSize, ".\\DATATBLS\\LvlTbls.cpp", 0x2A7, 0);
+        memset(gppLvlPrestDrlgFiles, 0, nSize);
     }
     D2LvlPrestTxt* pRecord = sgtDataTables.pLvlPrestTxt;
     const int bExpansion = FOG_IsExpansion();
@@ -670,7 +670,7 @@ void __fastcall DATATBLS_LoadLvlPrestTxt(void* hArchive, int bLoadFiles)
             {
                 DATATBLS_PrefixPathWithDirectory(gszTilesDirectory, pRecord->szFile[j]);
                 if (bLoadFiles && strlen(pRecord->szFile[j]) > 1)
-                    DRLGPRESET_LoadDrlgFile(&sgtDataTables.ppLvlPrestFiles[j + 6 * i], 0, pRecord->szFile[j]);
+                    DRLGPRESET_LoadDrlgFile(&gppLvlPrestDrlgFiles[j + 6 * i], 0, pRecord->szFile[j]);
             }
         }
     }
@@ -837,7 +837,7 @@ void __fastcall DATATBLS_LoadLvlSubTxt(void* archive,int loadFiles,int extra)
   {gszField_CheckAll,2,0,0x40,0},
   {gszField_BordType,2,0,0x44,0},
   {gszField_GridSize,2,0,0x4c,0},
-  {gszField_Dt1Mask,2,0,0x48,0},
+  {"Dt1Mask",2,0,0x48,0},
   {gszField_Prob0,2,0,0x11c,0},
   {gszField_Trials0,2,0,0x130,0},
   {gszField_Max0,2,0,0x144,0},
@@ -1024,12 +1024,6 @@ static int DATATBLS_GetAutomapTileType(const char* szTileName)
     }
 
     return 0;
-}
-
-void __stdcall sub_M14_EmitAutomapLookups(const char* pAutomapRecord, int* pTypes)
-{
-    pTypes[0] = DATATBLS_GetAutomapLevelType(pAutomapRecord);
-    pTypes[1] = DATATBLS_GetAutomapTileType(pAutomapRecord + 16);
 }
 
 // 0x0061C540

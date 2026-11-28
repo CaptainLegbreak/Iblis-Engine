@@ -178,7 +178,7 @@ static __forceinline void COMPOSIT_FormatPathInto(char* path,unsigned int classC
  m[1]=TOKEN_CHAR(((char*)&modeCode)[1]);
  m[2]=TOKEN_CHAR(((char*)&modeCode)[2]);
  m[3]=0;
- if(full)wsprintfA(path,gszCofPathFormat,prefix,c,c,m,w);else wsprintfA(path,gszCofTokenFormat,c,m,w);
+ if(full)wsprintfA(path,"%s\\%s\\COF\\%s%s%s.COF",prefix,c,c,m,w);else wsprintfA(path,gszCofTokenFormat,c,m,w);
 }
 
 // 0x0064F5B0
@@ -194,7 +194,7 @@ void __stdcall D2Common_10884_COMPOSIT_unk(D2UnitStrc* unit,int cls,int mode,int
   if(determine){if(mode && mode!=17){int weaponId;*weapon=COMPOSIT_GetWeaponClassCode(unit,0,cls,mode,inv,&weaponId);}else *weapon=0x20687468;}
   for(unsigned int i=0;i<gnCompositPlayerModeCount;++i)if(mode==gaCompositPlayerModes[i].nWeaponClassId)modeCode=gaCompositPlayerModes[i].code;
   if(mode==11 && *weapon!=0x20736831 && *weapon!=0x20746831 && *weapon!=0x20736A31 && *weapon!=0x20746A31 && *weapon!=0x20737331 && *weapon!=0x20747331)*weapon=0x20687468;
-  COMPOSIT_FormatPathInto(path,clsCode,modeCode,weapon,gszCharsDir,full,w,c,m);return;
+  COMPOSIT_FormatPathInto(path,clsCode,modeCode,weapon,"DATA\\GLOBAL\\CHARS",full,w,c,m);return;
  }
  case 1:{
   char w[4],c[4],m[4];

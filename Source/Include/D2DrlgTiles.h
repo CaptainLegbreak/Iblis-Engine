@@ -43,7 +43,7 @@ struct D2DrlgTileGridStrc
     {
         struct
         {
-            int unk0x14; // 0x14
+            D2DrlgTileDataStrc* pWallTiles; // 0x14
             int nTileWalls; // 0x18
             D2DrlgTileDataStrc* pFloorTiles; // 0x1C
             int nTileFloors; // 0x20

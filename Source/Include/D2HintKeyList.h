@@ -5,6 +5,6 @@
 
 struct D2HintKeyListStrc
 {
-    int unk0x00;
+    int unused0x00;
     int nCount;
 };

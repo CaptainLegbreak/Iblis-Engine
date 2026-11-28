@@ -9,8 +9,8 @@ struct D2SetsTxt
     unsigned short wSetId; // 0x00
     unsigned short wStringId; // 0x02
     unsigned short wVersion; // 0x04
-    unsigned short unk0x06; // 0x06
-    int unk0x08; // 0x08
+    unsigned short pad0x06; // 0x06
+    int unused0x08; // 0x08
     int nSetItems; // 0x0C
     D2PropertyStrc pBoni2[8]; // 0x10
     D2PropertyStrc pFBoni[8]; // 0x90

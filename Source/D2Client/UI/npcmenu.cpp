@@ -692,7 +692,7 @@ D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nTy
 
 
 
-void __fastcall sub_0046B710_SpawnMissileAtObject173(D2UnitStrc* pUnit);                                                            // 0x0046B710
+void __fastcall VIEW_SpawnMissileAtObject173(D2UnitStrc* pUnit);                                                            // 0x0046B710
 
 void __fastcall VIEW_SpawnMissileNearObject(D2UnitStrc* pUnit);                                                            // 0x0046B850
 

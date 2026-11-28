@@ -10,6 +10,7 @@
 #include "D2CmdArg.h"
 #include "D2FogSystemInfo.h"
 #include "FogApi.h"
+#include "D2FogSafeSock.h"
 #include "StormApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
@@ -58,28 +59,6 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 void __cdecl LOGMANAGER_CloseLogFiles(); // 0x0040F960
 
-struct AsyncData
-{
-    void* hFile;
-    D2PoolSystemStrc* pMemPool;
-    D2OverlappedStrc tOverlapped;
-    AsyncDataLoadFileCallback pAsyncOpDesc;
-    AsyncDataEventSlot* pEventSlot;
-    void* ptBuffer;
-    unsigned int nFileSize;
-    unsigned int nPriority;
-    unsigned int dwFlags;
-    unsigned int nPreviousPriority;
-    AsyncData* pNextPostponedPriorityChange;
-};
-
-struct AsyncDataEventSlot
-{
-    void* hEvent;
-    unsigned long bSlotAvailable;
-    AsyncData* pAsyncOp;
-};
-
 extern "C" size_t __cdecl strlen(const char* szString);
 
 void __fastcall ERRORMANAGER_DumpThread(unsigned long dwThreadId, D2ThreadContextStrc* pThreadContext, D2CrashPrintFn pfnPrint, void* pContext, bool bSymbols, bool bHeader, int nArg7); // 0x00403070
@@ -103,20 +82,6 @@ typedef char* va_list;
 #define va_start(ap, v) (ap = (va_list)&v + _INTSIZEOF(v))
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
-
-struct FSafeSock
-{
-    int bConnected;
-    int bConnecting;
-    unsigned int nSocket;
-    D2CriticalSectionStrc tCriticalSection;
-    void* hThread;
-    unsigned long nThreadId;
-    int bStopping;
-    unsigned long nFogErrorCode;
-    unsigned long nWSALastError;
-    char szName[64];
-};
 
 typedef void (__fastcall* D2CrashPrintFn)(void* pContext, const char* szText);
 

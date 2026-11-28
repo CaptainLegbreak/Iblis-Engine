@@ -13,7 +13,7 @@ struct D2GfxDataStrc
     int nFrame; // 0x00
     unsigned char nFlags; // 0x04
     unsigned char nComponent; // 0x05
-    unsigned short unk0x06; // 0x06
+    unsigned short pad0x06; // 0x06
     int nUnitType; // 0x08
     int nUnitIndex; // 0x0C
     int nMode; // 0x10

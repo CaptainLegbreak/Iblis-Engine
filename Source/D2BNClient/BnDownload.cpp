@@ -1952,10 +1952,10 @@ int __fastcall BNDOWNLOAD_HandleClientId(const D2BnClientIdReplyStrc* pData, uns
     unsigned int nRegistrationAuthority = pData->dwRegistrationAuthority;
     unsigned int nClientId = pData->dwClientId;
     unsigned int nClientToken = pData->dwRegistrationToken;
-    SRegSaveValue(gszConfiguration, "Registration Version", 2, nRegistrationVersion);
-    SRegSaveValue(gszConfiguration, "Registration Authority", 2, nRegistrationAuthority);
-    SRegSaveValue(gszConfiguration, "Client ID", 2, nClientId);
-    SRegSaveValue(gszConfiguration, "Client Token", 2, nClientToken);
+    SRegSaveValue("Configuration", "Registration Version", 2, nRegistrationVersion);
+    SRegSaveValue("Configuration", "Registration Authority", 2, nRegistrationAuthority);
+    SRegSaveValue("Configuration", "Client ID", 2, nClientId);
+    SRegSaveValue("Configuration", "Client Token", 2, nClientToken);
     BNDOWNLOAD_ConfigureLog(2, 4);
     BNDOWNLOAD_LogPrintf("client acknowledged");
     BNDOWNLOAD_ConfigureLog(2, -4);
@@ -2130,7 +2130,7 @@ int __fastcall BNDOWNLOAD_HandleCdKeyReply(D2BnReplyStrc* pReply)
 // 0x005210A0
 int __fastcall BNDOWNLOAD_HandleServerList(const void* pData, unsigned int nSize)
 {
-    SRegSaveString(gszConfiguration, "Server List", 2, (const char*)pData + 4);
+    SRegSaveString("Configuration", "Server List", 2, (const char*)pData + 4);
     return 1;
 }
 

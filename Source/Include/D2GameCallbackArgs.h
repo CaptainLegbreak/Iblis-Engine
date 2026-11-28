@@ -16,5 +16,5 @@ struct D2DoorObjectAiCallbackArgStrc
 {
     D2UnitStrc* pDoor; // 0x00
     int nDistance; // 0x04
-    int unk0x08[8]; // 0x08
+    int unused0x08[8]; // 0x08
 };

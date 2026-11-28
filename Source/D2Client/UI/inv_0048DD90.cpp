@@ -57,17 +57,17 @@ struct UNum10
 
 #define W(x) ((Unicode*)(x))
 
-extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
-
 extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
+// Placed by count: INV_DrawItemTooltip's code depends on how many names precede this declaration and
+// NPCMENU_ClearUnicode's below (docs/declaration-order.md).
+extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
+
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
 void __stdcall sub_00403040_VectorCtor(void* pArray, unsigned int nSize, int nCount, void (__fastcall* pfnCtor)(void*)); // 0x00403040
-
-void __fastcall NPCMENU_ClearUnicode(void* pThis);                                                      // 0x0042F530
 
 int __cdecl FOG_IsExpansion();                                                                 // 0x00408F20
 
@@ -92,6 +92,9 @@ int __cdecl sub_00468830_GetCursorState();                                      
 unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB);                                                     // 0x00469AA0
 
 const Unicode* __fastcall CMDTBL_GetKeyName(int nA, int nB);                                         // 0x0046A530
+
+// Placed by count, not by address: see gszEmptyAssertText above.
+void __fastcall NPCMENU_ClearUnicode(void* pThis);                                                      // 0x0042F530
 
 int __fastcall DATATBLS_ApplyRatio(int nValue, int nMultiplier, int nDivisor);                              // 0x00483360
 

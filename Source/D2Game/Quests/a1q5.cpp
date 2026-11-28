@@ -211,6 +211,7 @@ static void __stdcall ACT1Q5_AddUnitGUID(D2Act1Quest5Strc* pQuestDataEx, int nUn
 }
 
 // Out of line as in the original: it takes an argument in eax, a convention the compiler gives only a static whose callers are all in this object.
+// Kept noinline: ACT1Q5_Callback03_ChangedLevel (0x00595010) calls it out of line in the image; without it the compiler inlines it there.
 // 0x00594740
 static __declspec(noinline) int __stdcall ACT1Q5_UpdateUnitGUIDLists(D2Act1Quest5Strc* pQuestDataEx, int nUnitGUID, int bRemovePendingDialogue)
 {

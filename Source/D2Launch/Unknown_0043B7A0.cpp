@@ -99,7 +99,7 @@ int __fastcall CHARSEL_InitFuncTable(D2ConfigStrc* pRecord)
         gpFuncTable = sub_00518C00();
         D2_ASSERT(gpFuncTable, 0x94);
         pRecord->pComInterface = gpFuncTable;
-        gpFuncTable->pfnInit(pRecord);
+        gpFuncTable->pfnInitialize(pRecord);
     }
     return 1;
 }
@@ -138,7 +138,7 @@ int __cdecl CHARSEL_IsBattleNetConnected()
 // 0x0043B850
 int __stdcall CHARSEL_OnDownloadTick(SMSGHANDLER_PARAMS* pMsg)
 {
-    if (gpFuncTable->pfnSlot4C() != 0x65 && !GAME_GetStopMainLoop())
+    if (gpFuncTable->pfnGetPatchState() != 0x65 && !GAME_GetStopMainLoop())
     {
         MAINMENUS_UpdateProgress();
         return 1;
@@ -150,9 +150,9 @@ int __stdcall CHARSEL_OnDownloadTick(SMSGHANDLER_PARAMS* pMsg)
 // 0x0043B890
 int __stdcall CHARSEL_OnLogonTick(SMSGHANDLER_PARAMS* pMsg)
 {
-    if (gpFuncTable->pfnSlot0C())
+    if (gpFuncTable->pfnGetLogonInfo())
         D2Win_StopMessageLoop();
-    if (gfCharSelCancelled || !gpFuncTable->pfnSlot68() || sub_0042F6D0_GetMenusDone())
+    if (gfCharSelCancelled || !gpFuncTable->pfnIsSocketConnected() || sub_0042F6D0_GetMenusDone())
         D2Win_StopMessageLoop();
     return 1;
 }
@@ -161,11 +161,11 @@ int __stdcall CHARSEL_OnLogonTick(SMSGHANDLER_PARAMS* pMsg)
 int __stdcall CHARSEL_OnCreateAccountTick(SMSGHANDLER_PARAMS* pMsg)
 {
     int nValue;
-    if (gpFuncTable->pfnSlot64(&nValue))
+    if (gpFuncTable->pfnGetCreateAccountResult(&nValue))
         D2Win_StopMessageLoop();
-    if (gfCharSelCancelled || !gpFuncTable->pfnSlot68() || sub_0042F6D0_GetMenusDone())
+    if (gfCharSelCancelled || !gpFuncTable->pfnIsSocketConnected() || sub_0042F6D0_GetMenusDone())
     {
-        gpFuncTable->pfnSlot10();
+        gpFuncTable->pfnCloseBNetConnection();
         D2Win_StopMessageLoop();
     }
     return 1;
@@ -175,11 +175,11 @@ int __stdcall CHARSEL_OnCreateAccountTick(SMSGHANDLER_PARAMS* pMsg)
 int __stdcall CHARSEL_OnChangePasswordTick(SMSGHANDLER_PARAMS* pMsg)
 {
     int nValue;
-    if (gpFuncTable->pfnSlotA0(&nValue))
+    if (gpFuncTable->pfnGetChangePasswordResult(&nValue))
         D2Win_StopMessageLoop();
-    if (gfCharSelCancelled || !gpFuncTable->pfnSlot68() || sub_0042F6D0_GetMenusDone())
+    if (gfCharSelCancelled || !gpFuncTable->pfnIsSocketConnected() || sub_0042F6D0_GetMenusDone())
     {
-        gpFuncTable->pfnSlot10();
+        gpFuncTable->pfnCloseBNetConnection();
         D2Win_StopMessageLoop();
     }
     return 1;
@@ -195,7 +195,7 @@ void __cdecl CHARSEL_DisconnectBattleNet()
         gpLaunchRecord->szRealm0x381[0] = 0;
         OutputDebugStringA("Disconnect from BNET\n");
         D2MCPClientCloseMCP();
-        gpFuncTable->pfnSlot10();
+        gpFuncTable->pfnCloseBNetConnection();
     }
 }
 
@@ -445,7 +445,7 @@ int __fastcall CHARSEL_HandleStatus(D2StatusStrc* pStatus)
     if (bClose)
     {
         D2MCPClientCloseMCP();
-        gpFuncTable->pfnSlot10();
+        gpFuncTable->pfnCloseBNetConnection();
     }
     return 0;
 }
@@ -475,7 +475,7 @@ int __cdecl sub_0043BF60_ConnectToBattleNet()
     OutputDebugStringA("------------------\nConnect to Battle.net\n------------------\n");
     D2MCPClientCloseMCP();
 
-    if (!gpFuncTable->pfnSlot10Result())
+    if (!gpFuncTable->pfnCloseBNetConnectionResult())
     {
         D2StatusStrc tStatus;
         gbConnecting = 0;
@@ -492,20 +492,20 @@ int __cdecl sub_0043BF60_ConnectToBattleNet()
     {
         gbConnectCancelled = 1;
         sub_0042F880_DestroyControls();
-        gpFuncTable->pfnSlot10Result();
+        gpFuncTable->pfnCloseBNetConnectionResult();
         gbConnecting = 0;
         return 0;
     }
 
-    if (gpFuncTable->pfnSlot4C() != 0x66)
+    if (gpFuncTable->pfnGetPatchState() != 0x66)
     {
         MAINMENUS_ShowProgressScreen();
         sub_004FA590_RunLoop(CHARSEL_OnDownloadTick);
 
-        if (!GAME_GetStopMainLoop() && gpFuncTable->pfnSlot4C() == 0x65)
+        if (!GAME_GetStopMainLoop() && gpFuncTable->pfnGetPatchState() == 0x65)
         {
             int nValue = 0;
-            const int nResult = gpFuncTable->pfnSlot48(&nValue);
+            const int nResult = gpFuncTable->pfn0x48(&nValue);
             if (nValue)
             {
                 int bSkipToOpen = 0;
@@ -516,9 +516,9 @@ int __cdecl sub_0043BF60_ConnectToBattleNet()
                 SRegSaveValue("Diablo II", "UseCmdLine", 0, 1);
                 SRegSaveValue("Diablo II", "Skip To Open", 0, bSkipToOpen);
                 D2Win_CloseSpriteCache();
-                gpFuncTable->pfnSlot10Result();
+                gpFuncTable->pfnCloseBNetConnectionResult();
                 gbConnecting = 0;
-                Unload(gpFuncTable->pfnSlot98());
+                Unload(gpFuncTable->pfnGetBnGatewayAccessResult());
                 TerminateProcess(GetCurrentProcess(), 0);
                 return 0;
             }
@@ -534,7 +534,7 @@ int __cdecl sub_0043BF60_ConnectToBattleNet()
         }
         else
         {
-            gpFuncTable->pfnSlot10Result();
+            gpFuncTable->pfnCloseBNetConnectionResult();
             gbConnecting = 0;
             MAINMENUS_ShowMainMenu();
             return 0;
@@ -543,14 +543,14 @@ int __cdecl sub_0043BF60_ConnectToBattleNet()
 
     sub_0042F880_DestroyControls();
     D2StatusStrc tResult;
-    gpFuncTable->pfnSlot28(&tResult);
+    gpFuncTable->pfnBnMessageQueueGetLastError(&tResult);
     gbConnecting = 0;
     if (tResult.nCode)
     {
         return CHARSEL_HandleStatus(&tResult);
     }
 
-    return gpFuncTable->pfnSlot68() != 0;
+    return gpFuncTable->pfnIsSocketConnected() != 0;
 }
 
 // 0x0043C180
@@ -558,7 +558,7 @@ int __fastcall CHARSEL_Connect(D2ConfigStrc* pRecord, int bFlag, int nMode)
 {
     D2StatusStrc tStatus;
 
-    if (!gpFuncTable->pfnSlot68())
+    if (!gpFuncTable->pfnIsSocketConnected())
     {
         MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), MAINMENUS_ShowMainMenu);
         return 0;
@@ -570,10 +570,10 @@ int __fastcall CHARSEL_Connect(D2ConfigStrc* pRecord, int bFlag, int nMode)
     }
 
     MAINMENUS_ShowConnectingPopup();
-    gpFuncTable->pfnSlot28(&tStatus);
+    gpFuncTable->pfnBnMessageQueueGetLastError(&tStatus);
     if (bFlag && !tStatus.nCode)
     {
-        gpFuncTable->pfnSlot60(pRecord->szAccount, pRecord->szPassword);
+        gpFuncTable->pfnCreateAccount(pRecord->szAccount, pRecord->szPassword);
         sub_004FA590_RunLoop(CHARSEL_OnCreateAccountTick);
         if (gfCharSelCancelled)
         {
@@ -581,8 +581,8 @@ int __fastcall CHARSEL_Connect(D2ConfigStrc* pRecord, int bFlag, int nMode)
             return 0;
         }
 
-        gpFuncTable->pfnSlot64(&nMode);
-        if (nMode && gpFuncTable->pfnSlot68())
+        gpFuncTable->pfnGetCreateAccountResult(&nMode);
+        if (nMode && gpFuncTable->pfnIsSocketConnected())
         {
             int nCode;
             switch (nMode)
@@ -619,7 +619,7 @@ int __fastcall CHARSEL_Connect(D2ConfigStrc* pRecord, int bFlag, int nMode)
     }
     else if (nMode && !tStatus.nCode)
     {
-        gpFuncTable->pfnSlot9C(pRecord->szAccount, gszOldPassword, pRecord->szPassword);
+        gpFuncTable->pfnChangePassword(pRecord->szAccount, gszOldPassword, pRecord->szPassword);
         sub_004FA590_RunLoop(CHARSEL_OnChangePasswordTick);
         if (gfCharSelCancelled)
         {
@@ -627,17 +627,17 @@ int __fastcall CHARSEL_Connect(D2ConfigStrc* pRecord, int bFlag, int nMode)
             return 0;
         }
 
-        gpFuncTable->pfnSlotA0(&nMode);
-        if (nMode != 1 && gpFuncTable->pfnSlot68())
+        gpFuncTable->pfnGetChangePasswordResult(&nMode);
+        if (nMode != 1 && gpFuncTable->pfnIsSocketConnected())
         {
             CHARSEL_ReportStatus(0xE, 0);
             return 0;
         }
     }
 
-    if (gpFuncTable->pfnSlot68() && !tStatus.nCode)
+    if (gpFuncTable->pfnIsSocketConnected() && !tStatus.nCode)
     {
-        gpFuncTable->pfnSlot08(pRecord->szAccount, pRecord->szPassword);
+        gpFuncTable->pfnLogon(pRecord->szAccount, pRecord->szPassword);
         memset(pRecord->szPassword, 0, 0x18);
         sub_004FA590_RunLoop(CHARSEL_OnLogonTick);
         if (gfCharSelCancelled || sub_0042F6D0_GetMenusDone())
@@ -647,7 +647,7 @@ int __fastcall CHARSEL_Connect(D2ConfigStrc* pRecord, int bFlag, int nMode)
         }
     }
 
-    gpFuncTable->pfnSlot28(&tStatus);
+    gpFuncTable->pfnBnMessageQueueGetLastError(&tStatus);
     sub_0042F880_DestroyControls();
     if (tStatus.nCode)
     {
@@ -655,8 +655,8 @@ int __fastcall CHARSEL_Connect(D2ConfigStrc* pRecord, int bFlag, int nMode)
     }
 
     gbBattleNetConnected = 1;
-    int bConnected = gpFuncTable->pfnSlot68();
-    if (bConnected && gpFuncTable->pfnSlotB4())
+    int bConnected = gpFuncTable->pfnIsSocketConnected();
+    if (bConnected && gpFuncTable->pfn0xB4())
     {
         CHARSEL_CreateConnectScreen();
         sub_004FA590_RunLoop(sub_00436E90_AlwaysOne);
@@ -664,12 +664,12 @@ int __fastcall CHARSEL_Connect(D2ConfigStrc* pRecord, int bFlag, int nMode)
         if (sub_00436EA0_IsCancelled())
         {
             D2MCPClientCloseMCP();
-            gpFuncTable->pfnSlot10Result();
+            gpFuncTable->pfnCloseBNetConnectionResult();
             MAINMENUS_ShowMainMenu();
             return 0;
         }
 
-        bConnected = gpFuncTable->pfnSlot68();
+        bConnected = gpFuncTable->pfnIsSocketConnected();
     }
 
     if (bConnected)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "D2SysTypes.h"
+#include "D2Win32Guid.h"
 
 struct D2CriticalSectionStrc;
 
@@ -31,14 +32,6 @@ struct D2ComObjectStrc
     virtual long __stdcall QueryInterface(const void* riid, void** ppvObject) = 0;
     virtual unsigned long __stdcall AddRef() = 0;
     virtual unsigned long __stdcall Release() = 0;
-};
-
-struct D2GuidStrc
-{
-    unsigned long Data1;
-    unsigned short Data2;
-    unsigned short Data3;
-    unsigned char Data4[8];
 };
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
