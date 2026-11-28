@@ -77,6 +77,10 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Findings
 
+- 2026-11-27 19:20 PT, item 6c after the sync to Codex b186d24 (#495, PR #13): 80 unresolved symbols resolved,
+  12 new, each a declaration retyped in Codex while its definition or another file's declaration kept the old
+  type (**lane 12**): `ARCHIVE_LoadMPQFile`, `AUTOMAP_UnregisterHandlerTable`, `D2CMPSpriteValidate`, `D3DSUBTILECACHE_SubtileCacheUnlink`, `DecompressLzw_BufferRead`, `DecompressLzw_BufferWrite`, `SBigFromBinary`, `SLogSetIndent`, `WINDOW_PlayCutscene`, `gpGridBuffer`, ``, `BNDOWNLOAD_HandleReportVersion`.
+
 - 2026-11-27 19:45 PT, question for the coordinator (6d, not blocking): the replay harness's next level (Storm with
   the player's MPQs, D2Lang, the data tables, toward the drlg case) can be built on the oracle side now, but its
   engine side needs the engine to link as a whole, i.e. item 6. The link-alias proposal (18:00 entry below,
@@ -222,6 +226,11 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
   entries after the file merges, worth a fix in Codex.
 
 ## Status
+
+- 2026-11-27 19:20 PT: board check. #8-#11 merged. #9 was merged at its first commit, so its two later commits
+  (replay level 1 + bitbuf, and the level 2 notes) are in PR #12. Codex main moved to b186d24 (#495): 6b in
+  PR #13, clean, 1,693/1,693 data records match Game.exe; 538/538 compile; link 4,072 unresolved (-68).
+  Open: #12, #13. Waiting on the item 6 question (Findings, 19:45 entry) for the replay's engine side.
 
 - 2026-11-27 19:30 PT: 6d continued in PR #9 (new commit): the oracle's level 1 (Game.exe's own C runtime
   started by its entry point, the case taking over at WinMain), cases bitbuf (BITMANIP_*, the .d2s checksum)
