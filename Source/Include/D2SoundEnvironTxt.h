@@ -14,7 +14,7 @@ struct D2SoundEnvironTxtStrc
     int nNightEvent; // 0x10
     unsigned int nEventDelay; // 0x14
     unsigned char bIndoors; // 0x18
-    unsigned char unk0x19[3]; // 0x19
+    unsigned char pad0x19[3]; // 0x19
     int nMaterial1; // 0x1C
     int nMaterial2; // 0x20
     int nEAXEnviron; // 0x24

@@ -165,7 +165,7 @@ struct D2TexPoolEntryStrc
     int nIndex; // 0x00
     D2TexOwnerSlotStrc* pOwnerSlots; // 0x04
     int nOwnerSlot; // 0x08
-    int unk0x0C; // 0x0C
+    int unused0x0C; // 0x0C
     D2D3DObjStrc* pTexture; // 0x10
     D2D3DObjStrc* pSurface; // 0x14
     D2TexPoolEntryStrc* pNext; // 0x18
@@ -229,7 +229,7 @@ struct D2DDrawDeviceStrc
 {
     unsigned int dwFlags; // 0x00
     unsigned char guid[0x10]; // 0x04
-    char unk0x014[0x08]; // 0x14
+    char unused0x14[0x08]; // 0x14
     char szName[0x104]; // 0x1C
 };
 

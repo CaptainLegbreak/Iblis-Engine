@@ -1922,7 +1922,7 @@ int __fastcall MISSILE_CltDoEightWaySpawn(D2UnitStrc* pMissile)
             nFrames -= SEED_RollLimitedRandomNumberInline(&pMissile->pSeed, nFrames / 2);
             MISSILE_SetTotalFrames(pNew, nFrames);
             D2DynamicPathStrc* pPath = pNew->pDynamicPath;
-            PATH_SetVelocity(pPath, SEED_RollLimitedRandomNumberInline(&pMissile->pSeed, PATH_GetVelocity(pPath)), gszMissileSourceFile, 0x1A6B);
+            PATH_SetVelocity(pPath, SEED_RollLimitedRandomNumberInline(&pMissile->pSeed, PATH_GetVelocity(pPath)), ".\\UNIT\\Missile.cpp", 0x1A6B);
             GFXUTIL_SetBallistic(pNew, 0x1E, nFrames);
         }
     }
@@ -2026,7 +2026,7 @@ void __fastcall MISSILE_CltDoOnScreen(D2UnitStrc* pMissile)
     if (UNITS_IsAtEndOfFrameCycle(pMissile))
     {
         CUNIT_MarkUnitDead(pMissile);
-        PATH_SetVelocity(pMissile->pDynamicPath, 0, gszMissileSourceFile, 0x7F);
+        PATH_SetVelocity(pMissile->pDynamicPath, 0, ".\\UNIT\\Missile.cpp", 0x7F);
     }
 
     int nX = UNITS_GetClientCoordX(pMissile) - PLAYER_GetScreenOffsetX();
@@ -2534,7 +2534,7 @@ void __fastcall MISSILE_CltDoOwnerSkill(D2UnitStrc* pMissile)
         if (pOwner)
         {
             D2SkillStrc* pSkill = UNITS_GetUsedSkill(pOwner);
-            if (pSkill && SKILLS_GetSkillIdFromSkill(pSkill, gszMissileSourceFile, 2285) == MISSILE_GetSkill(pMissile))
+            if (pSkill && SKILLS_GetSkillIdFromSkill(pSkill, ".\\UNIT\\Missile.cpp", 2285) == MISSILE_GetSkill(pMissile))
             {
                 if (PATH_HasEnteredNewSubtile(pMissile->pDynamicPath))
                 {
@@ -4193,13 +4193,13 @@ void __fastcall MISSILE_CltDoLinked(D2UnitStrc* pMissile)
                 return;
 
             case 2:
-                PATH_SetVelocity(pPath, 0, gszMissileSourceFile, 6004);
+                PATH_SetVelocity(pPath, 0, ".\\UNIT\\Missile.cpp", 6004);
                 GFXUTIL_ReplaceMotionFlag1With8(pMissile);
                 GFXUTIL_SetMotionVectorB(pMissile, 0, 0, 6, 1);
                 GFXUTIL_SetMotionVectorC(pMissile, 0, 0, SEED_RollLimitedRandomNumber(pSeed, 40) + 170, 0);
                 GFXUTIL_SetMotionFlagMask(pMissile, 1);
                 D2COMMON_10170_PathSetTargetPos(pPath, CLIENTS_GetUnitX(pLinked), CLIENTS_GetUnitY(pLinked));
-                PATH_SetVelocity(pPath, 0x300, gszMissileSourceFile, 6012);
+                PATH_SetVelocity(pPath, 0x300, ".\\UNIT\\Missile.cpp", 6012);
                 D2Common_10142(pPath, pMissile, 0);
                 MISSILE_CltDoCommon(pMissile);
                 return;
@@ -4220,14 +4220,14 @@ void __fastcall MISSILE_CltDoLinked(D2UnitStrc* pMissile)
             if (nDiffX || nDiffY)
             {
                 D2COMMON_10170_PathSetTargetPos(pPath, CLIENTS_GetUnitX(pMissile) - nDiffY, CLIENTS_GetUnitY(pMissile) + nDiffX);
-                PATH_SetVelocity(pPath, 0xA00, gszMissileSourceFile, 6046);
+                PATH_SetVelocity(pPath, 0xA00, ".\\UNIT\\Missile.cpp", 6046);
                 D2Common_10142(pPath, pMissile, 0);
             }
         }
         else if (nPrevState == 3)
         {
             D2COMMON_10170_PathSetTargetPos(pPath, CLIENTS_GetUnitX(pLinked), CLIENTS_GetUnitY(pLinked));
-            PATH_SetVelocity(pPath, 0x200, gszMissileSourceFile, 6055);
+            PATH_SetVelocity(pPath, 0x200, ".\\UNIT\\Missile.cpp", 6055);
             D2Common_10142(pPath, pMissile, 0);
         }
     }
@@ -4440,7 +4440,7 @@ void __fastcall MISSILE_CltDoStateTarget(D2UnitStrc* pMissile)
             switch (nNewState)
             {
             case 2:
-                PATH_SetVelocity(pPath, 0xF00, gszMissileSourceFile, 0x19DB);
+                PATH_SetVelocity(pPath, 0xF00, ".\\UNIT\\Missile.cpp", 0x19DB);
                 D2COMMON_10170_PathSetTargetPos(pPath, 0x3B1F, 0x170C);
                 D2Common_10142(pPath, pMissile, 0);
                 break;
@@ -4452,7 +4452,7 @@ void __fastcall MISSILE_CltDoStateTarget(D2UnitStrc* pMissile)
             {
                 MISSILE_SetTargetY(pMissile, 1);
                 GFXUTIL_ReplaceMotionFlag1With8(pMissile);
-                PATH_SetVelocity(pPath, 0xF00, gszMissileSourceFile, 0x19E6);
+                PATH_SetVelocity(pPath, 0xF00, ".\\UNIT\\Missile.cpp", 0x19E6);
                 if (SEED_RollLimitedRandomNumber(pSeed, 2))
                 {
                     GFXUTIL_SetMotionVectorB(pMissile, 0, 0, 1, 1);

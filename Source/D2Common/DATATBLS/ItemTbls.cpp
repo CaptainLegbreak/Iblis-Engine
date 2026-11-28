@@ -78,7 +78,6 @@ extern int gbCompileTxt; // 0x0096C8B4
 
 unsigned short __fastcall DATATBLS_GetStringIdFromReferenceString(char* szReference); // 0x006117B0
 
-void __fastcall DATATBLS_ItemCalcLinker(char* pSrc, void* pRecord, int nOffset, int nPosition, int nTxtRow, int nTxtColumn); // 0x00631530
 
 void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
@@ -126,7 +125,7 @@ struct D2ItemStatCostDescStrc
 
 struct D2ItemDataTbl { int nItemsTxtRecordCount; D2ItemsTxt* pItemsTxt; };
 
-struct D2RareAffixDataTbl { int nRareAffixTxtRecordCount; D2RareAffixTxt* pRareAffixTxt; };
+struct D2RareAffixDataTbl { int nRareAffixTxtRecordCount; D2RareAffixTxt* pRareAffixTxt; D2RareAffixTxt* pRareSuffix; D2RareAffixTxt* pRarePrefix; };
 
 struct D2QualityItemDataTbl { int nQualityItemsTxtRecordCount; D2QualityItemsTxt* pQualityItemsTxt; };
 
@@ -880,19 +879,19 @@ void __fastcall DATATBLS_LoadRareSuffix_PrefixTxt(void* hArchive)
     D2RareAffixTxt* pRareSuffix = (D2RareAffixTxt*)DATATBLS_CompileTxt(hArchive, "raresuffix", pTbl, &nRareSuffixCount, sizeof(D2RareAffixTxt));
     D2RareAffixTxt* pRarePrefix = (D2RareAffixTxt*)DATATBLS_CompileTxt(hArchive, "rareprefix", pTbl, &nRarePrefixCount, sizeof(D2RareAffixTxt));
 
-    sgtDataTables.nRareAffixTxtRecordCount = nRareSuffixCount + nRarePrefixCount;
-    sgtDataTables.pRareAffixTxt = (D2RareAffixTxt*)FOG_AllocPool(0, sizeof(D2RareAffixTxt) * sgtDataTables.nRareAffixTxtRecordCount, ".\\DATATBLS\\ItemTbls.cpp", 0x2F4, 0);
-    sgtDataTables.pRareSuffixTxt = sgtDataTables.pRareAffixTxt;
-    memcpy(sgtDataTables.pRareSuffixTxt, pRareSuffix, sizeof(D2RareAffixTxt) * nRareSuffixCount);
-    sgtDataTables.pRarePrefixTxt = &sgtDataTables.pRareSuffixTxt[nRareSuffixCount];
-    memcpy(sgtDataTables.pRarePrefixTxt, pRarePrefix, sizeof(D2RareAffixTxt) * nRarePrefixCount);
+    sgtRareItemModsDataTblDesc.nRareAffixTxtRecordCount = nRareSuffixCount + nRarePrefixCount;
+    sgtRareItemModsDataTblDesc.pRareAffixTxt = (D2RareAffixTxt*)FOG_AllocPool(0, sizeof(D2RareAffixTxt) * sgtRareItemModsDataTblDesc.nRareAffixTxtRecordCount, ".\\DATATBLS\\ItemTbls.cpp", 0x2F4, 0);
+    sgtRareItemModsDataTblDesc.pRareSuffix = sgtRareItemModsDataTblDesc.pRareAffixTxt;
+    memcpy(sgtRareItemModsDataTblDesc.pRareSuffix, pRareSuffix, sizeof(D2RareAffixTxt) * nRareSuffixCount);
+    sgtRareItemModsDataTblDesc.pRarePrefix = &sgtRareItemModsDataTblDesc.pRareSuffix[nRareSuffixCount];
+    memcpy(sgtRareItemModsDataTblDesc.pRarePrefix, pRarePrefix, sizeof(D2RareAffixTxt) * nRarePrefixCount);
     DATATBLS_UnloadBin(pRareSuffix);
     DATATBLS_UnloadBin(pRarePrefix);
 
     void* pUnicode = 0;
-    for (int i = 0; i < sgtDataTables.nRareAffixTxtRecordCount; ++i)
+    for (int i = 0; i < sgtRareItemModsDataTblDesc.nRareAffixTxtRecordCount; ++i)
     {
-        sgtDataTables.pRareAffixTxt[i].wStringId = D2LANG_GetTblIndex(sgtDataTables.pRareAffixTxt[i].szName, &pUnicode);
+        sgtRareItemModsDataTblDesc.pRareAffixTxt[i].wStringId = D2LANG_GetTblIndex(sgtRareItemModsDataTblDesc.pRareAffixTxt[i].szName, &pUnicode);
     }
 }
 
@@ -1676,43 +1675,43 @@ void __fastcall DATATBLS_LoadGambleTxt(void* hArchive)
         { gszTxtField_end, 0, 0, 0, 0 },
     };
 
-    D2GambleTxt* pGambleTxt = (D2GambleTxt*)DATATBLS_CompileTxt(hArchive, "gamble", pTbl, &sgtDataTables.pGambleDataTables.nGambleTxtRecordCount, sizeof(D2GambleTxt));
+    D2GambleTxt* pGambleTxt = (D2GambleTxt*)DATATBLS_CompileTxt(hArchive, "gamble", pTbl, &gGambleDataTables.nGambleTxtRecordCount, sizeof(D2GambleTxt));
 
-    if (sgtDataTables.pGambleDataTables.nGambleTxtRecordCount)
+    if (gGambleDataTables.nGambleTxtRecordCount)
     {
-        sgtDataTables.pGambleDataTables.pGambleSelection = (int*)FOG_AllocPool(0, sizeof(unsigned int) * sgtDataTables.pGambleDataTables.nGambleTxtRecordCount, ".\\DATATBLS\\ItemTbls.cpp", 0x7DB, 0);
-        for (int i = 0; i < sgtDataTables.pGambleDataTables.nGambleTxtRecordCount; ++i)
+        gGambleDataTables.pGambleSelection = (int*)FOG_AllocPool(0, sizeof(unsigned int) * gGambleDataTables.nGambleTxtRecordCount, ".\\DATATBLS\\ItemTbls.cpp", 0x7DB, 0);
+        for (int i = 0; i < gGambleDataTables.nGambleTxtRecordCount; ++i)
         {
             const unsigned int dwItemCode = pGambleTxt[i].dwItemCode;
             const int nItemId = FOG_GetLinkIndex(sgtDataTables.pItemsLinker, dwItemCode, 0);
             D2ItemsTxt* pItemsTxtRecord;
-            D2_ASSERT(nItemId >= 0 && (pItemsTxtRecord = &sgtDataTables.pItemsTxt[nItemId]) != 0, 0x7E0);
+            D2_ASSERT(nItemId >= 0 && (pItemsTxtRecord = &gpItemsTxt[nItemId]) != 0, 0x7E0);
             pGambleTxt[i].nLevel = pItemsTxtRecord->nLevel;
             pGambleTxt[i].nItemId = nItemId;
         }
-        qsort(pGambleTxt, sgtDataTables.pGambleDataTables.nGambleTxtRecordCount, sizeof(D2GambleTxt), DATATBLS_CompareGambleTxtRecords);
+        qsort(pGambleTxt, gGambleDataTables.nGambleTxtRecordCount, sizeof(D2GambleTxt), DATATBLS_CompareGambleTxtRecords);
     }
     else
     {
-        sgtDataTables.pGambleDataTables.pGambleSelection = 0;
+        gGambleDataTables.pGambleSelection = 0;
     }
 
-    for (int i = 0; i < sgtDataTables.pGambleDataTables.nGambleTxtRecordCount; ++i)
+    for (int i = 0; i < gGambleDataTables.nGambleTxtRecordCount; ++i)
     {
-        sgtDataTables.pGambleDataTables.pGambleSelection[i] = pGambleTxt[i].nItemId;
+        gGambleDataTables.pGambleSelection[i] = pGambleTxt[i].nItemId;
     }
 
-    sgtDataTables.pGambleDataTables.pGambleChooseLimit[0] = 2;
+    gGambleDataTables.pGambleChooseLimit[0] = 2;
 
     for (int i = 1; i < 100; ++i)
     {
-        sgtDataTables.pGambleDataTables.pGambleChooseLimit[i] = sgtDataTables.pGambleDataTables.nGambleTxtRecordCount;
+        gGambleDataTables.pGambleChooseLimit[i] = gGambleDataTables.nGambleTxtRecordCount;
 
-        for (int nCounter = 0; nCounter < sgtDataTables.pGambleDataTables.nGambleTxtRecordCount; ++nCounter)
+        for (int nCounter = 0; nCounter < gGambleDataTables.nGambleTxtRecordCount; ++nCounter)
         {
             if (i < pGambleTxt[nCounter].nLevel)
             {
-                sgtDataTables.pGambleDataTables.pGambleChooseLimit[i] = nCounter;
+                gGambleDataTables.pGambleChooseLimit[i] = nCounter;
                 break;
             }
         }
@@ -1955,20 +1954,20 @@ void __fastcall DATATBLS_LoadRunesTxt(HD2ARCHIVE hArchive)
     D2_ASSERT(!DATATBLS_DoesExcelFileExist(hArchive, "runessrv", ".bin"), 2312);
     D2_ASSERT(!DATATBLS_DoesExcelFileExist(hArchive, "runessrv", ".xls"), 2316);
 
-    sgtDataTables.pRuneDataTables.pRunesTxt = (D2RunesTxt*)DATATBLS_CompileTxt(hArchive, "runes", pTbl, &sgtDataTables.pRuneDataTables.nRunesTxtRecordCount, sizeof(D2RunesTxt));
+    sgtRuneWordsTblDesc.pRunesTxt = (D2RunesTxt*)DATATBLS_CompileTxt(hArchive, "runes", pTbl, &sgtRuneWordsTblDesc.nRunesTxtRecordCount, sizeof(D2RunesTxt));
 
     const Unicode* pUnicode = NULL;
     int i = 0;
-    if (i < sgtDataTables.pRuneDataTables.nRunesTxtRecordCount)
+    if (i < sgtRuneWordsTblDesc.nRunesTxtRecordCount)
     {
         hArchive = NULL;
         do
         {
-            ((D2RunesTxt*)((char*)sgtDataTables.pRuneDataTables.pRunesTxt + (int)hArchive))->wStringId = STRTABLE_FindString(((D2RunesTxt*)((char*)sgtDataTables.pRuneDataTables.pRunesTxt + (int)hArchive))->szName, &pUnicode);
+            ((D2RunesTxt*)((char*)sgtRuneWordsTblDesc.pRunesTxt + (int)hArchive))->wStringId = STRTABLE_FindString(((D2RunesTxt*)((char*)sgtRuneWordsTblDesc.pRunesTxt + (int)hArchive))->szName, &pUnicode);
             hArchive = (char*)hArchive + sizeof(D2RunesTxt);
             ++i;
         }
-        while (i < sgtDataTables.pRuneDataTables.nRunesTxtRecordCount);
+        while (i < sgtRuneWordsTblDesc.nRunesTxtRecordCount);
     }
 }
 

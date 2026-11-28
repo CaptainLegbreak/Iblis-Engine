@@ -23,7 +23,10 @@ struct D2FieldStrc
 
 
 
-extern D2DataTablesStrc sgtDataTables; // 0x0096BC30
+// The collision field (expfield.d2): its cell offsets, its data and its dimensions. This file's own globals.
+int gaExpFieldI[9]; // 0x0096D630
+unsigned char* gpFieldData; // 0x0096D654
+D2CollisionFieldStrc gtCollisionField; // 0x0096D658
 extern const int gnFieldXOffsets[9]; // 0x00749780
 extern const int gnFieldYOffsets[9]; // 0x007497A4
 void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
@@ -52,17 +55,17 @@ int __stdcall DATATBLS_InitializeCollisionFieldTable(char* pExpField, int nSize)
     unsigned char* pFieldData = (unsigned char*)FOG_AllocPool(0, nArea, ".\\DATATBLS\\FieldTbls.cpp", 62, 0);
     FIELD_ASSERT(pFieldData, 64);
     memcpy(pFieldData, pExpField, nArea);
-    sgtDataTables.pFieldData = pFieldData;
+    gpFieldData = pFieldData;
 
-    sgtDataTables.pCollisionField.nWidth = nWidth;
-    sgtDataTables.pCollisionField.nHeight = nHeight;
-    sgtDataTables.pCollisionField.nArea = nArea;
-    sgtDataTables.pCollisionField.nCenterX = nWidth >> 1;
-    sgtDataTables.pCollisionField.nCenterY = nHeight >> 1;
+    gtCollisionField.nWidth = nWidth;
+    gtCollisionField.nHeight = nHeight;
+    gtCollisionField.nArea = nArea;
+    gtCollisionField.nCenterX = nWidth >> 1;
+    gtCollisionField.nCenterY = nHeight >> 1;
 
     for (int i = 0; i < 9; ++i)
     {
-        sgtDataTables.ExpFieldI[i] = gnFieldXOffsets[i] + nWidth * gnFieldYOffsets[i];
+        gaExpFieldI[i] = gnFieldXOffsets[i] + nWidth * gnFieldYOffsets[i];
     }
 
     FOG_Free(pFile, ".\\DATATBLS\\FieldTbls.cpp", 80, 0);
@@ -72,37 +75,37 @@ int __stdcall DATATBLS_InitializeCollisionFieldTable(char* pExpField, int nSize)
 // 0x0066A420
 int __stdcall DATATBLS_FreeCollisionFieldTable()
 {
-    if (sgtDataTables.pFieldData)
+    if (gpFieldData)
     {
-        sub_0040B480(0, sgtDataTables.pFieldData, ".\\DATATBLS\\FieldTbls.cpp", 91, 0);
+        sub_0040B480(0, gpFieldData, ".\\DATATBLS\\FieldTbls.cpp", 91, 0);
     }
 
-    sgtDataTables.pFieldData = 0;
-    sgtDataTables.pCollisionField.nHeight = 0;
-    sgtDataTables.pCollisionField.nWidth = 0;
-    sgtDataTables.pCollisionField.nArea = 0;
-    sgtDataTables.pCollisionField.nCenterX = 0;
-    sgtDataTables.pCollisionField.nCenterY = 0;
+    gpFieldData = 0;
+    gtCollisionField.nHeight = 0;
+    gtCollisionField.nWidth = 0;
+    gtCollisionField.nArea = 0;
+    gtCollisionField.nCenterX = 0;
+    gtCollisionField.nCenterY = 0;
     return 1;
 }
 
 // 0x0066A470
 void __stdcall DATATBLS_GetCollisionFieldCenter(int* pCenterX, int* pCenterY)
 {
-    *pCenterX = sgtDataTables.pCollisionField.nCenterX;
-    *pCenterY = sgtDataTables.pCollisionField.nCenterY;
+    *pCenterX = gtCollisionField.nCenterX;
+    *pCenterY = gtCollisionField.nCenterY;
 }
 
 // 0x0066A490
 int __stdcall DATATBLS_GetCollisionFieldWidth()
 {
-    return sgtDataTables.pCollisionField.nWidth;
+    return gtCollisionField.nWidth;
 }
 
 // 0x0066A4A0
 int __stdcall DATATBLS_GetCollisionFieldHeight()
 {
-    return sgtDataTables.pCollisionField.nHeight;
+    return gtCollisionField.nHeight;
 }
 
 // 0x0066A4B0
@@ -137,12 +140,10 @@ int __stdcall D2Common_11097(D2FieldStrc* pField, int nX, int nY)
 {
     FIELD_ASSERT(pField, 176);
 
-    return *(&sgtDataTables.pFieldData[((nY - pField->nY) << 8) - pField->nX] + nX);
+    return *(&gpFieldData[((nY - pField->nY) << 8) - pField->nX] + nX);
 }
 
-unsigned char* gpFieldData; // 0x0096D654
 
-D2CollisionFieldStrc gtCollisionField; // 0x0096D658
 
 // 0x0066A5D0
 int __stdcall D2Common_11098(D2FieldStrc* pField, int* pX, int* pY)

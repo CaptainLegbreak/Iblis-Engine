@@ -763,6 +763,7 @@ void __fastcall ACT3Q3_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2Q
 }
 
 // Out of line as in the original: ACT3Q3_SpawnGidbinnBoss (0x5B9A30) and OBJECTS_InitFunction25_Gidbinn (0x5B9AE0) call it.
+// Kept noinline: ACT3Q3_SpawnGidbinnBoss (0x005B9A30) calls it out of line in the image; without it the compiler inlines it there.
 // 0x005B9930
 static __declspec(noinline) void ACT3Q3_SpawnFetishBoss(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, D2Act3Quest3Strc* pQuestDataEx)
 {

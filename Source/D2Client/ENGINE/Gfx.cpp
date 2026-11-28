@@ -592,12 +592,6 @@ static void __stdcall GFX_CommandOnUnit(int nCommand, int nArg, D2UnitStrc* pUni
 
 static void __stdcall GFX_RecalcStateOverlays(D2UnitGfxDataStrc* pOwner, D2UnitStrc* pUnit, D2UnitOverlayStrc* pNode);
 
-void __stdcall sub_P09_Emit_0046DF40(D2UnitGfxDataStrc* pOwner, D2UnitStrc* pUnit, D2UnitOverlayStrc* pNode, D2UnitOverlayStrc* pOther)
-{
-    GFX_RecalcStateOverlays(pOwner, pUnit, pNode);
-    GFX_RecalcStateOverlays(pOwner, pUnit, pOther);
-}
-
 static inline void GFX_ResetGfxBytes20(D2UnitStrc* pUnit); // 0x0046EA80
 
 static inline void GFX_ResetGfxBytes16(D2UnitStrc* pUnit); // 0x0046EAA0
@@ -3125,8 +3119,7 @@ static int __stdcall GFX_DrawGfxUnit(unsigned int dwColor, int nArg, int bOverla
 }
 
 // 0x00471450
-// noinline: GFX_DrawUnitShadow (0x00471620) calls GFX_DrawSimpleUnitShadow (0x00471450); the image calls it out of line (0x00471662), and without this the compiler expands it there.
-__declspec(noinline) int __fastcall GFX_DrawSimpleUnitShadow(D2UnitStrc* pUnit)
+int __fastcall GFX_DrawSimpleUnitShadow(D2UnitStrc* pUnit)
 {
     if (UNITS_IsFlag5SetInl(pUnit) || STATES_CheckState(pUnit, STATE_INVIS))
     {

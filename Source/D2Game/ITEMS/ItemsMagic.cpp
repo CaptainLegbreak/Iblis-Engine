@@ -269,6 +269,7 @@ static int ITEMMODS_HasAffixWithGroup(D2UnitStrc* pItem, int nGroup);
 // noinline: ITEMS_RollMagicAffixesNew (0x005C1560) calls ITEMS_AddPotentialMagicAffix (0x005C0D00); the image calls it out of line there.
 #include "D2LowQualityItemDataTbl.h"
 
+// Kept noinline: ITEMS_RollMagicAffixesNew (0x005C1560) calls it out of line in the image; without it the compiler inlines it there.
 // 0x005C0D00
 static __declspec(noinline) int __stdcall ITEMS_AddPotentialMagicAffix(int nAffixId, D2MagicAffixTxt* pRecord, D2MagicAffixIndexAndPtrStrc* pAffixes, int nCount)
 {
@@ -293,6 +294,7 @@ static D2MagicAffixIndexAndPtrStrc* __stdcall ITEMS_GetPotentialMagicAffix(int n
 }
 
 // Out of line as in the original: ITEMS_ApplyLegacyLowQuality (0x5C2AF0) and ITEMS_ApplyLowQuality (0x5C2D40) call it (0x5C2CAF, 0x5C2CD6, 0x5C2F11, 0x5C2F38).
+// Kept noinline: ITEMS_ApplyLegacyLowQuality (0x005C2AF0) and ITEMS_ApplyLowQuality (0x005C2D40) call it out of line in the image; without it the compiler inlines it there.
 // 0x005C0D40
 static __declspec(noinline) int __stdcall SKILLITEM_PercentWithMinimum(int nValue, int nPercent, int nMin)
 {

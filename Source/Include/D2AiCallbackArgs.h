@@ -165,7 +165,7 @@ struct D2PetMoveStrc
 
 struct D2Unk005EAD50CounterStrc
 {
-    char unk0x00[0x14];
+    char unused0x00[0x14];
     int nFrame;
     int nValue;
     int nBase;
@@ -173,7 +173,7 @@ struct D2Unk005EAD50CounterStrc
 
 struct D2Unk005EAD50LimitsStrc
 {
-    char unk0x00[0x82];
+    char unused0x00[0x82];
     short nMin;
     short nMax;
 };
@@ -181,6 +181,6 @@ struct D2Unk005EAD50LimitsStrc
 struct D2Unk005EAD50ArgStrc
 {
     D2Unk005EAD50CounterStrc* pCounter;
-    char unk0x04[0x18];
+    char unused0x04[0x18];
     D2Unk005EAD50LimitsStrc* pLimits;
 };

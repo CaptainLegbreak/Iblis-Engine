@@ -40,7 +40,7 @@ struct D2SaveHeaderStrc
     unsigned char nTown[3]; // 0xA8
     unsigned int dwMapSeed; // 0xAB
     unsigned char MercSaveData[0x10]; // 0xAF
-    char unk0xBF[0x10]; // 0xBF
+    char unused0xBF[0x10]; // 0xBF
     unsigned char nGuildEmblemBgColor; // 0xCF
     char dwLastLevel[0x7F]; // 0xD0
 };

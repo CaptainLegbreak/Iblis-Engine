@@ -292,7 +292,7 @@ static inline int CLIENTS_GetUnitYInline(D2UnitStrc* pUnit)
 }
 
 // 0x0046B710
-void __fastcall sub_0046B710_SpawnMissileAtObject173(D2UnitStrc* pUnit)
+void __fastcall VIEW_SpawnMissileAtObject173(D2UnitStrc* pUnit)
 {
     D2UnitStrc* pObject = UNITFINDS_FindUnitInNeighboredRooms(UNITS_GetRoom(pUnit), 2, 0x173);
     int nX;
@@ -649,28 +649,28 @@ void __fastcall VIEW_SpawnMissileAtObject(D2UnitStrc* pUnit)
 }
 
 // 0x0046BA90
-void __fastcall sub_0046BA90_PlayerRequestAtUnit15B(D2UnitStrc* pUnit)
+void __fastcall VIEW_PlayerRequestAtUnit15B(D2UnitStrc* pUnit)
 {
     D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
     MISSILE_SubmitMissileRequest(pPlayer, 0x15B, CLIENTS_GetUnitXInline(pUnit), CLIENTS_GetUnitYInline(pUnit), 0, 1);
 }
 
 // 0x0046BB10
-void __fastcall sub_0046BB10_PlayerRequestAtUnit161(D2UnitStrc* pUnit)
+void __fastcall VIEW_PlayerRequestAtUnit161(D2UnitStrc* pUnit)
 {
     D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
     MISSILE_SubmitMissileRequest(pPlayer, 0x161, CLIENTS_GetUnitXInline(pUnit), CLIENTS_GetUnitYInline(pUnit), 0, 1);
 }
 
 // 0x0046BB90
-void __fastcall sub_0046BB90_PlayerRequestAtUnit16B(D2UnitStrc* pUnit)
+void __fastcall VIEW_PlayerRequestAtUnit16B(D2UnitStrc* pUnit)
 {
     D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
     MISSILE_SubmitMissileRequest(pPlayer, 0x16B, CLIENTS_GetUnitXInline(pUnit), CLIENTS_GetUnitYInline(pUnit), 0, 1);
 }
 
 // 0x0046BC90
-void __fastcall sub_0046BC90_RequestAtMonster220(D2UnitStrc* pUnit)
+void __fastcall VIEW_RequestAtMonster220(D2UnitStrc* pUnit)
 {
     D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
     D2UnitStrc* pMonster = UNITFINDS_FindUnitInNeighboredRooms(UNITS_GetRoom(pPlayer), 1, 0x220);
@@ -752,7 +752,7 @@ void __cdecl VIEW_EventObject98Request()
 }
 
 // 0x0046B290
-void __cdecl sub_0046B290_EventLevel108Request()
+void __cdecl VIEW_EventLevel108Request()
 {
     gbChaosLightEvent = 1;
     D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
@@ -773,7 +773,7 @@ void __cdecl sub_0046B290_EventLevel108Request()
 }
 
 // 0x0046B300
-void __cdecl sub_0046B300_EventObject178Request()
+void __cdecl VIEW_EventObject178Request()
 {
     D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
     if (!pPlayer)
@@ -807,7 +807,7 @@ void __cdecl VIEW_StartTimer()
 }
 
 // 0x0046B3C0
-void __fastcall sub_0046B3C0_UnitRequest25A(D2UnitStrc* pUnit)
+void __fastcall VIEW_UnitRequest25A(D2UnitStrc* pUnit)
 {
     if (!pUnit)
         return;
@@ -827,7 +827,7 @@ int gbThroneEventPending; // 0x007A7468
 int gbThroneEventActive; // 0x007A746C
 
 // 0x0046BE60
-void __fastcall sub_0046BE60_ApplyDenOfEvilRoom(D2ActiveRoomStrc* pRoom)
+void __fastcall VIEW_ApplyDenOfEvilRoom(D2ActiveRoomStrc* pRoom)
 {
     D2_ASSERT(pRoom, 0x344);
     if (DUNGEON_GetLevelIdFromRoom(pRoom) == LEVEL_DENOFEVIL && gbPulseDone != 0)
@@ -837,7 +837,7 @@ void __fastcall sub_0046BE60_ApplyDenOfEvilRoom(D2ActiveRoomStrc* pRoom)
 }
 
 // 0x0046BEB0
-void __cdecl sub_0046BEB0_UpdateTimers()
+void __cdecl VIEW_UpdateTimers()
 {
     if (gtTimedBox.bActive)
     {
@@ -903,7 +903,7 @@ void __cdecl VIEW_ResetLevelEffects()
 }
 
 // 0x0046B440
-void __cdecl sub_0046B440_EventObject1CCRequest()
+void __cdecl VIEW_EventObject1CCRequest()
 {
     D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
     if (!pPlayer)
@@ -1067,7 +1067,7 @@ void __fastcall VIEW_SpawnAroundUnit(D2UnitStrc* pUnit, int nMonsterId, int nCou
 }
 
 // 0x0046C460
-void __fastcall sub_0046C460_PopulateRoom(D2ActiveRoomStrc* pRoom)
+void __fastcall VIEW_PopulateRoom(D2ActiveRoomStrc* pRoom)
 {
     const int nLevelId = DUNGEON_GetLevelIdFromRoom(pRoom);
     if (!nLevelId)
@@ -1102,6 +1102,6 @@ extern int gnTimerUnitId = -1; // 0x007129D4
 extern int gnLevelEffectTick = -1; // 0x007129D0
 
 extern LEVELEVENT_Fn gpfnLevelEvents[20] = {
-    (LEVELEVENT_Fn)&VIEW_ResetPulseTick, (LEVELEVENT_Fn)&VIEW_ObjectMissileTimedBox, 0, (LEVELEVENT_Fn)&VIEW_EventObject98Request, 0, 0, (LEVELEVENT_Fn)&VIEW_EventObject95Request, 0, 0, 0, 0, 0, (LEVELEVENT_Fn)&sub_0046B290_EventLevel108Request, (LEVELEVENT_Fn)&VIEW_StartTimer, (LEVELEVENT_Fn)&sub_0046B300_EventObject178Request, 0,
-    (LEVELEVENT_Fn)&sub_0046B440_EventObject1CCRequest, (LEVELEVENT_Fn)&SCMD_TriggerNearbyMonsterEffect, 0, (LEVELEVENT_Fn)&sub_0046B520_SetFlag7A7468
+    (LEVELEVENT_Fn)&VIEW_ResetPulseTick, (LEVELEVENT_Fn)&VIEW_ObjectMissileTimedBox, 0, (LEVELEVENT_Fn)&VIEW_EventObject98Request, 0, 0, (LEVELEVENT_Fn)&VIEW_EventObject95Request, 0, 0, 0, 0, 0, (LEVELEVENT_Fn)&VIEW_EventLevel108Request, (LEVELEVENT_Fn)&VIEW_StartTimer, (LEVELEVENT_Fn)&VIEW_EventObject178Request, 0,
+    (LEVELEVENT_Fn)&VIEW_EventObject1CCRequest, (LEVELEVENT_Fn)&SCMD_TriggerNearbyMonsterEffect, 0, (LEVELEVENT_Fn)&sub_0046B520_SetFlag7A7468
 }; // 0x007129D8

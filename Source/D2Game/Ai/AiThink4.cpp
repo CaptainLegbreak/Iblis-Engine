@@ -3036,9 +3036,8 @@ static inline int GetUnitY(D2UnitStrc* pUnit)
     return pUnit->pDynamicPath ? PATH_GetYPosition(pUnit->pDynamicPath) : 0;
 }
 
-// noinline: AITHINK_Fn110_Vines (0x005EC6C0) and AITHINK_Fn108_Fenris (0x005ED2A0) call D2GAME_AI_PetMove (0x005E3EA0); the image calls it out of line there.
 // 0x005E3EA0
-__declspec(noinline) int __fastcall D2GAME_AI_PetMove(D2GameStrc* pGame, D2UnitStrc* pOwner, D2UnitStrc* pPet, int nMove, int bRun, int nVelocity, int nRange)
+int __fastcall D2GAME_AI_PetMove(D2GameStrc* pGame, D2UnitStrc* pOwner, D2UnitStrc* pPet, int nMove, int bRun, int nVelocity, int nRange)
 {
     D2UnitStrc* pUnit = pPet;
     D2SeedStrc* pSeed = &pUnit->pSeed;

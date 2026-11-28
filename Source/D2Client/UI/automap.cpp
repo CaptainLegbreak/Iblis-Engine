@@ -99,7 +99,7 @@ struct D2ActiveRoomStrc;
 
 struct D2DrlgCoordsStrc;
 
-struct D2PacketBufferStrc;
+struct D2PacketListStrc;
 
 struct D2PacketTableEntryStrc;
 
@@ -1206,7 +1206,7 @@ void __stdcall STATLIST_MergeStatLists(D2UnitStrc* pTarget, D2UnitStrc* pUnit, i
 
 
 
-D2PacketBufferStrc* __fastcall CUNIT_GetPacketList(void* pArg); // 0x00464770
+D2PacketListStrc* __fastcall CUNIT_GetPacketList(void* pArg); // 0x00464770
 
 
 
@@ -3989,7 +3989,7 @@ void __fastcall AUTOMAP_RefreshItemStats(D2UnitStrc* pUnit)
 // 0x0045FA40
 void __fastcall AUTOMAP_ProcessUnitPacketBuffer(void* pArg)
 {
-    D2PacketBufferStrc* pBuffer = CUNIT_GetPacketList(pArg);
+    D2PacketListStrc* pBuffer = CUNIT_GetPacketList(pArg);
     if (!pBuffer)
     {
         return;

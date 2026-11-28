@@ -849,8 +849,8 @@ void* __stdcall D2Common_10958(D2UnitStrc* pUnit, void* pValue)
         return 0;
     }
 
-    void* pResult = pSkillList->unk0x14;
-    pSkillList->unk0x14 = pValue;
+    void* pResult = pSkillList->pLight;
+    pSkillList->pLight = pValue;
     return pResult;
 }
 
@@ -867,7 +867,7 @@ void* __stdcall D2Common_10959(D2UnitStrc* pUnit)
         return 0;
     }
 
-    return pUnit->pSkills->unk0x14;
+    return pUnit->pSkills->pLight;
 }
 
 // 0x00643A60
@@ -1441,7 +1441,7 @@ int __stdcall D2Common_10969(D2SkillStrc* ptSkill)
 {
     SKILLS_ASSERT(ptSkill, 2595);
 
-    return ptSkill->unk0x10[0];
+    return ptSkill->nExportValues[0];
 }
 
 // 0x006443B0
@@ -1449,7 +1449,7 @@ void __stdcall D2Common_10970(D2SkillStrc* ptSkill, int nValue)
 {
     SKILLS_ASSERT(ptSkill, 2604);
 
-    ptSkill->unk0x10[0] = nValue;
+    ptSkill->nExportValues[0] = nValue;
 }
 
 // 0x006443F0
@@ -1457,7 +1457,7 @@ int __stdcall D2Common_10971(D2SkillStrc* ptSkill)
 {
     SKILLS_ASSERT(ptSkill, 2613);
 
-    return ptSkill->unk0x10[1];
+    return ptSkill->nExportValues[1];
 }
 
 // 0x00644420
@@ -1465,7 +1465,7 @@ void __stdcall D2Common_10972(D2SkillStrc* ptSkill, int nValue)
 {
     SKILLS_ASSERT(ptSkill, 2622);
 
-    ptSkill->unk0x10[1] = nValue;
+    ptSkill->nExportValues[1] = nValue;
 }
 
 // 0x00644460
@@ -1473,8 +1473,8 @@ void __stdcall D2Common_10973(D2SkillStrc* ptSkill)
 {
     SKILLS_ASSERT(ptSkill, 2631);
 
-    ptSkill->unk0x10[0] = 0;
-    ptSkill->unk0x10[1] = 0;
+    ptSkill->nExportValues[0] = 0;
+    ptSkill->nExportValues[1] = 0;
 }
 
 // 0x006444A0

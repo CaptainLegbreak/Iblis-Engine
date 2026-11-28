@@ -8,6 +8,8 @@
 #include "D2CmdArg.h"
 #include "D2FogSystemInfo.h"
 #include "D2Win32SystemInfo.h"
+#include "D2Win32Find.h"
+#include "D2Win32Guid.h"
 #include "FogApi.h"
 #include "StormApi.h"
 #include "StormApi2.h"
@@ -115,14 +117,6 @@ void __cdecl sub_00402980_StartDbgHelpWorker(); // 0x00402980
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-struct D2GuidStrc
-{
-    unsigned long Data1;
-    unsigned short Data2;
-    unsigned short Data3;
-    unsigned char Data4[8];
-};
-
 typedef long (__stdcall* D2KnownFolderPathFn)(const D2GuidStrc* pFolderId, unsigned long dwFlags, void* hToken, wchar_t** pwszPath);
 
 typedef int (__stdcall* D2AllocateAndInitializeSidFn)(D2SidAuthorityStrc* pAuthority, unsigned char nSubAuthorityCount, unsigned long dwSub0, unsigned long dwSub1, unsigned long dwSub2, unsigned long dwSub3, unsigned long dwSub4, unsigned long dwSub5, unsigned long dwSub6, unsigned long dwSub7, void** ppSid);
@@ -188,20 +182,6 @@ struct D2Storm408ElemStrc;
 struct D2StormArray408Strc;
 
 int __stdcall SFileReadFileEx2(void* hFile, void* pBuffer, int nToRead, int* pnRead, void* pOverlapped, int nArg6, int nArg7); // 0x0041AAD0
-
-struct D2FindDataStrc
-{
-    unsigned long dwFileAttributes;
-    D2FileTimeStrc ftCreationTime;
-    D2FileTimeStrc ftLastAccessTime;
-    D2FileTimeStrc ftLastWriteTime;
-    unsigned long nFileSizeHigh;
-    unsigned long nFileSizeLow;
-    unsigned long dwReserved0;
-    unsigned long dwReserved1;
-    char cFileName[260];
-    char cAlternateFileName[14];
-};
 
 extern "C" int __cdecl strcmp(const char* sz1, const char* sz2);
 
@@ -431,28 +411,6 @@ void __cdecl LOGMANAGER_CloseLogFiles(); // 0x0040F960
 int __fastcall ERRORMANAGER_ReportNestedError(const char* szFile, int nLine, const char* szMessage); // 0x004088C0
 
 bool __cdecl sub_004013A0_IsDebuggerAttached(); // 0x004013A0
-
-struct AsyncData
-{
-    void* hFile;
-    D2PoolSystemStrc* pMemPool;
-    D2OverlappedStrc tOverlapped;
-    AsyncDataLoadFileCallback pAsyncOpDesc;
-    AsyncDataEventSlot* pEventSlot;
-    void* ptBuffer;
-    unsigned int nFileSize;
-    unsigned int nPriority;
-    unsigned int dwFlags;
-    unsigned int nPreviousPriority;
-    AsyncData* pNextPostponedPriorityChange;
-};
-
-struct AsyncDataEventSlot
-{
-    void* hEvent;
-    unsigned long bSlotAvailable;
-    AsyncData* pAsyncOp;
-};
 
 int __fastcall FOG_FCloseFile(void* pArg); // 0x004068F0
 
@@ -1028,6 +986,7 @@ static bool ERRORMANAGER_AppendPathSeparator(char* szPath)
     return ERRORMANAGER_StrLCopy(szPath, "BlizzardError", 0x400) < 0x400;
 }
 
+// Kept noinline: ERRORMANAGER_AppendPathSeparator (0x004040B0) calls it out of line in the image; without it the compiler inlines it there.
 // 0x00404110
 // Out of line by evidence: the original passes nSize in ecx and szSource in edi, a register convention the
 // compiler gives only a static whose callers are all in this unit (0x403FA0, 0x4040B0), so it was one here.
@@ -2026,6 +1985,7 @@ static int sub_00406BA0_GetModuleDirectoryAndSave(char* szPath, unsigned int nSi
     return 0;
 }
 
+// Kept noinline: ERRORMANAGER_DebugPrintLog (0x004082C0) calls it out of line in the image; without it the compiler inlines it there.
 // 0x004080B0
 // Out of line by evidence: the original passes the va_list in edi, a register convention the compiler gives
 // only a static whose callers are all in this unit (0x4082A0, 0x4082C0), so it was one here.
@@ -3025,6 +2985,7 @@ int __stdcall ERRORMANAGER_MeasureCpuMHz()
     return (int)((nTsc2 - nTsc1) * tFrequency / (tCount2 - tCount1) / 1000000);
 }
 
+// Kept noinline: ERRORMANAGER_GetCpuBrandIndex (0x0040E980) and ERRORMANAGER_WriteProcessorReport (0x0040EA00) call it out of line in the image; without it the compiler inlines it there.
 // 0x0040E960
 __declspec(noinline) unsigned int __cdecl ERRORMANAGER_GetCpuSignature()
 {

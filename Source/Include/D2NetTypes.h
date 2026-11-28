@@ -30,7 +30,7 @@ struct D2WSADataStrc
     char szSystemStatus[129]; // 0x105
     unsigned short iMaxSockets; // 0x186
     unsigned short iMaxUdpDg; // 0x188
-    unsigned short unk0x18A; // 0x18A
+    unsigned short pad0x18A; // 0x18A
     char* lpVendorInfo; // 0x18C
 };
 

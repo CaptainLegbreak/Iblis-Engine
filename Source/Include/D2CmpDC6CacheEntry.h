@@ -5,6 +5,6 @@
 
 struct D2CmpDC6CacheEntryStrc
 {
-    char unk0x00[0x20];
+    char unused0x00[0x20];
     D2CmpDC6HeaderStrc tHeader;
 };

@@ -7,7 +7,7 @@ struct D2HotkeySkillStrc
 {
     short nSkill; // 0x00
     unsigned char nHand; // 0x02
-    unsigned char unk0x03; // 0x03
+    unsigned char pad0x03; // 0x03
     int nItemGUID; // 0x04
 };
 

@@ -2229,7 +2229,7 @@ int __cdecl CHARSEL_InitRealmScreen()
 
                 if (!SRegLoadString("Diablo II", "Preferred Realm", 0, gszPreferredRealm, 0x100) || !CHARSEL_FindSlotByName(gszPreferredRealm))
                 {
-                    D2FuncRecordStrc* pRecord = gpFuncTable_0077ABF0->pfnGetRecord();
+                    D2FuncRecordStrc* pRecord = gpFuncTable_0077ABF0->pfnGetBnGatewayAccess();
                     const int nIndex = pRecord->nIndex;
                     SStrCopy(gszPreferredRealm, Realm(pRecord, nIndex), 0x7FFFFFFF);
                     SRegSaveString("Diablo II", "Preferred Realm", 0, gszPreferredRealm);
@@ -2626,7 +2626,7 @@ static void CHARSEL_RequestCharList(char* szName)
     void* pData = CharSelCache_FindData(dwHash, nTick);
     if (!pData)
     {
-        if (!gpFuncTable_0077ABF0->pfnSlot68())
+        if (!gpFuncTable_0077ABF0->pfnIsSocketConnected())
         {
             MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x14E3), MAINMENUS_ShowMainMenu);
             return;

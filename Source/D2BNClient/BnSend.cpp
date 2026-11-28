@@ -733,10 +733,10 @@ void __fastcall CUNIT_DisableGoldButton(int nMode)
 int __cdecl BNSEND_SendClientId()
 {
     D2BnRegistrationPacketStrc tPacket;
-    SRegLoadValue(gszConfiguration, "Registration Version", 2, &tPacket.nRegistrationVersion);
-    SRegLoadValue(gszConfiguration, "Registration Authority", 2, &tPacket.nRegistrationAuthority);
-    SRegLoadValue(gszConfiguration, "Client ID", 2, &tPacket.nClientId);
-    SRegLoadValue(gszConfiguration, "Client Token", 2, &tPacket.nClientToken);
+    SRegLoadValue("Configuration", "Registration Version", 2, &tPacket.nRegistrationVersion);
+    SRegLoadValue("Configuration", "Registration Authority", 2, &tPacket.nRegistrationAuthority);
+    SRegLoadValue("Configuration", "Client ID", 2, &tPacket.nClientId);
+    SRegLoadValue("Configuration", "Client Token", 2, &tPacket.nClientToken);
     tPacket.nLead = 1;
     tPacket.szText[1] = tPacket.szText[0] = 0;
     BNSEND_SendPacket(0x1E, &tPacket, 0x16);

@@ -335,7 +335,7 @@ void __fastcall OBJECT_InitObject(D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, in
     pUnit->pObjectData = (D2ObjectDataStrc*)FOG_Alloc(sizeof(D2ObjectDataStrc), ".\\UNIT\\Object.cpp", 0x76, 0);
     memset(pUnit->pObjectData, 0, sizeof(D2ObjectDataStrc));
     pUnit->pObjectData->bPermanent = 0;
-    pUnit->pObjectData->unk0x14 = 0;
+    pUnit->pObjectData->unused0x14 = 0;
 
     D2ObjectsTxt* pTxt = DATATBLS_GetObjectsTxtRecord(nObjectId);
     if (pTxt->nSelectable[pUnit->dwAnimMode])

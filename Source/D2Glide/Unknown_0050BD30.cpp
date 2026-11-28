@@ -767,6 +767,7 @@ void __cdecl sub_0050D540_GlideInitD()
 extern D2GfxSettingsStrc* gpGfxSettings; // 0x007C9148
 
 // The original calls this getter from 0x50CD40 instead of inlining it.
+// Kept noinline: sub_0050CD40_GlideShadowTileDraw (0x0050CD40) calls it out of line in the image; without it the compiler inlines it there.
 // 0x0050BF40
 __declspec(noinline) int __cdecl sub_0050BF40_GlideGetBlendedShadows()
 {

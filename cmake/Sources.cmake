@@ -233,8 +233,12 @@ set(IBLIS_D2Common_SOURCES
     Source/D2Common/Logging/Logging.cpp
     Source/D2Common/Logging/ProfCore.cpp
     Source/D2Common/Monsters/MONSTERS.CPP
+    Source/D2Common/PATH/AStar.cpp
+    Source/D2Common/PATH/IDAStar.cpp
     Source/D2Common/PATH/Path.cpp
+    Source/D2Common/PATH/PathMisc.cpp
     Source/D2Common/PATH/PathUtil.cpp
+    Source/D2Common/PATH/PathWF.cpp
     Source/D2Common/QuestRecord/QuestRecord.cpp
     Source/D2Common/SKILLS/Skills.cpp
     Source/D2Common/Stats/StatsEx.cpp
@@ -257,10 +261,6 @@ set(IBLIS_D2Common_SOURCES
     Source/D2Common/Unknown_00668510.cpp
     Source/D2Common/Unknown_0066A1A0.cpp
     Source/D2Common/Unknown_00674040.cpp
-    Source/D2Common/Unknown_00679380.cpp
-    Source/D2Common/Unknown_0067A550.cpp
-    Source/D2Common/Unknown_0067ADC0.cpp
-    Source/D2Common/Unknown_0067B9C0.cpp
     Source/D2Common/Unknown_006808F0.cpp
     Source/D2Common/Unknown_00681000.cpp
     Source/D2Common/Unknown_00681490.cpp
@@ -311,6 +311,7 @@ set(IBLIS_D2Game_SOURCES
     Source/D2Game/ITEMS/ItemMode.cpp
     Source/D2Game/ITEMS/Items.cpp
     Source/D2Game/ITEMS/Items_00558110.cpp
+    Source/D2Game/ITEMS/ItemsMagic.cpp
     Source/D2Game/MISSILES/Missiles.cpp
     Source/D2Game/MISSILES/MissMode.cpp
     Source/D2Game/MONSTER/Monster.cpp
@@ -320,6 +321,7 @@ set(IBLIS_D2Game_SOURCES
     Source/D2Game/MONSTER/MonsterMode.cpp
     Source/D2Game/MONSTER/MonsterMsg.cpp
     Source/D2Game/MONSTER/MonsterRegion.cpp
+    Source/D2Game/MONSTER/MonsterSpawn.cpp
     Source/D2Game/MONSTER/MonsterUnique.cpp
     Source/D2Game/OBJECTS/Objects.cpp
     Source/D2Game/OBJECTS/OBJEVAL.CPP
@@ -335,6 +337,7 @@ set(IBLIS_D2Game_SOURCES
     Source/D2Game/PLAYER/PlrSave.cpp
     Source/D2Game/PLAYER/PlrSave2.cpp
     Source/D2Game/PLAYER/PlrTrade.cpp
+    Source/D2Game/Quests/a1q0.cpp
     Source/D2Game/Quests/a1q1.cpp
     Source/D2Game/Quests/a1q2.cpp
     Source/D2Game/Quests/a1q3.cpp
@@ -361,6 +364,7 @@ set(IBLIS_D2Game_SOURCES
     Source/D2Game/Quests/a4q1.cpp
     Source/D2Game/Quests/a4q2.cpp
     Source/D2Game/Quests/a4q3.cpp
+    Source/D2Game/Quests/a5q0.cpp
     Source/D2Game/Quests/a5q1.cpp
     Source/D2Game/Quests/a5q2.cpp
     Source/D2Game/Quests/a5q3.cpp
@@ -398,13 +402,9 @@ set(IBLIS_D2Game_SOURCES
     Source/D2Game/Unknown_0056B180.cpp
     Source/D2Game/Unknown_00570420.cpp
     Source/D2Game/Unknown_00573470.cpp
-    Source/D2Game/Unknown_00586B50.cpp
-    Source/D2Game/Unknown_0058F870.cpp
     Source/D2Game/Unknown_005947E0.cpp
     Source/D2Game/Unknown_00596BB0.cpp
     Source/D2Game/Unknown_0059F440.cpp
-    Source/D2Game/Unknown_005B24E0.cpp
-    Source/D2Game/Unknown_005C0D00.cpp
     Source/D2Game/Unknown_005D1080.cpp
     Source/D2Game/Unknown_005EFB80.cpp
     Source/D2Game/Unknown_005FD470.cpp
@@ -738,6 +738,7 @@ set_source_files_properties(
     Source/D2Common/Logging/Logging.cpp
     Source/D2Common/Logging/ProfCore.cpp
     Source/D2Common/Monsters/MONSTERS.CPP
+    Source/D2Common/PATH/IDAStar.cpp
     Source/D2Common/PATH/Path.cpp
     Source/D2Common/QuestRecord/QuestRecord.cpp
     Source/D2Common/SKILLS/Skills.cpp
@@ -758,7 +759,6 @@ set_source_files_properties(
     Source/D2Common/Unknown_006647C0.cpp
     Source/D2Common/Unknown_00668510.cpp
     Source/D2Common/Unknown_0066A1A0.cpp
-    Source/D2Common/Unknown_0067A550.cpp
     Source/D2Common/Unknown_006808F0.cpp
     Source/D2Common/Unknown_00681490.cpp
     Source/D2Common/Waypoint/Waypoint.cpp
@@ -783,6 +783,7 @@ set_source_files_properties(
     Source/D2Game/ITEMS/ItemMode.cpp
     Source/D2Game/ITEMS/Items.cpp
     Source/D2Game/ITEMS/Items_00558110.cpp
+    Source/D2Game/ITEMS/ItemsMagic.cpp
     Source/D2Game/MISSILES/Missiles.cpp
     Source/D2Game/MISSILES/MissMode.cpp
     Source/D2Game/MONSTER/Monster.cpp
@@ -792,6 +793,7 @@ set_source_files_properties(
     Source/D2Game/MONSTER/MonsterMode.cpp
     Source/D2Game/MONSTER/MonsterMsg.cpp
     Source/D2Game/MONSTER/MonsterRegion.cpp
+    Source/D2Game/MONSTER/MonsterSpawn.cpp
     Source/D2Game/MONSTER/MonsterUnique.cpp
     Source/D2Game/OBJECTS/Objects.cpp
     Source/D2Game/OBJECTS/OBJEVAL.CPP
@@ -807,6 +809,7 @@ set_source_files_properties(
     Source/D2Game/PLAYER/PlrSave.cpp
     Source/D2Game/PLAYER/PlrSave2.cpp
     Source/D2Game/PLAYER/PlrTrade.cpp
+    Source/D2Game/Quests/a1q0.cpp
     Source/D2Game/Quests/a1q1.cpp
     Source/D2Game/Quests/a1q2.cpp
     Source/D2Game/Quests/a1q3.cpp
@@ -833,6 +836,7 @@ set_source_files_properties(
     Source/D2Game/Quests/a4q1.cpp
     Source/D2Game/Quests/a4q2.cpp
     Source/D2Game/Quests/a4q3.cpp
+    Source/D2Game/Quests/a5q0.cpp
     Source/D2Game/Quests/a5q1.cpp
     Source/D2Game/Quests/a5q2.cpp
     Source/D2Game/Quests/a5q3.cpp
@@ -870,13 +874,9 @@ set_source_files_properties(
     Source/D2Game/Unknown_0056B180.cpp
     Source/D2Game/Unknown_00570420.cpp
     Source/D2Game/Unknown_00573470.cpp
-    Source/D2Game/Unknown_00586B50.cpp
-    Source/D2Game/Unknown_0058F870.cpp
     Source/D2Game/Unknown_005947E0.cpp
     Source/D2Game/Unknown_00596BB0.cpp
     Source/D2Game/Unknown_0059F440.cpp
-    Source/D2Game/Unknown_005B24E0.cpp
-    Source/D2Game/Unknown_005C0D00.cpp
     Source/D2Game/Unknown_005D1080.cpp
     Source/D2Game/Unknown_005EFB80.cpp
     Source/D2Game/Unknown_005FD470.cpp
@@ -1001,13 +1001,13 @@ set_source_files_properties(
     Source/D2Client/WARDEN/WardenClient.cpp
     Source/D2CMP/SRC/SubTile.cpp
     Source/D2Common/DRLG/DrlgLogic.cpp
+    Source/D2Common/PATH/AStar.cpp
+    Source/D2Common/PATH/PathMisc.cpp
     Source/D2Common/PATH/PathUtil.cpp
+    Source/D2Common/PATH/PathWF.cpp
     Source/D2Common/Unknown_0064FAD0.cpp
     Source/D2Common/Unknown_00650D70.cpp
     Source/D2Common/Unknown_00674040.cpp
-    Source/D2Common/Unknown_00679380.cpp
-    Source/D2Common/Unknown_0067ADC0.cpp
-    Source/D2Common/Unknown_0067B9C0.cpp
     Source/D2Common/Unknown_00681000.cpp
     Source/D2DDraw/Src/ddCore.cpp
     Source/D2DDraw/Src/ddDebugFont.cpp

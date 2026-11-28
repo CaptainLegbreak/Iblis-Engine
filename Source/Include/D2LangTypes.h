@@ -23,7 +23,7 @@ struct D2UtfConvertSpecStrc
     unsigned short nMask; // 0x00
     short nLeading; // 0x02
     short nTrailingBits; // 0x04
-    short unk0x06; // 0x06
+    short pad0x06; // 0x06
     int nLast; // 0x08
     int nFirst; // 0x0C
 };

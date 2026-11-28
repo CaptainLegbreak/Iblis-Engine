@@ -13,28 +13,6 @@ struct AsyncDataLoadFileCallback;
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-struct AsyncData
-{
-    void* hFile;
-    D2PoolSystemStrc* pMemPool;
-    D2OverlappedStrc tOverlapped;
-    AsyncDataLoadFileCallback pAsyncOpDesc;
-    AsyncDataEventSlot* pEventSlot;
-    void* ptBuffer;
-    unsigned int nFileSize;
-    int nPriority;
-    unsigned int dwFlags;
-    int nPreviousPriority;
-    AsyncData* pNextPostponedPriorityChange;
-};
-
-struct AsyncDataEventSlot
-{
-    void* hEvent;
-    unsigned long bSlotAvailable;
-    AsyncData* pAsyncOp;
-};
-
 extern "C" __declspec(dllimport) void* __stdcall CreateEventA(void* pAttributes, int bManualReset, int bInitialState, const char* szName); // 0x006CC228
 extern "C" __declspec(dllimport) unsigned long __stdcall WaitForSingleObject(void* hHandle, unsigned long dwMilliseconds); // 0x006CC230
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x006CC134

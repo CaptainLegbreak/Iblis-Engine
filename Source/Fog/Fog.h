@@ -3,6 +3,8 @@
 #include "D2Win32Base.h"
 
 struct D2PoolSystemStrc;
+struct AsyncData;
+struct AsyncDataEventSlot;
 struct D2MemoryBasicInfoStrc;
 struct D2ModuleInfoStrc;
 struct D2PoolSystemStrc;
@@ -186,6 +188,28 @@ struct D2OverlappedStrc
     unsigned long Offset;
     unsigned long OffsetHigh;
     void* hEvent;
+};
+
+struct AsyncData
+{
+    void* hFile;
+    D2PoolSystemStrc* pMemPool;
+    D2OverlappedStrc tOverlapped;
+    AsyncDataLoadFileCallback pAsyncOpDesc;
+    AsyncDataEventSlot* pEventSlot;
+    void* ptBuffer;
+    unsigned int nFileSize;
+    int nPriority;
+    unsigned int dwFlags;
+    int nPreviousPriority;
+    AsyncData* pNextPostponedPriorityChange;
+};
+
+struct AsyncDataEventSlot
+{
+    void* hEvent;
+    unsigned long bSlotAvailable;
+    AsyncData* pAsyncOp;
 };
 
 struct D2PeDosHeaderStrc

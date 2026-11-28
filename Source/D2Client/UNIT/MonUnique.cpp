@@ -39,7 +39,7 @@ int __fastcall DLIGHTMAP_GetLightSize(D2GfxLightStrc* pLight); // 0x00474350
 
 
 
-void __fastcall sub_0046B710_SpawnMissileAtObject173(D2UnitStrc* pUnit);                                                            // 0x0046B710
+void __fastcall VIEW_SpawnMissileAtObject173(D2UnitStrc* pUnit);                                                            // 0x0046B710
 
 void __fastcall VIEW_SpawnMissileNearObject(D2UnitStrc* pUnit);                                                            // 0x0046B850
 

@@ -80,7 +80,7 @@ struct D2StormMpqHeaderStrc
     unsigned int nArchiveSize; // 0x08
     unsigned short wVersion; // 0x0C
     unsigned char nSectorShift; // 0x0E
-    unsigned char unk0x0F; // 0x0F
+    unsigned char unused0x0F; // 0x0F
     unsigned int nHashOffset; // 0x10
     unsigned int nBlockOffset; // 0x14
     unsigned int nHashEntries; // 0x18
@@ -93,7 +93,7 @@ struct D2StormHashEntryStrc
     unsigned int nName2; // 0x04
     unsigned short wLocale; // 0x08
     unsigned char nPlatform; // 0x0A
-    unsigned char unk0x0B; // 0x0B
+    unsigned char nReserved; // 0x0B
     int nBlockIndex; // 0x0C
 };
 

@@ -197,7 +197,7 @@ void __cdecl CHARSEL_InitCharSelectScreen()
             nFound = CHARSEL_FindSlotByName(gszPreferredRealm);
         if (nFound == 0)
         {
-            BNGatewayAccess* pAccess = (BNGatewayAccess*)gpFuncTable->pfnGetRecord();
+            BNGatewayAccess* pAccess = (BNGatewayAccess*)gpFuncTable->pfnGetBnGatewayAccess();
             SStrCopy(gszPreferredRealm, pAccess->Realm(pAccess->m_nCurGateway), 0x7FFFFFFF);
             SRegSaveString("Diablo II", "Preferred Realm", 0, gszPreferredRealm);
             nFound = CHARSEL_FindSlotByName(gszPreferredRealm);

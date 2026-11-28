@@ -20,11 +20,11 @@ struct D2ObjectDataStrc
     D2ObjectsTxt* pObjectTxt; // 0x00
     unsigned char InteractType; // 0x04
     unsigned char nPortalFlags; // 0x05
-    unsigned short unk0x06; // 0x06
+    unsigned short pad0x06; // 0x06
     D2ShrinesTxt* pShrineTxt; // 0x08
     int dwOperateGUID; // 0x0C
     int bPermanent; // 0x10
-    int unk0x14; // 0x14
+    int unused0x14; // 0x14
     D2CoordStrc DestRoomCooords; // 0x18
     D2CoordStrc DestPortalCoords; // 0x20
     char szOwner[16]; // 0x28

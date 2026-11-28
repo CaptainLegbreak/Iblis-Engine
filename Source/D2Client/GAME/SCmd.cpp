@@ -109,7 +109,7 @@ struct D2Packet95RecordStrc;
 
 struct D2Packet96RecordStrc;
 
-struct D2PacketBufferStrc;
+struct D2PacketListStrc;
 
 struct D2PacketTableEntryStrc;
 
@@ -623,9 +623,9 @@ struct D2PacketTableEntryStrc
 };
 
 
-D2PacketBufferStrc* __fastcall CUNIT_GetPacketList(D2UnitStrc* pUnit); // 0x00464770
+D2PacketListStrc* __fastcall CUNIT_GetPacketList(D2UnitStrc* pUnit); // 0x00464770
 
-void __fastcall CUNIT_SetPacketList(D2UnitStrc* pUnit, D2PacketBufferStrc* pBuffer); // 0x004647A0
+void __fastcall CUNIT_SetPacketList(D2UnitStrc* pUnit, D2PacketListStrc* pBuffer); // 0x004647A0
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
@@ -1215,7 +1215,7 @@ static void SCMD_ReadWalkVerify(unsigned char* pData, D2Packet96RecordStrc* pRec
 
 void __fastcall SCMD_HandleWalkVerify(unsigned char* pPacket); // 0x0045DC50
 
-static D2PacketBufferStrc* SCMD_GrowPacketBuffer(D2UnitStrc* pUnit); // 0x0045F610
+static D2PacketListStrc* SCMD_GrowPacketBuffer(D2UnitStrc* pUnit); // 0x0045F610
 
 static void __stdcall SCMD_QueuePacket(unsigned char* pPacket, int nLength, D2UnitStrc* pUnit); // 0x0045F730
 
@@ -2375,7 +2375,7 @@ void __stdcall sub_0045F7A0_Nop(int nUnused1, int nUnused2)
 // 0x0045F9F0
 void __fastcall SCMD_FreePacketBuffer(D2UnitStrc* pUnit)
 {
-    D2PacketBufferStrc* pBuffer = CUNIT_GetPacketList(pUnit);
+    D2PacketListStrc* pBuffer = CUNIT_GetPacketList(pUnit);
     if (pBuffer)
     {
         FOG_Free(pBuffer->pData, ".\\GAME\\SCmd.cpp", 0x1516, 0);
@@ -3591,7 +3591,7 @@ inline int UNITS_GetYPositionInline(D2UnitStrc* pUnit)
 }
 
 // 0x0045F610
-static D2PacketBufferStrc* SCMD_GrowPacketBuffer(D2UnitStrc* pUnit)
+static D2PacketListStrc* SCMD_GrowPacketBuffer(D2UnitStrc* pUnit)
 {
     if (!gnPacketRecordSize)
     {
@@ -3604,10 +3604,10 @@ static D2PacketBufferStrc* SCMD_GrowPacketBuffer(D2UnitStrc* pUnit)
         }
         gnPacketRecordSize += 5;
     }
-    D2PacketBufferStrc* pBuffer = CUNIT_GetPacketList(pUnit);
+    D2PacketListStrc* pBuffer = CUNIT_GetPacketList(pUnit);
     if (!pBuffer)
     {
-        pBuffer = (D2PacketBufferStrc*)FOG_Alloc(0x10, ".\\GAME\\SCmd.cpp", 0x1266, 0);
+        pBuffer = (D2PacketListStrc*)FOG_Alloc(0x10, ".\\GAME\\SCmd.cpp", 0x1266, 0);
         memset(pBuffer, 0, 0x10);
         CUNIT_SetPacketList(pUnit, pBuffer);
     }
@@ -3629,7 +3629,7 @@ void __stdcall CURSOR_MsgHandler(SMSGHANDLER_PARAMS* pMsg); // 0x00467EF0
 // 0x0045F730
 static void __stdcall SCMD_QueuePacket(unsigned char* pPacket, int nLength, D2UnitStrc* pUnit)
 {
-    D2PacketBufferStrc* pBuffer = CUNIT_GetPacketList(pUnit);
+    D2PacketListStrc* pBuffer = CUNIT_GetPacketList(pUnit);
     if (!pBuffer || pBuffer->nCount + 1 == pBuffer->nMax)
     {
         pBuffer = SCMD_GrowPacketBuffer(pUnit);

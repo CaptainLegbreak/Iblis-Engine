@@ -1833,7 +1833,12 @@ struct D2Packet81ArgsStrc
     int nZero;
 };
 
-struct D2PacketBufferStrc
+// D2Client's old name for this record (D2Net's own D2PacketBufferStrc, in D2NetTypes.h, is another type). It stays
+// declared because removing it changes inv_0048BC10.cpp's code.
+struct D2PacketBufferStrc;
+
+// A unit's queue of received packets waiting to be handled (CUNIT_GetPacketList; SCmd.cpp grows it by 5).
+struct D2PacketListStrc
 {
     int nMax;
     int nCount;

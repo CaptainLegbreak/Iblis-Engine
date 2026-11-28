@@ -15,7 +15,7 @@ struct D2SkillStrc
     D2SkillStrc* pNextSkill; // 0x04
     int dwSkillMode; // 0x08
     unsigned int dwFlags; // 0x0C
-    int unk0x10[2]; // 0x10
+    int nExportValues[2]; // 0x10: read and written only by D2Common_10969-10973
     unsigned int nXpos; // 0x18
     unsigned int nYpos; // 0x1C
     unsigned int nPar3; // 0x20
@@ -35,7 +35,7 @@ struct D2SkillListStrc
     D2SkillStrc* pLeftSkill; // 0x08
     D2SkillStrc* pRightSkill; // 0x0C
     D2SkillStrc* pUsedSkill; // 0x10
-    void* unk0x14; // 0x14
+    void* pLight; // 0x14: the unit's skill light, D2Common_10958/10959
 };
 
 D2_CHECK_SIZE(D2SkillStrc, 0x40);

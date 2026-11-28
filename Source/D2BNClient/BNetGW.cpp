@@ -118,7 +118,7 @@ void __stdcall BNGatewayAccess::Unload()
         pCurGateway[1] = m_nCurGateway % 10 + '0';
         const char* szValueName = m_bOverride ? gszOverrideGateways : gszDiabloGateways;
         D2_ASSERT(!m_pGatewayList[m_nGatewayListSize - 1] && !m_pGatewayList[m_nGatewayListSize - 2], 0xB9);
-        SRegSaveData(gszConfiguration, szValueName, 0x82, m_pGatewayList, m_nGatewayListSize);
+        SRegSaveData("Configuration", szValueName, 0x82, m_pGatewayList, m_nGatewayListSize);
     }
 
     if (m_pGatewayList)
@@ -194,11 +194,11 @@ void BNGatewayAccess::GetGatewayList(const char* szValueName)
 {
     D2_ASSERT(!m_pGatewayList, 0x146);
     unsigned int nSize = 0;
-    if (!SRegLoadData(gszConfiguration, szValueName, 0x82, 0, 0, &nSize) || !nSize)
+    if (!SRegLoadData("Configuration", szValueName, 0x82, 0, 0, &nSize) || !nSize)
         return;
     m_nGatewayListSize = nSize;
     m_pGatewayList = (char*)SMemAlloc(nSize, ".\\BNetGW.cpp", 0x156, 0);
-    if (!SRegLoadData(gszConfiguration, szValueName, 0x82, m_pGatewayList, m_nGatewayListSize, 0))
+    if (!SRegLoadData("Configuration", szValueName, 0x82, m_pGatewayList, m_nGatewayListSize, 0))
     {
         SMemFree(m_pGatewayList, ".\\BNetGW.cpp", 0x15E, 0);
         m_pGatewayList = 0;

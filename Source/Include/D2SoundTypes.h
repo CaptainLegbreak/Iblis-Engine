@@ -48,7 +48,7 @@ struct D2SoundStrc
     int nVolume; // 0x38
     union
     {
-        int unk0x3C; // 0x3C
+        int nAttenuationBits; // 0x3C
         float fAttenuation; // 0x3C
     };
     int bNoLoop; // 0x40

@@ -2,32 +2,33 @@
 #include "D2TxtItems.h"
 #include "FogApi.h"
 
-extern D2DataTablesStrc sgtDataTables;                                                                       // 0x0096BC30
+extern D2CubeMainTxt* gpCubeMainTxt; // 0x0096D628
 void __stdcall DATATBLS_UnloadBin(void* pBinFile);                                                               // 0x006125C0
 extern "C" const char gszEmptyAssertText;                                                                         // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                                // 0x00681E09
+extern int gnCubeMainTxtRecordCount; // 0x0096D62C
 
 #define CUBE_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
 // 0x0066A1A0
 void __fastcall DATATBLS_UnloadCubeMainTxt()
 {
-    DATATBLS_UnloadBin(sgtDataTables.pCubeMainTxt);
+    DATATBLS_UnloadBin(gpCubeMainTxt);
 }
 
 // 0x0066A1B0
 D2CubeMainTxt* __stdcall DATATBLS_GetCubemainTxtRecord(int nIndex)
 {
-    CUBE_ASSERT(sgtDataTables.pCubeMainTxt, 846);
-    CUBE_ASSERT(nIndex < sgtDataTables.nCubeMainTxtRecordCount, 847);
+    CUBE_ASSERT(gpCubeMainTxt, 846);
+    CUBE_ASSERT(nIndex < gnCubeMainTxtRecordCount, 847);
 
-    return &sgtDataTables.pCubeMainTxt[nIndex];
+    return &gpCubeMainTxt[nIndex];
 }
 
 // 0x0066A200
 int __fastcall DATATBLS_GetCubemainTxtRecordCount()
 {
-    return sgtDataTables.nCubeMainTxtRecordCount;
+    return gnCubeMainTxtRecordCount;
 }
 
 // 0x0066A260

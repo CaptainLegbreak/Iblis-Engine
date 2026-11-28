@@ -1,30 +1,14 @@
 #include "Fog.h"
 #include "FogApi.h"
+#include "D2FogSafeSock.h"
 #include "StormApi.h"
 
 #define D2_ASSERT(x,line) do { if (!(x)) { FOG_DisplayHalt(gszAssert_006CC837, sub_00408090(), line); exit(-1); } } while (0)
-
-typedef struct _RTL_CRITICAL_SECTION CRITICAL_SECTION;
 
 struct FSafeSock;
 struct D2ThreadRecord006BC5A0Strc;
 
 typedef int (__fastcall* D2QSPacketHandlerFn)(unsigned char* pData, int nLength, void* pArg);
-
-// A Safesock connection.
-struct FSafeSock
-{
-    int bConnected;                         // 0x00
-    int bConnecting;                        // 0x04
-    unsigned int nSocket;                   // 0x08
-    char tCriticalSection[0x18];            // 0x0C
-    void* hThread;                          // 0x24
-    unsigned long nThreadId;                // 0x28
-    int bStopping;                          // 0x2C
-    unsigned long nFogErrorCode;            // 0x30
-    unsigned long nWSALastError;            // 0x34
-    char szName[64];                        // 0x38
-};
 
 // A queued-socket record (0x194 bytes): its receive thread, the connection and the packet queue.
 struct D2ThreadRecord006BC5A0Strc
@@ -56,8 +40,8 @@ void __fastcall D2QSQUEUE_Push(void* pQueue, unsigned char* pData, unsigned shor
 extern const char gszSocketFile[]; // 0x006FC418
 extern const char gszUnknownUpper[]; // 0x006CCED8
 
-extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(CRITICAL_SECTION* lpCriticalSection);
-extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(CRITICAL_SECTION* lpCriticalSection);
+extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc* pLock);
+extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalSectionStrc* pLock);
 extern "C" __declspec(dllimport) void* __stdcall CreateEventA(void* pAttributes, int bManualReset, int bInitialState, const char* szName);
 extern "C" __declspec(dllimport) void* __stdcall CreateThread(void* pAttributes, unsigned long nStackSize, unsigned long (__stdcall* pfStart)(void*), void* pParameter, unsigned long nFlags, unsigned long* pThreadId);
 extern "C" __declspec(dllimport) unsigned long __stdcall WaitForSingleObject(void* hHandle, unsigned long dwMilliseconds);
@@ -128,7 +112,7 @@ extern "C" int __fastcall D2QSSOCKET_SafeSockSend(FSafeSock* pSafeSock, const ch
 {
     if (!pSafeSock || pSafeSock->bStopping)
         return -1;
-    EnterCriticalSection((CRITICAL_SECTION*)pSafeSock->tCriticalSection);
+    EnterCriticalSection(&pSafeSock->tCriticalSection);
     int nResult;
     const int nSent = send(pSafeSock->nSocket, pBuffer, nSize, 0);
     if (nSent == -1)
@@ -149,7 +133,7 @@ extern "C" int __fastcall D2QSSOCKET_SafeSockSend(FSafeSock* pSafeSock, const ch
     {
         nResult = nSent;
     }
-    LeaveCriticalSection((CRITICAL_SECTION*)pSafeSock->tCriticalSection);
+    LeaveCriticalSection(&pSafeSock->tCriticalSection);
     return nResult;
 }
 
@@ -239,9 +223,9 @@ static void D2QSSOCKET_SetClosing(D2ThreadRecord006BC5A0Strc* pRecord)
     if (pRecord && pRecord->pSafeSock && pRecord->pSafeSock->hThread)
     {
         pRecord->bStop = 1;
-        EnterCriticalSection((CRITICAL_SECTION*)pRecord->pSafeSock->tCriticalSection);
+        EnterCriticalSection(&pRecord->pSafeSock->tCriticalSection);
         pRecord->pSafeSock->bStopping = 1;
-        LeaveCriticalSection((CRITICAL_SECTION*)pRecord->pSafeSock->tCriticalSection);
+        LeaveCriticalSection(&pRecord->pSafeSock->tCriticalSection);
     }
 }
 
@@ -250,11 +234,11 @@ static void D2QSSOCKET_CloseSocket(D2ThreadRecord006BC5A0Strc* pRecord)
 {
     if (pRecord && pRecord->pSafeSock && pRecord->pSafeSock->bConnected && pRecord->pSafeSock->nSocket)
     {
-        EnterCriticalSection((CRITICAL_SECTION*)pRecord->pSafeSock->tCriticalSection);
+        EnterCriticalSection(&pRecord->pSafeSock->tCriticalSection);
         FOG_SOCKET_CloseSocket(pRecord->pSafeSock->nSocket);
         pRecord->pSafeSock->nSocket = (unsigned int)-1;
         pRecord->pSafeSock->bConnected = 0;
-        LeaveCriticalSection((CRITICAL_SECTION*)pRecord->pSafeSock->tCriticalSection);
+        LeaveCriticalSection(&pRecord->pSafeSock->tCriticalSection);
     }
 }
 
@@ -307,11 +291,11 @@ unsigned long __stdcall D2QSSOCKET_ReceiveLoop(D2ThreadRecord006BC5A0Strc* pReco
                     FSafeSock* pSock = pRecord->pSafeSock;
                     if (pSock && pSock->bConnected && pSock->nSocket)
                     {
-                        EnterCriticalSection((CRITICAL_SECTION*)pSock->tCriticalSection);
+                        EnterCriticalSection(&pSock->tCriticalSection);
                         FOG_SOCKET_CloseSocket(pRecord->pSafeSock->nSocket);
                         pRecord->pSafeSock->nSocket = (unsigned int)-1;
                         pRecord->pSafeSock->bConnected = 0;
-                        LeaveCriticalSection((CRITICAL_SECTION*)pRecord->pSafeSock->tCriticalSection);
+                        LeaveCriticalSection(&pRecord->pSafeSock->tCriticalSection);
                     }
                     return 0;
                 }
