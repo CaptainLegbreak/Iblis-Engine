@@ -14,14 +14,6 @@
 #include "StormApi2.h"
 #include "D2CommonApi3.h"
 
-struct D2ClientItemSlotStrc
-{
-    unsigned short wId;
-    char unk0x02[0x02];
-    int nSeed;
-    int nUnitId;
-    char unk0x0C[0x04];
-};
 
 class UIWidget
 {
@@ -90,49 +82,48 @@ Unicode* __fastcall sub_00526790(Unicode* pDest, const Unicode* pSource, int nCo
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc);                                     // 0x005267E0
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength);                   // 0x00526F20
 
-extern D2ClientItemSlotStrc gaNpcItemSlots[10];                                                       // 0x007C0C85
-extern ListBoxWrapper* gpListBox_007C0D83;                                                                  // 0x007C0D83
+#include "D2ClientNpcMenu.h"
 
 // 0x004B5C60
 int __cdecl NPCMENU_ShowMainMenu()
 {
-    if (gpNpcMainMenuDialog)
+    if (gtNpcMenu.pMainMenuDialog)
     {
-        DIALOG_DestroyDialog(gpNpcMainMenuDialog);
-        gpNpcMainMenuDialog = 0;
+        DIALOG_DestroyDialog(gtNpcMenu.pMainMenuDialog);
+        gtNpcMenu.pMainMenuDialog = 0;
     }
 
-    if (gpNpcHireDialog)
+    if (gtNpcMenu.pHireDialog)
     {
-        DIALOG_DestroyDialog(gpNpcHireDialog);
-        delete gpListBox_007C0D83;
-        gpListBox_007C0D83 = 0;
-        gpNpcHireDialog = 0;
+        DIALOG_DestroyDialog(gtNpcMenu.pHireDialog);
+        delete gtNpcMenu.pListBox;
+        gtNpcMenu.pListBox = 0;
+        gtNpcMenu.pHireDialog = 0;
         NPCMENU_BuildNpcMenu();
         return 0;
     }
 
-    gpNpcHireDialog = DIALOG_CreateDialog((gnScreenWidth - 0x1EA) / 2, gnAutomapHeight_007A521C / 2 - 0xC3,
+    gtNpcMenu.pHireDialog = DIALOG_CreateDialog((gnScreenWidth - 0x1EA) / 2, gnAutomapHeight_007A521C / 2 - 0xC3,
         (int)NPCMENU_CloseHireDialog, 0, 0, 0, 0, 0x1EA, 0x15E, 0, 1);
-    ROSTER_SetCtrlState(gpNpcHireDialog, 1);
+    ROSTER_SetCtrlState(gtNpcMenu.pHireDialog, 1);
 
     Unicode wszGold[300];
     sub_005269D0_FormatText(300, wszGold, D2LANG_GetStringFromTblIndex(0xD24),
         STATLIST_UnitGetStatValue(sub_00463DD0(), STAT_GOLDBANK, 0) + STATLIST_UnitGetStatValue(sub_00463DD0(), STAT_GOLD, 0));
-    DIALOG_AddTextLine(gpNpcHireDialog, wszGold, 0x15, 0, 4, 1, 0, 0);
-    DIALOG_AddTextLine(gpNpcHireDialog, D2LANG_GetStringFromTblIndex(0xD48), 0x13B, 0, 0, 1, NPCMENU_CloseHireDialog, 1);
+    DIALOG_AddTextLine(gtNpcMenu.pHireDialog, wszGold, 0x15, 0, 4, 1, 0, 0);
+    DIALOG_AddTextLine(gtNpcMenu.pHireDialog, D2LANG_GetStringFromTblIndex(0xD48), 0x13B, 0, 0, 1, NPCMENU_CloseHireDialog, 1);
 
-    gpListBox_007C0D83 = new ListBoxWrapper((gnScreenWidth - 0x1EA) / 2, gnAutomapHeight_007A521C / 2 - 0xA0, 0x1EA,
+    gtNpcMenu.pListBox = new ListBoxWrapper((gnScreenWidth - 0x1EA) / 2, gnAutomapHeight_007A521C / 2 - 0xA0, 0x1EA,
         0x118, 6, 0, 1, (int)NPCMENU_HireMercHandler, 0);
-    if (!gpListBox_007C0D83)
+    if (!gtNpcMenu.pListBox)
     {
         NPCMENU_CloseHireDialog();
         return 0;
     }
 
-    DIALOG_AddWidget(gpNpcHireDialog, gpListBox_007C0D83, 0x23, 0x1E);
+    DIALOG_AddWidget(gtNpcMenu.pHireDialog, gtNpcMenu.pListBox, 0x23, 0x1E);
 
-    D2ClientItemSlotStrc* pSlot = gaNpcItemSlots;
+    D2ClientItemSlotStrc* pSlot = gtNpcMenu.aItemSlots;
     int nCount = 0;
     int i;
     for (i = 0; i < 10; ++i)
@@ -142,7 +133,7 @@ int __cdecl NPCMENU_ShowMainMenu()
             D2HirelingInitStrc hirelingInit;
             const int nAct = MONSTERS_GetActFromHirelingTxt(GAME_IsExpansion(), 0, pSlot->wId);
             const int nDifficulty = GAME_GetDifficulty();
-            if (!MONSTERS_HirelingInit(GAME_IsExpansion(), sub_00463DD0(), pSlot->nSeed, nAct, nDifficulty,
+            if (!MONSTERS_HirelingInit(GAME_IsExpansion(), sub_00463DD0(), pSlot->dwSeed, nAct, nDifficulty,
                 &hirelingInit))
             {
                 return 0;
@@ -219,7 +210,7 @@ int __cdecl NPCMENU_ShowMainMenu()
                 sub_00526700(wszHover, wszDesc);
             }
 
-            gpListBox_007C0D83->AddItem(wszText, wszHover, 0, 0, 0, 0, i, 0, 1, 0xE);
+            gtNpcMenu.pListBox->AddItem(wszText, wszHover, 0, 0, 0, 0, i, 0, 1, 0xE);
             ++nCount;
         }
         ++pSlot;
@@ -227,9 +218,9 @@ int __cdecl NPCMENU_ShowMainMenu()
 
     if (!nCount)
     {
-        gpListBox_007C0D83->AddItem(D2LANG_GetStringFromTblIndex(0xD25), 0, 0, 0, 0, 0, 10, 0, 1, 0xE);
+        gtNpcMenu.pListBox->AddItem(D2LANG_GetStringFromTblIndex(0xD25), 0, 0, 0, 0, 0, 10, 0, 1, 0xE);
     }
 
-    sub_004B82F0_Select(gpNpcHireDialog, -1);
+    sub_004B82F0_Select(gtNpcMenu.pHireDialog, -1);
     return 1;
 }

@@ -48,7 +48,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x00
 int __fastcall GAME_GetUnitClassId(D2UnitStrc* pUnit); // 0x00451F60
 
 
-extern unsigned char gbNpcEntriesProcessed; // 0x007C0C6A
+#include "D2ClientNpcMenu.h"
 
 
 // 0x004B17A0
@@ -56,7 +56,7 @@ void __cdecl sub_004B17A0_ProcessNpcEntries()
 {
     for (int i = 0; i < gnNpcEntryCount; ++i)
         sub_004B1680_PickNpcChoice(&gaNpcEntries[i]);
-    gbNpcEntriesProcessed = 1;
+    gtNpcMenu.bEntriesProcessed = 1;
 }
 
 // 0x004B1D70
@@ -66,7 +66,7 @@ int __cdecl sub_004B1D70_FindNpcEntry()
     int bFound = 0;
     while (i < gnNpcEntryCount && !bFound)
     {
-        if (gaNpcEntries[i].nId == gnInteractNpcClassId)
+        if (gaNpcEntries[i].nId == gtNpcMenu.nInteractNpcClassId)
             bFound = 1;
         else
             ++i;

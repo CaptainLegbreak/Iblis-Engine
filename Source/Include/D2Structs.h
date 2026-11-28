@@ -1,5 +1,5 @@
 // Shared layouts of the game's core structures (names after D2MOO, MIT; see NOTICE-D2MOO).
-// Offsets are 1.14d's. A field the game uses in more than one way is a union; unknown bytes are unk0xNN.
+// Offsets are 1.14d's. A field the game uses in more than one way is a union; unknown bytes are unused0xNN, alignment gaps pad0xNN.
 #pragma once
 struct D2PoolSystemStrc;
 
@@ -133,7 +133,7 @@ struct D2UnitStrc
         D2MissileDataStrc* pMissileData;
     };
     unsigned char nAct; // 0x18
-    unsigned char unk0x19[0x3];
+    unsigned char pad0x19[0x3]; // 0x19
     D2DrlgActStrc* pDrlgAct; // 0x1C
     D2SeedStrc pSeed; // 0x20
     unsigned int dwInitSeed; // 0x28
@@ -151,7 +151,7 @@ struct D2UnitStrc
     int dwFrameCountPrecise; // 0x48
     short wAnimSpeed; // 0x4C
     unsigned char nActionFrame; // 0x4E
-    unsigned char unk0x4F; // 0x4F
+    unsigned char pad0x4F; // 0x4F
     D2AnimDataRecordStrc* pAnimData; // 0x50
     D2UnitGfxDataStrc* pGfxData; // 0x54
     D2UnitGfxDataStrc* pGfxDataCopy; // 0x58
@@ -164,14 +164,14 @@ struct D2UnitStrc
             int dwInteractGUID; // 0x64
             int dwInteractType; // 0x68
             unsigned char nInteract; // 0x6C
-            unsigned char unk0x6D; // 0x6D
+            unsigned char pad0x6D; // 0x6D
             unsigned short nUpdateType; // 0x6E
             D2UnitStrc* pUpdateUnit; // 0x70
             D2QuestChainStrc* pQuestEventList; // 0x74
             unsigned char bSparkChest; // 0x78
             D2TimerArgStrc* pTimerArg; // 0x7C
             D2GameStrc* pGame; // 0x80
-            unsigned char unk0x84[0xC];
+            unsigned char unused0x84[0xC]; // 0x84
             D2UnitEventStrc* pSrvUnitEventsList; // 0x90
         };
         struct // client unit
@@ -199,9 +199,9 @@ struct D2UnitStrc
     D2SkillListStrc* pSkills; // 0xA8
     D2CombatStrc* pCombat; // 0xAC
     int dwLastHitClass; // 0xB0
-    unsigned char unk0xB4[0x4];
+    unsigned char unused0xB4[0x4]; // 0xB4
     unsigned int dwDropItemCode; // 0xB8
-    unsigned char unk0xBC[0x8];
+    unsigned char unused0xBC[0x8]; // 0xBC
     unsigned int dwFlags; // 0xC4
     unsigned int dwFlagEx; // 0xC8
     void* pUnused0xCC; // 0xCC
@@ -226,7 +226,7 @@ struct D2InventoryGridStrc
     D2UnitStrc* pLastItem; // 0x04
     unsigned char nGridWidth; // 0x08
     unsigned char nGridHeight; // 0x09
-    unsigned short unk0x0A; // 0x0A
+    unsigned short pad0x0A; // 0x0A
     D2UnitStrc** ppItems; // 0x0C
 };
 
@@ -234,14 +234,14 @@ struct D2InventoryGridInfoStrc
 {
     unsigned char nGridX; // 0x00
     unsigned char nGridY; // 0x01
-    unsigned short unk0x02; // 0x02
+    unsigned short pad0x02; // 0x02
     int nGridLeft; // 0x04
     int nGridRight; // 0x08
     int nGridTop; // 0x0C
     int nGridBottom; // 0x10
     unsigned char nGridBoxWidth; // 0x14
     unsigned char nGridBoxHeight; // 0x15
-    unsigned short unk0x16; // 0x16
+    unsigned short pad0x16; // 0x16
 };
 
 struct D2InventoryNodeStrc
@@ -254,7 +254,7 @@ struct D2CorpseStrc
 {
     unsigned int bCounted; // 0x00
     unsigned int dwUnitId; // 0x04
-    unsigned int unk0x08; // 0x08
+    unsigned int nMercNameId; // 0x08
     D2CorpseStrc* pNextCorpse; // 0x0C
 };
 

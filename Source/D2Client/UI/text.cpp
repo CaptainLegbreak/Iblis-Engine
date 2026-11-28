@@ -869,7 +869,6 @@ extern D2StringSoundStrc gaMonStringSounds[]; // 0x00723750
 
 static void __stdcall TEXT_ShowHoverText(const Unicode* wszText, D2UnitStrc* pUnit, D2HoverTextStrc* pHoverText, D2CoordStrc* pPos); // 0x004A0A00
 
-char gabNpcMenuState[1]; // 0x007C0C68
 
 static int gnDialogHandlerRegCount; // 0x007C0E4C
 

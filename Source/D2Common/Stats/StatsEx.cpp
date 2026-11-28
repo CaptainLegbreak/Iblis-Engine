@@ -697,6 +697,7 @@ int __stdcall STATLIST_GetBaseStatValue(D2StatListStrc* pStatList, int nStatId, 
     return STATLIST_GetBaseStat(pStatList, STAT_MAKE(nStatId, nLayer), pItemStatCostTxtRecord);
 }
 
+// The callers in the other modules pass an int for nLayer (each DLL had its own header).
 // 0x006253B0
 int __stdcall STATLIST_GetUnitBaseStat(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer)
 {
@@ -737,6 +738,7 @@ int __stdcall STATLIST_GetTotalStatValue(D2StatListStrc* pStatList, int nStatId,
     return STATLIST_GetTotalStat(pStatList, STAT_MAKE(nStatId, nLayer), pItemStatCostTxtRecord);
 }
 
+// The callers in the other modules pass an int for nLayer (each DLL had its own header).
 // 0x00625480
 int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer)
 {
@@ -772,6 +774,7 @@ int __stdcall STATLIST_GetTotalStatValueStub(D2StatListStrc* pStatList, int nSta
     return STATLIST_GetTotalStatValue(pStatList, nStatId, nLayer);
 }
 
+// The callers in the other modules pass an int for nLayer (each DLL had its own header).
 // 0x00625500
 int __stdcall STATLIST_UnitGetItemStatOrSkillStatValue(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer)
 {
@@ -2528,8 +2531,9 @@ int __stdcall STATLIST_SetStat(D2StatListStrc* pStatList, int nStatId, int nValu
 }
 
 // 0x00627260
-void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStatId, int nValue, unsigned short nLayer)
+void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStatId, int nValue, int nLayerArg)
 {
+    const unsigned short nLayer = (unsigned short)nLayerArg;
     if (STATLIST_SetStatValue(pUnit->pStatListEx, nStatId, nValue, nLayer) && pUnit->dwUnitType == UNIT_PLAYER)
     {
         STATLIST_InsertStatModOrFail(pUnit->pStatListEx, STAT_MAKE(nStatId, nLayer));

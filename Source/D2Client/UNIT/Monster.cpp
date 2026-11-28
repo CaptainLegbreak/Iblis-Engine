@@ -247,19 +247,13 @@ extern int gdwSecondaryTradeGold; // 0x007C0E78
 
 extern int gdwPrimaryTradeGold; // 0x007C0E68
 
-struct D2ClientStringListStrc
-{
-    unsigned short awStrings[10];
-    unsigned short wCount;
-};
 
 
 int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile); // 0x006280A0
 
-extern D2ClientStringListStrc gtStringList; // 0x007C0D9A
+#include "D2ClientNpcMenu.h"
 
 
-extern unsigned short gwGlobal_007C0DD8; // 0x007C0DD8
 
 void __stdcall sub_M103_EmitSink(int nValue);
 
@@ -3044,15 +3038,15 @@ static inline void MONSTER_SetNpcMenuUnit(D2UnitStrc* pUnit)
 // 0x004B17F0
 static inline void MONSTER_SetNpcMenuValue(unsigned short wValue)
 {
-    gwGlobal_007C0DD8 = wValue;
+    gtNpcMenu.wGlobal170 = wValue;
 }
 
 // 0x004B1800
 static inline bool MONSTER_IsStringUnused(unsigned short wString)
 {
-    for (int i = 0; i < gtStringList.wCount; ++i)
+    for (int i = 0; i < gtNpcMenu.tStringList.wCount; ++i)
     {
-        if (gtStringList.awStrings[i] == wString)
+        if (gtNpcMenu.tStringList.awStrings[i] == wString)
         {
             return false;
         }

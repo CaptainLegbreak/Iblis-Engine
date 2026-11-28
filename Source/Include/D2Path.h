@@ -49,7 +49,7 @@ struct D2StaticPathStrc
     unsigned char unk0x14[0x8]; // 0x14
     unsigned char nDirection; // 0x1C
     unsigned char bRoomNeedsUpdate; // 0x1D
-    unsigned char unk0x1E[0x2]; // 0x1E
+    unsigned char pad0x1E[2]; // 0x1E
 };
 
 #pragma pack(push, 1)
@@ -80,7 +80,7 @@ struct D2DynamicPathStrc
     D2ActiveRoomStrc* pPreviousRoom; // 0x20
     int dwCurrentPointIdx; // 0x24
     int dwPathPoints; // 0x28
-    void* unk0x2C; // 0x2C
+    void* unused0x2C; // 0x2C
     D2UnitStrc* pUnit; // 0x30
     unsigned int dwFlags; // 0x34
     unsigned int unk0x38; // 0x38
@@ -91,7 +91,7 @@ struct D2DynamicPathStrc
     unsigned int nFootprintCollisionMask; // 0x4C
     unsigned int nMoveTestCollisionMask; // 0x50
     unsigned short nCollidedWithMask; // 0x54
-    unsigned short unk0x56; // 0x56
+    unsigned short pad0x56; // 0x56
     D2UnitStrc* hTarget; // 0x58
     unsigned int dwTargetType; // 0x5C
     unsigned int dwTargetId; // 0x60
@@ -100,10 +100,10 @@ struct D2DynamicPathStrc
     unsigned char nDiffDirection; // 0x66
     unsigned char unk0x67; // 0x67
     unsigned char dwSpeed; // 0x68
-    unsigned char unk0x69; // 0x69
+    unsigned char unused0x69; // 0x69
     D2CoordStrc tDirectionVector; // 0x6A
     D2CoordStrc tVelocityVector; // 0x72
-    unsigned char unk0x7A[2]; // 0x7A
+    unsigned char pad0x7A[2]; // 0x7A
     int dwVelocity; // 0x7C
     unsigned int nPreviousVelocity; // 0x80
     int dwMaxVelocity; // 0x84
@@ -114,7 +114,7 @@ struct D2DynamicPathStrc
     unsigned char nIDAStarInitFScore; // 0x92
     unsigned char nStepNum; // 0x93
     unsigned char nDistance; // 0x94
-    unsigned char unk0x95[3]; // 0x95
+    unsigned char pad0x95[3]; // 0x95
     int nDirOffset; // 0x98
     D2PathPointStrc PathPoints[78]; // 0x9C
     int nSavedStepsCount; // 0x1D4
