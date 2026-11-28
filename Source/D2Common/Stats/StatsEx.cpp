@@ -108,7 +108,7 @@ int __stdcall STATLIST_GetBaseStat(D2StatListStrc* pStatList, int nLayer_StatId,
 
 int __stdcall STATLIST_GetTotalStat(D2StatListStrc* pStatList, int nLayer_StatId, D2ItemStatCostTxt* pItemStatCostTxtRecord); // 0x00624F60
 
-int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0);            // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 void __stdcall D2Common_ExpireStatList(D2StatListStrc* pStatList);                                 // 0x006269F0
 

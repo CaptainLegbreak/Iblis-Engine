@@ -98,7 +98,7 @@ static int gbPulseDone;                                                         
 
 static D2RosterPetStrc* gpRosterPets;                                                          // 0x007BB5BC
 
-static int gnGlobal_007BB5F0;                                                                               // 0x007BB5F0
+static int gnImeState;                                                                               // 0x007BB5F0
 
 static int gnInvMouseX;                                                                               // 0x007BCA4C
 

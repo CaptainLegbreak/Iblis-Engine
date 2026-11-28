@@ -506,7 +506,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x00
 
 
 
-void __fastcall FOG_FreePool(void*,void*,const char*,int,int); // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 struct Pad40_00536B40 {
     unsigned int dw00;

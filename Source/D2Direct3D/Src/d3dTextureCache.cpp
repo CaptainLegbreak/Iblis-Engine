@@ -25,7 +25,7 @@ struct D2TextureEntryStrc { char unknown[16]; D2SurfaceStrc* surface; char tail[
 
 struct D2TextureSetStrc { int count; char unknown[20]; D2TextureEntryStrc* entries; };
 
-void __fastcall D3DCORE_LogDDrawError(const char*, int); // 0x006B20E0
+void __fastcall D3DCORE_LogDDrawError(const char* szWhere, int hResult); // 0x006B20E0
 
 static void D3DTEXTURECACHE_Append(D2TexPoolStrc* pList, D2TexPoolEntryStrc* pNode); // 0x006BA5C0
 

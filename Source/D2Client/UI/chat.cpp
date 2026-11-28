@@ -431,7 +431,7 @@ extern int gdwGlobal_007BB5DC; // 0x007BB5DC
 
 extern int gnGlobal_007BB5DC;                                                                               // 0x007BB5DC
 
-static int gnGlobal_007BB5F0;                                                                               // 0x007BB5F0
+static int gnImeState;                                                                               // 0x007BB5F0
 
 // 0x0047ACA0
 void __stdcall CHAT_HandleImeStartComposition(SMSGHANDLER_PARAMS* pMsg)
@@ -440,9 +440,9 @@ void __stdcall CHAT_HandleImeStartComposition(SMSGHANDLER_PARAMS* pMsg)
     gwGlobal_007BC850 = 0;
     gwGlobal_007BB5F8 = 0;
     if (gnGlobal_007BB5DC == 9)
-        gnGlobal_007BB5F0 = 4;
+        gnImeState = 4;
     else if (gnGlobal_007BB5DC == 8)
-        gnGlobal_007BB5F0 = 5;
+        gnImeState = 5;
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
     sub_00420290_BreakHandlerChain(pMsg);

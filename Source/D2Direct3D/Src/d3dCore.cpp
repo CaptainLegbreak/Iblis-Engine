@@ -3351,9 +3351,9 @@ unsigned int ganHeights[2] = { 480, 600 }; // 0x0074C010
 
 extern "C" unsigned char gData_0074C018[8] = { 0x58, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }; // 0x0074C018
 
-int gnGammaScale_0074C020 = 100; // 0x0074C020
+int gnGammaScale = 100; // 0x0074C020
 
-D2PixelFormat006B1B60Strc gtWantedFormat_0074C024 = { 32, 0x41, 0, 0x10, 0x7C00, 0x3E0, 0x1F, 0x8000 }; // 0x0074C024
+D2PixelFormat006B1B60Strc gtWantedFormat = { 32, 0x41, 0, 0x10, 0x7C00, 0x3E0, 0x1F, 0x8000 }; // 0x0074C024
 
 char gszEnumerationClass[20] = "Enumeration Class"; // 0x0074C044
 

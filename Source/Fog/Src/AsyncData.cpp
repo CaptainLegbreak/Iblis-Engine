@@ -50,7 +50,7 @@ int gnAsyncDataPostponeCount; // 0x0075AF8C
 
 AsyncData* gpAsyncDataPostponed; // 0x0075AF90
 
-int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0);            // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 

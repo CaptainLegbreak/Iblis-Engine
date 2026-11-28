@@ -56,7 +56,7 @@ extern "C" int __cdecl strcmp(const char* szLeft, const char* szRight);
 
 void __fastcall sub_004113C0(char* szText, int nLength); // 0x004113C0
 
-void __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 static void EXCEL_InsertLinkNode(D2TxtLinkNodeStrc** ppNode, D2TxtLinkNodeStrc* pNew); // 0x006BD490
 

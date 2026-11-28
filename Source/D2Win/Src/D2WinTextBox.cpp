@@ -1337,12 +1337,12 @@ D2WinTextBoxStrc* __fastcall D2Win_10042_TEXTBOX_Create(int nX, int nY, int nWid
     if (pFontInfo)
     {
         pTextBox->eFont = pFontInfo[0];
-        pTextBox->unk0x98 = pFontInfo[1];
+        pTextBox->nTextColor = pFontInfo[1];
     }
     else
     {
         pTextBox->eFont = 1;
-        pTextBox->unk0x98 = 0;
+        pTextBox->nTextColor = 0;
     }
 
     TEXTBOX_SetLineGapForFont(pTextBox->eFont);

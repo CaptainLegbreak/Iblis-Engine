@@ -155,7 +155,7 @@ struct D2AiTargetSearchArgsStrc
     int nAlternativeDistance;
 };
 
-extern "C" unsigned int __fastcall sub_00541860(D2UnitStrc* pUnit); // 0x00541860
+extern "C" unsigned int __fastcall AIGENERAL_GetAiControlFromUnit(D2UnitStrc* pUnit); // 0x00541860
 
 enum D2C_J07AiConstants
 {
@@ -791,7 +791,7 @@ D2UnitStrc* __fastcall AIUTIL_TargetCallback_SelectHostileTarget(D2GameStrc* pGa
     {
         if (pTarget->dwUnitType == UNIT_MONSTER && (!pUnit || pUnit->dwUnitType != UNIT_PLAYER) && !STATLIST_GetUnitAlignment(pUnit) && pArg->bCheckTargetCollision && !MONSTERS_IsDead(pTarget))
         {
-            D2AiControlStrc* pAiControl = (D2AiControlStrc*)sub_00541860(pTarget);
+            D2AiControlStrc* pAiControl = (D2AiControlStrc*)AIGENERAL_GetAiControlFromUnit(pTarget);
             if ((pAiControl->nAiFlags & 8) && pArg->nAreaTile == D2Common_10095(UNITS_GetRoom(pTarget), CLIENTS_GetUnitX(pTarget), CLIENTS_GetUnitY(pTarget)))
             {
                 pAiControl->nAiFlags |= 8;

@@ -27,9 +27,9 @@ struct D2WinTextBoxLineStrc
     Unicode* pColumns[5]; // 0x00
     int nColor; // 0x14
     char bWrappedSegment; // 0x18
-    char unk0x19; // 0x19
-    char unk0x1A; // 0x1A
-    char unk0x1B; // 0x1B
+    char pad0x19; // 0x19
+    char pad0x1A; // 0x1A
+    char pad0x1B; // 0x1B
     D2WinTextBoxLineStrc* pNext; // 0x1C
 };
 
@@ -50,7 +50,7 @@ struct D2WinTextBoxStrc
     int nColumnAlignFlags[5]; // 0x7C
     D2WinScrollBarStrc* pScrollBar; // 0x90
     int eFont; // 0x94
-    int unk0x98; // 0x98
+    int nTextColor; // 0x98
     int nScrollOffset; // 0x9C
     int nWrappedLineGap; // 0xA0
     int nLineGap; // 0xA4
@@ -105,9 +105,9 @@ struct D2WinAccountListStrc
     D2WinAccountListDataStrc* pDataList; // 0x40
     D2WinAccountListDataStrc* pSelectedDataEntry; // 0x44
     int nFirstDrawnEntry; // 0x48
-    int unk0x4C; // 0x4C
+    int unused0x4C; // 0x4C
     int eFont; // 0x50
-    int unk0x54; // 0x54
+    int nTextColor; // 0x54
 };
 
 struct D2WinScrollBarStrc

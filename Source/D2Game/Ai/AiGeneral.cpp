@@ -35,7 +35,7 @@ void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 
-int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0);            // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 D2AiCmdStrc* __fastcall AIGENERAL_AllocAiCommand(D2GameStrc* pGame, D2UnitStrc* pUnit);                     // 0x0058EC90
 
@@ -448,7 +448,7 @@ D2AiCmdStrc* __fastcall AIGENERAL_SetCurrentAiCommand(D2GameStrc* pGame, D2UnitS
 }
 
 // 0x0058F000
-extern "C" __declspec(dllexport) unsigned int* __stdcall sub_0058F000(D2UnitStrc* pUnit) {
+extern "C" __declspec(dllexport) unsigned int* __stdcall AIGENERAL_GetMapAiFromUnit(D2UnitStrc* pUnit) {
     D2AiControlStrc* pAiControl;
     if (pUnit && pUnit->dwUnitType == UNIT_MONSTER && pUnit->pMonsterData) {
         pAiControl = pUnit->pMonsterData->pAiControl;

@@ -92,7 +92,7 @@ extern D2VertexBufferStrc* gpGridBuffer; // 0x00971734
 extern unsigned short gaFlatIndices[4]; // 0x0074C3D0
 extern unsigned short gaGridIndices[65]; // 0x009716B0
 extern unsigned char gabMultiplyTable[256][256]; // 0x00971740
-void __fastcall D3DCORE_LogDDrawError(const char* szWhere,int hResult); // 0x006B20E0
+void __fastcall D3DCORE_LogDDrawError(const char* szWhere, int hResult); // 0x006B20E0
 extern int gnD3DOriginX; // 0x00981740
 extern int gnOriginY; // 0x00981744
 extern int gnPerspectiveScale; // 0x00989748

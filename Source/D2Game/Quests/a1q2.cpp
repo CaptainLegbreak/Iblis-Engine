@@ -213,7 +213,7 @@ short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer); // 0x00554630
 void __fastcall ACT1Q2_UnitIterate_SetPrimaryGoalDone(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData);
 
 // 0x00590810
-extern "C" __declspec(dllexport) bool __fastcall sub_00590810(Obj00590810* pObj) {
+extern "C" __declspec(dllexport) bool __fastcall ACT1Q1_CanClientFXBeTriggered(Obj00590810* pObj) {
     if (pObj->bFlag09 && pObj->bValue0C >= 4) {
         return true;
     }
