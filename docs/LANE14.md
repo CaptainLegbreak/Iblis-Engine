@@ -107,6 +107,12 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Status
 
+- 2026-11-27 17:50 PT: 6a done (see the 17:30 line). 6b: PR #7 syncs to Codex 7442280 (#492), clean (every
+  old record re-renders, no missing bytes). Still 538/538 compile, same 59 warnings; the link has 4,193
+  unresolved (was 4,274), 7,345 references (was 7,444), interior 46 -> 9. #6 (link report, carrying the
+  PKWARE MPQ-test commit) is still open; I'll refresh PORT_LINK.md after it's in. Next: wait for the next
+  Codex round or the coordinator's go on items 6-8.
+
 - 2026-11-27 17:30 PT: the user gave access to their install (D:\Diablo II); Game.exe is the 1.14d one
   (SHA-256 631066c1..., as Codex expects). The three parked checks are done:
   - The 16 bytes PR #2 wrote as 0 are 0 in Game.exe. No change.
