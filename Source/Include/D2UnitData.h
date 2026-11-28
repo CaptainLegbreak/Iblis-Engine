@@ -32,12 +32,12 @@ struct D2PlayerDataStrc
     char szName[16]; // 0x00
     D2BitBufferStrc* pQuestData[3]; // 0x10
     D2WaypointDataStrc* pWaypointData[3]; // 0x1C
-    unsigned char unk0x28[0x4]; // 0x28
+    unsigned char unused0x28[4]; // 0x28
     int nPortalFlags; // 0x2C
-    unsigned char unk0x30[0x4]; // 0x30
+    unsigned char unused0x30[4]; // 0x30
     D2ArenaUnitStrc* pArenaUnit; // 0x34
     D2PlayerListStrc* pPlayerList; // 0x38
-    unsigned char unk0x3C[0x4]; // 0x3C
+    unsigned char unused0x3C[4]; // 0x3C
     int nNecropetFlag; // 0x40
     D2PlayerPetStrc* pPlayerPets; // 0x44
     int dwUniqueId; // 0x48
@@ -57,11 +57,11 @@ struct D2PlayerDataStrc
     int nSwitchRightSkillFlags; // 0x88
     int nSwitchLeftSkillFlags; // 0x8C
     int nWeaponGUID; // 0x90
-    int unk0x94; // 0x94
+    int unused0x94; // 0x94
     D2LifeSyncStrc* pPartyLifeList; // 0x98
     D2ClientStrc* pClient; // 0x9C
     unsigned char nPositionHistoryIndex; // 0xA0
-    unsigned char unk0xA1[0x3]; // 0xA1
+    unsigned char pad0xA1[3]; // 0xA1
     unsigned int dwPositionHistoryTick; // 0xA4
     D2CoordStrc pPositionHistory[20]; // 0xA8
     int nSkillCooldown148; // 0x148
@@ -71,7 +71,7 @@ struct D2PlayerDataStrc
     int nArg1; // 0x158
     int nArg2; // 0x15C
     unsigned int dwHostileDelay; // 0x160
-    unsigned char unk0x164[0x4]; // 0x164
+    unsigned char unused0x164[4]; // 0x164
     int dwGameFrame; // 0x168
 };
 
@@ -107,7 +107,7 @@ struct D2MonsterDataStrc
             int nMinionSpawnClassId; // 0x40 (client side)
         };
     };
-    unsigned char unk0x4C[0x4]; // 0x4C
+    unsigned char unused0x4C[4]; // 0x4C
     int pVision; // 0x50
     unsigned char dwAiState[0x4]; // 0x54
     int nLevelId; // 0x58
@@ -130,7 +130,7 @@ struct D2QuestDataStrc
     unsigned char fLastState; // 0x0B
     unsigned char fState; // 0x0C
     char nInitNo; // 0x0D
-    unsigned short unk0x0E; // 0x0E
+    unsigned short pad0x0E; // 0x0E
     int nSeqId; // 0x10
     union
     {

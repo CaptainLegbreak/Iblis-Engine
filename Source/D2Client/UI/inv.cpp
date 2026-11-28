@@ -1479,7 +1479,7 @@ D2CelFileStrc* __cdecl GAME_GetBuySellButtonCells(); // 0x00454600
 
 extern D2PanelButtonStrc gaPanelButtons_007BC9E0[];                                                         // 0x007BC9E0
 
-extern void* gpBuySellCel;                                                                            // 0x007C0DC8
+#include "D2ClientNpcMenu.h"
 
 extern int gnScreenHeight_00711470; // 0x00711470
 
@@ -4683,7 +4683,7 @@ void __cdecl INV_DrawNpcShopPanel()
 
     D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCelFile = gpBuySellCel;
+    tContext.pCelFile = gtNpcMenu.pBuySellCel;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
     sub_004F6480(&tContext, gnPanelOffsetX, gnScreenHeight + gnPanelOffsetY - 0xE0, -1, 5, 0);

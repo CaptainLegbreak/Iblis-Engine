@@ -10,7 +10,7 @@
 
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
-extern char gbNpcMessageShown; // 0x007C0C69
+#include "D2ClientNpcMenu.h"
 
 typedef char check_size_npcentry[(sizeof(D2NpcEntryStrc) == 0x16) ? 1 : -1];
 
@@ -43,9 +43,9 @@ extern "C" __declspec(noreturn) void __cdecl exit(int); // 0x00681E09
 // 0x004B5BC0
 int __cdecl sub_004B5BC0_SelectNpcEntry()
 {
-    gnNpcMenuState = 1;
+    gtNpcMenu.nMenuState = 1;
     int nIndex = sub_004B1D70_FindNpcEntry();
-    gpNpcEntry = &gaNpcEntries[nIndex];
+    gtNpcMenu.pEntry = &gaNpcEntries[nIndex];
     NPCMENU_OpenNpcPanel(0xD35, nIndex);
     return 1;
 }

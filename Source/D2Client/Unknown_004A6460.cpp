@@ -794,7 +794,7 @@ extern void* gpWaypointActTabsCel; // 0x007BF075
 
 extern void* gpWaypointIconCel; // 0x007BF079
 
-extern void* gpGlobal_007C0D43; // 0x007C0D43
+#include "D2ClientNpcMenu.h"
 
 
 

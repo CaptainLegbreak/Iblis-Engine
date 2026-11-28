@@ -3171,7 +3171,7 @@ int __stdcall INVENTORY_GetOwnerId(D2InventoryStrc* pInventory)
 }
 
 // 0x0063D470
-void __stdcall INVENTORY_CreateCorpseForPlayer(D2InventoryStrc* pInventory, int nUnitId, int a3, int bCounted)
+void __stdcall INVENTORY_CreateCorpseForPlayer(D2InventoryStrc* pInventory, int nUnitId, int nMercNameId, int bCounted)
 {
     if (!pInventory)
         return;
@@ -3182,7 +3182,7 @@ void __stdcall INVENTORY_CreateCorpseForPlayer(D2InventoryStrc* pInventory, int 
     D2CorpseStrc* pCorpse = (D2CorpseStrc*)FOG_AllocPool(pInventory->pMemPool, sizeof(D2CorpseStrc), gszInventorySourceFile, 0xFEA, 0);
     pCorpse->bCounted = bCounted;
     pCorpse->dwUnitId = nUnitId;
-    pCorpse->unk0x08 = a3;
+    pCorpse->nMercNameId = nMercNameId;
     pCorpse->pNextCorpse = 0;
 
     pInventory->pLastCorpse = pCorpse;
@@ -3328,7 +3328,7 @@ unsigned int __stdcall INVENTORY_GetCorpseMercNameId(D2CorpseStrc* pCorpse)
         return 0;
     }
 
-    return pCorpse->unk0x08;
+    return pCorpse->nMercNameId;
 }
 
 // 0x0063D670
