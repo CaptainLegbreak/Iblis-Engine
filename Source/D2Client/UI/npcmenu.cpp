@@ -206,7 +206,7 @@ void __fastcall DIALOG_AddTextLine(void* pPanel, const Unicode* pText, int nArg3
 
 int __cdecl NPCMENU_CloseSubMenuToMain(); // 0x004B5810
 
-int __cdecl sub_004B5850_CloseConfirmDialog(); // 0x004B5850
+int __cdecl NPCMENU_CloseConfirmAndRebuild(); // 0x004B5850
 
 extern D2ViewStrc* gpClientView; // 0x007A0640
 
@@ -2966,7 +2966,7 @@ void __cdecl NPCMENU_OpenGreetingDialog()
     const unsigned int nRoll = NPCDLG_RollSeed_Inline(&pPlayer->pSeed) % nStrings;
     DIALOG_AddTextLine(gtNpcMenu.pGreetingDialog, D2LANG_GetStringFromTblIndex(aStrings[nRoll]), 0xF, 0, 0, 1, NPCMENU_NpcMenuTalk, 1);
     DIALOG_AddTextLine(gtNpcMenu.pGreetingDialog, D2LANG_GetStringFromTblIndex(0x102E), 0xF, 0, 0, 1, NPCMENU_NpcMenuCancelText, 1);
-    sub_004B82F0_Select(gtNpcMenu.pGreetingDialog, 1);
+    DIALOG_SelectLine(gtNpcMenu.pGreetingDialog, 1);
 }
 
 // 0x004B4FD0
@@ -3328,7 +3328,7 @@ struct Handler
 };
 
 // 0x004B5850
-int __cdecl sub_004B5850_CloseConfirmDialog()
+int __cdecl NPCMENU_CloseConfirmAndRebuild()
 {
     if (gtNpcMenu.bMessageShown)
     {
@@ -3417,11 +3417,11 @@ void __stdcall NPCMENU_OpenConfirmDialog(int nStringIndex)
     tCoords.nY = 0;
     NPCMENU_GetNpcDialogPos(&tCoords);
 
-    gtNpcMenu.pConfirmDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, sub_004B5850_CloseConfirmDialog, NPCMENU_CloseConfirmDialog, 0, 0, 1, 0, 0, 0, 1);
+    gtNpcMenu.pConfirmDialog = DIALOG_CreateDialog(tCoords.nX, tCoords.nY, NPCMENU_CloseConfirmAndRebuild, NPCMENU_CloseConfirmDialog, 0, 0, 1, 0, 0, 0, 1);
     ROSTER_SetCtrlState(gtNpcMenu.pConfirmDialog, 1);
     DIALOG_AddTextLine(gtNpcMenu.pConfirmDialog, D2LANG_GetStringFromTblIndex(nStringIndex), 0x15, 0, 4, 1, 0, 0);
     DIALOG_AddTextLine(gtNpcMenu.pConfirmDialog, D2LANG_GetStringFromTblIndex(0xD49), 0xF, 0, 0, 1, NPCMENU_ConfirmNpcAction, 1);
-    DIALOG_AddTextLine(gtNpcMenu.pConfirmDialog, D2LANG_GetStringFromTblIndex(0xD48), 0xF, 0, 0, 1, sub_004B5850_CloseConfirmDialog, 1);
+    DIALOG_AddTextLine(gtNpcMenu.pConfirmDialog, D2LANG_GetStringFromTblIndex(0xD48), 0xF, 0, 0, 1, NPCMENU_CloseConfirmAndRebuild, 1);
 }
 
 // 0x004B5C00

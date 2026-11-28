@@ -608,10 +608,7 @@ static void SOUNDINST_FreeSound(D2ClientSoundStrc* pSound)
         return;
 
     D2SOUNDUTIL_ListRemove(&gpSoundList_007C5458, pSound);
-    for (D2SoundUnitNodeStrc* pNode = pSound->pUnitList; pNode; pNode = pNode->pNext)
-        UNITSND_RemoveUnitHint(pNode->pUnit, pSound->nHandle);
-
-    D2SOUNDUTIL_ListFree(&pSound->pUnitList);
+    SOUNDINST_ReleaseUnits(pSound);
     SOUNDINST_StopStream(pSound);
     pSound->bActive = 0;
 }
@@ -845,11 +842,6 @@ void __cdecl SOUNDINST_PlayRandomSpeech()
         const int nSound = SKILLDESC_RandomInRange(0xB76, 0x1230);
         SOUNDINST_PlaySound(nSound, 0, 0, 0, 0);
     }
-}
-
-void __fastcall sub_M112_Emit_004B9470(D2ClientSoundStrc* pSound)
-{
-    SOUNDINST_ReleaseUnits(pSound);
 }
 
 int __fastcall sub_M112_Emit_004B9BB0(D2ClientSoundStrc* pSound)

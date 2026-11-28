@@ -19,10 +19,6 @@
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
-struct D2CmdParamsStrc;
-
-struct D2CmdArgStrc;
-
 struct D2McpPacket02Strc;
 
 struct D2McpPacket07Strc;
@@ -49,23 +45,7 @@ struct D2McpPacket18Strc;
 
 struct D2McpPacket10Strc;
 
-struct D2McpInfoStrc;
-
 struct Unicode;
-
-struct D2CmdParamsStrc
-{
-    char unk0x00[0x18];
-    const char* szValue;
-};
-
-struct D2CmdArgStrc
-{
-    unsigned int dwFlags;
-    unsigned int dwId;
-    const char* szName;
-    void* pfnHandler;
-};
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
@@ -100,8 +80,6 @@ void __fastcall SCMD_ProcessPackets(unsigned char* pPacket, int nLength); // 0x0
 
 extern const char* gaszLaunchModeNames[7]; // 0x0070EE70
 
-extern const D2CmdArgStrc gaCommandLineArgs[8]; // 0x006D5BE8
-
 extern int (__cdecl* const gpfnLaunchInit[1])(); // 0x006D5BE0
 
 extern char gszClientCharName[]; // 0x007A05C4
@@ -125,22 +103,6 @@ extern unsigned short gwMcpRequestId; // 0x00798F8C
 
 
 
-struct D2McpInfoStrc
-{
-    unsigned short f_0;
-    unsigned short unk0x02;
-    int unk0x04;
-    int nValue;
-    unsigned char nByte0C;
-    unsigned char nByte0D;
-    unsigned char nByte0E;
-    unsigned char unk0x0F;
-    int nCount;
-    int nToken;
-    char unk0x18[0x10];
-    char szName[0x20];
-};
-
 
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
@@ -151,13 +113,7 @@ extern int gdwMcpGameHash; // 0x00798F88
 
 extern char gszMcpGameServerIP[]; // 0x007992CC
 
-extern D2McpInfoStrc gtMcpInfo; // 0x0079910C
-
 extern int gdwGlobal_00799108; // 0x00799108
-
-int __stdcall WINMAIN_ShowCommandLineHelp(const D2CmdParamsStrc* pParams, int nUnused); // 0x0044B4E0
-
-int __stdcall WINMAIN_SetLaunchMode(const D2CmdParamsStrc* pParams, int nUnused); // 0x0044B600
 
 extern const char* gpszDefaultCaption_0070EE50; // 0x0070EE50
 

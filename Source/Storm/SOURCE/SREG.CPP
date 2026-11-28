@@ -2,7 +2,7 @@
 #include "Storm.h"
 #include "StormApi.h"
 
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
+void __stdcall SErrSetLastError(unsigned int dwErrCode); // 0x0041C340
 
 extern "C" __declspec(dllimport) long __stdcall RegCloseKey(void* hKey); // 0x006CC030
 

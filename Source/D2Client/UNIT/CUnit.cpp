@@ -50,19 +50,6 @@ enum
 
 
 
-struct D2PalShiftDataStrc
-{
-    int unk0x00;
-    unsigned char aShift[8][0x100];
-    unsigned char aShiftBlood[8][0x100];
-};
-
-struct D2PalShiftEntryStrc
-{
-    int nId;
-    D2PalShiftDataStrc* pData;
-};
-
 extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(FARPROC lpfn);                                  // 0x006CC34C
 
 
@@ -87,8 +74,6 @@ extern D2HotkeyStrc gtHotkeys_007A6F90[NUM_HOTKEYS];                            
 D2WheelCallbackFn gpfnWheelUp; // 0x007A7404
 
 D2WheelCallbackFn gpfnWheelDown; // 0x007A7408
-
-extern D2PalShiftEntryStrc* gpPalShiftEntries;                                                     // 0x007B9578
 
 extern unsigned char gabGlobalPalShifts[0x1E][0x100];                                               // 0x007B9580
 

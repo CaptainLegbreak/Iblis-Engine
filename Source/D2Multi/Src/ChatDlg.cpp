@@ -779,11 +779,7 @@ int __stdcall CHATDLG_SelectHell(int nArg); // 0x00443CC0
 
 int __stdcall CHATDLG_OnRefresh(int nArg); // 0x00443F70
 
-struct D2LaunchPayloadStrc
-{
-    unsigned int nSize;
-    D2LaunchThreadRecordStrc tRecord;
-};
+#include "D2LaunchPayload.h"
 
 struct D2LaunchLoginStrc
 {

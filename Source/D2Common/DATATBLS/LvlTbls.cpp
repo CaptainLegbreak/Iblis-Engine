@@ -87,10 +87,6 @@ extern "C" char* __cdecl strcpy(char* szDest, const char* szSource);
 
 extern "C" unsigned int __cdecl strlen(const char* sz);
 
-extern void* gpLvlwarpTxt; // 0x0096CA00
-
-extern void* gpLvlmazeTxt; // 0x0096CA08
-
 struct D2LvlTypesTxt
 {
     char szFile[32][60];
@@ -147,12 +143,6 @@ void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const ch
 void __fastcall DRLGTILESUB_FreeDrlgFile(D2LvlSubTxt* pLvlSubTxtRecord); // 0x00670630
 
 
-int* gpPortalLevels; // 0x0096C9F4
-
-int gnPortalLevels; // 0x0096C9F8
-
-D2LvlTypesTxt* gpLvlTypesTxt; // 0x0096C9F0
-
 D2LvlWarpTxt* gpLvlWarpTxt; // 0x0096CA00
 
 D2LvlMazeTxt* gpLvlMazeTxt; // 0x0096CA08
@@ -162,8 +152,6 @@ D2LvlSubTxt* gpLvlSubTxt; // 0x0096CA10
 int gnLvlSubTxtRecordCount; // 0x0096CA14
 
 int* gpLvlSubTypeStartIds; // 0x0096CA18
-
-void* gppTileLibraryHash; // 0x0096CA1C
 
 D2DrlgFileStrc** gppLvlPrestDrlgFiles; // 0x0096CA20
 
@@ -226,15 +214,15 @@ extern const char gszTxtField_Expansion[]; // 0x006DCF44
 
 extern const char gszTxtField_end[]; // 0x006D9060
 
-static int* gpPortalLevels_0096C9F4; // 0x0096C9F4
+static int* gpPortalLevels; // 0x0096C9F4
 
-static int gnPortalLevels_0096C9F8; // 0x0096C9F8
+static int gnPortalLevels; // 0x0096C9F8
 
-static D2LvlTypesTxt* gpLvlTypesTxt_0096C9F0; // 0x0096C9F0
+static D2LvlTypesTxt* gpLvlTypesTxt; // 0x0096C9F0
 
 static int gnLvlTypesTxtRecordCount; // 0x0096C9FC
 
-static D2TileLibraryHeaderStrc** gppTileLibraryHash_0096CA1C; // 0x0096CA1C
+static D2TileLibraryHeaderStrc** gppTileLibraryHash; // 0x0096CA1C
 
 int gnAutomapRecordCount; // 0x0096CA2C
 
@@ -394,26 +382,26 @@ int __stdcall DATATBLS_GetMonsterLevelInArea(int nLevelId, unsigned char nDiffic
 // 0x0061DD00
 static void DATATBLS_InitPortalLevels(D2LevelDefBin* pLevelDefBin)
 {
-    gnPortalLevels_0096C9F8 = 0;
+    gnPortalLevels = 0;
     for (int i = 0; i < sgptDataTables->nLevelsTxtRecordCount; ++i)
     {
         if (pLevelDefBin[i].dwPortal)
         {
-            ++gnPortalLevels_0096C9F8;
+            ++gnPortalLevels;
         }
     }
-    if (gnPortalLevels_0096C9F8)
+    if (gnPortalLevels)
     {
-        gpPortalLevels_0096C9F4 = (int*)FOG_AllocPool(0, sizeof(int) * gnPortalLevels_0096C9F8, ".\\DATATBLS\\LvlTbls.cpp", 0x16C, 0);
-        memset(gpPortalLevels_0096C9F4, 0, sizeof(int) * gnPortalLevels_0096C9F8);
+        gpPortalLevels = (int*)FOG_AllocPool(0, sizeof(int) * gnPortalLevels, ".\\DATATBLS\\LvlTbls.cpp", 0x16C, 0);
+        memset(gpPortalLevels, 0, sizeof(int) * gnPortalLevels);
     }
     int nPortalIndex = 0;
     for (int i = 0; i < sgptDataTables->nLevelsTxtRecordCount; ++i)
     {
         if (pLevelDefBin[i].dwPortal)
         {
-            D2_ASSERT(nPortalIndex < gnPortalLevels_0096C9F8, 0x177);
-            gpPortalLevels_0096C9F4[nPortalIndex] = i;
+            D2_ASSERT(nPortalIndex < gnPortalLevels, 0x177);
+            gpPortalLevels[nPortalIndex] = i;
             ++nPortalIndex;
         }
     }
@@ -753,7 +741,7 @@ void __fastcall DATATBLS_LoadLvlWarpTxt(void* hArchive)
         { gszTxtField_end, 0, 0, 0, 0 },
     };
 
-    gpLvlwarpTxt = DATATBLS_CompileTxt(hArchive, "lvlwarp", pTbl, &nRecordCount, 48);
+    gpLvlWarpTxt = (D2LvlWarpTxt*)DATATBLS_CompileTxt(hArchive, "lvlwarp", pTbl, &nRecordCount, 48);
     gnLvlwarpTxtRecordCount = nRecordCount;
 }
 
@@ -799,7 +787,7 @@ void __fastcall DATATBLS_LoadLvlMazeTxt(void* hArchive)
         { gszTxtField_end, 0, 0, 0, 0 },
     };
 
-    gpLvlmazeTxt = DATATBLS_CompileTxt(hArchive, "lvlmaze", pTbl, &gnLvlmazeTxtRecordCount, 28);
+    gpLvlMazeTxt = (D2LvlMazeTxt*)DATATBLS_CompileTxt(hArchive, "lvlmaze", pTbl, &gnLvlmazeTxtRecordCount, 28);
 }
 
 // 0x0061F480
@@ -942,26 +930,26 @@ D2LvlSubTxt* __fastcall DATATBLS_GetLvlSubTxtRecord(int nSubType)
 
 // 0x0061FAE0
 void __fastcall DATATBLS_AllocGlobalTileLibraryHash(void* hArchive){
-    D2_ASSERT(gpLvlTypesTxt_0096C9F0, 1040);
+    D2_ASSERT(gpLvlTypesTxt, 1040);
 
     const int nSize = sizeof(D2TileLibraryHeaderStrc*[1024]) * gnLvlTypesTxtRecordCount;
-    gppTileLibraryHash_0096CA1C = (D2TileLibraryHeaderStrc**)FOG_AllocPool(0, nSize, ".\\DATATBLS\\LvlTbls.cpp", 1043, 0);
-    memset(gppTileLibraryHash_0096CA1C, 0, nSize);
+    gppTileLibraryHash = (D2TileLibraryHeaderStrc**)FOG_AllocPool(0, nSize, ".\\DATATBLS\\LvlTbls.cpp", 1043, 0);
+    memset(gppTileLibraryHash, 0, nSize);
 
-    D2TileLibraryHeaderStrc** ppTileLibraryHash = gppTileLibraryHash_0096CA1C;
+    D2TileLibraryHeaderStrc** ppTileLibraryHash = gppTileLibraryHash;
     const int bExpansion = FOG_IsExpansion();
     for (int i = 0; i < gnLvlTypesTxtRecordCount; ++i)
     {
         for (int j = 0; j < 32; ++j)
         {
-            if (!strcmp(gpLvlTypesTxt_0096C9F0[i].szFile[j], "0"))
+            if (!strcmp(gpLvlTypesTxt[i].szFile[j], "0"))
             {
                 break;
             }
 
-            if (bExpansion || !gpLvlTypesTxt_0096C9F0[i].dwExpansion)
+            if (bExpansion || !gpLvlTypesTxt[i].dwExpansion)
             {
-                TileLibraryAddProject(ppTileLibraryHash, gpLvlTypesTxt_0096C9F0[i].szFile[j]);
+                TileLibraryAddProject(ppTileLibraryHash, gpLvlTypesTxt[i].szFile[j]);
             }
         }
         ppTileLibraryHash += 1024;
@@ -979,7 +967,7 @@ void __fastcall DATATBLS_FreeGlobalTileLibraryHash()
 
 void sub_W12_EmitLvlTypesTxtWrites(D2LvlTypesTxt* pLvlTypesTxt, int nRecordCount)
 {
-    gpLvlTypesTxt_0096C9F0 = pLvlTypesTxt;
+    gpLvlTypesTxt = pLvlTypesTxt;
     gnLvlTypesTxtRecordCount = nRecordCount;
 }
 

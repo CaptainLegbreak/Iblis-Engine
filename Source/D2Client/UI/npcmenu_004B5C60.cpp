@@ -221,6 +221,6 @@ int __cdecl NPCMENU_ShowMainMenu()
         gtNpcMenu.pListBox->AddItem(D2LANG_GetStringFromTblIndex(0xD25), 0, 0, 0, 0, 0, 10, 0, 1, 0xE);
     }
 
-    sub_004B82F0_Select(gtNpcMenu.pHireDialog, -1);
+    DIALOG_SelectLine(gtNpcMenu.pHireDialog, -1);
     return 1;
 }

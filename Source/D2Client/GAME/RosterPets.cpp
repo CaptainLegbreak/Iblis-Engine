@@ -20,12 +20,6 @@
 
 struct Unicode;
 
-struct D2PanelAnimEntryStrc
-{
-    void* pData;
-    char unk0x04[0x18];
-};
-
 struct D2DialogTimerStrc
 {
     unsigned int dwTick;
@@ -63,8 +57,6 @@ int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, 
 
 
 
-
-extern D2PanelAnimEntryStrc gaPanelAnim[];                                                         // 0x00712020
 
 
 
@@ -661,7 +653,7 @@ int __stdcall ROSTERPETS_HandleRectClick(SMSGHANDLER_PARAMS* pMsg)
     gnInvMouseY = nY;
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
     if (nX < gnGlobal_007BCAA0 || nX >= gnGlobal_007BCAA4 || nY < gnGlobal_007BCAA8 || nY > gnGlobal_007BCAAC)
     {
         gbPanelButtonDown = 0;
@@ -673,7 +665,7 @@ int __stdcall ROSTERPETS_HandleRectClick(SMSGHANDLER_PARAMS* pMsg)
     {
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         sub_004C0440();
     }
     gbPanelButtonDown = 0;
@@ -695,7 +687,7 @@ void __stdcall ROSTERPETS_HandlePanelButtonDown(SMSGHANDLER_PARAMS* pMsg)
     sub_004A4AD0_Press(pMsg->nXpos, pMsg->nYpos);
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 extern "C" void __cdecl CURSOR_DrawDefaultCursor(); // 0x004683C0

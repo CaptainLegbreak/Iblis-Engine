@@ -35,7 +35,6 @@ struct D2DrlgTableRefStrc
 };
 
 
-
 void __fastcall DRLGACTIVATE_RoomExPropagateUnsetStatus(D2DrlgRoomStrc* pDrlgRoom, unsigned char nStatus); // 0x0061B5B0
 
 void __fastcall DRLGROOM_InitNearRooms(void* pContext, D2DrlgRoomStrc* pNode); // 0x0066C370
@@ -48,14 +47,6 @@ struct D2ColorRecordStrc
     unsigned char nGreen;
     unsigned char nBlue;
 };
-
-static int gnRoomStats_0096C8B8; // 0x0096C8B8
-
-static int gnRoomStats_0096C8BC; // 0x0096C8BC
-
-static int gnRoomStats_0096C8C0; // 0x0096C8C0
-
-static int gnRoomStats_0096C8C4; // 0x0096C8C4
 
 
 static void DRLGACTIVATE_ForceRoomExStatusImpl(D2DrlgRoomStrc* pDrlgRoom, unsigned char nStatus); // 0x0061B210
@@ -82,10 +73,7 @@ enum D2C_J07DungeonConstants
 };
 
 
-
-
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-
 
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
@@ -95,14 +83,6 @@ extern const int gnTownLevelIdsByAct[5]; // 0x006E7D1C
 int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 static int DRLGACTIVATE_RoomEx_EnsureHasRoom(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom);
-
-static int gnStatsClientAllocatedRooms; // 0x0096C8B8
-
-static int gnStatsClientFreedRooms; // 0x0096C8BC
-
-static int gnStatsAllocatedRooms; // 0x0096C8C4
-
-static int gnStatsFreedRooms; // 0x0096C8C0
 
 static inline D2DrlgRoomStrc* DRLGACTIVATE_RoomExStatusList_GetFirst(D2DrlgStrc* pDrlg, unsigned char nStatus);
 
@@ -566,13 +546,13 @@ static inline void DRLGACTIVATE_UpdateRoomsAllocationStats(D2DrlgStrc* pDrlg)
 {
     if (DRLG_IsOnClient(pDrlg))
     {
-        gnRoomStats_0096C8B8 = pDrlg->nAllocatedRooms;
-        gnRoomStats_0096C8BC = pDrlg->nFreedRooms;
+        gStatsClientAllocatedRooms = pDrlg->nAllocatedRooms;
+        gStatsClientFreedRooms = pDrlg->nFreedRooms;
     }
     else
     {
-        gnRoomStats_0096C8C4 = pDrlg->nAllocatedRooms;
-        gnRoomStats_0096C8C0 = pDrlg->nFreedRooms;
+        gStatsAllocatedRooms = pDrlg->nAllocatedRooms;
+        gStatsFreedRooms = pDrlg->nFreedRooms;
     }
 }
 
@@ -590,13 +570,13 @@ void __stdcall DRLGACTIVATE_Update(D2DrlgStrc* pDrlg)
 {
     if (DRLG_IsOnClient(pDrlg))
     {
-        gnStatsClientAllocatedRooms = pDrlg->nAllocatedRooms;
-        gnStatsClientFreedRooms = pDrlg->nFreedRooms;
+        gStatsClientAllocatedRooms = pDrlg->nAllocatedRooms;
+        gStatsClientFreedRooms = pDrlg->nFreedRooms;
     }
     else
     {
-        gnStatsAllocatedRooms = pDrlg->nAllocatedRooms;
-        gnStatsFreedRooms = pDrlg->nFreedRooms;
+        gStatsAllocatedRooms = pDrlg->nAllocatedRooms;
+        gStatsFreedRooms = pDrlg->nFreedRooms;
     }
 
     if (pDrlg->nRoomsInitSinceLastUpdate > 1)

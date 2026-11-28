@@ -31,24 +31,6 @@ struct D2MsgHandlerEntryStrc;
 
 struct Unicode;
 
-struct D2ClientFlagsLowStrc;
-
-struct D2ClientFlagsStrc;
-
-struct D2ClientFlagsLowStrc
-{
-    unsigned char bFlag0 : 1;
-    unsigned char bNumberDisplay : 1;
-    unsigned char bFlags2 : 6;
-};
-
-struct D2ClientFlagsStrc
-{
-    unsigned int bFlags0 : 8;
-    unsigned int bClassOverride : 1;
-    unsigned int bFlags9 : 23;
-};
-
 extern "C" __declspec(dllimport) unsigned short __stdcall GetSystemDefaultLangID(); // 0x006CC354
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
@@ -56,10 +38,6 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 
 int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
-
-extern D2ClientFlagsLowStrc gtClientFlagsLow_00712EFC; // 0x00712EFC
-
-extern D2ClientFlagsStrc gtClientFlags_00712EFC; // 0x00712EFC
 
 extern int gnLanguageId;        // 0x007BB5DC
 
@@ -86,13 +64,6 @@ struct HKL__;
 
 typedef HIMC__* HIMC;
 
-struct CANDIDATELIST
-{
-    unsigned long dwSize;
-    unsigned long dwStyle;
-    unsigned long dwCount;
-};
-
 
 
 
@@ -101,8 +72,6 @@ extern "C" int __stdcall ImmReleaseContext(int hWnd, HIMC hImc); // 0x006B00B4
 extern "C" int __stdcall ImmGetOpenStatus(HIMC hImc); // 0x006B00BA
 
 extern "C" HIMC __stdcall ImmGetContext(int hWnd); // 0x006B00C6
-
-extern "C" unsigned long __stdcall ImmGetCandidateListA(HIMC hImc, unsigned long dwIndex, CANDIDATELIST* pCandList, unsigned long dwBufLen); // 0x006B00CC
 
 extern "C" unsigned long __stdcall ImmGetCandidateListCountA(HIMC hImc, unsigned long* pListCount); // 0x006B00D2
 
@@ -1019,7 +988,7 @@ void __stdcall ESCMENU_OptionMouseDown(SMSGHANDLER_PARAMS* pMsg)
     gbOptionPressed = 1;
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x0047D840
@@ -1035,7 +1004,7 @@ void __stdcall ESCMENU_OptionMouseUp(SMSGHANDLER_PARAMS* pMsg)
     gbOptionDragging = 0;
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 
@@ -1057,7 +1026,7 @@ void __stdcall ESCMENU_SelectNextOption(SMSGHANDLER_PARAMS* pMsg)
     sub_004B9A00(1, 0, 0, 0, 0);
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x0047D920
@@ -1076,7 +1045,7 @@ void __stdcall ESCMENU_SelectPreviousOption(SMSGHANDLER_PARAMS* pMsg)
     sub_004B9A00(1, 0, 0, 0, 0);
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x0047D9A0
@@ -1114,7 +1083,7 @@ void __stdcall ESCMENU_OptionKeyLeft(SMSGHANDLER_PARAMS* pMsg)
     }
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x0047DA90
@@ -1152,7 +1121,7 @@ void __stdcall ESCMENU_OptionKeyRight(SMSGHANDLER_PARAMS* pMsg)
     }
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x0047DB80
@@ -1161,7 +1130,7 @@ void __stdcall ESCMENU_OptionActivate(SMSGHANDLER_PARAMS* pMsg)
     ESCMENU_ActivateOption(pMsg);
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 
@@ -1834,7 +1803,7 @@ void __stdcall MINIPANEL_SlotsClickMsg(SMSGHANDLER_PARAMS* pMsg)
             GAME_ResetMouseButtons();
             pMsg->bReturn = 1;
             pMsg->lResult = 0;
-            sub_00420290_BreakHandlerChain(pMsg);
+            SMsgBreakHandlerChain(pMsg);
             return;
         }
         pMsg->bReturn = 0;
@@ -1913,7 +1882,7 @@ void __stdcall MINIPANEL_SlotsClick(SMSGHANDLER_PARAMS* pMsg)
             gbSlotClicked = 1;
             pMsg->bReturn = 1;
             pMsg->lResult = 0;
-            sub_00420290_BreakHandlerChain(pMsg);
+            SMsgBreakHandlerChain(pMsg);
             return;
         }
     }

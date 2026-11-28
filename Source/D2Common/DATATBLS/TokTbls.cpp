@@ -6,33 +6,31 @@ struct D2BinFieldStrc;
 
 void* __stdcall DATATBLS_CompileTxt(void* hArchive, const char* szName, D2BinFieldStrc* pTbl, int* pRecordCount, int nRecordSize); // 0x006122F0
 
-struct D2TokRecord { char unk[0x34]; };
-
-D2TokRecord* gpCompositTxt;                                                                                 // 0x0096D4EC
-
-void* gpMonmodeTxt; // 0x0096D4BC
-
-void* gpMonmodeTxtAlias1; // 0x0096D4C0
-
-void* gpMonmodeTxtAlias2; // 0x0096D4C4
-
-int gnMonmodeTxtRecordCount; // 0x0096D4B8
-
-struct D2ObjModeTypeTxt
+// A record of the token tables (composit, armtype, plrtype, monmode, objtype, objmode): a name and its code.
+// Only monmode.txt fills the sixteen direction counts.
+struct D2TokRecord
 {
     char szName[32];
     unsigned int dwToken;
-    char unk0x24[16];
+    unsigned char nDTDir;
+    unsigned char nNUDir;
+    unsigned char nWLDir;
+    unsigned char nGHDir;
+    unsigned char nA1Dir;
+    unsigned char nA2Dir;
+    unsigned char nBLDir;
+    unsigned char nSCDir;
+    unsigned char nS1Dir;
+    unsigned char nS2Dir;
+    unsigned char nS3Dir;
+    unsigned char nS4Dir;
+    unsigned char nDDDir;
+    unsigned char nKBDir;
+    unsigned char nSQDir;
+    unsigned char nRNDir;
 };
 
-
-int gnObjModeTypeTxtRecordCount;                                                                            // 0x0096D4C8
-
-D2ObjModeTypeTxt* gpObjModeTypeTxt;                                                                         // 0x0096D4CC
-
-D2ObjModeTypeTxt* gpObjType;                                                                                // 0x0096D4D0
-
-D2ObjModeTypeTxt* gpObjMode;                                                                                // 0x0096D4D4
+D2TokRecord* gpCompositTxt;                                                                                 // 0x0096D4EC
 
 
 void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
@@ -57,9 +55,9 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                   
 
 #include "D2ObjModeDataTbl.h"
 
-extern D2MonModeDataTbl gMonModeDataTables;                                                                 // 0x0096D4B8
+D2MonModeDataTbl gMonModeDataTables;                                                                 // 0x0096D4B8
 
-extern D2ObjModeDataTbl gObjModeDataTables;                                                                 // 0x0096D4C8
+D2ObjModeDataTbl gObjModeDataTables;                                                                 // 0x0096D4C8
 
 D2PlrModeDataTbl gPlrModeDataTables;                                                                        // 0x0096D4D8
 
@@ -96,10 +94,10 @@ void __fastcall DATATBLS_LoadMonModeTxt(void* hArchive)
         { gszTxtField_end, 0, 0, 0, 0 },
     };
 
-    gpMonmodeTxt = DATATBLS_CompileTxt(hArchive, "monmode", pTbl, &nRecordCount, 52);
-    gnMonmodeTxtRecordCount = nRecordCount;
-    gpMonmodeTxtAlias1 = gpMonmodeTxt;
-    gpMonmodeTxtAlias2 = gpMonmodeTxt;
+    gMonModeDataTables.pMonModeTxt = (D2TokRecord*)DATATBLS_CompileTxt(hArchive, "monmode", pTbl, &nRecordCount, 52);
+    gMonModeDataTables.nMonModeTxtRecordCount = nRecordCount;
+    gMonModeDataTables.pMonMode[0] = gMonModeDataTables.pMonModeTxt;
+    gMonModeDataTables.pMonMode[1] = gMonModeDataTables.pMonModeTxt;
 }
 
 // 0x0065B1B0
@@ -114,24 +112,24 @@ void __fastcall DATATBLS_LoadObjType_ModeTxt(void* hArchive)
         { gszTxtField_end, 0, 0, 0, 0 },
     };
 
-    D2ObjModeTypeTxt* pType = (D2ObjModeTypeTxt*)DATATBLS_CompileTxt(hArchive, "objtype", pTbl, &nTypeRecords, sizeof(D2ObjModeTypeTxt));
-    D2ObjModeTypeTxt* pModeSrc = (D2ObjModeTypeTxt*)DATATBLS_CompileTxt(hArchive, "objmode", pTbl, &nModeRecords, sizeof(D2ObjModeTypeTxt));
+    D2TokRecord* pType = (D2TokRecord*)DATATBLS_CompileTxt(hArchive, "objtype", pTbl, &nTypeRecords, sizeof(D2TokRecord));
+    D2TokRecord* pModeSrc = (D2TokRecord*)DATATBLS_CompileTxt(hArchive, "objmode", pTbl, &nModeRecords, sizeof(D2TokRecord));
 
     int nTotal = nModeRecords + nTypeRecords;
-    D2ObjModeTypeTxt* pTxt = (D2ObjModeTypeTxt*)FOG_AllocPool(0, sizeof(D2ObjModeTypeTxt) * nTotal, ".\\DATATBLS\\TokTbls.cpp", 148, 0);
+    D2TokRecord* pTxt = (D2TokRecord*)FOG_AllocPool(0, sizeof(D2TokRecord) * nTotal, ".\\DATATBLS\\TokTbls.cpp", 148, 0);
     TBL_ASSERT(pTxt, 149);
 
-    memcpy(pTxt, pType, sizeof(D2ObjModeTypeTxt) * nTypeRecords);
-    D2ObjModeTypeTxt* pMode = pTxt + nTypeRecords;
-    memcpy(pMode, pModeSrc, sizeof(D2ObjModeTypeTxt) * nModeRecords);
+    memcpy(pTxt, pType, sizeof(D2TokRecord) * nTypeRecords);
+    D2TokRecord* pMode = pTxt + nTypeRecords;
+    memcpy(pMode, pModeSrc, sizeof(D2TokRecord) * nModeRecords);
 
     DATATBLS_UnloadBin(pType);
     DATATBLS_UnloadBin(pModeSrc);
 
-    gpObjMode = pMode;
-    gpObjModeTypeTxt = pTxt;
-    gpObjType = pTxt;
-    gnObjModeTypeTxtRecordCount = nTotal;
+    gObjModeDataTables.pObjMode = pMode;
+    gObjModeDataTables.pObjModeTypeTxt = pTxt;
+    gObjModeDataTables.pObjType = pTxt;
+    gObjModeDataTables.nObjModeTypeTxtRecordCount = nTotal;
 }
 
 // 0x0065ADC0

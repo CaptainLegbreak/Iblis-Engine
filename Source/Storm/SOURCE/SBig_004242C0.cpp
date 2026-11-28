@@ -1,4 +1,4 @@
-// This piece stays apart from SBig.cpp (a declaration difference). sub_004242C0_BigOp (0x4242C0) reads each buffer's
+// This piece stays apart from SBig.cpp (a declaration difference). Mul (0x4242C0) reads each buffer's
 // limb count through a copy of a one-member count struct (BigBuffer::IsUsed below); read directly, as
 // SBig.cpp's shared types (Source/Include D2StormArrayA.h, D2StormBigBuffer.h) hold it, as a plain
 // unsigned int, the function no longer matches, here or in SBig.cpp. Every function in SBig.cpp is
@@ -157,7 +157,7 @@ inline unsigned int ExtractLowPart(unsigned __int64& nValue)
 }
 
 // 0x004242C0
-void __stdcall sub_004242C0_BigOp(BigBuffer* pResult, const BigBuffer* pB, const BigBuffer* pC, BigStack* pStack)
+void __stdcall Mul(BigBuffer* pResult, const BigBuffer* pB, const BigBuffer* pC, BigStack* pStack)
 {
     BigBuffer& a = *pResult;
     const BigBuffer& b = *pB;

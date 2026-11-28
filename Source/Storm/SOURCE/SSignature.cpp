@@ -136,7 +136,7 @@ struct CHuffman
 
     CHuffman();                                                                                  // 0x0041F950
     ~CHuffman();                                                                                 // 0x0041F6A0
-    void sub_0041F350_IncWeights(HUFFNODE* pItem);                                               // 0x0041F350
+    void IncWeights(HUFFNODE* pItem);                                               // 0x0041F350
     unsigned int Decompress(void* pOutput, unsigned int nOutputSize, CBitInput* pInput); // 0x0041F740
     void AddSymbol(unsigned int nValue);
 };
@@ -253,7 +253,7 @@ static void __stdcall HashSignatureData(unsigned int nLen, const unsigned char* 
     Sha1 tHash;
     tHash.Initialize();
     tHash.Append(pData, nLen);
-    tHash.sub_00425F00_Final(pDigest);
+    tHash.Final(pDigest);
 }
 
 // 0x0041D3B0
@@ -339,7 +339,7 @@ int __fastcall SSignatureVerifyStream_Finish(D2StormHashBufferStrc* pBuffer, con
         unsigned char* pDigest = (unsigned char*)_alloca(nSize);
         SMemFill(pDigest, nSize, 0xBB);
         pDigest[pBuffer->nSignSize - 1] = 0x0B;
-        pBuffer->tHash.sub_00425F00_Final(pDigest);
+        pBuffer->tHash.Final(pDigest);
         unsigned char* pSign = (unsigned char*)_alloca(pBuffer->nSignSize);
         SMemCopy(pSign, pBuffer->pBuffer + 4, pBuffer->nSignSize);
         Crypt::RSA tKey;

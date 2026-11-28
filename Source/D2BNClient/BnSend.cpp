@@ -2241,7 +2241,7 @@ void __fastcall BNSEND_ComputeShaDigest(unsigned char* pDigest, const unsigned c
     Sha1 tContext;
     tContext.Initialize();
     tContext.Append(pData, nLength);
-    tContext.sub_00425F00_Final(pDigest);
+    tContext.Final(pDigest);
 }
 
 static inline int CheckCDKeySlot(int nSlot, int* pProduct, int* pValue1, int* pValue2, char* pKeyBlock)

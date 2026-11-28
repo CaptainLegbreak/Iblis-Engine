@@ -6,6 +6,6 @@ struct D2TokRecord;
 struct D2MonModeDataTbl
 {
     unsigned int nMonModeTxtRecordCount; // 0x00
-    void* pMonModeTxt; // 0x04
+    D2TokRecord* pMonModeTxt; // 0x04
     D2TokRecord* pMonMode[2]; // 0x08
 };

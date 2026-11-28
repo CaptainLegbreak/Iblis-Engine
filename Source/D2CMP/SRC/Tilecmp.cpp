@@ -428,11 +428,6 @@ static void TileCopySubTile(D2CmpSubTileRecordStrc* pSub, D2CmpTileNodeStrc* pNo
     pNode->pData = 0;
 }
 
-void __fastcall sub_M289_Emit_00609BF0(D2CmpSubTileRecordStrc* pSub, D2CmpTileNodeStrc* pNode)
-{
-    TileCopySubTile(pSub, pNode);
-}
-
 // 0x00609C30
 static void __stdcall TileConvertToProjectTile(D2CmpTileStrc* pSrc, D2CmpTileBlockStrc* ptTile)
 {
@@ -462,15 +457,7 @@ static void __stdcall TileConvertToProjectTile(D2CmpTileStrc* pSrc, D2CmpTileBlo
     int i = 0;
     for (D2CmpTileNodeStrc* pNode = pSrc->pNodes; pNode; pNode = pNode->pNext)
     {
-        D2CmpSubTileRecordStrc* pSub = &ptTile->pSubs[i];
-        pSub->nX = pNode->nX;
-        pSub->nY = pNode->nY;
-        pSub->nGridX = pNode->nGridX;
-        pSub->nGridY = pNode->nGridY;
-        pSub->nFlags = pNode->nFormat;
-        pSub->nLength = pNode->nLength;
-        pSub->ptData = pNode->pData;
-        pNode->pData = 0;
+        TileCopySubTile(&ptTile->pSubs[i], pNode);
         i++;
     }
     D2_ASSERT(i == ptTile->nSubs, 0x213);
@@ -807,24 +794,6 @@ int __stdcall sub_M213_Emit_0060A260(D2CmpTileBlockStrc* pBlock, unsigned char* 
     return TileProjectNormalizeSubTiles(pBlock, pData);
 }
 
-void __fastcall sub_M213_Emit_0060A620(const D2CmpSubTileRecordStrc* pRecord, int* pResult)
-{
-    *pResult = SubTileRecordIsEmpty(pRecord);
-}
-
-static int IsSubTileDataEmpty(const D2CmpSubTileRecordStrc* pRecord, const unsigned char* pData)
-{
-    for (int i = 0; i < pRecord->tHeader.nLength; i++)
-    {
-        if (*pData)
-        {
-            return 0;
-        }
-        pData++;
-    }
-    return 1;
-}
-
 // 0x0060A650
 static void __stdcall TileConvertSubTile24To8(D2CmpSubTileRecordStrc* pDst, const D2CmpSubTileRecordStrc* pSrc, D2CmpMapColorFn pfnMapColor, D2CmpColorStrc tTransparent)
 {
@@ -837,7 +806,7 @@ static void __stdcall TileConvertSubTile24To8(D2CmpSubTileRecordStrc* pDst, cons
     }
     SubTileConvert24To8(pDst, pSrc, tTransparent, pfnMapColor);
     unsigned char* pMapped = pDst->ptData;
-    if (IsSubTileDataEmpty(pDst, pMapped))
+    if (SubTileRecordIsEmpty(pDst))
     {
         FOG_Free(pMapped, ".\\SRC\\Tilecmp.cpp", 0x429, 0);
         pDst->tHeader.nFlags &= ~1;

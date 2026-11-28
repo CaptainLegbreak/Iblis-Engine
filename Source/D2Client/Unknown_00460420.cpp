@@ -169,13 +169,13 @@ void __stdcall AUTOMAP_PopupButtonDownMsg(SMSGHANDLER_PARAMS* pMsg)
         sub_004B9A00(4, 0, 0, 0, 0);
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         return;
     }
     GAME_ResetMouseButtons();
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x0045FED0
@@ -194,14 +194,14 @@ void __stdcall ROSTERPETS_HandlePopupButtonUp(SMSGHANDLER_PARAMS* pMsg)
             gbPopupMouseDown = 0;
             pMsg->bReturn = 1;
             pMsg->lResult = 0;
-            sub_00420290_BreakHandlerChain(pMsg);
+            SMsgBreakHandlerChain(pMsg);
             return;
         }
     }
     GAME_ResetMouseButtons();
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x0045FF70
@@ -212,7 +212,7 @@ void __stdcall SCMD_ConfirmPopup(SMSGHANDLER_PARAMS* pMsg)
     GAME_ResetMouseButtons();
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x0045FFB0
@@ -294,7 +294,7 @@ void __stdcall AUTOMAP_PopupTwoButtonDownMsg(SMSGHANDLER_PARAMS* pMsg)
         sub_004B9A00(4, 0, 0, 0, 0);
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         return;
     }
     nLeft = gnPanelOffsetX + 0x152;
@@ -308,13 +308,13 @@ void __stdcall AUTOMAP_PopupTwoButtonDownMsg(SMSGHANDLER_PARAMS* pMsg)
         sub_004B9A00(4, 0, 0, 0, 0);
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         return;
     }
     GAME_ResetMouseButtons();
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x004602E0
@@ -344,13 +344,13 @@ void __stdcall AUTOMAP_PopupTwoButtonUpMsg(SMSGHANDLER_PARAMS* pMsg)
         }
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         return;
     }
     GAME_ResetMouseButtons();
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x004603E0
@@ -361,7 +361,7 @@ void __stdcall SCMD_ConfirmOkCancelPopup(SMSGHANDLER_PARAMS* pMsg)
     GAME_ResetMouseButtons();
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x00460420

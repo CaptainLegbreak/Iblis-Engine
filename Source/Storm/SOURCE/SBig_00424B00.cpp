@@ -1,4 +1,4 @@
-// This piece stays apart from SBig.cpp (a declaration difference). sub_00424B00_BigSquare (0x424B00) reads each buffer's
+// This piece stays apart from SBig.cpp (a declaration difference). Square (0x424B00) reads each buffer's
 // limb count through a copy of a one-member count struct (BigBuffer::IsUsed below); read directly, as
 // SBig.cpp's shared types (Source/Include D2StormArrayA.h, D2StormBigBuffer.h) hold it, as a plain
 // unsigned int, the function no longer matches, here or in SBig.cpp. Every function in SBig.cpp is
@@ -112,7 +112,7 @@ static unsigned int __stdcall sub_00420EB0_AddWithCarry(unsigned __int64 nValue,
 }
 
 // 0x00424B00
-void __stdcall sub_00424B00_BigSquare(BigBuffer* pResult, BigBuffer* pA, BigStack* pStack)
+void __stdcall Square(BigBuffer* pResult, BigBuffer* pA, BigStack* pStack)
 {
     BigBuffer* pWork;
     if (pResult == pA)

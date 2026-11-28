@@ -34,8 +34,6 @@ struct D2LightCellStrc;
 
 struct D2R01LightStrc;
 
-struct D2GridCellStrc;
-
 struct D2UnitStrc;
 
 struct D2DrlgCoordsStrc;
@@ -127,19 +125,7 @@ extern int gdwSoundTick; // 0x007BC9BC
 extern int gdwGlobal_007BF024; // 0x007BF024
 
 
-struct D2GridCellStrc
-{
-    unsigned int nFlag;
-    unsigned char nValue0;
-    unsigned char nValue1;
-    unsigned char f_6;
-    unsigned char nValue3;
-};
-
-
 unsigned int gadwReciprocals[0x100]; // 0x007B0A68
-
-extern D2GridCellStrc gtGridCells_007B0E68[]; // 0x007B0E68
 
 D2LightCellStrc gaLightGrid[0x30][0x30]; // 0x007B0E68
 
@@ -166,7 +152,6 @@ int gnPathStepRatio; // 0x007A8A4C
 
 static void __stdcall DLIGHTMAP_SetupStepDirection(int nX, int nY, D2R01LightStrc* pPoint); // 0x00474B50
 
-extern D2LightCellStrc gLightGrid_007B0E68[][48]; // 0x007B0E68
 
 
 
@@ -470,7 +455,7 @@ static void __stdcall DLIGHTMAP_FillLightGrid(int nX0, int nY0, int nX1, unsigne
 {
     for (int nY = nY0; nY <= nY1; ++nY)
     {
-        D2LightCellStrc* pCell = &gLightGrid_007B0E68[nY][nX0];
+        D2LightCellStrc* pCell = &gaLightGrid[nY][nX0];
         for (int nX = nX0; nX <= nX1; ++nX)
         {
             pCell->nFlags = 0;
@@ -636,39 +621,39 @@ static void __stdcall DLIGHTMAP_AddGridLight(int nIntensity, unsigned char nRed,
         return;
     }
 
-    D2GridCellStrc* pCell = &gtGridCells_007B0E68[nGridY * 48 + nGridX];
-    const int nOld = pCell->nValue0;
+    D2LightCellStrc* pCell = &gaLightGrid[nGridY][nGridX];
+    const int nOld = pCell->nIntensity;
     const unsigned int nNew = LIGHT_MIN((unsigned int)(nOld + nIntensity), 0xFFu);
 
     if (gbBlendLightColor)
     {
         const unsigned int nRecip = gadwReciprocals[nNew];
-        int nR = (pCell->nValue1 * nOld + nRed * nIntensity) * nRecip >> 0x10;
+        int nR = (pCell->nRed * nOld + nRed * nIntensity) * nRecip >> 0x10;
         if (nR > 0xFF)
         {
             nR = 0xFF;
         }
-        int nG = (pCell->f_6 * nOld + nGreen * nIntensity) * nRecip >> 0x10;
+        int nG = (pCell->nGreen * nOld + nGreen * nIntensity) * nRecip >> 0x10;
         if (nG > 0xFF)
         {
             nG = 0xFF;
         }
-        int nB = (pCell->nValue3 * nOld + nBlue * nIntensity) * nRecip >> 0x10;
+        int nB = (pCell->nBlue * nOld + nBlue * nIntensity) * nRecip >> 0x10;
         if (nB > 0xFF)
         {
             nB = 0xFF;
         }
-        pCell->nValue0 = (unsigned char)nNew;
-        pCell->nValue1 = (unsigned char)nR;
-        pCell->f_6 = (unsigned char)nG;
-        pCell->nValue3 = (unsigned char)nB;
+        pCell->nIntensity = (unsigned char)nNew;
+        pCell->nRed = (unsigned char)nR;
+        pCell->nGreen = (unsigned char)nG;
+        pCell->nBlue = (unsigned char)nB;
     }
     else
     {
-        pCell->nValue1 = 0;
-        pCell->f_6 = 0;
-        pCell->nValue3 = 0;
-        pCell->nValue0 = (unsigned char)nNew;
+        pCell->nRed = 0;
+        pCell->nGreen = 0;
+        pCell->nBlue = 0;
+        pCell->nIntensity = (unsigned char)nNew;
     }
 }
 
@@ -1204,7 +1189,7 @@ void __cdecl DLIGHTMAP_ScanGridCollision()
             if (!pRoom)
                 pRoom = UNITS_GetRoom(pPlayer);
             if (COLLISION_CheckMask(pRoom, gnCellOriginX + nX, gnCellOriginY + nY, 0x22))
-                gtGridCells_007B0E68[nY * 0x30 + nX].nFlag = 1;
+                gaLightGrid[nY][nX].nFlags = 1;
         }
     }
 }
@@ -1233,13 +1218,13 @@ void __fastcall SCMD_ReadGridCell(int nX, int nY, unsigned char* pValue0, unsign
         nCellY = GRID_SIZE - 1;
     }
 
-    D2GridCellStrc* pCell = &gtGridCells_007B0E68[nCellY * GRID_SIZE + nCellX];
-    *pValue0 = pCell->nValue0;
+    D2LightCellStrc* pCell = &gaLightGrid[nCellY][nCellX];
+    *pValue0 = pCell->nIntensity;
     if (gbBlendLightColor)
     {
-        *pValue1 = pCell->nValue1;
-        *pValue2 = pCell->f_6;
-        *pValue3 = pCell->nValue3;
+        *pValue1 = pCell->nRed;
+        *pValue2 = pCell->nGreen;
+        *pValue3 = pCell->nBlue;
     }
 }
 

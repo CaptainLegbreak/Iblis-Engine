@@ -88,10 +88,10 @@ struct CBitInput
     unsigned int nBitCount;                                 // 0x08
 
     CBitInput(void* pInputBuffer);                                                          // 0x0041D880
-    int sub_0041D8A0_ReadBit();                                                             // 0x0041D8A0
+    int ReadBit();                                                             // 0x0041D8A0
     unsigned int sub_0041D8D0_Peek(unsigned int nBits, unsigned int nMask);                 // 0x0041D8D0
     void sub_0041D900_Skip(unsigned int nBits);                                             // 0x0041D900
-    unsigned int sub_0041E9E0_Get(unsigned int nBits, unsigned int nMask);                  // 0x0041E9E0
+    unsigned int Get(unsigned int nBits, unsigned int nMask);                  // 0x0041E9E0
 
     unsigned int Peek(unsigned int nBits, unsigned int nMask)
     {
@@ -177,9 +177,9 @@ struct CHuffman
         return tItemList.m_terminator.Prev();
     }
     void BuildTree(unsigned char nCmpType);                                                 // 0x0041EF20
-    void sub_0041F350_IncWeights(HUFFNODE* pItem);                                          // 0x0041F350
+    void IncWeights(HUFFNODE* pItem);                                          // 0x0041F350
     void AddSymbol(unsigned int nValue);                                                    // 0x0041F510
-    void sub_0041D9E0_EncodeOne(CBitOutput* pOutput, unsigned int nValue);                  // 0x0041D9E0
+    void EncodeOne(CBitOutput* pOutput, unsigned int nValue);                  // 0x0041D9E0
     unsigned int Compress(CBitOutput* pOutput, void* pvIn, int cbIn, unsigned char nCmpType); // 0x0041F850
 };
 
@@ -213,7 +213,7 @@ struct CHuffmanCache : CHuffman
     HUFFCACHE aCache[0x80];                                 // 0x3474
 
     CHuffmanCache();                                                                        // 0x0041F950
-    unsigned int sub_0041EBC0_DecodeOne(CBitInput* pInput);                                 // 0x0041EBC0
+    unsigned int DecodeOne(CBitInput* pInput);                                 // 0x0041EBC0
     unsigned int Decompress(void* pOutput, unsigned int nOutputSize, CBitInput* pInput);   // 0x0041F740
 };
 
@@ -496,7 +496,7 @@ CBitInput::CBitInput(void* pInputBuffer)
 }
 
 // 0x0041D8A0
-int CBitInput::sub_0041D8A0_ReadBit()
+int CBitInput::ReadBit()
 {
     int nBit = nBitBuffer & 1;
     nBitBuffer >>= 1;
@@ -539,13 +539,13 @@ CBitOutput::CBitOutput(void* pOutputBuffer, unsigned int nOutputSize)
 }
 
 // 0x0041D940
-unsigned int CBitOutput::sub_0041D940_GetSize()
+unsigned int CBitOutput::GetSize()
 {
     return pOutput - pOutputStart;
 }
 
 // 0x0041D950
-void CBitOutput::sub_0041D950_PutBits(unsigned int nValue, unsigned int nBits)
+void CBitOutput::PutBits(unsigned int nValue, unsigned int nBits)
 {
     nBitBuffer |= nValue << nBitCount;
     nBitCount += nBits;
@@ -577,7 +577,7 @@ void CBitOutput::Flush()
 }
 
 // 0x0041D9E0
-void CHuffman::sub_0041D9E0_EncodeOne(CBitOutput* pOutput, unsigned int nValue)
+void CHuffman::EncodeOne(CBitOutput* pOutput, unsigned int nValue)
 {
     HUFFNODE* pItem = pItemsByValue[nValue];
     unsigned int nCode = 0;
@@ -588,13 +588,13 @@ void CHuffman::sub_0041D9E0_EncodeOne(CBitOutput* pOutput, unsigned int nValue)
         nBits++;
         pItem = pParent;
     }
-    pOutput->sub_0041D950_PutBits(nCode, nBits);
+    pOutput->PutBits(nCode, nBits);
 }
 
 extern "C" int __cdecl abs(int);
 
 // 0x0041DA30
-static void sub_0041DA30_GetCompressionLevel(unsigned int nCmpLevel, unsigned char* pnLevel, int* pCmpType)
+static void GetCompressionLevel(unsigned int nCmpLevel, unsigned char* pnLevel, int* pCmpType)
 {
     switch (nCmpLevel)
     {
@@ -736,7 +736,7 @@ static int __stdcall ImaAdpcmCompress(int nOutSize, const short* pIn, int nInSiz
 void __fastcall ImaAdpcmMonoCompress(unsigned char* pvOutBuffer, int* pcbOutBuffer, const short* pvInBuffer, int cbInBuffer, int* pCmpType, int nCmpLevel)
 {
     unsigned char nLevel;
-    sub_0041DA30_GetCompressionLevel(nCmpLevel, &nLevel, pCmpType);
+    GetCompressionLevel(nCmpLevel, &nLevel, pCmpType);
     *pcbOutBuffer = ImaAdpcmCompress(*pcbOutBuffer, pvInBuffer, cbInBuffer, 1, nLevel, pvOutBuffer);
 }
 
@@ -878,7 +878,7 @@ void __fastcall ImaAdpcmMonoDecompress(short* pOut, unsigned int* pOutSize, unsi
 void __fastcall ImaAdpcmStereoCompress(unsigned char* pvOutBuffer, int* pcbOutBuffer, const short* pvInBuffer, int cbInBuffer, int* pCmpType, int nCmpLevel)
 {
     unsigned char nLevel;
-    sub_0041DA30_GetCompressionLevel(nCmpLevel, &nLevel, pCmpType);
+    GetCompressionLevel(nCmpLevel, &nLevel, pCmpType);
     *pcbOutBuffer = ImaAdpcmCompress(*pcbOutBuffer, pvInBuffer, cbInBuffer, 2, nLevel, pvOutBuffer);
 }
 
@@ -979,7 +979,7 @@ struct D2SCompDecompStrc
     PFNSCOMPDECOMPRESS pfnDecompress;
 };
 
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
+void __stdcall SErrSetLastError(unsigned int dwErrCode); // 0x0041C340
 void __fastcall HuffmanCompress(void* pvOutBuffer, int* pcbOutBuffer, void* pvInBuffer, int cbInBuffer, int* pCmpType, int nCmpLevel); // 0x0041F980
 void __fastcall HuffmanDecompress(void* pOut, unsigned int* pcbOut, void* pIn, unsigned int cbIn, int nExtra); // 0x0041F9E0
 
@@ -997,7 +997,7 @@ int __stdcall SCompCompress(unsigned char* pDest, unsigned int* pdwDestSize, uns
     VALIDATE(pSrc);
     if (!nValid)
     {
-        sub_0041C340_SetLastError(0x57);
+        SErrSetLastError(0x57);
         return 0;
     }
 
@@ -1234,7 +1234,7 @@ D2StormLinkStrc* __fastcall sub_0041E9C0_Identity(D2StormLinkStrc* pLink)
 }
 
 // 0x0041E9E0
-unsigned int CBitInput::sub_0041E9E0_Get(unsigned int nBits, unsigned int nMask)
+unsigned int CBitInput::Get(unsigned int nBits, unsigned int nMask)
 {
     unsigned int nValue = Peek(nBits, nMask);
     Skip(nBits);
@@ -1248,7 +1248,7 @@ int __stdcall sub_0041EA20_Forward(void* p1, unsigned int* p2, const void* p3, u
 }
 
 // 0x0041EBC0
-unsigned int CHuffmanCache::sub_0041EBC0_DecodeOne(CBitInput* input)
+unsigned int CHuffmanCache::DecodeOne(CBitInput* input)
 {
  unsigned int prefix=input->Peek7();
  HUFFCACHE* entry=&aCache[prefix];
@@ -1311,7 +1311,7 @@ HUFFNODE* CHuffman::NewItem(unsigned int nLinkType)
 }
 
 // 0x0041F350
-void CHuffman::sub_0041F350_IncWeights(HUFFNODE* pItem)
+void CHuffman::IncWeights(HUFFNODE* pItem)
 {
     for (; pItem; pItem = pItem->pParent)
     {
@@ -1375,7 +1375,7 @@ void CHuffman::AddSymbol(unsigned int nValue)
     pItem->pParent = pFirst;
     pItemsByValue[nValue] = pItem;
     pFirst->pChild = pItem;
-    sub_0041F350_IncWeights(pItem);
+    IncWeights(pItem);
 }
 
 // 0x0041F6A0
@@ -1396,14 +1396,14 @@ unsigned int CHuffmanCache::Decompress(void* pOutput, unsigned int nOutputSize, 
     unsigned char* pbOut = (unsigned char*)pOutput;
     for (;;)
     {
-        unsigned int nValue = sub_0041EBC0_DecodeOne(pInput);
+        unsigned int nValue = DecodeOne(pInput);
         if (nValue == 0x101)
         {
             nValue = pInput->Get8Bits();
             AddSymbol(nValue);
             if (!bIsCmp0)
             {
-                sub_0041F350_IncWeights(pItemsByValue[nValue]);
+                IncWeights(pItemsByValue[nValue]);
             }
         }
         if (nValue == 0x100)
@@ -1417,7 +1417,7 @@ unsigned int CHuffmanCache::Decompress(void* pOutput, unsigned int nOutputSize, 
         }
         if (bIsCmp0)
         {
-            sub_0041F350_IncWeights(pItemsByValue[nValue]);
+            IncWeights(pItemsByValue[nValue]);
         }
     }
 }
@@ -1427,7 +1427,7 @@ unsigned int CHuffman::Compress(CBitOutput* pOutput, void* pvIn, int cbIn, unsig
 {
     BuildTree(nCmpType);
     bIsCmp0 = nCmpType == 0;
-    pOutput->sub_0041D950_PutBits(nCmpType, 8);
+    pOutput->PutBits(nCmpType, 8);
     unsigned char* pbIn = (unsigned char*)pvIn;
     while (cbIn != 0)
     {
@@ -1435,26 +1435,26 @@ unsigned int CHuffman::Compress(CBitOutput* pOutput, void* pvIn, int cbIn, unsig
         cbIn--;
         if (pItemsByValue[nValue] == 0)
         {
-            sub_0041D9E0_EncodeOne(pOutput, 0x101);
-            pOutput->sub_0041D950_PutBits(nValue, 8);
+            EncodeOne(pOutput, 0x101);
+            pOutput->PutBits(nValue, 8);
             AddSymbol(nValue);
             if (!bIsCmp0)
             {
-                sub_0041F350_IncWeights(pItemsByValue[nValue]);
+                IncWeights(pItemsByValue[nValue]);
             }
         }
         else
         {
-            sub_0041D9E0_EncodeOne(pOutput, nValue);
+            EncodeOne(pOutput, nValue);
         }
         if (bIsCmp0)
         {
-            sub_0041F350_IncWeights(pItemsByValue[nValue]);
+            IncWeights(pItemsByValue[nValue]);
         }
     }
-    sub_0041D9E0_EncodeOne(pOutput, 0x100);
+    EncodeOne(pOutput, 0x100);
     pOutput->Flush();
-    return pOutput->sub_0041D940_GetSize();
+    return pOutput->GetSize();
 }
 
 // 0x0041F920

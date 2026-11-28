@@ -51,8 +51,6 @@ struct D2OffsetTableStrc;
 
 struct D2OffsetTableRefStrc;
 
-struct D2RequestStrc;
-
 struct D2KeyedNodeStrc;
 
 struct D2CltUnitEventStrc;
@@ -75,15 +73,9 @@ struct D2MissilesTxt;
 
 struct D2MonGfxCacheStrc;
 
-struct PartialSparseClear;
-
 struct PartialTableRecord;
 
 struct PartialTableView;
-
-struct PartialLookupRecord;
-
-struct PartialLookupHeader;
 
 struct D2CofLayerStrc;
 
@@ -130,20 +122,6 @@ struct D2OffsetTableRefStrc
     void* GetEntry(int nId); // 0x004E0700
 };
 
-struct D2RequestStrc
-{
-    int nType;
-    D2UnitStrc* pUnit;
-    int unk0x08[2];
-    int nMissile;
-    int nX;
-    int nY;
-    int unk0x1C[4];
-    int nSkill;
-    int nSkillLevel;
-    int unk0x34[10];
-};
-
 typedef int (__fastcall* UNITCALLBACKFN)(D2UnitStrc* pUnit, D2UnitStrc* pOther, void* pArg1, void* pArg2);
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
@@ -159,8 +137,6 @@ D2UnitGfxDataStrc* __fastcall CUNIT_GetGfxData(D2UnitStrc* pUnit); // 0x00463E10
 
 
 
-
-int __fastcall sub_004CD540_HandleRequest(D2RequestStrc* pRequest); // 0x004CD540
 
 struct D2KeyedNodeStrc
 {
@@ -232,18 +208,6 @@ void __stdcall sub_006488A0_SetDirection(D2DynamicPathStrc* pPath, int nDirectio
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 
-struct PartialSparseClear
-{
-    char unknown_00[0x38];
-    unsigned int first;
-    char unknown_3C[0xEA9C - 0x3C];
-    unsigned int second;
-    char unknown_EAA0[8];
-    unsigned int third;
-    char unknown_EAAC[4];
-    unsigned int fourth;
-};
-
 struct PartialTableRecord
 {
     char opaque[12];
@@ -259,31 +223,6 @@ struct PartialTableView
 
 extern "C" PartialTableView* gTableView_00744304;
 
-struct PartialLookupRecord
-{
-    unsigned char key;
-    unsigned char first;
-    unsigned char second;
-    char unknown_03[6];
-};
-
-struct PartialLookupHeader
-{
-    unsigned char count;
-    char unknown_01[0x1B];
-    PartialLookupRecord records[1];
-};
-
-typedef char check_PartialSparseClear_size[sizeof(PartialSparseClear) == 0xEAB4 ? 1 : -1];
-
-typedef char check_PartialSparseClear_first[offsetof(PartialSparseClear, first) == 0x38 ? 1 : -1];
-
-typedef char check_PartialSparseClear_second[offsetof(PartialSparseClear, second) == 0xEA9C ? 1 : -1];
-
-typedef char check_PartialSparseClear_third[offsetof(PartialSparseClear, third) == 0xEAA8 ? 1 : -1];
-
-typedef char check_PartialSparseClear_fourth[offsetof(PartialSparseClear, fourth) == 0xEAB0 ? 1 : -1];
-
 typedef char check_PartialTableRecord_size[sizeof(PartialTableRecord) == 12 ? 1 : -1];
 
 typedef char check_PartialTableView_size[sizeof(PartialTableView) == 0xC40 ? 1 : -1];
@@ -291,16 +230,6 @@ typedef char check_PartialTableView_size[sizeof(PartialTableView) == 0xC40 ? 1 :
 typedef char check_PartialTableView_count[offsetof(PartialTableView, count) == 0xC34 ? 1 : -1];
 
 typedef char check_PartialTableView_records[offsetof(PartialTableView, records) == 0xC3C ? 1 : -1];
-
-typedef char check_PartialLookupRecord_size[sizeof(PartialLookupRecord) == 9 ? 1 : -1];
-
-typedef char check_PartialLookupRecord_key[offsetof(PartialLookupRecord, key) == 0 ? 1 : -1];
-
-typedef char check_PartialLookupRecord_first[offsetof(PartialLookupRecord, first) == 1 ? 1 : -1];
-
-typedef char check_PartialLookupRecord_second[offsetof(PartialLookupRecord, second) == 2 ? 1 : -1];
-
-typedef char check_PartialLookupHeader_records[offsetof(PartialLookupHeader, records) == 0x1C ? 1 : -1];
 
 
 

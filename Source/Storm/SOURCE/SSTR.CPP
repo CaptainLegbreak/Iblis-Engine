@@ -4,7 +4,7 @@
 #include "D2StormTypes.h"
 #include "StormApi.h"
 
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
+void __stdcall SErrSetLastError(unsigned int dwErrCode); // 0x0041C340
 
 extern "C" void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int dwFlags); // 0x00413020
 
@@ -55,7 +55,7 @@ int __stdcall SStrCmp(const char* szString1, const char* szString2, int nMaxChar
     VALIDATE(szString2);
     if (!nValid)
     {
-        sub_0041C340_SetLastError(0x57);
+        SErrSetLastError(0x57);
         return (int)(szString1 - szString2);
     }
     return nValid ? strncmp(szString1, szString2, nMaxChars) : 0;
@@ -69,7 +69,7 @@ int __stdcall SStrCmpI(const char* szString1, const char* szString2, unsigned in
     VALIDATE(szString2);
     if (!nValid)
     {
-        sub_0041C340_SetLastError(0x57);
+        SErrSetLastError(0x57);
         return szString1 - szString2;
     }
     return nValid ? _strnicmp(szString1, szString2, nMaxChars) : 0;
@@ -151,7 +151,7 @@ unsigned int __stdcall SStrCopy(char* dest,const char* source,unsigned int limit
  int valid=-1;
  valid&=dest?-1:0;
  valid&=source?-1:0;
- if(!valid) { sub_0041C340_SetLastError(87); return 0; }
+ if(!valid) { SErrSetLastError(87); return 0; }
  if(!limit) return 0;
  unsigned int end=(unsigned int)dest+limit-1;
  int offset=(unsigned int)dest-end;
@@ -296,7 +296,7 @@ unsigned int __stdcall SStrPack(char* dest, const char* source, unsigned int lim
 {
  int valid=(__int64)dest?-1:0;
  valid&=source?-1:0;
- if(!valid) { sub_0041C340_SetLastError(87); return 0; }
+ if(!valid) { SErrSetLastError(87); return 0; }
  if(!limit) return 0;
  unsigned int dwOnes = 0xFFFFFFFF;
  const char* p = dest;

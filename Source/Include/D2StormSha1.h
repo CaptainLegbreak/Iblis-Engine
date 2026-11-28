@@ -9,5 +9,5 @@ struct Sha1
 
     void Initialize();                                              // 0x00425D90
     void Append(const unsigned char* pData, unsigned int nLen);     // 0x00425DD0
-    void sub_00425F00_Final(unsigned char* pDigest);                // 0x00425F00
+    void Final(unsigned char* pDigest);                // 0x00425F00
 };

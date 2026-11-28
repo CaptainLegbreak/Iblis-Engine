@@ -878,7 +878,7 @@ void __stdcall PANEL_OnMouseClick(SMSGHANDLER_PARAMS* pMsg)
         gbControlPanelClicked=1;
         pMsg->bReturn=1;
         pMsg->lResult=0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         return;
     }
     int nHeight=gnScreenHeight;
@@ -920,7 +920,7 @@ void __stdcall PANEL_OnMouseClick(SMSGHANDLER_PARAMS* pMsg)
         gbControlPanelMouseDown=1;
         pMsg->bReturn=1;
         pMsg->lResult=0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         return;
     }
     pMsg->bReturn=0;
@@ -1992,7 +1992,7 @@ void __stdcall PANEL_BeltMouseReleaseMsg(SMSGHANDLER_PARAMS* pMsg)
                 PANEL_ClickBeltBox(pPlayer->pInventory,x,y);
                 pMsg->bReturn=1;
                 pMsg->lResult=0;
-                sub_00420290_BreakHandlerChain(pMsg);
+                SMsgBreakHandlerChain(pMsg);
             }
             else if(x>=gnScreenWidth/2-8 && x<=gnScreenWidth/2+5 && y>=gnScreenHeight-39 && y<=gnScreenHeight-13) {
                 if(GAME_GetUIVarState(21)) UI_SetUIVar(21,1,0);
@@ -2040,7 +2040,7 @@ void __stdcall PANEL_BeltMouseReleaseMsg(SMSGHANDLER_PARAMS* pMsg)
             gbControlPanelMouseDown=0;
             pMsg->bReturn=1;
             pMsg->lResult=0;
-            sub_00420290_BreakHandlerChain(pMsg);
+            SMsgBreakHandlerChain(pMsg);
         }
         else {
             pMsg->bReturn=0;
@@ -2153,7 +2153,7 @@ void __stdcall PANEL_BeltClickMsg(SMSGHANDLER_PARAMS* pMsg)
         }
 
         PANEL_UseBeltSlot(nBox, pPlayer, pPlayer->pInventory, (pMsg->wParam >> 2) & 1);
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         return;
     }
 

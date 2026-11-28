@@ -1020,12 +1020,6 @@ static void QSERVER_StartServer(D2QueueServerStrc* pServer, int nValue)
     }
 }
 
-void __fastcall sub_Emit_006BF520(D2QueueServerStrc* pServer, int nValue)
-{
-    QSERVER_StartServer(pServer, nValue);
-    QSERVER_StartServer(pServer, nValue);
-}
-
 // 0x006BF580
 int __stdcall QSERVER_CountEntries(D2QueueServerStrc* pServer)
 {
@@ -1115,7 +1109,6 @@ void __cdecl sub_006BF750_Nop()
 // 0x006BF760
 D2QueueServerStrc* __stdcall QSInit(int nState, int nSlots, int nPort, int bDisableNt, D2MessageCallback pfnProcess, D2NewClientFn pfnOnNewClient, D2QRemoveCallback pfnOnRemove, D2QServerHandler pfnHandler)
 {
-    D2WSADataStrc tWsaData;
     D2QueueServerStrc* pServer = (D2QueueServerStrc*)FOG_Alloc(sizeof(D2QueueServerStrc), gszQServerCppFile, 148, 0);
     memset(pServer, 0, sizeof(D2QueueServerStrc));
     pServer->nBuckets = gnLockCount;
@@ -1173,13 +1166,7 @@ D2QueueServerStrc* __stdcall QSInit(int nState, int nSlots, int nPort, int bDisa
     pServer->nState = nState;
     if (nState != 1 && nState != 2)
     {
-        if (!WSAStartup(0x101, &tWsaData))
-        {
-            if (pServer->bAltSend)
-                QSERVERNT_Startup(pServer, nPort);
-            else
-                QSERVER98_StartServer(pServer, nPort);
-        }
+        QSERVER_StartServer(pServer, nPort);
     }
     return pServer;
 }

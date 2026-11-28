@@ -78,7 +78,7 @@ struct BigBuffer
     }
     void GrowToFit(int nIndex);                                                                // 0x00421FE0
     void sub_004220D0_SetCount(unsigned int nCount);                                                        // 0x004220D0
-    void sub_00422140_Trim();                                                                               // 0x00422140
+    void Trim();                                                                               // 0x00422140
     unsigned int sub_004212D0_Get(unsigned int nIndex);                                                      // 0x004212D0
 };
 

@@ -62,12 +62,7 @@ void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char
 
 
 
-struct D2DrlgWarpStrc
-{
-    int nLevel;
-    int nVis[16];
-    D2DrlgWarpStrc* pNext;
-};
+#include "D2DrlgWarp.h"
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 

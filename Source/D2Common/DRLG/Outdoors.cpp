@@ -107,8 +107,6 @@ extern const signed char gnRandomOutdoorDs1OffsetX[8];  // 0x006F0614
 
 extern const signed char gnRandomOutdoorDs1OffsetY[8];  // 0x006F060C
 
-struct Point { int x, y; };
-
 struct D2DrlgMapStrc;
 
 struct D2DrlgOrthStrc;
@@ -316,24 +314,24 @@ int __fastcall DRLGOUTDOORS_SpawnRandomOutdoorDS1(D2DrlgLevelStrc* pLevel, int n
     const int width = pOutdoors->nGridWidth - BORDER;
     const int count = width * (pOutdoors->nGridHeight - BORDER);
     if (!count) return 0;
-    Point cells[256];
+    D2CoordStrc cells[256];
     for (int i = 0; i < count; ++i)
     {
-        cells[i].x = i % width;
-        cells[i].y = i / width;
+        cells[i].nX = i % width;
+        cells[i].nY = i / width;
     }
     for (int i = 0; i < count; ++i)
     {
         const int first = ITEMS_RollLimitedRandomNumber(&pLevel->pSeed, count);
         const int second = ITEMS_RollLimitedRandomNumber(&pLevel->pSeed, count);
-        Point temp = cells[first];
+        D2CoordStrc temp = cells[first];
         cells[first] = cells[second];
         cells[second] = temp;
     }
     for (int i = 0; i < count; ++i)
     {
-        const int x = cells[i].x + CELL_OFFSET;
-        const int y = cells[i].y + CELL_OFFSET;
+        const int x = cells[i].nX + CELL_OFFSET;
+        const int y = cells[i].nY + CELL_OFFSET;
         if (DRLGGRID_GetGridEntry(&pOutdoors->pGrid[2], x, y) & 0x80)
         {
             for (int j = 0; j < 8; ++j)

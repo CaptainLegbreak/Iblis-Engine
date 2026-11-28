@@ -158,7 +158,7 @@ extern "C" int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, 
 extern "C" void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int dwFlags); // 0x00413020
 void __stdcall SMemZero(void* pDst, unsigned int nSize); // 0x0041D300
 void* __cdecl StormGetInstance(); // 0x0041BEF0
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
+void __stdcall SErrSetLastError(unsigned int dwErrCode); // 0x0041C340
 
 extern "C" const char gszDelete[]; // 0x006CC824
 extern "C" const char gszEmptyAssertText; // 0x006CC837
@@ -318,7 +318,7 @@ static void __stdcall GenerateError(D2ErrorCallback callback, unsigned int error
         SStrCopy(message, format, 256);
     if (message[0])
         SStrPack(message, gszNewline, 256);
-    sub_0041C340_SetLastError(error);
+    SErrSetLastError(error);
     report.error = error;
     report.context = context;
     report.message = message;

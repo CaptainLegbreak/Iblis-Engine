@@ -43,7 +43,7 @@ extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* 
 
 extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2CriticalSectionStrc* pLock);        // 0x006CC1FC
 
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
+void __stdcall SErrSetLastError(unsigned int dwErrCode); // 0x0041C340
 
 extern "C" __declspec(dllimport) void* __stdcall CreateFileA(const char* szFileName, unsigned long dwAccess, unsigned long dwShare, void* pSecurity, unsigned long dwCreation, unsigned long dwFlags, void* hTemplate); // 0x006CC19C
 

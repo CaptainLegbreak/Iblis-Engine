@@ -58,7 +58,7 @@ struct BigBuffer
     unsigned int* sub_00422050_At(unsigned int nIndex);
     void sub_00422120_SetStart(unsigned int nStart);
     BigBuffer& operator=(const BigBuffer& tSource);
-    void sub_00422080_TrimToStart();
+    void TrimToStart(); // 0x00422080
     unsigned int Count() const
     {
         return m_array.m_count - m_start;
@@ -71,7 +71,7 @@ struct BigBuffer
     {
         return IsUsed(nIndex) ? m_array.m_data[m_start + nIndex] : 0;
     }
-    void sub_00422140_Trim();                                                                               // 0x00422140
+    void Trim();                                                                               // 0x00422140
     static unsigned int __stdcall RoundUp(unsigned int nValue, unsigned int nAlign)
     {
         unsigned int nRemainder = nValue % nAlign;
@@ -164,7 +164,7 @@ struct D2StormArrayBStrc
         m_data[m_count] = nByte;
         m_count += 1;
     }
-    unsigned int sub_004219D0_AddOne(const unsigned char* pData);
+    unsigned int AddOne(const unsigned char* pData); // 0x004219D0
 };
 
 struct D2StormBigStrc
@@ -176,7 +176,7 @@ struct D2StormBigStrc
     static void operator delete(void* pMemory);
 };
 
-void __stdcall sub_00421CB0_AppendDigits(D2StormArrayBStrc* pOut, BigBuffer* pIn); // 0x00421CB0
+void __stdcall ToBinaryAppend(D2StormArrayBStrc* pOut, BigBuffer* pIn); // 0x00421CB0
 extern "C" int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int dwFlags); // 0x00412650
 
 struct D2GameLinkStrc
@@ -198,7 +198,7 @@ struct D2GameStrc
 
 
 // 0x00422080
-void BigBuffer::sub_00422080_TrimToStart()
+void BigBuffer::TrimToStart()
 {
     m_array.SetCountReserve(m_start);
 }
@@ -216,7 +216,7 @@ void sub_Emit_D2StormBigStrc(D2StormBigStrc* p)
 }
 
 // 0x00426160
-unsigned int __fastcall sub_00426160_GetTableSize(unsigned int nCount)
+unsigned int __fastcall GetTableSize(unsigned int nCount)
 {
     unsigned int nSize = 1;
     const unsigned int nLimit = 2 * nCount + 2;

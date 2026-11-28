@@ -207,7 +207,7 @@ void __cdecl CURSOR_DrawCursor(); // 0x004684C0
 int __cdecl sub_00468730(); // 0x00468730
 int __cdecl sub_00468740(); // 0x00468740
 int __cdecl CURSOR_GetCursorState(); // 0x00468830
-void __cdecl sub_00468F00_ShowBelt(); // 0x00468F00
+void __cdecl CMDTBL_ShowBelt(); // 0x00468F00
 void __fastcall CMDTBL_ResetKeyConfig(int nArg); // 0x00469A60
 unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB); // 0x00469AA0
 void __cdecl CMDTBL_SaveHotkeys(); // 0x00469D20
@@ -510,7 +510,7 @@ void __stdcall NPCMENU_OpenNpcPanel(int nStringIndex, int nEntryIndex); // 0x004
 void __stdcall NPCMENU_OpenConfirmDialog(int nStringIndex); // 0x004B5AD0
 void __cdecl DIALOG_LoadDialogHotkeys(); // 0x004B7C60
 void __fastcall DIALOG_DestroyDialog(void* pRes); // 0x004B8020
-void __fastcall sub_004B82F0_Select(D2ClientDialogStrc* pDialog, int nIndex); // 0x004B82F0
+void __fastcall DIALOG_SelectLine(D2ClientDialogStrc* pDialog, int nIndex); // 0x004B82F0
 int __cdecl DIALOG_GetDialogCount(); // 0x004B85E0
 int __stdcall INV_GetTableByte(int nUnused, int nIndex); // 0x004B92E0
 int __fastcall SOUNDINST_GetValue(int nHandle); // 0x004B9B20

@@ -18,6 +18,7 @@
 #include "StormApi.h"
 #include "D2CommonApi.h"
 #include "D2CommonApi2.h"
+#include "D2Packets.h"
 
 struct D2AutomapCellStrc;
 
@@ -220,13 +221,6 @@ extern "C" void __fastcall AUTOMAP_SetUnitFlag(Obj00457460* pObj, unsigned int d
 
 
 
-struct D2GSPacketSrv60
-{
-    unsigned char nHeader;
-    unsigned char nFlags;
-    unsigned char nLevel;
-    char dwUnitGUID[4];
-};
 
 
 
@@ -1330,7 +1324,7 @@ void __fastcall ITEM_ApplyTownPortalState(D2GSPacketSrv60* pPacket)
 {
     D2_ASSERT(pPacket, 0x556);
 
-    D2UnitStrc* pUnit = CUNIT_FindClientUnit(*(int*)pPacket->dwUnitGUID, UNIT_OBJECT);
+    D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->dwUnitGUID, UNIT_OBJECT);
     if (pUnit)
     {
         D2_ASSERT(pUnit->dwClassId == 0x3B || pUnit->dwClassId == 0x3C, 0x560);

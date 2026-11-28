@@ -383,7 +383,7 @@ int SpinnerImplementation::OnMouseWheel(SMSGHANDLER_PARAMS* pMsg)
 
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
     return 1;
 }
 static inline int sub_004BC0A0_IsInFirst(D2ButtonPairStrc* pButtons, D2MouseMessageStrc* pMessage)

@@ -31,7 +31,7 @@ void __stdcall GAME_HandleEndScreenButtonDown(SMSGHANDLER_PARAMS* pMsg)
         gbRightClickConsumed = 0;
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         return;
     }
 
@@ -41,7 +41,7 @@ void __stdcall GAME_HandleEndScreenButtonDown(SMSGHANDLER_PARAMS* pMsg)
     gbRightClickConsumed = 0;
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x0044E4F0
@@ -57,7 +57,7 @@ void __stdcall GAME_HandleEndScreenButtonUp(SMSGHANDLER_PARAMS* pMsg)
         gbEndScreenDismissed = 1;
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         return;
     }
     gbLeftButtonDown = 0;
@@ -66,7 +66,7 @@ void __stdcall GAME_HandleEndScreenButtonUp(SMSGHANDLER_PARAMS* pMsg)
     gbRightClickConsumed = 0;
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 

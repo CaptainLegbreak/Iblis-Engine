@@ -8,7 +8,7 @@
 
 #define ERROR_INVALID 0x57
 
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
+void __stdcall SErrSetLastError(unsigned int dwErrCode); // 0x0041C340
 
 int gnErrorOutputMode_0077909C;         // 0x0077909C
 
@@ -58,7 +58,7 @@ int __stdcall StormSetOption(unsigned int nOption, void* pOutput, unsigned int* 
     VALIDATE(pOutput);
     VALIDATE(pSize);
     VALIDATEEND;
-    sub_0041C340_SetLastError(ERROR_INVALID);
+    SErrSetLastError(ERROR_INVALID);
     switch (nOption)
     {
     case 1 + OPTION_BIAS:
@@ -87,7 +87,7 @@ int __stdcall StormSetOption(unsigned int nOption, void* pOutput, unsigned int* 
         *pSize = OUTPUT_BYTES;
         break;
     }
-    sub_0041C340_SetLastError(0);
+    SErrSetLastError(0);
     return nValid ? 1 : 0;
 }
 
@@ -97,7 +97,7 @@ int __stdcall StormGetOption(unsigned int nOption, const void* pInput, unsigned 
     VALIDATEBEGIN;
     VALIDATE(pInput);
     VALIDATEEND;
-    sub_0041C340_SetLastError(ERROR_INVALID);
+    SErrSetLastError(ERROR_INVALID);
     switch (nOption)
     {
     case 1 + OPTION_BIAS:
@@ -125,7 +125,7 @@ int __stdcall StormGetOption(unsigned int nOption, const void* pInput, unsigned 
         gbSLogDebugOutput = ((const int*)pInput)[INPUT_INDEX];
         break;
     }
-    sub_0041C340_SetLastError(0);
+    SErrSetLastError(0);
     return nValid ? 1 : 0;
 }
 

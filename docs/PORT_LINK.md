@@ -8,13 +8,13 @@ fixes come back with the next sync. Remeasure after each sync:
     ninja -C build -k 0 2> link.log                       # or the Visual Studio build's output
     python tools/link_report.py build link.log ../Iblis-Codex --md links.md
 
-Last measured: 2026-11-28, Source/ at Codex 4136fc4 (#509) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
+Last measured: 2026-11-28, Source/ at Codex 7e55106 (#511) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
 docs/PORT_COMPILE.md (every object of the 22 module libraries and the program, `/WHOLEARCHIVE`).
 
 ## Result
 
-The link of Game.exe fails with **914 unresolved symbols** (LNK2001/LNK2019) and **400 symbols defined more than once** (LNK2005).
-Counted as references, one per symbol and file that asks for it: **2340**.
+The link of Game.exe fails with **913 unresolved symbols** (LNK2001/LNK2019) and **396 symbols defined more than once** (LNK2005).
+Counted as references, one per symbol and file that asks for it: **2331**.
 
 Codex's count (21,648 references on Codex #492) counts every place in the code that uses a symbol; this report
 counts each symbol once per file. The categories are the same, with three differences:
@@ -40,7 +40,7 @@ on calling convention, argument bytes and return register (`tools/abi.py`); a re
 of function pointers) is bound for its address alone. No game source is changed, and an alias drops out when Codex
 fixes the declaration.
 
-At Codex 4136fc4: **2729 aliases** (1124 of them address-only), unresolved symbols with them **914** (1222 at 16572ad). Checked against
+At Codex 7e55106: **2722 aliases** (1124 of them address-only), unresolved symbols with them **913** (1222 at 16572ad). Checked against
 Codex's own `LINK_DEBT.json` (linkdebt.py with the user's Game.exe): 2803 agree; 3 bind the same address through the
 one external definition where Codex names it differently (`gpHoverItem`, `gbGoldButtonDisabled`); 25 aren't in Codex's
 list (references in code Codex's ordinary link leaves out, or tables the engine holds as source) and were checked by
@@ -61,18 +61,18 @@ crash risk, for Codex lane 12): **116**, by kind: calling convention 56, return 
 | renamed_definition | 100 | 61 |
 | interior | 6 | 6 |
 | unsourced_data | 509 | 399 |
-| no_address | 209 | 149 |
-| duplicate_data | 185 | 83 |
+| no_address | 208 | 148 |
+| duplicate_data | 177 | 79 |
 | local_copy | 819 | 317 |
-| **total** | 2340 | 1314 |
+| **total** | 2331 | 1309 |
 
 ## By module (references)
 
 | Module | import | crt | type | ident | plchld | renamed | inter | unsrc | noaddr | dup | copy | total |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| D2Client | 0 | 0 | 19 | 29 | 87 | 46 | 0 | 129 | 119 | 52 | 457 | 938 |
+| D2Client | 0 | 0 | 19 | 29 | 87 | 46 | 0 | 129 | 118 | 52 | 457 | 937 |
 | D2Game | 0 | 2 | 25 | 132 | 44 | 21 | 0 | 24 | 3 | 49 | 76 | 376 |
-| D2Common | 0 | 0 | 5 | 6 | 14 | 4 | 0 | 105 | 7 | 8 | 88 | 237 |
+| D2Common | 0 | 0 | 5 | 6 | 14 | 4 | 0 | 105 | 7 | 0 | 88 | 229 |
 | Fog | 0 | 0 | 1 | 0 | 5 | 10 | 0 | 55 | 5 | 32 | 57 | 165 |
 | D2CMP | 0 | 0 | 2 | 3 | 4 | 3 | 0 | 31 | 6 | 0 | 39 | 88 |
 | Storm | 0 | 0 | 3 | 0 | 26 | 5 | 0 | 14 | 3 | 4 | 33 | 88 |
@@ -165,7 +165,7 @@ crash risk, for Codex lane 12): **116**, by kind: calling convention 56, return 
 - `gIndexStrips` at 0x009716B0, in Source/D2Direct3D/Unknown_006B7530.cpp
 - `gLargeBudget` at 0x007C90E0, in Source/D2Direct3D/Src/d3dCore.cpp
 
-**no_address** (149 symbols)
+**no_address** (148 symbols)
 
 - `ListBoxWrapper::ListBoxWrapper`, in Source/D2Client/UI/text.cpp
 - `ListBoxWrapper::ListBoxWrapper`, in Source/D2Client/UI/npcmenu_004B5C60.cpp
@@ -176,7 +176,7 @@ crash risk, for Codex lane 12): **116**, by kind: calling convention 56, return 
 - `WardenModule::~WardenModule`, in Source/D2CMP/SRC/CelCmp.cpp
 - `WardenModule::~WardenModule`, in Source/D2Client/GAME/Game.cpp
 
-**duplicate_data** (83 symbols)
+**duplicate_data** (79 symbols)
 
 - `gpfnMcpMotdCallback`, in Source/D2Client/CORE/WINMAIN.CPP, Source/D2Client/Unknown_0044B400.cpp, Source/D2Client/Unknown_0044BA20.cpp, Source/D2M
 - `gGameListLock`, in Source/D2Game/GAME/Clients.cpp, Source/D2Game/GAME/Game.cpp, Source/D2Game/OBJECTS/objrgn.cpp

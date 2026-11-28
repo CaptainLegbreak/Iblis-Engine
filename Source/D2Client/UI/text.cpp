@@ -27,6 +27,7 @@
 #include "D2ClientKeyConfig.h"
 #include "FogApi.h"
 #include "StormApi.h"
+#include "D2Packets.h"
 #include "D2CommonApi.h"
 #include "D2LangApi.h"
 #include "FogApi.h"
@@ -52,7 +53,6 @@ struct D2TextListStrc;
 
 
 
-struct D2GSPacketSrv26;
 
 struct D2CommonChatIgnoreListStrc;
 
@@ -69,23 +69,9 @@ struct D2SplittedTextStrc;
 
 struct SMSGHANDLER_PARAMS;
 
-struct ByteRecord;
-
 struct PacketWords;
 
-struct PacketShorts;
-
-struct Digest;
-
 struct HashState;
-
-struct Member;
-
-struct ClassRecord;
-
-struct ClassTableView;
-
-struct UnitView;
 
 class ListBoxImplementation;
 
@@ -131,18 +117,6 @@ int gbTextHandlersRegistered; // 0x007BF27C
 
 extern D2MsgHandlerEntryStrc gaTextMsgHandlers[]; // 0x00722600
 
-struct D2GSPacketSrv26
-{
-    unsigned char nHeader;
-    unsigned char nMessageType;
-    unsigned char nLang;
-    unsigned char nUnitType;
-    unsigned int dwUnitGUID;
-    unsigned char nMessageColor;
-    unsigned char nNameColor;
-    char szName[16];
-    char szMessage[256];
-};
 
 extern "C" __declspec(dllimport) int __stdcall MultiByteToWideChar(unsigned int nCodePage, unsigned long dwFlags, const char* szSource, int nSource, Unicode* wszDest, int nDest); // 0x006CC29C
 
@@ -259,13 +233,6 @@ void __stdcall TEXT_OpenTextPanel(int bFlag); // 0x0049FBA0
 
 
 
-struct ByteRecord
-{
-    char gap00[0x3E];
-    unsigned char value;
-    char tail[0x4F];
-};
-
 #pragma pack(push, 1)
 
 struct PacketWords
@@ -275,25 +242,7 @@ struct PacketWords
     unsigned short wSlots[6];
 };
 
-struct PacketShorts
-{
-    char prefix[1];
-    unsigned short kind;
-    unsigned short a;
-    unsigned short b;
-    unsigned short c;
-};
-
 #pragma pack(pop)
-
-struct Digest
-{
-    unsigned int a;
-    unsigned int b;
-    unsigned int c;
-    unsigned int d;
-    unsigned int e;
-};
 
 struct HashState
 {
@@ -307,76 +256,9 @@ struct HashState
     char block[0x40];
 };
 
-struct Member
-{
-    short value;
-};
-
-struct ClassRecord
-{
-    char gap00[2];
-    short relation;
-    short next;
-    char gapToMembers[0x16A];
-    Member members[8];
-    char tail[0x28];
-};
-
-struct ClassTableView
-{
-    char gap00[0xA78];
-    ClassRecord* records;
-    char gapAfterRecords[4];
-    int count;
-};
-
-struct PayloadView;
-
-struct UnitView
-{
-    unsigned int type;
-    int classId;
-    char unused8[0xC];
-    PayloadView* payload;
-};
-
-typedef char ByteRecord_value[OFFSET(ByteRecord,value)==0x3E?1:-1];
-
 typedef char PacketWords_kind[OFFSET(PacketWords,kind)==0x1?1:-1];
 
 typedef char PacketWords_wSlots[OFFSET(PacketWords,wSlots)==0x3?1:-1];
-
-typedef char PacketShorts_kind[OFFSET(PacketShorts,kind)==0x1?1:-1];
-
-typedef char PacketShorts_a[OFFSET(PacketShorts,a)==0x3?1:-1];
-
-typedef char PacketShorts_b[OFFSET(PacketShorts,b)==0x5?1:-1];
-
-typedef char PacketShorts_c[OFFSET(PacketShorts,c)==0x7?1:-1];
-
-typedef char ClassRecord_relation[OFFSET(ClassRecord,relation)==0x2?1:-1];
-
-typedef char ClassRecord_next[OFFSET(ClassRecord,next)==0x4?1:-1];
-
-typedef char ClassRecord_members[OFFSET(ClassRecord,members)==0x170?1:-1];
-
-typedef char ClassTableView_records[OFFSET(ClassTableView,records)==0xA78?1:-1];
-
-typedef char ClassTableView_count[OFFSET(ClassTableView,count)==0xA80?1:-1];
-
-typedef char UnitView_type[OFFSET(UnitView,type)==0x0?1:-1];
-
-typedef char UnitView_classId[OFFSET(UnitView,classId)==0x4?1:-1];
-
-typedef char Digest_a[OFFSET(Digest,a)==0x0?1:-1];
-
-typedef char Digest_b[OFFSET(Digest,b)==0x4?1:-1];
-
-typedef char Digest_c[OFFSET(Digest,c)==0x8?1:-1];
-
-typedef char Digest_d[OFFSET(Digest,d)==0xC?1:-1];
-
-typedef char Digest_e[OFFSET(Digest,e)==0x10?1:-1];
 
 typedef char HashState_a[OFFSET(HashState,a)==0x0?1:-1];
 
@@ -392,21 +274,9 @@ typedef char HashState_lowCount[OFFSET(HashState,lowCount)==0x14?1:-1];
 
 typedef char HashState_highCount[OFFSET(HashState,highCount)==0x18?1:-1];
 
-typedef char ByteRecord_size[sizeof(ByteRecord)==0x8E?1:-1];
-
 typedef char PacketWords_size[sizeof(PacketWords)==0xF?1:-1];
 
-typedef char PacketShorts_size[sizeof(PacketShorts)==0x9?1:-1];
-
-typedef char Digest_size[sizeof(Digest)==0x14?1:-1];
-
 typedef char HashState_size[sizeof(HashState)==0x5C?1:-1];
-
-typedef char Member_size[sizeof(Member)==0x2?1:-1];
-
-typedef char ClassRecord_size[sizeof(ClassRecord)==0x1A8?1:-1];
-
-extern "C" ByteRecord* sgptSoundHeaderTable;
 
 extern "C" int gRecordCount_007BC9A4;
 
@@ -415,8 +285,6 @@ extern "C" unsigned int gValue_007BF254; // 0x007BF254
 
 
 extern "C" HashState gatBnHashCtx[];
-
-extern "C" ClassTableView* gClassTable_00744304;
 
 static bool TEXT_ConvertHoverText(int nLangId, Unicode* wszText, const char* szText); // 0x0049E280
 
@@ -559,8 +427,6 @@ int __cdecl sub_00525150();
 
 #define STAT_LEVEL 12
 
-struct D2SliderButtonStrc;
-
 
 
 
@@ -585,24 +451,11 @@ void __stdcall TEXT_LoadQuestPage(int nPage, int nArg); // 0x004A3220
 
 #pragma pack(push, 2)
 
-struct D2SliderButtonStrc
-{
-    unsigned short nStringId;
-    void (__cdecl* pfnClick)();
-    int unk0x06;
-    int nLeft;
-    int nRight;
-    int nTop;
-    int nBottom;
-};
-
 
 #pragma pack(pop)
 
 
 
-
-extern D2SliderButtonStrc gaKeyConfigButtons[3]; // 0x007246D8
 
 int gaPressed[7]; // 0x007C0288
 
@@ -632,13 +485,6 @@ extern int gnAutomapHeight; // 0x007A521C
 
 
 #pragma pack(push, 2)
-
-struct D2ClientListEntryStrc
-{
-    int nId;
-    unsigned short nString;
-    unsigned char unk0x06[4];
-};
 
 #pragma pack(pop)
 
@@ -869,7 +715,6 @@ struct D2ActiveRoomStrc;
 
 struct D2StoredUnitRecordStrc;
 
-struct D2GSPacketSrv5A;
 
 struct D2SuperUniquesTxt;
 
@@ -880,24 +725,6 @@ Unicode* __fastcall sub_00526700(Unicode* pDst, const Unicode* pSrc); // 0x00526
 
 
 void __stdcall ITEMMODS_AssignProperty(int nPass, int nArg1, D2UnitStrc* pItem, int nArg, int nArg2, int nArg5); // 0x0065FEC0
-
-#pragma pack(push, 1)
-
-struct D2GSPacketSrv5A
-{
-    unsigned char nHeader;
-    unsigned char nType;
-    unsigned char nColor;
-    int dwParam;
-    unsigned char nParam;
-    union
-    {
-        char szText[32];
-        char szTextData[2][16];
-    };
-};
-
-#pragma pack(pop)
 
 extern "C" char* __cdecl strcpy(char* szDst, const char* szSrc);
 
@@ -1060,10 +887,6 @@ D2TextHeaderStrc* gpTextHeader; // 0x007BF250
 
 
 
-extern D2ClientListEntryStrc gaKeyConfigEntries[]; // 0x00724268
-
-extern D2ClientListEntryStrc gaKeyConfigEntriesExp[]; // 0x00724468
-
 static int TEXT_GetWeaponBlock(D2UnitStrc* pUnit); // 0x004A70C0
 
 static int TEXT_AddToHitFactor(D2UnitStrc* pUnit, int nAttackRate); // 0x004A7300
@@ -1143,16 +966,7 @@ ListBoxWrapper* gpListBox; // 0x007BF1B4
 
 #define FIELD_OFFSET(T, F) ((unsigned long)&(((T*)0)->F))
 #pragma pack(push, 2)
-struct PackedNode
-{
-    char unused0[0x1e];
-    int value;
-    PackedNode* next;
-};
 #pragma pack(pop)
-typedef char PackedNode_value_offset[(FIELD_OFFSET(PackedNode,value)==0x1e)?1:-1];
-typedef char PackedNode_next_offset[(FIELD_OFFSET(PackedNode,next)==0x22)?1:-1];
-typedef char PackedNode_size[(sizeof(PackedNode)==0x26)?1:-1];
 
 
 
@@ -1162,20 +976,6 @@ typedef char PackedNode_size[(sizeof(PackedNode)==0x26)?1:-1];
 
 
 
-struct SearchRecord
-{
-    char unused0[2];
-    unsigned char value;
-    unsigned char destination;
-    char unused4[4];
-    int key;
-    char unusedC[0x4];
-};
-typedef char SearchRecord_size[(sizeof(SearchRecord)==0x10)?1:-1];
-typedef char SearchRecord_key_offset[(FIELD_OFFSET(SearchRecord,key)==8)?1:-1];
-typedef char SearchRecord_value_offset[(FIELD_OFFSET(SearchRecord,value)==2)?1:-1];
-typedef char SearchRecord_destination_offset[(FIELD_OFFSET(SearchRecord,destination)==3)?1:-1];
-extern "C" SearchRecord gSearch_00723F30[41];
 struct OutputRecord
 {
     char opaque[0x120];
@@ -1208,20 +1008,6 @@ typedef char TablesView_outputCount_offset[(FIELD_OFFSET(TablesView,outputCount)
 typedef char TablesView_inputs_offset[(FIELD_OFFSET(TablesView,inputs)==0xb98)?1:-1];
 typedef char TablesView_inputCount_offset[(FIELD_OFFSET(TablesView,inputCount)==0xba0)?1:-1];
 extern "C" TablesView* gTables_00744304;
-struct PayloadView
-{
-    char unused0[0x16];
-    unsigned short flags;
-    char unusedAfterFlags[4];
-    unsigned char modifiers[10];
-    short value26;
-};
-typedef char PayloadView_size[(sizeof(PayloadView)==0x28)?1:-1];
-typedef char PayloadView_flags_offset[(FIELD_OFFSET(PayloadView,flags)==0x16)?1:-1];
-typedef char PayloadView_modifiers_offset[(FIELD_OFFSET(PayloadView,modifiers)==0x1c)?1:-1];
-typedef char PayloadView_value_offset[(FIELD_OFFSET(PayloadView,value26)==0x26)?1:-1];
-typedef char UnitView_size[(sizeof(UnitView)==0x18)?1:-1];
-typedef char UnitView_payload_offset[(FIELD_OFFSET(UnitView,payload)==0x14)?1:-1];
 struct D2ButtonLayoutStrc;
 union D2SeedStrc;
 int __cdecl GAME_IsExpansion(); // 0x0044DCC0
@@ -1477,7 +1263,7 @@ void __stdcall TEXT_OnWaypointMouseUp(SMSGHANDLER_PARAMS* pMsg)
         {
             pMsg->bReturn = 1;
             pMsg->lResult = 0;
-            sub_00420290_BreakHandlerChain(pMsg);
+            SMsgBreakHandlerChain(pMsg);
             MSG_SendTwoDwords(0x49, gnWaypointId, gaWaypointEntries[gnWaypointSelected].nLevelId);
             gbSent = 1;
             TEXT_SendWaypointClose();
@@ -1487,7 +1273,7 @@ void __stdcall TEXT_OnWaypointMouseUp(SMSGHANDLER_PARAMS* pMsg)
             sub_004B9A00(0x8B7, 0, 0, 0, 0);
             pMsg->bReturn = 1;
             pMsg->lResult = 0;
-            sub_00420290_BreakHandlerChain(pMsg);
+            SMsgBreakHandlerChain(pMsg);
             return;
         }
 
@@ -1495,7 +1281,7 @@ void __stdcall TEXT_OnWaypointMouseUp(SMSGHANDLER_PARAMS* pMsg)
         gnWaypointSelected = -1;
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
     }
     else
     {
@@ -1740,7 +1526,7 @@ void __stdcall TEXT_EatMsg(SMSGHANDLER_PARAMS* pMsg)
 {
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x0049DA30
@@ -2581,14 +2367,14 @@ void __fastcall TEXT_HandleEventMessage(D2GSPacketSrv5A* pPacket)
     Unicode wszBuffer[0x132];
     Unicode wszName[16];
     Unicode wszName2[16];
-    if (strlen(pPacket->szTextData[0]) >= 15)
-        pPacket->szTextData[0][15] = 0;
+    if (strlen(pPacket->szText) >= 15)
+        pPacket->szText[15] = 0;
     switch (pPacket->nType)
     {
     case 10:
-        if (pPacket->szTextData[0][0])
+        if (pPacket->szText[0])
         {
-            sub_00526F20_ToUnicode(wszName, pPacket->szTextData[0], 16);
+            sub_00526F20_ToUnicode(wszName, pPacket->szText, 16);
             sub_005267E0(wszBuffer, wszName);
             sub_00526700(wszBuffer, D2LANG_GetStringFromTblIndex(0x1026));
             break;
@@ -2602,31 +2388,31 @@ void __fastcall TEXT_HandleEventMessage(D2GSPacketSrv5A* pPacket)
         sub_005267E0(wszBuffer, D2LANG_GetStringFromTblIndex(0xFCF));
         break;
     case 8:
-        sub_00526F20_ToUnicode(wszName, pPacket->szTextData[0], 16);
+        sub_00526F20_ToUnicode(wszName, pPacket->szText, 16);
         sub_005267E0(wszBuffer, wszName);
         sub_00526700(wszBuffer, D2LANG_GetStringFromTblIndex(0xFCC));
         break;
     case 0:
         D2_ASSERT(UNICODE_StrLen(D2LANG_GetStringFromTblIndex(0xE37)) < 0x104, 0x114C);
-        sub_00526F20_ToUnicode(wszName, pPacket->szTextData[0], 16);
+        sub_00526F20_ToUnicode(wszName, pPacket->szText, 16);
         sub_005267E0(wszBuffer, wszName);
         sub_00526700(wszBuffer, D2LANG_GetStringFromTblIndex(0xE37));
         break;
     case 1:
         D2_ASSERT(UNICODE_StrLen(D2LANG_GetStringFromTblIndex(0xE38)) < 0x104, 0x1152);
-        sub_00526F20_ToUnicode(wszName, pPacket->szTextData[0], 16);
+        sub_00526F20_ToUnicode(wszName, pPacket->szText, 16);
         sub_005267E0(wszBuffer, wszName);
         sub_00526700(wszBuffer, D2LANG_GetStringFromTblIndex(0xE38));
         break;
     case 2:
-        if (CUNIT_GetPlayerUnit() && !strcmp(pPacket->szTextData[0], sub_0047A210(CUNIT_GetPlayerUnit())))
+        if (CUNIT_GetPlayerUnit() && !strcmp(pPacket->szText, sub_0047A210(CUNIT_GetPlayerUnit())))
             break;
         D2_ASSERT(UNICODE_StrLen(D2LANG_GetStringFromTblIndex(0xE39)) < 0x104, 0x115C);
-        sub_00526F20_ToUnicode(wszName, pPacket->szTextData[0], 16);
-        if (strlen(pPacket->szTextData[1]))
+        sub_00526F20_ToUnicode(wszName, pPacket->szText, 16);
+        if (strlen(&pPacket->szText[16]))
         {
             Unicode wszAccount[16];
-            sub_00526F20_ToUnicode(wszAccount, pPacket->szTextData[1], 16);
+            sub_00526F20_ToUnicode(wszAccount, &pPacket->szText[16], 16);
             sub_005269D0_FormatText(0x132, wszBuffer, D2LANG_GetStringFromTblIndex(0xE3B), wszName, wszAccount);
             break;
         }
@@ -2634,11 +2420,11 @@ void __fastcall TEXT_HandleEventMessage(D2GSPacketSrv5A* pPacket)
         break;
     case 3:
         D2_ASSERT(UNICODE_StrLen(D2LANG_GetStringFromTblIndex(0xE3A)) < 0x104, 0x116A);
-        sub_00526F20_ToUnicode(wszName, pPacket->szTextData[0], 16);
-        if (strlen(pPacket->szTextData[1]))
+        sub_00526F20_ToUnicode(wszName, pPacket->szText, 16);
+        if (strlen(&pPacket->szText[16]))
         {
             Unicode wszAccount[16];
-            sub_00526F20_ToUnicode(wszAccount, pPacket->szTextData[1], 16);
+            sub_00526F20_ToUnicode(wszAccount, &pPacket->szText[16], 16);
             sub_005269D0_FormatText(0x132, wszBuffer, D2LANG_GetStringFromTblIndex(0xE3C), wszName, wszAccount);
             break;
         }
@@ -2646,41 +2432,41 @@ void __fastcall TEXT_HandleEventMessage(D2GSPacketSrv5A* pPacket)
         break;
     case 4:
         D2_ASSERT(UNICODE_StrLen(D2LANG_GetStringFromTblIndex(0xE3D)) < 0x104, 0x1178);
-        sub_00526F20_ToUnicode(wszName, pPacket->szTextData[0], 16);
+        sub_00526F20_ToUnicode(wszName, pPacket->szText, 16);
         sub_005267E0(wszBuffer, wszName);
         sub_00526700(wszBuffer, D2LANG_GetStringFromTblIndex(0xE3D));
         break;
     case 13:
         D2_ASSERT(UNICODE_StrLen(D2LANG_GetStringFromTblIndex(0xE44)) < 0x104, 0x117E);
-        sub_00526F20_ToUnicode(wszName, pPacket->szTextData[0], 16);
+        sub_00526F20_ToUnicode(wszName, pPacket->szText, 16);
         sub_005267E0(wszBuffer, wszName);
         sub_00526700(wszBuffer, D2LANG_GetStringFromTblIndex(0xE44));
         break;
     case 5:
         D2_ASSERT(UNICODE_StrLen(D2LANG_GetStringFromTblIndex(0xE3E)) < 0x104, 0x1184);
-        sub_00526F20_ToUnicode(wszName, pPacket->szTextData[0], 16);
+        sub_00526F20_ToUnicode(wszName, pPacket->szText, 16);
         sub_005267E0(wszBuffer, wszName);
         sub_00526700(wszBuffer, D2LANG_GetStringFromTblIndex(0xE3E));
         break;
     case 6:
     {
-        sub_00526F20_ToUnicode(wszName, pPacket->szTextData[0], 16);
+        sub_00526F20_ToUnicode(wszName, pPacket->szText, 16);
         const Unicode* pKiller;
         int nStringId;
         int bFound = 0;
         switch (pPacket->nParam)
         {
         case 0:
-            if (strlen(pPacket->szTextData[1]))
+            if (strlen(&pPacket->szText[16]))
             {
-                sub_00526F20_ToUnicode(wszName2, pPacket->szTextData[1], 16);
+                sub_00526F20_ToUnicode(wszName2, &pPacket->szText[16], 16);
                 nStringId = 0xE40;
                 pKiller = wszName2;
                 bFound = 1;
             }
             break;
         case 1:
-            if (!pPacket->szTextData[1][0])
+            if (!pPacket->szText[16])
             {
                 D2MonStatsTxt* pMonStatsTxtRecord = DATATBLS_GetMonStatsTxtRecord(pPacket->dwParam);
                 if (pMonStatsTxtRecord)
@@ -2692,7 +2478,7 @@ void __fastcall TEXT_HandleEventMessage(D2GSPacketSrv5A* pPacket)
             }
             else
             {
-                unsigned short wSuperUnique = *(unsigned short*)pPacket->szTextData[1];
+                unsigned short wSuperUnique = *(unsigned short*)&pPacket->szText[16];
                 nStringId = 0xE40;
                 D2SuperUniquesTxt* pSuperUniquesTxtRecord = DATATBLS_GetSuperUniquesTxtRecord(wSuperUnique);
                 if (pSuperUniquesTxtRecord)
@@ -2735,7 +2521,7 @@ void __fastcall TEXT_HandleEventMessage(D2GSPacketSrv5A* pPacket)
             TEXT_PrintPartyText(wszBuffer, pPacket->nColor);
         return;
     case 11:
-        sub_00526F20_ToUnicode(wszName, pPacket->szTextData[0], 16);
+        sub_00526F20_ToUnicode(wszName, pPacket->szText, 16);
         sub_005269D0_FormatText(0x132, wszBuffer, D2LANG_GetStringFromTblIndex(0x69B), wszName);
         break;
     case 15:
@@ -3117,7 +2903,7 @@ void __stdcall TEXT_CloseTextPanelMsg(SMSGHANDLER_PARAMS* pMsg)
 {
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
     UI_SetUIVar(16, 2, 0);
     TEXT_FreeTextPanelCels();
 }
@@ -3133,7 +2919,7 @@ void __stdcall TEXT_PanelClickMsg(SMSGHANDLER_PARAMS* pMsg)
         TEXT_FreeTextPanelCels();
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         GAME_ResetMouseState();
     }
 }
@@ -3238,7 +3024,7 @@ void TEXT_OpenMessageLogDialog()
     {
         DIALOG_AddWidget(gpListDialog, gpListBox, 0x19, 0x1E);
         TEXT_FillListBox();
-        sub_004B82F0_Select(gpListDialog, -1);
+        DIALOG_SelectLine(gpListDialog, -1);
     }
 }
 
@@ -4065,7 +3851,7 @@ void __stdcall TEXT_KeyUpMsg(SMSGHANDLER_PARAMS* pMsg)
     {
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         gtTextState.bTextCallbackAccepted = 0;
         return;
     }
@@ -4074,7 +3860,7 @@ void __stdcall TEXT_KeyUpMsg(SMSGHANDLER_PARAMS* pMsg)
     {
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
     }
 }
 

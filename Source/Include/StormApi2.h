@@ -66,7 +66,7 @@ unsigned long __stdcall SFileSetFilePointer(void* hFile, long nDistance, long* p
 int __stdcall SFileAuthenticateArchive(void* hArchive, unsigned int* pnResult); // 0x004172F0
 int __stdcall SFileOpenFileEx(void* hMpq, const char* szFileName, unsigned int dwFlags, void** phFile); // 0x004192F0
 int __stdcall SFileLoadFile(const char* szFileName, void** ppBuffer, unsigned int* pSize, unsigned int nExtraSize, void* pOverlapped); // 0x0041B650
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
+void __stdcall SErrSetLastError(unsigned int dwErrCode); // 0x0041C340
 void __stdcall SMemFill(void* pLocation, unsigned int nLength, unsigned char nFillWith); // 0x0041D2C0
 void __stdcall SLogClose(void* hLog); // 0x0041FD00
 int __stdcall SLogCreate(const char* szFileName, unsigned long dwFlags, void** phLog); // 0x0041FD40

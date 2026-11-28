@@ -11,7 +11,7 @@ typedef int (__stdcall* SMSGHANDLER)(void* pParams);
 
 struct SMSGHANDLER_PARAMS;
 
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
+void __stdcall SErrSetLastError(unsigned int dwErrCode); // 0x0041C340
 
 struct WNDREC : TSLinkedNode<WNDREC>
 {
@@ -207,7 +207,7 @@ int D2Strc00420DA0::GetSpan()
 }
 
 // 0x00420290
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg)
+int __stdcall SMsgBreakHandlerChain(SMSGHANDLER_PARAMS* pMsg)
 {
     return SEvtBreakHandlerChain(pMsg);
 }
