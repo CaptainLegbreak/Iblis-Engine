@@ -26,7 +26,7 @@ struct D2FieldStrc
 extern D2DataTablesStrc sgtDataTables; // 0x0096BC30
 extern const int gnFieldXOffsets[9]; // 0x00749780
 extern const int gnFieldYOffsets[9]; // 0x007497A4
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
@@ -49,7 +49,7 @@ int __stdcall DATATBLS_InitializeCollisionFieldTable(char* pExpField, int nSize)
     pExpField += 4;
     const int nArea = nWidth * nHeight;
 
-    unsigned char* pFieldData = (unsigned char*)sub_0040B430(0, nArea, ".\\DATATBLS\\FieldTbls.cpp", 62, 0);
+    unsigned char* pFieldData = (unsigned char*)FOG_AllocPool(0, nArea, ".\\DATATBLS\\FieldTbls.cpp", 62, 0);
     FIELD_ASSERT(pFieldData, 64);
     memcpy(pFieldData, pExpField, nArea);
     sgtDataTables.pFieldData = pFieldData;
@@ -108,7 +108,7 @@ int __stdcall DATATBLS_GetCollisionFieldHeight()
 // 0x0066A4B0
 D2FieldStrc* __stdcall DATATBLS_AllocField()
 {
-    D2FieldStrc* pField = (D2FieldStrc*)sub_0040B430(0, sizeof(D2FieldStrc), ".\\DATATBLS\\FieldTbls.cpp", 135, 0);
+    D2FieldStrc* pField = (D2FieldStrc*)FOG_AllocPool(0, sizeof(D2FieldStrc), ".\\DATATBLS\\FieldTbls.cpp", 135, 0);
     FIELD_ASSERT(pField, 136);
 
     memset(pField, 0, sizeof(D2FieldStrc));

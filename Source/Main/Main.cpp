@@ -149,7 +149,7 @@ __declspec(noinline) int __fastcall GameStart(void* hInstance, D2ConfigStrc* pCf
 
         if (ghModKeyhook)
         {
-            void (__stdcall* pfnInstall)(int) = (void (__stdcall*)(int))GetProcAddress(ghModKeyhook, "InstallKeyboardHook");
+            void (__stdcall* pfnInstall)(void*) = (void (__stdcall*)(void*))GetProcAddress(ghModKeyhook, "InstallKeyboardHook");
             if (pfnInstall)
             {
                 pfnInstall(WINDOW_GetWindow());

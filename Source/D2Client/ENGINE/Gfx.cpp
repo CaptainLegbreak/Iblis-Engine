@@ -177,7 +177,7 @@ void __fastcall GFXUTIL_GetLayerInfo(D2UnitStrc* pUnit, int nType, int nClass, i
 
 
 
-int __stdcall sub_006001F0(D2GfxDataStrc* pContext, int nArg2, int nArg3); // 0x006001F0
+int __stdcall D2CMPSpriteValidate(D2GfxDataStrc* pContext, int nArg2, int nArg3); // 0x006001F0
 
 int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile); // 0x006280A0
 
@@ -733,7 +733,7 @@ static int __stdcall GFX_LoadUnitLayers(int bAsync, int nMode, D2UnitStrc* pUnit
         int nItemId;
         if (GFXUTIL_InitUnitCelContext(&tContext, pUnit, 0, UNITS_GetDirection(pUnit), 0, &nItemId, nLayer, nMode))
         {
-            if (!sub_006001F0(&tContext, bAsync, bAsync))
+            if (!D2CMPSpriteValidate(&tContext, bAsync, bAsync))
             {
                 tContext.nArg34 = 0;
                 if (!D2CMPSpriteRequest(&tContext))
@@ -2350,7 +2350,7 @@ int __fastcall GFX_DrawItemCel(D2UnitStrc* pItem, int nX, int nY)
     memset(&tContext, 0, sizeof(tContext));
     int nOut;
     const int bReady = GFXUTIL_InitUnitCelContext(&tContext, pItem, 0, nSize, 0, &nOut, 1, -1)
-        && sub_006001F0(&tContext, 0, 1)
+        && D2CMPSpriteValidate(&tContext, 0, 1)
         && GFXUTIL_IsCelOnScreen(tContext.pCel, nX, nY + CelGetHeight(tContext.pCel), 0);
     if (!bReady)
     {
@@ -2585,7 +2585,7 @@ void __fastcall GFX_InitGfxTables(int nValue)
     memset(&gtGlobalHashedFile, 0, sizeof(gtGlobalHashedFile));
     memset(gaPlayerGfxCache, 0, sizeof(gaPlayerGfxCache));
     const int nSize = sgptDataTables->nMonStatsTxtRecordCount * sizeof(D2MonGfxCacheStrc);
-    gpPoolBlock = (D2MonGfxCacheStrc*)sub_0040B430(0, nSize, ".\\ENGINE\\Gfx.cpp", 0x7E1, 0);
+    gpPoolBlock = (D2MonGfxCacheStrc*)FOG_AllocPool(0, nSize, ".\\ENGINE\\Gfx.cpp", 0x7E1, 0);
     memset(gpPoolBlock, 0, nSize);
     gbCharArchiveLoaded = D2Win_10185_CheckCharMpq();
     GFXUTIL_InitModeTokens();
@@ -2751,7 +2751,7 @@ void __fastcall GFX_GetUnitCelOffsets(D2UnitStrc* pUnit, int nComponent, int* pO
     memset(&tContext, 0, sizeof(tContext));
 
     int nOut;
-    if (GFXUTIL_InitUnitCelContext(&tContext, pUnit, 0, PATH_GetDirection(pPath), pUnit->nSeqCurrentFramePrecise >> 8, &nOut, nComponent, -1) && sub_006001F0(&tContext, 0, 1))
+    if (GFXUTIL_InitUnitCelContext(&tContext, pUnit, 0, PATH_GetDirection(pPath), pUnit->nSeqCurrentFramePrecise >> 8, &nOut, nComponent, -1) && D2CMPSpriteValidate(&tContext, 0, 1))
     {
         D2_ASSERT(tContext.pCel, 0xD7A);
         *pOffsetX = CelGetOffsetX(tContext.pCel);
@@ -3606,7 +3606,7 @@ int __fastcall GFX_DrawUnit(D2UnitStrc* pUnit, unsigned int dwColor, int nX, int
         return 0;
     }
 
-    if (!sub_006001F0(&tCelContext, 0, 1))
+    if (!D2CMPSpriteValidate(&tCelContext, 0, 1))
     {
         return 0;
     }

@@ -59,6 +59,8 @@ struct D2InvCompGridStrc
     unsigned short pad0x12; // 0x12
 };
 
+// No global uses this any more: the three text lists at 0x007BF1E4 are six bytes apart, D2TextPanelListStrc
+// in D2ClientTextState.h. It stays declared because removing it changes code generation in inv_0048BC10.cpp.
 struct D2TextListStrc
 {
     D2TextNodeStrc* pFirst; // 0x00

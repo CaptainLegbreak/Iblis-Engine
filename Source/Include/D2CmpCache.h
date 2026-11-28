@@ -33,12 +33,12 @@ struct D2LRUNodeStrc;
 struct D2StormSlotListStrc
 {
     int m_linkoffset; // 0x00
-    int unk0x04[2]; // 0x04
+    int unused0x04[2]; // 0x04
 };
 
 struct D2StormSlotArrayStrc
 {
-    int unk0x00[4]; // 0x00
+    int unused0x00[4]; // 0x00
 };
 
 struct D2StormListEStrc
@@ -49,7 +49,7 @@ struct D2StormListEStrc
 
 struct D2GameHashTableStrc
 {
-    int unk0x00; // 0x00
+    int unused0x00; // 0x00
     D2StormSlotListStrc m_fulllist; // 0x04
     unsigned int m_fullnessIndicator; // 0x10
     D2StormSlotArrayStrc m_slotlistarray; // 0x14
@@ -58,7 +58,7 @@ struct D2GameHashTableStrc
 
 struct D2StormEntryArrayStrc
 {
-    int unk0x00[4]; // 0x00
+    int unused0x00[4]; // 0x00
 };
 
 struct D2DccIterStrc
@@ -118,7 +118,7 @@ struct D2CmpByteRunStrc
 
 struct D2DccOutTableStrc
 {
-    int unk0x00[3]; // 0x00
+    int unused0x00[3]; // 0x00
     int dwDirOffsets[1]; // 0x0C
 };
 
@@ -128,15 +128,15 @@ struct D2DccHeaderStrc
     int n08; // 0x04
     int n14; // 0x08
     int nFrames; // 0x0C
-    int unk0x10; // 0x10
+    int unused0x10; // 0x10
 };
 
 struct D2DccFileStrc
 {
-    int unk0x00; // 0x00
+    int unused0x00; // 0x00
     int n04; // 0x04
     int n08; // 0x08
-    int unk0x0C[2]; // 0x0C
+    int unused0x0C[2]; // 0x0C
     int n14; // 0x14
     int nFrames; // 0x18
     int dwDirOffsets[1]; // 0x1C

@@ -235,7 +235,7 @@ int __fastcall sub_004DC110(void* pArg1, int nArg2, int nArg3, int nArg4, void* 
 
 int __fastcall D2SOUNDSMP_ReadWaveHeader(int nSocket, int* pParam, D2AddressInfoStrc* pInfo); // 0x00516760
 
-int __stdcall sub_006001F0(D2PanelGfxStrc* pGfx, int nArg2, int nArg3); // 0x006001F0
+int __stdcall D2CMPSpriteValidate(D2PanelGfxStrc* pGfx, int nArg2, int nArg3); // 0x006001F0
 
 D2TileStrc* __stdcall DUNGEON_GetTileDataFromAct(void* pAct); // 0x00619720
 

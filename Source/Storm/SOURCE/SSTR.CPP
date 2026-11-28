@@ -45,7 +45,7 @@ typedef void (__stdcall* SMEMDUMPCALLBACK)(void* pParam, const char* szText);
 
 extern "C" const unsigned int gadwSStrHashTable[16]; // 0x006CEE30
 
-extern double gadPowTable_007788E0[20][10]; // 0x007788E0
+extern double gadDigitScale[20][10]; // 0x007788E0
 
 // 0x00413550
 int __stdcall SStrCmp(const char* szString1, const char* szString2, int nMaxChars)
@@ -887,7 +887,7 @@ void __cdecl InitPowTable()
     {
         for (int i = 0; i < 10; ++i)
         {
-            gadPowTable_007788E0[nExp][i] = PowIntT(10.0, -(nExp + 1)) * i;
+            gadDigitScale[nExp][i] = PowIntT(10.0, -(nExp + 1)) * i;
         }
     }
 }

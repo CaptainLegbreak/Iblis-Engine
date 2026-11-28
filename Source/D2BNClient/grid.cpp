@@ -11,7 +11,6 @@ typedef unsigned char Byte;
 
 typedef unsigned int UInt;
 
-void* __stdcall sub_00413020_Allocate(UInt size, const char* file, int line, UInt flags); // 0x00413020
 
 void* __cdecl sub_006829C0_CopyBuffer(void* dest, const void* source, UInt size); // 0x006829C0
 
@@ -115,13 +114,13 @@ static void __cdecl GRID_CopyDecodedKeys(Byte** first, Byte** second)
 {
     if (first)
     {
-        Byte* allocated = (Byte*)sub_00413020_Allocate(gnGidFileSize, gszGrid, 0x199, 0);
+        Byte* allocated = (Byte*)SMemAlloc(gnGidFileSize, gszGrid, 0x199, 0);
         *first = allocated;
         sub_006829C0_CopyBuffer(allocated, gpGidFileData, gnGidFileSize);
     }
     if (second)
     {
-        Byte* allocated = (Byte*)sub_00413020_Allocate(gnClhFileSize, gszGrid, 0x19e, 0);
+        Byte* allocated = (Byte*)SMemAlloc(gnClhFileSize, gszGrid, 0x19e, 0);
         *second = allocated;
         sub_006829C0_CopyBuffer(allocated, gpClhFileData, gnClhFileSize);
     }

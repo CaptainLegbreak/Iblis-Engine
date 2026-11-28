@@ -220,7 +220,7 @@ D2DrlgEnvironmentStrc* __fastcall ENVIRONMENT_AllocDrlgEnvironment(D2PoolSystemS
     pEnvironment->nTicks = pEnvironment->nTimeRate * pEnvironmentCycle->nTicksBegin;
     ENVIRONMENT_UpdateLightIntensity(pEnvironment, 0, 0);
     ENVIRONMENT_UpdateLightColor(0, pEnvironment);
-    pEnvironment->unk0x14 = 0;
+    pEnvironment->unused0x14 = 0;
     pEnvironment->dwInitTick = GetTickCount();
     pEnvironment->bEclipse = 0;
     return pEnvironment;
@@ -404,7 +404,7 @@ int __stdcall ENVIRONMENT_GetUnusedMember(D2DrlgActStrc* pAct)
         return 0;
     }
 
-    return pEnvironment->unk0x14;
+    return pEnvironment->unused0x14;
 }
 
 // 0x0061C180

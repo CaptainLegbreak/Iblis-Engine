@@ -70,7 +70,7 @@ int __fastcall D2SOUNDSMP_RestoreLostBuffer(D2SoundStrc* pSound); // 0x00515FD0
 void __fastcall D2SOUNDSMP_DestroySound(D2SoundStrc* pSound); // 0x005160D0
 void __fastcall D2SOUNDSMP_ResetSound(D2SoundStrc* pSound); // 0x00516140
 unsigned long __stdcall D2SOUNDSMP_SoundThreadProc(void* pParameter); // 0x00516250
-float __stdcall sub_00516670_RoomToVolume(float fRoom); // 0x00516670
+float __stdcall D2SOUNDSMP_DecibelsToScale(float fRoom); // 0x00516670
 void __fastcall D2SOUNDSMP_InitWaveFormat(D2WaveFormatStrc* pFormat, int nChannels); // 0x00516720
 void __fastcall D2SOUNDUTIL_ListAddHead(D2SoundNodeStrc** ppList, void* pData); // 0x00516950
 void __fastcall D2SOUNDUTIL_ListRemove(D2SoundNodeStrc** ppList, void* pData); // 0x00516980

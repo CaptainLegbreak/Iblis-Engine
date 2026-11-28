@@ -81,7 +81,7 @@ int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nL
 
 int __cdecl NPCMENU_GetUseItemMode(); // 0x004B1670
 
-int __cdecl WINDOW_GetWindow(); // 0x004F59A0
+void* __cdecl WINDOW_GetWindow(); // 0x004F59A0
 
 void __fastcall AUTOMAP_UnregisterHandlerTable(void* hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451E10
 
@@ -97,7 +97,7 @@ void __fastcall MSG_SendFourDwords(char nCommand, int nUnitId, int nArg1, int nA
 
 void __cdecl sub_004B3FE0_CloseNpcMenu(); // 0x004B3FE0
 
-void __fastcall sub_00451E10_RegisterHandlerTable(int hWnd, D2MsgHandlerEntryStrc* pTable, int nCount);     // 0x00451E10
+void __fastcall sub_00451E10_RegisterHandlerTable(void* hWnd, D2MsgHandlerEntryStrc* pTable, int nCount);     // 0x00451E10
 
 void __fastcall sub_00467430(void* pRect);                                                                  // 0x00467430
 
@@ -143,7 +143,7 @@ typedef void(__stdcall* SMSGHANDLER)(SMSGHANDLER_PARAMS* pMsg);
 
 int __fastcall UI_CloseUIVars(int bArg1, int nArg2); // 0x00456300
 
-void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
+void __fastcall SCMD_RegisterMsgHandlers(void* hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
 void __cdecl INV_SetNpcStateTrade(); // 0x00487B80
 
@@ -329,7 +329,7 @@ int __fastcall sub_004DBB50(D2PanelGfxStrc* pGfx, D2UnitStrc* pUnit, int nArg3, 
 
 void __fastcall sub_004DBEA0(D2UnitStrc* pUnit, int nArg2, int nArg3, unsigned int* pWidth, unsigned int* pHeight); // 0x004DBEA0
 
-int __stdcall sub_006001F0(D2PanelGfxStrc* pGfx, int nArg2, int nArg3); // 0x006001F0
+int __stdcall D2CMPSpriteValidate(D2PanelGfxStrc* pGfx, int nArg2, int nArg3); // 0x006001F0
 
 int __stdcall UNITS_ChangeAnimMode(D2UnitStrc* pUnit, int nMode); // 0x00624690
 
@@ -416,7 +416,7 @@ void __cdecl USEITEM_DrawPanelUnit()
                 D2PanelGfxStrc tGfx;
                 int nOut;
                 memset(&tGfx, 0, sizeof(tGfx));
-                if (sub_004DBB50(&tGfx, pUnit, 0, 0, 0, &nOut, 1, -1) && sub_006001F0(&tGfx, 0, 1) && tGfx.f_3C)
+                if (sub_004DBB50(&tGfx, pUnit, 0, 0, 0, &nOut, 1, -1) && D2CMPSpriteValidate(&tGfx, 0, 1) && tGfx.f_3C)
                 {
                     unsigned int nWidth;
                     unsigned int nHeight;

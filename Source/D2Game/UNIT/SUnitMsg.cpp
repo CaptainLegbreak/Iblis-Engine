@@ -207,7 +207,7 @@ void __fastcall MISSILES_SyncToClient(D2ClientStrc*, D2GameStrc*, D2UnitStrc*, i
 
 #define MESSAGE_HEADER 0xA1
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 
 struct D2UnitPacketListStrc
 {
@@ -638,7 +638,7 @@ void __fastcall SUNITMSG_QueueStatChange(D2UnitStrc* pUnit, unsigned short nStat
     D2_ASSERT(nStat < STAT_ID_LIMIT, ASSERT_LINE);
     if (nOldValue != nNewValue)
     {
-        D2UnitPacketListStrc* pMsg = (D2UnitPacketListStrc*)sub_0040B430(!pUnit ? 0 : pUnit->pMemoryPool, MESSAGE_SIZE, ".\\UNIT\\SUnitMsg.cpp", ALLOC_LINE, 0);
+        D2UnitPacketListStrc* pMsg = (D2UnitPacketListStrc*)FOG_AllocPool(!pUnit ? 0 : pUnit->pMemoryPool, MESSAGE_SIZE, ".\\UNIT\\SUnitMsg.cpp", ALLOC_LINE, 0);
         pMsg->nHeader = MESSAGE_HEADER;
         pMsg->pNext = 0;
         *(int*)((char*)pMsg + 8 + PAYLOAD_SHIFT) = !pUnit ? -1 : pUnit->dwUnitId;

@@ -110,7 +110,7 @@ enum D2C_U04DrlgLogicConstants
     FLAG_OPERATION_OVERWRITE = 3,
 };
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);    // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);    // 0x0040B430
 
 void __fastcall DRLGLOGIC_SetTileGridFlags(D2UnkDrlgLogicStrc* pLogic, int nX, int nY, int nFromDirection);
 

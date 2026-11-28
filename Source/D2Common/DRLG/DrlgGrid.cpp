@@ -28,7 +28,7 @@ enum D2DrlgGridFlagOperation
     DRLGGRID_FLAG_AND_NEGATED = 5
 };
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
@@ -437,7 +437,7 @@ void __fastcall DRLGGRID_InitializeGridCells(D2PoolSystemStrc* pMemPool, D2DrlgG
     pGrid->nHeight = nHeight;
 
     int nSize = sizeof(int) * (nWidth + 1) * nHeight;
-    pGrid->pCellsRowOffsets = (int*)sub_0040B430(pMemPool, nSize, ".\\DRLG\\DrlgGrid.cpp", 407, 0);
+    pGrid->pCellsRowOffsets = (int*)FOG_AllocPool(pMemPool, nSize, ".\\DRLG\\DrlgGrid.cpp", 407, 0);
     memset(pGrid->pCellsRowOffsets, 0, nSize);
     pGrid->pCellsFlags = &pGrid->pCellsRowOffsets[nHeight];
 
@@ -476,7 +476,7 @@ void __fastcall DRLGGRID_InitializeGridRowOffsets(D2PoolSystemStrc* pMemPool, D2
     pGrid->nWidth = nWidth;
     pGrid->nHeight = nHeight;
     pGrid->pCellsFlags = pCellsFlags;
-    pGrid->pCellsRowOffsets = (int*)sub_0040B430(pMemPool, sizeof(int) * nHeight, ".\\DRLG\\DrlgGrid.cpp", 464, 0);
+    pGrid->pCellsRowOffsets = (int*)FOG_AllocPool(pMemPool, sizeof(int) * nHeight, ".\\DRLG\\DrlgGrid.cpp", 464, 0);
 
     int nOffset = 0;
     for (int i = 0; i < nHeight; ++i)
@@ -494,7 +494,7 @@ void __fastcall DRLGGRID_FillNewCellFlags(D2PoolSystemStrc* pMemPool, D2DrlgGrid
     pGrid->nWidth = pCoords->nSubtileWidth;
     pGrid->nHeight = pCoords->nSubtileHeight;
     pGrid->pCellsFlags = &pCellsFlags[pCoords->nSubtileY * nStride + pCoords->nSubtileX];
-    pGrid->pCellsRowOffsets = (int*)sub_0040B430(pMemPool, sizeof(int) * pCoords->nSubtileHeight, ".\\DRLG\\DrlgGrid.cpp", 492, 0);
+    pGrid->pCellsRowOffsets = (int*)FOG_AllocPool(pMemPool, sizeof(int) * pCoords->nSubtileHeight, ".\\DRLG\\DrlgGrid.cpp", 492, 0);
 
     int nOffset = 0;
     for (int i = 0; i < pCoords->nSubtileHeight; ++i)

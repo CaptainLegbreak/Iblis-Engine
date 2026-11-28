@@ -519,7 +519,6 @@ extern int gn_007C9140; // 0x007C9140
 extern D2ComObject006B5550Strc* gpObject_00970E60; // 0x00970E60
 
 
-extern D2CriticalSectionStrc* gpCriticalSection_007C9134; // 0x007C9134
 
 extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc*);
 
@@ -2252,8 +2251,8 @@ int __fastcall D3DCORE_CreateSurface(void* window,int mode)
 // 0x006B5630
 void __fastcall D3DCORE_PauseSurface(void* window, int mode, int paused)
 {
-    if (!gpCriticalSection_007C9134) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x7b0); exit(-1); }
-    EnterCriticalSection(gpCriticalSection_007C9134);
+    if (!gpRenderCriticalSection) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x7b0); exit(-1); }
+    EnterCriticalSection(gpRenderCriticalSection);
     if (paused) {
         gbRenderPaused = 1;
         D3DCORE_ReleaseResources();
@@ -2263,7 +2262,7 @@ void __fastcall D3DCORE_PauseSurface(void* window, int mode, int paused)
         gbRenderPaused = 0;
         D3DCORE_CreateSurface(window, mode);
     }
-    LeaveCriticalSection(gpCriticalSection_007C9134);
+    LeaveCriticalSection(gpRenderCriticalSection);
 }
 
 // 0x006B56C0
@@ -2290,8 +2289,8 @@ void __fastcall D3DCORE_OpenSmackCutscene(int a, int b, int c)
 int __fastcall D3DCORE_StartDraw(int clear, int unused, int unusedA, int unusedB)
 {
     if (gbRenderPaused) return 0;
-    if (!gpCriticalSection_007C9134) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x842); exit(-1); }
-    EnterCriticalSection(gpCriticalSection_007C9134);
+    if (!gpRenderCriticalSection) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x842); exit(-1); }
+    EnterCriticalSection(gpRenderCriticalSection);
     if (clear) sub_006B7F70_ClearTarget(0);
     gnColorCombineMode = 0;
     gnAlphaBlendMode = 0;
@@ -2425,8 +2424,8 @@ int __fastcall D3DCORE_Init(int nArg1, int nArg2)
     sub_006B97D0_BuildScaleTable();
     sub_006B80A0_InitializeDrawingGeometry();
     D3DSMACK_SmackInit();
-    gpCriticalSection_007C9134 = (D2CriticalSectionStrc*)FOG_Alloc(0x18, gszD3DCoreFile, 0x6EA, 0);
-    InitializeCriticalSection(gpCriticalSection_007C9134);
+    gpRenderCriticalSection = (D2CriticalSectionStrc*)FOG_Alloc(0x18, gszD3DCoreFile, 0x6EA, 0);
+    InitializeCriticalSection(gpRenderCriticalSection);
     return 1;
 }
 

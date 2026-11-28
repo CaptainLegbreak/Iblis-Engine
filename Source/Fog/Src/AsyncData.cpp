@@ -58,7 +58,7 @@ int __fastcall FOG_FSetFilePointer(void* hFile, long nOffset, long* pnOffsetHigh
 
 void* __fastcall ERRORMANAGER_PoolAlloc(void* pPool, int nSize, const char* szFile, int nLine); // 0x0040A080
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 // 0x0040A850
 void __fastcall FOG_AsyncDataSetPriority(AsyncData* pAsyncData, int nPriority)
@@ -234,7 +234,7 @@ AsyncDataEventSlot* __cdecl ASYNCDATA_GetEventSlot()
 // 0x0040A620
 AsyncData* __fastcall FOG_AsyncDataLoadFileEx(D2PoolSystemStrc* pMemPool, const char* szFileName, int bAllowAsync, long nFileOffset, int nFileSize, void* pBuffer, AsyncDataLoadFileCallback* pAsyncOpDesc, int nPriority, const char* szFile, int nLine)
 {
-    AsyncData* pAsync = (AsyncData*)sub_0040B430(pMemPool, sizeof(AsyncData), ".\\Src\\AsyncData.cpp", 296, 0);
+    AsyncData* pAsync = (AsyncData*)FOG_AllocPool(pMemPool, sizeof(AsyncData), ".\\Src\\AsyncData.cpp", 296, 0);
     memset(pAsync, 0, sizeof(AsyncData));
     pAsync->dwFlags = 0x41737960;
     if (!FOG_FOpenFile(szFileName, &pAsync->hFile))

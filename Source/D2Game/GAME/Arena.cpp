@@ -35,7 +35,7 @@ void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char
 int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 // 0x0053F470
 static int __stdcall ARENA_HasFlag(D2GameStrc* pGame, unsigned int nFlag)
@@ -53,7 +53,7 @@ static int __stdcall ARENA_HasFlag(D2GameStrc* pGame, unsigned int nFlag)
 // 0x0053F4B0
 void __fastcall ARENA_AllocArena(D2GameStrc* pGame, int nUnused, unsigned int nFlags, unsigned char nTemplate)
 {
-    D2ArenaStrc* pArena = (D2ArenaStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2ArenaStrc), ".\\GAME\\Arena.cpp", 50, 0);
+    D2ArenaStrc* pArena = (D2ArenaStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2ArenaStrc), ".\\GAME\\Arena.cpp", 50, 0);
     memset(pArena, 0, sizeof(D2ArenaStrc));
     pGame->pArenaCtrl = pArena;
     pArena->fFlags = nFlags & 0x3179C7;

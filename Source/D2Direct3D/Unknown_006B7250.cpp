@@ -135,7 +135,7 @@ extern int ganPerspectiveTable[0x2000]; // 0x00981748
 extern int gnPerspectiveScale; // 0x00989748
 extern int gnD3DOriginX; // 0x00981740
 extern int gnOriginY; // 0x00981744
-extern int gnPerspective_00981748[]; // 0x00981748
+extern int ganPerspectiveTable[]; // 0x00981748
 
 D2Unknown006B7250Strc* gapGlyphTextures[0x60]; // 0x009712D0
 
@@ -563,7 +563,7 @@ void __fastcall sub_006B9860_Project(int x, int y, int z, int* outX, int* outY)
     int nB = ((y - gnOriginY) * 24) >> 16;
     int nZ = z * 1228;
     int nSum = (nB + nA) * 724;
-    int nScale = gnPerspective_00981748[(((nSum * 886 + nZ * 512) >> 20) - 4096) & 8191];
+    int nScale = ganPerspectiveTable[(((nSum * 886 + nZ * 512) >> 20) - 4096) & 8191];
     *outX = (((nB - nA) * nScale * 724) >> 20) + gnRenderWidth / 2;
     *outY = ((((nZ * 886 - nSum * 512) >> 10) * nScale) >> 20) + gnRenderHeight / 2 - 32;
 }

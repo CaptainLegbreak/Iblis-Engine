@@ -87,7 +87,7 @@ extern "C" int __fastcall sub_004FDA80_IsColorCodePrefix(Obj004FDA80* pObj); // 
 
 extern "C" unsigned short* __fastcall sub_005267E0_2(unsigned short* pDst, const unsigned short* pSrc); // 0x005267E0
 
-extern "C" int __fastcall sub_00526800_2(const unsigned short* pText); // 0x00526800
+extern "C" int __fastcall UNICODE_StrLen(const unsigned short* pText); // 0x00526800
 
 const char* __cdecl EDITBOX_GetClipboardText(); // 0x004FDB40
 
@@ -1254,7 +1254,7 @@ int __fastcall D2Win_10074(D2WinEditBoxStrc* pEditBox, char nChar)
     {
         EDITBOX_DeleteSelection(pEditBox);
     }
-    int nLength = sub_00526800_2(&pEditBox->wszText[0]);
+    int nLength = UNICODE_StrLen(&pEditBox->wszText[0]);
     UnicodeChar wszText[512];
     sub_005267E0_2(&wszText[0].wChar, &pEditBox->wszText[0]);
     UnicodeChar* pCaret = &wszText[pEditBox->nCaretPosition];
@@ -1345,7 +1345,7 @@ int __fastcall D2Win_10074(D2WinEditBoxStrc* pEditBox, char nChar)
             pCaret = &wszText[nStart];
             EDITBOX_SetClipboardText(szCut);
             EDITBOX_DeleteSelection(pEditBox);
-            nLength = sub_00526800_2(&pEditBox->wszText[0]);
+            nLength = UNICODE_StrLen(&pEditBox->wszText[0]);
             sub_005267E0_2(&wszText[0].wChar, &pEditBox->wszText[0]);
         }
         break;

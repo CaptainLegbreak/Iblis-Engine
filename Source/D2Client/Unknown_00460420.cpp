@@ -19,8 +19,8 @@ void __cdecl UI_DrawCenteredString();                                           
 void __fastcall sub_00460190_DrawFrame(int nUnused);                                                        // 0x00460190
 D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nType);                             // 0x004788B0
 void __fastcall GAME_SetClientState(int nState);                                                    // 0x0044C930
-void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
-void __fastcall sub_00451E10_RegisterHandlerTable(int hWnd, D2MsgHandlerEntryStrc* pTable, int nCount);     // 0x00451E10
+void __fastcall SCMD_RegisterMsgHandlers(void* hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
+void __fastcall sub_00451E10_RegisterHandlerTable(void* hWnd, D2MsgHandlerEntryStrc* pTable, int nCount);     // 0x00451E10
 void __cdecl UI_FreeCels();                                                                       // 0x00460430
 
 extern D2MsgHandlerEntryStrc gaPopupHandlers[];                                                      // 0x00711D40

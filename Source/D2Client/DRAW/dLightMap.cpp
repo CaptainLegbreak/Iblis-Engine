@@ -1,6 +1,7 @@
 #include "D2LanguageNames.h"
 #include "D2Client.h"
 #include "D2ClientFuncs.h"
+#include "D2ClientTextState.h"
 #include "D2Structs.h"
 #include "D2Drlg.h"
 #include "D2Path.h"
@@ -126,7 +127,6 @@ extern int gdwSoundTick; // 0x007BC9BC
 
 extern int gdwGlobal_007BF024; // 0x007BF024
 
-extern int gdwGlobal_007BF1F6; // 0x007BF1F6
 
 struct D2GridCellStrc
 {
@@ -1477,7 +1477,7 @@ void __stdcall sub_0048BDF0_Nop(int nUnused1)
 // 0x0049E8A0
 int __cdecl sub_0049E8A0()
 {
-    return gdwGlobal_007BF1F6;
+    return gtTextState.nTextDisplaySetting;
 }
 
 // 0x0049F900

@@ -368,7 +368,7 @@ int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nL
 
 int __stdcall INVENTORY_GetEquippedShield(D2InventoryStrc* pInventory, D2UnitStrc** ppItem);                // 0x0063C8F0
 
-int __stdcall sub_006001F0(D2GfxDataStrc* pContext, int nArg2, int nArg3);                // 0x006001F0
+int __stdcall D2CMPSpriteValidate(D2GfxDataStrc* pContext, int nArg2, int nArg3);                // 0x006001F0
 
 extern "C" int __cdecl PLAYER_GetScreenOffsetY();                                                      // 0x0045AFD0
 
@@ -875,7 +875,7 @@ void __fastcall GFXUTIL_GetUnitCelSize(D2UnitStrc* pUnit, int nArg40, int nArg0,
     tToken.nArg34 = 0;
     tToken.nDirection = nArg40;
     tToken.nComponent = 1;
-    if (GFXUTIL_ResolveUnitCelContext(pUnit, &tToken, -1, &nArg0) && sub_006001F0(&tToken, 0, 1) && tToken.pCel)
+    if (GFXUTIL_ResolveUnitCelContext(pUnit, &tToken, -1, &nArg0) && D2CMPSpriteValidate(&tToken, 0, 1) && tToken.pCel)
     {
         *pWidth = CelGetWidth(tToken.pCel);
         *pHeight = CelGetHeight(tToken.pCel);
@@ -895,7 +895,7 @@ int __fastcall GFXUTIL_HitTestUnitCel(D2UnitStrc* pUnit, int nX, int nY)
         UNITS_GetShiftedFrameMetrics(pUnit, &nFrameNo, &nFrameCount);
         D2GfxDataStrc tToken;
         memset(&tToken, 0, sizeof(tToken));
-        if (GFXUTIL_InitUnitCelContext(&tToken, pUnit, 0, UNITS_GetDirection(pUnit), nFrameNo, &nY, 1, -1) && sub_006001F0(&tToken, 0, 1))
+        if (GFXUTIL_InitUnitCelContext(&tToken, pUnit, 0, UNITS_GetDirection(pUnit), nFrameNo, &nY, 1, -1) && D2CMPSpriteValidate(&tToken, 0, 1))
         {
             D2CelStrc* const pCel = tToken.pCel;
             if (pCel)
@@ -2083,7 +2083,7 @@ int __fastcall GFXUTIL_GetComponentsMaxHeight(D2UnitStrc* pUnit, unsigned char* 
         tToken.nArg34 = 0;
         tToken.nComponent = nComponent;
         int nItemId;
-        if (GFXUTIL_ResolveUnitCelContext(pUnit, &tToken, -1, &nItemId) && sub_006001F0(&tToken, 0, 1) && tToken.pCel)
+        if (GFXUTIL_ResolveUnitCelContext(pUnit, &tToken, -1, &nItemId) && D2CMPSpriteValidate(&tToken, 0, 1) && tToken.pCel)
         {
             const int nHeight = CelGetOffsetY(tToken.pCel) - PLAYER_GetScreenOffsetY() + UNITS_GetClientCoordY(pUnit);
             if (nHeight > *pMax)
@@ -2337,7 +2337,7 @@ int __fastcall GFXUTIL_GetOverlayFrameCount(D2UnitStrc* pUnit, D2OverlaySourceSt
     tToken.nOverlay = pSrc->nOverlay;
     if (!GFXUTIL_InitUnitCelContext(&tToken, 0, 0, UNITS_GetDirection(pUnit), pSrc->nArg0, &nItemId, 1, -1))
         return 1;
-    if (!sub_006001F0(&tToken, 0, 1))
+    if (!D2CMPSpriteValidate(&tToken, 0, 1))
         return 1;
     return tToken.nFrames << 8;
 }

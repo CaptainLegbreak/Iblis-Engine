@@ -3,7 +3,7 @@
 #include "FogApi.h"
 #include "FogApi.h"
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
+void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
@@ -51,8 +51,8 @@ void __stdcall QUESTRECORD_ResetIntermediateStateFlags(D2BitBufferStrc* hQuestRe
 // 0x0065C430
 D2BitBufferStrc* __stdcall QUESTRECORD_AllocRecord(void* pMemPool)
 {
-    D2BitBufferStrc* pBitBuffer = (D2BitBufferStrc*)sub_0040B430(pMemPool, sizeof(D2BitBufferStrc), ".\\QuestRecord\\QuestRecord.cpp", 80, 0);
-    unsigned char* pBuffer = (unsigned char*)sub_0040B430(pMemPool, sizeof(unsigned short) * 48, ".\\QuestRecord\\QuestRecord.cpp", 81, 0);
+    D2BitBufferStrc* pBitBuffer = (D2BitBufferStrc*)FOG_AllocPool(pMemPool, sizeof(D2BitBufferStrc), ".\\QuestRecord\\QuestRecord.cpp", 80, 0);
+    unsigned char* pBuffer = (unsigned char*)FOG_AllocPool(pMemPool, sizeof(unsigned short) * 48, ".\\QuestRecord\\QuestRecord.cpp", 81, 0);
     memset(pBuffer, 0, sizeof(unsigned short) * 48);
 
     BITMANIP_Initialize(pBitBuffer, pBuffer, sizeof(unsigned short) * 48);

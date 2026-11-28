@@ -22,7 +22,7 @@ struct D2AnimDataTableStrc
 
 extern "C" const char gszDataGlobalPath[];                                                                      // 0x006D4118
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szBuffer, const char* szFormat, ...);           // 0x006CC468
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);               // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);               // 0x0040B430
 void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);             // 0x0040B480
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                  // 0x00681EF0
 #pragma function(memset)
@@ -37,7 +37,7 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                   
 // 0x0066A770
 D2AnimDataTableStrc* __fastcall DATATBLS_LoadAnimDataD2(void* hArchive)
 {
-    D2AnimDataTableStrc* pAnimDataTable = (D2AnimDataTableStrc*)sub_0040B430(0, sizeof(D2AnimDataTableStrc), ".\\DATATBLS\\AnimTbls.cpp", 131, 0);
+    D2AnimDataTableStrc* pAnimDataTable = (D2AnimDataTableStrc*)FOG_AllocPool(0, sizeof(D2AnimDataTableStrc), ".\\DATATBLS\\AnimTbls.cpp", 131, 0);
     memset(pAnimDataTable, 0, sizeof(D2AnimDataTableStrc));
 
     char szPath[260];

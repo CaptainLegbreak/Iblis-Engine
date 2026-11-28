@@ -56,7 +56,7 @@ extern "C" __declspec(dllimport) int __stdcall GdiFlush();
 
 extern "C" __declspec(dllimport) int __stdcall DeleteDC(void* hDC);
 
-void* __stdcall WINDOW_GetWindow(); // 0x004F59A0
+void* __cdecl WINDOW_GetWindow(); // 0x004F59A0
 
 extern int gnRenderHeight; // 0x007C913C
 
@@ -301,7 +301,7 @@ extern "C" __declspec(dllimport) int __stdcall GetClientRect(void* hWnd, tagRECT
 extern "C" __declspec(dllimport) int __stdcall StretchBlt(void* hDest, int nX, int nY, int nWidth, int nHeight, void* hSrc, int nSrcX, int nSrcY, int nSrcWidth, int nSrcHeight, unsigned long nRop);
 extern "C" __declspec(dllimport) int __stdcall GdiFlush();
 extern "C" __declspec(dllimport) int __stdcall DeleteDC(void* hDC);
-void* __stdcall WINDOW_GetWindow(); // 0x004F59A0
+void* __cdecl WINDOW_GetWindow(); // 0x004F59A0
 extern int gnRenderHeight; // 0x007C913C
 extern void* ghPalette; // 0x0098A160
 

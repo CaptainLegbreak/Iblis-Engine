@@ -197,9 +197,9 @@ void __stdcall PaletteBuildAlphaTables(unsigned char* pTables); // 0x00605880
 
 void __stdcall PaletteBuildAdditiveTable(unsigned char* pData); // 0x006059B0
 
-void __stdcall sub_00605AA0_BuildTablesC(unsigned char* pTables);
+void __stdcall FASTCMP_BuildMultiplyTable(unsigned char* pTables);
 
-void __stdcall sub_00605B70_BuildTablesD(unsigned char* pTables);
+void __stdcall FASTCMP_BuildBlendTables(unsigned char* pTables);
 
 void __stdcall FASTCMP_BuildTablesE(unsigned char* pTables, D2HslStrc* pHsl); // 0x00605F00
 
@@ -931,10 +931,10 @@ void* __stdcall CreateD2Palette(void* pSource)
     FASTCMP_BuildDarkenTables(pTables);
     FASTCMP_BuildLightenTables(pTables);
     PaletteBuildAdditiveTable(pTables);
-    sub_00605AA0_BuildTablesC(pTables);
+    FASTCMP_BuildMultiplyTable(pTables);
     FASTCMP_BuildTablesE(pTables, tHsl);
     FASTCMP_BuildBrightnessTable(pTables, tHsl);
-    sub_00605B70_BuildTablesD(pTables);
+    FASTCMP_BuildBlendTables(pTables);
     *(D2ColorBlockStrc*)(pTables + 0x6B600) = gtColorBlock;
     PaletteBuildTintTables(pTables);
     return pTables;

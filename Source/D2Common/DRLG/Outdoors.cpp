@@ -75,7 +75,7 @@ struct D2LvlPrestRecordStrc
 
 extern D2LvlPrestRecordStrc* __stdcall sub_0061F0B0(int nPresetId); // 0x0061F0B0
 
-extern void* __fastcall sub_0040B430(void* pPool, int nSize, const char* szFile, int nLine, int nZero); // 0x0040B430
+extern void* __fastcall FOG_AllocPool(void* pPool, int nSize, const char* szFile, int nLine, int nZero); // 0x0040B430
 
 extern int __fastcall sub_0045C3E0_RollLimited(D2SeedStrc* pSeed, int nLimit); // 0x0045C3E0
 
@@ -146,7 +146,7 @@ static int __cdecl DRLGOUTDOORS_PickNextPresetFile(D2DrlgLevelStrc* pLevel, int 
     if (!pFile)
     {
         D2LvlPrestRecordStrc* pRecord = sub_0061F0B0(nPresetId);
-        pFile = (D2DrlgBuildStrc*)sub_0040B430(pMemPool, sizeof(D2DrlgBuildStrc), ".\\DRLG\\Outdoors.cpp", 249, 0);
+        pFile = (D2DrlgBuildStrc*)FOG_AllocPool(pMemPool, sizeof(D2DrlgBuildStrc), ".\\DRLG\\Outdoors.cpp", 249, 0);
         memset(pFile, 0, sizeof(D2DrlgBuildStrc));
         pFile->nPreset = pRecord->nDef;
         pFile->nDivisor = pRecord->nFiles;
@@ -632,7 +632,7 @@ void __fastcall DRLGOUTDOORS_AddAct124SecondaryBorder(D2DrlgLevelStrc* pLevel, i
 // 0x00675320
 void __fastcall DRLGOUTDOORS_AllocOutdoorInfo(D2DrlgLevelStrc* pLevel)
 {
-    pLevel->pOutdoors = (D2DrlgOutdoorInfoStrc*)sub_0040B430(pLevel->pDrlg->pMempool, 0x268, ".\\DRLG\\Outdoors.cpp", 0x34C, 0);
+    pLevel->pOutdoors = (D2DrlgOutdoorInfoStrc*)FOG_AllocPool(pLevel->pDrlg->pMempool, 0x268, ".\\DRLG\\Outdoors.cpp", 0x34C, 0);
     memset(pLevel->pOutdoors, 0, 0x268);
 }
 

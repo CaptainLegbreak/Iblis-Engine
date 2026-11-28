@@ -817,7 +817,7 @@ static int __stdcall D2COMP_CountLayerCels(D2CofDataStrc* pCofData, const unsign
         D2COMP_InitGfxData(pCompositeUnit, &tGfxData);
         tGfxData.dwFlags |= 2;
 
-        if (sub_006001F0(&tGfxData, 0, 1) && tGfxData.pCel)
+        if (D2CMPSpriteValidate(&tGfxData, 0, 1) && tGfxData.pCel)
         {
             const int nHeight = CelGetOffsetY(tGfxData.pCel) + pCompositeUnit->nX;
             if (nHeight > *pMaxHeight)
@@ -1333,7 +1333,7 @@ void __fastcall D2COMP_LoadItems(void* hArchive)
         while (i < gnItemsTotalCount);
     }
 
-    gpCompItemsLinker = sub_006BD040(gszD2CompSourceFile, 0xA56);
+    gpCompItemsLinker = FOG_AllocLinker(gszD2CompSourceFile, 0xA56);
     for (int i = 0; i < gnItemsTotalCount; ++i)
     {
         sub_006BD230_AddLinkCode(gpCompItemsLinker, gpCompItemsTxt[i].dwCode);
@@ -1351,7 +1351,7 @@ void __fastcall D2COMP_LoadItemTypes(void* hArchive)
         { gszTxtField_end, 0, 0, 0, 0 },
     };
 
-    gpCompItemTypesLinker = sub_006BD040(".\\Src\\D2Comp.cpp", 0xA97);
+    gpCompItemTypesLinker = FOG_AllocLinker(".\\Src\\D2Comp.cpp", 0xA97);
     gpCompItemTypesTxt = D2COMP_CompileTxt(hArchive, gszItemTypesTable, aItemTypesFields, &gnCompItemTypesTxtRecordCount, 0xE4);
 }
 
@@ -1454,7 +1454,7 @@ static int __stdcall D2COMP_GetWeaponClass(unsigned int nUnitIndex, const unsign
         }
 
         const int nItemType = gaItems[nItem].nItemType;
-        if ((nRight == 13 || nRight == 14) && nUnitIndex != 6 || sub_00504A20_CheckItemType(nItemType, 0x32))
+        if ((nRight == 13 || nRight == 14) && nUnitIndex != 6 || D2COMP_IsItemTypeDescendant(nItemType, 0x32))
         {
             nRight = gaCompItems[pComponents[5]].nWeaponClass;
         }
@@ -1466,7 +1466,7 @@ static int __stdcall D2COMP_GetWeaponClass(unsigned int nUnitIndex, const unsign
         const int nItem = pComponents[6];
         nLeft = bTwoWeapons ? gaItemWeaponClass[nItem] : gaItems[nItem].nWeaponClass;
         const int nItemType = gaItems[nItem].nItemType;
-        if ((nLeft == 13 || nLeft == 14) && nUnitIndex != 6 || sub_00504A20_CheckItemType(nItemType, 0x32))
+        if ((nLeft == 13 || nLeft == 14) && nUnitIndex != 6 || D2COMP_IsItemTypeDescendant(nItemType, 0x32))
         {
             nLeft = gaCompItems[pComponents[6]].nWeaponClass;
         }
@@ -1559,19 +1559,19 @@ static void D2COMP_FixComponent(int nComponent, unsigned char* pComponent)
 {
     if ((nComponent == 1 || nComponent == 2 || nComponent == 3 || nComponent == 4) && *pComponent > 3)
     {
-        if (sub_00504A20_CheckItemType(gaCompItems[*pComponent].nItemType, 3))
+        if (D2COMP_IsItemTypeDescendant(gaCompItems[*pComponent].nItemType, 3))
         {
             REMAP_COMPONENT(pComponent, *pComponent % 3 + 1);
         }
-        if (sub_00504A20_CheckItemType(gaCompItems[*pComponent].nItemType, 0x10))
+        if (D2COMP_IsItemTypeDescendant(gaCompItems[*pComponent].nItemType, 0x10))
         {
             REMAP_COMPONENT(pComponent, *pComponent % 3 + 1);
         }
-        if (sub_00504A20_CheckItemType(gaCompItems[*pComponent].nItemType, 0xF))
+        if (D2COMP_IsItemTypeDescendant(gaCompItems[*pComponent].nItemType, 0xF))
         {
             REMAP_COMPONENT(pComponent, *pComponent % 3 + 1);
         }
-        if (sub_00504A20_CheckItemType(gaCompItems[*pComponent].nItemType, 0x33))
+        if (D2COMP_IsItemTypeDescendant(gaCompItems[*pComponent].nItemType, 0x33))
         {
             REMAP_COMPONENT(pComponent, *pComponent % 3 + 1);
         }
@@ -1581,9 +1581,9 @@ static void D2COMP_FixComponent(int nComponent, unsigned char* pComponent)
         }
     }
 
-    if (!nComponent && !sub_00504A20_CheckItemType(gaItems[*pComponent].nItemType, 0x25))
+    if (!nComponent && !D2COMP_IsItemTypeDescendant(gaItems[*pComponent].nItemType, 0x25))
     {
-        if (sub_00504A20_CheckItemType(gaCompItems[*pComponent].nItemType, 0x25))
+        if (D2COMP_IsItemTypeDescendant(gaCompItems[*pComponent].nItemType, 0x25))
         {
             REMAP_COMPONENT(pComponent, 1);
         }
@@ -2160,7 +2160,7 @@ void __stdcall D2COMP_InitCompItems()
         { "end", 0, 0, 0, 0 },
     };
 
-    gpCompItemTypesLinker = sub_006BD040(".\\Src\\D2Comp.cpp", 0xACB);
+    gpCompItemTypesLinker = FOG_AllocLinker(".\\Src\\D2Comp.cpp", 0xACB);
     gpCompItemTypesTxt = D2COMP_CompileTxt(sub_004FAC80(), "itemtypes", aItemTypesFields,
         &gnCompItemTypesTxtRecordCount, 0xE4);
 
@@ -2170,7 +2170,7 @@ void __stdcall D2COMP_InitCompItems()
         { "end", 0, 0, 0, 0 },
     };
 
-    gpCompHitClassLinker = sub_006BD040(".\\Src\\D2Comp.cpp", 0xAD7);
+    gpCompHitClassLinker = FOG_AllocLinker(".\\Src\\D2Comp.cpp", 0xAD7);
     gpCompHitClassTxt = D2COMP_CompileTxt(sub_004FAC80(), "hitclass", aHitClassFields, 0, 4);
 
     D2COMP_LoadItems(sub_004FAC80());
@@ -2201,9 +2201,9 @@ void __stdcall D2COMP_InitCompItems()
         }
 
         int bArmor = 1;
-        if (!(sub_00504A20_CheckItemType(pRecord->wType[0], 0x2D) || sub_00504A20_CheckItemType(pRecord->wType[0], 3)
-            || sub_00504A20_CheckItemType(pRecord->wType[0], 0x33) || sub_00504A20_CheckItemType(pRecord->wType[0], 0x25))
-            || sub_00504A20_CheckItemType(pRecord->wType[0], 0x4B))
+        if (!(D2COMP_IsItemTypeDescendant(pRecord->wType[0], 0x2D) || D2COMP_IsItemTypeDescendant(pRecord->wType[0], 3)
+            || D2COMP_IsItemTypeDescendant(pRecord->wType[0], 0x33) || D2COMP_IsItemTypeDescendant(pRecord->wType[0], 0x25))
+            || D2COMP_IsItemTypeDescendant(pRecord->wType[0], 0x4B))
         {
             bArmor = 0;
         }
@@ -2220,10 +2220,10 @@ void __stdcall D2COMP_InitCompItems()
         if (bArmor == 1)
         {
             int nSlot = nNext;
-            while ((sub_00504A20_CheckItemType(gaCompItems[nSlot].nItemType, 0x2D)
-                       && sub_00504A20_CheckItemType(pRecord->wType[0], 0x2D))
-                || (sub_00504A20_CheckItemType(gaCompItems[nSlot].nItemType, 0x32)
-                       && sub_00504A20_CheckItemType(pRecord->wType[0], 0x32))
+            while ((D2COMP_IsItemTypeDescendant(gaCompItems[nSlot].nItemType, 0x2D)
+                       && D2COMP_IsItemTypeDescendant(pRecord->wType[0], 0x2D))
+                || (D2COMP_IsItemTypeDescendant(gaCompItems[nSlot].nItemType, 0x32)
+                       && D2COMP_IsItemTypeDescendant(pRecord->wType[0], 0x32))
                 || gaItems[nSlot].dwCode)
             {
                 ++nSlot;

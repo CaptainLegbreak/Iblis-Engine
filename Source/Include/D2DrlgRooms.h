@@ -25,8 +25,8 @@ struct D2DrlgOutdoorRoomStrc
     D2DrlgVertexStrc* pVertex; // 0x50
     unsigned int dwFlags; // 0x54
     int dwFlagsEx; // 0x58
-    int unk0x5C; // 0x5C
-    int unk0x60; // 0x60
+    int unused0x5C; // 0x5C
+    int unused0x60; // 0x60
     int nTileInfo64; // 0x64
     int nTileInfo68; // 0x68
     int nTileInfo6C; // 0x6C
@@ -35,7 +35,7 @@ struct D2DrlgOutdoorRoomStrc
 struct D2DrlgSubstGroupStrc
 {
     D2DrlgCoordStrc tBox; // 0x00
-    int unk0x10; // 0x10
+    int unused0x10; // 0x10
     int nSubstGroup; // 0x14
 };
 
@@ -55,8 +55,8 @@ struct D2DrlgActStrc
     unsigned int dwInitSeed; // 0x0C
     D2ActiveRoomStrc* pRoom; // 0x10
     unsigned char nAct; // 0x14
-    unsigned char unk0x15; // 0x15
-    unsigned short unk0x16; // 0x16
+    unsigned char pad0x15; // 0x15
+    unsigned short pad0x16; // 0x16
     void* pTileData[12]; // 0x18
     D2DrlgStrc* pDrlg; // 0x48
     ACTCALLBACKFN pfnActCallBack; // 0x4C
@@ -99,7 +99,7 @@ struct D2DrlgOutRectStrc
 {
     int nX; // 0x00
     int nY; // 0x04
-    int unk0x08; // 0x08
+    int unused0x08; // 0x08
     unsigned char nFlags; // 0x0C
     char pad0x0D[3]; // 0x0D
     D2DrlgOutRectStrc* pBounds; // 0x10
@@ -160,7 +160,7 @@ struct D2DrlgEnvironmentStrc
     int nTicks; // 0x08
     int nIntensity; // 0x0C
     unsigned int dwInitTick; // 0x10
-    int unk0x14; // 0x14
+    int unused0x14; // 0x14
     unsigned char nRed; // 0x18
     unsigned char nGreen; // 0x19
     unsigned char nBlue; // 0x1A

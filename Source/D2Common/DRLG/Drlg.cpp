@@ -115,7 +115,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, size_t nSize); // 0x0068
 
 extern const int gnTileTypeMappingTable[]; // 0x006EEF20
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall DRLG_AddLevelActivity(D2DrlgLevelStrc* pLevel, int nDelta); // 0x00642F70
 
@@ -1149,7 +1149,7 @@ D2DrlgWarpStrc* __fastcall DRLG_GetDrlgWarpFromLevelId(D2DrlgStrc* pDrlg, int nL
     }
 
     D2LevelDefBin* pLevelDefBin = DATATBLS_GetLevelDefRecord(nLevelId);
-    D2DrlgWarpStrc* pDrlgWarp = (D2DrlgWarpStrc*)sub_0040B430(pDrlg->pMempool, sizeof(D2DrlgWarpStrc), ".\\DRLG\\Drlg.cpp", 0x3E0, 0);
+    D2DrlgWarpStrc* pDrlgWarp = (D2DrlgWarpStrc*)FOG_AllocPool(pDrlg->pMempool, sizeof(D2DrlgWarpStrc), ".\\DRLG\\Drlg.cpp", 0x3E0, 0);
     pDrlgWarp->nLevel = nLevelId;
 
     for (int i = 0; i < 8; ++i)

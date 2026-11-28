@@ -2914,7 +2914,7 @@ void __cdecl DATATBLS_InitChestTreasureClasses()
 // 0x0065A390
 void __stdcall DATATBLS_InitTreasureClassEx(void* hArchive)
 {
-    gpTreasureClassExLinker = sub_006BD040(".\\DATATBLS\\MonsterTbls.cpp", 1550);
+    gpTreasureClassExLinker = FOG_AllocLinker(".\\DATATBLS\\MonsterTbls.cpp", 1550);
     DATATBLS_CreateItemTypeTreasureClasses();
     DATATBLS_CompileTreasureClassExTxt(hArchive);
     DATATBLS_InitChestTreasureClasses();

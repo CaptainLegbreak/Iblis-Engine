@@ -54,7 +54,7 @@ int __cdecl GAME_GetAbortFlag(); // 0x00520AE0
 int __fastcall FOG_SOCKET_GetPeerName(FSafeSock* pSafeSock, void* pAddress, int* pnLength); // 0x0040DEE0
 int __fastcall FOG_SOCKET_Receive(FSafeSock* pSafeSock, char* pBuffer, int nBufferLength); // 0x0040DC60
 int __fastcall FOG_SOCKET_Select(FSafeSock* pSafeSock); // 0x0040DDF0
-int __fastcall sub_0051E3D0_PostMessage(const char* szText, int nCode); // 0x0051E3D0
+int __fastcall BNDOWNLOAD_SendGetFileTime(const char* szText, int nCode); // 0x0051E3D0
 void __fastcall BNDOWNLOAD_RequestDownload(int nType, int nSubType, unsigned int nArg1, unsigned int nArg2, const D2FileTimeStrc* pFileTime, const char* szFile, const char* szLink); // 0x0051F910
 int __fastcall BNDOWNLOAD_WaitForReply(unsigned char nReply); // 0x00520B70
 int __fastcall BNDOWNLOAD_IsReplyReceived(unsigned char nReply); // 0x00520BF0
@@ -74,9 +74,9 @@ void __fastcall BNDOWNLOAD_HashBuffer(unsigned char* pDigest, const void* pData,
 void __fastcall sub_00520C00_ClearReply(unsigned char nReply); // 0x00520C00
 void __stdcall SLogClose(void* hLog); // 0x0041FD00
 void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
-void __stdcall sub_0041D2A0_MemCopy(void* pDst, const void* pSrc, unsigned int nSize); // 0x0041D2A0
+void __stdcall SMemCopy(void* pDst, const void* pSrc, unsigned int nSize); // 0x0041D2A0
 void __stdcall SMemZero(void* pLocation, unsigned int nLength); // 0x0041D300
-void __stdcall sub_00420120_LogAdjust(void* hLog, int nValue); // 0x00420120
+void __stdcall SLogSetIndent(void* hLog, int nValue); // 0x00420120
 
 #define CACHE_CRC32(dwCrc, pBytes, nCount) \
     dwCrc = 0xFFFFFFFF; \

@@ -487,9 +487,9 @@ char* gpStormExplodeWork;                                                       
 
 CCritSect gStormExplodeLock;                                                                    // 0x00779080
 
-unsigned int __cdecl sub_004151D0_ExplodeRead(char* pBuffer, unsigned int* pnSize, void* pParam);          // 0x004151D0
+unsigned int __cdecl DecompressLzw_BufferRead(char* pBuffer, unsigned int* pnSize, void* pParam);          // 0x004151D0
 
-void __cdecl sub_00415210_ExplodeWrite(char* pBuffer, unsigned int* pnSize, void* pParam);                 // 0x00415210
+void __cdecl DecompressLzw_BufferWrite(char* pBuffer, unsigned int* pnSize, void* pParam);                 // 0x00415210
 
 extern "C" unsigned int __cdecl sub_006B01B0_Explode(unsigned int (__cdecl* pRead)(char*, unsigned int*, void*), void (__cdecl* pWrite)(char*, unsigned int*, void*), char* pWork, void* pParam); // 0x006B01B0
 
@@ -3693,7 +3693,7 @@ int __stdcall DecompressLzw(char* pDest, const char* pSource, unsigned int nSour
     tParam.pDest = pDest;
     tParam.nDestPos = 0;
     tParam.nSourceSize = nSourceSize;
-    sub_006B01B0_Explode(sub_004151D0_ExplodeRead, sub_00415210_ExplodeWrite, gpStormExplodeWork, &tParam);
+    sub_006B01B0_Explode(DecompressLzw_BufferRead, DecompressLzw_BufferWrite, gpStormExplodeWork, &tParam);
     LeaveCriticalSection(&gStormExplodeLock);
     return 1;
 }

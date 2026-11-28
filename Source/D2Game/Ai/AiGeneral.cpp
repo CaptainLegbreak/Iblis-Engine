@@ -31,7 +31,7 @@ void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, 
 
 void __fastcall AIGENERAL_AllocMinionList(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pMinion); // 0x0058F100
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 
@@ -159,7 +159,7 @@ D2AiCmdStrc* __fastcall AIGENERAL_AllocAiCommand(D2GameStrc* pGame, D2UnitStrc* 
         return 0;
     }
 
-    D2AiCmdStrc* pAiCmd = (D2AiCmdStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2AiCmdStrc), ".\\Ai\\AiGeneral.cpp", 0x65, 0);
+    D2AiCmdStrc* pAiCmd = (D2AiCmdStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2AiCmdStrc), ".\\Ai\\AiGeneral.cpp", 0x65, 0);
     memset(pAiCmd, 0, sizeof(D2AiCmdStrc));
     D2AiCmdStrc* pLastCmd = pAiControl->pLastCmd;
     if (!pLastCmd)

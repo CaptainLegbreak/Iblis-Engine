@@ -263,7 +263,7 @@ static D2InventoryGridStrc* __stdcall INVENTORY_GetGrid(D2InventoryStrc* invento
 
 D2UnitStrc* __stdcall INVENTORY_GetItemFromBeltSlot(D2InventoryStrc* inventory, int slot); // 0x0063C7F0
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 
 int __stdcall INVENTORY_CompareWithItemsParentInventory(D2InventoryStrc* pInventory, D2UnitStrc* pItem);    // 0x0063AD50
 
@@ -955,7 +955,7 @@ D2InventoryGridStrc* __stdcall INVENTORY_GetGrid(D2InventoryStrc* pInventory, in
             {
                 pInventoryGrid->nGridWidth = pInventoryGridInfo->nGridX;
                 pInventoryGrid->nGridHeight = pInventoryGridInfo->nGridY;
-                pInventoryGrid->ppItems = (D2UnitStrc**)sub_0040B430(*pInventoryMemPool, sizeof(D2UnitStrc*) * pInventoryGrid->nGridHeight * pInventoryGrid->nGridWidth, gszInventorySourceFile, LINE_GRID_ALLOC1, 0);
+                pInventoryGrid->ppItems = (D2UnitStrc**)FOG_AllocPool(*pInventoryMemPool, sizeof(D2UnitStrc*) * pInventoryGrid->nGridHeight * pInventoryGrid->nGridWidth, gszInventorySourceFile, LINE_GRID_ALLOC1, 0);
                 unsigned int nSize = pInventoryGrid->nGridWidth;
                 nSize *= pInventoryGrid->nGridHeight;
                 nSize *= sizeof(D2UnitStrc*);
@@ -982,7 +982,7 @@ D2InventoryGridStrc* __stdcall INVENTORY_GetGrid(D2InventoryStrc* pInventory, in
         pInventoryGrid = &pInventory->pGrids[nInventoryGrid];
         pInventoryGrid->nGridWidth = pInventoryGridInfo->nGridX;
         pInventoryGrid->nGridHeight = pInventoryGridInfo->nGridY;
-        pInventoryGrid->ppItems = (D2UnitStrc**)sub_0040B430(*pInventoryMemPool, sizeof(D2UnitStrc*) * pInventoryGrid->nGridHeight * pInventoryGrid->nGridWidth, gszInventorySourceFile, LINE_GRID_ALLOC2, 0);
+        pInventoryGrid->ppItems = (D2UnitStrc**)FOG_AllocPool(*pInventoryMemPool, sizeof(D2UnitStrc*) * pInventoryGrid->nGridHeight * pInventoryGrid->nGridWidth, gszInventorySourceFile, LINE_GRID_ALLOC2, 0);
         unsigned int nSize = pInventoryGrid->nGridWidth;
                 nSize *= pInventoryGrid->nGridHeight;
                 nSize *= sizeof(D2UnitStrc*);
@@ -2645,7 +2645,7 @@ void __stdcall INVENTORY_AddItemToTradeInventory(D2InventoryStrc* pInventory, D2
         return;
     }
 
-    D2InventoryNodeStrc* ptNode = (D2InventoryNodeStrc*)sub_0040B430(pInventory->pMemPool, sizeof(D2InventoryNodeStrc), gszInventorySourceFile, 3337, 0);
+    D2InventoryNodeStrc* ptNode = (D2InventoryNodeStrc*)FOG_AllocPool(pInventory->pMemPool, sizeof(D2InventoryNodeStrc), gszInventorySourceFile, 3337, 0);
     D2_ASSERT(ptNode, 3338);
     memset(ptNode, 0x00, sizeof(D2InventoryNodeStrc));
     ptNode->nItemId = pItem->dwUnitId;

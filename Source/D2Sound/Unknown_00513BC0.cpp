@@ -204,7 +204,7 @@ extern D2DSPropertySet* gpPropertySet_008816D8; // 0x008816D8
 
 extern D2DSCaps gtDSCaps; // 0x008816E0
 
-extern int gbUseEax_00881770; // 0x00881770
+extern int gbEaxEnabled; // 0x00881770
 
 extern int gbOldSoundDriver; // 0x00881784
 
@@ -336,7 +336,7 @@ void __fastcall D2SOUND_SetEaxEnvironment(D2EaxEnvironmentStrc* pEnvironment)
         return;
     if (gnEaxVersion == 1)
     {
-        float fVolume = sub_00516670_RoomToVolume((float)pEnvironment->nRoom);
+        float fVolume = D2SOUNDSMP_DecibelsToScale((float)pEnvironment->nRoom);
         gpEaxListenerPropertySet->Set(gtEaxListener10PropertySet, 1, 0, 0, pEnvironment, 4);
         gpEaxListenerPropertySet->Set(gtEaxListener10PropertySet, 2, 0, 0, &fVolume, 4);
         gpEaxListenerPropertySet->Set(gtEaxListener10PropertySet, 3, 0, 0, &pEnvironment->fDecayTime, 4);
@@ -523,7 +523,7 @@ void __cdecl sub_005140D0_InitDirectSound()
     }
 
     gnEaxVersion = 0;
-    if (gbUseEax_00881770)
+    if (gbEaxEnabled)
     {
         D2WaveFormatStrc tEaxFormat;
         D2SOUNDSMP_InitWaveFormat(&tEaxFormat, 1);

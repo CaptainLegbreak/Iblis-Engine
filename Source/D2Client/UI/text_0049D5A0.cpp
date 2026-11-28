@@ -1,6 +1,7 @@
 #include "D2Unicode.h"
 #include "D2Client.h"
 #include "D2ClientFuncs.h"
+#include "D2ClientTextState.h"
 #include "D2WinSplitText.h"
 #include "FogApi.h"
 #include "D2SoundApi.h"
@@ -31,7 +32,6 @@ extern "C" __declspec(dllimport) unsigned long __stdcall timeGetTime(void);     
 
 void __fastcall UI_DrawRectangleBorder(D2RectStrc* pRect);                                               // 0x00452E50
 void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nArg6); // 0x0046EFD0
-extern int gbTextSide;                                                                             // 0x007BF236
 extern int gnGlobal_007BF264;                                                                               // 0x007BF264
 
 // 0x0049D590
@@ -42,7 +42,7 @@ unsigned int __fastcall TEXT_CalcTextOffset(unsigned int nValue)
 
 static __forceinline void sub_0049D5A0_DrawClippedLine(D2SplittedTextStrc* pLine, int nY, int nColor, int nSkipLines, int nDrawLines)
 {
-    if (gnTextDisplaySetting || gbTextPanelOpen)
+    if (gtTextState.nTextDisplaySetting || gtTextState.bTextPanelOpen)
     {
         D2WINFONT_DrawClippedFontText(pLine->wszLine, gnTextLeft + 0x10, gnTextTop + nY, nColor, nSkipLines, nDrawLines);
     }
@@ -92,7 +92,7 @@ static int TEXT_UpdateScrollText(D2TextScrollStrc* pRec)
         pRec->nPos = (nExtra + nElapsed) * pRec->nSpeed;
     }
 
-    if (!gbTextSide && (gnTextDisplaySetting || gbTextPanelOpen))
+    if (!gtTextState.bTextSide && (gtTextState.nTextDisplaySetting || gtTextState.bTextPanelOpen))
     {
         AUTOMAP_DrawFramedBox(gnTextLeft, gnTextTop - 5, 0x145, 0x7A, 0, 1);
         D2RectStrc tRect;
@@ -116,7 +116,7 @@ static int TEXT_UpdateScrollText(D2TextScrollStrc* pRec)
             if (nPos < 0x17800)
             {
                 int nY = TEXT_CalcTextOffset(nPos);
-                if (gnTextDisplaySetting || gbTextPanelOpen)
+                if (gtTextState.nTextDisplaySetting || gtTextState.bTextPanelOpen)
                 {
                     D2Win_10117_DrawText(pLine->wszLine, gnTextLeft + 0x10, gnTextTop + nY, 0, 0);
                 }
@@ -220,8 +220,6 @@ static int TEXT_UpdateScrollText(D2TextScrollStrc* pRec)
 #pragma pack(pop)
 
 extern D2TextScrollStrc* gpTextBox; // 0x007BF0A4
-extern void* gpHint_007BF202; // 0x007BF202
-extern void* gpHint_007BF24B; // 0x007BF24B
 extern D2TextCallback gpfnTextCallback; // 0x007BF258
 extern int gbTextHandlersRegistered; // 0x007BF27C
 extern char gaTextMsgHandlers[]; // 0x00722600
@@ -229,7 +227,7 @@ extern char gaTextMsgHandlers[]; // 0x00722600
 void __stdcall TEXT_FreeTextBox(D2TextScrollStrc* pTextBox); // 0x0049D410
 void __fastcall SELECT_SetSelectionRect(const D2SelectionRectStrc* pRect); // 0x00467430
 void __fastcall NPCMENU_CancelNpcAndFlag(void* pHint); // 0x004B3D10
-void* __stdcall WINDOW_GetWindow(); // 0x004F59A0
+void* __cdecl WINDOW_GetWindow(); // 0x004F59A0
 void __fastcall AUTOMAP_UnregisterHandlerTable(void* hWnd, void* pTable, int nCount); // 0x00451E10
 
 // 0x004A0770
@@ -242,13 +240,13 @@ static int __stdcall TEXT_AdvanceTextBox(int bIgnore, D2TextScrollStrc* pTextBox
     }
 
     const int bBusy = D2SOUND_GetMasterVolumeOption();
-    if (!gpHint_007BF24B || sub_004B95C0_IsHintPlaying(gpHint_007BF24B) || !bBusy)
+    if (!gtTextState.hHintSound || sub_004B95C0_IsHintPlaying(gtTextState.hHintSound) || !bBusy)
     {
-        gpHint_007BF24B = 0;
+        gtTextState.hHintSound = 0;
         if (TEXT_UpdateScrollText(pTextBox))
         {
             gbTextBoxDone = 1;
-            if (!gbTextFromObject && gpTextBox)
+            if (!gtTextState.bTextFromObject && gpTextBox)
             {
                 TEXT_FreeTextBox(gpTextBox);
                 gpTextBox = 0;
@@ -265,13 +263,13 @@ static int __stdcall TEXT_AdvanceTextBox(int bIgnore, D2TextScrollStrc* pTextBox
             {
                 gbTextBoxPending = 0;
             }
-            else if (gbTextFromObject)
+            else if (gtTextState.bTextFromObject)
             {
-                NPCMENU_CancelNpcAndFlag(gpHint_007BF202);
+                NPCMENU_CancelNpcAndFlag(gtTextState.nTextNpcId);
             }
 
             UI_StartUIVarDelay();
-            gbTextFromObject = 0;
+            gtTextState.bTextFromObject = 0;
             SELECT_SetSelectionRect(0);
             if (gbTextHandlersRegistered == 1)
             {

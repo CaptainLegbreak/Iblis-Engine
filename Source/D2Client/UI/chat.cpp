@@ -274,10 +274,10 @@ extern int gnChatDrawCount; // 0x007BB5EC
 
 Unicode gwszChatLine_007BB638[0x101]; // 0x007BB638
 
-void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
+void __fastcall SCMD_RegisterMsgHandlers(void* hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
 
-extern "C" int __stdcall ImmSimulateHotKey(int hWnd, unsigned long nHotKey); // 0x006B00E4
+extern "C" int __stdcall ImmSimulateHotKey(void* hWnd, unsigned long nHotKey); // 0x006B00E4
 
 extern D2MsgHandlerEntryStrc gaChatHandlers[]; // 0x00712F4C
 
@@ -303,11 +303,11 @@ struct CANDIDATELIST
 
 
 
-extern "C" int __stdcall ImmReleaseContext(int hWnd, HIMC hImc); // 0x006B00B4
+extern "C" int __stdcall ImmReleaseContext(void* hWnd, HIMC hImc); // 0x006B00B4
 
 extern "C" int __stdcall ImmGetOpenStatus(HIMC hImc); // 0x006B00BA
 
-extern "C" HIMC __stdcall ImmGetContext(int hWnd); // 0x006B00C6
+extern "C" HIMC __stdcall ImmGetContext(void* hWnd); // 0x006B00C6
 
 extern "C" unsigned long __stdcall ImmGetCandidateListA(HIMC hImc, unsigned long dwIndex, CANDIDATELIST* pCandList, unsigned long dwBufLen); // 0x006B00CC
 
@@ -326,7 +326,7 @@ static CANDIDATELIST* gpImeCandidateList; // 0x007BB5F4
 
 unsigned char gbChatInputOpen; // 0x007BB5E1
 
-void __fastcall sub_00451E10_RegisterHandlerTable(int hWnd, D2MsgHandlerEntryStrc* pTable, int nCount); // 0x00451E10
+void __fastcall sub_00451E10_RegisterHandlerTable(void* hWnd, D2MsgHandlerEntryStrc* pTable, int nCount); // 0x00451E10
 
 
 

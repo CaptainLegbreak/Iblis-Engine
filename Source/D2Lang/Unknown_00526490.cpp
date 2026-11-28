@@ -175,13 +175,13 @@ Unicode* __fastcall Unicode::strcpy(Unicode* dest, const Unicode* src)
 }
 
 // 0x00526800
-extern "C" __declspec(dllexport) int __fastcall UNICODE_StrLen(const unsigned short* pText) {
+int __fastcall UNICODE_StrLen(const Unicode* pString) {
     int nLength = 0;
-    if (!pText) {
+    if (!pString) {
         return 0;
     }
-    while (*pText) {
-        pText++;
+    while (pString->wChar) {
+        pString++;
         nLength++;
     }
     return nLength;

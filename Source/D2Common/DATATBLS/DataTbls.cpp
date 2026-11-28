@@ -1686,7 +1686,7 @@ void __fastcall DATATBLS_LoadStatesTxt(void* hArchive)
         { gszTxtField_end, TXTFIELD_NONE, 0, 0, 0 },
     };
 
-    gD2DataTables.pStatesLinker = sub_006BD040(".\\DATATBLS\\DataTbls.cpp", 1735);
+    gD2DataTables.pStatesLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 1735);
     gD2DataTables.pStatesTxt = (D2StatesTxt*)DATATBLS_CompileTxt(hArchive, "states", pTbl, &gD2DataTables.nStatesTxtRecordCount, sizeof(D2StatesTxt));
 
     D2_ASSERT(gD2DataTables.nStatesTxtRecordCount < 256, 1737);

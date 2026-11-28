@@ -189,7 +189,7 @@ enum
 
 extern "C" const char szSUnitProxyCppFile[];                                                                // 0x006E0A30
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);   // 0x0040B430
 
 static void SUNITPROXY_InitializeItemCache(D2GameStrc* pGame, D2UnitProxyStrc* pUnitProxy, int nNpcInventoryId);
 
@@ -224,7 +224,7 @@ void __fastcall SUNITPROXY_FreeNpcGamble(D2GameStrc* pGame, D2UnitStrc* pNpc, D2
 void __fastcall SUNITPROXY_AllocNpcEvent(D2UnitStrc* pNpc, D2GameStrc* pGame, D2UnitStrc* pPlayer, int bPending)
 {
     int nUnused;
-    D2NpcEventStrc* pNpcEvent = (D2NpcEventStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2NpcEventStrc), ".\\UNIT\\sunitproxy.cpp", 133, 0);
+    D2NpcEventStrc* pNpcEvent = (D2NpcEventStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2NpcEventStrc), ".\\UNIT\\sunitproxy.cpp", 133, 0);
     D2NpcRecordStrc* pNpcRecord = SUNITPROXY_GetNpcRecordFromClassId(pGame, !pNpc ? -1 : pNpc->dwClassId, &nUnused);
     if (pNpcRecord)
     {
@@ -270,9 +270,9 @@ static inline unsigned int RollSeed(D2SeedStrc* pSeed)
 // 0x00536070
 void __fastcall SUNITPROXY_InitializeNpcControl(D2GameStrc* pGame)
 {
-    D2NpcRecordStrc* pRecords = (D2NpcRecordStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2NpcRecordStrc)*64, szSUnitProxyCppFile, 0xB7, 0);
+    D2NpcRecordStrc* pRecords = (D2NpcRecordStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2NpcRecordStrc)*64, szSUnitProxyCppFile, 0xB7, 0);
     memset(pRecords, 0, sizeof(D2NpcRecordStrc)*64);
-    D2NpcControlStrc* pControl = (D2NpcControlStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2NpcControlStrc), szSUnitProxyCppFile, 0xB9, 0);
+    D2NpcControlStrc* pControl = (D2NpcControlStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2NpcControlStrc), szSUnitProxyCppFile, 0xB9, 0);
     pControl->pFirstRecord = 0;
     pControl->nArraySize = 0;
     pControl->nNpcCount = 0;
@@ -637,7 +637,7 @@ void __fastcall SUNITPROXY_InitializeNpcEventChain(D2GameStrc* pGame, int nUnuse
     {
         if (pRecord->bTrader == 1 && pRecord->bVendorInit == 1 && pRecord->bTrading == 1)
         {
-            D2NpcEventStrc* pEvent = (D2NpcEventStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2NpcEventStrc), ".\\UNIT\\sunitproxy.cpp", 611, 0);
+            D2NpcEventStrc* pEvent = (D2NpcEventStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2NpcEventStrc), ".\\UNIT\\sunitproxy.cpp", 611, 0);
             pEvent->pNext = pRecord->pEvent;
             pEvent->field_C = 0;
             pEvent->pUnit = pUnit;

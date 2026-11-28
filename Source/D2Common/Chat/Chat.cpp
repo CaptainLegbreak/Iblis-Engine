@@ -16,7 +16,7 @@ struct D2HoverTextStrc
     char szMsg[256];
 };
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 extern "C" size_t __cdecl strlen(const char* szString);
 extern "C" char* __cdecl strcpy(char* szDest, const char* szSource);
@@ -33,7 +33,7 @@ D2HoverTextStrc* __stdcall CHAT_AllocHoverMsg(D2PoolSystemStrc* pMemPool, const 
 
     const int nLength = nTextLength >= 255 ? 255 - 1 : nTextLength;
 
-    D2HoverTextStrc* pHoverMsg = (D2HoverTextStrc*)sub_0040B430(pMemPool, sizeof(D2HoverTextStrc), ".\\Chat\\Chat.cpp", 50, 0);
+    D2HoverTextStrc* pHoverMsg = (D2HoverTextStrc*)FOG_AllocPool(pMemPool, sizeof(D2HoverTextStrc), ".\\Chat\\Chat.cpp", 50, 0);
     pHoverMsg->dwDisplayTime = 8 * nLength + 125;
     pHoverMsg->dwExpireTime = pHoverMsg->dwDisplayTime + nTimeout;
     pHoverMsg->bUsed = 0;

@@ -196,9 +196,9 @@ int gbQuestDebug; // 0x008846DC
 
 extern const D2UnkPlrMsgStrc gaUnitModeMessages[]; // 0x007319E8
 
-void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-void __fastcall SUNIT_IterateUnitsOfType(D2GameStrc* pGame, int nType, void* pArg, int(__fastcall* pfIterate)(D2GameStrc*, D2UnitStrc*, void*)); // 0x005537D0
+D2UnitStrc* __fastcall SUNIT_IterateUnitsOfType(D2GameStrc* pGame, int nType, void* pArg, int(__fastcall* pfIterate)(D2GameStrc*, D2UnitStrc*, void*)); // 0x005537D0
 
 
 
@@ -438,7 +438,7 @@ static int __stdcall QUESTS_AddQuestToUnitEventList(D2GameStrc* pGame, D2UnitStr
             return 0;
         }
     }
-    D2QuestChainStrc* pNew = (D2QuestChainStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2QuestChainStrc), gszQuestsSourceFile, 104, 0);
+    D2QuestChainStrc* pNew = (D2QuestChainStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2QuestChainStrc), gszQuestsSourceFile, 104, 0);
     pNew->pQuestData = pQuestData;
     pNew->pNext = pUnit->pQuestEventList;
     pUnit->pQuestEventList = pNew;
@@ -1004,7 +1004,7 @@ void __fastcall QUESTS_CreateTimer(D2QuestDataStrc* pQuest, QUESTUPDATE pfnCallb
     D2_ASSERT(!pQuestControl->bExecuting, 1047);
 
     D2QuestTimerStrc* pPrevious = pQuestControl->pTimer;
-    D2QuestTimerStrc* pQuestTimer = (D2QuestTimerStrc*)sub_0040B430(pQuest->pGame->pMemoryPool, sizeof(D2QuestTimerStrc), gszQuestsSourceFile, 1050, 0);
+    D2QuestTimerStrc* pQuestTimer = (D2QuestTimerStrc*)FOG_AllocPool(pQuest->pGame->pMemoryPool, sizeof(D2QuestTimerStrc), gszQuestsSourceFile, 1050, 0);
     pQuestTimer->pNext = pPrevious;
     pQuestTimer->pfUpdate = pfnCallback;
     pQuestTimer->pQuest = pQuest;
