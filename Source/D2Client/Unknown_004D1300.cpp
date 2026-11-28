@@ -2,6 +2,7 @@
 #include "D2StateIds.h"
 #include "D2StatIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2DataTbls.h"
 #include "D2Structs.h"
 #include "D2GameTypes.h"
@@ -19,6 +20,9 @@
 #include "D2ClientGfx.h"
 #include "D2ClientTypes.h"
 #include "D2LevelIds.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -38,43 +42,24 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
-D2UnitStrc* __fastcall CUNIT_GetOwnerUnit(D2UnitStrc* pUnit); // 0x004639D0
 
-void __fastcall MISSILE_CltDoDefault(D2UnitStrc* pMissile); // 0x004CD390
 
 D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams); // 0x004CD540
 
-void __fastcall MISSILE_CltDoCommon(D2UnitStrc* pMissile); // 0x004D30C0
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pDynamicPath); // 0x006488C0
 
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pDynamicPath); // 0x00648900
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-int __stdcall MISSILE_GetLevel(D2UnitStrc* pMissile); // 0x0064A210
-
-int __stdcall MISSILE_GetSkill(D2UnitStrc* pMissile); // 0x0064A280
-
 unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
 
-void __fastcall MISSILE_CltDoRandomTrail(D2UnitStrc* pMissile); // 0x004D3630
 
-int __stdcall UNITS_GetPrecisionX(D2UnitStrc* pUnit); // 0x006203B0
-
-int __stdcall UNITS_GetPrecisionY(D2UnitStrc* pUnit); // 0x00620410
-
-void __fastcall SEED_InitLowSeed(D2SeedStrc* pSeed, unsigned int nLowSeed); // 0x00650E40
 
 enum
 {
@@ -92,11 +77,8 @@ typedef char cc_M439_D2MissilesTxt_size[sizeof(D2MissilesTxt) == 0x1A4 ? 1 : -1]
 
 typedef char cc_M338_D2MissilesTxt_size[sizeof(D2MissilesTxt) == 0x1A4 ? 1 : -1];
 
-void __fastcall GFXUTIL_ClearMotionFlagTwo(D2UnitStrc* pMissile);                                                         // 0x004DA340
 
-void __fastcall GFXUTIL_SetBallistic(D2UnitStrc* pUnit, int nSpeed, int nFrames);                      // 0x004DA5B0
 
-void __fastcall MISSILE_CltDoFallingSpawn(D2UnitStrc* pMissile); // 0x004D66E0
 
 static void __stdcall MISSILE_SpawnScattered(int nRange, int nMissile, D2UnitStrc* pMissile); // 0x004D1300
 
@@ -205,7 +187,6 @@ inline D2MissilesTxt* MISSILE_GetMissilesTxtRecordFromUnit(D2UnitStrc* pMissile)
 
 #define LIGHT_LIMIT 60
 
-int __stdcall sub_0064A3B0_GetElapsedFrames(D2UnitStrc* pMissile);
 
 #define SPAWN_FLAGS 0x2001
 
@@ -310,7 +291,7 @@ static void __stdcall MISSILE_SpawnScattered(int nRange, int nMissile, D2UnitStr
 // 0x004D66E0
 void __fastcall MISSILE_CltDoFallingSpawn(D2UnitStrc* pMissile)
 {
-    const int nRemaining = sub_0064A380_GetRemainingFrames(pMissile);
+    const int nRemaining = MISSILE_GetCurrentFrame(pMissile);
     D2MissilesTxt* pMissilesTxtRecord = SKILLS_GetMissilesTxtRecordChecked(MISSILE_IZUAL_CONTROL);
     MISSILE_SpawnScattered(10, MISSILE_IZUAL_MIST_LOOP, pMissile);
     if (nRemaining < pMissilesTxtRecord->wRange - pMissilesTxtRecord->dwParam[0] && nRemaining > pMissilesTxtRecord->wRange - pMissilesTxtRecord->dwParam[1])
@@ -335,7 +316,7 @@ void __fastcall MISSILE_CltDoFallingSpawn(D2UnitStrc* pMissile)
             {
                 int nRoll = SEED_RollLimitedRandomNumber(pSeed, 3);
                 nRoll += 3;
-                sub_004DA250(pNew, 0, 0, -nRoll, 1);
+                GFXUTIL_SetMotionVectorD(pNew, 0, 0, -nRoll, 1);
                 GFXUTIL_SetBallistic(pNew, 0, 0xF);
                 GFXUTIL_ClearMotionFlagTwo(pNew);
             }
@@ -384,7 +365,7 @@ void __fastcall sub_004D6130_CltDoRandomSubMissile3(D2UnitStrc* pMissile)
         return;
     }
 
-    const int nFrames = sub_0064A3B0_GetElapsedFrames(pMissile);
+    const int nFrames = MISSILE_GetRemainingFrames(pMissile);
 
     int nCount = 0;
     do
@@ -400,7 +381,6 @@ void __fastcall sub_004D6130_CltDoRandomSubMissile3(D2UnitStrc* pMissile)
 
     if (nCount <= 0)
     {
-// build: symbol ?MISSILE_CltMissileHit@* 0x004D2D70
         MISSILE_CltMissileHit(pMissile, 0, 0);
         return;
     }

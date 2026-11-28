@@ -75,21 +75,21 @@ D2_CHECK_SIZE(D2SpriteCacheNodeStrc, 0x1C);
 struct D2CharStrc
 {
     unsigned short wChar; // 0x00
-    unsigned char unk0x02; // 0x02
+    unsigned char unused0x02; // 0x02
     unsigned char nWidth; // 0x03
     unsigned char nHeight; // 0x04
-    unsigned char unk0x05; // 0x05
-    unsigned short unk0x06; // 0x06
+    unsigned char unused0x05; // 0x05
+    unsigned short unused0x06; // 0x06
     unsigned short nImageIndex; // 0x08
-    unsigned short unk0x0A; // 0x0A
-    unsigned short unk0x0C; // 0x0C
+    unsigned short unused0x0A; // 0x0A
+    unsigned short unused0x0C; // 0x0C
 };
 
 struct D2FontStrc
 {
     unsigned int dwHeader; // 0x00
-    unsigned short unk0x04; // 0x04
-    unsigned short unk0x06; // 0x06
+    unsigned short unused0x04; // 0x04
+    unsigned short unused0x06; // 0x06
     unsigned short nCharCount; // 0x08
     unsigned char nHeight; // 0x0A
     unsigned char nWidth; // 0x0B
@@ -106,8 +106,8 @@ struct D2CompositeUnitStrc
     unsigned int dwFlags; // 0x00
     unsigned char nDirection; // 0x04
     unsigned char nDirections; // 0x05
-    unsigned char unk0x06; // 0x06
-    unsigned char unk0x07; // 0x07
+    unsigned char pad0x06; // 0x06
+    unsigned char pad0x07; // 0x07
     int nFrame; // 0x08
     int nFrameCount; // 0x0C
     int nAnimSpeed; // 0x10
@@ -123,8 +123,8 @@ struct D2CompositeUnitStrc
     D2CelFileStrc* pEmblemCellFile; // 0xBC
     unsigned char nEmblemColor1; // 0xC0
     unsigned char nEmblemColor2; // 0xC1
-    unsigned char unk0xC2; // 0xC2
-    unsigned char unk0xC3; // 0xC3
+    unsigned char pad0xC2; // 0xC2
+    unsigned char pad0xC3; // 0xC3
     D2CompositeUnitStrc* pNext; // 0xC4
     D2CompositeUnitStrc* pPrev; // 0xC8
     unsigned short wszAccountName[64]; // 0xCC

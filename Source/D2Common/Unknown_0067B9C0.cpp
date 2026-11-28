@@ -1,9 +1,11 @@
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2PathFind.h"
 #include "D2Structs.h"
 #include "D2Path.h"
 #include "D2DrlgPresets.h"
 #include "D2PathFoWallContext.h"
+#include "FogApi.h"
 
 struct D2DynamicPathStrc;
 
@@ -27,31 +29,22 @@ struct D2PathMovStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 int __stdcall COLLISION_CheckAnyCollisionWithPattern(D2ActiveRoomStrc* pRoom, int nX, int nY, int nCollisionPattern, unsigned short nMask); // 0x0064D910
 
-int __fastcall PATH_ComputeVelocityAndDirectionVectorsToNextPoint(D2DynamicPathStrc* pPath, int bNormalizeDirectionIfSamePos, int bForceDirectionNormalization); // 0x0064FE40
 
-void __fastcall PATH_GetDirections_6FDAB790(int* pTestDir, D2PathPointStrc pPoint1, D2PathPointStrc pPoint2); // 0x00678D70
 
-int __stdcall PATH_GetTableHeuristic(D2PathPointStrc pPoint1, D2PathPointStrc pPoint2); // 0x00679380
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pDynamicPath); // 0x006488C0
 
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pDynamicPath); // 0x00648900
 
 extern const D2CoordStrc gatDirectionToOffset[8]; // 0x006F1798
 
-int __stdcall sub_6FDAA880(D2PathPointStrc tPoint, int* pTestDir, int* pDirection, D2PathInfoStrc* pPathInfo); // 0x006793E0
+int __stdcall sub_006793E0_FindFreeDirection(D2PathPointStrc tPoint, int* pTestDir, int* pDirection, D2PathInfoStrc* pPathInfo); // 0x006793E0
 
 static int __stdcall PATH_RayTrace(D2PathPointStrc tStartCoord, D2PathPointStrc* pPathDestination, D2DynamicPathStrc* pDynamicPath); // 0x00679720
-
-int __fastcall sub_6FDAA720(D2PathInfoStrc* pPathInfo); // 0x00679B30
 
 typedef int BOOL;
 
@@ -83,7 +76,6 @@ int PATH_FindNonCollidingTargetPoint(D2PathInfoStrc* pInfo, D2PathMovStrc* pMov)
 
 static void __stdcall PATH_ReplaceSubpathPoints(D2PathPointStrc* pPoints, int* pSubPathStartIdx, int nSubPathLastIdx, int* nMaxIndex, D2PathMovStrc* pMov);
 
-// build: symbol ?gaPathDeltaTable@* 0x006F1E28
 int __stdcall PATH_GetAdjacentPointDirection(D2PathPointStrc tPoint1, D2PathPointStrc tPoint2); // 0x0067BBC0
 
 int __fastcall PATH_FindSubpathWithoutObstacles(D2PathInfoStrc* pInfo, D2PathPointStrc tSubPathStart, D2PathPointStrc* pPathPoints, int* pSubPathStartIdx, int* nMaxIndex, int nMaxLength, int nMajorDirection);
@@ -91,219 +83,6 @@ int __fastcall PATH_FindSubpathWithoutObstacles(D2PathInfoStrc* pInfo, D2PathPoi
 int __fastcall PATH_SimplifyToLines(D2PathPointStrc tStartCoord, D2PathPointStrc* pOutPathPoints, D2PathPointStrc* pInputPoints, int nbTempPoints); // 0x0067C1E0
 
 static int __stdcall PATH_BresenhamLine(D2PathPointStrc tStartPoint, D2PathPointStrc tTargetPoint, int nDistMax, int* nMajorDirection, D2PathPointStrc* pOutPoints);
-
-inline const int& PATH_MaxRef(const int& a, const int& b)
-{
-    return a > b ? a : b;
-}
-
-inline int UNITS_GetXPositionInline(D2UnitStrc* pUnit)
-{
-    switch (pUnit->dwUnitType)
-    {
-    case UNIT_OBJECT:
-    case UNIT_ITEM:
-    case UNIT_TILE:
-        return pUnit->pStaticPath->nXPos;
-    }
-    return pUnit->pDynamicPath ? PATH_GetXPosition(pUnit->pDynamicPath) : 0;
-}
-
-inline int UNITS_GetYPositionInline(D2UnitStrc* pUnit)
-{
-    switch (pUnit->dwUnitType)
-    {
-    case UNIT_OBJECT:
-    case UNIT_ITEM:
-    case UNIT_TILE:
-        return pUnit->pStaticPath->nYPos;
-    }
-    return pUnit->pDynamicPath ? PATH_GetYPosition(pUnit->pDynamicPath) : 0;
-}
-
-static inline int PATH_TestCollision(const D2CollisionTestStrc* pTest, int nX, int nY)
-{
-    return COLLISION_CheckAnyCollisionWithPattern(pTest->pRoom, nX, nY, pTest->nCollisionPattern, pTest->nCollisionMask);
-}
-
-int __fastcall PATH_Toward_6FDAA9F0(D2PathInfoStrc* pPathInfo)
-{
-    D2DynamicPathStrc* pPath = pPathInfo->pDynamicPath;
-    pPath->dwCurrentPointIdx = 0;
-    pPath->dwPathPoints = 0;
-    if (pPath->nDirOffset)
-    {
-        return sub_6FDAA720(pPathInfo);
-    }
-
-    D2PathPointStrc nNextPoint = pPathInfo->tTargetCoord;
-    pPath->PathPoints[0] = nNextPoint;
-
-    if (PATH_CheckCollisionsToNextPosition(pPath, &nNextPoint))
-    {
-        pPath->PathPoints[pPath->dwPathPoints] = nNextPoint;
-        pPath->dwPathPoints += 1;
-        return pPath->dwPathPoints;
-    }
-
-    if (PATH_GetTableHeuristic(nNextPoint, pPathInfo->tTargetCoord) <= pPathInfo->field_14)
-    {
-        pPath->PathPoints[pPath->dwPathPoints] = nNextPoint;
-        pPath->dwPathPoints += 1;
-        return pPath->dwPathPoints;
-    }
-
-    {
-        D2PathPointStrc tPoint = pPathInfo->tStartCoord;
-        D2PathPointStrc tCurCoords = pPathInfo->tStartCoord;
-        if (tPoint.X != nNextPoint.X || tPoint.Y != nNextPoint.Y)
-        {
-            pPath->PathPoints[pPath->dwPathPoints] = nNextPoint;
-            pPath->dwPathPoints += 1;
-            tPoint = nNextPoint;
-            tCurCoords = nNextPoint;
-        }
-
-        const int nDistMax = pPathInfo->nDistMax;
-        nNextPoint = pPathInfo->tTargetCoord;
-        int nPrevDir = 0xFF;
-        int nNewPointsCount = pPath->dwPathPoints;
-        int bNotStraightLine = 0;
-        int nCurDist = 0;
-        if (nDistMax > 0)
-        {
-            D2PathPointStrc* pPathPointsEnd = &pPath->PathPoints[pPath->dwPathPoints];
-            do
-            {
-                if (tCurCoords.X == nNextPoint.X && tCurCoords.Y == nNextPoint.Y)
-                {
-                    break;
-                }
-
-                bNotStraightLine = 0;
-                int aTestDir[3];
-                PATH_GetDirections_6FDAB790(aTestDir, tPoint, nNextPoint);
-                int nDirection;
-                if (!sub_6FDAA880(tPoint, aTestDir, &nDirection, pPathInfo) || ((nDirection - 4) & 7) == nPrevDir)
-                {
-                    goto ADD_LAST_POINT;
-                }
-
-                tCurCoords.X += gatDirectionToOffset[nDirection].nX;
-                tCurCoords.Y += gatDirectionToOffset[nDirection].nY;
-                if (nDirection != nPrevDir)
-                {
-                    if (tPoint.X != pPathInfo->tStartCoord.X || tPoint.Y != pPathInfo->tStartCoord.Y)
-                    {
-                        *pPathPointsEnd = tPoint;
-                        nNewPointsCount += 1;
-                        ++pPathPointsEnd;
-                    }
-                    bNotStraightLine = 1;
-                }
-                tPoint = tCurCoords;
-                nPrevDir = nDirection;
-                nCurDist += 1;
-            }
-            while (nCurDist < nDistMax);
-
-            if (bNotStraightLine)
-            {
-                goto STORE_POINT_COUNT;
-            }
-        ADD_LAST_POINT:
-            if (nCurDist)
-            {
-                pPath->PathPoints[nNewPointsCount] = tPoint;
-                nNewPointsCount += 1;
-            }
-        }
-    STORE_POINT_COUNT:
-        pPath->dwPathPoints = nNewPointsCount;
-    }
-
-    return pPath->dwPathPoints;
-}
-
-static inline int PATH_ScaleDelta(int nScale, int nDelta, int nMax)
-{
-    int nResult = nScale;
-    nResult *= nDelta;
-    return nResult / nMax;
-}
-
-static inline unsigned short PATH_AStar_HeuristicInline(D2PathPointStrc tPoint1, D2PathPointStrc tPoint2)
-{
-    int nDiffX = tPoint1.X - tPoint2.X;
-    if (nDiffX < 0)
-    {
-        nDiffX = -nDiffX;
-    }
-
-    int nDiffY = tPoint1.Y - tPoint2.Y;
-    if (nDiffY < 0)
-    {
-        nDiffY = -nDiffY;
-    }
-
-    if (nDiffX >= nDiffY)
-    {
-        return nDiffY + 2 * nDiffX;
-    }
-    return nDiffX + 2 * nDiffY;
-}
-
-static inline D2PathFoWallNodeStrc* PATH_AStar_RemoveFromPendingCache(D2PathFoWallContextStrc* pContext, D2PathFoWallNodeStrc* pToRemove)
-{
-    D2PathFoWallNodeStrc* pPrev = 0;
-    const int nHash = (gaIdaStar_PointCacheHashMaskY[pToRemove->tPoint.Y & 0x7F] + gaIdaStar_PointCacheHashMaskX[pToRemove->tPoint.X & 0x7F]) & 0x7F;
-    for (D2PathFoWallNodeStrc* pCur = pContext->aPendingCache[nHash]; pCur != pToRemove; pCur = pCur->pNextCachePoint)
-    {
-        pPrev = pCur;
-    }
-
-    if (pPrev)
-    {
-        pPrev->pNextCachePoint = pToRemove->pNextCachePoint;
-    }
-    else
-    {
-        pContext->aPendingCache[nHash] = pToRemove->pNextCachePoint;
-    }
-    pToRemove->pNextCachePoint = 0;
-    return pPrev;
-}
-
-static inline void PATH_AStar_AddChildToNode(D2PathFoWallNodeStrc* pNode, D2PathFoWallNodeStrc* pChild)
-{
-    if (!pNode->pChildren[0])
-        pNode->pChildren[0] = pChild;
-    else if (!pNode->pChildren[1])
-        pNode->pChildren[1] = pChild;
-    else if (!pNode->pChildren[2])
-        pNode->pChildren[2] = pChild;
-    else if (!pNode->pChildren[3])
-        pNode->pChildren[3] = pChild;
-    else if (!pNode->pChildren[4])
-        pNode->pChildren[4] = pChild;
-    else if (!pNode->pChildren[5])
-        pNode->pChildren[5] = pChild;
-    else if (!pNode->pChildren[6])
-        pNode->pChildren[6] = pChild;
-    else if (!pNode->pChildren[7])
-        pNode->pChildren[7] = pChild;
-}
-
-static inline D2PathFoWallNodeStrc* PATH_AStar_GetNewNode(D2PathFoWallContextStrc* pContext)
-{
-    D2PathFoWallNodeStrc* pNewNode = 0;
-    if (pContext->nNodesCount != 200)
-    {
-        pNewNode = &pContext->aNodesStorage[pContext->nNodesCount++];
-        memset(pNewNode, 0, sizeof(*pNewNode));
-    }
-    return pNewNode;
-}
 
 // 0x0067B9C0
 int __stdcall PATH_GetSquaredDistanceBetweenPoints(D2PathPointStrc tPoint1, D2PathPointStrc tPoint2)
@@ -452,7 +231,6 @@ static int __stdcall PATH_BresenhamLine(D2PathPointStrc tStartPoint, D2PathPoint
 // 0x0067BBC0
 int __stdcall PATH_GetAdjacentPointDirection(D2PathPointStrc tPoint1, D2PathPointStrc tPoint2)
 {
-// build: symbol ?gaPathDeltaTable@* 0x006F1E28
     return gaPathDeltaTable[3 * (tPoint2.Y - tPoint1.Y) + (tPoint2.X - tPoint1.X)];
 }
 
@@ -716,13 +494,6 @@ int __fastcall PATH_SimplifyToLines(D2PathPointStrc* pOutPathPoints, D2PathPoint
     return nbOutPoints;
 }
 
-static inline int PATH_TestNewTargetPointWF(D2PathMovStrc* pMov, D2ActiveRoomStrc* pRoom, int nCollisionPattern, int nCollisionMask)
-{
-    pMov->tTargetCoord.X = (unsigned short)(gnDirectionsToAdjacentCellOffsets[pMov->nDirectionIndex].nX + pMov->tCurrentCoord.X);
-    pMov->tTargetCoord.Y = (unsigned short)(gnDirectionsToAdjacentCellOffsets[pMov->nDirectionIndex].nY + pMov->tCurrentCoord.Y);
-    return COLLISION_CheckAnyCollisionWithPattern(pRoom, pMov->tTargetCoord.X, pMov->tTargetCoord.Y, nCollisionPattern, nCollisionMask);
-}
-
 // 0x0067C2D0
 int __fastcall PATH_ComputePathOrSlideAlongObstacles(D2PathInfoStrc* pPathInfo)
 {
@@ -801,37 +572,14 @@ struct d2data_00749B34_t
 };
 #pragma pack(pop)
 
-extern "C" const D2CoordStrc gData_006F1D98[16]; // 0x006F1D98
 extern "C" const struct d2data_006F1E18_t gData_006F1E18; // 0x006F1E18
-extern "C" const int gData_006F1E28[6]; // 0x006F1E28
 extern "C" struct d2data_00749B34_t gData_00749B34; // 0x00749B34
-
-extern "C" const D2CoordStrc gData_006F1D98[16] = {
-    { 0, -1 },
-    { 1, -1 },
-    { 1 },
-    { 1, 1 },
-    { 0, 1 },
-    { -1, 1 },
-    { -1 },
-    { -1, -1 },
-    { 0, -1 },
-    { 1, -1 },
-    { 1 },
-    { 1, 1 },
-    { 0, 1 },
-    { -1, 1 },
-    { -1 },
-    { -1, -1 }
-}; // 0x006F1D98
-#pragma comment(linker, "/alternatename:?gnDirectionsToAdjacentCellOffsets@@3QBUD2CoordStrc@@B=_gData_006F1D98")
 
 extern "C" const struct d2data_006F1E18_t gData_006F1E18 = {
     { 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x06 }
 }; // 0x006F1E18
 
-extern "C" const int gData_006F1E28[6] = { -1, 2, 5, 4, 3 }; // 0x006F1E28
-#pragma comment(linker, "/alternatename:?gaPathDeltaTable@@3QBHB=_gData_006F1E28")
+extern const int gaPathDeltaTable[6] = { -1, 2, 5, 4, 3 }; // 0x006F1E28
 
 extern "C" struct d2data_00749B34_t gData_00749B34 = {
     (const void*)"English",
@@ -850,3 +598,22 @@ extern "C" struct d2data_00749B34_t gData_00749B34 = {
     (const void*)"Unknown",
     (const void*)"14"
 }; // 0x00749B34
+
+extern const D2CoordStrc gnDirectionsToAdjacentCellOffsets[16] = {
+    { 0, -1 },
+    { 1, -1 },
+    { 1 },
+    { 1, 1 },
+    { 0, 1 },
+    { -1, 1 },
+    { -1 },
+    { -1, -1 },
+    { 0, -1 },
+    { 1, -1 },
+    { 1 },
+    { 1, 1 },
+    { 0, 1 },
+    { -1, 1 },
+    { -1 },
+    { -1, -1 }
+}; // 0x006F1D98

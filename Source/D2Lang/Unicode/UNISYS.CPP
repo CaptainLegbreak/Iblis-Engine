@@ -2,9 +2,7 @@
 
 #include "D2LangTypes.h"
 #include "D2Unicode.h"
-
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags);                  // 0x00412650
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags);          // 0x00413020
+#include "StormApi2.h"
 
 extern "C" int __cdecl strncmp(const char* szLeft, const char* szRight, size_t nCount);
 extern "C" char* __cdecl strncpy(char* szDest, const char* szSource, unsigned int nCount);
@@ -14,8 +12,6 @@ extern "C" char* __cdecl strcpy(char* szDest, const char* szSource);
 extern "C" unsigned int __cdecl strlen(const char* szString);
 
 void* __fastcall sub_00517079_LoadFile(void* hArchive, const char* szFileName, unsigned int* pnSize, const char* szFile, int nLine);
-char* __fastcall sub_00526F70(char* szDest, const Unicode* pSource, int nCount); // 0x00526F70
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
 
 extern "C" const char gszNewline[];                                                                // 0x006FFCB0
 
@@ -34,8 +30,6 @@ D2LangCharMapEntryStrc* gpCharMap;                                              
 D2LangByteRangeStrc* gpLeadByteRanges;                                                             // 0x00882B28
 unsigned short* gpCharMapIndex;                                                                    // 0x00882B2C
 
-// build: symbol ??_U@YAPAXI@Z 0x00527680
-// build: symbol ??_V@YAXPAX@Z 0x00527660
 // 0x00527660
 void __cdecl operator delete[](void* pMemory)
 {
@@ -91,7 +85,6 @@ void __cdecl UNISYS_FreeCodePageTables()
         SMemFree(gpLeadByteRanges, "delete[]", -1, 0);
         gpLeadByteRanges = 0;
     }
-// build: symbol ?gpCharMap@* 0x00882B24
     if (gpCharMap)
     {
         SMemFree(gpCharMap, "delete[]", -1, 0);
@@ -159,7 +152,6 @@ int __fastcall UNISYS_LoadSysMap(void* hArchive, const char* szPath)
     memcpy(pRanges, pCursor, *pRangeCount * sizeof(D2LangByteRangeStrc));
     pCursor += *pRangeCount * sizeof(D2LangByteRangeStrc);
 
-// build: symbol ?gpCharMap@* 0x00882B24
     delete[] gpCharMap;
     D2LangCharMapEntryStrc* pCharMap = new D2LangCharMapEntryStrc[*pMapCount];
     gpCharMap = pCharMap;
@@ -172,7 +164,7 @@ int __fastcall UNISYS_LoadSysMap(void* hArchive, const char* szPath)
     for (int i = 0; i < *pMapCount; ++i)
     {
         pCharMap[i].wValue = pCursor[0];
-        pCharMap[i].f_2 = pCursor[2];
+        pCharMap[i].wChar = pCursor[2];
         pCursor += 4;
     }
 
@@ -202,7 +194,6 @@ static __forceinline int sub_00527A50_FindIndex(const D2LangCharMapEntryStrc* pM
 {
     int nLow = 0;
     int nHigh = gnCharMapCount - 1;
-// build: symbol ?gpCharMapIndex@* 0x00882B2C
     if (wChar < pMap[gpCharMapIndex[0]].wValue)
         return -1;
     if (wChar > pMap[gpCharMapIndex[nHigh]].wValue)
@@ -231,13 +222,13 @@ static int UNISYS_MapCodePageChar(unsigned short wChar)
     const int nIndex = sub_00527A50_FindIndex(gpCharMap, wChar);
     if (nIndex < 0)
         return -1;
-    return gpCharMap[gpCharMapIndex[nIndex]].f_2;
+    return gpCharMap[gpCharMapIndex[nIndex]].wChar;
 }
 
 // 0x00527AE0
 int __cdecl sub_00527AE0_CompareKey(const void* pLeft, const void* pRight)
 {
-    return ((const D2LangCharMapEntryStrc*)pLeft)->f_2 - ((const D2LangCharMapEntryStrc*)pRight)->f_2;
+    return ((const D2LangCharMapEntryStrc*)pLeft)->wChar - ((const D2LangCharMapEntryStrc*)pRight)->wChar;
 }
 
 // 0x00527B00
@@ -248,7 +239,7 @@ static int sub_00527B00_MapUnicodeChar(unsigned short wChar)
         return wChar;
     }
     D2LangCharMapEntryStrc tKey;
-    tKey.f_2 = wChar;
+    tKey.wChar = wChar;
     const D2LangCharMapEntryStrc* pEntry = (const D2LangCharMapEntryStrc*)bsearch(&tKey, gpCharMap, gnCharMapCount, sizeof(D2LangCharMapEntryStrc), sub_00527AE0_CompareKey);
     if (!pEntry)
     {
@@ -310,7 +301,7 @@ char* __fastcall sub_00527BE0_UnicodeToCodePage(char* szDest, const Unicode* pSr
 {
     if (!gpCharMap)
     {
-        return sub_00526F70(szDest, pSrc, nCount);
+        return UNICODE_ToAscii(szDest, pSrc, nCount);
     }
     int i = 0;
     for (; i < nCount; ++pSrc)
@@ -347,7 +338,7 @@ int __fastcall sub_00527CA0_GetCodePageLength(const Unicode* pSrc, int nCount)
 {
     if (!gpCharMap)
     {
-        return sub_00526800(pSrc);
+        return UNICODE_StrLen(pSrc);
     }
     int nLength = 0;
     for (int i = 0; i < nCount; ++i)

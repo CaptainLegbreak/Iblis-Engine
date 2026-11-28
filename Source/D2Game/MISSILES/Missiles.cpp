@@ -10,7 +10,7 @@
 #include "D2TxtTables.h"
 #include "D2Packets.h"
 #include "D2LanguageNames.h"
-// build: symbol _gaszLanguageNames 0x0073BEE0
+#include "D2CommonApi.h"
 
 typedef void(__fastcall* MISSILEINITFUNC)(D2UnitStrc* pMissile, int nInitArg);
 
@@ -20,7 +20,7 @@ extern unsigned int gdwBitMasks[];                                              
 
 extern D2MissileUnitFindTableStrc gtMissileCollisionModes[];                                                // 0x0073C720
 
-D2MissilesTxt* __fastcall sub_0046ACE0(int nMissileId);                                    // 0x0046ACE0
+D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId);                                    // 0x0046ACE0
 
 int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit);                                                         // 0x0045ADF0
 
@@ -28,55 +28,20 @@ int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit);                             
 
 D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY);              // 0x00463740
 
-void __fastcall PLAYER_ApplyWeaponStatsForSkill(D2UnitStrc* pUnit, int a2);                                 // 0x00535D10
+#include "D2GameFuncs.h"
+#include "D2CommonApi2.h"
 
-void __fastcall PLAYER_RestoreWeaponStats(D2UnitStrc* pUnit, int a2);                                       // 0x00535E20
 
-D2UnitStrc* __fastcall SUNIT_AllocUnitData(int nUnitType, int nClassId, int nX, int nY, D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, char a7, int nMode, unsigned int a9); // 0x00555230
+D2UnitStrc* __fastcall SUNIT_AllocUnitData(int nUnitType, int nClassId, int nX, int nY, D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, char nAllocFlags, int nMode, unsigned int nOverrideUnitGUID); // 0x00555230
 
-void __fastcall MONSTERUNIQUE_OwnerMissileHook(D2GameStrc* pGame, D2UnitStrc* pOwner, D2UnitStrc* pMissile); // 0x005A43B0
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit);                                               // 0x00620BB0
 
-void __stdcall UNITS_StoreOwner(D2UnitStrc* pUnit, D2UnitStrc* pOwner);                                     // 0x00621CE0
-
-int __stdcall STATLIST_GetUnitBaseStat(D2UnitStrc* pUnit, int nStatId, int nLayer);                         // 0x006253B0
-
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer);                        // 0x00625480
-
-int __stdcall STATLIST_UnitGetItemStatOrSkillStatValue(D2UnitStrc* pUnit, int nStat, int nLayer);           // 0x00625500
-
-D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitAndState(D2UnitStrc* pUnit, int nState);              // 0x006256B0
-
-int __stdcall STATLIST_GetStatValue(D2StatListStrc* pStatList, int nStatId, unsigned short nLayer);         // 0x00625D00
-
-void __stdcall STATLIST_AllocStatListEx(D2UnitStrc* pUnit, int nFlags, void* pCallback, D2GameStrc* pGame); // 0x00626D40
-
-void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStatId, int nValue, int nLayer);                // 0x00627260
-
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState);                                             // 0x00639DF0
-
-int __stdcall DRLG_GetDistanceToXY(D2UnitStrc* pUnit, int nX, int nY);                                           // 0x006417F0
 
 void __stdcall PATH_SetVelocity(D2DynamicPathStrc* pDynamicPath, int nVelocity, const char* szFile, int nLine); // 0x00648690
 
 void __stdcall D2COMMON_10170_PathSetTargetPos(D2DynamicPathStrc* pPath, int nX, int nY);                   // 0x00648AD0
 
-void __stdcall PATH_SetFootprintCollisionMask(D2DynamicPathStrc* pDynamicPath, int nCollisionMask);         // 0x00648C30
 
-void __stdcall PATH_SetMoveTestCollisionMask(D2DynamicPathStrc* pDynamicPath, int nMask);                   // 0x00648CE0
-
-int __stdcall D2Common_10142(D2DynamicPathStrc* pPath, D2UnitStrc* pUnit, int bAllowInTown);               // 0x00649970
-
-void __stdcall MISSILE_SetTotalFrames(D2UnitStrc* pMissile, int nTotalFrames);                              // 0x0064A2B0
-
-void __stdcall MISSILE_SetCurrentFrame(D2UnitStrc* pMissile, int nCurrentFrame);                            // 0x0064A330
-
-void __fastcall SEED_InitLowSeed(D2SeedStrc* pSeed, unsigned int nLowSeed);                                 // 0x00650E40
-
-void __stdcall MISSILE_FreeMissileData(D2UnitStrc* pMissile); // 0x0064A150
-
-void __fastcall EVENT_FreeUnitTimers(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00540EE0
 
 #define UNIT_MONSTER 1
 
@@ -97,21 +62,9 @@ union D2SeedStrc;
 
 extern const unsigned char gnMissileFlag_006CE27C; // 0x006CE27C
 
-D2UnitStrc* __fastcall SUNIT_GetOwner(D2GameStrc*, D2UnitStrc*); // 0x00552FD0
 
-int __stdcall sub_0064A3E0_GetMissileId(D2UnitStrc*); // 0x0064A3E0
-
-int __stdcall D2COMMON_10175_PathGetFirstPointX(D2DynamicPathStrc*); // 0x00648A00
-
-int __stdcall D2COMMON_10176_PathGetFirstPointY(D2DynamicPathStrc*); // 0x00648A10
-
-int __stdcall sub_0064A380_GetRemainingFrames(D2UnitStrc*); // 0x0064A380
-
-int __stdcall MISSILE_GetLevel(D2UnitStrc*); // 0x0064A210
 
 void __fastcall D2GAME_PACKETS_SendPacket0x73(D2ClientStrc*, D2GSPacketSrv73*); // 0x0053DA10
-
-
 
 
 static void __stdcall MISSILES_RollMissilePierce(D2UnitStrc* pMissile, D2UnitStrc* pOwner); // 0x0059F940
@@ -129,9 +82,6 @@ static inline int GetUnitType(D2UnitStrc* pUnit)
     return !pUnit ? 6 : pUnit->dwUnitType;
 }
 
-D2UnitStrc* __fastcall SUNIT_GetNextUnitFromList(D2UnitStrc* pUnit); // 0x00552DB0
-
-void __fastcall SUNIT_RemoveUnit(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00555600
 
 // 0x0059F840
 void __fastcall MISSILES_RemoveAll(D2GameStrc* pGame)
@@ -152,9 +102,6 @@ void __fastcall MISSILES_RemoveAll(D2GameStrc* pGame)
 
 #define UNITFLAG_ISVALIDTARGET 0x00000008
 
-void __stdcall MISSILE_AllocMissileData(D2UnitStrc* pMissile); // 0x0064A100
-
-void __fastcall D2GAME_DeleteTimersOnUnit_6FC34A30(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00540F30
 
 // 0x0059F8A0
 void __fastcall MISSILES_Initialize(D2GameStrc* pGame, D2UnitStrc* pMissile, int nUnitGUID)
@@ -167,8 +114,8 @@ void __fastcall MISSILES_Initialize(D2GameStrc* pGame, D2UnitStrc* pMissile, int
     MISSILE_AllocMissileData(pMissile);
     pMissile->dwUnitId = nUnitGUID;
     pMissile->dwFlags &= ~(UNITFLAG_TARGETABLE | UNITFLAG_ISVALIDTARGET);
-    D2GAME_DeleteTimersOnUnit_6FC34A30(pGame, pMissile);
-    sub_6FC35570(pGame, pMissile, 0, 0, 0);
+    D2GAME_DeleteTimersOnUnit(pGame, pMissile);
+    EVENT_SetRecurringEvent(pGame, pMissile, 0, 0, 0);
 }
 
 // 0x0059F8E0
@@ -217,7 +164,7 @@ static void __stdcall MISSILES_RollMissilePierce(D2UnitStrc* pMissile, D2UnitStr
         return;
     }
 
-    D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0(pMissile->dwClassId);
+    D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(pMissile->dwClassId);
     if (!MISSILE_FLAGBIT(pMissilesTxtRecord, 2))
     {
         return;
@@ -268,7 +215,7 @@ D2UnitStrc* __fastcall MISSILES_CreateMissileFromParams(D2GameStrc* pGame, D2Mis
         return 0;
     }
 
-    D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0(pMissileParams->nMissile);
+    D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(pMissileParams->nMissile);
     if (!pMissilesTxtRecord)
     {
         return 0;
@@ -444,7 +391,6 @@ D2UnitStrc* __fastcall MISSILES_CreateMissileFromParams(D2GameStrc* pGame, D2Mis
         return 0;
     }
 
-// build: symbol ?gszMissilesSourceFile@* 0x006E2150
     PATH_SetVelocity(pPath, 0, gszMissilesSourceFile, 0x18E);
 
     if (pTarget)
@@ -551,7 +497,7 @@ void __fastcall MISSILES_SyncToClient(D2ClientStrc* pClient, D2GameStrc* pGame, 
         return;
     D2GSPacketSrv73 packet = {};
     packet.nHeader = 0x73;
-    packet.nMissileId = sub_0064A3E0_GetMissileId(pMissile);
+    packet.nMissileId = MISSILE_GetClassId(pMissile);
     packet.nX = CLIENTS_GetUnitX(pMissile);
     packet.nY = CLIENTS_GetUnitY(pMissile);
     if (bSendPath)
@@ -559,7 +505,7 @@ void __fastcall MISSILES_SyncToClient(D2ClientStrc* pClient, D2GameStrc* pGame, 
         packet.nFirstX = D2COMMON_10175_PathGetFirstPointX(pMissile->pDynamicPath);
         packet.nFirstY = D2COMMON_10176_PathGetFirstPointY(pMissile->pDynamicPath);
     }
-    packet.nCurrentFrame = sub_0064A380_GetRemainingFrames(pMissile);
+    packet.nCurrentFrame = MISSILE_GetCurrentFrame(pMissile);
     const int nOwnerType = pOwner ? pOwner->dwUnitType : UNIT_INVALID;
     packet.nUnitType = nOwnerType;
     packet.nUnitGUID = pOwner->dwUnitId;
@@ -585,7 +531,4 @@ extern "C" D2MonLvlTxt* __fastcall MISSILES_GetMonLvlTxtRecord(int nLevel)
     return 0;
 }
 
-extern "C" const char gData_006E2150[24]; // 0x006E2150
-
-extern "C" const char gData_006E2150[24] = ".\\MISSILES\\Missiles.cpp"; // 0x006E2150
-#pragma comment(linker, "/alternatename:_gszMissilesSourceFile=_gData_006E2150")
+extern "C" const char gszMissilesSourceFile[24] = ".\\MISSILES\\Missiles.cpp"; // 0x006E2150

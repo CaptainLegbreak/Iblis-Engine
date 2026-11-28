@@ -1,8 +1,12 @@
+#include "D2LanguageNames.h"
+
 #include "D2MonsterIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
 #include "D2Txt.h"
+#include "FogApi.h"
 
 struct D2MonStatsTxt;
 
@@ -47,9 +51,7 @@ struct D2PalShiftEntryStrc
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 void __fastcall PALSHIFT_LoadPalShift(int nMonsterId); // 0x00477170
 
@@ -76,11 +78,8 @@ int __fastcall DATATBLS_GetMonStatsTxtRecordCount();                            
 
 D2PalShiftNodeStrc* __fastcall PALSHIFT_FindPalShiftNode(int nId);                                          // 0x00477030
 
-int __fastcall ARCHIVE_OpenFile(void* hArchive, const char* szFilePath, void** phFile, int bFileNotFoundLogSkipped); // 0x00516E46
 
-void __fastcall ARCHIVE_CloseFile(void* hArchive, void* hFile);                                             // 0x00516E84
 
-void __fastcall ARCHIVE_ReadFileToBuffer(void* hArchive, void* hFile, void* pBuffer, unsigned int dwBytesToRead); // 0x00516F85
 
 
 
@@ -294,19 +293,14 @@ void __cdecl PALSHIFT_InitPalShifts()
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
-int __fastcall CUNIT_GetPalShiftIndex(D2UnitStrc* pUnit); // 0x00463EB0
 
-int __cdecl GAME_GetColorFlag(); // 0x0044DC60
 
-D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int nMonsterId); // 0x00451FE0
 
 // 0x00477530
 unsigned char* __fastcall PALSHIFT_GetPalShift(D2UnitStrc* pUnit)
@@ -356,43 +350,4 @@ unsigned char* __fastcall PALSHIFT_GetPalShift(D2UnitStrc* pUnit)
     return 0;
 }
 
-#pragma pack(push, 1)
-struct d2data_00712C54_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
 
-extern "C" struct d2data_00712C54_t gData_00712C54; // 0x00712C54
-
-extern "C" struct d2data_00712C54_t gData_00712C54 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00712C54

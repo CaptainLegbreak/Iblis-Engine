@@ -1,9 +1,10 @@
 #include "D2CmpTypes.h"
+#include "FogApi.h"
 struct D2CmpRawFrameStrc
 {
     int unk0x00;
     D2CmpRawFrameStrc* pNext;
-    int f_8;
+    int nFlip;
     int nWidth;
     int nHeight;
     int unk0x14;
@@ -22,7 +23,6 @@ struct D2CmpRawStrc
 };
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);                          // 0x006829C0
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);                               // 0x0040B380
 int __stdcall CelGameDirToFileDir(int nDirection, unsigned int nDirections);                   // 0x00600C90
 
 // 0x0060D190
@@ -36,7 +36,7 @@ void __fastcall RawBuildCelFile(D2CmpRawStrc* pRaw, D2CmpDC6HeaderStrc* pDC6)
     {
         unsigned int nLength = pRawFrame->nWidth * pRawFrame->nHeight * 3;
         D2CmpDC6FrameStrc* pFrame = (D2CmpDC6FrameStrc*)FOG_Alloc(nLength + 0x23, ".\\SRC\\Raw.cpp", 0x22, 0);
-        pFrame->nFlip = pRawFrame->f_8;
+        pFrame->nFlip = pRawFrame->nFlip;
         pFrame->nWidth = pRawFrame->nWidth;
         pFrame->nHeight = pRawFrame->nHeight;
         pFrame->nOffsetX = pRawFrame->nOffsetX;

@@ -12,19 +12,19 @@
 #include "D2Win32Types.h"
 #include "D2Win32System.h"
 #include "D2MultiCharSave.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "FogApi.h"
 struct _iobuf;
 
 typedef struct _iobuf FILE;
 
 extern "C" const char gszEmptyAssertText_006CC837; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
 extern "C" FILE* __cdecl fopen(const char* szFileName, const char* szMode); // 0x0068239A
 
@@ -36,47 +36,18 @@ extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize
 
 #pragma intrinsic(memcpy)
 
-int __fastcall FOG_GetSavePath(char* szPath, int nSize); // 0x00407050
 
 void __stdcall FOG_Encode14BitsToString(unsigned char* pStream, unsigned short nValue); // 0x006BBF40
 
 extern const char gszDefaultSaveName_0070CCC8[]; // 0x0070CCC8
 
-void* __fastcall FOG_CreateFileA(const char* szPath, unsigned long dwAccess, unsigned long dwShare, void* pSecurity, unsigned long dwCreation, unsigned long dwFlags, void* hTemplate); // 0x00406960
-int __fastcall FOG_ReadFile(void* hFile, void* pBuffer, unsigned long nSize, unsigned long* pRead, void* pOverlapped); // 0x004069B0
-int __fastcall FOG_WriteFile(void* hFile, const void* pBuffer, unsigned long nSize, unsigned long* pWritten, void* pOverlapped); // 0x004069D0
-unsigned long __fastcall FOG_SetFilePointer(void* hFile, long nDistance, long* pDistanceHigh, unsigned long dwMethod); // 0x004069F0
 unsigned int __stdcall FOG_ComputeChecksum(const unsigned char* pData, unsigned int nSize); // 0x00411130
 extern "C" const char gszSaveFormat_006D4230[]; // 0x006D4230
 D2CharSaveHeaderStrc gtCharSaveHeader; // 0x0077AC10
-unsigned int __stdcall SStrHash(const char* text, unsigned int flags, unsigned int hashSeed); // 0x00413CE0
-// build: symbol ??__EgdwHeaderHash_0077AD64@@YAXXZ 0x006CA960
 extern unsigned int gdwHeaderHash_0077AD64; // 0x0077AD64
 unsigned int gdwHeaderHash_0077AD64 = SStrHash("Header", 0, 0);
-// build: symbol ??__EgdwGameTimeHash_0077AD60@@YAXXZ 0x006CA980
 extern unsigned int gdwGameTimeHash_0077AD60; // 0x0077AD60
 unsigned int gdwGameTimeHash_0077AD60 = SStrHash("Game Time", 0, 0);
-
-// 0x0043C6B0
-int __fastcall CHATDLG_WriteSaveHeader(const char* szName)
-{
-    char szDir[0x400];
-    char szPath[0x1F4];
-    unsigned long dwWritten;
-
-    FOG_GetSavePath(szDir, 0x400);
-    sprintf(szPath, gszSaveFormat_006D4230, szDir, szName);
-
-    void* hFile = FOG_CreateFileA(szPath, 0x40000000, 0, 0, 2, 0x8000000, 0);
-    if (!hFile)
-        return 0;
-
-    gtCharSaveHeader.dwChecksum = FOG_ComputeChecksum((const unsigned char*)&gtCharSaveHeader, 0x14F);
-    FOG_WriteFile(hFile, &gtCharSaveHeader, 0x14F, &dwWritten, 0);
-// build: symbol ?FOG_CloseFile@* 0x004069A0
-    FOG_CloseFile(hFile);
-    return 1;
-}
 
 // 0x0043C8A0
 int __fastcall sub_0043C8A0_ReadSaveSummary(const char* szName, unsigned char* pOut)
@@ -207,43 +178,20 @@ int __fastcall CHATDLG_UpdateSaveFlags(const char* szName)
     FOG_CloseFile(hFile);
     return nResult;
 }
-#pragma pack(push, 1)
-struct d2data_0070CC8C_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
+extern "C" const char* gData_0070CC8C[15] = { // 0x0070CC8C
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
 };
-#pragma pack(pop)
-
-extern "C" struct d2data_0070CC8C_t gData_0070CC8C; // 0x0070CC8C
-
-extern "C" struct d2data_0070CC8C_t gData_0070CC8C = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0070CC8C

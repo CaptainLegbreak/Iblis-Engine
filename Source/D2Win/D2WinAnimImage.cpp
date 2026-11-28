@@ -8,6 +8,8 @@
 #include "D2WinControls.h"
 
 #include "D2StormTypes.h"
+#include "FogApi.h"
+#include "D2CMPApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -24,7 +26,6 @@ enum D2ControlTypes
     D2WIN_TYPE_6 = 6,
 };
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -42,15 +43,11 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);    
 
 int __fastcall ANIMIMAGE_ShouldMouseInputBeHandled(D2WinControlStrc* pControl);                             // 0x005003A0
 
-int __stdcall CelFileGetCelsPerDirection(D2CelFileStrc* pCelFile);                                                // 0x006019F0
+D2CelStrc* __stdcall CelGetHandle(D2GfxDataStrc* pContext);                                        // 0x00601840
 
-D2CelStrc* __stdcall CelGetHandle(D2CelContextStrc* pContext);                                        // 0x00601840
-
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 static int ANIMIMAGE_UpdateState(D2WinAnimImageStrc* pAnimImage); // 0x00500480
-
-int __stdcall CelGetHeight(D2CelStrc* pCel);                                                                // 0x006018F0
 
 extern tagPOINT gtMousePosition;                                                                    // 0x007D55A4
 
@@ -189,7 +186,7 @@ int __stdcall ANIMIMAGE_HandleMouseDown(SMSGHANDLER_PARAMS* pMsg)
 }
 
 // 0x00500850
-D2WinAnimImageStrc* __fastcall ANIMIMAGE_Create(int nX, int nY, int nWidth, int nHeight, D2CelFileStrc* pCellFile, unsigned int nAnimSpeed, D2WinMsgHandler a7, D2AnimatedImageDescriptor* pDescriptor, int eDrawMode, D2WinMsgHandler a10)
+D2WinAnimImageStrc* __fastcall ANIMIMAGE_Create(int nX, int nY, int nWidth, int nHeight, D2CelFileStrc* pCellFile, unsigned int nAnimSpeed, D2WinMsgHandler pfnOnClick, D2AnimatedImageDescriptor* pDescriptor, int eDrawMode, D2WinMsgHandler pfnField58)
 {
     D2WinAnimImageStrc* pAnimImage = (D2WinAnimImageStrc*)FOG_Alloc(sizeof(D2WinAnimImageStrc), ".\\D2WinAnimImage.cpp", 0x1C, 0);
     memset(pAnimImage, 0, sizeof(D2WinAnimImageStrc));
@@ -207,7 +204,7 @@ D2WinAnimImageStrc* __fastcall ANIMIMAGE_Create(int nX, int nY, int nWidth, int 
     pAnimImage->controlHeader.pfHandleMouseUp = 0;
     pAnimImage->controlHeader.pfHandleCharInput = 0;
     pAnimImage->controlHeader.pfHandleVirtualKeyInput = 0;
-    pAnimImage->controlHeader.field_34 = a7;
+    pAnimImage->controlHeader.field_34 = pfnOnClick;
     pAnimImage->pAnimatedImageDescriptor = pDescriptor;
     pAnimImage->nAnimSpeed = nAnimSpeed;
     pAnimImage->nFrame = 0;
@@ -219,7 +216,7 @@ D2WinAnimImageStrc* __fastcall ANIMIMAGE_Create(int nX, int nY, int nWidth, int 
         pAnimImage->eDrawMode = 5;
     else
         pAnimImage->eDrawMode = eDrawMode;
-    pAnimImage->field_58 = a10;
+    pAnimImage->field_58 = pfnField58;
     pAnimImage->bIsRunning = 1;
     CONTROL_AppendToList(&pAnimImage->controlHeader);
     return pAnimImage;
@@ -231,7 +228,7 @@ int __fastcall ANIMIMAGE_Draw(D2WinControlStrc* pControl)
     D2WinAnimImageStrc* pAnimImage = (D2WinAnimImageStrc*)pControl;
     D2_ASSERT(pAnimImage->controlHeader.eType == 2, 0xF9);
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
     tContext.nDirection = 0;
 
@@ -269,7 +266,7 @@ int __fastcall ANIMIMAGE_Draw(D2WinControlStrc* pControl)
         nDrawMode = nAnimDrawMode;
         nFrameCount = CelFileGetCelsPerDirection(pCellFile1);
         nAnimSpeed = pAnimImage->nAnimSpeed;
-        tContext.pCellFile = pCellFile1;
+        tContext.pCelFile = pCellFile1;
         tContext.nDirection = 0;
         tContext.nFrame = 0;
         D2CelStrc* pCel = CelGetHandle(&tContext);
@@ -279,14 +276,14 @@ int __fastcall ANIMIMAGE_Draw(D2WinControlStrc* pControl)
 
     if (pCellFile1)
     {
-        tContext.pCellFile = pCellFile1;
+        tContext.pCelFile = pCellFile1;
         tContext.nFrame = pAnimImage->nFrame;
         sub_004F6480(&tContext, nX, nY, -1, nAnimDrawMode, 0);
     }
 
     if (pCellFile2)
     {
-        tContext.pCellFile = pCellFile2;
+        tContext.pCelFile = pCellFile2;
         tContext.nFrame = pAnimImage->nFrame;
         sub_004F6480(&tContext, nX, nY, -1, nDrawMode, 0);
     }
@@ -326,9 +323,9 @@ int __fastcall ANIMIMAGE_ShouldMouseInputBeHandled(D2WinControlStrc* pControl)
         pCellFile = *ppCellFile;
     }
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = pCellFile;
+    tContext.pCelFile = pCellFile;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
 

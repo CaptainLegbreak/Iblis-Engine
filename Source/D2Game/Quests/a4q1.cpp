@@ -19,6 +19,8 @@
 #include "D2Packets.h"
 #include "D2GameAux.h"
 #include "D2LanguageNames.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -68,23 +70,16 @@ struct D2UnkMonCreateStrc2
     D2UnkMonCreateStrc3 records[4];
 };
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
 
-int __stdcall D2Common_11063(D2ActiveRoomStrc* pRoom, int nMonsterId); // 0x0063EC70
+#include "D2GameFuncs.h"
+#include "D2CMPApi.h"
 
-D2UnitStrc* __fastcall MONSTERSPAWN_SpawnAtUnit(D2GameStrc* pGame, D2UnitStrc* pUnit, int nMonsterId, int nAnimMode, int a5, short nFlags); // 0x005B23C0
-
-void __fastcall AIGENERAL_SetOwnerData(D2GameStrc* pGame, D2UnitStrc* pUnit, int nOwnerGUID, int nOwnerType, int bSetFlag1, int bSetFlag2); // 0x0058F030
 
 void __fastcall AIGENERAL_AllocMinionList(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pMinion); // 0x0058F100
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pDynamicPath); // 0x006488C0
-
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pDynamicPath); // 0x00648900
 
 extern D2UnkMonCreateStrc2 gtBonePrisonSpawnInfo; // 0x0073D4F0
 
-D2UnitStrc* __fastcall D2GAME_SpawnNormalMonster(D2UnkMonCreateStrc*); // 0x005B2A00
 
 enum D2C_SpawnRandomConstants
 {
@@ -97,15 +92,11 @@ extern const unsigned int gdwBitMasks[32]; // 0x006CE268
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
 
 D2LevelsTxt* __stdcall DATATBLS_GetLevelsTxtRecord(int nLevelId); // 0x0061DB70
 
@@ -125,77 +116,39 @@ typedef bool(__fastcall* QUESTSTATUSFILTER)(D2QuestDataStrc* pQuest, D2UnitStrc*
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-extern char gpAct4Q0NpcMessages[]; // 0x0073D580
-
-D2PlayerDataStrc* __stdcall UNITS_GetPlayerData(D2UnitStrc* pUnit); // 0x006221A0
-
-int __stdcall QUESTRECORD_GetQuestState(D2BitBufferStrc* pQuestFlags, int nQuestId, int nState); // 0x0065C310
-
-void __stdcall QUESTRECORD_SetQuestState(D2BitBufferStrc* pQuestFlags, int nQuestId, int nState); // 0x0065C360
-
-void __stdcall QUESTRECORD_ResetIntermediateStateFlags(D2BitBufferStrc* pQuestRecord, int nQuest); // 0x0065C3E0
-
-void __fastcall QUESTS_InitScrollTextChain(D2QuestDataStrc* pQuest, D2TextHeaderStrc* pTextControl, int nNPCID, int nIndex); // 0x00543790
 
 D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId); // 0x00543640
 
-void __fastcall QUESTS_SendLogUpdateEx(D2UnitStrc* pPlayer, int nQuestId, unsigned char nAct); // 0x00545920
 
 void __fastcall QUESTS_UnitIterate(D2QuestDataStrc* pQuest, int nIterateState, D2UnitStrc* pUnit, QUESTUNITITERATE pfIterate, bool bIterate); // 0x00544300
 
 void __fastcall SUNIT_AttachSound(D2UnitStrc* pUnit, int nUpdateType, D2UnitStrc* pUpdateUnit); // 0x00553380
 
-unsigned char __stdcall DRLG_GetActNoFromLevelId(int nLevelId); // 0x006427F0
 
-D2ActiveRoomStrc* __stdcall DUNGEON_FindRoomBySubtileCoordinates(void* pAct, int a2, int a3); // 0x00619DA0
+D2ActiveRoomStrc* __stdcall DUNGEON_FindRoomBySubtileCoordinates(void* pAct, int nX, int nY); // 0x00619DA0
 
-D2UnitStrc* __fastcall D2GAME_SpawnMonster_6FC69F10(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nX, int nY, int nMonsterId, int nAnimMode, int nMaxSearchRings, short nFlags); // 0x005B2F20
+D2UnitStrc* __fastcall D2GAME_SpawnMonster(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nX, int nY, int nMonsterId, int nAnimMode, int nMaxSearchRings, short nFlags); // 0x005B2F20
 
-bool __fastcall ACT4Q0_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId, D2UnitStrc* pPlayer, D2BitBufferStrc* pQuestFlags, D2UnitStrc* pNPC); // 0x005B3750
 
 bool __fastcall ACT3Q7_StatusFilterCallback(D2QuestDataStrc* pQuest, D2UnitStrc* pPlayer, D2BitBufferStrc* pGlobalFlags, D2BitBufferStrc* pFlags, unsigned char* pStatus); // 0x005B3740
 
-int __fastcall ACT4Q1_UnitIterate_StatusCyclerEx(D2GameStrc* pGame, D2UnitStrc* pPlayer, void* pData); // 0x005B3940
 
 void __fastcall QUESTS_StatusCyclerEx(D2GameStrc* game,D2UnitStrc* player,unsigned char id); // 0x00544190
-
 
 
 void __stdcall QUESTRECORD_ClearQuestState(D2BitBufferStrc* pQuestRecord, int nQuest, int nState); // 0x0065C3A0
 
 void __fastcall QUESTS_CreateTimer(D2QuestDataStrc* pQuest, QUESTUPDATE pfnCallback, int nTicks); // 0x00543F10
 
-void __fastcall QUESTS_DebugOutput(D2GameStrc* pGame, const char* szMessage, const char* szFile, int nLine); // 0x00544070
-
-void __fastcall QUESTS_DeleteItem(D2GameStrc* pGame, D2UnitStrc* pPlayer, int dwCode); // 0x00544160
-
-void __fastcall QUESTS_StateDebug(D2QuestDataStrc* pQuestData, int nState, const char* szFile, int nLine); // 0x00544350
-
-void __fastcall QUESTS_SetGlobalState(D2GameStrc* pGame, int nQuestId, int nState); // 0x00544720
-
-int __fastcall QUESTS_GetGlobalState(D2GameStrc* pGame, int nQuestId, int nState); // 0x00544760
-
-void __fastcall QUESTS_AddPlayerGUID(D2QuestGUIDStrc* pQuestGUID, int dwGUID); // 0x00545200
 
 int __fastcall QUESTS_CheckPlayerGUID(D2QuestDataStrc* pQuest, int dwGUID); // 0x005452C0
 
-void __fastcall QUESTS_UpdatePlayerFlags(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x005455B0
-
-void __fastcall QUESTS_NPCActivateSpeeches(D2GameStrc* pGame, D2UnitStrc* pPlayer, D2UnitStrc* pTarget); // 0x00545780
-
-D2UnitStrc* __fastcall QUESTS_CreateItem(D2GameStrc* pGame, D2UnitStrc* pPlayer, unsigned int dwCode, int nLevel, int nQuality, int bDroppable); // 0x005466B0
 
 void __fastcall SUNIT_IterateUnitsOfType(D2GameStrc* pGame, int nType, void* pArg, QUESTUNITITERATE pfIterate); // 0x005537D0
 
-D2ClientStrc* __fastcall UnitGetClient(D2UnitStrc* pPlayer, const char* szFile, int nLine); // 0x005531C0
 
 void __stdcall SUNIT_ResetInteractInfo(D2UnitStrc* pUnit); // 0x00554190
 
-D2UnitStrc* __fastcall ITEMS_FindQuestItem(D2GameStrc* pGame, D2UnitStrc* pUnit, unsigned int dwItemCode); // 0x00558110
-
-D2UnitStrc* __fastcall D2GAME_DropItemAtUnit_6FC4FEC0(D2GameStrc* pGame, D2UnitStrc* pUnit, int nQuality, int* pItemLevel, D2ItemDropStrc* pItemDrop, int a6, int a7); // 0x00559A30
-
-void __stdcall UNITS_GetCoords(D2UnitStrc* pUnit, D2CoordStrc* pCoord); // 0x00620870
 
 void __stdcall UNITS_ChangeAnimMode(D2UnitStrc* pUnit, int nMode); // 0x00624690
 
@@ -205,47 +158,12 @@ int __stdcall MONSTERS_IsBoss(D2MonStatsTxt* pMonStatsTxtRecord, D2UnitStrc* pMo
 
 void __fastcall PLAYER_CloseInteraction(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x005351C0
 
-int __fastcall PLAYER_IsBusy(D2UnitStrc* pUnit); // 0x00535060
-
-void __fastcall LEVEL_WarpUnit(D2GameStrc* pGame, D2UnitStrc* pPlayer, int nDestinationLevelId, int nTileCalc); // 0x0053AEC0
-
-void __fastcall SCMD_SendPacket0x5D(D2ClientStrc* pClient, D2GSPacketSrv5D* pPacket); // 0x0053D710
-
-void __fastcall D2GAME_SendPacket0x50_6FC3F440(D2ClientStrc* pClient, D2GSPacketSrv50* pPacket); // 0x0053D7E0
-
-void __fastcall D2GAME_PACKETS_SendPacket0x61(D2ClientStrc* pClient, unsigned char nValue); // 0x0053D940
-
-void __fastcall D2GAME_PlayerChangeAct_6FC867C0(D2GameStrc* pGame, D2UnitStrc* pUnit, int dwDestLvl, int nTileCalc); // 0x0054B830
-
-void __stdcall ACT4Q2_ActivateHarrogathWaypoint(D2GameStrc* pGame, D2UnitStrc* pPlayer); // 0x005B4FF0
-
-bool __fastcall ACT3Q5_IsOrbNotSmashed(D2GameStrc* pGame); // 0x005BBF80
-
-int __fastcall ACT4Q1_UnitIterate_SetCompletionFlag(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x005B3CD0
-
-int __fastcall ACT4Q1_UnitIterate_SetPrimaryGoalDoneForPartyMembers(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x005B3DE0
-
-bool __fastcall ACT4Q1_SpawnIzualGhost(D2GameStrc* pGame, D2QuestDataStrc* pQuest); // 0x005B3E60
-
-int __fastcall ACT4Q1_UnitIterate_SetRewardPending(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x005B3F20
-
-int __fastcall ACT4Q3_UnitIterate_StatusCyclerEx(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x005B59C0
-
-int __fastcall ACT3Q1_UnitIterate_StatusCyclerEx(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x005B7340
-
-void __fastcall ACT3Q1_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B7740
-
-int __fastcall ACT3Q5_UnitIterate_StatusCyclerEx(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x005BAF70
-
-int __fastcall ACT3Q6_UnitIterate_StatusCyclerEx(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x005BC210
 
 typedef void (__fastcall* PartyCallbackFunction)(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pArgs);
 
 short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer); // 0x00554630
 
 void __fastcall PARTY_IteratePartyMembers(D2GameStrc* pGame, unsigned short nPartyId, PartyCallbackFunction pCallback, void* pArgs); // 0x00540510
-
-void __fastcall ACT4Q1_UnitIterate_SetPrimaryGoalDone(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x005B3D70
 
 
 #define CENTER 3
@@ -261,9 +179,6 @@ struct D2TileLibraryEntryStrc;
 
 extern D2CoordStrc g_006E2D50_offsets[4];  // 0x006E2D50
 
-D2DrlgTileDataStrc* __stdcall sub_00619660_GetFloorTiles(D2ActiveRoomStrc*,int*); // 0x00619660
-
-int __stdcall TileGetFlags(D2TileLibraryEntryStrc*); // 0x00604BC0
 
 unsigned short __stdcall COLLISION_CheckMask(D2ActiveRoomStrc*,int,int,unsigned short); // 0x0064CB30
 
@@ -279,15 +194,9 @@ int __fastcall PLAYER_GetBaseIdFromMonsterId(int nMonsterId); // 0x00463830
 
 int __fastcall MISSILE_RollRange(D2SeedStrc* pSeed, int nMin, int nMax); // 0x004CC790
 
-int __fastcall sub_005B2570_SpawnMinionsAround(D2GameStrc* pGame, D2UnitStrc* pUnit, int nMonsterId, int nAnimMode, int nCount, int nOffset, short nFlags); // 0x005B2570
-
-int __stdcall DATATBLS_GetMonsterChainInfo(int nMonsterId, int* pMaxChainId, int* pChainId); // 0x006510C0
 
 static void MONSTERSPAWN_SpawnMinionParty(D2UnkMonCreateStrc* pMonCreate, D2UnitStrc* pUnit); // 0x005B2830
 
-D2UnitStrc* __fastcall MONSTERSPAWN_SpawnWithOwnerData(D2GameStrc* pGame, void* pRoom, int a1, int a2, int a3, int a4, int a5, int a6, unsigned short a7); // 0x005B3130
-
-int __fastcall sub_005B31B0_SpawnMinionsAt(D2GameStrc* pGame, D2UnitStrc* pOwner, int nX, int nY, int nMonsterId, int nAnimMode, int a5, int nCount, short nFlags); // 0x005B31B0
 
 int __fastcall GAME_GetUnitTypeOrInvalid(D2UnitStrc* pUnit); // 0x0044BE50
 
@@ -299,27 +208,18 @@ extern unsigned int gdwBossTransfer_006CE27C; // 0x006CE27C
 
 extern "C" __declspec(dllimport) int __stdcall PtInRect(const tagRECT*,tagPOINT);
 
-void __stdcall DUNGEON_GetRoomCoordinates(D2ActiveRoomStrc*,D2DrlgCoordsStrc*); // 0x00619730
-
-void __stdcall SKILLS_GameTileToSubtileCoords(int*,int*); // 0x00643560
 
 D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc*,int,int); // 0x00463740
 
-int __stdcall D2Common_10095(D2ActiveRoomStrc*,int,int); // 0x0061B130
 
-int __fastcall sub_005FD350_CanSpawn(int,D2ActiveRoomStrc*,int,int,int); // 0x005FD350
-
-unsigned short __stdcall COLLISION_CheckMaskWithSize(D2ActiveRoomStrc*,int,int,int,unsigned short); // 0x0064D9B0
 
 D2UnitStrc* __fastcall SUNIT_AllocUnitData(int,int,int,int,D2GameStrc*,D2ActiveRoomStrc*,char,int,unsigned int); // 0x00555230
 
-void __fastcall sub_00547D90_RegisterSpawn(D2MonsterRegionStrc**,D2ActiveRoomStrc*,D2UnitStrc*,int); // 0x00547D90
+void __fastcall MONSTERREGION_RegisterSpawnedMonster(D2MonsterRegionStrc**,D2ActiveRoomStrc*,D2UnitStrc*,int); // 0x00547D90
 
-D2RoomCoordListStrc* __stdcall D2Common_10096(D2ActiveRoomStrc*,int,int); // 0x0061AD30
 
-void __fastcall sub_00552D60_SetVision(D2UnitStrc*,D2RoomCoordListStrc*); // 0x00552D60
+void __fastcall SUNIT_SetMonsterVision(D2UnitStrc*,D2RoomCoordListStrc*); // 0x00552D60
 
-void __fastcall SUNIT_SetAlignment(D2UnitStrc*,unsigned char,int); // 0x005543B0
 
 static void MONSTERSPAWN_SetupNormalMods(D2UnkMonCreateStrc*,D2UnitStrc*); // 0x005B21B0
 
@@ -327,21 +227,16 @@ static void MONSTERSPAWN_SetupBossMods(D2UnkMonCreateStrc*,D2UnitStrc*); // 0x00
 
 static void MONSTERSPAWN_EquipAncientBarbarians(D2UnitStrc*); // 0x005B1C50
 
-void __fastcall D2GAME_BOSSES_AssignUMod_6FC6FF10(D2GameStrc*,D2UnitStrc*,int,int); // 0x005A4850
+void __fastcall D2GAME_BOSSES_AssignUMod(D2GameStrc*,D2UnitStrc*,int,int); // 0x005A4850
 
-D2GameStrc* __fastcall SUNIT_GetGameFromUnit(D2UnitStrc* pUnit);                                            // 0x00554010
-
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer);                        // 0x00625480
 
 D2ItemsTxt* __stdcall DATATBLS_GetItemRecordFromItemCode(unsigned int dwCode, int* pItemId);                // 0x00633640
 
 void __fastcall MONSTERAI_CreateAndEquipItem(D2GameStrc* pGame, D2UnitStrc* pUnit, struct D2MonsterEquipmentStrc* pItemInfo, int nLevel, unsigned int nFlags); // 0x00573B20
 
-int __fastcall QUESTS_CreateChainRecord(D2GameStrc* pGame, D2UnitStrc* pUnit, int nQuestId);                // 0x005436B0
 
 void __fastcall MONSTER_ToggleSummonerFlag(D2UnitStrc* pUnit, unsigned short nFlag, int bSet);                         // 0x00573570
 
-void __stdcall STATES_ToggleState(D2UnitStrc* pUnit, int nState, int bSet);                                 // 0x00639DB0
 
 int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit);                                                         // 0x0045AE20
 
@@ -356,35 +251,15 @@ void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, in
 
 extern "C" const char gszAct4Q2SourceFile[]; // 0x006E2DA4
 
-extern char gpAct4Q1NpcMessages[]; // 0x0073D708
 
 void __fastcall QUESTS_QuickRemovePlayerGUID(D2QuestDataStrc* pQuest, D2QuestArgStrc* pQuestArg); // 0x00545310
 
-int __fastcall ACT4Q1_UnitIterate_UpdateQuestStateFlags(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x005B3860
 
 void __fastcall ACT4Q3_Callback10_PlayerLeavesGame(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B3E30
 
-void __fastcall ACT4Q1_Callback08_MonsterKilled(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B4020
-
-void __fastcall ACT4Q1_Callback00_NpcActivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B3BB0
-
-void __fastcall ACT4Q1_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B39A0
-
-void __fastcall ACT4Q1_Callback02_NpcDeactivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
-
-void __fastcall ACT4Q1_Callback03_ChangedLevel(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
-
-void __fastcall ACT4Q1_Callback13_PlayerStartedGame(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
-
-bool __fastcall ACT4Q1_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId, D2UnitStrc* pPlayer, D2BitBufferStrc* pQuestFlags, D2UnitStrc* pNPC); // 0x005B37F0
-
-bool __fastcall ACT4Q1_SeqCallback(D2QuestDataStrc* pQuestData); // 0x005B38E0
-
-void __fastcall ACT4Q2_UnitIterate_SetPrimaryGoalDone(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x005B4DA0
 
 void __fastcall QUESTS_SendLogUpdate(D2UnitStrc*, int); // 0x005458E0
 
-void __stdcall STATLIST_AddUnitStat(D2UnitStrc*, int, int, int); // 0x006272B0
 
 extern "C" const char gszAct4Q3SourceFile[];
 
@@ -394,39 +269,15 @@ extern char gpAct4Q4NpcMessages[];
 
 extern char gpAct3IntroNpcMessages[];
 
-int __fastcall QUESTS_FastRemovePlayerGUID(D2QuestGUIDStrc* pGUIDs, int dwGUID);                            // 0x00545240
 
 int __stdcall ITEMS_GetBaseCode(D2UnitStrc* pItem);
 
-int __fastcall ACT4Q3_UnitIterate_UpdateQuestStateFlags(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData);
-
-bool __fastcall ACT4Q3_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId, D2UnitStrc* pPlayer, D2BitBufferStrc* pQuestFlags, D2UnitStrc* pNPC);
-
-bool __fastcall ACT4Q3_SeqCallback(D2QuestDataStrc* pQuestData);
-
-void __fastcall ACT4Q3_Callback04_ItemPickedUp(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
-
-void __fastcall ACT4Q3_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
-
-void __fastcall ACT4Q3_Callback00_NpcActivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
-
-void __fastcall ACT4Q3_Callback02_NpcDeactivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
-
-void __fastcall ACT4Q3_Callback13_PlayerStartedGame(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
-
-void __fastcall ACT4Q3_Callback08_MonsterKilled(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
 
 bool __fastcall ACT4Q4_StatusFilterCallback(D2QuestDataStrc* pQuest, D2UnitStrc* pPlayer, D2BitBufferStrc* pGlobalFlags, D2BitBufferStrc* pFlags, unsigned char* pStatus);
 
-bool __fastcall ACT4Q4_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId, D2UnitStrc* pPlayer, D2BitBufferStrc* pQuestFlags, D2UnitStrc* pNPC);
 
 void __fastcall ACT3Intro_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
 
-void __fastcall ACT3Intro_Callback00_NpcActivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
-
-bool __fastcall ACT3Intro_StatusFilterCallback(D2QuestDataStrc* pQuest, D2UnitStrc* pPlayer, D2BitBufferStrc* pGlobalFlags, D2BitBufferStrc* pFlags, unsigned char* pStatus);
-
-bool __fastcall ACT3Intro_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId, D2UnitStrc* pPlayer, D2BitBufferStrc* pQuestFlags, D2UnitStrc* pNPC);
 
 inline int CLIENTS_GetUnitX_Inline(D2UnitStrc* pUnit)
 {
@@ -454,8 +305,6 @@ inline int CLIENTS_GetUnitY_Inline(D2UnitStrc* pUnit)
     }
 }
 
-D2UnitStrc* __fastcall MONSTERSPAWN_SpawnLevelVariantAtUnit(D2GameStrc* pGame, D2UnitStrc* pUnit, int nMonsterId, int nAnimMode, int a5, short nFlags); // 0x005B2490
-
 
 static inline D2MonStatsTxt* DATATBLS_GetMonStatsTxtRecord_Inline(int nMonsterId)
 {
@@ -482,13 +331,13 @@ static void MONSTERSPAWN_SetupNormalMods(D2UnkMonCreateStrc* pMonCreate, D2UnitS
     switch (MONSTERREGION_SanitizeMonsterId_Inline(nBaseId))
     {
     case 0x5B:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x14, 0);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x14, 0);
         break;
     case 0x18:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0xD, 0);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0xD, 0);
         break;
     case 0x60:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0xA, 0);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0xA, 0);
         break;
     case 0x146:
     case 0x147:
@@ -496,29 +345,29 @@ static void MONSTERSPAWN_SetupNormalMods(D2UnkMonCreateStrc* pMonCreate, D2UnitS
     case 0x149:
     case 0x14A:
     case 0x162:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0xE, 0);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0xE, 0);
         break;
     case 0x154:
     case 0x155:
     case 0x156:
     case 0x157:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0xF, 0);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0xF, 0);
         break;
     case 0x1CD:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x21, 0);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x21, 0);
         break;
     case 0x1B4:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x22, 0);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x22, 0);
         break;
     case 0x1F5:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x23, 0);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x23, 0);
         break;
     case 0xD3:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0xB, 0);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0xB, 0);
     case 0x21C:
     case 0x21D:
     case 0x21E:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
         break;
     }
 }
@@ -606,8 +455,8 @@ static void MONSTERSPAWN_SetupBossMods(D2UnkMonCreateStrc* pMonCreate, D2UnitStr
             QUESTS_CreateChainRecord(pGame, pUnit, 9);
             return;
         }
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 6, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x12, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 6, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x12, 1);
         return;
     case 0xAF:
     {
@@ -623,18 +472,18 @@ static void MONSTERSPAWN_SetupBossMods(D2UnkMonCreateStrc* pMonCreate, D2UnitStr
     case 0xF3:
         if (nMonsterId != MONSTER_UBERDIABLO)
         {
-            D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
+            D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
             QUESTS_CreateChainRecord(pGame, pUnit, 0x17);
             return;
         }
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 8, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 6, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 8, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 6, 1);
         return;
     case 0x16E:
         QUESTS_CreateChainRecord(pGame, pUnit, 0x13);
         MONSTERUNIQUE_ToggleUnitFlag_Inline(pUnit, 0x20000);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
         return;
     case 0x154:
     case 0x155:
@@ -646,25 +495,25 @@ static void MONSTERSPAWN_SetupBossMods(D2UnkMonCreateStrc* pMonCreate, D2UnitStr
         if (nMonsterId != MONSTER_UBERMEPHISTO)
         {
             QUESTS_CreateChainRecord(pGame, pUnit, 0x14);
-            D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
+            D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
             return;
         }
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x1E, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x11, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 8, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 6, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x1E, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x11, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 8, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 6, 1);
         return;
     case 0x9C:
         if (nMonsterId != MONSTER_UBERANDARIEL)
         {
-            D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
+            D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
             QUESTS_CreateChainRecord(pGame, pUnit, 6);
             return;
         }
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x17, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 6, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x1D, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x17, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 6, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x1D, 1);
         return;
     case 0x199:
         QUESTS_CreateChainRecord(pGame, pUnit, 0x18);
@@ -672,12 +521,12 @@ static void MONSTERSPAWN_SetupBossMods(D2UnkMonCreateStrc* pMonCreate, D2UnitStr
     case 0x100:
         if (nMonsterId != MONSTER_UBERIZUAL)
         {
-            D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
+            D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
             QUESTS_CreateChainRecord(pGame, pUnit, 0x16);
             return;
         }
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 6, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x12, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 6, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x12, 1);
         return;
     case 0x197:
         QUESTS_CreateChainRecord(pGame, pUnit, 0x11);
@@ -686,27 +535,27 @@ static void MONSTERSPAWN_SetupBossMods(D2UnkMonCreateStrc* pMonCreate, D2UnitStr
         QUESTS_CreateChainRecord(pGame, pUnit, 8);
         return;
     case 0x10B:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0xC, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0xC, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
         QUESTS_CreateChainRecord(pGame, pUnit, 2);
         STATES_ToggleState(pUnit, 0x76, 1);
         return;
     case 0x11C:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x17, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x17, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
         return;
     case 0x124:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x1F, 0);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x1F, 0);
         return;
     case 0x192:
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
         return;
     case 0x1B2:
         QUESTS_CreateChainRecord(pGame, pUnit, 0x20);
         return;
     case 0x20E:
         QUESTS_CreateChainRecord(pGame, pUnit, 0x22);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
         return;
     case 0x21C:
         MONSTERSPAWN_EquipAncientBarbarians(pUnit);
@@ -715,13 +564,13 @@ static void MONSTERSPAWN_SetupBossMods(D2UnkMonCreateStrc* pMonCreate, D2UnitStr
         if (nMonsterId != MONSTER_UBERBAAL)
         {
             QUESTS_CreateChainRecord(pGame, pUnit, 0x24);
-            D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
+            D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
             return;
         }
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x16, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 0x12, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 8, 1);
-        D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame, pUnit, 6, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x16, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 0x12, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 8, 1);
+        D2GAME_BOSSES_AssignUMod(pGame, pUnit, 6, 1);
         return;
     }
 }
@@ -734,7 +583,6 @@ static inline unsigned __int64 SEED_RollRandomNumber(D2SeedStrc* pSeed)
     pSeed->nLowSeed = (unsigned int)lSeed;
     return lSeed;
 }
-
 
 
 struct D2BitBufferStrc;
@@ -901,14 +749,6 @@ bool __fastcall ACT4Q1_SeqCallback(D2QuestDataStrc* pQuestData)
     return false;
 }
 
-bool __fastcall ACT3Q7_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId, D2UnitStrc* pPlayer, D2BitBufferStrc* pQuestFlags, D2UnitStrc* pNPC)
-{
-    return false;
-}
-
-void __cdecl sub_005BDB10_Return()
-{
-}
 
 // 0x005B3940
 int __fastcall ACT4Q1_UnitIterate_StatusCyclerEx(D2GameStrc* pGame, D2UnitStrc* pPlayer, void* pData)
@@ -996,7 +836,6 @@ struct d2data_0073E5C0_t
 };
 #pragma pack(pop)
 
-extern "C" int gData_0073DBA0[6]; // 0x0073DBA0
 extern "C" struct d2data_0073E5C0_t gData_0073E5C0; // 0x0073E5C0
 
 extern char gpAct4Q0NpcMessages[392] = {
@@ -1080,9 +919,6 @@ extern char gpAct4Q1NpcMessages[1176] = {
     2, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 2
 }; // 0x0073D708
 
-extern "C" int gData_0073DBA0[6] = { -1, 0, 1, 2, 3, 4 }; // 0x0073DBA0
-#pragma comment(linker, "/alternatename:?gnAct4Q1NpcMessageIndices@@3PAHA=_gData_0073DBA0")
-
 extern int gpAct4Q2NpcMessages[343] = {
     367, 681, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1104,8 +940,6 @@ extern int gpAct4Q2NpcMessages[343] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 2, -1, 0, 2
 }; // 0x0073DBB8
-
-extern unsigned int gnHellforgeRunesNormal[11] = { 0x20313072, 0x20323072, 0x20333072, 0x20343072, 0x20353072, 0x20363072, 0x20373072, 0x20383072, 0x20393072, 0x20303172, 0x20313172 }; // 0x0073E114
 
 extern char gpAct4Q3NpcMessages[980] = {
     -10, 0, 0, 0, -90, 2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
@@ -1160,16 +994,6 @@ extern char gpAct4Q3NpcMessages[980] = {
     -1, -1, -1, -1, 0, 0, 0, 0, 2
 }; // 0x0073E140
 
-extern unsigned int gnHellforgeRunesNightmare[11] = { 0x20323172, 0x20333172, 0x20343172, 0x20353172, 0x20363172, 0x20373172, 0x20383172, 0x20393172, 0x20303272, 0x20313272, 0x20323272 }; // 0x0073E514
-
-extern unsigned int gnHellforgeRunesHell[11] = { 0x20353172, 0x20363172, 0x20373172, 0x20383172, 0x20393172, 0x20303272, 0x20313272, 0x20323272, 0x20333272, 0x20343272, 0x20353272 }; // 0x0073E540
-
-extern unsigned int gnHellforgeGemsFirst[7] = { 0x20767067, 0x20727067, 0x20627067, 0x20797067, 0x20677067, 0x20777067, 0x207A6B73 }; // 0x0073E56C
-
-extern unsigned int gnHellforgeGemsMiddle[7] = { 0x20767A67, 0x20726C67, 0x20626C67, 0x20796C67, 0x20676C67, 0x20776C67, 0x206C6B73 }; // 0x0073E588
-
-extern unsigned int gnHellforgeGemsLast[7] = { 0x20767367, 0x20727367, 0x20627367, 0x20797367, 0x20677367, 0x20777367, 0x20756B73 }; // 0x0073E5A4
-
 extern "C" struct d2data_0073E5C0_t gData_0073E5C0 = {
     {
         0x98, 0x01, 0x00, 0x00, 0x9C, 0x02, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -1201,6 +1025,20 @@ extern "C" struct d2data_0073E5C0_t gData_0073E5C0 = {
     }
 }; // 0x0073E5C0
 #pragma comment(linker, "/alternatename:?gpAct4Q4NpcMessages@@3PADA=_gData_0073E5C0")
+
+extern unsigned int gnHellforgeRunesNormal[11] = { 0x20313072, 0x20323072, 0x20333072, 0x20343072, 0x20353072, 0x20363072, 0x20373072, 0x20383072, 0x20393072, 0x20303172, 0x20313172 }; // 0x0073E114
+
+extern unsigned int gnHellforgeRunesNightmare[11] = { 0x20323172, 0x20333172, 0x20343172, 0x20353172, 0x20363172, 0x20373172, 0x20383172, 0x20393172, 0x20303272, 0x20313272, 0x20323272 }; // 0x0073E514
+
+extern unsigned int gnHellforgeRunesHell[11] = { 0x20353172, 0x20363172, 0x20373172, 0x20383172, 0x20393172, 0x20303272, 0x20313272, 0x20323272, 0x20333272, 0x20343272, 0x20353272 }; // 0x0073E540
+
+extern unsigned int gnHellforgeGemsFirst[7] = { 0x20767067, 0x20727067, 0x20627067, 0x20797067, 0x20677067, 0x20777067, 0x207A6B73 }; // 0x0073E56C
+
+extern unsigned int gnHellforgeGemsMiddle[7] = { 0x20767A67, 0x20726C67, 0x20626C67, 0x20796C67, 0x20676C67, 0x20776C67, 0x206C6B73 }; // 0x0073E588
+
+extern unsigned int gnHellforgeGemsLast[7] = { 0x20767367, 0x20727367, 0x20627367, 0x20797367, 0x20677367, 0x20777367, 0x20756B73 }; // 0x0073E5A4
+
+extern int gnAct4Q1NpcMessageIndices[6] = { -1, 0, 1, 2, 3, 4 }; // 0x0073DBA0
 
 extern int gnAct4Q1NpcMessageIndices[]; // 0x0073DBA0
 
@@ -1345,10 +1183,10 @@ bool __fastcall ACT4Q1_SpawnIzualGhost(D2GameStrc* pGame, D2QuestDataStrc* pQues
         D2ActiveRoomStrc* pRoom = DUNGEON_FindRoomBySubtileCoordinates(pGame->pAct[3], pQuestDataEx->pCoords.nX, pQuestDataEx->pCoords.nY);
         if (pRoom)
         {
-            if (!D2GAME_SpawnMonster_6FC69F10(pGame, pRoom, pQuestDataEx->pCoords.nX, pQuestDataEx->pCoords.nY, MONSTER_IZUALGHOST, 8, -1, 0)
-                && !D2GAME_SpawnMonster_6FC69F10(pGame, pRoom, pQuestDataEx->pCoords.nX, pQuestDataEx->pCoords.nY, MONSTER_IZUALGHOST, 8, 3, 0))
+            if (!D2GAME_SpawnMonster(pGame, pRoom, pQuestDataEx->pCoords.nX, pQuestDataEx->pCoords.nY, MONSTER_IZUALGHOST, 8, -1, 0)
+                && !D2GAME_SpawnMonster(pGame, pRoom, pQuestDataEx->pCoords.nX, pQuestDataEx->pCoords.nY, MONSTER_IZUALGHOST, 8, 3, 0))
             {
-                D2GAME_SpawnMonster_6FC69F10(pGame, pRoom, pQuestDataEx->pCoords.nX, pQuestDataEx->pCoords.nY, MONSTER_IZUALGHOST, 8, 5, 0);
+                D2GAME_SpawnMonster(pGame, pRoom, pQuestDataEx->pCoords.nX, pQuestDataEx->pCoords.nY, MONSTER_IZUALGHOST, 8, 5, 0);
             }
         }
     }
@@ -1357,7 +1195,6 @@ bool __fastcall ACT4Q1_SpawnIzualGhost(D2GameStrc* pGame, D2QuestDataStrc* pQues
     return 1;
 }
 
-void __stdcall DUNGEON_GetAdjacentRoomsListFromRoom(D2ActiveRoomStrc* pRoom, D2ActiveRoomStrc*** pppRoomList, unsigned int* pnNumRooms); // 0x00619790
 
 // 0x005B3F20
 int __fastcall ACT4Q1_UnitIterate_SetRewardPending(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData)
@@ -1384,7 +1221,7 @@ int __fastcall ACT4Q1_UnitIterate_SetRewardPending(D2GameStrc* pGame, D2UnitStrc
         D2_ASSERT(pUnitRoom, 473);
 
         D2ActiveRoomStrc** ppRoomList;
-        unsigned int nNumRooms;
+        int nNumRooms;
         DUNGEON_GetAdjacentRoomsListFromRoom(pUnitRoom, &ppRoomList, &nNumRooms);
         for (unsigned int i = 0; i < nNumRooms; ++i)
         {
@@ -1557,7 +1394,6 @@ void __fastcall ACT4Q1_OnIzualActivated(D2GameStrc* pGame)
     }
 }
 
-int __stdcall DRLG_UnitEdgeDistance(D2UnitStrc* pUnit, D2UnitStrc* pOther); // 0x006416D0
 
 // 0x005B43D0
 void __fastcall ACT4Q1_UnitIterate_CheckDistanceToIzualGhost(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData)
@@ -1599,10 +1435,6 @@ void __fastcall ACT4Q1_AttachCompletionSoundToPlayers(D2GameStrc* pGame)
     SUNIT_IterateUnitsOfType(pGame, 0, 0, ACT4Q1_UnitIterate_AttachCompletionSound);
 }
 
-void __fastcall ACT4Q3_Callback00_NpcActivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B62D0
-void __fastcall ACT4Q3_Callback08_MonsterKilled(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B65D0
-
-void __fastcall ACT3Q1_Callback00_NpcActivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B7400
 
 // 0x005B7A60
 int __fastcall OBJECTS_OperateFunction28_LamEsenTome(D2ObjOperateFnStrc* pOp, int nOperate)
@@ -1625,7 +1457,7 @@ int __fastcall OBJECTS_OperateFunction28_LamEsenTome(D2ObjOperateFnStrc* pOp, in
 
         pOp->hObject->dwDropItemCode = ' bbb';
         int nItemLevel;
-        if (D2GAME_DropItemAtUnit_6FC4FEC0(pOp->pGame, pOp->hObject, 2, &nItemLevel, 0, -1, 0))
+        if (D2GAME_DropItemAtUnit(pOp->pGame, pOp->hObject, 2, &nItemLevel, 0, -1, 0))
         {
             UNITS_ChangeAnimMode(pOp->hObject, 2);
 
@@ -1655,178 +1487,4 @@ int __fastcall OBJECTS_OperateFunction28_LamEsenTome(D2ObjOperateFnStrc* pOp, in
     return 0;
 }
 
-void __fastcall ACT4Q3_Callback03_ChangedLevel(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg)
-{
-    if (pQuestArg->nOldLevel != 103)
-    {
-        return;
-    }
 
-    QUESTS_QuickRemovePlayerGUID(pQuestData, pQuestArg);
-    if (pQuestData->fState != 2)
-    {
-        return;
-    }
-
-    D2BitBufferStrc* pQuestFlags = sub_00543520(pQuestArg->pGame, pQuestArg->pPlayer);
-    if (QUESTRECORD_GetQuestState(pQuestFlags, pQuestData->eFilter, 0) == 1 || QUESTRECORD_GetQuestState(pQuestFlags, pQuestData->eFilter, 1) == 1)
-    {
-        return;
-    }
-
-    QUESTS_StateDebug(pQuestData, 3, gszAct4Q3SourceFile, 433);
-    SUNIT_IterateUnitsOfType(pQuestData->pGame, 0, 0, ACT4Q3_UnitIterate_UpdateQuestStateFlags);
-}
-
-void __fastcall ACT4Q3_Callback09_PlayerDroppedWithQuestItem(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg)
-{
-    D2Act4Quest3Strc* pQuestDataEx = (D2Act4Quest3Strc*)pQuestData->pQuestDataEx;
-
-    if (ITEMS_GetBaseCode(pQuestArg->pTarget) == 0x20686668)
-    {
-        --pQuestDataEx->nHellforgeHammersInGame;
-    }
-}
-
-void __fastcall ACT4Q3_Callback14_PlayerJoinedGame(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg)
-{
-    D2Act4Quest3Strc* pQuestDataEx = (D2Act4Quest3Strc*)pQuestData->pQuestDataEx;
-
-    if (ITEMS_FindQuestItem(pQuestArg->pGame, pQuestArg->pPlayer, 0x20686668))
-    {
-        ++pQuestDataEx->nHellforgeHammersInGame;
-    }
-}
-
-void __fastcall ACT4Q3_InitQuestData(D2QuestDataStrc* pQuestData)
-{
-    memset(pQuestData->pCallback, 0x00, sizeof(pQuestData->pCallback));
-    pQuestData->pfActiveFilter = ACT4Q3_ActiveFilterCallback;
-    pQuestData->pQuestDataEx = 0;
-    pQuestData->fLastState = 0;
-    pQuestData->fState = 0;
-    pQuestData->pNPCMessages = gpAct4Q3NpcMessages;
-    pQuestData->bActive = 1;
-    pQuestData->pfSeqFilter = ACT4Q3_SeqCallback;
-    pQuestData->nSeqId = 23;
-    pQuestData->eFilter = 27;
-    pQuestData->nInitNo = 4;
-    pQuestData->pfStatusFilter = 0;
-    pQuestData->pCallback[10] = ACT4Q3_Callback10_PlayerLeavesGame;
-    pQuestData->pCallback[3] = ACT4Q3_Callback03_ChangedLevel;
-    pQuestData->pCallback[0] = ACT4Q3_Callback00_NpcActivate;
-    pQuestData->pCallback[2] = ACT4Q3_Callback02_NpcDeactivate;
-    pQuestData->pCallback[11] = ACT4Q3_Callback11_ScrollMessage;
-    pQuestData->pCallback[13] = ACT4Q3_Callback13_PlayerStartedGame;
-    pQuestData->pCallback[14] = ACT4Q3_Callback14_PlayerJoinedGame;
-    pQuestData->pCallback[9] = ACT4Q3_Callback09_PlayerDroppedWithQuestItem;
-    pQuestData->pCallback[8] = ACT4Q3_Callback08_MonsterKilled;
-    pQuestData->pCallback[4] = ACT4Q3_Callback04_ItemPickedUp;
-
-    D2Act4Quest3Strc* pQuestDataEx = (D2Act4Quest3Strc*)FOG_AllocPool(pQuestData->pGame->pMemoryPool, sizeof(D2Act4Quest3Strc), gszAct4Q3SourceFile, 856, 0);
-    pQuestData->pQuestDataEx = pQuestDataEx;
-    memset(pQuestDataEx, 0x00, sizeof(D2Act4Quest3Strc));
-}
-
-void __fastcall ACT4Q4_Callback00_NpcActivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg)
-{
-    const int nNpcId = !pQuestArg->pTarget ? -1 : pQuestArg->pTarget->dwClassId;
-    if (nNpcId != 408)
-    {
-        return;
-    }
-
-    D2GameStrc* pGame = pQuestArg->pGame;
-    D2BitBufferStrc* pQuestFlags = UNITS_GetPlayerData(pQuestArg->pPlayer)->pQuestData[pGame->nDifficulty];
-    if (QUESTRECORD_GetQuestState(pQuestFlags, 27, 0) || QUESTRECORD_GetQuestState(pQuestFlags, 27, 1) || QUESTRECORD_GetQuestState(pQuestFlags, 27, 13))
-    {
-        D2QuestDataStrc* pQuest = QUESTS_GetQuestData(pQuestData->pGame, 23);
-        if (!pQuest || !((D2Act4Quest2Strc*)pQuest->pQuestDataEx)->bDiabloKilled)
-        {
-            QUESTS_InitScrollTextChain(pQuestData, pQuestArg->pTextControl, 408, 1);
-        }
-    }
-    else
-    {
-        QUESTS_InitScrollTextChain(pQuestData, pQuestArg->pTextControl, 408, 0);
-    }
-}
-
-void __fastcall ACT4Q4_InitQuestData(D2QuestDataStrc* pQuestData)
-{
-    memset(pQuestData->pCallback, 0x00, sizeof(pQuestData->pCallback));
-    pQuestData->pCallback[0] = ACT4Q4_Callback00_NpcActivate;
-    pQuestData->pNPCMessages = gpAct4Q4NpcMessages;
-    pQuestData->bActive = 1;
-    pQuestData->fState = 0;
-    pQuestData->fLastState = 0;
-    pQuestData->pQuestDataEx = 0;
-    pQuestData->eFilter = 33;
-    pQuestData->pfStatusFilter = ACT4Q4_StatusFilterCallback;
-    pQuestData->pfActiveFilter = ACT4Q4_ActiveFilterCallback;
-}
-
-void __fastcall ACT3Intro_InitQuestData(D2QuestDataStrc* pQuestData)
-{
-    memset(pQuestData->pCallback, 0x00, sizeof(pQuestData->pCallback));
-    pQuestData->pCallback[0] = ACT3Intro_Callback00_NpcActivate;
-    pQuestData->pCallback[11] = ACT3Intro_Callback11_ScrollMessage;
-    pQuestData->pNPCMessages = gpAct3IntroNpcMessages;
-    pQuestData->bActive = 1;
-    pQuestData->fState = 0;
-    pQuestData->fLastState = 0;
-    pQuestData->pQuestDataEx = 0;
-    pQuestData->eFilter = 42;
-    pQuestData->pfStatusFilter = ACT3Intro_StatusFilterCallback;
-    pQuestData->pfActiveFilter = ACT3Intro_ActiveFilterCallback;
-}
-
-void __fastcall ACT3Q0_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg)
-{
-    const unsigned short nMessageIndex = pQuestArg->nMessageIndex;
-    if (pQuestArg->nNPCNo != 253)
-    {
-        return;
-    }
-
-    D2BitBufferStrc* pQuestFlags = sub_00543520(pQuestData->pGame, pQuestArg->pPlayer);
-    if (nMessageIndex == 465 || nMessageIndex == 466)
-    {
-        QUESTRECORD_SetQuestState(pQuestFlags, 16, 0);
-        QUESTS_SetGlobalState(pQuestData->pGame, 16, 13);
-    }
-}
-
-void __fastcall ACT3Q0_Callback00_NpcActivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg)
-{
-    const int nNpcId = !pQuestArg->pTarget ? -1 : pQuestArg->pTarget->dwClassId;
-    if (nNpcId != 253)
-    {
-        return;
-    }
-
-    D2BitBufferStrc* pQuestFlags = sub_00543520(pQuestArg->pGame, pQuestArg->pPlayer);
-    if (QUESTRECORD_GetQuestState(pQuestFlags, 16, 0))
-    {
-        return;
-    }
-
-    const int nClassId = !pQuestArg->pPlayer ? -1 : pQuestArg->pPlayer->dwClassId;
-    if (nClassId == 1)
-    {
-        QUESTS_InitScrollTextChain(pQuestData, pQuestArg->pTextControl, 253, 1);
-    }
-    else
-    {
-        QUESTS_InitScrollTextChain(pQuestData, pQuestArg->pTextControl, 253, 0);
-    }
-}
-
-void __fastcall ACT3Q0_Callback13_PlayerStartedGame(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg)
-{
-    D2BitBufferStrc* pQuestFlags = sub_00543520(pQuestArg->pGame, pQuestArg->pPlayer);
-    if (QUESTRECORD_GetQuestState(pQuestFlags, 16, 0) == 1)
-    {
-        QUESTS_SetGlobalState(pQuestData->pGame, 16, 13);
-    }
-}

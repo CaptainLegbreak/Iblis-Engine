@@ -1,4 +1,7 @@
+#include "D2LanguageNames.h"
+
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2StormTypes.h"
 #include "D2Win32Message.h"
 #include "D2ClientTypes.h"
@@ -7,6 +10,9 @@
 #include "D2TxtTables.h"
 #include "D2Unicode.h"
 #include "D2DataTbls.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2GfxApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 struct D2MsgHandlerEntryStrc;
@@ -27,8 +33,6 @@ typedef void (__stdcall* SMSGHANDLER)(SMSGHANDLER_PARAMS* pMsg);
 
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 extern D2MsgHandlerEntryStrc gaWindowMsgHandlers[4]; // 0x0070F7E4
 void __fastcall SCMD_UnregisterMsgHandler(void* hWnd, int nType, int nId, SMSGHANDLER pfnHandler); // 0x00451D10
@@ -121,8 +125,6 @@ extern "C" __declspec(dllimport) int __stdcall DispatchMessageA(const D2WinMsgSt
 
 extern "C" __declspec(dllimport) void __stdcall Sleep(unsigned int nMilliseconds); // 0x006CC258
 
-int __cdecl WINDOW_GetWindow(); // 0x004F59A0
-
 int __stdcall SMsgRegisterCommand(void* hWnd, int nId, SMSGHANDLER pfnHandler); // 0x00420BF0
 
 int __stdcall SMsgRegisterKeyDown(void* hWnd, int nId, SMSGHANDLER pfnHandler); // 0x00420C10
@@ -154,9 +156,7 @@ public:
     virtual int IsFiltered(const char* szText);
 };
 
-int __stdcall SMsgDispatchMessage(void* hWnd, unsigned int uMessage, unsigned int wParam, int lParam, int* pUseResult, int* pResult); // 0x00420B00
 
-int __cdecl RECORD_IsReplayActive(); // 0x00451990
 
 void __fastcall RECORD_RecordInputMessage(unsigned int uMessage, unsigned int wParam, int lParam); // 0x004514B0
 
@@ -171,7 +171,6 @@ void __stdcall SCMD_HandleQuitMessage(SMSGHANDLER_PARAMS* pMsg)
 // 0x00451AB0
 void __stdcall SCMD_OnActivateApp(SMSGHANDLER_PARAMS* msg)
 {
-// build: symbol ?gbClientAppActive@* 0x0070F7E0
     gbClientAppActive = msg->wParam != 0;
     msg->bReturn = USE_RESULT;
 }
@@ -236,8 +235,7 @@ int __fastcall SCMD_RunMessageLoop(int (__stdcall* pfnIdle)(int))
                 }
             }
 
-// build: symbol ?gbClientAppActive@* 0x0070F7E0
-            if (!gbClientAppActive && gdwGlobal_007A0610 != 6 && gdwGlobal_007A0610 != 8)
+            if (!gbClientAppActive && gnGameType != 6 && gnGameType != 8)
             {
                 Sleep(10);
             }
@@ -330,50 +328,8 @@ void __fastcall sub_00451EB0_UnregisterWindowHandlers(void* hWnd)
     {
         SCMD_UnregisterMsgHandler(hWnd, gaWindowMsgHandlers[i].nType, gaWindowMsgHandlers[i].nId, (SMSGHANDLER)gaWindowMsgHandlers[i].pfnHandler);
     }
-// build: symbol ?SMsgPopRegisterState@* 0x00420320
     SMsgPopRegisterState(hWnd);
 }
-
-#pragma pack(push, 1)
-struct d2data_0070F7A4_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
-
-extern "C" struct d2data_0070F7A4_t gData_0070F7A4; // 0x0070F7A4
-
-extern "C" struct d2data_0070F7A4_t gData_0070F7A4 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0070F7A4
 
 extern int gbClientAppActive = 1; // 0x0070F7E0
 

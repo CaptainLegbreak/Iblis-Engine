@@ -6,6 +6,7 @@
 #include "D2StormSha1.h"
 #include "D2StormBitOutput.h"
 #include "D2Win32SystemInfo.h"
+#include "StormApi.h"
 
 struct D2FileStrc;
 
@@ -101,12 +102,6 @@ struct D2StormList004185B0Strc;
 
 struct D2StormHashBufferStrc;
 
-class THuffmannTree;
-
-struct D2StormHuffLinkSlotStrc;
-
-struct CHuffman;
-
 struct HANDLER;
 
 
@@ -135,8 +130,6 @@ struct CCritSect : D2CriticalSectionStrc
     ~CCritSect() { DeleteCriticalSection(this); }
 };
 
-// build: symbol ??__EgBasePathLock_00779068@@YAXXZ 0x006CA7F0
-// build: symbol ??__FgBasePathLock_00779068@@YAXXZ 0x006CB0A0
 CCritSect gBasePathLock_00779068; // 0x00779068
 
 char gszBasePath_00778F28[260]; // 0x00778F28
@@ -144,10 +137,6 @@ char gszBasePath_00778F28[260]; // 0x00778F28
 unsigned short gwValue_0077905C; // 0x0077905C
 
 void __cdecl InitBasePath(); // 0x004158E0
-
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
-
-void __stdcall SMemCopy(void* pDst, const void* pSrc, unsigned int nSize); // 0x0041D2A0
 
 struct Link {
     Link* previous;
@@ -206,8 +195,6 @@ void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, uns
 
 void __stdcall SMemFill(void* pLocation, unsigned int nLength, unsigned char nFillWith); // 0x0041D2C0
 
-const char* __stdcall SStrChrR(const char* szString, char nChar); // 0x004134D0
-
 void __fastcall CrcBuffer(const unsigned char* pData, unsigned int nSize, unsigned int* pCrc, unsigned char nFlags); // 0x0041D810
 
 int __cdecl GetDefaultOpenFlags(); // 0x00418B50
@@ -219,8 +206,6 @@ void __cdecl StartCdThread(); // 0x0041A880
 void __cdecl PumpStreams(); // 0x00419C00
 
 int __stdcall SFileCloseFile(void* pArg); // 0x004198D0
-
-int __stdcall SFileCloseArchive(void* hMpq); // 0x00419A80
 
 static int __stdcall ReadAdditionalAttributes(ARCHIVEREC* pArchive, D2StormBlockStrc* pBlockTable, unsigned int nCount);
 
@@ -275,46 +260,11 @@ struct D2StormQuadStrc
     D2StormQuadStrc& sub_00415160_Copy(const D2StormQuadStrc& source);
 };
 
-// build: symbol ??_R0?AUAUDIOSTREAM@@@8 0x00708400
-// build: symbol ?LinkNode@?$TSList@UAUDIOSTREAM@@U?$TSGetLink@UAUDIOSTREAM@@@@@@QAEXPAUAUDIOSTREAM@@I0@Z 0x00417D80
-// build: symbol ?UnlinkAll@?$TSList@UAUDIOSTREAM@@U?$TSGetLink@UAUDIOSTREAM@@@@@@QAEXXZ 0x00418A00
-// build: symbol ??1?$TSList@UAUDIOSTREAM@@U?$TSGetLink@UAUDIOSTREAM@@@@@@QAE@XZ 0x00418DA0
-// build: symbol ?NewNode@?$TSList@UAUDIOSTREAM@@U?$TSGetLink@UAUDIOSTREAM@@@@@@QAEPAUAUDIOSTREAM@@III@Z 0x00419700
-// build: symbol ?DeleteNode@?$TSList@UAUDIOSTREAM@@U?$TSGetLink@UAUDIOSTREAM@@@@@@QAEPAUAUDIOSTREAM@@PAU2@@Z 0x00419B90
-// build: symbol ??_R0?AUREQUEST@@@8 0x007083E8
-// build: symbol ?LinkNode@?$TSList@UREQUEST@@U?$TSGetLink@UREQUEST@@@@@@QAEXPAUREQUEST@@I0@Z 0x00417A70
-// build: symbol ?UnlinkAll@?$TSList@UREQUEST@@U?$TSGetLink@UREQUEST@@@@@@QAEXXZ 0x00418940
-// build: symbol ??1?$TSList@UREQUEST@@U?$TSGetLink@UREQUEST@@@@@@QAE@XZ 0x00418CC0
-// build: symbol ?NewNode@?$TSList@UREQUEST@@U?$TSGetLink@UREQUEST@@@@@@QAEPAUREQUEST@@III@Z 0x00419630
-// build: symbol ?DeleteNode@?$TSList@UREQUEST@@U?$TSGetLink@UREQUEST@@@@@@QAEPAUREQUEST@@PAU2@@Z 0x0041A2C0
-// build: symbol ??_R0?AUEVENTREC@@@8 0x007083D0
-// build: symbol ?LinkNode@?$TSList@UEVENTREC@@U?$TSGetLink@UEVENTREC@@@@@@QAEXPAUEVENTREC@@I0@Z 0x00417C70
-// build: symbol ?UnlinkAll@?$TSList@UEVENTREC@@U?$TSGetLink@UEVENTREC@@@@@@QAEXXZ 0x004189C0
-// build: symbol ??1?$TSList@UEVENTREC@@U?$TSGetLink@UEVENTREC@@@@@@QAE@XZ 0x00418D40
-// build: symbol ?NewNode@?$TSList@UEVENTREC@@U?$TSGetLink@UEVENTREC@@@@@@QAEPAUEVENTREC@@III@Z 0x00418F90
-// build: symbol ?DeleteNode@?$TSList@UEVENTREC@@U?$TSGetLink@UEVENTREC@@@@@@QAEPAUEVENTREC@@PAU2@@Z 0x00419690
-// build: symbol ??_R0?AUFILEREC@@@8 0x007083B8
-// build: symbol ?LinkNode@?$TSList@UFILEREC@@U?$TSGetLink@UFILEREC@@@@@@QAEXPAUFILEREC@@I0@Z 0x00417B80
-// build: symbol ?UnlinkAll@?$TSList@UFILEREC@@U?$TSGetLink@UFILEREC@@@@@@QAEXXZ 0x00418980
-// build: symbol ??1?$TSList@UFILEREC@@U?$TSGetLink@UFILEREC@@@@@@QAE@XZ 0x00418D00
-// build: symbol ?NewNode@?$TSList@UFILEREC@@U?$TSGetLink@UFILEREC@@@@@@QAEPAUFILEREC@@III@Z 0x00418F20
-// build: symbol ??_R0?AUARCHIVEREC@SFile@Storm@@@8 0x00708390
-// build: symbol ?LinkNode@?$TSList@UARCHIVEREC@SFile@Storm@@U?$TSGetLink@UARCHIVEREC@SFile@Storm@@@@@@QAEXPAUARCHIVEREC@SFile@Storm@@I0@Z 0x004184B0
-// build: symbol ?UnlinkAll@?$TSList@UARCHIVEREC@SFile@Storm@@U?$TSGetLink@UARCHIVEREC@SFile@Storm@@@@@@QAEXXZ 0x00418900
-// build: symbol ??1?$TSList@UARCHIVEREC@SFile@Storm@@U?$TSGetLink@UARCHIVEREC@SFile@Storm@@@@@@QAE@XZ 0x00418C60
-// build: symbol ?NewNode@?$TSList@UARCHIVEREC@SFile@Storm@@U?$TSGetLink@UARCHIVEREC@SFile@Storm@@@@@@QAEPAUARCHIVEREC@SFile@Storm@@III@Z 0x00418EC0
-// build: symbol ?Link@?$TSList@UARCHIVEREC@SFile@Storm@@U?$TSGetLink@UARCHIVEREC@SFile@Storm@@@@@@QAEPAU?$TSLink@UARCHIVEREC@SFile@Storm@@@@PBUARCHIVEREC@SFile@Storm@@@Z 0x00417A10
-// build: symbol ?Link@?$TSList@UREQUEST@@U?$TSGetLink@UREQUEST@@@@@@QAEPAU?$TSLink@UREQUEST@@@@PBUREQUEST@@@Z 0x00417A50
-// build: symbol ?Link@?$TSList@UFILEREC@@U?$TSGetLink@UFILEREC@@@@@@QAEPAU?$TSLink@UFILEREC@@@@PBUFILEREC@@@Z 0x00417B60
-// build: symbol ?Link@?$TSList@UEVENTREC@@U?$TSGetLink@UEVENTREC@@@@@@QAEPAU?$TSLink@UEVENTREC@@@@PBUEVENTREC@@@Z 0x00417C50
-// build: symbol ?Link@?$TSList@UAUDIOSTREAM@@U?$TSGetLink@UAUDIOSTREAM@@@@@@QAEPAU?$TSLink@UAUDIOSTREAM@@@@PBUAUDIOSTREAM@@@Z 0x00417D60
 template TSLink<ARCHIVEREC>* TSList<ARCHIVEREC>::Link(const ARCHIVEREC*);
 template TSLink<REQUEST>* TSList<REQUEST>::Link(const REQUEST*);
 template TSLink<FILEREC>* TSList<FILEREC>::Link(const FILEREC*);
 template TSLink<EVENTREC>* TSList<EVENTREC>::Link(const EVENTREC*);
 template TSLink<AUDIOSTREAM>* TSList<AUDIOSTREAM>::Link(const AUDIOSTREAM*);
-// build: symbol ?Next@?$TSList@UFILEREC@@U?$TSGetLink@UFILEREC@@@@@@QAEPAUFILEREC@@PBU2@@Z 0x00417B20
-// build: symbol ?Next@?$TSList@UAUDIOSTREAM@@U?$TSGetLink@UAUDIOSTREAM@@@@@@QAEPAUAUDIOSTREAM@@PBU2@@Z 0x00417D20
 template FILEREC* TSList<FILEREC>::Next(const FILEREC*);
 template AUDIOSTREAM* TSList<AUDIOSTREAM>::Next(const AUDIOSTREAM*);
 template TSList<FILEREC>::~TSList();
@@ -326,10 +276,6 @@ template AUDIOSTREAM* TSList<AUDIOSTREAM>::DeleteNode(AUDIOSTREAM*);
 extern TSList<AUDIOSTREAM> gDdaList_00708384; // 0x00708384
 
 extern "C" __declspec(dllimport) int __stdcall GetFileTime(void* hFile, D2FileTimeStrc* pCreation, D2FileTimeStrc* pAccess, D2FileTimeStrc* pWrite);
-
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
-
-unsigned int __stdcall SStrPack(char* szDest, const char* szSource, unsigned int nDestSize); // 0x00413800
 
 struct PairStrc_00416810
 {
@@ -435,21 +381,6 @@ struct D2StormHashBufferStrc
     unsigned int nWindow;
 };
 
-class THuffmannTree
-{
-public:
-    THuffmannTree();                                                                                        // 0x0041F4A0
-
-    unsigned int adwData[0x3474 / 4];
-};
-
-struct CHuffman : THuffmannTree
-{
-    D2StormHuffLinkSlotStrc aQuickLinks[0x80];
-
-    CHuffman();
-};
-
 static void* ghStormThread_00779034; // 0x00779034
 
 int gnStormDirectFlags_00779058;                                                                            // 0x00779058
@@ -519,17 +450,8 @@ extern TSList<REQUEST> gRequestList_00708360; // 0x00708360
 
 static int gbStreamsPaused_00779044;                                                                        // 0x00779044
 
-struct D2FogBlockStrc;
 
 struct D2StormRecord419000Strc;
-
-struct D2FogBlockStrc
-{
-    D2FogBlockStrc* pNext;
-    unsigned int dwSize;
-    int unk0x08[3];
-    int bInUse;
-};
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetModuleFileNameA(void* hModule, char* szFileName, unsigned long nSize); // 0x006CC1BC
 
@@ -563,8 +485,6 @@ extern "C" __declspec(dllimport) unsigned int __stdcall GetDriveTypeA(const char
 
 char* gpStormExplodeWork;                                                                                   // 0x0077903C
 
-// build: symbol ??__EgStormExplodeLock@@YAXXZ 0x006CA870
-// build: symbol ??__FgStormExplodeLock@@YAXXZ 0x006CB0B0
 CCritSect gStormExplodeLock;                                                                    // 0x00779080
 
 unsigned int __cdecl sub_004151D0_ExplodeRead(char* pBuffer, unsigned int* pnSize, void* pParam);          // 0x004151D0
@@ -2427,7 +2347,6 @@ void D2StormListBaseStrc::sub_00417D40_Initialize()
     m_terminator.m_next = (char*)~(unsigned int)&m_terminator;
 }
 
-// build: symbol ??1ARCHIVEREC@SFile@Storm@@QAE@XZ 0x00418A50
 // 0x00418490
 int D2StormList00418490Strc::sub_00418490_IsEmpty()
 {
@@ -2519,14 +2438,6 @@ void __cdecl StartCdThread()
     }
 }
 
-// 0x0041F950
-CHuffman::CHuffman()
-{
-    for (int i = 0; i < 0x80; ++i)
-        aQuickLinks[i].nData[0] = 0;
-}
-
-// build: symbol ??1?$TSLinkedNode@UAUDIOSTREAM@@@@QAE@XZ 0x00418BE0
 // 0x004199A0
 AUDIOSTREAM::~AUDIOSTREAM()
 {
@@ -2537,7 +2448,6 @@ AUDIOSTREAM::~AUDIOSTREAM()
         pBuffer->Release();
 }
 
-// build: symbol ??1?$TSLinkedNode@UREQUEST@@@@QAE@XZ 0x00418C20
 // 0x0041A020
 REQUEST::~REQUEST()
 {
@@ -2549,8 +2459,6 @@ REQUEST::~REQUEST()
         delete pAudio;
 }
 
-// build: symbol ??_GAUDIOSTREAM@@QAEPAXI@Z 0x00419A50
-// build: symbol ??_GREQUEST@@QAEPAXI@Z 0x0041A0E0
 // 0x00419A50
 inline void AUDIOSTREAM::operator delete(void* pMemory)
 {
@@ -2572,7 +2480,6 @@ inline HANDLER::~HANDLER()
 
 void __stdcall SErrReportResourceLeak(const char* szName); // 0x0041D1E0
 void __stdcall SErrReportNamedResourceLeak(const char* szName, const char* szDetail); // 0x0041D010
-int __cdecl SFileDdaDestroy(); // 0x00419F30
 
 // 0x0041A110
 int __cdecl SFileDestroy()
@@ -3612,9 +3519,6 @@ Done:
     return bResult;
 }
 
-// build: symbol ??_GARCHIVEREC@SFile@Storm@@QAEPAXI@Z 0x00418B20
-// build: symbol ??_GFILEREC@@QAEPAXI@Z 0x00419150
-// build: symbol ??_GD2StormRecord419000Strc@@QAEPAXI@Z 0x00419000
 inline D2StormRecord419000Strc::~D2StormRecord419000Strc()
 {
     tLink.Unlink();
@@ -4748,6 +4652,16 @@ sub_00419060::sub_00419060()
 
 extern "C" char gData_006F28F8[]; // 0x006F28F8
 
+unsigned int gnReadUnit_00708348 = 131072; // 0x00708348
+
+int gnValueA_0070834C = 2; // 0x0070834C
+
+int gnValue_00708350 = 1; // 0x00708350
+
+long gnErrorLockUsers_0070841C = -1; // 0x0070841C
+
+extern "C" char gData_006F28F8[]; // 0x006F28F8
+
 extern "C" const unsigned char gData_006CEF78[0x100]; // 0x006CEF78
 extern "C" const unsigned char gData_006CF078[4]; // 0x006CF078
 extern "C" const D2StormSignatureKeyStrc gData_006CF07C[1]; // 0x006CF07C
@@ -4778,30 +4692,12 @@ extern "C" const unsigned char gData_006CF078[4] = { 1, 0, 1 }; // 0x006CF078
 extern "C" const D2StormSignatureKeyStrc gData_006CF07C[1] = { { (const char *)"BLIZZARDKEY", 5 } }; // 0x006CF07C
 #pragma comment(linker, "/alternatename:?gaSignatureKeys_006CF07C@@3QBUD2StormSignatureKeyStrc@@B=_gData_006CF07C")
 
-extern unsigned int gnReadUnit_00708348 = 0x20000; // 0x00708348
-
-extern int gnValueA_0070834C = 2; // 0x0070834C
-
-extern int gnValue_00708350 = 1; // 0x00708350
-
-extern long gnErrorLockUsers_0070841C = -1; // 0x0070841C
-
-// build: symbol ??__EgRequestList_00708360@@YAXXZ 0x006CA7D0
-// build: symbol ??__FgRequestList_00708360@@YAXXZ 0x006CB120
 TSList<REQUEST> gRequestList_00708360; // 0x00708360
 
-// build: symbol ??__EgDdaList_00708384@@YAXXZ 0x006CA850
-// build: symbol ??__FgDdaList_00708384@@YAXXZ 0x006CB240
 TSList<AUDIOSTREAM> gDdaList_00708384; // 0x00708384
 
-// build: symbol ??__EgEventList_00708378@@YAXXZ 0x006CA830
-// build: symbol ??__FgEventList_00708378@@YAXXZ 0x006CB1E0
 TSList<EVENTREC> gEventList_00708378; // 0x00708378
 
-// build: symbol ??__EgFileList_0070836C@@YAXXZ 0x006CA810
-// build: symbol ??__FgFileList_0070836C@@YAXXZ 0x006CB180
 TSList<FILEREC> gFileList_0070836C; // 0x0070836C
 
-// build: symbol ??__EgArchiveList_00708354@@YAXXZ 0x006CA7B0
-// build: symbol ??__FgArchiveList_00708354@@YAXXZ 0x006CB0C0
 TSList<ARCHIVEREC> gArchiveList_00708354; // 0x00708354

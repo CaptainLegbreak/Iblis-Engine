@@ -1,43 +1,35 @@
+#include "D2LanguageNames.h"
+
 #include "D2Structs.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Constants.h"
 #include "D2Win32Types.h"
 #include "D2Drlg.h"
 #include "D2WinSplitText.h"
 #include "D2ClientUiRecords.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
+#include "D2GfxApi.h"
 
 
 extern int gnPanelSlideMode; // 0x007A5210
 
 struct D2UnitStrc;
 
-int __cdecl GAME_GetConnectionType(); // 0x0044DB30
 
-int __cdecl GAME_IsExpansion(); // 0x0044DCC0
 
-void __cdecl AUTOMAP_UpdateAutomapLayout(); // 0x00457520
 
-void __cdecl AUTOMAP_PaintAutomap(); // 0x00459700
 
-void __cdecl AUTOMAP_DrawGameInfoLines(); // 0x00459E90
 
-void __cdecl AUTOMAP_DrawStringLine(); // 0x00459FF0
 
-void __cdecl AUTOMAP_DrawLevelName(); // 0x0045A050
 
-void __cdecl AUTOMAP_DrawVersionLine(); // 0x0045A0A0
 
-void __cdecl AUTOMAP_DrawLocalIpLine(); // 0x0045A120
 
-void __cdecl AUTOMAP_DrawDifficultyLine(); // 0x0045A190
 
-void __cdecl AUTOMAP_DrawAutomapUnits(); // 0x0045AC90
 
-D2UnitStrc* __cdecl sub_00463DE0_GetPlayerUnit(); // 0x00463DE0
 
-int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
 
 extern void* gpGlobal_007A0634; // 0x007A0634
 
@@ -96,11 +88,8 @@ struct D2TileRectStrc
     int nOffsetY;
 };
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit);                                                         // 0x0045ADF0
 
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit);                                                         // 0x0045AE20
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
 
 // 0x0045ADF0
 int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit)
@@ -120,7 +109,6 @@ int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit)
     }
 }
 
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
 
 // 0x0045AE20
 int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit)
@@ -165,23 +153,17 @@ int __cdecl sub_0045AE80()
 }
 
 // 0x0045AE90
-int __cdecl sub_0045AE90()
+int __cdecl sub_0045AE90_GetPanelSlideMode()
 {
     return gnPanelSlideMode;
 }
 
 
-void __cdecl GAME_ResetMouseButtons(); // 0x0044DA70
-
-void __fastcall D2GFX_SetViewMatrixAdjust(int nOffset); // 0x004F52A0
 
 extern D2ViewStrc* gpClientView; // 0x007A0640
 
-extern int gnScreenWidth; // 0x0071146C
 
-extern int gnAutomapHeight_007A521C; // 0x007A521C
 
-extern int gnAutomapWidth; // 0x007A5220
 
 int gnPanelSlideOffsetX; // 0x007A5214
 
@@ -208,16 +190,16 @@ void __fastcall PLAYER_SetPanelSlide(int nMode)
     switch (nMode)
     {
     case 0:
-        sub_00476000_SetViewRect(gpClientView, 0, 0, nWidth, gnAutomapHeight_007A521C);
+        VIEW_SetViewRects(gpClientView, 0, 0, nWidth, gnAutomapHeight_007A521C);
         break;
     case 1:
-        sub_00476000_SetViewRect(gpClientView, -nQuarter, 0, nWidth - nQuarter, gnAutomapHeight_007A521C);
+        VIEW_SetViewRects(gpClientView, -nQuarter, 0, nWidth - nQuarter, gnAutomapHeight_007A521C);
         break;
     case 2:
-        sub_00476000_SetViewRect(gpClientView, nQuarter, 0, nWidth + nQuarter, gnAutomapHeight_007A521C);
+        VIEW_SetViewRects(gpClientView, nQuarter, 0, nWidth + nQuarter, gnAutomapHeight_007A521C);
         break;
     case 3:
-        sub_00476000_SetViewRect(gpClientView, 0, 0, nWidth, gnAutomapHeight_007A521C);
+        VIEW_SetViewRects(gpClientView, 0, 0, nWidth, gnAutomapHeight_007A521C);
         GAME_ResetMouseButtons();
         break;
     }
@@ -286,19 +268,11 @@ void __cdecl sub_0045B0A0_Nop()
 {
 }
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-int __stdcall UNITS_GetClientCoordX(D2UnitStrc* pUnit); // 0x00620650
-
-int __stdcall UNITS_GetClientCoordY(D2UnitStrc* pUnit); // 0x006206B0
-
-int __fastcall VIEW_GetViewShift(int* pX, int* pY); // 0x00476AC0
 
 int gnAutomapPanelShiftX; // 0x007A5204
 
 struct D2ClientUnitPointStrc;
-
-void __stdcall D2GFX_DrawLine(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, unsigned char nAlpha); // 0x004F6380
 
 struct D2ClientUnitPointStrc
 {
@@ -307,8 +281,6 @@ struct D2ClientUnitPointStrc
     char unk0x08[0x18];
     D2ClientUnitPointStrc* pNext;
 };
-
-void __stdcall D2GFX_DrawBox(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, int eDrawMode); // 0x004F6300
 
 void __stdcall DUNGEON_GetAdjacentRoomsListFromRoom(D2ActiveRoomStrc* pRoom, D2ActiveRoomStrc*** pppRoomList, unsigned int* pnNumRooms); // 0x00619790
 
@@ -362,13 +334,9 @@ void __fastcall CUNIT_DrawAutomapDiamond(int nX, int nY, unsigned char nColor)
 
 struct D2DrlgCoordsStrc;
 
-void __stdcall DUNGEON_GameSubtileToClientCoords(int* pX, int* pY); // 0x00643260
 
 
 
-D2ActiveRoomStrc* __cdecl CUNIT_GetPlayerRoom(); // 0x004646A0
-
-void __stdcall DUNGEON_GetRoomCoordinates(D2ActiveRoomStrc* pRoom, D2DrlgCoordsStrc* pCoords); // 0x00619730
 
 inline int UNITS_GetXPositionInline(D2UnitStrc* pUnit)
 {
@@ -400,7 +368,7 @@ inline int UNITS_GetYPositionInline(D2UnitStrc* pUnit)
 void __stdcall AUTOMAP_DrawUnitTileRect(D2UnitStrc* pUnit)
 {
     D2ActiveRoomStrc* pRoom = UNITS_GetRoom(pUnit);
-    D2TileRectStrc* pTileRect = sub_00619620(pRoom, pUnit);
+    D2TileRectStrc* pTileRect = DUNGEON_GetLvlWarpTxtRecordFromRoomAndUnit(pRoom, pUnit);
     if (!pTileRect)
     {
         return;
@@ -493,7 +461,7 @@ void __stdcall AUTOMAP_DrawRoomCollision(D2ActiveRoomStrc* pRoom)
     {
         for (int nX = tCoords.nSubtileX + 3; nX < tCoords.nSubtileX + tCoords.nSubtileWidth + 5; nX += 5)
         {
-            int nCollision = sub_0061B130_GetCollision(pRoom, nX, nY);
+            int nCollision = D2Common_10095(pRoom, nX, nY);
             int nScreenX = nX;
             int nScreenY = nY;
             DUNGEON_GameSubtileToClientCoords(&nScreenX, &nScreenY);
@@ -509,47 +477,6 @@ void __stdcall AUTOMAP_DrawRoomCollision(D2ActiveRoomStrc* pRoom)
         }
     }
 }
-
-#pragma pack(push, 1)
-struct d2data_007113EC_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
-
-extern "C" struct d2data_007113EC_t gData_007113EC; // 0x007113EC
-
-extern "C" struct d2data_007113EC_t gData_007113EC = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x007113EC
 
 extern int gdwGlobal_00711428 = 64; // 0x00711428
 

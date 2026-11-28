@@ -44,14 +44,14 @@ struct D2DamageStrc
     int dwStunLen; // 0x44
     int dwAbsLife; // 0x48
     int dwDmgTotal; // 0x4C
-    int unk0x50; // 0x50
+    int unused0x50; // 0x50
     int dwPiercePct; // 0x54
     int dwDamageRate; // 0x58
-    int unk0x5C; // 0x5C
+    int unused0x5C; // 0x5C
     unsigned int dwHitClass; // 0x60
     unsigned char nHitClassActiveSet; // 0x64
     signed char nConvType; // 0x65
-    unsigned short unk0x66; // 0x66
+    unsigned short pad0x66; // 0x66
     int dwConvPct; // 0x68
     int nOverlay; // 0x6C
 };
@@ -72,8 +72,8 @@ struct D2MissileStrc
     int nSkill; // 0x2C
     int nSkillLevel; // 0x30
     int nLoops; // 0x34
-    unsigned int unk0x38; // 0x38
-    unsigned int unk0x3C; // 0x3C
+    unsigned int unused0x38; // 0x38
+    unsigned int unused0x3C; // 0x3C
     int nFrame; // 0x40
     int nActivateFrame; // 0x44
     int nAttBonus; // 0x48
@@ -92,11 +92,11 @@ struct D2ModeChangeStrc
     int nY; // 0x10
     unsigned char nDirection; // 0x14
     unsigned char nEventFlag; // 0x15
-    unsigned short unk0x16; // 0x16
+    unsigned short pad0x16; // 0x16
     int nVelocityPercent; // 0x18
     unsigned char nNewDist; // 0x1C
-    unsigned char unk0x1D; // 0x1D
-    unsigned short unk0x1E; // 0x1E
+    unsigned char pad0x1D; // 0x1D
+    unsigned short pad0x1E; // 0x1E
 };
 
 struct D2AiCmdStrc
@@ -111,7 +111,7 @@ struct D2AiControlStrc
     int nAiSpecialState; // 0x00
     void* pAiParamFn; // 0x04
     unsigned short nAiFlags; // 0x08
-    unsigned short unk0x0A; // 0x0A
+    unsigned short pad0x0A; // 0x0A
     int dwOwnerGUID; // 0x0C
     unsigned int dwOwnerType; // 0x10
     int dwAiParam[3]; // 0x14
@@ -128,10 +128,10 @@ struct D2AiControlStrc
 struct D2AiTickParamStrc
 {
     D2AiControlStrc* pAiControl; // 0x00
-    int unk0x04; // 0x04
+    int unused0x04; // 0x04
     D2UnitStrc* pTarget; // 0x08
-    int unk0x0C; // 0x0C
-    int unk0x10; // 0x10
+    int unused0x0C; // 0x0C
+    int unused0x10; // 0x10
     int nTargetDistance; // 0x14
     int bCombat; // 0x18
     D2MonStatsTxt* pMonstatsTxt; // 0x1C
@@ -155,7 +155,7 @@ struct D2QuestArgStrc
     int nEvent; // 0x04
     D2UnitStrc* pTarget; // 0x08
     D2UnitStrc* pPlayer; // 0x0C
-    unsigned int unk0x10; // 0x10
+    unsigned int unused0x10; // 0x10
     union
     {
         int nOldLevel; // 0x14
@@ -172,7 +172,7 @@ struct D2QuestArgStrc
 struct D2PartyStrc
 {
     short nPartyId; // 0x00
-    short unk0x02; // 0x02
+    short pad0x02; // 0x02
     D2PartyNodeStrc* pPartyNodes; // 0x04
     D2PartyStrc* pNext; // 0x08
 };
@@ -180,7 +180,7 @@ struct D2PartyStrc
 struct D2PartyControlStrc
 {
     short nNextPartyId; // 0x00
-    short unk0x02; // 0x02
+    short pad0x02; // 0x02
     D2PartyStrc* pParties; // 0x04
 };
 

@@ -1,18 +1,19 @@
 #include "Storm.h"
 #include "D2GameTypes.h"
 #include "D2StormTypes.h"
+#include "StormApi.h"
 
-D2CriticalSectionStrc gaSLogLocks_00779238[4]; // 0x00779238
+D2CriticalSectionStrc gaSLogLocks[4]; // 0x00779238
 
-D2SLogStrc* gapSLogBuckets_00779298[4]; // 0x00779298
+D2SLogStrc* gapSLogBuckets[4]; // 0x00779298
 
-static unsigned long gnSLogTimeLength_007792A8; // 0x007792A8
+static unsigned long gnSLogTimeLength; // 0x007792A8
 
-static char gszSLogTime_007792B0[0x40]; // 0x007792B0
+static char gszSLogTime[0x40]; // 0x007792B0
 
-static unsigned long gdwSLogLastTick_007792F0; // 0x007792F0
+static unsigned long gdwSLogLastTick; // 0x007792F0
 
-int gbSLogDebugOutput_007790AC; // 0x007790AC
+int gbSLogDebugOutput; // 0x007790AC
 
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x006CC134
 
@@ -26,13 +27,7 @@ extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalS
 
 extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA(const char* szText); // 0x006CC200
 
-void __stdcall SMemCopy(void* pDest, const void* pSource, unsigned int nSize); // 0x0041D2A0
-
 void __stdcall SMemFill(void* pLocation, unsigned int nLength, unsigned char nFillWith); // 0x0041D2C0
-
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nMax); // 0x004135D0
-
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
 
 extern "C" __declspec(dllimport) void* __stdcall VirtualAlloc(void* pAddress, size_t nSize, unsigned long dwAllocationType, unsigned long dwProtect); // 0x006CC21C
 
@@ -58,7 +53,7 @@ void __cdecl SLogFlushAll();                                                    
 
 void __stdcall SErrReportResourceLeak(const char* szName);                                           // 0x0041D1E0
 
-static unsigned long gnSLogLastHandle_00779230; // 0x00779230
+static unsigned long gnSLogLastHandle; // 0x00779230
 
 // 0x0041FA40
 static void FlushLog(D2SLogStrc* pLog)
@@ -82,9 +77,9 @@ static D2SLogStrc* __stdcall LockLog(unsigned long* pIndex, int bCreate, void* h
         return 0;
     }
     unsigned long nIndex = (unsigned long)hLog & 3;
-    EnterCriticalSection(&gaSLogLocks_00779238[nIndex]);
+    EnterCriticalSection(&gaSLogLocks[nIndex]);
     *pIndex = nIndex;
-    D2SLogStrc** ppNext = &gapSLogBuckets_00779298[nIndex];
+    D2SLogStrc** ppNext = &gapSLogBuckets[nIndex];
     for (D2SLogStrc* p = *ppNext; p; p = *ppNext)
     {
         if (p->hLog == hLog)
@@ -93,7 +88,7 @@ static D2SLogStrc* __stdcall LockLog(unsigned long* pIndex, int bCreate, void* h
     }
     if (!bCreate)
     {
-        LeaveCriticalSection(&gaSLogLocks_00779238[nIndex]);
+        LeaveCriticalSection(&gaSLogLocks[nIndex]);
         *pIndex = (unsigned long)-1;
         return 0;
     }
@@ -101,7 +96,7 @@ static D2SLogStrc* __stdcall LockLog(unsigned long* pIndex, int bCreate, void* h
     *ppNext = pLog;
     if (!pLog)
     {
-        LeaveCriticalSection(&gaSLogLocks_00779238[nIndex]);
+        LeaveCriticalSection(&gaSLogLocks[nIndex]);
         *pIndex = (unsigned long)-1;
         return 0;
     }
@@ -130,7 +125,7 @@ static void AppendIndent(D2SLogStrc* pLog)
 // 0x0041FB80
 static void AppendNewline(D2SLogStrc* pLog)
 {
-    SMemCopy(pLog->szBuffer + pLog->nUsed, gszSLogNewline_006CFF08, 3);
+    SMemCopy(pLog->szBuffer + pLog->nUsed, gszSLogNewline, 3);
     pLog->nUsed += 2;
 }
 
@@ -140,31 +135,31 @@ static void __stdcall AppendTimestamp(int bText, D2SLogStrc* pLog)
     if (!pLog->bTimestamp)
         return;
     unsigned long dwTick = GetTickCount();
-    if (dwTick != gdwSLogLastTick_007792F0)
+    if (dwTick != gdwSLogLastTick)
     {
-        gdwSLogLastTick_007792F0 = dwTick;
+        gdwSLogLastTick = dwTick;
         D2SystemTimeStrc tTime;
         GetLocalTime(&tTime);
-        wsprintfA(gszSLogTime_007792B0, "%u/%u %02u:%02u:%02u.%03u  ", tTime.wMonth, tTime.wDay, tTime.wHour, tTime.wMinute, tTime.wSecond, tTime.wMilliseconds);
-        gnSLogTimeLength_007792A8 = SStrLen(gszSLogTime_007792B0);
+        wsprintfA(gszSLogTime, "%u/%u %02u:%02u:%02u.%03u  ", tTime.wMonth, tTime.wDay, tTime.wHour, tTime.wMinute, tTime.wSecond, tTime.wMilliseconds);
+        gnSLogTimeLength = SStrLen(gszSLogTime);
     }
     if (bText)
     {
-        SMemCopy(pLog->szBuffer + pLog->nUsed, gszSLogTime_007792B0, gnSLogTimeLength_007792A8 + 1);
+        SMemCopy(pLog->szBuffer + pLog->nUsed, gszSLogTime, gnSLogTimeLength + 1);
     }
     else
     {
-        SMemFill(pLog->szBuffer + pLog->nUsed, gnSLogTimeLength_007792A8, ' ');
-        pLog->szBuffer[pLog->nUsed + gnSLogTimeLength_007792A8] = 0;
+        SMemFill(pLog->szBuffer + pLog->nUsed, gnSLogTimeLength, ' ');
+        pLog->szBuffer[pLog->nUsed + gnSLogTimeLength] = 0;
     }
-    pLog->nUsed += gnSLogTimeLength_007792A8;
+    pLog->nUsed += gnSLogTimeLength;
     AppendIndent(pLog);
 }
 
 // 0x0041FC80
 static void FreeLog(D2SLogStrc* pLog, unsigned long nIndex)
 {
-    D2SLogStrc** ppNext = &gapSLogBuckets_00779298[nIndex];
+    D2SLogStrc** ppNext = &gapSLogBuckets[nIndex];
     for (D2SLogStrc* p = *ppNext; p; p = *ppNext)
     {
         if (p == pLog)
@@ -175,13 +170,13 @@ static void FreeLog(D2SLogStrc* pLog, unsigned long nIndex)
         }
         ppNext = &p->pNext;
     }
-    LeaveCriticalSection(&gaSLogLocks_00779238[nIndex]);
+    LeaveCriticalSection(&gaSLogLocks[nIndex]);
 }
 
 // 0x0041FCE0
 static void UnlockLog(unsigned long nIndex)
 {
-    LeaveCriticalSection(&gaSLogLocks_00779238[nIndex]);
+    LeaveCriticalSection(&gaSLogLocks[nIndex]);
 }
 
 // 0x0041FD00
@@ -211,7 +206,7 @@ int __stdcall SLogCreate(const char* szFileName, unsigned long dwFlags, void** p
     void* hFile = CreateFileA(szFileName, 0x40000000, 3, 0, 2, 0x80, 0);
     if (hFile == (void*)-1)
         return 0;
-    void* hLog = (void*)++gnSLogLastHandle_00779230;
+    void* hLog = (void*)++gnSLogLastHandle;
     *phLog = hLog;
     unsigned long nIndex;
     D2SLogStrc* pLog = LockLog(&nIndex, 1, hLog);
@@ -263,15 +258,14 @@ void __stdcall SLogDump(void* hLog, const void* pData, unsigned long nSize)
             }
             else
             {
-// build: symbol ?gszSpace@* 0x006FFC44
-                pLog->nUsed += SStrCopy(pLog->szBuffer + pLog->nUsed, c ? gszDot_006CCAD8 : gszSpace, 0x7FFFFFFF);
+                pLog->nUsed += SStrCopy(pLog->szBuffer + pLog->nUsed, c ? gszDot : gszSpace, 0x7FFFFFFF);
             }
             if ((i & 7) == 3)
                 pLog->nUsed += SStrCopy(pLog->szBuffer + pLog->nUsed, gszSpace, 0x7FFFFFFF);
         }
         AppendNewline(pLog);
     }
-    if (gbSLogDebugOutput_007790AC)
+    if (gbSLogDebugOutput)
         OutputDebugStringA(pLog->szBuffer + pLog->nPended);
     pLog->nPended = pLog->nUsed;
     if (pLog->nUsed >= 0xC000)
@@ -296,17 +290,17 @@ void __cdecl SLogFlushAll()
 {
     for (unsigned int i = 0; i < 4; ++i)
     {
-        EnterCriticalSection(&gaSLogLocks_00779238[i]);
-        for (D2SLogStrc* p = gapSLogBuckets_00779298[i]; p; p = p->pNext)
+        EnterCriticalSection(&gaSLogLocks[i]);
+        for (D2SLogStrc* p = gapSLogBuckets[i]; p; p = p->pNext)
             FlushLog(p);
-        LeaveCriticalSection(&gaSLogLocks_00779238[i]);
+        LeaveCriticalSection(&gaSLogLocks[i]);
     }
 }
 
 // 0x00420040
 void __cdecl SLogInitialize()
 {
-    D2CriticalSectionStrc* pLock = gaSLogLocks_00779238;
+    D2CriticalSectionStrc* pLock = gaSLogLocks;
     int n = 4;
     do
     {
@@ -384,7 +378,7 @@ void __cdecl SLogWrite(void* hLog, const char* szFormat, ...)
     vsprintf(pLog->szBuffer + pLog->nUsed, szFormat, args);
     pLog->nUsed += SStrLen(pLog->szBuffer + pLog->nUsed);
     AppendNewline(pLog);
-    if (gbSLogDebugOutput_007790AC)
+    if (gbSLogDebugOutput)
         OutputDebugStringA(pLog->szBuffer + pLog->nPended);
     pLog->nPended = pLog->nUsed;
     if (pLog->nUsed >= 0xC000)
@@ -396,8 +390,8 @@ void __cdecl SLogWrite(void* hLog, const char* szFormat, ...)
 void __cdecl SLogDestroy()
 {
     SLogFlushAll();
-    D2CriticalSectionStrc* pLock = gaSLogLocks_00779238;
-    D2SLogStrc** ppBucket = gapSLogBuckets_00779298;
+    D2CriticalSectionStrc* pLock = gaSLogLocks;
+    D2SLogStrc** ppBucket = gapSLogBuckets;
     for (int n = 4; n; --n)
     {
         EnterCriticalSection(pLock);
@@ -410,7 +404,7 @@ void __cdecl SLogDestroy()
         ++ppBucket;
         ++pLock;
     }
-    pLock = gaSLogLocks_00779238;
+    pLock = gaSLogLocks;
     for (int n = 4; n; --n)
     {
         DeleteCriticalSection(pLock);

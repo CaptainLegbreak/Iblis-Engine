@@ -30,6 +30,10 @@
 #include "D2ClientTypes.h"
 #include "D2WinPopupLine.h"
 #include "D2WinListData.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2GfxApi.h"
+#include "D2CMPApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -53,7 +57,6 @@ struct D2WinImage2Strc;
 
 struct D2WinTimerStrc;
 
-struct D2WinCommandRegisterStrc;
 
 struct D2WinListDataStrc;
 
@@ -65,13 +68,12 @@ struct D2WinAccountListStrc;
 
 struct D2WinPopUpLineStrc;
 
-struct D2CelContextStrc;
+struct D2GfxDataStrc;
 
 struct D2CofNodeStrc;
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 struct D2WinControl004FD110Strc
 {
@@ -80,8 +82,6 @@ struct D2WinControl004FD110Strc
     unsigned char f_8[0x38];
     int nFrame;
 };
-
-int __stdcall CelFileGetCelsPerDirection(D2CelFileStrc* pCellFile); // 0x006019F0
 
 enum D2ControlTypes
 {
@@ -104,12 +104,6 @@ typedef int (__stdcall* D2WinMsgHandler)(SMSGHANDLER_PARAMS* pMsg);
 
 typedef int (__fastcall* D2WinControlFn)(D2WinControlStrc* pControl);
 
-struct D2WinCommandRegisterStrc
-{
-    int nType;
-    int nId;
-    D2WinMsgHandler pCallback;
-};
 
 
 
@@ -119,21 +113,12 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern "C" int __cdecl strcmp(const char* szString1, const char* szString2);
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
-void __stdcall D2GFX_UtilRect(tagRECT* pRect, unsigned char nPaletteIndex); // 0x004F62A0
-
-void __stdcall D2GFX_DrawBox(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned char nColor, int eDrawMode); // 0x004F6300
-
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
 int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
-
-void __fastcall WREGISTER_RegisterCommand(void* hWnd, int nType, int nId, D2WinMsgHandler pCallback); // 0x00506C40
-
-void __fastcall WREGISTER_UnregisterCommand(void* hWnd, int nType, int nId, D2WinMsgHandler pCallback); // 0x00506CF0
 
 extern void* sghPentagram; // 0x0087E96C
 
@@ -148,18 +133,10 @@ struct D2WinImageClickRectStrc
 
 extern D2CofNodeStrc* gpCofNodeList; // 0x0087E83C
 
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
-
-int __stdcall STATLIST_UnitGetItemStatOrSkillStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625500
-
-void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStatId, int nValue, int nLayer); // 0x00627260
-
 enum DrawMode
 {
     DRAWMODE_NORMAL = 5,
 };
-
-void __stdcall TEXTURE_CelDrawClipped(D2CelContextStrc* pData, int nXPos, int nYPos, void* pCropRect, int eDrawMode); // 0x004F6510
 
 int __fastcall D2Win_10058_0(D2WinControlStrc* pControl, const Unicode* pText, int nLineNum, int nColumn);         // 0x004FB790
 
@@ -182,8 +159,6 @@ void __fastcall IMAGE2_Destroy(void* pArg)
 {
     CONTROL_RemoveFromList(pArg);
 }
-
-// build: symbol ?IMAGE_Draw@@YIHPAUD2WinControlStrc@@@Z 0x004FD470
 
 // 0x004FD110
 int __stdcall IMAGE_SetFrame(D2WinControl004FD110Strc* pControl, int nFrame)
@@ -223,9 +198,9 @@ int __fastcall IMAGE2_Draw(D2WinControlStrc* pControl)
         const int nColumns = (pImage->controlHeader.nWidth + 255) >> 8;
         const int nRows = ((pImage->controlHeader.nHeight + 255) >> 8) - 1;
 
-        D2CelContextStrc tContext;
+        D2GfxDataStrc tContext;
         memset(&tContext, 0, sizeof(tContext));
-        tContext.pCellFile = pImage->controlHeader.pCellFile;
+        tContext.pCelFile = pImage->controlHeader.pCellFile;
         tContext.nDirection = 0;
         tContext.nFrame = pImage->nFrame;
 
@@ -251,14 +226,8 @@ int __fastcall IMAGE2_Draw(D2WinControlStrc* pControl)
     return 1;
 }
 
-// build: symbol ?D2Win_10058@* 0x004FCD90
-int __fastcall D2Win_10058(D2WinControlStrc* pControl, const Unicode* pText, int a3, int nColumn)
-{
-    return D2Win_10058_0(pControl, pText, a3, nColumn);
-}
-
 // 0x004FD340
-static void __stdcall IMAGE_DrawTiled(const D2CropRectStrc* pDst, const D2CropRectStrc* pSrc, D2CelContextStrc* pGfxData)
+static void __stdcall IMAGE_DrawTiled(const D2CropRectStrc* pDst, const D2CropRectStrc* pSrc, D2GfxDataStrc* pGfxData)
 {
     const int nSrcWidth = pSrc->nX1 - pSrc->nX0;
     const int nDstWidth = pDst->nX1 - pDst->nX0;
@@ -290,21 +259,6 @@ static void __stdcall IMAGE_DrawTiled(const D2CropRectStrc* pDst, const D2CropRe
     }
 }
 
-// build: symbol ?SKILLS_GetSkillValue@* 0x005C33D0
-int __fastcall SKILLS_GetSkillValue(int nSkillId)
-{
-    switch (nSkillId)
-    {
-    case SKILL_PENETRATE:
-        return 0xA;
-    case SKILL_IMMOLATIONARROW:
-        return 0xC;
-    case SKILL_METEOR:
-        return 0xB;
-    }
-    return 0;
-}
-
 // 0x004FD470
 int __fastcall IMAGE_Draw(D2WinControlStrc* pControl)
 {
@@ -314,9 +268,9 @@ int __fastcall IMAGE_Draw(D2WinControlStrc* pControl)
 
     const int nBorderX = pImage->field_4C;
     const int nBorderY = pImage->field_50;
-    D2CelContextStrc tGfxData;
+    D2GfxDataStrc tGfxData;
     memset(&tGfxData, 0, sizeof(tGfxData));
-    tGfxData.pCellFile = pImage->controlHeader.pCellFile;
+    tGfxData.pCelFile = pImage->controlHeader.pCellFile;
     tGfxData.nDirection = 0;
     tGfxData.nFrame = 0;
 
@@ -372,20 +326,6 @@ static inline int IMAGE_IsInClickRect(const D2WinImageClickRectStrc* pClickRect,
     return 0;
 }
 
-static inline void SUNITDMG_ApplyDamageTargetAc(D2UnitStrc* pAttacker, D2UnitStrc* pDefender)
-{
-    const int nValue = STATLIST_UnitGetItemStatOrSkillStatValue(pAttacker, STAT_ITEM_DAMAGETARGETAC, 0);
-    if (nValue)
-    {
-        int nNew = STATLIST_UnitGetStatValue(pDefender, STAT_ARMORCLASS, 0) + nValue;
-        if (nNew < 0)
-        {
-            nNew = 0;
-        }
-        STATLIST_SetUnitStat(pDefender, STAT_ARMORCLASS, nNew, 0);
-    }
-}
-
 int __stdcall sub_M118_Emit_004FD5A0(const D2WinImageClickRectStrc* pClickRect, int nX, int nY)
 {
     while (pClickRect && pClickRect->pCallback)
@@ -399,12 +339,7 @@ int __stdcall sub_M118_Emit_004FD5A0(const D2WinImageClickRectStrc* pClickRect, 
     return 0;
 }
 
-void __stdcall sub_M118_Emit_0057B7A0(D2UnitStrc* pAttacker, D2UnitStrc* pDefender)
-{
-    SUNITDMG_ApplyDamageTargetAc(pAttacker, pDefender);
-}
-
-tagPOINT gtMousePosition; // 0x007D55A4
+extern tagPOINT gtMousePosition; // 0x007D55A4
 struct Point { int x, y; };
 
 // 0x004FD5D0
@@ -444,28 +379,6 @@ int __stdcall IMAGE2_HandleMouseDown(SMSGHANDLER_PARAMS* pMsg)
     return 0;
 }
 
-// 0x00506DA0
-void __fastcall WREGISTER_RegisterCommands(void* hWnd, D2WinCommandRegisterStrc* pCommandRegister, unsigned int nCommands)
-{
-    D2_ASSERT(hWnd, 0x4D);
-
-    for (unsigned int i = 0; i < nCommands; ++i)
-    {
-        WREGISTER_RegisterCommand(hWnd, pCommandRegister[i].nType, pCommandRegister[i].nId, pCommandRegister[i].pCallback);
-    }
-}
-
-// 0x00506E00
-void __fastcall WREGISTER_UnregisterCommands(void* hWnd, D2WinCommandRegisterStrc* pCommandRegister, unsigned int nCommands)
-{
-    D2_ASSERT(hWnd, 0x5A);
-
-    for (unsigned int i = 0; i < nCommands; ++i)
-    {
-        WREGISTER_UnregisterCommand(hWnd, pCommandRegister[i].nType, pCommandRegister[i].nId, pCommandRegister[i].pCallback);
-    }
-}
-
 // 0x004FD070
 int __stdcall IMAGE_SetCellFile(D2WinImageStrc* pImage, D2CelFileStrc* pCellFile, D2WinImageClickRectStrc* pClickRect)
 {
@@ -476,7 +389,7 @@ int __stdcall IMAGE_SetCellFile(D2WinImageStrc* pImage, D2CelFileStrc* pCellFile
 }
 
 // 0x004FD6C0
-D2WinImage2Strc* __fastcall IMAGE2_Create(int nX, int nY, int nWidth, int nHeight, D2CelFileStrc* pCellFile, D2WinMsgHandler a6, D2WinImageClickRectStrc* pClickRect, D2WinMsgHandler pfHandleVirtualKeyInput)
+D2WinImage2Strc* __fastcall IMAGE2_Create(int nX, int nY, int nWidth, int nHeight, D2CelFileStrc* pCellFile, D2WinMsgHandler pfnOnClick, D2WinImageClickRectStrc* pClickRect, D2WinMsgHandler pfHandleVirtualKeyInput)
 {
     D2WinImage2Strc* pImage = (D2WinImage2Strc*)FOG_Alloc(sizeof(D2WinImage2Strc), ".\\Src\\D2WinImage.cpp", 0x1D, 0);
     memset(pImage, 0, sizeof(D2WinImage2Strc));
@@ -494,7 +407,7 @@ D2WinImage2Strc* __fastcall IMAGE2_Create(int nX, int nY, int nWidth, int nHeigh
     pImage->controlHeader.pfHandleMouseUp = 0;
     pImage->controlHeader.pfHandleCharInput = 0;
     pImage->controlHeader.pfHandleVirtualKeyInput = pfHandleVirtualKeyInput;
-    pImage->controlHeader.field_34 = a6;
+    pImage->controlHeader.field_34 = pfnOnClick;
     pImage->pClickRect = pClickRect;
     pImage->nFrame = 0;
     pImage->eDrawMode = 5;
@@ -503,7 +416,7 @@ D2WinImage2Strc* __fastcall IMAGE2_Create(int nX, int nY, int nWidth, int nHeigh
 }
 
 // 0x004FD770
-D2WinImageStrc* __fastcall IMAGE_Create(int nX, int nY, int nWidth, int nHeight, D2CelFileStrc* pCellFile, int a6, int a7)
+D2WinImageStrc* __fastcall IMAGE_Create(int nX, int nY, int nWidth, int nHeight, D2CelFileStrc* pCellFile, int nField4C, int nField50)
 {
     D2WinImageStrc* pImage = (D2WinImageStrc*)FOG_Alloc(sizeof(D2WinImageStrc), ".\\Src\\D2WinImage.cpp", 0x3B, 0);
     memset(pImage, 0, sizeof(D2WinImageStrc));
@@ -525,8 +438,8 @@ D2WinImageStrc* __fastcall IMAGE_Create(int nX, int nY, int nWidth, int nHeight,
     pImage->pClickRect = 0;
     pImage->nFrame = 0;
     pImage->eDrawMode = 5;
-    pImage->field_4C = a6;
-    pImage->field_50 = a7;
+    pImage->field_4C = nField4C;
+    pImage->field_50 = nField50;
     CONTROL_AppendToList(&pImage->controlHeader);
     return pImage;
 }

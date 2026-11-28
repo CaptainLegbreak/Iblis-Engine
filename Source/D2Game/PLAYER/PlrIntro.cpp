@@ -4,6 +4,8 @@
 #include "D2GameAux.h"
 #include "D2UnitData.h"
 #include "D2LanguageNames.h"
+#include "D2CommonApi.h"
+#include "FogApi.h"
 
 #pragma intrinsic(memcpy)
 
@@ -14,12 +16,7 @@ struct D2GameStrc;
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 extern D2NpcIndexMapStrc gaPlrIntroNpcIndexMap[]; // 0x00732738
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
-void __stdcall sub_00410B10(unsigned char* pBitBuffer, int nBit); // 0x00410B10
-int __stdcall sub_00410B30(unsigned char* pBitBuffer, int nBit); // 0x00410B30
-void __stdcall sub_00410B50(unsigned char* pBitBuffer, int nBit); // 0x00410B50
-D2PlayerDataStrc* __stdcall UNITS_GetPlayerData(D2UnitStrc* pUnit); // 0x006221A0
-void __stdcall BITMANIP_Initialize(D2BitBufferStrc* pBuffer, unsigned char* pBitStream, int nSize); // 0x00410E40
+void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
@@ -102,16 +99,16 @@ void __fastcall PLRINTRO_CopyBufferToNpcIntroFlags(D2PlrIntroStrc* pPlayerIntro,
 // 0x00572560
 D2PlrIntroStrc* __fastcall PLRINTRO_Create(D2GameStrc* pGame)
 {
-    D2PlrIntroStrc* pPlayerIntro = (D2PlrIntroStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2PlrIntroStrc), ".\\PLAYER\\PlrIntro.cpp", 196, 0);
-    D2BitBufferStrc* pBitBuffer1 = (D2BitBufferStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2BitBufferStrc), ".\\PLAYER\\PlrIntro.cpp", 197, 0);
-    unsigned char* pBuffer1 = (unsigned char*)sub_0040B430(pGame->pMemoryPool, 8, ".\\PLAYER\\PlrIntro.cpp", 198, 0);
+    D2PlrIntroStrc* pPlayerIntro = (D2PlrIntroStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2PlrIntroStrc), ".\\PLAYER\\PlrIntro.cpp", 196, 0);
+    D2BitBufferStrc* pBitBuffer1 = (D2BitBufferStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2BitBufferStrc), ".\\PLAYER\\PlrIntro.cpp", 197, 0);
+    unsigned char* pBuffer1 = (unsigned char*)FOG_AllocPool(pGame->pMemoryPool, 8, ".\\PLAYER\\PlrIntro.cpp", 198, 0);
     memset(pBuffer1, 0, 8);
 
     BITMANIP_Initialize(pBitBuffer1, pBuffer1, 8);
     pPlayerIntro->pQuestIntroFlags = pBitBuffer1;
 
-    D2BitBufferStrc* pBitBuffer2 = (D2BitBufferStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2BitBufferStrc), ".\\PLAYER\\PlrIntro.cpp", 203, 0);
-    unsigned char* pBuffer2 = (unsigned char*)sub_0040B430(pGame->pMemoryPool, 8, ".\\PLAYER\\PlrIntro.cpp", 204, 0);
+    D2BitBufferStrc* pBitBuffer2 = (D2BitBufferStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2BitBufferStrc), ".\\PLAYER\\PlrIntro.cpp", 203, 0);
+    unsigned char* pBuffer2 = (unsigned char*)FOG_AllocPool(pGame->pMemoryPool, 8, ".\\PLAYER\\PlrIntro.cpp", 204, 0);
     memset(pBuffer2, 0, 8);
 
     BITMANIP_Initialize(pBitBuffer2, pBuffer2, 8);

@@ -1,24 +1,25 @@
+#include "D2LanguageNames.h"
+
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2ClientTypes.h"
 #include "D2StormTypes.h"
 #include "D2CelContext.h"
+#include "D2LangApi.h"
+#include "StormApi.h"
+#include "D2GfxApi.h"
 
 struct D2CelFileStrc;
 
 
 void __cdecl sub_00477DD0();                                                                                // 0x00477DD0
-void __stdcall UI_DrawCelPair(int bFirst);                                                        // 0x0045FBC0
 void __cdecl SCMD_DrawLoadingTexts();                                                               // 0x0045FC60
 void __stdcall VIEW_DrawPanelCel(int nFrame);                                                       // 0x0045FD20
 void __cdecl UI_DrawCenteredString();                                                             // 0x0045FD80
-void __cdecl CURSOR_DrawCursor(); // 0x004684C0
-void __cdecl SOUNDHDR_TickSound();                                                                           // 0x00482C20
 void __fastcall sub_00460190_DrawFrame(int nUnused);                                                        // 0x00460190
 D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nType);                             // 0x004788B0
 void __fastcall GAME_SetClientState(int nState);                                                    // 0x0044C930
-int __cdecl WINDOW_GetWindow();                                                                                // 0x004F59A0
 void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
-int __fastcall SCMD_RunMessageLoop(int (__stdcall* pfnIdle)(int));                                     // 0x00451BB0
 void __fastcall sub_00451E10_RegisterHandlerTable(int hWnd, D2MsgHandlerEntryStrc* pTable, int nCount);     // 0x00451E10
 void __cdecl UI_FreeCels();                                                                       // 0x00460430
 
@@ -45,27 +46,21 @@ void __cdecl sub_0045FB40_LoadPopupCels()
 
 struct Unicode;
 
-struct D2CelContextStrc;
+struct D2GfxDataStrc;
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
-void __cdecl GAME_LoadLoadingPalette(); // 0x00454740
 
 void __fastcall ARCHIVE_FreeClientCellFile(void* pCel); // 0x00478A00
 
 void __fastcall TEXT_DrawCenteredText(int nLeft, int nY, int nRight, const Unicode* wszText, int nColor); // 0x004A7080
 
-int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
-extern int gnScreenWidth; // 0x0071146C
 
-extern int gnPanelOffsetX; // 0x007A2858
 
-extern int gnPanelOffsetY; // 0x007A285C
 
 
 
@@ -73,12 +68,12 @@ extern int gnPanelOffsetY; // 0x007A285C
 // 0x0045FBC0
 void __stdcall UI_DrawCelPair(int bFirst)
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
     if (bFirst)
-        tContext.pCellFile = gpPopupOkCelA;
+        tContext.pCelFile = gpPopupOkCelA;
     else
-        tContext.pCellFile = gpPopupOkCelB;
+        tContext.pCelFile = gpPopupOkCelB;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
     sub_004F6480(&tContext, gnPanelOffsetX + 0xBC, 0x148 - gnPanelOffsetY, -1, 5, 0);
@@ -106,7 +101,6 @@ void __cdecl SCMD_DrawLoadingTexts()
 {
     const int nOldFont = D2Win_10127_SetFont(1);
     TEXT_DrawCenteredText(gnScreenWidth / 2 - 0x84, 0xBE - gnPanelOffsetY, gnPanelOffsetX + 0x1C4, D2LANG_GetStringFromTblIndex(0x1430), 0);
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
     if (FOG_IsExpansion())
         TEXT_DrawCenteredText(gnScreenWidth / 2 - 0x84, 0xCD - gnPanelOffsetY, gnPanelOffsetX + 0x1C4, D2LANG_GetStringFromTblIndex(0x5578), 0);
     else
@@ -117,9 +111,9 @@ void __cdecl SCMD_DrawLoadingTexts()
 // 0x0045FD20
 void __stdcall VIEW_DrawPanelCel(int nFrame)
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpOkCancelButtonCel;
+    tContext.pCelFile = gpOkCancelButtonCel;
     tContext.nFrame = nFrame;
     tContext.nDirection = 0;
     sub_004F6480(&tContext, gnPanelOffsetX + 0x110, 0x13E - gnPanelOffsetY, -1, 5, 0);
@@ -147,7 +141,6 @@ void __cdecl sub_0045FDE0_DrawLoadingScreen()
     if (!D2GFX_StartDraw(1, 0, 0, 0))
         return;
     D2GFX_ClearScreen(0);
-// build: symbol ?D2Win_10179_UpdatePaletteFlash@* 0x004FB0D0
     D2Win_10179_UpdatePaletteFlash();
     UI_DrawCelPair(1);
     SCMD_DrawLoadingTexts();
@@ -162,13 +155,9 @@ static int gbCinematicExpansion; // 0x007A5238
 struct SMSGHANDLER_PARAMS;
 
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
-void __cdecl GAME_ResetMouseButtons(); // 0x0044DA70
 
-int __cdecl sub_00468730(); // 0x00468730
 
-int __cdecl sub_00468740(); // 0x00468740
 
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
@@ -257,9 +246,9 @@ void __cdecl UI_DrawCenteredStrings()
 // 0x00460060
 void __stdcall VIEW_DrawPanelCels(int nFrame1, int nFrame2)
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpOkCancelButtonCel;
+    tContext.pCelFile = gpOkCancelButtonCel;
     tContext.nFrame = nFrame1;
     tContext.nDirection = 0;
     sub_004F6480(&tContext, gnPanelOffsetX + 0xCE, 0x13E - gnPanelOffsetY, -1, 5, 0);
@@ -292,7 +281,6 @@ void __cdecl sub_00460190_DrawFrame()
     if (!D2GFX_StartDraw(1, 0, 0, 0))
         return;
     D2GFX_ClearScreen(0);
-// build: symbol ?D2Win_10179_UpdatePaletteFlash@* 0x004FB0D0
     D2Win_10179_UpdatePaletteFlash();
     UI_DrawCelPair(0);
     UI_DrawCenteredStrings();
@@ -426,7 +414,6 @@ int __stdcall sub_00460490_DrawPopup(int nArg)
     if (!WINDOW_GetState() && D2GFX_StartDraw(1, 0, 0, 0))
     {
         D2GFX_ClearScreen(0);
-// build: symbol ?D2Win_10179_UpdatePaletteFlash@* 0x004FB0D0
         D2Win_10179_UpdatePaletteFlash();
         UI_DrawCelPair(1);
         SCMD_DrawLoadingTexts();
@@ -443,7 +430,6 @@ int __stdcall sub_00460490_DrawPopup(int nArg)
 int __cdecl sub_00460500_RunPopup()
 {
     gbPopupDismissed = 0;
-// build: symbol ?D2Win_10176_StartPaletteFlash@* 0x004FB130
     D2Win_10176_StartPaletteFlash(0);
     gpPopupOkCelA = ARCHIVE_LoadClientCellFile("Data\\Global\\UI\\Bigmenu\\popupok", 0);
     gpPopupOkCelB = ARCHIVE_LoadClientCellFile("Data\\Global\\UI\\Bigmenu\\popupok", 0);
@@ -508,47 +494,6 @@ int __cdecl sub_00460680_RunOkCancel()
     UI_FreeCels();
     return nResult;
 }
-
-#pragma pack(push, 1)
-struct d2data_00711D04_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
-
-extern "C" struct d2data_00711D04_t gData_00711D04; // 0x00711D04
-
-extern "C" struct d2data_00711D04_t gData_00711D04 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00711D04
 
 extern D2MsgHandlerEntryStrc gaPopupHandlers[4] = {
     { 0, 513, (void*)(unsigned int)&AUTOMAP_PopupButtonDownMsg },

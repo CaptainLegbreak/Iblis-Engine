@@ -3,6 +3,7 @@
 #include "D2CmpTypes.h"
 #include "D2CmpTiles.h"
 #include "D2CelDataHash.h"
+#include "FogApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -20,7 +21,6 @@ struct D2CmpGfxKeyStrc;
 
 struct D2CmpGfxCelStrc;
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -30,7 +30,7 @@ typedef void(__fastcall* PixelDataFreeCallback)(void* pData);
 
 void* __fastcall FOG_AsyncDataGetBuffer(D2AsyncLoadStrc* pAsync); // 0x0040A9E0
 
-void __fastcall sub_0040AB00_FreeAsyncData(D2AsyncLoadStrc* pAsync); // 0x0040AB00
+void __fastcall FOG_AsyncDataFree(D2AsyncLoadStrc* pAsync); // 0x0040AB00
 
 void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
@@ -96,7 +96,6 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern "C" int __cdecl strcmp(const char* szString1, const char* szString2);
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
 extern "C" __declspec(dllimport) long __stdcall InterlockedIncrement(long volatile* pAddend); // 0x006CC208
 
@@ -312,7 +311,7 @@ void __fastcall GfxHashFreeEntry(D2CmpGfxHashStrc* pHash, int nUnused, void* pMe
             }
         }
 
-        sub_0040AB00_FreeAsyncData(pAsync);
+        FOG_AsyncDataFree(pAsync);
         pInfo->pAsync = 0;
     }
 

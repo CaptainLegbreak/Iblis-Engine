@@ -6,8 +6,7 @@ struct D2StormEntry38Strc;
 struct D2StormHashChunkStrc;
 struct D2CelEntryStrc;
 
-extern "C" int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
-
+extern "C" int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int dwFlags); // 0x00412650
 #include "D2StormAutoLink.h"
 
 struct D2StormNodeStrc
@@ -203,7 +202,6 @@ struct D2StormNodeListStrc
         }
     }
     D2CelEntryStrc* NewNode(int nLinkType, unsigned int nExtraBytes, unsigned int nFlags);
-// build: symbol ?UnlinkAll@D2StormNodeListStrc@@QAEXXZ 0x006025E0
     void UnlinkAll();
     D2StormLinkStrc* CelEntryListLink(D2StormNodeStrc* pNode);
     void CelEntryListLinkNode(D2StormNodeStrc* pNode, int nLinkType, D2StormNodeStrc* pExistingNode);      // 0x00601FC0
@@ -232,7 +230,6 @@ struct D2StormListEStrc
         m_terminator.m_prevlink = &m_terminator;
         m_terminator.m_next = (char*)~(unsigned int)&m_terminator;
     }
-// build: symbol ?UnlinkAll@D2StormListEStrc@@QAEXXZ 0x00602690
     void UnlinkAll();
     D2StormLinkStrc* sub_00602110_Link(char* pNode);
     D2StormLinkStrc* sub_00602280_Link(char* pNode);
@@ -312,7 +309,6 @@ struct D2StormSlotArrayStrc
 struct D2StormSlotGrowArrayStrc : D2StormSlotArrayStrc
 {
 
-// build: symbol ??1D2StormSlotGrowArrayStrc@@QAE@XZ 0x00603240
     ~D2StormSlotGrowArrayStrc() throw();
 };
 

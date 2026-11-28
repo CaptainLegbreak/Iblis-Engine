@@ -18,6 +18,7 @@
 #include "D2Unicode.h"
 
 #include "D2ItemTypes.h"
+#include "D2CelContext.h"
 
 #include "D2Txt.h"
 
@@ -29,6 +30,12 @@
 
 #include "D2TxtTables.h"
 #include "D2WinPopupLine.h"
+#include "FogApi.h"
+#include "D2LangApi.h"
+#include "FogApi2.h"
+#include "D2GfxApi.h"
+#include "D2CMPApi.h"
+#include "D2HellApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -72,38 +79,14 @@ struct D2CompItemStrc;
 
 struct Unicode;
 
-struct D2GfxDataStrc
-{
-    int nFrame;
-    unsigned char unk0x04;
-    unsigned char nComponent;
-    unsigned char unk0x06[2];
-    int nUnitType;
-    int nUnitIndex;
-    unsigned int nMode;
-    int unk0x14;
-    unsigned int dwUnitToken;
-    unsigned int dwComponentToken;
-    unsigned int dwArmorType;
-    unsigned int dwModeToken;
-    unsigned int dwWClassToken;
-    int unk0x2C[2];
-    D2CelFileStrc* pCelFile;
-    int nDrawFlag;
-    D2CelStrc* pCel;
-    int nDirection;
-    unsigned int dwFlags;
-};
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
+
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
-
-void __stdcall TEXTURE_CelDraw(D2GfxDataStrc* pData, int nXPos, int nYPos, unsigned int dwGamma, int eDrawMode, unsigned char* pPalette); // 0x004F6480
 
 int __fastcall D2Win_10143(D2CompositeUnitStrc* pCompositeUnit, int nMode); // 0x005042F0
 
@@ -143,13 +126,11 @@ int __fastcall D2Win_10122(const Unicode* wszText, int nTextLength); // 0x005017
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
 
-char* __fastcall sub_00526F70(char* szDest, const Unicode* pSource, int nCount); // 0x00526F70
 
-extern "C" const char gszExcelDirectory_006D8ED4[]; // 0x006D8ED4
+extern "C" const char gszExcelDirectory[]; // 0x006D8ED4
 
 extern void* sghPentagram; // 0x0087E96C
 
-D2CelFileStrc* __fastcall ARCHIVE_LoadCellFile(const char* szFile, int nType); // 0x004FA9B0
 
 extern "C" int __cdecl _stricmp(const char* szString1, const char* szString2); // 0x006841E9
 
@@ -157,15 +138,11 @@ void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, in
 
 void* __stdcall D2COMP_LoadExcelFile(void* hArchive, const char* szName, const char* szExtension, unsigned int* pnFileSize); // 0x005043E0
 
-void __stdcall FOG_FreeBinFile(D2BinFileStrc* pBinFile); // 0x006BCDA0
-
-int __stdcall FOG_GetRecordCountFromBinFile(D2BinFileStrc* pBinFile); // 0x006BCDE0
-
 D2BinFileStrc* __stdcall FOG_CreateBinFile(void* pDataBuffer, int nBufferSize); // 0x006BD640
 
 void __stdcall FOG_10207(D2BinFileStrc* pBinFile, D2BinFieldStrc* pBinField, void* pTxt, int nRecordCount, int nRecordSize); // 0x006BD780
 
-extern "C" const char szBinExtension_006DCC68[]; // 0x006DCC68
+extern "C" const char gszBinExtension[]; // 0x006DCC68
 
 extern int gbD2WinBinMode; // 0x0072EF2C
 
@@ -195,7 +172,7 @@ extern "C" const char gszItemTypesFieldCode[]; // 0x006DCCE0
 
 extern "C" const char gszItemsFieldType[]; // 0x006DCCE8
 
-extern "C" const char szItemsFieldVersion_006DCCF0[]; // 0x006DCCF0
+extern "C" const char gszTxtField_version[]; // 0x006DCCF0
 
 extern "C" const char gszItemsTableWeapons[]; // 0x006DCCF8
 
@@ -211,12 +188,6 @@ void* __stdcall D2COMP_CompileTxt(void* hArchive, const char* szName, D2BinField
 
 extern "C" char* __cdecl strcpy(char* szDest, const char* szSource);
 
-int __fastcall ARCHIVE_OpenFile(void* hArchive, const char* szFilePath, void** phFile, int bFileNotFoundLogSkipped); // 0x00516E46
-
-void __fastcall ARCHIVE_CloseFile(void* hArchive, void* hFile); // 0x00516E84
-
-void __fastcall ARCHIVE_ReadFileToBuffer(void* hArchive, void* hFile, void* pBuffer, unsigned int dwBytesToRead); // 0x00516F85
-
 unsigned char gabItemPalettes[9][0x6900]; // 0x00842710
 
 extern const char gszGuildPrefix[]; // 0x006DCE68
@@ -227,11 +198,10 @@ Unicode* __fastcall sub_005267E0(Unicode*,const Unicode*); // 0x005267E0
 
 Unicode* __fastcall sub_00526700(Unicode*,const Unicode*); // 0x00526700
 
-int __fastcall sub_00526800(const Unicode*); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode*); // 0x00526800
 
 Unicode* __fastcall sub_00526F20(Unicode*,const char*,int); // 0x00526F20
 
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 
 int __fastcall D2Win_10127_SetFont(int); // 0x00502EF0
 
@@ -262,13 +232,9 @@ struct D2HoverLineStrc
 
 extern "C" __declspec(dllimport) int __stdcall SetRect(tagRECT* lprc, int xLeft, int yTop, int xRight, int yBottom); // 0x006CC498
 
-void __stdcall D2GFX_DrawBox(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, int eDrawMode); // 0x004F6300
-
 int __stdcall CONTROL_MouseInsideRect(const tagRECT* pRect); // 0x004F97B0
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...); // 0x005269D0
 
 void __stdcall D2COMP_AddHoverTextLine(const Unicode* wszText, D2HoverLineStrc* pLines, int* pCount, int* pMaxWidth, int* pTotalHeight); // 0x00503FA0
 
@@ -290,10 +256,11 @@ extern D2CompPairStrc gaCompPairs[]; // 0x0072EF68
 
 extern unsigned int gnCompPairs; // 0x0072EFD0
 
-extern int gnItemsTxtRecordCount_008426EC; // 0x008426EC
+extern int gnItemsTotalCount; // 0x008426EC
 
 static void D2COMP_CopyTokenPadded(char* pDst, const char* pSrc);
 
+// Kept noinline: a static that takes its arguments in registers; D2COMP_GetCofNode (0x503340) calls it out of line in the image (the #368 case).
 static __declspec(noinline) D2CofDataStrc* __stdcall D2COMP_LoadCofFile(const char* szPath, unsigned int* pnSize);
 
 struct D2WinEditBoxStrc;
@@ -318,13 +285,9 @@ struct D2WinSmackStrc;
 
 struct D2WinListStrc;
 
-extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
-void __fastcall ARCHIVE_FreeCellFile(D2CelFileStrc* pCellFile); // 0x004FAAE0
 
 void __fastcall D2COMP_UnlinkCompositeUnit(D2CompositeUnitStrc* pCompositeUnit); // 0x00504100
 
@@ -333,11 +296,8 @@ struct D2PaletteRecordStrc
     unsigned char ab[0x100];
 };
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
-void __stdcall FOG_FreeLinker(D2TxtLinkStrc* pLinker); // 0x006BD0B0
-
-extern D2TxtLinkStrc* gpCompItemsLinker_0087D824; // 0x0087D824
+extern D2TxtLinkStrc* gpCompItemsLinker; // 0x0087D824
 
 extern "C" const char gszItemTypesFieldEquiv1[]; // 0x006DCD14
 
@@ -345,7 +305,6 @@ extern "C" const char gszItemTypesFieldEquiv2[]; // 0x006DCD0C
 
 extern "C" const char gszItemTypesTable[]; // 0x006DCD00
 
-D2TxtLinkStrc* __stdcall sub_006BD040(const char* szFile, int nLine); // 0x006BD040
 
 enum D2ControlTypes
 {
@@ -370,27 +329,6 @@ typedef int (__fastcall* D2WinControlFn)(D2WinControlStrc* pControl);
 
 extern "C" __declspec(dllimport) int __stdcall DeleteFileA(const char* lpFileName); // 0x006CC1A0
 
-extern "C" char* __cdecl strncpy(char* szDest, const char* szSource, unsigned int nCount); // 0x00687330
-
-int __stdcall SMsgRegisterCommand(void* hWnd, int nId, D2WinMsgHandler pfnHandler); // 0x00420BF0
-
-int __stdcall SMsgRegisterKeyDown(void* hWnd, int nId, D2WinMsgHandler pfnHandler); // 0x00420C10
-
-int __stdcall SMsgRegisterKeyUp(void* hWnd, int nId, D2WinMsgHandler pfnHandler); // 0x00420C30
-
-int __stdcall SMsgRegisterMessage(void* hWnd, int nId, D2WinMsgHandler pfnHandler); // 0x00420C50
-
-int __stdcall SMsgUnregisterCommand(void* hWnd, int nId, D2WinMsgHandler pfnHandler); // 0x00420C70
-
-int __stdcall SMsgUnregisterKeyDown(void* hWnd, int nId, D2WinMsgHandler pfnHandler); // 0x00420C90
-
-int __stdcall SMsgUnregisterKeyUp(void* hWnd, int nId, D2WinMsgHandler pfnHandler); // 0x00420CB0
-
-int __stdcall SMsgUnregisterMessage(void* hWnd, int nId, D2WinMsgHandler pfnHandler); // 0x00420CD0
-
-void __stdcall WINDOW_DecodeSmacker(const char* szSmacker, unsigned char* pBuffer, int nVersion); // 0x004F5E00
-
-void __stdcall WINDOW_CloseSmacker(void* pContext); // 0x004F5E80
 
 int __stdcall CONTROL_SetFocusedEditBox(D2WinEditBoxStrc* pEditBox); // 0x004F91C0
 
@@ -440,7 +378,6 @@ extern "C" __declspec(dllimport) int __stdcall EmptyClipboard();                
 
 void __stdcall D2Win_10142_CompUnitDestroy(D2CompositeUnitStrc* pCompositeUnit, int bUnlink); // 0x005041B0
 
-int __stdcall SMACK_DeleteFile(D2WinSmackStrc* pSmack);                                                     // 0x00506990
 
 extern D2EmblemColorStrc gaEmblemColorRGB1[10];                                                    // 0x0072E19C
 
@@ -451,8 +388,6 @@ struct D2CelStrc;
 struct D2WinImageClickRectStrc;
 
 struct D2AnimatedImageDescriptor;
-
-int __stdcall CelFileGetCelsPerDirection(D2CelFileStrc* pCelFile);                                                // 0x006019F0
 
 extern D2CharStrc* (__fastcall* gpfnGetCharInfo)(int nChar);                                        // 0x00841DA0
 
@@ -676,15 +611,12 @@ static void __stdcall D2COMP_ReleaseCofNode(int bFree, D2CofNodeStrc* pCofNode)
 static void __stdcall D2COMP_BuildCofPath(unsigned int nClass, unsigned int nMode, unsigned int dwWeaponClass, char* szPath)
 {
     D2_ASSERT(nClass < 25, 0x488);
-// build: symbol ?gnModeTokens@* 0x0072E0B4
     D2_ASSERT(nMode < gnModeTokens, 0x489);
 
     char szWeaponClass[4];
     char szUnit[4];
     char szMode[4];
-// build: symbol ?gadwUnitTokens@* 0x0072E050
     const unsigned int dwUnit = gadwUnitTokens[nClass];
-// build: symbol ?gadwModeTokens@* 0x0072E0B8
     const unsigned int dwMode = gadwModeTokens[nMode];
     const char* pWeaponClass = (const char*)&dwWeaponClass;
     szWeaponClass[0] = TOKEN_CHAR(pWeaponClass[0]);
@@ -708,10 +640,8 @@ static void __stdcall D2COMP_BuildCofPath(unsigned int nClass, unsigned int nMod
     wsprintfA(szPath, "%s\\%s\\COF\\%s%s%s.COF", szDir, szUnit, szUnit, szMode, szWeaponClass);
 
     void* hFile;
-// build: symbol ?FOG_FOpenFile@* 0x004068E0
     if (FOG_FOpenFile(szPath, &hFile))
     {
-// build: symbol ?FOG_FCloseFile@* 0x004068F0
         FOG_FCloseFile(hFile);
     }
     else
@@ -774,9 +704,7 @@ void __fastcall D2COMP_InitGfxData(D2CompositeUnitStrc* pCompositeUnit, D2GfxDat
     pGfxData->nUnitIndex = pCompositeUnit->nUnitIndex;
     pGfxData->nMode = pCompositeUnit->nMode;
     const int nComponent = pGfxData->nComponent;
-// build: symbol ?gadwComponentTokens@* 0x0072E108
     pGfxData->dwComponentToken = gadwComponentTokens[nComponent];
-// build: symbol ?gadwWClassTokens@* 0x0072E15C
     pGfxData->dwWClassToken = gadwWClassTokens[pCompositeUnit->nWClassTokenIndex];
     pGfxData->dwUnitToken = gadwUnitTokens[pCompositeUnit->nUnitIndex];
     pGfxData->dwArmorType = 0x2074696C;
@@ -821,6 +749,7 @@ void __fastcall D2COMP_InitGfxData(D2CompositeUnitStrc* pCompositeUnit, D2GfxDat
     }
 }
 
+// Kept noinline: a static that takes its arguments in registers; D2COMP_DrawCompositeShadow (0x503A50) calls it out of line in the image (the #368 case).
 // 0x005038A0
 static __declspec(noinline) void __stdcall D2COMP_SetupGfxData(D2CompositeUnitStrc* pCompositeUnit, unsigned char nComponent, int nFrame, int nDirection, D2GfxDataStrc* pGfxData, D2CelFileStrc* pCelFile)
 {
@@ -863,7 +792,6 @@ fail:
 static unsigned char __stdcall D2COMP_GetDirectionIndex(unsigned int nDirections, unsigned char nDirection)
 {
     D2_ASSERT(nDirection < 64, 0x576);
-// build: symbol ?gaDirectionIndex@* 0x006DCA60
     const unsigned char nIndex = gaDirectionIndex[sub_00517ABB_BitScanForward1(nDirections)][nDirection];
     D2_ASSERT(nIndex <= 64, 0x578);
     return nIndex;
@@ -942,7 +870,7 @@ void __fastcall D2COMP_DrawCompositeShadow(D2CompositeUnitStrc* pCompositeUnit)
         D2GfxDataStrc tGfxData;
         memset(&tGfxData, 0, sizeof(tGfxData));
         D2COMP_SetupGfxData(pCompositeUnit, nComponent, nFrame, pCompositeUnit->nDirection, &tGfxData, 0);
-        sub_004F6540(&tGfxData, nX, nY);
+        TEXTURE_CelDrawShadow(&tGfxData, nX, nY);
     }
 }
 
@@ -1027,7 +955,6 @@ int __fastcall D2COMP_DrawCompositeUnit(D2CompositeUnitStrc* pCompositeUnit, int
         unsigned char* pPalette = 0;
         if (nColor != 0xFF)
         {
-// build: symbol ?D2COMP_GetComponentPalette@* 0x005038D0
             pPalette = D2COMP_GetComponentPalette(nColor);
         }
         TEXTURE_CelDraw(&tGfxData, pCompositeUnit->nX, pCompositeUnit->nY, nGamma, nDrawMode, pPalette);
@@ -1074,7 +1001,7 @@ int __stdcall D2COMP_TruncateTextToWidth(Unicode* wszText, int nMaxWidth)
 {
     char szText[300];
     int nCount = 0;
-    sub_00526F70(szText, wszText, 300);
+    UNICODE_ToAscii(szText, wszText, 300);
     const int nLength = strlen(szText);
     int bTruncated = 0;
     while (nCount < nLength)
@@ -1143,8 +1070,6 @@ static int D2COMP_ValidateAndLoadCOFForUnit(D2CompositeUnitStrc* ptCompositeUnit
 {
     D2_ASSERT(ptCompositeUnit, 0x81A);
 
-// build: symbol ?gnUnitTokens@* 0x0072E04C
-// build: symbol ?gnWClassTokens@* 0x0072E198
     if (ptCompositeUnit->nUnitIndex >= gnUnitTokens || ptCompositeUnit->nMode >= gnModeTokens || ptCompositeUnit->nWClassTokenIndex >= gnWClassTokens)
     {
         ptCompositeUnit->nUnitIndex = 7;
@@ -1295,7 +1220,7 @@ void __stdcall D2COMP_Stub4(int, int, int, int)
 void* __stdcall D2COMP_LoadExcelFile(void* hArchive, const char* szName, const char* szExtension, unsigned int* pnFileSize)
 {
     char szFilename[260];
-    wsprintfA(szFilename, "%s\\%s%s", gszExcelDirectory_006D8ED4, szName, szExtension);
+    wsprintfA(szFilename, "%s\\%s%s", gszExcelDirectory, szName, szExtension);
     return sub_00517079_LoadFile(hArchive, szFilename, pnFileSize, ".\\Src\\D2Comp.cpp", 0x958);
 }
 
@@ -1307,7 +1232,7 @@ void* __stdcall D2COMP_CompileTxt(void* hArchive, const char* szName, D2BinField
     if (gbD2WinBinMode)
     {
         char szFilename[260];
-        wsprintfA(szFilename, "%s\\%s%s", gszExcelDirectory_006D8ED4, szName, szBinExtension_006DCC68);
+        wsprintfA(szFilename, "%s\\%s%s", gszExcelDirectory, szName, gszBinExtension);
         pFileData = sub_00517079_LoadFile(hArchive, szFilename, &nFileSize, ".\\Src\\D2Comp.cpp", 0x958);
     }
     else if (!_stricmp(szName, "leveldefs"))
@@ -1352,7 +1277,7 @@ void __fastcall D2COMP_LoadItems(void* hArchive)
 {
     D2BinFieldStrc aItemsFields[] =
     {
-        { szItemsFieldVersion_006DCCF0, 3, 0, 0xF6, 0 },
+        { gszTxtField_version, 3, 0, 0xF6, 0 },
         { gszItemsFieldType, 0xF, 0, 0x11E, &gpCompItemTypesLinker },
         { gszItemTypesFieldCode, 9, 0, 0x80, 0 },
         { gszItemsFieldAlternateGfx, 9, 0, 0x90, 0 },
@@ -1432,10 +1357,10 @@ void __fastcall D2COMP_LoadItemTypes(void* hArchive)
 // 0x005049D0
 void __stdcall D2COMP_FreeLinkers()
 {
-    if (gpCompItemsLinker_0087D824)
+    if (gpCompItemsLinker)
     {
-        FOG_FreeLinker(gpCompItemsLinker_0087D824);
-        gpCompItemsLinker_0087D824 = 0;
+        FOG_FreeLinker(gpCompItemsLinker);
+        gpCompItemsLinker = 0;
     }
     if (gpCompItemTypesLinker)
     {
@@ -1833,7 +1758,6 @@ void __stdcall D2Win_10158(D2CompositeUnitStrc* hCompositeUnit, unsigned char nE
     }
 
     char szFile[512];
-// build: symbol ?gszDataGlobal@* 0x006D4118
     wsprintfA(szFile, "%s\\ui\\emblems\\icon%02dc", gszDataGlobal, nEmblemIcon - 1);
     hCompositeUnit->pEmblemCellFile = ARCHIVE_LoadCellFile(szFile, 0);
 
@@ -1991,7 +1915,7 @@ int __fastcall D2COMP_DrawCompositeLabel(D2CompositeUnitStrc* unit)
   else sub_005267E0(text,(Unicode*)unit->wszAccountName);
  }
  Unicode decoration[256];
- if(sub_00526800((Unicode*)unit->wszGuildTag)){
+ if(UNICODE_StrLen((Unicode*)unit->wszGuildTag)){
   sub_00526320_ToUnicode(decoration,gszGuildPrefix,256);
   sub_00526700(text,decoration);
   sub_00526700(text,(Unicode*)unit->wszGuildTag);
@@ -2007,7 +1931,6 @@ int __fastcall D2COMP_DrawCompositeLabel(D2CompositeUnitStrc* unit)
  return 1;
 }
 
-// build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 // 0x00505A80
 int __fastcall D2COMP_DrawCompositeHover(D2CompositeUnitStrc* pCompositeUnit)
 {
@@ -2052,7 +1975,7 @@ ShowLevel:
             if (nLevel > 0)
             {
                 memset(wszText, 0, sizeof(wszText));
-                sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(5017), nLevel);
+                sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(5017), nLevel);
                 D2COMP_AddHoverTextLine(wszText, lines, &nCount, &nWidth, &nHeight);
 
                 if (pCompositeUnit->dwFlags & gdwBitMasks[5])
@@ -2262,7 +2185,7 @@ void __stdcall D2COMP_InitCompItems()
     gaItems[3].nWeaponClass = gaWClassTokens[0];
 
     int nNext = 4;
-    for (int i = 0; i < gnItemsTxtRecordCount_008426EC; ++i)
+    for (int i = 0; i < gnItemsTotalCount; ++i)
     {
         D2ItemsTxt* pRecord = &gpCompItemsTxt[i];
 
@@ -2468,57 +2391,12 @@ int __stdcall SMACK_SetCoordinates(D2WinSmackStrc* pSmack, int nX, int nY)
     return 1;
 }
 
-// 0x00506C40
-void __fastcall WREGISTER_RegisterCommand(void* hWnd, int nType, int nId, D2WinMsgHandler pCallback)
+#pragma pack(push, 1)
+struct d2data_0072EF24_t
 {
-    D2_ASSERT(hWnd, 0x13);
-    switch (nType)
-    {
-    case 0:
-        D2_ASSERT(nId != 0x111, 0x17);
-        D2_ASSERT(nId != 0x101, 0x18);
-        D2_ASSERT(nId != 0x100, 0x19);
-        SMsgRegisterMessage(hWnd, nId, pCallback);
-        break;
-    case 1:
-        SMsgRegisterCommand(hWnd, nId, pCallback);
-        break;
-    case 2:
-        SMsgRegisterKeyUp(hWnd, nId, pCallback);
-        break;
-    case 3:
-        SMsgRegisterKeyDown(hWnd, nId, pCallback);
-        break;
-    default:
-        return;
-    }
-}
-
-// 0x00506CF0
-void __fastcall WREGISTER_UnregisterCommand(void* hWnd, int nType, int nId, D2WinMsgHandler pCallback)
-{
-    D2_ASSERT(hWnd, 0x30);
-    switch (nType)
-    {
-    case 0:
-        D2_ASSERT(nId != 0x111, 0x34);
-        D2_ASSERT(nId != 0x101, 0x35);
-        D2_ASSERT(nId != 0x100, 0x36);
-        SMsgUnregisterMessage(hWnd, nId, pCallback);
-        break;
-    case 1:
-        SMsgUnregisterCommand(hWnd, nId, pCallback);
-        break;
-    case 2:
-        SMsgUnregisterKeyUp(hWnd, nId, pCallback);
-        break;
-    case 3:
-        SMsgUnregisterKeyDown(hWnd, nId, pCallback);
-        break;
-    default:
-        return;
-    }
-}
+    unsigned char b0[8];
+};
+#pragma pack(pop)
 
 #pragma pack(push, 1)
 struct d2data_0072E010_t
@@ -2548,19 +2426,39 @@ struct d2data_0072E1BA_t
 };
 #pragma pack(pop)
 
-#pragma pack(push, 1)
-struct d2data_0072EF24_t
-{
-    unsigned char b0[8];
-};
-#pragma pack(pop)
-
 extern "C" const unsigned char gData_006DCA60[7][64]; // 0x006DCA60
+extern "C" struct d2data_0072EF24_t gData_0072EF24; // 0x0072EF24
 extern "C" const char gData_006DCE64[4]; // 0x006DCE64
 extern "C" const char gData_006DCE68[4]; // 0x006DCE68
 extern "C" struct d2data_0072E010_t gData_0072E010; // 0x0072E010
 extern "C" struct d2data_0072E1BA_t gData_0072E1BA; // 0x0072E1BA
-extern "C" struct d2data_0072EF24_t gData_0072EF24; // 0x0072EF24
+
+extern unsigned int gnCompPairs = 0xD; // 0x0072EFD0
+
+extern D2EmblemColorStrc gaEmblemColorRGB1[10] = {
+    { 0xBC },
+    { 0xE0, 0x70, 0x20 },
+    { 0xFC, 0xD4, 0x5C },
+    { 0xFC, 0xE4, 0xA4 },
+    { 0xF4, 0xF4, 0xF4 },
+    { 0xB8, 0xB8, 0xB8 },
+    { 0x74, 0x74, 0x74 },
+    { 0x4C, 0x6C, 0xAC },
+    { 0x58, 0x90, 0x4C },
+    { 0xB2, 0x7C, 0x58 }
+}; // 0x0072E19C
+
+extern D2EmblemColorStrc gaEmblemColorRGB2[10] = {
+    { 0x5C },
+    { 0x90 },
+    { 0x30, 0x1C, 0x10 },
+    { 0x5C, 0x24, 8 },
+    { 4, 0x24, 0x10 },
+    { 0x24, 0x5C, 0x24 },
+    { 0, 0, 0x58 },
+    { 0x28, 0x28, 0x78 },
+    { 0x40, 0x40, 0x40 }
+}; // 0x0072E1BC
 
 extern "C" const unsigned char gData_006DCA60[7][64] = {
     { 0 },
@@ -2575,30 +2473,6 @@ extern "C" const unsigned char gData_006DCA60[7][64] = {
 }
 }; // 0x006DCA60
 #pragma comment(linker, "/alternatename:?gaDirectionIndex@@3PAY0EA@EA=_gData_006DCA60")
-
-extern "C" const char gData_006DCE64[4] = "}"; // 0x006DCE64
-#pragma comment(linker, "/alternatename:?gszGuildSuffix@@3QBDB=_gData_006DCE64")
-
-extern "C" const char gData_006DCE68[4] = " {"; // 0x006DCE68
-#pragma comment(linker, "/alternatename:?gszGuildPrefix@@3QBDB=_gData_006DCE68")
-
-extern "C" struct d2data_0072E010_t gData_0072E010 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0072E010
 
 extern unsigned int gnUnitTokens = 0x19; // 0x0072E04C
 
@@ -2622,35 +2496,6 @@ extern unsigned int gadwComponentTokens[21] = {
 extern unsigned int gadwWClassTokens[15] = { 0, 0x20687468, 0x20746831, 0x20746832, 0x20736831, 0x20736832, 0x20776F62, 0x20776278, 0x20667473, 0x20736A31, 0x20746A31, 0x20737331, 0x20747331, 0x20317468, 0x20327468 }; // 0x0072E15C
 
 extern unsigned int gnWClassTokens = 0xF; // 0x0072E198
-
-extern D2EmblemColorStrc gaEmblemColorRGB1[10] = {
-    { 0xBC },
-    { 0xE0, 0x70, 0x20 },
-    { 0xFC, 0xD4, 0x5C },
-    { 0xFC, 0xE4, 0xA4 },
-    { 0xF4, 0xF4, 0xF4 },
-    { 0xB8, 0xB8, 0xB8 },
-    { 0x74, 0x74, 0x74 },
-    { 0x4C, 0x6C, 0xAC },
-    { 0x58, 0x90, 0x4C },
-    { 0xB2, 0x7C, 0x58 }
-}; // 0x0072E19C
-
-extern "C" struct d2data_0072E1BA_t gData_0072E1BA = {
-    { 0x00 }
-}; // 0x0072E1BA
-
-extern D2EmblemColorStrc gaEmblemColorRGB2[10] = {
-    { 0x5C },
-    { 0x90 },
-    { 0x30, 0x1C, 0x10 },
-    { 0x5C, 0x24, 8 },
-    { 4, 0x24, 0x10 },
-    { 0x24, 0x5C, 0x24 },
-    { 0, 0, 0x58 },
-    { 0x28, 0x28, 0x78 },
-    { 0x40, 0x40, 0x40 }
-}; // 0x0072E1BC
 
 extern D2CompItemStrc gaCompItems[283] = {
     { 0, 0, 1 },
@@ -2944,6 +2789,12 @@ extern "C" struct d2data_0072EF24_t gData_0072EF24 = {
 
 extern int gbD2WinBinMode = 1; // 0x0072EF2C
 
+extern "C" const char gData_006DCE64[4] = "}"; // 0x006DCE64
+#pragma comment(linker, "/alternatename:?gszGuildSuffix@@3QBDB=_gData_006DCE64")
+
+extern "C" const char gData_006DCE68[4] = " {"; // 0x006DCE68
+#pragma comment(linker, "/alternatename:?gszGuildPrefix@@3QBDB=_gData_006DCE68")
+
 extern int gaWClassTokens[14] = { 1, 6, 4, 2, 8, 5, 3, 7, 9, 10, 11, 12, 13, 14 }; // 0x0072EF30
 
 extern D2CompPairStrc gaCompPairs[13] = {
@@ -2962,4 +2813,24 @@ extern D2CompPairStrc gaCompPairs[13] = {
     { 0x20327468, 13 }
 }; // 0x0072EF68
 
-extern unsigned int gnCompPairs = 0xD; // 0x0072EFD0
+extern "C" struct d2data_0072E010_t gData_0072E010 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0072E010
+
+extern "C" struct d2data_0072E1BA_t gData_0072E1BA = {
+    { 0x00 }
+}; // 0x0072E1BA

@@ -10,7 +10,7 @@ struct D2PantherAiCallbackArgStrc
 {
     D2UnitStrc* pTarget;
     int nDistance;
-    int unk0x08[8];
+    int unused0x08[8];
 };
 
 struct D2BaalThroneAiCallbackArgStrc
@@ -19,28 +19,28 @@ struct D2BaalThroneAiCallbackArgStrc
     int nDistance1;
     D2UnitStrc* pTarget2;
     int nDistance2;
-    int unk_10[6];
+    int unused0x10[6];
 };
 
 struct D2BaalToStairsAiCallbackArgStrc
 {
-    int unk0x00;
+    int unused0x00;
     int nMaxDistance;
-    int unk0x08[8];
+    int unused0x08[8];
 };
 
 struct D2SandRaiderAiCallbackArgStrc
 {
     D2UnitStrc* pTarget;
     int nDistance;
-    int unk0x08[8];
+    int unused0x08[8];
 };
 
 struct D2SiegeBeastTowerAiCallbackArgStrc
 {
     int nMaxDistance;
-    int unk0x04;
-    int unk0x08[8];
+    int unused0x04;
+    int unused0x08[8];
 };
 
 struct D2NihlathakOverseerAiCallbackArgStrc
@@ -51,13 +51,13 @@ struct D2NihlathakOverseerAiCallbackArgStrc
     D2UnitStrc* pTarget;
     D2UnitStrc* pDistantTarget;
     int nCounter;
-    int unk0x18[4];
+    int unused0x18[4];
 };
 
 struct D2MinionSpawnerAiCallbackArgStrc
 {
     int nMinions;
-    int unk0x04[9];
+    int unused0x04[9];
 };
 
 struct D2ShadowMasterAiCallbackArgStrc
@@ -80,7 +80,7 @@ struct D2ZakarumPriestAiCallbackArgStrc
     int nCounter;
     int nMaxLifePercentage;
     int nMaxDistance;
-    int unk0x10[6];
+    int unused0x10[6];
 };
 
 struct D2FetishShamanAiCallbackArgStrc
@@ -92,7 +92,7 @@ struct D2FetishShamanAiCallbackArgStrc
     int nSquaredDistanceToClosestAliveTarget;
     int nAliveTargets;
     int nHealCapability;
-    int unk0x1C[3];
+    int unused0x1C[3];
 };
 
 struct D2OblivionKnightAiCallbackArgStrc
@@ -102,7 +102,7 @@ struct D2OblivionKnightAiCallbackArgStrc
     int nMaxDistanceSquared;
     int nClosestDistanceSquared;
     int nClosestWoundedDistanceSquared;
-    int unk0x14[5];
+    int unused0x14[5];
 };
 
 struct D2GreaterMummyAiCallbackArgStrc
@@ -114,7 +114,7 @@ struct D2GreaterMummyAiCallbackArgStrc
     int nMaxDistance;
     int bRadament;
     int bNormal;
-    int unk0x1C[3];
+    int unused0x1C[3];
 };
 
 struct D2HighPriestAiCallbackArgStrc
@@ -122,7 +122,7 @@ struct D2HighPriestAiCallbackArgStrc
     D2UnitStrc* pTarget;
     int nLifePercentage;
     int nMaxDistance;
-    int unk0x0C[7];
+    int unused0x0C[7];
 };
 
 struct D2MephistoAiCallbackArgStrc
@@ -135,8 +135,8 @@ struct D2MephistoAiCallbackArgStrc
     D2UnitStrc* pClosestTargetForPlayerActor;
     int nClosestPlayerActorDistanceSquared;
     int nCounter;
-    int unk0x20;
-    int unk0x24;
+    int unused0x20;
+    int unused0x24;
 };
 
 struct D2VultureAiCallbackArgStrc
@@ -144,7 +144,7 @@ struct D2VultureAiCallbackArgStrc
     D2UnitStrc* pTarget;
     int nDistance;
     int nLifePercentage;
-    int unk0x0C[7];
+    int unused0x0C[7];
 };
 
 struct D2ShadowMasterSkillStrc

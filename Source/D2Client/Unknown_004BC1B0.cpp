@@ -1,9 +1,16 @@
+#include "D2LanguageNames.h"
+
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Unicode.h"
 #include "D2CelContext.h"
 #include "D2StormTypes.h"
 #include "D2ListBoxLine.h"
 #include "D2ClientTextPanel.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2GfxApi.h"
+#include "StormApi2.h"
 
 class UIWidget;
 class ListBoxImplementation;
@@ -13,41 +20,29 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, int nFlags); // 0x00413020
-
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, int nFlags); // 0x00412650
-
 void __fastcall UI_DrawRectangleBorder(D2RectStrc* pRect); // 0x00452E50
 
-int __cdecl sub_00468730(); // 0x00468730
 
-int __cdecl sub_00468740(); // 0x00468740
 
 D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nType); // 0x004788B0
 
 int __fastcall PANEL_CountLinesInView(ListBoxImplementation* pListBox); // 0x004BE340
 
-int __stdcall D2GFX_GetResolutionMode(); // 0x004F5160
-
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 int __fastcall D2Win_10123(const Unicode* wszText, int nLength); // 0x00501730
 
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
-int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
@@ -75,7 +70,6 @@ public:
 
     static void* operator new(unsigned int nSize)
     {
-// build: symbol ?gszNew@* 0x006CC82C
         return SMemAlloc(nSize, gszNew, -1, 0);
     }
 
@@ -127,19 +121,10 @@ struct ListBoxView
 
 #define D2_MAX(a, b) (((a) > (b)) ? (a) : (b))
 
-// build: symbol ??_7UIWidget@@6B@ 0x006DA6C0
-// build: symbol ??_7ListBoxImplementation@@6B@ 0x006DAAEC
-// build: symbol ??_7ListBoxWrapper@@6B@ 0x006DAAA4
-// build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
-// build: symbol ??0D2ListBoxLineStrc@@QAE@XZ 0x004BEE30
-// build: symbol ??3UIWidget@@SAXPAX@Z 0x004053F0
 // 0x004BE080
 UIWidget::~UIWidget()
 {
 }
-
-// build: symbol ??_GListBoxImplementation@@UAEPAXI@Z 0x004BF8C0
-// build: symbol ??_GListBoxWrapper@@UAEPAXI@Z 0x004BED10
 
 
 struct D2ListScrollStrc
@@ -148,7 +133,7 @@ struct D2ListScrollStrc
     int nY;
     int nRows;
 
-    int DrawRows(D2CelContextStrc* pContext);
+    int DrawRows(D2GfxDataStrc* pContext);
 };
 
 // 0x004BF8C0
@@ -174,8 +159,8 @@ public:
     virtual int sub_004BE0A0_GetLineCount();
     virtual void sub_004BE0B0_Clear();
     virtual void sub_004BE500_AddLine(const Unicode* wszText0, const Unicode* wszText1, const Unicode* wszText2,
-        const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5, int nArg20, int nData,
-        int bUseDefault, int nArg2C);
+        const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5, int nEntryData, int nColor,
+        int bUseDefault, int nFont);
 
     void DrawClippedText(const Unicode* wszSource, int nX, int nY, int nColor);
     int HitTestScrollDown(SMSGHANDLER_PARAMS* pMsg); // 0x004BE770
@@ -237,7 +222,7 @@ public:
     virtual int GetValue();
     virtual void sub_004BEDE0_ForwardSlot3C(const Unicode* wszText0, const Unicode* wszText1,
         const Unicode* wszText2, const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5,
-        int nArg20, int nData, int bUseDefault, int nArg2C);
+        int nEntryData, int nColor, int bUseDefault, int nFont);
     virtual int sub_004BEDF0_ForwardGetEntryData(int nIndex);
     virtual int sub_004BEE00_Slot14();
     virtual void sub_004BEE10_Slot15();
@@ -276,7 +261,7 @@ void __cdecl TEXT_LoadTextSliderCel()
 }
 
 // 0x004BE060
-void __cdecl sub_004BE060()
+void __cdecl sub_004BE060_FreeSliderCel()
 {
     if (gpListBoxSliderCel)
     {
@@ -382,9 +367,9 @@ void ListBoxImplementation::sub_004BE110_UpdateScrollBar()
 
     const int nTop = tBar.nY + 13;
     const int nLeft = tBar.nX - 1;
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpListBoxSliderCel;
+    tContext.pCelFile = gpListBoxSliderCel;
     tContext.nDirection = 0;
     tContext.nFrame = 16;
     sub_004F6480(&tContext, nLeft, nTop + 12 * nStart, -1, 5, 0);
@@ -439,30 +424,30 @@ void ListBoxImplementation::DrawClippedText(const Unicode* wszSource, int nX, in
 {
     Unicode wszText[1024];
     sub_005267E0(wszText, wszSource);
-    if (D2Win_10123(wszText, sub_00526800(wszText)) < nRectWidth - 0x32)
+    if (D2Win_10123(wszText, UNICODE_StrLen(wszText)) < nRectWidth - 0x32)
     {
         D2Win_10117_DrawText(wszText, nX, nY, nColor, 0);
         return;
     }
 
-    while (D2Win_10123(wszText, sub_00526800(wszText)) > nRectWidth - 0x32)
+    while (D2Win_10123(wszText, UNICODE_StrLen(wszText)) > nRectWidth - 0x32)
     {
-        wszText[sub_00526800(wszText) - 1].wChar = 0;
+        wszText[UNICODE_StrLen(wszText) - 1].wChar = 0;
     }
     D2Win_10117_DrawText(wszText, nX, nY, nColor, 0);
 }
 
 // 0x004BE500
 void ListBoxImplementation::sub_004BE500_AddLine(const Unicode* wszText0, const Unicode* wszText1, const Unicode* wszText2,
-    const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5, int nArg20, int nData, int bUseDefault,
-    int nArg2C)
+    const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5, int nEntryData, int nColor, int bUseDefault,
+    int nFont)
 {
     if (nEntryCount >= 0x80)
     {
         return;
     }
 
-    aLines[nEntryCount].unk0x3002 = nArg20;
+    aLines[nEntryCount].nData = nEntryData;
     if (nSelectedIndex == -1)
     {
         nSelectedIndex = 0;
@@ -505,13 +490,13 @@ void ListBoxImplementation::sub_004BE500_AddLine(const Unicode* wszText0, const 
     }
     if (bUseDefault)
     {
-        aLines[nEntryCount].nData = nArg14;
+        aLines[nEntryCount].nColor = nArg14;
     }
     else
     {
-        aLines[nEntryCount].nData = nData;
+        aLines[nEntryCount].nColor = nColor;
     }
-    aLines[nEntryCount].nFont = nArg2C;
+    aLines[nEntryCount].nFont = nFont;
     ++nEntryCount;
 }
 
@@ -539,7 +524,6 @@ int ListBoxImplementation::sub_004BE810_HitTestRect(SMSGHANDLER_PARAMS* pMsg)
     return 0;
 }
 
-// build: symbol ?OnMouseWheel@ListBoxImplementation@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BE860
 // 0x004BE860
 int ListBoxImplementation::OnMouseWheel(SMSGHANDLER_PARAMS* pMsg)
 {
@@ -572,7 +556,6 @@ void ListBoxImplementation::sub_004BE8D0_ClampTopToSelection()
     }
 }
 
-// build: symbol ?MsgSlot07@ListBoxImplementation@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BE910
 // 0x004BE910
 int ListBoxImplementation::MsgSlot07(SMSGHANDLER_PARAMS* pMsg)
 {
@@ -590,7 +573,6 @@ int ListBoxImplementation::MsgSlot07(SMSGHANDLER_PARAMS* pMsg)
     return 1;
 }
 
-// build: symbol ?MsgSlot08@ListBoxImplementation@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BE990
 // 0x004BE990
 int ListBoxImplementation::MsgSlot08(SMSGHANDLER_PARAMS* pMsg)
 {
@@ -612,14 +594,12 @@ int ListBoxImplementation::MsgSlot08(SMSGHANDLER_PARAMS* pMsg)
     return 1;
 }
 
-// build: symbol ?OnKeyLeft@ListBoxImplementation@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BEA30
 // 0x004BEA30
 int ListBoxImplementation::OnKeyLeft(SMSGHANDLER_PARAMS* pMsg)
 {
     return 0;
 }
 
-// build: symbol ?OnKeyRight@ListBoxImplementation@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BEA40
 // 0x004BEA40
 int ListBoxImplementation::OnKeyRight(SMSGHANDLER_PARAMS* pMsg)
 {
@@ -673,7 +653,6 @@ int ListBoxImplementation::sub_004BEA50_HitTestEntry(SMSGHANDLER_PARAMS* pMsg)
     return -1;
 }
 
-// build: symbol ?MsgSlot05@ListBoxImplementation@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BEB70
 // 0x004BEB70
 int ListBoxImplementation::MsgSlot05(SMSGHANDLER_PARAMS* pMsg)
 {
@@ -684,7 +663,6 @@ int ListBoxImplementation::MsgSlot05(SMSGHANDLER_PARAMS* pMsg)
     return 0;
 }
 
-// build: symbol ?OnKeyDown@ListBoxImplementation@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BEBC0
 // 0x004BEBC0
 int ListBoxImplementation::OnKeyDown(SMSGHANDLER_PARAMS* pMsg)
 {
@@ -706,7 +684,6 @@ int ListBoxImplementation::OnKeyDown(SMSGHANDLER_PARAMS* pMsg)
     return 0;
 }
 
-// build: symbol ?GetValue@ListBoxImplementation@@UAEHXZ 0x004BEC30
 // 0x004BEC30
 int ListBoxImplementation::GetValue()
 {
@@ -720,7 +697,7 @@ int ListBoxImplementation::GetListEntryData(int nIndex)
 {
     if (nIndex >= 0 && nIndex < nEntryCount && nIndex < 0x80)
     {
-        return aLines[nIndex].unk0x3002;
+        return aLines[nIndex].nData;
     }
     D2_ASSERT(nEntryCount < 0x80, 0x46C);
     D2_ASSERT(nEntryCount < nIndex, 0x46D);
@@ -734,70 +711,60 @@ ListBoxWrapper::~ListBoxWrapper()
     delete pImpl;
 }
 
-// build: symbol ?MsgSlot08@ListBoxWrapper@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BED40
 // 0x004BED40
 int ListBoxWrapper::MsgSlot08(SMSGHANDLER_PARAMS* pMsg)
 {
     return pImpl->MsgSlot08(pMsg);
 }
 
-// build: symbol ?MsgSlot07@ListBoxWrapper@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BED50
 // 0x004BED50
 int ListBoxWrapper::MsgSlot07(SMSGHANDLER_PARAMS* pMsg)
 {
     return pImpl->MsgSlot07(pMsg);
 }
 
-// build: symbol ?OnKeyRight@ListBoxWrapper@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BED60
 // 0x004BED60
 int ListBoxWrapper::OnKeyRight(SMSGHANDLER_PARAMS* pMsg)
 {
     return pImpl->OnKeyRight(pMsg);
 }
 
-// build: symbol ?OnKeyLeft@ListBoxWrapper@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BED70
 // 0x004BED70
 int ListBoxWrapper::OnKeyLeft(SMSGHANDLER_PARAMS* pMsg)
 {
     return pImpl->OnKeyLeft(pMsg);
 }
 
-// build: symbol ?OnLButtonDown@ListBoxWrapper@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BED80
 // 0x004BED80
 int ListBoxWrapper::OnLButtonDown(SMSGHANDLER_PARAMS* pMsg)
 {
     return pImpl->OnLButtonDown(pMsg);
 }
 
-// build: symbol ?OnLButtonUp@ListBoxWrapper@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BED90
 // 0x004BED90
 int ListBoxWrapper::OnLButtonUp(SMSGHANDLER_PARAMS* pMsg)
 {
     return pImpl->OnLButtonUp(pMsg);
 }
 
-// build: symbol ?MsgSlot05@ListBoxWrapper@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BEDA0
 // 0x004BEDA0
 int ListBoxWrapper::MsgSlot05(SMSGHANDLER_PARAMS* pMsg)
 {
     return pImpl->MsgSlot05(pMsg);
 }
 
-// build: symbol ?OnKeyDown@ListBoxWrapper@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BEDB0
 // 0x004BEDB0
 int ListBoxWrapper::OnKeyDown(SMSGHANDLER_PARAMS* pMsg)
 {
     return pImpl->OnKeyDown(pMsg);
 }
 
-// build: symbol ?GetValue@ListBoxWrapper@@UAEHXZ 0x004BEDC0
 // 0x004BEDC0
 int ListBoxWrapper::GetValue()
 {
     return pImpl->GetValue();
 }
 
-// build: symbol ?Draw@ListBoxWrapper@@UAEXXZ 0x004BEDD0
 // 0x004BEDD0
 void ListBoxWrapper::Draw()
 {
@@ -807,10 +774,10 @@ void ListBoxWrapper::Draw()
 // 0x004BEDE0
 void ListBoxWrapper::sub_004BEDE0_ForwardSlot3C(const Unicode* wszText0, const Unicode* wszText1,
     const Unicode* wszText2, const Unicode* wszText3, const Unicode* wszText4, const Unicode* wszText5,
-    int nArg20, int nData, int bUseDefault, int nArg2C)
+    int nEntryData, int nColor, int bUseDefault, int nFont)
 {
-    pImpl->sub_004BE500_AddLine(wszText0, wszText1, wszText2, wszText3, wszText4, wszText5, nArg20, nData,
-        bUseDefault, nArg2C);
+    pImpl->sub_004BE500_AddLine(wszText0, wszText1, wszText2, wszText3, wszText4, wszText5, nEntryData, nColor,
+        bUseDefault, nFont);
 }
 
 // 0x004BEDF0
@@ -819,7 +786,7 @@ int ListBoxWrapper::sub_004BEDF0_ForwardGetEntryData(int nIndex)
     return pImpl->GetListEntryData(nIndex);
 }
 
-__forceinline int D2ListScrollStrc::DrawRows(D2CelContextStrc* pContext)
+__forceinline int D2ListScrollStrc::DrawRows(D2GfxDataStrc* pContext)
 {
     int i;
     for (i = 0; i < nRows; ++i)
@@ -842,14 +809,12 @@ void ListBoxWrapper::sub_004BEE10_Slot15()
     pImpl->sub_004BE0B0_Clear();
 }
 
-// build: symbol ?OnMouseWheel@ListBoxWrapper@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BEE20
 // 0x004BEE20
 int ListBoxWrapper::OnMouseWheel(SMSGHANDLER_PARAMS* pMsg)
 {
     return pImpl->OnMouseWheel(pMsg);
 }
 
-// build: symbol ?Draw@ListBoxImplementation@@UAEXXZ 0x004BEE90
 // 0x004BEE90
 void ListBoxImplementation::Draw()
 {
@@ -862,9 +827,9 @@ void ListBoxImplementation::Draw()
 
     const int nOldFont = D2Win_10127_SetFont(nArg18);
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpListBoxSliderCel;
+    tContext.pCelFile = gpListBoxSliderCel;
     tContext.nFrame = bTopPressed ? 11 : 9;
     tContext.nDirection = 0;
     sub_004F6480(&tContext, tBar.nX, tBar.nY, -1, 5, 0);
@@ -886,7 +851,7 @@ void ListBoxImplementation::Draw()
         }
         else
         {
-            nColor = aLines[nLine].nData;
+            nColor = aLines[nLine].nColor;
         }
 
         D2Win_10127_SetFont(aLines[nLine].nFont != 14 ? aLines[nLine].nFont : nArg18);
@@ -1011,7 +976,6 @@ int ListBoxView::ClickScrollTrack(SMSGHANDLER_PARAMS* pMsg)
 }
 
 
-// build: symbol ?OnLButtonDown@ListBoxImplementation@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BF430
 // 0x004BF430
 int ListBoxImplementation::OnLButtonDown(SMSGHANDLER_PARAMS* pMsg)
 {
@@ -1049,7 +1013,6 @@ int ListBoxImplementation::OnLButtonDown(SMSGHANDLER_PARAMS* pMsg)
     return 1;
 }
 
-// build: symbol ?OnLButtonUp@ListBoxImplementation@@UAEHPAUSMSGHANDLER_PARAMS@@@Z 0x004BF530
 // 0x004BF530
 int ListBoxImplementation::OnLButtonUp(SMSGHANDLER_PARAMS* pMsg)
 {
@@ -1124,9 +1087,9 @@ ListBoxImplementation::ListBoxImplementation(int nX, int nY, int nWidth, int nHe
         aLines[n].wszText4[0].wChar = 0;
         aLines[n].wszText5[0].wChar = 0;
         aLines[n].nFlags = 0;
-        aLines[n].nData = 0;
+        aLines[n].nColor = 0;
         aLines[n].nFont = 1;
-        aLines[n].unk0x3002 = 0;
+        aLines[n].nData = 0;
     }
     pfnCallback = (void (__cdecl*)())nCallback;
     this->nArg10 = nArg10;
@@ -1159,43 +1122,4 @@ ListBoxWrapper::ListBoxWrapper(int nX, int nY, int nWidth, int nHeight, int nArg
     pImpl = new ListBoxImplementation(nX, nY, nWidth, nHeight, nArg10, nArg14, nArg18, nCallback, bLargeFont);
 }
 
-#pragma pack(push, 1)
-struct d2data_0072783C_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
 
-extern "C" struct d2data_0072783C_t gData_0072783C; // 0x0072783C
-
-extern "C" struct d2data_0072783C_t gData_0072783C = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0072783C

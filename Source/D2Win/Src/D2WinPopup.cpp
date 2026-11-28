@@ -20,6 +20,8 @@
 
 #include "D2Win32Types.h"
 #include "D2WinPopupLine.h"
+#include "FogApi.h"
+#include "D2GfxApi.h"
 
 enum D2C_WinControlTypes
 {
@@ -41,7 +43,6 @@ struct D2WinPopUpStrc
     int nCurrentLine;
 };
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
@@ -55,7 +56,6 @@ int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl);               
 
 int __stdcall CONTROL_AppendToList(D2WinControlStrc* pControl); // 0x004F9210
 
-int __fastcall POPUP_Draw(D2WinControlStrc* pControl); // 0x005087A0
 
 extern "C" void* __cdecl memset(void* destination, int value, unsigned int size); // 0x00681EF0
 
@@ -150,8 +150,6 @@ int __stdcall POPUP_HandleMouseButtonInput(SMSGHANDLER_PARAMS* pMsg)
     pfHandleMouseInput();
     return 1;
 }
-
-void __stdcall D2GFX_UtilRect(tagRECT* pRect, unsigned char nPaletteIndex); // 0x004F62A0
 
 void __stdcall D2GFX_DrawBox(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned char nColor, int eDrawMode); // 0x004F6300
 

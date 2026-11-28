@@ -5,7 +5,7 @@
 #include "D2GameTypes.h"
 #include "D2Constants.h"
 #include "D2LanguageNames.h"
-// build: symbol _gaszLanguageNames 0x00736160
+#include "FogApi.h"
 
 #define UNIT_MONSTER 1
 
@@ -17,18 +17,6 @@ struct D2AiCmdStrc;
 
 struct D2MinionListStrc;
 
-struct Sub0058EE80;
-
-struct Data0058EE80;
-
-struct Unit0058EE80;
-
-struct Sub0058F000;
-
-struct Data0058F000;
-
-struct Unit0058F000;
-
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
@@ -37,85 +25,8 @@ D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int
 
 void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
-struct Sub0058EE80 {
-    unsigned int dwUnknown00;
-    unsigned int dwUnknown04;
-    unsigned int dwUnknown08;
-    unsigned int dwUnknown0C;
-    unsigned int f_10;
-    unsigned int dwUnknown14;
-    unsigned int dwUnknown18;
-    unsigned int dwUnknown1C;
-    unsigned int dwValue20;
-};
+#include "D2GameFuncs.h"
 
-struct Data0058EE80 {
-    unsigned int dwUnknown00;
-    unsigned int dwUnknown04;
-    unsigned int dwUnknown08;
-    unsigned int dwUnknown0C;
-    unsigned int f_10;
-    unsigned int dwUnknown14;
-    unsigned int dwUnknown18;
-    unsigned int dwUnknown1C;
-    unsigned int dwUnknown20;
-    unsigned int dwUnknown24;
-    Sub0058EE80* f_28;
-};
-
-struct Unit0058EE80 {
-    int nType;
-    unsigned int dwUnknown04;
-    unsigned int dwUnknown08;
-    unsigned int dwUnknown0C;
-    unsigned int f_10;
-    Data0058EE80* pData;
-};
-
-D2AiCmdStrc* __fastcall AIGENERAL_GetAiCommandFromParam(D2UnitStrc* pUnit, int nCmdParam, int bSet); // 0x0058EEF0
-
-void __fastcall AIGENERAL_CopyAiCommand(D2GameStrc* pGame, D2UnitStrc* pUnit, D2AiCmdStrc* pAiCmd); // 0x0058EF40
-
-struct Sub0058F000 {
-    unsigned int dwUnknown00;
-    unsigned int dwUnknown04;
-    unsigned int dwUnknown08;
-    unsigned int dwUnknown0C;
-    unsigned int f_10;
-    unsigned int dwUnknown14;
-    unsigned int dwUnknown18;
-    unsigned int dwUnknown1C;
-    unsigned int dwUnknown20;
-    unsigned int dwUnknown24;
-    unsigned int dwUnknown28;
-    unsigned int dwUnknown2C;
-    unsigned int dwUnknown30;
-    unsigned int dwUnknown34;
-    unsigned int dwField38;
-};
-
-struct Data0058F000 {
-    unsigned int dwUnknown00;
-    unsigned int dwUnknown04;
-    unsigned int dwUnknown08;
-    unsigned int dwUnknown0C;
-    unsigned int f_10;
-    unsigned int dwUnknown14;
-    unsigned int dwUnknown18;
-    unsigned int dwUnknown1C;
-    unsigned int dwUnknown20;
-    unsigned int dwUnknown24;
-    Sub0058F000* f_28;
-};
-
-struct Unit0058F000 {
-    int nType;
-    unsigned int dwUnknown04;
-    unsigned int dwUnknown08;
-    unsigned int dwUnknown0C;
-    unsigned int f_10;
-    Data0058F000* pData;
-};
 
 void __fastcall AIGENERAL_AllocMinionList(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pMinion); // 0x0058F100
 
@@ -128,18 +39,13 @@ int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int
 D2AiCmdStrc* __fastcall AIGENERAL_AllocAiCommand(D2GameStrc* pGame, D2UnitStrc* pUnit);                     // 0x0058EC90
 
 
-
 extern const char gszAiGeneralSourceFile[]; // 0x006E1B24
 
-D2UnitStrc* __fastcall AIGENERAL_GetMinionOwner(D2UnitStrc* pUnit);
 
 extern const char gszAiGeneralSourceFile[]; // 0x006E1B24
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
-
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
@@ -149,9 +55,6 @@ typedef int (__stdcall* FARPROC)();
 
 extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(FARPROC lpfn);                                  // 0x006CC34C
 
-void __fastcall AIGENERAL_SetOwnerData(D2GameStrc* pGame, D2UnitStrc* pUnit, int nOwnerGUID, int nOwnerType, int bSetFlag1, int bSetFlag2); // 0x0058F030
-
-void __fastcall AIGENERAL_FreeAllMinionLists(D2GameStrc* pGame, D2MinionListStrc* pMinionList); // 0x0058F350
 
 static inline int sub_GetUnitTypeOrInvalid(D2UnitStrc* pUnit)
 {
@@ -400,13 +303,13 @@ void __fastcall AIGENERAL_FreeAllAiCommands(D2GameStrc* pGame, D2UnitStrc* pUnit
 }
 
 // 0x0058EE80
-extern "C" __declspec(dllexport) unsigned int __fastcall sub_0058EE80(Unit0058EE80* pUnit) {
-    Data0058EE80* pData = (pUnit && pUnit->nType == 1) ? pUnit->pData : 0;
-    Sub0058EE80* pSub = pData ? pData->f_28 : 0;
-    if (!pSub) {
+extern "C" __declspec(dllexport) unsigned int __fastcall sub_0058EE80(D2UnitStrc* pUnit) {
+    D2MonsterDataStrc* pData = (pUnit && pUnit->dwUnitType == UNIT_MONSTER) ? pUnit->pMonsterData : 0;
+    D2AiControlStrc* pAiControl = pData ? pData->pAiControl : 0;
+    if (!pAiControl) {
         return 0;
     }
-    return pSub->dwValue20;
+    return (unsigned int)pAiControl->pCurrentCmd;
 }
 
 // 0x0058EEA0
@@ -544,14 +447,14 @@ D2AiCmdStrc* __fastcall AIGENERAL_SetCurrentAiCommand(D2GameStrc* pGame, D2UnitS
 }
 
 // 0x0058F000
-extern "C" __declspec(dllexport) unsigned int* __stdcall sub_0058F000(Unit0058F000* pUnit) {
-    Sub0058F000* pSub;
-    if (pUnit && pUnit->nType == 1 && pUnit->pData) {
-        pSub = pUnit->pData->f_28;
+extern "C" __declspec(dllexport) unsigned int* __stdcall sub_0058F000(D2UnitStrc* pUnit) {
+    D2AiControlStrc* pAiControl;
+    if (pUnit && pUnit->dwUnitType == UNIT_MONSTER && pUnit->pMonsterData) {
+        pAiControl = pUnit->pMonsterData->pAiControl;
     } else {
-        pSub = 0;
+        pAiControl = 0;
     }
-    return &pSub->dwField38;
+    return (unsigned int*)&pAiControl->pMapAi;
 }
 
 // 0x0058F030
@@ -623,6 +526,7 @@ D2UnitStrc* __fastcall AIGENERAL_GetMinionOwner(D2UnitStrc* pUnit)
     return SUNIT_GetServerUnit(pAiControl->pGame, pAiControl->dwOwnerTypeEx, pAiControl->dwOwnerGUIDEx);
 }
 
+// noinline: AIGENERAL_TransferMinionsToNewLeader (0x0058F530) calls AIGENERAL_AllocMinionList (0x0058F100); the image calls it out of line there.
 // 0x0058F100
 __declspec(noinline) void __fastcall AIGENERAL_AllocMinionList(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pMinion)
 {
@@ -721,7 +625,7 @@ void __fastcall AIGENERAL_FreeAllMinionLists(D2GameStrc* pGame, D2MinionListStrc
 }
 
 // 0x0058F380
-void __fastcall AIGENERAL_ExecuteCallbackOnMinions(D2UnitStrc* pUnit, void* a2, void* a3, void(__fastcall* pfnParty)(D2UnitStrc*, void*, void*))
+void __fastcall AIGENERAL_ExecuteCallbackOnMinions(D2UnitStrc* pUnit, void* pCallbackArg1, void* pCallbackArg2, void(__fastcall* pfnParty)(D2UnitStrc*, void*, void*))
 {
     D2_ASSERT(!IsBadCodePtr((FARPROC)pfnParty), 590);
 
@@ -747,7 +651,7 @@ void __fastcall AIGENERAL_ExecuteCallbackOnMinions(D2UnitStrc* pUnit, void* a2, 
         D2UnitStrc* pMinion = SUNIT_GetServerUnit(pGame, UNIT_MONSTER, pMinionList->dwMinionGUID);
         if (pMinion)
         {
-            pfnParty(pMinion, a2, a3);
+            pfnParty(pMinion, pCallbackArg1, pCallbackArg2);
         }
         pMinionList = pNext;
     }

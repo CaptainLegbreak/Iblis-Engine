@@ -1,8 +1,13 @@
+#include "D2LanguageNames.h"
+
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2ClientGame.h"
 #include "D2UnitData.h"
 #include "D2GameClient.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -13,8 +18,6 @@ struct D2RosterPetStrc;
 struct D2RosterGroupStrc;
 
 struct D2RosterCorpseStrc;
-
-struct D2RosterUnitStrc;
 
 struct Obj00479B80;
 
@@ -30,17 +33,6 @@ struct Obj0047A670;
 
 extern D2RosterPetStrc* gpRosterPets; // 0x007BB5BC
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
-
-struct D2RosterUnitStrc
-{
-    char unk0x00[0x38];
-    D2RosterCorpseStrc* pCorpse;
-    char unk0x3C[0x08];
-    unsigned short wUnk0x44;
-    unsigned char unk0x46[4];
-    unsigned char unk0x4A[4];
-};
 
 
 
@@ -48,22 +40,17 @@ D2StoredUnitRecordStrc* __stdcall GFX_SortRosterByName(D2StoredUnitRecordStrc* p
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
 
 void __fastcall MSG_SendPartyCommand(int nCommand, int nUnitId); // 0x00478780
 
 void __cdecl ROSTER_RebuildRosterOrder(); // 0x00479AB0
 
-void __cdecl PARTY_RebuildRosterUnits(); // 0x0049A640
 
-unsigned int __fastcall GFXUTIL_TestRelationFlags(int nUnitId1, int nUnitId2, unsigned int nFlags); // 0x004DC440
 
 struct Obj00479B80 {
     unsigned int dwUnknown00;
@@ -130,7 +117,6 @@ public:
     virtual void Unsquelch(const char* szName);
 };
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
 void __fastcall MSG_SendPvpCommand(int nCommand, int nUnitId, int bSet); // 0x00478740
 
@@ -144,13 +130,9 @@ void __cdecl ROSTER_SortGroupMembers(); // 0x004799C0
 
 void __cdecl ROSTER_JoinRosterGroups(); // 0x00479A00
 
-void __fastcall PLAYERLIST_AddRosterInfo(int nUnitId1, int nUnitId2); // 0x004DC320
 
-void __fastcall GFXUTIL_SetRelationFlag(int nUnitId1, int nUnitId2, unsigned int nFlags, int bSet); // 0x004DC3E0
 
-void __fastcall GFXUTIL_SetRelationFlags(int nUnitId1, int nUnitId2, unsigned int nFlags); // 0x004DC4C0
 
-D2PlayerDataStrc* __stdcall UNITS_GetPlayerData(D2UnitStrc* pUnit); // 0x006221A0
 
 static D2StoredUnitRecordStrc* gpStoredUnits; // 0x007BB5C0
 
@@ -170,11 +152,9 @@ void __cdecl ROSTER_BuildRosterGroups();                                        
 
 D2StoredUnitRecordStrc* __cdecl ROSTER_LeaveParty();                                                  // 0x00479F60
 
-int __cdecl CHAT_IsNumberDisplayEnabled();                                                          // 0x0047A980
 
-D2RosterInfoStrc** __cdecl PLAYERLIST_AllocRosterInfoList();                                              // 0x004DC270
 
-struct D2PanelCtrlStrc_004B8370
+struct ROSTER_SetCtrlState
 {
     char unk0x00[0x5C];
     int nState;
@@ -189,7 +169,7 @@ struct D2SoundObjStrc_00515A30
 
 typedef char check_ptr_width[(sizeof(void*) == 4) ? 1 : -1];
 
-typedef char check_size_ctrl[(sizeof(D2PanelCtrlStrc_004B8370) == 0x60) ? 1 : -1];
+typedef char check_size_ctrl[(sizeof(ROSTER_SetCtrlState) == 0x60) ? 1 : -1];
 
 typedef char check_size_sound[(sizeof(D2SoundObjStrc_00515A30) == 0x48) ? 1 : -1];
 
@@ -216,55 +196,33 @@ void __fastcall PLAYERLIST_FreeRosterInfoList(D2RosterInfoStrc** pList);        
 
 unsigned short __fastcall CUNIT_GetPlayerPartyId(D2UnitStrc* pUnit);                           // 0x00465400
 
-void __fastcall ROSTER_SetKillCount(int nUnitId, unsigned short nValue); // 0x00479B10
 
-D2StoredUnitRecordStrc* __fastcall ROSTER_FindRosterUnitById(int nUnitId); // 0x00479BB0
 
-unsigned short __fastcall ROSTER_LookupPartyNumber(D2UnitStrc* pUnit); // 0x00479C00
 
 static void ROSTER_ToggleRelationFlag(D2StoredUnitRecordStrc* pEntry, unsigned short nFlag); // 0x00479D30
 
-void __fastcall ROSTER_ToggleLoot(D2StoredUnitRecordStrc* pEntry); // 0x00479DA0
 
-void __fastcall ROSTER_ToggleMute(D2StoredUnitRecordStrc* pEntry); // 0x00479DE0
 
-void __fastcall ROSTER_ToggleSquelch(D2StoredUnitRecordStrc* pEntry); // 0x00479E20
 
-void __fastcall ROSTER_ToggleHostile(D2StoredUnitRecordStrc* pEntry); // 0x00479FE0
 
-int __fastcall ROSTER_IsHostileRelation(int nUnitId1, int nUnitId2); // 0x0047A070
 
-void __fastcall ROSTER_SetLifeAndLevel(int nUnitId, int nLife, unsigned short wLevelId); // 0x0047A0D0
 
-void __fastcall ROSTER_SetPosition(int nUnitId, int nX, int nY); // 0x0047A100
 
-int __fastcall ROSTER_GetPartyLife(int nUnitId); // 0x0047A150
 
 char* __fastcall ROSTER_GetNameEx(int nUnitId); // 0x0047A1F0
 
-char* __fastcall ROSTER_GetUnitName(D2UnitStrc* pUnit); // 0x0047A210
 
-void __fastcall ROSTER_SetPortalIds(int nUnitId, int nA, int nB); // 0x0047A270
 
-D2RosterInfoStrc** __fastcall ROSTER_GetRosterInfoList(int nUnitId); // 0x0047A310
 
-void __fastcall ROSTER_SetPartyId(int nUnitId, unsigned short wPartyId); // 0x0047A330
 
-void __fastcall ROSTER_SetPartyFlags(int nUnitId, unsigned char nFlags); // 0x0047A350
 
-void __fastcall ROSTER_SetPvpFlags(int nUnitId1, int nUnitId2, unsigned short wFlags); // 0x0047A370
 
-void __fastcall ROSTER_AddCorpse(int nUnitId, int nCorpseId); // 0x0047A3D0
 
-void __fastcall ROSTER_DropCorpseEntry(int nUnitId, int nCorpseId); // 0x0047A490
 
-int __fastcall ROSTER_CanLoot(int nUnitId1, int nUnitId2); // 0x0047A4F0
 
 int __fastcall ROSTER_IsSameParty(int nUnitId1, int nUnitId2); // 0x0047A520
 
-int __fastcall ROSTER_GetOtherPartyLife(int nUnitId); // 0x0047A6B0
 
-void __fastcall ROSTER_UpdateRosterUnit(int nUnitId, unsigned short wPartyId, unsigned short wLevel, int nUnused, int nPartyFlags); // 0x0047A850
 
 static void ROSTER_MoveGroupMembers(D2RosterGroupStrc* pGroup); // 0x00479800
 
@@ -278,7 +236,6 @@ void __fastcall ROSTER_AddRosterUnit(int nUnitId, int nClassId, const char* szNa
 
 static D2StoredUnitRecordStrc* ROSTER_FindRosterUnit(int nUnitId); // 0x004792E0
 
-int __fastcall ROSTER_IsNotSquelched(int nUnitId); // 0x0047A170
 
 static D2StoredUnitRecordStrc* ROSTER_FindRosterUnitByIdOrName(int nUnitId, const char* szName); // 0x00479360
 
@@ -288,7 +245,6 @@ static D2StoredUnitRecordStrc* ROSTER_SortRosterByKills(D2StoredUnitRecordStrc* 
 
 void __cdecl ROSTER_SortMainListByKills(); // 0x00479740
 
-void __cdecl ROSTER_SendLeaveParty(); // 0x00479FC0
 
 
 
@@ -297,7 +253,7 @@ void __cdecl ROSTER_SendLeaveParty(); // 0x00479FC0
 
 
 // 0x004792C0
-static inline int ROSTER_HasCorpse(D2RosterUnitStrc* pRosterUnit, unsigned int dwCorpseId)
+static inline int ROSTER_HasCorpse(D2StoredUnitRecordStrc* pRosterUnit, unsigned int dwCorpseId)
 {
     for (D2RosterCorpseStrc* pCorpse = pRosterUnit->pCorpse; pCorpse; pCorpse = pCorpse->pNext)
     {
@@ -369,7 +325,7 @@ static void __stdcall ROSTER_FillRosterUnit(int nUnitId, int nClassId, unsigned 
 }
 
 // 0x00479470
-static inline void ROSTER_FreeCorpses(D2RosterUnitStrc* pRosterUnit)
+static inline void ROSTER_FreeCorpses(D2StoredUnitRecordStrc* pRosterUnit)
 {
     D2RosterCorpseStrc* pCorpse = pRosterUnit->pCorpse;
     while (pCorpse)
@@ -381,7 +337,7 @@ static inline void ROSTER_FreeCorpses(D2RosterUnitStrc* pRosterUnit)
     pRosterUnit->pCorpse = 0;
 }
 
-int __fastcall sub_M119_Emit_004792C0(D2RosterUnitStrc* pRosterUnit, unsigned int dwCorpseId)
+int __fastcall sub_M119_Emit_004792C0(D2StoredUnitRecordStrc* pRosterUnit, unsigned int dwCorpseId)
 {
     if (ROSTER_HasCorpse(pRosterUnit, dwCorpseId + 1))
     {
@@ -765,6 +721,7 @@ static void ROSTER_MovePlayerToFront(int nPlayerId)
 }
 
 // 0x00479AB0
+// noinline: the original calls this; without it the compiler expands it into 0x0047A850, 0x0047A8B0.
 __declspec(noinline) void __cdecl ROSTER_RebuildRosterOrder()
 {
     D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
@@ -795,33 +752,33 @@ void __fastcall ROSTER_SetKillCount(int nUnitId, unsigned short nValue)
 }
 
 // 0x00479B50
-unsigned short __fastcall ROSTER_GetGuildFlags(D2RosterUnitStrc* pRosterUnit)
+unsigned short __fastcall ROSTER_GetGuildFlags(D2StoredUnitRecordStrc* pRosterUnit)
 {
     if (!pRosterUnit)
     {
         return 0;
     }
-    return pRosterUnit->wUnk0x44;
+    return pRosterUnit->wGuildFlags;
 }
 
 // 0x00479B60
-unsigned char* __fastcall ROSTER_GetGuildTag(D2RosterUnitStrc* pRosterUnit)
+unsigned char* __fastcall ROSTER_GetGuildTag(D2StoredUnitRecordStrc* pRosterUnit)
 {
     if (!pRosterUnit)
     {
         return 0;
     }
-    return pRosterUnit->unk0x46;
+    return (unsigned char*)pRosterUnit->szGuildTag;
 }
 
 // 0x00479B70
-unsigned char* __fastcall ROSTER_GetGuildName(D2RosterUnitStrc* pRosterUnit)
+unsigned char* __fastcall ROSTER_GetGuildName(D2StoredUnitRecordStrc* pRosterUnit)
 {
     if (!pRosterUnit)
     {
         return 0;
     }
-    return pRosterUnit->unk0x4A;
+    return (unsigned char*)pRosterUnit->szGuildName;
 }
 
 // 0x00479B80
@@ -1513,63 +1470,17 @@ int __fastcall ROSTER_GetOtherPartyLife(int nUnitId)
     return 0;
 }
 
-// build: symbol @D2SOUND_SetSoundNoLoop@* 0x00515A30
 extern "C" void __fastcall D2SOUND_SetSoundNoLoop(D2SoundObjStrc_00515A30* pSound, int nValue)
 {
     D2_ASSERT(pSound, 815);
     pSound->nValue40 = nValue;
 }
 
-// build: symbol @D2SOUND_SetSoundLoopStart@* 0x00515A60
 extern "C" void __fastcall D2SOUND_SetSoundLoopStart(D2SoundObjStrc_00515A30* pSound, int nValue)
 {
     D2_ASSERT(pSound, 826);
     pSound->nValue44 = nValue;
 }
 
-extern "C" void __fastcall CLIENTS_SetPlayerUnitAlive(D2ClientStrc* pClient)
-{
-    D2_ASSERT(pClient, 518);
-    pClient->dwFlags |= 1;
-}
 
-#pragma pack(push, 1)
-struct d2data_00712E84_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
 
-extern "C" struct d2data_00712E84_t gData_00712E84; // 0x00712E84
-
-extern "C" struct d2data_00712E84_t gData_00712E84 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00712E84

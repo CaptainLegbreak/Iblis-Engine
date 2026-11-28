@@ -47,8 +47,8 @@ struct D2ArenaStrc
         };
     };
     unsigned char nTemplate; // 0x0C
-    unsigned char unk0x0D; // 0x0D
-    unsigned short unk0x0E; // 0x0E
+    unsigned char pad0x0D; // 0x0D
+    unsigned short pad0x0E; // 0x0E
 };
 
 struct D2NpcGambleStrc
@@ -61,11 +61,11 @@ struct D2NpcGambleStrc
 struct D2ObjectRegionStrc
 {
     unsigned char nAct; // 0x00
-    unsigned char unk0x01; // 0x01
-    unsigned short unk0x02; // 0x02
+    unsigned char pad0x01; // 0x01
+    unsigned short pad0x02; // 0x02
     int nProcessedRooms; // 0x04
     int nPopulatedRooms; // 0x08
-    int unk0x0C; // 0x0C
+    int nThemedRooms; // 0x0C
     int nHealingShrines; // 0x10
     int nShrines; // 0x14
     int nWells; // 0x18
@@ -86,7 +86,7 @@ struct D2UnkMonCreateStrc
     int nY; // 0x1C
     int nMaxSearchRings; // 0x20
     short nFlags; // 0x24
-    unsigned short unk0x26; // 0x26
+    unsigned short pad0x26; // 0x26
 };
 
 typedef void (__fastcall* D2EnterGameFn)(int nGameId, char* szName, int nClass, int nLevel, int nSaveFlags);
@@ -107,18 +107,18 @@ struct D2ServerCallbackFunctions
     int (__fastcall* pfFindPlayerToken)(const char* szClientName, int nTokenId, int nGameId, char* pszInOutAccountName, int* pOutCharSaveTransactionToken, int*, int*, int*, int*); // 0x18
     void* pfSaveDatabaseGuild; // 0x1C
     void (__fastcall* pfUnlockDatabaseCharacter)(D2ClientInfoStrc** ppClientInfo, const char* szCharName, const char* szAccountName); // 0x20
-    void* unk0x24; // 0x24
+    void* unused0x24; // 0x24
     FnUpdateCharacterLadder pfUpdateCharacterLadder; // 0x28
     void* pfUpdateGameInformation; // 0x2C
     void* pfGetGameServerInfo; // 0x30
     int (__stdcall* pfGetValue)(); // 0x34
     RealmUpdateCallback pfUpdate; // 0x38
     FnLoadComplete pfLoadComplete; // 0x3C
-    void* unk0x40; // 0x40
-    void* unk0x44; // 0x44
-    void* unk0x48; // 0x48
-    void* unk0x4C; // 0x4C
-    void* unk0x50; // 0x50
+    void* unused0x40; // 0x40
+    void* unused0x44; // 0x44
+    void* unused0x48; // 0x48
+    void* unused0x4C; // 0x4C
+    void* unused0x50; // 0x50
     void (__fastcall* pfGetTime)(D2FileTimeStrc* pTime); // 0x54
 };
 
@@ -138,7 +138,7 @@ struct D2UnitInfoStrc
     int nY; // 0x14
     int nOwnerType; // 0x18
     int nOwnerGUID; // 0x1C
-    int unk0x20; // 0x20
+    int unused0x20; // 0x20
     char szDescription[16]; // 0x24
 };
 

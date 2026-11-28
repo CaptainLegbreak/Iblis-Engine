@@ -3,6 +3,7 @@
 #include "D2CmpTileLib.h"
 #include "D2CmpTypes.h"
 #include "D2CmpTiles.h"
+#include "FogApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -23,15 +24,13 @@ struct D2CmpTileLibraryStrc;
 struct D2TileLibraryEntryStrc;
 
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
+extern "C" char* __cdecl strcpy(char* szDst, const char* szSrc);
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
-unsigned char __stdcall GetClosestColor(const unsigned char* pPalette, unsigned int nCount, int nC0, int nC1, int nC2); // 0x00605210
 
 extern const unsigned char gaDirection8To4[]; // 0x006E5DA0
 
@@ -49,7 +48,6 @@ struct D2TileRecordStrc
     int unk0x0C;
 };
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
@@ -92,9 +90,7 @@ static int TileSerializeSubTiles(unsigned char* pOut, D2BlockSet0060A050Strc* pS
 
 static int __stdcall TileHasNonKeyPixel(D2CmpColorStrc tColor, const unsigned char* pData);
 
-extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
 #pragma function(memcpy)
 
@@ -112,7 +108,6 @@ void __stdcall TileAddAddFloorTile(D2CmpTileStrc* pTile, const unsigned char* pP
 
 static int TileProjectGetSerializedSize(D2CmpTileLibraryStrc* pLibrary);
 
-void __fastcall D2CMPTileCacheFreeProject(D2CmpTileLibraryStrc* pLibrary); // 0x005FE080
 
 
 void __stdcall TileProjectConvert24To8(D2CmpTileLibraryStrc* pSrc, D2CmpTileLibraryStrc** ppLibrary, D2CmpMapColorFn pfnMapColor);
@@ -241,6 +236,28 @@ void __stdcall TileListDestroy(D2CmpTileListStrc* pList)
     FOG_Free(pList, ".\\SRC\\Tilecmp.cpp", 0x8C, 0);
 }
 
+// 0x006096D0
+D2CmpTileStrc* __stdcall TileListAddTile(D2CmpTileListStrc* ptList, short nValue16, short nValue14, int nValue24, int nValue28, int nValue2C, int nValue30, int nValue10, const D2CmpTileInfoStrc* pInfo)
+{
+    D2_ASSERT(ptList, 0xA2);
+    D2CmpTileStrc* pTile = TileAlloc();
+    D2_ASSERT(pTile, 0xA6);
+    pTile->pNext = ptList->pFirst;
+    ptList->nCount++;
+    ptList->pFirst = pTile;
+    pTile->nMaterialFlags = nValue16;
+    pTile->nRoofHeight = nValue14;
+    pTile->nOrientation = nValue24;
+    pTile->nIndex = nValue28;
+    pTile->nSubIndex = nValue2C;
+    pTile->nRarity = nValue30;
+    pTile->nLightDirection = nValue10;
+    pTile->nOwnerId = ptList->nId;
+    pTile->nType = 2;
+    pTile->tInfo = *pInfo;
+    return pTile;
+}
+
 // 0x00609770
 static int __stdcall TileIsSubTileBlank(D2CmpTileStrc* pTile, const unsigned char* pPixels, int nPitch)
 {
@@ -309,6 +326,7 @@ void __stdcall TileAddAddSubTile(D2CmpTileStrc* pTile, unsigned char* pPixels, i
         pTile->nMinY = nY - 0x20;
 }
 
+// Kept noinline: a static that takes its arguments in registers; TileExtractFloorSubTile (0x609980) calls it out of line in the image (the #368 case).
 // 0x00609940
 static __declspec(noinline) int __stdcall TileHasNonKeyPixel(D2CmpColorStrc tColor, const unsigned char* pData)
 {
@@ -676,6 +694,82 @@ static inline int TileProjectNormalizeSubTiles(D2CmpTileBlockStrc* pBlock, unsig
     return nSize;
 }
 
+// 0x0060A290
+void __stdcall TileProjectNormalize(D2CmpTileLibraryStrc* pLibrary, D2CmpTileLibraryStrc** ppLibrary, const char* szName)
+{
+    D2_ASSERT(pLibrary->dwVersion == 7, 0x348);
+    if (pLibrary->dwFlags & 3)
+    {
+        pLibrary->pBlocks = (D2CmpTileBlockStrc*)((char*)pLibrary + (int)pLibrary->pBlocks);
+        if (szName)
+            strcpy(pLibrary->szName, szName);
+        char* pData = (char*)pLibrary + sizeof(D2CmpTileLibraryStrc) + pLibrary->nBlocks * sizeof(D2CmpTileBlockStrc);
+        for (int i = 0; i < pLibrary->nBlocks; i++)
+        {
+            D2CmpTileBlockStrc* pBlock = &pLibrary->pBlocks[i];
+            pBlock->pName = pLibrary->szName;
+            pBlock->pSubs = (D2CmpSubTileRecordStrc*)((char*)pLibrary + pBlock->nSubsOffset);
+            int nSize = pBlock->nSubs * sizeof(D2CmpSubTileRecordStrc);
+            for (int j = 0; j < pBlock->nSubs; j++)
+            {
+                D2CmpSubTileRecordStrc* pSub = &pBlock->pSubs[j];
+                pSub->ptData += (int)pData;
+                nSize += pSub->nLength;
+            }
+            pData += nSize;
+        }
+        pLibrary->dwFlags = (pLibrary->dwFlags & ~2) | 4;
+        *ppLibrary = pLibrary;
+    }
+}
+
+// 0x0060A390
+void __stdcall TileProjectNormalizeHeaders(D2CmpTileLibraryStrc* pLibrary, D2CmpTileLibraryStrc** ppLibrary, const char* szName)
+{
+    D2_ASSERT(pLibrary->dwVersion == 7, 0x37F);
+    if (pLibrary->dwFlags & 2)
+    {
+        pLibrary->pBlocks = (D2CmpTileBlockStrc*)((char*)pLibrary + (int)pLibrary->pBlocks);
+        strcpy(pLibrary->szName, szName);
+        for (int i = 0; i < pLibrary->nBlocks; i++)
+        {
+            D2CmpTileBlockStrc* pBlock = &pLibrary->pBlocks[i];
+            pBlock->pName = pLibrary->szName;
+            D2_ASSERT(!pBlock->pSubs, 0x3A2);
+            D2_ASSERT(!pBlock->pExtra, 0x3A3);
+        }
+        pLibrary->dwFlags = (pLibrary->dwFlags & ~2) | 4;
+        *ppLibrary = pLibrary;
+    }
+}
+
+// 0x0060A440
+D2TileLibraryHashStrc* __fastcall TileProjectBuildFindTable(D2CmpTileLibraryStrc* pLibrary)
+{
+    D2TileLibraryHashStrc* pHash = sub_0060CDB0_AllocTileHash();
+    D2_ASSERT(pHash, 0x3B9);
+    D2_ASSERT(pLibrary, 0x3BA);
+
+    for (int i = 0; i < pLibrary->nBlocks; ++i)
+    {
+        FindTileAddTile(pHash, &pLibrary->pBlocks[i]);
+    }
+
+    return pHash;
+}
+
+// 0x0060A4C0
+void __stdcall TileNormalizeSubTiles(D2CmpTileBlockStrc* pBlock)
+{
+    D2_ASSERT(pBlock, 0x3C9);
+    char* pBase = (char*)pBlock->pSubs;
+    for (int i = 0; i < pBlock->nSubs; i++)
+    {
+        D2CmpSubTileRecordStrc* pSub = &pBlock->pSubs[i];
+        pSub->ptData += (int)pBase;
+    }
+}
+
 // 0x0060A520
 static void TileIterateSubTilePixels(D2CmpColorCallback pfnColor, const unsigned char* pData, int nSize)
 {
@@ -763,7 +857,7 @@ static void __stdcall TileConvertSubTile24To8(D2CmpSubTileRecordStrc* pDst, cons
     if (pDst->tHeader.nFlags & 0x1000)
     {
         int nLength;
-        unsigned char* pData = (unsigned char*)sub_0060D430_Compress(pMapped, &nLength);
+        unsigned char* pData = (unsigned char*)SubTileCompress(pMapped, &nLength);
         D2_ASSERT(pData, 0x434);
         D2_ASSERT(nLength < 0x10000, 0x435);
         FOG_Free(pDst->ptData, ".\\SRC\\Tilecmp.cpp", 0x436, 0);
@@ -838,47 +932,20 @@ void __stdcall TileLibraryCopyHeaders(D2TileLibraryHeaderStrc* pSource, D2TileLi
     *pnSize = nSize;
 }
 
-#pragma pack(push, 1)
-struct d2data_007435C8_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
-
-extern "C" const unsigned char gData_006E5DA0[8]; // 0x006E5DA0
-extern "C" const unsigned char gData_006E5DA8[16]; // 0x006E5DA8
-extern "C" const unsigned char gData_006E5DB8[8]; // 0x006E5DB8
-extern "C" const unsigned char gData_006E5DC0[16]; // 0x006E5DC0
-extern "C" struct d2data_007435C8_t gData_007435C8; // 0x007435C8
-
 extern "C" const unsigned char gData_006E5DA0[8] = { 1, 1, 3, 3, 5, 5, 7, 7 }; // 0x006E5DA0
 #pragma comment(linker, "/alternatename:?gaDirection8To4@@3QBEB=_gData_006E5DA0")
 
-extern "C" const unsigned char gData_006E5DA8[16] = { 0, 0, 2, 2, 4, 4, 6, 6, 8, 8, 0xA, 0xA, 0xC, 0xC, 0xE, 0xE }; // 0x006E5DA8
+extern "C" const unsigned char gData_006E5DA8[16] = { 0, 0, 2, 2, 4, 4, 6, 6, 8, 8, 10, 10, 12, 12, 14, 14 }; // 0x006E5DA8
 #pragma comment(linker, "/alternatename:?gaDirection16To8@@3QBEB=_gData_006E5DA8")
 
 extern "C" const unsigned char gData_006E5DB8[8] = { 3, 3, 5, 5, 7, 7, 1, 1 }; // 0x006E5DB8
 #pragma comment(linker, "/alternatename:?gaDirection8To4Alt@@3QBEB=_gData_006E5DB8")
 
-extern "C" const unsigned char gData_006E5DC0[16] = { 2, 2, 4, 4, 6, 6, 8, 8, 0xA, 0xA, 0xC, 0xC, 0xE, 0xE }; // 0x006E5DC0
+extern "C" const unsigned char gData_006E5DC0[16] = { 2, 2, 4, 4, 6, 6, 8, 8, 10, 10, 12, 12, 14, 14, 0, 0 }; // 0x006E5DC0
 #pragma comment(linker, "/alternatename:?gaDirection16To8Alt@@3QBEB=_gData_006E5DC0")
 
-extern D2CmpSubTilePosStrc gatSubTilePositions[25] = {
-    { 64 },
+D2CmpSubTilePosStrc gatSubTilePositions[25] = { // 0x00743500
+    { 64, 0 },
     { 80, 8 },
     { 96, 16 },
     { 112, 24 },
@@ -903,22 +970,22 @@ extern D2CmpSubTilePosStrc gatSubTilePositions[25] = {
     { 32, 48 },
     { 48, 56 },
     { 64, 64 }
-}; // 0x00743500
+};
 
-extern "C" struct d2data_007435C8_t gData_007435C8 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x007435C8
+extern "C" const char* gData_007435C8[15] = { // 0x007435C8
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
+};

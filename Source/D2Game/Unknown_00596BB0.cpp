@@ -2,6 +2,7 @@
 #include "D2UnitData.h"
 #include "D2GameStrc.h"
 #include "D2MonsterIds.h"
+#include "D2CommonApi.h"
 
 // 0x00596BB0
 bool __fastcall ACT3Q7_StatusFilterCallback(D2QuestDataStrc* pQuest, D2UnitStrc* pPlayer, D2BitBufferStrc* pGlobalFlags, D2BitBufferStrc* pFlags, unsigned char* pStatus)
@@ -17,9 +18,6 @@ struct D2PlayerDataStrc;
 
 D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId); // 0x00543640
 
-int __stdcall QUESTRECORD_GetQuestState(D2BitBufferStrc* pQuestFlags, int nQuestId, int nState); // 0x0065C310
-
-D2PlayerDataStrc* __stdcall UNITS_GetPlayerData(D2UnitStrc* pUnit); // 0x006221A0
 
 enum D2QuestConstants
 {
@@ -28,7 +26,7 @@ enum D2QuestConstants
     QFLAG_PRIMARYGOALDONE = 13,
 };
 
-int __fastcall QUESTS_GetGlobalState(D2GameStrc* pGame, int nQuestId, int nState); // 0x00544760
+#include "D2GameFuncs.h"
 
 // 0x00596BC0
 bool __fastcall ACT1Q7_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId, D2UnitStrc* pPlayer, D2BitBufferStrc* pQuestFlags, D2UnitStrc* pNPC)
@@ -83,7 +81,7 @@ void __fastcall ACT1Q7_Callback00_NpcActivate(); // 0x00596A90
 void __fastcall ACT1Q6_EmptyCallback(); // 0x00596BA0
 
 // 0x00596C40
-void __fastcall sub_00596C40_InitQuestCallbacks(D2QuestData00596C40Strc* pQuestData)
+void __fastcall ACT1Q7_InitQuestData(D2QuestData00596C40Strc* pQuestData)
 {
     memset(&pQuestData->tCallbacks, 0, sizeof(pQuestData->tCallbacks));
     pQuestData->tCallbacks.pfCallbackA0 = (void*)ACT1Q7_Callback00_NpcActivate;
@@ -97,11 +95,4 @@ void __fastcall sub_00596C40_InitQuestCallbacks(D2QuestData00596C40Strc* pQuestD
     pQuestData->pfActiveFilterEC = (void*)ACT1Q7_ActiveFilterCallback;
 }
 
-bool __fastcall ACT3Q7_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId, D2UnitStrc* pPlayer, D2BitBufferStrc* pQuestFlags, D2UnitStrc* pNPC)
-{
-    return false;
-}
 
-void __cdecl sub_005BDB10_Return()
-{
-}

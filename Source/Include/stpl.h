@@ -323,7 +323,7 @@ struct TSGrowableArray : TSFixedArray<T, TCD>
     ~TSGrowableArray()
     {
     }
-    static unsigned int __stdcall RoundUp(unsigned int value, unsigned int align)
+    unsigned int RoundUp(unsigned int value, unsigned int align)
     {
         unsigned int remainder = value % align;
         if (remainder)
@@ -335,10 +335,9 @@ struct TSGrowableArray : TSFixedArray<T, TCD>
         enum { MAXCHUNK = 256 / sizeof(T) > 8 ? 256 / sizeof(T) : 8 };
         if (count < MAXCHUNK)
         {
-            unsigned int result = count;
-            while (result & (result - 1))
-                result &= result - 1;
-            return result < 1 ? 1 : result;
+            while (count & (count - 1))
+                count &= count - 1;
+            return count < 1 ? 1 : count;
         }
         m_chunk = MAXCHUNK;
         return MAXCHUNK;
@@ -351,7 +350,9 @@ struct TSGrowableArray : TSFixedArray<T, TCD>
         {
             if (round)
             {
-                unsigned int chunk = m_chunk ? m_chunk : CalcChunkSize(count);
+                unsigned int chunk = m_chunk;
+                if (!chunk)
+                    chunk = CalcChunkSize(count);
                 count = RoundUp(count, chunk);
             }
             ReallocData(count);

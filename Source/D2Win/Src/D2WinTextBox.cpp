@@ -22,10 +22,14 @@
 #include "D2WinTypes.h"
 
 #include "D2Unicode.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "D2GfxApi.h"
+#include "D2HellApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
-// build: symbol ?gnMouseY@* 0x007D55A8
 #define gnMouseY (gtMousePosition.y)
 
 struct D2CelFileStrc;
@@ -38,7 +42,6 @@ struct D2WinListEntry004FBB30Strc;
 
 struct D2WinControl004FBB30Strc;
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -52,7 +55,6 @@ extern tagPOINT gtMousePosition; // 0x007D55A4
 
 int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
-int __stdcall D2Win_10125(); // 0x00501A40
 
 int __stdcall CONTROL_AppendToList(D2WinTextBoxStrc* pControl); // 0x004F9210
 
@@ -87,7 +89,7 @@ struct D2WinControl004FBB30Strc
 
 int gbTextBoxSmallGap; // 0x00841B70
 
-tagPALETTEENTRY gaPalette_0081E668[256]; // 0x0081E668
+tagPALETTEENTRY gatRGBAPalette[256]; // 0x0081E668
 
 struct D2WinTextBoxLineStrc;
 
@@ -99,7 +101,7 @@ struct D2WinImageStrc;
 
 struct D2CropRectStrc;
 
-struct D2CelContextStrc;
+struct D2GfxDataStrc;
 
 struct D2CharStrc;
 
@@ -113,7 +115,6 @@ struct D2UnitStrc;
 
 struct D2ItemsTxt;
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 enum D2WinControlType
 {
@@ -149,15 +150,12 @@ enum DrawMode
     DRAWMODE_NORMAL = 5,
 };
 
-void __stdcall TEXTURE_CelDrawClipped(D2CelContextStrc* pData, int nXPos, int nYPos, void* pCropRect, int eDrawMode); // 0x004F6510
-
 int __fastcall D2Win_10058_0(D2WinControlStrc* pControl, const Unicode* pText, int nLineNum, int nColumn); // 0x004FB790
 
-int __fastcall D2Win_10055(D2WinTextBoxStrc* pTextBox); // 0x004FBAB0
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 extern D2FontCacheStrc gatFontCache[]; // 0x00841DA8
 
@@ -169,17 +167,12 @@ int __stdcall PALETTE_LoadPaletteFiles(const char* szDatFileName, const char* sz
 
 void __fastcall sub_004FC9B0_SetText(D2WinControlStrc* pControl, const Unicode* pText, int nA, int nB, int nC); // 0x004FC9B0
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource); // 0x00526700
 
-Unicode* __fastcall sub_00526E40_Utf8ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526E40
 
-int __stdcall ITEMSIsA(D2UnitStrc* pItem, int nItemType); // 0x00629BB0
 
-D2ItemsTxt* __stdcall DATATBLS_GetItemsTxtRecord(int nItemId); // 0x006335F0
 
-D2GemsTxt* __stdcall DATATBLS_GetGemsTxtRecord(int nGemId); // 0x006372C0
 
 extern tagPALETTEENTRY gatRGBAPalette[]; // 0x0081E668
 
@@ -199,19 +192,13 @@ void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMa
 
 struct D2WinScrollBarStrc;
 
-extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
 extern "C" int __fastcall SCROLLBAR_GetScrollBarField48(D2WinScrollBarStrc* ptScrollbarData); // 0x00507EF0
 
-extern "C" int __cdecl isspace(int c);                                                                      // 0x00687006
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);                               // 0x0040B380
 
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags);          // 0x00413020
 
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags);                  // 0x00412650
 
 int __fastcall TEXTBOX_AddWrappedText(D2WinTextBoxStrc* pTextBox, const Unicode* wszText, int nColor, int nIndent); // 0x004FCDA0
 
@@ -223,8 +210,6 @@ void __fastcall sub_004FB6A0_ClearText(D2WinControlStrc* pControl);             
 
 void __fastcall SCROLLBAR_Destroy(void* pArg);                                                                   // 0x00507EE0
 
-void __stdcall TEXTURE_CelDraw(D2CelContextStrc* pData, int nXPos, int nYPos, unsigned int dwGamma, int eDrawMode, unsigned char* pPalette); // 0x004F6480
-
 void __fastcall FONT_DrawTextWithBackground(const Unicode* wszText, int nX, int nY, int nWidth, int nColor, int eDrawMode, int nTextColor); // 0x005025C0
 
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
@@ -233,7 +218,7 @@ void __fastcall D2WINFONT_DrawTickerText(const Unicode* wszText, int nX, int nY,
 
 static void TEXTBOX_SetLineGapForFont(int nFont); // 0x004FB5A0
 
-extern "C" const char gszPathFormat_006D4124[];                                                             // 0x006D4124
+extern "C" const char gszPathFormat[];                                                             // 0x006D4124
 
 extern "C" const char gszPalDat[];                                                                  // 0x006DC7FC
 
@@ -241,13 +226,9 @@ void __fastcall D2COMP_InitEmblemColorTables();                                 
 
 struct D2Palette256Strc;
 
-int __cdecl WINDOW_GetWindow(); // 0x004F59A0
-
 extern "C" __declspec(dllimport) int __stdcall MessageBoxA(void* hWnd, const char* szText, const char* szCaption, unsigned int nType); // 0x006CC464
 
 D2ArchiveHandleStrc* __fastcall sub_00517332_LoadMpqFile(const char* szFileName, void* hFile, void* pfShowMessage, int nPriority); // 0x00517332
-
-void __fastcall ARCHIVE_UnloadMPQFile(D2ArchiveHandleStrc* pMPQHandle); // 0x005173AC
 
 extern "C" const char gszExpansionMpq[]; // 0x006CD3A0
 
@@ -276,11 +257,8 @@ extern int gbPaletteFlash; // 0x0072DE50
 
 extern D2Palette256Strc gatShadowsLightGammaPalette[49]; // 0x0081EA68
 
-int __cdecl ARCHIVE_ShowInsertExpansionDiscMessage(); // 0x004FAB00
 
-int __cdecl ARCHIVE_ShowInsertPlayDiscMessage(); // 0x004FAB30
 
-int __cdecl ARCHIVE_ShowInsertCinematicsDisc(); // 0x004FAB60
 
 extern D2ArchiveHandleStrc* gpD2XMusicMPQ; // 0x007D5604
 
@@ -300,7 +278,6 @@ extern D2ArchiveHandleStrc* gpD2PatchMPQ; // 0x007D5630
 
 extern D2ArchiveHandleStrc* gpD2ExpMPQ; // 0x007D5634
 
-int __cdecl ARCHIVE_LoadArchives(); // 0x004FAB90
 
 void __fastcall D2Win_10178_CopyGammaTable(unsigned char (*pRows)[0x100]); // 0x004FB1C0
 
@@ -312,13 +289,9 @@ extern int gbPaletteFlashWaiting; // 0x00841B68
 
 extern unsigned long gdwPaletteFlashTick; // 0x00841B6C
 
-unsigned char* __fastcall D2Win_10175_GetPL2Shift(int nIndex); // 0x004FB0C0
 
-void __stdcall D2Win_10179_UpdatePaletteFlash(); // 0x004FB0D0
 
-void __fastcall D2Win_10176_StartPaletteFlash(int bTimed); // 0x004FB130
 
-void* __stdcall D2Win_GetArchive(); // 0x004FAC80
 
 void __fastcall sub_004E6850_BuildSocketFillerText(D2UnitStrc* pItem, Unicode* pBuffer, int nSize)
 {
@@ -399,7 +372,6 @@ int __fastcall D2Win_10177(unsigned char nAct)
 
     char szPL2Filename[260];
     char szDatFilename[260];
-// build: symbol ?gszDataGlobal@* 0x006D4118
     sprintf(szDatFilename, "%s\\palette\\act%d\\%s", gszDataGlobal, nActNo, "pal.dat");
     sprintf(szPL2Filename, "%s\\palette\\act%d\\%s", gszDataGlobal, nActNo, "pal.pl2");
     const int nResult = PALETTE_LoadPaletteFiles(szDatFilename, szPL2Filename);
@@ -414,9 +386,8 @@ int __stdcall D2Win_10028(const char* pszPalDatFilename, const char* pszPalPL2Fi
     {
         char szPalDatFilename[260];
         char szPalPL2Filename[260];
-// build: symbol ?gszDataGlobal@* 0x006D4118
-        wsprintfA(szPalDatFilename, gszPathFormat_006D4124, gszDataGlobal, gszPalDat);
-        wsprintfA(szPalPL2Filename, gszPathFormat_006D4124, gszDataGlobal, "palette\\act1\\pal.pl2");
+        wsprintfA(szPalDatFilename, gszPathFormat, gszDataGlobal, gszPalDat);
+        wsprintfA(szPalPL2Filename, gszPathFormat, gszDataGlobal, "palette\\act1\\pal.pl2");
         PALETTE_LoadPaletteFiles(szPalDatFilename, szPalPL2Filename);
     }
     else
@@ -442,7 +413,6 @@ static void TEXTBOX_SetLineGapForFont(int nFont)
         const int nOldFont = D2Win_10127_SetFont(nFont);
         if (D2Win_10125() > 13)
         {
-// build: symbol ?gnTextBoxLineGap@* 0x0072DE90
             gnTextBoxLineGap = 8;
         }
         else
@@ -543,7 +513,7 @@ int __fastcall D2Win_10058_0(D2WinTextBoxStrc* pTextBox, const Unicode* pText, i
     if (ptLine)
     {
         D2_ASSERT(ptLine->pColumns[nColumn] == 0, 0x20F);
-        ptLine->pColumns[nColumn] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (sub_00526800(wszText) + 1), ".\\Src\\D2WinTextBox.cpp", 0x210, 0);
+        ptLine->pColumns[nColumn] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (UNICODE_StrLen(wszText) + 1), ".\\Src\\D2WinTextBox.cpp", 0x210, 0);
         sub_005267E0(ptLine->pColumns[nColumn], wszText);
     }
 
@@ -843,7 +813,7 @@ static int TEXTBOX_CountLinesFromCurrent(D2WinTextBoxStrc* pTextBox)
 static int __stdcall TEXTBOX_TruncateTextToWidth(int nWidth, Unicode* wszText)
 {
     int i = 0;
-    const int nLength = sub_00526800(wszText);
+    const int nLength = UNICODE_StrLen(wszText);
     while (i < nLength)
     {
         if (D2Win_10122(wszText, i + 1) >= nWidth)
@@ -857,8 +827,6 @@ static int __stdcall TEXTBOX_TruncateTextToWidth(int nWidth, Unicode* wszText)
     return i;
 }
 
-// build: symbol ??_FUnicode@@QAEXXZ 0x0042F530
-// build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 // 0x004FBF30
 int __fastcall TEXTBOX_Draw(D2WinTextBoxStrc* pTextBox)
 {
@@ -875,9 +843,9 @@ int __fastcall TEXTBOX_Draw(D2WinTextBoxStrc* pTextBox)
     D2CelFileStrc* pCellFile = pTextBox->controlHeader.pCellFile;
     if (pCellFile)
     {
-        D2CelContextStrc tGfxData;
+        D2GfxDataStrc tGfxData;
         memset(&tGfxData, 0, sizeof(tGfxData));
-        tGfxData.pCellFile = pCellFile;
+        tGfxData.pCelFile = pCellFile;
         tGfxData.nDirection = 0;
         tGfxData.nFrame = 0;
         TEXTURE_CelDraw(&tGfxData, pTextBox->controlHeader.nImageX, pTextBox->controlHeader.nImageY - 1, -1, 5, 0);
@@ -886,13 +854,13 @@ int __fastcall TEXTBOX_Draw(D2WinTextBoxStrc* pTextBox)
     TEXTBOX_SetLineGapForFont(pTextBox->eFont);
     D2Win_10127_SetFont(pTextBox->eFont);
 
-    const int v51 = pTextBox->controlHeader.nImageX + pTextBox->nTextInsetX;
+    const int nTextX = pTextBox->controlHeader.nImageX + pTextBox->nTextInsetX;
     int nY = D2Win_10125() + (pTextBox->controlHeader.nImageY - pTextBox->controlHeader.nHeight) + pTextBox->nTextInsetY;
 
     TEXTBOX_SetLineGapForFont(pTextBox->eFont);
 
-    const int v8 = D2Win_10125() + pTextBox->nLineSpacing;
-    int v49 = pTextBox->controlHeader.nHeight - 2 * pTextBox->nTextInsetY;
+    const int nLineHeight = D2Win_10125() + pTextBox->nLineSpacing;
+    int nHeightLeft = pTextBox->controlHeader.nHeight - 2 * pTextBox->nTextInsetY;
     const int nBoxWidth = pTextBox->controlHeader.nWidth - 2 * pTextBox->nTextInsetX;
 
     if (pTextBox->dwTextBoxFlags & 0x40)
@@ -914,7 +882,7 @@ int __fastcall TEXTBOX_Draw(D2WinTextBoxStrc* pTextBox)
         if (pCurrentLine)
         {
             pTextBox->nScrollOffset -= 2;
-            if (pTextBox->nScrollOffset < -v8)
+            if (pTextBox->nScrollOffset < -nLineHeight)
             {
                 pTextBox->nScrollOffset = 0;
                 pTextBox->pCurrentLine = pCurrentLine->pNext;
@@ -936,34 +904,30 @@ int __fastcall TEXTBOX_Draw(D2WinTextBoxStrc* pTextBox)
                     break;
                 }
 
-                int v48 = pTextBox->controlHeader.nWidth;
+                int nColumnWidth = pTextBox->controlHeader.nWidth;
                 if (i < pTextBox->nNumColumns - 1)
                 {
-                    v48 = pTextBox->nColumnOffsets[i + 1];
+                    nColumnWidth = pTextBox->nColumnOffsets[i + 1];
                 }
 
-                const int v16 = pTextBox->nColumnOffsets[i];
+                const int nColumnOffset = pTextBox->nColumnOffsets[i];
                 int nX;
-                if (v16)
+                if (nColumnOffset)
                 {
-                    nX = v16 + v51;
+                    nX = nColumnOffset + nTextX;
 
-                    int v18;
                     if (i + 1 < pTextBox->nNumColumns)
                     {
-                        v18 = pTextBox->nColumnOffsets[i + 1] - v16;
-                        v48 = v18;
+                        nColumnWidth = pTextBox->nColumnOffsets[i + 1] - nColumnOffset;
                     }
                     else
                     {
-                        v48 = pTextBox->controlHeader.nWidth - v16;
-                        v18 = v48;
+                        nColumnWidth = pTextBox->controlHeader.nWidth - nColumnOffset;
                     }
 
                     if (pTextBox->nColumnAlignFlags[i] & 2)
                     {
-                        // the original keeps the column pointer in a stack slot and reloads it here; a plain read is taken again from pLine->pColumns[i]
-                        int nOffset = (v18 - D2Win_10121_GetTextWidth(*(const Unicode* volatile*)&wszColumn)) / 2;
+                        int nOffset = (nColumnWidth - D2Win_10121_GetTextWidth(wszColumn)) / 2;
                         if (nOffset < 0)
                         {
                             nOffset = 0;
@@ -977,7 +941,7 @@ int __fastcall TEXTBOX_Draw(D2WinTextBoxStrc* pTextBox)
                         {
                             nTextWidth = 0;
                         }
-                        nX += v48 - nTextWidth;
+                        nX += nColumnWidth - nTextWidth;
                     }
                 }
                 else if (pTextBox->dwTextBoxFlags & 2)
@@ -1000,7 +964,7 @@ int __fastcall TEXTBOX_Draw(D2WinTextBoxStrc* pTextBox)
                 }
                 else
                 {
-                    nX = v51;
+                    nX = nTextX;
                 }
 
                 Unicode wszText[1024];
@@ -1009,7 +973,7 @@ int __fastcall TEXTBOX_Draw(D2WinTextBoxStrc* pTextBox)
                     wszText[j].wChar = 0;
                 }
                 sub_005267E0(wszText, pLine->pColumns[i]);
-                TEXTBOX_TruncateTextToWidth(v48, wszText);
+                TEXTBOX_TruncateTextToWidth(nColumnWidth, wszText);
 
                 if (pTextBox->nCurrentLine == nCounter + pTextBox->nLine && (pTextBox->dwTextBoxFlags & 1))
                 {
@@ -1037,13 +1001,13 @@ int __fastcall TEXTBOX_Draw(D2WinTextBoxStrc* pTextBox)
                 }
             }
 
-            const int v34 = (!pLine->bWrappedSegment ? pTextBox->nLineGap : pTextBox->nWrappedLineGap) + v8;
+            const int nAdvance = (!pLine->bWrappedSegment ? pTextBox->nLineGap : pTextBox->nWrappedLineGap) + nLineHeight;
             ++nCounter;
-            nY += v34;
-            v49 -= v34;
+            nY += nAdvance;
+            nHeightLeft -= nAdvance;
             pLine = pLine->pNext;
         }
-        while (pLine && v49 >= (!pLine->bWrappedSegment ? pTextBox->nLineGap : pTextBox->nWrappedLineGap) + v8);
+        while (pLine && nHeightLeft >= (!pLine->bWrappedSegment ? pTextBox->nLineGap : pTextBox->nWrappedLineGap) + nLineHeight);
     }
 
     D2Win_10127_SetFont(1);
@@ -1094,7 +1058,6 @@ int __stdcall TEXTBOX_HandleVirtualKeyInput(SMSGHANDLER_PARAMS* pMsg)
     D2_ASSERT(pTextBox->controlHeader.eType == D2WIN_TEXTBOX, 0x502);
 
     if (!(pTextBox->controlHeader.dwFlags & gdwBitMasks_006CE268[2]) || !(pTextBox->controlHeader.dwFlags & gdwBitMasks_006CE268[0])
-// build: symbol ?CONTROL_GetFocusedEditBox@* 0x004F9200
         || pTextBox->nNumLines < 1 || pTextBox->nCurrentLine == -1 || CONTROL_GetFocusedEditBox())
     {
         return 0;
@@ -1208,8 +1171,6 @@ int __fastcall D2Win_10191(D2WinTextBoxStrc* ptTextData, int nMaxSteps)
     return SCROLLBAR_SetMaxSteps(ptTextData->pScrollBar, nMaxSteps);
 }
 
-// build: symbol ??_FUnicode@@QAEXXZ 0x0042F530
-// build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 // 0x004FC620
 int __fastcall D2Win_10192(D2WinTextBoxStrc* ptTextData)
 {
@@ -1270,7 +1231,7 @@ static inline int sub_B03_AddLineRecord(D2WinTextBoxStrc* pTextBox, const Unicod
     Unicode* pDest;
     if (nIndent == 2)
     {
-        pLine->pColumns[0] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (sub_00526800(pText) + 6), ".\\Src\\D2WinTextBox.cpp", 0x161, 0);
+        pLine->pColumns[0] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (UNICODE_StrLen(pText) + 6), ".\\Src\\D2WinTextBox.cpp", 0x161, 0);
         pLine->pColumns[0][4].wChar = 0x20;
         pLine->pColumns[0][3].wChar = pLine->pColumns[0][4].wChar;
         pLine->pColumns[0][2].wChar = pLine->pColumns[0][3].wChar;
@@ -1280,7 +1241,7 @@ static inline int sub_B03_AddLineRecord(D2WinTextBoxStrc* pTextBox, const Unicod
     }
     else
     {
-        pLine->pColumns[0] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (sub_00526800(pText) + 1), ".\\Src\\D2WinTextBox.cpp", 0x167, 0);
+        pLine->pColumns[0] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (UNICODE_StrLen(pText) + 1), ".\\Src\\D2WinTextBox.cpp", 0x167, 0);
         pDest = pLine->pColumns[0];
     }
     sub_005267E0(pDest, pText);
@@ -1472,7 +1433,7 @@ int __fastcall D2Win_10051(D2WinTextBoxStrc* ptTextData, const Unicode* wszText,
     D2WinTextBoxLineStrc* pLine = (D2WinTextBoxLineStrc*)FOG_Alloc(sizeof(D2WinTextBoxLineStrc), gszD2WinTextBoxCpp, 0x15D, 0);
     if (nIndent == 2)
     {
-        pLine->pColumns[0] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (sub_00526800(pText) + 6), gszD2WinTextBoxCpp, 0x161, 0);
+        pLine->pColumns[0] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (UNICODE_StrLen(pText) + 6), gszD2WinTextBoxCpp, 0x161, 0);
         pLine->pColumns[0][4].wChar = 0x20;
         pLine->pColumns[0][3].wChar = pLine->pColumns[0][4].wChar;
         pLine->pColumns[0][2].wChar = pLine->pColumns[0][3].wChar;
@@ -1482,7 +1443,7 @@ int __fastcall D2Win_10051(D2WinTextBoxStrc* ptTextData, const Unicode* wszText,
     }
     else
     {
-        pLine->pColumns[0] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (sub_00526800(pText) + 1), gszD2WinTextBoxCpp, 0x167, 0);
+        pLine->pColumns[0] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (UNICODE_StrLen(pText) + 1), gszD2WinTextBoxCpp, 0x167, 0);
         sub_005267E0(pLine->pColumns[0], pText);
     }
 
@@ -1540,7 +1501,7 @@ int __fastcall D2Win_10198(D2WinTextBoxStrc* ptTextData, const Unicode* pText, i
     D2_ASSERT(ptTextData, 0x1A7);
     D2_ASSERT(ptTextData->controlHeader.eType == 4, 0x1A8);
 
-    const int nSize = sizeof(Unicode) * (sub_00526800(pText) + 1);
+    const int nSize = sizeof(Unicode) * (UNICODE_StrLen(pText) + 1);
     for (int i = 0; i < nCount; ++i)
     {
         D2WinTextBoxLineStrc* pLine = (D2WinTextBoxLineStrc*)FOG_Alloc(sizeof(D2WinTextBoxLineStrc), ".\\Src\\D2WinTextBox.cpp", 0x1AF, 0);
@@ -1576,7 +1537,6 @@ int __fastcall D2Win_10198(D2WinTextBoxStrc* ptTextData, const Unicode* pText, i
     return 1;
 }
 
-// build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 // 0x004FCD40
 int __fastcall D2Win_10057(D2WinControlStrc* pControl, const char* szText, int nLineNum, int nColumn)
 {
@@ -1611,7 +1571,7 @@ int __fastcall TEXTBOX_AddWrappedText(D2WinTextBoxStrc* pTextBox, const Unicode*
     sub_005267E0(pText, wszText);
 
     int nSplit = 0;
-    const int nLength = sub_00526800(pText);
+    const int nLength = UNICODE_StrLen(pText);
     Unicode* pChar = pText;
     Unicode* pSpace = 0;
     while (nSplit < nLength)
@@ -1677,8 +1637,6 @@ void __fastcall D2Win_10044(D2WinControlStrc* pControl, const Unicode* pText)
     sub_004FC9B0_SetText(pControl, pText, 4, 0, 0);
 }
 
-// build: symbol ?IMAGE_DrawTiled@* 0x004FD340
-
 // 0x004FFE10
 int __fastcall D2Win_10076(D2WinControlStrc* pControl, const char* szText)
 {
@@ -1723,6 +1681,8 @@ struct d2data_0072DE54_t
 extern "C" const struct d2data_006DC7FC_t gData_006DC7FC; // 0x006DC7FC
 extern "C" struct d2data_0072DE54_t gData_0072DE54; // 0x0072DE54
 
+extern int gnTextBoxLineGap = 4; // 0x0072DE90
+
 extern "C" const struct d2data_006DC7FC_t gData_006DC7FC = {
     {
         0x70, 0x61, 0x6C, 0x65, 0x74, 0x74, 0x65, 0x5C, 0x61, 0x63, 0x74, 0x31, 0x5C, 0x70, 0x61, 0x6C,
@@ -1753,5 +1713,3 @@ extern "C" struct d2data_0072DE54_t gData_0072DE54 = {
     (const void*)"Unknown",
     (const void*)"14"
 }; // 0x0072DE54
-
-extern int gnTextBoxLineGap = 4; // 0x0072DE90

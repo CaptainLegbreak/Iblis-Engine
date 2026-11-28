@@ -1,10 +1,16 @@
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
 #include "D2CelContext.h"
 #include "D2ClientGfx.h"
 #include "D2Txt.h"
 #include "D2ClientTypes.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
+#include "D2HellApi.h"
 struct D2UnitStrc;
 
 #define UNIT_PLAYER 0
@@ -29,8 +35,6 @@ struct D2GfxHeaderStrc;
 
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 extern "C" size_t __cdecl strlen(const char* szString);
 extern "C" char* __cdecl strcpy(char* szDest, const char* szSource);
@@ -38,29 +42,11 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 extern "C" char* __cdecl strncpy(char* szDest, const char* szSource, unsigned int nCount); // 0x00687330
 extern "C" char* __cdecl _strlwr(char* szString); // 0x006864E1
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* szFormat, ...); // 0x006CC468
-unsigned int __stdcall SStrHash(const char* szString, unsigned int nFlags, unsigned int nSeed); // 0x00413CE0
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
-void* __fastcall ARCHIVE_AllocateBufferAndReadFile(void* hArchive, const char* szFileName, unsigned int* pnSize, const char* szFile, int nLine); // 0x00517079
-D2GfxDataStrc* __fastcall CUNIT_GetGfxData(D2UnitStrc* pUnit); // 0x00463E10
-D2UnitStrc* __fastcall CUNIT_GetOwnerUnit(D2UnitStrc* pUnit); // 0x004639D0
-int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
-int __fastcall GFX_GetConvertedUnitType(D2UnitStrc* pUnit); // 0x0046D9F0
+D2UnitGfxDataStrc* __fastcall CUNIT_GetGfxData(D2UnitStrc* pUnit); // 0x00463E10
 int __fastcall GFX_GetNodeValue(D2UnitStrc* pUnit, int nMode); // 0x0046E570
-D2GfxListNodeStrc* __fastcall GFXUTIL_FindGfxListNode(D2UnitStrc* pUnit, int nId, int nMode); // 0x0046E5A0
-void __fastcall GFX_FreeGfxNodes(D2UnitStrc* pUnit); // 0x0046EC80
-void __fastcall GFX_FillGfxEntries(D2UnitStrc* pUnit, unsigned char nValue); // 0x0046F020
-int __fastcall GFXUTIL_IsPlayerMonsterOrObject(D2UnitStrc* pUnit); // 0x004DB180
-unsigned char __fastcall GFXUTIL_GetGfxEntryByte(D2UnitStrc* pUnit, int nIndex); // 0x004DB1A0
-void __fastcall GFXUTIL_SetGfxEntryByte(D2UnitStrc* pUnit, int nIndex, unsigned char nValue); // 0x004DB1C0
 extern "C" D2GfxLayerHeaderStrc* __fastcall GFXUTIL_identity(void* pGfx); // 0x004DB040
-int __fastcall GFXUTIL_InitMonsterCelContext(D2CelContextStrc* pContext, int nA, int nB, unsigned char nLayer, int nMode, unsigned int dwCode, D2HashedFileEntryStrc* pEntry, D2MonCofInfoStrc* pInfo, D2MonStatsTxt* pMonStats, int nIndex); // 0x004DBCF0
-int __stdcall sub_006001F0(D2CelContextStrc* pContext, int nArg2, int nArg3); // 0x006001F0
-int __stdcall STATES_CheckStateMaskOnUnit(D2UnitStrc* pUnit, int nStateMask); // 0x0063A7B0
-D2ObjectsTxt* __stdcall DATATBLS_GetObjectsTxtRecord(int nObjectId); // 0x00640E90
-void __stdcall D2COMMON_11013_ConvertMode(D2UnitStrc* pUnit, int* pType, int* pClass, int* pMode, const char* szFile, int nLine); // 0x00645270
-void __stdcall D2Common_10885_COMPOSIT_unk(D2UnitStrc* pUnit, char* szPath, int* pWeaponClassCode, int bAddPathPrefix, int a5, D2InventoryStrc* pInventory, int nAnimMode); // 0x0064FA00
-int __stdcall UNITS_GetAnimOrSeqMode(D2UnitStrc* pUnit); // 0x00621190
+int __fastcall GFXUTIL_InitMonsterCelContext(D2GfxDataStrc* pContext, int nA, int nB, unsigned char nLayer, int nMode, unsigned int dwCode, D2HashedFileEntryStrc* pEntry, D2MonCofInfoStrc* pInfo, D2MonStatsTxt* pMonStats, int nIndex); // 0x004DBCF0
+int __stdcall sub_006001F0(D2GfxDataStrc* pContext, int nArg2, int nArg3); // 0x006001F0
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 extern D2CofModeEntryStrc gaCofModeCodes[]; // 0x00712B04
@@ -72,11 +58,7 @@ static int GFX_LoadGfxNodeSetByte(D2UnitStrc* pUnit, int nIndex); // 0x0046EA50
 
 struct D2GfxHeaderStrc { int unknown00[2],left,right,top,bottom; };
 
-extern int gnScreenWidth; // 0x0071146C
-D2GfxListNodeStrc* __fastcall GFXUTIL_FindGfxListNode(D2UnitStrc* pUnit, int nId, int nMode); // 0x0046E5A0
-void* __fastcall GFX_LoadUnitGfxNode(D2UnitStrc*,int,int); // 0x0046FA80
 D2GfxHeaderStrc* __fastcall sub_004DB040_GetLayerHeader(void*); // 0x004DB040
-int __stdcall COMPOSIT_GetWeaponClassId(D2UnitStrc*,D2InventoryStrc*,int*,int,int); // 0x0064F380
 
 inline int STATES_IsUnitShapeShiftedInl(D2UnitStrc* pUnit)
 {
@@ -103,19 +85,9 @@ inline D2MonStats2Txt* DATATBLS_GetMonStats2TxtRecordInl(int nRecordId)
 }
 
 // 0x0046DB90
-static unsigned int GFX_HashName(const char* szName)
-{
-    D2_ASSERT(strlen(szName) < 8, 0x79);
-    const unsigned int nHash = SStrHash(szName, 1, 0);
-    unsigned int nBucket = (nHash >> 8) ^ nHash;
-    nBucket = (nBucket >> 8) ^ nHash;
-    nBucket = (nBucket >> 8) ^ nHash;
-    return nBucket & 0x1FF;
-}
 
 void __fastcall GFX_GetBaseName(const char* szPath, char* szDest); // 0x0046DBF0
 
-D2HashedFileEntryStrc* __stdcall GFX_FindHashedEntry(D2HashedFileStrc* pTable, const char* szPath); // 0x0046DC40
 
 D2HashedFileEntryStrc* __stdcall GFX_LoadHashedEntry(D2HashedFileStrc* pTable, const char* szPath); // 0x0046DCC0
 
@@ -149,7 +121,7 @@ static int __stdcall GFX_LoadGfxNode(int* pValue, int nIndex, D2UnitStrc* pUnit)
         return 0;
     }
 
-    D2GfxDataStrc* pGfxData = CUNIT_GetGfxData(pUnit);
+    D2UnitGfxDataStrc* pGfxData = CUNIT_GetGfxData(pUnit);
     if (!pGfxData)
     {
         return 0;
@@ -158,7 +130,6 @@ static int __stdcall GFX_LoadGfxNode(int* pValue, int nIndex, D2UnitStrc* pUnit)
     D2GfxListNodeStrc* pNode;
     if (GFX_FindGfxNode(nId, &pNode, pValue, pUnit, nIndex))
     {
-// build: symbol ?gszGfxFile@* 0x006D6C1C
         D2GfxListNodeStrc* pNewNode = (D2GfxListNodeStrc*)FOG_Alloc(sizeof(D2GfxListNodeStrc), gszGfxFile, 0x434, 0);
         D2_ASSERT(pNewNode, 0x435);
         memset(pNewNode, 0, sizeof(D2GfxListNodeStrc));
@@ -220,7 +191,7 @@ static void __stdcall GFX_LoadMonsterCof(D2MonStatsTxt* pMonStatsTxtRecord, int 
     D2_ASSERT(pData, 0xEC9);
     D2GfxLayerHeaderStrc* pHeader = GFXUTIL_identity(pData);
     D2_ASSERT(pHeader, 0xECB);
-    unsigned char* pOrder = sub_004DB110_GetLayerOrder(pData, 0, 0);
+    unsigned char* pOrder = GFXUTIL_GetLayerOrder(pData, 0, 0);
     D2_ASSERT(pOrder, 0xED0);
 
     for (int i = 0; i < pHeader->nLayers; ++i)
@@ -231,7 +202,7 @@ static void __stdcall GFX_LoadMonsterCof(D2MonStatsTxt* pMonStatsTxtRecord, int 
         {
             for (unsigned int j = 0; j < pInfo->nCount; ++j)
             {
-                D2CelContextStrc tContext;
+                D2GfxDataStrc tContext;
                 memset(&tContext, 0, sizeof(tContext));
                 if (GFXUTIL_InitMonsterCelContext(&tContext, 0, 0, nLayer, nMode, dwCode, pEntry, pInfo, pMonStatsTxtRecord, j))
                 {
@@ -240,7 +211,7 @@ static void __stdcall GFX_LoadMonsterCof(D2MonStatsTxt* pMonStatsTxtRecord, int 
                         if (!sub_006001F0(&tContext, 1, 1))
                         {
                             tContext.nArg34 = 0;
-                            sub_006004E0_LoadSprite(&tContext);
+                            D2CMPSpriteRequest(&tContext);
                         }
                     }
                     else
@@ -252,7 +223,7 @@ static void __stdcall GFX_LoadMonsterCof(D2MonStatsTxt* pMonStatsTxtRecord, int 
         }
         else
         {
-            D2CelContextStrc tContext;
+            D2GfxDataStrc tContext;
             memset(&tContext, 0, sizeof(tContext));
             if (GFXUTIL_InitMonsterCelContext(&tContext, 0, 0, nLayer, nMode, dwCode, pEntry, pInfo, pMonStatsTxtRecord, 0))
             {
@@ -261,7 +232,7 @@ static void __stdcall GFX_LoadMonsterCof(D2MonStatsTxt* pMonStatsTxtRecord, int 
                     if (!sub_006001F0(&tContext, 1, 1))
                     {
                         tContext.nArg34 = 0;
-                        sub_006004E0_LoadSprite(&tContext);
+                        D2CMPSpriteRequest(&tContext);
                     }
                 }
                 else
@@ -288,10 +259,8 @@ void __fastcall GFX_LoadMonsterCofs(int nMonsterId, int bLoadNow)
         return;
     }
 
-// build: symbol ?gnCofModeCount@* 0x00712B00
     for (int i = 0; i < gnCofModeCount; ++i)
     {
-// build: symbol ?gaCofModes@* 0x00712AC4
         const int nMode = gaCofModes[i];
         if (pMonStats2TxtRecord->nModeFlags[nMode >> 3] & gdwBitMasks[nMode & 7])
         {
@@ -305,9 +274,7 @@ void __fastcall GFX_LoadMonsterCofs(int nMonsterId, int bLoadNow)
 
 void GFX_LoadMonsterModeGfx(D2UnitStrc* pUnit, int nIndex); // 0x0046F9E0
 
-void* __fastcall GFX_LoadUnitGfxNode(D2UnitStrc* pUnit, int nWeaponClassId, int nIndex); // 0x0046FA80
 
-void __fastcall GFX_RefreshUnitGfx(D2UnitStrc* pUnit, int nArg); // 0x00470610
 
 static inline int IsShapeShifted(D2UnitStrc* unit) { if(!unit) return 0; return (unit->dwFlagEx>>3)&1; }
 
@@ -320,7 +287,7 @@ static inline D2InventoryStrc* GetInventory(D2UnitStrc* unit) {
 }
 
 static inline void* GetModeGfx(D2UnitStrc* unit,int mode) {
- D2GfxDataStrc* data=CUNIT_GetGfxData(unit);
+ D2UnitGfxDataStrc* data=CUNIT_GetGfxData(unit);
  if(!data) return 0;
  D2GfxListNodeStrc* node=data->pList;
  if(!node) return 0;

@@ -8,40 +8,23 @@
 #include "D2GameObjs.h"
 #include "D2GameTypes.h"
 #include "D2LanguageNames.h"
-// build: symbol _gaszLanguageNames 0x0073E810
+#include "D2CommonApi.h"
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-void __fastcall ACT3Q0_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B6ED0
+#include "D2GameFuncs.h"
 
-void __fastcall ACT3Q0_Callback00_NpcActivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B6F20
-
-void __fastcall ACT3Q0_Callback13_PlayerStartedGame(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B6FD0
-
-extern char gpAct3Q0NpcMessages[]; // 0x0073EAA0
 
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 bool __fastcall ACT3Q7_StatusFilterCallback(D2QuestDataStrc* pQuest, D2UnitStrc* pPlayer, D2BitBufferStrc* pGlobalFlags, D2BitBufferStrc* pFlags, unsigned char* pStatus); // 0x005B6F90
 
-bool __fastcall ACT3Q0_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId, D2UnitStrc* pPlayer, D2BitBufferStrc* pQuestFlags, D2UnitStrc* pNPC); // 0x005B6FA0
-
-D2PlayerDataStrc* __stdcall UNITS_GetPlayerData(D2UnitStrc* pUnit); // 0x006221A0
 
 inline D2BitBufferStrc* PLAYER_GetQuestFlags(D2GameStrc* pGame, D2UnitStrc* pPlayer)
 {
     return UNITS_GetPlayerData(pPlayer)->pQuestData[pGame->nDifficulty];
 }
 
-void __stdcall QUESTRECORD_SetQuestState(D2BitBufferStrc* pQuestFlags, int nQuestId, int nState); // 0x0065C360
-
-void __fastcall QUESTS_SetGlobalState(D2GameStrc* pGame, int nQuestId, int nState);                         // 0x00544720
-
-int __stdcall QUESTRECORD_GetQuestState(D2BitBufferStrc* pQuestFlags, int nQuestId, int nState); // 0x0065C310
-
-void __fastcall QUESTS_InitScrollTextChain(D2QuestDataStrc* pQuest, D2TextHeaderStrc* pTextControl, int nNPCID, int nIndex); // 0x00543790
-
-void __fastcall PLRINTRO_SetQuestIntroFlag(D2UnitStrc* pUnit, D2GameStrc* pGame, int nNpcId); // 0x00572360
 
 // 0x005B6C60
 void __fastcall ACT3Intro_Callback11_ScrollMessage(void* pUnused, D2QuestArgStrc* pArgs)
@@ -77,7 +60,6 @@ void __fastcall ACT3Intro_Callback11_ScrollMessage(void* pUnused, D2QuestArgStrc
     }
 }
 
-int __fastcall PLRINTRO_GetQuestIntroFlag(D2UnitStrc* pUnit, D2GameStrc* pGame, int nNpcId); // 0x005723C0
 
 // 0x005B6D30
 void __fastcall ACT3Intro_Callback00_NpcActivate(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg)
@@ -139,7 +121,6 @@ bool __fastcall ACT3Intro_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpc
     return false;
 }
 
-extern char gpAct3IntroNpcMessages[];                                                                       // 0x0073E850
 
 void __fastcall ACT3Intro_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B6C60
 
@@ -249,9 +230,6 @@ void __fastcall ACT3Q0_InitQuestData(D2QuestDataStrc* pQuestData)
     pQuestData->pfActiveFilter = ACT3Q0_ActiveFilterCallback;
 }
 
-
-extern "C" int gData_0073F188[6]; // 0x0073F188
-extern "C" int gData_007401B8[6]; // 0x007401B8
 
 extern char gpAct3IntroNpcMessages[592] = {
     41, 1, 0, 0, -59, 1, 0, 0, 0, 0, 0, 0, -11, 0, 0, 0,
@@ -375,9 +353,6 @@ extern char gpAct3Q1NpcMessages[1176] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     2, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0, 2
 }; // 0x0073ECF0
-
-extern "C" int gData_0073F188[6] = { -1, 0, 1, 2, 3, 4 }; // 0x0073F188
-#pragma comment(linker, "/alternatename:?gnAct3Q1NpcMessageIndices@@3PAHA=_gData_0073F188")
 
 extern char gpAct3Q2NpcMessages[2552] = {
     -11, 0, 0, 0, 31, 2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
@@ -620,9 +595,6 @@ extern char gpAct3Q3NpcMessages[1568] = {
     0, 0, 0, 0, 2
 }; // 0x0073FB98
 
-extern "C" int gData_007401B8[6] = { -1, 0, 1, 2, 3, 4 }; // 0x007401B8
-#pragma comment(linker, "/alternatename:?gnAct3Q3NpcMessageIndices@@3PAHA=_gData_007401B8")
-
 extern char gpAct3Q4NpcMessages[1768] = {
     -11, 0, 0, 0, 15, 2, 0, 0, 1, 0, 0, 0, -4, 0, 0, 0,
     16, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -817,6 +789,8 @@ extern char gpAct3Q5NpcMessages[1568] = {
 
 extern unsigned int gnA3Q5NpcActivateIndices[8] = { 0xFFFFFFFF, 0, 1, 2, 3, 4, 5, 6 }; // 0x00740ED8
 
+extern unsigned gnAct3Q6NpcMessageIndices[8] = { 0xFFFFFFFF, 0, 1, 2, 3, 4, 5, 6 }; // 0x00741518
+
 extern "C" char gpAct3Q6NpcMessages[1568] = {
     -1, 0, 0, 0, 116, 2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -907,8 +881,6 @@ extern "C" char gpAct3Q6NpcMessages[1568] = {
     0, 0, 0, 0, 2
 }; // 0x00740EF8
 
-extern unsigned gnAct3Q6NpcMessageIndices[8] = { 0xFFFFFFFF, 0, 1, 2, 3, 4, 5, 6 }; // 0x00741518
-
 extern D2CoordStrc gaSpawnOffsets[8] = {
     { -3, -3 },
     { -3 },
@@ -919,3 +891,7 @@ extern D2CoordStrc gaSpawnOffsets[8] = {
     { 3 },
     { -3, 3 }
 }; // 0x00741538
+
+extern int gnAct3Q1NpcMessageIndices[6] = { -1, 0, 1, 2, 3, 4 }; // 0x0073F188
+
+extern int gnAct3Q3NpcMessageIndices[6] = { -1, 0, 1, 2, 3, 4 }; // 0x007401B8

@@ -16,9 +16,6 @@ void __cdecl sub_00401A60_UnlockSymbols()
     LeaveCriticalSection(&gtSymbolLock);
 }
 
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
 // 0x00402530
 int __stdcall sub_00402530_UnloadModule(unsigned __int64 qwBaseOfDll)
 {

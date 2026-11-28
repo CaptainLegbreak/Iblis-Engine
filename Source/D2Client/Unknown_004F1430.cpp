@@ -1,5 +1,6 @@
 #include "D2SkillIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Constants.h"
 #include "D2Structs.h"
 #include "D2Path.h"
@@ -9,6 +10,8 @@
 #include "D2Txt.h"
 #include "D2ItemsWorld.h"
 #include "D2GameRecords.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
 
 #define D2_MAX(a, b) ((a) > (b) ? (a) : (b))
 #define D2_MIN(a, b) ((a) < (b) ? (a) : (b))
@@ -28,31 +31,15 @@ struct D2MissileStrc;
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 D2UnitStrc* __fastcall MISSILE_SubmitMissileRequest(D2UnitStrc* pUnit, int nRequest, int nX, int nY, int nA, int nB); // 0x004CDB40
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
-void __stdcall MISSILE_SetTotalFrames(D2UnitStrc* pMissile, int nTotalFrames); // 0x0064A2B0
-void __stdcall MISSILE_SetCurrentFrame(D2UnitStrc* pMissile, int nCurrentFrame); // 0x0064A330
 void __stdcall UNITFINDS_InitializeUnitFindData(void* pMemPool, D2UnitFindDataStrc* pUnitFindData, D2ActiveRoomStrc* pRoom, int nX, int nY, int nSize, void* pfnUnitTest, D2UnitFindArgStrc* pUnitFindArg); // 0x0065A950
-void __fastcall GFX_AddUnitOverlay(D2UnitStrc* pUnit, int nOverlay, int nArg3, int nArg4, int nArg5, int nArg6, int nArg7, int nArg8); // 0x00470390
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
 
 typedef void (__fastcall* MissileInitFunc)(D2UnitStrc*, int);
 
 
 unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646CA0
-void __stdcall MISSILE_SetTargetX(D2UnitStrc* pMissile, int nTargetX); // 0x0064A710
-void __stdcall MISSILE_SetTargetY(D2UnitStrc* pMissile, int nTargetY); // 0x0064A760
 D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams); // 0x004CD540
-void __stdcall GFXUTIL_SetMotionVectorA(D2UnitStrc* pUnit, int nX, int nY, int nZ); // 0x004DA1D0
-int __stdcall DUNGEON_IsRoomInTown(D2ActiveRoomStrc* pRoom); // 0x0061AB00
-void* __fastcall UNITSND_FindUnitSfxInRange(D2UnitStrc* pUnit, int nId); // 0x004CA900
 void __fastcall sub_004BA790_ReleaseUnitSfx(void* pUnitSfx, D2UnitStrc* pUnit, int bForce); // 0x004BA790
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4); // 0x004B9A00
-int __fastcall ITEM_GetTargetPosition(D2UnitStrc* pUnit, int* pX, int* pY); // 0x004C52E0
-D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc* pUnit); // 0x004648F0
-int __fastcall CUNIT_IsHostileTo(D2UnitStrc* pUnit, D2UnitStrc* pOther); // 0x00465C60
 
 enum D2C_SkillsTxtFlagIndices
 {
@@ -60,24 +47,10 @@ enum D2C_SkillsTxtFlagIndices
 };
 
 extern unsigned int gdwBitMasks[]; // 0x006CE268
-D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitAndState(D2UnitStrc* pUnit, int nState); // 0x006256B0
-int __stdcall STATLIST_GetStatValue(D2StatListStrc* pStatList, int nStatId, unsigned short nLayer); // 0x00625D00
-int __fastcall SKILLSMON_StartStateList(D2UnitStrc* pUnit, int nSkillId, int nArg); // 0x004F2450
 extern int gaMissileRingX[]; // 0x006DBFE8
 extern int gaMissileRingY[]; // 0x006DC0E8
-void __fastcall SKILLDESC_MissileInit(D2UnitStrc* pMissile, int nArg); // 0x004F2AC0
-void __fastcall SEED_InitLowSeed(D2SeedStrc* pSeed, unsigned int nLowSeed); // 0x00650E40
-int __fastcall SKILLDESC_GetSkillParamTwo(int nSkillId); // 0x004EFC20
-int __fastcall SKILLDESC_GetCltMissileId(D2UnitStrc* pUnit, int nSkillId); // 0x004F21B0
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 extern int gaMissileRing2X[]; // 0x006DC228
 extern int gaMissileRing2Y[]; // 0x006DC328
-void __fastcall SKILLDESC_InitCurvingMissilePath(D2UnitStrc* pMissile, int nArg); // 0x004F2BE0
-unsigned int __fastcall SEED_GetLowSeed(D2SeedStrc* pSeed); // 0x00650E50
-D2SkillStrc* __stdcall UNITS_GetUsedSkill(D2UnitStrc* pUnit); // 0x00620250
-void __stdcall SKILLS_SetParam1(D2SkillStrc* pSkill, int nValue); // 0x00644560
-void __stdcall SKILLS_SetParam2(D2SkillStrc* pSkill, int nValue); // 0x006445A0
 
 inline D2SkillsTxt* SKILLS_GetSkillsTxtRecord(int nSkillId)
 {
@@ -252,9 +225,7 @@ static void __stdcall SKILLDESC_CreateSprayMissile(D2SkillsTxt* pSkillsTxt, int 
     const int nIndex = SEED_RollRandomNumber_Spray(&pUnit->pSeed) & 7;
     const int nUnitX = CLIENTS_GetUnitX_Spray(pUnit);
     const int nUnitY = CLIENTS_GetUnitY_Spray(pUnit);
-// build: symbol ?gaSprayOffsetX@* 0x006DBFA8
     const int nOffsetX = gaSprayOffsetX[nIndex];
-// build: symbol ?gaSprayOffsetY@* 0x006DBFC8
     const int nOffsetY = gaSprayOffsetY[nIndex];
     const int nX = nUnitX + nOffsetX;
     const int nY = nUnitY + nOffsetY;

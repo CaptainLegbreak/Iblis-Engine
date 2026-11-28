@@ -44,11 +44,11 @@ struct D2CmpTileInfoStrc
 
 struct D2CmpSubTileHeaderStrc
 {
-    int unk0x00; // 0x00
-    int unk0x04; // 0x04
+    int unused0x00; // 0x00
+    int unused0x04; // 0x04
     unsigned short nFlags; // 0x08
     unsigned short nLength; // 0x0A
-    int unk0x0C; // 0x0C
+    int unused0x0C; // 0x0C
 };
 
 struct D2CmpSpriteContextStrc
@@ -74,7 +74,7 @@ struct D2CmpSpriteContextStrc
     const char* pName; // 0x2C
     int nFrames; // 0x30
     void* pCel; // 0x34
-    int unk0x38; // 0x38
+    int nDrawFlag; // 0x38
     void* pFrame; // 0x3C
     int nDirection; // 0x40
     unsigned int dwGfxFlags; // 0x44
@@ -119,12 +119,12 @@ struct D2CmpTileBlockStrc
     };
     union
     {
-        int unk0x28[7]; // 0x28
+        int unused0x28[7]; // 0x28
         D2CmpTileInfoStrc tInfo; // 0x28
     };
-    unsigned short unk0x44; // 0x44
+    unsigned short unused0x44; // 0x44
     unsigned char nFlags; // 0x46
-    unsigned char unk0x47; // 0x47
+    unsigned char pad0x47; // 0x47
     int nSubsOffset; // 0x48
     int nSubBytes; // 0x4C
     int nSubs; // 0x50
@@ -148,8 +148,8 @@ struct D2CmpSpriteEntryStrc
     unsigned char nFirstFrame; // 0x22
     unsigned char nDirections; // 0x23
     unsigned char nFramesPerDirection; // 0x24
-    unsigned char unk0x25; // 0x25
-    unsigned short unk0x26; // 0x26
+    unsigned char pad0x25; // 0x25
+    unsigned short pad0x26; // 0x26
     int bFramesInitialized; // 0x28
     int aOffsets[33]; // 0x2C
     AsyncData* pAsync; // 0xB0
@@ -172,7 +172,7 @@ struct D2CmpDC6FrameStrc
 struct D2CmpSpriteFileStrc
 {
     unsigned int dwFlags; // 0x00
-    int unk0x04[4]; // 0x04
+    int unused0x04[4]; // 0x04
     int nDirections; // 0x14
     int nFramesPerDirection; // 0x18
     unsigned int aOffsets[1]; // 0x1C
@@ -185,23 +185,23 @@ struct D2CmpLoadDescStrc
     unsigned char* pFlags; // 0x08
     int nFirstFrame; // 0x0C
     int nFrames; // 0x10
-    int unk0x14[2]; // 0x14
+    int unused0x14[2]; // 0x14
 };
 
 struct D2CmpDC6HeaderStrc
 {
     unsigned char nFlags; // 0x00
-    unsigned char unk0x01; // 0x01
-    unsigned char unk0x02; // 0x02
+    unsigned char unused0x01; // 0x01
+    unsigned char unused0x02; // 0x02
     unsigned char nDirections; // 0x03
     unsigned char nFrames; // 0x04
-    unsigned char unk0x05; // 0x05
-    unsigned short unk0x06; // 0x06
+    unsigned char pad0x05; // 0x05
+    unsigned short pad0x06; // 0x06
     int bFramesReady; // 0x08
     int aOffsets[1]; // 0x0C
-    int unk0x10[2]; // 0x10
+    int unused0x10[2]; // 0x10
     D2CmpDC6FrameStrc* pFrames[1]; // 0x18
-    int unk0x1C[29]; // 0x1C
+    int unused0x1C[29]; // 0x1C
     AsyncData* pAsync; // 0x90
 };
 
@@ -223,7 +223,7 @@ struct D2CmpTileStrc
     int nLightDirection; // 0x10
     short nRoofHeight; // 0x14
     unsigned short nMaterialFlags; // 0x16
-    int unk0x18[3]; // 0x18
+    int unused0x18[3]; // 0x18
     int nOrientation; // 0x24
     int nIndex; // 0x28
     int nSubIndex; // 0x2C
@@ -237,10 +237,10 @@ struct D2CmpTileStrc
     {
         struct
         {
-            int unk0x38[6]; // 0x38
-            unsigned char unk0x50; // 0x50
+            int unused0x38[6]; // 0x38
+            unsigned char unused0x50; // 0x50
             unsigned char nType; // 0x51
-            unsigned short unk0x52; // 0x52
+            unsigned short unused0x52; // 0x52
         };
         D2CmpTileInfoStrc tInfo; // 0x38
     };
@@ -257,12 +257,12 @@ struct D2CmpSubTileRecordStrc
         {
             unsigned short nX; // 0x00
             unsigned short nY; // 0x02
-            short unk0x04; // 0x04
+            short unused0x04; // 0x04
             unsigned char nGridX; // 0x06
             unsigned char nGridY; // 0x07
             unsigned short nFlags; // 0x08
             unsigned short nLength; // 0x0A
-            int unk0x0C; // 0x0C
+            int unused0x0C; // 0x0C
         };
         D2CmpSubTileHeaderStrc tHeader; // 0x00
     };
@@ -272,9 +272,9 @@ struct D2CmpSubTileRecordStrc
 struct D2CmpCelContextStrc
 {
     unsigned int nFrame; // 0x00
-    int unk0x04[12]; // 0x04
+    int unused0x04[12]; // 0x04
     D2CelFileStrc* pCelFile; // 0x34
-    int unk0x38; // 0x38
+    int nDrawFlag; // 0x38
     D2CelStrc* pCel; // 0x3C
     unsigned int nDirection; // 0x40
 };
@@ -352,7 +352,7 @@ struct D2CofDataStrc
     unsigned char nFramesPerDirection; // 0x01
     unsigned char nDirections; // 0x02
     unsigned char nVersion; // 0x03
-    unsigned int unk0x04; // 0x04
+    unsigned int unused0x04; // 0x04
     unsigned int nBoxLeft; // 0x08
     unsigned int nBoxRight; // 0x0C
     unsigned int nBoxTop; // 0x10
@@ -363,13 +363,13 @@ struct D2CofDataStrc
 
 struct D2CmpFindTilesSubStrc
 {
-    int unk0x00; // 0x00
+    int unused0x00; // 0x00
     D2CmpFindTilesSubStrc* pNext; // 0x04
 };
 
 struct D2CmpFindTilesNodeStrc
 {
-    int unk0x00[3]; // 0x00
+    int unused0x00[3]; // 0x00
     D2CmpFindTilesSubStrc* pSubs; // 0x0C
     D2CmpFindTilesNodeStrc* pNext; // 0x10
 };

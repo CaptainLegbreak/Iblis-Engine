@@ -12,6 +12,12 @@
 #include "D2ItemsWorld.h"
 #include "D2CelContext.h"
 #include "D2ClientUiRecords.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "FogApi.h"
+#include "D2GfxApi.h"
+#include "D2WinApi.h"
+#include "D2CommonApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -31,9 +37,7 @@ struct D2InvCompGridStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -57,7 +61,7 @@ int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
 int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
-int __cdecl sub_0045AE90(); // 0x0045AE90
+int __cdecl sub_0045AE90_GetPanelSlideMode(); // 0x0045AE90
 
 D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
@@ -65,7 +69,7 @@ D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
 int __cdecl CUNIT_IsPlayerDeadOrMissing(); // 0x00463DF0
 
-void __fastcall sub_00468040(int nArg, int nArg2); // 0x00468040
+void __fastcall sub_00468040_ResetCursorState(int nArg, int nArg2); // 0x00468040
 
 void __fastcall CURSOR_SetCursorItemState(D2UnitStrc* pItem); // 0x00468070
 
@@ -75,7 +79,7 @@ int __cdecl sub_00468730(); // 0x00468730
 
 int __cdecl sub_00468740(); // 0x00468740
 
-int __cdecl sub_00468830(); // 0x00468830
+int __cdecl sub_00468830_GetCursorState(); // 0x00468830
 
 void __fastcall MSG_SendShorts(char nHeader, short nArg1, short nArg2, short nArg3); // 0x00478600
 
@@ -93,7 +97,7 @@ void __fastcall TEXT_OpenTextData(D2UnitStrc* pUnit, D2ClientTextDataStrc* pText
 
 int __fastcall NPCMENU_GetInteractNpcId(int* pUnitId); // 0x004B3230
 
-void __cdecl sub_004B8CB0(); // 0x004B8CB0
+void __cdecl sub_004B8CB0_BeginTradeWait(); // 0x004B8CB0
 
 void __fastcall sub_004B9070(int nArg); // 0x004B9070
 
@@ -109,33 +113,9 @@ int __fastcall ITEM_IsItemActionBlocked(D2UnitStrc* pItem); // 0x004C2240
 
 void __fastcall sub_004DBEA0(D2UnitStrc* pUnit, int nArg2, int nArg3, unsigned int* pWidth, unsigned int* pHeight); // 0x004DBEA0
 
-int __stdcall D2GFX_GetResolutionMode(); // 0x004F5160
-
 void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nTextColor, int nAlign); // 0x00502280
 
 int __stdcall UNITS_GetInventoryRecordId(D2UnitStrc* pUnit, int nInvPage, int bLoD); // 0x00621050
-
-unsigned int __stdcall ITEMS_GetBaseCode(D2UnitStrc* hItem); // 0x00628590
-
-void __stdcall ITEMS_GetDimensions(D2UnitStrc* pItem, unsigned char* pWidth, unsigned char* pHeight, const char* szFile, int nLine); // 0x006286C0
-
-int __stdcall ITEMS_CheckIfUseable(D2UnitStrc* pItem); // 0x00628C20
-
-int __stdcall ITEMS_GetUniqueColumnFromItemsTxt(D2UnitStrc* pItem); // 0x00628C70
-
-int __stdcall ITEMSIsA(D2UnitStrc* pItem, int nItemType); // 0x00629BB0
-
-unsigned int __stdcall ITEMS_GetTransmogrify(D2UnitStrc* pItem); // 0x0062A0A0
-
-D2UnitStrc* __stdcall INVENTORY_GetItemFromInventoryPage(D2InventoryStrc* pInventory, int nGridX, int nGridY, int* pX, int* pY, int nInventoryRecordId, unsigned char nPage); // 0x0063BD10
-
-D2UnitStrc* __stdcall INVENTORY_GetItemFromBodyLoc(D2InventoryStrc* pInventory, int nBodyLoc); // 0x0063BDE0
-
-D2UnitStrc* __stdcall INVENTORY_GetCursorItem(D2InventoryStrc* pInventory); // 0x0063C1E0
-
-int __stdcall INVENTORY_GetWieldType(D2UnitStrc* pUnit, D2InventoryStrc* pInventory); // 0x0063D340
-
-D2ItemsTxt* __stdcall DATATBLS_GetItemsTxtRecord(int nItemId); // 0x006335F0
 
 void __stdcall INV_DrawItemSockets(D2UnitStrc* pItem, D2InventoryGridInfoStrc* pGrid, int nX, int nY); // 0x00483E40
 
@@ -147,7 +127,6 @@ D2BitBufferStrc* __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
 
 void __fastcall sub_004E6850_BuildSocketFillerText(D2UnitStrc* pItem, Unicode* pText, int nMaxLength); // 0x004E6850
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource); // 0x00526700
 
@@ -157,41 +136,8 @@ unsigned char __stdcall ITEMS_GetInvPage(D2UnitStrc* pItem); // 0x00628250
 
 int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile); // 0x006280A0
 
-int __stdcall ITEMS_CheckIfSocketable(D2UnitStrc* pItem); // 0x00629900
-
-unsigned char __stdcall ITEMS_GetSockets(D2UnitStrc* pItem); // 0x006299B0
-
-int __stdcall ITEMS_GetFileIndex(D2UnitStrc* pItem); // 0x00629DA0
-
-int __stdcall ITEMS_CanBeEquipped(D2UnitStrc* pItem); // 0x0062A4E0
-
-unsigned char __stdcall ITEMS_GetMaxSockets(D2UnitStrc* pItem); // 0x0062BC20
-
-int __stdcall ITEMS_IsSocketFiller(D2UnitStrc* pItem); // 0x0062BEB0
-
-int __stdcall ITEMS_CheckRequirements(D2UnitStrc* pItem, D2UnitStrc* pUnit, int bEquipping, int* bStrength, int* bDexterity, int* bLevel); // 0x0062EAF0
-
-int __stdcall ITEMS_CheckBodyLocation(D2UnitStrc* pItem, int nBodyLoc); // 0x0062ED50
-
-D2UnitStrc* __stdcall INVENTORY_GetFirstItem(D2InventoryStrc* pInventory); // 0x0063B2C0
-
 int __stdcall sub_0063B9D0(D2InventoryStrc* pInventory, D2UnitStrc* pItem, int nX, int nY, int nRecord, int* pOutX, int* pOutY, unsigned char nPage); // 0x0063B9D0
 
-int __stdcall INVENTORY_CanItemsBeExchanged(D2InventoryStrc* pInventory, D2UnitStrc* pItem, int nX, int nY, int nRecord, D2UnitStrc** ppOther, unsigned char nPage, int nArg8); // 0x0063BB20
-
-unsigned int __stdcall INVENTORY_GetItemCount(D2InventoryStrc* pInventory); // 0x0063CD60
-
-D2UnitStrc* __stdcall INVENTORY_GetNextItem(D2UnitStrc* pItem); // 0x0063DFA0
-
-D2UnitStrc* __stdcall INVENTORY_UnitIsItem(D2UnitStrc* pItem); // 0x0063DFD0
-
-int __stdcall INVENTORY_GetItemNodePage(D2UnitStrc* pItem); // 0x0063E020
-
-int __stdcall QUESTRECORD_GetQuestState(D2BitBufferStrc* pQuestFlags, int nQuestId, int nState); // 0x0065C310
-
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
-
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
 
 extern int gnScreenWidth; // 0x0071146C
 
@@ -227,7 +173,7 @@ extern D2NpcButtonStrc gaNpcButtons[4]; // 0x007BC9E0
 
 extern D2InventoryGridInfoStrc gtTradePage2Grid; // 0x007BCA30
 
-extern unsigned char gabColors_007BCAD8[5]; // 0x007BCAD8
+extern unsigned char gabInvHighlightColors[5]; // 0x007BCAD8
 
 extern D2InventoryGridInfoStrc gtBigBankGrid; // 0x007BCA78
 
@@ -321,11 +267,9 @@ int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLay
 
 D2UnitStrc* __stdcall STATLIST_GetOwner(D2UnitStrc* pUnit, int* pStatNotDynamic);   // 0x00625820
 
-void __stdcall STATLIST_ExpireUnitStatlist(D2UnitStrc* pUnused, D2UnitStrc* pUnit);   // 0x006277F0
 
 void __stdcall STATLIST_MergeStatLists(D2UnitStrc* pTarget, D2UnitStrc* pUnit, int bType);   // 0x00627910
 
-int __stdcall STATLIST_GetDefenseFromUnit(D2UnitStrc* pUnit); // 0x00626020
 
 
 
@@ -355,8 +299,6 @@ int gbBuySellPressed;                                                           
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 
 struct D2CelFileStrc* __fastcall GAME_LoadUiCelFile(const char* szPath);                          // 0x004520C0
-
-int __fastcall D2Win_10127_SetFont(int nSize);                                                                     // 0x00502EF0
 
 enum D2C_UIvars
 {
@@ -412,15 +354,13 @@ enum DrawMode
     DRAWMODE_HIGHLIGHT
 };
 
-int __stdcall TEXTURE_CelDraw(D2CelContextStrc* pContext, int nX, int nY, unsigned int nGamma, DrawMode eDrawMode, unsigned char* pPalette); // 0x004F6480
-
 void __fastcall D2Win_10117_DrawText(const unsigned short* wszText, int nX, int nY, int nColor, int bCentered);   // 0x00502320
 
 extern struct D2CelFileStrc* gpRecipeScrollCel;                                                  // 0x007BCE8C
 
-extern int gnRecipeScrollColor_007BCEA4;                                                                    // 0x007BCEA4
+extern int gnRecipeScrollColor;                                                                    // 0x007BCEA4
 
-extern unsigned short gwszRecipeScrollText_007BCEA8[];                                                      // 0x007BCEA8
+extern unsigned short gwszRecipeScrollText[];                                                      // 0x007BCEA8
 
 static int INV_IsOverGoldButton(int nX, int nY); // 0x00486DA0
 
@@ -460,7 +400,6 @@ void __stdcall INV_StashClickMsg(SMSGHANDLER_PARAMS* pMsg);
 
 static void INV_AppendBookCharges(Unicode* pText);
 
-// build: symbol ?INV_IsInPlayerInvRect@* 0x00483AB0
 int __fastcall INV_IsInPlayerInvRect(int nX, int nY)
 {
     if (nX >= gtPlayerInvRect.nLeft && nX < gtPlayerInvRect.nRight && nY >= gtPlayerInvRect.nTop && nY <= gtPlayerInvRect.nBottom)
@@ -470,7 +409,7 @@ int __fastcall INV_IsInPlayerInvRect(int nX, int nY)
     return 0;
 }
 
-static __declspec(noinline) int sub_00483AE0_IsInGrid7BCB18(int nX, int nY)
+static int sub_00483AE0_IsInGrid7BCB18(int nX, int nY)
 {
     if (nX > gtTradePage1Grid.nGridLeft && nX < gtTradePage1Grid.nGridRight && nY >= gtTradePage1Grid.nGridTop && nY <= gtTradePage1Grid.nGridBottom)
     {
@@ -538,7 +477,6 @@ int __cdecl INV_GetPanelX()
     return gnPanelOffsetX + 0x110;
 }
 
-// build: symbol ?INV_GetPanelY@* 0x00486B00
 int __cdecl INV_GetPanelY()
 {
     if (!GAME_IsExpansion())
@@ -585,7 +523,7 @@ static void __stdcall INV_DrawGridCells(D2InventoryGridInfoStrc* pGrid, int nX, 
             const int nPixelY = nBoxHeight * y + pGrid->nGridTop;
             if (nPixelX >= 0 && nPixelX < gnAutomapWidth && nPixelY >= 0 && nPixelY < gnAutomapHeight_007A521C)
             {
-                AUTOMAP_DrawFramedBox(nPixelX, nPixelY, nBoxWidth, nBoxHeight, gabColors_007BCAD8[nColor], 0);
+                AUTOMAP_DrawFramedBox(nPixelX, nPixelY, nBoxWidth, nBoxHeight, gabInvHighlightColors[nColor], 0);
             }
         }
     }
@@ -601,7 +539,7 @@ static void INV_DrawSlotFrame(D2InvCompGridStrc* pCompGrid, int nColor)
     const int nTop = pCompGrid->rect.nTop;
     if (nLeft >= 0 && nLeft < gnAutomapWidth && nTop >= 0 && nTop < gnAutomapHeight_007A521C)
     {
-        AUTOMAP_DrawFramedBox(nLeft, nTop, pCompGrid->nWidth, pCompGrid->nHeight, gabColors_007BCAD8[nColor], 0);
+        AUTOMAP_DrawFramedBox(nLeft, nTop, pCompGrid->nWidth, pCompGrid->nHeight, gabInvHighlightColors[nColor], 0);
     }
 }
 
@@ -670,7 +608,6 @@ int __cdecl INV_ResetNpcButtons()
     return 1;
 }
 
-// build: symbol ?INV_CanUseCursor@* 0x004888C0
 int __cdecl INV_CanUseCursor()
 {
     if (gnInvPanelMode == 1 || gnInvPanelMode == 2 || gnInvPanelMode == 4 || gnInvPanelMode == 3)
@@ -680,7 +617,7 @@ int __cdecl INV_CanUseCursor()
         {
             return 0;
         }
-        const int nMode = sub_00468830();
+        const int nMode = sub_00468830_GetCursorState();
         if (nMode == 7 || nMode == 1 || nMode == 4)
         {
             return 1;
@@ -726,7 +663,7 @@ void __stdcall INV_MercPanelHoverMsg(SMSGHANDLER_PARAMS* pMsg); // 0x0048BA50
 // 0x0048BC10
 void __stdcall INV_DrawRecipeScroll()
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
 
     if (!GAME_IsExpansion() || !GAME_GetUIVarState(UI_RECIPESCROLL))
     {
@@ -743,7 +680,7 @@ void __stdcall INV_DrawRecipeScroll()
     }
 
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpRecipeScrollCel;
+    tContext.pCelFile = gpRecipeScrollCel;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
     TEXTURE_CelDraw(&tContext, gnPanelOffsetX, gnScreenHeight + gnPanelOffsetY - 224, -1, DRAWMODE_NORMAL, 0);
@@ -755,7 +692,7 @@ void __stdcall INV_DrawRecipeScroll()
     TEXTURE_CelDraw(&tContext, gnPanelOffsetX + 256, gnScreenHeight + gnPanelOffsetY - 48, -1, DRAWMODE_NORMAL, 0);
 
     const int nOldSize = D2Win_10127_SetFont(4);
-    D2Win_10117_DrawText(gwszRecipeScrollText_007BCEA8, gnPanelOffsetX + 80, 130 - gnPanelOffsetY, gnRecipeScrollColor_007BCEA4, 0);
+    D2Win_10117_DrawText(gwszRecipeScrollText, gnPanelOffsetX + 80, 130 - gnPanelOffsetY, gnRecipeScrollColor, 0);
     D2Win_10127_SetFont(nOldSize);
 }
 

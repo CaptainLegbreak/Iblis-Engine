@@ -1,4 +1,5 @@
 #include "D2DataTbls.h"
+#include "FogApi.h"
 #pragma function(memcpy)
 #pragma intrinsic(memset)
 
@@ -26,13 +27,10 @@ extern const int gnFieldXOffsets[9]; // 0x00749780
 extern const int gnFieldYOffsets[9]; // 0x007497A4
 void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 unsigned short __stdcall COLLISION_CheckMask(D2ActiveRoomStrc* pRoom, int nX, int nY, unsigned short nMask); // 0x0064CB30
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 int __stdcall D2Common_11098(D2FieldStrc* pField, int* pX, int* pY); // 0x0066A5D0
 extern "C" const char gszDataGlobalPath[]; // 0x006D4118

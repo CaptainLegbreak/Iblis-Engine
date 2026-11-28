@@ -1,20 +1,10 @@
-struct Data0055B7E0 {
-    unsigned int dwValue00;
-};
-
-struct Unit0055B7E0 {
-    int nType;
-    unsigned int dwUnknown04;
-    unsigned int dwUnknown08;
-    unsigned int dwUnknown0C;
-    unsigned int f_10;
-    Data0055B7E0* pData;
-};
+#include "D2Game.h"
+#include "D2UnitData.h"
 
 // 0x0055B7E0
-extern "C" __declspec(dllexport) unsigned int __fastcall sub_0055B7E0(Unit0055B7E0* pUnit) {
-    if (pUnit && pUnit->nType == 1 && pUnit->pData) {
-        return pUnit->pData->dwValue00;
+extern "C" __declspec(dllexport) unsigned int __fastcall sub_0055B7E0(D2UnitStrc* pUnit) {
+    if (pUnit && pUnit->dwUnitType == UNIT_MONSTER && pUnit->pMonsterData) {
+        return (unsigned int)pUnit->pMonsterData->pMonstatsTxt;
     }
     return 0;
 }

@@ -42,9 +42,9 @@ void __cdecl GLPERSPECTIVE_FillPerspectiveTable()
     gnGlideSpriteScale = 0x100;
 }
 
-int gnProjectOriginX; // 0x00880B60
+extern int gnProjectOriginX; // 0x00880B60
 
-int gnProjectOriginY; // 0x00880B68
+extern int gnProjectOriginY; // 0x00880B68
 
 // 0x0050DD50
 void __fastcall GLPERSPECTIVE_SetProjectOrigin(int nX, int nY)

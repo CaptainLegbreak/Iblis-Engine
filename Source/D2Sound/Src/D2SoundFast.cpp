@@ -12,20 +12,16 @@
 #include "D2GameTypes.h"
 
 #include "D2SoundTypes.h"
+#include "FogApi.h"
+#include "D2HellApi.h"
 
 struct D2SoundStrc;
 
-int __cdecl D2SOUNDSMP_GetMasterVolume();                                                                  // 0x00515D60
 
-int __fastcall D2SOUNDSMP_IsSoundStreaming(D2SoundStrc* pSound);                                          // 0x00515C30
 
-void __fastcall D2SOUNDSMP_ResetSound(D2SoundStrc* pSound);                                                // 0x00516140
 
-void __fastcall D2SOUNDSMP_SetSoundVolume(D2SoundStrc* pSound, int nVolume);                              // 0x005157B0
 
-int __fastcall D2SOUNDSMP_StartSoundStream(D2SoundStrc* pSound, const char* szFileName, int nPosition, int bLoop); // 0x00515D70
 
-void __fastcall D2SOUNDSMP_StopSound(D2SoundStrc* pSound);                                                // 0x00515EE0
 
 D2SoundStrc* gpSoundChannel;                                                                       // 0x00881794
 
@@ -51,27 +47,19 @@ struct D2SoundWaveStrc;
 
 struct D2WaveStrc;
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-void __cdecl D2SOUND_ReleaseSoundObjects(); // 0x00513AF0
 
 int __cdecl D2SOUND_GetDirectSound(); // 0x00513B50
 
-void __cdecl D2SOUND_DestroyStreamChannel(); // 0x005147B0
 
-void __cdecl D2SOUND_ClearChannelTable(); // 0x00514860
 
-void __cdecl D2SOUNDSMP_StopSoundThread(); // 0x00515120
 
-D2SoundStrc* __fastcall D2SOUNDSMP_CreateSound(unsigned int nFlags, int nValue); // 0x00515530
 
 int __fastcall D2SOUNDSMP_GetSoundPlayingFlag(D2SoundStrc* pSound); // 0x00515710
 
-void __fastcall D2SOUNDSMP_StartSoundFade(D2SoundStrc* pFade, int nTarget, int nDuration); // 0x00515C60
 
-void __fastcall D2SOUNDSMP_SetMasterVolume(int nVolume); // 0x00515CE0
 
 extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC210
 
@@ -90,7 +78,7 @@ struct D2SoundWaveStrc
     char szName[0x50];
     void* pFile;
     unsigned int nFileSize;
-    int f_58;
+    int bStereo;
     D2SoundWaveStrc* pNext;
 };
 
@@ -101,8 +89,6 @@ extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalS
 extern "C" char* __cdecl strcpy(char* szDst, const char* szSrc);
 
 void* __fastcall D2SOUNDSMP_ReadWaveHeader(const void* pFile, unsigned int* pnSize, D2WaveFormatStrc* pFormat); // 0x00516760
-
-void* __fastcall ARCHIVE_AllocateBufferAndReadFile(void* hArchive, const char* szFileName, unsigned int* pnSize, const char* szFile, int nLine); // 0x00517079
 
 extern D2SoundWaveStrc* gpSoundWaveList_00881800; // 0x00881800
 
@@ -118,9 +104,8 @@ int gnChannelValue; // 0x00881798
 
 int gbChannelFlag; // 0x0088179C
 
-void __fastcall D2SOUNDSMP_DestroySound(D2SoundStrc* pSound); // 0x005160D0
 
-extern int gdwGlobal_00881798; // 0x00881798
+extern int gnChannelValue; // 0x00881798
 
 // 0x00514DB0
 void __cdecl D2SOUNDFAST_InitWaveSlots()
@@ -135,12 +120,12 @@ void __cdecl D2SOUNDFAST_InitWaveSlots()
     }
 }
 
-extern int gdwGlobal_008817FC; // 0x008817FC
+extern int gbWaveSlotsInit; // 0x008817FC
 
 // 0x00515060
 int __cdecl D2SOUNDFAST_AreWaveSlotsInitialized()
 {
-    return gdwGlobal_008817FC;
+    return gbWaveSlotsInit;
 }
 
 // 0x00515070
@@ -187,7 +172,7 @@ void __fastcall D2SOUNDFAST_PreloadWave(const char* szName)
     pWave->pFile = pFile;
     pWave->nFileSize = nFileSize;
     gpSoundWaveList_00881800 = pWave;
-    pWave->f_58 = tFormat.nChannels == 2;
+    pWave->bStereo = tFormat.nChannels == 2;
     strcpy(pWave->szName, szName);
 }
 
@@ -273,43 +258,20 @@ void __cdecl D2SOUNDFAST_FadeOutWaves()
     }
 }
 
-#pragma pack(push, 1)
-struct d2data_0072F938_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
+extern "C" const char* gData_0072F938[15] = { // 0x0072F938
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
 };
-#pragma pack(pop)
-
-extern "C" struct d2data_0072F938_t gData_0072F938; // 0x0072F938
-
-extern "C" struct d2data_0072F938_t gData_0072F938 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0072F938

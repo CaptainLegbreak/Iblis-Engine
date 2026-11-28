@@ -32,12 +32,8 @@ extern "C" long __cdecl _time32(long* pTime);
 
 extern "C" int __cdecl tolower(int nChar);
 
-// build: symbol ?gacCDKeyMap@* 0x006DF238
-extern const char gacCDKeyMap[];
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -51,7 +47,36 @@ void __fastcall BNDOWNLOAD_FillRandomBytes(unsigned char* pBuffer, int nSize); /
 
 unsigned int __fastcall BNDOWNLOAD_DecryptData(unsigned char* pBuffer, unsigned int nSize, unsigned char* pKey); // 0x00522E10
 
-static int __cdecl sub_005232B0_DecodeAndValidate(unsigned char* pBuffer, unsigned int nSize);
+
+#define IDEA_MUL(x, y) (x = IdeaMul((x) & 0xFFFF, y))
+
+extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
+
+void __stdcall sub_00523AF0_HashTransform(D2BnHashCtxStrc* pCtx); // 0x00523AF0
+
+typedef unsigned int D2IdeaUInt16;
+
+typedef unsigned short D2IdeaWord16;
+
+static inline D2IdeaUInt16 IdeaMul(D2IdeaUInt16 a, D2IdeaUInt16 b);
+
+static inline D2IdeaUInt16 IdeaMul(D2IdeaUInt16 a, D2IdeaUInt16 b)
+{
+    if (a)
+    {
+        if (b)
+        {
+            const unsigned int p = (unsigned int)a * b;
+            b = p & 0xFFFF;
+            a = p >> 16;
+            return b - a + (b < a);
+        }
+        return 1 - a;
+    }
+    return 1 - b;
+}
+
+void __fastcall sub_00524780_SetKey(int nIndex, int bEncrypt, const D2IdeaUserKeyStrc* pUserKey); // 0x00524780
 
 // 0x00521B50
 void __cdecl sub_00521B50_ReseedLogin()
@@ -83,36 +108,12 @@ extern "C" const unsigned char gData_0073016C[32] = {
 extern int gnSrpSize2 = 32; // 0x0073018C
 
 #include "D2BnCryptTypes.h"
+#include "FogApi.h"
 
 // 0x00522BB0
-// build: symbol ?BNDOWNLOAD_GetTime@* 0x00521B40
 static long BNDOWNLOAD_GetTime(long* pTime)
 {
     return _time32(pTime);
-}
-
-// build: symbol ?BNSEND_NibbleToHex@* 0x0051DD10
-static unsigned int BNSEND_NibbleToHex(unsigned int nValue)
-{
-    nValue &= 0xF;
-    if (nValue >= 10)
-        return nValue + 0x37;
-    return nValue + 0x30;
-}
-
-// build: symbol ?BNSEND_HexToNibble@* 0x0051DD20
-static int BNSEND_HexToNibble(char cChar)
-{
-    char cLower = (char)tolower(cChar);
-    if (cLower >= 'a')
-        return cLower - 0x57;
-    return cLower - 0x30;
-}
-
-// build: symbol ?BNSEND_MapKeyChar@* 0x0051DD40
-static int BNSEND_MapKeyChar(unsigned char cChar)
-{
-    return gacCDKeyMap[cChar];
 }
 
 long __stdcall sub_M106_Emit_0051DC70(long* pTime)
@@ -120,29 +121,68 @@ long __stdcall sub_M106_Emit_0051DC70(long* pTime)
     return BNDOWNLOAD_GetTime(pTime);
 }
 
-unsigned int __stdcall sub_M106_Emit_0051DD10(int n)
+// 0x005241A0
+void __cdecl sub_005241A0_ClearHashContexts()
 {
-    return BNSEND_NibbleToHex(tolower(n)) + BNSEND_NibbleToHex(tolower(n + 1));
+    memset(gatBnHashCtx, 0, sizeof(D2BnHashCtxStrc) * 3);
 }
 
-int __stdcall sub_M106_Emit_0051DD20(int n)
+// 0x005241C0
+void __fastcall sub_005241C0_GetDigest(int nIndex, unsigned int* pDigest)
 {
-    return BNSEND_HexToNibble((char)tolower(n)) * 16 + BNSEND_HexToNibble((char)tolower(n + 1));
+    if (pDigest)
+    {
+        for (int i = 0; i < 5; ++i)
+            pDigest[i] = gatBnHashCtx[nIndex].aState[i];
+    }
 }
 
-int __stdcall sub_M106_Emit_0051DD40(int n)
+// 0x00524200
+void __fastcall sub_00524200_HashBlock(int nIndex, const void* pBlock, unsigned int* pDigest)
 {
-    return BNSEND_MapKeyChar((unsigned char)tolower(n)) * 24 + BNSEND_MapKeyChar((unsigned char)tolower(n + 1));
+    D2BnHashCtxStrc* pCtx = &gatBnHashCtx[nIndex];
+    const int nOld = pCtx->nBitCountLo;
+    const int nNew = nOld + 0x200;
+    if (nNew < nOld)
+        ++pCtx->nBitCountHi;
+    pCtx->nBitCountLo = nNew;
+    memcpy(pCtx->aBlock, pBlock, sizeof(pCtx->aBlock));
+    sub_00523AF0_HashTransform(pCtx);
+    if (pDigest)
+    {
+        for (int i = 0; i < 5; ++i)
+            pDigest[i] = gatBnHashCtx[nIndex].aState[i];
+    }
 }
 
-// 0x00523020
-char* __fastcall sub_00523020_GetAlignedData(char* pBuffer)
+// 0x00524280
+void __fastcall sub_00524280_InitHashContext(int nIndex)
 {
-    D2_ASSERT(pBuffer, 0xF2);
-    const unsigned int nMisalign = (unsigned int)pBuffer & 0x3F;
-    if (nMisalign)
-        pBuffer += 0x40 - nMisalign;
-    return pBuffer + 8;
+    D2BnHashCtxStrc* pCtx = &gatBnHashCtx[nIndex];
+    pCtx->aState[0] = 0x67452301;
+    pCtx->aState[1] = 0xEFCDAB89;
+    pCtx->aState[2] = 0x98BADCFE;
+    pCtx->aState[3] = 0x10325476;
+    pCtx->aState[4] = 0xC3D2E1F0;
+    pCtx->nBitCountLo = 0;
+    pCtx->nBitCountHi = 0;
+}
+
+// 0x005242C0
+D2IdeaUInt16 __fastcall sub_005242C0_IdeaMul(D2IdeaUInt16 a, D2IdeaUInt16 b)
+{
+    if (a)
+    {
+        if (b)
+        {
+            const unsigned int p = (unsigned int)a * b;
+            b = p & 0xFFFF;
+            a = p >> 16;
+            return b - a + (b < a);
+        }
+        return 1 - a;
+    }
+    return 1 - b;
 }
 
 // 0x005242F0
@@ -187,10 +227,97 @@ void __fastcall sub_00524360_ExpandKey(const D2IdeaUserKeyStrc* pUserKey, D2Idea
     }
 }
 
+// 0x005243E0
+void __fastcall sub_005243E0_InvertKey(const D2IdeaWord16* pEK, D2IdeaWord16* pDK)
+{
+    D2IdeaUInt16 u1;
+    D2IdeaUInt16 u2;
+    D2IdeaUInt16 u3;
+    D2IdeaWord16 aTemp[52];
+    D2IdeaWord16* p = aTemp + 52;
+    const D2IdeaUInt16 t1 = *pEK++;
+    const D2IdeaUInt16 t2 = -*pEK++;
+    const D2IdeaUInt16 t3 = -*pEK++;
+    *--p = sub_005242F0_MulInv(*pEK++);
+    *--p = t3;
+    *--p = t2;
+    *--p = sub_005242F0_MulInv(t1);
+    for (int j = 1; j < 8; j++)
+    {
+        u1 = *pEK++;
+        *--p = *pEK++;
+        *--p = u1;
+        u1 = *pEK++;
+        u2 = -*pEK++;
+        u3 = -*pEK++;
+        *--p = sub_005242F0_MulInv(*pEK++);
+        *--p = u2;
+        *--p = u3;
+        *--p = sub_005242F0_MulInv(u1);
+    }
+    u1 = *pEK++;
+    *--p = *pEK++;
+    *--p = u1;
+    u1 = *pEK++;
+    u2 = -*pEK++;
+    *--p = sub_005242F0_MulInv(pEK[1]);
+    *--p = -*pEK;
+    *--p = u2;
+    *--p = sub_005242F0_MulInv(u1);
+    int j;
+    for (j = 0, p = aTemp; j < 52; j++)
+    {
+        *pDK++ = *p;
+        *p++ = 0;
+    }
+}
+
+// 0x00524540
+void __fastcall sub_00524540_Cipher(const D2IdeaWord16* pIn, D2IdeaWord16* pOut, const D2IdeaWord16* pKey)
+{
+    D2IdeaUInt16 x1, x2, x3, x4, t1, t2;
+    int r = 8;
+    x1 = *pIn++;
+    x2 = *pIn++;
+    x3 = *pIn++;
+    x4 = *pIn;
+    do
+    {
+        IDEA_MUL(x1, *pKey++);
+        x2 += *pKey++;
+        x3 += *pKey++;
+        IDEA_MUL(x4, *pKey++);
+        t2 = x1 ^ x3;
+        IDEA_MUL(t2, *pKey++);
+        t1 = t2 + (x2 ^ x4);
+        IDEA_MUL(t1, *pKey++);
+        t2 = t1 + t2;
+        x1 ^= t1;
+        x4 ^= t2;
+        t2 ^= x2;
+        x2 = x3 ^ t1;
+        x3 = t2;
+    }
+    while (--r);
+    IDEA_MUL(x1, *pKey++);
+    *pOut++ = x1;
+    *pOut++ = x3 + *pKey++;
+    *pOut++ = x2 + *pKey++;
+    IDEA_MUL(x4, *pKey);
+    *pOut = x4;
+}
+
 // 0x00524740
 void __cdecl sub_00524740_ClearKeySchedules()
 {
     memset(gaIdeaKeySchedules, 0, sizeof(D2IdeaKeyScheduleStrc) * 3);
+}
+
+
+// 0x00524760
+void __fastcall sub_00524760_CipherBlock(int nIndex, const unsigned short* pIn, unsigned short* pOut)
+{
+    sub_00524540_Cipher(pIn, pOut, gaIdeaKeySchedules[nIndex].aKey);
 }
 
 static inline unsigned int sub_GetTerminatedLength(const unsigned char* pString, unsigned int nSize)
@@ -221,34 +348,3 @@ static inline unsigned int sub_GetTerminatedLength(const unsigned char* pString,
     return 0;
 }
 
-// 0x005232B0
-static int __cdecl sub_005232B0_DecodeAndValidate(unsigned char* pBuffer, unsigned int nSize)
-{
-    unsigned char aKey[20];
-    BNDOWNLOAD_FillRandomBytes(aKey, sizeof(aKey));
-    unsigned int nLength = BNDOWNLOAD_DecryptData(pBuffer, nSize, aKey);
-    if (!nLength)
-    {
-        return 0;
-    }
-
-    if (nLength >= nSize)
-    {
-        return 0;
-    }
-
-    pBuffer[nLength] = 0;
-    ++nLength;
-    if (!sub_GetTerminatedLength(pBuffer, nLength))
-    {
-        return 0;
-    }
-
-    return 1;
-}
-
-// calling-convention shim (not game code)
-int __fastcall sub_005232B0_Shim(unsigned char* pBuffer, unsigned int nSize)
-{
-    return sub_005232B0_DecodeAndValidate(pBuffer, nSize);
-}

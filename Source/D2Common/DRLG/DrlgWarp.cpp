@@ -1,9 +1,11 @@
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2Structs.h"
 #include "D2Txt.h"
 #include "D2ItemsWorld.h"
 #include "D2DrlgTiles.h"
 #include "D2DrlgWarp.h"
+#include "FogApi.h"
 
 struct D2ActiveRoomStrc;
 
@@ -27,9 +29,7 @@ struct D2ObjectsTxt;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -113,7 +113,6 @@ struct D2DrlgListOwnerStrc
 
 unsigned int __fastcall sub_006C9A38(const char* szString); // 0x006C9A38
 
-D2ActiveRoomStrc* __fastcall DRLGACTIVATE_InitializeRoomEx(D2DrlgRoomStrc* pDrlgRoom); // 0x0061B730
 
 struct D2DrlgStrc
 {
@@ -121,29 +120,16 @@ struct D2DrlgStrc
     D2DrlgWarpStrc* pWarp;
 };
 
-int* __fastcall DRLGWARP_GetWarpIdArrayFromLevelId(D2DrlgStrc* pDrlg, int nLevelId); // 0x0066AEC0
-
-int* __fastcall DRLGROOM_GetVisArrayFromLevelId(D2DrlgStrc* pDrlg, int nLevelId); // 0x0066C040
-
 struct D2LvlWarpTxt
 {
     int dwLevelId;
 };
 
 
-D2LevelDefBin* __fastcall DATATBLS_GetLevelDefRecord(int nLevelId); // 0x0061E470
-
 unsigned int __fastcall DRLGROOM_CheckWaypointFlags(D2DrlgRoomStrc* pDrlgRoom); // 0x0066BAA0
 
-D2ObjectsTxt* __stdcall DATATBLS_GetObjectsTxtRecord(int nObjectId); // 0x00640E90
-
-D2DrlgLevelStrc* __stdcall DRLG_GetLevel(D2DrlgStrc* pDrlg, int nLevelId); // 0x00642BB0
-
-D2DrlgRoomStrc* __fastcall DRLG_GetRoomExFromLevelAndCoordinates(D2DrlgLevelStrc* pLevel, int nX, int nY); // 0x00642630
 
 int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
-
-D2PresetUnitStrc* __fastcall DRLGROOM_GetPresetUnits(D2DrlgRoomStrc* pDrlgRoom); // 0x0066BFA0
 
 void __fastcall DRLGOUTPLACE_CreateLevelConnections(D2DrlgStrc* pDrlg); // 0x00678AD0
 
@@ -280,21 +266,7 @@ static inline D2ActiveRoomStrc* DRLGWARP_GetActiveRoomFromRoomEx(D2DrlgRoomStrc*
     return pDrlgRoom->pRoom;
 }
 
-static inline int* sub_0066AEC0(D2DrlgStrc* pDrlg, int nLevelId)
-{
-    for (D2DrlgWarpStrc* pDrlgWarp = pDrlg->pWarp; pDrlgWarp; pDrlgWarp = pDrlgWarp->pNext)
-    {
-        D2_ASSERT(pDrlgWarp->nLevel, 418);
-        if (nLevelId == pDrlgWarp->nLevel)
-        {
-            return pDrlgWarp->nWarp;
-        }
-    }
-    return DATATBLS_GetLevelDefRecord(nLevelId)->dwWarp;
-}
-
 extern D2TileGroupStrc gaTileGroups[];                                                             // 0x006EED88
-D2DrlgRoomStrc* __fastcall DRLG_GetRoomExFromCoordinates(int nX, int nY, D2DrlgStrc* pDrlg, D2DrlgRoomStrc* pRoomHint, D2DrlgLevelStrc* pLevel); // 0x00642C30
 
 static inline int TileMatches(int nTileIndex, int nOther)
 {
@@ -600,7 +572,7 @@ static D2DrlgRoomStrc* DRLGWARP_GetFirstWarpRoom(D2DrlgLevelStrc* pLevel)
             unsigned char nCounter = 0;
             do
             {
-                if ((nFlags & pDrlgRoom->dwFlags) && sub_0066AEC0(pLevel->pDrlg, pLevel->eLevelId)[nCounter] != -1)
+                if ((nFlags & pDrlgRoom->dwFlags) && DRLGWARP_GetWarpIdArrayFromLevelId(pLevel->pDrlg, pLevel->eLevelId)[nCounter] != -1)
                 {
                     return pDrlgRoom;
                 }
@@ -701,26 +673,8 @@ struct d2data_00749804_t
 };
 #pragma pack(pop)
 
-extern "C" const D2TileGroupStrc gData_006EED88[14]; // 0x006EED88
 extern "C" struct d2data_00749804_t gData_00749804; // 0x00749804
-
-extern "C" const D2TileGroupStrc gData_006EED88[14] = {
-    { 1 },
-    { 0 },
-    { 0 },
-    { 0 },
-    { 0 },
-    { 1, 1 },
-    { 0, 1 },
-    { 0, 1 },
-    { 0, 1 },
-    { 0, 1 },
-    { 0, 2 },
-    { 0, 3 },
-    { 0, 4 },
-    { 0, 5 }
-}; // 0x006EED88
-#pragma comment(linker, "/alternatename:?gaTileGroups@@3PAUD2TileGroupStrc@@A=_gData_006EED88")
+extern "C" const D2TileGroupStrc gData_006EED88[14]; // 0x006EED88
 
 extern "C" struct d2data_00749804_t gData_00749804 = {
     (const void*)"English",
@@ -739,3 +693,21 @@ extern "C" struct d2data_00749804_t gData_00749804 = {
     (const void*)"Unknown",
     (const void*)"14"
 }; // 0x00749804
+
+extern "C" const D2TileGroupStrc gData_006EED88[14] = {
+    { 1 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 0 },
+    { 1, 1 },
+    { 0, 1 },
+    { 0, 1 },
+    { 0, 1 },
+    { 0, 1 },
+    { 0, 2 },
+    { 0, 3 },
+    { 0, 4 },
+    { 0, 5 }
+}; // 0x006EED88
+#pragma comment(linker, "/alternatename:?gaTileGroups@@3PAUD2TileGroupStrc@@A=_gData_006EED88")

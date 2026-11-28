@@ -1,26 +1,26 @@
 #include "D2Direct3D.h"
+#include "D2GfxInterface.h"
 
 #include "D2DDrawTypes.h"
 
 #include "D2Win32Types.h"
 #include "D2D3DTypes.h"
 #include "D2FogSystemInfo.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "FogApi.h"
+#include "D2HellApi.h"
 
-extern "C" __declspec(dllimport) int __stdcall lstrlenA(const char* sz); // 0x006CC154
-extern "C" __declspec(dllimport) long __stdcall RegSetValueExA(void* hKey, const char* szValueName, unsigned long nReserved, unsigned long dwType, const unsigned char* pData, unsigned long cbData); // 0x006CC034
 extern "C" __declspec(dllimport) long __stdcall RegCloseKey(void* hKey);
 extern "C" __declspec(dllimport) long __stdcall RegCreateKeyExA(void* hKey, const char* lpSubKey, unsigned long Reserved, char* lpClass, unsigned long dwOptions, unsigned long samDesired, void* lpSecurityAttributes, void** phkResult, unsigned long* lpdwDisposition);
 
 namespace Define_the_symbol__ATL_MIXED
 {
-// build: symbol ??0Thank_you@Define_the_symbol__ATL_MIXED@@QAE@XZ 0x006B1A00
-// build: symbol ?sub_006B1A10_Nop@Thank_you@Define_the_symbol__ATL_MIXED@@UAEXXZ 0x006B1A10
 struct Thank_you
 {
     Thank_you() {}
     virtual void sub_006B1A10_Nop() {}
 };
-// build: symbol ?clash@Define_the_symbol__ATL_MIXED@@3UThank_you@1@A 0x0074C0C8
 extern __declspec(selectany) Thank_you clash = Thank_you();
 }
 
@@ -117,8 +117,8 @@ struct D2PixelFormat006B1B60Strc
     unsigned long dwRGBAlphaBitMask;
 };
 
-extern D2PixelFormat006B1B60Strc gtWantedFormat_0074C024; // 0x0074C024
-extern const unsigned long gnFormatCap_006CE28C; // 0x006CE28C
+extern D2PixelFormat006B1B60Strc gtWantedFormat; // 0x0074C024
+extern const unsigned long gnFormatCap; // 0x006CE28C
 
 #define DD_CHECK(expr,message) { error=(expr); if(error) { D3DCORE_LogDDrawError(message,error); goto Fail; } }
 
@@ -383,9 +383,7 @@ extern const char gLocalError[]; // 0x006FBA74
 
 extern const char gAgpError[]; // 0x006FBA1C
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char*, const char*, int); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int); // 0x00681E09
 
@@ -395,17 +393,14 @@ extern "C" __declspec(dllimport) int __stdcall MoveWindow(void*,int,int,int,int,
 
 void __fastcall D3DCORE_LogDDrawError(const char* szWhere, int hResult); // 0x006B20E0
 
-void __fastcall D3DCORE_ShowD3DError(const char*,long); // 0x006B39B0
 
 void __cdecl D3DCORE_ReleaseResources(); // 0x006B3320
 
-void __cdecl sub_006B3080(); // 0x006B3080
+void __cdecl sub_006B3080_InitBufferPools(); // 0x006B3080
 
-void __cdecl D3DFLOORCACHE_CreateTileSurfaces(); // 0x006BB5E0
 
-void __cdecl sub_006B8F10(); // 0x006B8F10
+void __cdecl sub_006B8F10_CreateGridVertexBuffer(); // 0x006B8F10
 
-void __fastcall D3DCORE_SetTextureFilterMode(int); // 0x006B2030
 
 static int D3DCORE_InitFullscreen(void*,int); // 0x006B4FD0
 
@@ -472,7 +467,6 @@ void __cdecl sub_006B96C0_BuildScaleTable(); // 0x006B96C0
 
 void __cdecl sub_006B97D0_BuildScaleTable(); // 0x006B97D0
 
-void __cdecl D3DSMACK_SmackInit(); // 0x006B9A10
 
 extern const unsigned int gnDeviceFlagMask_006CE268; // 0x006CE268
 
@@ -490,7 +484,7 @@ extern D2GuidStrc gDeviceGuid_0096F3AC; // 0x0096F3AC
 
 extern D2ComObjectStrc* gpDirect3D3; // 0x00970E64
 
-extern D2GfxSettingsStrc* gpConfig_007C9148; // 0x007C9148
+extern D2GfxSettingsStrc* gpGfxSettings; // 0x007C9148
 
 extern D2DDrawSurfaceStrc* gpDevice_00970E68; // 0x00970E68
 
@@ -508,7 +502,6 @@ struct D2ComObjectVtbl006B5550Strc;
 
 extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2CriticalSectionStrc* pCriticalSection);
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 struct D2ComObjectVtbl006B5550Strc
 {
@@ -528,21 +521,20 @@ extern int gn_007C9140; // 0x007C9140
 
 extern D2ComObject006B5550Strc* gpObject_00970E60; // 0x00970E60
 
-extern "C" void __cdecl D3DSMACK_SmackFree(); // 0x006B9B00
 
 extern D2CriticalSectionStrc* gpCriticalSection_007C9134; // 0x007C9134
 
-extern int gnPaused_007C9144; // 0x007C9144
+extern int gbRenderPaused; // 0x007C9144
 
 extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc*);
 
 int __fastcall D3DCORE_CreateSurface(void* window,int mode); // 0x006B55E0
 
-int gnState_00970E54; // 0x00970E54
+int gnColorCombineMode; // 0x00970E54
 
 int gnFilterMode; // 0x00970E5C
 
-int gnState_00970E58; // 0x00970E58
+int gnAlphaBlendMode; // 0x00970E58
 
 void __fastcall sub_006B7F70_ClearTarget(int); // 0x006B7F70
 
@@ -554,7 +546,6 @@ void __cdecl D3DCORE_ReleaseRenderer(); // 0x006B32B0
 
 void __cdecl sub_006B9150_ReleaseResource(); // 0x006B9150
 
-void __cdecl D3DFLOORCACHE_ReleaseTileSurfaces(); // 0x006BB640
 
 unsigned int gadwColors[256]; // 0x009702C0
 
@@ -585,11 +576,11 @@ extern D2ComObjectStrc* gpPrimarySurface; // 0x00970E68
 
 typedef long (__stdcall* D2DDFlipFn)(D2ComObjectStrc* pThis, D2ComObjectStrc* pTarget, unsigned long dwFlags);
 
-extern int gdwGlobal_007B57E4; // 0x007B57E4
+extern int gnSceneScaleFactor; // 0x007B57E4
 
-extern D2PaletteTableStrc* gpGfxPaletteView_007C9150; // 0x007C9150
+extern D2PaletteTableStrc* gpGfxPaletteView; // 0x007C9150
 
-D2PaletteTableStrc gPaletteView_0096F280; // 0x0096F280
+D2PaletteTableStrc gPaletteView; // 0x0096F280
 
 extern D2ComObjectStrc* gpRenderSurface; // 0x00970E6C
 
@@ -609,13 +600,11 @@ extern const unsigned int gdwBitMask7_006CE284;                                 
 
 extern const unsigned int gdwBitMask8;                                                             // 0x006CE288
 
-void __cdecl LOGMANAGER_WriteLogLine(const char* szFormat, ...);                                          // 0x00410610
 
 extern const unsigned int gnGammaMask_006CE278;                                                             // 0x006CE278
 
-extern int gnGammaScale_0074C020;                                                                           // 0x0074C020
+extern int gnGammaScale;                                                                           // 0x0074C020
 
-void __fastcall EXCEL_BuildGammaTable(int nGamma, void* pTable, double dScale, int nStride, int nEntries, int nMask); // 0x006BE190
 
 extern "C" void* __cdecl memcpy(void* pDest, const void* pSource, unsigned int nBytes);
 
@@ -627,7 +616,7 @@ int gnDeviceTextureFlag; // 0x00970E4C
 
 int gpTileDrawFunctions; // 0x007C914C
 
-int gbD3DInitialized_00970E48; // 0x00970E48
+int gbD3DInitialized; // 0x00970E48
 
 D2ComObjectStrc* gpDirectDraw4_00970E60; // 0x00970E60
 
@@ -637,7 +626,7 @@ extern unsigned int gnRenderFlags_0096F3A8; // 0x0096F3A8
 
 extern const unsigned int gnRenderFlag_006CE284; // 0x006CE284
 
-extern const unsigned int gnRenderFlag_006CE288; // 0x006CE288
+extern const unsigned int gdwBitMask8; // 0x006CE288
 
 extern "C" const char gszFailedToLockDest[];                                                       // 0x006FB130
 
@@ -670,11 +659,8 @@ struct D2Cache006BA830Strc
     int unk0x00[7];
 };
 
-void __cdecl D3DSPRITE_ReleaseSprites(); // 0x006B5B10
 
-void __cdecl sub_006B7250_ReleaseAll(); // 0x006B7250
 
-void __cdecl D3DSMACK_ReleaseSmackSurfaces(); // 0x006B9B30
 
 void __fastcall sub_006BA830_FreeCache(D2Cache006BA830Strc* pCache, int bFree); // 0x006BA830
 
@@ -683,9 +669,9 @@ void __fastcall D3DSUBTILECACHE_SubtileCacheDestroy(D2Object006BADC0Strc* pObjec
 void __fastcall D3DFLOORCACHE_FloorCacheDestroy(D2Object006BB3E0Strc* pObject, int bFree); // 0x006BB3E0
 
 
-extern D2Object006BADC0Strc gObject_0096FC80; // 0x0096FC80
+extern D2Object006BADC0Strc gtSubtileCache; // 0x0096FC80
 
-extern D2Object006BB3E0Strc gObject_0096FC9C; // 0x0096FC9C
+extern D2Object006BB3E0Strc gTextureCache; // 0x0096FC9C
 
 extern D2Cache006BA830Strc gtTextureCache1; // 0x00970EC8
 
@@ -778,11 +764,10 @@ extern const unsigned int gnGammaMask_006CE278; // 0x006CE278
 
 extern unsigned int gnCapabilities_0096F3A8; // 0x0096F3A8
 
-extern int gnGammaScale_0074C020; // 0x0074C020
+extern int gnGammaScale; // 0x0074C020
 
 extern D2GammaControlStrc* gpGammaControl_00970E74; // 0x00970E74
 
-void __fastcall EXCEL_BuildGammaTable(int nGamma, void* pTable, double dScale, int nStride, int nEntries, int nMask); // 0x006BE190
 
 void __fastcall D3DCORE_LogDDrawError(const char* szMessage, int nResult); // 0x006B20E0
 
@@ -851,15 +836,11 @@ extern D2Surface006B3570Strc* gpPrimarySurface_00970E68; // 0x00970E68
 
 extern D2Surface006B3570Strc* gpRenderSurface_00970E6C; // 0x00970E6C
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 __declspec(noreturn) void __cdecl exit(int); // 0x00681E09
 
-int __stdcall SRegLoadString(const char* szKeyName, const char* szValueName, unsigned int nFlags, char* szBuffer, unsigned long nBufferSize); // 0x00414E50
 
-int __stdcall SRegLoadValue(const char*,const char*,unsigned int,unsigned long*); // 0x00414F10
 
 int __stdcall SRegLoadData(const char*,const char*,unsigned int,void*,unsigned int,unsigned int*); // 0x00414DE0
 
@@ -917,13 +898,11 @@ extern "C" HRESULT __stdcall DirectDrawEnumerateA(LPDDENUMCALLBACKA pCallback, v
 
 void __cdecl LOGMANAGER_WriteLogLine(const char* szFormat, ...) throw();                                                  // 0x00410610
 
-void __cdecl sub_0051793E_FormatAndRaise(unsigned long dwError, ...); // 0x0051793E
-
 void __fastcall D3DCORE_LogDDrawError(const char* szMessage, long hResult) throw();                      // 0x006B20E0
 
 void __fastcall D3DCORE_SaveVideoConfig(int nRender, int nDevice);                                     // 0x006B2F60
 
-int __stdcall sub_006B42F0_DDrawEnumCallback(void* pGuid, char* szDescription, char* szName, void* pContext); // 0x006B42F0
+int __stdcall D3DCORE_EnumerateD3DDevices(void* pGuid, char* szDescription, char* szName, void* pContext); // 0x006B42F0
 
 extern char gszEnumerationClass[];                                                                 // 0x0074C044
 
@@ -1020,7 +999,6 @@ typedef char CheckIdentifierSize[sizeof(DDDEVICEIDENTIFIER)==0x428?1:-1];
 typedef char CheckRendererSize[sizeof(D2RendererInfoStrc)==0x3c0?1:-1];
 extern "C" char* __cdecl sub_00687330_Strncpy(char*,const char*,unsigned int); // 0x00687330
 void __fastcall D3DCORE_LogDDrawError(const char*,HRESULT) throw(); // 0x006B20E0
-void __fastcall D3DCORE_ShowD3DError(const char* text,long result); // 0x006B39B0
 int __stdcall D3DCORE_EnumerateDisplayMode(DDSURFACEDESC2*,void*); // 0x006B3FD0
 int __stdcall D3D_EnumTextureFormatCallback(void*,void*); // 0x006B1B60
 extern IDirectDraw4* gpIDirectDraw4_00970E60; // 0x00970E60
@@ -1037,14 +1015,14 @@ extern const D2DDGuidStrc gIIDDirect3D3; // 0x006FF558
 extern const D2DDGuidStrc gIIDHardwareDevice; // 0x006FF518
 extern const DWORD gFlag_006CE268; // 0x006CE268
 extern const DWORD gdwBitMask1; // 0x006CE26C
-extern const DWORD gFlag_006CE270; // 0x006CE270
+extern const DWORD gbChargeMissileMask; // 0x006CE270
 extern const DWORD gdwBitMask3; // 0x006CE274
 extern const DWORD gFlag_006CE278; // 0x006CE278
-extern const DWORD gFlag_006CE27C; // 0x006CE27C
+extern const DWORD gdwBitMask5; // 0x006CE27C
 extern const DWORD gFlag_006CE284; // 0x006CE284
 extern const DWORD gFlag_006CE288; // 0x006CE288
 extern const DWORD gFlag_006CE28C; // 0x006CE28C
-extern const DWORD gFlag_006CE2E8; // 0x006CE2E8
+extern const DWORD gdwInvBitMasks; // 0x006CE2E8
 extern const char gszEnumD3DCleanupFailed[]; // 0x006FB8A4
 extern const char gszEnumD3DCaughtFailure[]; // 0x006FB8D4
 extern const char gszNoTriangleSupport[]; // 0x006FB908
@@ -1093,7 +1071,6 @@ extern "C" char* __cdecl strcpy(char*, const char*);
 extern "C" void* __cdecl memset(void*, int, unsigned int);
 #pragma intrinsic(memset)
 
-// build: symbol ??_7Thank_you@Define_the_symbol__ATL_MIXED@@6B@ 0x006FAFFC
 struct D2FloorCacheStrc;
 struct D2SubtileCacheStrc;
 struct D2TextureCacheStrc;
@@ -1108,11 +1085,9 @@ extern D2TextureCacheStrc gTextureCache_00970EC8; // 0x00970EC8
 extern D2TextureCacheStrc gTextureCache_00970EE4; // 0x00970EE4
 extern D2TextureCacheStrc gTextureCache_00970F00; // 0x00970F00
 
-extern int gdwGlobal_00970E50; // 0x00970E50
+extern int gbD3DBusy; // 0x00970E50
 extern char gnFloorCacheSize[]; // 0x007C90C8
 
-// build: symbol ??0CAtlException@ATL@@QAE@J@Z 0x006B1A20
-// build: symbol __TI1?AVCAtlException@ATL@@ 0x007020B4
 // 0x006B1A30
 void __cdecl ATL::sub_006B1A30_ThrowAtlException(long error)
 {
@@ -1185,31 +1160,31 @@ int __stdcall D3D_EnumTextureFormatCallback(D2PixelFormat006B1B60Strc* pFormat, 
     {
         return 1;
     }
-    if (pFormat->dwFlags != gtWantedFormat_0074C024.dwFlags)
+    if (pFormat->dwFlags != gtWantedFormat.dwFlags)
     {
         return 1;
     }
-    if (pFormat->dwRGBBitCount != gtWantedFormat_0074C024.dwRGBBitCount)
+    if (pFormat->dwRGBBitCount != gtWantedFormat.dwRGBBitCount)
     {
         return 1;
     }
-    if (pFormat->dwRBitMask != gtWantedFormat_0074C024.dwRBitMask)
+    if (pFormat->dwRBitMask != gtWantedFormat.dwRBitMask)
     {
         return 1;
     }
-    if (pFormat->dwGBitMask != gtWantedFormat_0074C024.dwGBitMask)
+    if (pFormat->dwGBitMask != gtWantedFormat.dwGBitMask)
     {
         return 1;
     }
-    if (pFormat->dwBBitMask != gtWantedFormat_0074C024.dwBBitMask)
+    if (pFormat->dwBBitMask != gtWantedFormat.dwBBitMask)
     {
         return 1;
     }
-    if (pFormat->dwRGBAlphaBitMask != gtWantedFormat_0074C024.dwRGBAlphaBitMask)
+    if (pFormat->dwRGBAlphaBitMask != gtWantedFormat.dwRGBAlphaBitMask)
     {
         return 1;
     }
-    *pFlags |= gnFormatCap_006CE28C;
+    *pFlags |= gnFormatCap;
     return 1;
 }
 
@@ -1226,13 +1201,13 @@ void __fastcall D3DCORE_ClearCaches()
 // 0x006B1C00
 int __cdecl D3DCORE_CheckCutScene()
 {
-    return gdwGlobal_00970E50;
+    return gbD3DBusy;
 }
 
 // 0x006B1C10
 void __fastcall D3DCORE_SetGlobalScale(int nValue)
 {
-    gdwGlobal_007B57E4 = nValue;
+    gnSceneScaleFactor = nValue;
 }
 
 // 0x006B1C20
@@ -1244,7 +1219,7 @@ unsigned int __cdecl D3DCORE_GetMaskedFlags()
 // 0x006B1C30
 int __cdecl D3DCORE_FlipPrimary()
 {
-    if (gpConfig_007C9148->bVSync)
+    if (gpGfxSettings->bVSync)
         ((D2DDFlipFn)gpPrimarySurface->lpVtbl[11])(gpPrimarySurface, 0, 1);
     else
         ((D2DDFlipFn)gpPrimarySurface->lpVtbl[11])(gpPrimarySurface, 0, 9);
@@ -1293,8 +1268,8 @@ unsigned int __fastcall D3DCORE_GetColor(unsigned int nIndex)
 // 0x006B1D60
 void __fastcall D3DCORE_SetPaletteView(const D2PaletteTableStrc* pSource)
 {
-    gPaletteView_0096F280 = *pSource;
-    gpGfxPaletteView_007C9150 = &gPaletteView_0096F280;
+    gPaletteView = *pSource;
+    gpGfxPaletteView = &gPaletteView;
 }
 
 // 0x006B1D80
@@ -1358,7 +1333,7 @@ void __fastcall D3DCORE_Blit8To32(const unsigned char* pSource, unsigned int* pD
 // 0x006B1EA0
 void __fastcall D3DCORE_SetColorCombineMode(int nState)
 {
-    if (gnState_00970E54 && nState == gnState_00970E54)
+    if (gnColorCombineMode && nState == gnColorCombineMode)
         return;
     switch (nState)
     {
@@ -1373,13 +1348,13 @@ void __fastcall D3DCORE_SetColorCombineMode(int nState)
         gpDevice->SetRenderState(15, 0);
         break;
     }
-    gnState_00970E54 = nState;
+    gnColorCombineMode = nState;
 }
 
 // 0x006B1F40
 void __fastcall D3DCORE_SetAlphaBlendMode(int nState)
 {
-    if (gnState_00970E58 && nState == gnState_00970E58)
+    if (gnAlphaBlendMode && nState == gnAlphaBlendMode)
         return;
     switch (nState)
     {
@@ -1404,7 +1379,7 @@ void __fastcall D3DCORE_SetAlphaBlendMode(int nState)
         gpDevice->SetRenderState(20, 6);
         break;
     }
-    gnState_00970E58 = nState;
+    gnAlphaBlendMode = nState;
 }
 
 // 0x006B2030
@@ -1510,9 +1485,7 @@ int __cdecl D3DCORE_InitCutsceneMode()
 {
     D2_ASSERT(!gbVideoUp, 0x7CB);
 
-// build: symbol ?gnRenderWidth@* 0x007C9138
     gnRenderWidth = 640;
-// build: symbol ?gnRenderHeight@* 0x007C913C
     gnRenderHeight = 480;
 
     unsigned int nBpp = 16;
@@ -1556,13 +1529,12 @@ fail:
 // 0x006B3530
 int __cdecl D3DCORE_BeginCutScene()
 {
-// build: symbol ?gbRenderPaused@* 0x007C9144
     if (gbRenderPaused)
     {
         return 0;
     }
 
-    if (!(gnRenderFlags_0096F3A8 & gnRenderFlag_006CE284) && !(gnRenderFlags_0096F3A8 & gnRenderFlag_006CE288))
+    if (!(gnRenderFlags_0096F3A8 & gnRenderFlag_006CE284) && !(gnRenderFlags_0096F3A8 & gdwBitMask8))
     {
         return 1;
     }
@@ -1584,7 +1556,7 @@ void __fastcall D3DCORE_SetGamma(int nGamma)
     D2GammaRampStrc ramp;
     if (gnCapabilities_0096F3A8 & gnGammaMask_006CE278)
     {
-        EXCEL_BuildGammaTable(nGamma, (unsigned short*)ramp.red, gnGammaScale_0074C020, 2, 256, 65535);
+        EXCEL_BuildGammaTable(nGamma, (unsigned short*)ramp.red, gnGammaScale, 2, 256, 65535);
         memcpy(ramp.green, ramp.red, sizeof(ramp.red));
         memcpy(ramp.blue, ramp.red, sizeof(ramp.red));
         if (gpGammaControl)
@@ -1645,7 +1617,7 @@ int __fastcall D3DCORE_CreateMemoryTexture(D2ComObject006B58A0Strc** ppSurface, 
     D2DDSurfaceDesc006B58A0Strc tDesc = { sizeof(tDesc) };
     tDesc.dwFlags = 0x1007;
     tDesc.dwCaps = 0x840;
-    tDesc.tPixelFormat = gtWantedFormat_0074C024;
+    tDesc.tPixelFormat = gtWantedFormat;
     tDesc.dwWidth = nWidth;
     tDesc.dwHeight = nHeight;
     long hResult = gpDirectDraw4->lpVtbl->CreateSurface(gpDirectDraw4, &tDesc, ppSurface, 0);
@@ -1798,7 +1770,7 @@ struct D2DisplayModeStrc { unsigned int flags,bits,width,height,refresh; };
 struct D2DisplayContextStrc { unsigned int reserved[0x13c/4]; D2DisplayModeStrc modes[32]; int count; };
 extern D2DrawStrc* gpDraw_00970E60; // 0x00970E60
 extern D2D3DStrc* gpD3D_00970E64; // 0x00970E64
-extern void* ghWindow_00970E84; // 0x00970E84
+extern void* ghEnumWindow; // 0x00970E84
 extern unsigned int ganWidths[2]; // 0x0074C000
 extern unsigned int ganHeights[2]; // 0x0074C010
 extern const unsigned int gadwHalGuid[4]; // 0x006FF518
@@ -1899,7 +1871,7 @@ int __stdcall D3DCORE_EnumerateDisplayMode(D2SurfaceDescStrc* mode,D2DisplayCont
     if(mode->bits==32 && mode->width==ganWidths[0] && mode->height==ganHeights[0]) flags|=gdwBitMasks_006CE268[1];
     if(mode->bits==32 && mode->width==ganWidths[1] && mode->height==ganHeights[1]) flags|=gdwBitMasks_006CE268[0];
     if(!flags) goto done;
-    result=gpDraw_00970E60->SetCooperativeLevel(ghWindow_00970E84,0x11);
+    result=gpDraw_00970E60->SetCooperativeLevel(ghEnumWindow,0x11);
     if(result && result!=(long)0x88760245) { D3DCORE_LogDDrawError(gszCoop,result); goto cleanup; }
     result=gpDraw_00970E60->SetDisplayMode(mode->width,mode->height,mode->bits,mode->refresh,0);
     if(result) { D3DCORE_LogDDrawError(gszSetDisplayModeFailed,result); goto cleanup; }
@@ -1949,7 +1921,7 @@ int __stdcall D3DCORE_EnumerateD3DDevices(D2DDGuidStrc* guid,char* description,c
   D2RendererInfoStrc* display=&gaDisplays[index];
   memset(display,0,0x134);
   if(!guid) display->flags|=gFlag_006CE268;
-  else { display->flags&=gFlag_006CE2E8; display->guid=*guid; }
+  else { display->flags&=gdwInvBitMasks; display->guid=*guid; }
   HRESULT hr=sub_006B1350_DirectDrawCreate((D2GuidStrc*)guid,(D2ComObjectStrc**)&dd,0);
   if(hr) { D3DCORE_LogDDrawError(gszEnumDirectDrawCreateFailed,hr); goto Cleanup; }
   hr=dd->vtbl->QueryInterface(dd,&gIIDDirectDraw4,(void**)&gpIDirectDraw4_00970E60);
@@ -1975,7 +1947,7 @@ int __stdcall D3DCORE_EnumerateD3DDevices(D2DDGuidStrc* guid,char* description,c
   int hasUI=0,hasGame=0,has32=0,has24=0;
   int invalid=0;
   for(int i=0;i<display->modeCount;++i) {
-   if(display->modes[i].flags&gFlag_006CE270) has32=1;
+   if(display->modes[i].flags&gbChargeMissileMask) has32=1;
    if(display->modes[i].flags&gdwBitMask3) has24=1;
    if(display->modes[i].flags&gFlag_006CE268) hasUI=1;
    if(display->modes[i].flags&gdwBitMask1) hasGame=1;
@@ -2000,7 +1972,7 @@ int __stdcall D3DCORE_EnumerateD3DDevices(D2DDGuidStrc* guid,char* description,c
   if(!(caps.caps&1)) { LOGMANAGER_WriteLogLine(gszNo3DSupport); goto Cleanup; }
   if(caps.caps2&0x20000) display->flags|=gFlag_006CE278;
   else LOGMANAGER_WriteLogLine(gszNoGammaControl);
-  if(caps.caps2&0x100000) { display->flags|=gFlag_006CE27C; LOGMANAGER_WriteLogLine(gszSupportsGammaCalibration); }
+  if(caps.caps2&0x100000) { display->flags|=gdwBitMask5; LOGMANAGER_WriteLogLine(gszSupportsGammaCalibration); }
   gpIDirect3D3_00970E64->vtbl->CreateDevice(gpIDirect3D3_00970E64,&gIIDHardwareDevice,back,&device,0);
   if(!device) { LOGMANAGER_WriteLogLine(gszNoHardware3D); goto Cleanup; }
   D3DDEVICEDESC hardware,software;
@@ -2011,7 +1983,7 @@ int __stdcall D3DCORE_EnumerateD3DDevices(D2DDGuidStrc* guid,char* description,c
   if(hardware.textureCaps&0x100) LOGMANAGER_WriteLogLine(gszSupportsNonPow2Textures);
   if(hardware.flags&0x40) {
   if(!(hardware.textureCaps&1)) LOGMANAGER_WriteLogLine(gszNoPerspectiveTextures);
-  if(hardware.textureCaps&0x20) { LOGMANAGER_WriteLogLine(gszRequiresSquareTextures); display->flags|=gFlag_006CE270; goto Cleanup; }
+  if(hardware.textureCaps&0x20) { LOGMANAGER_WriteLogLine(gszRequiresSquareTextures); display->flags|=gbChargeMissileMask; goto Cleanup; }
   if(hardware.textureFilterCaps&0x20) display->flags|=gdwBitMask3;
   else LOGMANAGER_WriteLogLine(gszNoMipmapping);
   display->videoTotal=caps.videoTotal;display->videoFree=caps.videoFree;
@@ -2101,7 +2073,7 @@ static int __stdcall D3DCORE_DetectDirect3D(HINSTANCE hInstance)
             return 0;
         }
 
-        const HRESULT hResult = DirectDrawEnumerateA(sub_006B42F0_DDrawEnumCallback, 0);
+        const HRESULT hResult = DirectDrawEnumerateA(D3DCORE_EnumerateD3DDevices, 0);
         if (hResult)
         {
             D3DCORE_LogDDrawError("DirectDrawEnumerate", hResult);
@@ -2149,9 +2121,7 @@ static int __stdcall D3DCORE_DetectDirect3D(HINSTANCE hInstance)
 
 // 0x006B4E80
 int __fastcall D3DCORE_LoadVideoConfiguration(void* window) {
-// build: symbol ?FOG_GetSystemInfo@* 0x00407360
     D2FogSystemInfoStrc* info=FOG_GetSystemInfo();
-// build: symbol ?gszEmptyString@* 0x006CC837
     if (!info) { FOG_DisplayHalt(gszEmptyString,sub_00408090(),1032); exit(-1); }
     if (info->nOsKind==1) return 0;
     D2VideoKeyStrc key=gtVideoKey;
@@ -2245,7 +2215,7 @@ static int D3DCORE_InitFullscreen(void* window,int mode)
     gpDevice->SetTextureStageState(0,3,0);
     gpDevice->SetTextureStageState(0,5,2);
     gpDevice->SetTextureStageState(0,6,0);
-    sub_006B3080(); D3DFLOORCACHE_CreateTileSurfaces(); sub_006B8F10();
+    sub_006B3080_InitBufferPools(); D3DFLOORCACHE_CreateTileSurfaces(); sub_006B8F10_CreateGridVertexBuffer();
     return 1;
 D3DFail:
     D3DCORE_ShowD3DError(msg,error);
@@ -2257,7 +2227,7 @@ Fail:
 void __cdecl D3DCORE_FlushAndFlip()
 {
     D3DCORE_Flush();
-    if (gpConfig_007C9148->bVSync)
+    if (gpGfxSettings->bVSync)
     {
         gpDevice_00970E68->lpVtbl->Flip(gpDevice_00970E68, 0, 1);
     }
@@ -2277,11 +2247,11 @@ int __cdecl D3DCORE_Close()
         gn_007C9140 = 0;
         RELEASE(gpObject_00970E64);
         RELEASE(gpObject_00970E60);
-        if (gpLock_007C9134)
+        if (gpRenderCriticalSection)
         {
-            DeleteCriticalSection(gpLock_007C9134);
-            FOG_Free(gpLock_007C9134, ".\\Src\\d3dCore.cpp", 0x71D, 0);
-            gpLock_007C9134 = 0;
+            DeleteCriticalSection(gpRenderCriticalSection);
+            FOG_Free(gpRenderCriticalSection, ".\\Src\\d3dCore.cpp", 0x71D, 0);
+            gpRenderCriticalSection = 0;
         }
         gbD3DInitialized = 0;
     }
@@ -2311,12 +2281,12 @@ void __fastcall D3DCORE_PauseSurface(void* window, int mode, int paused)
     if (!gpCriticalSection_007C9134) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x7b0); exit(-1); }
     EnterCriticalSection(gpCriticalSection_007C9134);
     if (paused) {
-        gnPaused_007C9144 = 1;
+        gbRenderPaused = 1;
         D3DCORE_ReleaseResources();
         gn_007C9140 = 0;
     }
     else {
-        gnPaused_007C9144 = 0;
+        gbRenderPaused = 0;
         D3DCORE_CreateSurface(window, mode);
     }
     LeaveCriticalSection(gpCriticalSection_007C9134);
@@ -2329,7 +2299,7 @@ void __fastcall D3DCORE_OpenSmackCutscene(int a, int b, int c)
     {
         gbD3DBusy = 1;
         D3DCORE_Flush();
-        if (gpConfig_007C9148->bVSync)
+        if (gpGfxSettings->bVSync)
         {
             gpDevice_00970E68->lpVtbl->Flip(gpDevice_00970E68, 0, 1);
         }
@@ -2345,12 +2315,12 @@ void __fastcall D3DCORE_OpenSmackCutscene(int a, int b, int c)
 // 0x006B5720
 int __fastcall D3DCORE_StartDraw(int clear, int unused, int unusedA, int unusedB)
 {
-    if (gnPaused_007C9144) return 0;
+    if (gbRenderPaused) return 0;
     if (!gpCriticalSection_007C9134) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x842); exit(-1); }
     EnterCriticalSection(gpCriticalSection_007C9134);
     if (clear) sub_006B7F70_ClearTarget(0);
-    gnState_00970E54 = 0;
-    gnState_00970E58 = 0;
+    gnColorCombineMode = 0;
+    gnAlphaBlendMode = 0;
     gnFilterMode = 0;
     sub_006B9710_SetColorComponents(255, 255, 255);
     long result = gpDevice_00970E78->lpVtbl->BeginScene(gpDevice_00970E78);
@@ -2366,8 +2336,8 @@ int __cdecl D3DCORE_EndDraw()
     {
         D3DCORE_ShowD3DError("EndScene failed!", nResult);
     }
-    D2_ASSERT(gpLock_007C9134, 0x8B3);
-    LeaveCriticalSection(gpLock_007C9134);
+    D2_ASSERT(gpRenderCriticalSection, 0x8B3);
+    LeaveCriticalSection(gpRenderCriticalSection);
     return 1;
 }
 
@@ -2396,7 +2366,7 @@ int __fastcall D3DCORE_CreateDeviceTexture(D2ComObject006B58A0Strc** ppSurface, 
     D2DDSurfaceDesc006B58A0Strc tDesc = { sizeof(tDesc) };
     tDesc.dwFlags = 0x1007;
     tDesc.aCaps2[0] = 0x80;
-    tDesc.tPixelFormat = gtWantedFormat_0074C024;
+    tDesc.tPixelFormat = gtWantedFormat;
     tDesc.dwWidth = nWidth;
     tDesc.dwHeight = nHeight;
     tDesc.dwCaps = gnDeviceTextureFlag ? 0x5000 : 0x10005000;
@@ -2431,7 +2401,7 @@ int __fastcall D3DCORE_Init(int nArg1, int nArg2)
     D2ComObjectStrc* pDirectDraw = 0;
     char tIdentifier[0x850];
 
-    D2_ASSERT(!gbD3DInitialized_00970E48, 0x687);
+    D2_ASSERT(!gbD3DInitialized, 0x687);
 
     gnD3DArg1_007C9148 = nArg1;
     gpTileDrawFunctions = nArg2;
@@ -2476,7 +2446,7 @@ int __fastcall D3DCORE_Init(int nArg1, int nArg2)
     }
 
     atexit(D3DCORE_CloseAtExit);
-    gbD3DInitialized_00970E48 = 1;
+    gbD3DInitialized = 1;
     sub_006B96C0_BuildScaleTable();
     sub_006B97D0_BuildScaleTable();
     sub_006B80A0_InitializeDrawingGeometry();
@@ -2491,7 +2461,7 @@ int __fastcall D3DCORE_SetOption(int nId, int nValue)
 {
     if (nId != 11)
         return 0;
-    gnGammaScale_0074C020 = nValue;
+    gnGammaScale = nValue;
     return 1;
 }
 
@@ -2619,7 +2589,7 @@ void __fastcall D3DCORE_ClearCaches(); // 0x006B1BC0
 int gnModeFlag;        // 0x00970E8C
 
 // 0x006B2F20
-int __cdecl sub_006B2F20()
+int __cdecl sub_006B2F20_GetModeFlag()
 {
     return gnModeFlag;
 }
@@ -2654,11 +2624,8 @@ extern D2DDrawDeviceStrc gaDDrawDevices[]; // 0x0096F4E0
 
 
 
-void __cdecl D3DSPRITE_ReleaseSprites(); // 0x006B5B10
 
-void __cdecl sub_006B7250_ReleaseAll(); // 0x006B7250
 
-void __cdecl D3DSMACK_ReleaseSmackSurfaces(); // 0x006B9B30
 
 void __fastcall sub_006BA830_FreeCache(D2Cache006BA830Strc* pCache, int bFree); // 0x006BA830
 
@@ -2667,9 +2634,9 @@ void __fastcall D3DSUBTILECACHE_SubtileCacheDestroy(D2Object006BADC0Strc* pObjec
 void __fastcall D3DFLOORCACHE_FloorCacheDestroy(D2Object006BB3E0Strc* pObject, int bFree); // 0x006BB3E0
 
 
-extern D2Object006BADC0Strc gObject_0096FC80; // 0x0096FC80
+extern D2Object006BADC0Strc gtSubtileCache; // 0x0096FC80
 
-extern D2Object006BB3E0Strc gObject_0096FC9C; // 0x0096FC9C
+extern D2Object006BB3E0Strc gTextureCache; // 0x0096FC9C
 
 extern D2Cache006BA830Strc gtTextureCache1; // 0x00970EC8
 
@@ -2686,15 +2653,12 @@ extern void* ghDDrawWindow_007C9140; // 0x007C9140
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-void __cdecl LOGMANAGER_WriteLogLine(const char* szFormat, ...); // 0x00410610
 
 void __fastcall D3DCORE_LogDDrawError(const char* szWhere, int hResult); // 0x006B20E0
 
@@ -2755,16 +2719,12 @@ extern BufferPool gLargePool; // 0x00970EC8
 extern BufferPool gMediumPool; // 0x00970EE4
 extern BufferPool gSmallPool; // 0x00970F00
 char* __fastcall sub_006B76D0_InitVertices(char*); // 0x006B76D0
-char* __fastcall D3DSMACK_CreateSmackSurfaces(char*); // 0x006B9A50
 char* __fastcall D3DFLOORCACHE_FloorCacheInit(BufferPool*,char*,char*,unsigned int); // 0x006BAFC0
 char* __fastcall D3DSUBTILECACHE_SubtileCacheInit(BufferPool*,char*,char*,unsigned int); // 0x006BA9A0
-char* __fastcall sub_006BA420(BufferPool*,char*,char*,unsigned int,unsigned int); // 0x006BA420
-void __cdecl D3DSPRITE_InitSprites(); // 0x006B7110
-void __fastcall D3DFLOORCACHE_InvalidateTileCaches(D2TileLibraryEntryStrc* pTile); // 0x006BBB90
+char* __fastcall sub_006BA420_Init(BufferPool*,char*,char*,unsigned int,unsigned int); // 0x006BA420
 void __stdcall TileSetHardwareFreeCallback(void*); // 0x00604A30
 extern D2ComObjectStrc* gpInterface_00970E78; // 0x00970E78
 void __cdecl sub_006B9150_ReleaseResource(); // 0x006B9150
-void __cdecl D3DFLOORCACHE_ReleaseTileSurfaces(); // 0x006BB640
 int gbVideoUp; // 0x00970E40
 int gnVideoState; // 0x00970E44
 D2ComObjectStrc* gpPrimarySurface; // 0x00970E68
@@ -2775,7 +2735,7 @@ D2ComObjectStrc* gpViewport; // 0x00970E7C
 char gabGammaRamp[1536]; // 0x0096FCB8
 
 // 0x006B3080
-void __cdecl sub_006B3080()
+void __cdecl sub_006B3080_InitBufferPools()
 {
  unsigned int memory;
  gBufferCopies=2;
@@ -2805,19 +2765,19 @@ void __cdecl sub_006B3080()
   secondary+=(unsigned int)current;
   current=D3DSUBTILECACHE_SubtileCacheInit(&gAuxiliaryPool,current,(char*)secondary,2048);
   start=current;remaining=memory-(unsigned int)current;
-  current=sub_006BA420(&gLargePool,current,current+remaining*20/100,256,256);
+  current=sub_006BA420_Init(&gLargePool,current,current+remaining*20/100,256,256);
   gLargeBudget=gLargePool.count*gBufferCopies*65536;
-  current=sub_006BA420(&gMediumPool,current,start+remaining*75/100,128,128);
+  current=sub_006BA420_Init(&gMediumPool,current,start+remaining*75/100,128,128);
  } else {
   gPrimaryBudget=0;gSecondaryBudget=0;
   current=D3DSMACK_CreateSmackSurfaces(current);
   start=current;remaining=memory-(unsigned int)current;
-  current=sub_006BA420(&gLargePool,current,current+remaining*70/100,256,256);
+  current=sub_006BA420_Init(&gLargePool,current,current+remaining*70/100,256,256);
   gLargeBudget=gLargePool.count*gBufferCopies*65536;
-  current=sub_006BA420(&gMediumPool,current,start+remaining*80/100,128,128);
+  current=sub_006BA420_Init(&gMediumPool,current,start+remaining*80/100,128,128);
  }
  gMediumBudget=gMediumPool.count*gBufferCopies*16384;
- sub_006BA420(&gSmallPool,current,(char*)memory,32,32);
+ sub_006BA420_Init(&gSmallPool,current,(char*)memory,32,32);
  gSmallBudget=gSmallPool.count*gBufferCopies*1024;
  D3DSPRITE_InitSprites();
  TileSetHardwareFreeCallback((void*)D3DFLOORCACHE_InvalidateTileCaches);
@@ -2829,8 +2789,8 @@ void __cdecl D3DCORE_ReleaseRenderer()
     if (gnModeFlag)
     {
         sub_006B7250_ReleaseAll();
-        D3DFLOORCACHE_FloorCacheDestroy(&gObject_0096FC9C, 1);
-        D3DSUBTILECACHE_SubtileCacheDestroy(&gObject_0096FC80, 1);
+        D3DFLOORCACHE_FloorCacheDestroy(&gTextureCache, 1);
+        D3DSUBTILECACHE_SubtileCacheDestroy(&gtSubtileCache, 1);
     }
     else
     {
@@ -2843,6 +2803,9 @@ void __cdecl D3DCORE_ReleaseRenderer()
     D3DSPRITE_ReleaseSprites();
 }
 
+// The entry points of the Direct3D renderer, which D2Gfx selects by video mode (gapGraphicsInterfaces).
+extern D2GraphicsInterfaceStrc gtD3DGraphicsInterface; // 0x0074BF28
+
 extern "C" void __cdecl D3DSMACK_CloseSmacker(); // 0x006B9BB0
 extern "C" void __cdecl D3DSMACK_DecodeSmacker(); // 0x006BA010
 extern "C" void __cdecl D3DSMACK_PlaySmacker(); // 0x006BA390
@@ -2853,7 +2816,7 @@ extern "C" void __cdecl D3DSPRITE_DrawSpriteClipped(); // 0x006B6EE0
 extern "C" void __cdecl D3DSPRITE_DrawSpriteRows(); // 0x006B6C90
 extern "C" void __cdecl D3DSPRITE_DrawSpriteShadow(); // 0x006B7000
 extern "C" void __cdecl sub_006B7630_DrawTextV(); // 0x006B7630
-extern "C" void __cdecl sub_006B76C0(); // 0x006B76C0
+extern "C" void __cdecl sub_006B76C0_Nop(); // 0x006B76C0
 extern "C" void __cdecl sub_006B77B0_Call(); // 0x006B77B0
 extern "C" void __cdecl sub_006B7980_DrawRectangle(); // 0x006B7980
 extern "C" void __cdecl sub_006B7B30_DrawLine(); // 0x006B7B30
@@ -2872,288 +2835,11 @@ extern "C" void __cdecl sub_006B9A00_ResetScale(); // 0x006B9A00
 extern "C" void __cdecl D3DSPRITE_CelDraw(); // 0x006B6B40
 extern "C" void __cdecl D3DSPRITE_CelDrawColor(); // 0x006B6BF0
 
-#pragma pack(push, 1)
-struct d2data_006FADC2_t
-{
-    unsigned char b0[2];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_006FB77B_t
-{
-    unsigned char b0[1];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_006FF488_t
-{
-    unsigned char b0[144];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_006FF528_t
-{
-    unsigned char b0[48];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_006FF568_t
-{
-    unsigned char b0[608];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_006FF7D8_t
-{
-    unsigned char b0[256];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_006FF8E8_t
-{
-    unsigned char b0[88];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0074BF28_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-    const void* p15;
-    const void* p16;
-    const void* p17;
-    const void* p18;
-    const void* p19;
-    const void* p20;
-    const void* p21;
-    const void* p22;
-    const void* p23;
-    const void* p24;
-    const void* p25;
-    const void* p26;
-    const void* p27;
-    const void* p28;
-    const void* p29;
-    const void* p30;
-    const void* p31;
-    const void* p32;
-    const void* p33;
-    const void* p34;
-    const void* p35;
-    const void* p36;
-    const void* p37;
-    const void* p38;
-    const void* p39;
-    const void* p40;
-    const void* p41;
-    const void* p42;
-    const void* p43;
-    const void* p44;
-    const void* p45;
-    const void* p46;
-    const void* p47;
-    const void* p48;
-    const void* p49;
-    const void* p50;
-    const void* p51;
-    const void* p52;
-    const void* p53;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0074C008_t
-{
-    unsigned char b0[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0074C018_t
-{
-    unsigned char b0[8];
-};
-#pragma pack(pop)
-
-extern "C" const struct d2data_006FADC2_t gData_006FADC2; // 0x006FADC2
-extern "C" const int gData_006FADC4; // 0x006FADC4
-extern "C" const int gData_006FADC8; // 0x006FADC8
-extern "C" const unsigned int gData_006FADCC; // 0x006FADCC
-extern "C" const unsigned int gData_006FADD0; // 0x006FADD0
-extern "C" const long gData_006FADD4; // 0x006FADD4
-extern "C" const long gData_006FADD8; // 0x006FADD8
-extern "C" const unsigned long gData_006FADDC; // 0x006FADDC
-extern "C" const unsigned long gData_006FADE0; // 0x006FADE0
-extern "C" const __int64 gData_006FADE8; // 0x006FADE8
-extern "C" const __int64 gData_006FADF0; // 0x006FADF0
-extern "C" const unsigned __int64 gData_006FADF8; // 0x006FADF8
-extern "C" const unsigned __int64 gData_006FAE00; // 0x006FAE00
-extern "C" const unsigned int gData_006FAE08; // 0x006FAE08
-extern "C" const int gData_006FAE0C; // 0x006FAE0C
-extern "C" const unsigned int gData_006FAE10; // 0x006FAE10
-extern "C" const int gData_006FAE14; // 0x006FAE14
-extern "C" const unsigned int gData_006FAE18; // 0x006FAE18
-extern "C" const int gData_006FAE1C; // 0x006FAE1C
-extern "C" const unsigned int gData_006FAE20; // 0x006FAE20
-extern "C" const int gData_006FAE24; // 0x006FAE24
-extern "C" const unsigned int gData_006FAE28; // 0x006FAE28
-extern "C" const int gData_006FAE2C; // 0x006FAE2C
-extern "C" const unsigned int gData_006FAE30; // 0x006FAE30
-extern "C" const int gData_006FAE34; // 0x006FAE34
-extern "C" const unsigned int gData_006FAE38; // 0x006FAE38
-extern "C" const int gData_006FAE3C; // 0x006FAE3C
-extern "C" const unsigned int gData_006FAE40; // 0x006FAE40
-extern "C" const int gData_006FAE44; // 0x006FAE44
-extern "C" const unsigned int gData_006FAE48; // 0x006FAE48
-extern "C" const int gData_006FAE4C; // 0x006FAE4C
-extern "C" const unsigned int gData_006FAE50; // 0x006FAE50
-extern "C" const int gData_006FAE54; // 0x006FAE54
-extern "C" const unsigned int gData_006FAE58; // 0x006FAE58
-extern "C" const int gData_006FAE5C; // 0x006FAE5C
-extern "C" const unsigned int gData_006FAE60; // 0x006FAE60
-extern "C" const int gData_006FAE64; // 0x006FAE64
-extern "C" const unsigned int gData_006FAE68; // 0x006FAE68
-extern "C" const int gData_006FAE6C; // 0x006FAE6C
-extern "C" const unsigned int gData_006FAE70; // 0x006FAE70
-extern "C" const int gData_006FAE74; // 0x006FAE74
-extern "C" const unsigned int gData_006FAE78; // 0x006FAE78
-extern "C" const int gData_006FAE7C; // 0x006FAE7C
-extern "C" const unsigned int gData_006FAE80; // 0x006FAE80
-extern "C" const int gData_006FAE84; // 0x006FAE84
-extern "C" const unsigned int gData_006FAE88; // 0x006FAE88
-extern "C" const int gData_006FAE8C; // 0x006FAE8C
-extern "C" const unsigned int gData_006FAE90; // 0x006FAE90
-extern "C" const int gData_006FAE94; // 0x006FAE94
-extern "C" const unsigned int gData_006FAE98; // 0x006FAE98
-extern "C" const int gData_006FAE9C; // 0x006FAE9C
-extern "C" const unsigned int gData_006FAEA0; // 0x006FAEA0
-extern "C" const int gData_006FAEA4; // 0x006FAEA4
-extern "C" const unsigned int gData_006FAEA8; // 0x006FAEA8
-extern "C" const int gData_006FAEAC; // 0x006FAEAC
-extern "C" const unsigned int gData_006FAEB0; // 0x006FAEB0
-extern "C" const int gData_006FAEB4; // 0x006FAEB4
-extern "C" const unsigned int gData_006FAEB8; // 0x006FAEB8
-extern "C" const int gData_006FAEBC; // 0x006FAEBC
-extern "C" const unsigned int gData_006FAEC0; // 0x006FAEC0
-extern "C" const int gData_006FAEC4; // 0x006FAEC4
-extern "C" const unsigned int gData_006FAEC8; // 0x006FAEC8
-extern "C" const unsigned int gData_006FAECC; // 0x006FAECC
-extern "C" const int gData_006FAED0; // 0x006FAED0
-extern "C" const unsigned int gData_006FAED4; // 0x006FAED4
-extern "C" const int gData_006FAED8; // 0x006FAED8
-extern "C" const unsigned int gData_006FAEDC; // 0x006FAEDC
-extern "C" const int gData_006FAEE0; // 0x006FAEE0
-extern "C" const unsigned int gData_006FAEE4; // 0x006FAEE4
-extern "C" const int gData_006FAEE8; // 0x006FAEE8
-extern "C" const unsigned int gData_006FAEEC; // 0x006FAEEC
-extern "C" const int gData_006FAEF0; // 0x006FAEF0
-extern "C" const unsigned int gData_006FAEF4; // 0x006FAEF4
-extern "C" const int gData_006FAEF8; // 0x006FAEF8
-extern "C" const unsigned int gData_006FAEFC; // 0x006FAEFC
-extern "C" const int gData_006FAF00; // 0x006FAF00
-extern "C" const unsigned int gData_006FAF04; // 0x006FAF04
-extern "C" const int gData_006FAF08; // 0x006FAF08
-extern "C" const char gData_006FB130[28]; // 0x006FB130
-extern "C" const char gData_006FB14C[32]; // 0x006FB14C
-extern "C" const struct d2data_006FB77B_t gData_006FB77B; // 0x006FB77B
-extern "C" const char gData_006FB77C[48]; // 0x006FB77C
-extern "C" const char gData_006FB7AC[48]; // 0x006FB7AC
-extern "C" const char gData_006FB7DC[52]; // 0x006FB7DC
-extern "C" const char gData_006FB810[44]; // 0x006FB810
-extern "C" const char gData_006FB83C[48]; // 0x006FB83C
-extern "C" const char gData_006FB86C[56]; // 0x006FB86C
-extern "C" const char gData_006FB8A4[48]; // 0x006FB8A4
-extern "C" const char gData_006FB8D4[52]; // 0x006FB8D4
-extern "C" const char gData_006FB908[32]; // 0x006FB908
-extern "C" const char gData_006FB928[40]; // 0x006FB928
-extern "C" const char gData_006FB950[60]; // 0x006FB950
-extern "C" const char gData_006FB98C[28]; // 0x006FB98C
-extern "C" const char gData_006FB9A8[28]; // 0x006FB9A8
-extern "C" const char gData_006FB9C4[48]; // 0x006FB9C4
-extern "C" const char gData_006FB9F4[40]; // 0x006FB9F4
-extern "C" const char gData_006FBA1C[44]; // 0x006FBA1C
-extern "C" const char gData_006FBA48[44]; // 0x006FBA48
-extern "C" const char gData_006FBA74[48]; // 0x006FBA74
-extern "C" const char gData_006FBAA4[52]; // 0x006FBAA4
-extern "C" const char gData_006FBAD8[40]; // 0x006FBAD8
-extern "C" const char gData_006FBB00[48]; // 0x006FBB00
-extern "C" const char gData_006FBB30[32]; // 0x006FBB30
-extern "C" const char gData_006FBB50[28]; // 0x006FBB50
-extern "C" const char gData_006FBB6C[52]; // 0x006FBB6C
-extern "C" const char gData_006FBBA0[40]; // 0x006FBBA0
-extern "C" const char gData_006FBBC8[44]; // 0x006FBBC8
-extern "C" const char gData_006FBBF4[32]; // 0x006FBBF4
-extern "C" const char gData_006FBC14[48]; // 0x006FBC14
-extern "C" const char gData_006FBC44[32]; // 0x006FBC44
-extern "C" const char gData_006FBC64[36]; // 0x006FBC64
-extern "C" const char gData_006FBC88[32]; // 0x006FBC88
-extern "C" const char gData_006FBCA8[24]; // 0x006FBCA8
-extern "C" const char gData_006FBCC0[36]; // 0x006FBCC0
-extern "C" const char gData_006FBCE4[36]; // 0x006FBCE4
-extern "C" const char gData_006FBD08[28]; // 0x006FBD08
-extern "C" const char gData_006FBD24[56]; // 0x006FBD24
-extern "C" const char gData_006FBD5C[64]; // 0x006FBD5C
-extern "C" const char gData_006FBD9C[32]; // 0x006FBD9C
-extern "C" const char gData_006FBDBC[32]; // 0x006FBDBC
-extern "C" const char gData_006FBDDC[44]; // 0x006FBDDC
-extern "C" const char gData_006FBE08[32]; // 0x006FBE08
-extern "C" const char gData_006FBE28[28]; // 0x006FBE28
-extern "C" const char gData_006FBE44[28]; // 0x006FBE44
-extern "C" const char gData_006FBE60[40]; // 0x006FBE60
-extern "C" const char gData_006FBE88[32]; // 0x006FBE88
-extern "C" const char gData_006FBEA8[48]; // 0x006FBEA8
-extern "C" const char gData_006FBED8[36]; // 0x006FBED8
-extern "C" const char gData_006FBEFC[48]; // 0x006FBEFC
-extern "C" const char gData_006FC010[28]; // 0x006FC010
-extern "C" const char gData_006FC02C[20]; // 0x006FC02C
-extern "C" const char gData_006FC040[36]; // 0x006FC040
-extern "C" const char gData_006FC064[28]; // 0x006FC064
-extern "C" const char gData_006FC080[32]; // 0x006FC080
-extern "C" const char gData_006FC0A0[36]; // 0x006FC0A0
-extern "C" const char gData_006FC0C4[40]; // 0x006FC0C4
-extern "C" const char gData_006FC0EC[28]; // 0x006FC0EC
-extern "C" const char gData_006FC108[24]; // 0x006FC108
-extern "C" const unsigned char gData_006FF478[16]; // 0x006FF478
-extern "C" const struct d2data_006FF488_t gData_006FF488; // 0x006FF488
-extern "C" const unsigned int gData_006FF518[4]; // 0x006FF518
-extern "C" const struct d2data_006FF528_t gData_006FF528; // 0x006FF528
-extern "C" const D2GuidStrc gData_006FF558; // 0x006FF558
-extern "C" const struct d2data_006FF568_t gData_006FF568; // 0x006FF568
-extern "C" const Guid gData_006FF7C8; // 0x006FF7C8
-extern "C" const struct d2data_006FF7D8_t gData_006FF7D8; // 0x006FF7D8
-extern "C" const D2GuidStrc gData_006FF8D8; // 0x006FF8D8
-extern "C" const struct d2data_006FF8E8_t gData_006FF8E8; // 0x006FF8E8
-extern "C" struct d2data_0074BF28_t gData_0074BF28; // 0x0074BF28
-extern "C" struct d2data_0074C008_t gData_0074C008; // 0x0074C008
-extern "C" struct d2data_0074C018_t gData_0074C018; // 0x0074C018
-
-extern "C" const struct d2data_006FADC2_t gData_006FADC2 = {
-    { 0x00 }
-}; // 0x006FADC2
+extern "C" const unsigned char gData_006FADC2[2] = { 0 }; // 0x006FADC2
 
 extern "C" const int gData_006FADC4 = (-2147483647 - 1); // 0x006FADC4
 
-extern "C" const int gData_006FADC8 = 2147483647; // 0x006FADC8
+extern "C" const int gData_006FADC8 = 0x7FFFFFFF; // 0x006FADC8
 
 extern "C" const unsigned int gData_006FADCC = 0; // 0x006FADCC
 
@@ -3161,7 +2847,7 @@ extern "C" const unsigned int gData_006FADD0 = 0xFFFFFFFF; // 0x006FADD0
 
 extern "C" const long gData_006FADD4 = (-2147483647 - 1); // 0x006FADD4
 
-extern "C" const long gData_006FADD8 = 2147483647; // 0x006FADD8
+extern "C" const long gData_006FADD8 = 0x7FFFFFFF; // 0x006FADD8
 
 extern "C" const unsigned long gData_006FADDC = 0; // 0x006FADDC
 
@@ -3169,25 +2855,25 @@ extern "C" const unsigned long gData_006FADE0 = 0xFFFFFFFF; // 0x006FADE0
 
 extern "C" const __int64 gData_006FADE8 = (-9223372036854775807i64 - 1); // 0x006FADE8
 
-extern "C" const __int64 gData_006FADF0 = 9223372036854775807i64; // 0x006FADF0
+extern "C" const __int64 gData_006FADF0 = 0x7FFFFFFFFFFFFFFFi64; // 0x006FADF0
 
-extern "C" const unsigned __int64 gData_006FADF8 = 0x0ui64; // 0x006FADF8
+extern "C" const unsigned __int64 gData_006FADF8 = 0; // 0x006FADF8
 
 extern "C" const unsigned __int64 gData_006FAE00 = 0xFFFFFFFFFFFFFFFFui64; // 0x006FAE00
 
-extern "C" const unsigned int gData_006FAE08 = 0x10; // 0x006FAE08
+extern "C" const unsigned int gData_006FAE08 = 16; // 0x006FAE08
 
 extern "C" const int gData_006FAE0C = 8; // 0x006FAE0C
 
-extern "C" const unsigned int gData_006FAE10 = 0x11; // 0x006FAE10
+extern "C" const unsigned int gData_006FAE10 = 17; // 0x006FAE10
 
 extern "C" const int gData_006FAE14 = 8; // 0x006FAE14
 
-extern "C" const unsigned int gData_006FAE18 = 0x4010; // 0x006FAE18
+extern "C" const unsigned int gData_006FAE18 = 16400; // 0x006FAE18
 
 extern "C" const int gData_006FAE1C = 8; // 0x006FAE1C
 
-extern "C" const unsigned int gData_006FAE20 = 0x4011; // 0x006FAE20
+extern "C" const unsigned int gData_006FAE20 = 16401; // 0x006FAE20
 
 extern "C" const int gData_006FAE24 = 8; // 0x006FAE24
 
@@ -3195,15 +2881,15 @@ extern "C" const unsigned int gData_006FAE28 = 2; // 0x006FAE28
 
 extern "C" const int gData_006FAE2C = 8; // 0x006FAE2C
 
-extern "C" const unsigned int gData_006FAE30 = 0x4002; // 0x006FAE30
+extern "C" const unsigned int gData_006FAE30 = 16386; // 0x006FAE30
 
 extern "C" const int gData_006FAE34 = 8; // 0x006FAE34
 
-extern "C" const unsigned int gData_006FAE38 = 0x12; // 0x006FAE38
+extern "C" const unsigned int gData_006FAE38 = 18; // 0x006FAE38
 
 extern "C" const int gData_006FAE3C = 8; // 0x006FAE3C
 
-extern "C" const unsigned int gData_006FAE40 = 0x4012; // 0x006FAE40
+extern "C" const unsigned int gData_006FAE40 = 16402; // 0x006FAE40
 
 extern "C" const int gData_006FAE44 = 8; // 0x006FAE44
 
@@ -3211,15 +2897,15 @@ extern "C" const unsigned int gData_006FAE48 = 3; // 0x006FAE48
 
 extern "C" const int gData_006FAE4C = 8; // 0x006FAE4C
 
-extern "C" const unsigned int gData_006FAE50 = 0x4003; // 0x006FAE50
+extern "C" const unsigned int gData_006FAE50 = 16387; // 0x006FAE50
 
 extern "C" const int gData_006FAE54 = 8; // 0x006FAE54
 
-extern "C" const unsigned int gData_006FAE58 = 0x13; // 0x006FAE58
+extern "C" const unsigned int gData_006FAE58 = 19; // 0x006FAE58
 
 extern "C" const int gData_006FAE5C = 8; // 0x006FAE5C
 
-extern "C" const unsigned int gData_006FAE60 = 0x4013; // 0x006FAE60
+extern "C" const unsigned int gData_006FAE60 = 16403; // 0x006FAE60
 
 extern "C" const int gData_006FAE64 = 8; // 0x006FAE64
 
@@ -3227,31 +2913,31 @@ extern "C" const unsigned int gData_006FAE68 = 3; // 0x006FAE68
 
 extern "C" const int gData_006FAE6C = 8; // 0x006FAE6C
 
-extern "C" const unsigned int gData_006FAE70 = 0x4003; // 0x006FAE70
+extern "C" const unsigned int gData_006FAE70 = 16387; // 0x006FAE70
 
 extern "C" const int gData_006FAE74 = 8; // 0x006FAE74
 
-extern "C" const unsigned int gData_006FAE78 = 0x13; // 0x006FAE78
+extern "C" const unsigned int gData_006FAE78 = 19; // 0x006FAE78
 
 extern "C" const int gData_006FAE7C = 8; // 0x006FAE7C
 
-extern "C" const unsigned int gData_006FAE80 = 0x4013; // 0x006FAE80
+extern "C" const unsigned int gData_006FAE80 = 16403; // 0x006FAE80
 
 extern "C" const int gData_006FAE84 = 8; // 0x006FAE84
 
-extern "C" const unsigned int gData_006FAE88 = 0x14; // 0x006FAE88
+extern "C" const unsigned int gData_006FAE88 = 20; // 0x006FAE88
 
 extern "C" const int gData_006FAE8C = 8; // 0x006FAE8C
 
-extern "C" const unsigned int gData_006FAE90 = 0x4014; // 0x006FAE90
+extern "C" const unsigned int gData_006FAE90 = 16404; // 0x006FAE90
 
 extern "C" const int gData_006FAE94 = 8; // 0x006FAE94
 
-extern "C" const unsigned int gData_006FAE98 = 0x15; // 0x006FAE98
+extern "C" const unsigned int gData_006FAE98 = 21; // 0x006FAE98
 
 extern "C" const int gData_006FAE9C = 8; // 0x006FAE9C
 
-extern "C" const unsigned int gData_006FAEA0 = 0x4015; // 0x006FAEA0
+extern "C" const unsigned int gData_006FAEA0 = 16405; // 0x006FAEA0
 
 extern "C" const int gData_006FAEA4 = 8; // 0x006FAEA4
 
@@ -3259,7 +2945,7 @@ extern "C" const unsigned int gData_006FAEA8 = 4; // 0x006FAEA8
 
 extern "C" const int gData_006FAEAC = 8; // 0x006FAEAC
 
-extern "C" const unsigned int gData_006FAEB0 = 0x4004; // 0x006FAEB0
+extern "C" const unsigned int gData_006FAEB0 = 16388; // 0x006FAEB0
 
 extern "C" const int gData_006FAEB4 = 8; // 0x006FAEB4
 
@@ -3267,25 +2953,25 @@ extern "C" const unsigned int gData_006FAEB8 = 5; // 0x006FAEB8
 
 extern "C" const int gData_006FAEBC = 8; // 0x006FAEBC
 
-extern "C" const unsigned int gData_006FAEC0 = 0x4005; // 0x006FAEC0
+extern "C" const unsigned int gData_006FAEC0 = 16389; // 0x006FAEC0
 
 extern "C" const int gData_006FAEC4 = 8; // 0x006FAEC4
 
-extern "C" const unsigned int gData_006FAEC8 = 0xC; // 0x006FAEC8
+extern "C" const unsigned int gData_006FAEC8 = 12; // 0x006FAEC8
 
 extern "C" const unsigned int gData_006FAECC = 8; // 0x006FAECC
 
 extern "C" const int gData_006FAED0 = 8; // 0x006FAED0
 
-extern "C" const unsigned int gData_006FAED4 = 0x4008; // 0x006FAED4
+extern "C" const unsigned int gData_006FAED4 = 16392; // 0x006FAED4
 
 extern "C" const int gData_006FAED8 = 8; // 0x006FAED8
 
-extern "C" const unsigned int gData_006FAEDC = 0xD; // 0x006FAEDC
+extern "C" const unsigned int gData_006FAEDC = 13; // 0x006FAEDC
 
 extern "C" const int gData_006FAEE0 = 8; // 0x006FAEE0
 
-extern "C" const unsigned int gData_006FAEE4 = 0x400D; // 0x006FAEE4
+extern "C" const unsigned int gData_006FAEE4 = 16397; // 0x006FAEE4
 
 extern "C" const int gData_006FAEE8 = 8; // 0x006FAEE8
 
@@ -3293,7 +2979,7 @@ extern "C" const unsigned int gData_006FAEEC = 9; // 0x006FAEEC
 
 extern "C" const int gData_006FAEF0 = 8; // 0x006FAEF0
 
-extern "C" const unsigned int gData_006FAEF4 = 0x4009; // 0x006FAEF4
+extern "C" const unsigned int gData_006FAEF4 = 16393; // 0x006FAEF4
 
 extern "C" const int gData_006FAEF8 = 8; // 0x006FAEF8
 
@@ -3301,27 +2987,72 @@ extern "C" const unsigned int gData_006FAEFC = 6; // 0x006FAEFC
 
 extern "C" const int gData_006FAF00 = 8; // 0x006FAF00
 
-extern "C" const unsigned int gData_006FAF04 = 0x4006; // 0x006FAF04
+extern "C" const unsigned int gData_006FAF04 = 16390; // 0x006FAF04
 
 extern "C" const int gData_006FAF08 = 8; // 0x006FAF08
 
-extern "C" const __declspec(selectany) GUID LIBID_ATLLib = { 0x44EC0535, 0x400F, 0x11D0, { 0x9D, 0xCD, 0, 0xA0, 0xC9, 3, 0x91, 0xD3 } }; // 0x006FAF0C
+extern "C" const __declspec(selectany) GUID LIBID_ATLLib = { // 0x006FAF0C
+    0x44EC0535,
+    0x400F,
+    0x11D0,
+    { 0x9D, 0xCD, 0x00, 0xA0, 0xC9, 0x03, 0x91, 0xD3 }
+};
 
-extern "C" const __declspec(selectany) GUID CLSID_Registrar = { 0x44EC053A, 0x400F, 0x11D0, { 0x9D, 0xCD, 0, 0xA0, 0xC9, 3, 0x91, 0xD3 } }; // 0x006FAF1C
+extern "C" const __declspec(selectany) GUID CLSID_Registrar = { // 0x006FAF1C
+    0x44EC053A,
+    0x400F,
+    0x11D0,
+    { 0x9D, 0xCD, 0x00, 0xA0, 0xC9, 0x03, 0x91, 0xD3 }
+};
 
-extern "C" const __declspec(selectany) GUID IID_IRegistrar = { 0x44EC053B, 0x400F, 0x11D0, { 0x9D, 0xCD, 0, 0xA0, 0xC9, 3, 0x91, 0xD3 } }; // 0x006FAF2C
+extern "C" const __declspec(selectany) GUID IID_IRegistrar = { // 0x006FAF2C
+    0x44EC053B,
+    0x400F,
+    0x11D0,
+    { 0x9D, 0xCD, 0x00, 0xA0, 0xC9, 0x03, 0x91, 0xD3 }
+};
 
-extern "C" const __declspec(selectany) GUID IID_IAxWinHostWindow = { 0xB6EA2050, 0x48A, 0x11D1, { 0x82, 0xB9, 0, 0xC0, 0x4F, 0xB9, 0x94, 0x2E } }; // 0x006FAF3C
+extern "C" const __declspec(selectany) GUID IID_IAxWinHostWindow = { // 0x006FAF3C
+    0xB6EA2050,
+    0x48A,
+    0x11D1,
+    { 0x82, 0xB9, 0x00, 0xC0, 0x4F, 0xB9, 0x94, 0x2E }
+};
 
-extern "C" const __declspec(selectany) GUID IID_IAxWinAmbientDispatch = { 0xB6EA2051, 0x48A, 0x11D1, { 0x82, 0xB9, 0, 0xC0, 0x4F, 0xB9, 0x94, 0x2E } }; // 0x006FAF4C
+extern "C" const __declspec(selectany) GUID IID_IAxWinAmbientDispatch = { // 0x006FAF4C
+    0xB6EA2051,
+    0x48A,
+    0x11D1,
+    { 0x82, 0xB9, 0x00, 0xC0, 0x4F, 0xB9, 0x94, 0x2E }
+};
 
-extern "C" const __declspec(selectany) GUID IID_IInternalConnection = { 0x72AD0770, 0x6A9F, 0x11D1, { 0xBC, 0xEC, 0, 0x60, 8, 0x8F, 0x44, 0x4E } }; // 0x006FAF5C
+extern "C" const __declspec(selectany) GUID IID_IInternalConnection = { // 0x006FAF5C
+    0x72AD0770,
+    0x6A9F,
+    0x11D1,
+    { 0xBC, 0xEC, 0x00, 0x60, 0x08, 0x8F, 0x44, 0x4E }
+};
 
-extern "C" const __declspec(selectany) GUID IID_IDocHostUIHandlerDispatch = { 0x425B5AF0, 0x65F1, 0x11D1, { 0x96, 0x11, 0, 0, 0xF8, 0x1E, 0xD, 0xD } }; // 0x006FAF6C
+extern "C" const __declspec(selectany) GUID IID_IDocHostUIHandlerDispatch = { // 0x006FAF6C
+    0x425B5AF0,
+    0x65F1,
+    0x11D1,
+    { 0x96, 0x11, 0x00, 0x00, 0xF8, 0x1E, 0x0D, 0x0D }
+};
 
-extern "C" const __declspec(selectany) GUID IID_IAxWinHostWindowLic = { 0x3935BDA8, 0x4ED9, 0x495C, { 0x86, 0x50, 0xE0, 0x1F, 0xC1, 0xE3, 0x8A, 0x4B } }; // 0x006FAF7C
+extern "C" const __declspec(selectany) GUID IID_IAxWinHostWindowLic = { // 0x006FAF7C
+    0x3935BDA8,
+    0x4ED9,
+    0x495C,
+    { 0x86, 0x50, 0xE0, 0x1F, 0xC1, 0xE3, 0x8A, 0x4B }
+};
 
-extern "C" const __declspec(selectany) GUID IID_IAxWinAmbientDispatchEx = { 0xB2D0778B, 0xAC99, 0x4C58, { 0xA5, 0xC8, 0xE7, 0x72, 0x4E, 0x53, 0x16, 0xB5 } }; // 0x006FAF8C
+extern "C" const __declspec(selectany) GUID IID_IAxWinAmbientDispatchEx = { // 0x006FAF8C
+    0xB2D0778B,
+    0xAC99,
+    0x4C58,
+    { 0xA5, 0xC8, 0xE7, 0x72, 0x4E, 0x53, 0x16, 0xB5 }
+};
 
 __declspec(selectany) const char* const ATL::CRegParser::szStringVal = "S"; // 0x006FAF9C
 
@@ -3343,7 +3074,20 @@ __declspec(selectany) const int ATL::CRegParser::MAX_VALUE = 4096; // 0x006FAFBC
 
 __declspec(selectany) const int ATL::CRegParser::MAX_TYPE = 4096; // 0x006FAFC0
 
-__declspec(selectany) const char* const ATL::CRegParser::rgszNeverDelete[12] = { "AppID", "CLSID", "Component Categories", "FileType", "Interface", "Hardware", "Mime", "SAM", "SECURITY", "SYSTEM", "Software", "TypeLib" }; // 0x006FAFC4
+__declspec(selectany) const char* const ATL::CRegParser::rgszNeverDelete[12] = { // 0x006FAFC4
+    "AppID",
+    "CLSID",
+    "Component Categories",
+    "FileType",
+    "Interface",
+    "Hardware",
+    "Mime",
+    "SAM",
+    "SECURITY",
+    "SYSTEM",
+    "Software",
+    "TypeLib"
+};
 
 __declspec(selectany) const int ATL::CRegParser::cbNeverDelete = 12; // 0x006FAFF4
 
@@ -3353,9 +3097,7 @@ extern "C" const char gData_006FB130[28] = "Failed to lock dest surface"; // 0x0
 extern "C" const char gData_006FB14C[32] = "Failed to lock source surface"; // 0x006FB14C
 #pragma comment(linker, "/alternatename:_gszFailedToLockSource=_gData_006FB14C")
 
-extern "C" const struct d2data_006FB77B_t gData_006FB77B = {
-    { 0x00 }
-}; // 0x006FB77B
+extern "C" const unsigned char gData_006FB77B[1] = { 0 }; // 0x006FB77B
 
 extern "C" const char gData_006FB77C[48] = "Create 3D HAL Device (mode enumeration) failed!"; // 0x006FB77C
 #pragma comment(linker, "/alternatename:?gszCreateHalDeviceFailed@@3QBDB=_gData_006FB77C")
@@ -3528,191 +3270,153 @@ extern "C" const char gData_006FC0EC[28] = "GetAttachedSurface failed!"; // 0x00
 extern "C" const char gData_006FC108[24] = "CreateSurface failed!"; // 0x006FC108
 #pragma comment(linker, "/alternatename:?gSurfaceError@@3QBDB=_gData_006FC108")
 
-extern "C" const unsigned char gData_006FF478[16] = { 2, 0x15, 0x28, 0x93, 0xF8, 0x8C, 0xD0, 0x11, 0x89, 0xAB, 0, 0xA0, 0xC9, 5, 0x41, 0x29 }; // 0x006FF478
+extern "C" const unsigned char gData_006FF478[16] = { // 0x006FF478
+    0x02, 0x15, 0x28, 0x93, 0xF8, 0x8C, 0xD0, 0x11, 0x89, 0xAB, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29
+};
 #pragma comment(linker, "/alternatename:?gabIidTexture@@3QBEB=_gData_006FF478")
 
-extern "C" const struct d2data_006FF488_t gData_006FF488 = {
-    {
-        0xE0, 0xD9, 0xDC, 0x2C, 0xA0, 0x25, 0xCF, 0x11, 0xA3, 0x1A, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
-        0x79, 0x9E, 0x04, 0xF5, 0x61, 0x48, 0xD2, 0x11, 0xA4, 0x07, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
-        0x60, 0x3B, 0xAB, 0xB0, 0xD7, 0x33, 0xD1, 0x11, 0xA9, 0x81, 0x00, 0xC0, 0x4F, 0xD7, 0xB1, 0x74,
-        0x01, 0x15, 0x28, 0x93, 0xF8, 0x8C, 0xD0, 0x11, 0x89, 0xAB, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29,
-        0x00, 0x88, 0x10, 0x64, 0x7D, 0x95, 0xD0, 0x11, 0x89, 0xAB, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29,
-        0x78, 0x9E, 0x04, 0xF5, 0x61, 0x48, 0xD2, 0x11, 0xA4, 0x07, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
-        0x22, 0xDF, 0x67, 0x87, 0xCC, 0xBA, 0xD1, 0x11, 0x89, 0x69, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
-        0x43, 0x66, 0x93, 0x50, 0xE9, 0x13, 0xD1, 0x11, 0x89, 0xAA, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29,
-        0xA1, 0x49, 0x19, 0x88, 0xF3, 0xD6, 0xD0, 0x11, 0x89, 0xAB, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29
-    }
-}; // 0x006FF488
+extern "C" const unsigned char gData_006FF488[144] = { // 0x006FF488
+    0xE0, 0xD9, 0xDC, 0x2C, 0xA0, 0x25, 0xCF, 0x11, 0xA3, 0x1A, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+    0x79, 0x9E, 0x04, 0xF5, 0x61, 0x48, 0xD2, 0x11, 0xA4, 0x07, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+    0x60, 0x3B, 0xAB, 0xB0, 0xD7, 0x33, 0xD1, 0x11, 0xA9, 0x81, 0x00, 0xC0, 0x4F, 0xD7, 0xB1, 0x74,
+    0x01, 0x15, 0x28, 0x93, 0xF8, 0x8C, 0xD0, 0x11, 0x89, 0xAB, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29,
+    0x00, 0x88, 0x10, 0x64, 0x7D, 0x95, 0xD0, 0x11, 0x89, 0xAB, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29,
+    0x78, 0x9E, 0x04, 0xF5, 0x61, 0x48, 0xD2, 0x11, 0xA4, 0x07, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+    0x22, 0xDF, 0x67, 0x87, 0xCC, 0xBA, 0xD1, 0x11, 0x89, 0x69, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+    0x43, 0x66, 0x93, 0x50, 0xE9, 0x13, 0xD1, 0x11, 0x89, 0xAA, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29,
+    0xA1, 0x49, 0x19, 0x88, 0xF3, 0xD6, 0xD0, 0x11, 0x89, 0xAB, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29
+};
 
-extern "C" const unsigned int gData_006FF518[4] = { 0x84E63DE0, 0x11CF46AA, 0x6F81, 0x6E1520C0 }; // 0x006FF518
+extern "C" const unsigned int gData_006FF518[4] = { 0x84E63DE0, 0x11CF46AA, 0x00006F81, 0x6E1520C0 }; // 0x006FF518
 #pragma comment(linker, "/alternatename:?gadwHalGuid@@3QBIB=_gData_006FF518")
 
-extern "C" const struct d2data_006FF528_t gData_006FF528 = {
-    {
-        0x60, 0x5C, 0x66, 0xA4, 0x73, 0x26, 0xCF, 0x11, 0xA3, 0x1A, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
-        0x20, 0x6B, 0x08, 0xF2, 0x9F, 0x25, 0xCF, 0x11, 0xA3, 0x1A, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
-        0x77, 0x9E, 0x04, 0xF5, 0x61, 0x48, 0xD2, 0x11, 0xA4, 0x07, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8
-    }
-}; // 0x006FF528
+extern "C" const unsigned char gData_006FF528[48] = { // 0x006FF528
+    0x60, 0x5C, 0x66, 0xA4, 0x73, 0x26, 0xCF, 0x11, 0xA3, 0x1A, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+    0x20, 0x6B, 0x08, 0xF2, 0x9F, 0x25, 0xCF, 0x11, 0xA3, 0x1A, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+    0x77, 0x9E, 0x04, 0xF5, 0x61, 0x48, 0xD2, 0x11, 0xA4, 0x07, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8
+};
 
 extern "C" const D2GuidStrc gData_006FF558 = { { 0xBB223240, 0x11D0E72B, 0xAA00B4A9, 0x3E99C000 } }; // 0x006FF558
 #pragma comment(linker, "/alternatename:?gtIidDirect3D3@@3UD2GuidStrc@@B=_gData_006FF558")
 
-extern "C" const struct d2data_006FF568_t gData_006FF568 = {
-    {
-        0xC1, 0x1E, 0xAE, 0x6A, 0x2A, 0x66, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
-        0x80, 0x00, 0xBA, 0x3B, 0x21, 0x24, 0xCF, 0x11, 0xA3, 0x1A, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
-        0x60, 0xF1, 0x2C, 0x33, 0x61, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
-        0x60, 0xA5, 0x52, 0x13, 0x61, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
-        0xA0, 0x26, 0xA3, 0xFC, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
-        0xE0, 0x77, 0x9C, 0xE0, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
-        0xE0, 0x02, 0x7A, 0xA0, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
-        0x20, 0x32, 0x78, 0x92, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
-        0x80, 0x99, 0xF3, 0x54, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
-        0x94, 0xFB, 0x55, 0xA6, 0x89, 0x05, 0x57, 0x4E, 0xB3, 0x33, 0x56, 0x7A, 0x89, 0x46, 0x8C, 0x88,
-        0xE0, 0x93, 0x6D, 0xB3, 0x43, 0x2B, 0xCF, 0x11, 0xA2, 0xDE, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
-        0x60, 0x27, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
-        0xA0, 0x00, 0xA0, 0x0A, 0x04, 0xF4, 0xD9, 0x11, 0xBD, 0x7A, 0x00, 0x10, 0xDC, 0x4F, 0x8F, 0x81,
-        0xAC, 0x00, 0xA0, 0x0A, 0x04, 0xF4, 0xD9, 0x11, 0xBD, 0x7A, 0x00, 0x10, 0xDC, 0x4F, 0x8F, 0x81,
-        0xAB, 0x00, 0xA0, 0x0A, 0x04, 0xF4, 0xD9, 0x11, 0xBD, 0x7A, 0x00, 0x10, 0xDC, 0x4F, 0x8F, 0x81,
-        0xAA, 0x00, 0xA0, 0x0A, 0x04, 0xF4, 0xD9, 0x11, 0xBD, 0x7A, 0x00, 0x10, 0xDC, 0x4F, 0x8F, 0x81,
-        0x30, 0xAF, 0x0B, 0x88, 0x30, 0xB0, 0xD0, 0x11, 0x8E, 0xA7, 0x00, 0x60, 0x97, 0x97, 0xEA, 0x5B,
-        0x00, 0x2F, 0x6B, 0x40, 0x5A, 0x3E, 0xD1, 0x11, 0xB6, 0x40, 0x00, 0xAA, 0x00, 0xA1, 0xF9, 0x6A,
-        0xDE, 0xEC, 0xE9, 0x6F, 0x89, 0xDF, 0xD1, 0x11, 0x9D, 0xB0, 0x00, 0x60, 0x08, 0x27, 0x71, 0xBA,
-        0x40, 0x2B, 0x12, 0xB1, 0xA5, 0x5D, 0xD1, 0x11, 0x8F, 0xCF, 0x00, 0xC0, 0x4F, 0xC2, 0x9B, 0x4E,
-        0xA0, 0xFF, 0x04, 0x2E, 0xE4, 0x98, 0xD1, 0x11, 0x8C, 0xE1, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
-        0xB6, 0x61, 0xF8, 0x97, 0xA1, 0x60, 0xD1, 0x11, 0x8C, 0xD0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
-        0xE2, 0xE8, 0xB0, 0xF0, 0x97, 0x5F, 0xD1, 0x11, 0x8C, 0xD0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
-        0x04, 0x28, 0x79, 0x9D, 0xA8, 0x5F, 0xD1, 0x11, 0x8C, 0xD0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
-        0x72, 0x84, 0x5C, 0xE0, 0xD4, 0x51, 0xD1, 0x11, 0x8C, 0xCE, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
-        0x9C, 0x16, 0x28, 0xF8, 0xE8, 0xA8, 0xD2, 0x11, 0xA1, 0xF2, 0x00, 0xA0, 0xC9, 0x83, 0xEA, 0xF6,
-        0x66, 0x04, 0x8A, 0x3B, 0x69, 0xF2, 0xD1, 0x11, 0x88, 0x0B, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
-        0x80, 0x98, 0x86, 0x93, 0xCF, 0x36, 0xD1, 0x11, 0x9B, 0x1B, 0x00, 0xAA, 0x00, 0xBB, 0xB8, 0xAE,
-        0x80, 0x1F, 0xE4, 0x7D, 0x93, 0x9D, 0xD0, 0x11, 0x89, 0xAB, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29,
-        0x40, 0x75, 0xAA, 0xFF, 0xA8, 0x7A, 0xD0, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
-        0x00, 0x38, 0x86, 0x80, 0x06, 0x6B, 0xD0, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
-        0x80, 0xFA, 0xC4, 0x86, 0x84, 0x8D, 0xD0, 0x11, 0x94, 0xE8, 0x00, 0xC0, 0x4F, 0xC3, 0x41, 0x37,
-        0x30, 0x12, 0xF4, 0xDD, 0x0A, 0xEC, 0xD0, 0x11, 0xA9, 0xB6, 0x00, 0xAA, 0x00, 0xC0, 0x99, 0x3E,
-        0xE1, 0x84, 0xA5, 0x0B, 0xB6, 0x70, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
-        0xC3, 0x0C, 0xD6, 0xEF, 0xE7, 0x49, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
-        0xC2, 0x0C, 0xD6, 0xEF, 0xE7, 0x49, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
-        0xC1, 0x0C, 0xD6, 0xEF, 0xE7, 0x49, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
-        0xC0, 0x0C, 0xD6, 0xEF, 0xE7, 0x49, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A
-    }
-}; // 0x006FF568
+extern "C" const unsigned char gData_006FF568[608] = { // 0x006FF568
+    0xC1, 0x1E, 0xAE, 0x6A, 0x2A, 0x66, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
+    0x80, 0x00, 0xBA, 0x3B, 0x21, 0x24, 0xCF, 0x11, 0xA3, 0x1A, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+    0x60, 0xF1, 0x2C, 0x33, 0x61, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+    0x60, 0xA5, 0x52, 0x13, 0x61, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+    0xA0, 0x26, 0xA3, 0xFC, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+    0xE0, 0x77, 0x9C, 0xE0, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+    0xE0, 0x02, 0x7A, 0xA0, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+    0x20, 0x32, 0x78, 0x92, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+    0x80, 0x99, 0xF3, 0x54, 0x60, 0xDA, 0xCF, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+    0x94, 0xFB, 0x55, 0xA6, 0x89, 0x05, 0x57, 0x4E, 0xB3, 0x33, 0x56, 0x7A, 0x89, 0x46, 0x8C, 0x88,
+    0xE0, 0x93, 0x6D, 0xB3, 0x43, 0x2B, 0xCF, 0x11, 0xA2, 0xDE, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+    0x60, 0x27, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
+    0xA0, 0x00, 0xA0, 0x0A, 0x04, 0xF4, 0xD9, 0x11, 0xBD, 0x7A, 0x00, 0x10, 0xDC, 0x4F, 0x8F, 0x81,
+    0xAC, 0x00, 0xA0, 0x0A, 0x04, 0xF4, 0xD9, 0x11, 0xBD, 0x7A, 0x00, 0x10, 0xDC, 0x4F, 0x8F, 0x81,
+    0xAB, 0x00, 0xA0, 0x0A, 0x04, 0xF4, 0xD9, 0x11, 0xBD, 0x7A, 0x00, 0x10, 0xDC, 0x4F, 0x8F, 0x81,
+    0xAA, 0x00, 0xA0, 0x0A, 0x04, 0xF4, 0xD9, 0x11, 0xBD, 0x7A, 0x00, 0x10, 0xDC, 0x4F, 0x8F, 0x81,
+    0x30, 0xAF, 0x0B, 0x88, 0x30, 0xB0, 0xD0, 0x11, 0x8E, 0xA7, 0x00, 0x60, 0x97, 0x97, 0xEA, 0x5B,
+    0x00, 0x2F, 0x6B, 0x40, 0x5A, 0x3E, 0xD1, 0x11, 0xB6, 0x40, 0x00, 0xAA, 0x00, 0xA1, 0xF9, 0x6A,
+    0xDE, 0xEC, 0xE9, 0x6F, 0x89, 0xDF, 0xD1, 0x11, 0x9D, 0xB0, 0x00, 0x60, 0x08, 0x27, 0x71, 0xBA,
+    0x40, 0x2B, 0x12, 0xB1, 0xA5, 0x5D, 0xD1, 0x11, 0x8F, 0xCF, 0x00, 0xC0, 0x4F, 0xC2, 0x9B, 0x4E,
+    0xA0, 0xFF, 0x04, 0x2E, 0xE4, 0x98, 0xD1, 0x11, 0x8C, 0xE1, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+    0xB6, 0x61, 0xF8, 0x97, 0xA1, 0x60, 0xD1, 0x11, 0x8C, 0xD0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+    0xE2, 0xE8, 0xB0, 0xF0, 0x97, 0x5F, 0xD1, 0x11, 0x8C, 0xD0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+    0x04, 0x28, 0x79, 0x9D, 0xA8, 0x5F, 0xD1, 0x11, 0x8C, 0xD0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+    0x72, 0x84, 0x5C, 0xE0, 0xD4, 0x51, 0xD1, 0x11, 0x8C, 0xCE, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+    0x9C, 0x16, 0x28, 0xF8, 0xE8, 0xA8, 0xD2, 0x11, 0xA1, 0xF2, 0x00, 0xA0, 0xC9, 0x83, 0xEA, 0xF6,
+    0x66, 0x04, 0x8A, 0x3B, 0x69, 0xF2, 0xD1, 0x11, 0x88, 0x0B, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+    0x80, 0x98, 0x86, 0x93, 0xCF, 0x36, 0xD1, 0x11, 0x9B, 0x1B, 0x00, 0xAA, 0x00, 0xBB, 0xB8, 0xAE,
+    0x80, 0x1F, 0xE4, 0x7D, 0x93, 0x9D, 0xD0, 0x11, 0x89, 0xAB, 0x00, 0xA0, 0xC9, 0x05, 0x41, 0x29,
+    0x40, 0x75, 0xAA, 0xFF, 0xA8, 0x7A, 0xD0, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+    0x00, 0x38, 0x86, 0x80, 0x06, 0x6B, 0xD0, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+    0x80, 0xFA, 0xC4, 0x86, 0x84, 0x8D, 0xD0, 0x11, 0x94, 0xE8, 0x00, 0xC0, 0x4F, 0xC3, 0x41, 0x37,
+    0x30, 0x12, 0xF4, 0xDD, 0x0A, 0xEC, 0xD0, 0x11, 0xA9, 0xB6, 0x00, 0xAA, 0x00, 0xC0, 0x99, 0x3E,
+    0xE1, 0x84, 0xA5, 0x0B, 0xB6, 0x70, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
+    0xC3, 0x0C, 0xD6, 0xEF, 0xE7, 0x49, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
+    0xC2, 0x0C, 0xD6, 0xEF, 0xE7, 0x49, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
+    0xC1, 0x0C, 0xD6, 0xEF, 0xE7, 0x49, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A,
+    0xC0, 0x0C, 0xD6, 0xEF, 0xE7, 0x49, 0xD0, 0x11, 0x88, 0x9D, 0x00, 0xAA, 0x00, 0xBB, 0xB7, 0x6A
+};
 
-extern "C" const Guid gData_006FF7C8 = { 0x69C11C3E, 0xB46B, 0x11D1, { 0xAD, 0x7A, 0, 0xC0, 0x4F, 0xC2, 0x9B, 0x4E } }; // 0x006FF7C8
+extern "C" const Guid gData_006FF7C8 = { 0x69C11C3E, 0xB46B, 0x11D1, { 0xAD, 0x7A, 0x00, 0xC0, 0x4F, 0xC2, 0x9B, 0x4E } }; // 0x006FF7C8
 #pragma comment(linker, "/alternatename:?gGammaGuid@@3UGuid@@B=_gData_006FF7C8")
 
-extern "C" const struct d2data_006FF7D8_t gData_006FF7D8 = {
-    {
-        0xE0, 0x0E, 0x9F, 0x4B, 0x7E, 0x0D, 0xD0, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
-        0x85, 0xDB, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
-        0x84, 0xDB, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
-        0x7E, 0x47, 0x3C, 0xC0, 0x19, 0x65, 0xD1, 0x11, 0x8C, 0x52, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
-        0x1E, 0x1F, 0x19, 0x51, 0x2B, 0x4F, 0xD1, 0x11, 0x8C, 0xC3, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
-        0xFC, 0x7F, 0x0C, 0x73, 0x47, 0x53, 0xD1, 0x11, 0x8C, 0x4D, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
-        0x46, 0xBC, 0x43, 0xE0, 0x17, 0x53, 0xD1, 0x11, 0x8C, 0x4D, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
-        0x88, 0xC4, 0xB2, 0x89, 0xF4, 0x4A, 0xD1, 0x11, 0x8C, 0x4C, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
-        0x90, 0x47, 0xDC, 0xB9, 0xF1, 0x4A, 0xD1, 0x11, 0x8C, 0x4C, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
-        0x96, 0x8E, 0xAB, 0x1B, 0xFE, 0x9C, 0xE3, 0x4C, 0xBC, 0x72, 0xD7, 0xE9, 0xE9, 0x9A, 0x21, 0x75,
-        0x80, 0x5A, 0x67, 0x06, 0x9B, 0x3B, 0xD2, 0x11, 0xB9, 0x2F, 0x00, 0x60, 0x97, 0x97, 0xEA, 0x5B,
-        0x30, 0x86, 0x2B, 0x0B, 0x35, 0xAD, 0xD0, 0x11, 0x8E, 0xA6, 0x00, 0x60, 0x97, 0x97, 0xEA, 0x5B,
-        0x00, 0x4E, 0x04, 0xDA, 0xB2, 0x69, 0xD0, 0x11, 0xA1, 0xD5, 0x00, 0xAA, 0x00, 0xB8, 0xDF, 0xBB,
-        0x85, 0x58, 0x80, 0x57, 0xEC, 0x6E, 0xCF, 0x11, 0x94, 0x41, 0xA8, 0x23, 0x03, 0xC1, 0x0E, 0x27,
-        0x81, 0xDB, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
-        0xC0, 0x5E, 0xE6, 0x15, 0x9C, 0x3B, 0xD2, 0x11, 0xB9, 0x2F, 0x00, 0x60, 0x97, 0x97, 0xEA, 0x5B
-    }
-}; // 0x006FF7D8
+extern "C" const unsigned char gData_006FF7D8[256] = { // 0x006FF7D8
+    0xE0, 0x0E, 0x9F, 0x4B, 0x7E, 0x0D, 0xD0, 0x11, 0x9B, 0x06, 0x00, 0xA0, 0xC9, 0x03, 0xA3, 0xB8,
+    0x85, 0xDB, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
+    0x84, 0xDB, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
+    0x7E, 0x47, 0x3C, 0xC0, 0x19, 0x65, 0xD1, 0x11, 0x8C, 0x52, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+    0x1E, 0x1F, 0x19, 0x51, 0x2B, 0x4F, 0xD1, 0x11, 0x8C, 0xC3, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8,
+    0xFC, 0x7F, 0x0C, 0x73, 0x47, 0x53, 0xD1, 0x11, 0x8C, 0x4D, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+    0x46, 0xBC, 0x43, 0xE0, 0x17, 0x53, 0xD1, 0x11, 0x8C, 0x4D, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+    0x88, 0xC4, 0xB2, 0x89, 0xF4, 0x4A, 0xD1, 0x11, 0x8C, 0x4C, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+    0x90, 0x47, 0xDC, 0xB9, 0xF1, 0x4A, 0xD1, 0x11, 0x8C, 0x4C, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+    0x96, 0x8E, 0xAB, 0x1B, 0xFE, 0x9C, 0xE3, 0x4C, 0xBC, 0x72, 0xD7, 0xE9, 0xE9, 0x9A, 0x21, 0x75,
+    0x80, 0x5A, 0x67, 0x06, 0x9B, 0x3B, 0xD2, 0x11, 0xB9, 0x2F, 0x00, 0x60, 0x97, 0x97, 0xEA, 0x5B,
+    0x30, 0x86, 0x2B, 0x0B, 0x35, 0xAD, 0xD0, 0x11, 0x8E, 0xA6, 0x00, 0x60, 0x97, 0x97, 0xEA, 0x5B,
+    0x00, 0x4E, 0x04, 0xDA, 0xB2, 0x69, 0xD0, 0x11, 0xA1, 0xD5, 0x00, 0xAA, 0x00, 0xB8, 0xDF, 0xBB,
+    0x85, 0x58, 0x80, 0x57, 0xEC, 0x6E, 0xCF, 0x11, 0x94, 0x41, 0xA8, 0x23, 0x03, 0xC1, 0x0E, 0x27,
+    0x81, 0xDB, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
+    0xC0, 0x5E, 0xE6, 0x15, 0x9C, 0x3B, 0xD2, 0x11, 0xB9, 0x2F, 0x00, 0x60, 0x97, 0x97, 0xEA, 0x5B
+};
 
 extern "C" const D2GuidStrc gData_006FF8D8 = { { 0x9C59509A, 0x11D139BD, 0xC0004A8C, 0xC530D94F } }; // 0x006FF8D8
 #pragma comment(linker, "/alternatename:?gtIidDirectDraw4@@3UD2GuidStrc@@B=_gData_006FF8D8")
 
-extern "C" const struct d2data_006FF8E8_t gData_006FF8E8 = {
-    {
-        0xE0, 0xF3, 0xA6, 0xB3, 0x43, 0x2B, 0xCF, 0x11, 0xA2, 0xDE, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
-        0x80, 0xDB, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
-        0xA0, 0x17, 0x38, 0x59, 0xB3, 0x7D, 0xCF, 0x11, 0xA2, 0xDE, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
-        0x96, 0x51, 0x30, 0x3C, 0xDB, 0x50, 0xD3, 0x11, 0x9C, 0xFE, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
-        0xE0, 0x0E, 0xB7, 0xD7, 0x40, 0x43, 0xCF, 0x11, 0xB0, 0x63, 0x00, 0x20, 0xAF, 0xC2, 0xCD, 0x35,
-        0x10, 0x00, 0x00, 0x00, 0x00, 0x04
-    }
-}; // 0x006FF8E8
+extern "C" const unsigned char gData_006FF8E8[88] = { // 0x006FF8E8
+    0xE0, 0xF3, 0xA6, 0xB3, 0x43, 0x2B, 0xCF, 0x11, 0xA2, 0xDE, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+    0x80, 0xDB, 0x14, 0x6C, 0x33, 0xA7, 0xCE, 0x11, 0xA5, 0x21, 0x00, 0x20, 0xAF, 0x0B, 0xE5, 0x60,
+    0xA0, 0x17, 0x38, 0x59, 0xB3, 0x7D, 0xCF, 0x11, 0xA2, 0xDE, 0x00, 0xAA, 0x00, 0xB9, 0x33, 0x56,
+    0x96, 0x51, 0x30, 0x3C, 0xDB, 0x50, 0xD3, 0x11, 0x9C, 0xFE, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5,
+    0xE0, 0x0E, 0xB7, 0xD7, 0x40, 0x43, 0xCF, 0x11, 0xB0, 0x63, 0x00, 0x20, 0xAF, 0xC2, 0xCD, 0x35,
+    0x10, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00
+};
 
-extern "C" struct d2data_0074BF28_t gData_0074BF28 = {
-    (const void*)(unsigned int)&D3DCORE_LoadVideoConfiguration,
-    (const void*)(unsigned int)&D3DCORE_Init,
-    (const void*)(unsigned int)&D3DCORE_Close,
-    (const void*)(unsigned int)&D3DCORE_CreateSurface,
-    (const void*)(unsigned int)&D3DCORE_ReleaseWindow,
-    (const void*)(unsigned int)&D3DCORE_PauseSurface,
-    (const void*)(unsigned int)&D3DCORE_StartDraw,
-    (const void*)(unsigned int)&D3DCORE_EndDraw,
-    (const void*)(unsigned int)&D3DCORE_FlipPrimary,
-    (const void*)(unsigned int)&D3DCORE_ChangeRes,
-    (const void*)(unsigned int)&D3DCORE_GetBackBuffer,
-    (const void*)(unsigned int)&D3DCORE_ActivateWindow,
-    (const void*)(unsigned int)&D3DCORE_SetOption,
-    (const void*)(unsigned int)&D3DCORE_BeginCutScene,
-    (const void*)(unsigned int)&D3DCORE_OpenSmackCutscene,
-    (const void*)(unsigned int)&D3DCORE_CheckCutScene,
-    (const void*)(unsigned int)&D3DSMACK_DecodeSmacker,
-    (const void*)(unsigned int)&D3DSMACK_PlaySmacker,
-    (const void*)(unsigned int)&D3DSMACK_CloseSmacker,
-    (const void*)(unsigned int)&QSERVER_GetFloorCacheSize,
-    (const void*)(unsigned int)&D3DCORE_GetScreenSize,
-    (const void*)(unsigned int)&D3DCORE_SetGlobalScale,
-    (const void*)(unsigned int)&D3DCORE_SetGamma,
-    (const void*)(unsigned int)&D3DCORE_GetMaskedFlags,
-    (const void*)(unsigned int)&sub_006B9850_SetOrigin,
-    (const void*)(unsigned int)&sub_006B9860_Project,
-    (const void*)(unsigned int)&sub_006B9910_ProjectPoint,
-    (const void*)(unsigned int)&sub_006B9A00_ResetScale,
-    (const void*)(unsigned int)&D3DCORE_SetPalette,
-    (const void*)(unsigned int)&D3DCORE_SetPaletteView,
-    (const void*)(unsigned int)&sub_006B9710_SetColorComponents,
-    (const void*)(unsigned int)&sub_006B9170_DrawGrid,
-    (const void*)(unsigned int)&D3DSPRITE_DrawFlatSprite,
-    (const void*)(unsigned int)&D3DSPRITE_CelDraw,
-    (const void*)(unsigned int)&D3DSPRITE_CelDrawColor,
-    (const void*)(unsigned int)&D3DSPRITE_DrawSpriteRows,
-    (const void*)(unsigned int)&D3DSPRITE_DrawSpriteShadow,
-    (const void*)(unsigned int)&D3DSPRITE_CelDrawHilight,
-    (const void*)(unsigned int)&D3DSPRITE_DrawSpriteClipped,
-    (const void*)(unsigned int)&sub_006B8E90_DrawWallTile,
-    (const void*)(unsigned int)&sub_006B8E60_DrawRelay,
-    (const void*)(unsigned int)&sub_006B86F0_DrawShadow,
-    (const void*)(unsigned int)&sub_006B7C90_DrawDiamond,
-    (const void*)(unsigned int)&sub_006B7D80_DrawRectangle,
-    (const void*)(unsigned int)&sub_006B7ED0_CallRect,
-    (const void*)(unsigned int)&sub_006B7F20_CallSquare,
-    (const void*)(unsigned int)&sub_006B77B0_Call,
-    (const void*)(unsigned int)&sub_006B7980_DrawRectangle,
-    (const void*)(unsigned int)&sub_006B7B30_DrawLine,
-    (const void*)(unsigned int)&sub_006B7F70_ClearTarget,
-    (const void*)(unsigned int)&sub_006B7630_DrawTextV,
-    (const void*)(unsigned int)&sub_006B76C0,
-    (const void*)(unsigned int)&D3DSPRITE_DebugFillBackBuffer,
-    (const void*)(unsigned int)&D3DCORE_ClearCaches
-}; // 0x0074BF28
+unsigned int ganWidths[2] = { 640, 800 }; // 0x0074C000
 
-extern unsigned int ganWidths[2] = { 0x280, 0x320 }; // 0x0074C000
+extern "C" unsigned char gData_0074C008[8] = { 0x20, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }; // 0x0074C008
 
-extern "C" struct d2data_0074C008_t gData_0074C008 = {
-    { 0x20, 0x03 }
-}; // 0x0074C008
+unsigned int ganHeights[2] = { 480, 600 }; // 0x0074C010
 
-extern unsigned int ganHeights[2] = { 0x1E0, 0x258 }; // 0x0074C010
+extern "C" unsigned char gData_0074C018[8] = { 0x58, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }; // 0x0074C018
 
-extern "C" struct d2data_0074C018_t gData_0074C018 = {
-    { 0x58, 0x02 }
-}; // 0x0074C018
+int gnGammaScale_0074C020 = 100; // 0x0074C020
 
-extern int gnGammaScale_0074C020 = 100; // 0x0074C020
+D2PixelFormat006B1B60Strc gtWantedFormat_0074C024 = { 32, 0x41, 0, 0x10, 0x7C00, 0x3E0, 0x1F, 0x8000 }; // 0x0074C024
 
-extern D2PixelFormat006B1B60Strc gtWantedFormat_0074C024 = { 0x20, 0x41, 0, 0x10, 0x7C00, 0x3E0, 0x1F, 0x8000 }; // 0x0074C024
+char gszEnumerationClass[20] = "Enumeration Class"; // 0x0074C044
 
-extern char gszEnumerationClass[20] = "Enumeration Class"; // 0x0074C044
+char gszEnumerationWindow[24] = "Direct3D Enumeration"; // 0x0074C058
 
-extern char gszEnumerationWindow[24] = "Direct3D Enumeration"; // 0x0074C058
+extern "C" void __cdecl D3DSMACK_CloseSmacker(); // 0x006B9BB0
+extern "C" void __cdecl D3DSMACK_DecodeSmacker(); // 0x006BA010
+extern "C" void __cdecl D3DSMACK_PlaySmacker(); // 0x006BA390
+extern "C" void __cdecl D3DSPRITE_CelDrawHilight(); // 0x006B7090
+extern "C" void __cdecl D3DSPRITE_DebugFillBackBuffer(); // 0x006B7100
+extern "C" void __cdecl D3DSPRITE_DrawFlatSprite(); // 0x006B6730
+extern "C" void __cdecl D3DSPRITE_DrawSpriteClipped(); // 0x006B6EE0
+extern "C" void __cdecl D3DSPRITE_DrawSpriteRows(); // 0x006B6C90
+extern "C" void __cdecl D3DSPRITE_DrawSpriteShadow(); // 0x006B7000
+extern "C" void __cdecl sub_006B7630_DrawTextV(); // 0x006B7630
+extern "C" void __cdecl sub_006B76C0_Nop(); // 0x006B76C0
+extern "C" void __cdecl sub_006B77B0_Call(); // 0x006B77B0
+extern "C" void __cdecl sub_006B7980_DrawRectangle(); // 0x006B7980
+extern "C" void __cdecl sub_006B7B30_DrawLine(); // 0x006B7B30
+extern "C" void __cdecl sub_006B7C90_DrawDiamond(); // 0x006B7C90
+extern "C" void __cdecl sub_006B7D80_DrawRectangle(); // 0x006B7D80
+extern "C" void __cdecl sub_006B7ED0_CallRect(); // 0x006B7ED0
+extern "C" void __cdecl sub_006B7F20_CallSquare(); // 0x006B7F20
+extern "C" void __cdecl sub_006B86F0_DrawShadow(); // 0x006B86F0
+extern "C" void __cdecl sub_006B8E60_DrawRelay(); // 0x006B8E60
+extern "C" void __cdecl sub_006B8E90_DrawWallTile(); // 0x006B8E90
+extern "C" void __cdecl sub_006B9170_DrawGrid(); // 0x006B9170
+extern "C" void __cdecl sub_006B9850_SetOrigin(); // 0x006B9850
+extern "C" void __cdecl sub_006B9860_Project(); // 0x006B9860
+extern "C" void __cdecl sub_006B9910_ProjectPoint(); // 0x006B9910
+extern "C" void __cdecl sub_006B9A00_ResetScale(); // 0x006B9A00
+extern "C" void __cdecl D3DSPRITE_CelDraw(); // 0x006B6B40
+extern "C" void __cdecl D3DSPRITE_CelDrawColor(); // 0x006B6BF0
+
+extern D2GraphicsInterfaceStrc gtD3DGraphicsInterface = { (int (__fastcall*)(void* hInstance))&D3DCORE_LoadVideoConfiguration, (int (__fastcall*)(D2GfxSettingsStrc* pSettings, const void* pHelpers))&D3DCORE_Init, (int (__fastcall*)())&D3DCORE_Close, (int (__fastcall*)(void* hWnd, int nResolutionMode))&D3DCORE_CreateSurface, (int (__fastcall*)())&D3DCORE_ReleaseWindow, (void (__fastcall*)(void* hWnd, int nResolutionMode, int nWindowState))&D3DCORE_PauseSurface, (int (__fastcall*)(int bClear, unsigned char nRed, unsigned char nGreen, unsigned char nBlue))&D3DCORE_StartDraw, (int (__fastcall*)())&D3DCORE_EndDraw, (int (__fastcall*)())&D3DCORE_FlipPrimary, (int (__fastcall*)(void* hWnd, int nResolutionMode))&D3DCORE_ChangeRes, (int (__fastcall*)(unsigned char* pBuffer))&D3DCORE_GetBackBuffer, (int (__fastcall*)(int bActive, int bWindowed))&D3DCORE_ActivateWindow, (int (__fastcall*)(int nOption, int nValue))&D3DCORE_SetOption, (int (__fastcall*)())&D3DCORE_BeginCutScene, (void (__fastcall*)(const char* szFile, int nResolutionMode, void* pfFrame))&D3DCORE_OpenSmackCutscene, (int (__fastcall*)())&D3DCORE_CheckCutScene, (void (__fastcall*)(const char* szSmacker, unsigned char* pBuffer, int nVersion))&D3DSMACK_DecodeSmacker, (void (__fastcall*)(void* pContext))&D3DSMACK_PlaySmacker, (void (__fastcall*)(void* pContext))&D3DSMACK_CloseSmacker, (D2CacheStatsStrc* (__fastcall*)())&QSERVER_GetFloorCacheSize, (int (__fastcall*)(int* pWidth, int* pHeight))&D3DCORE_GetScreenSize, (void (__fastcall*)(int nScaleFactor))&D3DCORE_SetGlobalScale, (int (__fastcall*)(int nGamma))&D3DCORE_SetGamma, (int (__fastcall*)())&D3DCORE_GetMaskedFlags, (void (__fastcall*)(int nScaleX, int nScaleY))&sub_006B9850_SetOrigin, (void (__fastcall*)(int nPosX, int nPosY, int nBias, int* pXAdjust, int* pYAdjust))&sub_006B9860_Project, (void (__fastcall*)(int nPosX, int nPosY, int nAngle, int* pXAdjust, int* pYAdjust, int bOrder))&sub_006B9910_ProjectPoint, (void (__fastcall*)())&sub_006B9A00_ResetScale, (void (__fastcall*)(tagPALETTEENTRY* pPalette))&D3DCORE_SetPalette, (void (__fastcall*)(D2PaletteTableStrc* pPaletteTables))&D3DCORE_SetPaletteView, (void (__fastcall*)(int nRed, int nGreen, int nBlue))&sub_006B9710_SetColorComponents, (int (__fastcall*)(D2TileLibraryEntryStrc* pTile, D2GfxLightExStrc* pLight, int nPosX, int nPosY, int nWorldXpos, int nWorldYpos, unsigned char nAlpha, int nScreenPanels, void* pTileData))&sub_006B9170_DrawGrid, (void (__fastcall*)(D2GfxDataStrc* pData, int nPosX, int nPosY, unsigned int dwGamma, int eDrawMode, int nScreenMode, unsigned char* pPalette))&D3DSPRITE_DrawFlatSprite, (void (__fastcall*)(D2GfxDataStrc* pData, int nPosX, int nPosY, unsigned int dwGamma, int eDrawMode, unsigned char* pPalette))&D3DSPRITE_CelDraw, (void (__fastcall*)(D2GfxDataStrc* pData, int nPosX, int nPosY, unsigned int dwGamma, int eDrawMode, int nGlobalPaletteShift))&D3DSPRITE_CelDrawColor, (void (__fastcall*)(D2GfxDataStrc* pData, int nPosX, int nPosY, int nSkipLines, int nDrawLines, int eDrawMode))&D3DSPRITE_DrawSpriteRows, (void (__fastcall*)(D2GfxDataStrc* pData, int nPosX, int nPosY))&D3DSPRITE_DrawSpriteShadow, (void (__fastcall*)(D2GfxDataStrc* pData, int nPosX, int nPosY, unsigned char nPaletteIndex))&D3DSPRITE_CelDrawHilight, (void (__fastcall*)(D2GfxDataStrc* pData, int nPosX, int nPosY, void* pCropRect, int eDrawMode))&D3DSPRITE_DrawSpriteClipped, (int (__fastcall*)(D2TileLibraryEntryStrc* pTile, int nPosX, int nPosY, D2GfxLightStrc* pLight, int nScreenPanels))&sub_006B8E90_DrawWallTile, (int (__fastcall*)(D2TileLibraryEntryStrc* pTile, int nPosX, int nPosY, D2GfxLightStrc* pLight, int nScreenPanels, unsigned char nAlpha))&sub_006B8E60_DrawRelay, (int (__fastcall*)(D2TileLibraryEntryStrc* pTile, int nPosX, int nPosY, int eDrawMode, int nScreenPanels))&sub_006B86F0_DrawShadow, (void (__fastcall*)(tagRECT* pRect, unsigned char nPaletteIndex))&sub_006B7C90_DrawDiamond, (void (__fastcall*)(tagRECT* pRect, unsigned char nPaletteIndex))&sub_006B7D80_DrawRectangle, (void (__fastcall*)(tagRECT* pRect, unsigned char nPaletteIndex))&sub_006B7ED0_CallRect, (void (__fastcall*)(tagPOINT* pPoint, unsigned char nSize, unsigned char nPaletteIndex))&sub_006B7F20_CallSquare, (void (__fastcall*)(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, int eDrawMode))&sub_006B77B0_Call, (void (__fastcall*)(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, unsigned char nAlpha))&sub_006B7980_DrawRectangle, (void (__fastcall*)(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, unsigned char nAlpha))&sub_006B7B30_DrawLine, (void (__fastcall*)(int bPartial))&sub_006B7F70_ClearTarget, (void (__fastcall*)(int nPosX, int nPosY, const char* szFormat, char* va))&sub_006B7630_DrawTextV, (void (__fastcall*)(unsigned int* pLight, unsigned int* pPlayerLight, int nPosX, int nPosY))&sub_006B76C0_Nop, (void (__fastcall*)(int nPosX, int nPosY))&D3DSPRITE_DebugFillBackBuffer, (void (__fastcall*)())&D3DCORE_ClearCaches }; // 0x0074BF28

@@ -2,53 +2,28 @@
 #include "D2LangTypes.h"
 #include "D2Unicode.h"
 
-#pragma pack(push, 1)
-struct d2data_00730A64_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
+extern "C" const char* gData_00730A64[15] = { // 0x00730A64
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
 };
-#pragma pack(pop)
-
-extern "C" struct d2data_00730A64_t gData_00730A64; // 0x00730A64
-
-extern "C" struct d2data_00730A64_t gData_00730A64 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00730A64
 
 struct UnicodeZ;
 struct UnicodeChar;
 struct D2LangCharSetStrc;
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
-Unicode* __fastcall sub_005267E0(Unicode* pDest, const Unicode* pSource); // 0x005267E0
 
 struct UnicodeZ
 {
@@ -87,7 +62,7 @@ bool D2LangCharSetStrc::ContainsChar(const Unicode* pChar) const
     {
         wszChars[i].wChar = 0;
     }
-    const int nLength = sub_00526800(wszChars);
+    const int nLength = UNICODE_StrLen(wszChars);
     for (int j = 0; j < nLength; ++j)
     {
         if (pChar->wChar == wszChars[j].wChar)
@@ -115,8 +90,8 @@ static bool sub_005271A0_EndsWithCharOf(const char* szChars, const Unicode* pTex
     {
         wszChars[i].wChar = 0;
     }
-    const int nLength = sub_00526800(wszChars);
-    const int nTextLength = sub_00526800(pText);
+    const int nLength = UNICODE_StrLen(wszChars);
+    const int nTextLength = UNICODE_StrLen(pText);
     for (int j = 0; j < nLength; ++j)
     {
         if (pText[nTextLength - 1].wChar == wszChars[j].wChar)
@@ -144,12 +119,11 @@ static inline void win2UnicodeInline(Unicode* pDst, const char* szSrc, int nMaxL
     }
 }
 
-// build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 // 0x005272B0
 void __fastcall sub_005272B0_FormatText(Unicode* pDst, const Unicode* pOwner, const Unicode* pItem, int nMaxLength, int nLanguage)
 {
-    const int nOwnerLength = sub_00526800(pOwner);
-    const int nItemLength = sub_00526800(pItem);
+    const int nOwnerLength = UNICODE_StrLen(pOwner);
+    const int nItemLength = UNICODE_StrLen(pItem);
     if (nItemLength + nOwnerLength + 5 > nMaxLength)
     {
         if (nItemLength < nMaxLength)

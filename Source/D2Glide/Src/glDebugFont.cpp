@@ -1,5 +1,6 @@
 #include "D2Glide.h"
 #include "D2DrlgMaps.h"
+#include "FogApi.h"
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -29,7 +30,6 @@ unsigned char* gpGlideDebugFontGlyphs; // 0x0088044C
 void __cdecl GLDEBUGFONT_CreateDebugFont()
 {
     void* hDC = CreateCompatibleDC(0);
-// build: symbol ?gszCourier@* 0x006DD52C
     void* hFont = CreateFontA(10, 0, 0, 0, 400, 0, 0, 0, 0, 0, 0, 0, 1, gszCourier);
     void* hBitmap = CreateCompatibleBitmap(hDC, 8, 16);
     SelectObject(hDC, hFont);
@@ -96,11 +96,8 @@ D2GlideFontVertexStrc gaGlideDebugFontVertices[4];                         // 0x
 
 static int gnGlideDebugFontTmu;                                            // 0x00880450
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);       // 0x0040B380
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
-extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 
 #pragma intrinsic(memcpy)
 
@@ -162,10 +159,6 @@ int __fastcall GLDEBUGFONT_DownloadDebugFont(int nStartAddress, int nAlignment)
 extern "C" __declspec(dllimport) int __stdcall wvsprintfA(char* szDest, const char* szFormat, char* args); // 0x006CC4AC
 extern void (__stdcall* gpfnGrTexSource)(int nTmu, int nStartAddress, int nEvenOdd, D2GrTexInfoStrc* pInfo); // 0x0087EB98
 extern void (__stdcall* gpfnGrDrawVertexArrayContiguous)(int nMode, int nCount, void* pVertices, int nStride); // 0x0087EAC4
-void __fastcall GLCORE_SetColorCombineMode(int nState); // 0x005094B0
-void __fastcall GLCORE_SetAlphaBlendMode(int nMode); // 0x00509500
-void __fastcall GLCORE_SetTextureFilterMode(int nMode); // 0x005095D0
-void __fastcall GLCORE_SetTextureCombineMode(int nTmu); // 0x00509460
 struct D2GlideVtxStrc { float x; float y; float z; float oow; float sow; float tow; unsigned int color; };
 int gaGlideDebugFontCharWidths[96]; // 0x008802C8
 
@@ -223,6 +216,6 @@ void __fastcall GLDEBUGFONT_DebugPrintf(int nX, int nY, const char* szFormat, ch
     }
 }
 
-extern unsigned long gdwGlideDebugFontTextColor = 0xFFFFFF; // 0x0072F2B0
+unsigned long gdwGlideDebugFontTextColor = 0xFFFFFF; // 0x0072F2B0
 
-extern D2GrTexInfoStrc gtGlideDebugFontTexInfo = { 4, 4, -1, 5 }; // 0x0072F2B4
+D2GrTexInfoStrc gtGlideDebugFontTexInfo = { 4, 4, -1, 5, 0 }; // 0x0072F2B4

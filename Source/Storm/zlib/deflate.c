@@ -1398,30 +1398,18 @@ static block_state __stdcall deflate_huff(deflate_state* s, int flush)
     return block_done;
 }
 
-#pragma pack(push, 1)
-struct d2data_006D02F8_t
-{
-    unsigned char b0[8];
+extern const config gData_006D0280[10] = { // 0x006D0280
+    { 0, 0, 0, 0, &deflate_stored },
+    { 4, 4, 8, 4, &deflate_fast },
+    { 4, 5, 16, 8, &deflate_fast },
+    { 4, 6, 32, 32, &deflate_fast },
+    { 4, 4, 16, 16, &deflate_slow },
+    { 8, 16, 32, 32, &deflate_slow },
+    { 8, 16, 128, 128, &deflate_slow },
+    { 8, 32, 128, 256, &deflate_slow },
+    { 32, 128, 258, 1024, &deflate_slow },
+    { 32, 258, 258, 4096, &deflate_slow }
 };
-#pragma pack(pop)
-
-extern const config gData_006D0280[10]; // 0x006D0280
-extern const struct d2data_006D02F8_t gData_006D02F8; // 0x006D02F8
-
-extern const config gData_006D0280[10] = {
-    { 0, 0, 0, 0, (unsigned short (__fastcall *)(void*, int))&deflate_stored },
-    { 4, 4, 8, 4, (unsigned short (__fastcall *)(void*, int))&deflate_fast },
-    { 4, 5, 0x10, 8, (unsigned short (__fastcall *)(void*, int))&deflate_fast },
-    { 4, 6, 0x20, 0x20, (unsigned short (__fastcall *)(void*, int))&deflate_fast },
-    { 4, 4, 0x10, 0x10, (unsigned short (__fastcall *)(void*, int))&deflate_slow },
-    { 8, 0x10, 0x20, 0x20, (unsigned short (__fastcall *)(void*, int))&deflate_slow },
-    { 8, 0x10, 0x80, 0x80, (unsigned short (__fastcall *)(void*, int))&deflate_slow },
-    { 8, 0x20, 0x80, 0x100, (unsigned short (__fastcall *)(void*, int))&deflate_slow },
-    { 0x20, 0x80, 0x102, 0x400, (unsigned short (__fastcall *)(void*, int))&deflate_slow },
-    { 0x20, 0x102, 0x102, 0x1000, (unsigned short (__fastcall *)(void*, int))&deflate_slow }
-}; // 0x006D0280
 #pragma comment(linker, "/alternatename:_configuration_table=_gData_006D0280")
 
-extern const struct d2data_006D02F8_t gData_006D02F8 = {
-    { 0x31, 0x2E, 0x32, 0x2E, 0x38 }
-}; // 0x006D02F8
+extern const char gData_006D02F8[8] = "1.2.8"; // 0x006D02F8

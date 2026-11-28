@@ -1,5 +1,6 @@
 #include "D2SkillIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2DataTbls.h"
 #include "D2Txt.h"
 #include "D2Records.h"
@@ -12,6 +13,12 @@
 #include "D2ClientGfx.h"
 #include "D2StatIds.h"
 #include "D2ClientUiRecords.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "StormApi.h"
+#include "D2CommonApi2.h"
+#include "D2GfxApi.h"
 
 struct D2SkillStrc;
 
@@ -31,7 +38,7 @@ struct D2SpellSelSlotsStrc
     int nX[60];
     int nY[60];
     int nSkill[60];
-    int f_2D0[60];
+    int nOwnerGuid[60];
     unsigned char nCount;
     int nState;
 };
@@ -48,15 +55,10 @@ extern unsigned int gdwBitMasks_006CE268[];                                     
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                               // 0x00681EF0
 
-int __stdcall SKILLS_GetSkillIdFromSkill(D2SkillStrc* pSkill, const char* szFile, int nLine);               // 0x00643CE0
 
-D2SkillsTxt* __fastcall SKILLS_GetSkillsTxtRecordFromSkill(D2SkillStrc* pSkill);                            // 0x00644140
 
-int __stdcall SKILLS_GetFlags(D2SkillStrc* pSkill);                                                         // 0x006446A0
+extern "C" int __fastcall sub_004D9FC0_GetSkillUseState(D2UnitStrc* unit,D2SkillStrc* skill); // 0x004D9FC0
 
-extern "C" int __fastcall sub_004D9FC0(D2UnitStrc* unit,D2SkillStrc* skill); // 0x004D9FC0
-
-int __stdcall SKILLS_GetSkillLevel(D2UnitStrc* pUnit, D2SkillStrc* pSkill, int bBonus);                     // 0x006442A0
 
 void __fastcall SPELLSEL_DrawSkillSlot(D2SkillsTxt* pSkillsTxt, int nOwner, int nCharges, int nState, int nX, int nY, int bLeft); // 0x004A9870
 
@@ -70,31 +72,20 @@ struct D2HotkeySlotTableStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
 void __cdecl GAME_ResetMouseState(); // 0x0044DA40
 
-int __fastcall GAME_GetUIVarState(unsigned int nUIVar); // 0x004538D0
 
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-int __cdecl sub_00468730(); // 0x00468730
 
-int __cdecl sub_00468740(); // 0x00468740
 
-void __fastcall MSG_SendTwoDwords(unsigned char nHeader, unsigned int d1, unsigned int d5); // 0x004786A0
 
-D2SkillStrc* __fastcall SKILLS_GetSkillById(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID); // 0x006439B0
 
-int __stdcall SKILLS_GetOwnerGUIDFromSkill(D2SkillStrc* pSkill); // 0x00643AD0
 
 
 extern int gbSkillSelectRight; // 0x007C07FC
@@ -146,27 +137,14 @@ unsigned short gawIconValues[8]; // 0x007C07A8
 
 extern "C" char* __cdecl _itoa(int nValue, char* szOut, int nRadix);
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
 
-D2UnitStrc* __stdcall INVENTORY_GetItemFromBodyLoc(D2InventoryStrc*,int); // 0x0063BDE0
 
-int __stdcall ITEMSIsA(D2UnitStrc*,int); // 0x00629BB0
-
-int __stdcall ITEMS_CheckIfThrowable(D2UnitStrc*); // 0x0062BA80
-
-unsigned int __stdcall ITEMS_CheckIfStackable(D2UnitStrc* pItem); // 0x006289F0
-
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc*,int,int); // 0x00625480
-
-D2UnitStrc* __stdcall INVENTORY_GetLeftHandWeapon(D2InventoryStrc*); // 0x0063BEF0
-
-void __stdcall TEXTURE_CelDrawColor(D2CelContextStrc* pData, int nXPos, int nYPos, unsigned int dwGamma, int eDrawMode, int nPaletteShift); // 0x004F64B0
 
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
-unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB);                                                     // 0x00469AA0
 
 const Unicode* __fastcall CMDTBL_GetKeyName(int nA, int nB);                                          // 0x0046A530
 
@@ -195,9 +173,7 @@ void __cdecl SPELLSEL_FreeSkillIcons()
     }
 }
 
-void* __fastcall GAME_LoadUiCelFile(const char* szPath); // 0x004520C0
 
-int __stdcall SKILLS_GetClassIdFromSkillId(int nSkillId); // 0x00645040
 
 // 0x004A8C80
 void* __fastcall SPELLSEL_GetSkillIconCel(D2SkillsTxt* pSkillsTxt)
@@ -230,7 +206,7 @@ void __fastcall SPELLSEL_SetSkillSelectRight(int nValue)
 // 0x004A8D30
 int __fastcall SPELLSEL_GetSkillState(D2UnitStrc* pUnit, D2SkillStrc* pSkill)
 {
-    const int nState = sub_004D9FC0(pUnit, pSkill);
+    const int nState = sub_004D9FC0_GetSkillUseState(pUnit, pSkill);
     if (nState)
     {
         return nState == 6 ? 4 : 1;
@@ -238,7 +214,6 @@ int __fastcall SPELLSEL_GetSkillState(D2UnitStrc* pUnit, D2SkillStrc* pSkill)
     return 0;
 }
 
-void __fastcall sub_004EF990_SetSkillPopUpText(D2UnitStrc* pUnit, int nId, int nA, int nB, int nState, int nX, int nY); // 0x004EF990
 
 // 0x004A8D50
 void __fastcall SPELLSEL_UpdateSkillButtonHover(short* pId, int nState, int nA, int nB, int nX, int nY)
@@ -268,7 +243,7 @@ static int __stdcall SPELLSEL_AddSkillSlot(int nX, int bLeft, int nY, D2SkillStr
     gtHotkeySlots_007C0300.nX[gtHotkeySlots_007C0300.nCount] = nX;
     gtHotkeySlots_007C0300.nY[gtHotkeySlots_007C0300.nCount] = nY;
     gtHotkeySlots_007C0300.nSkill[gtHotkeySlots_007C0300.nCount] = SKILLS_GetSkillIdFromSkill(pSkill, ".\\UI\\spellsel.cpp", 0x23D);
-    SKILLS_GetSkillInfo(pSkill, &gtHotkeySlots_007C0300.f_2D0[gtHotkeySlots_007C0300.nCount], 0, 0, 0);
+    SKILLS_GetSkillInfo(pSkill, &gtHotkeySlots_007C0300.nOwnerGuid[gtHotkeySlots_007C0300.nCount], 0, 0, 0);
     gtHotkeySlots_007C0300.nState = nState;
     ++gtHotkeySlots_007C0300.nCount;
     if (!bLeft)
@@ -365,7 +340,7 @@ void __stdcall SPELLSEL_SkillSelectClickMsg(SMSGHANDLER_PARAMS* pMsg)
         const int nMouseY = sub_00468740();
         if (nMouseX >= nX && nMouseX <= nX + 48 && nMouseY >= nY - 48 && nMouseY <= nY)
         {
-            D2SkillStrc* pSkill = SKILLS_GetSkillById(sub_00463DD0_GetPlayerUnit(), gtHotkeySlots_007C0300.nSkill[i], gtHotkeySlots_007C0300.f_2D0[i]);
+            D2SkillStrc* pSkill = SKILLS_GetSkillById(sub_00463DD0_GetPlayerUnit(), gtHotkeySlots_007C0300.nSkill[i], gtHotkeySlots_007C0300.nOwnerGuid[i]);
             if (pSkill)
             {
                 int nCharges;
@@ -382,7 +357,7 @@ void __stdcall SPELLSEL_SkillSelectClickMsg(SMSGHANDLER_PARAMS* pMsg)
                     return;
                 }
 
-                MSG_SendTwoDwords(0x3C, (gbSkillSelectRight ? 0x80000000 : 0) + gtHotkeySlots_007C0300.nSkill[i], gtHotkeySlots_007C0300.f_2D0[i]);
+                MSG_SendTwoDwords(0x3C, (gbSkillSelectRight ? 0x80000000 : 0) + gtHotkeySlots_007C0300.nSkill[i], gtHotkeySlots_007C0300.nOwnerGuid[i]);
                 UI_SetUIVar(3, 1, 0);
                 gbSkillSelectRight = 0;
                 bHandled = 1;
@@ -484,7 +459,7 @@ void __fastcall SPELLSEL_AssignHotkey(int nHotkey)
             {
                 gaHotkeyLeft[nHotkey] = 1;
             }
-            gaHotkeyOwners[nHotkey] = gtHotkeySlots_007C0300.f_2D0[i];
+            gaHotkeyOwners[nHotkey] = gtHotkeySlots_007C0300.nOwnerGuid[i];
             MSG_SendTwoDwords(0x51, (nHotkey << 16) + (gaHotkeyLeft[nHotkey] ? 0x8000 : 0) + gaHotkeySkills[nHotkey], gaHotkeyOwners[nHotkey]);
 
             for (int j = 0; j < 16; ++j)
@@ -502,9 +477,7 @@ void __fastcall SPELLSEL_AssignHotkey(int nHotkey)
 }
 
 
-void __stdcall SKILLS_SetLeftActiveSkill(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID); // 0x00643BC0
 
-void __stdcall SKILLS_SetRightActiveSkill(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID); // 0x00643C50
 
 int gnSelectedHotkey; // 0x007C0708
 
@@ -556,15 +529,12 @@ struct Unicode;
 
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* szFormat, ...); // 0x006CC468
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
 
 Unicode* __fastcall sub_00526700(Unicode* pDst, const Unicode* pSrc); // 0x00526700
 
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 
-unsigned short __fastcall SKILLDESC_GetSkillDescStringId(int nId, int nIndex); // 0x004E6CE0
 
 void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
 
@@ -588,11 +558,10 @@ static void SPELLSEL_AssignFreeHotkey(int nSlot, int nIndex)
         gaHotkeyLeft[nSlot] = 0;
     else
         gaHotkeyLeft[nSlot] = 1;
-    gaHotkeyOwners[nSlot] = gtHotkeySlots_007C0300.f_2D0[nIndex];
+    gaHotkeyOwners[nSlot] = gtHotkeySlots_007C0300.nOwnerGuid[nIndex];
     MSG_SendTwoDwords(0x51, (nSlot << 16) + (gaHotkeyLeft[nSlot] ? 0x8000 : 0) + gaHotkeySkills[nSlot], gaHotkeyOwners[nSlot]);
 }
 
-D2SkillStrc* __fastcall SKILLS_GetHighestLevelSkillFromUnitAndId(D2UnitStrc* pUnit, int nSkillId); // 0x006439F0
 
 // 0x004AA160
 void __cdecl SPELLSEL_FillHotkeys()
@@ -647,7 +616,6 @@ void __fastcall SPELLSEL_DrawSkillQuantity(short* pId, int nState, int nQuantity
     sub_00526700(wszText, D2LANG_GetStringFromTblIndex(0xF9D));
     Unicode wszNumber[10];
     char szNumber[12];
-// build: symbol ?gszFormatI@* 0x006D6454
     wsprintfA(szNumber, gszFormatI, nQuantity);
     sub_00526320_ToUnicode(wszNumber, szNumber, 9);
     sub_00526700(wszText, wszNumber);
@@ -703,7 +671,7 @@ void __fastcall SPELLSEL_BuildSkillRows(D2UnitStrc* pUnit, int nStartX, int bLef
             else if (!bItem)
                 continue;
             int nState;
-            const int nUse = sub_004D9FC0(pUnit, pSkill);
+            const int nUse = sub_004D9FC0_GetSkillUseState(pUnit, pSkill);
             if (nUse)
                 nState = nUse == 6 ? 4 : 1;
             else
@@ -766,7 +734,6 @@ void __cdecl SPELLSEL_BuildRightRows()
     }
 }
 
-extern int gnScreenWidth; // 0x0071146C
 
 // 0x004AA6B0
 void __fastcall SPELLSEL_BuildLeftRows(int bNoDraw)
@@ -792,7 +759,6 @@ void __cdecl SPELLSEL_BuildLeftRows2()
         SPELLSEL_BuildSkillRows(sub_00463DD0_GetPlayerUnit(), gnScreenWidth - 0x80, 0, 1, 0);
 }
 
-int __cdecl CUNIT_IsPlayerDeadOrMissing(); // 0x00463DF0
 
 // 0x004AA740
 void __fastcall SPELLSEL_CycleHotkey(int nDelta)
@@ -933,7 +899,6 @@ void __fastcall sub_K05_EmitMouseInRect(int nX, int nY)
     sub_K05_EmitUse(SPELLSEL_IsMouseInRect(nX + 0x30, 0x30, nY, 0x30));
 }
 
-// build: symbol ?$S1@?4??SPELLSEL_DrawKeyLabel@@YIXHHHH@Z@4IA 0x007C0830
 // 0x004A8DF0
 void __fastcall SPELLSEL_DrawKeyLabel(int nKeyId, int nX, int nY, int nColor)
 {
@@ -949,7 +914,7 @@ void __fastcall SPELLSEL_DrawKeyLabel(int nKeyId, int nX, int nY, int nColor)
     {
         Unicode::strncpy(wszBuf, wszText, 16);
         wszText = wszBuf;
-        Unicode* pEnd = &wszBuf[sub_00526800(wszText)];
+        Unicode* pEnd = &wszBuf[UNICODE_StrLen(wszText)];
         do
         {
             --pEnd;
@@ -996,7 +961,7 @@ static void __stdcall SPELLSEL_DrawSkillCharges(int nCharges, int nX, int nY)
     if (nCharges > 0)
     {
         sub_00526320_ToUnicode(wszText, _itoa(nCharges, szText, 10), 16);
-        int nLength = sub_00526800(wszText);
+        int nLength = UNICODE_StrLen(wszText);
         while (D2Win_10121_GetTextWidth(wszText) > 40)
         {
             wszText[nLength].wChar = 0;
@@ -1047,8 +1012,8 @@ void __fastcall SPELLSEL_DrawSkillInfoBase(void* cell,D2SkillsTxt* skills,int ow
   else if(state==1)drawState=1;
   else drawState=state==4?4:1;
  } else drawState=state;
- D2CelContextStrc ctx;memset(&ctx,0,sizeof(ctx));
- ctx.pCellFile=cell;ctx.nDirection=0;ctx.nFrame=frame;
+ D2GfxDataStrc ctx;memset(&ctx,0,sizeof(ctx));
+ ctx.pCelFile=cell;ctx.nDirection=0;ctx.nFrame=frame;
  TEXTURE_CelDrawColor(&ctx,x,y,-1,5,drawState);
  if(left)SPELLSEL_DrawSkillHotkeyLabels(skills,owner,x,y);
  else SPELLSEL_DrawHotkeyLabelsB(skills,owner,x,y); // 0x004A9300
@@ -1109,9 +1074,9 @@ void __fastcall SPELLSEL_DrawSkillSlot(D2SkillsTxt* skills,int owner,int charges
    else drawState=state==4?4:1;
   } else drawState=state;
  } else {drawY=y;drawState=state;}
- D2CelContextStrc ctx;
+ D2GfxDataStrc ctx;
  memset(&ctx,0,sizeof(ctx));
- ctx.pCellFile=cell;ctx.nDirection=0;ctx.nFrame=frame;
+ ctx.pCelFile=cell;ctx.nDirection=0;ctx.nFrame=frame;
  TEXTURE_CelDrawColor(&ctx,x,drawY,-1,5,drawState);
  if(left) {
   SPELLSEL_DrawSkillHotkeyLabels(skills,owner,x,drawY);
@@ -1146,6 +1111,16 @@ struct d2data_00724A80_t
 
 extern "C" struct d2data_00724A80_t gData_00724A80; // 0x00724A80
 
+extern D2UiCelFileStrc gaSkillIconCels[7] = {
+    { 0, "Spells\\AmSkillicon" },
+    { 0, "Spells\\SoSkillicon" },
+    { 0, "Spells\\NeSkillicon" },
+    { 0, "Spells\\PaSkillicon" },
+    { 0, "Spells\\BaSkillicon" },
+    { 0, "Spells\\DrSkillicon" },
+    { 0, "Spells\\AsSkillicon" }
+}; // 0x00724AC0
+
 extern "C" struct d2data_00724A80_t gData_00724A80 = {
     (const void*)"English",
     (const void*)"Spanish",
@@ -1164,13 +1139,3 @@ extern "C" struct d2data_00724A80_t gData_00724A80 = {
     (const void*)"14",
     { 0x00 }
 }; // 0x00724A80
-
-extern D2UiCelFileStrc gaSkillIconCels[7] = {
-    { 0, "Spells\\AmSkillicon" },
-    { 0, "Spells\\SoSkillicon" },
-    { 0, "Spells\\NeSkillicon" },
-    { 0, "Spells\\PaSkillicon" },
-    { 0, "Spells\\BaSkillicon" },
-    { 0, "Spells\\DrSkillicon" },
-    { 0, "Spells\\AsSkillicon" }
-}; // 0x00724AC0

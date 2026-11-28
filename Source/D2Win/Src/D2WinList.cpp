@@ -22,6 +22,8 @@
 
 #include "D2WinControls.h"
 #include "D2WinListData.h"
+#include "FogApi.h"
+#include "D2LangApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -52,7 +54,6 @@ typedef int (__stdcall* D2WinMsgHandler)(SMSGHANDLER_PARAMS* pMsg);
 typedef int (__fastcall* D2WinControlFn)(D2WinControlStrc* pControl);
 
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -136,17 +137,15 @@ int __stdcall LIST_HandleCharInput(SMSGHANDLER_PARAMS* pMsg); // 0x005073B0
 
 int __stdcall LIST_HandleVirtualKeyInput(SMSGHANDLER_PARAMS* pMsg); // 0x00507420
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 extern int ganListFontHeight[]; // 0x006DD024
 
 int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl);                                           // 0x004F9310
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength);                   // 0x00526F20
 
@@ -207,9 +206,8 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x00
 
 extern tagPOINT gtMousePosition; // 0x007D55A4
 
-unsigned long gdwListLastClickTick; // 0x0087E970
+extern unsigned long gdwListLastClickTick; // 0x0087E970
 
-D2CelFileStrc* __fastcall ARCHIVE_LoadCellFile(const char* szFile, int nType); // 0x004FA9B0
 
 int __stdcall CONTROL_SetFocusedEditBox(D2WinEditBoxStrc* pEditBox); // 0x004F91C0
 
@@ -223,7 +221,7 @@ void __stdcall LIST_LoadPentspinCellfile()
     sghPentagram = ARCHIVE_LoadCellFile(szFile, 0);
 }
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
 // 0x00507160
@@ -246,9 +244,9 @@ int __fastcall LIST_Draw(D2WinControlStrc* pControl)
         }
     }
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = sghPentagram;
+    tContext.pCelFile = sghPentagram;
     tContext.nDirection = 0;
     tContext.nFrame = pList->field_5C;
 
@@ -442,7 +440,7 @@ D2WinListStrc* __fastcall LIST_Create(int nX, int nY, int nWidth, int nHeight, D
     {
         D2WinListDataStrc* pData = (D2WinListDataStrc*)FOG_Alloc(sizeof(D2WinListDataStrc), ".\\Src\\D2WinList.cpp", 0x56, 0);
         const Unicode* pText = D2LANG_GetStringFromTblIndex((unsigned short)pEntry->nStringId);
-        D2_ASSERT(sub_00526800(pText) < 256, 0x58);
+        D2_ASSERT(UNICODE_StrLen(pText) < 256, 0x58);
         sub_005267E0(pData->wszText, pText);
 
         int nTextWidth;
@@ -501,14 +499,14 @@ int __fastcall LIST_Destroy(D2WinListStrc* pList)
 }
 
 // 0x00506EC0
-void __fastcall D2Win_10137(D2WinListStrc* ptListData, const Unicode* wszText, D2WinMsgHandler a3, char a4, int a5, int a6, int a7)
+void __fastcall D2Win_10137(D2WinListStrc* ptListData, const Unicode* wszText, D2WinMsgHandler pfnHandler, char cHotkey, int nVirtualKey, int bPrepend, int bSelect)
 {
     D2_ASSERT(ptListData->controlHeader.eType == D2WIN_LIST, 0xA1);
 
     D2Win_10127_SetFont(ptListData->eFont);
 
     D2WinListDataStrc* pNewData = (D2WinListDataStrc*)FOG_Alloc(sizeof(D2WinListDataStrc), ".\\Src\\D2WinList.cpp", 0xA5, 0);
-    D2_ASSERT(sub_00526800(wszText) < 256, 0xA6);
+    D2_ASSERT(UNICODE_StrLen(wszText) < 256, 0xA6);
 
     sub_005267E0(pNewData->wszText, wszText);
 
@@ -522,15 +520,15 @@ void __fastcall D2Win_10137(D2WinListStrc* ptListData, const Unicode* wszText, D
     }
 
     pNewData->field_200 = nTextWidth;
-    pNewData->field_204 = a3;
+    pNewData->field_204 = pfnHandler;
     pNewData->field_208 = 0;
     pNewData->field_20C = 0;
     pNewData->field_210 = 0;
     pNewData->field_214 = 0;
-    pNewData->field_218 = a4;
-    pNewData->field_21C = a5;
+    pNewData->field_218 = cHotkey;
+    pNewData->field_21C = nVirtualKey;
 
-    if (!a6)
+    if (!bPrepend)
     {
         D2WinListDataStrc* pLast = ptListData->pDataList;
         if (pLast)
@@ -558,7 +556,7 @@ void __fastcall D2Win_10137(D2WinListStrc* ptListData, const Unicode* wszText, D
     ++ptListData->field_50;
     D2Win_10127_SetFont(1);
 
-    if (a7)
+    if (bSelect)
     {
         ptListData->pSelectedDataEntry = pNewData;
         ptListData->field_54 = ptListData->field_50 - 1;
@@ -566,19 +564,19 @@ void __fastcall D2Win_10137(D2WinListStrc* ptListData, const Unicode* wszText, D
 }
 
 // 0x005077F0
-void __fastcall D2Win_10138(D2WinListStrc* pList, const char* szText, D2WinMsgHandler a3, char a4, int a5, int a6, int a7)
+void __fastcall D2Win_10138(D2WinListStrc* pList, const char* szText, D2WinMsgHandler pfnHandler, char cHotkey, int nVirtualKey, int bPrepend, int bSelect)
 {
     Unicode wszText[256];
     for (int i = 0; i < 256; i++)
         wszText[i].wChar = 0;
     sub_00526F20_ToUnicode(wszText, szText, 256);
-    D2Win_10137(pList, wszText, a3, a4, a5, a6, a7);
+    D2Win_10137(pList, wszText, pfnHandler, cHotkey, nVirtualKey, bPrepend, bSelect);
 }
 
 // 0x00507140
 void __stdcall LIST_UnloadPentspinCellfile()
 {
-    sub_004FAAE0_FreeCellFile(sghPentagram);
+    ARCHIVE_FreeCellFile(sghPentagram);
     sghPentagram = 0;
 }
 

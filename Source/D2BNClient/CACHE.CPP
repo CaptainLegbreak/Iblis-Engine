@@ -2,12 +2,14 @@
 #include "D2GameTypes.h"
 #include "D2SysTypes.h"
 #include "D2Primitives.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "StormApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
 struct D2CriticalSectionStrc;
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -27,8 +29,6 @@ extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalS
 
 extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC218
 
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
-
 extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC210
 extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC1FC
 
@@ -39,17 +39,13 @@ struct CCritSect : D2CriticalSectionStrc
     ~CCritSect() { DeleteCriticalSection(this); }
 };
 
-// build: symbol ??__EgtCacheLock@@YAXXZ 0x006CAEA0
-// build: symbol ??__FgtCacheLock@@YAXXZ 0x006CB440
 CCritSect gtCacheLock;                                                                  // 0x00881894
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
-extern "C" int __cdecl toupper(int nChar);                                                                  // 0x00685385
 
 extern "C" __declspec(dllimport) void* __stdcall CreateFileA(const char* szFileName, unsigned long dwDesiredAccess, unsigned long dwShareMode, void* pSecurityAttributes, unsigned long dwCreationDisposition, unsigned long dwFlagsAndAttributes, void* hTemplateFile); // 0x006CC19C
 
@@ -59,11 +55,6 @@ extern "C" __declspec(dllimport) int __stdcall ReadFile(void* hFile, void* pBuff
 
 extern "C" __declspec(dllimport) unsigned long __stdcall SetFilePointer(void* hFile, long nDistance, long* pnDistanceHigh, unsigned long dwMoveMethod); // 0x006CC1AC
 
-unsigned int __stdcall SStrPack(char* szDest, const char* szSource, unsigned int nDestSize);                // 0x00413800
-
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags);          // 0x00413020
-
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode);                                         // 0x0041C340
 
 void __cdecl BNDOWNLOAD_LogPrintf(const char* szFormat, ...);                                                   // 0x00518D40
 
@@ -122,11 +113,11 @@ static D2CacheHashEntryStrc* gpCacheHashTable; // 0x0088188C
 
 int gbCacheLoaded; // 0x00881890
 
-extern unsigned __int64 gqwCacheFileTime; // 0x008818AC
+unsigned __int64 gqwCacheFileTime; // 0x008818AC
 
-extern unsigned long gdwCacheTimeTick; // 0x008818B4
+unsigned long gdwCacheTimeTick; // 0x008818B4
 
-extern unsigned int gnCacheTimeSeconds; // 0x008818B8
+unsigned int gnCacheTimeSeconds; // 0x008818B8
 
 extern const char gszCacheFile[]; // 0x006DEE70
 
@@ -165,6 +156,7 @@ extern "C" __declspec(dllimport) int __stdcall SystemTimeToFileTime(const D2Syst
 
 static void CACHE_GetCacheFilePath(char* szPath); // 0x00519220
 
+// 0x00518DE0
 static unsigned int sub_00518DE0_Crc32(const void* pData, unsigned int nSize)
 {
     VALIDATEBEGIN;
@@ -178,6 +170,7 @@ static unsigned int sub_00518DE0_Crc32(const void* pData, unsigned int nSize)
     return dwCrc;
 }
 
+// 0x00518E60
 static void sub_00518E60_DecryptBlock(unsigned int* pData, unsigned int nLength, unsigned int dwKey)
 {
     unsigned int dwSeed = 0xEEEEEEEE;
@@ -192,6 +185,7 @@ static void sub_00518E60_DecryptBlock(unsigned int* pData, unsigned int nLength,
     }
 }
 
+// 0x00518EC0
 static void sub_00518EC0_EncryptBlock(unsigned int* pData, unsigned int nLength, unsigned int dwKey)
 {
     unsigned int dwSeed = 0xEEEEEEEE;
@@ -212,6 +206,7 @@ static void sub_00518EC0_EncryptBlock(unsigned int* pData, unsigned int nLength,
     }
 }
 
+// 0x00518F30
 static D2FileTimeStrc* sub_00518F30_GetCacheFileTime(unsigned int nSeconds)
 {
     if (nSeconds != gnCacheTimeSeconds || GetTickCount() != gdwCacheTimeTick)
@@ -226,6 +221,7 @@ static D2FileTimeStrc* sub_00518F30_GetCacheFileTime(unsigned int nSeconds)
     return (D2FileTimeStrc*)&gqwCacheFileTime;
 }
 
+// 0x00518FA0
 static unsigned int __stdcall sub_00518FA0_HashString(unsigned int nHashType, const char* szString)
 {
     unsigned int dwSeed1 = 0x7FED7FED;
@@ -276,6 +272,7 @@ static void sub_H08_ClearBlockEntry(D2CacheBlockEntryStrc* pBlockTable, unsigned
     pBlockTable[nBlock].dwFlags = 0;
 }
 
+// 0x005191D0
 static void sub_005191D0_DeleteHashEntries(const char* szName)
 {
     int nIndex;
@@ -854,8 +851,6 @@ Done:
     LeaveCriticalSection(&gtCacheLock);
     return nError == 0;
 }
-
-extern "C" const char gData_006DEEC0[64]; // 0x006DEEC0
 
 extern "C" const char gData_006DEEC0[64] = "File: '%s' in bncache.dat is corrupt (%d) - deleting from cache"; // 0x006DEEC0
 #pragma comment(linker, "/alternatename:?gszCorruptFile@@3QBDB=_gData_006DEEC0")

@@ -1,4 +1,5 @@
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 
 #include "D2Structs.h"
 
@@ -11,6 +12,7 @@
 #include "D2Txt.h"
 
 #include "D2ClientSound.h"
+#include "D2CommonApi.h"
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
@@ -20,11 +22,8 @@ extern const int gaSkillRingOffsetY[16]; // 0x006DBAB8
 
 extern "C" void* __cdecl memset(void* pDest, int nValue, unsigned int nSize); // 0x00681EF0
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646CA0
 
 D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams); // 0x004CD540
 
@@ -85,11 +84,6 @@ int __fastcall sub_004E1770_SpawnSkillMissileRing(D2UnitStrc* pUnit, int nSkillI
     return 0;
 }
 
-extern "C" const int gData_006DBAB8[16]; // 0x006DBAB8
-extern "C" const int gData_006DBAF8[16]; // 0x006DBAF8
+extern const int gaSkillRingOffsetY[16] = { 2, 2, 2, 1, 0, -1, -2, -2, -2, -2, -2, -1, 0, 1, 2, 2 }; // 0x006DBAB8
 
-extern "C" const int gData_006DBAB8[16] = { 2, 2, 2, 1, 0, -1, -2, -2, -2, -2, -2, -1, 0, 1, 2, 2 }; // 0x006DBAB8
-#pragma comment(linker, "/alternatename:?gaSkillRingOffsetY@@3QBHB=_gData_006DBAB8")
-
-extern "C" const int gData_006DBAF8[16] = { 0, 1, 2, 2, 2, 2, 2, 1, 0, -1, -2, -2, -2, -2, -2, -1 }; // 0x006DBAF8
-#pragma comment(linker, "/alternatename:?gaSkillRingOffsetX@@3QBHB=_gData_006DBAF8")
+extern const int gaSkillRingOffsetX[16] = { 0, 1, 2, 2, 2, 2, 2, 1, 0, -1, -2, -2, -2, -2, -2, -1 }; // 0x006DBAF8

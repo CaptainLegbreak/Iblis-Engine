@@ -1,9 +1,14 @@
+#include "D2LanguageNames.h"
+
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Primitives.h"
 #include "D2StormTypes.h"
 #include "D2ClientParty.h"
 #include "D2WinSplitText.h"
 #include "D2WaypointActRange.h"
+#include "D2CommonApi.h"
+#include "StormApi.h"
 
 struct D2PartyRowStrc;
 struct D2PacketRecord21Strc;
@@ -12,17 +17,6 @@ struct D2WaypointRowRectStrc;
 
 
 
-int __cdecl sub_00468730(); // 0x00468730
-int __cdecl sub_00468740(); // 0x00468740
-D2StoredUnitRecordStrc* __fastcall ROSTER_GetNextStoredUnit(D2StoredUnitRecordStrc* pEntry); // 0x004795A0
-int __fastcall ROSTER_GetLevel(D2StoredUnitRecordStrc* pEntry); // 0x00479B90
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-int __stdcall DUNGEON_IsRoomInTown(D2ActiveRoomStrc* pRoom); // 0x0061AB00
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
-extern int gnScreenWidth; // 0x0071146C
-extern int gnPanelOffsetX; // 0x007A2858
-extern int gnPanelOffsetY; // 0x007A285C
 extern D2PartyRowStrc* gpRosterUnits; // 0x007BF014
 extern int gnWaypointSelected; // 0x007BF06D
 
@@ -32,23 +26,13 @@ struct D2PacketRecord21Strc
     unsigned char nUnitGUID[4];
     unsigned char pWaypointData[16];
 };
-int __cdecl GAME_IsExpansion(); // 0x0044DCC0
 D2BitBufferStrc* __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
-int __stdcall QUESTRECORD_GetQuestState(D2BitBufferStrc* pQuestFlags, int nQuestId, int nState); // 0x0065C310
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
-unsigned char __stdcall DRLG_GetActNoFromLevelId(int nLevelId); // 0x006427F0
 void __cdecl WARDENCLIENT_BuildWaypointList(); // 0x0049C7F0
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
 void __cdecl GAME_ResetMouseState(); // 0x0044DA40
-int __cdecl sub_0047F210_IsMouseInSlots(); // 0x0047F210
-void __cdecl sub_0049C6C0_SendWaypointClose(); // 0x0049C6C0
-void __fastcall MSG_SendTwoDwords(unsigned char nHeader, unsigned int d1, unsigned int d5); // 0x004786A0
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4); // 0x004B9A00
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
-extern D2WaypointRowRectStrc gaWaypointRowRects[9]; // 0x007224F8
-extern D2WaypointMenuEntryStrc gaWaypointEntries[9]; // 0x007BF03C
+#include "D2WaypointLayout.h"
+extern D2WaypointLayoutStrc gaLayouts[9]; // 0x007224E8
 extern bool gbWaypointClosePressed; // 0x007BF06C
-extern char gbSent; // 0x007BF085
 // 0x0049BB40
 static inline void sub_0049BB40_SetSlotCount(D2PartyRowStrc* pRow, int nSlot)
 {
@@ -181,7 +165,6 @@ void __cdecl sub_0049C560_ResetSelection()
 // 0x0049C490
 static int sub_0049C490_GetActTabAtPoint(int nX, int nY)
 {
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
     if (FOG_IsExpansion() && GAME_IsExpansion())
     {
         if (nY > 0x1E || nX > 0x140)
@@ -213,8 +196,8 @@ static int sub_0049C510_GetWaypointRowAtPoint(int nX, int nY)
 {
     for (int i = 0; i < 9; ++i)
     {
-        if (gaWaypointEntries[i].bEnabled && nX > gaWaypointRowRects[i].nX && nX < gaWaypointRowRects[i].nX + 0x118
-            && nY > gaWaypointRowRects[i].nY && nY < gaWaypointRowRects[i].nY + 0x1E)
+        if (gaWaypointEntries[i].bEnabled && nX > gaLayouts[i].nRowX && nX < gaLayouts[i].nRowX + 0x118
+            && nY > gaLayouts[i].nRowY && nY < gaLayouts[i].nRowY + 0x1E)
             return i;
     }
     return -1;
@@ -236,9 +219,7 @@ extern void* gpWaypointActTabsCel; // 0x007BF075
 
 extern void* gpWaypointIconCel; // 0x007BF079
 
-D2WaypointDataStrc* __stdcall WAYPOINTS_AllocWaypointData(void* pMemPool); // 0x00660F30
 
-void __stdcall WAYPOINTS_FreeWaypointData(void* pMemPool, D2WaypointDataStrc* pData); // 0x00660FD0
 
 extern "C" void __cdecl TEXT_FreeWaypointCels(); // 0x0049C650
 
@@ -248,13 +229,11 @@ void __cdecl TEXT_LoadWaypointPanelCels()
     char szPath[0x104];
     if (!gpWaypointBackgroundCel)
     {
-// build: symbol ?gszDataGlobal@* 0x006D4118
         sprintf(szPath, "%s\\ui\\menu\\waygatebackground", gszDataGlobal);
         gpWaypointBackgroundCel = ARCHIVE_LoadClientCellFile(szPath, 0);
     }
     if (!gpWaypointActTabsCel)
     {
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
         if (FOG_IsExpansion() && GAME_IsExpansion())
         {
             sprintf(szPath, "%s\\ui\\menu\\expwaygatetabs", gszDataGlobal);
@@ -295,7 +274,6 @@ extern "C" void __cdecl TEXT_FreeWaypointCels()
 // 0x0049C6A0
 void __cdecl TEXT_InitWaypointData()
 {
-// build: symbol ?gpWaypointData@* 0x007BF081
     gpWaypointData = WAYPOINTS_AllocWaypointData(0);
     gbSent = 0;
 }
@@ -305,7 +283,6 @@ void __cdecl sub_0049C6C0_SendWaypointClose()
 {
     if (!gbSent && sub_00463DD0_GetPlayerUnit() && UNITS_GetRoom(sub_00463DD0_GetPlayerUnit()))
     {
-// build: symbol ?gnWaypointId@* 0x007BF07D
         MSG_SendTwoDwords(0x49, gnWaypointId, 0);
         gbSent = 1;
     }
@@ -324,7 +301,6 @@ void __cdecl TEXT_CloseWaypointPanel()
 // 0x0049C760
 static void sub_0049C760_SetWaypointAct(int nAct)
 {
-// build: symbol ?gnWaypointActCount@* 0x007224E4
     if (nAct >= gnWaypointActCount)
         nAct = 0;
 
@@ -344,7 +320,6 @@ static void sub_0049C760_SetWaypointAct(int nAct)
             nAct = 0;
     }
 
-// build: symbol ?gnWaypointAct@* 0x007BF086
     gnWaypointAct = nAct;
 }
 
@@ -353,11 +328,8 @@ struct Unicode;
 struct D2WaypointActRangeStrc;
 
 
-int __stdcall WAYPOINTS_GetLevelIdFromWaypointNo(unsigned short wWaypointNo, int* pLevelId); // 0x00660D90
 
-int __stdcall WAYPOINTS_GetWaypointNoFromLevelId(int nLevelId, unsigned short* pWaypointNo); // 0x00660E00
 
-int __stdcall WAYPOINTS_IsActivated(D2WaypointDataStrc* pData, unsigned short wField); // 0x00660E50
 
 extern D2WaypointActRangeStrc gaWaypointActRanges[]; // 0x007224AC
 
@@ -395,7 +367,6 @@ void __cdecl WARDENCLIENT_BuildWaypointList()
         gaWaypointEntries[i].bEnabled = 0;
     }
 
-// build: symbol ?gnWaypointAct@* 0x007BF086
     if ((unsigned int)gnWaypointAct > 5)
     {
         gbSent = 0;
@@ -425,7 +396,6 @@ void __cdecl WARDENCLIENT_BuildWaypointList()
     for (int i = gaWaypointActRanges[gnWaypointAct].nMinWaypoint; i <= gaWaypointActRanges[gnWaypointAct].nMaxWaypoint; ++i)
     {
         const unsigned short wWaypoint = (unsigned short)i;
-// build: symbol ?gpWaypointData@* 0x007BF081
         if (WAYPOINTS_IsActivated(gpWaypointData, wWaypoint))
         {
             int nLevelId;
@@ -497,7 +467,6 @@ void __stdcall TEXT_WaypointKeyMsg(SMSGHANDLER_PARAMS* pMsg)
 
     if (!gbSent && sub_00463DD0_GetPlayerUnit() && UNITS_GetRoom(sub_00463DD0_GetPlayerUnit()))
     {
-// build: symbol ?gnWaypointId@* 0x007BF07D
         MSG_SendTwoDwords(0x49, gnWaypointId, 0);
         gbSent = 1;
     }
@@ -520,22 +489,19 @@ void __cdecl sub_0049CF50_SendWaypointClose()
 }
 
 // 0x0049CF90
-void __fastcall sub_0049CF90(D2PacketRecord21Strc* pPacket)
+void __fastcall sub_0049CF90_OpenWaypointPanel(D2PacketRecord21Strc* pPacket)
 {
     if (UI_SetUIVar(0x14, 0, 1) == 1)
     {
         GAME_ResetMouseState();
         sub_0049C980_UpdateWaypointAct();
-// build: symbol ?gnWaypointId@* 0x007BF07D
         gnWaypointId = *(int*)pPacket->nUnitGUID;
-// build: symbol ?gpWaypointData@* 0x007BF081
         WAYPOINTS_CopyAndValidateWaypointData(gpWaypointData, pPacket->pWaypointData);
         gbSent = 0;
         WARDENCLIENT_BuildWaypointList();
     }
 }
 
-// build: symbol ?TEXT_OnWaypointMouseUp@* 0x0049D010
 void __stdcall TEXT_OnWaypointMouseUp(SMSGHANDLER_PARAMS* pMsg)
 {
     int nX = (unsigned short)pMsg->lParam;
@@ -640,55 +606,6 @@ void __stdcall sub_0049D160_WaypointMouseDown(SMSGHANDLER_PARAMS* pMsg)
     sub_00420290_BreakHandlerChain(pMsg);
 }
 
-#pragma pack(push, 1)
-struct d2data_00722470_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_007224E8_t
-{
-    unsigned char b0[216];
-};
-#pragma pack(pop)
-
-extern "C" struct d2data_00722470_t gData_00722470; // 0x00722470
-extern "C" struct d2data_007224E8_t gData_007224E8; // 0x007224E8
-
-extern "C" struct d2data_00722470_t gData_00722470 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00722470
-
 extern D2WaypointActRangeStrc gaWaypointActRanges[5] = {
     { 0, { 1 }, "&", 0xFF },
     { 0, "(", "J", 0xFF },
@@ -699,22 +616,14 @@ extern D2WaypointActRangeStrc gaWaypointActRanges[5] = {
 
 extern int gnWaypointActCount = 5; // 0x007224E4
 
-extern "C" struct d2data_007224E8_t gData_007224E8 = {
-    {
-        0x11, 0x00, 0x00, 0x00, 0x59, 0x00, 0x00, 0x00, 0x50, 0x00, 0x00, 0x00, 0x54, 0x00, 0x00, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0x3C, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x7D, 0x00, 0x00, 0x00,
-        0x50, 0x00, 0x00, 0x00, 0x77, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0xA1, 0x00, 0x00, 0x00, 0x50, 0x00, 0x00, 0x00, 0x9A, 0x00, 0x00, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0x84, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0xC5, 0x00, 0x00, 0x00,
-        0x50, 0x00, 0x00, 0x00, 0xBD, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0xA8, 0x00, 0x00, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0xEA, 0x00, 0x00, 0x00, 0x50, 0x00, 0x00, 0x00, 0xE0, 0x00, 0x00, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0xCD, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x0E, 0x01, 0x00, 0x00,
-        0x50, 0x00, 0x00, 0x00, 0x03, 0x01, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0xF1, 0x00, 0x00, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0x32, 0x01, 0x00, 0x00, 0x50, 0x00, 0x00, 0x00, 0x26, 0x01, 0x00, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0x15, 0x01, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x56, 0x01, 0x00, 0x00,
-        0x50, 0x00, 0x00, 0x00, 0x49, 0x01, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x39, 0x01, 0x00, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0x7A, 0x01, 0x00, 0x00, 0x50, 0x00, 0x00, 0x00, 0x6C, 0x01, 0x00, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0x5D, 0x01
-    }
+extern D2WaypointLayoutStrc gaLayouts[9] = {
+    { 17, 89, 80, 84, 17, 60 },
+    { 17, 125, 80, 119, 17, 96 },
+    { 17, 161, 80, 154, 17, 132 },
+    { 17, 197, 80, 189, 17, 168 },
+    { 17, 234, 80, 224, 17, 205 },
+    { 17, 270, 80, 259, 17, 241 },
+    { 17, 306, 80, 294, 17, 277 },
+    { 17, 342, 80, 329, 17, 313 },
+    { 17, 378, 80, 364, 17, 349 }
 }; // 0x007224E8
-#pragma comment(linker, "/alternatename:?gaLayouts@@3PAUD2WaypointLayoutStrc@@A=_gData_007224E8")

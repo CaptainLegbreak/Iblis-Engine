@@ -12,7 +12,7 @@ struct D2ThreadContextStrc;
 struct D2QueueServerStrc;
 struct _iobuf;
 
-D2ModuleInfoStrc* __stdcall sub_0040B920_GetModuleListPsapi(void* hProcess); // 0x0040B920
+D2ModuleInfoStrc* __stdcall EXCEPTIONS_GetModuleListPsapi(void* hProcess); // 0x0040B920
 extern "C" __declspec(dllimport) int __stdcall DeleteFileA(const char* lpFileName); // 0x006CC1A0
 extern "C" __declspec(dllimport) int __stdcall DuplicateHandle(void* hSourceProcess, void* hSource, void* hTargetProcess, void** phTarget, unsigned long dwAccess, int bInherit, unsigned long dwOptions); // 0x006CC248
 extern "C" __declspec(dllimport) int __stdcall FreeLibrary(void* hModule); // 0x006CC14C
@@ -59,7 +59,7 @@ extern "C" void* __stdcall CreateToolhelp32Snapshot(unsigned long dwFlags, unsig
 extern _iobuf* gapLogFiles[20]; // 0x0075E790
 extern char gaszLogNames[20][0x10]; // 0x0075D148
 extern char gszLogPrefix[]; // 0x00708018
-extern const char gszQServerNT_006FC8A0[]; // 0x006FC8A0
+extern const char gszQServerNTFile[]; // 0x006FC8A0
 extern const char gszServerFile_006FC460[]; // 0x006FC460
 extern const char* gaszErrorTypeNames[]; // 0x00706654
 extern int gbLogThreadStop; // 0x0075E830
@@ -70,35 +70,33 @@ extern unsigned long gadwLogWriteTick[20]; // 0x0075D2F0
 extern void* ghDbgHelpDoneEvent; // 0x0098A6BC
 extern void* ghDbgHelpWorkEvent; // 0x0098A6C0
 int __fastcall FOG_SOCKET_WSACleanup(); // 0x0040D8D0
-int __stdcall SRegLoadString(const char* szKeyName, const char* szValueName, unsigned int nFlags, char* szBuffer, unsigned int nBufferSize); // 0x00414E50
+int __stdcall SRegLoadString(const char* szKeyName, const char* szValueName, unsigned int nFlags, char* szBuffer, unsigned long nBufferSize); // 0x00414E50
 int __stdcall SRegLoadValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long* pValue); // 0x00414F10
 int __stdcall SRegSaveString(const char* szKeyName, const char* szValueName, unsigned int nFlags, const char* szString); // 0x00415070
-int __stdcall SStrCmpI(const char* szString1, const char* szString2, int nMaxChars); // 0x00413590
+int __stdcall SStrCmpI(const char* szString1, const char* szString2, unsigned int nMaxChars); // 0x00413590
 int __stdcall sub_006B0144_GetSockAddr(unsigned int s, D2SockAddrInStrc* pAddr, int* pAddrLen); // 0x006B0144
 int __stdcall sub_006B018C_GetSockAddr(unsigned int s, D2SockAddrInStrc* pAddr, int* pAddrLen); // 0x006B018C
 unsigned int __cdecl sub_00410A80_GetTime(); // 0x00410A80
 unsigned int __stdcall SStrHash(const char* szString, unsigned int nFlags, unsigned int nSeed); // 0x00413CE0
-unsigned int __stdcall SStrPack(char* szDest, const char* szSource, unsigned int nDestSize); // 0x00413800
+unsigned int __stdcall SStrPack(char* dest, const char* source, unsigned int limit); // 0x00413800
 unsigned short __stdcall sub_006B019E(unsigned short nValue); // 0x006B019E
 void __cdecl ERRORMANAGER_LogPoolError(const char* szFormat, ...); // 0x00409020
 void __cdecl FOG_CreateNewPoolSystem(void* pReserved, const char* szName, int nSize, int nBlockSize); // 0x00409DD0
 void __cdecl LOGMANAGER_LogWritePrefixed(const char* szPrefix, const char* szFormat, ...); // 0x00410740
 void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 bool __fastcall ERRORMANAGER_ShowErrorReport(const char* szSummary, const char* szUnused, const char** ppszFiles, int nFiles, unsigned int nLine, bool bFlag); // 0x00408660
-void __fastcall sub_00409810_FreeLarge(D2PoolSystemStrc* pSystem, void* pMemory, const char* szFile, int nLine); // 0x00409810
+void __fastcall ERRORMANAGER_PoolFreeLarge(D2PoolSystemStrc* pSystem, void* pMemory, const char* szFile, int nLine); // 0x00409810
 void __fastcall QSERVER_ProcessReceived(D2QueueServerStrc* pServer, D2QClientStrc* pClient); // 0x006C08A0
-void __stdcall SMemZero(void* pDest, unsigned int nSize); // 0x0041D300
-void* __fastcall sub_004098B0_ReallocLarge(D2PoolSystemStrc* pSystem, void* pMemory, int nSize, const char* szFile, int nLine); // 0x004098B0
+void __stdcall SMemZero(void* pLocation, unsigned int nLength); // 0x0041D300
+void* __fastcall ERRORMANAGER_PoolReallocLarge(D2PoolSystemStrc* pSystem, void* pMemory, int nSize, const char* szFile, int nLine); // 0x004098B0
 
 #define QS_IS_READ(f) (((f) & 1) == 1)
 #define QS_IS_WRITE(f) (((f) & 3) == 2)
-// build: symbol ?FOG_DisplayHalt@* 0x00408A60
 #define S_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText_006CC837, sub_00408090(), line); exit(-1); }
 #define _INTSIZEOF(n) ((sizeof(n) + sizeof(int) - 1) & ~(sizeof(int) - 1))
 
 // the default of a switch whose every value is a listed case: the compiler is told it cannot be reached
 #define DEFAULT_UNREACHABLE __assume(0)
-// build: symbol ?gtPoolManager@* 0x0074F0E8
 #define gtDefaultPoolSystem_0074F104 (gtPoolManager.aSystems[0])
 #define va_start(ap, v) (ap = (va_list)&v + _INTSIZEOF(v))
 
@@ -273,8 +271,7 @@ int __fastcall FOG_CreatePathHierarchy(const char* szPath); // 0x00406A10
 unsigned int __cdecl ERRORMANAGER_GetCpuSignature(); // 0x0040E960
 unsigned int __cdecl ERRORMANAGER_GetCpuBrandIndex(); // 0x0040E980
 extern "C" int __cdecl _snprintf_s(char* szBuffer, unsigned int nSizeOfBuffer, unsigned int nCount, const char* szFormat, ...); // 0x006824CB
-unsigned long __stdcall SFileSetFilePointer(void* hFile, long lDistanceToMove, long* plDistanceToMoveHigh, unsigned long dwMoveMethod); // 0x004165A0
-// build: symbol ?gtSystemInfo@* 0x0074D8A0
+unsigned long __stdcall SFileSetFilePointer(void* hFile, long nDistance, long* pnDistanceHigh, unsigned long dwMoveMethod); // 0x004165A0
 #define gwProcessorLevel_0074D8C0 (gtSystemInfo.wProcessorLevel)
 typedef int (__stdcall* SymCleanupFn)(void* hProcess);
 

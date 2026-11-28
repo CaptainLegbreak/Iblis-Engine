@@ -1,6 +1,7 @@
 #include "D2Structs.h"
 #include "D2DataTbls.h"
 #include "D2Txt.h"
+#include "D2CommonApi.h"
 #define UNIT_FLAG 0x40
 #define COUNT_BIAS 6
 #define MIN_COUNT 1
@@ -12,7 +13,6 @@ struct D2GfxLightStrc;
 struct D2MissilesTxt;
 extern D2DataTablesStrc* sgptDataTables;  // 0x00744304
 int __fastcall ITEM_GetTargetPosition(D2UnitStrc* pUnit, int* pX, int* pY);                         // 0x004C52E0
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646CA0
 void __fastcall MISSILE_CreateBurstAt(D2UnitStrc* pMissile, int nX, int nY, int nCount, int nMissile, int nSkill, int nLevel, int nPerStep, int nMult); // 0x004CED60
 static inline D2SkillsTxt* SKILLS_GetSkillsTxtRecordForceInline(int nSkillId)
 {
@@ -23,7 +23,7 @@ static inline D2SkillsTxt* SKILLS_GetSkillsTxtRecordForceInline(int nSkillId)
     return 0;
 }
 // 0x004E1320
-int __fastcall sub_004E1320(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
+int __fastcall sub_004E1320_CastMissileBurst(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
 {
     D2SkillsTxt* pSkillsTxt = SKILLS_GetSkillsTxtRecordForceInline(nSkillId);
     if (!pSkillsTxt)

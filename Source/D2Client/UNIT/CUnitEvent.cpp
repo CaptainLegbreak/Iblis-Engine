@@ -2,7 +2,6 @@
 #include "D2Structs.h"
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
-void* __fastcall sub_004DC0B0_GetUnitMemoryPool(D2UnitStrc* pUnit); // 0x004DC0B0
 
 typedef int (__fastcall* D2CltUnitEventFn)(int nType, D2UnitStrc* pUnit, int nArg1, int nArg2, int nParam1, int nParam2);
 
@@ -18,7 +17,7 @@ void __fastcall CUNITEVENT_FreeCltUnitEvents(D2UnitStrc* pUnit)
     while (pEvent)
     {
         D2CltUnitEventStrc* pNext = pEvent->pNext;
-        sub_0040B480(sub_004DC0B0_GetUnitMemoryPool(pUnit), pEvent, ".\\UNIT\\CUnitEvent.cpp", 0x2F, 0);
+        sub_0040B480(GFXUTIL_GetNextRosterInfo(pUnit), pEvent, ".\\UNIT\\CUnitEvent.cpp", 0x2F, 0);
         pEvent = pNext;
     }
 
@@ -41,8 +40,8 @@ D2CltUnitEventStrc* __fastcall CUNITEVENT_AddCltUnitEvent(D2UnitStrc* pUnit, int
     pEvent->nParam3 = nParam3;
     pEvent->nType = nType;
     pEvent->pNext = pUnit->pCltTimerList;
-    pEvent->f_4 = nParam4;
-    pEvent->f_8 = nParam5;
+    pEvent->nParam4 = nParam4;
+    pEvent->nParam5 = nParam5;
     if (pUnit->pCltTimerList)
     {
         pUnit->pCltTimerList->pPrevious = pEvent;
@@ -64,7 +63,7 @@ void __fastcall CUNITEVENT_RemoveCltUnitEvents(D2UnitStrc* pUnit, int nParam4, i
     while (pEvent)
     {
         D2CltUnitEventStrc* pNext = pEvent->pNext;
-        if (pEvent->f_4 == nParam4 && pEvent->f_8 == nParam5)
+        if (pEvent->nParam4 == nParam4 && pEvent->nParam5 == nParam5)
         {
             if (pEvent->pPrevious)
             {
@@ -80,7 +79,7 @@ void __fastcall CUNITEVENT_RemoveCltUnitEvents(D2UnitStrc* pUnit, int nParam4, i
                 pEvent->pNext->pPrevious = pEvent->pPrevious;
             }
 
-            sub_0040B480(sub_004DC0B0_GetUnitMemoryPool(pUnit), pEvent, ".\\UNIT\\CUnitEvent.cpp", 0x80, 0);
+            sub_0040B480(GFXUTIL_GetNextRosterInfo(pUnit), pEvent, ".\\UNIT\\CUnitEvent.cpp", 0x80, 0);
         }
 
         pEvent = pNext;

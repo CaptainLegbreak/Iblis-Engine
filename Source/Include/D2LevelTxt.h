@@ -25,7 +25,7 @@ struct D2LevelsTxt
     unsigned char nNoPer; // 0x07
     unsigned char nIsInside; // 0x08
     unsigned char nDrawEdges; // 0x09
-    unsigned short unk0x0A; // 0x0A
+    unsigned short pad0x0A; // 0x0A
     unsigned int dwWarpDist; // 0x0C
     unsigned short wMonLvl[3]; // 0x10
     short wMonLvlEx[3]; // 0x16
@@ -52,16 +52,16 @@ struct D2LevelsTxt
     char szLevelName[40]; // 0xF5
     char szLevelWarp[40]; // 0x11D
     char szEntryFile[40]; // 0x145
-    unsigned char unk0x16D; // 0x16D
+    unsigned char pad0x16D; // 0x16D
     unsigned short wszLevelName[40]; // 0x16E
     unsigned short wszLevelWarp[40]; // 0x1BE
-    unsigned short unk0x20E; // 0x20E
+    unsigned short pad0x20E; // 0x20E
     unsigned int dwThemes; // 0x210
     unsigned int dwFloorFilter; // 0x214
     unsigned int dwBlankScreen; // 0x218
     unsigned char nSoundEnv; // 0x21C
-    unsigned char unk0x21D; // 0x21D
-    unsigned short unk0x21E; // 0x21E
+    unsigned char pad0x21D; // 0x21D
+    unsigned short pad0x21E; // 0x21E
 };
 
 struct D2LvlPrestTxt
@@ -118,20 +118,20 @@ struct D2UniqueItemsTxt
     unsigned char nUniqueItemFlags[4]; // 0x2C
     int nRarity; // 0x30
     unsigned char nLevel; // 0x34
-    unsigned char unk0x35; // 0x35
+    unsigned char pad0x35; // 0x35
     unsigned short wLvlReq; // 0x36
     char nChrTransform; // 0x38
     char nInvTransform; // 0x39
     char szFlippyFile[32]; // 0x3A
     char szInvFile[32]; // 0x5A
-    unsigned short unk0x7A; // 0x7A
+    unsigned short pad0x7A; // 0x7A
     int dwCostMult; // 0x7C
     int dwCostAdd; // 0x80
     short wDropSound; // 0x84
     short wUseSound; // 0x86
     unsigned char nDropSfxFrame; // 0x88
-    unsigned char unk0x89; // 0x89
-    unsigned short unk0x8A; // 0x8A
+    unsigned char pad0x89; // 0x89
+    unsigned short pad0x8A; // 0x8A
     D2PropertyStrc pProperties[12]; // 0x8C
 };
 
@@ -150,15 +150,15 @@ struct D2SuperUniquesTxt
     unsigned char nStacks; // 0x26
     unsigned char nReplaceable; // 0x27
     unsigned char nModes[3]; // 0x28
-    unsigned char unk0x2B; // 0x2B
+    unsigned char pad0x2B; // 0x2B
     unsigned short wTC[3]; // 0x2C
-    unsigned short unk0x32; // 0x32
+    unsigned short pad0x32; // 0x32
 };
 
 struct D2HirelingTxt
 {
     unsigned short wVersion; // 0x00
-    unsigned short unk0x02; // 0x02
+    unsigned short pad0x02; // 0x02
     int nId; // 0x04
     int dwClass; // 0x08
     int dwAct; // 0x0C
@@ -194,7 +194,7 @@ struct D2HirelingTxt
     unsigned char nHireDesc; // 0xD2
     char szNameFirst[32]; // 0xD3
     char szNameLast[32]; // 0xF3
-    unsigned char unk0x113; // 0x113
+    unsigned char pad0x113; // 0x113
     unsigned short wNameFirst; // 0x114
     unsigned short wNameLast; // 0x116
 };
@@ -214,7 +214,7 @@ struct D2StatesTxt
     unsigned char nColorPri; // 0x20
     unsigned char nColorShift; // 0x21
     unsigned char nLightRGB[3]; // 0x22
-    unsigned char unk0x25; // 0x25
+    unsigned char pad0x25; // 0x25
     short wOnSound; // 0x26
     short wOffSound; // 0x28
     short wItemType; // 0x2A
@@ -247,7 +247,7 @@ struct D2PetTypeTxt
         {
             unsigned char nIconType; // 0x0E
             char szIcon[5][32]; // 0x0F
-            char unk0xAF; // 0xAF
+            char pad0xAF; // 0xAF
             unsigned short wClass[5]; // 0xB0
         };
     };

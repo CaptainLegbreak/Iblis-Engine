@@ -9,6 +9,9 @@
 #include "D2CelContext.h"
 
 #include "D2WinTypes.h"
+#include "FogApi.h"
+#include "D2LangApi.h"
+#include "D2CMPApi.h"
 
 #pragma function(memset)
 
@@ -24,12 +27,10 @@ struct SMSGHANDLER_PARAMS;
 
 struct Obj004FDA80;
 
-// build: symbol _strncpy 0x00687330
 struct Unicode
 {
     unsigned short wChar;
     static Unicode* __fastcall strcat(Unicode* pDest, const Unicode* pSource);                             // 0x00526700
-// build: symbol ?strncpy@Unicode@@SIPAU1@PAU1@PBU1@H@Z 0x00526790
     static Unicode* __fastcall strncpy(Unicode* pDest, const Unicode* pSource, int nCount);                // 0x00526790
     static Unicode* __fastcall win2Unicode(Unicode* pDest, const char* szSource, int nCount);              // 0x00526F20
 };
@@ -42,11 +43,10 @@ typedef void (__stdcall* D2WinEditBoxEnterFn)(Unicode* pText);
 
 typedef int (__stdcall* D2WinMsgHandler)(SMSGHANDLER_PARAMS* pMsg);
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
 
@@ -54,7 +54,6 @@ Unicode* __fastcall sub_00526790(Unicode* pDest, const Unicode* pSource, int nCo
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource); // 0x00526700
 
-void __fastcall EDITBOX_ClearSelection(D2WinEditBoxStrc* pEditBox); // 0x004FDCC0
 
 struct UnicodeChar : Unicode
 {
@@ -69,13 +68,11 @@ int __fastcall D2Win_10122(const Unicode* wszText, int nTextLength); // 0x005017
 
 int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
 
-int __stdcall D2Win_10125(); // 0x00501A40
 
 int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
 
-char* __fastcall sub_00526F70(char* szDest, const Unicode* pSource, int nCount); // 0x00526F70
 
 struct Obj004FDA80
 {
@@ -86,7 +83,7 @@ extern "C" unsigned int __cdecl strlen(const char* szString);
 
 extern "C" char* __cdecl strcpy(char* szDest, const char* szSource);
 
-extern "C" int __fastcall sub_004FDA80(Obj004FDA80* pObj); // 0x004FDA80
+extern "C" int __fastcall sub_004FDA80_IsColorCodePrefix(Obj004FDA80* pObj); // 0x004FDA80
 
 extern "C" unsigned short* __fastcall sub_005267E0_2(unsigned short* pDst, const unsigned short* pSrc); // 0x005267E0
 
@@ -104,23 +101,18 @@ static void EDITBOX_DeleteSelection(D2WinEditBoxStrc* pEditBox); // 0x004FE9F0
 
 struct D2WinControlStrc;
 
-extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
 #define D2WIN_MAX(a, b) (((a) > (b)) ? (a) : (b))
 
 #define D2WIN_MIN(a, b) (((a) < (b)) ? (a) : (b))
 
-extern "C" __declspec(dllimport) short __stdcall GetKeyState(int nVirtKey);                                 // 0x006CC45C
 
 extern "C" void* __cdecl memmove(void* pDst, const void* pSrc, unsigned int nSize);                         // 0x00683840
 
 extern unsigned int gdwBitMasks[];                                                                          // 0x006CE268
 
-extern int gnWinCallbackDepth_007D55C4;                                                                     // 0x007D55C4
 
-int __stdcall EDITBOX_PlaceMultiLineCaret(SMSGHANDLER_PARAMS* pMsg, int nX, int nY);                          // 0x004FE3B0
 
 static int EDITBOX_HasSelection(D2WinEditBoxStrc* pEditBox); // 0x004FDC70
 
@@ -144,7 +136,7 @@ void __cdecl EDITBOX_UpdateVisibleChars(); // 0x004FE7C0
 
 #define EDITBOX_MAX(a, b) ((a) > (b) ? (a) : (b))
 
-struct D2CelContextStrc;
+struct D2GfxDataStrc;
 
 void __fastcall D2Win_10131_GetTextDimensions(const Unicode* pText, int* pWidth, int* pHeight); // 0x00502520
 
@@ -154,7 +146,7 @@ void __stdcall D2GFX_DrawBox(int nXStart, int nYStart, int nXEnd, int nYEnd, uns
 
 int __stdcall EDITBOX_HandleSingleLineMouseDown(SMSGHANDLER_PARAMS* pMsg); // 0x004FFBF0
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 void __fastcall D2Win_10133(const Unicode* wszText, int nX, int nY, int nColor, int nDrawMode, int nTextColor); // 0x00502480
 
@@ -178,9 +170,7 @@ int __fastcall EDITBOX_DrawMultiLine(D2WinEditBoxStrc* pEditBox);               
 
 int __fastcall EDITBOX_DrawSingleLine(D2WinEditBoxStrc* pEditBox);                                        // 0x004FFE50
 
-D2CelStrc* __stdcall CelGetHandle(D2CelContextStrc* pContext);                                        // 0x00601840
-
-int __stdcall CelGetHeight(D2CelStrc* pCel);                                                                // 0x006018F0
+D2CelStrc* __stdcall CelGetHandle(D2GfxDataStrc* pContext);                                        // 0x00601840
 
 int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl);                                           // 0x004F9310
 
@@ -239,6 +229,7 @@ static int EDITBOX_HasSelection(D2WinEditBoxStrc* pEditBox)
     return 0;
 }
 
+// Kept noinline: a static that takes its arguments in registers; EDITBOX_HandleKeyDown (0x4FF050), EDITBOX_PlaceMultiLineCaret (0x4FE3B0), EDITBOX_DeleteSelection (0x4FE9F0) and others call it out of line in the image (the #368 case).
 // 0x004FDCC0
 __declspec(noinline) void __fastcall EDITBOX_ClearSelection(D2WinEditBoxStrc* ptEditData)
 {
@@ -248,8 +239,6 @@ __declspec(noinline) void __fastcall EDITBOX_ClearSelection(D2WinEditBoxStrc* pt
     ptEditData->nSelectionEnd = 0;
 }
 
-// build: symbol ??0UnicodeChar@@QAE@XZ 0x0042F530
-// build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 // 0x004FDE30
 static int __stdcall EDITBOX_GetTextHeight(const Unicode* wszText, D2WinEditBoxStrc* ptEditData)
 {
@@ -269,7 +258,7 @@ static int __stdcall EDITBOX_GetTextHeight(const Unicode* wszText, D2WinEditBoxS
         wszLine[i].wChar = 0;
     }
     char szText[256];
-    sub_00526F70(szText, wszText, 256);
+    UNICODE_ToAscii(szText, wszText, 256);
     const char* pLine = szText;
     const char* pChar = szText;
     int nY = nStartY;
@@ -354,7 +343,7 @@ static void __stdcall EDITBOX_GetCaretPosition(int* pX, int* pY, D2WinEditBoxStr
         wszLine[i].wChar = 0;
     }
     char szText[256];
-    sub_00526F70(szText, (Unicode*)ptEditData->wszText, 256);
+    UNICODE_ToAscii(szText, (Unicode*)ptEditData->wszText, 256);
     const char* pLine = szText;
     const char* pChar = szText;
     int nY = nStartY;
@@ -447,21 +436,7 @@ static void __stdcall EDITBOX_GetCaretPosition(int* pX, int* pY, D2WinEditBoxStr
     }
 }
 
-int sub_A23_Emit_004FDC70(D2WinEditBoxStrc* pEditBox, unsigned char nKey)
-{
-    if (nKey != 0x18 && nKey != 1)
-        return 0;
-    return EDITBOX_HasSelection(pEditBox);
-}
-
-int __fastcall sub_A23_Emit_004FE9F0(D2WinEditBoxStrc* pEditBox, int nKey)
-{
-    if (nKey != 0x18 && nKey != 1)
-        EDITBOX_DeleteSelection(pEditBox);
-    return sub_00526800((Unicode*)pEditBox->wszText) + pEditBox->nCaretPosition;
-}
-
-tagPOINT gtMousePosition; // 0x007D55A4
+extern tagPOINT gtMousePosition; // 0x007D55A4
 
 struct Point { int x, y; };
 
@@ -623,7 +598,7 @@ int __fastcall EDITBOX_HandleKeyDown(D2WinEditBoxStrc* ptEditData, char nKey)
         if (pChar > (Unicode*)ptEditData->wszText && !bDeleted)
         {
             --pChar;
-            const int nLength = sub_00526800(pChar + 1) + 1;
+            const int nLength = UNICODE_StrLen(pChar + 1) + 1;
             memmove(pChar, pChar + 1, 2 * nLength);
             if (pChar > (Unicode*)ptEditData->wszText && pChar[-1].wChar == '\r')
             {
@@ -636,7 +611,7 @@ int __fastcall EDITBOX_HandleKeyDown(D2WinEditBoxStrc* ptEditData, char nKey)
     case 46:
         if (pChar->wChar && !bDeleted)
         {
-            const int nLength = sub_00526800(pChar + 1) + 1;
+            const int nLength = UNICODE_StrLen(pChar + 1) + 1;
             memmove(pChar, pChar + 1, 2 * nLength);
             if (pChar->wChar && pChar->wChar == '\n')
             {
@@ -649,9 +624,9 @@ int __fastcall EDITBOX_HandleKeyDown(D2WinEditBoxStrc* ptEditData, char nKey)
         if (ptEditData->pfOnEnter)
         {
             const unsigned int bKeepFocus = ptEditData->dwEditBoxFlags & 2;
-            ++gnWinCallbackDepth_007D55C4;
+            ++gnWinCallbackDepth;
             ((D2WinEditBoxEnterFn)ptEditData->pfOnEnter)((Unicode*)ptEditData->wszText);
-            --gnWinCallbackDepth_007D55C4;
+            --gnWinCallbackDepth;
             if (bKeepFocus)
             {
                 pChar = (Unicode*)&ptEditData->wszText[ptEditData->nCaretPosition];
@@ -665,9 +640,9 @@ int __fastcall EDITBOX_HandleKeyDown(D2WinEditBoxStrc* ptEditData, char nKey)
     case 27:
         if (ptEditData->pfOnEnter)
         {
-            ++gnWinCallbackDepth_007D55C4;
+            ++gnWinCallbackDepth;
             ((D2WinEditBoxEnterFn)ptEditData->pfOnEnter)(0);
-            --gnWinCallbackDepth_007D55C4;
+            --gnWinCallbackDepth;
         }
     done:
         return 1;
@@ -765,7 +740,7 @@ int __stdcall EDITBOX_PlaceMultiLineCaret(SMSGHANDLER_PARAMS* pMsg, int nX, int 
         sub_00526F20_ToUnicode(wszDash, szDash, 2);
         const int nDashWidth = D2Win_10121_GetTextWidth(wszDash);
         char szText[256];
-        sub_00526F70(szText, (Unicode*)ptEditData->wszText, 256);
+        UNICODE_ToAscii(szText, (Unicode*)ptEditData->wszText, 256);
         const char* pLine = szText;
         const char* pChar = szText;
         int nLineY = 0;
@@ -837,7 +812,7 @@ int __stdcall EDITBOX_PlaceMultiLineCaret(SMSGHANDLER_PARAMS* pMsg, int nX, int 
         if (!bFound)
         {
             nOldCaret = ptEditData->nCaretPosition;
-            ptEditData->nCaretPosition = sub_00526800((Unicode*)ptEditData->wszText);
+            ptEditData->nCaretPosition = UNICODE_StrLen((Unicode*)ptEditData->wszText);
         }
 
         if ((((unsigned int)GetKeyState(0x10) & 0x8000) || ptEditData->bMouseSelecting) && nOldCaret != -1)
@@ -878,7 +853,7 @@ static void EDITBOX_UpdateVisibleChars(D2WinEditBoxStrc* pEditBox)
 {
     D2Win_10127_SetFont(pEditBox->eFont);
     int nAvail = pEditBox->controlHeader.nWidth - 2 * pEditBox->nTextInsetX;
-    const int nLength = sub_00526800((Unicode*)pEditBox->wszText);
+    const int nLength = UNICODE_StrLen((Unicode*)pEditBox->wszText);
     Unicode wszText[300];
     for (int i = 0; i < 300; ++i)
     {
@@ -1009,7 +984,7 @@ static void EDITBOX_DeleteSelection(D2WinEditBoxStrc* pEditBox)
     sub_005267E0(wszTail, (Unicode*)&pEditBox->wszText[nEnd]);
     sub_005267E0((Unicode*)pEditBox->wszText, wszHead);
     sub_00526700((Unicode*)pEditBox->wszText, wszTail);
-    const int nLength = sub_00526800((Unicode*)pEditBox->wszText);
+    const int nLength = UNICODE_StrLen((Unicode*)pEditBox->wszText);
     if (nStart <= nLength)
     {
         pEditBox->nCaretPosition = nStart;
@@ -1022,7 +997,7 @@ static void EDITBOX_DeleteSelection(D2WinEditBoxStrc* pEditBox)
 }
 
 // 0x005001D0
-D2WinEditBoxStrc* __fastcall D2Win_10070_EDITBOX_Create(int nX, int nY, int nWidth, int nHeight, int a5, int a6, D2CelFileStrc* pCellFile, int a8, D2WinMsgHandler a9, int nEditBoxFlags, D2WinFontAndColorStrc* pFontAndColor)
+D2WinEditBoxStrc* __fastcall D2Win_10070_EDITBOX_Create(int nX, int nY, int nWidth, int nHeight, int nTextInsetX, int nTextInsetY, D2CelFileStrc* pCellFile, int pfnOnEnter, D2WinMsgHandler pfnOnClick, int nEditBoxFlags, D2WinFontAndColorStrc* pFontAndColor)
 {
     D2WinEditBoxStrc* pEditBox = (D2WinEditBoxStrc*)FOG_Alloc(sizeof(D2WinEditBoxStrc), ".\\Src\\D2WinEditBox.cpp", 0x39, 0);
     memset(pEditBox, 0, sizeof(D2WinEditBoxStrc));
@@ -1033,21 +1008,21 @@ D2WinEditBoxStrc* __fastcall D2Win_10070_EDITBOX_Create(int nX, int nY, int nWid
     pEditBox->controlHeader.nImageX = nX;
     pEditBox->controlHeader.nWidth = nWidth;
     pEditBox->controlHeader.nHeight = nHeight;
-    pEditBox->nTextInsetX = a5;
-    pEditBox->nTextInsetY = a6;
+    pEditBox->nTextInsetX = nTextInsetX;
+    pEditBox->nTextInsetY = nTextInsetY;
     pEditBox->nMaxLength = 256;
     pEditBox->controlHeader.nImageY = nY;
     pEditBox->nFirstVisibleChar = 0;
     pEditBox->nLastVisibleChar = 0;
     pEditBox->nSelectionStart = -1;
     pEditBox->controlHeader.pfDraw = (D2WinControlFn)((nEditBoxFlags & 8) ? EDITBOX_DrawMultiLine : EDITBOX_DrawSingleLine);
-    pEditBox->controlHeader.pfHandleMouseDown = (nEditBoxFlags & 8) ? sub_004FE710_EditBoxMouseDownAlt : EDITBOX_HandleSingleLineMouseDown;
+    pEditBox->controlHeader.pfHandleMouseDown = (nEditBoxFlags & 8) ? EDITBOX_HandleMultiLineMouseDown : EDITBOX_HandleSingleLineMouseDown;
     pEditBox->controlHeader.pfHandleMouseUp = EDITBOX_HandleMouseUp;
     pEditBox->controlHeader.pfHandleCharInput = 0;
     pEditBox->controlHeader.pfHandleVirtualKeyInput = 0;
     pEditBox->pfFilter = 0;
-    pEditBox->controlHeader.field_34 = a9;
-    pEditBox->pfOnEnter = (void*)a8;
+    pEditBox->controlHeader.field_34 = pfnOnClick;
+    pEditBox->pfOnEnter = (void*)pfnOnEnter;
     pEditBox->controlHeader.pNext = 0;
     pEditBox->wszText[0] = 0;
     pEditBox->nCaretPosition = 0;
@@ -1092,7 +1067,6 @@ void __fastcall EDITBOX_SetChangeCallback(D2WinEditBoxStrc* ptEditData, void* pf
     ptEditData->pfOnChange = pfOnChange;
 }
 
-// build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 // 0x004FDB40
 const char* __cdecl EDITBOX_GetClipboardText()
 {
@@ -1182,7 +1156,7 @@ int __stdcall EDITBOX_HandleSingleLineMouseDown(SMSGHANDLER_PARAMS* pMsg)
                 }
                 else if (nX >= nRight)
                 {
-                    const int nLength = sub_00526800((Unicode*)ptEditData->wszText);
+                    const int nLength = UNICODE_StrLen((Unicode*)ptEditData->wszText);
                     ptEditData->nCaretPosition = D2WIN_MIN(ptEditData->nCaretPosition + 1, nLength - 1);
                     EDITBOX_UpdateVisibleChars();
                 }
@@ -1190,7 +1164,7 @@ int __stdcall EDITBOX_HandleSingleLineMouseDown(SMSGHANDLER_PARAMS* pMsg)
 
             while (nX > D2Win_10122((Unicode*)&ptEditData->wszText[ptEditData->nFirstVisibleChar], nChars))
             {
-                if (nChars > sub_00526800((Unicode*)&ptEditData->wszText[ptEditData->nFirstVisibleChar]))
+                if (nChars > UNICODE_StrLen((Unicode*)&ptEditData->wszText[ptEditData->nFirstVisibleChar]))
                 {
                     break;
                 }
@@ -1235,7 +1209,7 @@ int __fastcall D2Win_10082(D2WinEditBoxStrc* pEditBox)
     D2_ASSERT(pEditBox, 0x1B3);
     D2_ASSERT(pEditBox->controlHeader.eType == D2WIN_EDITBOX, 0x1B5);
     pEditBox->nSelectionStart = 0;
-    pEditBox->nSelectionEnd = sub_00526800((Unicode*)pEditBox->wszText);
+    pEditBox->nSelectionEnd = UNICODE_StrLen((Unicode*)pEditBox->wszText);
     return pEditBox->nSelectionEnd;
 }
 
@@ -1252,9 +1226,9 @@ int __fastcall D2Win_10074(D2WinEditBoxStrc* pEditBox, char nChar)
     {
         if (pEditBox->pfFilter)
         {
-            ++gnWinCallbackDepth_007D55C4;
+            ++gnWinCallbackDepth;
             ((D2WinEditBoxFilterFn)pEditBox->pfFilter)(pEditBox, pEditBox->nCaretPosition, &nChar);
-            --gnWinCallbackDepth_007D55C4;
+            --gnWinCallbackDepth;
         }
         return 0;
     }
@@ -1264,7 +1238,7 @@ int __fastcall D2Win_10074(D2WinEditBoxStrc* pEditBox, char nChar)
         if (!D2Win_10128(nChar))
         {
             const unsigned int dwEditBoxFlags = pEditBox->dwEditBoxFlags;
-            if (!((dwEditBoxFlags & 0x20) && sub_004FDA80((Obj004FDA80*)&wKey))
+            if (!((dwEditBoxFlags & 0x20) && sub_004FDA80_IsColorCodePrefix((Obj004FDA80*)&wKey))
                 && !((dwEditBoxFlags & 8) && nChar == '\r')
                 && !((dwEditBoxFlags & 0x10) && nChar == 0x0E)
                 && nChar != 0x16 && nChar != 3 && nChar != 0x18 && nChar != 1)
@@ -1359,7 +1333,7 @@ int __fastcall D2Win_10074(D2WinEditBoxStrc* pEditBox, char nChar)
             const int nStart = D2WIN_MIN(pEditBox->nSelectionStart, pEditBox->nSelectionEnd);
             const int nEnd = D2WIN_MAX(pEditBox->nSelectionStart, pEditBox->nSelectionEnd);
             char szCopy[256];
-            sub_00526F70(szCopy, &wszText[nStart], D2WIN_MAX(nEnd - nStart + 1, 2));
+            UNICODE_ToAscii(szCopy, &wszText[nStart], D2WIN_MAX(nEnd - nStart + 1, 2));
             EDITBOX_SetClipboardText(szCopy);
         }
         break;
@@ -1369,7 +1343,7 @@ int __fastcall D2Win_10074(D2WinEditBoxStrc* pEditBox, char nChar)
             const int nStart = D2WIN_MIN(pEditBox->nSelectionStart, pEditBox->nSelectionEnd);
             const int nEnd = D2WIN_MAX(pEditBox->nSelectionStart, pEditBox->nSelectionEnd);
             char szCut[256];
-            sub_00526F70(szCut, &wszText[nStart], D2WIN_MAX(nEnd - nStart + 1, 2));
+            UNICODE_ToAscii(szCut, &wszText[nStart], D2WIN_MAX(nEnd - nStart + 1, 2));
             pCaret = &wszText[nStart];
             EDITBOX_SetClipboardText(szCut);
             EDITBOX_DeleteSelection(pEditBox);
@@ -1390,7 +1364,7 @@ int __fastcall D2Win_10074(D2WinEditBoxStrc* pEditBox, char nChar)
             char szKey[256];
             if (nChar == '\r')
             {
-                sub_00526F70(&szKey[2], pCaret, 256);
+                UNICODE_ToAscii(&szKey[2], pCaret, 256);
                 szKey[0] = '\r';
                 szKey[1] = '\n';
                 Unicode::win2Unicode(pCaret, szKey, 256);
@@ -1398,7 +1372,7 @@ int __fastcall D2Win_10074(D2WinEditBoxStrc* pEditBox, char nChar)
             }
             else
             {
-                sub_00526F70(&szKey[1], pCaret, 256);
+                UNICODE_ToAscii(&szKey[1], pCaret, 256);
                 szKey[0] = nChar;
                 Unicode::win2Unicode(pCaret, szKey, 256);
                 ++pCaret;
@@ -1435,7 +1409,7 @@ int __fastcall EDITBOX_SetText(D2WinEditBoxStrc* pEditBox, const Unicode* pText)
 {
     D2_ASSERT(pEditBox, 0x45E);
     D2_ASSERT(pEditBox->controlHeader.eType == 1, 0x460);
-    const int nLength = sub_00526800(pText);
+    const int nLength = UNICODE_StrLen(pText);
     if (nLength)
     {
         sub_005267E0((Unicode*)pEditBox->wszText, pText);
@@ -1461,7 +1435,6 @@ int __fastcall EDITBOX_DrawMultiLine(D2WinEditBoxStrc* pEditBox)
 
     if (pEditBox->controlHeader.dwFlags & gdwBitMasks[2] && pEditBox->controlHeader.dwFlags & gdwBitMasks[0])
     {
-// build: symbol ?D2Win_IsMouseButtonPressed@* 0x004FA460
         if (!D2Win_IsMouseButtonPressed())
         {
             pEditBox->bMouseSelecting = 0;
@@ -1472,7 +1445,7 @@ int __fastcall EDITBOX_DrawMultiLine(D2WinEditBoxStrc* pEditBox)
             SMSGHANDLER_PARAMS tMsg;
             tMsg.hWnd = pEditBox;
             tMsg.uMessage = 0x201;
-            sub_004FE710_EditBoxMouseDownAlt(&tMsg);
+            EDITBOX_HandleMultiLineMouseDown(&tMsg);
         }
 
         UnicodeChar wszText[300];
@@ -1489,7 +1462,6 @@ int __fastcall EDITBOX_DrawMultiLine(D2WinEditBoxStrc* pEditBox)
         const int nCaretWidth = D2Win_10122(wszCaret, 2);
 
         int bBlink;
-// build: symbol ?CONTROL_GetFocusedEditBox@* 0x004F9200
         if (CONTROL_GetFocusedEditBox() == (int)pEditBox && GetTickCount() / 250 & 1)
             bBlink = 1;
         else
@@ -1498,7 +1470,7 @@ int __fastcall EDITBOX_DrawMultiLine(D2WinEditBoxStrc* pEditBox)
         int bCaretDrawn = 0;
         UnicodeChar wszLine[256];
         char szText[256];
-        sub_00526F70(szText, (Unicode*)pEditBox->wszText, 256);
+        UNICODE_ToAscii(szText, (Unicode*)pEditBox->wszText, 256);
         char* pLineStart = szText;
         char* pCur = szText;
         const int nLineHeight = D2Win_10125();
@@ -1648,9 +1620,9 @@ int __fastcall EDITBOX_DrawSingleLine(D2WinEditBoxStrc* pEditBox)
         UnicodeChar wszText[300];
         if (pEditBox->controlHeader.pCellFile)
         {
-            D2CelContextStrc tContext;
+            D2GfxDataStrc tContext;
             memset(&tContext, 0, sizeof(tContext));
-            tContext.pCellFile = pEditBox->controlHeader.pCellFile;
+            tContext.pCelFile = pEditBox->controlHeader.pCellFile;
             tContext.nDirection = 0;
             tContext.nFrame = 0;
             sub_004F6480(&tContext, pEditBox->controlHeader.nImageX, pEditBox->controlHeader.nImageY - 1, -1, 5, 0);
@@ -1660,7 +1632,7 @@ int __fastcall EDITBOX_DrawSingleLine(D2WinEditBoxStrc* pEditBox)
         int nX = pEditBox->nTextInsetX + pEditBox->controlHeader.nImageX;
         const int nY = pEditBox->nTextInsetY - pEditBox->controlHeader.nHeight + pEditBox->controlHeader.nImageY + 16;
         sub_00526790(wszText, (Unicode*)&pEditBox->wszText[pEditBox->nFirstVisibleChar], pEditBox->nLastVisibleChar - pEditBox->nFirstVisibleChar + 1);
-        const int nLength = sub_00526800(wszText);
+        const int nLength = UNICODE_StrLen(wszText);
         if (pEditBox->dwEditBoxFlags & 1)
         {
             char szStar[] = "*";

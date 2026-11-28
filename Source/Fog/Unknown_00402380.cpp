@@ -56,7 +56,11 @@ typedef int (__stdcall* SymFindFileInPathFn)(void* hProcess, const char* szSearc
 
 extern SymFindFileInPathFn gpfnSymFindFileInPath;                                                  // 0x0098A6EC
 
-int __stdcall sub_00402370(int nUnused1, int nUnused2);                                                     // 0x00402370
+// 0x00402370
+int __stdcall sub_00402370(int nUnused1, int nUnused2)
+{
+    return 0;
+}
 
 typedef unsigned __int64 (__stdcall* SymLoadModule64Fn)(void* hProcess, void* hFile, const char* szImageName,
     const char* szModuleName, unsigned __int64 qwBaseOfDll, unsigned long dwSizeOfDll);
@@ -105,9 +109,6 @@ void __cdecl sub_00401A60_UnlockSymbols()
 {
     LeaveCriticalSection(&gtSymbolLock);
 }
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
 
 
 static unsigned char __stdcall ERRORMANAGER_GetStackRange(void** ppBase, unsigned long* pEnd, const void* pAddress)
@@ -237,18 +238,6 @@ static void __fastcall sub_00402D60_FormatStackFrame(const D2StackFrameStrc* fra
 }
 
 
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
 
 // 0x00402380
 int __fastcall sub_00402380_FindFileInPath(FindFileInPathCallbackFn pfnCallback, int nUnused, const char* szSearchPath,
@@ -263,9 +252,6 @@ int __fastcall sub_00402380_FindFileInPath(FindFileInPathCallbackFn pfnCallback,
             szFoundFile, pfnCallback ? pfnCallback : sub_00402370, pContext);
     return 0;
 }
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
 
 static unsigned __int64 __stdcall sub_00402460_LoadModule(void* hFile, const char* szImageName,
     const char* szModuleName, unsigned __int64 qwBaseOfDll, unsigned long dwSizeOfDll);
@@ -282,7 +268,6 @@ static unsigned __int64 __stdcall sub_00402460_LoadModule(void* hFile, const cha
     return 0;
 }
 
-// build: context sub_00402460_Shim
 // calling-convention shim (not game code)
 unsigned long __stdcall sub_00402460_Shim(void* hFile, const char* szImageName, const char* szModuleName,
     unsigned __int64 qwBaseOfDll, unsigned long dwSizeOfDll)
@@ -291,15 +276,3 @@ unsigned long __stdcall sub_00402460_Shim(void* hFile, const char* szImageName, 
     strncpy_s(szName, 0x104, szModuleName, (unsigned int)-1);
     return (unsigned long)sub_00402460_LoadModule(hFile, szImageName, szName, qwBaseOfDll, dwSizeOfDll);
 }
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc

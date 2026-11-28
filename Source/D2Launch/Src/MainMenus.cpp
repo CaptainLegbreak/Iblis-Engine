@@ -1,4 +1,5 @@
 #include "D2Launch.h"
+#include "D2MultiCharSave.h"
 
 #include "D2Win32Types.h"
 
@@ -27,8 +28,16 @@
 #include "D2Win32System.h"
 #include "D2Win32Message.h"
 #include "D2CoordPair.h"
-
-void __cdecl ERRORMANAGER_LogPoolError(const char* szFormat, ...); // 0x00409020
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2LangApi.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "FogApi2.h"
+#include "StormApi2.h"
+#include "D2GfxApi.h"
+#include "D2SoundApi.h"
+#include "D2NetApi.h"
 
 int __stdcall MAINMENUS_AskEmailRegistration(int nArg); // 0x00436C90
 
@@ -78,7 +87,7 @@ typedef char* va_list;
 
 struct D2MenuCallbackArgStrc
 {
-    int nUnk0x00;
+    D2WinControlStrc* pControl;
     int nUnk0x04;
     int nUnk0x08;
     unsigned int nArg;
@@ -110,29 +119,6 @@ void __stdcall D2ServerServiceHandlerProc(unsigned long dwCtrlCode); // 0x004064
 
 void __fastcall LOGMANAGER_WriteLogV(const char* szPrefix, int nArg2, int nArg3, const char* szFormat, va_list args); // 0x00410340
 
-void __cdecl LOGMANAGER_LogWritePrefixedLine(const char* szPrefix, const char* szFormat, ...); // 0x00410660
-
-char* __fastcall Int64ToString(char* szBuffer, unsigned int nBufferSize, __int64 nValue); // 0x00411540
-
-int __stdcall SFileEnableDirectAccess(int nFlags); // 0x00415F70
-
-void __stdcall SFileEnableSeekOptimization(int nValue); // 0x00415F90
-
-int __stdcall SFileSetBasePath(const char* szPath); // 0x004164B0
-
-int __stdcall SFileSetIoErrorMode(int nValueA, int nValueB); // 0x004166B0
-
-int __stdcall StormGetOption(unsigned int nOption, const void* pInput, unsigned int nSize); // 0x0041BFC0
-
-void __cdecl LockErrorState(); // 0x0041C1A0
-
-void __cdecl UnlockErrorState(); // 0x0041C1E0
-
-int __stdcall SErrDisplayError(unsigned int nErrorCode, const char* szFile, int nLine, const char* szDescription, int bRecoverable, unsigned int nExitCode); // 0x0041CAF0
-
-void __stdcall SMemZero(void* pLocation, unsigned int nLength); // 0x0041D300
-
-int __stdcall SEvtPopState(unsigned long dwId, void* pContext); // 0x004269C0
 
 int __fastcall MAINMENUS_ShowOptionDescription(unsigned int nArg, int nMode, int nStringId1, int nStringId2); // 0x004307A0
 
@@ -148,13 +134,7 @@ extern D2ServiceStatusStrc gD2ServerServiceStatus; // 0x007065FC
 
 extern void* ghD2ServerServiceStatus; // 0x0074C714
 
-extern int gbRunningAsService; // 0x0074C720
-
-extern int gnStormDirectFlags_0074C82C; // 0x0074C82C
-
-extern void* gpStormOwnerB_007790C4; // 0x007790C4
-
-extern unsigned long gdwStormOwnerThread_007790C8; // 0x007790C8
+extern int gnLaunchDirectFlags; // 0x0074C82C
 
 int gnFlag_007798D0; // 0x007798D0
 
@@ -168,21 +148,18 @@ static D2LaunchSlotStrc** gppSlots; // 0x00779988
 
 extern int gnSlotCount; // 0x0077998C
 
-void __fastcall D2Win_10045(D2WinControlStrc* pControl, const char* szText); // 0x004FCF80
 
-extern D2WinControlStrc* gpList_0077995C; // 0x0077995C
+extern D2WinControlStrc* gpCreditsLeftList; // 0x0077995C
 
-extern D2WinControlStrc* gpList_00779960; // 0x00779960
+extern D2WinControlStrc* gpCreditsRightList; // 0x00779960
 
 extern int gdwGlobal_00779990; // 0x00779990
 
-extern D2WinControlStrc* gpList_00779964; // 0x00779964
+extern D2WinControlStrc* gpCreditsList; // 0x00779964
 
-void __cdecl MAINMENUS_Reset(); // 0x0042F480
 
 int __fastcall MAINMENUS_ReadPaletteFiles(const char* szFile1, const char* szFile2); // 0x0042F2E0
 
-D2WinControlStrc* __fastcall MAINMENUS_CreateControl(int nId); // 0x0042F430
 
 int __fastcall MAINMENUS_ShowCredits(int nUnused); // 0x00431050
 
@@ -210,11 +187,7 @@ int gnLastClickTick; // 0x007799A0
 
 void __cdecl MAINMENUS_DestroyControls(); // 0x0042F3F0
 
-int __cdecl CLIENT_GetConnectionStatus(); // 0x0052B050
 
-D2WinControlStrc* __fastcall MAINMENUS_CreateFromTemplate(int nTemplateId); // 0x0042F3A0
-
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
 int __stdcall CONTROL_SetFocusedEditBox(D2WinControlStrc* pEditBox); // 0x004F91C0
 
@@ -228,23 +201,18 @@ void __cdecl MAINMENUS_CreateArchivePopup(); // 0x00431970
 
 int gnLoaderFlag; // 0x007798E0
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
-extern D2WinControlStrc* gpEdit_007799CC; // 0x007799CC
 
-extern D2WinControlStrc* gpEdit_007799D0; // 0x007799D0
 
 extern D2WinControlStrc* gpControl_007799D4; // 0x007799D4
 
 D2ConfigStrc* gpLaunchRecord; // 0x007795D4
 
-void __cdecl D2SOUNDFAST_FadeOutWaves(); // 0x00515020
 
-void __cdecl sub_0043B080();
 
 void __cdecl MAINMENUS_CreateLoginScreen(); // 0x00432100
 
-void __cdecl CHARSEL_CreateBaseScreen(); // 0x0043C4F0
 
 int __fastcall D2Win_10051(D2WinControlStrc* pTextBox, const Unicode* wszText, int nColor, char bIsWrapped, int nIndent); // 0x004FC9B0
 
@@ -256,7 +224,6 @@ void __fastcall sub_0042E6A0(void (__cdecl* pfnCallback)()); // 0x0042E6A0
 
 void __cdecl CHARSEL_SetCancelled(); // 0x0043B810
 
-void __cdecl MAINMENUS_UpdateStatus(); // 0x00436AD0
 
 int __stdcall MAINMENUS_FilterLoginChar(D2WinControlStrc* pControl, int nUnused, const char* pChar); // 0x0042FE70
 
@@ -284,7 +251,7 @@ extern int gnStatusDots; // 0x007799B4
 
 unsigned long gdwStatusStart; // 0x007799B8
 
-extern D2WinControlStrc* gpButton_007799E4; // 0x007799E4
+extern D2WinControlStrc* gpButton; // 0x007799E4
 
 extern "C" __declspec(dllimport) unsigned long __stdcall WaitForSingleObject(void* hHandle, unsigned long dwMilliseconds); // 0x006CC230
 
@@ -302,7 +269,7 @@ void __cdecl MAINMENUS_UpdateNameOk(); // 0x00430620
 
 void __cdecl MAINMENUS_UpdateLoginOk(); // 0x004306C0
 
-int gdwGlobal_00779974; // 0x00779974
+int gfMenusDone; // 0x00779974
 
 void __fastcall MAINMENUS_ShowMessage(const Unicode* pText, D2LaunchDoneFn pfnDone, int nArg); // 0x00433380
 
@@ -310,7 +277,7 @@ extern "C" void _ReadWriteBarrier(void);
 
 void* __cdecl sub_00449AC0_GetHandle(); // 0x00449AC0
 
-int __cdecl sub_00432350_GetStatus(); // 0x00432350
+int __cdecl MAINMENUS_IsListedCode(); // 0x00432350
 
 extern "C" int __cdecl strcmp(const char* szA, const char* szB);
 
@@ -325,9 +292,7 @@ struct D2LaunchPayloadStrc
     D2LaunchThreadRecordStrc tRecord;
 };
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
 
-void __cdecl MAINMENUS_ShowConnectingPopup(); // 0x0042F6E0
 
 int __stdcall MAINMENUS_OnWait(int nArg); // 0x00432450
 
@@ -337,9 +302,7 @@ struct D2LaunchControlTemplateStrc;
 
 struct D2LaunchRecord3Strc;
 
-int __stdcall SRegLoadValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long* pValue); // 0x00414F10
 
-int __stdcall SRegSaveValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long nValue); // 0x004150E0
 
 void __fastcall BUTTON_SetText(D2WinControlStrc* pControl, int nMode, unsigned short* pText, int nArg); // 0x005009D0
 
@@ -363,15 +326,15 @@ int __stdcall CHATDLG_GetUserDataReply(int nUnused); // 0x0043F590
 
 void __fastcall CHATDLG_ShowTimedMessage(const Unicode* pText, D2LaunchCallback pfnDone); // 0x004401C0
 
+// The front end's control templates (333 entries), indexed by template id.
 extern D2LaunchControlTemplateStrc gatControlTemplates[]; // 0x00708D10
 
 extern int gnTextMode; // 0x00708D0C
 
 extern char gKey_0070CD54; // 0x0070CD54
 
-void __cdecl CHARSEL_InitCharSelectScreen(); // 0x0043B080
 
-extern void (__cdecl* gpfnGatewayDone)(); // 0x007795BC
+void (__cdecl* gpfnGatewayDone)(); // 0x007795BC
 
 int __cdecl GAME_IsMcpCharCreateReceived(); // 0x00449C10
 
@@ -403,17 +366,13 @@ int __stdcall CONTROL_GetType(D2WinControlStrc* pControl);                      
 
 int __fastcall D2Win_10054(D2WinTextBoxStrc* pTextBox);                                                     // 0x004FB950
 
-void __cdecl MAINMENUS_CreateMultiplayerScreen();                                                                                // 0x004301A0
 
-unsigned int __stdcall SStrHashHT(const char* szPath);                                           // 0x00414150
 
 int __fastcall sub_00526590_Compare(const Unicode* pString1, const Unicode* pString2);                      // 0x00526590
 
 int __fastcall CHARSEL_Connect(D2ConfigStrc* pRecord, int bFlag, int nMode);                    // 0x0043C180
 
-int __cdecl MAINMENUS_HasSaveFiles();                                                                    // 0x00430BC0
 
-void __cdecl MAINMENUS_ReturnToCharSelect();                                                                                // 0x0042FDD0
 
 void __cdecl MAINMENUS_ShowLoginScreen();                                                                // 0x00435330
 
@@ -423,63 +382,29 @@ char gszOldPassword[24];                                                        
 
 int gbConnectCancelled; // 0x007795F4
 
-typedef unsigned short U16;
-
-struct U16Cell
-{
-    U16 value;
-
-};
-
-typedef char U16_is_two[(sizeof(U16)==2)?1:-1];
-
-typedef char Cell_size[(sizeof(U16Cell)==2)?1:-1];
-
-typedef char Cell_value_zero[((unsigned int)&((U16Cell*)0)->value==0)?1:-1];
-
 struct UiControl;
 
 extern "C" int __cdecl sub_00525150_Language();
 
 extern "C" void __fastcall sub_004F9740_ControlFlag(UiControl* control,int value);
 
-extern "C" int __fastcall sub_00526800_UnicodeLength(const U16* text);
-
 extern "C" UiControl* gControl;
 
-extern "C" const U16Cell gUpperTable[];
 
-extern "C" int gLayout_00709C48; // 0x00709C48
 
-extern "C" int gLayout_007091F8; // 0x007091F8
 
-extern "C" int gLayout_00709228; // 0x00709228
 
-extern "C" int gLayout_00709258; // 0x00709258
 
-extern "C" int gLayout_007092E8; // 0x007092E8
 
-extern "C" int gLayout_00709318; // 0x00709318
 
-extern "C" int gLayout_00709EE8; // 0x00709EE8
 
-extern "C" int gLayout_0070B2C8; // 0x0070B2C8
 
-extern "C" int gLayout_0070B2F8; // 0x0070B2F8
 
-extern "C" int gLayout_0070B088; // 0x0070B088
 
-extern "C" int gLayout_0070B4A8; // 0x0070B4A8
 
-extern "C" int gLayout_0070B0E8; // 0x0070B0E8
 
-extern "C" int gLayout_0070B148; // 0x0070B148
 
-extern "C" int gLayout_0070B1A8; // 0x0070B1A8
 
-extern "C" int gLayout_0070BDA8; // 0x0070BDA8
-
-extern "C" int gLayout_0070BF58; // 0x0070BF58
 
 D2WinControlStrc* gpControl_00779968; // 0x00779968
 
@@ -519,7 +444,6 @@ struct D2WinAnimImageStrc;
 
 int __stdcall ANIMIMAGE_SetIsRunning(D2WinAnimImageStrc* pAnimImage, int bIsRunning); // 0x00500810
 
-int __stdcall D2Win_10033(D2WinControlStrc* pControl, int nArg);                                            // 0x004FA470
 
 void __cdecl MAINMENUS_ShowLocalAddress();                                                               // 0x0042FF20
 
@@ -529,15 +453,11 @@ extern "C" char* __cdecl strcpy(char* szDest, const char* szSource);
 
 #pragma intrinsic(strcpy)
 
-extern D2ComInterfaceStrc* gpFuncTable_0077ABF0;                                                      // 0x0077ABF0
 
 int gnLaunchMode;                                                                                  // 0x007795EC
 
-const char* __fastcall FOG_GetHostIPAddress(); // 0x0040DF60
 
-void __cdecl MAINMENUS_ShowMainMenu();                                                                                // 0x004336C0
 
-void __cdecl MAINMENUS_CreateCharCreateScreen();                                                                                // 0x00435580
 
 int gnControlCountA; // 0x00779948
 
@@ -677,7 +597,7 @@ D2CelFileStrc* gpDownloadPatchBckgCelFile;                                      
 
 D2CelFileStrc* gpDownloadPatchBall2CelFile;                                                                        // 0x007797DC
 
-extern D2CelFileStrc* gpCellFile_00779700; // 0x00779700
+extern D2CelFileStrc* gpCellFile; // 0x00779700
 
 extern D2CelFileStrc* gpFireCelFile; // 0x00779728
 
@@ -697,13 +617,11 @@ extern D2CelFileStrc* gpCharacterCreateCelFile; // 0x00779724
 
 extern int gnGatewayValue_007795BC; // 0x007795BC
 
-void* __fastcall FOG_CreateFileA(const char* szFileName, unsigned long dwDesiredAccess, unsigned long dwShareMode, void* pSecurityAttributes, unsigned long dwCreationDisposition, unsigned long dwFlagsAndAttributes, void* hTemplateFile); // 0x00406960
 
-int __fastcall FOG_CloseFile(void* hFile);                                                         // 0x004069A0
 
 void __cdecl MAINMENUS_FlushInput();                                                                     // 0x004317D0
 
-void __cdecl sub_00430520();                                                                                // 0x00430520
+void __cdecl sub_00430520_CreateControls();                                                                                // 0x00430520
 
 void __stdcall MAINMENUS_CreateLevelScreen(int nLevel);                                                                    // 0x004313D0
 
@@ -711,13 +629,10 @@ void __cdecl MAINMENUS_ShowCurrentGateway();                                    
 
 void __cdecl MAINMENUS_CreateCharacter();                                                                                // 0x004365B0
 
-void __cdecl CHARSEL_DisconnectBattleNet();                                                                                // 0x0043B9A0
 
-void __fastcall sub_0043C6A0(int bSet);                                                                     // 0x0043C6A0
 
-void __stdcall STRTABLE_GetLanguageInfoField(void* pOut, int nField);                                                 // 0x00525260
 
-D2WinControlStrc* gpOkButton_00779330; // 0x00779330
+D2WinControlStrc* gpOkButton; // 0x00779330
 
 D2WinControlStrc* gpControl_007795AC; // 0x007795AC
 
@@ -813,17 +728,12 @@ struct D2LaunchSlotStrc;
 
 struct D2MenuListStrc;
 
-int __cdecl STRTABLE_GetLanguage(); // 0x00525150
 
-int __cdecl D2Win_10003(); // 0x004F9050
 
-void __stdcall D2Win_10004(int nResolution); // 0x004F9060
 
 void __cdecl MAINMENUS_CreateVideoScreen(); // 0x0042FB20
 
-void __cdecl ARCHIVE_UnloadExpansionArchives(); // 0x004FAD70
 
-int __fastcall ARCHIVE_LoadExpansionArchives(int (__cdecl* pfnPlayDisc)(), int (__cdecl* pfnExpansionDisc)(), int nUnused, D2ConfigStrc* pCfg); // 0x004FAEC0
 
 int __cdecl MAINMENUS_ShowArchiveMessage(); // 0x00431A00
 
@@ -835,19 +745,7 @@ extern D2ConfigStrc* gpConfig_007795D4; // 0x007795D4
 
 extern "C" const char gszMainMenusFile[]; // 0x006D41C0
 
-extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-int __fastcall FOG_FOpenFile(const char* szFileName, void** phFile); // 0x004068E0
-
-int __fastcall FOG_FCloseFile(void* pArg); // 0x004068F0
-
-int __fastcall FOG_FReadFile(void* hFile, void* pBuffer, int nToRead, int* pnRead, void* pOverlapped, int nArg7, int nArg6); // 0x00406900
-
-int __fastcall FOG_FGetFileSize(void* hFile, unsigned int* pnSizeHigh); // 0x00406930
-
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
-
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 void __fastcall CHARSEL_SwapUnicodeBytes(Unicode* pText, int nLength); // 0x0042E5D0
 
@@ -1109,7 +1007,6 @@ extern "C" unsigned int __cdecl strlen(const char* szText);
 
 extern "C" void __cdecl qsort(void* pBase, unsigned int nCount, unsigned int nSize, int (__cdecl* pfnCompare)(const void*, const void*)); // 0x00685B50
 
-int __stdcall MAINMENUS_StopLoop(int nArg); // 0x00431D10
 
 int __cdecl MAINMENUS_CompareNames(const void* pEntry1, const void* pEntry2); // 0x00430B00
 
@@ -1117,19 +1014,15 @@ extern D2MenuListStrc* gpMenuList; // 0x007795C0
 
 int __stdcall MAINMENUS_PollCharLogon(int nArg); // 0x00432FE0
 
-int __cdecl sub_0043BF60(); // 0x0043BF60
+int __cdecl sub_0043BF60_ConnectToBattleNet(); // 0x0043BF60
 
-int __cdecl MCPCONNECT_QueryAddress(); // 0x00449B30
 
-int __cdecl GAME_GetConnectError(); // 0x00449C00
 
 int __stdcall CHATDLG_RequestCharLogon(const char* szName); // 0x00449E10
 
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...); // 0x005269D0
 
 extern char gaGlobal_007089C4[]; // 0x007089C4
 
-extern void* gpGlobal_0070B738; // 0x0070B738
 
 int gnLaunchState; // 0x007795E8
 
@@ -1143,17 +1036,12 @@ int __stdcall MAINMENUS_OnLoginChanged(int nArg); // 0x00433BE0
 
 int __cdecl CHARSEL_IsBattleNetConnected(); // 0x0043B840
 
-void __fastcall sub_004FC9B0_SetText(D2WinControlStrc* pControl, const Unicode* pText, int nA, int nB, int nC); // 0x004FC9B0
 
 void __fastcall D2Win_10044(D2WinControlStrc* pControl, const Unicode* pText); // 0x004FD060
 
-void __fastcall sub_004FDAD0_SetKeyCallback(D2WinControlStrc* pControl, int (__stdcall* pfnCallback)(D2WinControlStrc*, int, const char*)); // 0x004FDAD0
 
-void __fastcall sub_004FDB00_SetEnterCallback(D2WinControlStrc* pControl, int (__stdcall* pfnCallback)(int)); // 0x004FDB00
 
-void __fastcall sub_004FDD50_SetMaxLength(D2WinControlStrc* pControl, int nLength); // 0x004FDD50
 
-void __fastcall sub_004FDDD0_LinkTab(D2WinControlStrc* pControl, D2WinControlStrc* pNext); // 0x004FDDD0
 
 int __fastcall D2Win_10076(D2WinControlStrc* pControl, const char* szText); // 0x004FFE10
 
@@ -1165,33 +1053,31 @@ void __cdecl MAINMENUS_LoadCharCreateCells(); // 0x004326F0
 
 int __stdcall MAINMENUS_OnNameChanged(int nArg); // 0x00433BD0
 
-void __fastcall CONTROL_SetEnabled(D2WinControlStrc* pControl, int nFlags); // 0x004F96F0
 
-void __stdcall CONTROL_SetEscapeButton(void* a1); // 0x004FA450
+void __stdcall CONTROL_SetEscapeButton(void* pButton); // 0x004FA450
 
 void __fastcall sub_004FB740(D2WinControlStrc* pList, int nA, int nB); // 0x004FB740
 
-extern "C" const char gszFecharPalDat_006D39E8[]; // 0x006D39E8
+extern "C" const char gszFeCharPalDat[]; // 0x006D39E8
 
-extern int gnGlobal_00708D0C; // 0x00708D0C
+extern int gnTextMode; // 0x00708D0C
 
-extern int gnGlobal_0070CB80; // 0x0070CB80
 
 extern D2WinControlStrc* gpOkButton; // 0x00779330
 
-extern D2WinControlStrc* gpControl_00779348; // 0x00779348
+D2WinControlStrc* gpControl_00779348; // 0x00779348
 
-extern D2WinControlStrc* gpControl_00779568; // 0x00779568
+D2WinControlStrc* gpControl_00779568; // 0x00779568
 
-extern D2WinControlStrc* gpControl_00779598; // 0x00779598
+D2WinControlStrc* gpControl_00779598; // 0x00779598
 
-extern D2WinControlStrc* gpControl_007795B4; // 0x007795B4
+D2WinControlStrc* gpControl_007795B4; // 0x007795B4
 
-extern D2WinControlStrc* gpControl_007795C8; // 0x007795C8
+D2WinControlStrc* gpControl_007795C8; // 0x007795C8
 
-extern D2WinControlStrc* gpControl_007795D8; // 0x007795D8
+extern D2WinControlStrc* gpTextControl1; // 0x007795D8
 
-extern D2WinControlStrc* gpControl_007795DC; // 0x007795DC
+extern D2WinControlStrc* gpTextControl2; // 0x007795DC
 
 const Unicode* __fastcall D2Win_10077_EDITBOX_GetText(D2WinControlStrc*); // 0x004FDD90
 
@@ -1207,19 +1093,13 @@ D2WinControlStrc* gpControl_0077933C; // 0x0077933C
 
 D2WinControlStrc* gpNameEdit; // 0x0077934C
 
-D2WinControlStrc* gapClassImages; // 0x0077956C
+D2WinControlStrc* gapClassImages[7]; // 0x0077956C
 
-D2WinControlStrc* gpControl_00779570; // 0x00779570
 
-D2WinControlStrc* gpControl_00779574; // 0x00779574
 
-D2WinControlStrc* gpControl_00779578; // 0x00779578
 
-D2WinControlStrc* gpControl_0077957C; // 0x0077957C
 
-D2WinControlStrc* gpControl_00779580; // 0x00779580
 
-D2WinControlStrc* gpControl_00779584; // 0x00779584
 
 D2WinControlStrc* gpControl_007795B0; // 0x007795B0
 
@@ -1233,39 +1113,27 @@ int gnGlobal_00779DA4; // 0x00779DA4
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
-extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
-extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-extern "C" __declspec(dllimport) int __stdcall GetDiskFreeSpaceA(const char* szRootPathName, unsigned long* pnSectorsPerCluster, unsigned long* pnBytesPerSector, unsigned long* pnFreeClusters, unsigned long* pnTotalClusters); // 0x006CC270
 
-int __fastcall FOG_GetSavePath(char* szPath, int nSize); // 0x00407050
 
-int __stdcall SRegSaveString(const char* szKeyName, const char* szValueName, unsigned int nFlags, const char* szString); // 0x00415070
 
 int __cdecl MAINMENUS_ShowTerms(); // 0x00433810
 
 int __stdcall CONTROL_Destroy(D2WinControlStrc** ppControl); // 0x004F95C0
 
-const Unicode* __fastcall sub_004FDD90_GetEditText(D2WinControlStrc* pControl); // 0x004FDD90
 
 Unicode* __fastcall sub_00526790(Unicode* pDest, const Unicode* pSource, int nCount); // 0x00526790
 
-char* __fastcall sub_00526F70(char* szDest, const Unicode* pSource, int nCount); // 0x00526F70
 
-char* __fastcall sub_005263E0(char* szDest, const Unicode* pSource, int nMaxLength); // 0x005263E0
 
 int __fastcall sub_005264F0_Compare(const Unicode* pString1, const Unicode* pString2); // 0x005264F0
 
 void __fastcall MAINMENUS_ShowMessageBox(const Unicode* pTitle, const Unicode* pMessage, int nButton1StringId, int nButton2StringId, D2LaunchCallback pfnButton1, D2LaunchCallback pfnButton2, int bFlag1, int bFlag2); // 0x0042F540
 
-extern "C" const unsigned char gabDefault[]; // 0x006D4D88
 
-extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
 int __stdcall MAINMENUS_PollCharCreate(int nArg); // 0x00432FA0
 
@@ -1273,11 +1141,9 @@ char* __cdecl GAME_GetPreferredRealm(); // 0x00437D00
 
 int __stdcall CHATDLG_RequestCharCreate(const char* szName, int nClass, int nFlags); // 0x00449DF0
 
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource); // 0x00526700
 
-Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
 
 void __cdecl MAINMENUS_LoadFrontEndCells(); // 0x0042E6D0
 
@@ -1295,7 +1161,6 @@ int __stdcall MAINMENUS_OnCharCreateOk(int nUnused); // 0x004369F0
 
 class BNGatewayAccess;
 
-int __fastcall sub_004FB950_GetFirstVisible(D2WinControlStrc* pControl); // 0x004FB950
 
 void __cdecl MAINMENUS_PlayIntroVideo(); // 0x00433640
 
@@ -1318,15 +1183,10 @@ int __fastcall D2Win_10055(D2WinControlStrc* pTextBox); // 0x004FBAB0
 
 void __fastcall sub_004FB9D0_Select(D2WinControlStrc* pControl, int nLine); // 0x004FB9D0
 
-int __stdcall SFileOpenArchive(const char* szMpqName, int nPriority, unsigned int dwFlags, void** phMpq); // 0x0041BA60
 
-int __stdcall SFileCloseArchive(void* hMpq); // 0x00419A80
-
-void __fastcall AUTOMAP_InitCharSaveHeader(char* szName, char nClass, char* pData, int nFlags); // 0x0043C540
 
 int __fastcall CHATDLG_WriteSaveHeader(const char* szName); // 0x0043C6B0
 
-void __cdecl MAINMENUS_CreateRealmCharacter(); // 0x00435E10
 
 void __cdecl MAINMENUS_SetDone(); // 0x0042F6C0
 
@@ -1338,7 +1198,7 @@ int gnValue_0077994C; // 0x0077994C
 
 int gnValue_00779950; // 0x00779950
 
-int gbGatewayFlag; // 0x00779954
+extern int gbGatewayFlag; // 0x00779954
 
 int __cdecl MAINMENUS_FreeSlots();
 
@@ -1346,7 +1206,7 @@ D2WinControlStrc* gpGatewayList; // 0x00779590
 
 static void MAINMENUS_StoreAccountTexts(D2WinControlStrc* pAccountEdit, D2WinControlStrc* pPasswordEdit);
 
-int gdwGlobal_007799D8; // 0x007799D8
+int gfConnectCancelled; // 0x007799D8
 
 int __stdcall MAINMENUS_ChangePasswordOk(int nArg);
 
@@ -1370,27 +1230,16 @@ void __cdecl MAINMENUS_PlayIntroVideos();                                       
 
 int __fastcall CHARSEL_InitFuncTable(D2ConfigStrc* pRecord);                                     // 0x0043B7A0
 
-int __stdcall WINDOW_CenterWindow(int nResolution);                                                   // 0x004F5BC0
-
 int __fastcall D2Win_10015();                                                                               // 0x004F8FE0
 
 int __stdcall CURSOR_SetCellFile(D2CelFileStrc* pCellFile);                                                 // 0x004F9160
 
-void __stdcall D2Win_SetQuitCallback(int (__cdecl* a1)());                                                            // 0x004F9180
+void __stdcall D2Win_SetQuitCallback(int (__cdecl* pfnQuitCallback)());                                                            // 0x004F9180
 
 int __stdcall D2Win_RunMessageLoop(void (__stdcall* pCallback)(unsigned long));                                      // 0x004FA590
 
 void* __stdcall sub_004FAC80(int nArg);                                                                     // 0x004FAC80
 
-void __cdecl D2SOUNDFAST_InitWaveSlots();                                                                                // 0x00514DB0
-
-void __fastcall D2SOUNDFAST_PreloadWave(const char* szFile);                                                           // 0x00514E10
-
-int __cdecl D2SOUNDFAST_IsAnyWavePlaying();                                                                // 0x00514FB0
-
-void __cdecl D2SOUNDFAST_FreeWaveSlots();                                                                                // 0x00515070
-
-void __stdcall D2Win_10029(int a1); // 0x004FA410
 
 void __cdecl sub_0042F880_DestroyControls(); // 0x0042F880
 
@@ -1402,9 +1251,30 @@ extern D2WinControlStrc* gpControl_007795A0; // 0x007795A0
 
 extern D2WinControlStrc* gpControl_007795A4; // 0x007795A4
 
-void __cdecl sub_0042F800(); // 0x0042F800
+void __cdecl sub_0042F800_CreateControls(); // 0x0042F800
 
-void __cdecl sub_0042FA20(); // 0x0042FA20
+void __cdecl sub_0042FA20_ClearStopMainLoop(); // 0x0042FA20
+
+int __fastcall WINMAIN_DecodeCdKey(const char* szCdKey, unsigned int* pProduct, unsigned int* pValue); // 0x00449920
+extern D2WinControlStrc* gpControl_007795AC; // 0x007795AC
+extern int gbFeCharPalette; // 0x007795F0
+extern const char gszTextExt[]; // 0x006D48E0
+extern const char gszTosPrefix[]; // 0x006D48E8
+int __fastcall D2Win_10121_GetTextWidth(const Unicode*); // 0x00501820
+extern D2WinControlStrc* gpControl_0077933C; // 0x0077933C
+extern D2WinControlStrc* gpControl_007795B0; // 0x007795B0
+extern D2WinControlStrc* gpControl_007795B8; // 0x007795B8
+extern D2WinControlStrc* gpControl_007795C4; // 0x007795C4
+extern D2WinControlStrc* gpControl_007795CC; // 0x007795CC
+extern "C" int __fastcall D2Win_10106(D2WinControlStrc*); // 0x00500310
+int __fastcall D2Win_10104(D2WinControlStrc*); // 0x00500340
+extern "C" void __fastcall BUTTON_SetIsPressed(D2WinControlStrc*, int); // 0x005009A0
+const char* __stdcall Name(D2FuncRecordStrc* pRecord, int nIndex); // 0x005180A0
+extern "C" __declspec(dllimport) int __stdcall FindNextFileA(void* hFindFile, D2FindDataStrc* pFindData); // 0x006CC1C8
+extern "C" __declspec(dllimport) unsigned long __stdcall GetFileAttributesA(const char* szFileName); // 0x006CC1B0
+extern "C" __declspec(dllimport) int __stdcall DeleteFileA(const char* lpFileName); // 0x006CC1A0
+extern "C" __declspec(dllimport) unsigned long __stdcall GetFileSize(void*, unsigned long*); // 0x006CC2F0
+extern "C" char* __cdecl strstr(const char* szString, const char* szSubString);                             // 0x00686900
 
 // 0x00406870
 void __fastcall MAINMENUS_InitStorm(int nDirectFlags, int nValue)
@@ -1413,7 +1283,7 @@ void __fastcall MAINMENUS_InitStorm(int nDirectFlags, int nValue)
     SFileEnableDirectAccess(nDirectFlags);
     SFileSetIoErrorMode(0, 0);
     SFileEnableSeekOptimization(nValue);
-    gnStormDirectFlags_0074C82C = nDirectFlags;
+    gnLaunchDirectFlags = nDirectFlags;
     int nChunkSize = 0x8000;
     StormGetOption(2, &nChunkSize, 4);
     int bEnable = 1;
@@ -1443,10 +1313,8 @@ int __cdecl MAINMENUS_GetGatewayFlag()
 void __cdecl MAINMENUS_LoadFrontEndCells()
 {
     char szPath[0x104];
-// build: symbol ?gszDataGlobal@* 0x006D4118
     wsprintfA(szPath, "%s\\UI\\FrontEnd\\blizno", gszDataGlobal);
     gpBlizNoCelFile = sub_004FA9B0_LoadCellFile(szPath, 0);
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
     if (FOG_IsExpansion())
         wsprintfA(szPath, "%s\\UI\\FrontEnd\\trademarkscreenEXP", gszDataGlobal);
     else
@@ -1573,7 +1441,7 @@ void __cdecl MAINMENUS_FreeFrontEndCells()
 {
     ARCHIVE_FreeCellFile(gpBlizNoCelFile);
     ARCHIVE_FreeCellFile(gpTrademarkCelFile);
-    ARCHIVE_FreeCellFile(gpCellFile_00779700);
+    ARCHIVE_FreeCellFile(gpCellFile);
     ARCHIVE_FreeCellFile(gpCursorOHandCelFile);
     ARCHIVE_FreeCellFile(gpDiablo2LogoCelFile);
     ARCHIVE_FreeCellFile(gpD2LogoBlackLeftCelFile);
@@ -1586,7 +1454,6 @@ void __cdecl MAINMENUS_FreeFrontEndCells()
     ARCHIVE_FreeCellFile(gpWideButtonBlank02CelFile);
     ARCHIVE_FreeCellFile(gpNarrowButtonBlankCelFile);
     ARCHIVE_FreeCellFile(gpGWListBoxCelFile);
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
     if (FOG_IsExpansion())
     {
         ARCHIVE_FreeCellFile(gpRealmSelectButtonCelFile);
@@ -1667,8 +1534,8 @@ int __fastcall MAINMENUS_ReadPaletteFiles(const char* szFile1, const char* szFil
     char szPathA[0x104];
     char szPathB[0x104];
     gbPaletteBusy = 1;
-    wsprintfA(szPathA, gszPathFormat_006D4124, gszDataGlobal, szFile1);
-    wsprintfA(szPathB, gszPathFormat_006D4124, gszDataGlobal, szFile2);
+    wsprintfA(szPathA, gszPathFormat, gszDataGlobal, szFile1);
+    wsprintfA(szPathB, gszPathFormat, gszDataGlobal, szFile2);
     gbFeCharPalette = strcmp(szFile1, "palette\\fechar\\pal.dat") == 0;
     sub_004FB500(szPathA, szPathB);
     return 1;
@@ -1789,7 +1656,7 @@ void __fastcall MAINMENUS_ShowMessageBox(const Unicode* pTitle, const Unicode* p
 // 0x0042F6C0
 void __cdecl MAINMENUS_SetDone()
 {
-    gdwGlobal_00779974 = 1;
+    gfMenusDone = 1;
 }
 
 // 0x0042F6E0
@@ -1797,7 +1664,7 @@ void __cdecl MAINMENUS_ShowConnectingPopup()
 {
     MAINMENUS_DestroyControls();
     gbGatewayFlag = 1;
-    gdwGlobal_00779974 = 0;
+    gfMenusDone = 0;
     D2WinControlStrc* pControlA;
     D2WinControlStrc* pControlB;
     D2WinControlStrc* pControlC;
@@ -1839,12 +1706,11 @@ int __stdcall MAINMENUS_ShowCantConnect(SMSGHANDLER_PARAMS* pMsg)
 }
 
 // 0x0042F800
-void __cdecl sub_0042F800()
+void __cdecl sub_0042F800_CreateControls()
 {
     MAINMENUS_DestroyControls();
     gbGatewayFlag = 1;
-    gdwGlobal_00779974 = 0;
-// build: symbol ?MAINMENUS_CreateFromTemplate@* 0x0042F3A0
+    gfMenusDone = 0;
     D2WinControlStrc* pControlA = MAINMENUS_CreateFromTemplate(0xDE);
     D2Win_10033(pControlA, 0);
     D2Win_10030_CONTROL_ToggleFourthFlag(pControlA, 1);
@@ -1862,11 +1728,11 @@ void __cdecl sub_0042F880_DestroyControls()
     MAINMENUS_DestroyControls();
 }
 
-int __stdcall sub_004FD110_SetBarValue(D2WinControlStrc* pBar, int nValue); // 0x004FD110
+int __stdcall IMAGE_SetFrame(D2WinControlStrc* pBar, int nValue); // 0x004FD110
 
-int __stdcall sub_004FD170_SetBarMode(D2WinControlStrc* pBar, int nMode); // 0x004FD170
+int __stdcall IMAGE_ForceNormalDrawMode(D2WinControlStrc* pBar, int nMode); // 0x004FD170
 
-int __stdcall sub_004FD1B0_GetBarMax(D2WinControlStrc* pBar); // 0x004FD1B0
+int __stdcall IMAGE_GetFrameCount(D2WinControlStrc* pBar); // 0x004FD1B0
 
 D2WinControlStrc* gpProgressText; // 0x00779978
 
@@ -1876,7 +1742,7 @@ struct D2ChatMessageStrc { D2WinControlStrc* pControl; unsigned int nMessage; };
 
 static inline int ProgressBarValue(int nPercent)
 {
-    return nPercent * sub_004FD1B0_GetBarMax(gpProgressBar) / 100;
+    return nPercent * IMAGE_GetFrameCount(gpProgressBar) / 100;
 }
 
 // 0x0042F890
@@ -1886,9 +1752,9 @@ void __cdecl MAINMENUS_ShowProgressScreen()
     CHARSEL_CreateBaseScreen();
     MAINMENUS_CreateControl(0x116);
     gpProgressBar = MAINMENUS_CreateControl(0x117);
-    sub_004FD170_SetBarMode(gpProgressBar, 3);
+    IMAGE_ForceNormalDrawMode(gpProgressBar, 3);
     gpProgressText = MAINMENUS_CreateControl(0x113);
-    int nPercent = gpFuncTable_0077ABF0->pfnSlot4C();
+    int nPercent = gpFuncTable->pfnSlot4C();
     if (nPercent > 100)
         nPercent = 100;
     D2WinControlStrc* pControl = MAINMENUS_CreateControl(0x114);
@@ -1896,7 +1762,7 @@ void __cdecl MAINMENUS_ShowProgressScreen()
     pControl = MAINMENUS_CreateControl(0x112);
     sub_004FC9B0_SetText(pControl, D2LANG_GetStringFromTblIndex(0x143B), 0, 0, 0);
     MAINMENUS_CreateControl(0x118);
-    sub_004FD110_SetBarValue(gpProgressBar, ProgressBarValue(nPercent));
+    IMAGE_SetFrame(gpProgressBar, ProgressBarValue(nPercent));
     sprintf(szText, "%d%%", nPercent);
     sub_004FCFF0_SetTextA(gpProgressText, szText, 0);
 }
@@ -1906,19 +1772,17 @@ void __cdecl MAINMENUS_UpdateProgress()
 {
     char szText[100];
     sub_004FB6A0_ClearText(gpProgressText);
-    int nPercent = gpFuncTable_0077ABF0->pfnSlot4C();
+    int nPercent = gpFuncTable->pfnSlot4C();
     if (nPercent > 100)
         nPercent = 100;
-    sub_004FD110_SetBarValue(gpProgressBar, ProgressBarValue(nPercent));
+    IMAGE_SetFrame(gpProgressBar, ProgressBarValue(nPercent));
     sprintf(szText, "%d%%", nPercent);
     if (gpProgressText)
         sub_004FCFF0_SetTextA(gpProgressText, szText, 0);
 }
 
-// build: symbol ?MAINMENUS_CreateFromTemplate@* 0x0042F3A0
-
 // 0x0042FA20
-void __cdecl sub_0042FA20()
+void __cdecl sub_0042FA20_ClearStopMainLoop()
 {
     gbStopMainLoop = 0;
 }
@@ -1953,6 +1817,49 @@ int __cdecl MAINMENUS_GetAuxBattleNetFlag()
     return 0;
 }
 
+// 0x0042FB20
+void __cdecl MAINMENUS_CreateVideoScreen()
+{
+    MAINMENUS_Reset();
+    MAINMENUS_CreateControl(2);
+    MAINMENUS_CreateControl(3);
+    MAINMENUS_CreateControl(6);
+    MAINMENUS_CreateControl(7);
+    MAINMENUS_ReadPaletteFiles("palette\\sky\\pal.dat", "palette\\sky\\pal.pl2");
+    D2WinControlStrc* pControl = MAINMENUS_CreateControl(4);
+    char szTail[0x200] = { 0 };
+    char szText[0x200] = { 0 };
+    unsigned short wszText[0x200];
+    wszText[0] = 0;
+    for (int i = 1; i < 0x200; i++)
+        wszText[i] = 0;
+    const char* szKey;
+    if (FOG_IsExpansion())
+    {
+        UNICODE_ToUtf8(szText, D2LANG_GetStringFromTblIndex(0x557A), 0x200);
+        szKey = "2001";
+    }
+    else
+    {
+        UNICODE_ToUtf8(szText, D2LANG_GetStringFromTblIndex(0x13F0), 0x200);
+        szKey = "2000";
+    }
+    int nKeyLen = SStrLen(szKey);
+    char* pFound = strstr(szText, szKey);
+    if (pFound)
+    {
+        SStrCopy(szTail, pFound + nKeyLen, 0x7FFFFFFF);
+        SStrCopy(pFound, "2000 - 2016", 0x7FFFFFFF);
+        SStrCopy(pFound + SStrLen("2000 - 2016"), szTail, 0x7FFFFFFF);
+    }
+    sub_00526320_ToUnicode((Unicode*)wszText, szText, 0x200);
+    sub_004FC9B0_SetText(pControl, (Unicode*)wszText, 4, 0, 0);
+    sub_004FC9B0_SetText(pControl, D2LANG_GetStringFromTblIndex(0x13F1), 4, 0, 0);
+    D2Win_10029(0);
+    if (D2SOUND_GetOptionsMusicOption())
+        D2SOUND_10034(1);
+}
+
 // 0x0042FCE0
 static int MAINMENUS_IsArchiveFilePresent(const char* szFile)
 {
@@ -1968,7 +1875,6 @@ static void MAINMENUS_BuildLocalizedVideoPath(char* szOut, const char* szFormat,
 {
     char szLang[4];
     STRTABLE_GetLanguageInfoField(szLang, 0);
-// build: symbol ?gszDataLocal@* 0x006D41A8
     sprintf(szOut, szFormat, gszDataLocal, szLang, szFile);
     if (MAINMENUS_IsArchiveFilePresent(szOut))
         return;
@@ -1987,7 +1893,7 @@ static void MAINMENUS_BuildLocalizedVideoPath(char* szOut, const char* szFormat,
 // 0x0042FDD0
 void __cdecl MAINMENUS_ReturnToCharSelect()
 {
-    sub_00515020();
+    D2SOUNDFAST_FadeOutWaves();
     MAINMENUS_Reset();
     CHARSEL_InitCharSelectScreen();
 }
@@ -2070,7 +1976,6 @@ void __cdecl MAINMENUS_ShowLocalAddress()
     if (!strcmp(szAddress, "127.0.0.1"))
     {
         sub_004FD060_SetText(gpControl_00779588, D2LANG_GetStringFromTblIndex(0x1404));
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
         CONTROL_SetEnabled(gpControl_007795A4, 0);
         CONTROL_SetEnabled(gpControl_007795A0, 0);
         CONTROL_SetEnabled(gpControl_00779338, 0);
@@ -2169,13 +2074,11 @@ void __cdecl MAINMENUS_CreateMultiplayerScreen()
     pControl = MAINMENUS_CreateControl(0x20);
     sub_004FC9B0_SetText(pControl, D2LANG_GetStringFromTblIndex(0x1467), 0, 0, 0);
 
-// build: symbol ?gpAccountEdit@* 0x0077958C
     gpAccountEdit = MAINMENUS_CreateControl(0x54);
     sub_004FDAD0_SetKeyCallback(gpAccountEdit, MAINMENUS_FilterLoginChar);
     sub_004FDD50_SetMaxLength(gpAccountEdit, 0x10);
     sub_004FFE10_SetTextA(gpAccountEdit, gpLaunchRecord->szAccount);
 
-// build: symbol ?gpPasswordEdit@* 0x00779334
     gpPasswordEdit = MAINMENUS_CreateControl(0x55);
     sub_004FDAD0_SetKeyCallback(gpPasswordEdit, sub_0042FF00_FilterChar);
     sub_004FDD50_SetMaxLength(gpPasswordEdit, 0x0D);
@@ -2230,7 +2133,7 @@ bool __stdcall MAINMENUS_IsLineBreak(Unicode wc)
 // 0x00430400
 int __stdcall MAINMENUS_PollDownloadDone(int nArg)
 {
-    if (gpFuncTable_0077ABF0->pfnSlot4C() == 0x65 || gbStopMainLoop)
+    if (gpFuncTable->pfnSlot4C() == 0x65 || gbStopMainLoop)
         D2Win_StopMessageLoop();
     return 1;
 }
@@ -2276,7 +2179,7 @@ int __stdcall MAINMENUS_ScrollDown(int nArg)
 }
 
 // 0x00430520
-void __cdecl sub_00430520()
+void __cdecl sub_00430520_CreateControls()
 {
     D2WinControlStrc* pControl = MAINMENUS_CreateFromTemplate(0xCD);
     D2Win_10033(pControl, 1);
@@ -2294,7 +2197,7 @@ static __forceinline int FilterNoSeparator(D2WinControlStrc* pControl)
 {
     char szText[0x20];
     const Unicode* pText = sub_004FDD90_GetEditText(pControl);
-    sub_005263E0(szText, pText, 0x20);
+    UNICODE_ToUtf8(szText, pText, 0x20);
     for (int i = 0; szText[i]; i += 1)
     {
         if (szText[i] == '-' || szText[i] == '_')
@@ -2330,12 +2233,12 @@ static inline int MAINMENUS_CountNameSeparators(const char* szText, int nLength)
 void __cdecl MAINMENUS_UpdateNameOk()
 {
     char szText[0x20];
-    const Unicode* pText = sub_004FDD90_GetEditText(gpNameEdit_0077934C);
+    const Unicode* pText = sub_004FDD90_GetEditText(gpNameEdit);
     int bValid = 0;
     if (pText)
     {
-        const int nLen = sub_00526800(pText);
-        sub_005263E0(szText, pText, 0x20);
+        const int nLen = UNICODE_StrLen(pText);
+        UNICODE_ToUtf8(szText, pText, 0x20);
         if (nLen >= 2 && nLen <= 15)
         {
             const char cLast = szText[nLen - 1];
@@ -2353,26 +2256,23 @@ void __cdecl MAINMENUS_UpdateNameOk()
             }
         }
     }
-    CONTROL_SetEnabled(gpOkButton_00779330, bValid);
+    CONTROL_SetEnabled(gpOkButton, bValid);
 }
 
 // 0x004306C0
 void __cdecl MAINMENUS_UpdateLoginOk()
 {
-// build: symbol ?gpAccountEdit@* 0x0077958C
     const Unicode* pName = sub_004FDD90_GetEditText(gpAccountEdit);
-// build: symbol ?gpPasswordEdit@* 0x00779334
     const Unicode* pPassword = sub_004FDD90_GetEditText(gpPasswordEdit);
     int bOk = 0;
     if (pName && pPassword)
     {
-        int nNameLength = sub_00526800(pName);
-        int nPasswordLength = sub_00526800(pPassword);
+        int nNameLength = UNICODE_StrLen(pName);
+        int nPasswordLength = UNICODE_StrLen(pPassword);
         if (nNameLength >= 1 && nNameLength <= 50 && nPasswordLength >= 1 && nPasswordLength <= 13)
             bOk = 1;
     }
     if (gpControl_00779594)
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
         CONTROL_SetEnabled(gpControl_00779594, bOk);
 }
 
@@ -2402,7 +2302,6 @@ int __stdcall MAINMENUS_ToggleExpansion(int nArg)
 // 0x004307A0
 int __fastcall MAINMENUS_ShowOptionDescription(unsigned int nArg, int nMode, int nStringId1, int nStringId2)
 {
-// build: symbol ?gnTextSentinel@* 0x0070CB80
     if (gnTextSentinel == -1)
     {
         if (nArg)
@@ -2423,20 +2322,12 @@ int __fastcall MAINMENUS_ShowOptionDescription(unsigned int nArg, int nMode, int
     return 1;
 }
 
-// build: symbol ?gpAccountEdit@* 0x0077958C
-// build: symbol ?gpPasswordEdit@* 0x00779334
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
-
 // 0x00430840
 int __stdcall MAINMENUS_OnHoverSorceress(SMSGHANDLER_PARAMS* pMsg)
 {
     MAINMENUS_ShowOptionDescription(pMsg->lParam, 1, 0xFAA, 0x140B);
     return 1;
 }
-
-// build: symbol ?gpAccountEdit@* 0x0077958C
-// build: symbol ?gpPasswordEdit@* 0x00779334
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
 
 // 0x00430870
 int __stdcall MAINMENUS_OnHoverAmazon(SMSGHANDLER_PARAMS* pMsg)
@@ -2467,10 +2358,6 @@ int __stdcall MAINMENUS_OnSelectDruid(D2MenuCallbackArgStrc* pArg)
     return 1;
 }
 
-// build: symbol ?gpAccountEdit@* 0x0077958C
-// build: symbol ?gpPasswordEdit@* 0x00779334
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
-
 // 0x00430920
 int __stdcall MAINMENUS_OnHoverNecromancer(SMSGHANDLER_PARAMS* pMsg)
 {
@@ -2478,20 +2365,12 @@ int __stdcall MAINMENUS_OnHoverNecromancer(SMSGHANDLER_PARAMS* pMsg)
     return 1;
 }
 
-// build: symbol ?gpAccountEdit@* 0x0077958C
-// build: symbol ?gpPasswordEdit@* 0x00779334
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
-
 // 0x00430950
 int __stdcall MAINMENUS_OnHoverBarbarian(SMSGHANDLER_PARAMS* pMsg)
 {
     MAINMENUS_ShowOptionDescription(pMsg->lParam, 4, 0xFA7, 0x140A);
     return 1;
 }
-
-// build: symbol ?gpAccountEdit@* 0x0077958C
-// build: symbol ?gpPasswordEdit@* 0x00779334
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
 
 // 0x00430980
 int __stdcall MAINMENUS_OnHoverPaladin(SMSGHANDLER_PARAMS* pMsg)
@@ -2503,22 +2382,16 @@ int __stdcall MAINMENUS_OnHoverPaladin(SMSGHANDLER_PARAMS* pMsg)
 // 0x004309B0
 void __cdecl MAINMENUS_ClearLaunchState()
 {
-// build: symbol ?gnLaunchState@* 0x007795E8
     gnLaunchState = 0;
 }
 
-// build: symbol @CHATDLG_SetMainControlState@* 0x0043DAD0
 extern "C" int __fastcall CHATDLG_SetMainControlState(int value)
 {
     sub_004F9740_ControlFlag(gControl, value);
     return 1;
 }
 
-int gnSlotCount;                                                                                     // 0x0077998C
-
-// build: symbol ?gpAccountEdit@* 0x0077958C
-// build: symbol ?gpPasswordEdit@* 0x00779334
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
+extern int gnSlotCount; // 0x0077998C
 
 // 0x004309C0
 int __stdcall MAINMENUS_AddToSlots(void* pEntry)
@@ -2559,21 +2432,18 @@ int __cdecl MAINMENUS_FreeSlots()
 
 int __stdcall sub_M121_Emit_00430600(const char* szText, int nLength) { return MAINMENUS_CountNameSeparators(szText, nLength); }
 
-// build: symbol ?gpAccountEdit@* 0x0077958C
-// build: symbol ?gpPasswordEdit@* 0x00779334
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
-
 // 0x00430B00
 int __cdecl MAINMENUS_CompareNames(const void* pEntry1, const void* pEntry2)
 {
     return strcmp(**(const char* const* const*)pEntry1, **(const char* const* const*)pEntry2);
 }
 
-char* __fastcall MAINMENUS_GetSlotName(int nIndex); // 0x00430B50
 
-// build: symbol ?gpAccountEdit@* 0x0077958C
-// build: symbol ?gpPasswordEdit@* 0x00779334
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
+// 0x00430B40
+int __cdecl GAME_GetSlotNameCount()
+{
+    return gnSlotCount;
+}
 
 // 0x00430B50
 char* __fastcall MAINMENUS_GetSlotName(int nIndex)
@@ -2604,7 +2474,6 @@ int __cdecl MAINMENUS_HasSaveFiles()
     char szPattern[0x400];
     D2FindDataStrc tFind;
     FOG_GetSavePath(szDir, 0x400);
-// build: symbol ?gszSaveMask@* 0x006D41D4
     sprintf(szPattern, gszSaveMask, szDir);
     void* hFind = FindFirstFileA(szPattern, &tFind);
     if (hFind != (void*)-1)
@@ -2634,19 +2503,15 @@ int __stdcall MAINMENUS_OnCreate(int nArg)
     return 1;
 }
 
-D2WinControlStrc* gpList_00779964;                                                                          // 0x00779964
-
-// build: symbol ?gpAccountEdit@* 0x0077958C
-// build: symbol ?gpPasswordEdit@* 0x00779334
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
+D2WinControlStrc* gpCreditsList;                                                                          // 0x00779964
 
 // 0x00430C80
 void __cdecl MAINMENUS_FillCreditsList()
 {
     for (int i = 0; i < 50; i++)
-        D2Win_10045(gpList_00779964, &gszEmptyAssertText);
-    D2Win_10045(gpList_00779964, "The End");
-    gnListPos = sub_004FB950_GetFirstVisible(gpList_00779964);
+        D2Win_10045(gpCreditsList, &gszEmptyAssertText);
+    D2Win_10045(gpCreditsList, "The End");
+    gnListPos = sub_004FB950_GetFirstVisible(gpCreditsList);
 }
 
 // 0x00430CD0
@@ -2719,56 +2584,52 @@ Unicode* __stdcall MAINMENUS_LoadCreditsText(int* pnLength)
     return pText;
 }
 
-D2WinControlStrc* gpList_0077995C;                                                                          // 0x0077995C
+D2WinControlStrc* gpCreditsLeftList;                                                                          // 0x0077995C
 
-D2WinControlStrc* gpList_00779960;                                                                          // 0x00779960
-
-// build: symbol ?gpAccountEdit@* 0x0077958C
-// build: symbol ?gpPasswordEdit@* 0x00779334
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
+D2WinControlStrc* gpCreditsRightList;                                                                          // 0x00779960
 
 // 0x00430EF0
 void __cdecl MAINMENUS_SyncCreditsLists()
 {
-    int nFirst = sub_004FB950_GetFirstVisible(gpList_00779964);
-    int nSecond = sub_004FB950_GetFirstVisible(gpList_0077995C);
-    int nThird = sub_004FB950_GetFirstVisible(gpList_00779960);
+    int nFirst = sub_004FB950_GetFirstVisible(gpCreditsList);
+    int nSecond = sub_004FB950_GetFirstVisible(gpCreditsLeftList);
+    int nThird = sub_004FB950_GetFirstVisible(gpCreditsRightList);
     while (nSecond > nThird)
     {
-        D2Win_10045(gpList_00779960, &gszEmptyAssertText);
-        nThird = sub_004FB950_GetFirstVisible(gpList_00779960);
+        D2Win_10045(gpCreditsRightList, &gszEmptyAssertText);
+        nThird = sub_004FB950_GetFirstVisible(gpCreditsRightList);
     }
     while (nSecond < nThird)
     {
-        D2Win_10045(gpList_0077995C, &gszEmptyAssertText);
-        nSecond = sub_004FB950_GetFirstVisible(gpList_0077995C);
+        D2Win_10045(gpCreditsLeftList, &gszEmptyAssertText);
+        nSecond = sub_004FB950_GetFirstVisible(gpCreditsLeftList);
     }
     while (nFirst > nSecond)
     {
-        D2Win_10045(gpList_0077995C, &gszEmptyAssertText);
-        nSecond = sub_004FB950_GetFirstVisible(gpList_0077995C);
-        D2Win_10045(gpList_00779960, &gszEmptyAssertText);
+        D2Win_10045(gpCreditsLeftList, &gszEmptyAssertText);
+        nSecond = sub_004FB950_GetFirstVisible(gpCreditsLeftList);
+        D2Win_10045(gpCreditsRightList, &gszEmptyAssertText);
     }
     while (nFirst < nSecond)
     {
-        D2Win_10045(gpList_00779964, &gszEmptyAssertText);
-        nFirst = sub_004FB950_GetFirstVisible(gpList_00779964);
+        D2Win_10045(gpCreditsList, &gszEmptyAssertText);
+        nFirst = sub_004FB950_GetFirstVisible(gpCreditsList);
     }
-    D2Win_10045(gpList_00779964, &gszEmptyAssertText);
-    D2Win_10045(gpList_0077995C, &gszEmptyAssertText);
-    D2Win_10045(gpList_00779960, &gszEmptyAssertText);
+    D2Win_10045(gpCreditsList, &gszEmptyAssertText);
+    D2Win_10045(gpCreditsLeftList, &gszEmptyAssertText);
+    D2Win_10045(gpCreditsRightList, &gszEmptyAssertText);
 }
 
 // 0x00431020
 void __cdecl MAINMENUS_ClearCreditsLists()
 {
-    D2Win_10045(gpList_0077995C, &gszEmptyAssertText);
-    D2Win_10045(gpList_00779960, &gszEmptyAssertText);
+    D2Win_10045(gpCreditsLeftList, &gszEmptyAssertText);
+    D2Win_10045(gpCreditsRightList, &gszEmptyAssertText);
 }
 
 // 0x00431040
 void __cdecl MAINMENUS_ClearCreditsList() {
- D2Win_10045(gpList_00779964,&gszEmptyAssertText);
+ D2Win_10045(gpCreditsList,&gszEmptyAssertText);
 }
 
 // 0x00431050
@@ -2781,9 +2642,9 @@ int __fastcall MAINMENUS_ShowCredits(int nUnused)
 
     for (int i = 0; i < 50; ++i)
     {
-        D2Win_10045(gpList_00779964, &gszEmptyAssertText);
-        D2Win_10045(gpList_0077995C, &gszEmptyAssertText);
-        D2Win_10045(gpList_00779960, &gszEmptyAssertText);
+        D2Win_10045(gpCreditsList, &gszEmptyAssertText);
+        D2Win_10045(gpCreditsLeftList, &gszEmptyAssertText);
+        D2Win_10045(gpCreditsRightList, &gszEmptyAssertText);
     }
 
     int nRemain = nLength;
@@ -2792,14 +2653,14 @@ int __fastcall MAINMENUS_ShowCredits(int nUnused)
     {
         if (pCursor->wChar == 0x2A)
         {
-            D2Win_10045(gpList_0077995C, &gszEmptyAssertText);
-            D2Win_10045(gpList_00779960, &gszEmptyAssertText);
+            D2Win_10045(gpCreditsLeftList, &gszEmptyAssertText);
+            D2Win_10045(gpCreditsRightList, &gszEmptyAssertText);
             ++pCursor;
             if (sub_005267E0(wszLine, pCursor))
-                sub_004FC9B0_SetText(gpList_00779964, wszLine, 1, 0, 0);
+                sub_004FC9B0_SetText(gpCreditsList, wszLine, 1, 0, 0);
             else
                 nRemain = 0;
-            int nSkip = sub_00526800(wszLine) + 2;
+            int nSkip = UNICODE_StrLen(wszLine) + 2;
             nRemain -= nSkip;
             pCursor += nSkip;
         }
@@ -2816,7 +2677,7 @@ int __fastcall MAINMENUS_ShowCredits(int nUnused)
                 if (pCursor->wChar < 0x80 && isalpha((char)pCursor->wChar) && sub_005267E0(wszLine, pCursor))
                 {
                     sub_005267E0(wszLeft, wszLine);
-                    int nSkip = sub_00526800(wszLine) + 2;
+                    int nSkip = UNICODE_StrLen(wszLine) + 2;
                     nRemain -= nSkip;
                     pCursor += nSkip;
                 }
@@ -2830,7 +2691,7 @@ int __fastcall MAINMENUS_ShowCredits(int nUnused)
                     if (sub_005267E0(wszLine, pCursor))
                     {
                         sub_005267E0(wszRight, wszLine);
-                        int nSkip = sub_00526800(wszLine) + 2;
+                        int nSkip = UNICODE_StrLen(wszLine) + 2;
                         nRemain -= nSkip;
                         pCursor += nSkip;
                     }
@@ -2842,14 +2703,14 @@ int __fastcall MAINMENUS_ShowCredits(int nUnused)
 
                 if (wszLeft[0].wChar && wszRight[0].wChar)
                 {
-                    sub_004FD060_SetText(gpList_0077995C, wszLeft);
-                    sub_004FD060_SetText(gpList_00779960, wszRight);
+                    sub_004FD060_SetText(gpCreditsLeftList, wszLeft);
+                    sub_004FD060_SetText(gpCreditsRightList, wszRight);
                 }
                 else
                 {
-                    sub_004FD060_SetText(gpList_00779964, wszLeft);
+                    sub_004FD060_SetText(gpCreditsList, wszLeft);
                 }
-                D2Win_10045(gpList_00779964, &gszEmptyAssertText);
+                D2Win_10045(gpCreditsList, &gszEmptyAssertText);
             } while (pCursor->wChar != 0x2A);
         }
         MAINMENUS_SyncCreditsLists();
@@ -2869,23 +2730,23 @@ int __stdcall MAINMENUS_CreateCreditsScreen(int nUnused)
     MAINMENUS_CreateControl(0x2A);
     if (!FOG_IsExpansion())
     {
-        gpList_0077995C = MAINMENUS_CreateControl(0x2B);
-        gpList_00779960 = MAINMENUS_CreateControl(0x2C);
-        gpList_00779964 = MAINMENUS_CreateControl(0x2D);
+        gpCreditsLeftList = MAINMENUS_CreateControl(0x2B);
+        gpCreditsRightList = MAINMENUS_CreateControl(0x2C);
+        gpCreditsList = MAINMENUS_CreateControl(0x2D);
     }
     else
     {
-        gpList_0077995C = MAINMENUS_CreateControl(0x2F);
-        gpList_00779960 = MAINMENUS_CreateControl(0x30);
-        gpList_00779964 = MAINMENUS_CreateControl(0x31);
+        gpCreditsLeftList = MAINMENUS_CreateControl(0x2F);
+        gpCreditsRightList = MAINMENUS_CreateControl(0x30);
+        gpCreditsList = MAINMENUS_CreateControl(0x31);
     }
     gpControl_00779968 = MAINMENUS_CreateControl(0x2E);
     sub_004FD830(gpControl_00779968);
     sub_004FDA50(gpControl_00779968);
     MAINMENUS_ShowCredits(0);
-    D2Win_10053(gpList_00779964, 20);
-    D2Win_10053(gpList_0077995C, 20);
-    D2Win_10053(gpList_00779960, 20);
+    D2Win_10053(gpCreditsList, 20);
+    D2Win_10053(gpCreditsLeftList, 20);
+    D2Win_10053(gpCreditsRightList, 20);
     return 1;
 }
 
@@ -2929,7 +2790,6 @@ void __stdcall MAINMENUS_CreateLevelScreen(int nLevel)
     switch (nLevel)
     {
     default:
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
         CONTROL_SetEnabled(pField1, 0);
         BUTTON_SetText(pField1, 10, wszEmpty, 0);
     case 2:
@@ -2951,10 +2811,6 @@ void __stdcall MAINMENUS_CreateLevelScreen(int nLevel)
         break;
     }
 }
-
-// build: symbol ?gpAccountEdit@* 0x0077958C
-// build: symbol ?gpPasswordEdit@* 0x00779334
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
 
 // 0x00431570
 void __fastcall MAINMENUS_CreateExpansionDiscPopup(int bFlag)
@@ -2979,10 +2835,8 @@ int __stdcall MAINMENUS_ShowLevelScreen(int nUnused)
 {
     char szAddress[0x64];
     unsigned char nLevel;
-    sub_00515F50(0xB4);
-// build: symbol ?D2SOUND_StopChannel@* 0x00514930
+    D2SOUNDSMP_FadeOutMasterVolume(0xB4);
     D2SOUND_StopChannel();
-// build: symbol ?D2SOUNDSMP_SetMasterVolume@* 0x00515CE0
     D2SOUNDSMP_SetMasterVolume(0xFF);
     CHARSEL_CreateBaseScreen();
     if (SRegLoadString("Diablo II", "Aux Battle.net", 0, szAddress, 0x64))
@@ -3099,7 +2953,7 @@ static void __stdcall MAINMENUS_PlayVideo(int nArg, const char* szFormat)
             strcpy(szSize, "640x146");
         }
         MAINMENUS_BuildLocalizedVideoPath(szPath, szFormat, szSize);
-        sub_004F5D90_PlayVideo(szPath, nMode, 0);
+        WINDOW_OpenSmackCutscene(szPath, nMode, 0);
         D2Win_10004(1);
     }
     MAINMENUS_FlushInput();
@@ -3170,7 +3024,6 @@ int __cdecl MAINMENUS_ShowArchiveMessage()
 int __stdcall MAINMENUS_OpenTcpIpScreen(int nArg)
 {
     gnLaunchMode = 2;
-// build: symbol ?CHARSEL_CreateTcpIpScreen@* 0x0042FFE0
     CHARSEL_CreateTcpIpScreen();
     return 1;
 }
@@ -3194,11 +3047,44 @@ int __fastcall MAINMENUS_IsDoubleClick(SMSGHANDLER_PARAMS* pMsg)
     return bResult;
 }
 
+// 0x00431AF0
+void __cdecl MAINMENUS_ShowCurrentGateway()
+{
+    D2FuncRecordStrc* pRecord = gpFuncTable->pfnGetRecord();
+    char szText[0x100];
+    const int nIndex = pRecord->nIndex;
+    SStrCopy(szText, Name(pRecord, nIndex), 0x100);
+
+    Unicode wszText[0x100];
+    for (int i = 0; i < 0x100; ++i)
+        wszText[i].wChar = 0;
+    sub_00526320_ToUnicode(wszText, szText, 0x100);
+
+    Unicode wszFormat[0x100];
+    for (int i = 0; i < 0x100; ++i)
+        wszFormat[i].wChar = 0;
+    sub_005267E0(wszFormat, D2LANG_GetStringFromTblIndex(0x2B29));
+
+    Unicode wszOut[0x100];
+    for (int i = 0; i < 0x100; ++i)
+        wszOut[i].wChar = 0;
+    memset(wszOut, 0, 0x100);
+    sub_005269D0_FormatText(0x100, wszOut, wszFormat, wszText);
+
+    for (int i = 0; i < UNICODE_StrLen(wszOut); ++i)
+    {
+        const unsigned short wChar = wszOut[i].wChar;
+        wszOut[i].wChar = wChar < 0x100 ? gawToUpperTable[wChar] : wChar;
+    }
+
+    BUTTON_SetText(gpControl_007795AC, 10, (unsigned short*)wszOut, 0);
+}
+
 // 0x00431C30
 int __stdcall MAINMENUS_Leave(int nArg)
 {
     gnLaunchState = 0;
-    sub_00515F50(0xB4);
+    D2SOUNDSMP_FadeOutMasterVolume(0xB4);
     D2Win_StopMessageLoop();
     return 1;
 }
@@ -3220,8 +3106,6 @@ void __fastcall MAINMENUS_HandleCompressionMessage(unsigned char* pMsg, int nSiz
     }
 }
 
-int __stdcall CLIENT_DequeueSystemPacket(unsigned char* pBuffer, unsigned int nBufferSize); // 0x0052A8B0
-
 int gdwGlobal_00779990; // 0x00779990
 
 // 0x00431C90
@@ -3242,7 +3126,7 @@ int __stdcall MAINMENUS_PollSystemPacket(int nUnused)
         }
     }
 
-    if (gdwGlobal_00779990 || gdwGlobal_00779974)
+    if (gdwGlobal_00779990 || gfMenusDone)
         D2Win_StopMessageLoop();
 
     return 1;
@@ -3346,18 +3230,12 @@ static void MAINMENUS_SetModeFlags(char nMode)
     }
 }
 
-void __cdecl sub_I03_Emit_00431E70(char nMode)
-{
-    MAINMENUS_SetModeFlags(gnTextSentinel);
-    MAINMENUS_SetModeFlags(nMode);
-}
-
 // 0x00431F50
 int __stdcall sub_00431F50_OnCancel(int nArg)
 {
     D2SOUNDFAST_FadeOutWaves();
     MAINMENUS_Reset();
-    sub_0043B080();
+    CHARSEL_InitCharSelectScreen();
     return 1;
 }
 
@@ -3369,9 +3247,8 @@ int __cdecl MAINMENUS_SaveExists()
     char szPath[0x104];
     char szName[0x100];
     FOG_GetSavePath(szDir, 0x400);
-    const Unicode* pText = sub_004FDD90_GetEditText(gpNameEdit_0077934C);
-    sub_005263E0(szUtf8, pText, 0x100);
-// build: symbol ?gszStringFormat@* 0x006FFC58
+    const Unicode* pText = sub_004FDD90_GetEditText(gpNameEdit);
+    UNICODE_ToUtf8(szUtf8, pText, 0x100);
     sprintf(szName, gszStringFormat, szUtf8);
     sprintf(szPath, gszSavePathFormat_006D4230, szDir, szName);
     void* hFile = FOG_CreateFileA(szPath, 0x80000000, 0, 0, 3, 0x8000000, 0);
@@ -3415,12 +3292,12 @@ static void MAINMENUS_StoreAccountTexts(D2WinControlStrc* pAccountEdit, D2WinCon
     if (pAccountEdit)
     {
         const Unicode* pText = sub_004FDD90_GetEditText(pAccountEdit);
-        sub_00526F70(gpLaunchRecord->szAccount, pText, 0x100);
+        UNICODE_ToAscii(gpLaunchRecord->szAccount, pText, 0x100);
     }
     if (pPasswordEdit)
     {
         const Unicode* pText = sub_004FDD90_GetEditText(pPasswordEdit);
-        sub_00526F70(gpLaunchRecord->szPassword, pText, 0x100);
+        UNICODE_ToAscii(gpLaunchRecord->szPassword, pText, 0x100);
         gpLaunchRecord->dwPasswordHash = SStrHashHT(gpLaunchRecord->szPassword);
         gpLaunchRecord->nPasswordLength = SStrLen(gpLaunchRecord->szPassword);
     }
@@ -3481,15 +3358,15 @@ int __stdcall MAINMENUS_OnLoginScreen(int nArg)
 int __stdcall MAINMENUS_StoreAccount(int nArg)
 {
     const Unicode* pText = sub_004FDD90_GetEditText(gpAccountEdit);
-    sub_00526F70(gpLaunchRecord->szAccount, pText, 0x100);
-    sub_004370C0();
+    UNICODE_ToAscii(gpLaunchRecord->szAccount, pText, 0x100);
+    MAINMENUS_CreateInfoScreen();
     return 1;
 }
 
 // 0x00432340
 int __stdcall MAINMENUS_OpenInfoScreen(int nUnused)
 {
-    sub_004370C0();
+    MAINMENUS_CreateInfoScreen();
     return 1;
 }
 
@@ -3525,16 +3402,15 @@ int __cdecl MAINMENUS_PollStatus()
         _ReadWriteBarrier();
         return 3;
     case 0:
-// build: symbol ?GAME_GetConnectError@* 0x00449C00
         GAME_GetConnectError();
-        return sub_00432350_GetStatus() ? 2 : 0;
+        return MAINMENUS_IsListedCode() ? 2 : 0;
     }
 }
 
 // 0x00432450
 int __stdcall MAINMENUS_OnWait(int nArg)
 {
-    if (gdwGlobal_00779974)
+    if (gfMenusDone)
         gnWaitDone = 1;
     if (sub_00432400_GetStatus() != 3)
         D2Win_StopMessageLoop();
@@ -3570,9 +3446,9 @@ int __fastcall MAINMENUS_ConnectToRealm(const char* szName, int bFlag)
     }
 
     D2LaunchPayloadStrc* pPayload;
-    if (!gpFuncTable_0077ABF0)
+    if (!gpFuncTable)
         goto fail;
-    pPayload = gpFuncTable_0077ABF0->pfn0x44(szName, "password");
+    pPayload = gpFuncTable->pfn0x44(szName, "password");
     if (!pPayload)
         goto fail;
     if (pPayload->nSize == 8)
@@ -3598,10 +3474,6 @@ fail:
 int __stdcall D2Win_10125();                                                                                // 0x00501A40
 
 int __fastcall D2Win_10127_SetFont(int nArg);                                                                      // 0x00502EF0
-
-// build: symbol ?gpAccountEdit@* 0x0077958C
-// build: symbol ?gpPasswordEdit@* 0x00779334
-// build: symbol ?CONTROL_SetEnabled@* 0x004F96F0
 
 // 0x004325B0
 void __cdecl MAINMENUS_CreateScreen()
@@ -3755,22 +3627,22 @@ extern "C" void __cdecl MAINMENUS_ConfigureLanguageLayout()
 {
     if (sub_00525150_Language() == 9)
     {
-        gLayout_00709C48 = 0x9B;
-        gLayout_007091F8 = 0x14E;
-        gLayout_00709228 = 0x184;
-        gLayout_00709258 = 0x1BA;
-        gLayout_007092E8 = 0xF0;
-        gLayout_00709318 = 0x158;
-        gLayout_00709EE8 = 0x9C;
-        gLayout_0070B2C8 = 0x1FA;
-        gLayout_0070B2F8 = 0x22B;
-        gLayout_0070B088 = 0x23F;
-        gLayout_0070B4A8 = 0x22B;
-        gLayout_0070B0E8 = 0x22B;
-        gLayout_0070B148 = 0x23F;
-        gLayout_0070B1A8 = 0x253;
-        gLayout_0070BDA8 = 0x46;
-        gLayout_0070BF58 = 0xEE;
+        gatControlTemplates[0x51].nY = 0x9B;
+        gatControlTemplates[0x1A].nY = 0x14E;
+        gatControlTemplates[0x1B].nY = 0x184;
+        gatControlTemplates[0x1C].nY = 0x1BA;
+        gatControlTemplates[0x1F].nY = 0xF0;
+        gatControlTemplates[0x20].nY = 0x158;
+        gatControlTemplates[0x5F].nY = 0x9C;
+        gatControlTemplates[0xC9].nY = 0x1FA;
+        gatControlTemplates[0xCA].nY = 0x22B;
+        gatControlTemplates[0xBD].nY = 0x23F;
+        gatControlTemplates[0xD3].nY = 0x22B;
+        gatControlTemplates[0xBF].nY = 0x22B;
+        gatControlTemplates[0xC1].nY = 0x23F;
+        gatControlTemplates[0xC3].nY = 0x253;
+        gatControlTemplates[0x103].nY = 0x46;
+        gatControlTemplates[0x10C].nY = 0xEE;
     }
 }
 
@@ -3778,7 +3650,7 @@ extern "C" void __cdecl MAINMENUS_ConfigureLanguageLayout()
 int __stdcall MAINMENUS_PollCharCreate(int nArg)
 {
     sub_00449B70_Receive();
-    if (GAME_IsMcpCharCreateReceived() || !MCPCONNECT_QueryAddress() || gdwGlobal_00779974)
+    if (GAME_IsMcpCharCreateReceived() || !MCPCONNECT_QueryAddress() || gfMenusDone)
     {
         CHATDLG_SetCharCreateReceived(0);
         D2Win_StopMessageLoop();
@@ -3790,7 +3662,7 @@ int __stdcall MAINMENUS_PollCharCreate(int nArg)
 int __stdcall MAINMENUS_PollCharLogon(int nArg)
 {
     sub_00449B70_Receive();
-    if (GAME_IsMcpCharLogonReceived() || !MCPCONNECT_QueryAddress() || gdwGlobal_00779974)
+    if (GAME_IsMcpCharLogonReceived() || !MCPCONNECT_QueryAddress() || gfMenusDone)
     {
         CHATDLG_SetCharLogonReceived(0);
         D2Win_StopMessageLoop();
@@ -3821,7 +3693,7 @@ int __cdecl sub_00432400_GetWaitStatus()
 int __stdcall MAINMENUS_PollCharDelete(int nArg)
 {
     sub_00449B70_Receive();
-    if (GAME_IsMcpCharDeleteReceived() || !MCPCONNECT_QueryAddress() || gdwGlobal_00779974)
+    if (GAME_IsMcpCharDeleteReceived() || !MCPCONNECT_QueryAddress() || gfMenusDone)
     {
         CHATDLG_SetCharDeleteReceived(0);
         D2Win_StopMessageLoop();
@@ -3833,12 +3705,135 @@ int __stdcall MAINMENUS_PollCharDelete(int nArg)
 int __stdcall MAINMENUS_PollCharUpgrade(int nArg)
 {
     sub_00449B70_Receive();
-    if (GAME_IsMcpCharUpgradeReceived() || !MCPCONNECT_QueryAddress() || gdwGlobal_00779974)
+    if (GAME_IsMcpCharUpgradeReceived() || !MCPCONNECT_QueryAddress() || gfMenusDone)
     {
         CHATDLG_SetCharUpgradeReceived(0);
         D2Win_StopMessageLoop();
     }
     return 1;
+}
+
+// 0x004330A0
+static int __stdcall MAINMENUS_SetMultilineText(D2WinControlStrc* pControl, int nArg, const Unicode* pText, bool bWrapped)
+{
+    Unicode aBuffer[0x400];
+    for (int i = 0; i < 0x400; ++i)
+        aBuffer[i].wChar = 0;
+    sub_00526790(aBuffer, pText, 0x400);
+    Unicode* pChar = aBuffer;
+    Unicode* pLine = pChar;
+    while (pChar->wChar)
+    {
+        if (pChar->wChar == 0xA)
+        {
+            pChar->wChar = 0;
+            D2Win_10051(pControl, pLine, nArg, bWrapped, 0);
+            pLine = pChar + 1;
+        }
+        ++pChar;
+    }
+    if (pLine < pChar)
+        D2Win_10051(pControl, pLine, nArg, bWrapped, 0);
+    return 1;
+}
+
+// 0x00433130
+void __fastcall MAINMENUS_ShowTwoTexts(const Unicode* pText1, const Unicode* pText2, D2LaunchDoneFn pfnDone)
+{
+    MAINMENUS_DestroyControls();
+    D2WinControlStrc* pControl = MAINMENUS_CreateFromTemplate(0xE7);
+    D2Win_10033(pControl, 1);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+    D2WinControlStrc* pOther = MAINMENUS_CreateFromTemplate(0xE8);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pOther, 1);
+    pControl = MAINMENUS_CreateFromTemplate(0xE9);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+    MAINMENUS_SetMultilineText(pControl, 0, pText1, false);
+    pControl = MAINMENUS_CreateFromTemplate(0xEA);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+    MAINMENUS_SetMultilineText(pControl, 0, pText2, false);
+    gpfnGatewayDone = pfnDone;
+}
+
+// 0x004331C0
+void __fastcall MAINMENUS_ShowThreeTexts(const Unicode* pText1, const Unicode* pText2, const Unicode* pText3, D2LaunchDoneFn pfnDone)
+{
+    MAINMENUS_DestroyControls();
+    D2WinControlStrc* pControl = MAINMENUS_CreateFromTemplate(0xEB);
+    D2Win_10033(pControl, 1);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+    D2WinControlStrc* pOther = MAINMENUS_CreateFromTemplate(0xEC);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pOther, 1);
+    pControl = MAINMENUS_CreateFromTemplate(0xED);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+    MAINMENUS_SetMultilineText(pControl, 0, pText1, false);
+    if (pText3 && pText3->wChar)
+    {
+        pControl = MAINMENUS_CreateFromTemplate(0xEF);
+        D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+        MAINMENUS_SetMultilineText(pControl, 0, pText2, false);
+        pControl = MAINMENUS_CreateFromTemplate(0xF0);
+        D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+        MAINMENUS_SetMultilineText(pControl, 4, pText3, false);
+        gpfnGatewayDone = pfnDone;
+        return;
+    }
+    pControl = MAINMENUS_CreateFromTemplate(0xEE);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+    MAINMENUS_SetMultilineText(pControl, 0, pText2, false);
+    gpfnGatewayDone = pfnDone;
+}
+
+// 0x004332B0
+void __fastcall MAINMENUS_ShowFourTexts(const Unicode* pText1, const Unicode* pText2, const Unicode* pText3, const Unicode* pText4, D2LaunchDoneFn pfnDone)
+{
+    MAINMENUS_DestroyControls();
+    D2WinControlStrc* pControl = MAINMENUS_CreateFromTemplate(0xF1);
+    D2Win_10033(pControl, 1);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+    D2WinControlStrc* pOther = MAINMENUS_CreateFromTemplate(0xF2);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pOther, 1);
+    pControl = MAINMENUS_CreateFromTemplate(0xF3);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+    MAINMENUS_SetMultilineText(pControl, 0, pText1, false);
+    pControl = MAINMENUS_CreateFromTemplate(0xF4);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+    MAINMENUS_SetMultilineText(pControl, 0, pText2, false);
+    pControl = MAINMENUS_CreateFromTemplate(0xF5);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+    MAINMENUS_SetMultilineText(pControl, 0, pText3, false);
+    pControl = MAINMENUS_CreateFromTemplate(0xF6);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+    MAINMENUS_SetMultilineText(pControl, 4, pText4, false);
+    gpfnGatewayDone = pfnDone;
+}
+
+// 0x00433380
+void __fastcall MAINMENUS_ShowMessage(const Unicode* pText, D2LaunchDoneFn pfnDone, int nArg)
+{
+    D2WinControlStrc* pFrame;
+    D2WinControlStrc* pButton;
+    D2WinControlStrc* pTextBox;
+    MAINMENUS_DestroyControls();
+    if (gbFeCharPalette)
+    {
+        pFrame = MAINMENUS_CreateFromTemplate(0xF7);
+        D2Win_10033(pFrame, 1);
+        pButton = MAINMENUS_CreateFromTemplate(nArg ? 0xF8 : 0xFA);
+        pTextBox = MAINMENUS_CreateFromTemplate(0xF9);
+    }
+    else
+    {
+        pFrame = MAINMENUS_CreateFromTemplate(0xDE);
+        D2Win_10033(pFrame, 1);
+        pButton = MAINMENUS_CreateFromTemplate(nArg ? 0xE1 : 0xDF);
+        pTextBox = MAINMENUS_CreateFromTemplate(0xE0);
+    }
+    D2Win_10030_CONTROL_ToggleFourthFlag(pFrame, 1);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pButton, 1);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pTextBox, 1);
+    MAINMENUS_SetMultilineText(pTextBox, 0, pText, false);
+    gpfnGatewayDone = pfnDone;
 }
 
 // 0x00433440
@@ -3851,6 +3846,21 @@ void __fastcall MAINMENUS_ShowMessageNoArg(const Unicode* pText, D2LaunchDoneFn 
 void __fastcall MAINMENUS_ShowText(const Unicode* pText, D2LaunchDoneFn pfnDone)
 {
     MAINMENUS_ShowMessage(pText, pfnDone, 1);
+}
+
+// 0x00433460
+void __fastcall MAINMENUS_ShowTextBox(const Unicode* pText, D2LaunchDoneFn pfnDone)
+{
+    MAINMENUS_DestroyControls();
+    D2WinControlStrc* pControl = MAINMENUS_CreateFromTemplate(0xF7);
+    D2Win_10033(pControl, 1);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+    D2WinControlStrc* pOther = MAINMENUS_CreateFromTemplate(0xFA);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pOther, 1);
+    pControl = MAINMENUS_CreateFromTemplate(0xF9);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
+    MAINMENUS_SetMultilineText(pControl, 0, pText, false);
+    gpfnGatewayDone = pfnDone;
 }
 
 // 0x004334D0
@@ -3889,7 +3899,7 @@ void __cdecl MAINMENUS_PlayIntro()
         SFileCloseFile(hFile);
     else
         sprintf(szPath, "%s\\video\\%s\\D2x_Intro%s.bik", gszDataLocal, "ENG", szSize);
-    sub_004F5D90_PlayVideo(szPath, nMode, 0);
+    WINDOW_OpenSmackCutscene(szPath, nMode, 0);
     if (SRegLoadString("Diablo II", "Aux Battle.net", 0, szAddress, 0x64))
         sscanf(szAddress, "%ld.%ld.%ld.%ld", &a, &b, &c, &d);
     d |= 0x80;
@@ -3914,7 +3924,7 @@ void __cdecl MAINMENUS_PlayIntroVideo()
         strcpy(szSize, "640x146");
     }
     MAINMENUS_BuildLocalizedVideoPath(szPath, "%s\\video\\%s\\d2intro%s.bik", szSize);
-    sub_004F5D90_PlayVideo(szPath, nMode, 0);
+    WINDOW_OpenSmackCutscene(szPath, nMode, 0);
     MAINMENUS_CreateVideoScreen();
 }
 
@@ -3943,7 +3953,6 @@ void __cdecl MAINMENUS_ShowMainMenu()
         MAINMENUS_CreateControl(0x09);
         pSecond = MAINMENUS_CreateControl(0x0C);
     }
-// build: symbol ?D2Win_10185_CheckCharMpq@* 0x004FAC90
     if (D2Win_10185_CheckCharMpq())
     {
         CONTROL_SetEnabled(pFirst, 0);
@@ -3958,9 +3967,116 @@ void __cdecl MAINMENUS_ShowMainMenu()
     if (gpLaunchRecord->bFlag223)
         SStrPrintf(&szVersion[nLen], 0x40 - nLen, " %d", 0x47);
     sub_004FCFF0_SetTextA(pText, szVersion, 0);
-// build: symbol ?D2SOUND_GetOptionsMusicOption@* 0x00514D80
     if (D2SOUND_GetOptionsMusicOption())
         D2SOUND_10034(1);
+}
+
+// 0x00433810
+int __cdecl MAINMENUS_ShowTerms()
+{
+    char szLanguage[128];
+    unsigned short wszLine[200];
+    char szFileName[128];
+    gbStopMainLoop = 0;
+    sub_0042F800_CreateControls();
+    STRTABLE_GetLanguageInfoField(szLanguage, 2);
+    SStrCopy(szFileName, gszTosPrefix, 128);
+    SStrPack(szFileName, szLanguage, 128);
+    SStrPack(szFileName, gszTextExt, 128);
+    gpFuncTable->pfnRequest(szFileName, strlen(szFileName));
+    sub_004FA590_RunLoop(MAINMENUS_PollDownloadDone);
+    if (gbStopMainLoop) { MAINMENUS_DestroyControls(); return 0; }
+    if (!gpFuncTable->pfnSlot68())
+    {
+        const Unicode* pMessage = D2LANG_GetStringFromTblIndex(0x14E3);
+        MAINMENUS_ShowMessage(pMessage, MAINMENUS_ShowMainMenu, 1);
+        return 0;
+    }
+    MAINMENUS_DestroyControls();
+    MAINMENUS_CreateTermsControls();
+    MAINMENUS_CreateControl(0x4D);
+    D2WinControlStrc* pText = MAINMENUS_CreateControl(0x4E);
+    void* hFile = FOG_CreateFileA(szFileName, 0x80000000, 0, 0, 3, 0x08000000, 0);
+    if (hFile == (void*)-1)
+    {
+        const Unicode* pMessage = D2LANG_GetStringFromTblIndex(0x14E3);
+        MAINMENUS_ShowMessage(pMessage, MAINMENUS_ShowMainMenu, 1);
+        return 0;
+    }
+    unsigned long nSize = GetFileSize(hFile, 0);
+    void* pBuffer = FOG_Alloc(nSize, gszMainMenusFile, 0xC4D, 0);
+    unsigned long nRead;
+    FOG_ReadFile(hFile, pBuffer, nSize, &nRead, 0);
+    FOG_CloseFile(hFile);
+    FOG_DeleteFileA(szFileName);
+    Unicode* pChars = 0;
+    int nCount;
+    if (nSize == nRead && nSize > 2)
+    {
+        if (*(unsigned short*)pBuffer == 0xFEFF)
+        {
+            pChars = (Unicode*)pBuffer + 1;
+            nCount = (nSize - 2) / 2;
+        }
+        else if (*(unsigned short*)pBuffer == 0xFFFE)
+        {
+            pChars = (Unicode*)pBuffer + 1;
+            nCount = (nSize - 2) / 2;
+            CHARSEL_SwapUnicodeBytes(pChars, nCount);
+        }
+        else
+        {
+            pChars = (Unicode*)FOG_Alloc(2*nSize+1, gszMainMenusFile, 0xC6B, 0);
+            sub_00526F20_ToUnicode(pChars, (const char*)pBuffer, nSize);
+            FOG_Free(pBuffer, gszMainMenusFile, 0xC6D, 0);
+            pBuffer = pChars;
+            nCount = nSize;
+        }
+    }
+    else nCount = 0;
+    int nStart = 0;
+    int i = 0;
+    while (i < nCount)
+    {
+        memset(wszLine, 0, sizeof(wszLine));
+        int nLine = 0;
+        do
+        {
+            if (i >= nCount) break;
+            const unsigned short nChar = pChars[i].wChar;
+            if (nChar == '\r' || nChar == '\n') { wszLine[nLine] = ' '; nLine = 200; ++i; }
+            else if (nChar != '\t') { wszLine[nLine++] = nChar; ++i; }
+            else { ++i; wszLine[nLine++] = ' '; }
+            if (D2Win_10121_GetTextWidth((const Unicode*)wszLine) > 540)
+            {
+                int nLength = UNICODE_StrLen((const Unicode*)wszLine);
+                while (nLength > 1 && !sub_00526D30_IsLineBreak(pChars + nStart, nLength)) --nLength;
+                i = nStart + nLength;
+                wszLine[nLength] = 0;
+                if (nLength && wszLine[nLength - 1] == ' ') wszLine[nLength - 1] = 0;
+                break;
+            }
+        } while (nLine < 200);
+        int nLength = UNICODE_StrLen((const Unicode*)wszLine);
+        for (int j = 0; j < nLength; ++j)
+        {
+            if (wszLine[j] != ' ')
+            {
+                D2Win_10051(pText, (const Unicode*)wszLine, 0, 0, 0);
+                break;
+            }
+        }
+        nStart = i;
+    }
+    FOG_Free(pBuffer, gszMainMenusFile, 0xCB4, 0);
+    D2Win_10053(pText, 0);
+    MAINMENUS_CreateControl(0x4F);
+    MAINMENUS_CreateControl(0x50);
+    pText = MAINMENUS_CreateControl(0x51);
+    D2Win_10051(pText, D2LANG_GetStringFromTblIndex(0x143C), 0, 0, 0);
+    MAINMENUS_CreateControl(0x52);
+    MAINMENUS_CreateControl(0x53);
+    return 1;
 }
 
 // 0x00433BD0
@@ -3977,13 +4093,163 @@ int __stdcall MAINMENUS_OnLoginChanged(int nArg)
     return 1;
 }
 
+// 0x00433BF0
+int __stdcall MAINMENUS_SelectCharacterClass(D2MenuCallbackArgStrc* pArg)
+{
+    int nImageState = D2Win_10106(pArg->pControl);
+    if (FOG_IsExpansion())
+    {
+        for (int i = 0; i < 7; ++i)
+            if (!D2Win_10104(gapClassImages[i])) return 0;
+    }
+    else
+    {
+        for (int i = 0; i < 5; ++i)
+            if (!D2Win_10104(gapClassImages[i])) return 0;
+    }
+    int nPreviousClass = gnTextSentinel;
+    int nClass = -1;
+    gnTextSentinel = -1;
+    if (nPreviousClass != -1)
+    {
+        D2SOUNDFAST_FadeOutWaves();
+        switch (nPreviousClass)
+        {
+        case 0: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\amazon deselect.wav"); break;
+        case 4: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\barbarian deselect.wav"); break;
+        case 3: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\paladin deselect.wav"); break;
+        case 2: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\necromancer deselect.wav"); break;
+        case 1: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\sorceress deselect.wav"); break;
+        case 5: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\druid deselect.wav"); break;
+        case 6: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\assassin deselect.wav"); break;
+        }
+    }
+    if (pArg->pControl == gapClassImages[0])
+    {
+        nClass = 4;
+        MAINMENUS_ShowOptionDescription(pArg->nArg, 4, 0xFA7, 0x140A);
+    }
+    else if (pArg->pControl == gapClassImages[1])
+    {
+        nClass = 2;
+        MAINMENUS_ShowOptionDescription(pArg->nArg, 2, 0xFA9, 0x1409);
+    }
+    else if (pArg->pControl == gapClassImages[2])
+    {
+        nClass = 0;
+        MAINMENUS_ShowOptionDescription(pArg->nArg, 0, 0xFAB, 0x1408);
+    }
+    else if (pArg->pControl == gapClassImages[3])
+    {
+        nClass = 1;
+        MAINMENUS_ShowOptionDescription(pArg->nArg, 1, 0xFAA, 0x140B);
+    }
+    else if (pArg->pControl == gapClassImages[4])
+    {
+        nClass = 3;
+        MAINMENUS_ShowOptionDescription(pArg->nArg, 3, 0xFA8, 0x140C);
+    }
+    else if (pArg->pControl == gapClassImages[5])
+    {
+        nClass = 5;
+        MAINMENUS_OnSelectDruid(pArg);
+    }
+    else if (pArg->pControl == gapClassImages[6])
+    {
+        nClass = 6;
+        MAINMENUS_OnSelectAssassin(pArg);
+    }
+    if (nClass != nPreviousClass && nImageState == 1)
+    {
+        switch (nClass)
+        {
+        case 0: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\amazon select.wav"); break;
+        case 4: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\barbarian select.wav"); break;
+        case 3: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\paladin select.wav"); break;
+        case 2: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\necromancer select.wav"); break;
+        case 1: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\sorceress select.wav"); break;
+        case 6: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\assassin select.wav"); break;
+        case 5: D2SOUND_10039("data\\global\\sfx\\cursor\\intro\\druid select.wav"); break;
+        }
+        gnTextSentinel = nClass;
+    }
+    else if (nImageState != 2 && nImageState != 3 && nImageState != 4)
+        gnTextSentinel = nClass;
+    MAINMENUS_SetModeFlags((char)gnTextSentinel);
+    if (gnTextSentinel == -1 && nImageState != 1)
+    {
+        CONTROL_SetVisible(gpControl_00779598, 0);
+        CONTROL_SetVisible(gpControl_007795CC, 0);
+        CONTROL_SetVisible(gpControl_007795B0, 0);
+        CONTROL_SetVisible(gpControl_007795C4, 0);
+        CONTROL_SetVisible(gpNameEdit, 0);
+        CONTROL_SetVisible(gpOkButton, 0);
+        if (gnLaunchMode == 1)
+        {
+            CONTROL_SetVisible(gpControl_007795B8, 0);
+            CONTROL_SetVisible(gpControl_00779348, 0);
+        }
+        if (FOG_IsExpansion())
+        {
+            CONTROL_SetVisible(gpControl_00779568, 0);
+            CONTROL_SetVisible(gpControl_007795C8, 0);
+            CONTROL_SetVisible(gpControl_007795B4, 0);
+        }
+        CONTROL_SetFocusedEditBox(0);
+        if (gnLaunchMode == 1) CONTROL_SetVisible(gpControl_0077933C, 1);
+    }
+    else
+    {
+        CONTROL_SetVisible(gpControl_00779598, 1);
+        CONTROL_SetVisible(gpControl_007795CC, 1);
+        if (gfHasCharEntries)
+        {
+            CONTROL_SetVisible(gpControl_007795B0, 1);
+            CONTROL_SetVisible(gpControl_007795C4, 1);
+        }
+        if (gnLaunchMode == 1)
+        {
+            CONTROL_SetVisible(gpControl_007795B8, 1);
+            CONTROL_SetVisible(gpControl_00779348, 1);
+        }
+        CONTROL_SetVisible(gpNameEdit, 1);
+        CONTROL_SetFocusedEditBox(gpNameEdit);
+        CONTROL_SetVisible(gpOkButton, 1);
+        if (gnLaunchMode == 1) CONTROL_SetVisible(gpControl_0077933C, 0);
+    }
+    if (FOG_IsExpansion())
+    {
+        if (gnTextSentinel == 6 || gnTextSentinel == 5)
+        {
+            CONTROL_SetVisible(gpControl_00779568, 1);
+            CONTROL_SetVisible(gpControl_007795C8, 0);
+            CONTROL_SetVisible(gpControl_007795B4, 1);
+            gpLaunchRecord->wFlags1EF |= 0x20;
+        }
+        else if (gnTextSentinel != -1)
+        {
+            CONTROL_SetVisible(gpControl_00779568, 1);
+            CONTROL_SetVisible(gpControl_007795C8, 1);
+            CONTROL_SetVisible(gpControl_007795B4, 0);
+            BUTTON_SetIsPressed(gpControl_007795C8, 1);
+            gpLaunchRecord->wFlags1EF |= 0x20;
+        }
+    }
+    if (gnLaunchMode == 1)
+    {
+        BUTTON_SetIsPressed(gpControl_00779348, 1);
+        gpLaunchRecord->wFlags1EF |= 0x40;
+    }
+    return 1;
+}
+
 // 0x00434060
 void __cdecl MAINMENUS_BuildRealmList()
 {
     MAINMENUS_ShowConnectingPopup();
     sub_004FA590_RunLoop(MAINMENUS_StopLoop);
-    if (gpFuncTable_0077ABF0)
-        gpMenuList = gpFuncTable_0077ABF0->pfnGetMenuList(0);
+    if (gpFuncTable)
+        gpMenuList = gpFuncTable->pfnGetMenuList(0);
     MAINMENUS_DestroyControls();
     D2MenuListStrc* pList = gpMenuList;
     if (!pList)
@@ -4022,8 +4288,8 @@ void __cdecl MAINMENUS_BuildRealmList()
 // 0x004341F0
 int __stdcall MAINMENUS_CheckCreditsEnd(int nArg)
 {
-    if (gnListPos <= sub_004FB950_GetFirstVisible(gpList_00779964) + 10)
-        sub_004336C0();
+    if (gnListPos <= sub_004FB950_GetFirstVisible(gpCreditsList) + 10)
+        MAINMENUS_ShowMainMenu();
     return 1;
 }
 
@@ -4031,7 +4297,6 @@ int __stdcall MAINMENUS_CheckCreditsEnd(int nArg)
 int __cdecl MAINMENUS_PromptPlayDisc()
 {
     MAINMENUS_DestroyControls();
-// build: symbol ?MAINMENUS_CreateFromTemplate@* 0x0042F3A0
     D2WinControlStrc* pControl = MAINMENUS_CreateFromTemplate(0xDE);
     D2Win_10033(pControl, 1);
     D2Win_10030_CONTROL_ToggleFourthFlag(pControl, 1);
@@ -4156,29 +4421,25 @@ int __stdcall MAINMENUS_PlayExpansionOutro(int nArg)
 // 0x004345C0
 int __stdcall MAINMENUS_ReloadAndLeave(int nArg)
 {
-    sub_004FAD70();
+    ARCHIVE_UnloadExpansionArchives();
     ARCHIVE_LoadExpansionArchives(MAINMENUS_PromptPlayDisc, MAINMENUS_PromptExpansionDisc, 0, gpConfig_007795D4);
-// build: symbol ?D2SOUND_GetOptionsMusicOption@* 0x00514D80
     if (D2SOUND_GetOptionsMusicOption())
         D2SOUND_10034(1);
-    sub_004336C0();
+    MAINMENUS_ShowMainMenu();
     return 1;
 }
 
-// build: symbol ?Name@BNGatewayAccess@@QAGPBDH@Z 0x005180A0
 // 0x00434600
 int __stdcall MAINMENUS_CreateGatewayScreen(int nUnused)
 {
-// build: symbol ?CHARSEL_CreateBaseScreen@* 0x0043C4F0
     CHARSEL_CreateBaseScreen();
-// build: symbol ?MAINMENUS_CreateControl@* 0x0042F430
     MAINMENUS_CreateControl(0x47);
     D2Win_10044(MAINMENUS_CreateControl(0x48), D2LANG_GetStringFromTblIndex(0x2B2F));
     D2Win_10044(MAINMENUS_CreateControl(0x49), D2LANG_GetStringFromTblIndex(0x2B30));
     gpGatewayList = MAINMENUS_CreateControl(0x4A);
     MAINMENUS_CreateControl(0x4B);
     MAINMENUS_CreateControl(0x4C);
-    BNGatewayAccess* pGateways = (BNGatewayAccess*)gpFuncTable_0077ABF0->pfnGetRecord();
+    BNGatewayAccess* pGateways = (BNGatewayAccess*)gpFuncTable->pfnGetRecord();
     int nCur = pGateways->m_nCurGateway;
     for (int i = 1; i <= pGateways->m_nNumGateways; ++i)
     {
@@ -4203,32 +4464,30 @@ int __stdcall SetCurGateway(D2FuncRecordStrc* pRecord, int nIndex);             
 
 struct D2ComInterfaceStrc;
 
-extern D2ComInterfaceStrc* gpFuncTable_0077ABF0; // 0x0077ABF0
 
 // 0x00434700
 int __stdcall MAINMENUS_OnRealmSelected(SMSGHANDLER_PARAMS* pMsg)
 {
-    D2FuncRecordStrc* pRecord = gpFuncTable_0077ABF0->pfnGetRecord();
+    D2FuncRecordStrc* pRecord = gpFuncTable->pfnGetRecord();
     int nSelection = sub_004FB990_GetSelection(gpGatewayList);
     if (nSelection != -1)
     {
         nSelection += 1;
         SetCurGateway(pRecord, nSelection);
-        SRegSaveString("Diablo II", "Preferred Realm", 0, sub_005180E0(pRecord, nSelection));
+        SRegSaveString("Diablo II", "Preferred Realm", 0, Realm(pRecord, nSelection));
     }
     MAINMENUS_Reset();
-    sub_004336C0();
+    MAINMENUS_ShowMainMenu();
     return 1;
 }
 
 // 0x00434760
 int __stdcall MAINMENUS_ResetAndLeave(int nArg)
 {
-// build: symbol ?MAINMENUS_Reset@* 0x0042F480
     MAINMENUS_Reset();
     if (D2SOUND_GetOptionsMusicOption())
         D2SOUND_10034(1);
-    sub_004336C0();
+    MAINMENUS_ShowMainMenu();
     return 1;
 }
 
@@ -4241,7 +4500,7 @@ int __stdcall MAINMENUS_JoinTcpIp(int nUnused)
     int c;
     int d;
     const Unicode* pText = sub_004FDD90_GetEditText(gpAddressEdit);
-    sub_005263E0(szText, pText, 0x100);
+    UNICODE_ToUtf8(szText, pText, 0x100);
     if (!szText[0])
         return 1;
     strncpy(gszLastTcpIpAddress, szText, 0xFF);
@@ -4262,30 +4521,29 @@ int __stdcall MAINMENUS_JoinTcpIp(int nUnused)
     }
     strcpy(gpLaunchRecord->szServerIP, szText);
     MAINMENUS_ShowConnectingPopup();
-    sub_004FA590_RunLoop(sub_00431D10);
+    sub_004FA590_RunLoop(MAINMENUS_StopLoop);
     gbConnectResult = 0;
-    sub_0052A750(0, szText);
-    sub_004FA590_RunLoop(sub_00431E30);
+    CLIENT_Initialize(0, szText);
+    sub_004FA590_RunLoop(MAINMENUS_PollConnection);
     if (!gbConnectResult)
     {
-        sub_0052A7E0();
+        CLIENT_Release();
         MAINMENUS_DestroyControls();
         const Unicode* pMessage = D2LANG_GetStringFromTblIndex(0x145B);
-// build: symbol ?CHARSEL_CreateTcpIpScreen@* 0x0042FFE0
         MAINMENUS_ShowMessage(pMessage, CHARSEL_CreateTcpIpScreen, 1);
         return 1;
     }
     MAINMENUS_DestroyControls();
     MAINMENUS_ShowConnectingPopup();
-    sub_004FA590_RunLoop(sub_00431C90);
-    sub_0052A7E0();
+    sub_004FA590_RunLoop(MAINMENUS_PollSystemPacket);
+    CLIENT_Release();
     MAINMENUS_DestroyControls();
-    if (!gdwGlobal_00779974)
+    if (!gfMenusDone)
     {
         gnLaunchMode = 2;
         gpLaunchRecord->dwGameType = 9;
         gpLaunchRecord->wJoinID = 1;
-        sub_00515020();
+        D2SOUNDFAST_FadeOutWaves();
         MAINMENUS_Reset();
         CHARSEL_InitCharSelectScreen();
     }
@@ -4386,7 +4644,6 @@ int __fastcall MAINMENUS_UpgradeCharacter(D2LaunchCharEntryStrc* pEntry, const c
 {
     if (!MCPCONNECT_QueryAddress())
     {
-// build: symbol ?MAINMENUS_ConnectToRealm@* 0x00432480
         int nResult = MAINMENUS_ConnectToRealm(szName, 0);
         if (nResult >= 1 && nResult <= 2)
         {
@@ -4397,7 +4654,6 @@ int __fastcall MAINMENUS_UpgradeCharacter(D2LaunchCharEntryStrc* pEntry, const c
     MAINMENUS_ShowConnectingPopup();
     WINMAIN_SendMcpCharUpgrade(pEntry->szName);
     sub_004FA590_RunLoop(MAINMENUS_PollCharUpgrade);
-// build: symbol ?GAME_GetConnectError@* 0x00449C00
     return GAME_GetConnectError() == 0;
 }
 
@@ -4412,10 +4668,10 @@ int __fastcall MAINMENUS_JoinGame(const char* szGameName, unsigned short wFlags,
 
     if (gnLaunchMode == 1 || gnLaunchMode == 3)
     {
-        if (!gpFuncTable_0077ABF0->pfnSlot68())
+        if (!gpFuncTable->pfnSlot68())
         {
             CHARSEL_CreateBaseScreen();
-            if (!sub_0043BF60())
+            if (!sub_0043BF60_ConnectToBattleNet())
                 return 0;
             if (!CHARSEL_Connect(gpLaunchRecord, 0, 0))
                 return 0;
@@ -4503,16 +4759,16 @@ int __fastcall MAINMENUS_JoinGame(const char* szGameName, unsigned short wFlags,
                 Unicode wszName[256];
                 sub_00526F20_ToUnicode(wszName, gpLaunchRecord->szJoinGameName, 256);
                 D2MCPClientCloseMCP();
-                sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(0x2B89), wszName);
+                sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(0x2B89), wszName);
                 MAINMENUS_DestroyControls();
-                void* pSaved = gpGlobal_0070B738;
-                gpGlobal_0070B738 = gaGlobal_007089C4;
+                void* pSaved = gatControlTemplates[0xE0].unk0x28;
+                gatControlTemplates[0xE0].unk0x28 = gaGlobal_007089C4;
                 MAINMENUS_ShowMessage(wszText, MAINMENUS_ReturnToCharSelect, 1);
-                gpGlobal_0070B738 = pSaved;
+                gatControlTemplates[0xE0].unk0x28 = pSaved;
                 return 0;
             }
 
-            if (gdwGlobal_00779974)
+            if (gfMenusDone)
             {
                 MAINMENUS_DestroyControls();
                 return 0;
@@ -4552,7 +4808,6 @@ int __fastcall MAINMENUS_JoinGame(const char* szGameName, unsigned short wFlags,
 // 0x00434D90
 int __stdcall MAINMENUS_PlayIntroAndLeave(int nArg)
 {
-// build: symbol ?D2Win_10003@* 0x004F9050
     if (D2Win_10003())
         MAINMENUS_PlayIntroVideo();
     D2Win_10004(1);
@@ -4563,75 +4818,23 @@ int __stdcall MAINMENUS_PlayIntroAndLeave(int nArg)
 // 0x00434DC0
 int __stdcall sub_00434DC0_Leave(int nArg)
 {
-    sub_004336C0();
+    MAINMENUS_ShowMainMenu();
     return 1;
 }
 
 // 0x00434DD0
 int __stdcall MAINMENUS_DisconnectAndLeave(int nArg)
 {
-// build: symbol ?CHARSEL_DisconnectBattleNet@* 0x0043B9A0
     CHARSEL_DisconnectBattleNet();
-    sub_004336C0();
+    MAINMENUS_ShowMainMenu();
     return 1;
 }
 
 // 0x00434DF0
 int __stdcall sub_00434DF0_Leave(int nArg)
 {
-    sub_004336C0();
+    MAINMENUS_ShowMainMenu();
     return 1;
-}
-
-// build: symbol ?MAINMENUS_SetMultilineText@* 0x004330A0
-static int __stdcall MAINMENUS_SetMultilineText(D2WinControlStrc* pControl, int nArg, const Unicode* pText, bool bWrapped)
-{
-    Unicode aBuffer[0x400];
-    for (int i = 0; i < 0x400; ++i)
-        aBuffer[i].wChar = 0;
-    sub_00526790(aBuffer, pText, 0x400);
-    Unicode* pChar = aBuffer;
-    Unicode* pLine = pChar;
-    while (pChar->wChar)
-    {
-        if (pChar->wChar == 0xA)
-        {
-            pChar->wChar = 0;
-            D2Win_10051(pControl, pLine, nArg, bWrapped, 0);
-            pLine = pChar + 1;
-        }
-        ++pChar;
-    }
-    if (pLine < pChar)
-        D2Win_10051(pControl, pLine, nArg, bWrapped, 0);
-    return 1;
-}
-
-void __fastcall MAINMENUS_ShowMessage(const Unicode* pText, D2LaunchDoneFn pfnDone, int nArg)
-{
-    D2WinControlStrc* pFrame;
-    D2WinControlStrc* pButton;
-    D2WinControlStrc* pTextBox;
-    MAINMENUS_DestroyControls();
-    if (gbFeCharPalette)
-    {
-        pFrame = MAINMENUS_CreateFromTemplate(0xF7);
-        D2Win_10033(pFrame, 1);
-        pButton = MAINMENUS_CreateFromTemplate(nArg ? 0xF8 : 0xFA);
-        pTextBox = MAINMENUS_CreateFromTemplate(0xF9);
-    }
-    else
-    {
-        pFrame = MAINMENUS_CreateFromTemplate(0xDE);
-        D2Win_10033(pFrame, 1);
-        pButton = MAINMENUS_CreateFromTemplate(nArg ? 0xE1 : 0xDF);
-        pTextBox = MAINMENUS_CreateFromTemplate(0xE0);
-    }
-    D2Win_10030_CONTROL_ToggleFourthFlag(pFrame, 1);
-    D2Win_10030_CONTROL_ToggleFourthFlag(pButton, 1);
-    D2Win_10030_CONTROL_ToggleFourthFlag(pTextBox, 1);
-    MAINMENUS_SetMultilineText(pTextBox, 0, pText, false);
-    gpfnGatewayDone = pfnDone;
 }
 
 // 0x00434E00
@@ -4664,7 +4867,7 @@ int __stdcall MAINMENUS_CheckFreeSpace(int nUnused)
 // 0x00435020
 int __stdcall MAINMENUS_Callback(int nUnused)
 {
-    sub_004336C0();
+    MAINMENUS_ShowMainMenu();
     return 1;
 }
 
@@ -4673,7 +4876,7 @@ int __stdcall MAINMENUS_ChangePasswordOk(int nArg)
 {
     if (!nArg)
     {
-        sub_004370C0();
+        MAINMENUS_CreateInfoScreen();
         return 1;
     }
     MAINMENUS_StoreAccountTexts(gpAccountEdit, gpCreatePasswordEdit);
@@ -4681,8 +4884,8 @@ int __stdcall MAINMENUS_ChangePasswordOk(int nArg)
     const Unicode* pOldPassword = sub_004FDD90_GetEditText(gpPasswordEdit);
     const Unicode* pPassword = sub_004FDD90_GetEditText(gpCreatePasswordEdit);
     const Unicode* pConfirm = sub_004FDD90_GetEditText(gpCreatePasswordConfirmEdit);
-    sub_00526F70(gszOldPassword, pOldPassword, 0x100);
-    int nLength = sub_00526800(pAccount);
+    UNICODE_ToAscii(gszOldPassword, pOldPassword, 0x100);
+    int nLength = UNICODE_StrLen(pAccount);
     if (nLength < 2)
     {
         const Unicode* pMessage = D2LANG_GetStringFromTblIndex(0x1460);
@@ -4701,7 +4904,7 @@ int __stdcall MAINMENUS_ChangePasswordOk(int nArg)
         MAINMENUS_ShowMessage(pMessage, MAINMENUS_CreateLoginScreen, 1);
         return 1;
     }
-    nLength = sub_00526800(pPassword);
+    nLength = UNICODE_StrLen(pPassword);
     if (nLength < 2)
     {
         const Unicode* pMessage = D2LANG_GetStringFromTblIndex(0x1463);
@@ -4732,10 +4935,25 @@ int __stdcall MAINMENUS_ChangePasswordOk(int nArg)
     return 1;
 }
 
+// 0x00435180
+void __fastcall MAINMENUS_ShowExpansionMessage(const Unicode* pText, D2LaunchDoneFn pfnDone, int nArg)
+{
+    MAINMENUS_DestroyControls();
+    D2WinControlStrc* pFrame = MAINMENUS_CreateFromTemplate(0xDE);
+    D2Win_10033(pFrame, 1);
+    D2WinControlStrc* pButton = MAINMENUS_CreateFromTemplate(nArg ? 0xE1 : 0xDF);
+    D2WinControlStrc* pTextBox = MAINMENUS_CreateFromTemplate(0xE0);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pFrame, 1);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pButton, 1);
+    D2Win_10030_CONTROL_ToggleFourthFlag(pTextBox, 1);
+    MAINMENUS_SetMultilineText(pTextBox, 0, pText, false);
+    gpfnGatewayDone = pfnDone;
+}
+
 // 0x00435200
 int __stdcall MAINMENUS_CancelDownload(int nArg)
 {
-    gpFuncTable_0077ABF0->pfnSlot70();
+    gpFuncTable->pfnSlot70();
     gbStopMainLoop = 1;
     MAINMENUS_ShowMainMenu();
     return 1;
@@ -4744,7 +4962,6 @@ int __stdcall MAINMENUS_CancelDownload(int nArg)
 // 0x00435230
 void __cdecl MAINMENUS_PlayIntroVideos()
 {
-// build: symbol ?gpLaunchRecord@* 0x007795D4
     D2_ASSERT(!gpLaunchRecord->bIntroPlayed, 0x8D4);
     D2Win_10029(0);
     MAINMENUS_Reset();
@@ -4773,7 +4990,6 @@ void __cdecl MAINMENUS_PlayIntroVideos()
         }
         else
         {
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
             if (FOG_IsExpansion() && MAINMENUS_GetAuxBattleNetFlag())
                 MAINMENUS_PlayIntro();
         }
@@ -4789,18 +5005,17 @@ void __cdecl MAINMENUS_ShowLoginScreen()
 {
     char szAccount[0x400];
     s_bGatewayFlag_00779954 = 1;
-    int bConnected = gpFuncTable_0077ABF0->pfnSlot68();
+    int bConnected = gpFuncTable->pfnSlot68();
     if (bConnected && !CHARSEL_IsBattleNetConnected())
         goto create;
     if (bConnected)
         CHARSEL_DisconnectBattleNet();
-    sub_004336C0();
-    if (!sub_0043BF60())
+    MAINMENUS_ShowMainMenu();
+    if (!sub_0043BF60_ConnectToBattleNet())
         return;
 create:
     gpAccountEdit = 0;
     gpPasswordEdit = 0;
-// build: symbol ?gpCreatePasswordConfirmEdit@* 0x007795A8
     gpCreatePasswordConfirmEdit = 0;
     gpControl_00779594 = 0;
     CHARSEL_CreateBaseScreen();
@@ -4853,14 +5068,14 @@ void __cdecl MAINMENUS_CreateCharCreateScreen()
 {
     MAINMENUS_LoadCharCreateCells();
     MAINMENUS_Reset();
-    gnGlobal_00708D0C = -1;
-    gnGlobal_0070CB80 = -1;
+    gnTextMode = -1;
+    gnTextSentinel = -1;
     gpLaunchRecord->wFlags1EF = 0;
-    MAINMENUS_ReadPaletteFiles(gszFecharPalDat_006D39E8, "palette\\fechar\\pal.pl2");
+    MAINMENUS_ReadPaletteFiles(gszFeCharPalDat, "palette\\fechar\\pal.pl2");
 
     MAINMENUS_CreateControl(0xB1);
-    gpControl_007795D8 = MAINMENUS_CreateControl(0xC5);
-    gpControl_007795DC = MAINMENUS_CreateControl(0xC6);
+    gpTextControl1 = MAINMENUS_CreateControl(0xC5);
+    gpTextControl2 = MAINMENUS_CreateControl(0xC6);
     D2WinControlStrc* pTitle = MAINMENUS_CreateControl(0xAE);
     sub_004FC9B0_SetText(pTitle, D2LANG_GetStringFromTblIndex(0x1407), 0, 0, 0);
 
@@ -4951,23 +5166,23 @@ void __cdecl MAINMENUS_CreateCharCreateScreen()
         sub_004F9740_SetControlState(gpControl_00779348, 0);
     }
 
-    gapClassImages = MAINMENUS_CreateControl(0xB6);
+    gapClassImages[0] = MAINMENUS_CreateControl(0xB6);
     if (FOG_IsExpansion())
     {
-        gpControl_00779578 = MAINMENUS_CreateControl(0xBA);
-        gpControl_0077957C = MAINMENUS_CreateControl(0xBB);
-        gpControl_00779570 = MAINMENUS_CreateControl(0xB5);
-        gpControl_00779584 = MAINMENUS_CreateControl(0xD1);
-        gpControl_00779574 = MAINMENUS_CreateControl(0xBC);
-        gpControl_00779580 = MAINMENUS_CreateControl(0xD2);
+        gapClassImages[3] = MAINMENUS_CreateControl(0xBA);
+        gapClassImages[4] = MAINMENUS_CreateControl(0xBB);
+        gapClassImages[1] = MAINMENUS_CreateControl(0xB5);
+        gapClassImages[6] = MAINMENUS_CreateControl(0xD1);
+        gapClassImages[2] = MAINMENUS_CreateControl(0xBC);
+        gapClassImages[5] = MAINMENUS_CreateControl(0xD2);
         MAINMENUS_CreateControl(0xB2);
     }
     else
     {
-        gpControl_00779570 = MAINMENUS_CreateControl(0xB5);
-        gpControl_00779578 = MAINMENUS_CreateControl(0xB7);
-        gpControl_00779574 = MAINMENUS_CreateControl(0xB4);
-        gpControl_0077957C = MAINMENUS_CreateControl(0xB8);
+        gapClassImages[1] = MAINMENUS_CreateControl(0xB5);
+        gapClassImages[3] = MAINMENUS_CreateControl(0xB7);
+        gapClassImages[2] = MAINMENUS_CreateControl(0xB4);
+        gapClassImages[4] = MAINMENUS_CreateControl(0xB8);
         MAINMENUS_CreateControl(0xB3);
     }
 
@@ -4977,11 +5192,9 @@ void __cdecl MAINMENUS_CreateCharCreateScreen()
 // 0x004359D0
 int __fastcall MAINMENUS_RunFrontEnd(D2ConfigStrc* pRecord)
 {
-// build: symbol ?gpLaunchRecord@* 0x007795D4
     gpLaunchRecord = pRecord;
     D2Win_10015();
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
-    D2_ASSERT(sub_005259C0(sub_004FAC80(FOG_IsExpansion()), 0), 0x125A);
+    D2_ASSERT(STRTABLE_LoadStringTables(sub_004FAC80(FOG_IsExpansion()), 0), 0x125A);
     MAINMENUS_LoadFrontEndCells();
     CURSOR_SetCellFile(gpCursorOHandCelFile);
     gpLaunchRecord->szRealm0x361[0] = 0;
@@ -5009,15 +5222,15 @@ int __fastcall MAINMENUS_RunFrontEnd(D2ConfigStrc* pRecord)
         D2SOUNDFAST_PreloadWave("data\\global\\sfx\\cursor\\intro\\assassin select.wav");
         D2SOUNDFAST_PreloadWave("data\\global\\sfx\\cursor\\intro\\assassin deselect.wav");
     }
-    gpFuncTable_0077ABF0 = pRecord->pComInterface;
+    gpFuncTable = pRecord->pComInterface;
     const char nStartMode = gpLaunchRecord->nStartMode;
     if (nStartMode == 2)
     {
-        if (gpFuncTable_0077ABF0->pfnSlot68())
+        if (gpFuncTable->pfnSlot68())
         {
             gnLaunchMode = 1;
             sub_004F90A0(1);
-            sub_0043B080();
+            CHARSEL_InitCharSelectScreen();
         }
         else
         {
@@ -5028,11 +5241,11 @@ int __fastcall MAINMENUS_RunFrontEnd(D2ConfigStrc* pRecord)
     }
     else if (nStartMode == 4)
     {
-        if (gpFuncTable_0077ABF0->pfnSlot68())
+        if (gpFuncTable->pfnSlot68())
         {
             gnLaunchMode = 3;
             sub_004F90A0(1);
-            sub_0043B080();
+            CHARSEL_InitCharSelectScreen();
         }
         else
         {
@@ -5046,7 +5259,6 @@ int __fastcall MAINMENUS_RunFrontEnd(D2ConfigStrc* pRecord)
         CHARSEL_InitFuncTable(gpLaunchRecord);
         gnLaunchMode = 2;
         sub_004F90A0(1);
-// build: symbol ?CHARSEL_CreateTcpIpScreen@* 0x0042FFE0
         CHARSEL_CreateTcpIpScreen();
     }
     else
@@ -5077,20 +5289,19 @@ int __fastcall MAINMENUS_RunFrontEnd(D2ConfigStrc* pRecord)
             {
                 gnLaunchMode = 0;
                 sub_004F90A0(1);
-                sub_004336C0();
+                MAINMENUS_ShowMainMenu();
             }
         }
     }
     D2Win_SetQuitCallback(sub_004309B0_ClearState);
     D2Win_RunMessageLoop(MAINMENUS_IdleLoopCallback);
-    sub_00515020();
+    D2SOUNDFAST_FadeOutWaves();
     while (D2SOUNDFAST_IsAnyWavePlaying())
         Sleep(0);
     D2SOUNDFAST_FreeWaveSlots();
-// build: symbol ?MAINMENUS_Reset@* 0x0042F480
     MAINMENUS_Reset();
     MAINMENUS_FreeFrontEndCells();
-    sub_00524E40();
+    STRTABLE_UnloadStringTables();
     memset(gpLaunchRecord->adwSecret, 0, sizeof(gpLaunchRecord->adwSecret));
     sub_004FA550();
     return gnLaunchState;
@@ -5158,21 +5369,18 @@ int __stdcall MAINMENUS_OnTcpIpHost(int nArg)
 // 0x00435E00
 int __stdcall MAINMENUS_Back(int nArg)
 {
-    sub_00435580();
+    MAINMENUS_CreateCharCreateScreen();
     return 1;
 }
 
-// build: symbol ??_FUnicode@@QAEXXZ 0x0042F530
-// build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 // 0x00435E10
 void __cdecl MAINMENUS_CreateRealmCharacter()
 {
-// build: symbol ?MAINMENUS_ConnectToRealm@* 0x00432480
     switch (MAINMENUS_ConnectToRealm(GAME_GetPreferredRealm(), 0))
     {
     case 1:
     case 2:
-        sub_00435580();
+        MAINMENUS_CreateCharCreateScreen();
         return;
     }
 
@@ -5188,7 +5396,7 @@ void __cdecl MAINMENUS_CreateRealmCharacter()
             CHATDLG_RequestCharCreate(gpLaunchRecord->szCharName, gpLaunchRecord->nClass, gpLaunchRecord->wFlags1EF);
             MAINMENUS_ShowConnectingPopup();
             sub_004FA590_RunLoop(MAINMENUS_PollCharCreate);
-            if (gdwGlobal_00779974)
+            if (gfMenusDone)
             {
                 MAINMENUS_DestroyControls();
                 return;
@@ -5211,7 +5419,7 @@ void __cdecl MAINMENUS_CreateRealmCharacter()
                     sub_00526320_ToUnicode(wszName, szName, 100);
                     sub_00526700(wszText, wszName);
                     sub_00526700(wszText, wszTail);
-                    MAINMENUS_ShowText(wszText, sub_00435580);
+                    MAINMENUS_ShowText(wszText, MAINMENUS_CreateCharCreateScreen);
                     return;
                 }
 
@@ -5219,12 +5427,12 @@ void __cdecl MAINMENUS_CreateRealmCharacter()
                 Unicode wszText[256];
                 Unicode wszName[256];
                 sub_00526F20_ToUnicode(wszName, gpLaunchRecord->szCharName, 256);
-                sub_005269D0(256, wszText, D2LANG_GetStringFromTblIndex(0x2B33), wszName);
-                MAINMENUS_ShowText(wszText, sub_00435580);
+                sub_005269D0_FormatText(256, wszText, D2LANG_GetStringFromTblIndex(0x2B33), wszName);
+                MAINMENUS_ShowText(wszText, MAINMENUS_CreateCharCreateScreen);
                 return;
             }
 
-            sub_0043C6A0(1);
+            CHARSEL_SetFlagBit2(1);
             SStrCopy(gpLaunchRecord->szRealm, GAME_GetPreferredRealm(), 0x7FFFFFFF);
             gpLaunchRecord->wFlags1EF |= 2;
             gpLaunchRecord->nByte35E = 2;
@@ -5246,7 +5454,7 @@ void __cdecl MAINMENUS_CreateRealmCharacter()
     case 10:
     case 11:
     case 12:
-        MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x145D), sub_00435580);
+        MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(0x145D), MAINMENUS_CreateCharCreateScreen);
         return;
 
     case 71:
@@ -5266,7 +5474,7 @@ int __stdcall MAINMENUS_LoginOk(int nArg)
 {
     if (!nArg)
     {
-        sub_004336C0();
+        MAINMENUS_ShowMainMenu();
         return 1;
     }
     if (!sub_004F9710_TestFlag(gpControl_00779594))
@@ -5277,7 +5485,7 @@ int __stdcall MAINMENUS_LoginOk(int nArg)
         SRegSaveString("Diablo II", "Last BNet", 0, gpLaunchRecord->szAccount);
         if (gnLaunchMode == 1)
         {
-            sub_00515020();
+            D2SOUNDFAST_FadeOutWaves();
             MAINMENUS_Reset();
             CHARSEL_InitCharSelectScreen();
             return 1;
@@ -5287,7 +5495,7 @@ int __stdcall MAINMENUS_LoginOk(int nArg)
             MAINMENUS_ReturnToCharSelect();
             return 1;
         }
-        sub_00435580();
+        MAINMENUS_CreateCharCreateScreen();
     }
     return 1;
 }
@@ -5314,15 +5522,14 @@ int __stdcall MAINMENUS_ConnectOk(int nArg)
     else
     {
         SRegSaveString("Diablo II", "Last BNet", 0, gpLaunchRecord->szAccount);
-// build: symbol ?MAINMENUS_HasSaveFiles@* 0x00430BC0
         if (MAINMENUS_HasSaveFiles())
         {
-            sub_00515020();
+            D2SOUNDFAST_FadeOutWaves();
             MAINMENUS_Reset();
-            sub_0043B080();
+            CHARSEL_InitCharSelectScreen();
             return 1;
         }
-        sub_00435580();
+        MAINMENUS_CreateCharCreateScreen();
     }
     return 1;
 }
@@ -5360,7 +5567,7 @@ int __stdcall MAINMENUS_SubmitCharacter(int nArg)
     if (gnLaunchMode == 3)
     {
         D2MCPClientCloseMCP();
-        sub_0043C6A0(0);
+        CHARSEL_SetFlagBit2(0);
         AUTOMAP_InitCharSaveHeader(gpLaunchRecord->szCharName, gpLaunchRecord->nClass, gpLaunchRecord->aDataED, gpLaunchRecord->wFlags1EF);
         CHATDLG_WriteSaveHeader(gpLaunchRecord->szCharName);
         gpLaunchRecord->nByte35E = 4;
@@ -5388,7 +5595,7 @@ int __stdcall MAINMENUS_SubmitCharacter(int nArg)
     }
     if (gnLaunchMode == 2)
     {
-        sub_0043C6A0(0);
+        CHARSEL_SetFlagBit2(0);
         AUTOMAP_InitCharSaveHeader(gpLaunchRecord->szCharName, gpLaunchRecord->nClass, gpLaunchRecord->aDataED, gpLaunchRecord->wFlags1EF);
         CHATDLG_WriteSaveHeader(gpLaunchRecord->szCharName);
         gpLaunchRecord->nByte35E = 3;
@@ -5410,7 +5617,7 @@ int __stdcall MAINMENUS_SubmitCharacter(int nArg)
 int __stdcall MAINMENUS_BackToCharCreate(int nArg)
 {
     MAINMENUS_DestroyControls();
-    sub_00435580();
+    MAINMENUS_CreateCharCreateScreen();
     return 1;
 }
 
@@ -5420,27 +5627,27 @@ void __cdecl MAINMENUS_CreateCharacter()
     char szName[0x100];
     if (MAINMENUS_SaveExists() == 1 && gnLaunchMode != 1)
     {
-        sub_00433460_ShowMessage(D2LANG_GetStringFromTblIndex(0x142D), MAINMENUS_DestroyControls);
+        MAINMENUS_ShowTextBox(D2LANG_GetStringFromTblIndex(0x142D), MAINMENUS_DestroyControls);
         return;
     }
     if (gpLaunchRecord->nMode == 6 || gpLaunchRecord->nMode == 5)
         gpLaunchRecord->wFlags1EF |= 0x20;
-    const Unicode* pText = sub_004FDD90_GetEditText(gpNameEdit_0077934C);
-    sub_005263E0(szName, pText, 0x100);
+    const Unicode* pText = sub_004FDD90_GetEditText(gpNameEdit);
+    UNICODE_ToUtf8(szName, pText, 0x100);
     sprintf((gpLaunchRecord->szPassword + 0x18), gszStringFormat, szName);
     gpLaunchRecord->szPassword[0x30] = 0;
     if (gpLaunchRecord->wFlags1EF & 0x20)
         gbFlag_00779984 = 1;
     if (gpLaunchRecord->wFlags1EF & 4)
     {
-        sub_00430520();
+        sub_00430520_CreateControls();
         return;
     }
     if (gnLaunchMode == 0)
     {
         MAINMENUS_Reset();
         AUTOMAP_InitCharSaveHeader((gpLaunchRecord->szPassword + 0x18), gpLaunchRecord->nMode, (gpLaunchRecord->szPassword + 0x48), gpLaunchRecord->wFlags1EF);
-        sub_0043C6B0((gpLaunchRecord->szPassword + 0x18));
+        CHATDLG_WriteSaveHeader((gpLaunchRecord->szPassword + 0x18));
         gpLaunchRecord->nByte35E = 1;
         gpLaunchRecord->dwGameType = 0;
         gnLaunchState = 1;
@@ -5454,9 +5661,9 @@ void __cdecl MAINMENUS_CreateCharacter()
     else if (gnLaunchMode == 2)
     {
         MAINMENUS_Reset();
-        sub_0043C6A0(0);
+        CHARSEL_SetFlagBit2(0);
         AUTOMAP_InitCharSaveHeader((gpLaunchRecord->szPassword + 0x18), gpLaunchRecord->nMode, (gpLaunchRecord->szPassword + 0x48), gpLaunchRecord->wFlags1EF);
-        sub_0043C6B0((gpLaunchRecord->szPassword + 0x18));
+        CHATDLG_WriteSaveHeader((gpLaunchRecord->szPassword + 0x18));
         gpLaunchRecord->nByte35E = 3;
         gnLaunchState = 1;
         *(int*)gpLaunchRecord->aState209 = 4;
@@ -5470,9 +5677,9 @@ void __cdecl MAINMENUS_CreateCharacter()
     {
         MAINMENUS_Reset();
         D2MCPClientCloseMCP();
-        sub_0043C6A0(0);
+        CHARSEL_SetFlagBit2(0);
         AUTOMAP_InitCharSaveHeader((gpLaunchRecord->szPassword + 0x18), gpLaunchRecord->nMode, (gpLaunchRecord->szPassword + 0x48), gpLaunchRecord->wFlags1EF);
-        sub_0043C6B0((gpLaunchRecord->szPassword + 0x18));
+        CHATDLG_WriteSaveHeader((gpLaunchRecord->szPassword + 0x18));
         gpLaunchRecord->nLevel = 1;
         SMemCopy(gpLaunchRecord->szText0x3A1, gabDefault, 0x10);
         SMemZero(gpLaunchRecord->nComponentColors, 0x10);
@@ -5507,7 +5714,7 @@ int __stdcall MAINMENUS_CreateAccountOk(int nArg)
     const Unicode* pAccount = sub_004FDD90_GetEditText(gpAccountEdit);
     const Unicode* pPassword = sub_004FDD90_GetEditText(gpPasswordEdit);
     const Unicode* pConfirm = sub_004FDD90_GetEditText(gpCreatePasswordConfirmEdit);
-    int nLength = sub_00526800(pAccount);
+    int nLength = UNICODE_StrLen(pAccount);
     if (nLength < 2)
     {
         const Unicode* pMessage = D2LANG_GetStringFromTblIndex(0x1460);
@@ -5526,7 +5733,7 @@ int __stdcall MAINMENUS_CreateAccountOk(int nArg)
         MAINMENUS_ShowMessage(pMessage, MAINMENUS_CreateMultiplayerScreen, 1);
         return 1;
     }
-    nLength = sub_00526800(pPassword);
+    nLength = UNICODE_StrLen(pPassword);
     if (nLength < 2)
     {
         const Unicode* pMessage = D2LANG_GetStringFromTblIndex(0x1463);
@@ -5547,7 +5754,7 @@ int __stdcall MAINMENUS_CreateAccountOk(int nArg)
 int __stdcall MAINMENUS_OnCharCreateOk(int nUnused)
 {
     char szPath[0x400];
-    if (sub_004F9710_TestFlags(gpOkButton_00779330))
+    if (sub_004F9710_TestFlags(gpOkButton))
     {
         FOG_GetSavePath(szPath, 0x400);
         for (unsigned int i = 0; i < 0x400; i += 1)
@@ -5565,25 +5772,24 @@ int __stdcall MAINMENUS_OnCharCreateOk(int nUnused)
         GetDiskFreeSpaceA(szPath, &nSectorsPerCluster, &nBytesPerSector, &nFreeClusters, &nTotalClusters);
         if (nFreeClusters * nBytesPerSector * nSectorsPerCluster < 5000)
         {
-            sub_00433460_ShowMessage(D2LANG_GetStringFromTblIndex(0x141D), MAINMENUS_ReturnToCharSelect);
+            MAINMENUS_ShowTextBox(D2LANG_GetStringFromTblIndex(0x141D), MAINMENUS_ReturnToCharSelect);
             return 1;
         }
-        CONTROL_SetEnabled(gpOkButton_00779330, 0);
+        CONTROL_SetEnabled(gpOkButton, 0);
         MAINMENUS_CreateCharacter();
     }
     return 1;
 }
 
-int __cdecl sub_0043B830(); // 0x0043B830
+int __cdecl sub_0043B830_IsCancelled(); // 0x0043B830
 
 int gnStatusDots; // 0x007799B4
 
 // 0x0043B4C0
 int __stdcall MAINMENUS_OnRealmListClick(SMSGHANDLER_PARAMS* pMsg)
 {
-// build: symbol ?gpNameControl@* 0x007799E8
     const Unicode* pText = sub_004FBB30_GetText(gpNameControl);
-    sub_005263E0(gszEnteredName, pText, 0x100);
+    UNICODE_ToUtf8(gszEnteredName, pText, 0x100);
     CHARSEL_UseName(gszEnteredName);
     CHARSEL_RefreshCharEntry();
     if (MAINMENUS_IsDoubleClick(pMsg))
@@ -5591,12 +5797,67 @@ int __stdcall MAINMENUS_OnRealmListClick(SMSGHANDLER_PARAMS* pMsg)
     return 1;
 }
 
-// build: symbol ?gszFormatD@* 0x006D57BC
 
-void __fastcall sub_J02_EmitLaunchVideoPath(char* szOut, const char* szFormat, const char* szFile)
+unsigned int __stdcall FOG_ComputeChecksum(const unsigned char* pData, unsigned int nSize); // 0x00411130
+extern "C" const char gszSaveFormat_006D4230[]; // 0x006D4230
+extern D2CharSaveHeaderStrc gtCharSaveHeader; // 0x0077AC10
+
+// 0x0043C6B0
+int __fastcall CHATDLG_WriteSaveHeader(const char* szName)
 {
-    MAINMENUS_BuildLocalizedVideoPath(szOut, szFormat, szFile);
-    MAINMENUS_BuildLocalizedVideoPath(szOut + 1, szFormat, szFile);
+    char szDir[0x400];
+    char szPath[0x1F4];
+    unsigned long dwWritten;
+
+    FOG_GetSavePath(szDir, 0x400);
+    sprintf(szPath, gszSaveFormat_006D4230, szDir, szName);
+
+    void* hFile = FOG_CreateFileA(szPath, 0x40000000, 0, 0, 2, 0x8000000, 0);
+    if (!hFile)
+        return 0;
+
+    gtCharSaveHeader.dwChecksum = FOG_ComputeChecksum((const unsigned char*)&gtCharSaveHeader, 0x14F);
+    FOG_WriteFile(hFile, &gtCharSaveHeader, 0x14F, &dwWritten, 0);
+    FOG_CloseFile(hFile);
+    return 1;
+}
+
+// 0x0043C750
+void __fastcall MAINMENUS_DeleteCharFiles(const char* szCharName, const char* szSubdirectory)
+{
+    char szDir[0x104];
+    D2FindDataStrc tFind;
+    char szTemp[0x104];
+    char szPath[500];
+    char szMask[500];
+
+    D2_ASSERT(szCharName[0], 0xAF);
+
+    FOG_GetSavePath(szDir, 0x104);
+    if (szSubdirectory && szSubdirectory[0])
+    {
+        SStrPrintf(szTemp, 0x104, "%s%s\\", szDir, szSubdirectory);
+        FOG_CreatePathHierarchy(szTemp);
+        SStrCopy(szDir, szTemp, 0x104);
+    }
+
+    sprintf(szMask, "%s%s.*", szDir, szCharName);
+    void* hFind = FindFirstFileA(szMask, &tFind);
+    while (hFind != (void*)-1)
+    {
+        sprintf(szPath, "%s%s", szDir, tFind.cFileName);
+        if (GetFileAttributesA(szPath) & 0x10)
+        {
+            if (!FindNextFileA(hFind, &tFind))
+                return;
+        }
+        else
+        {
+            if (!DeleteFileA(szPath))
+                return;
+            hFind = FindFirstFileA(szMask, &tFind);
+        }
+    }
 }
 
 extern "C" void __cdecl MAINMENUS_OnConnectCancel(); // 0x00436CD0
@@ -5608,7 +5869,6 @@ extern "C" void __cdecl sub_00437710_OnInfoScreen(); // 0x00437710
 extern "C" void __cdecl sub_00437720_OnPasswordScreen(); // 0x00437720
 extern "C" void __cdecl sub_00437730_ChangePassword(); // 0x00437730
 extern "C" void __cdecl CHARSEL_SubmitPasswordReset(); // 0x004378D0
-extern "C" void __cdecl MAINMENUS_SelectCharacterClass(); // 0x00433BF0
 extern "C" void __cdecl CHARSEL_OnNormalDifficulty(); // 0x00439B80
 extern "C" void __cdecl CHARSEL_OnNightmareDifficulty(); // 0x00439BA0
 extern "C" void __cdecl CHARSEL_OnHellDifficulty(); // 0x00439BC0
@@ -5629,23 +5889,51 @@ extern "C" void __cdecl CHARSEL_JoinSelected(); // 0x0043B6B0
 extern "C" void __cdecl CHARSEL_OnCharSelectOk(); // 0x00439840
 
 #pragma pack(push, 1)
-struct d2data_00708970_t
+struct d2data_00708C30_t
 {
     const void* p0;
     const void* p1;
-    const void* p2;
+    unsigned char b2[8];
     const void* p3;
     const void* p4;
-    const void* p5;
+    unsigned char b5[8];
     const void* p6;
     const void* p7;
-    const void* p8;
+    unsigned char b8[8];
     const void* p9;
     const void* p10;
-    const void* p11;
+    unsigned char b11[8];
     const void* p12;
     const void* p13;
-    const void* p14;
+    unsigned char b14[8];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00708C80_t
+{
+    const void* p0;
+    const void* p1;
+    unsigned char b2[8];
+    const void* p3;
+    const void* p4;
+    unsigned char b5[8];
+    const void* p6;
+    const void* p7;
+    unsigned char b8[8];
+    const void* p9;
+    const void* p10;
+    unsigned char b11[8];
+    const void* p12;
+    const void* p13;
+    unsigned char b14[20];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0070CB84_t
+{
+    unsigned char b0[4];
 };
 #pragma pack(pop)
 
@@ -5833,48 +6121,6 @@ struct d2data_00708BE0_t
 #pragma pack(pop)
 
 #pragma pack(push, 1)
-struct d2data_00708C30_t
-{
-    const void* p0;
-    const void* p1;
-    unsigned char b2[8];
-    const void* p3;
-    const void* p4;
-    unsigned char b5[8];
-    const void* p6;
-    const void* p7;
-    unsigned char b8[8];
-    const void* p9;
-    const void* p10;
-    unsigned char b11[8];
-    const void* p12;
-    const void* p13;
-    unsigned char b14[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00708C80_t
-{
-    const void* p0;
-    const void* p1;
-    unsigned char b2[8];
-    const void* p3;
-    const void* p4;
-    unsigned char b5[8];
-    const void* p6;
-    const void* p7;
-    unsigned char b8[8];
-    const void* p9;
-    const void* p10;
-    unsigned char b11[8];
-    const void* p12;
-    const void* p13;
-    unsigned char b14[20];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
 struct d2data_00708CDC_t
 {
     unsigned char b0[12];
@@ -5903,1063 +6149,31 @@ struct d2data_00708D00_t
 #pragma pack(pop)
 
 #pragma pack(push, 1)
-struct d2data_00708D10_t
+struct d2data_00708970_t
 {
-    unsigned char b0[28];
+    const void* p0;
     const void* p1;
     const void* p2;
-    unsigned char b3[44];
+    const void* p3;
     const void* p4;
-    unsigned char b5[40];
+    const void* p5;
     const void* p6;
     const void* p7;
-    unsigned char b8[4];
-    const void* p9;
-    unsigned char b10[36];
-    const void* p11;
-    unsigned char b12[52];
-    const void* p13;
-    unsigned char b14[32];
-    const void* p15;
-    unsigned char b16[52];
-    const void* p17;
-    unsigned char b18[44];
-    const void* p19;
-    unsigned char b20[36];
-    const void* p21;
-    unsigned char b22[44];
-    const void* p23;
-    const void* p24;
-    unsigned char b25[40];
-    const void* p26;
-    const void* p27;
-    unsigned char b28[40];
-    const void* p29;
-    const void* p30;
-    unsigned char b31[40];
-    const void* p32;
-    const void* p33;
-    unsigned char b34[40];
-    const void* p35;
-    const void* p36;
-    unsigned char b37[40];
-    const void* p38;
-    const void* p39;
-    unsigned char b40[40];
-    const void* p41;
-    const void* p42;
-    unsigned char b43[40];
-    const void* p44;
-    const void* p45;
-    unsigned char b46[40];
-    const void* p47;
-    const void* p48;
-    unsigned char b49[40];
-    const void* p50;
-    const void* p51;
-    unsigned char b52[40];
-    const void* p53;
-    const void* p54;
-    unsigned char b55[52];
-    const void* p56;
-    unsigned char b57[32];
-    const void* p58;
-    unsigned char b59[44];
-    const void* p60;
-    unsigned char b61[44];
-    const void* p62;
-    unsigned char b63[44];
-    const void* p64;
-    unsigned char b65[44];
-    const void* p66;
-    unsigned char b67[16];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_007091F0_t
-{
-    unsigned char b0[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_007091FC_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[12];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070922C_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[12];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070925C_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[44];
-    const void* p3;
-    unsigned char b4[44];
-    const void* p5;
-    unsigned char b6[12];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_007092EC_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[12];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070931C_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[44];
-    const void* p3;
-    unsigned char b4[40];
-    const void* p5;
-    const void* p6;
-    unsigned char b7[40];
     const void* p8;
     const void* p9;
-    unsigned char b10[32];
+    const void* p10;
     const void* p11;
     const void* p12;
-    unsigned char b13[40];
-    const void* p14;
-    const void* p15;
-    unsigned char b16[40];
-    const void* p17;
-    const void* p18;
-    unsigned char b19[40];
-    const void* p20;
-    const void* p21;
-    unsigned char b22[52];
-    const void* p23;
-    unsigned char b24[32];
-    const void* p25;
-    unsigned char b26[44];
-    const void* p27;
-    const void* p28;
-    unsigned char b29[52];
-    const void* p30;
-    unsigned char b31[44];
-    const void* p32;
-    unsigned char b33[44];
-    const void* p34;
-    unsigned char b35[36];
-    const void* p36;
-    unsigned char b37[52];
-    const void* p38;
-    unsigned char b39[44];
-    const void* p40;
-    unsigned char b41[44];
-    const void* p42;
-    unsigned char b43[32];
-    const void* p44;
-    unsigned char b45[56];
-    const void* p46;
-    unsigned char b47[32];
-    const void* p48;
-    const void* p49;
-    unsigned char b50[40];
-    const void* p51;
-    const void* p52;
-    unsigned char b53[40];
-    const void* p54;
-    const void* p55;
-    unsigned char b56[40];
-    const void* p57;
-    const void* p58;
-    unsigned char b59[40];
-    const void* p60;
-    const void* p61;
-    unsigned char b62[40];
-    const void* p63;
-    const void* p64;
-    unsigned char b65[40];
-    const void* p66;
-    const void* p67;
-    unsigned char b68[40];
-    const void* p69;
-    const void* p70;
-    unsigned char b71[40];
-    const void* p72;
-    const void* p73;
-    unsigned char b74[40];
-    const void* p75;
-    unsigned char b76[56];
-    const void* p77;
-    unsigned char b78[32];
-    const void* p79;
-    const void* p80;
-    unsigned char b81[40];
-    const void* p82;
-    const void* p83;
-    unsigned char b84[40];
-    const void* p85;
-    const void* p86;
-    unsigned char b87[40];
-    const void* p88;
-    const void* p89;
-    unsigned char b90[40];
-    const void* p91;
-    const void* p92;
-    unsigned char b93[40];
-    const void* p94;
-    const void* p95;
-    unsigned char b96[40];
-    const void* p97;
-    const void* p98;
-    unsigned char b99[40];
-    const void* p100;
-    const void* p101;
-    unsigned char b102[40];
-    const void* p103;
-    unsigned char b104[56];
-    const void* p105;
-    unsigned char b106[44];
-    const void* p107;
-    unsigned char b108[32];
-    const void* p109;
-    const void* p110;
-    const void* p111;
-    const void* p112;
-    unsigned char b113[32];
-    const void* p114;
-    const void* p115;
-    unsigned char b116[40];
-    const void* p117;
-    const void* p118;
-    unsigned char b119[40];
-    const void* p120;
-    unsigned char b121[44];
-    const void* p122;
-    unsigned char b123[4];
-    const void* p124;
-    const void* p125;
-    unsigned char b126[32];
-    const void* p127;
-    const void* p128;
-    unsigned char b129[40];
-    const void* p130;
-    const void* p131;
-    unsigned char b132[20];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00709C4C_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[36];
-    const void* p3;
-    unsigned char b4[44];
-    const void* p5;
-    unsigned char b6[48];
-    const void* p7;
-    const void* p8;
-    unsigned char b9[40];
-    const void* p10;
-    const void* p11;
-    unsigned char b12[40];
     const void* p13;
     const void* p14;
-    unsigned char b15[32];
-    const void* p16;
-    const void* p17;
-    unsigned char b18[40];
-    const void* p19;
-    const void* p20;
-    unsigned char b21[48];
-    const void* p22;
-    const void* p23;
-    unsigned char b24[40];
-    const void* p25;
-    const void* p26;
-    unsigned char b27[40];
-    const void* p28;
-    const void* p29;
-    unsigned char b30[40];
-    const void* p31;
-    const void* p32;
-    unsigned char b33[32];
-    const void* p34;
-    const void* p35;
-    unsigned char b36[40];
-    const void* p37;
-    const void* p38;
-    unsigned char b39[20];
 };
 #pragma pack(pop)
 
-#pragma pack(push, 1)
-struct d2data_00709EEC_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[44];
-    const void* p3;
-    unsigned char b4[44];
-    const void* p5;
-    unsigned char b6[44];
-    const void* p7;
-    unsigned char b8[32];
-    const void* p9;
-    const void* p10;
-    unsigned char b11[40];
-    const void* p12;
-    const void* p13;
-    unsigned char b14[40];
-    const void* p15;
-    unsigned char b16[56];
-    const void* p17;
-    unsigned char b18[32];
-    const void* p19;
-    const void* p20;
-    unsigned char b21[52];
-    const void* p22;
-    unsigned char b23[32];
-    const void* p24;
-    unsigned char b25[56];
-    const void* p26;
-    unsigned char b27[32];
-    const void* p28;
-    const void* p29;
-    unsigned char b30[52];
-    const void* p31;
-    unsigned char b32[32];
-    const void* p33;
-    unsigned char b34[56];
-    const void* p35;
-    unsigned char b36[44];
-    const void* p37;
-    unsigned char b38[32];
-    const void* p39;
-    const void* p40;
-    const void* p41;
-    const void* p42;
-    unsigned char b43[32];
-    const void* p44;
-    const void* p45;
-    unsigned char b46[40];
-    const void* p47;
-    const void* p48;
-    unsigned char b49[40];
-    const void* p50;
-    unsigned char b51[56];
-    const void* p52;
-    unsigned char b53[44];
-    const void* p54;
-    unsigned char b55[32];
-    const void* p56;
-    const void* p57;
-    const void* p58;
-    const void* p59;
-    unsigned char b60[32];
-    const void* p61;
-    const void* p62;
-    unsigned char b63[40];
-    const void* p64;
-    const void* p65;
-    unsigned char b66[52];
-    const void* p67;
-    unsigned char b68[36];
-    const void* p69;
-    unsigned char b70[40];
-    const void* p71;
-    const void* p72;
-    unsigned char b73[40];
-    const void* p74;
-    const void* p75;
-    unsigned char b76[40];
-    const void* p77;
-    const void* p78;
-    unsigned char b79[40];
-    const void* p80;
-    const void* p81;
-    unsigned char b82[44];
-    const void* p83;
-    unsigned char b84[4];
-    const void* p85;
-    unsigned char b86[36];
-    const void* p87;
-    unsigned char b88[4];
-    const void* p89;
-    unsigned char b90[36];
-    const void* p91;
-    unsigned char b92[4];
-    const void* p93;
-    unsigned char b94[36];
-    const void* p95;
-    unsigned char b96[4];
-    const void* p97;
-    unsigned char b98[36];
-    const void* p99;
-    unsigned char b100[4];
-    const void* p101;
-    unsigned char b102[36];
-    const void* p103;
-    unsigned char b104[4];
-    const void* p105;
-    unsigned char b106[36];
-    const void* p107;
-    unsigned char b108[4];
-    const void* p109;
-    unsigned char b110[36];
-    const void* p111;
-    unsigned char b112[4];
-    const void* p113;
-    unsigned char b114[36];
-    const void* p115;
-    unsigned char b116[4];
-    const void* p117;
-    unsigned char b118[36];
-    const void* p119;
-    unsigned char b120[4];
-    const void* p121;
-    unsigned char b122[36];
-    const void* p123;
-    unsigned char b124[4];
-    const void* p125;
-    unsigned char b126[36];
-    const void* p127;
-    unsigned char b128[4];
-    const void* p129;
-    unsigned char b130[36];
-    const void* p131;
-    unsigned char b132[4];
-    const void* p133;
-    unsigned char b134[36];
-    const void* p135;
-    unsigned char b136[4];
-    const void* p137;
-    unsigned char b138[36];
-    const void* p139;
-    unsigned char b140[4];
-    const void* p141;
-    unsigned char b142[36];
-    const void* p143;
-    unsigned char b144[4];
-    const void* p145;
-    unsigned char b146[36];
-    const void* p147;
-    unsigned char b148[4];
-    const void* p149;
-    unsigned char b150[36];
-    const void* p151;
-    unsigned char b152[4];
-    const void* p153;
-    unsigned char b154[36];
-    const void* p155;
-    unsigned char b156[4];
-    const void* p157;
-    unsigned char b158[36];
-    const void* p159;
-    unsigned char b160[4];
-    const void* p161;
-    unsigned char b162[36];
-    const void* p163;
-    unsigned char b164[4];
-    const void* p165;
-    unsigned char b166[44];
-    const void* p167;
-    unsigned char b168[44];
-    const void* p169;
-    unsigned char b170[32];
-    const void* p171;
-    unsigned char b172[8];
-    const void* p173;
-    unsigned char b174[32];
-    const void* p175;
-    unsigned char b176[8];
-    const void* p177;
-    unsigned char b178[44];
-    const void* p179;
-    unsigned char b180[32];
-    const void* p181;
-    const void* p182;
-    unsigned char b183[40];
-    const void* p184;
-    const void* p185;
-    unsigned char b186[52];
-    const void* p187;
-    unsigned char b188[44];
-    const void* p189;
-    unsigned char b190[44];
-    const void* p191;
-    unsigned char b192[44];
-    const void* p193;
-    unsigned char b194[32];
-    const void* p195;
-    unsigned char b196[8];
-    const void* p197;
-    unsigned char b198[44];
-    const void* p199;
-    unsigned char b200[32];
-    const void* p201;
-    unsigned char b202[44];
-    const void* p203;
-    const void* p204;
-    unsigned char b205[40];
-    const void* p206;
-    const void* p207;
-    unsigned char b208[40];
-    const void* p209;
-    const void* p210;
-    unsigned char b211[40];
-    const void* p212;
-    const void* p213;
-    unsigned char b214[40];
-    const void* p215;
-    const void* p216;
-    unsigned char b217[40];
-    const void* p218;
-    const void* p219;
-    const void* p220;
-    const void* p221;
-    unsigned char b222[32];
-    const void* p223;
-    const void* p224;
-    unsigned char b225[40];
-    const void* p226;
-    const void* p227;
-    unsigned char b228[40];
-    const void* p229;
-    const void* p230;
-    unsigned char b231[52];
-    const void* p232;
-    unsigned char b233[32];
-    const void* p234;
-    unsigned char b235[48];
-    const void* p236;
-    unsigned char b237[52];
-    const void* p238;
-    unsigned char b239[32];
-    const void* p240;
-    const void* p241;
-    unsigned char b242[40];
-    const void* p243;
-    const void* p244;
-    unsigned char b245[40];
-    const void* p246;
-    unsigned char b247[44];
-    const void* p248;
-    unsigned char b249[44];
-    const void* p250;
-    unsigned char b251[48];
-    const void* p252;
-    const void* p253;
-    const void* p254;
-    unsigned char b255[36];
-    const void* p256;
-    const void* p257;
-    const void* p258;
-    unsigned char b259[36];
-    const void* p260;
-    const void* p261;
-    const void* p262;
-    unsigned char b263[36];
-    const void* p264;
-    const void* p265;
-    const void* p266;
-    unsigned char b267[36];
-    const void* p268;
-    const void* p269;
-    const void* p270;
-    unsigned char b271[36];
-    const void* p272;
-    const void* p273;
-    const void* p274;
-    unsigned char b275[36];
-    const void* p276;
-    const void* p277;
-    const void* p278;
-    unsigned char b279[36];
-    const void* p280;
-    const void* p281;
-    const void* p282;
-    unsigned char b283[36];
-    const void* p284;
-    const void* p285;
-    const void* p286;
-    unsigned char b287[12];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070B08C_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[32];
-    const void* p3;
-    const void* p4;
-    unsigned char b5[20];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070B0EC_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[32];
-    const void* p3;
-    const void* p4;
-    unsigned char b5[20];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070B14C_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[32];
-    const void* p3;
-    const void* p4;
-    unsigned char b5[20];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070B1AC_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[32];
-    const void* p3;
-    const void* p4;
-    unsigned char b5[52];
-    const void* p6;
-    unsigned char b7[44];
-    const void* p8;
-    unsigned char b9[44];
-    const void* p10;
-    unsigned char b11[32];
-    const void* p12;
-    unsigned char b13[24];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070B2CC_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[12];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070B2FC_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[32];
-    const void* p3;
-    const void* p4;
-    unsigned char b5[48];
-    const void* p6;
-    const void* p7;
-    unsigned char b8[32];
-    const void* p9;
-    unsigned char b10[44];
-    const void* p11;
-    const void* p12;
-    unsigned char b13[40];
-    const void* p14;
-    const void* p15;
-    unsigned char b16[52];
-    const void* p17;
-    unsigned char b18[36];
-    const void* p19;
-    const void* p20;
-    const void* p21;
-    unsigned char b22[36];
-    const void* p23;
-    const void* p24;
-    const void* p25;
-    unsigned char b26[12];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070B4AC_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[32];
-    const void* p3;
-    const void* p4;
-    unsigned char b5[40];
-    const void* p6;
-    unsigned char b7[44];
-    const void* p8;
-    unsigned char b9[44];
-    const void* p10;
-    const void* p11;
-    unsigned char b12[40];
-    const void* p13;
-    const void* p14;
-    unsigned char b15[52];
-    const void* p16;
-    unsigned char b17[32];
-    const void* p18;
-    unsigned char b19[44];
-    const void* p20;
-    const void* p21;
-    unsigned char b22[40];
-    const void* p23;
-    const void* p24;
-    unsigned char b25[52];
-    const void* p26;
-    unsigned char b27[4];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070B6B0_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[44];
-    const void* p3;
-    const void* p4;
-    unsigned char b5[52];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070B73C_t
-{
-    unsigned char b0[4];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070B740_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    const void* p2;
-    unsigned char b3[40];
-    const void* p4;
-    unsigned char b5[44];
-    const void* p6;
-    const void* p7;
-    unsigned char b8[52];
-    const void* p9;
-    unsigned char b10[44];
-    const void* p11;
-    unsigned char b12[44];
-    const void* p13;
-    unsigned char b14[32];
-    const void* p15;
-    unsigned char b16[44];
-    const void* p17;
-    const void* p18;
-    unsigned char b19[52];
-    const void* p20;
-    unsigned char b21[44];
-    const void* p22;
-    unsigned char b23[32];
-    const void* p24;
-    unsigned char b25[44];
-    const void* p26;
-    const void* p27;
-    unsigned char b28[52];
-    const void* p29;
-    unsigned char b30[44];
-    const void* p31;
-    unsigned char b32[44];
-    const void* p33;
-    unsigned char b34[44];
-    const void* p35;
-    unsigned char b36[32];
-    const void* p37;
-    unsigned char b38[44];
-    const void* p39;
-    const void* p40;
-    unsigned char b41[52];
-    const void* p42;
-    unsigned char b43[44];
-    const void* p44;
-    unsigned char b45[44];
-    const void* p46;
-    unsigned char b47[44];
-    const void* p48;
-    unsigned char b49[32];
-    const void* p50;
-    unsigned char b51[44];
-    const void* p52;
-    const void* p53;
-    unsigned char b54[52];
-    const void* p55;
-    unsigned char b56[32];
-    const void* p57;
-    const void* p58;
-    unsigned char b59[44];
-    const void* p60;
-    unsigned char b61[40];
-    const void* p62;
-    const void* p63;
-    unsigned char b64[40];
-    const void* p65;
-    const void* p66;
-    unsigned char b67[52];
-    const void* p68;
-    unsigned char b69[32];
-    const void* p70;
-    const void* p71;
-    unsigned char b72[40];
-    const void* p73;
-    const void* p74;
-    unsigned char b75[40];
-    const void* p76;
-    const void* p77;
-    unsigned char b78[40];
-    const void* p79;
-    unsigned char b80[24];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070BDAC_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[44];
-    const void* p3;
-    unsigned char b4[44];
-    const void* p5;
-    unsigned char b6[32];
-    const void* p7;
-    const void* p8;
-    unsigned char b9[4];
-    const void* p10;
-    unsigned char b11[32];
-    const void* p12;
-    const void* p13;
-    unsigned char b14[4];
-    const void* p15;
-    unsigned char b16[44];
-    const void* p17;
-    unsigned char b18[44];
-    const void* p19;
-    unsigned char b20[32];
-    const void* p21;
-    const void* p22;
-    unsigned char b23[44];
-    const void* p24;
-    unsigned char b25[20];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070BF5C_t
-{
-    unsigned char b0[28];
-    const void* p1;
-    unsigned char b2[40];
-    const void* p3;
-    const void* p4;
-    unsigned char b5[32];
-    const void* p6;
-    unsigned char b7[44];
-    const void* p8;
-    unsigned char b9[44];
-    const void* p10;
-    const void* p11;
-    unsigned char b12[40];
-    const void* p13;
-    const void* p14;
-    unsigned char b15[52];
-    const void* p16;
-    unsigned char b17[44];
-    const void* p18;
-    unsigned char b19[44];
-    const void* p20;
-    unsigned char b21[44];
-    const void* p22;
-    unsigned char b23[32];
-    const void* p24;
-    unsigned char b25[44];
-    const void* p26;
-    unsigned char b27[44];
-    const void* p28;
-    const void* p29;
-    unsigned char b30[40];
-    const void* p31;
-    unsigned char b32[36];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070C208_t
-{
-    unsigned char b0[4];
-    const void* p1;
-    unsigned char b2[36];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070C234_t
-{
-    unsigned char b0[4];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070C238_t
-{
-    unsigned char b0[4];
-    const void* p1;
-    unsigned char b2[36];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0070C268_t
-{
-    unsigned char b0[4];
-    const void* p1;
-    unsigned char b2[56];
-    const void* p3;
-    unsigned char b4[44];
-    const void* p5;
-    unsigned char b6[44];
-    const void* p7;
-    unsigned char b8[32];
-    const void* p9;
-    unsigned char b10[44];
-    const void* p11;
-    unsigned char b12[56];
-    const void* p13;
-    unsigned char b14[44];
-    const void* p15;
-    unsigned char b16[44];
-    const void* p17;
-    unsigned char b18[44];
-    const void* p19;
-    unsigned char b20[44];
-    const void* p21;
-    unsigned char b22[44];
-    const void* p23;
-    unsigned char b24[32];
-    const void* p25;
-    const void* p26;
-    unsigned char b27[40];
-    const void* p28;
-    const void* p29;
-    unsigned char b30[40];
-    const void* p31;
-    const void* p32;
-    unsigned char b33[52];
-    const void* p34;
-    unsigned char b35[32];
-    const void* p36;
-    const void* p37;
-    unsigned char b38[40];
-    const void* p39;
-    const void* p40;
-    unsigned char b41[52];
-    const void* p42;
-    unsigned char b43[32];
-    const void* p44;
-    unsigned char b45[56];
-    const void* p46;
-    unsigned char b47[40];
-    const void* p48;
-    const void* p49;
-    unsigned char b50[32];
-    const void* p51;
-    unsigned char b52[56];
-    const void* p53;
-    unsigned char b54[40];
-    const void* p55;
-    const void* p56;
-    unsigned char b57[44];
-    const void* p58;
-    unsigned char b59[44];
-    const void* p60;
-    unsigned char b61[44];
-    const void* p62;
-    unsigned char b63[44];
-    const void* p64;
-    unsigned char b65[32];
-    const void* p66;
-    const void* p67;
-    unsigned char b68[40];
-    const void* p69;
-    const void* p70;
-    unsigned char b71[40];
-    const void* p72;
-    const void* p73;
-    unsigned char b74[40];
-    const void* p75;
-    const void* p76;
-    unsigned char b77[52];
-    const void* p78;
-    unsigned char b79[44];
-    const void* p80;
-    unsigned char b81[32];
-    const void* p82;
-    unsigned char b83[56];
-    const void* p84;
-    unsigned char b85[40];
-    const void* p86;
-    const void* p87;
-    unsigned char b88[32];
-    const void* p89;
-    unsigned char b90[56];
-    const void* p91;
-    unsigned char b92[40];
-    const void* p93;
-    const void* p94;
-    unsigned char b95[32];
-    const void* p96;
-    unsigned char b97[56];
-    const void* p98;
-    unsigned char b99[40];
-    const void* p100;
-    const void* p101;
-    unsigned char b102[32];
-    const void* p103;
-    unsigned char b104[56];
-    const void* p105;
-    unsigned char b106[40];
-    const void* p107;
-    const void* p108;
-    unsigned char b109[32];
-    const void* p110;
-    const void* p111;
-    unsigned char b112[40];
-    const void* p113;
-    const void* p114;
-    unsigned char b115[12];
-};
-#pragma pack(pop)
-
-extern "C" const unsigned char gData_006D4D88[20]; // 0x006D4D88
-extern "C" struct d2data_00708970_t gData_00708970; // 0x00708970
+extern "C" struct d2data_00708C30_t gData_00708C30; // 0x00708C30
+extern "C" struct d2data_00708C80_t gData_00708C80; // 0x00708C80
+extern "C" D2LaunchControlTemplateStrc gData_00708D10[333]; // 0x00708D10
+extern "C" const char gData_006D48E8[16]; // 0x006D48E8
+extern "C" struct d2data_0070CB84_t gData_0070CB84; // 0x0070CB84
 extern "C" struct d2data_007089AC_t gData_007089AC; // 0x007089AC
 extern "C" struct d2data_007089B4_t gData_007089B4; // 0x007089B4
 extern "C" struct d2data_007089BC_t gData_007089BC; // 0x007089BC
@@ -6976,58 +6190,399 @@ extern "C" struct d2data_00708AF0_t gData_00708AF0; // 0x00708AF0
 extern "C" struct d2data_00708B40_t gData_00708B40; // 0x00708B40
 extern "C" struct d2data_00708B90_t gData_00708B90; // 0x00708B90
 extern "C" struct d2data_00708BE0_t gData_00708BE0; // 0x00708BE0
-extern "C" struct d2data_00708C30_t gData_00708C30; // 0x00708C30
-extern "C" struct d2data_00708C80_t gData_00708C80; // 0x00708C80
 extern "C" struct d2data_00708CDC_t gData_00708CDC; // 0x00708CDC
 extern "C" struct d2data_00708CE8_t gData_00708CE8; // 0x00708CE8
 extern "C" struct d2data_00708CF4_t gData_00708CF4; // 0x00708CF4
 extern "C" struct d2data_00708D00_t gData_00708D00; // 0x00708D00
-extern "C" struct d2data_00708D10_t gData_00708D10; // 0x00708D10
-extern "C" struct d2data_007091F0_t gData_007091F0; // 0x007091F0
-extern "C" struct d2data_007091FC_t gData_007091FC; // 0x007091FC
-extern "C" struct d2data_0070922C_t gData_0070922C; // 0x0070922C
-extern "C" struct d2data_0070925C_t gData_0070925C; // 0x0070925C
-extern "C" struct d2data_007092EC_t gData_007092EC; // 0x007092EC
-extern "C" struct d2data_0070931C_t gData_0070931C; // 0x0070931C
-extern "C" struct d2data_00709C4C_t gData_00709C4C; // 0x00709C4C
-extern "C" struct d2data_00709EEC_t gData_00709EEC; // 0x00709EEC
-extern "C" struct d2data_0070B08C_t gData_0070B08C; // 0x0070B08C
-extern "C" struct d2data_0070B0EC_t gData_0070B0EC; // 0x0070B0EC
-extern "C" struct d2data_0070B14C_t gData_0070B14C; // 0x0070B14C
-extern "C" struct d2data_0070B1AC_t gData_0070B1AC; // 0x0070B1AC
-extern "C" struct d2data_0070B2CC_t gData_0070B2CC; // 0x0070B2CC
-extern "C" struct d2data_0070B2FC_t gData_0070B2FC; // 0x0070B2FC
-extern "C" struct d2data_0070B4AC_t gData_0070B4AC; // 0x0070B4AC
-extern "C" struct d2data_0070B6B0_t gData_0070B6B0; // 0x0070B6B0
-extern "C" struct d2data_0070B73C_t gData_0070B73C; // 0x0070B73C
-extern "C" struct d2data_0070B740_t gData_0070B740; // 0x0070B740
-extern "C" struct d2data_0070BDAC_t gData_0070BDAC; // 0x0070BDAC
-extern "C" struct d2data_0070BF5C_t gData_0070BF5C; // 0x0070BF5C
-extern "C" struct d2data_0070C208_t gData_0070C208; // 0x0070C208
-extern "C" struct d2data_0070C234_t gData_0070C234; // 0x0070C234
-extern "C" struct d2data_0070C238_t gData_0070C238; // 0x0070C238
-extern "C" struct d2data_0070C268_t gData_0070C268; // 0x0070C268
+extern "C" const unsigned char gData_006D4D88[20]; // 0x006D4D88
+extern "C" struct d2data_00708970_t gData_00708970; // 0x00708970
 
-extern "C" const unsigned char gData_006D4D88[20] = { 1, 1, 1, 1, 1, 0, 0, 0, 1, 1 }; // 0x006D4D88
-#pragma comment(linker, "/alternatename:_gabDefault=_gData_006D4D88")
+extern "C" struct d2data_00708C30_t gData_00708C30 = {
+    (const void*)&gpD2LogoBlackLeftCelFile,
+    (const void*)&gpD2LogoFireLeftCelFile,
+    { 0x03, 0x00, 0x00, 0x00, 0x01 },
+    (const void*)&gpD2LogoBlackLeftCelFile,
+    (const void*)&gpD2LogoFireLeftCelFile,
+    { 0x03, 0x00, 0x00, 0x00, 0x01 },
+    (const void*)&gpD2LogoBlackLeftCelFile,
+    (const void*)&gpD2LogoFireLeftCelFile,
+    { 0x03, 0x00, 0x00, 0x00, 0x01 },
+    (const void*)&gpD2LogoBlackLeftCelFile,
+    (const void*)&gpD2LogoFireLeftCelFile,
+    { 0x03, 0x00, 0x00, 0x00, 0x01 },
+    (const void*)&gpD2LogoBlackLeftCelFile,
+    (const void*)&gpD2LogoFireLeftCelFile,
+    { 0x03, 0x00, 0x00, 0x00, 0x01 }
+}; // 0x00708C30
 
-extern "C" struct d2data_00708970_t gData_00708970 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00708970
+extern "C" struct d2data_00708C80_t gData_00708C80 = {
+    (const void*)&gpD2LogoBlackRightCelFile,
+    (const void*)&gpD2LogoFireRightCelFile,
+    { 0x03, 0x00, 0x00, 0x00, 0x01 },
+    (const void*)&gpD2LogoBlackRightCelFile,
+    (const void*)&gpD2LogoFireRightCelFile,
+    { 0x03, 0x00, 0x00, 0x00, 0x01 },
+    (const void*)&gpD2LogoBlackRightCelFile,
+    (const void*)&gpD2LogoFireRightCelFile,
+    { 0x03, 0x00, 0x00, 0x00, 0x01 },
+    (const void*)&gpD2LogoBlackRightCelFile,
+    (const void*)&gpD2LogoFireRightCelFile,
+    { 0x03, 0x00, 0x00, 0x00, 0x01 },
+    (const void*)&gpD2LogoBlackRightCelFile,
+    (const void*)&gpD2LogoFireRightCelFile,
+    {
+        0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x33, 0x00, 0x00, 0x00, 0xC8, 0x01, 0x00, 0x00,
+        0x0E, 0x01
+    }
+}; // 0x00708C80
+
+extern "C" D2LaunchControlTemplateStrc gData_00708D10[333] = {
+    { 2, 0, 479, 640, 480, 0, 0, (void*)&gpBlizNoCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayIntroAndLeave },
+    { 8, 8, 0, 0, 0, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayIntroAndLeave },
+    { 2, 0, 599, 800, 600, 0, 0, (void*)&gpTrademarkCelFile, (D2LaunchCallback)(unsigned int)&sub_00434DC0_Leave, 0, (void*)(unsigned int)&sub_00434DC0_Leave },
+    { 8, 9, 0, 0, 0, 0, 0, 0, (D2LaunchCallback)(unsigned int)&sub_00434DC0_Leave },
+    { 4, 100, 580, 600, 80, 0, 0, 0, 0, 0, (void*)&gData_007089DC, 2 },
+    { 2, 240, 120, 320, 151, 0, 0, (void*)&gpDiablo2LogoCelFile },
+    { 3, 400, 120, 181, 170, 0, 0, 0, 0, (void*)&gData_00708C30 },
+    { 3, 400, 120, 188, 177, 0, 0, 0, 0, (void*)&gData_00708C80 },
+    { 2, 0, 599, 800, 600, 0, 0, (void*)&gpTitleScreenCelFile },
+    { 6, 264, 224, 272, 35, 0, 5106, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnSinglePlayer },
+    { 6, 264, 266, 272, 35, 0, 5107, (void*)&gpWideButtonBlank02CelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnBattleNet },
+    { 6, 264, 291, 272, 25, 0, 0, (void*)&gpNarrowButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CreateGatewayScreen },
+    { 6, 264, 333, 272, 35, 0, 5108, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnCreate },
+    { 6, 264, 528, 135, 25, 0, 5110, (void*)&gpShortButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CreateCreditsScreen },
+    { 6, 402, 528, 135, 25, 0, 5111, (void*)&gpShortButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ShowLevelScreen },
+    { 6, 264, 568, 272, 35, 27, 5109, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_Leave },
+    { 6, 264, 324, 272, 35, 0, 5106, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnSinglePlayer },
+    { 6, 264, 366, 272, 35, 0, 5107, (void*)&gpWideButtonBlank02CelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnBattleNet },
+    { 6, 264, 391, 272, 25, 0, 0, (void*)&gpNarrowButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CreateGatewayScreen },
+    { 6, 264, 433, 272, 35, 0, 5108, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnCreate },
+    { 4, 150, 300, 500, 100, 0, 0, 0, 0, 0, (void*)&gData_007089AC, 34 },
+    { 2, 319, 347, 169, 26, 0, 0, (void*)&gpTextBox2CelFile },
+    { 2, 319, 401, 169, 26, 0, 0, (void*)&gpTextBox2CelFile },
+    { 2, 319, 455, 169, 26, 0, 0, (void*)&gpTextBox2CelFile },
+    { 2, 319, 455, 169, 26, 0, 0, (void*)&gpTextBox2CelFile },
+    { 2, 319, 509, 169, 26, 0, 0, (void*)&gpTextBox2CelFile },
+    { 4, 321, 340, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 4, 321, 394, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 4, 321, 448, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 4, 321, 448, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 4, 321, 502, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 4, 0, 260, 800, 50, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 4, 200, 350, 400, 100, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 4, 0, 310, 800, 50, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 1, 322, 342, 162, 19, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_LoginOk, (void*)&gData_007089DC },
+    { 1, 322, 396, 162, 19, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_LoginOk, (void*)&gData_007089DC, 33 },
+    { 6, 264, 572, 272, 35, 0, 5221, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CheckFreeSpace },
+    { 6, 264, 528, 272, 35, 0, 11108, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_StoreAccount },
+    { 6, 264, 484, 272, 35, 13, 5288, (void*)&gp3WideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_LoginOk, 0, 0, 32 },
+    { 6, 33, 572, 128, 35, 27, 5101, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_Callback },
+    { 4, 590, 545, 205, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 2, 0, 599, 800, 600, 0, 0, (void*)&gpCreditsBckgCelFile },
+    { 6, 33, 578, 128, 35, 27, 5101, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_Callback },
+    { 4, 560, 615, 250, 610, 0, 0, 0, 0, 0, (void*)&gData_007089D4, 144 },
+    { 4, 570, 615, 250, 610, 0, 0, 0, 0, 0, (void*)&gData_007089D4, 128 },
+    { 4, 440, 615, 250, 610, 0, 0, 0, 0, 0, (void*)&gData_007089D4, 130 },
+    { 8, 50, 0, 0, 0, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_CheckCreditsEnd },
+    { 4, 400, 615, 250, 610, 0, 0, 0, 0, 0, (void*)&gData_007089D4, 144 },
+    { 4, 410, 615, 250, 610, 0, 0, 0, 0, 0, (void*)&gData_007089D4, 128 },
+    { 4, 280, 615, 250, 610, 0, 0, 0, 0, 0, (void*)&gData_007089D4, 130 },
+    { 2, 237, 555, 326, 341, 0, 0, (void*)&gpCinematicsSelectionCelFile },
+    { 4, 262, 283, 272, 35, 0, 0, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 6, 262, 316, 272, 35, 0, 4137, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayClassicIntro },
+    { 6, 262, 359, 272, 35, 0, 4138, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayActTwoStart },
+    { 6, 262, 402, 272, 35, 0, 4139, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayActThreeStart },
+    { 6, 262, 445, 272, 35, 0, 4140, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayActFourStart },
+    { 6, 262, 488, 272, 35, 0, 5113, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayActFourEnd },
+    { 6, 334, 538, 128, 35, 27, 5103, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ReloadAndLeave },
+    { 6, 281, 337, 96, 32, 27, 5103, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ShowLevelAndStop, 0, 0, 2 },
+    { 6, 421, 337, 96, 32, 13, 5102, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_00431920_SetFlagD4, 0, 0, 2 },
+    { 6, 351, 337, 96, 32, 13, 5102, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_00431910_SetFlagD4, 0, 0, 2 },
+    { 2, 237, 505, 326, 427, 0, 0, (void*)&gpCinematicsSelectionExpCelFile },
+    { 4, 262, 153, 272, 35, 0, 0, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 6, 262, 181, 272, 35, 0, 21797, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayClassicIntro },
+    { 6, 262, 224, 272, 35, 0, 21798, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayActTwoStart },
+    { 6, 262, 268, 272, 35, 0, 21799, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayActThreeStart },
+    { 6, 262, 310, 272, 35, 0, 21800, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayActFourStart },
+    { 6, 262, 353, 272, 35, 0, 21801, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayActFourEnd },
+    { 6, 262, 396, 272, 35, 0, 21802, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayExpansionIntro },
+    { 6, 262, 439, 272, 35, 0, 21803, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_PlayExpansionOutro },
+    { 6, 334, 488, 128, 35, 27, 5103, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ReloadAndLeave },
+    { 2, 237, 555, 340, 340, 0, 0, (void*)&gpGWListBoxCelFile },
+    { 4, 237, 270, 340, 35, 0, 0, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 4, 257, 345, 320, 84, 0, 0, 0, 0, 0, (void*)&gData_007089CC },
+    { 4, 257, 500, 292, 160, 0, 0, (void*)&gpJoinGameScrollBarsCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnRealmDoubleClick, (void*)&gData_00708CE8, (void*)&gData_007089DC, 13 },
+    { 6, 281, 538, 96, 32, 13, 5102, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnRealmSelected },
+    { 6, 436, 538, 96, 32, 27, 5103, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ResetAndLeave },
+    { 2, 103, 526, 593, 451, 0, 0, (void*)&gpTermsOfUseBckgCelFile },
+    { 4, 120, 467, 560, 318, 0, 0, (void*)&gpJoinGameScrollBarsCelFile, 0, (void*)&gData_00708CDC, (void*)&gData_007089E4, 4 },
+    { 6, 525, 513, 128, 35, 0, 5181, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnBack },
+    { 6, 133, 513, 128, 35, 13, 5182, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnShowLogin },
+    { 4, 103, 173, 570, 69, 0, 0, 0, 0, 0, (void*)&gData_007089AC, 2 },
+    { 6, 900, 900, 128, 35, 38, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_ScrollUp, 0, 0, 6 },
+    { 6, 900, 900, 128, 35, 40, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_ScrollDown, 0, 0, 6 },
+    { 1, 322, 342, 162, 19, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_CreateAccountOk, (void*)&gData_007089DC },
+    { 1, 322, 396, 162, 19, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_CreateAccountOk, (void*)&gData_007089DC, 33 },
+    { 1, 322, 450, 162, 19, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_CreateAccountOk, (void*)&gData_007089DC, 33 },
+    { 6, 627, 572, 128, 35, 13, 5102, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CreateAccountOk },
+    { 6, 33, 572, 128, 35, 27, 5101, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnShowLogin },
+    { 1, 322, 342, 162, 19, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_ChangePasswordOk, (void*)&gData_007089DC },
+    { 1, 322, 396, 162, 19, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_ChangePasswordOk, (void*)&gData_007089DC, 33 },
+    { 1, 322, 450, 162, 19, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_ChangePasswordOk, (void*)&gData_007089DC, 33 },
+    { 1, 322, 504, 162, 19, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_ChangePasswordOk, (void*)&gData_007089DC, 33 },
+    { 6, 627, 572, 128, 35, 13, 5102, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ChangePasswordOk },
+    { 6, 33, 572, 128, 35, 27, 5101, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OpenInfoScreen },
+    { 4, 103, 173, 570, 69, 0, 0, 0, 0, 0, (void*)&gData_007089AC, 2 },
+    { 4, 110, 480, 570, 318, 0, 0, 0, 0, 0, (void*)&gData_007089DC, 2 },
+    { 4, 110, 610, 570, 318, 0, 0, 0, 0, 0, (void*)&gData_007089DC, 2 },
+    { 4, 110, 700, 570, 318, 0, 0, 0, 0, 0, (void*)&gData_007089DC, 2 },
+    { 6, 525, 513, 128, 35, 13, 5102, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ConnectOk },
+    { 6, 133, 513, 128, 35, 27, 5103, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_BackToLogin },
+    { 2, 513, 80, 272, 73, 0, 0, (void*)&gpRealmSelectCelFile },
+    { 4, 559, 33, 183, 18, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 6, 513, 105, 272, 25, 0, 11057, (void*)&gpRealmSelectButtonThinCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_CopyName },
+    { 4, 528, 96, 246, 47, 0, 0, 0, 0, 0, (void*)&gData_007089AC, 2 },
+    { 2, 609, 83, 182, 71, 0, 0, (void*)&gpRealmSelectCelFile },
+    { 4, 629, 44, 145, 21, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 6, 609, 113, 182, 30, 0, 11057, (void*)&gpRealmSelectButtonThinCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_CopyName },
+    { 4, 626, 100, 151, 44, 0, 0, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 2, 451, 455, 340, 340, 0, 0, (void*)&gpGWListBoxCelFile },
+    { 4, 451, 173, 340, 35, 0, 0, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 4, 461, 230, 320, 70, 0, 0, 0, 0, 0, (void*)&gData_007089CC },
+    { 4, 471, 400, 292, 160, 0, 0, (void*)&gpJoinGameScrollBarsCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnRealmListClick, (void*)&gData_00708CF4, (void*)&gData_007089DC, 13 },
+    { 6, 495, 438, 96, 32, 13, 5102, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_OnRealmChosen },
+    { 6, 650, 438, 96, 32, 27, 5103, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_OnName },
+    { 2, 127, 455, 340, 340, 0, 0, (void*)&gpGWListBoxCelFile },
+    { 4, 127, 173, 340, 35, 0, 0, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 4, 137, 230, 320, 70, 0, 0, 0, 0, 0, (void*)&gData_007089CC },
+    { 4, 147, 400, 292, 160, 0, 0, (void*)&gpJoinGameScrollBarsCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnRealmListClick, (void*)&gData_00708CF4, (void*)&gData_007089DC, 13 },
+    { 6, 171, 438, 96, 32, 13, 5102, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_OnRealmChosen },
+    { 6, 326, 438, 96, 32, 27, 5103, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_OnName },
+    { 4, 33, 530, 448, 120, 0, 0, 0, 0, 0, (void*)&gData_007089E4 },
+    { 8, 50, 0, 0, 0, 0, 0, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_PollConnect },
+    { 6, 514, 572, 272, 35, 0, 5273, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_Back },
+    { 6, 33, 572, 128, 35, 27, 5101, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_DisconnectAndLeave },
+    { 6, 193, 572, 128, 35, 0, 5272, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_00439D50_CreateControls },
+    { 6, 353, 572, 128, 35, 13, 5102, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_OnCharSelectOk },
+    { 4, 514, 153, 200, 92, 76, 5, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 514, 246, 200, 92, 76, 5, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 514, 339, 200, 92, 76, 5, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 514, 432, 200, 92, 76, 5, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 514, 525, 200, 92, 76, 5, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 37, 178, 200, 92, 76, 3, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 309, 178, 200, 92, 76, 3, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 37, 271, 200, 92, 76, 3, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 309, 271, 200, 92, 76, 3, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 37, 364, 200, 92, 76, 3, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 309, 364, 200, 92, 76, 3, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 37, 457, 200, 92, 76, 3, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 309, 457, 200, 92, 76, 3, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 237, 178, 72, 93, 0, 0, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 509, 178, 72, 93, 0, 0, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 237, 271, 72, 93, 0, 0, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 509, 271, 72, 93, 0, 0, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 237, 364, 72, 93, 0, 0, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 509, 364, 72, 93, 0, 0, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 237, 457, 72, 93, 0, 0, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 509, 457, 72, 93, 0, 0, 0, (D2LaunchCallback)(unsigned int)&CHARSEL_OnListClick, 0, (void*)&gData_007089C4, 32 },
+    { 4, 45, 318, 531, 140, 0, 0, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 4, 37, 178, 547, 35, 0, 0, 0, 0, 0, (void*)&gData_007089E4, 2 },
+    { 2, 514, 1000, 272, 93, 0, 0, (void*)&gpCharSelectBoxCelFile, 0, 0, (void*)(unsigned int)&CHARSEL_OnListKeyDown },
+    { 2, 514, 1000, 272, 93, 0, 0, (void*)&gpCharSelectBoxGreyCelFile, 0, 0, (void*)(unsigned int)&CHARSEL_OnListKeyDown },
+    { 4, 514, 385, 272, 93, 0, 0, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 6, 634, 50, 29, 20, 105, 0, (void*)&gpSelectCharArrowsCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_ScrollUp, 0, 0, 8 },
+    { 6, 634, 555, 29, 20, 99, 0, (void*)&gpSelectCharArrowsCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_ScrollDown, (void*)0x2, 0, 16 },
+    { 4, 70, 103, 450, 50, 0, 0, 0, 0, 0, (void*)&gData_007089AC, 34 },
+    { 4, 85, 78, 466, 42, 0, 0, 0, 0, 0, (void*)&gData_007089AC, 34 },
+    { 4, 86, 143, 400, 50, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 4, 86, 178, 400, 50, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 2, 512, 150, 84, 86, 0, 0, (void*)&gpCreateNewCharImageCelFile, 0, 0, (void*)(unsigned int)&CHARSEL_OnListKeyDown },
+    { 4, 86, 300, 400, 200, 0, 0, 0, 0, 0, (void*)&gData_007089EC, 2 },
+    { 2, 0, 599, 800, 600, 0, 0, (void*)&gpCharacterSelectScreenExpCelFile },
+    { 6, 627, 572, 128, 35, 13, 5102, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_OnCharSelectOk },
+    { 6, 33, 572, 128, 35, 27, 5101, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_DisconnectAndLeave },
+    { 6, 33, 528, 168, 60, 0, 10832, (void*)&gpTallButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_Back, 0, 0, 64 },
+    { 6, 233, 528, 168, 60, 0, 22732, (void*)&gpTallButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_CreateExpansionControls, 0, 0, 64 },
+    { 6, 433, 528, 168, 60, 0, 5272, (void*)&gpTallButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_00439D50_CreateControls, 0, 0, 64 },
+    { 4, 564, 457, 34, 371, 0, 0, (void*)&gpJoinGameScrollBarsCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_OnScroll, (void*)&gData_00708D00, (void*)&gData_007089DC, 5 },
+    { 6, 264, 297, 272, 35, 82, 10018, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_OnNormalDifficulty },
+    { 6, 264, 340, 272, 35, 78, 10017, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_OnNightmareDifficulty },
+    { 6, 264, 383, 272, 35, 72, 10016, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_OnHellDifficulty },
+    { 4, 264, 260, 272, 35, 0, 0, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 2, 237, 400, 326, 200, 0, 0, (void*)&gpDifficultyLevelsCelFile },
+    { 6, 900, 900, 10, 10, 27, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_CloseBox },
+    { 4, 0, 80, 800, 50, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 6, 33, 572, 128, 35, 27, 5101, (void*)&gpMediumSelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_00430C30_OnCancel },
+    { 6, 627, 572, 128, 35, 13, 5102, (void*)&gpMediumSelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnCharCreateOk },
+    { 2, 0, 599, 800, 600, 0, 0, (void*)&gpCharacterCreateCelFile },
+    { 3, 345, 470, 110, 127, 1, 3, (void*)&gpFireCelFile },
+    { 3, 345, 454, 110, 127, 1, 3, (void*)&gpFireCelFile },
+    { 3, 195, 341, 88, 184, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_SelectCharacterClass, (void*)&gData_00708AA0, (void*)(unsigned int)&MAINMENUS_OnHoverAmazon },
+    { 3, 301, 333, 88, 184, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_SelectCharacterClass, (void*)&gData_00708AF0, (void*)(unsigned int)&MAINMENUS_OnHoverNecromancer },
+    { 3, 400, 330, 88, 184, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_SelectCharacterClass, (void*)&gData_00708B40, (void*)(unsigned int)&MAINMENUS_OnHoverBarbarian },
+    { 3, 521, 344, 88, 184, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_SelectCharacterClass, (void*)&gData_00708B90, (void*)(unsigned int)&MAINMENUS_OnHoverSorceress },
+    { 3, 610, 359, 88, 184, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_SelectCharacterClass, (void*)&gData_00708BE0, (void*)(unsigned int)&MAINMENUS_OnHoverPaladin },
+    { 3, 217, 360, 88, 184, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_SelectCharacterClass, (void*)&gData_00708AF0, (void*)(unsigned int)&MAINMENUS_OnHoverNecromancer },
+    { 3, 626, 353, 88, 184, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_SelectCharacterClass, (void*)&gData_00708B90, (void*)(unsigned int)&MAINMENUS_OnHoverSorceress },
+    { 3, 521, 339, 88, 184, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_SelectCharacterClass, (void*)&gData_00708BE0, (void*)(unsigned int)&MAINMENUS_OnHoverPaladin },
+    { 3, 100, 337, 88, 184, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_SelectCharacterClass, (void*)&gData_00708AA0, (void*)(unsigned int)&MAINMENUS_OnHoverAmazon },
+    { 4, 339, 581, 100, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 6, 319, 560, 15, 16, 0, 0, (void*)&gpClickBoxCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ToggleHardcore, 0, 0, 2 },
+    { 4, 339, 561, 200, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 6, 319, 540, 15, 16, 0, 0, (void*)&gpClickBoxCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ToggleLadder, 0, 0, 2 },
+    { 4, 339, 581, 200, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 6, 319, 560, 15, 16, 0, 0, (void*)&gpClickBoxCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ToggleLadder, 0, 0, 2 },
+    { 4, 339, 601, 200, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 6, 319, 580, 15, 16, 0, 0, (void*)&gpClickBoxCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ToggleLadder, 0, 0, 2 },
+    { 4, 0, 180, 800, 100, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 4, 250, 210, 300, 100, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 4, 210, 610, 430, 120, 0, 0, 0, 0, 0, (void*)&gData_007089CC },
+    { 2, 319, 519, 169, 26, 0, 0, (void*)&gpTextBoxCelFile },
+    { 4, 321, 512, 200, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 4, 339, 561, 100, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 6, 319, 540, 15, 16, 0, 0, (void*)&gpClickBoxCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ToggleHardcore, 0, 0, 2 },
+    { 1, 318, 510, 157, 16, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_OnCharCreateOk, (void*)&gData_007089DC },
+    { 2, 268, 350, 264, 176, 0, 0, (void*)&gpPopUpOkCancelCelFile },
+    { 6, 281, 337, 96, 32, 0, 5103, (void*)&gpOkCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_BackToCharCreate, 0, 0, 2 },
+    { 6, 421, 337, 96, 32, 0, 5102, (void*)&gpOkCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_SubmitCharacter, 0, 0, 2 },
+    { 4, 268, 320, 264, 120, 10, 8, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 3, 232, 364, 88, 184, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_SelectCharacterClass, (void*)&gData_00708A00, (void*)(unsigned int)&MAINMENUS_OnSelectAssassin },
+    { 3, 720, 370, 88, 184, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_SelectCharacterClass, (void*)&gData_00708A50, (void*)(unsigned int)&MAINMENUS_OnSelectDruid },
+    { 4, 339, 561, 200, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 6, 319, 540, 15, 16, 0, 0, (void*)&gpClickBoxCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ToggleExpansion, 0, 0, 2 },
+    { 2, 319, 540, 15, 16, 0, 0, (void*)&gpJoinGameClickBoxGreyCelFile },
+    { 2, 268, 350, 264, 176, 0, 0, (void*)&gpPopUpOkCancel2CelFile },
+    { 6, 281, 337, 96, 32, 27, 5167, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_OnClosePopup, 0, 0, 2 },
+    { 6, 421, 337, 96, 32, 0, 5166, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_JoinSelected, 0, 0, 2 },
+    { 4, 268, 320, 264, 120, 10, 8, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 2, 268, 350, 264, 176, 0, 0, (void*)&gpPopUpOkCancel2CelFile },
+    { 6, 281, 337, 96, 32, 27, 5167, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_DestroyIfExpansion, 0, 0, 2 },
+    { 6, 421, 337, 96, 32, 0, 5166, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_OnCharSelect, 0, 0, 2 },
+    { 4, 268, 310, 264, 120, 9, 0, 0, 0, 0, (void*)&gData_007089CC, 2 },
+    { 2, 268, 350, 264, 176, 0, 0, (void*)&gpPopUpOkCelFile },
+    { 6, 351, 337, 96, 32, 27, 5103, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CallGatewayDone, 0, 0, 2 },
+    { 4, 268, 300, 264, 100, 10, 8, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 6, 351, 337, 96, 32, 13, 5102, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CallGatewayDone, 0, 0, 2 },
+    { 2, 222, 426, 340, 224, 0, 0, (void*)&gpPopUp340x224CelFile },
+    { 6, 330, 416, 128, 35, 27, 5103, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CallGatewayDone },
+    { 4, 222, 280, 340, 60, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 4, 222, 360, 340, 70, 10, 8, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 4, 222, 370, 340, 20, 10, 4, 0, 0, 0, (void*)&gData_007089DC, 2 },
+    { 2, 195, 422, 410, 245, 0, 0, (void*)&gpPopUpWideCelFile },
+    { 6, 335, 412, 128, 35, 13, 5102, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CallGatewayDone },
+    { 4, 195, 237, 410, 40, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 4, 199, 377, 402, 140, 10, 8, 0, 0, 0, (void*)&gData_007089BC },
+    { 2, 158, 460, 485, 290, 0, 0, (void*)&gpPopUpLargestCelFile },
+    { 6, 335, 450, 128, 35, 13, 5102, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CallGatewayDone },
+    { 4, 158, 220, 485, 40, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 4, 162, 420, 477, 200, 10, 0, 0, 0, 0, (void*)&gData_007089BC },
+    { 4, 162, 320, 477, 100, 10, 0, 0, 0, 0, (void*)&gData_007089BC },
+    { 4, 162, 420, 477, 100, 10, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 2, 158, 460, 485, 290, 0, 0, (void*)&gpPopUpLargestCelFile },
+    { 6, 335, 450, 128, 35, 13, 5102, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CallGatewayDone },
+    { 4, 158, 220, 485, 40, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 4, 162, 270, 477, 50, 10, 0, 0, 0, 0, (void*)&gData_007089BC },
+    { 4, 158, 310, 485, 40, 0, 0, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 4, 162, 420, 477, 100, 10, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 2, 268, 350, 264, 176, 0, 0, (void*)&gpPopUpOk2CelFile },
+    { 6, 351, 337, 96, 32, 13, 5102, (void*)&gpOkCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CallGatewayDone, 0, 0, 2 },
+    { 4, 268, 320, 264, 120, 10, 8, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 6, 351, 337, 96, 32, 27, 5103, (void*)&gpOkCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CallGatewayDone, 0, 0, 2 },
+    { 8, 40, 0, 0, 0, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_ShowCantConnect },
+    { 6, 351, 337, 96, 32, 27, 5103, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CancelDownload, 0, 0, 2 },
+    { 6, 351, 337, 96, 32, 13, 5102, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CancelDownload, 0, 0, 2 },
+    { 4, 268, 337, 264, 120, 10, 8, 0, 0, 0, (void*)&gData_007089BC, 2 },
+    { 6, 264, 310, 272, 35, 0, 5115, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnOpenBattleNet },
+    { 6, 264, 350, 272, 35, 0, 5116, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OpenTcpIpScreen },
+    { 6, 264, 568, 272, 35, 27, 5103, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_00434DF0_Leave },
+    { 2, 0, 599, 800, 600, 0, 0, (void*)&gpTcpIpBckgCelFile },
+    { 4, 100, 76, 600, 40, 0, 0, 0, 0, 0, (void*)&gData_007089AC, 2 },
+    { 4, 270, 156, 272, 40, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 4, 265, 171, 272, 40, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 6, 265, 206, 272, 35, 0, 5118, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnTcpIpHost, 0, (void*)(unsigned int)&sub_00430120_OnToggle },
+    { 6, 265, 264, 272, 35, 0, 5119, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CreateTcpIpScreen, 0, (void*)(unsigned int)&sub_00430160_OnToggle },
+    { 4, 265, 520, 272, 210, 0, 0, 0, 0, 0, (void*)&gData_007089EC, 2 },
+    { 4, 265, 520, 272, 210, 2, 0, 0, 0, 0, (void*)&gData_007089EC, 2 },
+    { 6, 39, 571, 128, 35, 27, 5103, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnCreate },
+    { 8, 5000, 0, 0, 0, 0, 0, 0, (D2LaunchCallback)(unsigned int)&MAINMENUS_ShowAddress },
+    { 4, 300, 250, 200, 50, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 1, 300, 268, 213, 20, 0, 0, 0, 0, (void*)(unsigned int)&MAINMENUS_JoinTcpIp, (void*)&gData_007089DC },
+    { 2, 291, 270, 218, 26, 0, 0, (void*)&gpIPAddressBoxCelFile },
+    { 2, 268, 350, 264, 176, 0, 0, (void*)&gpPopUpOkCancel2CelFile },
+    { 6, 281, 337, 96, 32, 27, 5103, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnTcpIpJoin },
+    { 6, 421, 337, 96, 32, 13, 5102, (void*)&gpCancelButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_JoinTcpIp },
+    { 4, 0, 96, 800, 30, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 4, 323, 134, 300, 30, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 16 },
+    { 4, 351, 134, 425, 30, 0, 0, 0, 0, 0, (void*)&gData_007089B4 },
+    { 4, 0, 599, 200, 40, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 2, 0, 599, 800, 600, 0, 0, (void*)&gpDownloadPatchBckgCelFile },
+    { 2, 400, 300, 207, 172, 0, 0, (void*)&gpDownloadPatchBall2CelFile },
+    { 6, 336, 540, 128, 35, 27, 5103, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_CancelDownload },
+    { 13, 195, 422, 410, 245, 4, 4, (void*)&gpTileableDialogCelFile },
+    { 6, 335, 412, 128, 35, 0, 0, (void*)&gpMediumButtonBlankCelFile },
+    { 6, 415, 412, 128, 35, 0, 0, (void*)&gpMediumButtonBlankCelFile },
+    { 6, 255, 412, 128, 35, 0, 0, (void*)&gpMediumButtonBlankCelFile },
+    { 4, 195, 237, 410, 40, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 4, 199, 377, 402, 140, 10, 8, 0, 0, 0, (void*)&gData_007089BC },
+    { 4, 199, 377, 402, 180, 10, 8, 0, 0, 0, (void*)&gData_007089BC },
+    { 2, 250, 347, 300, 26, 0, 0, (void*)&gpEditTextBoxWideCelFile },
+    { 2, 250, 401, 300, 26, 0, 0, (void*)&gpEditTextBoxWideCelFile },
+    { 4, 200, 350, 400, 100, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 4, 200, 515, 400, 100, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 4, 252, 340, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 4, 252, 394, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 1, 253, 342, 293, 19, 8, 4, 0, 0, 0, (void*)&gData_007089DC },
+    { 1, 253, 396, 293, 19, 8, 4, 0, 0, 0, (void*)&gData_007089DC },
+    { 6, 265, 527, 272, 35, 13, 11097, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ConfirmText },
+    { 6, 265, 572, 272, 35, 0, 11098, (void*)&gpWideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_AskEmailRegistration },
+    { 6, 33, 572, 128, 35, 27, 5103, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnConnectCancel },
+    { 4, 0, 310, 800, 50, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 6, 627, 572, 128, 35, 0, 11062, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&CHARSEL_SubmitPasswordReset },
+    { 6, 33, 572, 128, 35, 27, 5103, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_00437710_OnInfoScreen },
+    { 4, 158, 500, 480, 220, 10, 8, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 2, 248, 427, 300, 26, 0, 0, (void*)&gpEditTextBoxWideCelFile },
+    { 4, 250, 420, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 1, 251, 422, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&CHARSEL_SubmitPasswordReset, (void*)&gData_007089DC },
+    { 2, 248, 477, 300, 26, 0, 0, (void*)&gpEditTextBoxWideCelFile },
+    { 4, 250, 470, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 1, 251, 472, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&CHARSEL_SubmitPasswordReset, (void*)&gData_007089DC },
+    { 4, 0, 285, 800, 35, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 4, 0, 300, 800, 16, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 4, 0, 385, 800, 16, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 4, 0, 470, 800, 16, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 6, 264, 335, 272, 35, 0, 11050, (void*)&gp3WideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_004371B0_OnLoginScreen },
+    { 6, 264, 420, 272, 35, 0, 11113, (void*)&gp3WideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_004371C0_OnEmailScreen },
+    { 6, 264, 505, 272, 35, 0, 11115, (void*)&gp3WideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_00437720_OnPasswordScreen },
+    { 6, 33, 572, 128, 35, 27, 5103, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_004371D0_OnShowLogin },
+    { 4, 0, 310, 800, 50, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
+    { 4, 158, 500, 480, 220, 10, 8, 0, 0, 0, (void*)&gData_007089C4, 2 },
+    { 2, 248, 402, 300, 26, 0, 0, (void*)&gpEditTextBoxWideCelFile },
+    { 4, 250, 395, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 1, 251, 397, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&sub_00437730_ChangePassword, (void*)&gData_007089DC },
+    { 2, 248, 452, 300, 26, 0, 0, (void*)&gpEditTextBoxWideCelFile },
+    { 4, 250, 445, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 1, 251, 447, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&sub_00437730_ChangePassword, (void*)&gData_007089DC },
+    { 2, 248, 502, 300, 26, 0, 0, (void*)&gpEditTextBoxWideCelFile },
+    { 4, 250, 495, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 1, 251, 497, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&sub_00437730_ChangePassword, (void*)&gData_007089DC },
+    { 2, 248, 552, 300, 26, 0, 0, (void*)&gpEditTextBoxWideCelFile },
+    { 4, 250, 545, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
+    { 1, 251, 547, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&sub_00437730_ChangePassword, (void*)&gData_007089DC },
+    { 6, 627, 572, 128, 35, 0, 11062, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_00437730_ChangePassword },
+    { 6, 33, 572, 128, 35, 27, 5103, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_004374E0_OnInfoScreen }
+}; // 0x00708D10
+#pragma comment(linker, "/alternatename:?gatControlTemplates@@3PAUD2LaunchControlTemplateStrc@@A=_gData_00708D10")
+
+extern int gnTextMode = -1; // 0x00708D0C
+
+extern "C" const char gData_006D48E8[16] = "tos-unicode_"; // 0x006D48E8
+#pragma comment(linker, "/alternatename:?gszTosPrefix@@3QBDB=_gData_006D48E8")
+
+extern int gnTextSentinel = -1; // 0x0070CB80
+
+extern "C" struct d2data_0070CB84_t gData_0070CB84 = {
+    { 0xFF, 0xFF, 0xFF, 0xFF }
+}; // 0x0070CB84
 
 extern "C" struct d2data_007089AC_t gData_007089AC = {
     { 0x03 }
@@ -7167,45 +6722,6 @@ extern "C" struct d2data_00708BE0_t gData_00708BE0 = {
     { 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x01 }
 }; // 0x00708BE0
 
-extern "C" struct d2data_00708C30_t gData_00708C30 = {
-    (const void*)&gpD2LogoBlackLeftCelFile,
-    (const void*)&gpD2LogoFireLeftCelFile,
-    { 0x03, 0x00, 0x00, 0x00, 0x01 },
-    (const void*)&gpD2LogoBlackLeftCelFile,
-    (const void*)&gpD2LogoFireLeftCelFile,
-    { 0x03, 0x00, 0x00, 0x00, 0x01 },
-    (const void*)&gpD2LogoBlackLeftCelFile,
-    (const void*)&gpD2LogoFireLeftCelFile,
-    { 0x03, 0x00, 0x00, 0x00, 0x01 },
-    (const void*)&gpD2LogoBlackLeftCelFile,
-    (const void*)&gpD2LogoFireLeftCelFile,
-    { 0x03, 0x00, 0x00, 0x00, 0x01 },
-    (const void*)&gpD2LogoBlackLeftCelFile,
-    (const void*)&gpD2LogoFireLeftCelFile,
-    { 0x03, 0x00, 0x00, 0x00, 0x01 }
-}; // 0x00708C30
-
-extern "C" struct d2data_00708C80_t gData_00708C80 = {
-    (const void*)&gpD2LogoBlackRightCelFile,
-    (const void*)&gpD2LogoFireRightCelFile,
-    { 0x03, 0x00, 0x00, 0x00, 0x01 },
-    (const void*)&gpD2LogoBlackRightCelFile,
-    (const void*)&gpD2LogoFireRightCelFile,
-    { 0x03, 0x00, 0x00, 0x00, 0x01 },
-    (const void*)&gpD2LogoBlackRightCelFile,
-    (const void*)&gpD2LogoFireRightCelFile,
-    { 0x03, 0x00, 0x00, 0x00, 0x01 },
-    (const void*)&gpD2LogoBlackRightCelFile,
-    (const void*)&gpD2LogoFireRightCelFile,
-    { 0x03, 0x00, 0x00, 0x00, 0x01 },
-    (const void*)&gpD2LogoBlackRightCelFile,
-    (const void*)&gpD2LogoFireRightCelFile,
-    {
-        0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x33, 0x00, 0x00, 0x00, 0xC8, 0x01, 0x00, 0x00,
-        0x0E, 0x01
-    }
-}; // 0x00708C80
-
 extern "C" struct d2data_00708CDC_t gData_00708CDC = {
     { 0xA9, 0x02, 0x00, 0x00, 0xD3, 0x01, 0x00, 0x00, 0x43, 0x01 }
 }; // 0x00708CDC
@@ -7222,2105 +6738,23 @@ extern "C" struct d2data_00708D00_t gData_00708D00 = {
     { 0x49, 0x02, 0x00, 0x00, 0xC9, 0x01, 0x00, 0x00, 0x6B, 0x01 }
 }; // 0x00708D00
 
-extern int gnTextMode = -1; // 0x00708D0C
+extern "C" const unsigned char gData_006D4D88[20] = { 1, 1, 1, 1, 1, 0, 0, 0, 1, 1 }; // 0x006D4D88
+#pragma comment(linker, "/alternatename:_gabDefault=_gData_006D4D88")
 
-extern "C" struct d2data_00708D10_t gData_00708D10 = {
-    {
-        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xDF, 0x01, 0x00, 0x00, 0x80, 0x02, 0x00, 0x00,
-        0xE0, 0x01
-    },
-    (const void*)&gpBlizNoCelFile,
-    (const void*)(unsigned int)&MAINMENUS_PlayIntroAndLeave,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00,
-        0x08
-    },
-    (const void*)(unsigned int)&MAINMENUS_PlayIntroAndLeave,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x57, 0x02, 0x00, 0x00, 0x20, 0x03, 0x00, 0x00, 0x58, 0x02
-    },
-    (const void*)&gpTrademarkCelFile,
-    (const void*)(unsigned int)&sub_00434DC0_Leave,
-    { 0x00 },
-    (const void*)(unsigned int)&sub_00434DC0_Leave,
-    { 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x09 },
-    (const void*)(unsigned int)&sub_00434DC0_Leave,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x64, 0x00, 0x00, 0x00, 0x44, 0x02, 0x00, 0x00, 0x58, 0x02, 0x00, 0x00, 0x50
-    },
-    (const void*)&gData_007089DC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xF0, 0x00, 0x00, 0x00, 0x78, 0x00, 0x00, 0x00,
-        0x40, 0x01, 0x00, 0x00, 0x97
-    },
-    (const void*)&gpDiablo2LogoCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x03, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00, 0x78, 0x00, 0x00, 0x00, 0xB5, 0x00, 0x00, 0x00,
-        0xAA
-    },
-    (const void*)&gData_00708C30,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00,
-        0x78, 0x00, 0x00, 0x00, 0xBC, 0x00, 0x00, 0x00, 0xB1
-    },
-    (const void*)&gData_00708C80,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x57, 0x02, 0x00, 0x00, 0x20, 0x03, 0x00, 0x00, 0x58, 0x02
-    },
-    (const void*)&gpTitleScreenCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00, 0xE0, 0x00, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00,
-        0x23, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF2, 0x13
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnSinglePlayer,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x0A, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0xF3, 0x13
-    },
-    (const void*)&gpWideButtonBlank02CelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnBattleNet,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x23, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x19
-    },
-    (const void*)&gpNarrowButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CreateGatewayScreen,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x4D, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0xF4, 0x13
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnCreate,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x10, 0x02, 0x00, 0x00, 0x87, 0x00, 0x00, 0x00, 0x19, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0xF6, 0x13
-    },
-    (const void*)&gpShortButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CreateCreditsScreen,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x92, 0x01, 0x00, 0x00, 0x10, 0x02, 0x00, 0x00, 0x87, 0x00, 0x00, 0x00, 0x19, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0xF7, 0x13
-    },
-    (const void*)&gpShortButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ShowLevelScreen,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x38, 0x02, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xF5, 0x13
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_Leave,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x44, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0xF2, 0x13
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnSinglePlayer,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x6E, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0xF3, 0x13
-    },
-    (const void*)&gpWideButtonBlank02CelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnBattleNet,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x87, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x19
-    },
-    (const void*)&gpNarrowButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CreateGatewayScreen,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0xB1, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0xF4, 0x13
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnCreate,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x96, 0x00, 0x00, 0x00, 0x2C, 0x01, 0x00, 0x00, 0xF4, 0x01, 0x00, 0x00, 0x64
-    },
-    (const void*)&gData_007089AC,
-    {
-        0x22, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x3F, 0x01, 0x00, 0x00, 0x5B, 0x01, 0x00, 0x00,
-        0xA9, 0x00, 0x00, 0x00, 0x1A
-    },
-    (const void*)&gpTextBox2CelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x3F, 0x01, 0x00, 0x00, 0x91, 0x01, 0x00, 0x00, 0xA9, 0x00, 0x00, 0x00,
-        0x1A
-    },
-    (const void*)&gpTextBox2CelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x3F, 0x01, 0x00, 0x00, 0xC7, 0x01, 0x00, 0x00, 0xA9, 0x00, 0x00, 0x00,
-        0x1A
-    },
-    (const void*)&gpTextBox2CelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x3F, 0x01, 0x00, 0x00, 0xC7, 0x01, 0x00, 0x00, 0xA9, 0x00, 0x00, 0x00,
-        0x1A
-    },
-    (const void*)&gpTextBox2CelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x3F, 0x01, 0x00, 0x00, 0xFD, 0x01, 0x00, 0x00, 0xA9, 0x00, 0x00, 0x00,
-        0x1A
-    },
-    (const void*)&gpTextBox2CelFile,
-    { 0x00 }
-}; // 0x00708D10
-#pragma comment(linker, "/alternatename:?gatControlTemplates@@3PAUD2LaunchControlTemplateStrc@@A=_gData_00708D10")
-
-extern "C" struct d2data_007091F0_t gData_007091F0 = {
-    { 0x04, 0x00, 0x00, 0x00, 0x41, 0x01 }
-}; // 0x007091F0
-
-extern "C" int gLayout_007091F8 = 340; // 0x007091F8
-
-extern "C" struct d2data_007091FC_t gData_007091FC = {
-    { 0x2C, 0x01, 0x00, 0x00, 0x20 },
-    (const void*)&gData_007089C4,
-    { 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x41, 0x01 }
-}; // 0x007091FC
-
-extern "C" int gLayout_00709228 = 394; // 0x00709228
-
-extern "C" struct d2data_0070922C_t gData_0070922C = {
-    { 0x2C, 0x01, 0x00, 0x00, 0x20 },
-    (const void*)&gData_007089C4,
-    { 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x41, 0x01 }
-}; // 0x0070922C
-
-extern "C" int gLayout_00709258 = 448; // 0x00709258
-
-extern "C" struct d2data_0070925C_t gData_0070925C = {
-    { 0x2C, 0x01, 0x00, 0x00, 0x20 },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x41, 0x01, 0x00, 0x00, 0xC0, 0x01, 0x00, 0x00,
-        0x2C, 0x01, 0x00, 0x00, 0x20
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x41, 0x01, 0x00, 0x00, 0xF6, 0x01, 0x00, 0x00,
-        0x2C, 0x01, 0x00, 0x00, 0x20
-    },
-    (const void*)&gData_007089C4,
-    { 0x00, 0x00, 0x00, 0x00, 0x04 }
-}; // 0x0070925C
-
-extern "C" int gLayout_007092E8 = 260; // 0x007092E8
-
-extern "C" struct d2data_007092EC_t gData_007092EC = {
-    { 0x20, 0x03, 0x00, 0x00, 0x32 },
-    (const void*)&gData_007089B4,
-    { 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xC8 }
-}; // 0x007092EC
-
-extern "C" int gLayout_00709318 = 350; // 0x00709318
-
-extern "C" struct d2data_0070931C_t gData_0070931C = {
-    { 0x90, 0x01, 0x00, 0x00, 0x64 },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x36, 0x01, 0x00, 0x00,
-        0x20, 0x03, 0x00, 0x00, 0x32
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0x56, 0x01, 0x00, 0x00,
-        0xA2, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&MAINMENUS_LoginOk,
-    (const void*)&gData_007089DC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0x8C, 0x01, 0x00, 0x00,
-        0xA2, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&MAINMENUS_LoginOk,
-    (const void*)&gData_007089DC,
-    {
-        0x21, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x65, 0x14
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CheckFreeSpace,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x10, 0x02, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x64, 0x2B
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_StoreAccount,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0xE4, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x0D, 0x00, 0x00, 0x00, 0xA8, 0x14
-    },
-    (const void*)&gp3WideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_LoginOk,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x21, 0x00, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xED, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_Callback,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x4E, 0x02, 0x00, 0x00, 0x21, 0x02, 0x00, 0x00, 0xCD, 0x00, 0x00, 0x00, 0x20
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x57, 0x02, 0x00, 0x00,
-        0x20, 0x03, 0x00, 0x00, 0x58, 0x02
-    },
-    (const void*)&gpCreditsBckgCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x21, 0x00, 0x00, 0x00, 0x42, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
-        0x23, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0xED, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_Callback,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x30, 0x02, 0x00, 0x00, 0x67, 0x02, 0x00, 0x00, 0xFA, 0x00, 0x00, 0x00, 0x62, 0x02
-    },
-    (const void*)&gData_007089D4,
-    {
-        0x90, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x3A, 0x02, 0x00, 0x00, 0x67, 0x02, 0x00, 0x00,
-        0xFA, 0x00, 0x00, 0x00, 0x62, 0x02
-    },
-    (const void*)&gData_007089D4,
-    {
-        0x80, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xB8, 0x01, 0x00, 0x00, 0x67, 0x02, 0x00, 0x00,
-        0xFA, 0x00, 0x00, 0x00, 0x62, 0x02
-    },
-    (const void*)&gData_007089D4,
-    { 0x82, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x32 },
-    (const void*)(unsigned int)&MAINMENUS_CheckCreditsEnd,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x90, 0x01, 0x00, 0x00, 0x67, 0x02, 0x00, 0x00, 0xFA, 0x00, 0x00, 0x00, 0x62, 0x02
-    },
-    (const void*)&gData_007089D4,
-    {
-        0x90, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x9A, 0x01, 0x00, 0x00, 0x67, 0x02, 0x00, 0x00,
-        0xFA, 0x00, 0x00, 0x00, 0x62, 0x02
-    },
-    (const void*)&gData_007089D4,
-    {
-        0x80, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x18, 0x01, 0x00, 0x00, 0x67, 0x02, 0x00, 0x00,
-        0xFA, 0x00, 0x00, 0x00, 0x62, 0x02
-    },
-    (const void*)&gData_007089D4,
-    {
-        0x82, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xED, 0x00, 0x00, 0x00, 0x2B, 0x02, 0x00, 0x00,
-        0x46, 0x01, 0x00, 0x00, 0x55, 0x01
-    },
-    (const void*)&gpCinematicsSelectionCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0x06, 0x01, 0x00, 0x00, 0x1B, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00,
-        0x23
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x06, 0x01, 0x00, 0x00, 0x3C, 0x01, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x29, 0x10
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_PlayClassicIntro,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x06, 0x01, 0x00, 0x00, 0x67, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x2A, 0x10
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_PlayActTwoStart,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x06, 0x01, 0x00, 0x00, 0x92, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x2B, 0x10
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_PlayActThreeStart,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x06, 0x01, 0x00, 0x00, 0xBD, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x2C, 0x10
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_PlayActFourStart,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x06, 0x01, 0x00, 0x00, 0xE8, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0xF9, 0x13
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_PlayActFourEnd,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x4E, 0x01, 0x00, 0x00, 0x1A, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ReloadAndLeave,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x19, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ShowLevelAndStop,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0xA5, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&sub_00431920_SetFlagD4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x5F, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&sub_00431910_SetFlagD4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0xED, 0x00, 0x00, 0x00, 0xF9, 0x01, 0x00, 0x00, 0x46, 0x01, 0x00, 0x00, 0xAB, 0x01
-    },
-    (const void*)&gpCinematicsSelectionExpCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0x06, 0x01, 0x00, 0x00, 0x99, 0x00, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00,
-        0x23
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x06, 0x01, 0x00, 0x00, 0xB5, 0x00, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x25, 0x55
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_PlayClassicIntro,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x06, 0x01, 0x00, 0x00, 0xE0, 0x00, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x26, 0x55
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_PlayActTwoStart,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x06, 0x01, 0x00, 0x00, 0x0C, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x27, 0x55
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_PlayActThreeStart,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x06, 0x01, 0x00, 0x00, 0x36, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x28, 0x55
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_PlayActFourStart,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x06, 0x01, 0x00, 0x00, 0x61, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x29, 0x55
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_PlayActFourEnd,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x06, 0x01, 0x00, 0x00, 0x8C, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x2A, 0x55
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_PlayExpansionIntro,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x06, 0x01, 0x00, 0x00, 0xB7, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x2B, 0x55
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_PlayExpansionOutro,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x4E, 0x01, 0x00, 0x00, 0xE8, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ReloadAndLeave,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0xED, 0x00, 0x00, 0x00, 0x2B, 0x02, 0x00, 0x00, 0x54, 0x01, 0x00, 0x00, 0x54, 0x01
-    },
-    (const void*)&gpGWListBoxCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0xED, 0x00, 0x00, 0x00, 0x0E, 0x01, 0x00, 0x00, 0x54, 0x01, 0x00, 0x00,
-        0x23
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x01, 0x01, 0x00, 0x00, 0x59, 0x01, 0x00, 0x00,
-        0x40, 0x01, 0x00, 0x00, 0x54
-    },
-    (const void*)&gData_007089CC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x01, 0x01, 0x00, 0x00, 0xF4, 0x01, 0x00, 0x00,
-        0x24, 0x01, 0x00, 0x00, 0xA0
-    },
-    (const void*)&gpJoinGameScrollBarsCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnRealmDoubleClick,
-    (const void*)&gData_00708CE8,
-    (const void*)&gData_007089DC,
-    {
-        0x0D, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x19, 0x01, 0x00, 0x00, 0x1A, 0x02, 0x00, 0x00,
-        0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnRealmSelected,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0xB4, 0x01, 0x00, 0x00, 0x1A, 0x02, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ResetAndLeave,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0x67, 0x00, 0x00, 0x00, 0x0E, 0x02, 0x00, 0x00, 0x51, 0x02, 0x00, 0x00, 0xC3, 0x01
-    },
-    (const void*)&gpTermsOfUseBckgCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0x78, 0x00, 0x00, 0x00, 0xD3, 0x01, 0x00, 0x00, 0x30, 0x02, 0x00, 0x00,
-        0x3E, 0x01
-    },
-    (const void*)&gpJoinGameScrollBarsCelFile,
-    { 0x00 },
-    (const void*)&gData_00708CDC,
-    (const void*)&gData_007089E4,
-    {
-        0x04, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x0D, 0x02, 0x00, 0x00, 0x01, 0x02, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3D, 0x14
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnBack,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x85, 0x00, 0x00, 0x00, 0x01, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x0D, 0x00, 0x00, 0x00, 0x3E, 0x14
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnShowLogin,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x67
-    }
-}; // 0x0070931C
-
-extern "C" int gLayout_00709C48 = 173; // 0x00709C48
-
-extern "C" struct d2data_00709C4C_t gData_00709C4C = {
-    { 0x3A, 0x02, 0x00, 0x00, 0x45 },
-    (const void*)&gData_007089AC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x84, 0x03, 0x00, 0x00, 0x84, 0x03, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x26
-    },
-    (const void*)(unsigned int)&MAINMENUS_ScrollUp,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x84, 0x03, 0x00, 0x00, 0x84, 0x03, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x28
-    },
-    (const void*)(unsigned int)&MAINMENUS_ScrollDown,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x42, 0x01, 0x00, 0x00, 0x56, 0x01, 0x00, 0x00, 0xA2, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00,
-        0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&MAINMENUS_CreateAccountOk,
-    (const void*)&gData_007089DC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0x8C, 0x01, 0x00, 0x00,
-        0xA2, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&MAINMENUS_CreateAccountOk,
-    (const void*)&gData_007089DC,
-    {
-        0x21, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0xC2, 0x01, 0x00, 0x00,
-        0xA2, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&MAINMENUS_CreateAccountOk,
-    (const void*)&gData_007089DC,
-    {
-        0x21, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x73, 0x02, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CreateAccountOk,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x21, 0x00, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xED, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnShowLogin,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x42, 0x01, 0x00, 0x00, 0x56, 0x01, 0x00, 0x00, 0xA2, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00,
-        0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&MAINMENUS_ChangePasswordOk,
-    (const void*)&gData_007089DC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0x8C, 0x01, 0x00, 0x00,
-        0xA2, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&MAINMENUS_ChangePasswordOk,
-    (const void*)&gData_007089DC,
-    {
-        0x21, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0xC2, 0x01, 0x00, 0x00,
-        0xA2, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&MAINMENUS_ChangePasswordOk,
-    (const void*)&gData_007089DC,
-    {
-        0x21, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0xF8, 0x01, 0x00, 0x00,
-        0xA2, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&MAINMENUS_ChangePasswordOk,
-    (const void*)&gData_007089DC,
-    {
-        0x21, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x73, 0x02, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ChangePasswordOk,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x21, 0x00, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xED, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OpenInfoScreen,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x67
-    }
-}; // 0x00709C4C
-
-extern "C" int gLayout_00709EE8 = 173; // 0x00709EE8
-
-extern "C" struct d2data_00709EEC_t gData_00709EEC = {
-    { 0x3A, 0x02, 0x00, 0x00, 0x45 },
-    (const void*)&gData_007089AC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x6E, 0x00, 0x00, 0x00, 0xE0, 0x01, 0x00, 0x00,
-        0x3A, 0x02, 0x00, 0x00, 0x3E, 0x01
-    },
-    (const void*)&gData_007089DC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x6E, 0x00, 0x00, 0x00, 0x62, 0x02, 0x00, 0x00,
-        0x3A, 0x02, 0x00, 0x00, 0x3E, 0x01
-    },
-    (const void*)&gData_007089DC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x6E, 0x00, 0x00, 0x00, 0xBC, 0x02, 0x00, 0x00,
-        0x3A, 0x02, 0x00, 0x00, 0x3E, 0x01
-    },
-    (const void*)&gData_007089DC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x0D, 0x02, 0x00, 0x00, 0x01, 0x02, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ConnectOk,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x85, 0x00, 0x00, 0x00, 0x01, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_BackToLogin,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0x01, 0x02, 0x00, 0x00, 0x50, 0x00, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x49
-    },
-    (const void*)&gpRealmSelectCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0x2F, 0x02, 0x00, 0x00, 0x21, 0x00, 0x00, 0x00, 0xB7, 0x00, 0x00, 0x00,
-        0x12
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x01, 0x02, 0x00, 0x00, 0x69, 0x00, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x19, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x31, 0x2B
-    },
-    (const void*)&gpRealmSelectButtonThinCelFile,
-    (const void*)(unsigned int)&CHARSEL_CopyName,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x10, 0x02, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0xF6, 0x00, 0x00, 0x00, 0x2F
-    },
-    (const void*)&gData_007089AC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x61, 0x02, 0x00, 0x00, 0x53, 0x00, 0x00, 0x00,
-        0xB6, 0x00, 0x00, 0x00, 0x47
-    },
-    (const void*)&gpRealmSelectCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0x75, 0x02, 0x00, 0x00, 0x2C, 0x00, 0x00, 0x00, 0x91, 0x00, 0x00, 0x00,
-        0x15
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x61, 0x02, 0x00, 0x00, 0x71, 0x00, 0x00, 0x00,
-        0xB6, 0x00, 0x00, 0x00, 0x1E, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x31, 0x2B
-    },
-    (const void*)&gpRealmSelectButtonThinCelFile,
-    (const void*)(unsigned int)&CHARSEL_CopyName,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x72, 0x02, 0x00, 0x00, 0x64, 0x00, 0x00, 0x00, 0x97, 0x00, 0x00, 0x00, 0x2C
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xC3, 0x01, 0x00, 0x00, 0xC7, 0x01, 0x00, 0x00,
-        0x54, 0x01, 0x00, 0x00, 0x54, 0x01
-    },
-    (const void*)&gpGWListBoxCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0xC3, 0x01, 0x00, 0x00, 0xAD, 0x00, 0x00, 0x00, 0x54, 0x01, 0x00, 0x00,
-        0x23
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xCD, 0x01, 0x00, 0x00, 0xE6, 0x00, 0x00, 0x00,
-        0x40, 0x01, 0x00, 0x00, 0x46
-    },
-    (const void*)&gData_007089CC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xD7, 0x01, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00,
-        0x24, 0x01, 0x00, 0x00, 0xA0
-    },
-    (const void*)&gpJoinGameScrollBarsCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnRealmListClick,
-    (const void*)&gData_00708CF4,
-    (const void*)&gData_007089DC,
-    {
-        0x0D, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0xEF, 0x01, 0x00, 0x00, 0xB6, 0x01, 0x00, 0x00,
-        0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_OnRealmChosen,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x8A, 0x02, 0x00, 0x00, 0xB6, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_OnName,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0x7F, 0x00, 0x00, 0x00, 0xC7, 0x01, 0x00, 0x00, 0x54, 0x01, 0x00, 0x00, 0x54, 0x01
-    },
-    (const void*)&gpGWListBoxCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0x7F, 0x00, 0x00, 0x00, 0xAD, 0x00, 0x00, 0x00, 0x54, 0x01, 0x00, 0x00,
-        0x23
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x89, 0x00, 0x00, 0x00, 0xE6, 0x00, 0x00, 0x00,
-        0x40, 0x01, 0x00, 0x00, 0x46
-    },
-    (const void*)&gData_007089CC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x93, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00,
-        0x24, 0x01, 0x00, 0x00, 0xA0
-    },
-    (const void*)&gpJoinGameScrollBarsCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnRealmListClick,
-    (const void*)&gData_00708CF4,
-    (const void*)&gData_007089DC,
-    {
-        0x0D, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0xAB, 0x00, 0x00, 0x00, 0xB6, 0x01, 0x00, 0x00,
-        0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_OnRealmChosen,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x46, 0x01, 0x00, 0x00, 0xB6, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_OnName,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x21, 0x00, 0x00, 0x00, 0x12, 0x02, 0x00, 0x00, 0xC0, 0x01, 0x00, 0x00, 0x78
-    },
-    (const void*)&gData_007089E4,
-    { 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x32 },
-    (const void*)(unsigned int)&CHARSEL_PollConnect,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x02, 0x02, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x99, 0x14
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_Back,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x21, 0x00, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xED, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_DisconnectAndLeave,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0xC1, 0x00, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x98, 0x14
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&sub_00439D50_CreateControls,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x61, 0x01, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_OnCharSelectOk,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x02, 0x02, 0x00, 0x00, 0x99, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x00, 0x00, 0x5C, 0x00, 0x00, 0x00,
-        0x4C, 0x00, 0x00, 0x00, 0x05
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x02, 0x02, 0x00, 0x00, 0xF6, 0x00, 0x00, 0x00,
-        0xC8, 0x00, 0x00, 0x00, 0x5C, 0x00, 0x00, 0x00, 0x4C, 0x00, 0x00, 0x00, 0x05
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x02, 0x02, 0x00, 0x00, 0x53, 0x01, 0x00, 0x00,
-        0xC8, 0x00, 0x00, 0x00, 0x5C, 0x00, 0x00, 0x00, 0x4C, 0x00, 0x00, 0x00, 0x05
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x02, 0x02, 0x00, 0x00, 0xB0, 0x01, 0x00, 0x00,
-        0xC8, 0x00, 0x00, 0x00, 0x5C, 0x00, 0x00, 0x00, 0x4C, 0x00, 0x00, 0x00, 0x05
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x02, 0x02, 0x00, 0x00, 0x0D, 0x02, 0x00, 0x00,
-        0xC8, 0x00, 0x00, 0x00, 0x5C, 0x00, 0x00, 0x00, 0x4C, 0x00, 0x00, 0x00, 0x05
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x25, 0x00, 0x00, 0x00, 0xB2, 0x00, 0x00, 0x00,
-        0xC8, 0x00, 0x00, 0x00, 0x5C, 0x00, 0x00, 0x00, 0x4C, 0x00, 0x00, 0x00, 0x03
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x35, 0x01, 0x00, 0x00, 0xB2, 0x00, 0x00, 0x00,
-        0xC8, 0x00, 0x00, 0x00, 0x5C, 0x00, 0x00, 0x00, 0x4C, 0x00, 0x00, 0x00, 0x03
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x25, 0x00, 0x00, 0x00, 0x0F, 0x01, 0x00, 0x00,
-        0xC8, 0x00, 0x00, 0x00, 0x5C, 0x00, 0x00, 0x00, 0x4C, 0x00, 0x00, 0x00, 0x03
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x35, 0x01, 0x00, 0x00, 0x0F, 0x01, 0x00, 0x00,
-        0xC8, 0x00, 0x00, 0x00, 0x5C, 0x00, 0x00, 0x00, 0x4C, 0x00, 0x00, 0x00, 0x03
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x25, 0x00, 0x00, 0x00, 0x6C, 0x01, 0x00, 0x00,
-        0xC8, 0x00, 0x00, 0x00, 0x5C, 0x00, 0x00, 0x00, 0x4C, 0x00, 0x00, 0x00, 0x03
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x35, 0x01, 0x00, 0x00, 0x6C, 0x01, 0x00, 0x00,
-        0xC8, 0x00, 0x00, 0x00, 0x5C, 0x00, 0x00, 0x00, 0x4C, 0x00, 0x00, 0x00, 0x03
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x25, 0x00, 0x00, 0x00, 0xC9, 0x01, 0x00, 0x00,
-        0xC8, 0x00, 0x00, 0x00, 0x5C, 0x00, 0x00, 0x00, 0x4C, 0x00, 0x00, 0x00, 0x03
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x35, 0x01, 0x00, 0x00, 0xC9, 0x01, 0x00, 0x00,
-        0xC8, 0x00, 0x00, 0x00, 0x5C, 0x00, 0x00, 0x00, 0x4C, 0x00, 0x00, 0x00, 0x03
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xED, 0x00, 0x00, 0x00, 0xB2, 0x00, 0x00, 0x00,
-        0x48, 0x00, 0x00, 0x00, 0x5D
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xFD, 0x01, 0x00, 0x00, 0xB2, 0x00, 0x00, 0x00,
-        0x48, 0x00, 0x00, 0x00, 0x5D
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xED, 0x00, 0x00, 0x00, 0x0F, 0x01, 0x00, 0x00,
-        0x48, 0x00, 0x00, 0x00, 0x5D
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xFD, 0x01, 0x00, 0x00, 0x0F, 0x01, 0x00, 0x00,
-        0x48, 0x00, 0x00, 0x00, 0x5D
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xED, 0x00, 0x00, 0x00, 0x6C, 0x01, 0x00, 0x00,
-        0x48, 0x00, 0x00, 0x00, 0x5D
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xFD, 0x01, 0x00, 0x00, 0x6C, 0x01, 0x00, 0x00,
-        0x48, 0x00, 0x00, 0x00, 0x5D
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xED, 0x00, 0x00, 0x00, 0xC9, 0x01, 0x00, 0x00,
-        0x48, 0x00, 0x00, 0x00, 0x5D
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xFD, 0x01, 0x00, 0x00, 0xC9, 0x01, 0x00, 0x00,
-        0x48, 0x00, 0x00, 0x00, 0x5D
-    },
-    (const void*)(unsigned int)&CHARSEL_OnListClick,
-    { 0x00 },
-    (const void*)&gData_007089C4,
-    {
-        0x20, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x2D, 0x00, 0x00, 0x00, 0x3E, 0x01, 0x00, 0x00,
-        0x13, 0x02, 0x00, 0x00, 0x8C
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x25, 0x00, 0x00, 0x00, 0xB2, 0x00, 0x00, 0x00,
-        0x23, 0x02, 0x00, 0x00, 0x23
-    },
-    (const void*)&gData_007089E4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x02, 0x00, 0x00, 0xE8, 0x03, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x5D
-    },
-    (const void*)&gpCharSelectBoxCelFile,
-    { 0x00 },
-    (const void*)(unsigned int)&CHARSEL_OnListKeyDown,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x02, 0x00, 0x00, 0xE8, 0x03, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x5D
-    },
-    (const void*)&gpCharSelectBoxGreyCelFile,
-    { 0x00 },
-    (const void*)(unsigned int)&CHARSEL_OnListKeyDown,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x02, 0x02, 0x00, 0x00, 0x81, 0x01, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x5D
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x7A, 0x02, 0x00, 0x00, 0x32, 0x00, 0x00, 0x00,
-        0x1D, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00, 0x69
-    },
-    (const void*)&gpSelectCharArrowsCelFile,
-    (const void*)(unsigned int)&CHARSEL_ScrollUp,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x7A, 0x02, 0x00, 0x00, 0x2B, 0x02, 0x00, 0x00, 0x1D, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00,
-        0x63
-    },
-    (const void*)&gpSelectCharArrowsCelFile,
-    (const void*)(unsigned int)&CHARSEL_ScrollDown,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x46, 0x00, 0x00, 0x00, 0x67, 0x00, 0x00, 0x00, 0xC2, 0x01, 0x00, 0x00, 0x32
-    },
-    (const void*)&gData_007089AC,
-    {
-        0x22, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x55, 0x00, 0x00, 0x00, 0x4E, 0x00, 0x00, 0x00,
-        0xD2, 0x01, 0x00, 0x00, 0x2A
-    },
-    (const void*)&gData_007089AC,
-    {
-        0x22, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x56, 0x00, 0x00, 0x00, 0x8F, 0x00, 0x00, 0x00,
-        0x90, 0x01, 0x00, 0x00, 0x32
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x56, 0x00, 0x00, 0x00, 0xB2, 0x00, 0x00, 0x00,
-        0x90, 0x01, 0x00, 0x00, 0x32
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x96, 0x00, 0x00, 0x00,
-        0x54, 0x00, 0x00, 0x00, 0x56
-    },
-    (const void*)&gpCreateNewCharImageCelFile,
-    { 0x00 },
-    (const void*)(unsigned int)&CHARSEL_OnListKeyDown,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x56, 0x00, 0x00, 0x00, 0x2C, 0x01, 0x00, 0x00,
-        0x90, 0x01, 0x00, 0x00, 0xC8
-    },
-    (const void*)&gData_007089EC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x57, 0x02, 0x00, 0x00,
-        0x20, 0x03, 0x00, 0x00, 0x58, 0x02
-    },
-    (const void*)&gpCharacterSelectScreenExpCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x73, 0x02, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
-        0x23, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_OnCharSelectOk,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x21, 0x00, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xED, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_DisconnectAndLeave,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x21, 0x00, 0x00, 0x00, 0x10, 0x02, 0x00, 0x00, 0xA8, 0x00, 0x00, 0x00, 0x3C, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x50, 0x2A
-    },
-    (const void*)&gpTallButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_Back,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0xE9, 0x00, 0x00, 0x00, 0x10, 0x02, 0x00, 0x00, 0xA8, 0x00, 0x00, 0x00, 0x3C, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0xCC, 0x58
-    },
-    (const void*)&gpTallButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_CreateExpansionControls,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0xB1, 0x01, 0x00, 0x00, 0x10, 0x02, 0x00, 0x00, 0xA8, 0x00, 0x00, 0x00, 0x3C, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x98, 0x14
-    },
-    (const void*)&gpTallButtonBlankCelFile,
-    (const void*)(unsigned int)&sub_00439D50_CreateControls,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x34, 0x02, 0x00, 0x00, 0xC9, 0x01, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x73, 0x01
-    },
-    (const void*)&gpJoinGameScrollBarsCelFile,
-    (const void*)(unsigned int)&CHARSEL_OnScroll,
-    (const void*)&gData_00708D00,
-    (const void*)&gData_007089DC,
-    {
-        0x05, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00, 0x29, 0x01, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x52, 0x00, 0x00, 0x00, 0x22, 0x27
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_OnNormalDifficulty,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x54, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x4E, 0x00, 0x00, 0x00, 0x21, 0x27
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_OnNightmareDifficulty,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x7F, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x48, 0x00, 0x00, 0x00, 0x20, 0x27
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_OnHellDifficulty,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x04, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xED, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00,
-        0x46, 0x01, 0x00, 0x00, 0xC8
-    },
-    (const void*)&gpDifficultyLevelsCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x84, 0x03, 0x00, 0x00, 0x84, 0x03, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00,
-        0x0A, 0x00, 0x00, 0x00, 0x1B
-    },
-    (const void*)(unsigned int)&MAINMENUS_CloseBox,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x50, 0x00, 0x00, 0x00, 0x20, 0x03, 0x00, 0x00, 0x32
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x21, 0x00, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0xED, 0x13
-    },
-    (const void*)&gpMediumSelButtonBlankCelFile,
-    (const void*)(unsigned int)&sub_00430C30_OnCancel,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x73, 0x02, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpMediumSelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnCharCreateOk,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x57, 0x02, 0x00, 0x00, 0x20, 0x03, 0x00, 0x00, 0x58, 0x02
-    },
-    (const void*)&gpCharacterCreateCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x03, 0x00, 0x00, 0x00, 0x59, 0x01, 0x00, 0x00, 0xD6, 0x01, 0x00, 0x00, 0x6E, 0x00, 0x00, 0x00,
-        0x7F, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x03
-    },
-    (const void*)&gpFireCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x03, 0x00, 0x00, 0x00, 0x59, 0x01, 0x00, 0x00, 0xC6, 0x01, 0x00, 0x00, 0x6E, 0x00, 0x00, 0x00,
-        0x7F, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x03
-    },
-    (const void*)&gpFireCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x03, 0x00, 0x00, 0x00, 0xC3, 0x00, 0x00, 0x00, 0x55, 0x01, 0x00, 0x00, 0x58, 0x00, 0x00, 0x00,
-        0xB8
-    },
-    (const void*)(unsigned int)&MAINMENUS_SelectCharacterClass,
-    (const void*)&gData_00708AA0,
-    (const void*)(unsigned int)&MAINMENUS_OnHoverAmazon,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x2D, 0x01, 0x00, 0x00, 0x4D, 0x01, 0x00, 0x00,
-        0x58, 0x00, 0x00, 0x00, 0xB8
-    },
-    (const void*)(unsigned int)&MAINMENUS_SelectCharacterClass,
-    (const void*)&gData_00708AF0,
-    (const void*)(unsigned int)&MAINMENUS_OnHoverNecromancer,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00, 0x4A, 0x01, 0x00, 0x00,
-        0x58, 0x00, 0x00, 0x00, 0xB8
-    },
-    (const void*)(unsigned int)&MAINMENUS_SelectCharacterClass,
-    (const void*)&gData_00708B40,
-    (const void*)(unsigned int)&MAINMENUS_OnHoverBarbarian,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x09, 0x02, 0x00, 0x00, 0x58, 0x01, 0x00, 0x00,
-        0x58, 0x00, 0x00, 0x00, 0xB8
-    },
-    (const void*)(unsigned int)&MAINMENUS_SelectCharacterClass,
-    (const void*)&gData_00708B90,
-    (const void*)(unsigned int)&MAINMENUS_OnHoverSorceress,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x62, 0x02, 0x00, 0x00, 0x67, 0x01, 0x00, 0x00,
-        0x58, 0x00, 0x00, 0x00, 0xB8
-    },
-    (const void*)(unsigned int)&MAINMENUS_SelectCharacterClass,
-    (const void*)&gData_00708BE0,
-    (const void*)(unsigned int)&MAINMENUS_OnHoverPaladin,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xD9, 0x00, 0x00, 0x00, 0x68, 0x01, 0x00, 0x00,
-        0x58, 0x00, 0x00, 0x00, 0xB8
-    },
-    (const void*)(unsigned int)&MAINMENUS_SelectCharacterClass,
-    (const void*)&gData_00708AF0,
-    (const void*)(unsigned int)&MAINMENUS_OnHoverNecromancer,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x72, 0x02, 0x00, 0x00, 0x61, 0x01, 0x00, 0x00,
-        0x58, 0x00, 0x00, 0x00, 0xB8
-    },
-    (const void*)(unsigned int)&MAINMENUS_SelectCharacterClass,
-    (const void*)&gData_00708B90,
-    (const void*)(unsigned int)&MAINMENUS_OnHoverSorceress,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x09, 0x02, 0x00, 0x00, 0x53, 0x01, 0x00, 0x00,
-        0x58, 0x00, 0x00, 0x00, 0xB8
-    },
-    (const void*)(unsigned int)&MAINMENUS_SelectCharacterClass,
-    (const void*)&gData_00708BE0,
-    (const void*)(unsigned int)&MAINMENUS_OnHoverPaladin,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x64, 0x00, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00,
-        0x58, 0x00, 0x00, 0x00, 0xB8
-    },
-    (const void*)(unsigned int)&MAINMENUS_SelectCharacterClass,
-    (const void*)&gData_00708AA0,
-    (const void*)(unsigned int)&MAINMENUS_OnHoverAmazon,
-    { 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x53, 0x01 }
-}; // 0x00709EEC
-
-extern "C" int gLayout_0070B088 = 581; // 0x0070B088
-
-extern "C" struct d2data_0070B08C_t gData_0070B08C = {
-    { 0x64, 0x00, 0x00, 0x00, 0x20 },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x3F, 0x01, 0x00, 0x00, 0x30, 0x02, 0x00, 0x00,
-        0x0F, 0x00, 0x00, 0x00, 0x10
-    },
-    (const void*)&gpClickBoxCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ToggleHardcore,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x53, 0x01
-    }
-}; // 0x0070B08C
-
-extern "C" int gLayout_0070B0E8 = 561; // 0x0070B0E8
-
-extern "C" struct d2data_0070B0EC_t gData_0070B0EC = {
-    { 0xC8, 0x00, 0x00, 0x00, 0x20 },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x3F, 0x01, 0x00, 0x00, 0x1C, 0x02, 0x00, 0x00,
-        0x0F, 0x00, 0x00, 0x00, 0x10
-    },
-    (const void*)&gpClickBoxCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ToggleLadder,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x53, 0x01
-    }
-}; // 0x0070B0EC
-
-extern "C" int gLayout_0070B148 = 581; // 0x0070B148
-
-extern "C" struct d2data_0070B14C_t gData_0070B14C = {
-    { 0xC8, 0x00, 0x00, 0x00, 0x20 },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x3F, 0x01, 0x00, 0x00, 0x30, 0x02, 0x00, 0x00,
-        0x0F, 0x00, 0x00, 0x00, 0x10
-    },
-    (const void*)&gpClickBoxCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ToggleLadder,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x53, 0x01
-    }
-}; // 0x0070B14C
-
-extern "C" int gLayout_0070B1A8 = 601; // 0x0070B1A8
-
-extern "C" struct d2data_0070B1AC_t gData_0070B1AC = {
-    { 0xC8, 0x00, 0x00, 0x00, 0x20 },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x3F, 0x01, 0x00, 0x00, 0x44, 0x02, 0x00, 0x00,
-        0x0F, 0x00, 0x00, 0x00, 0x10
-    },
-    (const void*)&gpClickBoxCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ToggleLadder,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0xB4, 0x00, 0x00, 0x00, 0x20, 0x03, 0x00, 0x00, 0x64
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xFA, 0x00, 0x00, 0x00, 0xD2, 0x00, 0x00, 0x00,
-        0x2C, 0x01, 0x00, 0x00, 0x64
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xD2, 0x00, 0x00, 0x00, 0x62, 0x02, 0x00, 0x00,
-        0xAE, 0x01, 0x00, 0x00, 0x78
-    },
-    (const void*)&gData_007089CC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x3F, 0x01, 0x00, 0x00, 0x07, 0x02, 0x00, 0x00,
-        0xA9, 0x00, 0x00, 0x00, 0x1A
-    },
-    (const void*)&gpTextBoxCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0x41, 0x01
-    }
-}; // 0x0070B1AC
-
-extern "C" int gLayout_0070B2C8 = 512; // 0x0070B2C8
-
-extern "C" struct d2data_0070B2CC_t gData_0070B2CC = {
-    { 0xC8, 0x00, 0x00, 0x00, 0x20 },
-    (const void*)&gData_007089C4,
-    { 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x53, 0x01 }
-}; // 0x0070B2CC
-
-extern "C" int gLayout_0070B2F8 = 561; // 0x0070B2F8
-
-extern "C" struct d2data_0070B2FC_t gData_0070B2FC = {
-    { 0x64, 0x00, 0x00, 0x00, 0x20 },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x3F, 0x01, 0x00, 0x00, 0x1C, 0x02, 0x00, 0x00,
-        0x0F, 0x00, 0x00, 0x00, 0x10
-    },
-    (const void*)&gpClickBoxCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ToggleHardcore,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x3E, 0x01, 0x00, 0x00, 0xFE, 0x01, 0x00, 0x00, 0x9D, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00,
-        0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&MAINMENUS_OnCharCreateOk,
-    (const void*)&gData_007089DC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x0C, 0x01, 0x00, 0x00, 0x5E, 0x01, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0xB0
-    },
-    (const void*)&gpPopUpOkCancelCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x19, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00,
-        0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpOkCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_BackToCharCreate,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0xA5, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpOkCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_SubmitCharacter,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x0C, 0x01, 0x00, 0x00, 0x40, 0x01, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00, 0x78, 0x00, 0x00, 0x00,
-        0x0A, 0x00, 0x00, 0x00, 0x08
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xE8, 0x00, 0x00, 0x00, 0x6C, 0x01, 0x00, 0x00,
-        0x58, 0x00, 0x00, 0x00, 0xB8
-    },
-    (const void*)(unsigned int)&MAINMENUS_SelectCharacterClass,
-    (const void*)&gData_00708A00,
-    (const void*)(unsigned int)&MAINMENUS_OnSelectAssassin,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xD0, 0x02, 0x00, 0x00, 0x72, 0x01, 0x00, 0x00,
-        0x58, 0x00, 0x00, 0x00, 0xB8
-    },
-    (const void*)(unsigned int)&MAINMENUS_SelectCharacterClass,
-    (const void*)&gData_00708A50,
-    (const void*)(unsigned int)&MAINMENUS_OnSelectDruid,
-    { 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x53, 0x01 }
-}; // 0x0070B2FC
-
-extern "C" int gLayout_0070B4A8 = 561; // 0x0070B4A8
-
-extern "C" struct d2data_0070B4AC_t gData_0070B4AC = {
-    { 0xC8, 0x00, 0x00, 0x00, 0x20 },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x3F, 0x01, 0x00, 0x00, 0x1C, 0x02, 0x00, 0x00,
-        0x0F, 0x00, 0x00, 0x00, 0x10
-    },
-    (const void*)&gpClickBoxCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ToggleExpansion,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0x3F, 0x01, 0x00, 0x00, 0x1C, 0x02, 0x00, 0x00, 0x0F, 0x00, 0x00, 0x00, 0x10
-    },
-    (const void*)&gpJoinGameClickBoxGreyCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x0C, 0x01, 0x00, 0x00, 0x5E, 0x01, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00,
-        0xB0
-    },
-    (const void*)&gpPopUpOkCancel2CelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x19, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00,
-        0x20, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0x2F, 0x14
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_OnClosePopup,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0xA5, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x2E, 0x14
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_JoinSelected,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x0C, 0x01, 0x00, 0x00, 0x40, 0x01, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00, 0x78, 0x00, 0x00, 0x00,
-        0x0A, 0x00, 0x00, 0x00, 0x08
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x0C, 0x01, 0x00, 0x00, 0x5E, 0x01, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0xB0
-    },
-    (const void*)&gpPopUpOkCancel2CelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x19, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00,
-        0x20, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0x2F, 0x14
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_DestroyIfExpansion,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0xA5, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x2E, 0x14
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_OnCharSelect,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x0C, 0x01, 0x00, 0x00, 0x36, 0x01, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00, 0x78, 0x00, 0x00, 0x00,
-        0x09
-    },
-    (const void*)&gData_007089CC,
-    { 0x02 }
-}; // 0x0070B4AC
-
-extern "C" struct d2data_0070B6B0_t gData_0070B6B0 = {
-    {
-        0x02, 0x00, 0x00, 0x00, 0x0C, 0x01, 0x00, 0x00, 0x5E, 0x01, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00,
-        0xB0
-    },
-    (const void*)&gpPopUpOkCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x5F, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00,
-        0x20, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CallGatewayDone,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x0C, 0x01, 0x00, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00, 0x64, 0x00, 0x00, 0x00,
-        0x0A, 0x00, 0x00, 0x00, 0x08
-    }
-}; // 0x0070B6B0
-
-extern void* gpGlobal_0070B738 = (void*)&gData_007089BC; // 0x0070B738
-
-extern "C" struct d2data_0070B73C_t gData_0070B73C = {
-    { 0x02 }
-}; // 0x0070B73C
-
-extern "C" struct d2data_0070B740_t gData_0070B740 = {
-    {
-        0x06, 0x00, 0x00, 0x00, 0x5F, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00,
-        0x20, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CallGatewayDone,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0xDE, 0x00, 0x00, 0x00, 0xAA, 0x01, 0x00, 0x00, 0x54, 0x01, 0x00, 0x00, 0xE0
-    },
-    (const void*)&gpPopUp340x224CelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x4A, 0x01, 0x00, 0x00, 0xA0, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
-        0x23, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CallGatewayDone,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0xDE, 0x00, 0x00, 0x00, 0x18, 0x01, 0x00, 0x00, 0x54, 0x01, 0x00, 0x00, 0x3C
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xDE, 0x00, 0x00, 0x00, 0x68, 0x01, 0x00, 0x00,
-        0x54, 0x01, 0x00, 0x00, 0x46, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x08
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xDE, 0x00, 0x00, 0x00, 0x72, 0x01, 0x00, 0x00,
-        0x54, 0x01, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)&gData_007089DC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xC3, 0x00, 0x00, 0x00, 0xA6, 0x01, 0x00, 0x00,
-        0x9A, 0x01, 0x00, 0x00, 0xF5
-    },
-    (const void*)&gpPopUpWideCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x4F, 0x01, 0x00, 0x00, 0x9C, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
-        0x23, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CallGatewayDone,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0xC3, 0x00, 0x00, 0x00, 0xED, 0x00, 0x00, 0x00, 0x9A, 0x01, 0x00, 0x00, 0x28
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xC7, 0x00, 0x00, 0x00, 0x79, 0x01, 0x00, 0x00,
-        0x92, 0x01, 0x00, 0x00, 0x8C, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x08
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x9E, 0x00, 0x00, 0x00, 0xCC, 0x01, 0x00, 0x00,
-        0xE5, 0x01, 0x00, 0x00, 0x22, 0x01
-    },
-    (const void*)&gpPopUpLargestCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x4F, 0x01, 0x00, 0x00, 0xC2, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
-        0x23, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CallGatewayDone,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x9E, 0x00, 0x00, 0x00, 0xDC, 0x00, 0x00, 0x00, 0xE5, 0x01, 0x00, 0x00, 0x28
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xA2, 0x00, 0x00, 0x00, 0xA4, 0x01, 0x00, 0x00,
-        0xDD, 0x01, 0x00, 0x00, 0xC8, 0x00, 0x00, 0x00, 0x0A
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xA2, 0x00, 0x00, 0x00, 0x40, 0x01, 0x00, 0x00,
-        0xDD, 0x01, 0x00, 0x00, 0x64, 0x00, 0x00, 0x00, 0x0A
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xA2, 0x00, 0x00, 0x00, 0xA4, 0x01, 0x00, 0x00,
-        0xDD, 0x01, 0x00, 0x00, 0x64, 0x00, 0x00, 0x00, 0x0A
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x9E, 0x00, 0x00, 0x00, 0xCC, 0x01, 0x00, 0x00,
-        0xE5, 0x01, 0x00, 0x00, 0x22, 0x01
-    },
-    (const void*)&gpPopUpLargestCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x4F, 0x01, 0x00, 0x00, 0xC2, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
-        0x23, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CallGatewayDone,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x9E, 0x00, 0x00, 0x00, 0xDC, 0x00, 0x00, 0x00, 0xE5, 0x01, 0x00, 0x00, 0x28
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xA2, 0x00, 0x00, 0x00, 0x0E, 0x01, 0x00, 0x00,
-        0xDD, 0x01, 0x00, 0x00, 0x32, 0x00, 0x00, 0x00, 0x0A
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x9E, 0x00, 0x00, 0x00, 0x36, 0x01, 0x00, 0x00,
-        0xE5, 0x01, 0x00, 0x00, 0x28
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xA2, 0x00, 0x00, 0x00, 0xA4, 0x01, 0x00, 0x00,
-        0xDD, 0x01, 0x00, 0x00, 0x64, 0x00, 0x00, 0x00, 0x0A
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x0C, 0x01, 0x00, 0x00, 0x5E, 0x01, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0xB0
-    },
-    (const void*)&gpPopUpOk2CelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x5F, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00,
-        0x20, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpOkCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CallGatewayDone,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x0C, 0x01, 0x00, 0x00, 0x40, 0x01, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00, 0x78, 0x00, 0x00, 0x00,
-        0x0A, 0x00, 0x00, 0x00, 0x08
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x5F, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00,
-        0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpOkCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CallGatewayDone,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00,
-        0x28
-    },
-    (const void*)(unsigned int)&MAINMENUS_ShowCantConnect,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x5F, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CancelDownload,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x5F, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CancelDownload,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x0C, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00, 0x78, 0x00, 0x00, 0x00,
-        0x0A, 0x00, 0x00, 0x00, 0x08
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00, 0x36, 0x01, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFB, 0x13
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnOpenBattleNet,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x5E, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0xFC, 0x13
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OpenTcpIpScreen,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0x38, 0x02, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&sub_00434DF0_Leave,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x57, 0x02, 0x00, 0x00, 0x20, 0x03, 0x00, 0x00, 0x58, 0x02
-    },
-    (const void*)&gpTcpIpBckgCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0x64
-    }
-}; // 0x0070B740
-
-extern "C" int gLayout_0070BDA8 = 76; // 0x0070BDA8
-
-extern "C" struct d2data_0070BDAC_t gData_0070BDAC = {
-    { 0x58, 0x02, 0x00, 0x00, 0x28 },
-    (const void*)&gData_007089AC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x0E, 0x01, 0x00, 0x00, 0x9C, 0x00, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x28
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x09, 0x01, 0x00, 0x00, 0xAB, 0x00, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x28
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x09, 0x01, 0x00, 0x00, 0xCE, 0x00, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFE, 0x13
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnTcpIpHost,
-    { 0x00 },
-    (const void*)(unsigned int)&sub_00430120_OnToggle,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x09, 0x01, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x13
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CreateTcpIpScreen,
-    { 0x00 },
-    (const void*)(unsigned int)&sub_00430160_OnToggle,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x09, 0x01, 0x00, 0x00, 0x08, 0x02, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0xD2
-    },
-    (const void*)&gData_007089EC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x09, 0x01, 0x00, 0x00, 0x08, 0x02, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0xD2, 0x00, 0x00, 0x00, 0x02
-    },
-    (const void*)&gData_007089EC,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x27, 0x00, 0x00, 0x00, 0x3B, 0x02, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnCreate,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00,
-        0x88, 0x13
-    },
-    (const void*)(unsigned int)&MAINMENUS_ShowAddress,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x2C, 0x01
-    }
-}; // 0x0070BDAC
-
-extern "C" int gLayout_0070BF58 = 250; // 0x0070BF58
-
-extern "C" struct d2data_0070BF5C_t gData_0070BF5C = {
-    { 0xC8, 0x00, 0x00, 0x00, 0x32 },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x2C, 0x01, 0x00, 0x00, 0x0C, 0x01, 0x00, 0x00,
-        0xD5, 0x00, 0x00, 0x00, 0x14
-    },
-    (const void*)(unsigned int)&MAINMENUS_JoinTcpIp,
-    (const void*)&gData_007089DC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x23, 0x01, 0x00, 0x00, 0x0E, 0x01, 0x00, 0x00,
-        0xDA, 0x00, 0x00, 0x00, 0x1A
-    },
-    (const void*)&gpIPAddressBoxCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x0C, 0x01, 0x00, 0x00, 0x5E, 0x01, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00,
-        0xB0
-    },
-    (const void*)&gpPopUpOkCancel2CelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x19, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00,
-        0x20, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnTcpIpJoin,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0xA5, 0x01, 0x00, 0x00, 0x51, 0x01, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x0D, 0x00, 0x00, 0x00, 0xEE, 0x13
-    },
-    (const void*)&gpCancelButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_JoinTcpIp,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x20, 0x03, 0x00, 0x00, 0x1E
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x43, 0x01, 0x00, 0x00, 0x86, 0x00, 0x00, 0x00,
-        0x2C, 0x01, 0x00, 0x00, 0x1E
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x10, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x5F, 0x01, 0x00, 0x00, 0x86, 0x00, 0x00, 0x00,
-        0xA9, 0x01, 0x00, 0x00, 0x1E
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x57, 0x02, 0x00, 0x00,
-        0xC8, 0x00, 0x00, 0x00, 0x28
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x57, 0x02, 0x00, 0x00,
-        0x20, 0x03, 0x00, 0x00, 0x58, 0x02
-    },
-    (const void*)&gpDownloadPatchBckgCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00, 0x2C, 0x01, 0x00, 0x00, 0xCF, 0x00, 0x00, 0x00,
-        0xAC
-    },
-    (const void*)&gpDownloadPatchBall2CelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x50, 0x01, 0x00, 0x00, 0x1C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
-        0x23, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_CancelDownload,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00,
-        0xC3, 0x00, 0x00, 0x00, 0xA6, 0x01, 0x00, 0x00, 0x9A, 0x01, 0x00, 0x00, 0xF5, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)&gpTileableDialogCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x4F, 0x01, 0x00, 0x00, 0x9C, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
-        0x23
-    }
-}; // 0x0070BF5C
-
-extern "C" struct d2data_0070C208_t gData_0070C208 = {
-    { 0x00 },
-    (const void*)&gpMediumButtonBlankCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x9F, 0x01, 0x00, 0x00, 0x9C, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
-        0x23
-    }
-}; // 0x0070C208
-
-extern "C" struct d2data_0070C234_t gData_0070C234 = {
-    { 0x00 }
-}; // 0x0070C234
-
-extern "C" struct d2data_0070C238_t gData_0070C238 = {
-    { 0x00 },
-    (const void*)&gpMediumButtonBlankCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x9C, 0x01, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
-        0x23
-    }
-}; // 0x0070C238
-
-extern "C" struct d2data_0070C268_t gData_0070C268 = {
-    { 0x00 },
-    (const void*)&gpMediumButtonBlankCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0xC3, 0x00, 0x00, 0x00, 0xED, 0x00, 0x00, 0x00, 0x9A, 0x01, 0x00, 0x00,
-        0x28
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xC7, 0x00, 0x00, 0x00, 0x79, 0x01, 0x00, 0x00,
-        0x92, 0x01, 0x00, 0x00, 0x8C, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x08
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xC7, 0x00, 0x00, 0x00, 0x79, 0x01, 0x00, 0x00,
-        0x92, 0x01, 0x00, 0x00, 0xB4, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x08
-    },
-    (const void*)&gData_007089BC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xFA, 0x00, 0x00, 0x00, 0x5B, 0x01, 0x00, 0x00,
-        0x2C, 0x01, 0x00, 0x00, 0x1A
-    },
-    (const void*)&gpEditTextBoxWideCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0xFA, 0x00, 0x00, 0x00, 0x91, 0x01, 0x00, 0x00, 0x2C, 0x01, 0x00, 0x00,
-        0x1A
-    },
-    (const void*)&gpEditTextBoxWideCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x00, 0x00, 0x5E, 0x01, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00,
-        0x64
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x00, 0x00, 0x03, 0x02, 0x00, 0x00,
-        0x90, 0x01, 0x00, 0x00, 0x64
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xFC, 0x00, 0x00, 0x00, 0x54, 0x01, 0x00, 0x00,
-        0x2C, 0x01, 0x00, 0x00, 0x20
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xFC, 0x00, 0x00, 0x00, 0x8A, 0x01, 0x00, 0x00,
-        0x2C, 0x01, 0x00, 0x00, 0x20
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFD, 0x00, 0x00, 0x00, 0x56, 0x01, 0x00, 0x00,
-        0x25, 0x01, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)&gData_007089DC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFD, 0x00, 0x00, 0x00, 0x8C, 0x01, 0x00, 0x00,
-        0x25, 0x01, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)&gData_007089DC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x09, 0x01, 0x00, 0x00, 0x0F, 0x02, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0x59, 0x2B
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_ConfirmText,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x09, 0x01, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x5A, 0x2B
-    },
-    (const void*)&gpWideButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_AskEmailRegistration,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x21, 0x00, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&MAINMENUS_OnConnectCancel,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x36, 0x01, 0x00, 0x00, 0x20, 0x03, 0x00, 0x00, 0x32
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x73, 0x02, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x36, 0x2B
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&CHARSEL_SubmitPasswordReset,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x21, 0x00, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&sub_00437710_OnInfoScreen,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x9E, 0x00, 0x00, 0x00, 0xF4, 0x01, 0x00, 0x00, 0xE0, 0x01, 0x00, 0x00, 0xDC, 0x00, 0x00, 0x00,
-        0x0A, 0x00, 0x00, 0x00, 0x08
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xF8, 0x00, 0x00, 0x00, 0xAB, 0x01, 0x00, 0x00,
-        0x2C, 0x01, 0x00, 0x00, 0x1A
-    },
-    (const void*)&gpEditTextBoxWideCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0xFA, 0x00, 0x00, 0x00, 0xA4, 0x01, 0x00, 0x00, 0x2C, 0x01, 0x00, 0x00,
-        0x20
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFB, 0x00, 0x00, 0x00, 0xA6, 0x01, 0x00, 0x00,
-        0x25, 0x01, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&CHARSEL_SubmitPasswordReset,
-    (const void*)&gData_007089DC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xF8, 0x00, 0x00, 0x00, 0xDD, 0x01, 0x00, 0x00,
-        0x2C, 0x01, 0x00, 0x00, 0x1A
-    },
-    (const void*)&gpEditTextBoxWideCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0xFA, 0x00, 0x00, 0x00, 0xD6, 0x01, 0x00, 0x00, 0x2C, 0x01, 0x00, 0x00,
-        0x20
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFB, 0x00, 0x00, 0x00, 0xD8, 0x01, 0x00, 0x00,
-        0x25, 0x01, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&CHARSEL_SubmitPasswordReset,
-    (const void*)&gData_007089DC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1D, 0x01, 0x00, 0x00,
-        0x20, 0x03, 0x00, 0x00, 0x23
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2C, 0x01, 0x00, 0x00,
-        0x20, 0x03, 0x00, 0x00, 0x10
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, 0x01, 0x00, 0x00,
-        0x20, 0x03, 0x00, 0x00, 0x10
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xD6, 0x01, 0x00, 0x00,
-        0x20, 0x03, 0x00, 0x00, 0x10
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x08, 0x01, 0x00, 0x00, 0x4F, 0x01, 0x00, 0x00,
-        0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2A, 0x2B
-    },
-    (const void*)&gp3WideButtonBlankCelFile,
-    (const void*)(unsigned int)&sub_004371B0_OnLoginScreen,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0xA4, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x69, 0x2B
-    },
-    (const void*)&gp3WideButtonBlankCelFile,
-    (const void*)(unsigned int)&sub_004371C0_OnEmailScreen,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x08, 0x01, 0x00, 0x00, 0xF9, 0x01, 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x6B, 0x2B
-    },
-    (const void*)&gp3WideButtonBlankCelFile,
-    (const void*)(unsigned int)&sub_00437720_OnPasswordScreen,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x21, 0x00, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&sub_004371D0_OnShowLogin,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x36, 0x01, 0x00, 0x00, 0x20, 0x03, 0x00, 0x00, 0x32
-    },
-    (const void*)&gData_007089B4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x9E, 0x00, 0x00, 0x00, 0xF4, 0x01, 0x00, 0x00,
-        0xE0, 0x01, 0x00, 0x00, 0xDC, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x08
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x02, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xF8, 0x00, 0x00, 0x00, 0x92, 0x01, 0x00, 0x00,
-        0x2C, 0x01, 0x00, 0x00, 0x1A
-    },
-    (const void*)&gpEditTextBoxWideCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0xFA, 0x00, 0x00, 0x00, 0x8B, 0x01, 0x00, 0x00, 0x2C, 0x01, 0x00, 0x00,
-        0x20
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFB, 0x00, 0x00, 0x00, 0x8D, 0x01, 0x00, 0x00,
-        0x25, 0x01, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&sub_00437730_ChangePassword,
-    (const void*)&gData_007089DC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xF8, 0x00, 0x00, 0x00, 0xC4, 0x01, 0x00, 0x00,
-        0x2C, 0x01, 0x00, 0x00, 0x1A
-    },
-    (const void*)&gpEditTextBoxWideCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0xFA, 0x00, 0x00, 0x00, 0xBD, 0x01, 0x00, 0x00, 0x2C, 0x01, 0x00, 0x00,
-        0x20
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFB, 0x00, 0x00, 0x00, 0xBF, 0x01, 0x00, 0x00,
-        0x25, 0x01, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&sub_00437730_ChangePassword,
-    (const void*)&gData_007089DC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xF8, 0x00, 0x00, 0x00, 0xF6, 0x01, 0x00, 0x00,
-        0x2C, 0x01, 0x00, 0x00, 0x1A
-    },
-    (const void*)&gpEditTextBoxWideCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0xFA, 0x00, 0x00, 0x00, 0xEF, 0x01, 0x00, 0x00, 0x2C, 0x01, 0x00, 0x00,
-        0x20
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFB, 0x00, 0x00, 0x00, 0xF1, 0x01, 0x00, 0x00,
-        0x25, 0x01, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&sub_00437730_ChangePassword,
-    (const void*)&gData_007089DC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xF8, 0x00, 0x00, 0x00, 0x28, 0x02, 0x00, 0x00,
-        0x2C, 0x01, 0x00, 0x00, 0x1A
-    },
-    (const void*)&gpEditTextBoxWideCelFile,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0xFA, 0x00, 0x00, 0x00, 0x21, 0x02, 0x00, 0x00, 0x2C, 0x01, 0x00, 0x00,
-        0x20
-    },
-    (const void*)&gData_007089C4,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFB, 0x00, 0x00, 0x00, 0x23, 0x02, 0x00, 0x00,
-        0x25, 0x01, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x04
-    },
-    (const void*)(unsigned int)&sub_00437730_ChangePassword,
-    (const void*)&gData_007089DC,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x73, 0x02, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x36, 0x2B
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&sub_00437730_ChangePassword,
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x21, 0x00, 0x00, 0x00, 0x3C, 0x02, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00,
-        0x1B, 0x00, 0x00, 0x00, 0xEF, 0x13
-    },
-    (const void*)&gpMediumButtonBlankCelFile,
-    (const void*)(unsigned int)&sub_004374E0_OnInfoScreen,
-    { 0x00 }
-}; // 0x0070C268
+extern "C" struct d2data_00708970_t gData_00708970 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00708970

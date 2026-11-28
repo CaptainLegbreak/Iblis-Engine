@@ -58,18 +58,5 @@ struct Unicode
 };
 
 // The string routines are named by their decorated names: their plain names are also C runtime names.
-// build: symbol ?compare@Unicode@@SIHU1@0@Z 0x00526490
-// build: symbol ?strcmp@Unicode@@SIHPBU1@0@Z 0x005264F0
-// build: symbol ?strncmp@Unicode@@SIHPBU1@0I@Z 0x00526540
-// build: symbol ?stricmp@Unicode@@SIHPBU1@0@Z 0x00526590
-// build: symbol ?strnicmp@Unicode@@SIHPBU1@0I@Z 0x00526610
-// build: symbol ?strchr@Unicode@@SIPAU1@PBU1@U1@@Z 0x005266C0
-// build: symbol ?strcat@Unicode@@SIPAU1@PAU1@PBU1@@Z 0x00526700
-// build: symbol ?strncat@Unicode@@SIPAU1@PAU1@PBU1@H@Z 0x00526740
-// build: symbol ?strncpy@Unicode@@SIPAU1@PAU1@PBU1@H@Z 0x00526790
-// build: symbol ?strcpy@Unicode@@SIPAU1@PAU1@PBU1@@Z 0x005267E0
-// build: symbol ?win2Unicode@Unicode@@SIPAU1@PAU1@PBDH@Z 0x00526F20
-// build: symbol ?unicode2Win@Unicode@@SIPADPADPBU1@H@Z 0x00526F70
 
 // The default constructor closure the compiler emits for arrays of Unicode.
-// build: symbol ??_FUnicode@@QAEXXZ 0x0042F530

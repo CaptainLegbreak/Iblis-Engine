@@ -4,6 +4,7 @@
 #include "D2DrlgMaps.h"
 #include "D2CoordPair.h"
 #include "D2TileLight.h"
+#include "D2CMPApi.h"
 
 struct D2CoordPairStrc;
 struct D2TileLightStrc;
@@ -11,7 +12,6 @@ struct D2TileLightStrc;
 extern unsigned char* gpSurfaceBits_007C9154; // 0x007C9154
 
 
-int __stdcall D2CMPTileValidate(D2TileLibraryEntryStrc* pTile, int bAsync, int nFlags); // 0x005FDEA0
 extern int gnRenderHeight; // 0x007C913C
 
 // 0x006C8DA0
@@ -37,7 +37,7 @@ void __fastcall sub_006C8DA0_DrawLine(D2CoordPairStrc* pFrom, D2CoordPairStrc* p
     int nY = nStartY;
     int i = 0;
 
-    while (!(nY >= 0 && nY < gnSurfaceHeight_007C913C && nX >= 0 && nX < gnSurfaceWidth_007C9138))
+    while (!(nY >= 0 && nY < gnRenderHeight && nX >= 0 && nX < gnRenderWidth))
     {
         nFracX += nStepX;
         if (nFracX >= 0x10000 || nFracX <= -0x10000)
@@ -60,7 +60,7 @@ void __fastcall sub_006C8DA0_DrawLine(D2CoordPairStrc* pFrom, D2CoordPairStrc* p
         ++i;
     }
 
-    unsigned char* pPixel = gpSurfaceBits_007C9154 + nY * gnSurfaceWidth_007C9138 + nX;
+    unsigned char* pPixel = gpSurfaceBits_007C9154 + nY * gnRenderWidth + nX;
     *pPixel = nColor;
 
     for (++i; i < nLength; ++i)
@@ -74,7 +74,7 @@ void __fastcall sub_006C8DA0_DrawLine(D2CoordPairStrc* pFrom, D2CoordPairStrc* p
             nFracX -= nStep * 0x10000;
         }
 
-        if (nX < 0 || nX >= gnSurfaceWidth_007C9138)
+        if (nX < 0 || nX >= gnRenderWidth)
             return;
 
         nFracY += nStepY;
@@ -82,11 +82,11 @@ void __fastcall sub_006C8DA0_DrawLine(D2CoordPairStrc* pFrom, D2CoordPairStrc* p
         {
             const int nStep = nFracY / 0x10000;
             nY += nStep;
-            pPixel += nStep * gnSurfaceWidth_007C9138;
+            pPixel += nStep * gnRenderWidth;
             nFracY -= nStep * 0x10000;
         }
 
-        if (nY < 0 || nY >= gnSurfaceHeight_007C913C)
+        if (nY < 0 || nY >= gnRenderHeight)
             return;
 
         *pPixel = nColor;
@@ -100,7 +100,6 @@ int __fastcall sub_006C93A0_DrawLitTile(D2TileLibraryEntryStrc* pTile, int nX, i
     if (D2CMPTileValidate(pTile, 1, 0))
     {
         int nLeft = -32;
-// build: symbol ?gnRenderWidth@* 0x007C9138
         int nRight = gnRenderWidth;
         const int nBottom = gnRenderHeight + 32;
         switch (nHalf)

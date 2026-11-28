@@ -217,7 +217,6 @@ bool __cdecl sub_00401B00_LoadDbgHelp()
         CloseHandle(hModule);
         return false;
     }
-// build: symbol ?gszMiniDumpWriteDump@* 0x006FFB94
     gpfnMiniDumpWriteDump = GetProcAddress(hModule, gszMiniDumpWriteDump);
     ghDbgHelp = hModule;
     return true;
@@ -226,10 +225,8 @@ bool __cdecl sub_00401B00_LoadDbgHelp()
 // 0x00401C80
 void __cdecl sub_00401C80_FreeDbgHelp()
 {
-// build: symbol ?gbSymInitialized@* 0x0098A6B0
     if (gbSymInitialized)
     {
-// build: symbol ?ghDbgHelp@* 0x0098A680
         if (ghDbgHelp)
         {
             FreeLibrary(ghDbgHelp);
@@ -299,18 +296,12 @@ void __cdecl sub_00401DD0_CleanupSymbols()
 {
     if (gbSymInitialized)
     {
-// build: symbol ?ghProcess@* 0x0074C6F0
         ((SymCleanupFn)gpfnSymCleanup)(ghProcess);
         gbSymInitialized = false;
     }
 }
 
-extern "C" const char gData_006FFB94[24]; // 0x006FFB94
-
-extern "C" const char gData_006FFB94[24] = {
-    77, 105, 110, 105, 68, 117, 109, 112, 87, 114, 105, 116, 101, 68, 117, 109,
-    112, 0, 0, 0, 76, 1
-}; // 0x006FFB94
+extern "C" const char gData_006FFB94[24] = "MiniDumpWriteDump\0\0\0L\x01"; // 0x006FFB94
 #pragma comment(linker, "/alternatename:_gszMiniDumpWriteDump=_gData_006FFB94")
 
 extern void* ghProcess = (void*)0xFFFFFFFF; // 0x0074C6F0

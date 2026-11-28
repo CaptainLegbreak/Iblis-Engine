@@ -1,5 +1,7 @@
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
+#include "FogApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 struct D2CltUnitEventStrc;
@@ -15,17 +17,9 @@ struct D2RosterInfoStrc
 };
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
-extern unsigned int gdwFadeTick; // 0x007C89CC
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
-D2GfxDataStrc* __cdecl GFX_AllocGfxData(); // 0x0046EBB0
-void __fastcall GFX_RefreshUnitGfx(D2UnitStrc* pUnit, int nArg); // 0x00470610
-D2RosterInfoStrc** __fastcall ROSTER_GetRosterInfoList(int nUnitId); // 0x0047A310
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
+D2UnitGfxDataStrc* __cdecl GFX_AllocGfxData(); // 0x0046EBB0
 
 // 0x004DC270
 D2RosterInfoStrc** __cdecl PLAYERLIST_AllocRosterInfoList()
@@ -126,7 +120,7 @@ void __fastcall PLAYERLIST_InitGfxData(D2UnitStrc* pUnit)
 }
 
 // 0x004DDDF0
-void __cdecl sub_004DDDF0()
+void __cdecl sub_004DDDF0_Nop()
 {
 }
 
@@ -164,5 +158,5 @@ void __fastcall PLAYERLIST_RemoveRosterInfo(int nUnitId1, int nUnitId2)
 // 0x004DCA20
 int __fastcall PLAYERLIST_CallDrawSimpleShadow(D2UnitStrc* pUnit)
 {
-    return sub_00471450(pUnit);
+    return GFX_DrawSimpleUnitShadow(pUnit);
 }

@@ -24,6 +24,8 @@
 #include "D2UnitData.h"
 
 #include "D2MonModes.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
 
 #define CHECK(p,line) if (!(p)) { FOG_DisplayHalt(text_006CC837,sub_00408090(),line); sub_00681E09(-1); }
 
@@ -39,26 +41,20 @@ struct Coord;
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 extern const unsigned int gdwBitMasks[]; // 0x006CE268
 
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
-
 D2LevelsTxt* __stdcall DATATBLS_GetLevelsTxtRecord(int nLevelId); // 0x0061DB70
-
-int __stdcall DATATBLS_GetMonsterChainInfo(int nMonsterId, int* pMaxChainId, int* pChainId); // 0x006510C0
 
 
 struct Coord { int x,y; };
 
 extern Coord gaMonsterChainDirections[4]; // 0x006EA9D0
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char*,const char*,int); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl sub_00681E09(int); // 0x00681E09
 
@@ -94,10 +90,6 @@ D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int monsterId); // 0x004
 
 int __fastcall DATATBLS_ApplyRatio(int value, int numerator, int denominator); // 0x00483360
 
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* unit, int stat, int layer); // 0x00625480
-
-void __stdcall STATLIST_SetUnitStat(D2UnitStrc* unit, int stat, int value, int layer); // 0x00627260
-
 extern const D2DifficultyStatStrc gaClassicStatAdjustments[3]; // 0x006EA9F0
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
@@ -110,20 +102,6 @@ unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax
 
 int __fastcall SKILLS_GetMonsterClassFromChain(int nMonsterId, int nChainSteps); // 0x0054DA60
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-
-void __stdcall STATES_ToggleState(D2UnitStrc* pUnit, int nState, int bSet); // 0x00639DB0
-
-int __stdcall D2Common_11063(D2ActiveRoomStrc* pRoom, int nMonsterId); // 0x0063EC70
-
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
-
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
-
-int __stdcall D2COMMON_10175_PathGetFirstPointX(D2DynamicPathStrc* pDynamicPath); // 0x00648A00
-
-int __stdcall D2COMMON_10176_PathGetFirstPointY(D2DynamicPathStrc* pDynamicPath); // 0x00648A10
-
 // 0x0063E810
 void __fastcall MONSTERS_SetMonsterNameInMonsterData(D2UnitStrc* pMonster, const Unicode* wszName)
 {
@@ -131,7 +109,7 @@ void __fastcall MONSTERS_SetMonsterNameInMonsterData(D2UnitStrc* pMonster, const
     {
         if (wszName)
         {
-            const int nLength = sub_00526800(wszName);
+            const int nLength = UNICODE_StrLen(wszName);
             pMonster->pMonsterData->wszMonName = (Unicode*)FOG_Alloc((nLength + 1) * sizeof(Unicode), ".\\Monsters\\MONSTERS.CPP", 195, 0);
             sub_005267E0(pMonster->pMonsterData->wszMonName, wszName);
         }
@@ -348,7 +326,7 @@ int __stdcall MONSTERS_GetSpawnMode_XY(D2UnitStrc* pMonster, int bFromMonster, i
 }
 
 // 0x0063EBC0
-void __stdcall sub_0063EBC0(int nUnused1, int nUnused2)
+void __stdcall D2COMMON_11062_Return(int nUnused1, int nUnused2)
 {
 }
 
@@ -710,20 +688,6 @@ void __stdcall MONSTERS_GetMinionSpawnInfo(D2UnitStrc* pMonster, int* pMonsterId
 }
 
 #pragma pack(push, 1)
-struct d2data_006EA9F0_t
-{
-    unsigned char b0[8];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_006EA9F8_t
-{
-    unsigned char b0[52];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
 struct d2data_00745648_t
 {
     const void* p0;
@@ -744,10 +708,42 @@ struct d2data_00745648_t
 };
 #pragma pack(pop)
 
+#pragma pack(push, 1)
+struct d2data_006EA9F0_t
+{
+    unsigned char b0[8];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_006EA9F8_t
+{
+    unsigned char b0[52];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00745648_t gData_00745648; // 0x00745648
 extern "C" const Coord gData_006EA9D0[4]; // 0x006EA9D0
 extern "C" const struct d2data_006EA9F0_t gData_006EA9F0; // 0x006EA9F0
 extern "C" const struct d2data_006EA9F8_t gData_006EA9F8; // 0x006EA9F8
-extern "C" struct d2data_00745648_t gData_00745648; // 0x00745648
+
+extern "C" struct d2data_00745648_t gData_00745648 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00745648
 
 extern "C" const Coord gData_006EA9D0[4] = {
     { 0, 1 },
@@ -769,21 +765,3 @@ extern "C" const struct d2data_006EA9F8_t gData_006EA9F8 = {
         0x1A
     }
 }; // 0x006EA9F8
-
-extern "C" struct d2data_00745648_t gData_00745648 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00745648

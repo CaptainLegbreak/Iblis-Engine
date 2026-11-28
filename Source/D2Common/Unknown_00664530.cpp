@@ -11,11 +11,9 @@ struct D2MonStats2Txt;
 
 extern D2DataTablesStrc sgtDataTables; // 0x0096BC30
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
-void __stdcall DATATBLS_UnloadBin(void* pBinFile); // 0x006125C0
 
 
 D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int nMonsterId); // 0x00451FE0
-unsigned int __stdcall DATATBLS_GetCodeFromCompCodeTxt(int nCompCode); // 0x006117D0
 
 static D2OverlayTxt* DATATBLS_GetOverlayTxtRecord(int nOverlay)
 {

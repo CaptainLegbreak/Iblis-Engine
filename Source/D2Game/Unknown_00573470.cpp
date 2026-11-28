@@ -153,7 +153,7 @@ struct Data00573570 { unsigned char bUnknown00[0x5C]; unsigned short wFlags5C; }
 struct Unit00573570 { int nType; unsigned int dwUnknown04; unsigned int dwUnknown08; unsigned int dwUnknown0C; unsigned int dwUnknown10; Data00573570* pData; };
 
 // 0x00573470
-D2MonStats2Txt* __fastcall sub_00573470(int nMonsterId)
+D2MonStats2Txt* __fastcall sub_00573470_GetMonStats2Record(int nMonsterId)
 {
     D2MonStatsTxt* pMonStatsTxtRecord = (nMonsterId >= 0 && nMonsterId < sgptDataTables->nMonStatsTxtRecordCount) ? &sgptDataTables->pMonStatsTxt[nMonsterId] : 0;
     if (pMonStatsTxtRecord)

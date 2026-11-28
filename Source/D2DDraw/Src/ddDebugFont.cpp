@@ -10,6 +10,10 @@
 #include "D2LevelTxt.h"
 
 #include "D2ClientMenus.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "StormApi.h"
+#include "D2WinApi.h"
 
 struct D2PlayerDataStrc;
 
@@ -23,9 +27,7 @@ typedef void (__cdecl* D2WheelCallbackFn)();
 
 typedef int (__stdcall* D2FarProcFn)();
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(D2FarProcFn lpfn);                              // 0x006CC34C
 
@@ -33,13 +35,9 @@ void __fastcall DLIGHTMAP_ReleaseLight(void* pResource);                        
 
 void __cdecl TEXT_ResetTextBox();                                                                   // 0x0049F960
 
-void __stdcall TEXT_FreeTextHeader(D2TextHeaderStrc* pTextHeader);                                          // 0x006612A0
 
-int __stdcall SFileUnloadFile(void* pBuffer); // 0x00416710
 
 int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
-
-unsigned char __stdcall PALETTE_FindPaletteIndex(unsigned char nRed, unsigned char nGreen, unsigned char nBlue);  // 0x004FB180
 
 extern D2DataTablesStrc* sgptDataTables;                                                                    // 0x00744304
 
@@ -87,7 +85,7 @@ extern int gnTradeState;                                                        
 
 unsigned char* gpDDrawDebugFontGlyphs;                                                             // 0x008815AC
 
-extern void* gpReply_008818D0;                                                                              // 0x008818D0
+extern void* gpReply;                                                                              // 0x008818D0
 
 extern "C" void* gpGidFileData;                                                                    // 0x00882744
 
@@ -113,9 +111,9 @@ extern "C" __declspec(dllimport) int __stdcall SetRect(tagRECT* lprc, int xLeft,
 
 extern int gaDDrawDebugFontCharWidths[96]; // 0x00881428
 
-int gaDDrawDebugFontGlyphOffsets[96]; // 0x008812A8
+extern int gaDDrawDebugFontGlyphOffsets[96]; // 0x008812A8
 
-unsigned long gdwDDrawDebugFontBkColor; // 0x008815A8
+extern unsigned long gdwDDrawDebugFontBkColor; // 0x008815A8
 
 extern unsigned long gdwDDrawDebugFontTextColor; // 0x0072F7F0
 
@@ -194,7 +192,6 @@ static int __stdcall DDDEBUGFONT_DebugDrawChar(int nY, int nX, char ch)
     if (n <= 0x5F)
     {
         const unsigned char* pBits = gpDDrawDebugFontGlyphs + gaDDrawDebugFontGlyphOffsets[(char)n];
-// build: symbol ?gnRenderWidth@* 0x007C9138
         unsigned char* pDst = gpScreenBuffer_007C9154 + gnRenderWidth * nY + nX;
         for (int nRow = 16; nRow; --nRow)
         {

@@ -1,6 +1,7 @@
 #include "D2Direct3D.h"
 #include "D2GlideTypes.h"
 #include "D2D3DTypes.h"
+#include "FogApi.h"
 
 struct D2SurfaceStrc;
 
@@ -14,15 +15,12 @@ struct D2Node006BABD0Strc;
 
 struct D2List006BABD0Strc;
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 struct D2SurfaceVtableStrc { void* unknown[31]; int (__stdcall* SetPalette)(D2SurfaceStrc*, void*); };
 
@@ -74,7 +72,6 @@ int __fastcall D3DSUBTILECACHE_SubtileCacheInit(D2SubtilePoolStrc* pPool, unsign
 	pPool->nCapacity = pPool->nCapacity < 0x800 ? pPool->nCapacity : 0x800;
 
 	int nSize = pPool->nCapacity * sizeof(D2SubtilePoolEntryStrc);
-// build: symbol ?gszSubtilePoolSourceFile@* 0x006FC3A8
 	pPool->pEntries = (D2SubtilePoolEntryStrc*)FOG_Alloc(nSize, gszSubtilePoolSourceFile, 45, 0);
 	D2_ASSERT(pPool->pEntries, 46);
 	memset(pPool->pEntries, 0, nSize);
@@ -530,8 +527,6 @@ int __fastcall D3DSUBTILECACHE_SubtileCacheAdd(D2CacheListStrc* list)
             return result;
     }
 }
-
-extern "C" const char gData_006FC3A8[28]; // 0x006FC3A8
 
 extern "C" const char gData_006FC3A8[28] = ".\\Src\\d3dSubtileCache.cpp"; // 0x006FC3A8
 #pragma comment(linker, "/alternatename:?gszSubtilePoolSourceFile@@3QBDB=_gData_006FC3A8")

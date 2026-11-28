@@ -7,32 +7,32 @@
 #include "D2GameTypes.h"
 
 #include "D2SoundTypes.h"
+#include "StormApi.h"
 
 extern int gnNpcSpeech;                                                                              // 0x008817BC
 
-extern int gdwGlobal_008817AC; // 0x008817AC
+extern int gnSoundMode; // 0x008817AC
 
 extern int gnMasterVolume; // 0x008817B0
 
-extern int gdwGlobal_008817B4; // 0x008817B4
+extern int gnMusicVolume; // 0x008817B4
 
 extern int gnPositionalBias; // 0x008817B8
 
-extern int gdwGlobal_008817C0; // 0x008817C0
+extern int gnOptionsMusic; // 0x008817C0
 
-int gnSoundMode; // 0x008817AC
+extern int gnSoundMode; // 0x008817AC
 
-int gnMusicVolume; // 0x008817B4
+extern int gnMusicVolume; // 0x008817B4
 
-int gnOptionsMusic; // 0x008817C0
+extern int gnOptionsMusic; // 0x008817C0
 
-int __stdcall SRegLoadValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long* pValue); // 0x00414F10
 
-int gnMasterVolume; // 0x008817B0
+extern int gnMasterVolume; // 0x008817B0
 
-int gnPositionalBias; // 0x008817B8
+extern int gnPositionalBias; // 0x008817B8
 
-int gnNpcSpeech; // 0x008817BC
+extern int gnNpcSpeech; // 0x008817BC
 
 // 0x00514B60
 void __cdecl D2SOUND_LoadRegistrySettings()
@@ -61,7 +61,7 @@ void __cdecl D2SOUND_LoadRegistrySettings()
 // 0x00514C90
 int __cdecl D2SOUND_GetSoundMixerOption()
 {
-    return gdwGlobal_008817AC;
+    return gnSoundMode;
 }
 
 // 0x00514CA0
@@ -89,7 +89,7 @@ int __fastcall D2SOUND_SetMasterVolumeOption(int nValue)
 // 0x00514CF0
 int __cdecl D2SOUND_GetMusicVolumeOption()
 {
-    return gdwGlobal_008817B4;
+    return gnMusicVolume;
 }
 
 // 0x00514D00
@@ -131,7 +131,7 @@ int __fastcall sub_00514D60_SetNpcSpeech(int nValue)
 // 0x00514D80
 int __cdecl D2SOUND_GetOptionsMusicOption()
 {
-    return gdwGlobal_008817C0;
+    return gnOptionsMusic;
 }
 
 // 0x00514D90
@@ -142,43 +142,20 @@ int __fastcall D2SOUND_SetOptionsMusicOption(int nValue)
     return nValue;
 }
 
-#pragma pack(push, 1)
-struct d2data_0072F8FC_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
+extern "C" const char* gData_0072F8FC[15] = { // 0x0072F8FC
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
 };
-#pragma pack(pop)
-
-extern "C" struct d2data_0072F8FC_t gData_0072F8FC; // 0x0072F8FC
-
-extern "C" struct d2data_0072F8FC_t gData_0072F8FC = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0072F8FC

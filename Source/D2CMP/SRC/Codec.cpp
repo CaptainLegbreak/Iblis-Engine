@@ -7,6 +7,9 @@
 #include "D2GameTypes.h"
 
 #include "D2CmpTiles.h"
+#include "FogApi.h"
+#include "FogApi.h"
+#include "FogApi2.h"
 
 static int DccTestBit(const unsigned int* pBits, int nBit);
 
@@ -40,7 +43,6 @@ struct D2SpritePixelsStrc { int unknown00,width,height; char unknown0C[0x14]; un
 
 struct D2SpriteCelStrc { int unknown00[7]; unsigned int dataSize; };
 
-void __cdecl LOGMANAGER_WriteLogLine(const char* szFormat, ...); // 0x00410610
 
 void* __cdecl sub_006829C0_Copy(void* dest,const void* source,unsigned int size); // 0x006829C0
 
@@ -71,21 +73,11 @@ struct D2CmpTileHeaderTargetStrc
     unsigned int adwData[33];
 };
 
-int __fastcall FOG_FOpenFile(const char* szFileName, void** phFile); // 0x004068E0
-
-int __fastcall FOG_FCloseFile(void* pArg); // 0x004068F0
-
-int __fastcall FOG_FReadFile(void* hFile, void* pBuffer, int nToRead, int* pnRead, void* pOverlapped, int nArg7, int nArg6); // 0x00406900
-
-int __fastcall FOG_FGetFileSize(void* hFile, unsigned int* pnSizeHigh); // 0x00406930
 
 static int CodecDccNextCell(D2DccDirStrc* pDir, D2DccIterStrc* pIt); // 0x0060B2B0
 
-extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
@@ -97,11 +89,10 @@ extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalS
 
 extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalSectionStrc* pLock);        // 0x006CC214
 
-void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
 
 int __fastcall CodecEncodeSprite(D2DccFrameStrc* pFrame, D2Dc6FrameStrc* pHeader, unsigned char* pDst); // 0x0060BDB0
 
-extern D2CriticalSectionStrc gtCodecLock_008F03CC;                                                          // 0x008F03CC
+extern D2CriticalSectionStrc gtCodecLock;                                                          // 0x008F03CC
 
 extern unsigned char gabDccPixels[];                                                               // 0x008F03E8
 
@@ -119,7 +110,6 @@ extern const unsigned int gadwDccSignExtend[33];                                
 
 extern "C" const unsigned int gData_006E6030[33]; // 0x006E6030
 
-extern unsigned int gdwBitMasks_006CE268[];                                                                 // 0x006CE268
 
 void __stdcall CodecDccDecodeCells(D2DccDirStrc* pDir, D2DccCellStrc* pCells, D2CmpBitCursorStrc* pEqual, D2CmpBitCursorStrc* pMask, D2CmpBitCursorStrc* pEncoding, D2CmpBitCursorStrc* pRaw, D2CmpBitCursorStrc* pCode, D2CmpByteRunStrc* pRun, int* pnBitsUsed); // 0x0060B9A0
 
@@ -609,7 +599,7 @@ static inline int DccReadSigned(int nCount, D2CmpBitCursorStrc* pCursor)
 }
 
 // 0x0060B7B0
-static void __stdcall sub_0060B7B0_DecodeCell(D2CmpBitCursorStrc* pCursor, D2CmpBitCursorStrc* pEqual, D2DccCellStrc* pPrev, D2DccCellStrc* pCell, unsigned char** ppRun)
+static void __stdcall CODEC_DecodeCell(D2CmpBitCursorStrc* pCursor, D2CmpBitCursorStrc* pEqual, D2DccCellStrc* pPrev, D2DccCellStrc* pCell, unsigned char** ppRun)
 {
     if (pEqual && pPrev->pColors && CodecReadBits(1, pEqual))
     {
@@ -715,7 +705,7 @@ int __fastcall CodecDecodeDccData(unsigned char* pData, void* pMemPool, int nSiz
     D2DccIterStrc tIt;
     D2CmpByteMapStrc tInverse;
 
-    EnterCriticalSection(&gtCodecLock_008F03CC);
+    EnterCriticalSection(&gtCodecLock);
 
     DccCopyHeader(&tHeader, DccGetFile(dwFile));
     sub_0060B140_BitBufferInit(nSize, (unsigned int*)pData, &tCursor);
@@ -855,7 +845,7 @@ int __fastcall CodecDecodeDccData(unsigned char* pData, void* pMemPool, int nSiz
                     tCell.nPitch = tIt.nCellsY;
                     tCell.nWidth = tIt.nStepX;
                     tCell.nHeight = tIt.nStepY;
-                    sub_0060B7B0_DecodeCell(&tCursor, pEqual, &gatDccCells[tIt.nCell], &tCell, &pRun);
+                    CODEC_DecodeCell(&tCursor, pEqual, &gatDccCells[tIt.nCell], &tCell, &pRun);
                     gatDccCells[tIt.nCell] = tCell;
 
                     bMore = CodecDccNextCell(&tDir, &tIt);
@@ -890,48 +880,38 @@ int __fastcall CodecDecodeDccData(unsigned char* pData, void* pMemPool, int nSiz
         tCursor.AlignToByte();
     }
 
-    LeaveCriticalSection(&gtCodecLock_008F03CC);
+    LeaveCriticalSection(&gtCodecLock);
     return (int)pResult;
 }
-
-#pragma pack(push, 1)
-struct d2data_006E60B8_t
-{
-    unsigned char b0[128];
-};
-#pragma pack(pop)
-
-extern "C" const int gData_006E5F70[16]; // 0x006E5F70
-extern "C" const unsigned int gData_006E5FB0[32]; // 0x006E5FB0
-extern "C" const unsigned int gData_006E6030[33]; // 0x006E6030
-extern "C" const struct d2data_006E60B8_t gData_006E60B8; // 0x006E60B8
 
 extern "C" const int gData_006E5F70[16] = { 0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 20, 24, 26, 28, 30, 32 }; // 0x006E5F70
 #pragma comment(linker, "/alternatename:?ganDccFieldWidths@@3QBHB=_gData_006E5F70")
 
-extern "C" const unsigned int gData_006E5FB0[32] = {
-    1, 2, 4, 8, 0x10, 0x20, 0x40, 0x80, 0x100, 0x200, 0x400, 0x800, 0x1000, 0x2000, 0x4000, 0x8000,
-    0x10000, 0x20000, 0x40000, 0x80000, 0x100000, 0x200000, 0x400000, 0x800000, 0x1000000, 0x2000000, 0x4000000, 0x8000000, 0x10000000, 0x20000000, 0x40000000, 0x80000000
-}; // 0x006E5FB0
+extern "C" const unsigned int gData_006E5FB0[32] = { // 0x006E5FB0
+    0x00000001, 0x00000002, 0x00000004, 0x00000008, 0x00000010, 0x00000020, 0x00000040, 0x00000080,
+    0x00000100, 0x00000200, 0x00000400, 0x00000800, 0x00001000, 0x00002000, 0x00004000, 0x00008000,
+    0x00010000, 0x00020000, 0x00040000, 0x00080000, 0x00100000, 0x00200000, 0x00400000, 0x00800000,
+    0x01000000, 0x02000000, 0x04000000, 0x08000000, 0x10000000, 0x20000000, 0x40000000, 0x80000000
+};
 #pragma comment(linker, "/alternatename:?gadwDccSignBits@@3QBIB=_gData_006E5FB0")
 
-extern "C" const unsigned int gData_006E6030[33] = {
-    0, 1, 3, 7, 0xF, 0x1F, 0x3F, 0x7F, 0xFF, 0x1FF, 0x3FF, 0x7FF, 0xFFF, 0x1FFF, 0x3FFF, 0x7FFF,
-    0xFFFF, 0x1FFFF, 0x3FFFF, 0x7FFFF, 0xFFFFF, 0x1FFFFF, 0x3FFFFF, 0x7FFFFF, 0xFFFFFF, 0x1FFFFFF, 0x3FFFFFF, 0x7FFFFFF, 0xFFFFFFF, 0x1FFFFFFF, 0x3FFFFFFF, 0x7FFFFFFF,
+extern "C" const unsigned int gData_006E6030[33] = { // 0x006E6030
+    0x00000000, 0x00000001, 0x00000003, 0x00000007, 0x0000000F, 0x0000001F, 0x0000003F, 0x0000007F,
+    0x000000FF, 0x000001FF, 0x000003FF, 0x000007FF, 0x00000FFF, 0x00001FFF, 0x00003FFF, 0x00007FFF,
+    0x0000FFFF, 0x0001FFFF, 0x0003FFFF, 0x0007FFFF, 0x000FFFFF, 0x001FFFFF, 0x003FFFFF, 0x007FFFFF,
+    0x00FFFFFF, 0x01FFFFFF, 0x03FFFFFF, 0x07FFFFFF, 0x0FFFFFFF, 0x1FFFFFFF, 0x3FFFFFFF, 0x7FFFFFFF,
     0xFFFFFFFF
-}; // 0x006E6030
+};
 #pragma comment(linker, "/alternatename:?gadwDccBitMasks@@3PAIA=_gData_006E6030")
 
-extern "C" const struct d2data_006E60B8_t gData_006E60B8 = {
-    {
-        0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0xFF, 0xFF, 0xFF, 0xFC, 0xFF, 0xFF, 0xFF, 0xF8, 0xFF, 0xFF, 0xFF,
-        0xF0, 0xFF, 0xFF, 0xFF, 0xE0, 0xFF, 0xFF, 0xFF, 0xC0, 0xFF, 0xFF, 0xFF, 0x80, 0xFF, 0xFF, 0xFF,
-        0x00, 0xFF, 0xFF, 0xFF, 0x00, 0xFE, 0xFF, 0xFF, 0x00, 0xFC, 0xFF, 0xFF, 0x00, 0xF8, 0xFF, 0xFF,
-        0x00, 0xF0, 0xFF, 0xFF, 0x00, 0xE0, 0xFF, 0xFF, 0x00, 0xC0, 0xFF, 0xFF, 0x00, 0x80, 0xFF, 0xFF,
-        0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0xFE, 0xFF, 0x00, 0x00, 0xFC, 0xFF, 0x00, 0x00, 0xF8, 0xFF,
-        0x00, 0x00, 0xF0, 0xFF, 0x00, 0x00, 0xE0, 0xFF, 0x00, 0x00, 0xC0, 0xFF, 0x00, 0x00, 0x80, 0xFF,
-        0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0xFE, 0x00, 0x00, 0x00, 0xFC, 0x00, 0x00, 0x00, 0xF8,
-        0x00, 0x00, 0x00, 0xF0, 0x00, 0x00, 0x00, 0xE0, 0x00, 0x00, 0x00, 0xC0, 0x00, 0x00, 0x00, 0x80
-    }
-}; // 0x006E60B8
+extern "C" const unsigned char gData_006E60B8[128] = { // 0x006E60B8
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0xFF, 0xFF, 0xFF, 0xFC, 0xFF, 0xFF, 0xFF, 0xF8, 0xFF, 0xFF, 0xFF,
+    0xF0, 0xFF, 0xFF, 0xFF, 0xE0, 0xFF, 0xFF, 0xFF, 0xC0, 0xFF, 0xFF, 0xFF, 0x80, 0xFF, 0xFF, 0xFF,
+    0x00, 0xFF, 0xFF, 0xFF, 0x00, 0xFE, 0xFF, 0xFF, 0x00, 0xFC, 0xFF, 0xFF, 0x00, 0xF8, 0xFF, 0xFF,
+    0x00, 0xF0, 0xFF, 0xFF, 0x00, 0xE0, 0xFF, 0xFF, 0x00, 0xC0, 0xFF, 0xFF, 0x00, 0x80, 0xFF, 0xFF,
+    0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0xFE, 0xFF, 0x00, 0x00, 0xFC, 0xFF, 0x00, 0x00, 0xF8, 0xFF,
+    0x00, 0x00, 0xF0, 0xFF, 0x00, 0x00, 0xE0, 0xFF, 0x00, 0x00, 0xC0, 0xFF, 0x00, 0x00, 0x80, 0xFF,
+    0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0xFE, 0x00, 0x00, 0x00, 0xFC, 0x00, 0x00, 0x00, 0xF8,
+    0x00, 0x00, 0x00, 0xF0, 0x00, 0x00, 0x00, 0xE0, 0x00, 0x00, 0x00, 0xC0, 0x00, 0x00, 0x00, 0x80
+};
 #pragma comment(linker, "/alternatename:?gadwDccSignExtend@@3QBIB=_gData_006E60B8")

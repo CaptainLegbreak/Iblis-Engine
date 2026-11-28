@@ -1,4 +1,5 @@
 #include "Fog.h"
+#include "FogApi.h"
 
 struct D2DataArrayStrc
 {
@@ -14,17 +15,11 @@ struct D2DataArrayStrc
     unsigned char* pEntries;        // 0x11C
 };
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
-
 extern "C" void* __cdecl memset(void*, int, unsigned int); // 0x00681EF0
 
 extern "C" char* __cdecl strncpy(char*, const char*, unsigned int); // 0x00687330
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
-
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-
-extern "C" void __cdecl FOG_DisplayHalt(const char* text, const char* file, int line); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int code); // 0x00681E09
 

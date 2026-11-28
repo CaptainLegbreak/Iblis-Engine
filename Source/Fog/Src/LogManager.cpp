@@ -3,6 +3,8 @@
 #include "D2FogTypes.h"
 #include "D2StormLink.h"
 #include "stpl.h"
+#include "FogApi.h"
+#include "StormApi.h"
 
 struct D2FindDataStrc
 {
@@ -44,8 +46,6 @@ struct D2FileTimeStrc;
 
 extern "C" __declspec(dllimport) unsigned long __stdcall WaitForSingleObject(void* hHandle, unsigned long dwMilliseconds); // 0x006CC230
 
-extern "C" __declspec(dllimport) int __stdcall SetEvent(void* hEvent); // 0x006CC130
-
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x006CC134
 
 extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC218
@@ -55,14 +55,6 @@ extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalS
 extern "C" void* __cdecl memset(void* pDst, int nValue, size_t nSize); // 0x00681EF0
 
 extern "C" size_t __cdecl fread(void* pBuffer, size_t nSize, size_t nCount, _iobuf* pFile); // 0x00684782
-
-extern "C" int __cdecl SStrPrintf(char* szDest, unsigned int nMaxCount, const char* szFormat, ...); // 0x00413A40
-
-void __cdecl ERRORMANAGER_SetMiniDumpThreadName(); // 0x00401A70
-
-void __cdecl sub_004026D0_WriteMiniDump(); // 0x004026D0
-
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
 _iobuf* __fastcall LOGMANAGER_OpenDatedLogFile(const char* szName, D2SystemTimeStrc* pTime, const char* szMode, int* pbNew, char* szPathOut, unsigned int nPathOutSize); // 0x0040EBD0
 
@@ -76,19 +68,11 @@ void __cdecl LOGMANAGER_LogWritePrefixedLine(const char* szPrefix, const char* s
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
-
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" int __cdecl sscanf(const char* szSource, const char* szFormat, ...); // 0x00684BD5
 
 extern "C" __declspec(dllimport) long __stdcall SHGetFolderPathA(void* hWnd, int nFolder, void* hToken, unsigned long dwFlags, char* szPath); // 0x006CC43C
-
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
-
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
-
-int __fastcall FOG_CreatePathHierarchy(const char* szPath); // 0x00406A10
 
 int __fastcall ERRORMANAGER_AppendBackslash(char* szPath, unsigned int nSize); // 0x00406B20
 
@@ -96,9 +80,8 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(void); // 
 
 extern "C" __declspec(dllimport) void __stdcall Sleep(unsigned long dwMilliseconds); // 0x006CC258
 
-int gbLogInitialized; // 0x0075D2EC
+extern int gbLogInitialized; // 0x0075D2EC
 
-extern int gnLogQueueCount; // 0x0075E870
 
 extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC210
 extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC1FC
@@ -112,9 +95,6 @@ struct CCritSect : D2CriticalSectionStrc
     void Leave();
 };
 
-// build: symbol ??0CCritSect@@QAE@XZ 0x0040EB50
-// build: symbol ??1CCritSect@@QAE@XZ 0x0040EB60
-
 // 0x0040EB70
 void CCritSect::Enter()
 {
@@ -127,15 +107,9 @@ void CCritSect::Leave()
     LeaveCriticalSection(this);
 }
 
-// build: symbol ??__EgtLogQueueLock@@YAXXZ 0x006CA700
-// build: symbol ??__FgtLogQueueLock@@YAXXZ 0x006CB070
 CCritSect gtLogQueueLock; // 0x0075E838
 
 _iobuf* __fastcall LOGMANAGER_GetLogFile(const char* szName, int* pnSlot); // 0x0040EDE0
-
-// build: symbol _SMemAlloc@16 0x00413020
-// build: symbol ??3Message@LogManager@@SAXPAX0@Z 0x0040EB30
-// build: symbol _SMemFree@16 0x00412650
 
 
 struct D2ChatStormLinkStrc
@@ -185,7 +159,6 @@ struct Message : TSLinkedNode<Message>
 };
 }
 
-// build: symbol ??2@YAPAXIPAX@Z 0x0040EB20
 inline void* operator new(unsigned int, void* pWhere) throw()
 {
     return pWhere;
@@ -197,8 +170,6 @@ char* __fastcall sub_0040EB40_GetMessageData(LogManager::Message* pMessage)
     return (char*)&pMessage->nSize;
 }
 
-// build: symbol ??__EgtLogLock@@YAXXZ 0x006CA720
-// build: symbol ??__FgtLogLock@@YAXXZ 0x006CB080
 CCritSect gtLogLock; // 0x0075E850
 
 D2MiniDumpRequestStrc* gpMiniDumpRequest; // 0x0098A6E4
@@ -218,27 +189,7 @@ int gnLogQueuedBytes; // 0x0075D144
 
 int gnLogQueued; // 0x0075D140
 
-// build: symbol ??__EgtLogMsgQueue_0075E868@@YAXXZ 0x006CA740
-// build: symbol ??__FgtLogMsgQueue_0075E868@@YAXXZ 0x006CB090
 TSList<LogManager::Message> gtLogMsgQueue_0075E868; // 0x0075E868
-// build: symbol ?Next@?$TSLink@UMessage@LogManager@@@@QAEPAUMessage@LogManager@@XZ 0x0040F520
-// build: symbol ?Unlink@?$TSLink@UMessage@LogManager@@@@QAEXXZ 0x0040F530
-// build: symbol ?InitializeTerminator@?$TSList@UMessage@LogManager@@U?$TSGetLink@UMessage@LogManager@@@@@@QAEXXZ 0x0040F580
-// build: symbol ?Head@?$TSList@UMessage@LogManager@@U?$TSGetLink@UMessage@LogManager@@@@@@QAEPAUMessage@LogManager@@XZ 0x0040F7C0
-// build: symbol ??0?$TSLink@UMessage@LogManager@@@@QAE@XZ 0x0040F810
-// build: symbol ?NextLink@?$TSLink@UMessage@LogManager@@@@QAEPAU1@H@Z 0x0040F4F0
-// build: symbol ??1?$TSLink@UMessage@LogManager@@@@QAE@XZ 0x0040F820
-// build: symbol ?Link@?$TSList@UMessage@LogManager@@U?$TSGetLink@UMessage@LogManager@@@@@@QAEPAU?$TSLink@UMessage@LogManager@@@@PBUMessage@LogManager@@@Z 0x0040F880
-// build: symbol ??1?$TSLinkedNode@UMessage@LogManager@@@@QAE@XZ 0x0040FAA0
-// build: symbol ??0?$TSList@UMessage@LogManager@@U?$TSGetLink@UMessage@LogManager@@@@@@QAE@XZ 0x0040FB50
-// build: symbol ?LinkNode@?$TSList@UMessage@LogManager@@U?$TSGetLink@UMessage@LogManager@@@@@@QAEXPAUMessage@LogManager@@I0@Z 0x0040FBB0
-// build: symbol ?UnlinkNode@?$TSList@UMessage@LogManager@@U?$TSGetLink@UMessage@LogManager@@@@@@QAEXPAUMessage@LogManager@@@Z 0x0040FC60
-// build: symbol ??0?$TSLinkedNode@UMessage@LogManager@@@@QAE@XZ 0x0040FCB0
-// build: symbol ?UnlinkAll@?$TSList@UMessage@LogManager@@U?$TSGetLink@UMessage@LogManager@@@@@@QAEXXZ 0x0040FD00
-// build: symbol ??1?$TSList@UMessage@LogManager@@U?$TSGetLink@UMessage@LogManager@@@@@@QAE@XZ 0x0040FD90
-// build: symbol ?Clear@?$TSList@UMessage@LogManager@@U?$TSGetLink@UMessage@LogManager@@@@@@QAEXXZ 0x0040FED0
-// build: symbol ?NewNode@?$TSList@UMessage@LogManager@@U?$TSGetLink@UMessage@LogManager@@@@@@QAEPAUMessage@LogManager@@III@Z 0x0040FF40
-// build: symbol ??_R0?AUMessage@LogManager@@@8 0x0070811C
 template LogManager::Message* TSLink<LogManager::Message>::Next();
 template void TSLink<LogManager::Message>::Unlink();
 template void TSList<LogManager::Message>::InitializeTerminator();
@@ -304,9 +255,9 @@ void __fastcall LOGMANAGER_WriteStartupBanner(_iobuf* pFile)
     fprintf(pFile, "---------------------------------------------------------------\n");
 }
 
-int ganLogNewFile[20]; // 0x0075D298
+extern int ganLogNewFile[20]; // 0x0075D298
 
-char gaszLogFilePaths[20][0x104]; // 0x0075D340
+extern char gaszLogFilePaths[20][0x104]; // 0x0075D340
 
 // 0x0040EB90
 unsigned int __fastcall LOGMANAGER_GetLogFilePaths(char** apszFiles, unsigned int nCount)
@@ -341,31 +292,11 @@ extern "C" const char gszLogDumpByteSpaced[]; // 0x006CE1A4
 
 extern "C" const char gszLogLineFormat_006CD90C[]; // 0x006CD90C
 
-// 0x004027C0
-unsigned long __stdcall LOGMANAGER_DbgHelpThreadProc(void* pParam)
-{
-    // stands for a stack local the original stores 0 to and reads back unused (no plain-C form found)
-    volatile int nDummy = 0;
-    nDummy;
-    ERRORMANAGER_SetMiniDumpThreadName();
-// build: symbol ?ghDbgHelpWorkEvent@* 0x0098A6C0
-    WaitForSingleObject(ghDbgHelpWorkEvent, 0xFFFFFFFF);
-    while (gpMiniDumpRequest)
-    {
-        sub_004026D0_WriteMiniDump();
-// build: symbol ?ghDbgHelpDoneEvent@* 0x0098A6BC
-        SetEvent(ghDbgHelpDoneEvent);
-        WaitForSingleObject(ghDbgHelpWorkEvent, 0xFFFFFFFF);
-    }
-    return 0;
-}
-
 // 0x0040EBD0
 _iobuf* __fastcall LOGMANAGER_OpenDatedLogFile(const char* szName, D2SystemTimeStrc* pTime, const char* szMode, int* pbNew, char* szPathOut, unsigned int nPathOutSize)
 {
     char szPath[0x104];
     GetLocalTime(pTime);
-// build: symbol ?gszLogPrefix@* 0x00708018
     SStrPrintf(szPath, sizeof(szPath), "%s%s%02d%02d%02d.txt", gszLogPrefix, szName, pTime->wYear % 100, pTime->wMonth, pTime->wDay);
     if (szPathOut)
     {
@@ -426,7 +357,6 @@ void __fastcall LOGMANAGER_SetLogPrefix(const char* szName)
 {
     char szDirectory[0x104];
     LOGMANAGER_GetLogDirectory(szDirectory, 0x104);
-// build: symbol ?gszLogPrefix@* 0x00708018
     SStrPrintf(gszLogPrefix, 0x104, "%s%s", szDirectory, szName);
 }
 
@@ -476,9 +406,9 @@ void __cdecl LOGMANAGER_CloseLogFilesNow()
     while (GetTickCount() - dwStart < 1000)
     {
         EnterCriticalSection(&gtLogQueueLock);
-        const int nQueued = gnLogQueueCount > 0 ? gnLogQueueCount : 0;
+        LogManager::Message* pQueued = gtLogMsgQueue_0075E868.Head();
         LeaveCriticalSection(&gtLogQueueLock);
-        if (!nQueued)
+        if (!pQueued)
         {
             break;
         }
@@ -487,7 +417,6 @@ void __cdecl LOGMANAGER_CloseLogFilesNow()
     for (int i = 0; i < 20; i++)
     {
         EnterCriticalSection(&gtLogLock);
-// build: symbol ?gapLogFiles@* 0x0075E790
         if (gapLogFiles[i])
         {
             fclose(gapLogFiles[i]);
@@ -503,7 +432,6 @@ void __cdecl LOGMANAGER_CloseLogFiles()
     LOGMANAGER_CloseLogFilesNow();
 }
 
-// build: symbol ??_GMessage@LogManager@@QAEPAXI@Z 0x0040FE60
 inline void LogManager::Message::operator delete(void* pMemory)
 {
     if (pMemory)
@@ -520,11 +448,11 @@ LogManager::Message::~Message()
 {
 }
 
-void* ghLogThread; // 0x0075D2E8
+extern void* ghLogThread; // 0x0075D2E8
 
-int gbLogThreadStop; // 0x0075E830
+extern int gbLogThreadStop; // 0x0075E830
 
-unsigned long gnLogThreadId; // 0x0075E834
+extern unsigned long gnLogThreadId; // 0x0075E834
 
 // 0x0040FFD0
 void __cdecl LOGMANAGER_ShutdownLogSystem()
@@ -546,7 +474,6 @@ void __cdecl LOGMANAGER_ShutdownLogSystem()
 // 0x00410040
 void __cdecl LOGMANAGER_LogMemoryDump(const char* szPrefix, const char* szTitle, unsigned long dwAddress, unsigned int nSize, int nArg5, int bBadPointer, int nArg7)
 {
-// build: symbol ?gbLogThreadStop@* 0x0075E830
     if (gbLogThreadStop || !gbLogInitialized)
         return;
     if (!bBadPointer && IsBadReadPtr((const void*)dwAddress, nSize))
@@ -586,7 +513,6 @@ extern "C" int __cdecl _snprintf(char* szDest, size_t nCount, const char* szForm
 // 0x00410340
 void __fastcall LOGMANAGER_WriteLogV(const char* szPrefix, int nArg2, int nArg3, const char* szFormat, va_list args)
 {
-// build: symbol ?gbLogThreadStop@* 0x0075E830
     if (gbLogThreadStop || !gbLogInitialized)
     {
         return;
@@ -669,7 +595,6 @@ unsigned long __stdcall LOGMANAGER_LogThreadProc(void* pParam)
         }
         LeaveCriticalSection(&gtLogQueueLock);
 
-// build: symbol ?gbLogThreadStop@* 0x0075E830
         if (gbLogThreadStop)
         {
             if (!dwStopTime)
@@ -713,7 +638,6 @@ unsigned long __stdcall LOGMANAGER_LogThreadProc(void* pParam)
 // 0x00410540
 void __cdecl LOGMANAGER_InitLogSystem()
 {
-// build: symbol ?gbLogThreadStop@* 0x0075E830
     gbLogThreadStop = 0;
     ghLogThread = CreateThread(0, 0, LOGMANAGER_LogThreadProc, 0, 0, &gnLogThreadId);
     gbLogInitialized = 1;
@@ -798,7 +722,6 @@ void __fastcall LOGMANAGER_WriteMessage(LogManager::Message* pMessage)
         if (pMessage->bTimeStamp)
             fprintf(pFile, "%02d:%02d:%02d.%03d  ", pMessage->tTimeStamp.wHour, pMessage->tTimeStamp.wMinute, pMessage->tTimeStamp.wSecond, pMessage->tTimeStamp.wMilliseconds);
         fwrite(szText, SStrLen(szText), 1, pFile);
-// build: symbol ?gadwLogWriteTick@* 0x0075D2F0
         gadwLogWriteTick[nSlot] = GetTickCount();
     }
 }
@@ -890,11 +813,9 @@ _iobuf* __fastcall LOGMANAGER_GetLogFile(const char* szName, int* pnSlot)
     nOldest = 1;
     for (; i < 20; ++i)
     {
-// build: symbol ?gaszLogNames@* 0x0075D148
         if (!strcmp(gaszLogNames[i], szName))
         {
             nSlot = i;
-// build: symbol ?gapLogFiles@* 0x0075E790
             pFile = gapLogFiles[i];
             if (pFile)
             {
@@ -916,7 +837,6 @@ _iobuf* __fastcall LOGMANAGER_GetLogFile(const char* szName, int* pnSlot)
             {
                 nFree = i;
             }
-// build: symbol ?gadwLogWriteTick@* 0x0075D2F0
             else if (dwTick - gadwLogWriteTick[i] > gadwLogWriteTick[nFree])
             {
                 nFree = i;
@@ -1042,7 +962,6 @@ void __fastcall LOGMANAGER_WriteDumpMessage(LogManager::Message* pMessage)
             {
                 for (i = (16 - nLine) * 9 / 4 + 2; i; --i)
                 {
-// build: symbol ?gszSpace@* 0x006FFC44
                     SStrPack(szLine, gszSpace, sizeof(szLine));
                 }
 
@@ -1099,12 +1018,6 @@ void __fastcall sub_0040F570(PairStrc_0040F570* pPair)
     pPair->nFirst = 0;
     pPair->nSecond = 0;
 }
-
-extern "C" const char gData_006CE1A4[8]; // 0x006CE1A4
-extern "C" const char gData_006CE1AC[8]; // 0x006CE1AC
-extern "C" const char gData_006CE1B4[12]; // 0x006CE1B4
-extern "C" const char gData_006CE1C0[12]; // 0x006CE1C0
-extern "C" const char gData_006CE1CC[16]; // 0x006CE1CC
 
 extern "C" const char gData_006CE1A4[8] = " %02X"; // 0x006CE1A4
 #pragma comment(linker, "/alternatename:_gszLogDumpByteSpaced=_gData_006CE1A4")
