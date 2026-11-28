@@ -297,6 +297,11 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Status
 
+- 2026-11-27 22:50 PT: board check. #17, #18 merged. Codex main moved to 16572ad (#499): 6b in PR #19. Clean;
+  1,693/1,693 data records against Game.exe; 538/538 compile. Aliases 2,794 (23 dropped out, 10 new table
+  entries, checked). Unresolved 1,222 (-2, none new, so nothing new for 6c); calling-interface refusals 149
+  (-2). Replay: rng/bitbuf/startup identical; sfile still waits on Storm's caller globals (lane 11).
+
 - 2026-11-27 22:10 PT: board check. Codex main moved to 3f6ca97 (#498): 6b in PR #18, stacked on #17 (still
   open; merge #17 first). Clean; 1,693/1,693 data records against Game.exe; 538/538 compile. Aliases
   regenerated: 26 replaced by 26 after Codex renames, checked by address. Unresolved 1,224 (unchanged), so
