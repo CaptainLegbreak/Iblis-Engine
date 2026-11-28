@@ -900,7 +900,7 @@ Unicode* __fastcall sub_00452170_ReturnText(Unicode* pText);                    
 
 const Unicode* __fastcall INV_SkipBracketTag(const Unicode* pString); // 0x004834A0
 
-void __cdecl INV_FormatArgs(Unicode* pDest, const Unicode* pFormat, ...);                          // 0x0048BE80
+void __cdecl INV_FormatArgs(Unicode* pDest, const Unicode* pFormat, ...); // 0x0048BE80
 
 
 
@@ -1945,6 +1945,10 @@ struct d2data_00721D98_t
 #pragma pack(pop)
 
 extern "C" struct d2data_00721D98_t gData_00721D98; // 0x00721D98
+
+extern "C" const char gszRes640x146[8] = "640x146"; // 0x006D4214
+
+extern "C" const char gszRes640x292[8] = "640x292"; // 0x006D421C
 
 extern int gnAuxLevelEntries = 8; // 0x00721D94
 

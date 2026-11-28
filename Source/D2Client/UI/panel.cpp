@@ -247,7 +247,7 @@ const Unicode* __fastcall CMDTBL_GetKeyName(int nA, int nB);                    
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc);                                     // 0x005267E0
 
-int __fastcall UNICODE_StrLen(const Unicode* pString);                                                      // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile);  // 0x006280A0
 

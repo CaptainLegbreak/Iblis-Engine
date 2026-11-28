@@ -255,6 +255,8 @@ struct d2data_00748A94_t
 extern "C" struct d2data_00748A58_t gData_00748A58; // 0x00748A58
 extern "C" struct d2data_00748A94_t gData_00748A94; // 0x00748A94
 
+extern "C" const char gszTxtField_int[4] = "int"; // 0x006E67EC
+
 extern "C" struct d2data_00748A58_t gData_00748A58 = {
     (const void*)"English",
     (const void*)"Spanish",

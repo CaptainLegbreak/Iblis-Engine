@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ObjectIds.h"
 #include "D2ItemTypes.h"
 #include "D2StateIds.h"
@@ -94,10 +95,6 @@ D2ItemsTxt* __stdcall DATATBLS_GetItemsTxtRecord(int nItemId); // 0x006335F0
 
 typedef void(__fastcall* StatListRemoveCallback)(D2UnitStrc*, int, D2StatListStrc*);
 
-enum D2C_Z09ItemConstants
-{
-    EVENTTYPE_REMOVESTATE = 0x0C,
-};
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
@@ -176,7 +173,6 @@ enum D2C_Y09SkillConstants
 {
     SKILLSFLAGINDEX_AURA = 5,
     SKILLSFLAGINDEX_IMMEDIATE = 15,
-    EVENTTYPE_PERIODICSTATS = 9,
 };
 
 extern unsigned int gdwBitMasks[]; // 0x006CE268
@@ -314,7 +310,7 @@ struct D2ModeChangeStrc;
 
 D2AiControlStrc* __fastcall AIGENERAL_GetAiControlFromUnit(D2UnitStrc* pUnit); // 0x00541860
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nType, int nGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 void __fastcall D2GAME_BOSSES_AssignUMod(D2GameStrc* pGame, D2UnitStrc* pUnit, int nUMod, int bUnique); // 0x005A4850
@@ -330,7 +326,7 @@ void __stdcall PATH_SetStepNum(D2DynamicPathStrc* pPath, unsigned char nStep); /
 
 int __stdcall PATH_GetUnitCollisionPattern(D2UnitStrc* pUnit); // 0x00649180
 
-void __stdcall COLLISION_ResetMaskWithPattern(D2ActiveRoomStrc* pRoom, int nX, int nY, int nPattern, int nMask); // 0x0064EC10
+void __stdcall COLLISION_ResetMaskWithPattern(D2ActiveRoomStrc* pRoom, int nX, int nY, int nCollisionPattern, int nMask); // 0x0064EC10
 
 enum D2C_SkillItemConstants
 {

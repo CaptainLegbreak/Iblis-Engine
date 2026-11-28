@@ -362,7 +362,7 @@ int __stdcall SetCurGateway(D2FuncRecordStrc* pRecord, int nIndex);             
 
 D2ComInterfaceStrc* __cdecl sub_00518C00();                                                           // 0x00518C00
 
-int __fastcall UNICODE_StrLen(const Unicode* pString);                                                      // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 
 static int gnSelectionA = -999;                                                                             // 0x0070CC04

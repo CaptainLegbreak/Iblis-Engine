@@ -95,7 +95,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x00
 #include "D2GameFuncs.h"
 #include "D2CommonApi3.h"
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 D2MonsterInteractStrc* __fastcall sub_00535E80_GetMonInteract(D2UnitStrc* pUnit); // 0x00535E80

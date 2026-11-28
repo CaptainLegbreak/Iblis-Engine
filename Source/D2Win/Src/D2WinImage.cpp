@@ -140,7 +140,7 @@ enum DrawMode
 
 int __fastcall D2Win_10058_0(D2WinControlStrc* pControl, const Unicode* pText, int nLineNum, int nColumn);         // 0x004FB790
 
-int __stdcall CONTROL_AppendToList(D2WinControlStrc* pControl);                                             // 0x004F9210
+int __stdcall CONTROL_AppendToList(D2WinControlStrc* pControl); // 0x004F9210
 
 int __stdcall IMAGE2_HandleMouseDown(SMSGHANDLER_PARAMS* pMsg);                                             // 0x004FD5D0
 

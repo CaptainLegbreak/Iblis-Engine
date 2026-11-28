@@ -162,7 +162,7 @@ struct D2WinFontAndColorStrc
     int nColor;
 };
 
-int __stdcall CONTROL_AppendToList(D2WinControlStrc* pControl);                                             // 0x004F9210
+int __stdcall CONTROL_AppendToList(D2WinControlStrc* pControl); // 0x004F9210
 
 int __stdcall EDITBOX_HandleMouseUp(SMSGHANDLER_PARAMS* pMsg);                                              // 0x004FE350
 

@@ -42,7 +42,7 @@ struct D2MsgHandlerEntryStrc
 
 struct D2GfxNodeTargetStrc
 {
-    int unk0x00[5]; // 0x00
+    int unused0x00[5]; // 0x00
     union
     {
         int nValue;
@@ -60,14 +60,14 @@ struct D2UnitTargetStrc
     int nParam1; // 0x00
     int nParam2; // 0x04
     int nParam3; // 0x08
-    int unk0x0C[4]; // 0x0C
+    int nExtraParams[4]; // 0x0C
 };
 
 struct D2ClientEntryStrc
 {
     unsigned int dwValue; // 0x00
     unsigned short wValue; // 0x04
-    unsigned short unk0x06; // 0x06
+    unsigned short pad0x06; // 0x06
     int nValue; // 0x08
 };
 

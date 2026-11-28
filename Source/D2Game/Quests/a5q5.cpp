@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ObjectIds.h"
 #include "D2MissileIds.h"
 #include "D2StateIds.h"
@@ -53,7 +54,7 @@ struct D2ObjectsTxt;
 struct D2QuestArgStrc;
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 #include "D2GameFuncs.h"
@@ -211,8 +212,6 @@ enum D2C_F33QuestConstants
     OBJMODE_OPENED = 2,
     OBJMODE_SPECIAL1 = 3,
     MONMODE_NEUTRAL = 1,
-    EVENTTYPE_ENDANIM = 1,
-    EVENTTYPE_QUESTFN = 7,
     ITEMQUAL_NORMAL = 2,
     MONSTATSFLAGINDEX_ZOO = 22,
 };

@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ObjectIds.h"
 #include "D2MonsterIds.h"
 #include "D2LevelIds.h"
@@ -25,7 +26,6 @@
 
 #define QUEST_A5Q4_NIHLATHAK 34
 
-#define EVENTTYPE_MONUMOD 7
 
 struct D2PoolSystemStrc;
 struct D2StaticPathStrc;
@@ -132,7 +132,7 @@ void __fastcall QUESTS_ResetPlayerGUIDCount(D2QuestGUIDStrc* pGUIDs);           
 
 D2UnitStrc* __fastcall SUNIT_IterateUnitsOfType(D2GameStrc* pGame, int nType, void* pArg, QUESTUNITITERATE pfIterate); // 0x005537D0
 
-short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer);                                                     // 0x00554630
+short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer); // 0x00554630
 
 bool __fastcall ACT5Q4_StatusFilterCallback(D2QuestDataStrc* pQuest, D2UnitStrc* pPlayer, D2BitBufferStrc* pGlobalFlags, D2BitBufferStrc* pFlags, unsigned char* pStatus); // 0x0058AF00
 
@@ -183,8 +183,6 @@ enum D2C_F33QuestConstants
     QUESTSTATEFLAG_A1Q4 = 4,
     QUESTSTATEFLAG_A5Q6 = 40,
     QFLAG_CUSTOM6 = 10,
-    EVENTTYPE_ENDANIM = 1,
-    EVENTTYPE_QUESTFN = 7,
     STAT_LEVEL = 12,
     ITEMQUAL_NORMAL = 2,
     MONSTATSFLAGINDEX_ZOO = 22,
@@ -205,7 +203,7 @@ int __fastcall QUESTS_CheckPlayerGUID(D2QuestDataStrc* pQuest, int dwGUID); // 0
 void __fastcall QUESTS_QuickRemovePlayerGUID(D2QuestDataStrc* pQuest, D2QuestArgStrc* pQuestArg); // 0x00545310
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 void __stdcall SUNIT_ResetInteractInfo(D2UnitStrc* pUnit); // 0x00554190

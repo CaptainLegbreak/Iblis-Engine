@@ -92,7 +92,7 @@ void __fastcall D2GAME_PACKETS_SendPacket0x63_WaypointMenu(D2ClientStrc* pClient
 void __fastcall D2GAME_PACKETS_SendPacket0x79(D2ClientStrc* pClient, int nGold, char bOwnGold); // 0x0053CBE0
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 void __fastcall SUNIT_AttachSound(D2UnitStrc* pUnit, int nUpdateType, D2UnitStrc* pUpdateUnit); // 0x00553380
 

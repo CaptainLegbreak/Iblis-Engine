@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ItemTypes.h"
 #include "D2LevelIds.h"
 #include "D2StateIds.h"
@@ -249,7 +250,6 @@ static void ITEMS_ClearAffixesAndFileIndex(D2UnitStrc** ppItem);
 #define ITEMDROPFLAG_NOSOCKETS 0x8
 
 
-#define EVENTTYPE_STATREGEN 3
 
 #define IFLAG_RUNEWORD 0x4000000
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Bring the engine's game source up to an Iblis Codex commit.
 
-    python tools/codex_sync.py CODEX_DIR [--report FILE]
+    python tools/codex_sync.py CODEX_DIR [--report FILE] [--game GAME_EXE]
 
 CODEX_DIR is a checkout of Iblis Codex at the commit to sync to. tools/CODEX_SYNC names the Codex commit the
 engine's Source/ was last synced to. A developer tool: the engine's build never runs it and never needs Codex.
@@ -19,8 +19,10 @@ The engine's game source is a copy of Codex's Source/, with two differences the 
 Files under Source/ that the last synced Codex tree doesn't have are the engine's own (Source/Storm/pklib,
 Source/Main/res, ...) and are left alone. Files Codex removed are removed.
 
-Bytes the new plan needs that no old record held can't be known without Game.exe: they are written as 0 and
-listed in the report (missing_bytes), to check against Game.exe.
+Bytes the new plan needs that no old record held can't be known without Game.exe. With --game they are read from
+the user's Game.exe (game data tables are in source by the user's ruling; the data plan holds no keys, resources or
+PKWARE code) and listed in the report (filled_from_game); without it they are written as 0 and listed as
+missing_bytes, to check against Game.exe.
 """
 import sys, os, re, json, struct, shutil, subprocess, collections
 
@@ -50,7 +52,11 @@ def main():
     old_tree = set(git(codex, "ls-tree", "-r", "--name-only", prev, "Source").decode().split("\n")) - {""}
     report = collections.defaultdict(list)
 
-    image = SparseImage()
+    game = None
+    if "--game" in args:
+        from common import PE
+        game = PE(args[args.index("--game") + 1])
+    image = SparseImage(game)
     invert_old(old, image, report)
     rendered = render_new(new, image, codex, report)
 
@@ -240,9 +246,17 @@ def bytes_fields(sdef):
 # ---------------------------------------------------------------- the sparse image
 
 class SparseImage:
-    def __init__(self):
+    def __init__(self, game=None):
         self.bytes = {}; self.texts = {}; self.missing = set()
         self.region_of = {}; self.reloc_vals = {}
+        self.game = game
+
+    def fill(self, va):
+        """A byte no old record held: from Game.exe when given, else None."""
+        if self.game is None:
+            return None
+        self.missing.add(va)
+        return self.game.read(va, 1)[0]
 
     def read(self, va, n):
         if n == 4096 and va in self.texts:   # gendata.image_text: a literal's text, up to its NUL
@@ -250,11 +264,20 @@ class SparseImage:
             while self.texts.get(va + len(out), 0) != 0:
                 out.append(self.texts[va + len(out)])
             if va + len(out) not in self.texts:
-                self.missing.add(va + len(out))
+                if self.game is None:
+                    self.missing.add(va + len(out))
+                else:
+                    while True:
+                        b = self.fill(va + len(out))
+                        if b == 0:
+                            break
+                        out.append(b)
             return bytes(out) + b"\0"
         out = bytearray()
         for i in range(n):
             b = self.bytes.get(va + i)
+            if b is None:
+                b = self.fill(va + i)
             if b is None:
                 self.missing.add(va + i); b = 0
             out.append(b)
@@ -409,7 +432,7 @@ def render_new(new, image, codex, report):
         except G.PlanError as e:
             report["render_error"].append([f, str(e)[:300]]); continue
         if image.missing:
-            report["missing_bytes"].append([f, ["0x%08X" % x for x in sorted(image.missing)]])
+            report["filled_from_game" if image.game is not None else "missing_bytes"].append([f, ["0x%08X" % x for x in sorted(image.missing)]])
         if ent.get("include"):
             put(f, ent["include"], inc)
         for path, text in statics.items():

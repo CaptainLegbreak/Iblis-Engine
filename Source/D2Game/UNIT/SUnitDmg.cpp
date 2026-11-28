@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ObjectIds.h"
 #include "D2ItemTypes.h"
 #include "D2StateIds.h"
@@ -37,9 +38,7 @@
 
 #define STAT_STAMINA 10
 
-#define EVENTTYPE_ENDANIM 1
 
-#define EVENTTYPE_QUESTFN 7
 
 #define UNITFLAG_TARGETABLE 0x00000002
 
@@ -346,7 +345,6 @@ static void __stdcall SUNITDMG_ApplyStun(D2UnitStrc* pAttacker, int nStunLength,
 
 static void __stdcall SUNITDMG_ApplyColdState(D2UnitStrc* pAttacker, int nColdLength, D2UnitStrc* pDefender);
 
-enum D2C_EventTypes { EVENTTYPE_AITHINK = 2, EVENTTYPE_REMOVESTATE = 12 };
 
 extern "C" void _ReadWriteBarrier(void);
 

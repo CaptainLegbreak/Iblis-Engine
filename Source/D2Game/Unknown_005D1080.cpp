@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2MissileIds.h"
 #include "D2StateIds.h"
 #include "D2MonsterIds.h"
@@ -69,8 +70,6 @@ typedef void(__fastcall* MissileInitFunc)(D2UnitStrc* pMissile, int nInitSeed);
 
 enum
 {
-    EVENTTYPE_ACTIVESTATE = 5,
-    EVENTTYPE_REMOVESTATE = 12,
 };
 
 
@@ -106,7 +105,6 @@ void __fastcall SUNITDMG_AllocCombat(D2GameStrc* pGame, D2UnitStrc* pAttacker, D
 enum D2C_Z09SkillConstants
 {
     UNITFLAG_TARGETFLAGS = 0x0E,
-    EVENTTYPE_ENDANIM = 1,
     AISPECIALSTATE_MOUNTING_UNIT = 0x10,
     PATHTYPE_BLESSEDHAMMER = 0x0E,
     PATHTYPE_KNOCKBACK_SERVER = 0x08,
@@ -204,11 +202,6 @@ struct D2MissilesTxt;
 
 struct Monster;
 
-enum D2C_Y09ImpInfernoConstants
-{
-    EVENTTYPE_MODECHANGE = 0,
-    EVENTTYPE_AITHINK = 2,
-};
 
 
 struct Game

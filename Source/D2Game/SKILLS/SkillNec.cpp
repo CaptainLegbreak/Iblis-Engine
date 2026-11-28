@@ -219,7 +219,7 @@ void __fastcall SUNITDMG_DrainItemDurability(D2GameStrc* pGame, D2UnitStrc* pAtt
 int __fastcall SKILLS_ExplodeCorpse(D2GameStrc* pGame, D2UnitStrc* pUnit, int nSkillId, int nSkillLevel); // 0x005C4DF0
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 D2MonStatsTxt* __fastcall sub_0055B7E0_GetMonStatsTxtFromUnit(D2UnitStrc* pUnit); // 0x0055B7E0
 
@@ -2887,6 +2887,8 @@ struct d2data_00741940_t
 
 extern "C" struct d2data_00741900_t gData_00741900; // 0x00741900
 extern "C" struct d2data_00741940_t gData_00741940; // 0x00741940
+
+extern const char gszSkillNecSourceFile[22] = ".\\SKILLS\\SkillNec.cpp"; // 0x006E3034
 
 extern "C" struct d2data_00741900_t gData_00741900 = {
     (const void*)"English",

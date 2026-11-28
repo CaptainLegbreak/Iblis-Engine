@@ -126,9 +126,9 @@ extern int gnValue_007C9138; // 0x007C9138
 
 struct D2CelStrc;
 
-int __stdcall CelGetWidth(D2CelStrc* pCel);                                                                 // 0x006018C0
+int __stdcall CelGetWidth(D2CelStrc* pCel); // 0x006018C0
 
-int __stdcall CelGetHeight(D2CelStrc* pCel);                                                                // 0x006018F0
+int __stdcall CelGetHeight(D2CelStrc* pCel); // 0x006018F0
 
 int __stdcall CelGetOffsetX(D2CelStrc* pCel);                                                               // 0x00601920
 

@@ -181,7 +181,7 @@ int __stdcall STATLIST_GetDefenseFromUnit(D2UnitStrc* pUnit); // 0x00626020
 int __stdcall ITEMS_GetTotalMaxStack(D2UnitStrc* hItem); // 0x006295B0
 int __stdcall ITEMS_HasDurability(D2UnitStrc* pItem); // 0x00629930
 int __stdcall INVENTORY_CompareWithItemsParentInventory(D2InventoryStrc* pInventory, D2UnitStrc* pItem); // 0x0063AD50
-void __stdcall QUESTRECORD_FreeRecord(D2PoolSystemStrc* pMemPool, D2BitBufferStrc* pQuestRecord); // 0x0065C490
+void __stdcall QUESTRECORD_FreeRecord(void* pMemPool, D2BitBufferStrc* pQuestRecord); // 0x0065C490
 unsigned int __fastcall SEED_GetLowSeed(D2SeedStrc* pSeed); // 0x00650E50
 int __stdcall DATATBLS_CalculateMonsterStatsByLevel(int nMonsterId, int nGameType, int nDifficulty, int nLevel, short nFlags, D2MonStatsInitStrc* pMonStatsInit); // 0x006538A0
 int __stdcall STATLIST_GetBaseStatsData(D2StatListStrc* pStatList, D2StatStrc* pOutStatBuffer, int nBufferSize); // 0x00625C90

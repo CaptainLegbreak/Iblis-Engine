@@ -294,7 +294,7 @@ D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType)
 
 void __fastcall NPCMENU_RemoveInventoryClientUnits(D2UnitStrc* pUnit); // 0x004B3790
 
-void __fastcall sub_004BA840_StopSound(int nHandle);                                                                  // 0x004BA840
+void __fastcall sub_004BA840_StopSound(int nHandle); // 0x004BA840
 
 static int gnHandlerCount = 9;                                                                  // 0x007253DC
 #include "D2CommonApi3.h"

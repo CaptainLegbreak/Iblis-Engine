@@ -45,7 +45,7 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                   
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 
-int __stdcall CONTROL_AppendToList(D2WinControlStrc* pControl);                                             // 0x004F9210
+int __stdcall CONTROL_AppendToList(D2WinControlStrc* pControl); // 0x004F9210
 
 
 

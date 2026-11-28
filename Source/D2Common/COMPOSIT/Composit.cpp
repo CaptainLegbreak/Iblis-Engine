@@ -263,6 +263,8 @@ struct d2data_007458C4_t
 
 extern "C" struct d2data_007458C4_t gData_007458C4; // 0x007458C4
 
+extern const char gszObjectsDir[20] = "DATA\\GLOBAL\\OBJECTS"; // 0x006E3628
+
 extern const D2CompositStrc gaWeaponClassCodeTable[13] = {
     { 544434225, 2 },
     { 544499761, 3 },

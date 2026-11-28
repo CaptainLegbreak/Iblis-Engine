@@ -705,6 +705,10 @@ struct d2data_00749690_t
 
 extern "C" struct d2data_00749690_t gData_00749690; // 0x00749690
 
+extern "C" const char gszEqualComma[3] = "=,"; // 0x006EE824
+
+extern "C" const char gszComma[2] = ","; // 0x006EE82C
+
 extern "C" struct d2data_00749690_t gData_00749690 = {
     (const void*)"English",
     (const void*)"Spanish",

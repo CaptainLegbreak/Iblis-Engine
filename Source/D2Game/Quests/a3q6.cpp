@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2MonsterIds.h"
 #include "D2LevelIds.h"
 #include "D2Game.h"
@@ -33,7 +34,6 @@
 
 #define ACT_III 2
 
-#define EVENTTYPE_QUESTFN 7
 
 #define QUESTSTATEFLAG_A3COMPLETED 23
 
@@ -117,7 +117,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 D2MapAIStrc** __stdcall AIGENERAL_GetMapAiFromUnit(D2UnitStrc* pUnit); // 0x0058F000
 
@@ -150,7 +150,6 @@ typedef int(__fastcall* SUNIT_ITERATEFN)(D2GameStrc* pGame, D2UnitStrc* pUnit, v
 
 #define UNIT_OBJECT 2
 
-#define EVENTTYPE_ENDANIM 1
 
 #define ITEMQUAL_NORMAL 2
 

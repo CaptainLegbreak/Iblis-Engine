@@ -17,7 +17,7 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                   
 #include "D2CommonApi2.h"
 void __cdecl QUESTS_DisableSequences();                                                                      // 0x005449D0
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 // 0x00534650
 D2UnitStrc* __stdcall DEBUG_GetUnitFromTypeAndGUID(int nUnitType, int nUnitGUID)

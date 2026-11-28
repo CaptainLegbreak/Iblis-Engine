@@ -165,7 +165,7 @@ typedef int (__stdcall* FARPROC)();
 
 extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(FARPROC lpfn); // 0x006CC34C
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 int __fastcall MONSTERUNIQUE_CheckMonTypeFlag(D2UnitStrc* pUnit, int nFlag); // 0x005A0180
 
@@ -2903,6 +2903,8 @@ void __fastcall ACT5Q6_InitQuestData(D2QuestDataStrc* pQuestData); // 0x0058E500
 void __fastcall ACT2Q6_InitQuestData(D2QuestDataStrc* pQuestData); // 0x0059D5B0
 void __fastcall ACT5Intro_InitQuestData(D2QuestDataStrc* pQuestData); // 0x0058EA50
 void __fastcall ACT1Q7_InitQuestData(D2QuestDataStrc* pQuestData); // 0x00596C40
+
+extern "C" const char gszQuestsSourceFile[20] = ".\\QUESTS\\QUESTS.CPP"; // 0x006E0BE4
 
 extern char gbQuestStateInitializationEnabled = 1; // 0x0073150C
 

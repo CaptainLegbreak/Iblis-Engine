@@ -414,6 +414,8 @@ void BigStack::Drop(unsigned int nCount)
 
 extern "C" const char gData_006D0224[20]; // 0x006D0224
 
+extern "C" const char gszNew[4] = "new"; // 0x006CC82C
+
 extern "C" const char gData_006D0224[20] = ".\\SOURCE\\SEVT.CPP"; // 0x006D0224
 #pragma comment(linker, "/alternatename:_gszSEvtCpp=_gData_006D0224")
 

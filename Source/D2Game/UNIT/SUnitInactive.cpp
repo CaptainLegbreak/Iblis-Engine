@@ -166,7 +166,7 @@ struct D2SpawnAreaStrc;
 
 int __fastcall ACT4Q2_IsChaosSanctumCleared(D2GameStrc*); // 0x005B5210
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc*,int,int); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 void __fastcall SUNIT_Restore(D2GameStrc*,D2UnitStrc*,D2ActiveRoomStrc*,int,int); // 0x00554A30
 

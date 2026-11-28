@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ObjectIds.h"
 #include "D2MissileIds.h"
 #include "D2MonsterIds.h"
@@ -39,7 +40,6 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 enum D2C_M96QuestsFxConstants
 {
-    EVENTTYPE_MONUMOD = 7,
     MONUMOD_TEMPSUMMON = 21,
 };
 
@@ -58,7 +58,6 @@ typedef void (__fastcall* MissileInitFunc)(D2UnitStrc* pMissile, int nArg);
 enum D2C_P11QuestsFxConstants
 {
     OBJECT_COMPELLINGORB_STAIRS = 386,
-    EVENTTYPE_ENDANIM = 1,
 };
 
 

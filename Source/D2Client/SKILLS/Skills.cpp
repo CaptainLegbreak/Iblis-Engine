@@ -184,7 +184,7 @@ void __stdcall D2COMMON_10475_PostStatToStatList(D2UnitStrc* pUnit, D2StatListSt
 void __stdcall STATLIST_SetStat(D2StatListStrc* pStatList, int nStatId, int nValue, unsigned short nLayer); // 0x00627150
 
 
-void __fastcall sub_004BA840_StopSound(void* pUnitSfx); // 0x004BA840
+void __fastcall sub_004BA840_StopSound(int nHandle); // 0x004BA840
 
 typedef int (__fastcall* CLIENTSKILLSTARTFN)(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel);
 

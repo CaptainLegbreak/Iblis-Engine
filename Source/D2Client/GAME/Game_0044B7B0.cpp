@@ -177,7 +177,7 @@ D2RecordHandlerFn __fastcall sub_005173D3_SetRecordHandler(D2RecordHandlerFn pfn
 
 Unicode* __fastcall sub_005267E0(Unicode* pDest, const Unicode* pSource);                                 // 0x005267E0
 
-int __fastcall UNICODE_StrLen(const Unicode* pString);                                                      // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 extern "C" const char gszLngFileName[];                                                            // 0x006D5EE0
 

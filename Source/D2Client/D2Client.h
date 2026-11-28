@@ -105,7 +105,7 @@ D2StoredUnitRecordStrc* __fastcall ROSTER_FindRosterUnitById(int nUnitId); // 0x
 D2TileRectStrc* __stdcall DUNGEON_GetLvlWarpTxtRecordFromRoomAndUnit(D2ActiveRoomStrc* pRoom, D2UnitStrc* pUnit); // 0x00619620
 D2TokRecord* __stdcall DATATBLS_GetObjModeTypeTxtRecord(unsigned int nIndex, int bGetMode); // 0x0065B570
 D2TokRecord* __stdcall DATATBLS_GetPlrModeTypeTxtRecord(unsigned int nIndex, int bGetMode); // 0x0065B480
-D2UnitStrc* __fastcall CUNIT_AllocClientUnit(int nUnitId, int nClassId, int nX, int nY, int nUnitType, int nMode); // 0x004661C0
+D2UnitStrc* __fastcall CUNIT_AllocClientUnit(unsigned int nUnitId, int nClassId, int nX, int nY, int nUnitType, int nArg5); // 0x004661C0
 D2UnitStrc* __fastcall AUTOMAP_RequestAtTarget(D2UnitStrc* pUnit, int nArg0, int nArg3, int nArg4); // 0x004C5420
 D2UnitStrc* __fastcall sub_004C5470_CreateMissileToTarget(D2UnitStrc* pUnit, int nMissile, int nSkillId, int nSkillLevel); // 0x004C5470
 D2UnitStrc* __fastcall MISSILE_SubmitTargetRequest(D2UnitStrc* pUnit, int nMissile, int nSkillId, int nSkillLevel); // 0x004CDD10
@@ -454,7 +454,7 @@ extern void* gpInvCharCel; // 0x007BEF64
 extern void* gpHlthManaCel; // 0x007BEF68
 extern void* gpOverlapCel; // 0x007BEF80
 extern void* gpChatBuffer_007BB5F4; // 0x007BB5F4
-extern void* gpGoldPanel; // 0x007A27A0
+extern D2ClientDialogStrc* gpGoldPanel; // 0x007A27A0
 extern void* gpRunButtonCel; // 0x007BEF0C
 extern void* gpGlobal_007C0D47; // 0x007C0D47
 extern void* gpRes_007C0D5F; // 0x007C0D5F
@@ -554,7 +554,7 @@ int __fastcall sub_004E4120(int nRange); // 0x004E4120
 int __fastcall sub_004F2260_GetSkillCount(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel); // 0x004F2260
 int __fastcall sub_004F9710_TestFlag(D2WinControlStrc* pControl); // 0x004F9710
 int __fastcall D2Win_10127_SetFont(int nFont); // 0x00502EF0
-int __fastcall D2SOUND_IsEaxEnabled(); // 0x00513B70
+int __cdecl D2SOUND_IsEaxEnabled(); // 0x00513B70
 int __fastcall sub_00514C90_GetSoundMode(); // 0x00514C90
 int __fastcall STRTABLE_LoadStringTables(void* pArg, int nArg); // 0x005259C0
 int __fastcall SERVER_GetServerPacketSize(unsigned char* pPacket, unsigned int nLength, int* pSize); // 0x0052B920
@@ -817,7 +817,7 @@ void __fastcall ROSTER_ToggleHostile(D2StoredUnitRecordStrc* pEntry); // 0x00479
 void __fastcall SOUNDHDR_AddVariantRefs(int nId, int nValue); // 0x004822B0
 void __fastcall SOUNDHDR_ClearVariantRefs(int nId); // 0x00482370
 void __fastcall SOUNDHDR_GetSoundPath(int nIndex, char* szPath); // 0x00482710
-void __fastcall TEXT_FreeHoverText(void* pSoundData); // 0x0049F3D0
+void __fastcall TEXT_FreeHoverText(D2HoverTextStrc* pHoverText); // 0x0049F3D0
 void __fastcall TEXT_HandleChatPacket(D2ChatMessageStrc* pMessage); // 0x0049F490
 void __fastcall TEXT_ShowNpcMessage(D2UnitStrc* pUnit, unsigned short nMessage, int nArg); // 0x004A10E0
 void __fastcall QUESTLOG_SendQuestUpdates(int nCount); // 0x004A2760

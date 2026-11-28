@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ObjectIds.h"
 #include "D2LevelIds.h"
 #include "D2Game.h"
@@ -29,9 +30,7 @@
 
 #define UNIT_OBJECT 2
 
-#define EVENTTYPE_MODECHANGE 0
 
-#define EVENTTYPE_STATREGEN 3
 
 #define OBJECTS_CONSTANT_00552AB0 2
 
@@ -317,7 +316,6 @@ void __fastcall SKILLS_ApplyAreaEffect(D2GameStrc* pGame, D2Unk0056DCC0Strc* pRe
 
 
 
-#define EVENTTYPE_PERIODICSTATS 9
 
 static void __stdcall OBJECTS_SpawnArmorStandOrWeaponRack(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, D2DrlgCoordsStrc* pDrlgCoords, int bWeaponRack); // 0x00552200
 

@@ -350,7 +350,7 @@ extern "C" { Unicode gwszNameSeparator[1]; }                                    
 
 extern "C" unsigned short* __fastcall sub_005267E0(unsigned short* pDst, const unsigned short* pSrc);     // 0x005267E0
 
-int __fastcall UNICODE_StrLen(const Unicode* pString);                                      // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 struct D2SeqModeStrc;
 
@@ -3219,3 +3219,5 @@ extern "C" const D2MonCmdRecordStrc gData_006DA4D8[30] = {
     { 11, 1 }
 }; // 0x006DA4D8
 #pragma comment(linker, "/alternatename:?gaMonCmdRecords@@3PAUD2MonCmdRecordStrc@@A=_gData_006DA4D8")
+
+extern "C" const char gszMonsterSourceFile[19] = ".\\UNIT\\Monster.cpp"; // 0x006DA5C8

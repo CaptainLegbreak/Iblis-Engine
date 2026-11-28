@@ -28,7 +28,7 @@ extern "C" { Unicode gwszNameSeparator[1]; }                                    
 
 extern "C" unsigned short* __fastcall sub_005267E0(unsigned short* pDst, const unsigned short* pSrc);     // 0x005267E0
 
-int __fastcall UNICODE_StrLen(const Unicode* pString);                                      // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 typedef void (__fastcall* UMODCALLBACK)(void* pTarget, int nUMod, int bUnique);
 

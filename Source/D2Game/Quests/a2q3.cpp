@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2MonsterIds.h"
 #include "D2ObjModes.h"
 #include "D2Game.h"
@@ -22,7 +23,6 @@
 
 #define ITEMQUAL_NORMAL 2
 
-#define EVENTTYPE_QUESTFN 7
 
 #define QUESTSTATEFLAG_A5Q6 40
 

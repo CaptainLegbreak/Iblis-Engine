@@ -932,6 +932,8 @@ struct d2data_00727DBC_t
 extern "C" const D2LobBracketStrc gData_006DAE70[2]; // 0x006DAE70
 extern "C" struct d2data_00727DBC_t gData_00727DBC; // 0x00727DBC
 
+extern "C" const char gszSkillsBarSourceFile[23] = ".\\SKILLS\\SkillsBar.cpp"; // 0x006DAE58
+
 extern "C" const D2LobBracketStrc gData_006DAE70[2] = {
     { 27, -270, 8462 },
     { 36, -72, 1224 }

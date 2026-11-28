@@ -578,8 +578,6 @@ void __stdcall sub_00649190_SetPathMode(D2UnitStrc* pUnit, int nMode); // 0x0064
 #define EVENTFLAG_0x1 1
 #define EVENTFLAG_0x2 2
 #define EVENTFLAG_0x8 8
-#define EVENTTYPE_AIRESET 10
-#define EVENTTYPE_PERIODICSKILLS 8
 #define FIELD(p,offset) (*(int*)((char*)(p)+(offset)))
 #define GAMEFLAG_ARENA_UPDATE 0x400
 #define GAMETYPE_1 1
@@ -769,6 +767,7 @@ struct D2HashKeyNoneStrc
     char unk0x00;
 };
 
+#include "D2GameEvents.h"
 #include "D2HotkeySkill.h"
 
 struct D2ItemCacheStrc

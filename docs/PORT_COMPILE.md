@@ -4,7 +4,7 @@ The state of the engine's source under Visual Studio 2022. Kept current after ea
 (`tools/codex_sync.py`); the source fixes go to the Codex lanes, which make them in Codex and keep the byte-exact
 build, and they come back with the next sync.
 
-Last measured: 2026-11-27, Source/ at Codex 16572ad (#499).
+Last measured: 2026-11-28, Source/ at Codex 0fc52e3 (#502).
 
 ## Toolchain
 
@@ -47,10 +47,10 @@ The link is the next step: `docs/PORT_LINK.md`.
 
 ## Warnings worth a source fix
 
-At `/W1`, 59 warnings. None stops the build; the ones below point at code whose behaviour can depend on the
+At `/W1`, 48 warnings (59 at Codex 16572ad: Codex #502 made each twice-defined macro one definition and wrote the missing return in D2GAME_PACKETS_SendPacket0xAE). None stops the build; the ones below point at code whose behaviour can depend on the
 compiler. Each is posted on the lane 14 board under Findings, by Codex module.
 
-### A value-returning function that can end without `return` (C4715): 4 functions
+### A value-returning function that can end without `return` (C4715): 3 functions
 
 The 2005 compiler returned whatever was in `eax` at that point, and the game's callers may read it; v143 can
 leave something else there. The fix is to write the `return` with the value 1.14d's code returns on that path
@@ -60,39 +60,22 @@ leave something else there. The fix is to write the `return` with the value 1.14
 |---|---|---|
 | D2Client | `UNIT/MonUnique.cpp` | `MONUNIQUE_ApplyResistantMod` |
 | D2Direct3D | `Src/d3dSprite.cpp` | `D3DSPRITE_DrawSpriteQuad` |
-| D2Game | `GAME/SCmd.cpp` | `D2GAME_PACKETS_SendPacket0xAE` (after the failed size assertion) |
 | D2Game | `MONSTER/MonsterUnique.cpp` | `MONSTERUNIQUE_UMod8_Resistant` |
-
-### A macro defined twice with different text (C4005): 12 sites
-
-A later definition replaces an earlier one, so which text a use gets depends on include order. The fix is one
-definition, in one header.
-
-| Module | File | Macro |
-|---|---|---|
-| D2Client | `UI/inv.cpp` | `va_start` (the file defines its own) |
-| D2Common | `DATATBLS/MonsterTbls.cpp` | `D2_ASSERT` |
-| D2Direct3D | `Src/d3dFloorCache.cpp` | `RELEASE` |
-| D2Game | `OBJECTS/ObjMode.cpp` | `UNITFLAG_TARGETABLE` |
-| D2Game | `PLAYER/Player.cpp` | `EVENTTYPE_STATREGEN` |
-| D2Game | `SKILLS/SkillAss.cpp` | `D2_MAX`, `D2_MIN` |
-| D2Game | `SKILLS/Skills.cpp` | `EVENTTYPE_REMOVESTATE`, `D2_MIN`, `D2_MAX` |
-| D2Win | `Src/D2WinFont.cpp` | `D2_MAX`, `D2_MIN` |
 
 ### Format strings that disagree with their arguments (C4477): 4 sites
 
 | Module | File | What |
 |---|---|---|
-| D2Game | `GAME/Game.cpp` line 2075 | `sprintf("~%d", szGameName, 0)` prints the name's address. Very likely 1.14d's own code, kept as is; listed so nobody "fixes" it by accident |
+| D2Game | `GAME/Game.cpp` line 2059 | `sprintf("~%d", szGameName, 0)` prints the name's address. Very likely 1.14d's own code, kept as is; listed so nobody "fixes" it by accident |
 | Fog | `Unknown_00401DF0.cpp` (3) | `%p` given an `unsigned long`. Same output on x86; matters only for a 64-bit build (M7) |
 
 ### Declarations the compiler ignores or doubts: 4 sites
 
 | Module | File | What |
 |---|---|---|
-| D2Client | `SKILLS/Skills.cpp` line 1121 | an `int` narrowed to `unsigned int` in a brace initialiser (C4838; ok in 2005, an error under `/permissive-`) |
-| D2Client | `UNIT/UnitSnd.cpp` lines 209, 211 | `extern` on a struct definition with no variable (C4091) |
-| D2Game | `Quests/a1q4.cpp` line 1253 | a type qualifier written twice (C4114) |
+| D2Client | `SKILLS/Skills.cpp` line 1122 | an `int` narrowed to `unsigned int` in a brace initialiser (C4838; ok in 2005, an error under `/permissive-`) |
+| D2Client | `UNIT/UnitSnd.cpp` lines 208, 210 | `extern` on a struct definition with no variable (C4091) |
+| D2Game | `Quests/a1q4.cpp` line 1255 | a type qualifier written twice (C4114) |
 
 ### Intrinsics declared without their header (C4164): 35 sites
 

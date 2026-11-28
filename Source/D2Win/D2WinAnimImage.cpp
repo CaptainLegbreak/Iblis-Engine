@@ -51,7 +51,7 @@ static int ANIMIMAGE_UpdateState(D2WinAnimImageStrc* pAnimImage); // 0x00500480
 
 extern tagPOINT gtMousePosition;                                                                    // 0x007D55A4
 
-int __stdcall CONTROL_AppendToList(D2WinControlStrc* pControl);                                             // 0x004F9210
+int __stdcall CONTROL_AppendToList(D2WinControlStrc* pControl); // 0x004F9210
 
 extern unsigned int gdwBitMasks[];                                                                          // 0x006CE268
 

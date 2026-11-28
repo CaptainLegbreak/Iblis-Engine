@@ -29,7 +29,7 @@ extern const unsigned int gdwInvBitMasks[32]; // 0x006CE2E8
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
-int __stdcall BITMANIP_GetSize(D2BitBufferStrc* pBuffer); // 0x00410E90
+extern "C" int __stdcall BITMANIP_GetSize(D2BitBufferStrc* pBuffer); // 0x00410E90
 
 #include "D2GameFuncs.h"
 #include "D2ClientApi.h"
@@ -188,7 +188,7 @@ void __fastcall D2GAME_SendP0x9C_ItemAction_AddToGround(D2ClientStrc*, D2UnitStr
 
 void __fastcall PLRMSG_SendUnitBaseStats(D2UnitStrc*, D2ClientStrc*); // 0x005489F0
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc*, int, int); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 void __fastcall MISSILES_SyncToClient(D2ClientStrc*, D2GameStrc*, D2UnitStrc*, int); // 0x0059FEE0

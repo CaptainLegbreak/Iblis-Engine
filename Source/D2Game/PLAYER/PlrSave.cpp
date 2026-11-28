@@ -1,3 +1,4 @@
+#include "D2GameEvents.h"
 #include "D2ItemTypes.h"
 #include "D2StateIds.h"
 #include "D2SkillIds.h"
@@ -56,7 +57,6 @@
 
 #define ACT_III 2
 
-#define EVENTTYPE_REMOVESTATE 12
 
 #define QUESTSTATEFLAG_A2Q6 14
 
@@ -214,7 +214,7 @@ void __fastcall PLRSAVE_CountInventoryItems(int nCount); // 0x00531750
 typedef void (__fastcall* PartyCallbackFunction)(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pArgs);
 
 
-D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
+D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
 
 
@@ -403,7 +403,7 @@ D2UnitStrc* __fastcall SUNIT_AllocUnitData(int nUnitType, int nClassId, int nX, 
 void __fastcall PLAYER_CreateStartItemsFromCharStatsTxt(D2UnitStrc* pPlayer, D2GameStrc* pGame, unsigned char nAct); // 0x00534F10
 
 
-extern "C" unsigned int __stdcall ITEMS_CheckIfFlagIsSet(unsigned int dwA, unsigned int dwB); // 0x006287A0
+unsigned int __stdcall ITEMS_CheckIfFlagIsSet(unsigned int dwFlags, unsigned int dwFlag); // 0x006287A0
 
 
 struct D2QuestSaveSectionStrc;
@@ -528,11 +528,8 @@ static int __stdcall PLRSAVE_PlaceCorpseItem(D2GameStrc* pGame, D2UnitStrc* pPla
 
 #define UNITFLAG_INITSEEDSET 0x10
 
-#define EVENTTYPE_FREEHOVER 3
 
-#define EVENTTYPE_STATREGEN 4
 
-#define EVENTTYPE_TRAP 6
 
 #define COLLIDE_MASK_CORPSE 0x9C19
 

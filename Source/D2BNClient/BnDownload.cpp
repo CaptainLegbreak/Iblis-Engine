@@ -3090,6 +3090,8 @@ int gnLastStatus = 255; // 0x0072FFA8
 extern "C" const unsigned char gData_006DFF20[30][16]; // 0x006DFF20
 extern "C" const unsigned char gData_006E0100[256]; // 0x006E0100
 
+extern "C" const char gszBnDownloadFile[17] = ".\\BnDownload.cpp"; // 0x006DF338
+
 extern "C" const unsigned char gData_006DFF20[30][16] = {
     { 9, 4, 7, 0xF, 0xD, 0xA, 3, 0xB, 1, 2, 0xC, 8, 6, 0xE, 5 },
     { 9, 0xB, 5, 4, 8, 0xF, 1, 0xE, 7, 0, 3, 2, 0xA, 6, 0xD, 0xC },

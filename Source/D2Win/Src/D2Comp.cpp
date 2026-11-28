@@ -199,7 +199,7 @@ Unicode* __fastcall sub_005267E0(Unicode*,const Unicode*); // 0x005267E0
 
 Unicode* __fastcall sub_00526700(Unicode*,const Unicode*); // 0x00526700
 
-int __fastcall UNICODE_StrLen(const Unicode*); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 Unicode* __fastcall sub_00526F20(Unicode*,const char*,int); // 0x00526F20
 

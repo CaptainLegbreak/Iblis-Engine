@@ -1213,8 +1213,12 @@ void __fastcall sub_00470B70_ResetMonsterMode(D2UnitStrc* pUnit)
 
 extern "C" const char* const gData_006D6C30[5]; // 0x006D6C30
 
+extern "C" const char gszPathFormat[6] = "%s\\%s"; // 0x006D4124
+
 extern "C" const char* const gData_006D6C30[5] = { "cmncof_a1.d2", "cmncof_a2.d2", "cmncof_a3.d2", "cmncof_a4.d2", "cmncof_a6.d2" }; // 0x006D6C30
 #pragma comment(linker, "/alternatename:?gaszHashedFileNames@@3PAPBDA=_gData_006D6C30")
+
+extern "C" const char gszMonstersDir[21] = "DATA\\GLOBAL\\MONSTERS"; // 0x006D6CAC
 
 extern D2CofModeEntryStrc gaCofModeCodes[1] = { { 0x20206867, 13 } }; // 0x00712B04
 
