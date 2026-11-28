@@ -187,12 +187,9 @@ class SourceIndex:
 
 # ---------------------------------------------------------------- main
 
-def main():
-    a = sys.argv[1:]
-    build, log, codex = a[:3]
-    jout = a[a.index("--json") + 1] if "--json" in a else None
-    mout = a[a.index("--md") + 1] if "--md" in a else None
-
+def analyse(build, log, codex):
+    """Every unresolved and duplicate symbol of the link, placed and sorted; also {identifier: symbols an object
+    defines externally}."""
     functions = json.load(open(os.path.join(codex, "build", "functions.json")))["functions"]
     plan = json.load(open(os.path.join(codex, "build", "data_plan.json")))
     starts = {}                                  # VA -> (identifier, size, kind)
@@ -300,6 +297,15 @@ def main():
         items.append(dict(symbol=sym, identifier=ident(sym), category=kind, units=sorted(units), refs=len(units),
                           module=d["module"]))
 
+    return items, defined_ids
+
+
+def main():
+    a = sys.argv[1:]
+    build, log, codex = a[:3]
+    jout = a[a.index("--json") + 1] if "--json" in a else None
+    mout = a[a.index("--md") + 1] if "--md" in a else None
+    items, _ = analyse(build, log, codex)
     report = summarise(items)
     if jout:
         json.dump(dict(report, items=items), open(jout, "w"), indent=1)
