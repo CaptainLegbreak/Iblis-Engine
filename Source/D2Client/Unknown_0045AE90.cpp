@@ -44,11 +44,11 @@ void __cdecl PLAYER_DrawAutomap()
     {
         return;
     }
-    if (!sub_00463DE0_GetPlayerUnit())
+    if (!CUNIT_GetPlayerUnit2())
     {
         return;
     }
-    if (!UNITS_GetRoom(sub_00463DE0_GetPlayerUnit()))
+    if (!UNITS_GetRoom(CUNIT_GetPlayerUnit2()))
     {
         return;
     }
@@ -440,7 +440,7 @@ void __cdecl AUTOMAP_UpdateAutomapOrigin()
     {
         gnAutomapPanelShiftX = 0;
     }
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     int nX = UNITS_GetClientCoordX(pPlayer);
     int nY = UNITS_GetClientCoordY(pPlayer);
     gnAutomapOriginX = nX - gnScreenWidth / 2;

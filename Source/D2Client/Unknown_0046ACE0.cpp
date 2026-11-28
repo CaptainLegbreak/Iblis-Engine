@@ -161,7 +161,7 @@ static inline D2MonStats2Txt* MONSTATS2_GetRecordInline(int nMonStatsEx)
 // 0x0046AF70
 void __stdcall VIEW_CreateDenOfEvilLight(D2ActiveRoomStrc* pRoom)
 {
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     if (pPlayer)
     {
         D2MissileStrc tMissile;
@@ -190,7 +190,7 @@ void __stdcall VIEW_CreateDenOfEvilLight(D2ActiveRoomStrc* pRoom)
 // 0x0046B4A0
 void __cdecl SCMD_TriggerNearbyMonsterEffect()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
         return;
     D2ActiveRoomStrc* pRoom = UNITS_GetRoom(pPlayer);
@@ -651,28 +651,28 @@ void __fastcall VIEW_SpawnMissileAtObject(D2UnitStrc* pUnit)
 // 0x0046BA90
 void __fastcall VIEW_PlayerRequestAtUnit15B(D2UnitStrc* pUnit)
 {
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     MISSILE_SubmitMissileRequest(pPlayer, 0x15B, CLIENTS_GetUnitXInline(pUnit), CLIENTS_GetUnitYInline(pUnit), 0, 1);
 }
 
 // 0x0046BB10
 void __fastcall VIEW_PlayerRequestAtUnit161(D2UnitStrc* pUnit)
 {
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     MISSILE_SubmitMissileRequest(pPlayer, 0x161, CLIENTS_GetUnitXInline(pUnit), CLIENTS_GetUnitYInline(pUnit), 0, 1);
 }
 
 // 0x0046BB90
 void __fastcall VIEW_PlayerRequestAtUnit16B(D2UnitStrc* pUnit)
 {
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     MISSILE_SubmitMissileRequest(pPlayer, 0x16B, CLIENTS_GetUnitXInline(pUnit), CLIENTS_GetUnitYInline(pUnit), 0, 1);
 }
 
 // 0x0046BC90
 void __fastcall VIEW_RequestAtMonster220(D2UnitStrc* pUnit)
 {
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     D2UnitStrc* pMonster = UNITFINDS_FindUnitInNeighboredRooms(UNITS_GetRoom(pPlayer), 1, 0x220);
     if (pMonster)
     {
@@ -689,7 +689,7 @@ void __cdecl VIEW_DrawCountdown()
 // 0x0046AEE0
 void __cdecl VIEW_ObjectMissileTimedBox()
 {
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     if (!pPlayer)
     {
         return;
@@ -724,7 +724,7 @@ void __cdecl VIEW_ResetPulseTick()
 // 0x0046B100
 void __cdecl VIEW_EventObject98Request()
 {
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     if (!pPlayer)
         return;
 
@@ -755,7 +755,7 @@ void __cdecl VIEW_EventObject98Request()
 void __cdecl VIEW_EventLevel108Request()
 {
     gbChaosLightEvent = 1;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
         return;
 
@@ -775,7 +775,7 @@ void __cdecl VIEW_EventLevel108Request()
 // 0x0046B300
 void __cdecl VIEW_EventObject178Request()
 {
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     if (!pPlayer)
         return;
 
@@ -876,7 +876,7 @@ void __fastcall VIEW_CheckThroneLevel(D2ActiveRoomStrc* pRoom)
     case LEVEL_THEWORLDSTONECHAMBER:
         if (!gbThroneEventActive && gbThroneEventPending)
         {
-            D2UnitStrc* pUnit = sub_00463DE0_GetPlayerUnit();
+            D2UnitStrc* pUnit = CUNIT_GetPlayerUnit2();
             if (pUnit)
             {
                 AUTOMAP_RequestAtTarget(pUnit, THRONE_MISSILE, 0, 1);
@@ -905,7 +905,7 @@ void __cdecl VIEW_ResetLevelEffects()
 // 0x0046B440
 void __cdecl VIEW_EventObject1CCRequest()
 {
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     if (!pPlayer)
         return;
 
@@ -935,7 +935,7 @@ struct D2UnitStrc;
 // 0x0046B1E0
 void __cdecl VIEW_EventObject95Request()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
         return;
 

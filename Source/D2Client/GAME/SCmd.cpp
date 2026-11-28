@@ -1552,7 +1552,7 @@ void __fastcall SCMD_HandleLoadComplete(void* pPacket)
     if (pRoom)
     {
         GFX_PreloadForce(DRLG_GetActNoFromLevelId(DUNGEON_GetLevelIdFromRoom(pRoom)));
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         if (pPlayer && pPlayer->dwUnitType == UNIT_PLAYER && pPlayer->pPlayerData)
         {
             pPlayer->pPlayerData->nState = 0;
@@ -1601,7 +1601,7 @@ void __fastcall SCMD_HandleSetClientInSight(D2ClientSightPacketStrc* pPacket)
         FOG_DisplayHalt(&gszEmptyAssertText_006CC837, sub_00408090(), 0x58A);
         exit(-1);
     }
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     void* pRoom = pPlayer ? UNITS_GetRoom(pPlayer) : 0;
     DUNGEON_SetClientIsInSight(gpDrlgAct_007A0634, pPacket->nLevelId, nX, nY, pRoom);
 }
@@ -1616,7 +1616,7 @@ void __fastcall SCMD_HandleUnsetClientInSight(D2ClientSightPacketStrc* pPacket)
         FOG_DisplayHalt(&gszEmptyAssertText_006CC837, sub_00408090(), 0x59E);
         exit(-1);
     }
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     void* pRoom = pPlayer ? UNITS_GetRoom(pPlayer) : 0;
     DUNGEON_UnsetClientIsInSight(gpDrlgAct_007A0634, pPacket->nLevelId, nX, nY, pRoom);
 }
@@ -1852,7 +1852,7 @@ void __fastcall SCMD_HandleReassignUnit(const unsigned char* pPacket)
                 PATH_SetFootprintCollisionMask(pUnit->pDynamicPath, 0x100);
             }
         }
-        if (pUnit == sub_00463DD0_GetPlayerUnit())
+        if (pUnit == CUNIT_GetPlayerUnit())
         {
             D2_ASSERT(!DUNGEON_GetActNoFromRoom(UNITS_GetRoom(pUnit)), 0x81E);
             GAME_ExtendDelay(3000);
@@ -1938,8 +1938,8 @@ static void __stdcall SCMD_HandleStatChange(int nValue, int nStat, D2UnitStrc* p
         break;
 
     case 0xC:
-        SCMD_RefreshUnitItems(sub_00463DD0_GetPlayerUnit());
-        if (pUnit != sub_00463DD0_GetPlayerUnit())
+        SCMD_RefreshUnitItems(CUNIT_GetPlayerUnit());
+        if (pUnit != CUNIT_GetPlayerUnit())
             break;
         AUTOMAP_RefreshItemStats(pUnit);
 
@@ -1953,7 +1953,7 @@ static void __stdcall SCMD_HandleStatChange(int nValue, int nStat, D2UnitStrc* p
 // 0x0045D260
 void __fastcall SCMD_HandleUnitEventAtPosition(D2UnitStrc* pUnit, const D2GSPacketSrv17* pPacket)
 {
-    if (pUnit != sub_00463DD0_GetPlayerUnit())
+    if (pUnit != CUNIT_GetPlayerUnit())
     {
         D2_ASSERT(pUnit, 0x841);
 
@@ -1973,7 +1973,7 @@ void __fastcall SCMD_HandlePlayerStatUpdate(D2PlayerStatPacketStrc* pPacket)
     const unsigned char nHeader = pPacket->nHeader;
     int nValue = 0;
     int nStat = -1;
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     D2_ASSERT(pPlayer, 0x9AA);
 
     switch (nHeader)
@@ -2056,7 +2056,7 @@ void __fastcall SCMD_HandleQuestLog(void* pPacket)
 void __fastcall SCMD_HandleRemoveObject(D2GSPacketSrv0A* pPacket)
 {
     const int nUnitGUID = pPacket->dwUnitGUID;
-    if (pPacket->nUnitType == 1 && nUnitGUID == ROSTERPETS_FindPetIdByOwner(sub_00463DD0_GetPlayerUnit(), 7, 1))
+    if (pPacket->nUnitType == 1 && nUnitGUID == ROSTERPETS_FindPetIdByOwner(CUNIT_GetPlayerUnit(), 7, 1))
         return;
     CUNIT_RemoveClientSideUnit(nUnitGUID, pPacket->nUnitType);
 }
@@ -2260,7 +2260,7 @@ void __fastcall SCMD_HandleVitalsUpdate(unsigned char* pPacket)
 {
     D2Packet18RecordStrc tRecord;
     SCMD_ReadVitalsUpdate(pPacket, &tRecord);
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     if (!pPlayer)
     {
         return;
@@ -2303,7 +2303,7 @@ void __fastcall SCMD_HandleVitalsAndPosition(unsigned char* pPacket)
 {
     D2Packet95RecordStrc tRecord;
     SCMD_ReadVitalsAndPosition(pPacket, &tRecord);
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     if (!pPlayer)
     {
         return;
@@ -2342,7 +2342,7 @@ void __fastcall SCMD_HandleWalkVerify(unsigned char* pPacket)
 {
     D2Packet96RecordStrc tRecord;
     SCMD_ReadWalkVerify(pPacket, &tRecord);
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     if (!pPlayer)
     {
         return;
@@ -2397,7 +2397,7 @@ void __fastcall SCMD_DropUnitItems(D2UnitDropItemsPacketStrc* pPacket)
         return;
     if (!CUNIT_IsDeadOrDying(pUnit))
         UNITMODE_SetUnitMode(pUnit, 0);
-    if (pUnit == sub_00463DD0_GetPlayerUnit())
+    if (pUnit == CUNIT_GetPlayerUnit())
     {
         D2UnitStrc* pOther = CUNIT_FindClientUnit(*(int*)pPacket->nOtherUnitId, 0);
         if (!pOther)
@@ -2663,12 +2663,12 @@ void __fastcall SCMD_HandleInitEnvironment(D2EnvironmentPacketStrc* pPacket)
 {
     const int nIndex = pPacket->nIndex;
     const int nTicks = pPacket->nTicks;
-    if (gpDrlgAct_007A0634 == sub_00463DD0_GetPlayerUnit()->pDrlgAct)
+    if (gpDrlgAct_007A0634 == CUNIT_GetPlayerUnit()->pDrlgAct)
     {
         ENVIRONMENT_InitializeEnvironment(gpDrlgAct_007A0634, CUNIT_GetPlayerRoom(), nIndex, nTicks, pPacket->bEclipse);
         CUNIT_UpdateObjectsForPeriod();
 
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         if (pPlayer)
         {
             D2PacketRecord11Strc tPacket;
@@ -2720,7 +2720,7 @@ void __fastcall SCMD_HandleMonsterEnchants(const unsigned char* p)
         D2UnitStrc* pUnit = CUNIT_FindClientUnit(nId, 1);
         if (pUnit)
         {
-            sub_004AC780_SetMonsterWord(pUnit, n6);
+            MONUNIQUE_SetNameSeed(pUnit, n6);
             unsigned char* pBytes = MONUNIQUE_GetMonUmods(pUnit);
             pBytes[0] = (unsigned char)n8;
             pBytes[1] = (unsigned char)(n8 >> 8);
@@ -2804,7 +2804,7 @@ void __fastcall SCMD_HandleRemoveEquippedItems(const D2GSPacketSrv92* pPacket)
 void __fastcall SCMD_HandleSetPortalFlags(const D2GSPacketSrv5F* pPacket)
 {
     const int nPortalFlags = pPacket->nPortalFlags;
-    D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit2();
     D2_ASSERT(pPlayer, 3349);
     UNITS_SetPlayerPortalFlags(pPlayer, nPortalFlags);
 }
@@ -2813,7 +2813,7 @@ void __fastcall SCMD_HandleSetPortalFlags(const D2GSPacketSrv5F* pPacket)
 void __fastcall SCMD_HandleTownPortalState(const D2PacketRecord7Strc* pPacket)
 {
     D2PacketRecord7Strc tPacket = *pPacket;
-    D2_ASSERT(sub_00463DE0_GetPlayerUnit(), 3361);
+    D2_ASSERT(CUNIT_GetPlayerUnit2(), 3361);
     ITEM_ApplyTownPortalState(&tPacket);
 }
 
@@ -2853,7 +2853,7 @@ void __fastcall SCMD_HandleCreateMissile(const D2GSPacketSrv73* pPacket)
     const unsigned short nMissileId = pPacket->nMissileId;
     const int nUnitGUID = pPacket->nUnitGUID;
 
-    D2UnitStrc* pOwner = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pOwner = CUNIT_GetPlayerUnit2();
     D2MissileStrc tMissileParams;
     memset(&tMissileParams, 0, sizeof(tMissileParams));
     tMissileParams.pOwner = pOwner;
@@ -2944,7 +2944,7 @@ void __fastcall SCMD_HandleSetItemState(const D2GSPacketSrv7DStrc* pPacket)
 // 0x0045E970
 void __fastcall SCMD_HandleLoadCommonCof(const D2GSPacketSrv7E* pPacket)
 {
-    GFX_LoadGlobalHashedFile(DRLG_GetActNoFromLevelId(DUNGEON_GetLevelIdFromRoom(UNITS_GetRoom(sub_00463DD0_GetPlayerUnit()))));
+    GFX_LoadGlobalHashedFile(DRLG_GetActNoFromLevelId(DUNGEON_GetLevelIdFromRoom(UNITS_GetRoom(CUNIT_GetPlayerUnit()))));
 }
 
 // 0x0045E990
@@ -3456,7 +3456,7 @@ void __fastcall SCMD_HandleUnitLife(unsigned char* pPacket)
     D2UnitStrc* pUnit = CUNIT_FindClientUnit(*(int*)(pPacket + 2), pPacket[1]);
     if (!pUnit)
         return;
-    if (pUnit == sub_00463DE0_GetPlayerUnit())
+    if (pUnit == CUNIT_GetPlayerUnit2())
         return;
     const int bFlag = (pUnit->dwFlags >> 9) & 1;
     if (bFlag)
@@ -3522,7 +3522,7 @@ void __fastcall SCMD_HandleAssignMonster(D2PacketSpawnStrc* pPacket)
     D2UnitStrc* pUnit = CUNIT_AddClientMonster(&tSpawn, pComponents, pMods, nPalette, nSpecial, 0);
     if (!pUnit) return;
     GFX_ResetMonsterModeGfx(pUnit);
-    if (!MONSTERS_GetHirelingTypeId(pUnit) || nUnitId != ROSTERPETS_FindPetIdByOwner(sub_00463DD0_GetPlayerUnit(), 7, 1))
+    if (!MONSTERS_GetHirelingTypeId(pUnit) || nUnitId != ROSTERPETS_FindPetIdByOwner(CUNIT_GetPlayerUnit(), 7, 1))
     {
         STATLIST_SetUnitStat(pUnit, STAT_MAXHP, 0x8000, 0);
         STATLIST_SetUnitStat(pUnit, STAT_HITPOINTS, pPacket->nLife << 8, 0);

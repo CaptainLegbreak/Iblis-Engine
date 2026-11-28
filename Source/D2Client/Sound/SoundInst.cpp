@@ -340,7 +340,7 @@ static void __stdcall SOUNDINST_GetSoundOffset(D2UnitStrc* pUnit, int nSoundId, 
     int nX;
     int nY;
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     UNITS_GetClientCoords(pPlayer, &tPlayer);
     UNITS_GetClientCoords(pUnit, &tUnit);
     if (nSoundId == 0xA27)
@@ -383,7 +383,7 @@ static float __stdcall SOUNDINST_GetSoundPan(D2UnitStrc* pUnit, int nSoundId)
         }
     }
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (UNITS_TestCollisionWithUnit(pPlayer, pUnit, 2))
         return 0.5f;
 
@@ -437,7 +437,7 @@ int __fastcall SOUNDINST_PlaySound(int nSoundId, D2UnitStrc* pUnit, int nDelay, 
         }
     }
 
-    if (pUnit == sub_00463DD0_GetPlayerUnit())
+    if (pUnit == CUNIT_GetPlayerUnit())
         pSound->nPriority += 0x50;
 
     if (pUnit)
@@ -706,7 +706,7 @@ int __fastcall SOUNDINST_IsNearPlayer(D2UnitStrc* pUnit)
     D2Vector3FStrc tDelta;
     D2CoordStrc tPlayerCoords;
     D2CoordStrc tUnitCoords;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     UNITS_GetClientCoords(pPlayer, &tPlayerCoords);
     UNITS_GetClientCoords(pUnit, &tUnitCoords);
     tDelta.fX = tUnitCoords.nX - tPlayerCoords.nX;

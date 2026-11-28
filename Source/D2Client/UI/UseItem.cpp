@@ -73,7 +73,7 @@ int __stdcall WARDENCLIENT_HandlePanelAreaClick(SMSGHANDLER_PARAMS* pMsg); // 0x
 
 void __fastcall USEITEM_HitTestHotspots(int nX, int nY); // 0x004BFBC0
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
+D2UnitStrc* __cdecl CUNIT_GetPlayerUnit(); // 0x00463DD0
 
 
 
@@ -207,7 +207,7 @@ int __cdecl USEITEM_ShowConfirmation()
     gnUseItemDialogState = 3;
     if (!gnUseItemPanelMode)
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         int nUnitId = !pPlayer ? -1 : pPlayer->dwUnitId;
         MSG_SendFourDwords(0x44, nUnitId, gnAnvilObjectId, gnAnvilItemId, 3);
     }
@@ -274,7 +274,7 @@ void __stdcall USEITEM_MouseMoveMsg(SMSGHANDLER_PARAMS* pMsg)
 
 static D2UnitStrc* GetCursorItem_Inline()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
         return 0;
     D2InventoryStrc* pInventory = pPlayer->pInventory;
@@ -446,13 +446,13 @@ int __cdecl USEITEM_ClosePanel()
     int mode = gnUseItemDialogState;
     if (mode == 3) return 0;
     if (mode == 2) {
-        D2UnitStrc* player = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* player = CUNIT_GetPlayerUnit();
         D2InventoryStrc* inventory = player ? player->pInventory : 0;
         CURSOR_SetCursorItemState(player ? INVENTORY_GetCursorItem(inventory) : 0);
     }
     sub_004B9A00(1, 0, 0, 0, 0);
     if (!gnUseItemPanelMode) {
-        D2UnitStrc* player = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* player = CUNIT_GetPlayerUnit();
         int id = !player ? -1 : player->dwUnitId;
         int value = gnAnvilObjectId;
         MSG_SendFourDwords(0x44, id, value, 0, 2);
@@ -540,7 +540,7 @@ void __cdecl sub_004C0080_Return()
 void __cdecl USEITEM_CloseUseItemPanel()
 {
     gnUseItemDialogState = 0;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     USEITEM_ToggleUseMode(pPlayer ? INVENTORY_GetCursorItem(pPlayer->pInventory) : 0);
     sub_00451E10_RegisterHandlerTable(WINDOW_GetWindow(), gaUseItemHandlers, 8);
     if (gpUseItemConfirmDialog)
@@ -566,14 +566,14 @@ void __stdcall USEITEM_OnPanelCloseMsg(SMSGHANDLER_PARAMS* pMsg)
             return;
         }
 
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         D2InventoryStrc* pInventory = pPlayer ? pPlayer->pInventory : 0;
         CURSOR_SetCursorItemState(pPlayer ? INVENTORY_GetCursorItem(pInventory) : 0);
     }
 
     if (!gnUseItemPanelMode)
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         const int nUnitId = !pPlayer ? -1 : pPlayer->dwUnitId;
         const int nValue = gnAnvilObjectId;
         MSG_SendFourDwords(0x44, nUnitId, nValue, 0, 2);
@@ -598,7 +598,7 @@ void __cdecl USEITEM_OpenPanel()
     {
         if (!gnUseItemPanelMode)
         {
-            D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+            D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
             MSG_SendFourDwords(0x44, !pPlayer ? -1 : pPlayer->dwUnitId, gnAnvilObjectId, 0, 2);
             USEITEM_CloseUseItemPanel();
         }
@@ -705,7 +705,7 @@ void __fastcall USEITEM_HandleUseItemPacket(D2PacketRecord7Strc* pPacket)
 
     case 5:
     {
-        D2InventoryStrc* pInventory = sub_00463DD0_GetPlayerUnit()->pInventory;
+        D2InventoryStrc* pInventory = CUNIT_GetPlayerUnit()->pInventory;
         INVENTORY_SetCursorItem(pInventory, 0);
     }
         if (pPacket->bFlag)

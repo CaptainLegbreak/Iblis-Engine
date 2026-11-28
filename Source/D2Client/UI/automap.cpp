@@ -2825,7 +2825,7 @@ void __cdecl AUTOMAP_UpdateAutomapReveal()
         return;
     }
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2_ASSERT(pPlayer, 0x696);
     gnRevealPlayerX = UNITS_GetClientCoordX(pPlayer);
     gnRevealPlayerY = UNITS_GetClientCoordY(pPlayer);
@@ -3097,7 +3097,7 @@ void __fastcall AUTOMAP_DrawAutomapCells(D2AutomapCellStrc* pCell, D2AutomapDraw
             nDrawMode = 1;
             break;
         case 3:
-            switch (sub_00463DD0_GetPlayerUnit()->nAct)
+            switch (CUNIT_GetPlayerUnit()->nAct)
             {
             case 0:
             case 2:
@@ -3348,14 +3348,14 @@ static int AUTOMAP_GetAutomapUnitColor(D2UnitStrc* pUnit, unsigned char* pColor)
             return 1;
         }
 
-        if (pUnit == sub_00463DD0_GetPlayerUnit())
+        if (pUnit == CUNIT_GetPlayerUnit())
         {
             *pColor = gabAutomapColors[0];
             return 1;
         }
 
         {
-            const unsigned short nPlayerRoster = CUNIT_GetPlayerPartyId(sub_00463DD0_GetPlayerUnit());
+            const unsigned short nPlayerRoster = CUNIT_GetPlayerPartyId(CUNIT_GetPlayerUnit());
             if (nPlayerRoster != 0xFFFF && nPlayerRoster == (unsigned short)CUNIT_GetPlayerPartyId(pUnit))
             {
                 *pColor = gabAutomapColors[3];
@@ -3404,7 +3404,7 @@ static int AUTOMAP_GetAutomapUnitColor(D2UnitStrc* pUnit, unsigned char* pColor)
         D2COMMON_11013_ConvertMode(pUnit, &nType, &nClass, &nMode, ".\\UI\\automap.cpp", 0x92D);
         if (!nType && STATES_CheckStateMaskOnUnit(pUnit, 0x25) && CUNIT_GetOwnerUnit(pUnit))
         {
-            const unsigned short nPlayerRoster = CUNIT_GetPlayerPartyId(sub_00463DD0_GetPlayerUnit());
+            const unsigned short nPlayerRoster = CUNIT_GetPlayerPartyId(CUNIT_GetPlayerUnit());
             if (nPlayerRoster != 0xFFFF && nPlayerRoster == (unsigned short)CUNIT_GetPlayerPartyId(pUnit))
             {
                 *pColor = gabAutomapColors[4];
@@ -3836,7 +3836,7 @@ static void AUTOMAP_DrawAutomapUnit(D2UnitStrc* pUnit)
             AUTOMAP_DrawAutomapCross(nColor, nX, nY);
         }
 
-        if (gbAutomapPartyNames && gbAutomapParty && pUnit != sub_00463DD0_GetPlayerUnit())
+        if (gbAutomapPartyNames && gbAutomapParty && pUnit != CUNIT_GetPlayerUnit())
         {
             if (nColor == gabAutomapColors[3])
             {
@@ -3889,7 +3889,7 @@ static void AUTOMAP_DrawAutomapUnit(D2UnitStrc* pUnit)
                 break;
             }
 
-            const unsigned short nPlayerRoster = CUNIT_GetPlayerPartyId(sub_00463DD0_GetPlayerUnit());
+            const unsigned short nPlayerRoster = CUNIT_GetPlayerPartyId(CUNIT_GetPlayerUnit());
             if (nPlayerRoster != 0xFFFF && nPlayerRoster == (unsigned short)CUNIT_GetPlayerPartyId(pUnit))
             {
                 break;
@@ -3921,7 +3921,7 @@ static void AUTOMAP_DrawAutomapPartyMember(D2StoredUnitRecordStrc* pEntry)
 {
     int nX = 0;
     int nY = 0;
-    const int nLevelId = DUNGEON_GetLevelIdFromRoom(UNITS_GetRoom(sub_00463DD0_GetPlayerUnit()));
+    const int nLevelId = DUNGEON_GetLevelIdFromRoom(UNITS_GetRoom(CUNIT_GetPlayerUnit()));
     const unsigned char nEntryAct = DRLG_GetActNoFromLevelId(ROSTER_GetLevelId(pEntry));
     if (DRLG_GetActNoFromLevelId(nLevelId) != nEntryAct)
     {
@@ -4171,7 +4171,7 @@ D2UnitStrc* __fastcall AUTOMAP_RequestAtTarget(D2UnitStrc* pUnit, int nRequest, 
 void __cdecl AUTOMAP_DrawAutomapUnits()
 {
     D2StoredUnitRecordStrc* pEntry = ROSTER_GetNextStoredUnit(0);
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2ActiveRoomStrc** ppRooms = 0;
     unsigned int nRooms = 0;
     DUNGEON_GetAdjacentRoomsListFromRoom(UNITS_GetRoom(pPlayer), &ppRooms, &nRooms);

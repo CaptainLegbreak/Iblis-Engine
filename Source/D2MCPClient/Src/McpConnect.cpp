@@ -3,6 +3,7 @@
 #include "D2GameTypes.h"
 #include "FogApi.h"
 #include "FogApi2.h"
+#include "D2FogSafeSock.h"
 #include "D2ClientApi.h"
 #include "D2MultiApi.h"
 
@@ -54,19 +55,6 @@ void* gpMcpConnection; // 0x00798FB4
 
 struct D2QSSOCKET_SetPacketFormat;
 
-struct FSafeSock
-{
-    int bConnected;
-    int bConnecting;
-    unsigned int nSocket;
-    D2CriticalSectionStrc tCriticalSection;
-    void* hThread;
-    unsigned long nThreadId;
-    int bStopping;
-    unsigned long nFogErrorCode;
-    unsigned long nWSALastError;
-    char szName[64];
-};
 
 typedef int (__fastcall* D2LaunchPacketHandler)(const unsigned char* pData, unsigned int nSize, int nArg);
 

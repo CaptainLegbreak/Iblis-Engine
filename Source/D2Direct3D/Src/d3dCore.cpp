@@ -4,6 +4,7 @@
 #include "D2DDrawTypes.h"
 
 #include "D2Win32Types.h"
+#include "D2Win32Guid.h"
 #include "D2D3DTypes.h"
 #include "D2FogSystemInfo.h"
 #include "FogApi.h"
@@ -447,11 +448,6 @@ typedef int (__stdcall* D2ComQueryInterfaceFn)(D2ComObjectStrc* pThis, const voi
 typedef unsigned int (__stdcall* D2ComReleaseFn)(D2ComObjectStrc* pThis);
 
 typedef int (__stdcall* D2DDGetDeviceIdentifierFn)(D2ComObjectStrc* pThis, void* pIdentifier, unsigned int dwFlags);
-
-struct D2GuidStrc
-{
-    unsigned int dwData[4];
-};
 
 extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(void* pCriticalSection);
 
@@ -3265,7 +3261,7 @@ extern "C" const unsigned char gData_006FF528[48] = { // 0x006FF528
     0x77, 0x9E, 0x04, 0xF5, 0x61, 0x48, 0xD2, 0x11, 0xA4, 0x07, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0xA8
 };
 
-extern "C" const D2GuidStrc gData_006FF558 = { { 0xBB223240, 0x11D0E72B, 0xAA00B4A9, 0x3E99C000 } }; // 0x006FF558
+extern "C" const D2GuidStrc gData_006FF558 = { 0xBB223240, 0xE72B, 0x11D0, { 0xA9, 0xB4, 0x00, 0xAA, 0x00, 0xC0, 0x99, 0x3E } }; // 0x006FF558
 #pragma comment(linker, "/alternatename:?gtIidDirect3D3@@3UD2GuidStrc@@B=_gData_006FF558")
 
 extern "C" const unsigned char gData_006FF568[608] = { // 0x006FF568
@@ -3331,7 +3327,7 @@ extern "C" const unsigned char gData_006FF7D8[256] = { // 0x006FF7D8
     0xC0, 0x5E, 0xE6, 0x15, 0x9C, 0x3B, 0xD2, 0x11, 0xB9, 0x2F, 0x00, 0x60, 0x97, 0x97, 0xEA, 0x5B
 };
 
-extern "C" const D2GuidStrc gData_006FF8D8 = { { 0x9C59509A, 0x11D139BD, 0xC0004A8C, 0xC530D94F } }; // 0x006FF8D8
+extern "C" const D2GuidStrc gData_006FF8D8 = { 0x9C59509A, 0x39BD, 0x11D1, { 0x8C, 0x4A, 0x00, 0xC0, 0x4F, 0xD9, 0x30, 0xC5 } }; // 0x006FF8D8
 #pragma comment(linker, "/alternatename:?gtIidDirectDraw4@@3UD2GuidStrc@@B=_gData_006FF8D8")
 
 extern "C" const unsigned char gData_006FF8E8[88] = { // 0x006FF8E8

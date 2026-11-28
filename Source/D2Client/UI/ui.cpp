@@ -853,7 +853,7 @@ int __fastcall UI_GetMonsterLifeFraction(D2UnitStrc* pUnit)
     if (pUnit && (!pUnit ? 6 : pUnit->dwUnitType) == 1 && !CUNIT_IsDeadOrDying(pUnit))
     {
         int bPaired;
-        if ((!pUnit ? 0 : (pUnit->dwFlags >> 2) & 1) && CUNIT_IsHostileTo(sub_00463DD0_GetPlayerUnit(), pUnit))
+        if ((!pUnit ? 0 : (pUnit->dwFlags >> 2) & 1) && CUNIT_IsHostileTo(CUNIT_GetPlayerUnit(), pUnit))
         {
             bPaired = 1;
         }
@@ -1023,7 +1023,7 @@ static void __stdcall UI_GetPlayerHoverName(D2UnitStrc* pUnit, Unicode* pDst, in
     *pValue = ROSTER_GetOtherPartyLife(!pUnit ? -1 : pUnit->dwUnitId) * 128 / 100;
     *pFlag = 0;
     const int nUnitId = !pUnit ? -1 : pUnit->dwUnitId;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (ROSTER_IsHostileRelation(!pPlayer ? -1 : pPlayer->dwUnitId, nUnitId))
     {
         *pFlag = 1;
@@ -1080,7 +1080,7 @@ static int __stdcall UI_GetRosterHoverName(D2UnitStrc* pUnit, Unicode* pDst, int
     sub_00526320_ToUnicode(pDst, szName, 0x80);
     *pValue = ROSTER_GetOtherPartyLife(nIndex) * 128 / 100;
     *pFlag = 0;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (ROSTER_IsHostileRelation(!pPlayer ? -1 : pPlayer->dwUnitId, nIndex))
     {
         *pFlag = 1;
@@ -1095,7 +1095,7 @@ void __cdecl UI_DrawPetHover()
     {
         return;
     }
-    const int nPetId = ROSTERPETS_FindPetIdByOwner(sub_00463DD0_GetPlayerUnit(), 7, 0);
+    const int nPetId = ROSTERPETS_FindPetIdByOwner(CUNIT_GetPlayerUnit(), 7, 0);
     if (nPetId == -1)
     {
         return;
@@ -1169,7 +1169,7 @@ void __cdecl UI_DrawDeathScreen()
 {
     char szPath[0x104];
     char szLanguage[4];
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
         return;
 
@@ -1238,7 +1238,7 @@ void __fastcall UI_DrawPartyMemberText(D2UnitStrc* pUnit)
     {
         return;
     }
-    if (pUnit == sub_00463DD0_GetPlayerUnit())
+    if (pUnit == CUNIT_GetPlayerUnit())
     {
         return;
     }
@@ -1304,9 +1304,9 @@ void __cdecl UI_DrawProgressiveStates()
 {
     if (!gpGlobal_007A0634)
         return;
-    if (!sub_00463DE0_GetPlayerUnit())
+    if (!CUNIT_GetPlayerUnit2())
         return;
-    if (!UNITS_GetRoom(sub_00463DE0_GetPlayerUnit()))
+    if (!UNITS_GetRoom(CUNIT_GetPlayerUnit2()))
         return;
     if (!gbOverlaysEnabled)
         return;
@@ -1314,7 +1314,7 @@ void __cdecl UI_DrawProgressiveStates()
     int nX = gnScreenWidth - gnProgressiveStatesRight;
     if (D2GFX_GetResolutionMode() == 2)
         nY = gnScreenHeight - gnProgressiveStatesBottomWide;
-    D2UnitStrc* pUnit = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pUnit = CUNIT_GetPlayerUnit2();
     for (int i = 0; i < sgptDataTables->nProgressiveStates; ++i)
     {
         const int nState = sgptDataTables->pProgressiveStates[i];
@@ -1432,7 +1432,7 @@ static int UI_CanSetUIVar(int nUIVar, int nState)
             }
             if (nUIVar == 0x09)
             {
-                D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+                D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
                 if (!pPlayer)
                 {
                     return 0;
@@ -1559,7 +1559,7 @@ void __cdecl UI_DrawStoredUnitNumber()
         return;
     }
 
-    D2UnitStrc* pUnit = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pUnit = CUNIT_GetPlayerUnit2();
     if (!pUnit)
     {
         return;
@@ -1739,11 +1739,11 @@ int __cdecl UI_GoldSpinnerChanged()
     unsigned int nMax;
     if (gnGoldPanelMode == 4)
     {
-        nMax = STATLIST_UnitGetStatValue(sub_00463DD0_GetPlayerUnit(), STAT_GOLDBANK, 0);
+        nMax = STATLIST_UnitGetStatValue(CUNIT_GetPlayerUnit(), STAT_GOLDBANK, 0);
     }
     else
     {
-        nMax = STATLIST_UnitGetStatValue(sub_00463DD0_GetPlayerUnit(), STAT_GOLD, 0);
+        nMax = STATLIST_UnitGetStatValue(CUNIT_GetPlayerUnit(), STAT_GOLD, 0);
     }
     if (nDirection == 1)
     {
@@ -1794,7 +1794,7 @@ int __cdecl UI_ConfirmGoldDialog()
     case 0:
     case 1:
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         int nId = GetUnitId(pPlayer);
         MSG_SendTwoDwords(0x50, nId, gnGoldPanelValue);
         return 1;
@@ -1825,12 +1825,12 @@ int __cdecl UI_CancelGoldDialog()
 // 0x00454150
 void __fastcall UI_OpenGoldPanel(int nMode)
 {
-    if (!sub_00463DD0_GetPlayerUnit())
+    if (!CUNIT_GetPlayerUnit())
     {
         UI_CloseGoldDialog();
         return;
     }
-    if (INVENTORY_GetCursorItem(sub_00463DD0_GetPlayerUnit()->pInventory))
+    if (INVENTORY_GetCursorItem(CUNIT_GetPlayerUnit()->pInventory))
     {
         UI_CloseGoldDialog();
         return;
@@ -1853,27 +1853,27 @@ void __fastcall UI_OpenGoldPanel(int nMode)
     case 0:
         TEXT_SetGoldDialogFlag();
         nStringId = 0xFC1;
-        nGold = STATLIST_UnitGetStatValue(sub_00463DD0_GetPlayerUnit(), STAT_GOLD, 0);
+        nGold = STATLIST_UnitGetStatValue(CUNIT_GetPlayerUnit(), STAT_GOLD, 0);
         break;
     case 1:
         nStringId = 0xFC1;
         CUNIT_DisableGoldButton(1);
-        nGold = STATLIST_UnitGetStatValue(sub_00463DD0_GetPlayerUnit(), STAT_GOLD, 0);
+        nGold = STATLIST_UnitGetStatValue(CUNIT_GetPlayerUnit(), STAT_GOLD, 0);
         break;
     case 2:
         nStringId = 0xFCE;
         CUNIT_DisableGoldButton(2);
-        nGold = STATLIST_UnitGetStatValue(sub_00463DD0_GetPlayerUnit(), STAT_GOLD, 0);
+        nGold = STATLIST_UnitGetStatValue(CUNIT_GetPlayerUnit(), STAT_GOLD, 0);
         break;
     case 3:
         nStringId = 0xFD1;
         CUNIT_DisableGoldButton(3);
-        nGold = STATLIST_UnitGetStatValue(sub_00463DD0_GetPlayerUnit(), STAT_GOLD, 0);
+        nGold = STATLIST_UnitGetStatValue(CUNIT_GetPlayerUnit(), STAT_GOLD, 0);
         break;
     case 4:
         nStringId = 0xFD2;
         CUNIT_DisableGoldButton(4);
-        nGold = STATLIST_UnitGetStatValue(sub_00463DD0_GetPlayerUnit(), STAT_GOLDBANK, 0);
+        nGold = STATLIST_UnitGetStatValue(CUNIT_GetPlayerUnit(), STAT_GOLDBANK, 0);
         break;
     default:
         UI_CloseGoldDialog();
@@ -1889,7 +1889,7 @@ void __fastcall UI_OpenGoldPanel(int nMode)
     memset(wszText, 0, sizeof(wszText));
     if (nMode == 5)
     {
-        sub_005269D0_FormatText(0x100, wszText, D2LANG_GetStringFromTblIndex(nStringId), STATLIST_UnitGetStatValue(sub_00463DD0_GetPlayerUnit(), STAT_GOLDBANK, 0) + STATLIST_UnitGetStatValue(sub_00463DD0_GetPlayerUnit(), STAT_GOLD, 0));
+        sub_005269D0_FormatText(0x100, wszText, D2LANG_GetStringFromTblIndex(nStringId), STATLIST_UnitGetStatValue(CUNIT_GetPlayerUnit(), STAT_GOLDBANK, 0) + STATLIST_UnitGetStatValue(CUNIT_GetPlayerUnit(), STAT_GOLD, 0));
     }
     else
     {
@@ -2220,7 +2220,7 @@ void __fastcall UI_DrawUnitHover(D2UnitStrc* pUnit)
         return;
     }
     const int nUnitType = pUnit ? pUnit->dwUnitType : UNIT_INVALID;
-    if (nUnitType == 5 && DRLG_UnitEdgeDistance(pUnit, sub_00463DD0_GetPlayerUnit()) > 100)
+    if (nUnitType == 5 && DRLG_UnitEdgeDistance(pUnit, CUNIT_GetPlayerUnit()) > 100)
     {
         return;
     }
@@ -2698,7 +2698,7 @@ int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg)
     {
         return 0;
     }
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     switch (nState)
     {
     case 0:
@@ -2996,7 +2996,7 @@ void __cdecl UI_ToggleMiniPanel()
             }
         }
     }
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer || (pPlayer->dwUnitType == UNIT_PLAYER && !CUNIT_IsDeadOrDying(pPlayer)))
         gaUIVarStates[UIVAR_MINIPANEL] = gaUIVarStates[UIVAR_MINIPANEL] == 0;
     if (!bWasOn)
@@ -3068,7 +3068,7 @@ void __cdecl UI_InitUI()
                 }
             }
         }
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         if (!pPlayer || (pPlayer->dwUnitType == UNIT_PLAYER && !CUNIT_IsDeadOrDying(pPlayer)))
             gaUIVarStates[0] = 1;
         if (!bWasOn)
@@ -3124,7 +3124,7 @@ mini_panel:
                     goto load_cels;
             }
         }
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         if (!pPlayer || (pPlayer->dwUnitType == UNIT_PLAYER && !CUNIT_IsDeadOrDying(pPlayer)))
             gaUIVarStates[0x22] = 1;
         if (!bWasOn)
@@ -3167,7 +3167,7 @@ void __cdecl UI_ShutdownUI()
         GAME_IsExpansion();
     }
     D2_ASSERT(gnUIVarCount == 0x26, 0x1397);
-    sub_00463DD0_GetPlayerUnit();
+    CUNIT_GetPlayerUnit();
     gaUIVarStates[0] = 0;
     if (nPrevState)
     {
@@ -3176,7 +3176,7 @@ void __cdecl UI_ShutdownUI()
     sub_00468730();
     sub_00468740();
     HIREABLES_FreePanelCels();
-    if (sub_00463DD0_GetPlayerUnit())
+    if (CUNIT_GetPlayerUnit())
     {
         SPELLSEL_FreeSkillIcons();
         sub_004AA980_FreePanelCel();
@@ -3362,7 +3362,7 @@ void __fastcall UI_DrawUIPanels(D2ViewStrc* pView)
             }
         }
         {
-            D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+            D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
             if (!pPlayer || (pPlayer->dwUnitType == UNIT_PLAYER && !CUNIT_IsDeadOrDying(pPlayer)))
                 gaUIVarStates[33] = gaUIVarStates[33] == 0;
             if (!bWasOn)

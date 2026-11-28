@@ -2531,7 +2531,7 @@ static int TEXT_FormatPartyEvent(Unicode* pOut, D2GSPacketSrv5A* pPacket)
 {
     D2StoredUnitRecordStrc* pRecord = ROSTER_FindRosterUnitById(pPacket->dwParam);
     Unicode wszName[16];
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     char szName[16];
     if (pRecord)
         strcpy(szName, ROSTER_GetEntryName(pRecord));
@@ -2635,7 +2635,7 @@ void __fastcall TEXT_HandleEventMessage(D2GSPacketSrv5A* pPacket)
         sub_00526700(wszBuffer, D2LANG_GetStringFromTblIndex(0xE38));
         break;
     case 2:
-        if (sub_00463DD0_GetPlayerUnit() && !strcmp(pPacket->szTextData[0], sub_0047A210(sub_00463DD0_GetPlayerUnit())))
+        if (CUNIT_GetPlayerUnit() && !strcmp(pPacket->szTextData[0], sub_0047A210(CUNIT_GetPlayerUnit())))
             break;
         D2_ASSERT(UNICODE_StrLen(D2LANG_GetStringFromTblIndex(0xE39)) < 0x104, 0x115C);
         sub_00526F20_ToUnicode(wszName, pPacket->szTextData[0], 16);
@@ -3013,7 +3013,7 @@ void __cdecl TEXT_DrawPanelFrame()
 // 0x0049FBA0
 void __stdcall TEXT_OpenTextPanel(int bDraw)
 {
-    if (!sub_00463DD0_GetPlayerUnit())
+    if (!CUNIT_GetPlayerUnit())
     {
         return;
     }

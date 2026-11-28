@@ -310,7 +310,7 @@ static void __fastcall sub_00468750_SetMousePos(int nX, int nY)
 // 0x004681C0
 void __cdecl CURSOR_AdvanceCursorAnim()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
         return;
     const int nIndex = gnCursorAnim;

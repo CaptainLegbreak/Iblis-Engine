@@ -241,7 +241,7 @@ int __fastcall SKILLSBAR_SkillCltStartPosition(D2UnitStrc* pUnit, int nSkillId, 
     D2SkillStrc* pSkill = UNITS_GetUsedSkill(pUnit);
     if (!pSkill)
         return 0;
-    if (pUnit == sub_00463DD0_GetPlayerUnit())
+    if (pUnit == CUNIT_GetPlayerUnit())
     {
         if (STATES_CheckState(pUnit, STATE_UNINTERRUPTABLE))
             return 0;
@@ -641,7 +641,7 @@ int __fastcall SKILLSBAR_SkillCltStartLeap(D2UnitStrc* pUnit, int nSkillId, int 
     if (!pSkill)
         return 0;
 
-    if (pUnit == sub_00463DD0_GetPlayerUnit())
+    if (pUnit == CUNIT_GetPlayerUnit())
     {
         if (STATES_CheckState(pUnit, STATE_UNINTERRUPTABLE))
             return 0;
@@ -806,7 +806,7 @@ int __fastcall SKILLSBAR_SkillCltStartRun(D2UnitStrc* pUnit, int nSkillId, int n
         return 0;
     }
 
-    if (pUnit == sub_00463DD0_GetPlayerUnit())
+    if (pUnit == CUNIT_GetPlayerUnit())
     {
         if (SKILLS_GetSkillIdFromSkill(pSkill, gszSkillsBarSourceFile, 1129) == nSkillId && (SKILLS_GetFlags(pSkill) & 1))
         {

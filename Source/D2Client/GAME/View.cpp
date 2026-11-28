@@ -620,7 +620,7 @@ void __fastcall VIEW_PrepareSceneLighting(D2ViewStrc* pView)
     gnSceneScaleFactor = SCALE_GetFactor();
     if (D2GFX_CheckPerspective())
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         int nX = UNITS_GetPrecisionX(pPlayer);
         int nY = UNITS_GetPrecisionY(pPlayer);
         int nOffsetX = 0;
@@ -644,7 +644,7 @@ void __fastcall VIEW_PrepareSceneLighting(D2ViewStrc* pView)
     }
 
     WALL2_UpdateRoomColor();
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2ActiveRoomStrc* pRoom = UNITS_GetRoom(pPlayer);
     if (DUNGEON_GetLevelIdFromRoom(pRoom) == LEVEL_ARCANESANCTUARY)
     {
@@ -1126,7 +1126,7 @@ void __fastcall VIEW_AdjustViewPos(int* pX, int* pY)
 
     if (nMagnitude)
     {
-        D2SeedStrc* pSeed = &sub_00463DD0_GetPlayerUnit()->pSeed;
+        D2SeedStrc* pSeed = &CUNIT_GetPlayerUnit()->pSeed;
         gnViewShiftX = sub_00472280_RollInRange(pSeed, -nMagnitude, 2 * nMagnitude);
         const int nOffsetY = sub_00472280_RollInRange(pSeed, -nMagnitude, 2 * nMagnitude);
         *pX += gnViewShiftX;

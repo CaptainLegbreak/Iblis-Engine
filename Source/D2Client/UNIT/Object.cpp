@@ -1160,7 +1160,7 @@ char __fastcall OBJECT_RemoveWhenFar(D2UnitStrc* pUnit)
             return 1;
         }
 
-        if (DRLG_UnitEdgeDistance(pUnit, sub_00463DD0_GetPlayerUnit()) > 25)
+        if (DRLG_UnitEdgeDistance(pUnit, CUNIT_GetPlayerUnit()) > 25)
         {
             CUNIT_RemoveServerSideUnit(pUnit->dwUnitId, 2);
             return 0;
@@ -1187,9 +1187,9 @@ char __fastcall OBJECT_AutoOperateQuestObject(D2UnitStrc* pUnit)
 {
     if (!pUnit || !pUnit->dwAnimMode)
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         if (pPlayer && QUESTRECORD_GetQuestState(MONSTER_GetQuestFlags(), 0x27, 0) && !QUESTRECORD_GetQuestState(MONSTER_GetQuestFlags(), 0x27, 4)
-            && DRLG_UnitEdgeDistance(pUnit, sub_00463DD0_GetPlayerUnit()) < 25)
+            && DRLG_UnitEdgeDistance(pUnit, CUNIT_GetPlayerUnit()) < 25)
         {
             if (pPlayer->pDynamicPath)
             {

@@ -1452,7 +1452,7 @@ void __fastcall INV_PlayCinematic(int nIndex)
         strcpy(szName, gaAuxLevelEntries[nIndex].szFile);
     }
 
-    sub_00481830_StopAllSounds();
+    UNITMODE_StopAllSounds();
     sub_004DCA30();
     ARCHIVE_UnloadExpansionArchives();
 

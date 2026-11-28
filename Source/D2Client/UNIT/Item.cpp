@@ -118,7 +118,7 @@ extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
+D2UnitStrc* __cdecl CUNIT_GetPlayerUnit(); // 0x00463DD0
 
 D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc* pUnit); // 0x004648F0
 
@@ -1430,7 +1430,7 @@ void __fastcall ITEM_UpdateItemStat(unsigned int nA, unsigned char nB, unsigned 
 
     if (nC == 0xCC)
     {
-        if (sub_00463DD0_GetPlayerUnit())
+        if (CUNIT_GetPlayerUnit())
             ITEM_SetChargedSkill(pItem, nE >> sgptDataTables->nStuff, nE & sgptDataTables->nShiftedStuff, nD & 0xFF);
         return;
     }
@@ -1438,12 +1438,12 @@ void __fastcall ITEM_UpdateItemStat(unsigned int nA, unsigned char nB, unsigned 
     if (nB == 1)
         STATLIST_SetUnitStat(pItem, nC, nD, 0);
 
-    if (!sub_00463DD0_GetPlayerUnit())
+    if (!CUNIT_GetPlayerUnit())
         return;
 
     if (nC != 0x46)
     {
-        ITEM_RefreshEquippedItems(sub_00463DD0_GetPlayerUnit());
+        ITEM_RefreshEquippedItems(CUNIT_GetPlayerUnit());
         return;
     }
 
@@ -1471,7 +1471,7 @@ void __fastcall ITEM_ClearCursorItemFromPacket(D2GSPacketSrv42Strc* pPacket)
     D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->dwUnitGUID, pPacket->nUnitType);
     if (!pUnit)
         return;
-    if (pUnit != sub_00463DD0_GetPlayerUnit())
+    if (pUnit != CUNIT_GetPlayerUnit())
         return;
     D2InventoryStrc* pInventory = pUnit->pInventory;
     D2UnitStrc* pItem = INVENTORY_GetCursorItem(pInventory);
@@ -1490,7 +1490,7 @@ void __fastcall ITEM_HandleItemToCursor(D2GSPacketSrv9C* pPacket)
     D2ItemSaveStrc tItemSave;
     ITEMS_GetCompactItemDataFromBitstreamDefault(pPacket->pBitstream, pPacket->nPacketSize - 0x08, 0, &tItemSave);
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2_ASSERT(pPlayer, 0xB0C);
 
     if (CUNIT_FindClientUnit(pPacket->nItemId, 4))
@@ -1558,7 +1558,7 @@ int __fastcall ITEM_IsItemActionBlocked(D2UnitStrc* pUnit)
 {
     if (STATLIST_GetStatListFromUnitAndFlag(pUnit, 2))
         return 1;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (pPlayer && STATES_CheckState(pPlayer, STATE_UNINTERRUPTABLE))
         return 1;
     return 0;
@@ -1704,7 +1704,7 @@ void __fastcall ITEM_HandleGroundToCursor(D2GSPacketSrv9C* pPacket)
     D2ItemSaveStrc tItemSave;
     ITEMS_GetCompactItemDataFromBitstreamDefault(pPacket->pBitstream, pPacket->nPacketSize - 0x08, 0, &tItemSave);
 
-    D2InventoryStrc* pInventory = sub_00463DD0_GetPlayerUnit()->pInventory;
+    D2InventoryStrc* pInventory = CUNIT_GetPlayerUnit()->pInventory;
     if (tItemSave.bMode == 4)
     {
         D2_ASSERT(!CUNIT_FindClientUnit(pPacket->nItemId, 4), 0x3A0);
@@ -1724,7 +1724,7 @@ void __fastcall ITEM_HandleDropToGround(D2GSPacketSrv9C* pPacket)
     D2ItemSaveStrc tItemSave;
     ITEMS_GetCompactItemDataFromBitstreamDefault(pPacket->pBitstream, pPacket->nPacketSize - 0x08, 0, &tItemSave);
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2UnitStrc* pItem = CUNIT_FindClientUnit(pPacket->nItemId, 4);
     if (pItem)
     {
@@ -1769,7 +1769,7 @@ void __fastcall ITEM_HandleItemOnGround(D2GSPacketSrv9C* pPacket)
 
         case 1:
         {
-            D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+            D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
             D2_ASSERT(pPlayer, 0x3E9);
 
             D2InventoryStrc* pInventory = pPlayer->pInventory;
@@ -1854,7 +1854,7 @@ static void __stdcall ITEM_PlaceItemAt(unsigned short nY, unsigned char nPage, D
         return;
     }
 
-    if (pUnit == sub_00463DD0_GetPlayerUnit())
+    if (pUnit == CUNIT_GetPlayerUnit())
     {
         if (nPage == 1)
         {
@@ -1867,7 +1867,7 @@ static void __stdcall ITEM_PlaceItemAt(unsigned short nY, unsigned char nPage, D
         }
     }
 
-    if (pUnit == sub_00463DD0_GetPlayerUnit() && nPage == 3)
+    if (pUnit == CUNIT_GetPlayerUnit() && nPage == 3)
     {
         const int nClassId = pItem->dwClassId;
         D2ItemsTxt* pItemsTxtRecord = DATATBLS_GetItemsTxtRecord(nClassId);
@@ -1889,7 +1889,7 @@ void __fastcall ITEM_HandleItemToStorage(D2GSPacketSrv9C* pPacket)
     D2ItemSaveStrc tItemSave;
     ITEMS_GetCompactItemDataFromBitstreamDefault(pPacket->pBitstream, pPacket->nPacketSize - 0x08, 0, &tItemSave);
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2UnitStrc* pItem = CUNIT_FindClientUnit(pPacket->nItemId, 4);
     if (pItem)
     {
@@ -1964,7 +1964,7 @@ void __fastcall ITEM_HandleItemFromStorage(D2GSPacketSrv9D* pPacket)
     {
         if (tItemSave.nStorePage == 1)
         {
-            sub_00463DD0_GetPlayerUnit();
+            CUNIT_GetPlayerUnit();
         }
         return;
     }
@@ -1977,7 +1977,7 @@ void __fastcall ITEM_HandleItemFromStorage(D2GSPacketSrv9D* pPacket)
     {
         if (tItemSave.nStorePage == 2)
         {
-            sub_00463DD0_GetPlayerUnit();
+            CUNIT_GetPlayerUnit();
         }
         return;
     }
@@ -2020,7 +2020,7 @@ void __fastcall ITEM_HandleItemFromStorage(D2GSPacketSrv9D* pPacket)
     else
     {
         CUNIT_RemoveClientSideUnit(pItem->dwUnitId, 4);
-        if (pOwner == sub_00463DD0_GetPlayerUnit())
+        if (pOwner == CUNIT_GetPlayerUnit())
         {
             if (tItemSave.nStorePage == 1)
             {
@@ -2033,7 +2033,7 @@ void __fastcall ITEM_HandleItemFromStorage(D2GSPacketSrv9D* pPacket)
         }
     }
 
-    if (pOwner == sub_00463DD0_GetPlayerUnit())
+    if (pOwner == CUNIT_GetPlayerUnit())
     {
         sub_004B2A00_FinishPendingAction(pItem->dwUnitId);
     }
@@ -2045,7 +2045,7 @@ void __fastcall ITEM_HandleEquipItem(D2GSPacketSrv9D* pPacket)
     D2ItemSaveStrc tItemSave;
     ITEMS_GetCompactItemDataFromBitstreamDefault(pPacket->pBitstream, pPacket->nPacketSize - 0x0D, 0, &tItemSave);
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
     {
         return;
@@ -2164,7 +2164,7 @@ void __fastcall ITEM_HandleIndirectSwapBodyItem(D2GSPacketSrv9D* pPacket)
     D2ItemSaveStrc tItemSave;
     ITEMS_GetCompactItemDataFromBitstreamDefault(pPacket->pBitstream, pPacket->nPacketSize - 0x0D, 0, &tItemSave);
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->nUnitId, pPacket->nUnitType);
     if (!pUnit)
     {
@@ -2318,7 +2318,7 @@ void __fastcall ITEM_HandleUnequipItem(D2GSPacketSrv9D* pPacket)
     D2ItemSaveStrc tItemSave;
     ITEMS_GetCompactItemDataFromBitstreamDefault(pPacket->pBitstream, pPacket->nPacketSize - 0x0D, 0, &tItemSave);
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     int bToCursor = 0;
     D2InventoryStrc* pInventory;
     D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->nUnitId, pPacket->nUnitType);
@@ -2506,7 +2506,7 @@ static void __stdcall ITEM_HandleItemFromBody(D2GSPacketSrv9D* pPacket, D2ItemSa
     if (sub_006287A0_TestFlags(pItemSave->dwFlags, 1))
     {
         CUNIT_RemoveClientSideUnit(pPacket->nItemId, 4);
-        if (pUnit == sub_00463DD0_GetPlayerUnit())
+        if (pUnit == CUNIT_GetPlayerUnit())
         {
             pItem = ITEM_CreateOwnedItem(0, 0, 0, pPacket, pItemSave);
             D2_ASSERT(pItem, 0x703);
@@ -2517,7 +2517,7 @@ static void __stdcall ITEM_HandleItemFromBody(D2GSPacketSrv9D* pPacket, D2ItemSa
         ITEM_PlaceItem(pItem, 0, 0, pItemSave->bMode, 0, pItemSave->nStorePage);
     }
 
-    if (pUnit == sub_00463DD0_GetPlayerUnit())
+    if (pUnit == CUNIT_GetPlayerUnit())
     {
         INV_ResetHover();
         ITEMS_SetBodyLocation(pItem, 0);
@@ -2635,7 +2635,7 @@ void __fastcall ITEM_UpdateItemFromPacket(D2GSPacketSrv9C* pPacket)
         return;
     }
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2_ASSERT(pPlayer, 0x7B3);
 
     D2InventoryStrc* pInventory = pPlayer->pInventory;
@@ -2778,7 +2778,7 @@ void __fastcall sub_004C2C80_ItemFromStorage9D(D2GSPacketSrv9D* pPacket)
     {
         if (tItemSave.nStorePage == 1)
         {
-            sub_00463DD0_GetPlayerUnit();
+            CUNIT_GetPlayerUnit();
         }
         return;
     }
@@ -2791,7 +2791,7 @@ void __fastcall sub_004C2C80_ItemFromStorage9D(D2GSPacketSrv9D* pPacket)
     {
         if (tItemSave.nStorePage == 2)
         {
-            sub_00463DD0_GetPlayerUnit();
+            CUNIT_GetPlayerUnit();
         }
         return;
     }
@@ -2833,7 +2833,7 @@ void __fastcall sub_004C2C80_ItemFromStorage9D(D2GSPacketSrv9D* pPacket)
     else
     {
         CUNIT_RemoveClientSideUnit(pItem->dwUnitId, 4);
-        if (pUnit == sub_00463DD0_GetPlayerUnit())
+        if (pUnit == CUNIT_GetPlayerUnit())
         {
             if (tItemSave.nStorePage == 1)
             {
@@ -2846,7 +2846,7 @@ void __fastcall sub_004C2C80_ItemFromStorage9D(D2GSPacketSrv9D* pPacket)
         }
     }
 
-    if (pUnit == sub_00463DD0_GetPlayerUnit())
+    if (pUnit == CUNIT_GetPlayerUnit())
     {
         sub_004B2A00_FinishPendingAction(pItem->dwUnitId);
     }
@@ -2855,7 +2855,7 @@ void __fastcall sub_004C2C80_ItemFromStorage9D(D2GSPacketSrv9D* pPacket)
 // 0x004C3E00
 static void ITEM_CursorItemToBelt(D2GSPacketSrv9C* pPacket, D2ItemSaveStrc* pItemSave)
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2_ASSERT(pPlayer, 0x86C);
 
     D2UnitStrc* pItem = CUNIT_FindClientUnit(pPacket->nItemId, 4);
@@ -2900,7 +2900,7 @@ static void ITEM_CursorItemToBelt(D2GSPacketSrv9C* pPacket, D2ItemSaveStrc* pIte
 // 0x004C3F60
 static void __stdcall ITEM_BeltItemToCursor(D2GSPacketSrv9C* pPacket, D2ItemSaveStrc* pItemSave)
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2_ASSERT(pPlayer, 0x8A6);
 
     D2UnitStrc* pItem = CUNIT_FindClientUnit(pPacket->nItemId, 4);
@@ -2970,7 +2970,7 @@ void __fastcall ITEM_HandlePutInBelt(D2GSPacketSrv9C* pPacket)
     D2ItemSaveStrc tItemSave;
     ITEMS_GetCompactItemDataFromBitstreamDefault(pPacket->pBitstream, pPacket->nPacketSize - 0x08, 0, &tItemSave);
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2_ASSERT(pPlayer, 0x8EF);
 
     D2UnitStrc* pItem = CUNIT_FindClientUnit(pPacket->nItemId, 4);
@@ -3018,7 +3018,7 @@ void __fastcall ITEM_HandleRemoveFromBelt(D2GSPacketSrv9C* pPacket)
     D2ItemSaveStrc tItemSave;
     ITEMS_GetCompactItemDataFromBitstreamDefault(pPacket->pBitstream, pPacket->nPacketSize - 0x08, 0, &tItemSave);
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2_ASSERT(pPlayer, 0x92C);
 
     D2UnitStrc* pItem = CUNIT_FindClientUnit(pPacket->nItemId, 4);
@@ -3063,7 +3063,7 @@ void __fastcall ITEM_HandleRemoveFromBelt(D2GSPacketSrv9C* pPacket)
 // 0x004C43E0
 static void __stdcall ITEM_MoveItemToBelt(D2GSPacketSrv9C* pPacket, D2ItemSaveStrc* pItemSave)
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2_ASSERT(pPlayer, 0x957);
 
     D2UnitStrc* pItem = CUNIT_FindClientUnit(pPacket->nItemId, 4);
@@ -3096,7 +3096,7 @@ static void __stdcall ITEM_MoveItemToBelt(D2GSPacketSrv9C* pPacket, D2ItemSaveSt
 // 0x004C44D0
 void __stdcall ITEM_MoveItemFromBelt(D2GSPacketSrv9C* pPacket, D2ItemSaveStrc* pItemSave)
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
     {
         return;
@@ -3245,7 +3245,7 @@ void __fastcall ITEM_HandleAutoUnequip(D2GSPacketSrv9D* pPacket)
     if (sub_006287A0_TestFlags(tItemSave.dwFlags, 1))
     {
         CUNIT_RemoveClientSideUnit(pPacket->nItemId, 4);
-        if (pUnit == sub_00463DD0_GetPlayerUnit())
+        if (pUnit == CUNIT_GetPlayerUnit())
         {
             pItem = ITEM_CreateOwnedItem(0, 0, 0, pPacket, &tItemSave);
             D2_ASSERT(pItem, 0xABD);
@@ -3256,7 +3256,7 @@ void __fastcall ITEM_HandleAutoUnequip(D2GSPacketSrv9D* pPacket)
         ITEM_PlaceItem(pItem, 0, 0, tItemSave.bMode, 0, tItemSave.nStorePage);
     }
 
-    if (pUnit != sub_00463DD0_GetPlayerUnit())
+    if (pUnit != CUNIT_GetPlayerUnit())
     {
         return;
     }
@@ -3320,7 +3320,7 @@ void __fastcall ITEM_HandleItemToSocket(D2GSPacketSrv9D* pPacket)
     {
         if (!sub_006287A0_TestFlags(tItemSave.dwFlags, 8))
         {
-            D2InventoryStrc* pPlayerInventory = sub_00463DD0_GetPlayerUnit()->pInventory;
+            D2InventoryStrc* pPlayerInventory = CUNIT_GetPlayerUnit()->pInventory;
             D2_ASSERT(pPlayerInventory, 0xB3A);
             INVENTORY_SetCursorItem(pPlayerInventory, NULL);
             CURSOR_SetCursorItemState(INVENTORY_GetCursorItem(pPlayerInventory));
@@ -3339,7 +3339,7 @@ void __fastcall ITEM_HandleGridItemToBody(D2GSPacketSrv9D* pPacket)
     D2ItemSaveStrc tItemSave;
     ITEMS_GetCompactItemDataFromBitstreamDefault(pPacket->pBitstream, pPacket->nPacketSize - 0x0D, 0, &tItemSave);
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->nUnitId, pPacket->nUnitType);
     if (!pUnit)
     {
@@ -3415,7 +3415,7 @@ D2UnitStrc* __fastcall ITEM_HandleBodyGridSwap(D2GSPacketSrv9D* pPacket)
     D2ItemSaveStrc tItemSave;
     ITEMS_GetCompactItemDataFromBitstreamDefault(pPacket->pBitstream, pPacket->nPacketSize - 0x0D, 0, &tItemSave);
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2UnitStrc* pUnit = CUNIT_FindClientUnit(pPacket->nUnitId, pPacket->nUnitType);
     if (!pUnit)
     {

@@ -380,7 +380,7 @@ int __cdecl sub_004723F0_GetPhase()
 void __cdecl sub_00472400_ResetPhaseState()
 {
     int nLevelId = DUNGEON_GetLevelIdFromRoom(CUNIT_GetPlayerRoom());
-    D2SeedStrc* pSeed = &sub_00463DE0_GetPlayerUnit()->pSeed;
+    D2SeedStrc* pSeed = &CUNIT_GetPlayerUnit2()->pSeed;
 
     switch (nLevelId)
     {
@@ -453,7 +453,7 @@ static void __stdcall sub_00472590_SetSplash(int bForce, int bValue)
 // 0x00472610
 void __cdecl sub_00472610_InitWindAngle()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (pPlayer)
     {
         D2SeedStrc tSeed;
@@ -478,7 +478,7 @@ void __cdecl sub_00472610_InitWindAngle()
 // 0x004726F0
 static int __stdcall sub_004726F0_RollAct5Weather(int bForce)
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
         return 0;
     D2ActiveRoomStrc* pRoom = CUNIT_GetPlayerRoom();
@@ -702,7 +702,7 @@ void __fastcall sub_00472D10_StepBubbles(int nUnused)
 // 0x00472DA0
 void __fastcall sub_00472DA0_CreateSplash(int nX, int nY, int nFixX, int nFixY)
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2_ASSERT(pPlayer, 0x2D2);
 
     D2SeedStrc* pSeed = &pPlayer->pSeed;
@@ -738,7 +738,7 @@ void __fastcall sub_00472DA0_CreateSplash(int nX, int nY, int nFixX, int nFixY)
 // 0x00472EC0
 void __fastcall sub_00472EC0_CreateBubble(int nX, int nY, int nFixX, int nFixY)
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2_ASSERT(pPlayer, 0x2FC);
 
     D2SeedStrc* pSeed = &pPlayer->pSeed;
@@ -1033,7 +1033,7 @@ extern "C" void __cdecl sub_004736C0_DrawPanelShade()
 // 0x00473720
 static inline void sub_00473720_GetLevelWeather(int* pRain, int* pMud)
 {
-    D2UnitStrc* pUnit = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pUnit = CUNIT_GetPlayerUnit2();
     *pRain = 0;
     *pMud = 0;
     if (pUnit)
@@ -1047,7 +1047,7 @@ static inline void sub_00473720_GetLevelWeather(int* pRain, int* pMud)
 // 0x00473770
 int __cdecl sub_00473770_IsMudLevel()
 {
-    D2UnitStrc* pUnit = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pUnit = CUNIT_GetPlayerUnit2();
     int bMud = 0;
     if (pUnit)
     {
@@ -1113,7 +1113,7 @@ static void sub_004737B0_StepWind(D2SeedStrc* pSeed)
 // 0x00473910
 void __cdecl sub_00473910_UpdateWeather()
 {
-    D2UnitStrc* pUnit = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pUnit = CUNIT_GetPlayerUnit2();
     int bRain = 0;
     if (pUnit)
     {
@@ -1122,7 +1122,7 @@ void __cdecl sub_00473910_UpdateWeather()
         DATATBLS_GetMudFromLevelsTxt(nLevelId);
     }
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2_ASSERT(pPlayer, 0x573);
 
     D2SeedStrc* pSeed = &pPlayer->pSeed;
@@ -1255,7 +1255,7 @@ int __cdecl sub_00473C40_IsRainLevel()
     {
         return 0;
     }
-    D2UnitStrc* pUnit = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pUnit = CUNIT_GetPlayerUnit2();
     int bRain = 0;
     if (pUnit)
     {
@@ -1324,7 +1324,7 @@ void __fastcall sub_00473D00_SetPhase(int nPhase)
     }
 
     gnPhase = nPhase;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2_ASSERT(pPlayer, 0x137);
 
     switch (nPhase)
@@ -1356,7 +1356,7 @@ void __cdecl sub_00473DC0_ToggleWeather()
     {
         gbPhaseActive = 0;
         gnPhase = 0;
-        D2_ASSERT(sub_00463DD0_GetPlayerUnit(), 0x137);
+        D2_ASSERT(CUNIT_GetPlayerUnit(), 0x137);
         gnPhaseLevel = 0;
         DATAARRAYS_Reset(gpWeatherParticles);
         D2_ASSERT(!gpWeatherParticles->nCount, 0x15B);
@@ -1376,7 +1376,7 @@ void __stdcall GFX_StepWeatherPhase(D2SeedStrc* pSeed)
         if (!gbPhaseBusy)
         {
             gnPhase = 2;
-            D2_ASSERT(sub_00463DD0_GetPlayerUnit(), 0x137);
+            D2_ASSERT(CUNIT_GetPlayerUnit(), 0x137);
             sub_00472400_ResetPhaseState();
         }
         return;
@@ -1410,7 +1410,7 @@ void __cdecl sub_00473F50_UpdateWeather()
     int nLevelId;
     int bRain;
     int bMud;
-    D2UnitStrc* pStoredUnit = sub_00463DE0_GetPlayerUnit();
+    D2UnitStrc* pStoredUnit = CUNIT_GetPlayerUnit2();
     bRain = 0;
     bMud = 0;
     if (pStoredUnit)
@@ -1445,7 +1445,7 @@ void __cdecl sub_00473F50_UpdateWeather()
     gbMudActive = bMud;
 
     const unsigned int nTick = sub_0044DB00_GetTickCounter();
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2_ASSERT(pPlayer, 0x547);
 
     D2SeedStrc* pSeed = &pPlayer->pSeed;
