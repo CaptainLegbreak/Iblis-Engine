@@ -730,8 +730,8 @@ int __fastcall sub_00517516_GetPositiveCount(D2PositiveCountStrc* data)
     return value;
 }
 
-void* __stdcall SMemAlloc(unsigned int,const char*,int,unsigned int);
-int __stdcall SMemFree(void*,const char*,int,unsigned int);
+void* __stdcall SMemAlloc(unsigned int,const char*,int,unsigned int); // 0x00413020
+int __stdcall SMemFree(void*,const char*,int,unsigned int); // 0x00412650
 extern const char gszRecordType[];
 struct D2StormRecordStrc {
  D2StormLinkStrc tLink;
@@ -897,7 +897,7 @@ void __thiscall D2ListStrc::sub_0051763C_UnlinkAll()
     }
 }
 
-int __stdcall SMemFree(void*,const char*,int,unsigned int);
+int __stdcall SMemFree(void*,const char*,int,unsigned int); // 0x00412650
 extern const char gszRecordType[];  // 0x0072F9FC
 // 0x00517669
 char* D2StormListStrc::sub_00517669_NewNode(unsigned int linkType,unsigned int extraBytes,unsigned int flags) {
@@ -941,7 +941,7 @@ void __thiscall TMESSAGESOURCE::Clear()
     }
 }
 
-void* __stdcall SMemAlloc(unsigned int,const char*,int,unsigned int);
+void* __stdcall SMemAlloc(unsigned int,const char*,int,unsigned int); // 0x00413020
 extern const char gszRecordType[];  // 0x0072F9FC
 // 0x0051772A
 char* D2StormListStrc::sub_0051772A_DeleteNode(char* node) {
@@ -1048,7 +1048,7 @@ void __fastcall sub_00517804_GetMessage(unsigned int id,char* dest,unsigned int 
   }
   LeaveCriticalSection(&gtFaultHandlerLock.tLock);
  }
- SStrCopy(dest,gszFaultError,size);
+ SStrCopy(dest,"D2Hell Fault.cpp error.",size);
 }
 
 extern "C" __declspec(dllimport) int __stdcall wvsprintfA(char*,const char*,char*);  // 0x006CC4AC

@@ -213,7 +213,7 @@ int __cdecl BNNEWS_SaveNews()
             return 0;
     }
 
-    char* pBuffer = (char*)FOG_Alloc(nSize, gszBNNewsFile, 0x154, 0);
+    char* pBuffer = (char*)FOG_Alloc(nSize, ".\\BNNews.cpp", 0x154, 0);
     if (pBuffer)
     {
         *(unsigned int*)pBuffer = gnNewsNewest;
@@ -235,7 +235,7 @@ int __cdecl BNNEWS_SaveNews()
         GetSystemTime(&tSystemTime);
         SystemTimeToFileTime(&tSystemTime, &tFileTime);
         int nResult = CACHE_WriteCachedFile(gpszNewsName, pBuffer, nSize, &tFileTime, -1, -1);
-        FOG_Free(pBuffer, gszBNNewsFile, 0x17B, 0);
+        FOG_Free(pBuffer, ".\\BNNews.cpp", 0x17B, 0);
         return nResult;
     }
     return 0;

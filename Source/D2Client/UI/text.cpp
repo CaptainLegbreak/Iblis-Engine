@@ -597,7 +597,7 @@ struct D2MonStatsTxt;
 
 
 
-void __stdcall TEXT_LoadQuestPage(int nPage, int nArg);
+void __stdcall TEXT_LoadQuestPage(int nPage, int nArg); // 0x004A3220
 
 
 #pragma pack(push, 2)
@@ -745,7 +745,7 @@ void __stdcall CURSOR_HandleButtonUp(SMSGHANDLER_PARAMS* pMsg); // 0x00467FA0
 
 int gbSkillButtonPressed; // 0x007C02E8
 
-void __fastcall TEXT_MoveKeyConfigSelection(int nStep);
+void __fastcall TEXT_MoveKeyConfigSelection(int nStep); // 0x004A45C0
 
 
 
@@ -1087,12 +1087,12 @@ static int TEXT_AddToHitFactor(D2UnitStrc* pUnit, int nAttackRate); // 0x004A730
 static void TEXT_SetQuestPage(int nPageArg); // 0x004A2220
 
 
-void __stdcall TEXT_QuestLButtonDownMsg(SMSGHANDLER_PARAMS* pMsg);
+void __stdcall TEXT_QuestLButtonDownMsg(SMSGHANDLER_PARAMS* pMsg); // 0x004A3E40
 
 
-void __stdcall TEXT_QuestLButtonUpMsg(SMSGHANDLER_PARAMS* pMsg);
+void __stdcall TEXT_QuestLButtonUpMsg(SMSGHANDLER_PARAMS* pMsg); // 0x004A42A0
 
-int __stdcall TEXT_GetChanceToHit(int nAttackRate);
+int __stdcall TEXT_GetChanceToHit(int nAttackRate); // 0x004A7340
 
 struct D2PacketRecord6Strc;
 

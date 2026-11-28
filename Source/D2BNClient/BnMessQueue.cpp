@@ -73,7 +73,7 @@ void __cdecl BNMESSQUEUE_DeleteQueueLock()
 // 0x00520210
 int __fastcall BNMESSQUEUE_QueueMessage(int nId, const void* pData, unsigned int nLength)
 {
-    D2BnMessageStrc* pMessage = (D2BnMessageStrc*)FOG_Alloc(sizeof(D2BnMessageStrc), gszBnMessQueueFile, 0x37, 0);
+    D2BnMessageStrc* pMessage = (D2BnMessageStrc*)FOG_Alloc(sizeof(D2BnMessageStrc), ".\\BnMessQueue.cpp", 0x37, 0);
     if (nLength > 0x120)
         nLength = 0x120;
     if (nLength)
@@ -97,7 +97,7 @@ int __fastcall BNMESSQUEUE_QueueMessage(int nId, const void* pData, unsigned int
 // 0x005202F0
 int __fastcall BNMESSQUEUE_QueueText(int nId, const char* szText)
 {
-    D2BnMessageStrc* pMessage = (D2BnMessageStrc*)FOG_Alloc(sizeof(D2BnMessageStrc), gszBnMessQueueFile, 0x5C, 0);
+    D2BnMessageStrc* pMessage = (D2BnMessageStrc*)FOG_Alloc(sizeof(D2BnMessageStrc), ".\\BnMessQueue.cpp", 0x5C, 0);
     SStrCopy(pMessage->szText, szText, 0x120);
     unsigned int nLength = strlen(pMessage->szText) + 1;
     pMessage->nLength = nLength;
@@ -126,7 +126,7 @@ unsigned int __fastcall BNMESSQUEUE_TakeMessage(int* pId, void* pBuffer)
         *pId = pMessage->nId;
         nLength = pMessage->nLength;
         D2BnMessageStrc* pNext = pMessage->pNext;
-        FOG_Free(gpMessageHead, gszBnMessQueueFile, 0x86, 0);
+        FOG_Free(gpMessageHead, ".\\BnMessQueue.cpp", 0x86, 0);
         gpMessageHead = pNext;
     }
     else

@@ -119,7 +119,7 @@ void __cdecl DDDEBUGFONT_FreeDebugFont()
 void __cdecl DDDEBUGFONT_CreateDebugFont()
 {
     void* hDC = CreateDCA("DISPLAY", 0, 0, 0);
-    void* hFont = CreateFontA(10, 0, 0, 0, 400, 0, 0, 0, 0, 0, 0, 0, 1, gszCourier);
+    void* hFont = CreateFontA(10, 0, 0, 0, 400, 0, 0, 0, 0, 0, 0, 0, 1, "Courier");
     void* hBitmap = CreateBitmap(8, 16, 1, 8, 0);
     SelectObject(hDC, hFont);
     SelectObject(hDC, hBitmap);

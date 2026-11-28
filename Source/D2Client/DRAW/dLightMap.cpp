@@ -45,7 +45,7 @@ struct D2UnitRefStrc
 {
     int nType;
     unsigned int nUnitId;
-    unsigned char f_8;
+    unsigned char bServerSide;
 };
 
 struct D2LightCellStrc
@@ -282,7 +282,7 @@ static inline D2UnitStrc* DLIGHTMAP_FindUnitFromRef(D2UnitRefStrc* pRef)
     {
         return 0;
     }
-    if (pRef->f_8)
+    if (pRef->bServerSide)
     {
         return CUNIT_FindServerSideUnit(pRef->nUnitId, pRef->nType);
     }
@@ -330,11 +330,11 @@ D2R01LightStrc* __fastcall DLIGHTMAP_MakeLightEntry(D2UnitStrc* pUnit, int nMode
         pLight->nUnitId = !pUnit ? -1 : pUnit->dwUnitId;
         if (UNITS_IsServerSide(pUnit))
         {
-            pLight->f_8 = 1;
+            pLight->bServerSide = 1;
         }
         else
         {
-            pLight->f_8 = 0;
+            pLight->bServerSide = 0;
         }
         pLight->nX = (UNITS_GetPrecisionX(pUnit) >> 13) + 4;
         unsigned int nPrecisionY = UNITS_GetPrecisionY(pUnit);
@@ -1007,7 +1007,7 @@ static void DLIGHTMAP_BuildLightMask(D2R01LightStrc* pLight)
         return;
     }
 
-    D2UnitStrc* pUnit = pLight->f_8 ? CUNIT_FindServerSideUnit(pLight->nUnitId, pLight->nUnitType)
+    D2UnitStrc* pUnit = pLight->bServerSide ? CUNIT_FindServerSideUnit(pLight->nUnitId, pLight->nUnitType)
                                             : CUNIT_FindClientUnit(pLight->nUnitId, pLight->nUnitType);
     if (!pUnit)
     {
@@ -1134,7 +1134,7 @@ static void __stdcall DLIGHTMAP_UpdateLight(int nLevel, D2R01LightStrc* pLight)
 {
     if (!pLight->bFixed && pLight->nUnitType != 6)
     {
-        D2UnitStrc* pUnit = pLight->f_8 ? CUNIT_FindServerSideUnit(pLight->nUnitId, pLight->nUnitType)
+        D2UnitStrc* pUnit = pLight->bServerSide ? CUNIT_FindServerSideUnit(pLight->nUnitId, pLight->nUnitType)
                                                 : CUNIT_FindClientUnit(pLight->nUnitId, pLight->nUnitType);
         if (pUnit)
         {
@@ -1305,7 +1305,7 @@ void __fastcall DLIGHTMAP_ActRoomCallback(D2ActiveRoomStrc* pRoom)
             if (pLight->nUnitType != 6)
             {
                 unsigned int const tNUnitId = pLight->nUnitId;
-                pUnit = pLight->f_8 ? CUNIT_FindServerSideUnit(tNUnitId, pLight->nUnitType)
+                pUnit = pLight->bServerSide ? CUNIT_FindServerSideUnit(tNUnitId, pLight->nUnitType)
                                     : CUNIT_FindClientUnit(tNUnitId, pLight->nUnitType);
             }
             D2_ASSERT(pUnit, 1425);

@@ -315,7 +315,7 @@ struct D2CmpBitCursorStrc
     unsigned char* sub_0060B180_GetBytePtr();
     void CodecSkipBits(int nBits);
     void sub_0060B1D0_AlignToByte();
-    int sub_0060B1F0_GetBitPos();
+    int GetBitPos(); // 0x0060B1F0
 };
 
 struct D2CofNodeStrc

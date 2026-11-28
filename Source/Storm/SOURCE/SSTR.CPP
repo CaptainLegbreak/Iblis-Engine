@@ -4,11 +4,11 @@
 #include "D2StormTypes.h"
 #include "StormApi.h"
 
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode);
+void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
 
 extern "C" void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int dwFlags); // 0x00413020
 
-double __cdecl sub_00414260_PowInt(double x, int nExp);
+double __cdecl sub_00414260_PowInt(double x, int nExp); // 0x00414260
 
 extern "C" int __cdecl strncmp(const char* szLeft, const char* szRight, unsigned int nCount);
 

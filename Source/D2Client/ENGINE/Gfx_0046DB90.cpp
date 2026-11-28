@@ -1127,8 +1127,7 @@ void __fastcall GFX_RefreshUnitGfx(D2UnitStrc* pUnit, int nArg)
 }
 
 // 0x00470B10
-void __cdecl GFX_PreloadForce()
-{
+void __fastcall GFX_PreloadForce(int nAct){
     gbPreloadForce = 1;
     GFX_PreloadRoomUnits(0);
     gdwLastPreloadTick = GetTickCount();

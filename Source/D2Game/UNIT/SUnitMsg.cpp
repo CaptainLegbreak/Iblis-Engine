@@ -203,7 +203,6 @@ void __fastcall MISSILES_SyncToClient(D2ClientStrc*, D2GameStrc*, D2UnitStrc*, i
 
 #define MESSAGE_SIZE 24
 
-#define PAYLOAD_SHIFT 0
 
 #define MESSAGE_HEADER 0xA1
 
@@ -241,7 +240,7 @@ struct D2UnitPacketListStrc
         } p9A;
         struct
         {
-            unsigned int unk0x08;
+            unsigned int dwUnitGUID;
             unsigned char nStatId;
             unsigned char unk0x0D[3];
             unsigned int dwValue;
@@ -292,7 +291,7 @@ void __fastcall SCMD_SendSkillUseOnUnit(D2ClientStrc* pClient, unsigned char nSo
 void __fastcall D2GAME_PACKETS_SendPacket0xA4(D2ClientStrc* pClient, short nMonStatsId);                    // 0x0053E1A0
 
 
-void __fastcall D2GAME_PACKETS_SendPacketSize06(D2ClientStrc*, unsigned char, int, int); // 0x0053B3D0
+void __fastcall D2GAME_PACKETS_SendPacketSize06(D2ClientStrc* pClient, unsigned char nHeader, int dwUnitType, int dwUnitId); // 0x0053B3D0
 
 void __fastcall SCMD_SendPacket0x2C(D2ClientStrc* pClient, D2GSPacketSrv2C* pPacket); // 0x0053D780
 
@@ -558,13 +557,13 @@ static inline void SUNITMSG_AppendUnitMessage(D2UnitStrc* pUnit, D2UnitPacketLis
 void __fastcall SUNITMSG_QueueItemSkillOnUnit(D2UnitStrc* pUnit, int nSkillId, unsigned char nSkillLevel, unsigned char nUnitType, int nUnitGUID, unsigned char nSkillParam)
 {
     D2UnitPacketListStrc* pMsg = (D2UnitPacketListStrc*)FOG_AllocPool(!pUnit ? 0 : pUnit->pMemoryPool, 20, ".\\UNIT\\SUnitMsg.cpp", 644, 0);
-    *((unsigned char*)pMsg + 10) = nSkillLevel;
-    *((unsigned char*)pMsg + 11) = nUnitType;
+    pMsg->p99.nSkillLevel = nSkillLevel;
+    pMsg->p99.nUnitType = nUnitType;
     pMsg->nHeader = 0x99;
     pMsg->pNext = 0;
-    *((short*)pMsg + 4) = nSkillId;
-    *((int*)pMsg + 3) = nUnitGUID;
-    *((unsigned char*)pMsg + 16) = nSkillParam;
+    pMsg->p99.wSkill = nSkillId;
+    pMsg->p99.dwUnitGUID = nUnitGUID;
+    pMsg->p99.nParam = nSkillParam;
 
     if (!pUnit->pMsgFirst)
     {
@@ -584,13 +583,13 @@ void __fastcall SUNITMSG_QueueItemSkillOnUnit(D2UnitStrc* pUnit, int nSkillId, u
 void __fastcall SUNITMSG_QueueItemSkillOnPosition(D2UnitStrc* pUnit, int nSkillId, unsigned char nSkillLevel, short nX, short nY, unsigned char nSkillParam)
 {
     D2UnitPacketListStrc* pMsg = (D2UnitPacketListStrc*)FOG_AllocPool(!pUnit ? 0 : pUnit->pMemoryPool, 20, ".\\UNIT\\SUnitMsg.cpp", 667, 0);
-    *((unsigned char*)pMsg + 10) = nSkillLevel;
-    *((short*)pMsg + 6) = nX;
+    pMsg->p9A.nSkillLevel = nSkillLevel;
+    pMsg->p9A.wX = nX;
     pMsg->nHeader = 0x9A;
     pMsg->pNext = 0;
-    *((short*)pMsg + 4) = nSkillId;
-    *((short*)pMsg + 7) = nY;
-    *((unsigned char*)pMsg + 16) = nSkillParam;
+    pMsg->p9A.wSkill = nSkillId;
+    pMsg->p9A.wY = nY;
+    pMsg->p9A.nParam = nSkillParam;
 
     if (!pUnit->pMsgFirst)
     {
@@ -614,9 +613,9 @@ void __fastcall D2GAME_MERCS_SendStat(D2UnitStrc* pUnit, unsigned short wStat, i
     D2UnitPacketListStrc* pMsg = (D2UnitPacketListStrc*)FOG_AllocPool(!pUnit ? 0 : pUnit->pMemoryPool, 20, ".\\UNIT\\SUnitMsg.cpp", 687, 0);
     pMsg->nHeader = 0x9E;
     pMsg->pNext = 0;
-    *((int*)pMsg + 2) = !pUnit ? -1 : pUnit->dwUnitId;
-    *((unsigned char*)pMsg + 12) = (unsigned char)wStat;
-    *((int*)pMsg + 4) = nValue;
+    pMsg->pStat.dwUnitGUID = !pUnit ? -1 : pUnit->dwUnitId;
+    pMsg->pStat.nStatId = (unsigned char)wStat;
+    pMsg->pStat.dwValue = nValue;
 
     if (!pUnit->pMsgFirst)
     {
@@ -641,10 +640,10 @@ void __fastcall SUNITMSG_QueueStatChange(D2UnitStrc* pUnit, unsigned short nStat
         D2UnitPacketListStrc* pMsg = (D2UnitPacketListStrc*)FOG_AllocPool(!pUnit ? 0 : pUnit->pMemoryPool, MESSAGE_SIZE, ".\\UNIT\\SUnitMsg.cpp", ALLOC_LINE, 0);
         pMsg->nHeader = MESSAGE_HEADER;
         pMsg->pNext = 0;
-        *(int*)((char*)pMsg + 8 + PAYLOAD_SHIFT) = !pUnit ? -1 : pUnit->dwUnitId;
-        *((unsigned char*)pMsg + 12 + PAYLOAD_SHIFT) = (unsigned char)nStat;
-        *(int*)((char*)pMsg + 16 + PAYLOAD_SHIFT) = nOldValue;
-        *(int*)((char*)pMsg + 20 + PAYLOAD_SHIFT) = nNewValue;
+        pMsg->pStat.dwUnitGUID = !pUnit ? -1 : pUnit->dwUnitId;
+        pMsg->pStat.nStatId = (unsigned char)nStat;
+        pMsg->pStat.dwValue = nOldValue;
+        pMsg->pStat.dwFullValue = nNewValue;
         if (!pUnit->pMsgFirst)
             pUnit->pMsgFirst = pMsg;
         if (pUnit->pMsgLast)
@@ -776,9 +775,9 @@ void __fastcall SUNITMSG_QueueSkillSelection(D2UnitStrc* pUnit, int bLeftSkill, 
     D2UnitPacketListStrc* pMsg = (D2UnitPacketListStrc*)FOG_AllocPool(!pUnit ? 0 : pUnit->pMemoryPool, 16, ".\\UNIT\\SUnitMsg.cpp", 818, 0);
     pMsg->nHeader = 0x23;
     pMsg->pNext = 0;
-    *((unsigned char*)pMsg + 14) = bLeftSkill;
-    *((short*)pMsg + 6) = nSkillId;
-    *((int*)pMsg + 2) = nOwnerGUID;
+    pMsg->p23.nParam = bLeftSkill;
+    pMsg->p23.wParam = nSkillId;
+    pMsg->p23.dwParam = nOwnerGUID;
 
     if (!pUnit->pMsgFirst)
     {

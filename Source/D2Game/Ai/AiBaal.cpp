@@ -937,7 +937,7 @@ void __fastcall AIBAAL_MainSkillHandler(D2GameStrc* pGame, D2UnitStrc* pUnit, D2
         AITACTICS_UseSkill(pGame, pUnit, 9, SKILL_BAALTENTACLE, pTarget, 0, 0);
         return;
     case 11:
-        SKILLS_AssignSkill(pUnit, SKILL_BAALNOVA, 1, 0, gszAiBaal, 0x452);
+        SKILLS_AssignSkill(pUnit, SKILL_BAALNOVA, 1, 0, ".\\Ai\\AiBaal.cpp", 0x452);
         AITACTICS_UseSkill(pGame, pUnit, 10, SKILL_BAALNOVA, pTarget, 0, 0);
         return;
     case 13:

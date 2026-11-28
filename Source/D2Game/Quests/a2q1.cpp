@@ -89,7 +89,7 @@ enum
 extern char gpAct2Q1NpcMessages[];                                                                          // 0x00739218
 
 
-void __fastcall QUESTS_QuickRemovePlayerGUID(D2QuestDataStrc* pQuest, D2QuestArgStrc* pQuestArg);          // 0x00545310
+void __fastcall QUESTS_QuickRemovePlayerGUID(D2QuestDataStrc* pQuest, D2QuestArgStrc* pQuestArg); // 0x00545310
 
 bool __fastcall ACT2Q1_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId, D2UnitStrc* pPlayer, D2BitBufferStrc* pQuestFlags, D2UnitStrc* pNPC); // 0x00598910
 
@@ -243,7 +243,7 @@ void __fastcall ACT2Q1_Callback11_ScrollMessage(D2QuestDataStrc* q,D2QuestArgStr
  D2Act2Quest1Strc* ex=(D2Act2Quest1Strc*)q->pQuestDataEx;
  if(message==304) {
   ex->bAtmaActivated=1;
-  QUESTS_StateDebug(q,2,gszA2Q1SourceFile,239);
+  QUESTS_StateDebug(q,2,"d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a2q1.cpp",239);
   SUNIT_IterateUnitsOfType(q->pGame,0,0,ACT2Q1_UnitIterate_UpdateQuestStateFlags);
  } else {
   if(message!=334) return;
@@ -254,7 +254,7 @@ void __fastcall ACT2Q1_Callback11_ScrollMessage(D2QuestDataStrc* q,D2QuestArgStr
     q->dwFlags&=0xFFFFFF00;
     QUESTS_UnitIterate(q,13,0,ACT2Q1_UnitIterate_StatusCyclerEx,true);
     q->pCallback[2]=0;
-    QUESTS_StateDebug(q,5,gszA2Q1SourceFile,253);
+    QUESTS_StateDebug(q,5,"d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a2q1.cpp",253);
     CHECK(!IsBadCodePtr((int (__stdcall*)())q->pfSeqFilter),254);
     q->pfSeqFilter(q);
    }

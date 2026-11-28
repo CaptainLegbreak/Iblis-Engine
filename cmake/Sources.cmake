@@ -143,7 +143,6 @@ set(IBLIS_D2Client_SOURCES
     Source/D2Client/Unknown_004A6460.cpp
     Source/D2Client/Unknown_004A9BD0.cpp
     Source/D2Client/Unknown_004AA9C0.cpp
-    Source/D2Client/Unknown_004ADD90.cpp
     Source/D2Client/Unknown_004B5810.cpp
     Source/D2Client/Unknown_004B8720.cpp
     Source/D2Client/Unknown_004B9200.cpp
@@ -166,11 +165,9 @@ set(IBLIS_D2Client_SOURCES
     Source/D2Client/Unknown_004DF770.cpp
     Source/D2Client/Unknown_004E12D0.cpp
     Source/D2Client/Unknown_004E1320.cpp
-    Source/D2Client/Unknown_004E1770.cpp
     Source/D2Client/Unknown_004E40A0.cpp
     Source/D2Client/Unknown_004E4670.cpp
     Source/D2Client/Unknown_004E89A0.cpp
-    Source/D2Client/Unknown_004EDA80.cpp
     Source/D2Client/Unknown_004EDCA0.cpp
     Source/D2Client/Unknown_004F1430.cpp
     Source/D2Client/Unknown_004F3FB0.cpp
@@ -656,7 +653,6 @@ set_source_files_properties(
     Source/D2Client/Unknown_00467DF0.cpp
     Source/D2Client/Unknown_0046C570.cpp
     Source/D2Client/Unknown_004A9BD0.cpp
-    Source/D2Client/Unknown_004ADD90.cpp
     Source/D2Client/Unknown_004B5810.cpp
     Source/D2Client/Unknown_004B9200.cpp
     Source/D2Client/Unknown_004BC500.cpp
@@ -670,7 +666,6 @@ set_source_files_properties(
     Source/D2Client/Unknown_004E12D0.cpp
     Source/D2Client/Unknown_004E1320.cpp
     Source/D2Client/Unknown_004E40A0.cpp
-    Source/D2Client/Unknown_004EDA80.cpp
     Source/D2Client/Unknown_004F1430.cpp
     Source/D2Client/Unknown_004F3FB0.cpp
     Source/D2CMP/SRC/CelCmp_00603280.cpp
@@ -988,7 +983,6 @@ set_source_files_properties(
     Source/D2Client/Unknown_004DF1C0.cpp
     Source/D2Client/Unknown_004DF6C0.cpp
     Source/D2Client/Unknown_004DF770.cpp
-    Source/D2Client/Unknown_004E1770.cpp
     Source/D2Client/Unknown_004E4670.cpp
     Source/D2Client/Unknown_004E89A0.cpp
     Source/D2Client/Unknown_004EDCA0.cpp

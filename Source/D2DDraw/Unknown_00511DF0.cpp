@@ -28,7 +28,7 @@ struct D2DDrawCelClipStrc
     int nRows;
 };
 
-int __stdcall D2CMPSpriteValidate(D2GfxDataStrc* pContext, int nArg2, int nArg3);
+int __stdcall D2CMPSpriteValidate(D2GfxDataStrc* pContext, int nArg2, int nArg3); // 0x006001F0
 
 extern D2PaletteTableStrc* gpGfxPaletteView; // 0x007C9150
 extern int gnDDrawClipRight; // 0x008812A0
@@ -168,7 +168,7 @@ void __fastcall sub_005123B0_DDrawDebugFillBackBuffer(int nX, int nY)
 
 struct D2CelStrc;
 
-int __stdcall D2CMPSpriteValidate(D2GfxDataStrc* pContext, int nArg2, int nArg3);
+int __stdcall D2CMPSpriteValidate(D2GfxDataStrc* pContext, int nArg2, int nArg3); // 0x006001F0
 int gnDDrawClipLeft;                                                                                // 0x0088129C
 
 // 0x005120A0

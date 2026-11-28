@@ -395,7 +395,7 @@ void __cdecl TEXT_ClearTextPanel();                                             
 
 typedef char check_size_npcindex[(sizeof(D2NpcIndexStrc) == 0x27) ? 1 : -1];
 
-void __cdecl GAME_ResetMouseState();                                                                                // 0x0044DA40
+void __cdecl GAME_ResetMouseState(); // 0x0044DA40
 
 
 void __fastcall CUNIT_TurnTowardPlayer(D2UnitStrc* pUnit);                                                 // 0x00464420
@@ -639,7 +639,7 @@ int __fastcall NPCMENU_NpcTextCallback(void* pContext, int nArg, int nValue); //
 
 void __cdecl INV_ResetButtonsFromMenuReturn(); // 0x00487D40
 
-void __cdecl sub_004B17A0_ProcessNpcEntries();
+void __cdecl sub_004B17A0_ProcessNpcEntries(); // 0x004B17A0
 
 struct D2ClientDialogStrc;
 
@@ -1183,26 +1183,24 @@ static inline void NPCMENU_SetIdentifyEntry(int nIndex)
 // 0x004B2250
 void __cdecl NPCMENU_ResetHandlers()
 {
-    gaNpcIndex[11].nCount = 2; gaNpcIndex[11].awIds[2] = 0; gaNpcIndex[11].apfHandlers[2] = 0;
-    gaNpcIndex[13].nCount = 2; gaNpcIndex[13].awIds[2] = 0; gaNpcIndex[13].apfHandlers[2] = 0;
-    gaNpcIndex[15].nCount = 2; gaNpcIndex[15].awIds[2] = 0; gaNpcIndex[15].apfHandlers[2] = 0;
-    gaNpcIndex[3].nCount = 3; gaNpcIndex[3].awIds[3] = 0; gaNpcIndex[3].apfHandlers[3] = 0;
-    gaNpcIndex[43].nCount = 2; gaNpcIndex[43].awIds[2] = 0; gaNpcIndex[43].apfHandlers[2] = 0;
+    NPCMENU_SetEntryType2(11);
+    NPCMENU_SetEntryType2(13);
+    NPCMENU_SetEntryType2(15);
+    NPCMENU_SetEntryType3(3);
+    NPCMENU_SetEntryType2(43);
     if (gaNpcIndex[43].apfHandlers[1] == NPCMENU_ResurrectMercWait)
     {
         gaNpcIndex[43].nCount = 3;
     }
-    gaNpcIndex[39].awIds[3] = 0; gaNpcIndex[39].apfHandlers[3] = 0;
-    gaNpcIndex[41].awIds[4] = 0; gaNpcIndex[41].apfHandlers[4] = 0;
-    gaNpcIndex[21].nCount = 2; gaNpcIndex[21].awIds[2] = 0; gaNpcIndex[21].apfHandlers[2] = 0;
+    NPCMENU_SetEntryType3(39);
+    NPCMENU_SetEntryType4(41);
+    NPCMENU_SetEntryType2(21);
     gaNpcIndex[21].awIds[1] = 0; gaNpcIndex[21].apfHandlers[1] = 0;
-    gaNpcIndex[39].nCount = 3;
-    gaNpcIndex[41].nCount = 4;
-    gaNpcIndex[16].awIds[1] = 0xFB4; gaNpcIndex[16].apfHandlers[1] = NPCMENU_IdentifyItemsWait; gaNpcIndex[16].nCount = 3;
-    gaNpcIndex[17].awIds[1] = 0xFB4; gaNpcIndex[17].apfHandlers[1] = NPCMENU_IdentifyItemsWait; gaNpcIndex[17].nCount = 3;
-    gaNpcIndex[18].awIds[1] = 0xFB4; gaNpcIndex[18].apfHandlers[1] = NPCMENU_IdentifyItemsWait; gaNpcIndex[18].nCount = 3;
-    gaNpcIndex[19].awIds[1] = 0xFB4; gaNpcIndex[19].apfHandlers[1] = NPCMENU_IdentifyItemsWait; gaNpcIndex[19].nCount = 3;
-    gaNpcIndex[38].awIds[1] = 0xFB4; gaNpcIndex[38].apfHandlers[1] = NPCMENU_IdentifyItemsWait; gaNpcIndex[38].nCount = 3;
+    NPCMENU_SetIdentifyEntry(16);
+    NPCMENU_SetIdentifyEntry(17);
+    NPCMENU_SetIdentifyEntry(18);
+    NPCMENU_SetIdentifyEntry(19);
+    NPCMENU_SetIdentifyEntry(38);
 }
 
 // 0x004B2370
@@ -1283,14 +1281,6 @@ void __cdecl NPCMENU_FreeNpcMenu()
     if (gtNpcMenu.pGreetingDialog) { DIALOG_DestroyDialog(gtNpcMenu.pGreetingDialog); gtNpcMenu.pGreetingDialog = 0; }
     if (gtNpcMenu.pMessageDialog) { DIALOG_DestroyDialog(gtNpcMenu.pMessageDialog); gtNpcMenu.pMessageDialog = 0; }
     if (gtNpcMenu.pConfirmDialog) { DIALOG_DestroyDialog(gtNpcMenu.pConfirmDialog); gtNpcMenu.pConfirmDialog = 0; }
-}
-
-void __stdcall sub_M129_Emit_004B21C0(int a, int b, int c, int d)
-{
-    NPCMENU_SetEntryType2(a);
-    NPCMENU_SetEntryType3(b);
-    NPCMENU_SetEntryType4(c);
-    NPCMENU_SetIdentifyEntry(d);
 }
 
 // 0x004B25C0

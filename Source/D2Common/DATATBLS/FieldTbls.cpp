@@ -37,7 +37,7 @@ unsigned short __stdcall COLLISION_CheckMask(D2ActiveRoomStrc* pRoom, int nX, in
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 int __stdcall D2Common_11098(D2FieldStrc* pField, int* pX, int* pY); // 0x0066A5D0
-extern "C" const char gszDataGlobalPath[]; // 0x006D4118
+extern "C" const char gszDataGlobal[]; // 0x006D4118
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szBuffer, const char* szFormat, ...); // 0x006CC468
 void* __fastcall sub_00517079(void* hArchive, const char* szPath, int* pSize, const char* szFile, int nLine); // 0x00517079
 
@@ -236,7 +236,7 @@ int __fastcall DATATBLS_LoadExpFieldD2(void* hArchive)
 {
     char szPath[260];
     int nSize;
-    wsprintfA(szPath, "%s\\expfield.d2", gszDataGlobalPath);
+    wsprintfA(szPath, "%s\\expfield.d2", gszDataGlobal);
     char* pExpField = (char*)sub_00517079(hArchive, szPath, &nSize, ".\\DATATBLS\\FieldTbls.cpp", 40);
     return DATATBLS_InitializeCollisionFieldTable(pExpField, nSize);
 }

@@ -188,11 +188,6 @@ D2CmpTileStrc* __cdecl TileAlloc()
     return pTile;
 }
 
-void __stdcall sub_M128_Emit_00609500(D2CmpTileNodeStrc* pNode)
-{
-    TileFreeSubTile(pNode);
-}
-
 // 0x006095A0
 static void TileFree(D2CmpTileStrc* pTile)
 {
@@ -201,11 +196,7 @@ static void TileFree(D2CmpTileStrc* pTile)
     while (pNode)
     {
         D2CmpTileNodeStrc* pNext = pNode->pNext;
-        if (pNode->pData)
-        {
-            FOG_Free(pNode->pData, ".\\SRC\\Tilecmp.cpp", 0x35, 0);
-        }
-        FOG_Free(pNode, ".\\SRC\\Tilecmp.cpp", 0x38, 0);
+        TileFreeSubTile(pNode);
         pNode = pNext;
     }
     FOG_Free(pTile, ".\\SRC\\Tilecmp.cpp", 0x60, 0);

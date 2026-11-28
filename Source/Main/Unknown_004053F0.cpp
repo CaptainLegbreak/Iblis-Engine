@@ -73,17 +73,11 @@ static inline void sub_00405430_GetIniPath(char* szPath)
     SStrPack(szPath, "D2.ini", 0x104);
 }
 
-void __stdcall sub_M114_Emit_00405430(char* szPath)
-{
-    sub_00405430_GetIniPath(szPath);
-}
-
 // 0x00405450
 void __stdcall sub_00405450_LoadIniSettings(char* pSettings)
 {
     char szIni[0x104];
-    ERRORMANAGER_GetModuleDirectory(szIni, 0x104);
-    SStrPack(szIni, "D2.ini", 0x104);
+    sub_00405430_GetIniPath(szIni);
     for (int i = 0; i < sizeof(gaIniEntries_00705040) / sizeof(gaIniEntries_00705040[0]); i++)
     {
         char* pDest = pSettings + gaIniEntries_00705040[i].nOffset;

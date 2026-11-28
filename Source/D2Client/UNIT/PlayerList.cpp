@@ -120,8 +120,7 @@ void __fastcall PLAYERLIST_InitGfxData(D2UnitStrc* pUnit)
 }
 
 // 0x004DDDF0
-void __cdecl sub_004DDDF0_Nop()
-{
+void __fastcall sub_004DDDF0_Nop(void* rows, void* data){
 }
 
 D2RosterInfoStrc* __stdcall sub_M121_Emit_004DC2F0(int nUnitId1, int nUnitId2) { return PLAYERLIST_FindRosterInfo(nUnitId1, nUnitId2); }

@@ -923,7 +923,7 @@ void* ghGdiDebugFont; // 0x0098A170
 // 0x006C8930
 void __cdecl GDICORE_CreateGraphicFont()
 {
-    ghGdiDebugFont = CreateFontA(10, 0, 0, 0, 400, 0, 0, 0, 0, 0, 0, 0, 1, gszCourier);
+    ghGdiDebugFont = CreateFontA(10, 0, 0, 0, 400, 0, 0, 0, 0, 0, 0, 0, 1, "Courier");
 }
 
 // 0x006C8960

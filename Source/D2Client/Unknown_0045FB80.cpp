@@ -20,28 +20,28 @@ extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szBuffer, const cha
 extern D2DataTablesStrc* sgptDataTables;
 extern unsigned int gdwBitMasks[];
 extern "C" const char gszFormatD[];
-extern int gnPanelOffsetX;
-extern int gnPanelOffsetY;
+extern int gnPanelOffsetX; // 0x007A2858
+extern int gnPanelOffsetY; // 0x007A285C
 extern int gnSkillPage;
 extern int gnTabSelection;
 extern int gbSkillTabPressed;
 extern "C" int gbSkillPointsHighlight;
-extern int gbInSkillPanelDraw;
-extern int gbSkillPanelDrawn;
+extern int gbInSkillPanelDraw; // 0x007C0C44
+extern int gbSkillPanelDrawn; // 0x007C0C4C
 extern int gaSkillButtonFrame[];
 extern int gaSkillButtonState[];
 
 void __stdcall sub_00420290_HandleMsg(SMSGHANDLER_PARAMS* pMsg);
 int __fastcall GAME_GetUnitClassId(D2UnitStrc* pUnit); // 0x00451F60
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId);
+D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 D2UnitStrc* __cdecl sub_00463DD0();
 void __stdcall CURSOR_HandleButtonUp(SMSGHANDLER_PARAMS* pMsg); // 0x00467FA0
-void __fastcall TEXT_DrawCenteredText(int nLeft, int nY, int nRight, const Unicode* wszText, int nColor);
+void __fastcall TEXT_DrawCenteredText(int nLeft, int nY, int nRight, const Unicode* wszText, int nColor); // 0x004A7080
 void* __fastcall SPELLSEL_GetSkillIconCel(D2SkillsTxt* pSkillsTxt); // 0x004A8C80
 int __fastcall SPELLSEL_GetSkillMaxLevel(int nSkillId); // 0x004AA8B0
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4);
-void __fastcall SKILLDESC_ShowSkillPopup(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int nArg, int nX, int nY);
-void __fastcall SKILLDESC_ShowSkillPopupB(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int nArg, int nX, int nY);
+void __fastcall SKILLDESC_ShowSkillPopup(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int nArg, int nX, int nY); // 0x004EEF00
+void __fastcall SKILLDESC_ShowSkillPopupB(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int nArg, int nX, int nY); // 0x004EF410
 void __fastcall sub_00502280_SetPopUpText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5);
 #define BITARRAY_CHECK(pBytes, nBit) ((pBytes)[(nBit) >> 3] & gdwBitMasks[(nBit) & 7])
 

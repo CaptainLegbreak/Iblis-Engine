@@ -377,7 +377,6 @@ void __fastcall FOG_AsyncDataFree(AsyncData* ptAsyncData)
 }
 
 // 0x0040ABE0
-int __cdecl sub_0040ABE0()
-{
+int __stdcall sub_0040ABE0(){
     return 0;
 }

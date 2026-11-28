@@ -46,25 +46,6 @@ void __fastcall SUNITDMG_AllocCombat(D2GameStrc* pGame, D2UnitStrc* pAttacker, D
 
 static void __stdcall SKILLS_DamageImpaleWeapon(D2GameStrc* pGame, int nChance, int nAmount, D2UnitStrc* pItem, D2UnitStrc* pUnit); // 0x005DAA40
 
-struct Skills;
-
-struct Skills
-{
-    char pad0[0x138];
-    unsigned rangeCalc,durationCalc;
-    char pad140[0xFC];
-};
-
-struct Tables
-{
-    char pad0[0xB6C];
-    int missileCount;
-    char padB70[0x28];
-    Skills* skills;
-    void* linker;
-    int skillCount;
-};
-
 typedef void(__fastcall* MissileInitFunc)(D2UnitStrc* pMissile, int nUnused);
 
 int __stdcall sub_00646CA0(D2UnitStrc*,unsigned,int,int); // 0x00646CA0
@@ -479,12 +460,6 @@ int __fastcall SKILLS_SrvSt10_LightningStrike(D2GameStrc* pGame, D2UnitStrc* pUn
 
     SUNITDMG_AllocCombat(pGame, pUnit, pTarget, &damage, nSrcDam);
     return 1;
-}
-
-inline Skills* GetSkills(int skillId)
-{
-    if(skillId>=0 && skillId<tables->skillCount) return &tables->skills[skillId];
-    return 0;
 }
 
 static int UNITS_GetUnitXPosition(D2UnitStrc* pUnit)
@@ -1056,18 +1031,18 @@ int __fastcall SKILLS_SrvDo013_Fend_Zeal_Fury(D2GameStrc* pGame, D2UnitStrc* pUn
 // 0x005DBE50
 int __fastcall SKILLS_SrvDo014_LightningStrike(D2GameStrc* game,D2UnitStrc* unit,int skillId,int level)
 {
-    Skills* record=GetSkills(skillId);
+    D2SkillsTxt* record=SKILLS_GetSkillsTxtRecord(skillId);
     if(!record) return 0;
     D2UnitStrc* target=SUNIT_GetTargetUnit(game,unit);
     if(!target) return 0;
     SUNITDMG_DrainItemDurability(game,unit,target,0);
-    int range=sub_00646CA0(unit,record->rangeCalc,skillId,level);
+    int range=sub_00646CA0(unit,record->dwCalc[0],skillId,level);
     const int targetId=target->dwUnitId;
     D2UnitStrc* other=SKILLS_FindNextAuraTarget(game,unit,UNITS_GetUnitXPosition(target),UNITS_GetUnitYPosition(target),range,3,targetId,0);
     if(!other) return 0;
     int missileId=SKILLS_GetProgressiveSkillMissileId(unit,skillId);
-    if(missileId<0 || missileId>=tables->missileCount) return 0;
-    int duration=sub_00646CA0(unit,record->durationCalc,skillId,level);
+    if(missileId<0 || missileId>=sgptDataTables->nMissilesTxtRecordCount) return 0;
+    int duration=sub_00646CA0(unit,record->dwCalc[1],skillId,level);
     D2MissileStrc params;
     memset(&params,0,sizeof(params));
     params.dwFlags=MISSILE_FLAGS;

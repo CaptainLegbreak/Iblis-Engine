@@ -612,10 +612,7 @@ static void SOUNDINST_FreeSound(D2ClientSoundStrc* pSound)
         UNITSND_RemoveUnitHint(pNode->pUnit, pSound->nHandle);
 
     D2SOUNDUTIL_ListFree(&pSound->pUnitList);
-    if (pSound->nType == 1)
-        sub_004DF7B0(pSound->pStream);
-
-    D2_ASSERT(!pSound->pStream, 0x93);
+    SOUNDINST_StopStream(pSound);
     pSound->bActive = 0;
 }
 
@@ -853,11 +850,6 @@ void __cdecl SOUNDINST_PlayRandomSpeech()
 void __fastcall sub_M112_Emit_004B9470(D2ClientSoundStrc* pSound)
 {
     SOUNDINST_ReleaseUnits(pSound);
-}
-
-void __fastcall sub_M112_Emit_004B94A0(D2ClientSoundStrc* pSound)
-{
-    SOUNDINST_StopStream(pSound);
 }
 
 int __fastcall sub_M112_Emit_004B9BB0(D2ClientSoundStrc* pSound)

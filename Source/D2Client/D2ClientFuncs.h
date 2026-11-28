@@ -662,12 +662,12 @@ void __cdecl sub_004ABF10_ClearSkillStates(); // 0x004ABF10
 void __cdecl sub_004AC690_DrawSkillPanel(); // 0x004AC690
 unsigned char* __fastcall MONUNIQUE_GetMonUmods(D2UnitStrc* pUnit); // 0x004AC740
 short __fastcall MONUNIQUE_GetBossHcIdx(D2UnitStrc* pUnit); // 0x004AC7C0
-void __stdcall MONSTER_RunUModCallbacks(D2UnitStrc* pUnit, void* pArgument, int nMode); // 0x004ADD90
+void __stdcall MONSTER_RunUModCallbacks(D2UnitStrc* pUnit, D2UnitStrc* pArgument, int nMode); // 0x004ADD90
 void __fastcall MONSTER_RunUModCommandCallbacks(D2UnitStrc* pUnit); // 0x004ADE40
 void __fastcall MONSTER_RunUModUpdateCallbacks(D2UnitStrc* pUnit); // 0x004ADE50
 void __fastcall MONSTER_RunUModFrameCallbacks(D2UnitStrc* pUnit); // 0x004ADE60
 void __fastcall MONSTER_RunUModHitCallbacks(D2UnitStrc* pUnit); // 0x004ADE70
-void __fastcall MONSTER_RunUModMissileCallbacks(D2UnitStrc* pUnit, void* pArg); // 0x004ADE80
+void __fastcall MONSTER_RunUModMissileCallbacks(D2UnitStrc* pUnit, D2UnitStrc* pMissile); // 0x004ADE80
 int __fastcall MONSTER_IsUniqueMonster(D2UnitStrc* pUnit); // 0x004AE360
 void __fastcall MONSTER_FreeClientUnit(D2UnitStrc* pUnit); // 0x004AED30
 void __fastcall MONSTER_InitHireling(D2UnitStrc* pUnit, D2HirelingInfoStrc* pInfo); // 0x004B1090

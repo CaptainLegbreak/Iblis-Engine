@@ -77,10 +77,6 @@ void __fastcall QUESTS_UnitIterate(D2QuestDataStrc* pQuest, int nIterateState, D
 
 struct D2QuestGUIDStrc;
 
-struct Sub005901E0;
-
-struct Obj005901E0;
-
 typedef int(__fastcall* QUESTUNITITERATE)(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData);
 
 typedef int(__stdcall* FARPROC)();
@@ -98,18 +94,6 @@ extern "C" unsigned int gnAct1Quest1NpcIndices[]; // 0x00736CD0
 int __fastcall QUESTS_CheckPlayerGUID(D2QuestDataStrc* pQuest, int dwGUID); // 0x005452C0
 
 int __fastcall ACT1Q1_UnitIterate_UpdateQuestStateFlags(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x0058FC90
-
-struct Sub005901E0
-{
-    unsigned char bUnknown00[0x88];
-    unsigned int dwValue88;
-};
-
-struct Obj005901E0
-{
-    unsigned char bUnknown00[0x18];
-    Sub005901E0* pSub18;
-};
 
 struct D2GameStrc;
 
@@ -535,8 +519,10 @@ int __fastcall ACT1Q1_UnitIterate_SetPrimaryGoalDoneForPartyMembers(D2GameStrc* 
 }
 
 // 0x005901E0
-extern "C" __declspec(dllexport) unsigned int __fastcall ACT1Q1_GetMonstersToBeKilled(Obj005901E0* pObj) {
-    return pObj->pSub18->dwValue88;
+int __fastcall ACT1Q1_GetMonstersToBeKilled(D2QuestDataStrc* pQuestData)
+{
+    D2Act1Quest1Strc* pQuestDataEx = (D2Act1Quest1Strc*)pQuestData->pQuestDataEx;
+    return pQuestDataEx->nMonstersLeft;
 }
 
 // 0x005901F0

@@ -1141,7 +1141,7 @@ extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...);        
 
 void __cdecl INV_DrawCacheStats(); // 0x00477760
 
-int __stdcall GAME_GetPing(); // 0x0044CE60
+int __cdecl GAME_GetPing(); // 0x0044CE60
 
 
 
@@ -1225,7 +1225,7 @@ int __cdecl VIEW_SetNpcMenuMode()
     return 1;
 }
 
-void __cdecl PANEL_SetBlackColour();
+void __cdecl PANEL_SetBlackColour(); // 0x00499E30
 
 void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nArg6); // 0x0046EFD0
 

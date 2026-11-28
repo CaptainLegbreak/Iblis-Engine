@@ -229,7 +229,7 @@ void __fastcall DRLGACTIVATE_RoomExSetStatus_ClientInSight(D2DrlgRoomStrc* pDrlg
     {
         D2DrlgStrc* pDrlg = pDrlgRoom->ptDrlgLevel->pDrlg;
         DRLGACTIVATE_RoomEx_EnsureHasRoom(pDrlg->pMempool, pDrlgRoom);
-        pDrlg->nRoomsInitTimeout = DRLG_IsOnClient(pDrlg) == 0 ? 7 : 5;
+        DRLGACTIVATE_InitRoomsInitTimeout(pDrlg);
     }
     if (pDrlgRoom->fRoomStatus > 1)
         DRLGACTIVATE_ForceRoomExStatus_ClientInSight(pDrlgRoom);
@@ -245,8 +245,6 @@ void __fastcall DRLGACTIVATE_RoomExSetStatus_Untile(D2DrlgRoomStrc* pDrlgRoom)
     if (pDrlgRoom->fRoomStatus > 3)
         DRLGACTIVATE_ForceRoomExStatus_Untile(pDrlgRoom);
 }
-
-void __stdcall sub_M121_Emit_0061B170(D2DrlgStrc* pDrlg) { DRLGACTIVATE_InitRoomsInitTimeout(pDrlg); }
 
 // 0x0061B360
 static inline void DRLGACTIVATE_SetStatusIfUnreferenced(D2DrlgRoomStrc* pDrlgRoom, int nStatus)
@@ -610,7 +608,7 @@ void __stdcall DRLGACTIVATE_Update(D2DrlgStrc* pDrlg)
     --pDrlg->nRoomsInitTimeout;
     if (pDrlg->nRoomsInitTimeout == 0)
     {
-        pDrlg->nRoomsInitTimeout = DRLG_IsOnClient(pDrlg) == 0 ? 7 : 5;
+        DRLGACTIVATE_InitRoomsInitTimeout(pDrlg);
         if (!pDrlg->pDrlgRoom || pDrlg->pDrlgRoom->fRoomStatus != 2)
             pDrlg->pDrlgRoom = pDrlg->tStatusRoomsLists[2].pStatusNext;
 

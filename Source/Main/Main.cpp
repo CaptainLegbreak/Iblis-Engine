@@ -385,7 +385,7 @@ static int __stdcall MAIN_SelectModule(const char* szArgvCmd, int* pChosenModule
     const size_t nArgvLength = strlen(szArgvCmd) + 1;
     char* szArgvDupe = (char*)FOG_Alloc(nArgvLength, ".\\Main.cpp", 442, 0);
     SStrCopy(szArgvDupe, szArgvCmd, nArgvLength);
-    for (char* pCurrentParam = strtok(szArgvDupe, gszDash); pCurrentParam; pCurrentParam = strtok(0, gszDash))
+    for (char* pCurrentParam = strtok(szArgvDupe, "-"); pCurrentParam; pCurrentParam = strtok(0, "-"))
     {
         for (int i = 0; i < 6; i++)
         {

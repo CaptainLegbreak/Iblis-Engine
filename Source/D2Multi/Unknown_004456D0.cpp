@@ -134,17 +134,17 @@ int __stdcall sub_004456D0_SubmitCreateGame(int nArg)
             char szValue[5];
             const Unicode* pValue = sub_004FDD90_GetEditText(gpMaxPlayerControl);
             UNICODE_ToUtf8(szValue, pValue, 5);
-            SRegSaveValue(gszDiabloII, gszMaxPlayer, 0, atoi(szValue));
-            SRegSaveValue(gszDiabloII, gszDiffLevel, 0, gnDiffSelect);
+            SRegSaveValue("Diablo II", "MAX_PLAYER", 0, atoi(szValue));
+            SRegSaveValue("Diablo II", "DIFF_LEVEL", 0, gnDiffSelect);
             if (!sub_00500960_IsPressed(gpLevelDiffCheck))
             {
-                SRegSaveValue(gszDiabloII, gszLvlRest, 0, 666);
+                SRegSaveValue("Diablo II", "LVL_REST", 0, 666);
             }
             else
             {
                 pValue = sub_004FDD90_GetEditText(gpEditBox_00798C3C);
                 UNICODE_ToUtf8(szValue, pValue, 5);
-                SRegSaveValue(gszDiabloII, gszLvlRest, 0, atoi(szValue));
+                SRegSaveValue("Diablo II", "LVL_REST", 0, atoi(szValue));
             }
         }
 

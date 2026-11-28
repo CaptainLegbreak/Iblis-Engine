@@ -96,7 +96,7 @@ enum D2C_J10SkillItemConstants
     SKILLSFLAGINDEX_ITEMTGTDO = 29,
 };
 
-void __fastcall D2GAME_PACKETS_SendPacketSize06(D2ClientStrc* client,unsigned char code); // 0x0053B3D0
+void __fastcall D2GAME_PACKETS_SendPacketSize06(D2ClientStrc* pClient, unsigned char nHeader, int dwUnitType, int dwUnitId); // 0x0053B3D0
 
 struct D2AiControlStrc;
 

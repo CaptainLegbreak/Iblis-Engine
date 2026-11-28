@@ -50,7 +50,7 @@ D2CharStrc* __fastcall FONT_FindCharInfo(unsigned short wChar);                 
 
 void __fastcall sub_00526320_ToUnicode(wchar_t* pDest, const char* szSource, int nLength);                  // 0x00526320
 
-extern "C" const char gszDataGlobal_006D4118[];                                                             // 0x006D4118
+extern "C" const char gszDataGlobal[];                                                             // 0x006D4118
 
 extern "C" const char gszDataLocal[];                                                              // 0x006D41A8
 
@@ -888,7 +888,7 @@ void __fastcall D2Win_10132(const Unicode* wszText, int nX, int nY, unsigned int
     }
     nY = D2_MIN(D2_MAX(nY, nTextHeight), nScreenHeight - 31);
 
-    D2GFX_DrawBox(nLeft, nY - nTextHeight, nTextWidth + nLeft, nY, dwColor, eDrawMode);
+    FONT_DrawBox(nLeft, nY, nTextWidth, nTextHeight, dwColor, eDrawMode);
     FONT_DrawString(wszText, nLeft, nY - 3 * gatFontCache[gnCurrentFont].pFontInfo[1]->nHeight / 10, nTextWidth, nColor, 1);
 }
 
@@ -1086,7 +1086,7 @@ __declspec(noinline) D2SplittedTextStrc* __stdcall D2Win_AllocateSplitText(const
 
 static inline D2SplittedTextStrc* AllocSplitTextLine_Inline(const Unicode* wszText, int nLength, int bSkipSpace)
 {
-    D2SplittedTextStrc* pSplitText = (D2SplittedTextStrc*)FOG_Alloc(sizeof(D2SplittedTextStrc), gszD2WinFontSourceFile, 0x588, 0);
+    D2SplittedTextStrc* pSplitText = (D2SplittedTextStrc*)FOG_Alloc(sizeof(D2SplittedTextStrc), ".\\Src\\D2WinFont.cpp", 0x588, 0);
     int nCount = nLength;
     const Unicode* pText = wszText;
     if (bSkipSpace && pText->wChar < 0x100 && isspace(pText->wChar))
@@ -1094,7 +1094,7 @@ static inline D2SplittedTextStrc* AllocSplitTextLine_Inline(const Unicode* wszTe
         nCount = nCount - 1;
         pText = pText + 1;
     }
-    pSplitText->wszLine = (Unicode*)FOG_Alloc(sizeof(Unicode) * (nCount + 1), gszD2WinFontSourceFile, 0x591, 0);
+    pSplitText->wszLine = (Unicode*)FOG_Alloc(sizeof(Unicode) * (nCount + 1), ".\\Src\\D2WinFont.cpp", 0x591, 0);
     pSplitText->pNextLine = 0;
     Unicode::strncpy(pSplitText->wszLine, pText, nCount);
     pSplitText->wszLine[nCount].wChar = 0;
@@ -1250,11 +1250,6 @@ int* __fastcall D2WINFONT_ClearTable(int* pTable)
     return pTable;
 }
 
-extern "C" void __stdcall sub_K08_EmitDrawRect(int nX, int nY, int nWidth, int nHeight, unsigned int dwColor, int nDrawMode)
-{
-    FONT_DrawBox(nX, nY, nWidth, nHeight, dwColor, nDrawMode);
-}
-
 // 0x00502C60
 void __fastcall D2Win_10115_FONT()
 {
@@ -1330,7 +1325,7 @@ void __fastcall D2Win_10115_FONT()
     if (!ghMonsterIndicators)
     {
         char szPath[0x104];
-        wsprintfA(szPath, "%s\\UI\\Font\\MonsterIndicators", gszDataGlobal_006D4118);
+        wsprintfA(szPath, "%s\\UI\\Font\\MonsterIndicators", gszDataGlobal);
         ghMonsterIndicators = ARCHIVE_LoadCellFile(szPath, 0);
     }
 

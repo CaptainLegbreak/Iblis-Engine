@@ -386,13 +386,13 @@ extern "C" long gnPendingCount;
 
 extern "C" int gnFlag_00882528;
 
-extern "C" int ganSlotArrayA[94];
+extern "C" int ganSlotArrayA[94]; // 0x00882128
 
 extern "C" int ganSlotArrayB[94];
 
 extern "C" int gpGidFileData;
 
-extern "C" int gpKeyFile3Data;
+extern "C" int gpKeyFile3Data; // 0x0088274C
 
 extern "C" int gnValue_0088CB0C; // 0x0088CB0C
 

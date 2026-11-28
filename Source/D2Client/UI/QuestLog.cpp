@@ -784,8 +784,7 @@ void __fastcall TEXT_SetTextCallback(D2TextCallback pfnCallback, void* pContext)
 
 
 // 0x004A2760
-void __cdecl QUESTLOG_SendQuestUpdates()
-{
+void __fastcall QUESTLOG_SendQuestUpdates(int nCount){
     for (int i = 0; i < gtQuestLog.nMsgCount; ++i)
     {
         if (!gtQuestLog.aMsgs[i].nState)

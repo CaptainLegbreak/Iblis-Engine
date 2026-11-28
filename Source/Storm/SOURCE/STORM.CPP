@@ -8,7 +8,7 @@
 
 #define ERROR_INVALID 0x57
 
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode);
+void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
 
 int gnErrorOutputMode_0077909C;         // 0x0077909C
 

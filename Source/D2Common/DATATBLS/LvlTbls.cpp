@@ -79,7 +79,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 
-extern "C" const char gszTxtFieldEnd[]; // 0x006D9060
+extern "C" const char gszTxtField_end[]; // 0x006D9060
 
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* szFormat, ...); // 0x006CC468
 
@@ -222,9 +222,9 @@ extern const char gszField_Trials4[]; // 0x006E8900
 
 extern const char gszField_Max4[]; // 0x006E88F8
 
-extern const char gszField_Expansion[]; // 0x006DCF44
+extern const char gszTxtField_Expansion[]; // 0x006DCF44
 
-extern const char gszField_end[]; // 0x006D9060
+extern const char gszTxtField_end[]; // 0x006D9060
 
 static int* gpPortalLevels_0096C9F4; // 0x0096C9F4
 
@@ -479,7 +479,7 @@ void __fastcall DATATBLS_LoadLevelDefsBin(void* hArchive)
         { "Position", 2, 0, 144, 0 },
         { "SaveMonsters", 2, 0, 148, 0 },
         { "LOSDraw", 2, 0, 152, 0 },
-        { gszTxtFieldEnd, 0, 0, 0, 0 },
+        { gszTxtField_end, 0, 0, 0, 0 },
     };
 
     sgtDataTables.pLevelDefBin = (D2LevelDefBin*)DATATBLS_CompileTxt(hArchive, "leveldefs", pTbl, 0, 0x9C);
@@ -849,8 +849,8 @@ void __fastcall DATATBLS_LoadLvlSubTxt(void* archive,int loadFiles,int extra)
   {gszField_Prob4,2,0,0x12c,0},
   {gszField_Trials4,2,0,0x140,0},
   {gszField_Max4,2,0,0x154,0},
-  {gszField_Expansion,2,0,0x158,0},
-  {gszField_end,0,0,0x0,0},
+  {gszTxtField_Expansion,2,0,0x158,0},
+  {gszTxtField_end,0,0,0x0,0},
  };
   int maxType=0;
  D2LvlSubTxt* rows=(D2LvlSubTxt*)DATATBLS_CompileTxt(archive,gszLvlSubTableName,fields,&gnLvlSubTxtRecordCount,sizeof(D2LvlSubTxt));
@@ -941,8 +941,7 @@ D2LvlSubTxt* __fastcall DATATBLS_GetLvlSubTxtRecord(int nSubType)
 }
 
 // 0x0061FAE0
-void __fastcall DATATBLS_AllocGlobalTileLibraryHash()
-{
+void __fastcall DATATBLS_AllocGlobalTileLibraryHash(void* hArchive){
     D2_ASSERT(gpLvlTypesTxt_0096C9F0, 1040);
 
     const int nSize = sizeof(D2TileLibraryHeaderStrc*[1024]) * gnLvlTypesTxtRecordCount;
@@ -1473,7 +1472,7 @@ void __fastcall DATATBLS_LoadAutomapTxt(void* hArchive)
         { "Cel2", 2, 0, 0x20, 0 },
         { "Cel3", 2, 0, 0x24, 0 },
         { "Cel4", 2, 0, 0x28, 0 },
-        { gszTxtFieldEnd, 0, 0, 0, 0 },
+        { gszTxtField_end, 0, 0, 0, 0 },
     };
 
     pAutomapTxt = (D2AutomapTxt*)DATATBLS_CompileTxt(hArchive, "automap", pTbl, &nRecordCount, sizeof(D2AutomapTxt));

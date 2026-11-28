@@ -1874,7 +1874,7 @@ static void __stdcall UNITSND_PlayHitSound(D2UnitStrc* pUnit, int nMode)
             {
                 if (SOUNDINST_HasUnitSound(pUnit))
                     goto done;
-                nSound = pRecord->f_0;
+                nSound = pRecord->nGetHitSound;
                 nArg = 2;
             }
             else

@@ -157,7 +157,7 @@ void __fastcall ACT2Q4_Callback03_ChangedLevel(D2QuestDataStrc* pQuestData, D2Qu
 
 #define QFLAG_REWARDPENDING 1
 
-void __fastcall QUESTS_QuickRemovePlayerGUID(D2QuestDataStrc* pQuest, D2QuestArgStrc* pQuestArg);           // 0x00545310
+void __fastcall QUESTS_QuickRemovePlayerGUID(D2QuestDataStrc* pQuest, D2QuestArgStrc* pQuestArg); // 0x00545310
 
 static void __stdcall ACT2Q4_InitializeJerhynMonster(D2QuestDataStrc* pQuestData, D2CoordStrc* pCoords, D2ActiveRoomStrc* pRoom); // 0x0059EF70
 
@@ -847,13 +847,11 @@ void __fastcall ACT2Q4_OpenPalaceOrCycle(D2GameStrc* pGame)
 }
 
 // 0x0059B6C0
-void __stdcall ACT2Q4_OnJerhynSpawned(int nUnused1, int nUnused2)
-{
+void __fastcall ACT2Q4_OnJerhynSpawned(D2GameStrc* pGame, D2UnitStrc* pUnit, int nX, int nY){
 }
 
 // 0x0059B6D0
-void __stdcall ACT2Q4_OnPalaceGuardSpawned(int nUnused1, int nUnused2)
-{
+void __fastcall ACT2Q4_OnPalaceGuardSpawned(D2GameStrc* pGame, D2UnitStrc* pUnit, int nX, int nY){
 }
 
 // 0x0059B6E0

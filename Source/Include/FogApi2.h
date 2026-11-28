@@ -30,7 +30,7 @@ void __fastcall FOG_AsyncDataInitialize(int bEnable, int nUnused); // 0x0040A390
 void __cdecl FOG_AsyncDataDestroy(); // 0x0040A440
 int __fastcall FOG_AsyncDataTestLoaded(AsyncData* ptAsyncData); // 0x0040A7F0
 unsigned int __fastcall FOG_AsyncDataGetBufferSize(AsyncData* pAsyncData); // 0x0040AA40
-int __cdecl sub_0040ABE0(); // 0x0040ABE0
+int __stdcall sub_0040ABE0(); // 0x0040ABE0
 void __cdecl FOG_10218(); // 0x0040B0C0
 void __fastcall FOG_10222(const unsigned char* pData, unsigned int nSize); // 0x0040B130
 int __fastcall FOG_CompressPacket(unsigned char* pOut, int nOutSize, const unsigned char* pIn, int nInSize); // 0x0040B1B0

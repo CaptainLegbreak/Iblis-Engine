@@ -51,48 +51,25 @@ bool __fastcall ACT1Q7_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId,
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
-struct D2QuestCallbacks00596C40Strc
-{
-    void* pfCallbackA0;
-    unsigned char unk_A4[0x1C];
-    void* pfCallbackC0;
-    unsigned char unk_C4[0x3C - 0x24];
-};
-
-struct D2QuestData00596C40Strc
-{
-    unsigned char unk_00[0x0A];
-    unsigned char nA;
-    unsigned char nB;
-    unsigned char nC;
-    unsigned char unk_0D[0xA0 - 0x0D];
-    D2QuestCallbacks00596C40Strc tCallbacks;
-    void* pRecordDC;
-    int nE0;
-    unsigned char unk_E4[4];
-    void* pfStatusFilterE8;
-    void* pfActiveFilterEC;
-};
-
 extern unsigned char gaAct1Q7NpcMessages[]; // 0x00738778
 
-void __fastcall ACT1Q7_Callback00_NpcActivate(); // 0x00596A90
+void __fastcall ACT1Q7_Callback00_NpcActivate(D2QuestDataStrc* pQuest, D2QuestArgStrc* pQuestArg); // 0x00596A90
 
-void __fastcall ACT1Q6_EmptyCallback(); // 0x00596BA0
+void __fastcall ACT1Q6_EmptyCallback(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x00596BA0
 
 // 0x00596C40
-void __fastcall ACT1Q7_InitQuestData(D2QuestData00596C40Strc* pQuestData)
+void __fastcall ACT1Q7_InitQuestData(D2QuestDataStrc* pQuestData)
 {
-    memset(&pQuestData->tCallbacks, 0, sizeof(pQuestData->tCallbacks));
-    pQuestData->tCallbacks.pfCallbackA0 = (void*)ACT1Q7_Callback00_NpcActivate;
-    pQuestData->tCallbacks.pfCallbackC0 = (void*)ACT1Q6_EmptyCallback;
-    pQuestData->pRecordDC = gaAct1Q7NpcMessages;
-    pQuestData->nA = 1;
-    pQuestData->nC = 0;
-    pQuestData->nB = 0;
-    pQuestData->nE0 = 0x1D;
-    pQuestData->pfStatusFilterE8 = (void*)ACT3Q7_StatusFilterCallback;
-    pQuestData->pfActiveFilterEC = (void*)ACT1Q7_ActiveFilterCallback;
+    memset(pQuestData->pCallback, 0x00, sizeof(pQuestData->pCallback));
+    pQuestData->pCallback[0] = ACT1Q7_Callback00_NpcActivate;
+    pQuestData->pCallback[8] = ACT1Q6_EmptyCallback;
+    pQuestData->pNPCMessages = gaAct1Q7NpcMessages;
+    pQuestData->bActive = 1;
+    pQuestData->fState = 0;
+    pQuestData->fLastState = 0;
+    pQuestData->eFilter = 29;
+    pQuestData->pfStatusFilter = ACT3Q7_StatusFilterCallback;
+    pQuestData->pfActiveFilter = ACT1Q7_ActiveFilterCallback;
 }
 
 

@@ -201,7 +201,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x00
 
 extern "C" const char gszD2NetSourceFile[];
 
-extern int gnConnectionMode;
+extern int gnConnectionMode; // 0x00882D10
 
 int gbD2ServerCallbackFunctionsInitialized;                                                        // 0x00883D54
 
@@ -330,7 +330,7 @@ struct D2StormHashTableStrc
     void GrowListArray(); // 0x0052FF20
 };
 
-extern unsigned short gwValue_0077905C;
+extern unsigned short gwValue_0077905C; // 0x0077905C
 
 struct D2Storm4167B0Strc
 {
@@ -1657,22 +1657,6 @@ static inline void GAME_FreeInactiveRooms(D2GameStrc* pGame)
     }
 }
 
-void __fastcall sub_M118_Emit_0052D000(D2GameStrc* pGame, int nAct)
-{
-    for (D2ActiveRoomStrc* pRoom = DUNGEON_GetRoomFromAct(pGame->pAct[nAct]); pRoom; pRoom = DUNGEON_GetRoomFromAct(pGame->pAct[nAct + 1]))
-    {
-        if (D2Common_10074(pRoom))
-        {
-            GAME_PopulateRoom(pGame, pRoom);
-        }
-        else
-        {
-            GAME_CompressRoomUnits(pGame, pRoom);
-        }
-    }
-    GAME_FreeInactiveRooms(pGame);
-}
-
 // 0x0052D160
 static void GAME_UpdatePendingRooms(D2GameStrc* pGame)
 {
@@ -1750,13 +1734,7 @@ void __fastcall GAME_UpdateProgress(D2GameStrc* pGame)
 
     if (!(pGame->dwGameFrame % 11))
     {
-        for (int i = 0; i < 5; ++i)
-        {
-            if (pGame->pAct[i])
-            {
-                DUNGEON_UpdateAndFreeInactiveRooms(pGame->pAct[i]);
-            }
-        }
+        GAME_FreeInactiveRooms(pGame);
     }
 
     GAME_DeleteInactiveItems(pGame);
@@ -2086,27 +2064,27 @@ void __fastcall D2GAME_SetStatOrResetGold(D2UnitStrc* pUnit, int nStat, int nVal
 }
 
 
-int __fastcall NET_IsSimulatedLagConnection();
+int __fastcall NET_IsSimulatedLagConnection(); // 0x0052B800
 
 
 
 
 
-unsigned int __fastcall NET_GetBits12(unsigned int nValue);
+unsigned int __fastcall NET_GetBits12(unsigned int nValue); // 0x0052BE00
 
-char* __fastcall NET_GetField0D0(D2Net52BE10Strc* pRecord);
+char* __fastcall NET_GetField0D0(D2Net52BE10Strc* pRecord); // 0x0052BE10
 
-void __stdcall NET_DefaultLeaveGame(int nUnused1, int nUnused2, int nUnused3, int nUnused4, int nUnused5, int nUnused6, int nUnused7, int nUnused8, int nUnused9, int nUnused10, int nUnused11, int nUnused12, int nUnused13, int nUnused14, int nUnused15, int nUnused16, int nUnused17, int nUnused18);
+void __stdcall NET_DefaultLeaveGame(int nUnused1, int nUnused2, int nUnused3, int nUnused4, int nUnused5, int nUnused6, int nUnused7, int nUnused8, int nUnused9, int nUnused10, int nUnused11, int nUnused12, int nUnused13, int nUnused14, int nUnused15, int nUnused16, int nUnused17, int nUnused18); // 0x0052BE40
 
-void __stdcall NET_DefaultSaveDatabaseCharacter(int nUnused1, int nUnused2, int nUnused3, int nUnused4);
+void __stdcall NET_DefaultSaveDatabaseCharacter(int nUnused1, int nUnused2, int nUnused3, int nUnused4); // 0x0052BE60
 
-void __cdecl NET_DefaultServerLogMessage();
+void __cdecl NET_DefaultServerLogMessage(); // 0x0052BE70
 
-void __stdcall NET_DefaultEnterGame(int nUnused1, int nUnused2, int nUnused3);
+void __stdcall NET_DefaultEnterGame(int nUnused1, int nUnused2, int nUnused3); // 0x0052BE80
 
-int __stdcall NET_DefaultFindPlayerToken(int nUnused1, int nUnused2, int nUnused3, int nUnused4, int nUnused5, int nUnused6, int nUnused7);
+int __stdcall NET_DefaultFindPlayerToken(int nUnused1, int nUnused2, int nUnused3, int nUnused4, int nUnused5, int nUnused6, int nUnused7); // 0x0052BE90
 
-void __stdcall NET_DefaultUpdateCharacterLadder(int nUnused1, int nUnused2, int nUnused3, int nUnused4, int nUnused5);
+void __stdcall NET_DefaultUpdateCharacterLadder(int nUnused1, int nUnused2, int nUnused3, int nUnused4, int nUnused5); // 0x0052BED0
 
 // 0x0052BEF0
 void __cdecl GAME_DefaultGetGameServerInfo()
@@ -2947,8 +2925,7 @@ void __fastcall GAME_SaveAndSendClientSaves(D2GameStrc* pGame)
 }
 
 // 0x0052E440
-void __fastcall GAME_SendAllClientPackets(D2GameStrc* pGame)
-{
+void __fastcall GAME_SendAllClientPackets(D2GameStrc* pGame, int nUnused){
     D2ClientStrc* pClient = pGame->pClientList;
     while (pClient)
     {

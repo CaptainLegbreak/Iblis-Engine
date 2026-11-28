@@ -303,13 +303,13 @@ void __cdecl D3DSMACK_UploadSmackFrameBuffer()
     long hResult = gapSmackSurfaces[0]->lpVtbl->Lock(gapSmackSurfaces[0], 0, &tDesc, 0x21, 0);
     if (hResult)
     {
-        D3DCORE_LogDDrawError(gszFailedToLockMemorySurface, hResult);
+        D3DCORE_LogDDrawError("Failed to lock memory surface", hResult);
     }
     sub_006B9EB0_CopyWithAlpha((const unsigned short*)gpFrameBuffer_009897D0, (unsigned char*)tDesc.lpSurface, tDesc.lPitch);
     hResult = gapSmackSurfaces[0]->lpVtbl->Unlock(gapSmackSurfaces[0], 0);
     if (hResult)
     {
-        D3DCORE_LogDDrawError(gszFailedToUnlockMemorySurface, hResult);
+        D3DCORE_LogDDrawError("Failed to unlock memory surface", hResult);
     }
 
     if (!gapSmackSurfaces[1])
@@ -321,13 +321,13 @@ void __cdecl D3DSMACK_UploadSmackFrameBuffer()
     hResult = gapSmackSurfaces[1]->lpVtbl->Lock(gapSmackSurfaces[1], 0, &tDesc, 0x21, 0);
     if (hResult)
     {
-        D3DCORE_LogDDrawError(gszFailedToLockMemorySurface, hResult);
+        D3DCORE_LogDDrawError("Failed to lock memory surface", hResult);
     }
     sub_006B9EB0_CopyWithAlpha((const unsigned short*)(gpFrameBuffer_009897D0 + 0x200), (unsigned char*)tDesc.lpSurface, tDesc.lPitch);
     hResult = gapSmackSurfaces[1]->lpVtbl->Unlock(gapSmackSurfaces[1], 0);
     if (hResult)
     {
-        D3DCORE_LogDDrawError(gszFailedToUnlockMemorySurface, hResult);
+        D3DCORE_LogDDrawError("Failed to unlock memory surface", hResult);
     }
 }
 
@@ -373,7 +373,7 @@ void __fastcall D3DSMACK_DecodeSmacker(const char* szFile, D2SmackRecordStrc* pS
         int nHeight;
         int nDepth;
         const int bDecoded = SBmpDecodeImage(2, pBuffer, nSize, aPalette, aPixels[0], 0x6DB0, &nWidth, &nHeight, &nDepth);
-        SMemFree(pBuffer, gszD3DSmackFile, 0xDA, 0);
+        SMemFree(pBuffer, ".\\Src\\d3dSmack.cpp", 0xDA, 0);
         if (!bDecoded || nWidth != 468 || nHeight != 60 || nDepth != 8)
         {
             break;

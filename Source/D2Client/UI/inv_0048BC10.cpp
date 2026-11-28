@@ -191,7 +191,7 @@ extern D2InvCompGridStrc gaCompGrids[11]; // 0x007BCC58
 
 void __stdcall sub_Z12_EmitUse(int nValue);
 
-void __stdcall INV_UpdateGridHover(D2UnitStrc* pPlayer, D2InventoryStrc* pInventory, D2UnitStrc* pCursorItem, unsigned int nX, unsigned int nY, int nPage, D2InventoryGridInfoStrc* pGrid);
+void __stdcall INV_UpdateGridHover(D2UnitStrc* pPlayer, D2InventoryStrc* pInventory, D2UnitStrc* pCursorItem, unsigned int nX, unsigned int nY, int nPage, D2InventoryGridInfoStrc* pGrid); // 0x00487000
 
 int __fastcall INV_IsInNpcPanelRect(int nX, int nY); // 0x00486E10
 
@@ -364,17 +364,17 @@ extern unsigned short gwszRecipeScrollText[];                                   
 
 static int INV_IsOverGoldButton(int nX, int nY); // 0x00486DA0
 
-void __stdcall INV_NpcPanelMouseMove(SMSGHANDLER_PARAMS* pMsg);
+void __stdcall INV_NpcPanelMouseMove(SMSGHANDLER_PARAMS* pMsg); // 0x00486EF0
 
 static void __stdcall INV_UpdateBodyLocHover(int nBodyLoc, D2UnitStrc* pPlayer, D2InventoryStrc* pInventory);
 
-void __stdcall INV_UpdateInventoryHover(SMSGHANDLER_PARAMS* pMsg);
+void __stdcall INV_UpdateInventoryHover(SMSGHANDLER_PARAMS* pMsg); // 0x004873A0
 
-void __stdcall INV_NpcShopMouseMoveMsg(SMSGHANDLER_PARAMS* pMsg);
+void __stdcall INV_NpcShopMouseMoveMsg(SMSGHANDLER_PARAMS* pMsg); // 0x004889D0
 
 static void INV_SelectButtonByKey(int nKey);
 
-void __cdecl INV_RestoreSelectedShopButton();
+void __cdecl INV_RestoreSelectedShopButton(); // 0x00488F10
 
 static int gbCubeButtonDown; // 0x007BCE40
 
@@ -388,15 +388,15 @@ static int INV_IsOverTradeButtonLeft(int nX, int nY);
 
 static int INV_IsOverTradeButtonRight(int nX, int nY);
 
-void __stdcall INV_TradePanelMsg(SMSGHANDLER_PARAMS* pMsg);
+void __stdcall INV_TradePanelMsg(SMSGHANDLER_PARAMS* pMsg); // 0x00489580
 
 static int INV_IsOverCloseButton(int nX, int nY); // 0x00489920
 
 static int INV_IsOverTransmuteButton(int nX, int nY); // 0x00489980
 
-void __stdcall INV_StashMouseMoveMsg(SMSGHANDLER_PARAMS* pMsg);
+void __stdcall INV_StashMouseMoveMsg(SMSGHANDLER_PARAMS* pMsg); // 0x00489A30
 
-void __stdcall INV_StashClickMsg(SMSGHANDLER_PARAMS* pMsg);
+void __stdcall INV_StashClickMsg(SMSGHANDLER_PARAMS* pMsg); // 0x00489AC0
 
 static void INV_AppendBookCharges(Unicode* pText);
 

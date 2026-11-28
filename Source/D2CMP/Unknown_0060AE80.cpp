@@ -43,7 +43,7 @@ void* __cdecl sub_006829C0_Copy(void* dest,const void* source,unsigned int size)
 
 
 // 0x0060AE80
-static unsigned int sub_0060AE80_GetCelDataHashKey(const char* szName)
+static unsigned int GetCelDataHashKey(const char* szName)
 {
     unsigned int nHash = SStrHash(szName, 1, 0);
     return ((nHash ^ (nHash >> 8)) ^ ((nHash ^ (nHash >> 8)) >> 16)) & 0x1FF;
@@ -51,7 +51,7 @@ static unsigned int sub_0060AE80_GetCelDataHashKey(const char* szName)
 
 unsigned int __fastcall sub_M383_Emit_0060AE80(int nAdd, const char* szName)
 {
-    return sub_0060AE80_GetCelDataHashKey(szName) + nAdd * 3;
+    return GetCelDataHashKey(szName) + nAdd * 3;
 }
 
 // 0x0060B130
@@ -60,14 +60,14 @@ void __cdecl sub_0060B130_Nothing()
 }
 
 // 0x0060B160
-static void __stdcall sub_0060B160_Copy(D2BitBufferInitStrc* dst,const D2BitBufferInitStrc* src) {
+static void __stdcall BitBufferCopy(D2BitBufferInitStrc* dst,const D2BitBufferInitStrc* src) {
  dst->pBuffer=src->pBuffer;
  dst->pCurrent=src->pCurrent;
  dst->nBits=src->nBits;
  dst->nPos=src->nPos;
 }
 
-void __stdcall EmitCopy(D2BitBufferInitStrc* dst,const D2BitBufferInitStrc* src) {sub_0060B160_Copy(dst,src);}
+void __stdcall EmitCopy(D2BitBufferInitStrc* dst,const D2BitBufferInitStrc* src) {BitBufferCopy(dst,src);}
 
 // 0x0060B180
 unsigned char* D2CmpBitCursorStrc::sub_0060B180_GetBytePtr()
@@ -84,13 +84,13 @@ void D2CmpBitCursorStrc::sub_0060B1D0_AlignToByte()
 }
 
 // 0x0060B1F0
-int D2CmpBitCursorStrc::sub_0060B1F0_GetBitPos()
+int D2CmpBitCursorStrc::GetBitPos()
 {
     return (pData - pStart) * 32 + nBitPos;
 }
 
 // 0x0060B140
-static void __stdcall sub_0060B140_BitBufferInit(int nSize, unsigned char* pBuffer, D2BitBufferInitStrc* pBitBuf)
+static void __stdcall BitBufferInit(int nSize, unsigned char* pBuffer, D2BitBufferInitStrc* pBitBuf)
 {
     pBitBuf->pBuffer = pBuffer;
     pBitBuf->pCurrent = pBuffer;
@@ -100,5 +100,5 @@ static void __stdcall sub_0060B140_BitBufferInit(int nSize, unsigned char* pBuff
 
 void __stdcall sub_K13_Emit_0060B140(D2BitBufferInitStrc* pBitBuf, unsigned char* pBuffer, int nSize)
 {
-    sub_0060B140_BitBufferInit(nSize, pBuffer, pBitBuf);
+    BitBufferInit(nSize, pBuffer, pBitBuf);
 }

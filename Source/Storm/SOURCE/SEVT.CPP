@@ -47,7 +47,7 @@ struct SEvtBreakCmdStrc;
 struct D2CriticalSectionStrc;
 struct SEvtLinkStrc;
 
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags);
+int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
 
 struct SEvtLinkStrc
 {

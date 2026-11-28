@@ -319,7 +319,7 @@ static int __stdcall PLRMSG_CheckTargetUnit(int nMaxDistance, D2GameStrc* pGame,
 static inline int PLRMSG_CheckSkillLevel(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID);
 
 
-int __stdcall sub_0063BE30_Return(D2InventoryStrc* pInventory, int nBodyLoc); // 0x0063BE30
+void __stdcall sub_0063BE30_Return(D2InventoryStrc* pInventory, int nBodyLoc); // 0x0063BE30
 
 
 static int __stdcall PLRMSG_TakeMercItemToCursor(D2GameStrc* pGame, D2UnitStrc* pMerc, D2UnitStrc* pPlayer, int nBodyLoc);
@@ -330,7 +330,7 @@ int __stdcall STATLIST_GetListExpireFrame(D2StatListStrc* pStatList); // 0x00626
 
 static unsigned char PLRMSG_GetPotionLifePercent(D2UnitStrc* pUnit);
 
-int __stdcall sub_0055E9A0_Return0(int nUnused1, int nUnused2); // 0x0055E9A0
+int __fastcall sub_0055E9A0_Return0(D2GameStrc* pGame, D2UnitStrc* pUnit, int nItemGUID, int* pItemStatus); // 0x0055E9A0
 
 int __fastcall OBJMODE_OperateObjectInRange(D2GameStrc* pGame, D2UnitStrc* pUnit, unsigned short nObjectType, int nObjectGUID); // 0x00584540
 
@@ -3557,7 +3557,7 @@ int __fastcall D2GAME_PACKETCALLBACK_Rcv0x35_Repair(D2GameStrc* pGame, D2UnitStr
         return 3;
     }
 
-    D2GAME_NPC_Repair(pGame, pUnit, pPacket35->nNpcGUID, pPacket35->nItemGUID, pPacket35->unk0x09, pPacket35->unk0x0D);
+    D2GAME_NPC_Repair(pGame, pUnit, pPacket35->nNpcGUID, pPacket35->nItemGUID, pPacket35->nItemMode, pPacket35->nRepairFlags);
     return 0;
 }
 

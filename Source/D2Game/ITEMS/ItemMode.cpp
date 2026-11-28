@@ -402,7 +402,7 @@ static void __stdcall ITEMMODE_UpdateEquippedItemStats(D2GameStrc* pGame, D2Unit
 
 void __fastcall QUESTS_SendLogUpdate(D2UnitStrc*, int); // 0x005458E0
 
-void __fastcall D2GAME_PACKETS_SendPacketSize06(D2ClientStrc*, unsigned char, int, int); // 0x0053B3D0
+void __fastcall D2GAME_PACKETS_SendPacketSize06(D2ClientStrc* pClient, unsigned char nHeader, int dwUnitType, int dwUnitId); // 0x0053B3D0
 
 
 void __stdcall QUESTRECORD_ClearQuestState(D2BitBufferStrc*, int, int); // 0x0065C3A0
@@ -2089,8 +2089,7 @@ void __stdcall sub_0055D920_Nop()
 }
 
 // 0x0055D930
-void __stdcall sub_0055D930_Nop(int nUnused1)
-{
+void __fastcall sub_0055D930_Nop(D2UnitStrc* pUnit, D2UnitStrc* pItem, int nUnused){
 }
 
 // 0x0055D940
@@ -2321,8 +2320,7 @@ void __fastcall ITEMMODE_IdentifyItemAndApplyCharmProperties(D2GameStrc* pGame, 
 }
 
 // 0x0055FE60
-void __stdcall D2GAME_ITEMS_UpdateStatList(D2UnitStrc* pItem)
-{
+void __fastcall D2GAME_ITEMS_UpdateStatList(D2GameStrc* pGame, D2UnitStrc* pSocketable, D2UnitStrc* pItem){
     sITEMSAddStatsList(pItem, 0);
 }
 
@@ -3247,8 +3245,7 @@ static void __stdcall ITEMMODE_InitItemDropFromItem(int nId, D2GameStrc* pGame, 
 }
 
 // 0x0055E9A0
-int __stdcall sub_0055E9A0_Return0(int nUnused1, int nUnused2)
-{
+int __fastcall sub_0055E9A0_Return0(D2GameStrc* pGame, D2UnitStrc* pUnit, int nItemGUID, int* pItemStatus){
     return 0;
 }
 
@@ -3853,8 +3850,7 @@ int __fastcall ITEMMODE_ResolveBodySlotPair(D2UnitStrc* pUnit, D2UnitStrc* pItem
 }
 
 // 0x0055F4F0
-void __stdcall sub_0055F4F0_Nop(int nUnused1)
-{
+void __fastcall sub_0055F4F0_Nop(D2GameStrc* pGame, D2UnitStrc* pUnit, int nUnused){
 }
 
 static __forceinline int PlaceIntoInventory(Game* game, Unit* player, int itemId, int line)

@@ -276,7 +276,7 @@ int __fastcall PARTY_AddPlayerToParty(D2GameStrc* pGame, short nPartyId, D2UnitS
         {
             return 1;
         }
-        D2PartyNodeStrc* ptNode = (D2PartyNodeStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2PartyNodeStrc), gszPartySourceFile, 264, 0);
+        D2PartyNodeStrc* ptNode = (D2PartyNodeStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2PartyNodeStrc), ".\\UNIT\\Party.cpp", 264, 0);
         D2_ASSERT(ptNode, 265);
         const D2PartyNodeStrc tZeroNode = {};
         *ptNode = tZeroNode;

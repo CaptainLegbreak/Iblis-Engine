@@ -149,5 +149,5 @@ short __fastcall GLFLOORCACHE_FloorCacheAdd(D2GlideFloorCacheStrc* pCache); // 0
 void __cdecl GLBLOCKS_InitBlockBuffers(); // 0x0050F870
 void __cdecl GLBLOCKS_FreeBlockBuffers(); // 0x0050F8C0
 int __fastcall GLTEXTURECACHE_BindFloorTexture(void* pTile); // 0x0050FAD0
-void __stdcall GLFLOORCACHE_ReleaseTileCache(); // 0x0050FCB0
+void __fastcall GLFLOORCACHE_ReleaseTileCache(D2TileLibraryEntryStrc* pTile); // 0x0050FCB0
 void __fastcall sub_0050FDF0_GlidePlaySmacker(const char* szFile, int nResolutionMode, void* pfFrame); // 0x0050FDF0

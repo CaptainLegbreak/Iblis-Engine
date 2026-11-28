@@ -422,26 +422,6 @@ typedef D2UnitStrc* (__fastcall* AITARGETCALLBACK)(D2GameStrc*, D2UnitStrc*, D2U
 
 typedef void (__fastcall* AIPARAMFN)(D2GameStrc*, D2UnitStrc*, D2AiTickParamStrc*);
 
-struct SynCoord;
-
-struct SynStatic;
-
-struct SynUnit;
-
-struct SynCoord
-{
-    int nX;
-    int nY;
-};
-
-struct SynStatic
-{
-    char unk0[0x0C];
-    SynCoord tGameCoords;
-};
-
-struct SynUnit { int dwUnitType; char unk4[0x28]; union { SynStatic* pStaticPath; D2DynamicPathStrc* pDynamicPath; }; };
-
 
 static D2UnitStrc* __stdcall MISSMODE_CreateMissileWithCollisionCheck(D2GameStrc* pGame, int nRange, int nMissileId, unsigned short nMask, D2UnitStrc* pMissile, int nRate); // 0x005A9820
 
@@ -3031,9 +3011,9 @@ static inline D2MissilesTxt* CLTMISS_GetMissilesTxtRecord(int nMissileId)
     return 0;
 }
 
-void __fastcall MISSILE_InitFromOwner(D2UnitStrc* pMissile, int nInitArg);
+void __fastcall MISSILE_InitFromOwner(D2UnitStrc* pMissile, int nInitArg); // 0x004CC870
 
-int __fastcall MISSILE_CltHitFlagOwner(D2UnitStrc* pMissile, D2UnitStrc* pUnit);
+int __fastcall MISSILE_CltHitFlagOwner(D2UnitStrc* pMissile, D2UnitStrc* pUnit); // 0x004CCCA0
 
 // 0x005AD910
 int __fastcall MISSMODE_RadamentDeathAreaEffectCallbackFirstFrame(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pCorpse, int nSkillLevel, int nUnused)
@@ -3054,7 +3034,7 @@ static inline void MISSMODE_BaalFxOpenPortal(D2GameStrc* pGame, D2UnitStrc* pMis
     DUNGEON_ToggleHasPortalFlag(pRoom, 1);
 }
 
-int __fastcall MISSILE_CltHitClearGlobals(D2UnitStrc* pMissile, D2UnitStrc* pUnit);
+int __fastcall MISSILE_CltHitClearGlobals(D2UnitStrc* pMissile, D2UnitStrc* pUnit); // 0x004CCF00
 
 // 0x005AD970
 int __fastcall MISSMODE_SrvHit57_BaalFxControl(D2GameStrc* pGame, D2UnitStrc* pMissile, D2UnitStrc* pUnit)
@@ -5921,33 +5901,6 @@ int __fastcall MISSMODE_SrvDo01_BasicMissile(D2GameStrc* pGame, D2UnitStrc* pMis
 }
 
 struct D2LevelsTxt;
-
-static inline int synh_GetUnitX(SynUnit* pUnit)
-{
-    switch (pUnit->dwUnitType)
-    {
-    case UNIT_OBJECT:
-    case UNIT_ITEM:
-    case UNIT_TILE:
-        return pUnit->pStaticPath->tGameCoords.nX;
-    default:
-        return pUnit->pDynamicPath ? PATH_GetXPosition(pUnit->pDynamicPath) : 0;
-    }
-}
-
-static inline int synh_GetUnitY(SynUnit* pUnit)
-{
-    switch (pUnit->dwUnitType)
-    {
-    case UNIT_OBJECT:
-    case UNIT_ITEM:
-    case UNIT_TILE:
-        return pUnit->pStaticPath->tGameCoords.nY;
-    default:
-        return pUnit->pDynamicPath ? PATH_GetYPosition(pUnit->pDynamicPath) : 0;
-    }
-}
-
 
 // calling-convention shim (not game code)
 int __fastcall sub_005ADA80_Shim(D2UnitStrc* pMissile)

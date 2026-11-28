@@ -76,7 +76,7 @@ void __fastcall NPCMENU_ClearUnicode(Unicode* pChar);                           
 void __stdcall sub_00403040_VectorConstructor(void* pArray, unsigned int nSize, int nCount, void (__fastcall* pfnConstructor)(Unicode*)); // 0x00403040
 void __fastcall INV_PrefixColorCode(Unicode* wszText, int nLevel);                                // 0x004521C0
 int __fastcall DATATBLS_ApplyRatio(int nValue, int nMultiplier, int nDivisor);                              // 0x00483360
-D2UnitStrc* __cdecl CUNIT_GetPlayerUnit();                                                               // 0x00463DD0
+D2UnitStrc* __cdecl CUNIT_GetPlayerUnit(); // 0x00463DD0
 int __cdecl GAME_GetLadderFlag();                                                                     // 0x0044DCA0
 int __cdecl GAME_IsExpansion(); // 0x0044DCC0
 unsigned char __cdecl GAME_GetDifficulty();                                                         // 0x0044DCD0

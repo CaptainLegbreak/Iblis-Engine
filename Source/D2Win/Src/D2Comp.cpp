@@ -1233,7 +1233,7 @@ void* __stdcall D2COMP_CompileTxt(void* hArchive, const char* szName, D2BinField
     if (gbD2WinBinMode)
     {
         char szFilename[260];
-        wsprintfA(szFilename, "%s\\%s%s", gszExcelDirectory, szName, gszBinExtension);
+        wsprintfA(szFilename, "%s\\%s%s", gszExcelDirectory, szName, ".bin");
         pFileData = sub_00517079_LoadFile(hArchive, szFilename, &nFileSize, ".\\Src\\D2Comp.cpp", 0x958);
     }
     else if (!_stricmp(szName, "leveldefs"))
@@ -1279,26 +1279,26 @@ void __fastcall D2COMP_LoadItems(void* hArchive)
     D2BinFieldStrc aItemsFields[] =
     {
         { gszTxtField_version, 3, 0, 0xF6, 0 },
-        { gszItemsFieldType, 0xF, 0, 0x11E, &gpCompItemTypesLinker },
-        { gszItemTypesFieldCode, 9, 0, 0x80, 0 },
-        { gszItemsFieldAlternateGfx, 9, 0, 0x90, 0 },
-        { gszItemsFieldSpawnable, 4, 0, 0x133, 0 },
-        { gszItemsFieldLevel, 4, 0, 0xFD, 0 },
-        { gszItemsFieldComponent, 4, 0, 0x115, 0 },
-        { gszItemsFieldWClass, 9, 0, 0xC0, 0 },
-        { gszItemsField2HandedWClass, 9, 0, 0xC4, 0 },
-        { gszItemsField1or2Handed, 6, 0, 0x13D, 0 },
-        { gszItemsFieldTransform, 4, 0, 0x141, 0 },
+        { "type", 0xF, 0, 0x11E, &gpCompItemTypesLinker },
+        { "code", 9, 0, 0x80, 0 },
+        { "alternategfx", 9, 0, 0x90, 0 },
+        { "spawnable", 4, 0, 0x133, 0 },
+        { "level", 4, 0, 0xFD, 0 },
+        { "component", 4, 0, 0x115, 0 },
+        { "wclass", 9, 0, 0xC0, 0 },
+        { "2handedwclass", 9, 0, 0xC4, 0 },
+        { "1or2handed", 6, 0, 0x13D, 0 },
+        { "Transform", 4, 0, 0x141, 0 },
         { gszTxtField_end, 0, 0, 0, 0 },
     };
 
-    D2ItemsTxt* pWeapons = (D2ItemsTxt*)D2COMP_CompileTxt(hArchive, gszItemsTableWeapons, aItemsFields, &gnCompWeaponsTxtRecordCount, sizeof(D2ItemsTxt));
-    D2ItemsTxt* pArmor = (D2ItemsTxt*)D2COMP_CompileTxt(hArchive, gszItemsTableArmor, aItemsFields, &gnCompArmorTxtRecordCount, sizeof(D2ItemsTxt));
-    D2ItemsTxt* pMisc = (D2ItemsTxt*)D2COMP_CompileTxt(hArchive, gszItemsTableMisc, aItemsFields, &gnCompMiscTxtRecordCount, sizeof(D2ItemsTxt));
+    D2ItemsTxt* pWeapons = (D2ItemsTxt*)D2COMP_CompileTxt(hArchive, "weapons", aItemsFields, &gnCompWeaponsTxtRecordCount, sizeof(D2ItemsTxt));
+    D2ItemsTxt* pArmor = (D2ItemsTxt*)D2COMP_CompileTxt(hArchive, "armor", aItemsFields, &gnCompArmorTxtRecordCount, sizeof(D2ItemsTxt));
+    D2ItemsTxt* pMisc = (D2ItemsTxt*)D2COMP_CompileTxt(hArchive, "misc", aItemsFields, &gnCompMiscTxtRecordCount, sizeof(D2ItemsTxt));
 
     gnItemsTotalCount = gnCompArmorTxtRecordCount + gnCompMiscTxtRecordCount + gnCompWeaponsTxtRecordCount;
 
-    gpCompItemsTxt = (D2ItemsTxt*)FOG_AllocPool(0, gnItemsTotalCount * sizeof(D2ItemsTxt), gszD2CompSourceFile, 0xA34, 0);
+    gpCompItemsTxt = (D2ItemsTxt*)FOG_AllocPool(0, gnItemsTotalCount * sizeof(D2ItemsTxt), ".\\Src\\D2Comp.cpp", 0xA34, 0);
     D2ItemsTxt* pItems = gpCompItemsTxt;
     gpCompWeaponsTxt = gpCompItemsTxt;
     memcpy(gpCompItemsTxt, pWeapons, gnCompWeaponsTxtRecordCount * sizeof(D2ItemsTxt));
@@ -1309,11 +1309,11 @@ void __fastcall D2COMP_LoadItems(void* hArchive)
     gpCompMiscTxt = pItems;
     memcpy(pItems, pMisc, gnCompMiscTxtRecordCount * sizeof(D2ItemsTxt));
 
-    FOG_FreePool(0, (char*)pWeapons - 4, gszD2CompSourceFile, 0xA44, 0);
-    FOG_FreePool(0, (char*)pArmor - 4, gszD2CompSourceFile, 0xA45, 0);
-    FOG_FreePool(0, (char*)pMisc - 4, gszD2CompSourceFile, 0xA46, 0);
+    FOG_FreePool(0, (char*)pWeapons - 4, ".\\Src\\D2Comp.cpp", 0xA44, 0);
+    FOG_FreePool(0, (char*)pArmor - 4, ".\\Src\\D2Comp.cpp", 0xA45, 0);
+    FOG_FreePool(0, (char*)pMisc - 4, ".\\Src\\D2Comp.cpp", 0xA46, 0);
 
-    gpItemsVersion0Index = (unsigned short*)FOG_AllocPool(0, gnItemsTotalCount * sizeof(unsigned short), gszD2CompSourceFile, 0xA4B, 0);
+    gpItemsVersion0Index = (unsigned short*)FOG_AllocPool(0, gnItemsTotalCount * sizeof(unsigned short), ".\\Src\\D2Comp.cpp", 0xA4B, 0);
     memset(gpItemsVersion0Index, 0, gnItemsTotalCount * sizeof(unsigned short));
 
     int i = 0;
@@ -1333,7 +1333,7 @@ void __fastcall D2COMP_LoadItems(void* hArchive)
         while (i < gnItemsTotalCount);
     }
 
-    gpCompItemsLinker = FOG_AllocLinker(gszD2CompSourceFile, 0xA56);
+    gpCompItemsLinker = FOG_AllocLinker(".\\Src\\D2Comp.cpp", 0xA56);
     for (int i = 0; i < gnItemsTotalCount; ++i)
     {
         sub_006BD230_AddLinkCode(gpCompItemsLinker, gpCompItemsTxt[i].dwCode);
@@ -1345,14 +1345,14 @@ void __fastcall D2COMP_LoadItemTypes(void* hArchive)
 {
     D2BinFieldStrc aItemTypesFields[] =
     {
-        { gszItemTypesFieldCode, 0xA, 0, 0, &gpCompItemTypesLinker },
-        { gszItemTypesFieldEquiv1, 0xF, 0, 4, &gpCompItemTypesLinker },
-        { gszItemTypesFieldEquiv2, 0xF, 0, 6, &gpCompItemTypesLinker },
+        { "code", 0xA, 0, 0, &gpCompItemTypesLinker },
+        { "equiv1", 0xF, 0, 4, &gpCompItemTypesLinker },
+        { "equiv2", 0xF, 0, 6, &gpCompItemTypesLinker },
         { gszTxtField_end, 0, 0, 0, 0 },
     };
 
     gpCompItemTypesLinker = FOG_AllocLinker(".\\Src\\D2Comp.cpp", 0xA97);
-    gpCompItemTypesTxt = D2COMP_CompileTxt(hArchive, gszItemTypesTable, aItemTypesFields, &gnCompItemTypesTxtRecordCount, 0xE4);
+    gpCompItemTypesTxt = D2COMP_CompileTxt(hArchive, "itemtypes", aItemTypesFields, &gnCompItemTypesTxtRecordCount, 0xE4);
 }
 
 // 0x005049D0
@@ -2254,11 +2254,11 @@ next:
 // 0x005066C0
 D2CompositeUnitStrc* __stdcall D2COMP_CreateCompositeUnit(unsigned int nUnitIndex, unsigned int nMode, unsigned char* pComponents, const unsigned char* pComponentColors)
 {
-    D2CompositeUnitStrc* ptNewUnit = (D2CompositeUnitStrc*)FOG_Alloc(sizeof(D2CompositeUnitStrc), gszD2CompSourceFile, 0xC70, 0);
+    D2CompositeUnitStrc* ptNewUnit = (D2CompositeUnitStrc*)FOG_Alloc(sizeof(D2CompositeUnitStrc), ".\\Src\\D2Comp.cpp", 0xC70, 0);
     D2_ASSERT(ptNewUnit, 0xC71);
     memset(ptNewUnit, 0, sizeof(D2CompositeUnitStrc));
 
-    D2GfxInfoStrc* ptGfxInfo = (D2GfxInfoStrc*)FOG_Alloc(sizeof(D2GfxInfoStrc), gszD2CompSourceFile, 0x866, 0);
+    D2GfxInfoStrc* ptGfxInfo = (D2GfxInfoStrc*)FOG_Alloc(sizeof(D2GfxInfoStrc), ".\\Src\\D2Comp.cpp", 0x866, 0);
     D2_ASSERT(ptGfxInfo, 0x867);
     ptGfxInfo->pCofInfo = 0;
     ptNewUnit->pGfxInfo = ptGfxInfo;

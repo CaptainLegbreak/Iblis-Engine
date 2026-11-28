@@ -1050,7 +1050,7 @@ void __fastcall ACT2Q3_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2Q
 
             if (pQuestData->fState == 1)
             {
-                QUESTS_StateDebug(pQuestData, 2, gszA2Q3SourceFile, 0xCD);
+                QUESTS_StateDebug(pQuestData, 2, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a2q3.cpp", 0xCD);
                 SUNIT_IterateUnitsOfType(pQuestData->pGame, 0, 0, ACT2Q3_UnitIterate_UpdateQuestStateFlags);
             }
         }
@@ -1079,7 +1079,7 @@ void __fastcall ACT2Q3_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2Q
         {
             pQuestData->nStatusFlags = 0;
             QUESTS_UnitIterate(pQuestData, 13, 0, ACT2Q3_UnitIterate_StatusCyclerEx, 0);
-            QUESTS_StateDebug(pQuestData, 5, gszA2Q3SourceFile, 0xDC);
+            QUESTS_StateDebug(pQuestData, 5, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a2q3.cpp", 0xDC);
             if (IsBadCodePtr((FARPROC)pQuestData->pfSeqFilter))
             {
                 FOG_DisplayHalt("", sub_00408090(), 0xDD);

@@ -344,7 +344,7 @@ extern const char gszGfxFile[];                                                 
 extern int gnScreenWidth;                                                                               // 0x0071146C
 int __cdecl GAME_GetColorFlag();                                                                                 // 0x0044DC60
 int __cdecl sub_0045AE90_GetPanelSlideMode();                                                                         // 0x0045AE90
-D2UnitStrc* __cdecl CUNIT_GetPlayerUnit();                                                               // 0x00463DD0
+D2UnitStrc* __cdecl CUNIT_GetPlayerUnit(); // 0x00463DD0
 int __fastcall CUNIT_TickDrawDelay(D2UnitStrc* pUnit);                                          // 0x00464C40
 D2UnitStrc* __cdecl SELECT_GetSelectedUnit();                                                             // 0x00467A10
 D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId);                                    // 0x0046ACE0
@@ -597,13 +597,6 @@ static inline void GFX_ResetGfxBytes20(D2UnitStrc* pUnit); // 0x0046EA80
 static inline void GFX_ResetGfxBytes16(D2UnitStrc* pUnit); // 0x0046EAA0
 
 static inline void GFX_ResetGfxBytes8(D2UnitStrc* pUnit); // 0x0046EB50
-
-void __fastcall sub_M113_Emit_0046EA80(D2UnitStrc* pUnit)
-{
-    GFX_ResetGfxBytes20(pUnit);
-    GFX_ResetGfxBytes16(pUnit);
-    GFX_ResetGfxBytes8(pUnit);
-}
 
 inline int STATES_IsUnitShapeShiftedInl(D2UnitStrc* pUnit)
 {
@@ -2465,22 +2458,13 @@ void __fastcall GFX_ClearGfxBytes(D2UnitStrc* pUnit, int nIndex)
     switch (GFX_GetConvertedUnitType(pUnit))
     {
     case 0:
-        for (unsigned int i = 0; i < GFX_ENTRY_COUNT; ++i)
-        {
-            GFXUTIL_SetGfxEntryByte(pUnit, i, 0);
-        }
+        GFX_ResetGfxBytes20(pUnit);
         break;
     case 1:
-        for (int i = 0; i < GFX_INDEX_COUNT; ++i)
-        {
-            GFXUTIL_SetGfxEntryByte(pUnit, i, 0);
-        }
+        GFX_ResetGfxBytes16(pUnit);
         break;
     case 2:
-        for (int i = 0; i < 8; ++i)
-        {
-            GFXUTIL_SetGfxEntryByte(pUnit, i, 0);
-        }
+        GFX_ResetGfxBytes8(pUnit);
         break;
     default:
         D2_ASSERT(0, 0xD3E);

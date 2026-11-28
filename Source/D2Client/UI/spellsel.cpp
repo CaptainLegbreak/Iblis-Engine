@@ -885,12 +885,6 @@ static int __stdcall SPELLSEL_IsMouseInRect(int nX, int nWidth, int nY, int nHei
 // static the register arguments it has there
 void __stdcall sub_K05_EmitUse(int nValue);
 
-void __fastcall sub_K05_EmitMouseInRect(int nX, int nY)
-{
-    sub_K05_EmitUse(SPELLSEL_IsMouseInRect(nX, 0x30, nY, 0x30));
-    sub_K05_EmitUse(SPELLSEL_IsMouseInRect(nX + 0x30, 0x30, nY, 0x30));
-}
-
 // 0x004A8DF0
 void __fastcall SPELLSEL_DrawKeyLabel(int nKeyId, int nX, int nY, int nColor)
 {
@@ -996,10 +990,8 @@ void __fastcall SPELLSEL_DrawSkillInfoBase(void* cell,D2SkillsTxt* skills,int ow
  if(id>=0 && id<sgptDataTables->nSkillDescTxtRecordCount)desc=&sgptDataTables->pSkillDescTxt[id];else desc=0;
  if(!desc)return;
  int frame=desc->nIconCel;
- int mouseX=sub_00468730();
- int mouseY=sub_00468740();
  int drawState;
- if(mouseX>=x && mouseX<=x+48 && mouseY>=y-48 && mouseY<=y) {
+ if(SPELLSEL_IsMouseInRect(x, 48, y, 48)) {
   if(state==0)drawState=0;
   else if(state==1)drawState=1;
   else drawState=state==4?4:1;

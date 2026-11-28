@@ -540,21 +540,21 @@ static void __stdcall OBJMODE_DamagePlayersInRange(D2GameStrc* pGame, D2UnitStrc
 
 void __fastcall OBJMODE_UpdateTrapProximity(D2GameStrc* pGame, D2UnitStrc* pObject);
 
-void __fastcall sub_0045D0A0_UnitPacketNop(D2UnitStrc* pUnit, const unsigned char* pPacket);
+void __fastcall sub_0045D0A0_UnitPacketNop(D2UnitStrc* pUnit, const unsigned char* pPacket); // 0x0045D0A0
 
-void __fastcall sub_0045D0B0_UnitPacketNop(D2UnitStrc* pUnit, const unsigned char* pPacket);
+void __fastcall sub_0045D0B0_UnitPacketNop(D2UnitStrc* pUnit, const unsigned char* pPacket); // 0x0045D0B0
 
-void __fastcall sub_0045D0C0_UnitPacketNop(D2UnitStrc* pUnit, const unsigned char* pPacket);
+void __fastcall sub_0045D0C0_UnitPacketNop(D2UnitStrc* pUnit, const unsigned char* pPacket); // 0x0045D0C0
 
-void __fastcall sub_0045D0D0_UnitPacketNop(D2UnitStrc* pUnit, const unsigned char* pPacket);
+void __fastcall sub_0045D0D0_UnitPacketNop(D2UnitStrc* pUnit, const unsigned char* pPacket); // 0x0045D0D0
 
-void __fastcall sub_0045D0E0_UnitPacketNop(D2UnitStrc* pUnit, const unsigned char* pPacket);
+void __fastcall sub_0045D0E0_UnitPacketNop(D2UnitStrc* pUnit, const unsigned char* pPacket); // 0x0045D0E0
 
-void __fastcall sub_0045D130_PacketNop(const unsigned char* pPacket);
+void __fastcall sub_0045D130_PacketNop(const unsigned char* pPacket); // 0x0045D130
 
-void __fastcall sub_0045D140_PacketNop(const unsigned char* pPacket);
+void __fastcall sub_0045D140_PacketNop(const unsigned char* pPacket); // 0x0045D140
 
-void __fastcall sub_0045D150_PacketNop(const unsigned char* pPacket);
+void __fastcall sub_0045D150_PacketNop(const unsigned char* pPacket); // 0x0045D150
 
 inline void SetUnitFlagMask(D2UnitStrc* pUnit, unsigned int nFlag)
 {

@@ -574,7 +574,7 @@ void __cdecl sub_006B8F10_CreateGridVertexBuffer()
     long result = gGraphics->CreateVertexBuffer(&description, &gGridBuffer, 4, 0);
     if (result)
     {
-        D3DCORE_ShowD3DError(gCreateFailure, result);
+        D3DCORE_ShowD3DError("CreateVertexBuffer failed!", result);
         return;
     }
 

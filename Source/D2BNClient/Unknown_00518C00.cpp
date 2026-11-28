@@ -75,7 +75,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x00
 
 extern "C" __declspec(dllimport) int __stdcall SystemTimeToFileTime(const D2SystemTimeStrc* pSystemTime, void* pFileTime); // 0x006CC26C
 
-int __cdecl sub_0051C470_CloseBNetConnection();
+int __cdecl sub_0051C470_CloseBNetConnection(); // 0x0051C470
 
 int gnLogonType; // 0x008818C0
 

@@ -314,46 +314,21 @@ int __fastcall SKILLS_SrvSt27_DragonTail(D2GameStrc* pGame, D2UnitStrc* pUnit, i
 
 struct D2ActiveRoomStrc;
 
-struct Skills;
+int __stdcall SKILLS_GetParam1(D2SkillStrc* pSkill); // 0x006444A0
 
-struct Unit
-{
-    char pad0[0xC4];
-    unsigned flags;
-};
+int __stdcall SKILLS_GetParam2(D2SkillStrc* pSkill); // 0x006444D0
 
-struct Skills
-{
-    char pad0[0xE6];
-    short overlay;
-    char padE8[0x154];
-};
+int __stdcall SKILLS_GetParam3(D2SkillStrc* pSkill); // 0x00644500
 
-struct Tables
-{
-    char pad0[0xB98];
-    Skills* skills;
-    void* linker;
-    int skillCount;
-    char padBA4[0x1C];
-    int overlayCount;
-};
+int __stdcall SKILLS_GetParam4(D2SkillStrc* pSkill); // 0x00644530
 
-int __stdcall SKILLS_GetParam1(Skill*); // 0x006444A0
+D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
 
-int __stdcall SKILLS_GetParam2(Skill*); // 0x006444D0
+D2UnitStrc* __fastcall D2GAME_SpawnMonster(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nX, int nY, int nMonsterId, int nAnimMode, int nMaxSearchRings, short nFlags); // 0x005B2F20
 
-int __stdcall SKILLS_GetParam3(Skill*); // 0x00644500
+void __stdcall UNITS_StoreOwner(D2UnitStrc* pUnit, D2UnitStrc* pOwner); // 0x00621CE0
 
-int __stdcall SKILLS_GetParam4(Skill*); // 0x00644530
-
-Room* __fastcall sub_00463740(Room*,int,int); // 0x00463740
-
-Unit* __fastcall D2GAME_SpawnMonster(Game*,Room*,int,int,int,int,int,int); // 0x005B2F20
-
-void __stdcall UNITS_StoreOwner(Unit*,Unit*); // 0x00621CE0
-
-void __stdcall UNITS_SetOverlay(Unit*,int,int); // 0x00621E40
+void __stdcall UNITS_SetOverlay(D2UnitStrc* pUnit, int nOverlay, int nUnused); // 0x00621E40
 
 enum { MINION_FLAGS = 0x4020000 };
 
@@ -595,33 +570,47 @@ int __fastcall SKILLS_SrvSt62_MinionSpawner(D2GameStrc* pGame, D2UnitStrc* pUnit
     return 1;
 }
 
-inline Skills* GetSkills(int skillId)
-{
-    if(skillId>=0 && skillId<tables->skillCount) return &tables->skills[skillId];
-    return 0;
-}
-
 // 0x005D2490
-int __fastcall SKILLS_SrvDo135_MinionSpawner(Game* game,Unit* unit,int skillId,int level)
+int __fastcall SKILLS_SrvDo135_MinionSpawner(D2GameStrc* pGame, D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
 {
-    Skills* record=GetSkills(skillId);
-    if(!record) return 0;
-    Skill* skill=sub_00620250(unit);
-    if(!skill) return 0;
-    int monsterId=SKILLS_GetParam1(skill);
-    int x=SKILLS_GetParam2(skill);
-    int y=SKILLS_GetParam3(skill);
-    int mode=SKILLS_GetParam4(skill);
-    Room* room=sub_00463740(sub_00620BB0(unit),x,y);
-    if(!room) return 0;
-    Unit* monster=D2GAME_SpawnMonster(game,room,x,y,monsterId,mode,-1,0);
-    if(!monster) {
-        monster=D2GAME_SpawnMonster(game,room,x,y,monsterId,mode,4,0);
-        if(!monster) return 0;
+    D2SkillsTxt* pSkillsTxtRecord = SKILLS_GetSkillsTxtRecord(nSkillId);
+    if (!pSkillsTxtRecord)
+    {
+        return 0;
     }
-    monster->flags |= MINION_FLAGS;
-    UNITS_StoreOwner(monster,unit);
-    if(record->overlay>=0 && record->overlay<tables->overlayCount) UNITS_SetOverlay(monster,record->overlay,0);
+
+    D2SkillStrc* pSkill = UNITS_GetUsedSkill(pUnit);
+    if (!pSkill)
+    {
+        return 0;
+    }
+
+    const int nMonsterId = SKILLS_GetParam1(pSkill);
+    const int nX = SKILLS_GetParam2(pSkill);
+    const int nY = SKILLS_GetParam3(pSkill);
+    const int nAnimMode = SKILLS_GetParam4(pSkill);
+    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+    if (!pRoom)
+    {
+        return 0;
+    }
+
+    D2UnitStrc* pMonster = D2GAME_SpawnMonster(pGame, pRoom, nX, nY, nMonsterId, nAnimMode, -1, 0);
+    if (!pMonster)
+    {
+        pMonster = D2GAME_SpawnMonster(pGame, pRoom, nX, nY, nMonsterId, nAnimMode, 4, 0);
+        if (!pMonster)
+        {
+            return 0;
+        }
+    }
+
+    pMonster->dwFlags |= MINION_FLAGS;
+    UNITS_StoreOwner(pMonster, pUnit);
+    if (pSkillsTxtRecord->wSumOverlay >= 0 && pSkillsTxtRecord->wSumOverlay < sgptDataTables->nOverlayTxtRecordCount)
+    {
+        UNITS_SetOverlay(pMonster, pSkillsTxtRecord->wSumOverlay, 0);
+    }
     return 1;
 }
 
@@ -908,26 +897,14 @@ int __fastcall D2GAME_SKILLS_BloodMana(D2UnitStrc* pUnit, int nManaCost)
         D2SkillsTxt* pSkillsTxtRecord = SKILLS_GetSkillsTxtRecord(nSkillId);
         if (STATLIST_UnitGetStatValue(pUnit, STAT_HITPOINTS, 0) < (pSkillsTxtRecord->dwParam[4] << 8))
         {
-            pStatList = STATLIST_GetStatListFromUnitAndState(pUnit, STATE_BLOOD_MANA);
-            if (pStatList)
-            {
-                D2Common_10474(pUnit, pStatList);
-                STATLIST_FreeStatList(pStatList);
-            }
+            SKILLS_RemoveBloodManaState(pUnit);
         }
         return 1;
     }
-    pStatList = STATLIST_GetStatListFromUnitAndState(pUnit, STATE_BLOOD_MANA);
-    if (pStatList)
-    {
-        D2Common_10474(pUnit, pStatList);
-        STATLIST_FreeStatList(pStatList);
-    }
+    SKILLS_RemoveBloodManaState(pUnit);
     STATLIST_SetUnitStat(pUnit, STAT_HITPOINTS, 256, 0);
     return 0;
 }
-
-void __stdcall sub_M121_Emit_005D2B40(D2UnitStrc* pUnit) { SKILLS_RemoveBloodManaState(pUnit); }
 
 static inline int CLIENTS_GetUnitXForceInline(D2UnitStrc* pUnit)
 {

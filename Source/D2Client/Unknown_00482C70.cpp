@@ -822,7 +822,7 @@ extern char gszClientCharName[];                                                
 void INV_DrawSlotFrame(D2InvCompGridStrc* pCompGrid, int nColor); // 0x00483A70
 
 
-int __cdecl INV_GetPanelY();
+int __cdecl INV_GetPanelY(); // 0x00486B00
 
 
 void __stdcall sub_E05_Emit_00486E60(SMSGHANDLER_PARAMS* pMsg); // 0x00486E60
@@ -857,7 +857,7 @@ int __cdecl sub_E05_Emit_00489FB0(int nX, int nY); // 0x00489FB0
 
 
 
-void __cdecl INV_SetupPanelButtons();
+void __cdecl INV_SetupPanelButtons(); // 0x00487ED0
 
 
 
@@ -1005,7 +1005,7 @@ const Unicode* __fastcall CMDTBL_GetKeyText(int nKey, int nArg2);               
 
 
 
-void __stdcall INV_UpdateGridHover(D2UnitStrc* pPlayer, D2InventoryStrc* pInventory, D2UnitStrc* pCursorItem, unsigned int nX, unsigned int nY, int nPage, D2InventoryGridInfoStrc* pGrid);
+void __stdcall INV_UpdateGridHover(D2UnitStrc* pPlayer, D2InventoryStrc* pInventory, D2UnitStrc* pCursorItem, unsigned int nX, unsigned int nY, int nPage, D2InventoryGridInfoStrc* pGrid); // 0x00487000
 
 
 Unicode* __fastcall INV_PrefixColorCode(Unicode* pText, int nDigit);   // 0x004521C0
@@ -1071,11 +1071,11 @@ extern struct D2CelFileStrc* gpRecipeScrollCel;                                 
 
 static int INV_IsUnusableQuestBook(D2ItemsTxt* pItemsTxt); // 0x00483F80
 
-void __stdcall INV_NpcPanelMouseMove(SMSGHANDLER_PARAMS* pMsg);
+void __stdcall INV_NpcPanelMouseMove(SMSGHANDLER_PARAMS* pMsg); // 0x00486EF0
 
 static void __stdcall INV_UpdateBodyLocHover(int nBodyLoc, D2UnitStrc* pPlayer, D2InventoryStrc* pInventory);
 
-void __stdcall INV_NpcShopMouseMoveMsg(SMSGHANDLER_PARAMS* pMsg);
+void __stdcall INV_NpcShopMouseMoveMsg(SMSGHANDLER_PARAMS* pMsg); // 0x004889D0
 
 static void INV_SelectButtonByKey(int nKey);
 
@@ -1083,15 +1083,15 @@ static int INV_IsOverTradeButtonLeft(int nX, int nY);
 
 static int INV_IsOverTradeButtonRight(int nX, int nY);
 
-void __stdcall INV_TradePanelMsg(SMSGHANDLER_PARAMS* pMsg);
+void __stdcall INV_TradePanelMsg(SMSGHANDLER_PARAMS* pMsg); // 0x00489580
 
 static int INV_IsOverCloseButton(int nX, int nY); // 0x00489920
 
 static int INV_IsOverTransmuteButton(int nX, int nY); // 0x00489980
 
-void __stdcall INV_StashMouseMoveMsg(SMSGHANDLER_PARAMS* pMsg);
+void __stdcall INV_StashMouseMoveMsg(SMSGHANDLER_PARAMS* pMsg); // 0x00489A30
 
-void __stdcall INV_StashClickMsg(SMSGHANDLER_PARAMS* pMsg);
+void __stdcall INV_StashClickMsg(SMSGHANDLER_PARAMS* pMsg); // 0x00489AC0
 
 static int INV_IsOverButtonC(int nX, int nY); // 0x00489FB0
 
@@ -1103,7 +1103,7 @@ static void __stdcall INV_DrawCursorPlacement(D2InventoryStrc* pInventory, D2Inv
 
 static void INV_DrawBodyLocPlacement(D2InventoryStrc* pInventory);
 
-void __stdcall INV_DrawUnitInventory(D2UnitStrc* pUnit);
+void __stdcall INV_DrawUnitInventory(D2UnitStrc* pUnit); // 0x00483FF0
 
 void __stdcall INV_TradeMouseMoveMsg(SMSGHANDLER_PARAMS* pMsg); // 0x004894D0
 
