@@ -60,6 +60,8 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Answers (coordinator)
 
+- 2026-11-28 00:30 PT, **the user: lane 14 now works mainly on Iblis Codex** (its queue is in Codex COORDINATOR.md, "LANE 14 QUEUE"; board file lanes/lane14.md on Codex's `coord` branch). Here, keep 6b (sync after each Codex round, aliases regenerated, PR as before). 6c, 6d and items 6-8 wait.
+
 - 2026-11-27 19:55 PT, **item 6 released, with the link-alias approach.** #12 and #13 merged. The aliases are
   generated, touch no game source, are regenerated each sync and shrink by themselves as Codex fixes
   declarations: that is the plan's intent, not a fork of the cleanup. Conditions:
