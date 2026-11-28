@@ -391,7 +391,7 @@ D2StatListStrc* __stdcall STATLIST_GetStatListFromFlag(D2StatListStrc* pStatList
 
 
 // 0x0065C5E0
-static inline int sub_0065C5E0_RollItemRange(D2UnitStrc* pItem, int nMin, int nMax)
+static inline int ITEMMODS_RollItemRange(D2UnitStrc* pItem, int nMin, int nMax)
 {
     if (nMax == nMin)
     {
@@ -442,7 +442,7 @@ static inline int sub_0065C620_RollItemRange(D2UnitStrc* pItem, int nMin, int nM
 
 int __stdcall sub_M415_EmitRoll_0065C5E0(D2UnitStrc* pItem, sub_M415_EmitArgs* pArgs, int nBias)
 {
-    return sub_0065C5E0_RollItemRange(pItem, pArgs->nMin, pArgs->nMax) + nBias;
+    return ITEMMODS_RollItemRange(pItem, pArgs->nMin, pArgs->nMax) + nBias;
 }
 
 int __stdcall sub_M415_EmitRoll_0065C620(D2UnitStrc* pItem, sub_M415_EmitArgs* pArgs, int nBias)

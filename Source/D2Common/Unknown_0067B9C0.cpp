@@ -42,7 +42,7 @@ int __stdcall COLLISION_CheckAnyCollisionWithPattern(D2ActiveRoomStrc* pRoom, in
 
 extern const D2CoordStrc gatDirectionToOffset[8]; // 0x006F1798
 
-int __stdcall sub_006793E0_FindFreeDirection(D2PathPointStrc tPoint, int* pTestDir, int* pDirection, D2PathInfoStrc* pPathInfo); // 0x006793E0
+int __stdcall PATH_FindFreeDirection(D2PathPointStrc tPoint, int* pTestDir, int* pDirection, D2PathInfoStrc* pPathInfo); // 0x006793E0
 
 static int __stdcall PATH_RayTrace(D2PathPointStrc tStartCoord, D2PathPointStrc* pPathDestination, D2DynamicPathStrc* pDynamicPath); // 0x00679720
 
@@ -267,7 +267,7 @@ static int PATH_FindNonCollidingTargetPoint(D2PathInfoStrc* pInfo, D2PathMovStrc
 }
 
 // 0x0067BD70
-static inline void sub_0067BD70_SwapPoints(D2PathPointStrc* pA, D2PathPointStrc* pB)
+static inline void PATH_SwapPoints(D2PathPointStrc* pA, D2PathPointStrc* pB)
 {
     const D2PathPointStrc tPoint = *pA;
     *pA = *pB;
@@ -277,7 +277,7 @@ static inline void sub_0067BD70_SwapPoints(D2PathPointStrc* pA, D2PathPointStrc*
 // emits the static 0x0067BD70 (not game code)
 void __fastcall sub_M110_Emit_0067BD70(D2PathPointStrc* pPoints, int nCount)
 {
-    sub_0067BD70_SwapPoints(pPoints, pPoints + nCount);
+    PATH_SwapPoints(pPoints, pPoints + nCount);
 }
 
 // 0x0067BD80

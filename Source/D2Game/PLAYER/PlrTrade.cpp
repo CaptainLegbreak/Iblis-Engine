@@ -258,7 +258,7 @@ void __fastcall ACT3Q2_UpdateKhalimItemCounts(D2GameStrc*,D2UnitStrc*); // 0x005
 
 
 
-void __stdcall ITEMS_SetItemQuality(D2UnitStrc*,int); // 0x00627EA0
+void __stdcall ITEMS_SetItemQuality(D2UnitStrc* pItem, unsigned int dwQuality); // 0x00627EA0
 
 
 void __stdcall ITEMS_AssignRareSuffix(D2UnitStrc*,unsigned short); // 0x00628070

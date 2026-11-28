@@ -75,7 +75,7 @@ struct D2PathBoundsContextStrc
 };
 
 // 0x0067A5D0
-static const int* __stdcall sub_0067A5D0_GetNeighborsSequence(int nBase, int nDirection)
+static const int* __stdcall PATH_GetNeighborsSequence(int nBase, int nDirection)
 {
     return gnIdaStarNeighborSequences[(nDirection - nBase) & 7];
 }
@@ -83,7 +83,7 @@ static const int* __stdcall sub_0067A5D0_GetNeighborsSequence(int nBase, int nDi
 // emits the static 0x0067A5D0 (not game code)
 const int* __stdcall sub_M125_Emit_0067A5D0(int nUnused1, int nUnused2, int nBase, int nDirection)
 {
-    return sub_0067A5D0_GetNeighborsSequence(nBase, nDirection);
+    return PATH_GetNeighborsSequence(nBase, nDirection);
 }
 
 // 0x0067A5F0
@@ -114,7 +114,7 @@ static void PATH_IDAStar_GetNextNeighborIndex(D2PathIDAStarNodeStrc* pNode, D2Pa
 }
 
 // 0x0067A690
-static D2PathIDAStarNodeStrc* __stdcall sub_0067A690_NextNode(D2PathIDAStarContextStrc* pContext, D2PathIDAStarNodeStrc* pNode)
+static D2PathIDAStarNodeStrc* __stdcall PATH_NextNode(D2PathIDAStarContextStrc* pContext, D2PathIDAStarNodeStrc* pNode)
 {
     if (pNode->nEvaluationsCount < 4)
     {
@@ -255,7 +255,7 @@ static D2PathIDAStarNodeStrc* __stdcall PATH_IDAStar_VisitNodes(int nFScoreCutof
             }
         }
 
-        pCurrentNode = sub_0067A690_NextNode(pContext, pCurrentNode);
+        pCurrentNode = PATH_NextNode(pContext, pCurrentNode);
         if (!pCurrentNode)
         {
             return 0;

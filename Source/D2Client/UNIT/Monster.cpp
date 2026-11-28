@@ -3026,13 +3026,13 @@ Unicode Unicode::toLower() const
 // 0x004B17D0
 static inline void MONSTER_SetNpcMenuState(int nState)
 {
-    gnNpcMenuState = nState;
+    gtNpcMenu.nMenuState = nState;
 }
 
 // 0x004B17E0
 static inline void MONSTER_SetNpcMenuUnit(D2UnitStrc* pUnit)
 {
-    gpNpcPlayerUnit = pUnit;
+    gtNpcMenu.pPlayerUnit = pUnit;
 }
 
 // 0x004B17F0
@@ -3058,10 +3058,10 @@ static inline bool MONSTER_IsStringUnused(unsigned short wString)
 // 0x004B1D50
 void __cdecl MONSTER_CloseNpcResource()
 {
-    if (gpRes_007C0D6B)
+    if (gtNpcMenu.pMainMenuDialog)
     {
-        DIALOG_DestroyDialog(gpRes_007C0D6B);
-        gpRes_007C0D6B = 0;
+        DIALOG_DestroyDialog(gtNpcMenu.pMainMenuDialog);
+        gtNpcMenu.pMainMenuDialog = 0;
     }
 }
 

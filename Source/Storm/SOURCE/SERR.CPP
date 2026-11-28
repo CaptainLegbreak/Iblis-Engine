@@ -45,7 +45,7 @@ unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
 unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
 unsigned int __stdcall SStrPack(char* szDest, const char* szSource, unsigned int nDestSize); // 0x00413800
 char* __stdcall SStrChrR(const char*,char); // 0x004134D0
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
+extern "C" int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int dwFlags); // 0x00412650
 void __stdcall SMemZero(void* pLocation, unsigned int nLength); // 0x0041D300
 int __stdcall SRegLoadValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long* pValue); // 0x00414F10
 void* __cdecl SMsgGetDefaultWindow(); // 0x00420310

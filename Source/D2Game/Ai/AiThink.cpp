@@ -351,7 +351,7 @@ int __fastcall AITHINK_TryOpenNearbyDoor(D2GameStrc* pGame, D2UnitStrc* pUnit, D
 int __fastcall D2GAME_AICORE_MinionLeash(D2GameStrc* pGame, D2UnitStrc* pMonster, D2AiTickParamStrc* pAiTickParam); // 0x005B0FF0
 
 
-int __fastcall AIUTIL_GetDistanceToCoordinates_FullUnitSize(D2UnitStrc*, D2UnitStrc*); // 0x005DC380
+int __fastcall AIUTIL_GetDistanceToCoordinates_FullUnitSize(D2UnitStrc* pTarget, D2UnitStrc* pSource); // 0x005DC380
 
 
 static inline int CanWalk(D2UnitStrc* pMonster)

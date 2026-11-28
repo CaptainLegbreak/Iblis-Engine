@@ -154,8 +154,8 @@ extern "C" int __cdecl _strnicmp(const char* szString1, const char* szString2, u
 extern "C" long __cdecl strtol(const char* szString, char** ppEnd, int nRadix); // 0x0068676E
 extern "C" unsigned long __cdecl strtoul(const char* szString, char** ppEnd, int nRadix); // 0x006867B2
 
-int __stdcall SMemFree(void* pLocation, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags); // 0x00413020
+extern "C" int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int dwFlags); // 0x00412650
+extern "C" void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int dwFlags); // 0x00413020
 void __stdcall SMemZero(void* pDst, unsigned int nSize); // 0x0041D300
 void* __cdecl StormGetInstance(); // 0x0041BEF0
 void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340

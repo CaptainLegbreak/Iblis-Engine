@@ -70,7 +70,7 @@ extern int gnChatDrawCount; // 0x007BB5EC
 
 extern Unicode gwszChatLine_007BB638[0x101]; // 0x007BB638
 
-void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
+void __fastcall SCMD_RegisterMsgHandlers(void* hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
 
 extern "C" int __stdcall ImmSimulateHotKey(int hWnd, unsigned long nHotKey); // 0x006B00E4
@@ -257,7 +257,7 @@ extern D2CelFileStrc* gpSliderEnabledCell_007BC954; // 0x007BC954
 
 extern D2CelFileStrc* gpSliderKnob_007BC958; // 0x007BC958
 
-void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nStyle); // 0x0046EFD0
+void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nArg6); // 0x0046EFD0
 
 extern void* gpSlotCells; // 0x007BC964
 

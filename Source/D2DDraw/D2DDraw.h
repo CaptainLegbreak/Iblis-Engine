@@ -23,7 +23,7 @@ extern unsigned long gdwVideoFlags; // 0x00881140
 extern void* ghDDrawWindow_007C9140; // 0x007C9140
 int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 unsigned char __stdcall GetClosestColor(const unsigned char* pPalette, unsigned int nCount, int nC0, int nC1, int nC2); // 0x00605210
-void __fastcall DDCORE_DDrawLogError(const char* szText, long nResult); // 0x005103B0
+void __fastcall DDCORE_DDrawLogError(const char* szWhere, int hResult); // 0x005103B0
 void __stdcall CelDraw(D2CmpCelContextStrc* pContext, int nX, int nY, int nArg4, int nArg5, unsigned char* pBuffer, int nHeight, int nPitch, int nArg9, int nArg10, int nArg11); // 0x006014C0
 void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 

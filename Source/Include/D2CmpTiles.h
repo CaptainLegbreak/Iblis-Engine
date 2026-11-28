@@ -19,7 +19,7 @@ struct D2CmpTileNodeStrc
     unsigned char nGridY; // 0x05
     unsigned short nFormat; // 0x06
     unsigned short nLength; // 0x08
-    unsigned short unk0x0A; // 0x0A
+    unsigned short pad0x0A; // 0x0A
     unsigned char* pData; // 0x0C
     D2CmpTileNodeStrc* pNext; // 0x10
 };
@@ -34,7 +34,7 @@ struct D2CmpTileListStrc
 
 struct D2CmpGfxHashStrc
 {
-    int unk0x00[8192]; // 0x00
+    int unused0x00[8192]; // 0x00
     D2CmpGfxHashEntryStrc* pBuckets[8192]; // 0x8000
 };
 

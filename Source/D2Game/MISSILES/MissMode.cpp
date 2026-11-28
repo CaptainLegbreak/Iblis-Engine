@@ -392,7 +392,7 @@ void __fastcall AIGENERAL_AllocMinionList(D2GameStrc*,D2UnitStrc*,D2UnitStrc*); 
 
 void __fastcall D2GAME_BOSSES_AssignUMod(D2GameStrc*,D2UnitStrc*,int,int); // 0x005A4850
 
-void __fastcall D2GAME_SetSummonPassiveStats(D2GameStrc*,D2UnitStrc*,D2UnitStrc*,int,int,int); // 0x005C4470
+int __fastcall D2GAME_SetSummonPassiveStats(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pPet, int nSkillId, int nSkillLevel, int nItemLevel); // 0x005C4470
 
 static void __stdcall MISSMODE_CreateMeteor_MoltenBoulderSubmissiles(D2GameStrc* pGame, int nMissileId, int nRange, int nStep, D2UnitStrc* pMissile);
 

@@ -96,7 +96,7 @@ struct D2DrlgLevelStrc
     int eLevelId;
     char unk0x1D4[0x04];
     int nTileInfo;
-    D2DrlgRoomStrc* sub_0066AC40_GetTileRoom(int nTileIndex, int* pX, int* pY);    // 0x0066AC40
+    D2DrlgRoomStrc* DRLGWARP_GetTileRoom(int nTileIndex, int* pX, int* pY);    // 0x0066AC40
 };
 
 struct D2DrlgListEntryStrc
@@ -295,7 +295,7 @@ static inline unsigned int SEED_RollLimitedRandomNumber_Inline(D2SeedStrc* pSeed
 }
 
 // 0x0066AC40
-D2DrlgRoomStrc* D2DrlgLevelStrc::sub_0066AC40_GetTileRoom(int nTileIndex, int* pX, int* pY)
+D2DrlgRoomStrc* D2DrlgLevelStrc::DRLGWARP_GetTileRoom(int nTileIndex, int* pX, int* pY)
 {
     int nCount = 0;
     for (int i = 0; i < nTileInfo; ++i)
@@ -610,7 +610,7 @@ D2ActiveRoomStrc* __fastcall DRLGWARP_GetLevelEntryRoom(D2DrlgStrc* pDrlg, int n
             return pDrlgRoom->pRoom;
         }
 
-        pDrlgRoom = pLevel->sub_0066AC40_GetTileRoom(nTileIndex, pX, pY);
+        pDrlgRoom = pLevel->DRLGWARP_GetTileRoom(nTileIndex, pX, pY);
         DRLGACTIVATE_InitializeRoomEx(pDrlgRoom);
         return pDrlgRoom->pRoom;
     }

@@ -279,7 +279,7 @@ unsigned int __fastcall DRLGOUTROOM_CheckOutdoorRoomFlag(D2DrlgRoomStrc* pRoom)
 }
 
 // 0x0067D7B0
-static inline void sub_0067D7B0_SetCoordSize(D2DrlgCoordStrc* pCoords, int nType)
+static inline void DRLGOUTROOM_SetCoordSize(D2DrlgCoordStrc* pCoords, int nType)
 {
     switch (nType)
     {
@@ -356,7 +356,7 @@ int __fastcall DRLGOUTROOM_LinkLevelsByLevelCoords(D2DrlgLevelLinkDataStrc* pLev
     pLevelLinkData->nRand[1][pLevelLinkData->nIteration] = nRand;
 
     D2DrlgCoordStrc* pCoord = &pLevelLinkData->pLevelCoord[pLevelLinkData->nIteration];
-    sub_0067D7B0_SetCoordSize(pCoord, nRand);
+    DRLGOUTROOM_SetCoordSize(pCoord, nRand);
 
     const int nIteration = pLevelLinkData->nIteration;
     D2DrlgCoordStrc* pLinkCoord = &pLevelLinkData->pLevelCoord[pLinks[nIteration].nLevelLink];
@@ -368,7 +368,7 @@ int __fastcall DRLGOUTROOM_LinkLevelsByLevelCoords(D2DrlgLevelLinkDataStrc* pLev
 
 static __forceinline void __fastcall DRLGOUTROOM_GetOrthCoords(D2DrlgCoordStrc* pCoords, int nRand, D2DrlgCoordStrc* pLinkCoords, int nLinkRand)
 {
-    sub_0067D7B0_SetCoordSize(pCoords, nRand);
+    DRLGOUTROOM_SetCoordSize(pCoords, nRand);
 
     const int nIndex = nRand + 2 * nLinkRand;
     pCoords->nPosX = gOutdoorOrthOffsets[nIndex].nX + pLinkCoords->nPosX;

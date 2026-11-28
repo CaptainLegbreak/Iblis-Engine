@@ -30,11 +30,11 @@ struct D2GameStrc
     unsigned int dwHashValue; // 0x00
     D2GameLinkStrc tLinkToSlot; // 0x04
     D2GameLinkStrc tLinkToFull; // 0x0C
-    unsigned char unk0x14[0x4]; // 0x14
+    unsigned char unused0x14[4]; // 0x14
     D2CriticalSectionStrc* lpCriticalSection; // 0x18
     D2PoolSystemStrc* pMemoryPool; // 0x1C
     D2ClientInfoStrc* pClientInfo; // 0x20
-    int unk0x24; // 0x24
+    int unused0x24; // 0x24
     unsigned short nGameId; // 0x28
     char szGameName[16]; // 0x2A
     char szGamePassword[16]; // 0x3A
@@ -44,11 +44,11 @@ struct D2GameStrc
     unsigned char nMaxLevelDifference; // 0x6C
     unsigned char nDifficulty; // 0x6D
     unsigned char nMaxPlayers; // 0x6E
-    unsigned char unk0x6F[0x1]; // 0x6F
+    unsigned char pad0x6F; // 0x6F
     int bExpansion; // 0x70
     int dwGameType; // 0x74
     unsigned short wItemFormat; // 0x78
-    unsigned char unk0x7A[0x2]; // 0x7A
+    unsigned char pad0x7A[2]; // 0x7A
     unsigned int dwInitSeed; // 0x7C
     int dwObjSeed; // 0x80
     int InitSeed; // 0x84
@@ -82,13 +82,13 @@ struct D2GameStrc
     int nTickCountSinceNoClients; // 0x1DC0
     unsigned int nSyncTimer; // 0x1DC4
     int nDebugBreakTrigger; // 0x1DC8
-    unsigned char unk0x1DCC[0x8]; // 0x1DCC
+    unsigned char unused0x1DCC[8]; // 0x1DCC
     union // 0x1DD4
     {
         int nUberFields[8];
         struct
         {
-            int unk0x1DD4[4]; // 0x1DD4
+            int unused0x1DD4[4]; // 0x1DD4
             unsigned int dwUberSandsCounter; // 0x1DE4
             int bUberBaalKilled; // 0x1DE8
             int bUberDiabloKilled; // 0x1DEC

@@ -438,7 +438,7 @@ void __stdcall sub_Z12_EmitUse2(int nValue1, int nValue2);
 
 
 
-void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, unsigned char nColor, int nFlags); // 0x0046EFD0
+void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nArg6); // 0x0046EFD0
 
 extern D2InvCompGridStrc gaBodyLocRects[11]; // 0x007BCD38
 
@@ -501,7 +501,7 @@ struct D2AuxLevelEntryStrc
 
 D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nType); // 0x004788B0
 
-D2BitBufferStrc* __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
+int __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
 

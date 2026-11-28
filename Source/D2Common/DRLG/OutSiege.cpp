@@ -93,7 +93,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 D2LvlPrestRecordStrc* __stdcall sub_0061F0B0(int nPresetId); // 0x0061F0B0
 
 
-int __fastcall DRLGOUTDOORS_SpawnOutdoorLevelPreset(D2DrlgLevelStrc* pLevel, int nPresetId, int nArg, int nOffset, int nFlags); // 0x00674730
+int __fastcall DRLGOUTDOORS_SpawnOutdoorLevelPreset(D2DrlgLevelStrc* pLevel, int nLevelPrestId, int nRand, int nOffset, char nFlags); // 0x00674730
 
 
 void __fastcall DRLGTILESUB_ApplySubstitutionBorder(D2DrlgOutPlaceCtxStrc* pCtx); // 0x00670750
@@ -697,7 +697,7 @@ static const int gAct4Level108Presets[25] = // 0x006F22C0
 };
 
 // 0x0067E660
-static void sub_0067E660_SpawnEdgePresets(D2DrlgLevelStrc* pLevel)
+static void DRLGOUTSIEGE_SpawnEdgePresets(D2DrlgLevelStrc* pLevel)
 {
     D2DrlgOutdoorInfoStrc* pInfo = pLevel->pOutdoors;
     if (pInfo->dwFlags & 0x400000)
@@ -711,7 +711,7 @@ static void sub_0067E660_SpawnEdgePresets(D2DrlgLevelStrc* pLevel)
 }
 
 // 0x0067E6A0
-static void sub_0067E6A0_SpawnAct4Presets(D2DrlgLevelStrc* pLevel)
+static void DRLGOUTSIEGE_SpawnAct4Presets(D2DrlgLevelStrc* pLevel)
 {
     if (pLevel->eLevelId == LEVEL_CITYOFTHEDAMNED)
     {
@@ -751,7 +751,7 @@ static void sub_0067E6A0_SpawnAct4Presets(D2DrlgLevelStrc* pLevel)
 }
 
 // 0x0067E840
-static void sub_0067E840_SpawnSanctumPresets(D2DrlgLevelStrc* pLevel)
+static void DRLGOUTSIEGE_SpawnSanctumPresets(D2DrlgLevelStrc* pLevel)
 {
     for (int i = 0; i < 25; ++i)
     {
@@ -777,15 +777,15 @@ void __fastcall DRLGOUTDOORS_InitAct4OutdoorLevel(D2DrlgLevelStrc* pLevel)
     case 104:
     case 105:
     case 106:
-        sub_0067E660_SpawnEdgePresets(pLevel);
+        DRLGOUTSIEGE_SpawnEdgePresets(pLevel);
         DRLGOUTDOORS_AddAct124SecondaryBorder(pLevel, 1, 0x31F);
         DRLGOUTDOORS_AddAct124SecondaryBorder(pLevel, 2, 0x31F);
         DRLGOUTDOORS_AddAct124SecondaryBorder(pLevel, 3, 0x31F);
-        sub_0067E6A0_SpawnAct4Presets(pLevel);
+        DRLGOUTSIEGE_SpawnAct4Presets(pLevel);
         break;
 
     case 108:
-        sub_0067E840_SpawnSanctumPresets(pLevel);
+        DRLGOUTSIEGE_SpawnSanctumPresets(pLevel);
         break;
     }
 }

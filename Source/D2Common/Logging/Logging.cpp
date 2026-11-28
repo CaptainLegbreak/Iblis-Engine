@@ -69,7 +69,7 @@ void __fastcall LOGGING_SetLogValue(int nValue)
 }
 
 // 0x00624710
-_iobuf* __cdecl sub_00624710_GetLogFile()
+_iobuf* __cdecl LOGGING_GetLogFile()
 {
     return gpLogFile;
 }

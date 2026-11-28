@@ -152,7 +152,7 @@ int __fastcall ITEMS_RollSuperiorItem(D2UnitStrc* pItem, D2ItemDropStrc* pItemDr
 
 int __stdcall ITEMS_GetItemQuality(D2UnitStrc* pItem); // 0x00627E70
 
-void __stdcall ITEMS_SetItemQuality(D2UnitStrc* pItem, int nQuality); // 0x00627EA0
+void __stdcall ITEMS_SetItemQuality(D2UnitStrc* pItem, unsigned int dwQuality); // 0x00627EA0
 
 void __stdcall ITEMS_AssignPrefix(D2UnitStrc* pItem, unsigned short nPrefix, int nPrefixNo); // 0x00627EF0
 

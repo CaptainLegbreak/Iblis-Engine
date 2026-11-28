@@ -8,13 +8,13 @@ fixes come back with the next sync. Remeasure after each sync:
     ninja -C build -k 0 2> link.log                       # or the Visual Studio build's output
     python tools/link_report.py build link.log ../Iblis-Codex --md links.md
 
-Last measured: 2026-11-27, Source/ at Codex 89e75a2 (#496) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
+Last measured: 2026-11-27, Source/ at Codex baf537f (#497) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
 docs/PORT_COMPILE.md (every object of the 22 module libraries and the program, `/WHOLEARCHIVE`).
 
 ## Result
 
-The link of Game.exe fails with **1238 unresolved symbols** (LNK2001/LNK2019) and **408 symbols defined more than once** (LNK2005).
-Counted as references, one per symbol and file that asks for it: **3076**.
+The link of Game.exe fails with **1224 unresolved symbols** (LNK2001/LNK2019) and **408 symbols defined more than once** (LNK2005).
+Counted as references, one per symbol and file that asks for it: **3062**.
 
 Codex's count (21,648 references on Codex #492) counts every place in the code that uses a symbol; this report
 counts each symbol once per file. The categories are the same, with three differences:
@@ -40,7 +40,7 @@ on calling convention, argument bytes and return register (`tools/abi.py`); a re
 of function pointers) is bound for its address alone. No game source is changed, and an alias drops out when Codex
 fixes the declaration.
 
-At Codex 89e75a2: **2817 aliases** (1132 of them address-only), unresolved symbols **4,055 → 1238**. Checked against
+At Codex baf537f: **2807 aliases** (1132 of them address-only), unresolved symbols **4,031 → 1224**. Checked against
 Codex's own `LINK_DEBT.json` (linkdebt.py with the user's Game.exe): 2803 agree; 3 bind the same address through the
 one external definition where Codex names it differently (`gpHoverItem`, `gbGoldButtonDisabled`); 25 aren't in Codex's
 list (references in code Codex's ordinary link leaves out, or tables the engine holds as source) and were checked by
@@ -59,24 +59,24 @@ crash risk, for Codex lane 12): **151**, by kind: calling convention 76, return 
 | different_identifier | 196 | 90 |
 | placeholder | 232 | 141 |
 | renamed_definition | 97 | 60 |
-| interior | 7 | 7 |
-| unsourced_data | 1159 | 675 |
+| interior | 6 | 6 |
+| unsourced_data | 1146 | 662 |
 | no_address | 217 | 157 |
 | duplicate_data | 187 | 84 |
 | local_copy | 839 | 324 |
-| **total** | 3076 | 1646 |
+| **total** | 3062 | 1632 |
 
 ## By module (references)
 
 | Module | import | crt | type | ident | plchld | renamed | inter | unsrc | noaddr | dup | copy | total |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| D2Client | 0 | 0 | 32 | 29 | 87 | 45 | 0 | 294 | 122 | 54 | 459 | 1122 |
+| D2Client | 0 | 0 | 32 | 29 | 87 | 45 | 0 | 281 | 122 | 54 | 459 | 1109 |
 | D2Game | 0 | 2 | 51 | 141 | 45 | 20 | 0 | 123 | 6 | 49 | 101 | 538 |
 | D2Common | 0 | 0 | 8 | 6 | 14 | 4 | 0 | 263 | 9 | 8 | 88 | 400 |
 | Fog | 0 | 0 | 2 | 0 | 5 | 9 | 0 | 89 | 5 | 32 | 55 | 197 |
 | D2CMP | 0 | 0 | 3 | 3 | 4 | 3 | 0 | 46 | 6 | 0 | 39 | 104 |
 | Storm | 0 | 0 | 4 | 0 | 26 | 5 | 0 | 27 | 3 | 4 | 33 | 102 |
-| D2Direct3D | 0 | 0 | 6 | 7 | 2 | 0 | 1 | 83 | 1 | 0 | 0 | 100 |
+| D2Direct3D | 0 | 0 | 6 | 7 | 2 | 0 | 0 | 83 | 1 | 0 | 0 | 99 |
 | D2Win | 0 | 0 | 7 | 1 | 17 | 2 | 0 | 64 | 0 | 2 | 4 | 97 |
 | D2Launch | 0 | 0 | 8 | 3 | 12 | 6 | 4 | 28 | 7 | 4 | 8 | 80 |
 | D2Multi | 0 | 0 | 3 | 0 | 7 | 1 | 2 | 35 | 1 | 18 | 4 | 71 |
@@ -145,7 +145,7 @@ crash risk, for Codex lane 12): **151**, by kind: calling convention 76, return 
 - `MAINMENUS_IsListedCode` at 0x00432350 -> `MAINMENUS_IsListedCode`, in Source/D2Launch/Src/MainMenus.cpp
 - `NPCMENU_ClearUnicode` at 0x0042F530 -> `NPCMENU_ClearUnicode`, in Source/D2Client/UI/SkillDesc.cpp
 
-**interior** (7 symbols)
+**interior** (6 symbols)
 
 - `gdwBitMask5` at 0x006CE27C -> `gdwBitMasks+0x14`, in Source/D2Launch/Src/CharSel.cpp
 - `gdwBitMask7` at 0x006CE284 -> `gdwBitMasks+0x1C`, in Source/D2Multi/Src/ComCallback.cpp
@@ -153,9 +153,8 @@ crash risk, for Codex lane 12): **151**, by kind: calling convention 76, return 
 - `gnFlagClear0` at 0x006CE2F8 -> `gdwInvBitMasks+0x10`, in Source/D2Launch/Src/CharSel.cpp
 - `gnFlagClear1` at 0x006CE2FC -> `gdwInvBitMasks+0x14`, in Source/D2Launch/Src/CharSel.cpp
 - `gnFlagSet0_006CE278` at 0x006CE278 -> `gdwBitMasks+0x10`, in Source/D2Launch/Src/CharSel.cpp
-- `gnRenderFlag` at 0x006CE290 -> `gdwBitMasks+0x28`, in Source/D2Direct3D/Src/d3dSmack.cpp
 
-**unsourced_data** (675 symbols)
+**unsourced_data** (662 symbols)
 
 - `empty` at 0x006CC837, in Source/D2Client/UI/npcmenu.cpp
 - `gAvailableMemory` at 0x0096F4D0, in Source/D2Direct3D/Src/d3dCore.cpp

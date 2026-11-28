@@ -6,7 +6,7 @@
 
 void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode);
 
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags);          // 0x00413020
+extern "C" void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int dwFlags); // 0x00413020
 
 double __cdecl sub_00414260_PowInt(double x, int nExp);
 

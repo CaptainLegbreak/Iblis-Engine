@@ -50,8 +50,8 @@ extern D2ServerCallbacks* gpServerCallbacks; // 0x00883D50
 void __fastcall SUNITPROXY_InitializeNpcEventChain(D2GameStrc*,D2UnitStrc*,int); // 0x00536850
 void __fastcall SUNIT_AttachSound(D2UnitStrc*,int,D2UnitStrc*); // 0x00553380
 int __stdcall UNITS_GetPlayerName(D2UnitStrc*,int,int); // 0x00622150
-static void sub_00570A50_SpendStatPointsOnStrength(D2UnitStrc* pUnit, int nValue);
-static void sub_00570B30_SpendStatPointsOnDexterity(D2UnitStrc* pUnit, int nValue);
+static void PLAYERSTATS_SpendStatPointsOnStrength(D2UnitStrc* pUnit, int nValue); // 0x00570A50
+static void PLAYERSTATS_SpendStatPointsOnDexterity(D2UnitStrc* pUnit, int nValue); // 0x00570B30
 
 #pragma pack(push, 1)
 
@@ -105,7 +105,7 @@ D2StatListStrc* __fastcall SKILLS_ApplyTimedState(D2GameStrc* pGame, D2UnitStrc*
 }
 
 // 0x005706A0
-static void __stdcall sub_005706A0_UseActEntry(D2GameStrc* pGame, D2UnitStrc* pUnit, unsigned char nAct)
+static void __stdcall PLAYERSTATS_UseActEntry(D2GameStrc* pGame, D2UnitStrc* pUnit, unsigned char nAct)
 {
     if (nAct >= 5)
     {
@@ -160,7 +160,7 @@ void __fastcall PLAYERSTATS_SetStatsForStartingAct(D2GameStrc* pGame, D2UnitStrc
 
     if (nAct > 0)
     {
-        sub_005706A0_UseActEntry(pGame, pPlayer, nAct);
+        PLAYERSTATS_UseActEntry(pGame, pPlayer, nAct);
     }
 }
 
@@ -170,7 +170,7 @@ extern int gnActCount = 5; // 0x007326B4
 struct D2MonStatsTxt;
 
 // 0x00570870
-static inline void sub_00570870_ForwardToLivingPlayers(D2GameStrc* pGame, D2UnitStrc* pUnit)
+static inline void PLAYERSTATS_ForwardToLivingPlayers(D2GameStrc* pGame, D2UnitStrc* pUnit)
 {
     SUNIT_IterateLivingPlayers(pGame, (SUNIT_IterateFn)PLAYERSTATS_OnPlayerLeveledUp, pUnit);
 }
@@ -203,7 +203,7 @@ void __fastcall PLAYERSTATS_LevelUp(D2GameStrc* game,D2UnitStrc* unit)
   STATLIST_AddUnitStat(unit,STAT_SKILLPTS,gained,0);
   SUNITPROXY_InitializeNpcEventChain(game,unit,level);
   SUNIT_AttachSound(unit,2,unit);
-   sub_00570870_ForwardToLivingPlayers(game,unit);
+   PLAYERSTATS_ForwardToLivingPlayers(game,unit);
   D2GAME_UpdatePlayerVitals(game,unit);
   D2GAME_UpdatePlayerItems(game,unit,1);
   if(gpServerCallbacks && gpServerCallbacks->levelUp) gpServerCallbacks->levelUp(game->nGameId,UNITS_GetPlayerName(unit,classId,level));
@@ -211,13 +211,13 @@ void __fastcall PLAYERSTATS_LevelUp(D2GameStrc* game,D2UnitStrc* unit)
 }
 
 // 0x00570E10
-int __cdecl sub_00570E10_GetStateMaskCount()
+int __cdecl PLAYERSTATS_GetStateMaskCount()
 {
     return (sgptDataTables->nStatesTxtRecordCount + 31) / 32;
 }
 
 // 0x00570A50
-static void sub_00570A50_SpendStatPointsOnStrength(D2UnitStrc* pUnit, int nValue)
+static void PLAYERSTATS_SpendStatPointsOnStrength(D2UnitStrc* pUnit, int nValue)
 {
     if (nValue)
     {
@@ -229,7 +229,7 @@ static void sub_00570A50_SpendStatPointsOnStrength(D2UnitStrc* pUnit, int nValue
 
 
 // 0x00570A80
-static void sub_00570A80_AddEnergyPoints(D2UnitStrc* pUnit, int nPoints)
+static void PLAYERSTATS_AddEnergyPoints(D2UnitStrc* pUnit, int nPoints)
 {
     if (nPoints && pUnit)
     {
@@ -253,7 +253,7 @@ static void sub_00570A80_AddEnergyPoints(D2UnitStrc* pUnit, int nPoints)
 }
 
 // 0x00570B60
-static void sub_00570B60_AddVitalityPoints(D2UnitStrc* pUnit, int nPoints)
+static void PLAYERSTATS_AddVitalityPoints(D2UnitStrc* pUnit, int nPoints)
 {
     if (nPoints && pUnit)
     {
@@ -287,7 +287,7 @@ static void sub_00570B60_AddVitalityPoints(D2UnitStrc* pUnit, int nPoints)
 }
 
 // 0x00570C80
-void __fastcall sub_00570C80_PLAYERSTATS_ResetToBaseStats(D2GameStrc* pGame, D2UnitStrc* pUnit)
+void __fastcall PLAYERSTATS_ResetToBaseStats(D2GameStrc* pGame, D2UnitStrc* pUnit)
 {
     if (!pUnit || pUnit->dwUnitType != UNIT_PLAYER)
     {
@@ -298,10 +298,10 @@ void __fastcall sub_00570C80_PLAYERSTATS_ResetToBaseStats(D2GameStrc* pGame, D2U
     {
         return;
     }
-    sub_00570A50_SpendStatPointsOnStrength(pUnit, pCharStatsTxtRecord->nStr - STATLIST_GetUnitBaseStat(pUnit, STAT_STRENGTH, 0));
-    sub_00570A80_AddEnergyPoints(pUnit, pCharStatsTxtRecord->nInt - STATLIST_GetUnitBaseStat(pUnit, STAT_ENERGY, 0));
-    sub_00570B30_SpendStatPointsOnDexterity(pUnit, pCharStatsTxtRecord->nDex - STATLIST_GetUnitBaseStat(pUnit, STAT_DEXTERITY, 0));
-    sub_00570B60_AddVitalityPoints(pUnit, pCharStatsTxtRecord->nVit - STATLIST_GetUnitBaseStat(pUnit, STAT_VITALITY, 0));
+    PLAYERSTATS_SpendStatPointsOnStrength(pUnit, pCharStatsTxtRecord->nStr - STATLIST_GetUnitBaseStat(pUnit, STAT_STRENGTH, 0));
+    PLAYERSTATS_AddEnergyPoints(pUnit, pCharStatsTxtRecord->nInt - STATLIST_GetUnitBaseStat(pUnit, STAT_ENERGY, 0));
+    PLAYERSTATS_SpendStatPointsOnDexterity(pUnit, pCharStatsTxtRecord->nDex - STATLIST_GetUnitBaseStat(pUnit, STAT_DEXTERITY, 0));
+    PLAYERSTATS_AddVitalityPoints(pUnit, pCharStatsTxtRecord->nVit - STATLIST_GetUnitBaseStat(pUnit, STAT_VITALITY, 0));
 }
 
 // 0x00570D60
@@ -319,7 +319,7 @@ int __fastcall PLAYERSTATS_SpendStatPoint(D2UnitStrc* pUnit, int nStatId)
         UNITROOM_RefreshUnit(pUnit);
         return 1;
     case 1:
-        sub_00570A80_AddEnergyPoints(pUnit, 1);
+        PLAYERSTATS_AddEnergyPoints(pUnit, 1);
         return 1;
     case 2:
         STATLIST_AddUnitStat(pUnit, STAT_STATPTS, -1, 0);
@@ -327,14 +327,14 @@ int __fastcall PLAYERSTATS_SpendStatPoint(D2UnitStrc* pUnit, int nStatId)
         UNITROOM_RefreshUnit(pUnit);
         return 1;
     case 3:
-        sub_00570B60_AddVitalityPoints(pUnit, 1);
+        PLAYERSTATS_AddVitalityPoints(pUnit, 1);
         return 1;
     }
     return 0;
 }
 
 // 0x00570B30
-static void sub_00570B30_SpendStatPointsOnDexterity(D2UnitStrc* pUnit, int nValue)
+static void PLAYERSTATS_SpendStatPointsOnDexterity(D2UnitStrc* pUnit, int nValue)
 {
     if (nValue)
     {
