@@ -297,6 +297,12 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Status
 
+- 2026-11-27 21:30 PT: board check. #15, #16 merged. Codex main moved to baf537f (#497): 6b in PR #17. Clean;
+  1,693/1,693 data records against Game.exe; no stale include entries left in Codex's data plan. 538/538 compile.
+  Aliases regenerated (2,807: 12 dropped out, 2 new, both path-function table entries, checked). Unresolved 1,224
+  (-14, none new). 6c: nothing new to post. Replay: rng/bitbuf/startup identical; sfile still waits on Storm's
+  caller globals (lane 11, 21:20 entry).
+
 - 2026-11-27 21:20 PT: 6d, PR #16: replay case sfile. Stock 1.14d's Storm reads the user's d2data.mpq in the
   oracle (listfile + 470 files). The engine's Storm (with the aliases and the open explode) reads the listfile
   and the first six files identically, then stops on Storm's unsourced caller globals (Findings, lane 11).
