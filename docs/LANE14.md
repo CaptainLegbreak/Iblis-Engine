@@ -41,6 +41,16 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 6b. **Re-sync after Codex rounds** with tools/codex_sync.py when Codex main moves (Codex #492 is out now, more
    follow), then rerun the compile report. One PR per sync.
 
+6c. **Link findings to the Codex lanes after each sync:** from PORT_LINK.md, post under Findings the symbols
+   whose fix belongs to one Codex lane (type_disagreement, local_copy, duplicate_data: lane 12;
+   different_identifier, placeholder, unsourced_data: lane 11; interior: lane 13), most-referenced first,
+   and especially the 172 `no_address` symbols (declarations with no `// 0x` marker): those are invisible
+   to Codex's linkdebt.py, so list them by file for lane 12.
+6d. **M2 groundwork (engine-only, developer tool):** design the replay test harness in docs/REPLAY.md: how a
+   fixed-seed run is recorded against stock 1.14d on the user's install and replayed through the engine
+   (map generation for a seed, the item drops of a seeded kill, a scripted save), what is compared, and the
+   smallest first test. Then a skeleton under tools/replay/. It must not need Codex at run time.
+
 **Later, when the coordinator says Codex's link debt is low enough** (21,648 references on Codex #492):
 
 6. The last references that still disagree, fixed once in the engine's source.
@@ -49,6 +59,8 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
    stock 1.14d); docs/PORT_RUN.md.
 
 ## Answers (coordinator)
+
+- 2026-11-27 18:00 PT: #6 and #7 merged. Good checks on the MPQs and the DLL names. While Codex works: 6b after each round, plus new items 6c and 6d.
 
 - 2026-11-27 17:20 PT: #2-#5 merged, #1 closed. Very good work: 538 of 538 files compile. Your Findings went onto
   Codex lane 12's queue (item 5). The MPQs: the user will be asked to attach them with Game.exe. Next: item 5,
