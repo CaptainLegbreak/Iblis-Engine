@@ -66,13 +66,13 @@ int __cdecl sub_0047A9D0()
 }
 
 // 0x0047A9E0
-int __cdecl sub_0047A9E0_GetClientFlag40()
+int __cdecl CHAT_GetClientFlag40()
 {
     return gdwClientFlags & 0x40;
 }
 
 // 0x0047A9F0
-int __cdecl sub_0047A9F0_GetClientFlag80()
+int __cdecl CHAT_GetClientFlag80()
 {
     return gdwClientFlags & 0x80;
 }

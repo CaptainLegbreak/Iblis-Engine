@@ -102,7 +102,7 @@ static inline unsigned __int64 SEED_RollRandomNumberForceInline(D2SeedStrc* pSee
     return lSeed;
 }
 
-void __fastcall sub_0046C320_SpawnAroundUnit(D2UnitStrc* pUnit, int nMonsterId, int nCount); // 0x0046C320
+void __fastcall VIEW_SpawnAroundUnit(D2UnitStrc* pUnit, int nMonsterId, int nCount); // 0x0046C320
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
@@ -334,7 +334,7 @@ void __fastcall NPCMENU_HandleUnitClassEvent(D2UnitStrc* pUnit, int nUnused, int
     case 0x21E:
         if (pUnit->dwAnimMode == 0)
         {
-            sub_0046B530_SpawnMissileAtObject(pUnit);
+            VIEW_SpawnMissileAtObject(pUnit);
         }
         break;
     }
@@ -407,7 +407,7 @@ void __fastcall NPCMENU_StateDurielDeath(D2UnitStrc* pUnit, int nState, int bFla
         {
             CLIENTS_GetUnitX(pUnit);
             CLIENTS_GetUnitY(pUnit);
-            sub_0046C320_SpawnAroundUnit(pUnit, MONSTER_MAGGOT, 4);
+            VIEW_SpawnAroundUnit(pUnit, MONSTER_MAGGOT, 4);
             pMonsterData->dwDurielFlag += 4;
         }
     }

@@ -12,7 +12,7 @@ struct D2SystemInfoStrc;
 struct _iobuf;
 struct z_stream;
 
-__declspec(noreturn) void __cdecl sub_006B1A30_ThrowAtlException(long error); // 0x006B1A30
+__declspec(noreturn) void __cdecl D3DCORE_ThrowAtlException(long error); // 0x006B1A30
 bool __fastcall ERRORMANAGER_EnumLoadedModules(void* pContext); // 0x00404E60
 extern "C" __declspec(dllimport) int __stdcall FindClose(void* hFindFile); // 0x006CC1C4
 extern "C" __declspec(dllimport) int __stdcall FlushFileBuffers(void* hFile); // 0x006CC328

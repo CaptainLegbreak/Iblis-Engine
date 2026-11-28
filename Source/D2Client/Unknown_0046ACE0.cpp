@@ -60,8 +60,8 @@ extern int gnTimerEnd; // 0x007A7464
 extern int gbThroneEventPending; // 0x007A7468
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
-void __stdcall sub_0046AF70_CreateDenOfEvilLight(D2ActiveRoomStrc* pRoom); // 0x0046AF70
-void __cdecl sub_0046AD10_UpdateTimedBox(); // 0x0046AD10
+void __stdcall VIEW_CreateDenOfEvilLight(D2ActiveRoomStrc* pRoom); // 0x0046AF70
+void __cdecl VIEW_UpdateTimedBox(); // 0x0046AD10
 extern D2DrlgActStrc* gpGlobal_007A0634; // 0x007A0634
 extern D2ClientTimedBoxStrc gtTimedBox; // 0x007A742C
 
@@ -159,7 +159,7 @@ static inline D2MonStats2Txt* MONSTATS2_GetRecordInline(int nMonStatsEx)
 }
 
 // 0x0046AF70
-void __stdcall sub_0046AF70_CreateDenOfEvilLight(D2ActiveRoomStrc* pRoom)
+void __stdcall VIEW_CreateDenOfEvilLight(D2ActiveRoomStrc* pRoom)
 {
     D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
     if (pPlayer)
@@ -219,7 +219,7 @@ extern LEVELEVENT_Fn gpfnLevelEvents[];                                         
 extern unsigned int gdwLevelEventBits; // 0x007A7458
 
 // 0x0046B630
-void __fastcall sub_0046B630_FireLevelEvent(int nIndex)
+void __fastcall VIEW_FireLevelEvent(int nIndex)
 {
     D2_ASSERT(nIndex < 0x20, 0x1D9);
     D2_ASSERT(nIndex < 0x14, 0x1DA);
@@ -499,7 +499,7 @@ void __fastcall sub_0046BFF0_UnitEventMissile271(D2UnitStrc* pUnit)
     GFXUTIL_SetMotionVectorC(pUnit, 0, 0, 5, 0);
     GFXUTIL_SetMotionFlagMask(pUnit, 0);
     MISSILE_SetTargetY(pMissile, 1);
-    sub_0046BF30_CheckThroneLevel(CUNIT_GetPlayerRoom());
+    VIEW_CheckThroneLevel(CUNIT_GetPlayerRoom());
 }
 
 
@@ -528,7 +528,7 @@ void __cdecl CUNIT_DrawCountdown()
 }
 
 // 0x0046C140
-int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode)
+int __fastcall MONSTERUNIQUE_TestMonModeFlag(int nMonsterId, int nMode)
 {
     D2MonStats2Txt* pMonStats2TxtRecord = CLIENT_GetMonStats2TxtRecord(nMonsterId);
     if (!pMonStats2TxtRecord)
@@ -541,7 +541,7 @@ int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode)
 D2ClientTimedBoxStrc gtTimedBox; // 0x007A742C
 
 // 0x0046AD10
-void __cdecl sub_0046AD10_UpdateTimedBox()
+void __cdecl VIEW_UpdateTimedBox()
 {
     unsigned int nLight = 0;
     SCMD_GetRoomLight(CUNIT_GetPlayerRoom(), (int*)&nLight, &gtTimedBox.nColor[0], &gtTimedBox.nColor[1], &gtTimedBox.nColor[2], 0);
@@ -590,13 +590,13 @@ inline D2MissilesTxt* DATATBLS_GetMissilesTxtRecord(int nMissileId)
 }
 
 // 0x0046B0D0
-void __cdecl sub_0046B0D0_ApplyDenOfEvilRooms()
+void __cdecl VIEW_ApplyDenOfEvilRooms()
 {
     for (D2ActiveRoomStrc* pRoom = DUNGEON_GetRoomFromAct(gpGlobal_007A0634); pRoom; pRoom = pRoom->pRoomNext)
     {
         if (DUNGEON_GetLevelIdFromRoom(pRoom) == LEVEL_DENOFEVIL)
         {
-            sub_0046AF70_CreateDenOfEvilLight(pRoom);
+            VIEW_CreateDenOfEvilLight(pRoom);
         }
     }
 }
@@ -607,7 +607,7 @@ inline int sub_00451F50(D2UnitStrc* pUnit)
 }
 
 // 0x0046B530
-void __fastcall sub_0046B530_SpawnMissileAtObject(D2UnitStrc* pUnit)
+void __fastcall VIEW_SpawnMissileAtObject(D2UnitStrc* pUnit)
 {
     if (!pUnit)
         return;
@@ -681,13 +681,13 @@ void __fastcall sub_0046BC90_RequestAtMonster220(D2UnitStrc* pUnit)
 }
 
 // 0x0046C130
-void __cdecl sub_0046C130_DrawCountdown()
+void __cdecl VIEW_DrawCountdown()
 {
     CUNIT_DrawCountdown();
 }
 
 // 0x0046AEE0
-void __cdecl sub_0046AEE0_ObjectMissileTimedBox()
+void __cdecl VIEW_ObjectMissileTimedBox()
 {
     D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
     if (!pPlayer)
@@ -716,13 +716,13 @@ void __cdecl sub_0046AEE0_ObjectMissileTimedBox()
 }
 
 // 0x0046B0C0
-void __cdecl sub_0046B0C0_ResetPulseTick()
+void __cdecl VIEW_ResetPulseTick()
 {
     gnPulseTick = 0;
 }
 
 // 0x0046B100
-void __cdecl sub_0046B100_EventObject98Request()
+void __cdecl VIEW_EventObject98Request()
 {
     D2UnitStrc* pPlayer = sub_00463DE0_GetPlayerUnit();
     if (!pPlayer)
@@ -800,7 +800,7 @@ void __cdecl sub_0046B300_EventObject178Request()
 }
 
 // 0x0046B3A0
-void __cdecl sub_0046B3A0_StartTimer()
+void __cdecl VIEW_StartTimer()
 {
     gnTimerEnd = sub_00410A80_GetTime() + 0x5A;
     gnLevelEffectTick = 0;
@@ -832,7 +832,7 @@ void __fastcall sub_0046BE60_ApplyDenOfEvilRoom(D2ActiveRoomStrc* pRoom)
     D2_ASSERT(pRoom, 0x344);
     if (DUNGEON_GetLevelIdFromRoom(pRoom) == LEVEL_DENOFEVIL && gbPulseDone != 0)
     {
-        sub_0046AF70_CreateDenOfEvilLight(pRoom);
+        VIEW_CreateDenOfEvilLight(pRoom);
     }
 }
 
@@ -841,7 +841,7 @@ void __cdecl sub_0046BEB0_UpdateTimers()
 {
     if (gtTimedBox.bActive)
     {
-        sub_0046AD10_UpdateTimedBox();
+        VIEW_UpdateTimedBox();
     }
     if (!gbPulseDone && gnPulseTick != -1)
     {
@@ -849,7 +849,7 @@ void __cdecl sub_0046BEB0_UpdateTimers()
         if (gnPulseTick >= LEVEL_EFFECT_TICKS)
         {
             gbPulseDone = 1;
-            sub_0046B0D0_ApplyDenOfEvilRooms();
+            VIEW_ApplyDenOfEvilRooms();
         }
     }
     if (gbChaosLightEvent && gnLevelEffectTick != -1)
@@ -864,7 +864,7 @@ void __cdecl sub_0046BEB0_UpdateTimers()
 }
 
 // 0x0046BF30
-void __fastcall sub_0046BF30_CheckThroneLevel(D2ActiveRoomStrc* pRoom)
+void __fastcall VIEW_CheckThroneLevel(D2ActiveRoomStrc* pRoom)
 {
     if (!pRoom)
     {
@@ -891,7 +891,7 @@ void __fastcall sub_0046BF30_CheckThroneLevel(D2ActiveRoomStrc* pRoom)
 }
 
 // 0x0046BF90
-void __cdecl sub_0046BF90_ResetLevelEffects()
+void __cdecl VIEW_ResetLevelEffects()
 {
     gbPulseDone = 0;
     gnPulseTick = -1;
@@ -933,7 +933,7 @@ void __cdecl sub_0046B520_SetFlag7A7468()
 struct D2UnitStrc;
 
 // 0x0046B1E0
-void __cdecl sub_0046B1E0_EventObject95Request()
+void __cdecl VIEW_EventObject95Request()
 {
     D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
     if (!pPlayer)
@@ -952,7 +952,7 @@ void __cdecl sub_0046B1E0_EventObject95Request()
 }
 
 // 0x0046BD20
-static inline int sub_0046BD20_GetChaosLevelLight(unsigned char* pRed, unsigned char* pGreen, unsigned char* pBlue)
+static inline int VIEW_GetChaosLevelLight(unsigned char* pRed, unsigned char* pGreen, unsigned char* pBlue)
 {
     if (gbChaosLightEvent && gnLevelEffectTick == -1)
     {
@@ -966,7 +966,7 @@ static inline int sub_0046BD20_GetChaosLevelLight(unsigned char* pRed, unsigned 
 
 int __stdcall sub_M212_Emit_0046BD20(unsigned char* pRed, unsigned char* pGreen, unsigned char* pBlue)
 {
-    return sub_0046BD20_GetChaosLevelLight(pRed, pGreen, pBlue);
+    return VIEW_GetChaosLevelLight(pRed, pGreen, pBlue);
 }
 
 static inline unsigned __int64 SEED_RollRandomNumberForceInline(D2SeedStrc* pSeed)
@@ -989,7 +989,7 @@ static inline unsigned int SEED_RollLimitedRandomNumberInline(D2SeedStrc* pSeed,
 }
 
 // 0x0046C1A0
-static void __stdcall sub_0046C1A0_SpawnMonsterInRoom(D2ActiveRoomStrc* pRoom, int nMonsterId, D2SeedStrc* pSeed)
+static void __stdcall VIEW_SpawnMonsterInRoom(D2ActiveRoomStrc* pRoom, int nMonsterId, D2SeedStrc* pSeed)
 {
     D2DrlgCoordsStrc tCoords;
     DUNGEON_GetRoomCoordinates(pRoom, &tCoords);
@@ -1036,7 +1036,7 @@ static inline D2MonStats2Txt* GetMonStats2(int nMonsterId)
 }
 
 // 0x0046C320
-void __fastcall sub_0046C320_SpawnAroundUnit(D2UnitStrc* pUnit, int nMonsterId, int nCount)
+void __fastcall VIEW_SpawnAroundUnit(D2UnitStrc* pUnit, int nMonsterId, int nCount)
 {
     D2ActiveRoomStrc* pRoom = UNITS_GetRoom(pUnit);
     D2MonStats2Txt* pTxt = GetMonStats2(nMonsterId);
@@ -1090,7 +1090,7 @@ void __fastcall sub_0046C460_PopulateRoom(D2ActiveRoomStrc* pRoom)
 
             while (nCount > 0)
             {
-                sub_0046C1A0_SpawnMonsterInRoom(pRoom, pLevel->wCMon[i], pSeed);
+                VIEW_SpawnMonsterInRoom(pRoom, pLevel->wCMon[i], pSeed);
                 --nCount;
             }
         }
@@ -1102,6 +1102,6 @@ extern int gnTimerUnitId = -1; // 0x007129D4
 extern int gnLevelEffectTick = -1; // 0x007129D0
 
 extern LEVELEVENT_Fn gpfnLevelEvents[20] = {
-    (LEVELEVENT_Fn)&sub_0046B0C0_ResetPulseTick, (LEVELEVENT_Fn)&sub_0046AEE0_ObjectMissileTimedBox, 0, (LEVELEVENT_Fn)&sub_0046B100_EventObject98Request, 0, 0, (LEVELEVENT_Fn)&sub_0046B1E0_EventObject95Request, 0, 0, 0, 0, 0, (LEVELEVENT_Fn)&sub_0046B290_EventLevel108Request, (LEVELEVENT_Fn)&sub_0046B3A0_StartTimer, (LEVELEVENT_Fn)&sub_0046B300_EventObject178Request, 0,
+    (LEVELEVENT_Fn)&VIEW_ResetPulseTick, (LEVELEVENT_Fn)&VIEW_ObjectMissileTimedBox, 0, (LEVELEVENT_Fn)&VIEW_EventObject98Request, 0, 0, (LEVELEVENT_Fn)&VIEW_EventObject95Request, 0, 0, 0, 0, 0, (LEVELEVENT_Fn)&sub_0046B290_EventLevel108Request, (LEVELEVENT_Fn)&VIEW_StartTimer, (LEVELEVENT_Fn)&sub_0046B300_EventObject178Request, 0,
     (LEVELEVENT_Fn)&sub_0046B440_EventObject1CCRequest, (LEVELEVENT_Fn)&SCMD_TriggerNearbyMonsterEffect, 0, (LEVELEVENT_Fn)&sub_0046B520_SetFlag7A7468
 }; // 0x007129D8

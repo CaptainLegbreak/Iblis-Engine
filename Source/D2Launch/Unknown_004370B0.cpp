@@ -368,7 +368,7 @@ int __stdcall sub_004371B0_OnLoginScreen(int nArg)
 }
 
 // 0x004371C0
-int __stdcall sub_004371C0_OnEmailScreen(int nArg)
+int __stdcall MAINMENUS_OnEmailScreen(int nArg)
 {
     MAINMENUS_CreateEmailScreen();
     return 1;
@@ -463,7 +463,7 @@ void __cdecl MAINMENUS_CreatePasswordScreen()
 }
 
 // 0x004374E0
-int __stdcall sub_004374E0_OnInfoScreen(int nArg)
+int __stdcall MAINMENUS_OnInfoScreen(int nArg)
 {
     MAINMENUS_CreateInfoScreen();
     return 1;
@@ -556,7 +556,7 @@ int __stdcall sub_00437710_OnInfoScreen(int nArg)
 int __stdcall sub_004374F0_UpdateStatusWait(int nArg); // 0x004374F0
 
 // 0x00437720
-int __stdcall sub_00437720_OnPasswordScreen(int nArg)
+int __stdcall MAINMENUS_OnPasswordScreen(int nArg)
 {
     MAINMENUS_CreatePasswordScreen();
     return 1;
@@ -567,7 +567,7 @@ struct Unicode;
 D2WinControlStrc* gpPasswordOk; // 0x007799A4
 
 // 0x00437730
-int __stdcall sub_00437730_ChangePassword(int bOk)
+int __stdcall MAINMENUS_ChangePassword(int bOk)
 {
     char szOld[0x100];
     char szNew[0x100];

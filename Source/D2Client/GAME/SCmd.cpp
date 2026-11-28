@@ -1021,7 +1021,7 @@ void __fastcall NPCMENU_FlagNpcEntries(D2GSPacket91Strc* pPacket); // 0x004B3510
 
 void __fastcall ITEM_ApplyTownPortalState(D2PacketRecord7Strc* pPacket); // 0x004BDF30
 
-void __fastcall sub_0049CF90_OpenWaypointPanel(D2PacketRecord21Strc* pPacket); // 0x0049CF90
+void __fastcall TEXT_OpenWaypointPanel(D2PacketRecord21Strc* pPacket); // 0x0049CF90
 
 void __fastcall TEXT_SetNameFromPacket(D2PacketRecord21Strc* pPacket); // 0x004B9010
 
@@ -1273,7 +1273,7 @@ Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource);       
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* szFormat, ...);             // 0x006CC468
 
 // 0x00452270
-Unicode* __fastcall sub_00452270_AppendDigitText(Unicode* pText, int nValue)
+Unicode* __fastcall SCMD_AppendDigitText(Unicode* pText, int nValue)
 {
     char szNumber[4];
     unsigned short wszNumberBuf[3];
@@ -2739,7 +2739,7 @@ void __fastcall SCMD_HandleMonsterEnchants(const unsigned char* p)
 void __fastcall SCMD_HandleOpenPanel(const D2PacketRecord7Strc* pPacket)
 {
     D2PacketRecord7Strc tPacket = *pPacket;
-    sub_004C0550_HandleUseItemPacket(&tPacket);
+    USEITEM_HandleUseItemPacket(&tPacket);
 }
 
 // 0x0045E4C0
@@ -2828,7 +2828,7 @@ void __fastcall SCMD_HandlePlayCinematic(const D2GSPacketSrv61* pPacket)
 void __fastcall SCMD_HandleWaypointMenu(const D2PacketRecord21Strc* pPacket)
 {
     D2PacketRecord21Strc tPacket = *pPacket;
-    sub_0049CF90_OpenWaypointPanel(&tPacket);
+    TEXT_OpenWaypointPanel(&tPacket);
 }
 
 // 0x0045E6B0

@@ -12,7 +12,7 @@ extern int gbCheckEmu10k1;                                                      
 int gbCheckCrlds3d;                                                                                // 0x0088178C
 
 // 0x00513A20
-int __stdcall sub_00513A20_EnumCallback(void* pGuid, const char* szDescription, const char* szModule, void* pContext)
+int __stdcall D2SOUND_EnumCallback(void* pGuid, const char* szDescription, const char* szModule, void* pContext)
 {
     if (pGuid && !gbSoundEnumDone)
     {

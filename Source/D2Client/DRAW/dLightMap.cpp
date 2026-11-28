@@ -1377,7 +1377,7 @@ unsigned char** __stdcall GFX_BuildLerpRowTable(unsigned int nCount, int nSteps)
 }
 
 // 0x00475D20
-void __fastcall sub_00475D20_FreeIfSet(void* pMemory)
+void __fastcall DLIGHTMAP_FreeIfSet(void* pMemory)
 {
     if (pMemory)
     {
@@ -1436,7 +1436,7 @@ int gbCacheStatsChecked;                                                        
 
 
 // 0x00478150
-int __cdecl sub_00478150_GetProgress()
+int __cdecl DLIGHTMAP_GetProgress()
 {
     return gnProgress;
 }
@@ -1457,7 +1457,7 @@ int __cdecl sub_00486E00_Return0()
 }
 
 // 0x00489870
-int __cdecl sub_00489870_GetNpcButtonHandled()
+int __cdecl DLIGHTMAP_GetNpcButtonHandled()
 {
     return gbNpcButtonHandled;
 }

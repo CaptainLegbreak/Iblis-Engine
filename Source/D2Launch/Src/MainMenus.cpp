@@ -5834,12 +5834,12 @@ void __fastcall MAINMENUS_DeleteCharFiles(const char* szCharName, const char* sz
 
 extern "C" void __cdecl MAINMENUS_OnConnectCancel(); // 0x00436CD0
 extern "C" void __cdecl sub_004371B0_OnLoginScreen(); // 0x004371B0
-extern "C" void __cdecl sub_004371C0_OnEmailScreen(); // 0x004371C0
+extern "C" void __cdecl MAINMENUS_OnEmailScreen(); // 0x004371C0
 extern "C" void __cdecl sub_004371D0_OnShowLogin(); // 0x004371D0
-extern "C" void __cdecl sub_004374E0_OnInfoScreen(); // 0x004374E0
+extern "C" void __cdecl MAINMENUS_OnInfoScreen(); // 0x004374E0
 extern "C" void __cdecl sub_00437710_OnInfoScreen(); // 0x00437710
-extern "C" void __cdecl sub_00437720_OnPasswordScreen(); // 0x00437720
-extern "C" void __cdecl sub_00437730_ChangePassword(); // 0x00437730
+extern "C" void __cdecl MAINMENUS_OnPasswordScreen(); // 0x00437720
+extern "C" void __cdecl MAINMENUS_ChangePassword(); // 0x00437730
 extern "C" void __cdecl CHARSEL_SubmitPasswordReset(); // 0x004378D0
 extern "C" void __cdecl CHARSEL_OnNormalDifficulty(); // 0x00439B80
 extern "C" void __cdecl CHARSEL_OnNightmareDifficulty(); // 0x00439BA0
@@ -6523,25 +6523,25 @@ extern "C" D2LaunchControlTemplateStrc gData_00708D10[333] = {
     { 4, 0, 385, 800, 16, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
     { 4, 0, 470, 800, 16, 0, 0, 0, 0, 0, (void*)&gData_007089C4, 2 },
     { 6, 264, 335, 272, 35, 0, 11050, (void*)&gp3WideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_004371B0_OnLoginScreen },
-    { 6, 264, 420, 272, 35, 0, 11113, (void*)&gp3WideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_004371C0_OnEmailScreen },
-    { 6, 264, 505, 272, 35, 0, 11115, (void*)&gp3WideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_00437720_OnPasswordScreen },
+    { 6, 264, 420, 272, 35, 0, 11113, (void*)&gp3WideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnEmailScreen },
+    { 6, 264, 505, 272, 35, 0, 11115, (void*)&gp3WideButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnPasswordScreen },
     { 6, 33, 572, 128, 35, 27, 5103, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_004371D0_OnShowLogin },
     { 4, 0, 310, 800, 50, 0, 0, 0, 0, 0, (void*)&gData_007089B4, 2 },
     { 4, 158, 500, 480, 220, 10, 8, 0, 0, 0, (void*)&gData_007089C4, 2 },
     { 2, 248, 402, 300, 26, 0, 0, (void*)&gpEditTextBoxWideCelFile },
     { 4, 250, 395, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
-    { 1, 251, 397, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&sub_00437730_ChangePassword, (void*)&gData_007089DC },
+    { 1, 251, 397, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_ChangePassword, (void*)&gData_007089DC },
     { 2, 248, 452, 300, 26, 0, 0, (void*)&gpEditTextBoxWideCelFile },
     { 4, 250, 445, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
-    { 1, 251, 447, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&sub_00437730_ChangePassword, (void*)&gData_007089DC },
+    { 1, 251, 447, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_ChangePassword, (void*)&gData_007089DC },
     { 2, 248, 502, 300, 26, 0, 0, (void*)&gpEditTextBoxWideCelFile },
     { 4, 250, 495, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
-    { 1, 251, 497, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&sub_00437730_ChangePassword, (void*)&gData_007089DC },
+    { 1, 251, 497, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_ChangePassword, (void*)&gData_007089DC },
     { 2, 248, 552, 300, 26, 0, 0, (void*)&gpEditTextBoxWideCelFile },
     { 4, 250, 545, 300, 32, 0, 0, 0, 0, 0, (void*)&gData_007089C4 },
-    { 1, 251, 547, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&sub_00437730_ChangePassword, (void*)&gData_007089DC },
-    { 6, 627, 572, 128, 35, 0, 11062, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_00437730_ChangePassword },
-    { 6, 33, 572, 128, 35, 27, 5103, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&sub_004374E0_OnInfoScreen }
+    { 1, 251, 547, 293, 19, 8, 4, 0, 0, (void*)(unsigned int)&MAINMENUS_ChangePassword, (void*)&gData_007089DC },
+    { 6, 627, 572, 128, 35, 0, 11062, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_ChangePassword },
+    { 6, 33, 572, 128, 35, 27, 5103, (void*)&gpMediumButtonBlankCelFile, (D2LaunchCallback)(unsigned int)&MAINMENUS_OnInfoScreen }
 }; // 0x00708D10
 #pragma comment(linker, "/alternatename:?gatControlTemplates@@3PAUD2LaunchControlTemplateStrc@@A=_gData_00708D10")
 

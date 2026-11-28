@@ -180,7 +180,7 @@ int __fastcall sub_00581F60_HandleState(D2ContextStrc* context, void* argument);
 int __stdcall MONSTERS_IsDead(D2UnitStrc* pMonster); // 0x0063EA40
 
 
-int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
+int __fastcall MONSTERUNIQUE_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
 
 D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int nMonsterId); // 0x00451FE0
 
@@ -2060,7 +2060,7 @@ int __fastcall OBJMODE_IsMonsterShrineCandidate(D2UnitStrc* pMonster, D2UnitStrc
         return 0;
     }
     const int nClassId = pMonster->dwClassId;
-    if (!sub_0046C140_TestMonModeFlag(nClassId, 2))
+    if (!MONSTERUNIQUE_TestMonModeFlag(nClassId, 2))
     {
         return 0;
     }
@@ -3493,7 +3493,7 @@ int __fastcall OBJECTS_OperateFunction68_EvilUrn(D2ObjOperateFnStrc* pOp, int nO
             for (int i = 0; i < nMonCount; ++i)
             {
                 const int nMonsterId = pMonsterRegion->pMonData[i].nMonHcIdx;
-                if (sub_0046C140_TestMonModeFlag(nMonsterId, MONMODE_WALK))
+                if (MONSTERUNIQUE_TestMonModeFlag(nMonsterId, MONMODE_WALK))
                 {
                     MONSTERUNIQUE_SpawnUniqueGroup(pOp->pGame, UNITS_GetRoom(pOp->hObject), 0, nMonsterId, 1, 0, 0, 1);
                     break;

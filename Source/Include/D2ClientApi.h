@@ -88,7 +88,7 @@ D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc* pUnit); // 0x004648F0
 int __fastcall CUNIT_IsHostileTo(D2UnitStrc* pUnit, D2UnitStrc* pOther); // 0x00465C60
 void __fastcall CUNIT_RemoveClientSideUnit(unsigned int nUnitId, int nUnitType); // 0x00465EE0
 D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId); // 0x0046ACE0
-int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
+int __fastcall MONSTERUNIQUE_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
 void __fastcall GFX_DrawProgressiveStateOverlays(D2UnitStrc* pUnit, int nOverlay, int nX, int nY); // 0x0046E1B0
 void __fastcall GFX_ClearGfxBytes(D2UnitStrc* pUnit, int nIndex); // 0x0046F280
 void __fastcall GFX_RefreshUnitGfx(D2UnitStrc* pUnit, int nArg); // 0x00470610
@@ -124,7 +124,7 @@ D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams
 void __fastcall MISSILE_CltDoCommon(D2UnitStrc* pMissile); // 0x004D30C0
 D2RosterInfoStrc* __fastcall GFXUTIL_GetNextRosterInfo(D2RosterInfoStrc* pRosterInfo); // 0x004DC0B0
 void __fastcall SKILLDESC_InitCappedChargedPath(D2UnitStrc* pMissile, int nSeedOffset); // 0x004E2ED0
-extern "C" void __cdecl sub_004E4280_ResetEnvironSounds(); // 0x004E4280
+extern "C" void __cdecl SKILLDESC_ResetEnvironSounds(); // 0x004E4280
 int __fastcall SKILLDESC_ValidateMonsterId(int nMonsterId); // 0x004E6C50
 int __fastcall SKILLDESC_GetSkillParamFive(int nSkillId); // 0x004E6C70
 int __fastcall SKILLDESC_GetSkillParamByLevel(int nSkillId, int nSkillLevel); // 0x004E6CA0

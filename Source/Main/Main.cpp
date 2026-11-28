@@ -188,7 +188,7 @@ __declspec(noinline) int __fastcall GameStart(void* hInstance, D2ConfigStrc* pCf
 
     if (!pCfg->bNoSound && gnMode != 2)
     {
-        sub_00514530_InitSound(pCfg->bIsExpansion, pCfg->bSoundBackground);
+        D2SOUND_InitSound(pCfg->bIsExpansion, pCfg->bSoundBackground);
         bSoundStarted = 1;
     }
 

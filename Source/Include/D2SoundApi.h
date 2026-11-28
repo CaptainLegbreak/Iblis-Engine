@@ -10,7 +10,7 @@ struct Node005169D0;
 
 void __fastcall D2SOUND_SetEaxEnvironment(D2EaxEnvironmentStrc* pEnvironment); // 0x00513C50
 void __cdecl D2SOUND_CloseSoundSystem(); // 0x00514060
-void __fastcall sub_00514530_InitSound(int nArg1, int nArg2); // 0x00514530
+void __fastcall D2SOUND_InitSound(int nArg1, int nArg2); // 0x00514530
 int __cdecl D2SOUND_IsStreamChannelPlaying(); // 0x00514840
 void __fastcall D2SOUND_10034(int nValue); // 0x005148F0
 void __cdecl D2SOUND_StopChannel(); // 0x00514930
@@ -23,7 +23,7 @@ int __fastcall D2SOUND_SetMusicVolumeOption(int nValue); // 0x00514D00
 int __cdecl D2SOUND_GetPositionalBiasOption(); // 0x00514D20
 int __fastcall D2SOUND_SetPositionalBiasOption(int nValue); // 0x00514D30
 int __cdecl D2SOUND_GetNpcSpeechOption(); // 0x00514D50
-int __fastcall sub_00514D60_SetNpcSpeech(int nValue); // 0x00514D60
+int __fastcall D2SOUND_SetNpcSpeech(int nValue); // 0x00514D60
 int __cdecl D2SOUND_GetOptionsMusicOption(); // 0x00514D80
 int __fastcall D2SOUND_SetOptionsMusicOption(int nValue); // 0x00514D90
 void __cdecl D2SOUNDFAST_InitWaveSlots(); // 0x00514DB0

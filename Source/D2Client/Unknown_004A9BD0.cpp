@@ -55,7 +55,7 @@ int __fastcall GAME_GetUnitClassId(D2UnitStrc* pUnit); // 0x00451F60
 void __cdecl sub_004B17A0_ProcessNpcEntries()
 {
     for (int i = 0; i < gnNpcEntryCount; ++i)
-        sub_004B1680_PickNpcChoice(&gaNpcEntries[i]);
+        NPCMENU_PickNpcChoice(&gaNpcEntries[i]);
     gtNpcMenu.bEntriesProcessed = 1;
 }
 

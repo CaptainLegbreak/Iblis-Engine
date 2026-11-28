@@ -40,7 +40,7 @@ struct D2CinematicPacketStrc
 
 void __fastcall INV_PlayCinematic(int nIndex); // 0x00482EF0
 
-void __fastcall sub_0046B630_FireLevelEvent(int nIndex); // 0x0046B630
+void __fastcall VIEW_FireLevelEvent(int nIndex); // 0x0046B630
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -132,7 +132,7 @@ void __fastcall sub_004B9320_PlayCinematicFromPacket(const D2CinematicPacketStrc
 // 0x004B9330
 void __fastcall sub_004B9330_ForwardByte(const unsigned char* pPacket)
 {
-    sub_0046B630_FireLevelEvent(pPacket[1]);
+    VIEW_FireLevelEvent(pPacket[1]);
 }
 
 // 0x004B9340

@@ -4142,7 +4142,7 @@ void __stdcall TEXT_KeyDownMsg(SMSGHANDLER_PARAMS* pMsg)
 }
 
 extern "C" void __cdecl D2CLIENT_CloseNPCTalk(); // 0x004A17D0
-extern "C" void __cdecl sub_004A6000_RegisterPressMsgHandler(); // 0x004A6000
+extern "C" void __cdecl TEXT_RegisterPressMsgHandler(); // 0x004A6000
 extern "C" void __cdecl TEXT_WheelCaptureMsg(); // 0x004A6310
 extern "C" void __cdecl TEXT_ButtonCaptureMsg(); // 0x004A6350
 extern "C" void __cdecl sub_004A63B0_WheelMsgHandler(); // 0x004A63B0

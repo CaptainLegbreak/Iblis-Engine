@@ -30,7 +30,7 @@ struct D2BigPairStrc
     void MakeVerifier(const char* szName, const char* szPassword, unsigned char* pSalt, unsigned char* pVerifier); // 0x00528660
     void sub_005286D0_InitLogin(D2BigLoginRecordStrc* pRecord, const char* szName, const char* szPassword); // 0x005286D0
     int sub_00528760_ComputeLoginProof(D2BigLoginRecordStrc* pRecord, const unsigned char* pSalt, const unsigned char* pServerPublic); // 0x00528760
-    int sub_00528890_CompareServerProof(const D2BigLoginRecordStrc* pRecord, const unsigned char* pServerProof); // 0x00528890
+    int BNSEND_CompareServerProof(const D2BigLoginRecordStrc* pRecord, const unsigned char* pServerProof); // 0x00528890
     void sub_005289F0_ComputeServerPublic(D2BigServerRecordStrc* pRecord); // 0x005289F0
     int sub_00528AC0_VerifyClientProof(D2BigServerRecordStrc* pRecord, const unsigned char* pClientProof); // 0x00528AC0
     void sub_00528C60_ComputeServerProof(D2BigServerRecordStrc* pRecord); // 0x00528C60

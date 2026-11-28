@@ -213,7 +213,7 @@ extern "C" __declspec(dllimport)
 int __cdecl wsprintfA(char* szOut, const char* szFormat, ...);             // 0x006CC468
 
 
-static int __stdcall sub_004E86F0_GetWeaponDamage(int*, int*, int*, int, D2SkillStrc*, int, D2UnitStrc*, int, D2UnitStrc*, int); // 0x004E86F0
+static int __stdcall SKILLDESC_GetWeaponDamage(int*, int*, int*, int, D2SkillStrc*, int, D2UnitStrc*, int, D2UnitStrc*, int); // 0x004E86F0
 
 
 extern const D2ElemDamageStatsStrc gaElemDamageStats[4];                                          // 0x006DBEF4
@@ -244,7 +244,7 @@ int __fastcall TEXT_SplitAtNewline(Unicode*, Unicode**); // 0x004A7660
 
 extern "C" int __fastcall sub_004D9FC0_GetSkillUseState(D2UnitStrc*, D2SkillStrc*); // 0x004D9FC0
 
-static void __stdcall sub_004E9940_DrawNumberCentered(int nColor, int nLeft, int nY, int nRight, int nValue); // 0x004E9940
+static void __stdcall SKILLDESC_DrawNumberCentered(int nColor, int nLeft, int nY, int nRight, int nValue); // 0x004E9940
 
 #define TP gaSkillTextPositions
 
@@ -364,7 +364,7 @@ int __stdcall INVENTORY_GetEquippedShield(D2InventoryStrc* pInventory, D2UnitStr
 
 
 
-D2UnitStrc* sub_004E9300_MergeWeaponPair(D2UnitStrc* pUnit); // 0x004E9300
+D2UnitStrc* SKILLDESC_MergeWeaponPair(D2UnitStrc* pUnit); // 0x004E9300
 
 
 int __fastcall GAME_GetLadderFlag(); // 0x0044DCA0
@@ -476,7 +476,7 @@ static int __stdcall SKILLDESC_AddElemDuration(Unicode* wszText, D2SkillsTxt* pS
 int __fastcall SKILLDESC_CltDoLobMissile(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel); // 0x004EFDF0
 int __fastcall SKILLDESC_CltDoLaunchMissileAtTarget(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel); // 0x004F0050
 
-static int __stdcall sub_004EDDD0_AddAttackInfo(Unicode* wszText, int nSkillId, D2SkillsTxt* pSkillsTxt, D2UnitStrc* pUnit, int nSkillLevel); // 0x004EDDD0
+static int __stdcall SKILLDESC_AddAttackInfo(Unicode* wszText, int nSkillId, D2SkillsTxt* pSkillsTxt, D2UnitStrc* pUnit, int nSkillLevel); // 0x004EDDD0
 
 
 void __fastcall NPCMENU_ClearUnicode(Unicode* pChar);                                                  // 0x0042F530
@@ -550,7 +550,7 @@ static void SKILLDESC_AddEnvironSoundRefs(int nIndex)
 }
 
 // 0x004E4280
-extern "C" void __cdecl sub_004E4280_ResetEnvironSounds()
+extern "C" void __cdecl SKILLDESC_ResetEnvironSounds()
 {
     gnEnvironLevelId = 0;
     gnEnvironAmbientId = 0;
@@ -867,7 +867,7 @@ int __fastcall SKILLDESC_MissileAtTargetUnit(D2UnitStrc* pUnit, int nSkillId, in
 }
 
 // 0x004E4180
-int __fastcall sub_004E4180_GetCyclicDistance(int nFrame, int nOffset, int nStepLength)
+int __fastcall SKILLDESC_GetCyclicDistance(int nFrame, int nOffset, int nStepLength)
 {
     int nFrameMod;
     int nOffsetMod;
@@ -985,7 +985,7 @@ void __fastcall SKILLDESC_UpdateEnvironSounds(unsigned int dwTick)
         }
         if (gnWeatherSoundHandle)
         {
-            const int nCurrent = sub_004B9B20_GetValue(gnWeatherSoundHandle);
+            const int nCurrent = SOUNDINST_GetValue(gnWeatherSoundHandle);
             int nNext;
             if (nVolume > nCurrent)
                 nNext = nVolume < nCurrent + 6 ? nVolume : nCurrent + 6;
@@ -1195,7 +1195,7 @@ static unsigned short SKILLDESC_GetSkillDescStrLong(int nSkillId)
 }
 
 // 0x004E6E30
-static unsigned short sub_004E6E30_GetSkillDescAltStr(int nSkillId)
+static unsigned short SKILLDESC_GetSkillDescAltStr(int nSkillId)
 {
     D2SkillsTxt* pSkillsTxtRecord = (nSkillId >= 0 && nSkillId < sgptDataTables->nSkillsTxtRecordCount) ? &sgptDataTables->pSkillsTxt[nSkillId] : 0;
     D2SkillDescTxt* pSkillDescTxtRecord = 0;
@@ -1941,7 +1941,7 @@ static int __stdcall SKILLDESC_AppendManaValue(int nValue, Unicode* wszOut)
 }
 
 // 0x004E85C0
-static int __stdcall sub_004E85C0_AppendManaCost(Unicode* wszOut, int nSkillId, int nLevel, int nMultiplier, D2SkillsTxt* pSkillsTxt, int nValue)
+static int __stdcall SKILLDESC_AppendManaCost(Unicode* wszOut, int nSkillId, int nLevel, int nMultiplier, D2SkillsTxt* pSkillsTxt, int nValue)
 {
     short nMana = pSkillsTxt->wMana;
     if (!nMana && !pSkillsTxt->wLevelMana)
@@ -1977,7 +1977,7 @@ static inline int SDPHYS_TestFlag(const unsigned char* pFlags, int nBit)
 }
 
 // 0x004E86F0
-static int __stdcall sub_004E86F0_GetWeaponDamage(int* pMinDamage, int* pMaxDamage, int* pColor, int nAdd, D2SkillStrc* pSkill, int nSrcDam, D2UnitStrc* pItem, int bStatBonus, D2UnitStrc* pUnit, int nBonus)
+static int __stdcall SKILLDESC_GetWeaponDamage(int* pMinDamage, int* pMaxDamage, int* pColor, int nAdd, D2SkillStrc* pSkill, int nSrcDam, D2UnitStrc* pItem, int bStatBonus, D2UnitStrc* pUnit, int nBonus)
 {
     if (!pSkill)
         return 0;
@@ -2173,7 +2173,7 @@ int __fastcall SKILLDESC_AttackRatingCallback(D2UnitStrc* pUnit, int* pValue1, i
 
 
 // 0x004E9000
-void __fastcall sub_004E9000_SkillDescAttackRatingMain(D2UnitStrc* pUnit, D2SkillStrc* pSkill, D2SkillsTxt* pSkillsTxt, int nLevel, int* pValue1, int* pValue2, int* pValue3, int* pValue4)
+void __fastcall SKILLDESC_SkillDescAttackRatingMain(D2UnitStrc* pUnit, D2SkillStrc* pSkill, D2SkillsTxt* pSkillsTxt, int nLevel, int* pValue1, int* pValue2, int* pValue3, int* pValue4)
 {
     D2UnitStrc* pItem = 0;
     if (pUnit->pInventory)
@@ -2319,7 +2319,7 @@ static __forceinline D2UnitStrc* sub_P03_MergeLeftWeaponOnly(D2UnitStrc* pUnit, 
 }
 
 // 0x004E9300
-static D2UnitStrc* sub_004E9300_MergeWeaponPair(D2UnitStrc* pUnit)
+static D2UnitStrc* SKILLDESC_MergeWeaponPair(D2UnitStrc* pUnit)
 {
     if (!UNITS_CanDualWield(pUnit))
         return 0;
@@ -2379,7 +2379,7 @@ static int __stdcall SKILLDESC_EvaluateForEachWeapon(int* pValue1, int* pValue2,
             *pValue4 = 0;
         }
 
-        pItem = sub_004E9300_MergeWeaponPair(pUnit);
+        pItem = SKILLDESC_MergeWeaponPair(pUnit);
         if (pItem)
         {
             pfnEvaluate(pUnit, pValue1, pValue2, pColor1, nBonus, nAdd, pSkill, 0, pItem);
@@ -2443,7 +2443,7 @@ void __fastcall SKILLDESC_DescAttackRatingOffhand(D2UnitStrc* pUnit, D2SkillStrc
 // 0x004E9610
 int __fastcall SKILLDESC_WeaponDamageCallback(D2UnitStrc* pUnit, int* pMinDamage, int* pMaxDamage, int* pColor, int nBonus, int nAdd, D2SkillStrc* pSkill, int nSrcDam, D2UnitStrc* pItem)
 {
-    sub_004E86F0_GetWeaponDamage(pMinDamage, pMaxDamage, pColor, nAdd, pSkill, nSrcDam, pItem, 0, pUnit, nBonus);
+    SKILLDESC_GetWeaponDamage(pMinDamage, pMaxDamage, pColor, nAdd, pSkill, nSrcDam, pItem, 0, pUnit, nBonus);
     return sub_004E89A0_GetElementalDamage(pUnit, pMinDamage, pMaxDamage, pColor, pSkill);
 }
 
@@ -2455,7 +2455,7 @@ static void __stdcall SKILLDESC_AddScaledWeaponDamage(D2UnitStrc* pUnit, int* pM
 
     int nMin = 0;
     int nMax = 0;
-    sub_004E86F0_GetWeaponDamage(&nMin, &nMax, pColor, 0, pSkill, 128, pItem, 0, pUnit, 0);
+    SKILLDESC_GetWeaponDamage(&nMin, &nMax, pColor, 0, pSkill, 128, pItem, 0, pUnit, 0);
     sub_004E89A0_GetElementalDamage(pUnit, &nMin, &nMax, pColor, pSkill);
     *pMinDamage += nMin * nRatio / 128;
     *pMaxDamage += nMax * nRatio / 128;
@@ -2527,7 +2527,7 @@ void __fastcall SKILLDESC_DrawTwoTexts(const Unicode* wszText1, const Unicode* w
 }
 
 // 0x004E9940
-static void __stdcall sub_004E9940_DrawNumberCentered(int nColor, int nLeft, int nY, int nRight, int nValue)
+static void __stdcall SKILLDESC_DrawNumberCentered(int nColor, int nLeft, int nY, int nRight, int nValue)
 {
     Unicode wszText[32];
     char szText[32];
@@ -3096,7 +3096,7 @@ void __fastcall SKILLDESC_DrawOtherHandDamage(D2UnitStrc* pUnit, D2SkillStrc* pS
     }
 
     SKILLDESC_ThrowDamageCallback(pUnit, &nMin, &nMax, &nColor, 0, 0, pSkill, 0, pItem);
-    sub_004E9300_MergeWeaponPair(pUnit);
+    SKILLDESC_MergeWeaponPair(pUnit);
     SKILLDESC_DrawDamageRange(nMin, nMax, nColor, nY, nLeft, nRight);
 }
 
@@ -3144,7 +3144,7 @@ void __fastcall SKILLDESC_DrawWeaponAndElemDamage(D2UnitStrc* pUnit, D2SkillStrc
     int nWeaponMinOutput = 0;
     int nWeaponMaxOutput = 0;
     int nWeaponColor = 0;
-    sub_004E86F0_GetWeaponDamage(&nWeaponMinOutput, &nWeaponMaxOutput, &nWeaponColor, 0, pSkill, 0x80, 0, 0, pUnit, 0);
+    SKILLDESC_GetWeaponDamage(&nWeaponMinOutput, &nWeaponMaxOutput, &nWeaponColor, 0, pSkill, 0x80, 0, 0, pUnit, 0);
     sub_004E89A0_GetElementalDamage(pUnit, &nWeaponMinOutput, &nWeaponMaxOutput, &nWeaponColor, pSkill);
 
     int nMin = 0;
@@ -3476,7 +3476,7 @@ void __fastcall SKILLDESC_DrawWeaponDamageWithParam(D2UnitStrc* pUnit, D2SkillSt
     int nMin = 0;
     int nMax = 0;
     int nColor = 0;
-    sub_004E86F0_GetWeaponDamage(&nMin, &nMax, &nColor, 0, pSkill, 0, 0, 0, pUnit, 0);
+    SKILLDESC_GetWeaponDamage(&nMin, &nMax, &nColor, 0, pSkill, 0, 0, 0, pUnit, 0);
     const int nSkillId = SKILLS_GetSkillIdFromSkill(pSkill, gszSkillDescFile, 0xD40);
     D2SkillsTxt* pRecord = DATATBLS_GetSkillsTxtRecord(nSkillId);
     const int nParam = !pRecord ? 0 : pRecord->dwParam[4];
@@ -3606,7 +3606,7 @@ void __fastcall SKILLDESC_DrawDescWeaponAndElemDamage(D2UnitStrc* pUnit, D2Skill
     int nColor = 0;
     const int nBonus = SKILLS_EvaluateSkillDescFormula(pUnit, pSkillDescTxt->dwDamCalc[0], nSkillId, nSkillLevel);
     const int nAdd = SKILLS_EvaluateSkillDescFormula(pUnit, pSkillDescTxt->dwDamCalc[1], nSkillId, nSkillLevel);
-    sub_004E86F0_GetWeaponDamage(&nMin, &nMax, &nColor, nAdd, pSkill, 0x80, 0, 0, pUnit, nBonus);
+    SKILLDESC_GetWeaponDamage(&nMin, &nMax, &nColor, nAdd, pSkill, 0x80, 0, 0, pUnit, nBonus);
     sub_004E89A0_GetElementalDamage(pUnit, &nMin, &nMax, &nColor, pSkill);
 
     int nElemMin = 0;
@@ -4128,7 +4128,7 @@ void __fastcall SKILLDESC_DrawSkillPanel(D2UnitStrc* pUnit, D2SkillStrc* pSkill,
     if (!pDesc) return;
     D2Win_10127_SetFont(6);
     Unicode wszName[32];
-    sub_005267E0(wszName, D2LANG_GetStringFromTblIndex(sub_004E6E30_GetSkillDescAltStr(nSkillId)));
+    sub_005267E0(wszName, D2LANG_GetStringFromTblIndex(SKILLDESC_GetSkillDescAltStr(nSkillId)));
     GAME_StrToUpper(wszName);
     int nIndex = nSlot;
     DRAW_SKILL_TEXT(nIndex, wszName);
@@ -4188,7 +4188,7 @@ void __fastcall SKILLDESC_DrawSkillPanel(D2UnitStrc* pUnit, D2SkillStrc* pSkill,
         SKILLDESC_DrawTwoTexts(wszValue1, wszValue2, TP[nIndex].nLeft, TP[nIndex].nY, TP[nIndex].nRight, nColor1, nColor2);
     }
     else if (nValue1)
-        sub_004E9940_DrawNumberCentered(nColor1, TP[nIndex].nLeft, TP[nIndex].nY, TP[nIndex].nRight, nValue1);
+        SKILLDESC_DrawNumberCentered(nColor1, TP[nIndex].nLeft, TP[nIndex].nY, TP[nIndex].nRight, nValue1);
 }
 
 
@@ -4882,7 +4882,7 @@ void __fastcall SKILLDESC_DrawSkillWeaponLine(D2UnitStrc* pUnit, D2SkillStrc* pS
     int& nBonus = nSkillLevel;
     nBonus = SKILLS_EvaluateSkillDescFormula(pUnit, pSkillDescTxt->dwDamCalc[0], SKILLS_GetSkillIdFromSkill(pSkill, gszSkillDescFile, 0x98C), nLevel);
     const int nAdd = SKILLS_EvaluateSkillDescFormula(pUnit, pSkillDescTxt->dwDamCalc[1], SKILLS_GetSkillIdFromSkill(pSkill, gszSkillDescFile, 0x98D), nLevel);
-    sub_004E86F0_GetWeaponDamage(&nMin, &nMax, &nColor, nAdd, pSkill, 0x80, 0, 0, pUnit, nBonus);
+    SKILLDESC_GetWeaponDamage(&nMin, &nMax, &nColor, nAdd, pSkill, 0x80, 0, 0, pUnit, nBonus);
     sub_004E89A0_GetElementalDamage(pUnit, &nMin, &nMax, &nColor, pSkill);
     D2SkillsTxt* const pTxt = pSkillsTxt;
     if (pTxt->nSrcDam != 0x80)
@@ -5714,7 +5714,7 @@ static inline D2SkillDescTxt* CLIENT_LookupSkillDescTxtRecord(int nSkillId)
 
 
 // 0x004EDDD0
-static int __stdcall sub_004EDDD0_AddAttackInfo(Unicode* wszText, int nSkillId, D2SkillsTxt* pSkillsTxt, D2UnitStrc* pUnit, int nSkillLevel)
+static int __stdcall SKILLDESC_AddAttackInfo(Unicode* wszText, int nSkillId, D2SkillsTxt* pSkillsTxt, D2UnitStrc* pUnit, int nSkillLevel)
 {
     if (GAME_IsExpansion())
     {
@@ -5735,7 +5735,7 @@ static int __stdcall sub_004EDDD0_AddAttackInfo(Unicode* wszText, int nSkillId, 
 
 
 // 0x004EF990
-void __fastcall sub_004EF990_SetSkillPopUpText(D2UnitStrc* pUnit, int nSkillId, int nArg3, int nArg4, int nArg5, int nX, int nY)
+void __fastcall SKILLDESC_SetSkillPopUpText(D2UnitStrc* pUnit, int nSkillId, int nArg3, int nArg4, int nArg5, int nX, int nY)
 {
     int bFound;
     int nHeight;
@@ -5935,7 +5935,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
     switch (pSkillDescTxt->nDescLine[nLine])
     {
     case 1:
-        sub_004E85C0_AppendManaCost(wszText, nSkillId, nSkillLevel, nCalcA, pSkillsTxt, nManaValue);
+        SKILLDESC_AppendManaCost(wszText, nSkillId, nSkillLevel, nCalcA, pSkillsTxt, nManaValue);
         break;
 
     case 2:
@@ -6253,7 +6253,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
         break;
 
     case 48:
-        sub_004EDDD0_AddAttackInfo(wszText, nSkillId, pSkillsTxt, pUnit, nSkillLevel);
+        SKILLDESC_AddAttackInfo(wszText, nSkillId, pSkillsTxt, pUnit, nSkillLevel);
         break;
 
     case 49:
@@ -6277,7 +6277,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
         break;
 
     case 53:
-        TEXT_DrawHintText(sub_004A9A90_FindSkill(pUnit, nSkillId), nStringA);
+        TEXT_DrawHintText(SPELLSEL_FindSkill(pUnit, nSkillId), nStringA);
         break;
 
     case 54:

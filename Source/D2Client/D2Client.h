@@ -763,7 +763,7 @@ void __cdecl TEXT_LayoutSlider(); // 0x004A5060
 void __cdecl TEXT_RegisterKeyCaptureHandlers(); // 0x004A5D00
 void __cdecl sub_004AB2F0(); // 0x004AB2F0
 void __cdecl NPCMENU_ShowTradeDialog(); // 0x004B2F50
-void __cdecl sub_004BA8F0_StopSongs(); // 0x004BA8F0
+void __cdecl SOUNDINST_StopSongs(); // 0x004BA8F0
 void __cdecl SOUNDINST_LockSpeechSounds(); // 0x004BAA50
 void __cdecl SOUNDINST_RefreshGroupTimers(); // 0x004BAAB0
 void __cdecl USEITEM_CloseUseItemPanel(); // 0x004C0090

@@ -567,7 +567,7 @@ static int __stdcall SKILLDESC_AppendSecondsTenths(unsigned short wStr, Unicode*
 
 // 0x004E84F0
 
-int __stdcall sub_004E85C0_AppendManaCost(Unicode* wszOut, int nSkillId, int nLevel, int nMultiplier, D2SkillsTxt* pSkillsTxt, int nValue); // 0x004E85C0
+int __stdcall SKILLDESC_AppendManaCost(Unicode* wszOut, int nSkillId, int nLevel, int nMultiplier, D2SkillsTxt* pSkillsTxt, int nValue); // 0x004E85C0
 
 // 0x004EC090
 static void __stdcall SKILLDESC_AddSummonLife(Unicode* wszText, int nMonsterId, int nPercent, int nBonus)
@@ -1097,7 +1097,7 @@ static int __stdcall sub_004EDCA0_AddElemDamageOverTime(D2UnitStrc* pUnit, Unico
     return 1;
 }
 
-int __stdcall sub_004EDDD0_AddAttackInfo(Unicode* wszText, int nSkillId, D2SkillsTxt* pSkillsTxt, D2UnitStrc* pUnit, int nSkillLevel); // 0x004EDDD0
+int __stdcall SKILLDESC_AddAttackInfo(Unicode* wszText, int nSkillId, D2SkillsTxt* pSkillsTxt, D2UnitStrc* pUnit, int nSkillLevel); // 0x004EDDD0
 
 static inline void AppendString(Unicode* wszText, unsigned short nString)
 {
@@ -1140,7 +1140,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
     switch (pSkillDescTxt->nDescLine[nLine])
     {
     case 1:
-        sub_004E85C0_AppendManaCost(wszText, nSkillId, nSkillLevel, nCalcA, pSkillsTxt, nManaValue);
+        SKILLDESC_AppendManaCost(wszText, nSkillId, nSkillLevel, nCalcA, pSkillsTxt, nManaValue);
         break;
 
     case 2:
@@ -1458,7 +1458,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
         break;
 
     case 48:
-        sub_004EDDD0_AddAttackInfo(wszText, nSkillId, pSkillsTxt, pUnit, nSkillLevel);
+        SKILLDESC_AddAttackInfo(wszText, nSkillId, pSkillsTxt, pUnit, nSkillLevel);
         break;
 
     case 49:
@@ -1482,7 +1482,7 @@ int __fastcall SKILLDESC_AddSkillLine(D2UnitStrc* pUnit, Unicode* wszText, D2Ski
         break;
 
     case 53:
-        TEXT_DrawHintText(sub_004A9A90_FindSkill(pUnit, nSkillId), nStringA);
+        TEXT_DrawHintText(SPELLSEL_FindSkill(pUnit, nSkillId), nStringA);
         break;
 
     case 54:

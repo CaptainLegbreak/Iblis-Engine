@@ -311,7 +311,7 @@ void __fastcall PLRSKILLS_ApplyStateMonster(D2UnitStrc* pUnit, int nState)
 }
 
 // 0x004D8A30
-static int __stdcall sub_004D8A30_GetThirdsTier(int nValue, int nTotal)
+static int __stdcall PLRSKILLS_GetThirdsTier(int nValue, int nTotal)
 {
     const int nThird = nTotal / 3;
     const int nTwoThirds = 2 * nThird;
@@ -504,7 +504,7 @@ void __stdcall sub_K06_Emittier1(int a, int b)
 {
     const int v = sub_K06_EmitGettier1(a);
     const int t = sub_K06_EmitGettier1(b);
-    sub_K06_EmitPuttier1(sub_004D8A30_GetThirdsTier(v, t), v);
+    sub_K06_EmitPuttier1(PLRSKILLS_GetThirdsTier(v, t), v);
 }
 
 // 0x004D8D60
@@ -1068,7 +1068,7 @@ void __stdcall PLRSKILLS_UpdateStateColor(D2UnitStrc* pUnit)
 }
 
 // 0x004D9160
-void __fastcall sub_004D9160_RefreshPassiveSkills(D2UnitStrc* pArg)
+void __fastcall PLRSKILLS_RefreshPassiveSkills(D2UnitStrc* pArg)
 {
     SKILLS_RefreshPassiveSkills(pArg);
 }
@@ -1192,7 +1192,7 @@ extern const unsigned char gabFrameDirections[8][9] = {
 extern const unsigned char gabBaseDirections[8] = { 0x1D, 0x1C, 0x1B, 0x1A, 0x19, 0x18, 0x1F, 0x1E }; // 0x006DBA50
 
 extern CLIENTSTATEFN gpfnClientStateSetFuncs[32] = {
-    0, (CLIENTSTATEFN)&PLRSKILLS_StatePrgOverlayLevel, (CLIENTSTATEFN)&PLRSKILLS_StateAuraEffect, (CLIENTSTATEFN)&PLRSKILLS_StateSkillLevel, (CLIENTSTATEFN)&PLRSKILLS_StateStoreOwner, (CLIENTSTATEFN)&PLRSKILLS_ApplyStateMonster, (CLIENTSTATEFN)&PLRSKILLS_StateTieredOverlays, (CLIENTSTATEFN)&PLRSKILLS_StatePlaySkillSound, (CLIENTSTATEFN)&PLRSKILLS_StateTieredOverlayPairs, (CLIENTSTATEFN)&sub_004D9160_RefreshPassiveSkills, (CLIENTSTATEFN)&PLRSKILLS_StateStartMissile, (CLIENTSTATEFN)&PLRSKILLS_StateSetFlagEx, (CLIENTSTATEFN)&PLRSKILLS_StateSetFlags, (CLIENTSTATEFN)&PLRSKILLS_StateResetGfxMotion, (CLIENTSTATEFN)&PLRSKILLS_SendPositionEvent, (CLIENTSTATEFN)&PLRSKILLS_StateSetMode,
+    0, (CLIENTSTATEFN)&PLRSKILLS_StatePrgOverlayLevel, (CLIENTSTATEFN)&PLRSKILLS_StateAuraEffect, (CLIENTSTATEFN)&PLRSKILLS_StateSkillLevel, (CLIENTSTATEFN)&PLRSKILLS_StateStoreOwner, (CLIENTSTATEFN)&PLRSKILLS_ApplyStateMonster, (CLIENTSTATEFN)&PLRSKILLS_StateTieredOverlays, (CLIENTSTATEFN)&PLRSKILLS_StatePlaySkillSound, (CLIENTSTATEFN)&PLRSKILLS_StateTieredOverlayPairs, (CLIENTSTATEFN)&PLRSKILLS_RefreshPassiveSkills, (CLIENTSTATEFN)&PLRSKILLS_StateStartMissile, (CLIENTSTATEFN)&PLRSKILLS_StateSetFlagEx, (CLIENTSTATEFN)&PLRSKILLS_StateSetFlags, (CLIENTSTATEFN)&PLRSKILLS_StateResetGfxMotion, (CLIENTSTATEFN)&PLRSKILLS_SendPositionEvent, (CLIENTSTATEFN)&PLRSKILLS_StateSetMode,
     (CLIENTSTATEFN)&PLRSKILLS_StateOverlaySpread, (CLIENTSTATEFN)&PLRSKILLS_StateMissile, (CLIENTSTATEFN)&PLRSKILLS_StateCreateMissile, (CLIENTSTATEFN)&PLRSKILLS_StateResetValue
 }; // 0x0072A690
 

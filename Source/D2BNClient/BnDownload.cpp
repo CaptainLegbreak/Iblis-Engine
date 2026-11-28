@@ -266,7 +266,7 @@ void __fastcall BNDOWNLOAD_ResolveHost(char* szResult, const char* szHost); // 0
 
 void __fastcall BNSEND_GetServerAddress(char* szText, int nSize); // 0x0051C190
 
-int __fastcall sub_0051C9B0_GetPeerName(void* pAddress, int* pnLength); // 0x0051C9B0
+int __fastcall BNSEND_GetPeerName(void* pAddress, int* pnLength); // 0x0051C9B0
 
 void __fastcall BNDOWNLOAD_HandleDownloadEvent(int nType, int nSubType, unsigned int nArg1, unsigned int nArg2, const D2FileTimeStrc* pFileTime, const char* szText1, const char* szText2, const void* pData, unsigned int nDataSize, int bFlag); // 0x0051FAB0
 
@@ -1238,7 +1238,7 @@ unsigned int __stdcall BNDOWNLOAD_DownloadThread(void* pArg)
     szHost[0] = 0;
     gbStopDownload = 0;
     nAddrLen = sizeof(tAddr);
-    if (!sub_0051C9B0_GetPeerName(&tAddr, &nAddrLen))
+    if (!BNSEND_GetPeerName(&tAddr, &nAddrLen))
     {
         BNSEND_GetServerAddress(szIp, sizeof(szIp));
         BNDOWNLOAD_ResolveHost(szHost, szIp);
@@ -2970,7 +2970,7 @@ struct D2CDKeyInfoStrc
 
 int __cdecl sub_0051BEC0_IsExpansion(); // 0x0051BEC0
 
-int __fastcall sub_0051E340_BuildCDKeyInfoForSlot(D2CDKeyInfoStrc* pInfo, unsigned int dwClientToken, int nSlot); // 0x0051E340
+int __fastcall BNSEND_BuildCDKeyInfoForSlot(D2CDKeyInfoStrc* pInfo, unsigned int dwClientToken, int nSlot); // 0x0051E340
 
 
 void __cdecl GRID_LockCDKeys(); // 0x005234D0
@@ -2985,14 +2985,14 @@ struct D2CipherKeyStringView
 };
 
 
-unsigned int __fastcall sub_00523020_GetAlignedData(unsigned int nSize); // 0x00523020
+unsigned int __fastcall BNDOWNLOAD_GetAlignedData(unsigned int nSize); // 0x00523020
 
 unsigned int gdwBnClientToken; // 0x00882530
 
 int __cdecl sub_00521DC0_SendAuthCheck(); // 0x00521DC0
 
 // 0x00523020
-char* __fastcall sub_00523020_GetAlignedData(char* pBuffer)
+char* __fastcall BNDOWNLOAD_GetAlignedData(char* pBuffer)
 {
     D2_ASSERT(pBuffer, 0xF2);
     const unsigned int nMisalign = (unsigned int)pBuffer & 0x3F;
@@ -3012,7 +3012,7 @@ void __fastcall BNDOWNLOAD_EncodeData(unsigned char* pData, unsigned int nSize, 
     const unsigned int& nKeyValue = nKey;
     const char* szKey = (const char*)nKeyValue;
     D2_ASSERT(szKey, 0x106);
-    D2_ASSERT(nBufferSize == sub_00523020_GetAlignedData(nSize), 0x108);
+    D2_ASSERT(nBufferSize == BNDOWNLOAD_GetAlignedData(nSize), 0x108);
 
     ((D2CipherKeyStringView*)szKey)->BNDOWNLOAD_InitCipherKeys(1);
 

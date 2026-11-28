@@ -140,7 +140,7 @@ extern "C" int __stdcall sub_00650840_UpdatePath(D2UnitStrc* unit, unsigned int 
 
 void __fastcall GFX_UpdateStateOverlays(D2UnitStrc* unit); // 0x00470C30
 
-void __fastcall sub_00463390_UpdatePlayerMode(D2UnitStrc* unit); // 0x00463390
+void __fastcall PLAYER_UpdatePlayerMode(D2UnitStrc* unit); // 0x00463390
 
 
 
@@ -185,7 +185,7 @@ inline int UNITS_GetFlag21Inl(D2UnitStrc* pUnit)
 }
 
 // 0x004804A0
-int __fastcall sub_004804A0_SetPathTargetPos(D2UnitStrc* pUnit, int nX, int nY)
+int __fastcall UNITMODE_SetPathTargetPos(D2UnitStrc* pUnit, int nX, int nY)
 {
     D2DynamicPathStrc* pPath = pUnit->pDynamicPath;
     D2COMMON_10170_PathSetTargetPos(pPath, nX, nY);
@@ -418,7 +418,7 @@ void __fastcall UNITMODE_UpdateUnit(D2UnitStrc* unit)
     GFX_UpdateStateOverlays(unit);
     switch (unit->dwUnitType)
     {
-    case UNIT_PLAYER: sub_00463390_UpdatePlayerMode(unit); break;
+    case UNIT_PLAYER: PLAYER_UpdatePlayerMode(unit); break; // 0x00463390
     case UNIT_MONSTER: MONSTER_UpdateMonsterClient(unit); break; // 0x004B13A0
     case UNIT_OBJECT: OBJECT_UpdateObject(unit); break; // 0x004BDFF0
     case UNIT_MISSILE: MISSILE_CltDoMissile(unit); break; // 0x004D2C70
@@ -803,7 +803,7 @@ void __fastcall UNITMODE_MoveToPosition(D2UnitStrc* pUnit, int nX, int nY, int b
     }
 
     const int nType = pUnit->dwUnitType;
-    if ((nType != UNIT_MONSTER || sub_0046C140_TestMonModeFlag(pUnit->dwClassId, 2)) && bMove)
+    if ((nType != UNIT_MONSTER || MONSTERUNIQUE_TestMonModeFlag(pUnit->dwClassId, 2)) && bMove)
     {
         D2UnitTargetStrc tTarget;
         tTarget.nParam1 = nX;
@@ -1124,7 +1124,7 @@ static inline int sub_IsUnitTargetable(D2UnitStrc* pUnit)
 }
 
 // 0x004815A0
-static int __stdcall sub_004815A0_TryUnitAction(D2UnitStrc* pUnit, D2UnitStrc* pPlayer, int nAction, int nArg1, int nArg2)
+static int __stdcall UNITMODE_TryUnitAction(D2UnitStrc* pUnit, D2UnitStrc* pPlayer, int nAction, int nArg1, int nArg2)
 {
     if (!sub_IsUnitTargetable(pUnit))
     {
@@ -1181,7 +1181,7 @@ void __fastcall sub_00481600_RunPendingAction(D2UnitStrc* pPlayer)
                     return;
                 break;
             case 2:
-                if (!sub_004815A0_TryUnitAction(pUnit, pPlayer, nAction, 2, nArg2))
+                if (!UNITMODE_TryUnitAction(pUnit, pPlayer, nAction, 2, nArg2))
                     return;
                 break;
             default:

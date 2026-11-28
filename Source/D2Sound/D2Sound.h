@@ -52,7 +52,7 @@ void __cdecl D2SOUND_DestroyStreamChannel(); // 0x005147B0
 int __cdecl D2SOUND_IsStreamChannelPlaying(); // 0x00514840
 void __cdecl D2SOUND_ClearChannelTable(); // 0x00514860
 int __cdecl D2SOUND_GetStreamChannelValue(); // 0x00514920
-int __cdecl sub_00514990_PickRandomChannel(); // 0x00514990
+int __cdecl D2SOUND_PickRandomChannel(); // 0x00514990
 void __cdecl D2SOUNDSMP_StopSoundThread(); // 0x00515120
 int __fastcall D2SOUNDSMP_FillSoundBuffer(D2SoundStrc* sound,unsigned int sourcePosition,unsigned int destinationPosition,unsigned int size); // 0x00515180
 D2SoundStrc* __fastcall D2SOUNDSMP_CreateSound(unsigned int nFlags, int nValue); // 0x00515530

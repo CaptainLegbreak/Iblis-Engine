@@ -243,7 +243,7 @@ void __fastcall SKILLS_EndCharge(D2UnitStrc* pUnit, int nSkillId)
 }
 
 // 0x004CA030
-int __fastcall sub_004CA030_TickEvent(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
+int __fastcall SKILLS_TickEvent(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
 {
     const unsigned int nTick = sub_0044DA90_GetTickCounter();
     if (nTick > gdwNextTick)

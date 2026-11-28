@@ -397,7 +397,7 @@ struct D2AuthCheckPacketStrc
     char szData[0x200];
 };
 int __fastcall BNDOWNLOAD_RunCheckRevision(unsigned int* pExeVersion, unsigned int* pExeHash, char* szText); // 0x0051E6D0
-unsigned int __fastcall sub_00523020_GetAlignedData(unsigned int nSize); // 0x00523020
+unsigned int __fastcall BNDOWNLOAD_GetAlignedData(unsigned int nSize); // 0x00523020
 extern unsigned int gdwBnClientToken; // 0x00882530
 
 D2BigPairStrc gtBigPair;                                                                           // 0x0088273C
@@ -575,7 +575,7 @@ struct D2BnUpgradePacketStrc
 extern "C" __declspec(dllimport) unsigned short __stdcall GetSystemDefaultLangID(void);                    // 0x006CC354
 
 
-int __fastcall sub_0051C9E0_GetSockName(void* pAddress, int* pnLength); // 0x0051C9E0
+int __fastcall BNSEND_GetSockName(void* pAddress, int* pnLength); // 0x0051C9E0
 
 int __fastcall BNSEND_DecodeCDKey16(int* pProduct, int* pValue1, const char* szKey, int* pValue2);   // 0x0051DDD0
 
@@ -718,7 +718,7 @@ unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB)
     return 0xFFFF;
 }
 
-void __fastcall sub_004898A0_DisableGoldButton(int nMode)
+void __fastcall CUNIT_DisableGoldButton(int nMode)
 {
     gbGoldButtonDisabled = 1;
     if (gnInvPanelMode == 13)
@@ -1867,7 +1867,7 @@ unsigned long __stdcall BNSEND_ReceiveThread(void* pParameter)
 }
 
 // 0x0051C9B0
-int __fastcall sub_0051C9B0_GetPeerName(void* pAddress, int* pnLength)
+int __fastcall BNSEND_GetPeerName(void* pAddress, int* pnLength)
 {
     FSafeSock* pSocket = (FSafeSock*)InterlockedCompareExchange(&gnConnected, 0, 0);
     if (pSocket)
@@ -1877,7 +1877,7 @@ int __fastcall sub_0051C9B0_GetPeerName(void* pAddress, int* pnLength)
 
 // Kept noinline: BNSEND_SendAuthInfo (0x521BF0) calls this out of line in the image; without it the compiler inlines it there.
 // 0x0051C9E0
-__declspec(noinline) int __fastcall sub_0051C9E0_GetSockName(void* pAddress, int* pnLength)
+__declspec(noinline) int __fastcall BNSEND_GetSockName(void* pAddress, int* pnLength)
 {
     FSafeSock* pSocket = (FSafeSock*)InterlockedCompareExchange(&gnConnected, 0, 0);
     if (pSocket)
@@ -2538,7 +2538,7 @@ int __stdcall BNSEND_CheckCDKeys()
 
 // Kept noinline: sub_00521DC0_SendAuthCheck (0x521DC0) calls this out of line in the image; without it the compiler inlines it there.
 // 0x0051E340
-__declspec(noinline) int __fastcall sub_0051E340_BuildCDKeyInfoForSlot(D2CDKeyInfoStrc* pInfo, unsigned int dwClientToken, int nSlot)
+__declspec(noinline) int __fastcall BNSEND_BuildCDKeyInfoForSlot(D2CDKeyInfoStrc* pInfo, unsigned int dwClientToken, int nSlot)
 {
     return BNSEND_BuildCDKeyInfo(pInfo, GRID_GetCDKey(nSlot), dwClientToken, BNCLIENT_GetServerToken());
 }
@@ -2613,7 +2613,7 @@ int __stdcall BNSEND_SendAuthInfo()
 
     D2SockAddrInStrc tAddress;
     int nLength = 0x10;
-    tPacket.nLocalIp = sub_0051C9E0_GetSockName(&tAddress, &nLength) ? tAddress.sin_addr.s_addr : 0;
+    tPacket.nLocalIp = BNSEND_GetSockName(&tAddress, &nLength) ? tAddress.sin_addr.s_addr : 0;
 
     D2FileTimeStrc tLocalFileTime;
     D2FileTimeStrc tSystemFileTime;
@@ -2675,8 +2675,8 @@ int __cdecl sub_00521DC0_SendAuthCheck()
     {
         pString = &tPacket.szData[SStrCopy(tPacket.szData, szText, 0x200) + 1];
         tPacket.nKeys = 2;
-        sub_0051E340_BuildCDKeyInfoForSlot(&tPacket.pKeys[0], gdwBnClientToken, 0);
-        sub_0051E340_BuildCDKeyInfoForSlot(&tPacket.pKeys[1], gdwBnClientToken, 1);
+        BNSEND_BuildCDKeyInfoForSlot(&tPacket.pKeys[0], gdwBnClientToken, 0);
+        BNSEND_BuildCDKeyInfoForSlot(&tPacket.pKeys[1], gdwBnClientToken, 1);
         SStrCopy(pString, GAME_GetExeInfo(), &tPacket.szData[0x200] - pString);
     }
     else
@@ -2684,7 +2684,7 @@ int __cdecl sub_00521DC0_SendAuthCheck()
         char* pData = (char*)&tPacket.pKeys[1];
         pString = &pData[SStrCopy(pData, szText, 0x200) + 1];
         tPacket.nKeys = 1;
-        sub_0051E340_BuildCDKeyInfoForSlot(&tPacket.pKeys[0], gdwBnClientToken, 0);
+        BNSEND_BuildCDKeyInfoForSlot(&tPacket.pKeys[0], gdwBnClientToken, 0);
         SStrCopy(pString, GAME_GetExeInfo(), &pData[0x200] - pString);
     }
 
@@ -2805,7 +2805,7 @@ int __fastcall BNSEND_SendAccountUpgradeProof(unsigned int nServerToken)
 // 0x005224C0
 int __fastcall BNSEND_CheckServerProof(const unsigned char* pServerProof)
 {
-    return gtBigPair.sub_00528890_CompareServerProof(&gtLoginRecord, pServerProof);
+    return gtBigPair.BNSEND_CompareServerProof(&gtLoginRecord, pServerProof);
 }
 
 // 0x005224E0
@@ -2821,7 +2821,7 @@ void __cdecl BNSEND_ClearPassword()
 }
 
 // 0x00528890
-int D2BigPairStrc::sub_00528890_CompareServerProof(const D2BigLoginRecordStrc* pRecord, const unsigned char* pServerProof)
+int D2BigPairStrc::BNSEND_CompareServerProof(const D2BigLoginRecordStrc* pRecord, const unsigned char* pServerProof)
 {
     unsigned char abProof[0x14];
     pState->sub_00528480_HashThreeBlocks(pRecord->abPublic, pRecord->abProof, pRecord->abKey, abProof);

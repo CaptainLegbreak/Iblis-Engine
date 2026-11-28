@@ -264,7 +264,7 @@ extern "C" const D2DamageHitClassMappingStrc gaDamageHitClassMapping[8]; // 0x00
 D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
 
 
-int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
+int __fastcall MONSTERUNIQUE_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
 
 void __fastcall MONSTERMODE_AddSandLeaperKnockback(D2GameStrc* pGame, D2UnitStrc* pAttacker, D2UnitStrc* pUnit, D2DamageStrc* pDamage); // 0x005A54F0
 
@@ -2050,7 +2050,7 @@ static int __stdcall SUNITDMG_ShouldSkipHitRecovery(D2UnitStrc* pUnit, D2DamageS
         return 1;
     }
 
-    if (pUnit && pUnit->dwUnitType == UNIT_MONSTER && !sub_0046C140_TestMonModeFlag(pUnit->dwClassId, 3))
+    if (pUnit && pUnit->dwUnitType == UNIT_MONSTER && !MONSTERUNIQUE_TestMonModeFlag(pUnit->dwClassId, 3))
     {
         return 1;
     }
@@ -2406,7 +2406,7 @@ void __fastcall SUNITDMG_ExecuteMissileDamage(D2GameStrc* pGame, D2UnitStrc* pAt
         const unsigned short wResultFlags = pDamage->wResultFlags;
         if (wResultFlags & 0x08)
         {
-            if (!sub_0046C140_TestMonModeFlag(pUnit->dwClassId, 0x0D))
+            if (!MONSTERUNIQUE_TestMonModeFlag(pUnit->dwClassId, 0x0D))
             {
                 pDamage->wResultFlags = wResultFlags & (unsigned short)(~0x08) | 0x04;
             }
@@ -2435,7 +2435,7 @@ void __fastcall SUNITDMG_ExecuteMissileDamage(D2GameStrc* pGame, D2UnitStrc* pAt
             if (pUnit->dwClassId == 0xF3) goto Blocked;
             if (pUnit->dwClassId == 0x14D) goto Blocked;
             if (pUnit->dwClassId == 0x2C1) goto Blocked;
-            if (!sub_0046C140_TestMonModeFlag(pUnit->dwClassId, 6))
+            if (!MONSTERUNIQUE_TestMonModeFlag(pUnit->dwClassId, 6))
             {
             Blocked:
                 MONSTER_SetAiState(pUnit, 0x13);

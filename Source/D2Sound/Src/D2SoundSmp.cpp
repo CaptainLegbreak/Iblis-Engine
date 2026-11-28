@@ -919,7 +919,7 @@ unsigned long __stdcall D2SOUNDSMP_SoundThreadProc(void* pParameter)
 
         if (D2SOUND_GetStreamChannelValue() && !D2SOUND_IsStreamChannelPlaying())
         {
-            sub_00514990_PickRandomChannel();
+            D2SOUND_PickRandomChannel();
         }
 
         for (D2SoundNodeStrc* pNode = gpSoundList; pNode; pNode = pNode->pNext)
@@ -1018,13 +1018,13 @@ void __cdecl D2SOUNDSMP_StartSoundThread()
 }
 
 // 0x00516570
-float __stdcall sub_00516570_Log(float fValue)
+float __stdcall D2SOUNDSMP_Log(float fValue)
 {
     return (float)log(fValue);
 }
 
 // 0x00516590
-float __stdcall sub_00516590_Pow(float fBase, float fExponent)
+float __stdcall D2SOUNDSMP_Pow(float fBase, float fExponent)
 {
     return (float)pow(fBase, fExponent);
 }

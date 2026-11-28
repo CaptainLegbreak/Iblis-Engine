@@ -32,7 +32,7 @@ Unicode* __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int
 extern "C" void* __cdecl bsearch(const void* pKey, const void* pBase, unsigned int nCount, unsigned int nSize, int (__cdecl* pfCompare)(const void*, const void*)); // 0x006881B1
 extern D2LangByteRangeStrc* gpLeadByteRanges; // 0x00882B28
 extern unsigned short* gpCharMapIndex; // 0x00882B2C
-int __cdecl sub_00527AE0_CompareKey(const void* pLeft, const void* pRight); // 0x00527AE0
+int __cdecl UNISYS_CompareKey(const void* pLeft, const void* pRight); // 0x00527AE0
 
 Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 Unicode* __fastcall sub_005267E0(Unicode* pDest, const Unicode* pSource); // 0x005267E0

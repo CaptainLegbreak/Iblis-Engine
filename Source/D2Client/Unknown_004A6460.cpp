@@ -1484,7 +1484,7 @@ bool __stdcall TEXT_IsStatButtonHidden(int nArg)
 int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 // 0x004A6A70
-void __cdecl sub_004A6A70_DrawLeftPanelButton()
+void __cdecl TEXT_DrawLeftPanelButton()
 {
     if (D2GFX_GetResolutionMode() != 2)
     {
@@ -1578,7 +1578,7 @@ bool __stdcall TEXT_IsSkillButtonHidden(int nArg)
 }
 
 // 0x004A6DA0
-void __cdecl sub_004A6DA0_DrawRightPanelButton()
+void __cdecl TEXT_DrawRightPanelButton()
 {
     if (D2GFX_GetResolutionMode() != 2)
     {
@@ -1968,7 +1968,7 @@ int __fastcall sub_00498DC0(SMSGHANDLER_PARAMS* pMsg);
 
 
 // 0x004A76C0
-static int sub_004A76C0_ClaimLeftPanelClick(SMSGHANDLER_PARAMS* pMsg)
+static int TEXT_ClaimLeftPanelClick(SMSGHANDLER_PARAMS* pMsg)
 {
     if (D2GFX_GetResolutionMode() == 2 && !AUTOMAP_IsCursorOverMiniPanelButton(pMsg) && pMsg->nXpos <= gnScreenWidth / 2 && pMsg->nYpos < gnScreenHeight - 0x2F)
     {
@@ -1982,7 +1982,7 @@ static int sub_004A76C0_ClaimLeftPanelClick(SMSGHANDLER_PARAMS* pMsg)
 }
 
 // 0x004A7720
-void __stdcall sub_004A7720_OnLButtonDown(SMSGHANDLER_PARAMS* pMsg)
+void __stdcall TEXT_OnLButtonDown(SMSGHANDLER_PARAMS* pMsg)
 {
     const int nX = pMsg->nXpos;
     const int nY = pMsg->nYpos;
@@ -2019,7 +2019,7 @@ void __stdcall sub_004A7720_OnLButtonDown(SMSGHANDLER_PARAMS* pMsg)
         sub_00420290_BreakHandlerChain(pMsg);
         return;
     }
-    if (!sub_004A76C0_ClaimLeftPanelClick(pMsg))
+    if (!TEXT_ClaimLeftPanelClick(pMsg))
         pMsg->bReturn = 0;
 }
 
@@ -2027,7 +2027,7 @@ void __stdcall sub_004A7720_OnLButtonDown(SMSGHANDLER_PARAMS* pMsg)
 extern "C" __declspec(dllimport) short __stdcall GetKeyState(int nVirtKey);
 
 // 0x004A78C0
-void __stdcall sub_004A78C0_OnLButtonUp(SMSGHANDLER_PARAMS* pMsg)
+void __stdcall TEXT_OnLButtonUp(SMSGHANDLER_PARAMS* pMsg)
 {
     const int nX = pMsg->nXpos;
     const int nY = pMsg->nYpos;
@@ -2071,7 +2071,7 @@ void __stdcall sub_004A78C0_OnLButtonUp(SMSGHANDLER_PARAMS* pMsg)
         sub_00420290_BreakHandlerChain(pMsg);
         return;
     }
-    if (!sub_004A76C0_ClaimLeftPanelClick(pMsg))
+    if (!TEXT_ClaimLeftPanelClick(pMsg))
         pMsg->bReturn = 0;
 }
 
@@ -2089,7 +2089,7 @@ void __cdecl TEXT_SetGoldDialogFlag()
 }
 
 // One line of the character panel's fixed text: its box, the string and
-// the string's length, which sub_004A7AA0_InitTextEntryLengths fills in.
+// the string's length, which TEXT_InitTextEntryLengths fills in.
 #pragma pack(push, 2)
 struct D2CharTextStrc
 {
@@ -2104,7 +2104,7 @@ struct D2CharTextStrc
 extern D2CharTextStrc gaCharTexts[15]; // 0x00724818
 
 // 0x004A7AA0
-void __cdecl sub_004A7AA0_InitTextEntryLengths()
+void __cdecl TEXT_InitTextEntryLengths()
 {
     for (unsigned int i = 0; i < sizeof(gaCharTexts) / sizeof(gaCharTexts[0]); ++i)
     {
@@ -2192,7 +2192,7 @@ Unicode* __fastcall win2Unicode(Unicode* pDest, const char* szSource, int nCount
 
 int __stdcall INVENTORY_GetEquippedShield(D2InventoryStrc* pInventory, D2UnitStrc** ppItem); // 0x0063C8F0
 
-static void __stdcall sub_004A7AE0_DrawHoverValueBox(int nValueA, int nValueB, int nX, int nY); // 0x004A7AE0
+static void __stdcall TEXT_DrawHoverValueBox(int nValueA, int nValueB, int nX, int nY); // 0x004A7AE0
 
 static inline D2CharStatsTxt* sub_CharStatsTxtRecord(int nClass)
 {
@@ -2205,7 +2205,7 @@ static inline D2CharStatsTxt* sub_CharStatsTxtRecord(int nClass)
 }
 
 // 0x004A7AE0
-static void __stdcall sub_004A7AE0_DrawHoverValueBox(int nValueA, int nValueB, int nX, int nY)
+static void __stdcall TEXT_DrawHoverValueBox(int nValueA, int nValueB, int nX, int nY)
 {
     D2TextCellStrc aText[0x40];
     PANEL_SetBlackColour();
@@ -2272,7 +2272,7 @@ static void __stdcall sub_004A7AE0_DrawHoverValueBox(int nValueA, int nValueB, i
 
 
 // 0x004A7D00
-void __cdecl sub_004A7D00_DrawCharStats()
+void __cdecl TEXT_DrawCharStats()
 {
     D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
     int nColor = 0;
@@ -2374,7 +2374,7 @@ NEXT_TEXT:;
     const int nLeftChance = TEXT_GetChanceToHit(SKILLDESC_CallSkillDescFunc(pPlayer, 1));
     const int nRightChance = TEXT_GetChanceToHit(SKILLDESC_CallSkillDescFunc(pPlayer, 0));
     const int nPercent = MONSTER_GetPlayerDefensePercent();
-    sub_004A7AE0_DrawHoverValueBox(nLeftChance, nRightChance, nMouseX, nMouseY);
+    TEXT_DrawHoverValueBox(nLeftChance, nRightChance, nMouseX, nMouseY);
     TEXT_DrawBlockChanceHover(nMouseX, nMouseY, nPercent);
     D2Win_10127_SetFont(1);
 
@@ -2707,7 +2707,7 @@ extern "C" void __cdecl TEXT_EatMsg(); // 0x0049DA10
 extern "C" void __cdecl TEXT_KeyUpMsg(); // 0x004A1770
 extern "C" void __cdecl TEXT_HotkeyMsg(); // 0x004A1870
 extern "C" void __cdecl TEXT_KeyDownMsg(); // 0x004A18C0
-extern "C" void __cdecl sub_004A6000_RegisterPressMsgHandler(); // 0x004A6000
+extern "C" void __cdecl TEXT_RegisterPressMsgHandler(); // 0x004A6000
 extern "C" void __cdecl TEXT_WheelCaptureMsg(); // 0x004A6310
 extern "C" void __cdecl TEXT_ButtonCaptureMsg(); // 0x004A6350
 extern "C" void __cdecl sub_004A63B0_WheelMsgHandler(); // 0x004A63B0

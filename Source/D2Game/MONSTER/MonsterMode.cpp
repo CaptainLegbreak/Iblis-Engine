@@ -236,7 +236,7 @@ static int __stdcall MONSTERMODE_StartNeutralUnlessDead(D2GameStrc* pGame, int n
 
 static void MONSTERMODE_ApplyDeathAreaDamage(D2GameStrc* pGame, D2UnitStrc* pUnit);
 
-int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
+int __fastcall MONSTERUNIQUE_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
 
 struct D2HoverTextStrc;
 
@@ -1601,7 +1601,7 @@ int __fastcall MONSTERMODE_StartGetHit(D2GameStrc* pGame, D2ModeChangeStrc* pMod
     {
         if (pUnit->dwAnimMode != MONMODE_DEATH && pUnit->dwAnimMode != MONMODE_DEAD)
         {
-            if (!sub_0046C140_TestMonModeFlag(pUnit->dwClassId, MONMODE_GETHIT))
+            if (!MONSTERUNIQUE_TestMonModeFlag(pUnit->dwClassId, MONMODE_GETHIT))
             {
                 return 0;
             }
@@ -1771,12 +1771,12 @@ void __fastcall MONSTERMODE_EndSkill3(D2GameStrc* pGame, D2UnitStrc* pUnit)
 int __fastcall MONSTERMODE_StartKnockback(D2GameStrc* pGame, D2ModeChangeStrc* pModeChange)
 {
     D2UnitStrc* pUnit = pModeChange->pUnit;
-    if (!sub_0046C140_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, 3))
+    if (!MONSTERUNIQUE_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, 3))
     {
         return 0;
     }
 
-    if (!sub_0046C140_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, 13))
+    if (!MONSTERUNIQUE_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, 13))
     {
         return 0;
     }
@@ -2165,7 +2165,7 @@ void __fastcall MONSTERMODE_EndKnockback(D2GameStrc* pGame, D2UnitStrc* pUnit)
     PATH_ResetToPreviousType(pUnit->pDynamicPath);
 
     const int nClassId = pUnit->dwClassId;
-    if (!sub_0046C140_TestMonModeFlag(nClassId, MONMODE_GETHIT))
+    if (!MONSTERUNIQUE_TestMonModeFlag(nClassId, MONMODE_GETHIT))
     {
         EVENT_SetEvent(pGame, pUnit, EVENTTYPE_AITHINK, pGame->dwGameFrame + 1, 0, 0);
         return;

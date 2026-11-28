@@ -41,7 +41,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams); // 0x004CD540
 unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
 D2UnitStrc* __stdcall D2Common_10407(D2ActiveRoomStrc* pRoom, int nX, int nY, D2UnitFindCallback pCallback, void* pArg, int nSize); // 0x00641CB0
-extern "C" void __cdecl sub_004E9000_SkillDescAttackRatingMain(); // 0x004E9000
+extern "C" void __cdecl SKILLDESC_SkillDescAttackRatingMain(); // 0x004E9000
 extern "C" void __cdecl PLRSKILLS_DescAttackRating(); // 0x004E9040
 extern "C" void __cdecl SKILLDESC_DescAttackRating(); // 0x004E9510
 extern "C" void __cdecl SKILLDESC_DescAttackRate(); // 0x004E9590
@@ -50,7 +50,7 @@ extern "C" void __cdecl SKILLDESC_DescAttackRatingOffhand(); // 0x004E95C0
 extern "C" const int gData_006DBF50[8]; // 0x006DBF50
 extern "C" const int gData_006DBF70[8]; // 0x006DBF70
 
-extern SKILLDESCFN gpfnSkillDescFuncs[18] = { 0, (SKILLDESCFN)&sub_004E9000_SkillDescAttackRatingMain, (SKILLDESCFN)&SKILLDESC_DescAttackRating, (SKILLDESCFN)&SKILLDESC_DescAttackRate, (SKILLDESCFN)&SKILLDESC_DescAttackRatingOffhand, (SKILLDESCFN)&PLRSKILLS_DescAttackRating }; // 0x0072D7F8
+extern SKILLDESCFN gpfnSkillDescFuncs[18] = { 0, (SKILLDESCFN)&SKILLDESC_SkillDescAttackRatingMain, (SKILLDESCFN)&SKILLDESC_DescAttackRating, (SKILLDESCFN)&SKILLDESC_DescAttackRate, (SKILLDESCFN)&SKILLDESC_DescAttackRatingOffhand, (SKILLDESCFN)&PLRSKILLS_DescAttackRating }; // 0x0072D7F8
 
 extern "C" const int gData_006DBF50[8] = { 0, 0, 1, -1, 1, -1, -1, 1 }; // 0x006DBF50
 #pragma comment(linker, "/alternatename:?gaFanOffsetX@@3PAHA=_gData_006DBF50")

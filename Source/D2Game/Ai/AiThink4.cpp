@@ -37,7 +37,7 @@ struct D2LevelsTxt;
 typedef D2UnitStrc* (__fastcall* AITARGETCALLBACK)(D2GameStrc*, D2UnitStrc*, D2UnitStrc*, void*);
 
 
-int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
+int __fastcall MONSTERUNIQUE_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
 
 
 D2UnitStrc* __fastcall AIUTIL_FindTargetWithCallback(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pArg, AITARGETCALLBACK pfnCallback, int nCallbackId); // 0x005DD0B0
@@ -4606,7 +4606,7 @@ bool __fastcall AITHINK_MapAiAction_QueueSkill1(D2GameStrc* pGame, D2UnitStrc* p
         D2AiCmdStrc* pAiCmd = AIGENERAL_SetCurrentAiCommand(pGame, pUnit, 7, 0);
         if (pAiCmd)
         {
-            pAiCmd->nCmdParam[1] = sub_0046C140_TestMonModeFlag(pUnit->dwClassId, MONMODE_SKILL1) ? MONMODE_SKILL1 : MONMODE_NEUTRAL;
+            pAiCmd->nCmdParam[1] = MONSTERUNIQUE_TestMonModeFlag(pUnit->dwClassId, MONMODE_SKILL1) ? MONMODE_SKILL1 : MONMODE_NEUTRAL;
             pAiCmd->nCmdParam[2] = pPosition->nX;
             pAiCmd->nCmdParam[3] = pPosition->nY;
             pAiCmd->nCmdParam[4] = 4;
@@ -4635,7 +4635,7 @@ bool __fastcall AITHINK_MapAiAction_QueueSkill2(D2GameStrc* pGame, D2UnitStrc* p
         D2AiCmdStrc* pAiCmd = AIGENERAL_SetCurrentAiCommand(pGame, pUnit, 7, 0);
         if (pAiCmd)
         {
-            pAiCmd->nCmdParam[1] = sub_0046C140_TestMonModeFlag(pUnit->dwClassId, MONMODE_SKILL2) ? MONMODE_SKILL2 : MONMODE_NEUTRAL;
+            pAiCmd->nCmdParam[1] = MONSTERUNIQUE_TestMonModeFlag(pUnit->dwClassId, MONMODE_SKILL2) ? MONMODE_SKILL2 : MONMODE_NEUTRAL;
             pAiCmd->nCmdParam[2] = pPosition->nX;
             pAiCmd->nCmdParam[3] = pPosition->nY;
             pAiCmd->nCmdParam[4] = 4;
@@ -5035,7 +5035,7 @@ void __fastcall D2GAME_AI_SpecialState11(D2GameStrc* pGame, D2UnitStrc* pUnit, D
         MONSTERAI_ClearTargetOverride(pUnit);
         D2GAME_EVENTS_Delete(pGame, pUnit, EVENTTYPE_AITHINK, 0);
         AITACTICS_SetAiParam(pUnit, 2, nVel, 0);
-        if (sub_0046C140_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, MONMODE_RUN))
+        if (MONSTERUNIQUE_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, MONMODE_RUN))
         {
             AITACTICS_RunAwayFromTarget(pGame, pUnit, pTarget, 30, 0);
             return;
@@ -5045,7 +5045,7 @@ void __fastcall D2GAME_AI_SpecialState11(D2GameStrc* pGame, D2UnitStrc* pUnit, D
         return;
     }
 
-    if (bCombat && !MONSTERUNIQUE_CheckMonStatsFlag(!pUnit ? -1 : pUnit->dwClassId, MONSTATSFLAGINDEX_INTERACT) && sub_0046C140_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, MONMODE_ATTACK1))
+    if (bCombat && !MONSTERUNIQUE_CheckMonStatsFlag(!pUnit ? -1 : pUnit->dwClassId, MONSTATSFLAGINDEX_INTERACT) && MONSTERUNIQUE_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, MONMODE_ATTACK1))
     {
         AITACTICS_ChangeModeAndTargetUnit(pGame, pUnit, MONMODE_ATTACK1, pTarget);
         return;
@@ -5053,7 +5053,7 @@ void __fastcall D2GAME_AI_SpecialState11(D2GameStrc* pGame, D2UnitStrc* pUnit, D
 
     AITACTICS_SetAiParam(pUnit, 2, nVel, 0);
     int bResult;
-    if (sub_0046C140_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, MONMODE_RUN))
+    if (MONSTERUNIQUE_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, MONMODE_RUN))
     {
         bResult = AITACTICS_RunAwayFromTarget(pGame, pUnit, pTarget, 30, 1);
     }
@@ -5729,7 +5729,7 @@ void __fastcall AITHINK_SpecialState10_17_DimVision(D2GameStrc* pGame, D2UnitStr
 {
     D2UnitStrc* pTarget = pTick->pTarget;
     if (pTick->bCombat && !CheckMonStatsFlag(!pUnit ? -1 : pUnit->dwClassId, MON_FLAG)
-        && sub_0046C140_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, ATTACK_MODE))
+        && MONSTERUNIQUE_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, ATTACK_MODE))
     {
         AITACTICS_ChangeModeAndTargetUnit(pGame, pUnit, ATTACK_MODE, pTarget);
         return;

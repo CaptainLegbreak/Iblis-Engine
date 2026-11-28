@@ -93,7 +93,7 @@ int __fastcall QUESTS_ActiveCycler(D2GameStrc* pGame, D2UnitStrc* pPlayer, D2Uni
 
 int __fastcall AITACTICS_MoveInRadiusToTarget(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pTarget, int nMode, int nMaxDistance, int nDesiredDistance); // 0x005DE4E0
 
-int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
+int __fastcall MONSTERUNIQUE_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
 
 
 
@@ -209,7 +209,7 @@ D2UnitStrc* __fastcall AITACTICS_FindTargetOrIdleInNeutralMode(D2GameStrc* pGame
         return pResult;
     }
 
-    if (AIUTIL_IsGettingHit(pUnit) && sub_0046C140_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, MONMODE_WALK))
+    if (AIUTIL_IsGettingHit(pUnit) && MONSTERUNIQUE_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, MONMODE_WALK))
     {
         AITACTICS_WalkCloseToUnit(pGame, pUnit, 5);
         return 0;
@@ -218,7 +218,7 @@ D2UnitStrc* __fastcall AITACTICS_FindTargetOrIdleInNeutralMode(D2GameStrc* pGame
     const int nCollisionPattern = PATH_GetUnitCollisionPattern(pUnit);
     const int nY = CLIENTS_GetUnitY(pUnit);
     const int nX = CLIENTS_GetUnitX(pUnit);
-    if (COLLISION_CheckAnyCollisionWithPattern(UNITS_GetRoom(pUnit), nX, nY, nCollisionPattern, COLLIDE_MISSILE) && sub_0046C140_TestMonModeFlag(pUnit->dwClassId, MONMODE_WALK))
+    if (COLLISION_CheckAnyCollisionWithPattern(UNITS_GetRoom(pUnit), nX, nY, nCollisionPattern, COLLIDE_MISSILE) && MONSTERUNIQUE_TestMonModeFlag(pUnit->dwClassId, MONMODE_WALK))
     {
         AITACTICS_WalkCloseToUnit(pGame, pUnit, 5);
         return 0;
@@ -601,7 +601,7 @@ D2UnitStrc* __fastcall AITACTICS_FindTargetOrIdle(D2GameStrc* pGame, D2UnitStrc*
     const int nCollisionPattern = PATH_GetUnitCollisionPattern(pUnit);
     const int nY = CLIENTS_GetUnitY(pUnit);
     const int nX = CLIENTS_GetUnitX(pUnit);
-    if (COLLISION_CheckAnyCollisionWithPattern(UNITS_GetRoom(pUnit), nX, nY, nCollisionPattern, 0x40) && sub_0046C140_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, 2))
+    if (COLLISION_CheckAnyCollisionWithPattern(UNITS_GetRoom(pUnit), nX, nY, nCollisionPattern, 0x40) && MONSTERUNIQUE_TestMonModeFlag(!pUnit ? -1 : pUnit->dwClassId, 2))
     {
         AITACTICS_WalkCloseToUnit(pGame, pUnit, 5);
         return 0;
