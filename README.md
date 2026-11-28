@@ -29,7 +29,13 @@ retail or digital copy, patched to 1.14d). Iblis Engine ships no game data.
 Only needed if you want to work on the engine. The source is a complete program: it builds with CMake and a current
 C++ compiler, with no game files and no other project needed.
 
-Build instructions are added with the first milestone that builds (see the roadmap).
+With Visual Studio 2022 (32-bit x86):
+
+    cmake -G "Visual Studio 17 2022" -A Win32 -S . -B build
+    cmake --build build --config Release
+
+Every file compiles; the program doesn't link yet. See [docs/PORT_COMPILE.md](docs/PORT_COMPILE.md) and
+[docs/PORT_LINK.md](docs/PORT_LINK.md).
 
 ## Repository layout
 

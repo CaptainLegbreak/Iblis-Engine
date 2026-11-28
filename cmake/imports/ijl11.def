@@ -1,0 +1,5 @@
+LIBRARY ijl11.dll
+EXPORTS
+    ijlFree
+    ijlInit
+    ijlWrite
