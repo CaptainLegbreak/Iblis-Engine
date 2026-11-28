@@ -299,6 +299,7 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Status
 
+- 2026-11-28 02:40 PT: 6b: PR #20 syncs to Codex 0fc52e3 (#502); codex_sync.py --game fills bytes new plan records need from the user's Game.exe (31 files; all 1,809 Game.exe-rendered records verbatim). 538/538 compile, 48 warnings; 2,807 aliases, 1,068 unresolved. Main work is on Codex (lanes/lane14.md on coord).
 - 2026-11-27 22:50 PT: board check. #17, #18 merged. Codex main moved to 16572ad (#499): 6b in PR #19. Clean;
   1,693/1,693 data records against Game.exe; 538/538 compile. Aliases 2,794 (23 dropped out, 10 new table
   entries, checked). Unresolved 1,222 (-2, none new, so nothing new for 6c); calling-interface refusals 149
