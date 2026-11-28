@@ -1637,15 +1637,15 @@ extern int gnRecordPos;                                                         
 
 void __cdecl RECORD_LoadRecordFile();                                                                 // 0x00451710
 
-int __fastcall WINMAIN_SendMcpJoinGame(const char* szName, const char* szRealm, unsigned short wRequestId);
+int __fastcall WINMAIN_SendMcpJoinGame(const char* szName, const char* szRealm, unsigned short wRequestId); // 0x0044A4E0
 
-int __fastcall sub_0044A680_SendPacket08(const char* szText, unsigned short wRequestId);
+int __fastcall sub_0044A680_SendPacket08(const char* szText, unsigned short wRequestId); // 0x0044A680
 
-int __fastcall sub_0044A710_SendPacket09(const char* szText, unsigned short wRequestId);
+int __fastcall sub_0044A710_SendPacket09(const char* szText, unsigned short wRequestId); // 0x0044A710
 
-int __fastcall sub_0044A870_SendPacket0B(const char* szText1, const char* szText2);
+int __fastcall sub_0044A870_SendPacket0B(const char* szText1, const char* szText2); // 0x0044A870
 
-int __fastcall sub_0044A900_SendPacket0C(const char* szText);
+int __fastcall sub_0044A900_SendPacket0C(const char* szText); // 0x0044A900
 
 // 0x00449920
 int __fastcall WINMAIN_DecodeCdKey(const char* szCdKey, unsigned int* pProduct, unsigned int* pValue)

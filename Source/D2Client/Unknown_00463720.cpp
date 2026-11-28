@@ -38,9 +38,9 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode);
 extern D2DataTablesStrc* sgptDataTables;
 extern unsigned int gdwBitMasks[];
 extern void* gpDrlgAct_007A0634;
-unsigned int __cdecl sub_0044DA90_GetTickCounter();
+unsigned int __cdecl sub_0044DA90_GetTickCounter(); // 0x0044DA90
 unsigned int __cdecl GAME_GetInteractDeadline(); // 0x0044DAC0
-D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId);
+D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
 int __stdcall PLAYER_IsPendingMode(int nArg1, int nArg2); // 0x00461D60
 int __fastcall CUNIT_CanUseSkill(D2UnitStrc* pUnit, int nArg); // 0x00464600
 D2UnitStrc* __cdecl SELECT_GetSelectedUnit(); // 0x00467A10
@@ -48,10 +48,10 @@ D2UnitStrc* __fastcall SELECT_GetSkillTarget(D2SkillStrc* pSkill, D2UnitStrc* pT
 int __cdecl INV_GetScreenHeightMinusPanel(); // 0x00454970
 void __fastcall PLAYER_SetPlayerMode(int nMode, D2UnitStrc* pUnit, int nArg1, int nArg2); // 0x00460780
 int __fastcall PLAYER_FilterCommandMessage(D2PlayerCmdStrc* pCmd); // 0x00462930
-void __fastcall CUNIT_SetPlayerUnit(int nArg);
+void __fastcall CUNIT_SetPlayerUnit(int nArg); // 0x00463D90
 D2UnitStrc* __cdecl sub_00463DD0();
 D2UnitStrc* __cdecl sub_00463DE0_GetStoredUnit();
-D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc* pUnit);
+D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc* pUnit); // 0x004648F0
 void __fastcall VIEW_SetPetEntryValue(D2UnitStrc* pOwner, D2UnitStrc* pRecord, int nValue); // 0x00467410
 
 struct D2ActiveRoomStrc { char unknown0[76]; int x, y, width, height; };
@@ -59,10 +59,10 @@ struct D2ActiveRoomStrc { char unknown0[76]; int x, y, width, height; };
 void __fastcall DLIGHTMAP_ReleaseLight(D2R01LightStrc* pLight); // 0x004743D0
 void __fastcall UNITMODE_DoUnitAction(int nMode, D2UnitStrc* pUnit, int nArg1, int nArg2, int nArg3); // 0x00481030
 void __fastcall SKILLS_DoUsedSkill(D2UnitStrc* pUnit); // 0x004C68F0
-int __fastcall sub_004D9FC0_GetSkillUseState(D2UnitStrc* pUnit, D2SkillStrc* pSkill);
+int __fastcall sub_004D9FC0_GetSkillUseState(D2UnitStrc* pUnit, D2SkillStrc* pSkill); // 0x004D9FC0
 void __stdcall D2Common_10153(D2DynamicPathStrc* pDynamicPath);
 void __stdcall PATH_SetTargetUnit(D2DynamicPathStrc* pPath, D2UnitStrc* pTargetUnit);
-int __stdcall D2Common_10399(D2UnitStrc* pUnit1, D2UnitStrc* pUnit2);
+int __stdcall D2Common_10399(D2UnitStrc* pUnit1, D2UnitStrc* pUnit2); // 0x00641530
 D2SkillStrc* __fastcall SKILLS_GetSkill(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID);
 void __stdcall D2COMMON_10170_PathSetTargetPos(D2DynamicPathStrc* pPath, int nX, int nY);
 void __stdcall PATH_SetUnitDeadCollision(D2UnitStrc* pUnit, int nArg); // 0x00649F70

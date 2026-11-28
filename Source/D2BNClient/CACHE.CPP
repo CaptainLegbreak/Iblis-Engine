@@ -58,7 +58,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall SetFilePointer(void* hF
 
 void __cdecl BNDOWNLOAD_LogPrintf(const char* szFormat, ...);                                                   // 0x00518D40
 
-void __cdecl sub_00519000_InitCryptTable();
+void __cdecl sub_00519000_InitCryptTable(); // 0x00519000
 
 void __cdecl CACHE_DeleteCacheFile();                                                                // 0x005192A0
 

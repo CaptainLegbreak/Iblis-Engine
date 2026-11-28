@@ -245,7 +245,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x00
 
 extern "C" const char gszD2NetSourceFile[];
 
-extern int gnConnectionMode;
+extern int gnConnectionMode; // 0x00882D10
 
 int gbD2ServerCallbackFunctionsInitialized;                                                        // 0x00883D54
 
@@ -257,7 +257,7 @@ extern UnitDescriptionFunction gpfnGetDescription[5]; // 0x0073107C
 void* __fastcall sub_0040B430(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 
-extern unsigned short gwValue_0077905C;
+extern unsigned short gwValue_0077905C; // 0x0077905C
 
 
 struct D2GameHashLinkStrc
@@ -794,7 +794,7 @@ extern D2QuestInitTableStrc sgQuestInit[]; // 0x00731510
 void __fastcall sub_0058CFD0(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x0058CFD0
 
 
-void __fastcall ACT5Q3_RemoveNihlathakFromTown(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00589540
+void __fastcall ACT5Q3_RemoveNihlathakFromTown(D2GameStrc* pGame); // 0x00589540
 
 
 
@@ -839,15 +839,15 @@ typedef bool (__fastcall* QUESTACTIVEFILTER)(D2QuestDataStrc* pQuest, int nNpcId
 D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId); // 0x00543640
 
 
-void __fastcall ACT2Q1_OnRadamentCreated(D2GameStrc* pGame, D2QuestDataStrc* pQuestData, D2UnitStrc* pUnit); // 0x005991B0
+void __stdcall ACT2Q1_OnRadamentCreated(int nUnused1); // 0x005991B0
 
-void __fastcall ACT2Q5_OnSummonerCreated(D2GameStrc* pGame, D2QuestDataStrc* pQuestData, D2UnitStrc* pUnit); // 0x0059C3B0
+void __stdcall ACT2Q5_OnSummonerCreated(int nUnused1); // 0x0059C3B0
 
 
 unsigned short __fastcall ACT1Q1_GetMonstersToBeKilled(D2QuestDataStrc* pQuestData); // 0x005901E0
 
 
-void __fastcall ACT3Q6_SetObjectModes(D2GameStrc* pGame, D2UnitStrc* pObject); // 0x005BCFD0
+void __fastcall ACT3Q6_SetObjectModes(D2GameStrc* pGame); // 0x005BCFD0
 
 struct D2MessageListStrc;
 

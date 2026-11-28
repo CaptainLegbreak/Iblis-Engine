@@ -370,8 +370,7 @@ void __fastcall ARENA_SetFlags(D2GameStrc* pGame, unsigned int nFlags, int bSet)
 }
 
 // 0x0053FDF0
-int __cdecl ARENA_Return0()
-{
+int __fastcall ARENA_Return0(D2GameStrc* pGame, D2UnitStrc* pUnit){
     return 0;
 }
 

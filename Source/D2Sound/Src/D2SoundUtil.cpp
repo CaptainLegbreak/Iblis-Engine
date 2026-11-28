@@ -69,7 +69,7 @@ struct D2DosHeaderStrc
 // 0x00516950
 void __fastcall D2SOUNDUTIL_ListAddHead(D2SoundListNodeStrc** ppList, void* pData)
 {
-    D2SoundListNodeStrc* pNode = (D2SoundListNodeStrc*)FOG_Alloc(sizeof(D2SoundListNodeStrc), gszD2SoundUtilFile, 0xD5, 0);
+    D2SoundListNodeStrc* pNode = (D2SoundListNodeStrc*)FOG_Alloc(sizeof(D2SoundListNodeStrc), ".\\Src\\D2SoundUtil.cpp", 0xD5, 0);
     memset(pNode, 0, sizeof(D2SoundListNodeStrc));
     D2SoundListNodeStrc* pHead = *ppList;
     pNode->pData = pData;
@@ -272,10 +272,10 @@ int __fastcall D2SOUNDUTIL_GetVxdFileVersion(const char* szPath, unsigned int* p
     if (!nSize)
         return 0;
 
-    void* pBuffer = FOG_Alloc(nSize, gszD2SoundUtilFile, 0x21C, 0);
+    void* pBuffer = FOG_Alloc(nSize, ".\\Src\\D2SoundUtil.cpp", 0x21C, 0);
     if (!D2SOUNDUTIL_GetVxdVersionInfo(szPath, nSize, pBuffer))
     {
-        FOG_Free(pBuffer, gszD2SoundUtilFile, 0x221, 0);
+        FOG_Free(pBuffer, ".\\Src\\D2SoundUtil.cpp", 0x221, 0);
         return 0;
     }
 
@@ -283,7 +283,7 @@ int __fastcall D2SOUNDUTIL_GetVxdFileVersion(const char* szPath, unsigned int* p
     unsigned int nInfoLen;
     if (!VerQueryValueA(pBuffer, "\\", (void**)&pInfo, &nInfoLen))
     {
-        FOG_Free(pBuffer, gszD2SoundUtilFile, 0x229, 0);
+        FOG_Free(pBuffer, ".\\Src\\D2SoundUtil.cpp", 0x229, 0);
         return 0;
     }
 

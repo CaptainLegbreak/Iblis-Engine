@@ -20,7 +20,7 @@ struct D2AnimDataTableStrc
     D2AnimDataRecordStrc tDefaultRecord;
 };
 
-extern "C" const char gszDataGlobalPath[];                                                                      // 0x006D4118
+extern "C" const char gszDataGlobal[];                                                                      // 0x006D4118
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szBuffer, const char* szFormat, ...);           // 0x006CC468
 void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);               // 0x0040B430
 void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);             // 0x0040B480
@@ -41,7 +41,7 @@ D2AnimDataTableStrc* __fastcall DATATBLS_LoadAnimDataD2(void* hArchive)
     memset(pAnimDataTable, 0, sizeof(D2AnimDataTableStrc));
 
     char szPath[260];
-    wsprintfA(szPath, "%s\\AnimData.d2", gszDataGlobalPath);
+    wsprintfA(szPath, "%s\\AnimData.d2", gszDataGlobal);
     pAnimDataTable->pBinaryData = ARCHIVE_AllocateBufferAndReadFile(hArchive, szPath, 0, ".\\DATATBLS\\AnimTbls.cpp", 138);
 
     D2AnimDataBucketStrc* pBucket = (D2AnimDataBucketStrc*)pAnimDataTable->pBinaryData;

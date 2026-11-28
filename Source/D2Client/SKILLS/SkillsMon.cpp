@@ -919,7 +919,7 @@ int __fastcall SKILLSMON_SetParamTimes(D2UnitStrc* pUnit, int nSkillId, int nSki
 
 struct Unit0064A300;
 
-void __stdcall D2COMMON_10160_PathUpdateDirection(D2DynamicPathStrc* pDynamicPath, unsigned char nDirection); // 0x00648820
+void __stdcall D2COMMON_10160_PathUpdateDirection(D2DynamicPathStrc* pDynamicPath, unsigned char bDir); // 0x00648820
 
 void __stdcall MISSILE_SetTotalFrames(D2UnitStrc* pMissile, int nTotalFrames); // 0x0064A2B0
 

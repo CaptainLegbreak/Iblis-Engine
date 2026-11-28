@@ -115,16 +115,6 @@ void __fastcall CLIENT_SetConnected(int bConnected)
     }
 }
 
-void __stdcall sub_M118_Emit_0052A730(int nArg, const char* szIpAddress)
-{
-    NET_SetConnectionMode(nArg);
-    if (NET_IsLocalConnection())
-    {
-        return;
-    }
-    CLIENT_StartConnectThread(szIpAddress);
-}
-
 void* ghReceiveThread; // 0x00882CD8
 
 // 0x0052A640
@@ -337,7 +327,7 @@ void __stdcall CLIENT_Initialize(int nArg, const char* szIpAddress)
         SERVER_SendConnectionInfo();
         return;
     }
-    ghClientConnectToHostThreadHandle = CreateThread(0, 0, CLIENT_ConnectToHost, (void*)szIpAddress, 0, &gdwThreadId);
+    CLIENT_StartConnectThread(szIpAddress);
 }
 
 // 0x0052A7E0

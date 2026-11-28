@@ -558,7 +558,7 @@ void __fastcall ACT5Q5_Callback11_ScrollMessage(D2QuestDataStrc* q,D2QuestArgStr
  if(msg==20153){
   if(npc==515){
    if(!q->bNotIntro||q->fState!=1)return;
-   QUESTS_StateDebug(q,2,gszA5Q5SourceFile,413);
+   QUESTS_StateDebug(q,2,"d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a5q5.cpp",413);
    if(q->fLastState!=1){q->dwFlags&=0xFFFFFF00;QUESTS_UnitIterate(q,1,0,ACT5Q5_UnitIterate_StatusCyclerEx,1);}
    SUNIT_IterateUnitsOfType(q->pGame,0,0,ACT5Q5_UnitIterate_UpdateQuestStateFlags);
    ex->bQualKehkActivated=1;return;

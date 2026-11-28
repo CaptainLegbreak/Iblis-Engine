@@ -92,7 +92,7 @@ void __fastcall PARTY_IteratePartyMembers(D2GameStrc* pGame, unsigned short nPar
 
 D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId); // 0x00543640
 
-void __fastcall QUESTS_StatusCyclerEx(D2GameStrc* pGame, D2UnitStrc* pPlayer, int nQuestId);
+void __fastcall QUESTS_StatusCyclerEx(D2GameStrc* pGame, D2UnitStrc* pPlayer, int nQuestId); // 0x00544190
 
 
 void __fastcall SUNIT_AttachSound(D2UnitStrc* pUnit, int nUpdateType, D2UnitStrc* pUpdateUnit); // 0x00553380
@@ -140,14 +140,6 @@ void __fastcall ACT5Q2_Callback14_PlayerJoinedGame(D2QuestDataStrc* pQuestData, 
 void __fastcall ACT5Q2_Callback13_PlayerStartedGame(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
 
 static inline void ACT5Q2_CountWussieKill(D2QuestDataStrc* pQuestData, D2UnitStrc* pUnit);
-
-struct D2ActiveRoomUnitsStrc;
-
-struct D2ActiveRoomUnitsStrc
-{
-    char unk0x00[0x74];
-    D2UnitStrc* pUnitFirst;
-};
 
 typedef int (__fastcall* QUESTUNITITERATEFN)(D2GameStrc*, D2UnitStrc*, void*);
 
@@ -518,7 +510,7 @@ void __fastcall ACT5Q2_Callback08_MonsterKilled(D2QuestDataStrc* pQuestData, D2Q
             DUNGEON_GetAdjacentRoomsListFromRoom(pRoom, &ppRooms, &nRooms);
             for (unsigned int i = 0; i < nRooms; ++i)
             {
-                for (D2UnitStrc* pUnit = ((D2ActiveRoomUnitsStrc*)ppRooms[i])->pUnitFirst; pUnit; pUnit = pUnit->ptRoomNext)
+                for (D2UnitStrc* pUnit = ppRooms[i]->pUnitFirst; pUnit; pUnit = pUnit->ptRoomNext)
                 {
                     if ((!pUnit ? 6 : pUnit->dwUnitType) == 1 && pUnit->dwClassId == 0x216 && pUnit->dwAnimMode != 12 && pUnit->dwAnimMode != 0
                         && DRLG_UnitEdgeDistance(pUnit, pQuestArg->pTarget) < 15)

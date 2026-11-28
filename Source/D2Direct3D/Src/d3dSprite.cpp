@@ -437,7 +437,7 @@ static int __stdcall D3DSPRITE_UploadTexture(D2SpriteInfoStrc* ptInfo, int nMode
     hResult = pSurface->lpVtbl->Lock(pSurface, 0, &tDesc, 0x21, 0);
     if (hResult)
     {
-        D3DCORE_LogDDrawError(gszFailedToLockMemorySurface, hResult);
+        D3DCORE_LogDDrawError("Failed to lock memory surface", hResult);
     }
     D2_ASSERT(tDesc.dwFlags & 8, 0x1C0);
     D3DCORE_BlitIndexedToHighColor(pData, (unsigned short*)tDesc.lpSurface, ptInfo->nTexWidth, ptInfo->nTexHeight, tDesc.lPitch >> 1,
@@ -445,7 +445,7 @@ static int __stdcall D3DSPRITE_UploadTexture(D2SpriteInfoStrc* ptInfo, int nMode
     hResult = pSurface->lpVtbl->Unlock(pSurface, 0);
     if (hResult)
     {
-        D3DCORE_LogDDrawError(gszFailedToUnlockMemorySurface, hResult);
+        D3DCORE_LogDDrawError("Failed to unlock memory surface", hResult);
     }
 
     if (gnRenderFlags_0096F3A8 & gdwBitMasks[10])

@@ -1400,7 +1400,7 @@ static void COMCALLBACK_UpdateUserText(D2MultiChannelUserStrc* pUser)
         }
 
         Unicode::win2Unicode(wszCharName, szCharName, 50);
-        Unicode::win2Unicode(wszName, gszStar, 50);
+        Unicode::win2Unicode(wszName, "*", 50);
         Unicode::strncat(wszName, wszCharName, 50);
         Unicode::win2Unicode(wszAccount, szAccount, 16);
     }

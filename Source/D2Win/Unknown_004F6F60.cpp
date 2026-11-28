@@ -32,7 +32,7 @@ extern D2PaletteStrc gatLightPalettes[]; // 0x007D2348
 extern "C" int gfSStrInitialized;
 
 
-extern "C" int gbClientSoundReady;
+extern "C" int gbClientSoundReady; // 0x007C545C
 
 extern "C" int gnSoundSerial;
 

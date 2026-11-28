@@ -151,7 +151,7 @@ void __fastcall SUNITNPC_AddItemsToTrade(D2UnitStrc* pPlayer, D2InventoryStrc* p
 
 
 
-void __fastcall D2GAME_PACKETS_SendPacket0x22(D2ClientStrc*, unsigned char, int, int, int); // 0x0053C520
+void __fastcall D2GAME_PACKETS_SendPacket0x22(D2ClientStrc* pClient, unsigned char nUnitType, int nUnitGUID, int nSkillId, int nQuantity); // 0x0053C520
 
 
 void __fastcall D2GAME_STORES_FillGamble(D2GameStrc* pGame, D2UnitStrc* pNpc, D2UnitStrc* pUnit, D2NpcRecordStrc* pNpcRecord); // 0x00578790

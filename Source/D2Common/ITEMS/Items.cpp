@@ -7733,8 +7733,7 @@ int __stdcall STATES_CheckStateMaskStayDeathOnUnitByStateId(D2UnitStrc* pUnit, i
 }
 
 // 0x0063A510
-int __fastcall STATES_CheckStateMaskRestrictOnUnit(D2UnitStrc* pUnit, D2SkillStrc* pSkill)
-{
+int __fastcall STATES_CheckStateMaskRestrictOnUnit(D2UnitStrc* pUnit){
     return STATES_CheckStateMaskFlagsOnUnit(pUnit, sgptDataTables->fStateMasks[STATEMASK_RESTRICT]);
 }
 

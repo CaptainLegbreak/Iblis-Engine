@@ -932,8 +932,8 @@ int __fastcall MONSTERSPAWN_GetResurrectMode(D2UnitStrc* pUnit, int bUseResurrec
 int __fastcall SKILLITEM_HandleItemEffectSkill(D2GameStrc* pGame, D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, D2UnitStrc* pTargetUnit, int nX, int nY, int* pUnitType, int* pUnitGUID, int* pX, int* pY, int nItemEffectParam); // 0x005FDA80
 int __fastcall SKILLITEM_CastSkillOnTarget(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, D2UnitStrc* pTargetUnit, int nItemEffectParam); // 0x005FDCA0
 int __fastcall SKILLITEM_CastSkillOnPosition(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int nX, int nY, int nItemEffectParam); // 0x005FDD60
-int __fastcall CUNIT_ValidateMonsterId(int nMonsterId);
-int __fastcall DATATBLS_ApplyRatio(int nValue, int nMultiplier, int nDivisor);
+int __fastcall CUNIT_ValidateMonsterId(int nMonsterId); // 0x00463900
+int __fastcall DATATBLS_ApplyRatio(int nValue, int nMultiplier, int nDivisor); // 0x00483360
 
 // D2Game data that two or more of the module's files use.
 extern const char gszEmptyLoadComplete[184]; // 0x006E0498

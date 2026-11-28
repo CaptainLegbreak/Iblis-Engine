@@ -578,7 +578,7 @@ void __fastcall AIGENERAL_FreeMinionList(D2UnitStrc* pUnit)
             else
                 pOwnerControl->pMinionList = pList->pNext;
 
-            FOG_FreePool(pGame->pMemoryPool, pList, gszAiGeneralSourceFile, 0x217, 0);
+            FOG_FreePool(pGame->pMemoryPool, pList, ".\\Ai\\AiGeneral.cpp", 0x217, 0);
             return;
         }
 
@@ -608,7 +608,7 @@ void __fastcall AIGENERAL_DetachOwnedMinions(D2UnitStrc* pUnit)
    minionControl->dwOwnerTypeEx=1;
    minionControl->pGame=game;
   }
-  FOG_FreePool(game->pMemoryPool,node,gszAiGeneralSourceFile,567,0);
+  FOG_FreePool(game->pMemoryPool,node,".\\Ai\\AiGeneral.cpp",567,0);
   node=next;
  }
  ownerControl->pMinionList=0;

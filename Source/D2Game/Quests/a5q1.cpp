@@ -127,7 +127,7 @@ D2MapAIStrc** __stdcall AIGENERAL_GetMapAiFromUnit(D2UnitStrc* pUnit); // 0x0058
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
-void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern "C" const char gszAct4Q3SourceFile[];
 
@@ -144,7 +144,7 @@ void __fastcall QUESTS_QuickRemovePlayerGUID(D2QuestDataStrc* pQuest, D2QuestArg
 bool __fastcall ACT4Q4_StatusFilterCallback(D2QuestDataStrc* pQuest, D2UnitStrc* pPlayer, D2BitBufferStrc* pGlobalFlags, D2BitBufferStrc* pFlags, unsigned char* pStatus);
 
 
-void __fastcall ACT3Intro_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
+void __fastcall ACT3Intro_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B6C60
 
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
@@ -757,15 +757,15 @@ void __fastcall ACT5Q1_SetRewardGranted(D2GameStrc* pGame, D2UnitStrc* pUnit)
     }
 }
 
-void __cdecl sub_00405A50_Nop();
+void __cdecl sub_00405A50_Nop(); // 0x00405A50
 
-void __cdecl sub_00405A60_Nop();
+void __cdecl sub_00405A60_Nop(); // 0x00405A60
 
-void __cdecl ITEMS_Nop();
+void __cdecl ITEMS_Nop(); // 0x0063A800
 
-void __cdecl sub_004DF920_Nop();
+void __cdecl sub_004DF920_Nop(); // 0x004DF920
 
-void __cdecl sub_004DF930_Nop();
+void __cdecl sub_004DF930_Nop(); // 0x004DF930
 
 // 0x00587830
 void __cdecl OBJECTS_InitFunction70_Unused()

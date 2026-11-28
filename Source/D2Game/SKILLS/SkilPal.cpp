@@ -811,7 +811,7 @@ int __fastcall SKILLS_SrvDo066_HolyFire_HolyShock_Sanctuary_Conviction(D2GameStr
     unsigned int const tArg7 = pSkillsTxtRecord->dwAuraRangeCalc;
     const int nAuraRange = SKILLS_EvaluateSkillFormula(pUnit, tArg7, nSkillId, nSkillLevel);
 
-    SKILLS_IterateAuraTargets(pGame, pUnit, 0, 0, nAuraRange, pSkillsTxtRecord->dwAuraFilter, SKILLS_AuraCallback_HolyFire_HolyShock_Sanctuary_Conviction, &args2, 0, gszSkillPalSourceFile, 698);
+    SKILLS_IterateAuraTargets(pGame, pUnit, 0, 0, nAuraRange, pSkillsTxtRecord->dwAuraFilter, SKILLS_AuraCallback_HolyFire_HolyShock_Sanctuary_Conviction, &args2, 0, ".\\SKILLS\\SkilPal.cpp", 698);
 
     if (nManaCost > 0 && pUnit && pUnit->dwUnitType == UNIT_PLAYER)
     {
@@ -1751,7 +1751,7 @@ int __fastcall SKILLS_SrvDo082_Redemption(D2GameStrc* pGame, D2UnitStrc* pUnit, 
     redemptionArgs.nSkillId = nSkillId;
     redemptionArgs.nSkillLevel = nSkillLevel;
     const int nAuraRange = SKILLS_EvaluateSkillFormula(pUnit, pSkillsTxtRecord->dwAuraRangeCalc, nSkillId, nSkillLevel);
-    SKILLS_IterateAuraTargets(pGame, pUnit, 0, 0, nAuraRange, pSkillsTxtRecord->dwAuraFilter, SKILLS_AuraCallback_Redemption, &redemptionArgs, 1, gszSkillPalSourceFile, 0x753);
+    SKILLS_IterateAuraTargets(pGame, pUnit, 0, 0, nAuraRange, pSkillsTxtRecord->dwAuraFilter, SKILLS_AuraCallback_Redemption, &redemptionArgs, 1, ".\\SKILLS\\SkilPal.cpp", 0x753);
 
     if (nManaCost > 0)
     {

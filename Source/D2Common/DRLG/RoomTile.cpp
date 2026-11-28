@@ -158,9 +158,9 @@ static void __stdcall DRLGROOMTILE_LinkedTileDataManager(D2PoolSystemStrc* pMemP
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* szFormat, ...);             // 0x006CC468
 
 
-int __stdcall sub_0066FCF0_CanPlaceSubstGroup(int nX, int nY, D2UnkOutdoorStrc2* pOutdoor, D2DrlgSubstGroupStrc* pSubstGroup, D2LvlSubTxt* pLvlSubTxtRecord);
+int __stdcall sub_0066FCF0_CanPlaceSubstGroup(int nX, int nY, D2UnkOutdoorStrc2* pOutdoor, D2DrlgSubstGroupStrc* pSubstGroup, D2LvlSubTxt* pLvlSubTxtRecord); // 0x0066FCF0
 
-void __fastcall sub_006707A0_SubstWaypointShrine(D2UnkOutdoorStrc2* pOutdoor);
+void __fastcall sub_006707A0_SubstWaypointShrine(D2UnkOutdoorStrc2* pOutdoor); // 0x006707A0
 
 static inline unsigned int SEED_RollRandomNumberHighFirst(D2SeedStrc* pSeed)
 {

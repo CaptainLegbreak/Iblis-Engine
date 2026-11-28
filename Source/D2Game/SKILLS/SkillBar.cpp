@@ -825,57 +825,67 @@ int __fastcall SKILLS_SrvDo075_GrimWard(D2GameStrc* pGame, D2UnitStrc* pUnit, in
     return 1;
 }
 
-struct Skills { char pad0[0x12E]; unsigned short resultFlags; unsigned hitFlags,hitClass; unsigned calc[4]; char pad148[0x5D]; unsigned char srcDamage; char pad1A6[0x36]; unsigned char element; char pad1DD[0x5F]; };
-
-struct Tables { char pad0[0xB98]; Skills* skills; void* linker; int skillCount; };
-
-void __stdcall UNITS_SetTargetUnitForDynamicUnit(Unit*,Unit*);  // 0x00620C10
-
-int __stdcall SKILLS_GetToHitFactor(Unit*,int,int);  // 0x006449F0
-
-int __stdcall sub_00646CA0(Unit*,unsigned,int,int);  // 0x00646CA0
-
-void __fastcall D2GAME_RollElementalDamage(Unit*,D2DamageStrc*,int,int);  // 0x0056E0C0
-
-void __fastcall SUNITDMG_AllocCombat(Game*,Unit*,Unit*,D2DamageStrc*,unsigned char);  // 0x0057DBF0
-
-void __fastcall SUNITDMG_DrainItemDurability(Game*,Unit*,Unit*,int);  // 0x0057D4F0
-
-void __stdcall SKILLS_SetParam1(Skill*,int);  // 0x00644560
-
-inline Skills* GetSkills(int id) { if(id>=0 && id<tables->skillCount) return &tables->skills[id]; return 0; }
-enum { DEFAULT_SRC = 0x80 };
-
-
 // 0x005D8B10
-int __fastcall SKILLS_RollFrenzyDamage(Game* game,Unit* unit,Unit* target,int id,int level)
+int __fastcall SKILLS_RollFrenzyDamage(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pTarget, int nSkillId, int nSkillLevel)
 {
-    Skills* record=GetSkills(id);
-    if(!record) return 0;
-    if(!target) return 0;
-    UNITS_SetTargetUnitForDynamicUnit(unit,target);
-    D2DamageStrc damage;
-    memset(&damage,0,sizeof(damage));
-    damage.wResultFlags=SUNITDMG_GetResultFlags(game,unit,target,SKILLS_GetToHitFactor(unit,id,level),0);
-    if(damage.wResultFlags&1) {
-        damage.wResultFlags |= record->resultFlags;
-        damage.dwHitFlags |= record->hitFlags;
-        if(record->hitClass) damage.dwHitClass=record->hitClass;
-        damage.dwEnDmgPct=sub_00646CA0(unit,record->calc[0],id,level);
-        if(record->element>0) {
-            damage.dwConvPct=sub_00646CA0(unit,record->calc[3],id,level);
-            if(damage.dwConvPct>0) damage.nConvType=record->element;
-        }
-        D2GAME_RollElementalDamage(unit,&damage,id,level);
+    D2SkillsTxt* pSkillsTxtRecord = SKILLS_GetSkillsTxtRecord(nSkillId);
+    if (!pSkillsTxtRecord)
+    {
+        return 0;
     }
-    unsigned char source=record->srcDamage;
-    if(!source) source=DEFAULT_SRC;
-    SUNITDMG_AllocCombat(game,unit,target,&damage,source);
-    SUNITDMG_DrainItemDurability(game,unit,target,0);
-    Skill* skill=sub_00620250(unit);
-    if(skill) {
-        if(damage.wResultFlags&1) SKILLS_SetParam1(skill,1);
-        else SKILLS_SetParam1(skill,0); // 0x00644560
+
+    if (!pTarget)
+    {
+        return 0;
+    }
+
+    UNITS_SetTargetUnitForDynamicUnit(pUnit, pTarget);
+
+    D2DamageStrc damage;
+    memset(&damage, 0x00, sizeof(damage));
+    damage.wResultFlags = SUNITDMG_GetResultFlags(pGame, pUnit, pTarget, SKILLS_GetToHitFactor(pUnit, nSkillId, nSkillLevel), 0);
+    if (damage.wResultFlags & 1)
+    {
+        damage.wResultFlags |= pSkillsTxtRecord->wResultFlags;
+        damage.dwHitFlags |= pSkillsTxtRecord->dwHitFlags;
+        if (pSkillsTxtRecord->dwHitClass)
+        {
+            damage.dwHitClass = pSkillsTxtRecord->dwHitClass;
+        }
+
+        damage.dwEnDmgPct = SKILLS_EvaluateSkillFormula(pUnit, pSkillsTxtRecord->dwCalc[0], nSkillId, nSkillLevel);
+        if (pSkillsTxtRecord->nEType > 0)
+        {
+            damage.dwConvPct = SKILLS_EvaluateSkillFormula(pUnit, pSkillsTxtRecord->dwCalc[3], nSkillId, nSkillLevel);
+            if (damage.dwConvPct > 0)
+            {
+                damage.nConvType = pSkillsTxtRecord->nEType;
+            }
+        }
+
+        D2GAME_RollElementalDamage(pUnit, &damage, nSkillId, nSkillLevel);
+    }
+
+    unsigned char nSrcDam = pSkillsTxtRecord->nSrcDam;
+    if (!nSrcDam)
+    {
+        nSrcDam = 0x80;
+    }
+
+    SUNITDMG_AllocCombat(pGame, pUnit, pTarget, &damage, nSrcDam);
+    SUNITDMG_DrainItemDurability(pGame, pUnit, pTarget, 0);
+
+    D2SkillStrc* pSkill = UNITS_GetUsedSkill(pUnit);
+    if (pSkill)
+    {
+        if (damage.wResultFlags & 1)
+        {
+            SKILLS_SetParam1(pSkill, 1);
+        }
+        else
+        {
+            SKILLS_SetParam1(pSkill, 0);
+        }
     }
     return 1;
 }

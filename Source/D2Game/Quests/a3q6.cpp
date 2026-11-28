@@ -375,11 +375,11 @@ void __fastcall ACT3Q6_Callback03_ChangedLevel(D2QuestDataStrc* pQuestData, D2Qu
 
             if (QUESTS_GetGlobalState(pQuestArg->pGame, 17, 13) == 1)
             {
-                QUESTS_StateDebug(pQuestData, 4, gszAct3Q6SourceFile, 364);
+                QUESTS_StateDebug(pQuestData, 4, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a3q6.cpp", 364);
             }
             else
             {
-                QUESTS_StateDebug(pQuestData, 5, gszAct3Q6SourceFile, 368);
+                QUESTS_StateDebug(pQuestData, 5, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a3q6.cpp", 368);
             }
 
             SUNIT_IterateUnitsOfType(pQuestData->pGame, 0, 0, ACT3Q6_UnitIterate_UpdateQuestStateFlags);
@@ -400,11 +400,11 @@ void __fastcall ACT3Q6_Callback03_ChangedLevel(D2QuestDataStrc* pQuestData, D2Qu
         {
             if (QUESTS_GetGlobalState(pQuestArg->pGame, 17, 13) == 1)
             {
-                QUESTS_StateDebug(pQuestData, 4, gszAct3Q6SourceFile, 400);
+                QUESTS_StateDebug(pQuestData, 4, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a3q6.cpp", 400);
             }
             else
             {
-                QUESTS_StateDebug(pQuestData, 5, gszAct3Q6SourceFile, 404);
+                QUESTS_StateDebug(pQuestData, 5, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a3q6.cpp", 404);
             }
             bUpdate = 1;
         }
@@ -426,11 +426,11 @@ void __fastcall ACT3Q6_Callback03_ChangedLevel(D2QuestDataStrc* pQuestData, D2Qu
         {
             if (QUESTS_GetGlobalState(pQuestArg->pGame, 17, 13) == 1)
             {
-                QUESTS_StateDebug(pQuestData, 4, gszAct3Q6SourceFile, 426);
+                QUESTS_StateDebug(pQuestData, 4, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a3q6.cpp", 426);
             }
             else
             {
-                QUESTS_StateDebug(pQuestData, 5, gszAct3Q6SourceFile, 430);
+                QUESTS_StateDebug(pQuestData, 5, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a3q6.cpp", 430);
             }
         }
 

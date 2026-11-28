@@ -353,7 +353,7 @@ void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char
 
 int __stdcall DUNGEON_GetPortalFlagFromLevelId(int nLevelId);                                               // 0x0061AE30
 
-void __stdcall sub_0066A250(int nUnused);
+void __stdcall sub_0066A250(int nUnused); // 0x0066A250
 
 struct D2SkillStrc;
 

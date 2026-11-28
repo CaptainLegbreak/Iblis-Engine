@@ -617,11 +617,11 @@ int __fastcall sub_006BB870_BindTileTexture(D2TileLibraryEntryStrc* pTile)
             {
                 D2DDSurfaceDesc2Strc tDesc = { sizeof(D2DDSurfaceDesc2Strc) };
                 long hResult = ((D2DDSurfaceStrc*)gpMemorySurface)->lpVtbl->Lock((D2DDSurfaceStrc*)gpMemorySurface, 0, &tDesc, 0x21, 0);
-                if (hResult) D3DCORE_LogDDrawError(gszFailedToLockMemorySurface, hResult);
+                if (hResult) D3DCORE_LogDDrawError("Failed to lock memory surface", hResult);
                 D2_ASSERT(tDesc.dwFlags & 8, 0x1AD);
                 D3DFLOORCACHE_RenderTile((D2TileStrc*)pTile, (unsigned short*)tDesc.lpSurface, tDesc.lPitch >> 1);
                 hResult = ((D2DDSurfaceStrc*)gpMemorySurface)->lpVtbl->Unlock((D2DDSurfaceStrc*)gpMemorySurface, 0);
-                if (hResult) D3DCORE_LogDDrawError(gszFailedToUnlockMemorySurface, hResult);
+                if (hResult) D3DCORE_LogDDrawError("Failed to unlock memory surface", hResult);
             }
             if (gnRenderFlags_0096F3A8 & gdwBitMasks[10])
                 D3DCORE_CopySurface(pNode->pSurface, (D2DDSurfaceStrc*)gpMemorySurface, gnHeight_009702B8);
@@ -660,7 +660,7 @@ void __fastcall D3DFLOORCACHE_BindTileTexture(D2CacheBindingStrc* pTile)
         long hResult = gpMemorySurface32->lpVtbl->Lock(gpMemorySurface32, 0, &tDesc, 0x21, 0);
         if (hResult)
         {
-            D3DCORE_LogDDrawError(gszFailedToLockMemorySurface, hResult);
+            D3DCORE_LogDDrawError("Failed to lock memory surface", hResult);
         }
 
         D2_ASSERT(tDesc.dwFlags & 8, 0x20B);
@@ -670,7 +670,7 @@ void __fastcall D3DFLOORCACHE_BindTileTexture(D2CacheBindingStrc* pTile)
         hResult = gpMemorySurface32->lpVtbl->Unlock(gpMemorySurface32, 0);
         if (hResult)
         {
-            D3DCORE_LogDDrawError(gszFailedToUnlockMemorySurface, hResult);
+            D3DCORE_LogDDrawError("Failed to unlock memory surface", hResult);
         }
 
         if (gnRenderFlags_0096F3A8 & gdwBitMasks[10])

@@ -11,7 +11,7 @@ typedef int (__stdcall* SMSGHANDLER)(void* pParams);
 
 struct SMSGHANDLER_PARAMS;
 
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode);
+void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
 
 struct WNDREC : TSLinkedNode<WNDREC>
 {

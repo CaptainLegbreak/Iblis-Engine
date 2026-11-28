@@ -2,9 +2,9 @@
 // Storm's list and array templates: an intrusive doubly linked list whose terminator link carries the complemented
 // address of the list head, and the base/fixed/growable arrays.
 
-extern "C" void* __stdcall SMemAlloc(unsigned int nBytes, const char* szFile, int nLine, unsigned int nFlags);
-extern "C" void* __stdcall SMemReAlloc(void* pLocation, unsigned int nBytes, const char* szFile, int nLine, unsigned int nFlags);
-extern "C" int __stdcall SMemFree(void* pLocation, const char* szFile, int nLine, unsigned int nFlags);
+extern "C" void* __stdcall SMemAlloc(unsigned int nBytes, const char* szFile, int nLine, unsigned int nFlags); // 0x00413020
+extern "C" void* __stdcall SMemReAlloc(void* pLocation, unsigned int nBytes, const char* szFile, int nLine, unsigned int nFlags); // 0x004133D0
+extern "C" int __stdcall SMemFree(void* pLocation, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
 
 // The compiler's type descriptor (typeid); only its address is used here.
 class type_info

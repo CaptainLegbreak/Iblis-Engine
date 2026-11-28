@@ -87,7 +87,7 @@ typedef int (__fastcall* QUESTITERATE)(D2GameStrc* pGame, D2UnitStrc* pUnit, voi
 extern "C" const char gszAct3Q5SourceFile[];
 
 
-D2UnitStrc* __fastcall SUNIT_IterateUnitsOfType(D2GameStrc* pGame, int nUnitType, void* pData, QUESTITERATE pfnCallback);
+D2UnitStrc* __fastcall SUNIT_IterateUnitsOfType(D2GameStrc* pGame, int nUnitType, void* pData, QUESTITERATE pfnCallback); // 0x005537D0
 
 
 short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer);                                                     // 0x00554630
@@ -121,16 +121,10 @@ typedef void (__fastcall* QUESTCALLBACK)(D2QuestDataStrc* pQuestData, D2QuestArg
 void __fastcall ACT3Q4_Callback08_MonsterKilled(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005BAB60
 
 
-struct D2QuestDataExStrc;
 
 int __fastcall QUESTS_CheckPlayerGUID(D2QuestDataStrc* pQuest, int dwGUID); // 0x005452C0
 
 
-struct D2QuestDataExStrc
-{
-    unsigned char unk_00[0x18];
-    int nState18;
-};
 
 static inline D2BitBufferStrc* PLAYER_GetQuestFlags(D2GameStrc* pGame, D2UnitStrc* pPlayer)
 {
@@ -364,7 +358,7 @@ void __fastcall ACT3Q4_UnitIterate_UpdateCurrentQuestState(D2GameStrc* pGame, D2
         D2BitBufferStrc* pQuestRecord = UNITS_GetPlayerData(pPlayer)->pQuestData[pGame->nDifficulty];
         if (!QUESTRECORD_GetQuestState(pQuestRecord, 0x14, 0) && !QUESTRECORD_GetQuestState(pQuestRecord, 0x14, 1))
         {
-            QUESTRECORD_SetQuestState(pQuestRecord, 0x14, ((D2QuestDataExStrc*)pQuestData->pQuestDataEx)->nState18);
+            QUESTRECORD_SetQuestState(pQuestRecord, 0x14, ((D2Act3Quest4Strc*)pQuestData->pQuestDataEx)->nCurrentQuestFlag);
         }
     }
 }

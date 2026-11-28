@@ -483,11 +483,6 @@ static int ITEMS_GetSetBonusCount(unsigned int nSetItemMask)
     return gnSetMaskToBonusMappingTable[nSetItemMask];
 }
 
-void __stdcall sub_M102_Emit_00663A10(int nUnused, unsigned int nSetItemMask)
-{
-    sub_M102_UseBonusCount_00663A10(ITEMS_GetSetBonusCount(nSetItemMask));
-}
-
 __forceinline unsigned int ITEMS_GetStoreSetItemsMaskInline(D2UnitStrc* pUnit, D2UnitStrc* pItem)
 {
     D2UnitStrc* pInventoryItem = INVENTORY_IsItemInInventory(pUnit->pInventory, pItem);
@@ -553,7 +548,7 @@ int __fastcall ITEMS_SetItemBonusStates(D2UnitStrc* pItem, unsigned int nSetItem
 
             case 2:
             {
-                const int nBonuses = (nSetItemMask >= 0x40 ? 0 : gnSetMaskToBonusMappingTable[nSetItemMask]) - 1;
+                const int nBonuses = ITEMS_GetSetBonusCount(nSetItemMask) - 1;
 
                 for (int i = 0; i < nBonuses; ++i)
                 {

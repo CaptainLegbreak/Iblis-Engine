@@ -278,18 +278,13 @@ int __fastcall SKILLS_AuraCallback_ApplyCurse(D2UnitStrc* pUnit, D2UnkNecSkillSt
 
 
 
-int __fastcall SUNIT_TeleportUnit(Game*,D2UnitStrc*,D2ActiveRoomStrc*,int,int,int,int); // 0x00554EA0
+int __fastcall SUNIT_TeleportUnit(D2GameStrc*,D2UnitStrc*,D2ActiveRoomStrc*,int,int,int,int); // 0x00554EA0
 
 enum { UNIT_FLAGS = 0xE };
 
 struct Monster;
 
 
-struct Game
-{
-    unsigned char pad[28];
-    void* pool;
-};
 
 
 
@@ -517,7 +512,7 @@ static int UNITS_GetUnitYPosition(D2UnitStrc* pUnit)
 }
 
 // 0x005CB170
-int __fastcall SKILLS_SrvSt44_MaggotUp(Game* game,D2UnitStrc* unit,int skillId,int level)
+int __fastcall SKILLS_SrvSt44_MaggotUp(D2GameStrc* game,D2UnitStrc* unit,int skillId,int level)
 {
     if(!SUNIT_TeleportUnit(game,unit,UNITS_GetRoom(unit),UNITS_GetUnitXPosition(unit),UNITS_GetUnitYPosition(unit),0,0)) return 0;
     unit->dwFlags |= UNIT_FLAGS;
@@ -2234,32 +2229,24 @@ struct MissileRecord;
 
 struct MonsterData;
 
-struct Skills;
 
+D2UnitStrc* __stdcall SUNIT_GetTargetUnit(D2GameStrc*, D2UnitStrc*); // 0x00553540
 
-D2UnitStrc* __stdcall SUNIT_GetTargetUnit(Game*, D2UnitStrc*); // 0x00553540
-
-void __fastcall SUNITDMG_FreeAttackerDefenderCombatList(Game*, D2UnitStrc*, D2UnitStrc*); // 0x0057C9F0
+void __fastcall SUNITDMG_FreeAttackerDefenderCombatList(D2GameStrc*, D2UnitStrc*, D2UnitStrc*); // 0x0057C9F0
 
 int __fastcall SKILLS_GetMonFrenzySequenceFrame(D2UnitStrc*); // 0x005CDD30
 
-int __fastcall SKILLS_StartSkill(Game*, D2UnitStrc*, int, int, int); // 0x0056F640
+int __fastcall SKILLS_StartSkill(D2GameStrc*, D2UnitStrc*, int, int, int); // 0x0056F640
 
-int __fastcall SKILLS_RollMonFrenzyDamage(Game*, D2UnitStrc*, D2UnitStrc*, int, int); // 0x005CDDD0
+int __fastcall SKILLS_RollMonFrenzyDamage(D2GameStrc*, D2UnitStrc*, D2UnitStrc*, int, int); // 0x005CDDD0
 
 enum { UNIT_FLAG = 0x40 };
 
-struct MonsterData { char pad0[0xE]; unsigned char variant; };
-
-struct Skills { char pad0[4]; unsigned char flags[4]; char pad8[0x40]; short missile; char pad4A[0x1F2]; };
-
-struct Tables { char pad0[0xB6C]; int missileCount; char padB70[0x28]; Skills* skills; void* linker; int skillCount; };
-
 extern unsigned bitMasks[]; // 0x006CE268
 
-D2UnitStrc* __fastcall SKILLS_CreateMissileFromOrigin(Game*,int,D2UnitStrc*,int,int,int,int,int,int,int); // 0x0056EE90
+D2UnitStrc* __fastcall SKILLS_CreateMissileFromOrigin(D2GameStrc*,int,D2UnitStrc*,int,int,int,int,int,int,int); // 0x0056EE90
 
-D2UnitStrc* __fastcall SKILLS_CreateMissileAtOffset(Game*,int,D2UnitStrc*,int,int,int,int,int,int,int); // 0x0056ECB0
+D2UnitStrc* __fastcall SKILLS_CreateMissileAtOffset(D2GameStrc*,int,D2UnitStrc*,int,int,int,int,int,int,int); // 0x0056ECB0
 
 typedef char D2SkillsTxtSizeCheck[sizeof(D2SkillsTxt) == 0x23C ? 1 : -1];
 

@@ -6338,7 +6338,7 @@ static void INV_DrawMercStats(D2UnitStrc* pUnit)
             for (int k = 0; k < 4; ++k)
             {
                 nValue = STATLIST_UnitGetStatValue(pUnit, aElem[k].nMinStat, 0);
-                const int nElemMax = STATLIST_UnitGetStatValue(pUnit, aElem[k].f_4, 0);
+                const int nElemMax = STATLIST_UnitGetStatValue(pUnit, aElem[k].nMaxStat, 0);
                 if (nValue || nElemMax)
                 {
                     nColor = aElem[k].nColor;

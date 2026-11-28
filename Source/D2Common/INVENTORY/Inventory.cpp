@@ -1802,8 +1802,7 @@ __declspec(noinline) D2UnitStrc* __stdcall INVENTORY_GetItemFromBodyLoc(D2Invent
 }
 
 // 0x0063BE30
-void __stdcall sub_0063BE30_Return(int nUnused1, int nUnused2)
-{
+void __stdcall sub_0063BE30_Return(D2InventoryStrc* pInventory, int nBodyLoc){
 }
 
 // 0x0063BE40

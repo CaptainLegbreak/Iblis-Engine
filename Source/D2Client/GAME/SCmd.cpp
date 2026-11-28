@@ -745,7 +745,7 @@ int gnPopUpTextMode; // 0x007A2D28
 
 struct D2ClientSightPacketStrc;
 
-void __fastcall GAME_ShowLoadingMessage(int nError);
+void __fastcall GAME_ShowLoadingMessage(int nError); // 0x0044E380
 
 #pragma pack(push, 1)
 struct D2ClientSightPacketStrc

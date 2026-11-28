@@ -118,7 +118,7 @@ static __forceinline void TASK_CloseGame(int nGameHashKey, int nTaskNumber, D2Ta
             TASK_LinkList_Remove(pNewTaskLink);
         }
         TASK_LinkList_PushFront(&gpTaskQueueLink, pNewTaskLink);
-        FOG_Free(ptTask, gszTaskSourceFile, 0x309, 0);
+        FOG_Free(ptTask, ".\\GAME\\Task.cpp", 0x309, 0);
     }
     --gnGamesCount;
     LeaveCriticalSection(&gTaskSlotsCriticalSection);

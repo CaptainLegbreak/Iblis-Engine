@@ -1688,7 +1688,7 @@ int __fastcall BNSEND_GetChangePasswordResult(int* pResult)
 
 extern long volatile gnConnected; // 0x00881BF0
 
-extern const char gszLineEnd_006FFCB0[]; // 0x006FFCB0
+extern "C" const char gszNewline[]; // 0x006FFCB0
 
 // 0x0051C460
 int __cdecl BNSEND_LeaveChat()
@@ -1745,7 +1745,7 @@ int __fastcall BNSEND_SendLine(const char* szLine)
 {
     FSafeSock* pSocket = (FSafeSock*)InterlockedCompareExchange(&gnConnected, 0, 0);
     FOG_SOCKET_Send(pSocket, (char *)szLine, strlen(szLine));
-    FOG_SOCKET_Send(pSocket, (char *)gszLineEnd_006FFCB0, 1);
+    FOG_SOCKET_Send(pSocket, (char *)gszNewline, 1);
     return 1;
 }
 

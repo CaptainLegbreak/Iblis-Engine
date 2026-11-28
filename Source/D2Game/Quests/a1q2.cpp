@@ -190,15 +190,6 @@ void __fastcall ACT1Q2_InitQuestData(D2QuestDataStrc* pQuestData)
 
 #define ACT_III 2
 
-struct Obj00590810;
-
-struct Obj00590810 {
-    unsigned char bUnknown00[9];
-    unsigned char bFlag09;
-    unsigned char bUnknown0A[2];
-    unsigned char bValue0C;
-};
-
 void __fastcall PARTY_IteratePartyMembers(D2GameStrc* pGame, unsigned short nPartyId, PartyCallbackFunction pCallback, void* pArgs); // 0x00540510
 
 void __fastcall QUESTS_StatusCyclerEx(D2GameStrc* game,D2UnitStrc* player,unsigned char id); // 0x00544190
@@ -212,8 +203,10 @@ short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer); // 0x00554630
 void __fastcall ACT1Q2_UnitIterate_SetPrimaryGoalDone(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData);
 
 // 0x00590810
-extern "C" __declspec(dllexport) bool __fastcall ACT1Q1_CanClientFXBeTriggered(Obj00590810* pObj) {
-    if (pObj->bFlag09 && pObj->bValue0C >= 4) {
+bool __fastcall ACT1Q1_CanClientFXBeTriggered(D2QuestDataStrc* pQuestData)
+{
+    if (pQuestData->bNotIntro && pQuestData->fState >= 4)
+    {
         return true;
     }
     return false;

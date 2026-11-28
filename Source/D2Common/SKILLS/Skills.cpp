@@ -308,7 +308,7 @@ void __stdcall sub_006460D0_Empty(int nUnused1, int nUnused2, int nUnused3);
 
 void __stdcall sub_006460E0_Empty(int nUnused);
 
-int __fastcall STATES_CheckStateMaskRestrictOnUnit(D2UnitStrc* pUnit, D2SkillStrc* pSkill); // 0x0063A510
+int __fastcall STATES_CheckStateMaskRestrictOnUnit(D2UnitStrc* pUnit); // 0x0063A510
 
 static int __stdcall SKILLS_IsPointOutsideTown(int nX, int nY, D2UnitStrc* pUnit); // 0x00645C60
 
@@ -2156,11 +2156,6 @@ int __stdcall D2Common_11014_ConvertShapeShiftedMode(int nArrayIndex, int nMonst
     }
 }
 
-int __stdcall sub_K15_Emit6(int* p, int n)
-{
-    return SKILLS_ConvertShapeshiftMonMode(p[0], n) + SKILLS_ConvertShapeshiftMonMode(p[n], p[2]);
-}
-
 inline D2StatesTxt* DATATBLS_GetStatesTxtRecordInl(int nState)
 {
     if (nState >= 0 && nState < sgptDataTables->nStatesTxtRecordCount)
@@ -2207,8 +2202,7 @@ void __stdcall D2COMMON_11013_ConvertMode(D2UnitStrc* pUnit, int* pType, int* pC
 
                     if (pUnit->dwUnitType == UNIT_MONSTER)
                     {
-                        const int nMode = *pMode;
-                        *pMode = (nClass == 6 && nMode == 4) ? 12 : gnShapeshiftMonModes[nMode];
+                        *pMode = SKILLS_ConvertShapeshiftMonMode(*pMode, nClass);
                     }
                     return;
                 }

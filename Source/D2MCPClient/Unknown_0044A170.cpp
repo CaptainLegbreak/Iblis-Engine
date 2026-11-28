@@ -309,13 +309,13 @@ void __cdecl VIEW_SendMcpCancelGameCreate()
 }
 
 // 0x0044AAB0
-void __cdecl VIEW_SendMcpCharListRequest()
+int __cdecl VIEW_SendMcpCharListRequest()
 {
     D2ClientPacket19Strc tPacket;
     CHATDLG_SetMcpResult(0);
     tPacket.nHeader = 0x19;
     *(int*)&tPacket.nValue0 = 8;
-    D2QSSOCKET_SendPacket(gpMcpConnection, &tPacket.nHeader, 5);
+    return D2QSSOCKET_SendPacket(gpMcpConnection, &tPacket.nHeader, 5);
 }
 
 // 0x0044AB70

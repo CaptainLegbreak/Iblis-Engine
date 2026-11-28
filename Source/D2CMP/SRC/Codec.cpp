@@ -682,7 +682,7 @@ static inline void DccCopyHeader(D2DccHeaderStrc* pHeader, const D2DccFileStrc* 
     pHeader->n08 = pFile->n08;
 }
 
-static inline void __stdcall sub_0060B140_BitBufferInit(int nSize, unsigned int* pBuffer, D2CmpBitCursorStrc* pBitBuf)
+static inline void __stdcall BitBufferInit(int nSize, unsigned int* pBuffer, D2CmpBitCursorStrc* pBitBuf)
 {
     pBitBuf->pStart = pBuffer;
     pBitBuf->pData = pBuffer;
@@ -709,7 +709,7 @@ int __fastcall CodecDecodeDccData(unsigned char* pData, D2PoolSystemStrc* pMemPo
     EnterCriticalSection(&gtCodecLock);
 
     DccCopyHeader(&tHeader, DccGetFile(dwFile));
-    sub_0060B140_BitBufferInit(nSize, (unsigned int*)pData, &tCursor);
+    BitBufferInit(nSize, (unsigned int*)pData, &tCursor);
 
     *pnOutSize = 0;
     const int nEnd = nFirstDir + nDirs;

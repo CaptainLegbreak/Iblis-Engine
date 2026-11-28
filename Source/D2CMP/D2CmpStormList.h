@@ -303,7 +303,7 @@ struct D2StormSlotArrayStrc
     void CelSlotArrayReserve(unsigned int nCount, int bRound);
     void CelSlotArraySetCount(unsigned int nCount);                                                        // 0x00603300
     void CelSlotArrayClear();
-    void sub_00603850_SetCount(unsigned int nCount);
+    void SetCount(unsigned int nCount); // 0x00603850
 };
 
 struct D2StormSlotGrowArrayStrc : D2StormSlotArrayStrc

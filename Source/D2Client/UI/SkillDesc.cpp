@@ -374,9 +374,9 @@ static int __stdcall SKILLDESC_AddSummonDamage(D2UnitStrc* pUnit, Unicode* wszTe
 static int __stdcall SKILLDESC_AddMissileElemRate(D2UnitStrc* pUnit, Unicode* wszText, D2SkillsTxt* pSkillsTxt, int nMissileId, int nSkillLevel);
 
 
-short __stdcall ITEMS_GetStrengthBonus(D2UnitStrc* pItem);
+short __stdcall ITEMS_GetStrengthBonus(D2UnitStrc* pItem); // 0x00629860
 
-short __stdcall ITEMS_GetDexBonus(D2UnitStrc* pItem);
+short __stdcall ITEMS_GetDexBonus(D2UnitStrc* pItem); // 0x006298A0
 
 
 
@@ -6615,7 +6615,6 @@ void __stdcall TEXT_DrawHintText(int nArg1, int nStringIndex)
     D2Win_10129_DrawFramedText(wszText, gnScreenWidth - 0x80, gnScreenHeight - 0x34, 0, 1);
 }
 
-extern "C" void __cdecl SKILLDESC_DrawThrowAndElemDamage(); // 0x004EAAA0
 extern "C" void __cdecl SKILLSMON_DescIfRecord(); // 0x004EC040
 
 #pragma pack(push, 1)
@@ -6708,6 +6707,8 @@ extern D2SkillTextPositionStrc gaSkillTextPositions[12] = {
     { 162, 187, 270 },
     { 270, 184, 310 }
 }; // 0x0072D840
+
+extern SKILLDESCFN gpfnSkillDescFuncs[18] = { 0, (SKILLDESCFN)&SKILLDESC_SkillDescAttackRatingMain, (SKILLDESCFN)&SKILLDESC_DescAttackRating, (SKILLDESCFN)&SKILLDESC_DescAttackRate, (SKILLDESCFN)&SKILLDESC_DescAttackRatingOffhand, (SKILLDESCFN)&PLRSKILLS_DescAttackRating }; // 0x0072D7F8
 
 extern const int gaLobVelocityBonus[5] = { -2, -1, 0, 1, 2 }; // 0x006DBF38
 

@@ -29,7 +29,7 @@ unsigned char* gpGlideDebugFontGlyphs; // 0x0088044C
 void __cdecl GLDEBUGFONT_CreateDebugFont()
 {
     void* hDC = CreateCompatibleDC(0);
-    void* hFont = CreateFontA(10, 0, 0, 0, 400, 0, 0, 0, 0, 0, 0, 0, 1, gszCourier);
+    void* hFont = CreateFontA(10, 0, 0, 0, 400, 0, 0, 0, 0, 0, 0, 0, 1, "Courier");
     void* hBitmap = CreateCompatibleBitmap(hDC, 8, 16);
     SelectObject(hDC, hFont);
     SelectObject(hDC, hBitmap);

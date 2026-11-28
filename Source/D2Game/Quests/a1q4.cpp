@@ -243,7 +243,7 @@ struct D2CoordStrc;
 
 struct D2QuestDataStrc;
 
-void __fastcall QUESTS_QuickRemovePlayerGUID(D2QuestDataStrc* pQuest, D2QuestArgStrc* pQuestArg);           // 0x00545310
+void __fastcall QUESTS_QuickRemovePlayerGUID(D2QuestDataStrc* pQuest, D2QuestArgStrc* pQuestArg); // 0x00545310
 
 
 static void ACT1Q4_DebugStartedQuest(D2QuestDataStrc* pQuestData);
@@ -271,11 +271,6 @@ void __fastcall ACT1Q4_StartCainRemoval(D2GameStrc* pGame);
 int __fastcall OBJECTS_OperateFunction12_InifussTree(D2ObjOperateFnStrc* pOp, int nOperate);
 
 
-struct D2Act1Quest4ExStrc
-{
-    unsigned char padding[0x46];
-    unsigned char cainActive;
-};
 
 inline D2BitBufferStrc* PLAYER_GetQuestFlags(D2GameStrc* pGame, D2UnitStrc* pPlayer)
 {
@@ -1173,7 +1168,7 @@ int __fastcall ACT1Q4_UnitIterate_FindPlayersInTristram(D2GameStrc* pGame, D2Uni
 bool __fastcall ACT1Q4_Timer_RemoveCainFromTristram(D2GameStrc* unused, D2QuestDataStrc* quest)
 {
     SUNIT_IterateUnitsOfType(quest->pGame, 1, 0, ACT1Q4_UnitIterate_RemoveCainFromTristram);
-    ((D2Act1Quest4ExStrc*)quest->pQuestDataEx)->cainActive = 0;
+    ((D2Act1Quest4Strc*)quest->pQuestDataEx)->bTimerActive = 0;
     return true;
 }
 
@@ -1337,7 +1332,7 @@ int __fastcall OBJECTS_OperateFunction09_Monolith(D2ObjOperateFnStrc* pOp,int nO
   if(!pEx->bDecipheredScrollAcquired && pInvisible && pInvisible->dwClassId==61) {
    if(!pQuestInfo->fState && pQuestInfo->bNotIntro==1) {
     ACT1Q4_DebugStartedQuest(pQuestInfo);
-    QUESTS_StateDebug(pQuestInfo,1,gszA1Q4SourceFile,0x793);
+    QUESTS_StateDebug(pQuestInfo,1,"d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a1q4.cpp",0x793);
    }
    if(!ITEMS_FindQuestItem(pOp->pGame,pOp->hPlayer,0x20646B62)) return 0;
   }
@@ -1346,7 +1341,7 @@ int __fastcall OBJECTS_OperateFunction09_Monolith(D2ObjOperateFnStrc* pOp,int nO
  if(pQuestInfo->fState!=5) {
   if(!pQuestInfo->fState && pQuestInfo->bNotIntro==1) {
    ACT1Q4_DebugStartedQuest(pQuestInfo);
-   QUESTS_StateDebug(pQuestInfo,1,gszA1Q4SourceFile,0x7A5);
+   QUESTS_StateDebug(pQuestInfo,1,"d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a1q4.cpp",0x7A5);
   }
   if(!ITEMS_FindQuestItem(pOp->pGame,pOp->hPlayer,0x20646B62)) return 0;
   pQuestInfo->fState=5;
@@ -1450,7 +1445,7 @@ int __fastcall OBJECTS_OperateFunction12_InifussTree(D2ObjOperateFnStrc* pOp, in
 
     pOp->hObject->dwDropItemCode = ' skb';
     ACT1Q4_DebugStartedQuest(pQuestInfo);
-    QUESTS_StateDebug(pQuestInfo, 4, gszA1Q4SourceFile, 0x84B);
+    QUESTS_StateDebug(pQuestInfo, 4, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a1q4.cpp", 0x84B);
 
     int nItemLevel;
     D2UnitStrc* pItem = D2GAME_DropItemAtUnit(pOp->pGame, pOp->hObject, 2, &nItemLevel, 0, -1, 0);
@@ -1513,7 +1508,7 @@ void __fastcall ACT1Q4_SendStoneOrderToClient(D2GameStrc* pGame, D2UnitStrc* pUn
         D2GSPacketSrv50 packet;
         packet.nHeader = 0x50;
         packet.nQuestId = 4;
-        D2ClientStrc* pClient = UnitGetClient(pUnit, gszAct1Q4SourceFile, 2169);
+        D2ClientStrc* pClient = UnitGetClient(pUnit, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a1q4.cpp", 2169);
         int i = 0;
         if (i < 5)
         {

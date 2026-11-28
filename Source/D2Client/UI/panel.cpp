@@ -286,7 +286,7 @@ int __stdcall STATLIST_GetUnitBaseStat(D2UnitStrc* pUnit, int nStatId, int nLaye
 
 struct D2StaticPathStrc;
 
-void __fastcall ITEM_SetUninterruptableState(D2UnitStrc* pItem);
+void __fastcall ITEM_SetUninterruptableState(D2UnitStrc* pItem); // 0x004C21F0
 
 static void PANEL_HoverBeltBox(int nX, D2InventoryStrc* pInventory, int nY); // 0x00498930
 

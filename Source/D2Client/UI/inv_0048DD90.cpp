@@ -69,7 +69,7 @@ extern "C" const char gszEmptyAssertText;                                       
 
 void __stdcall sub_00403040_VectorCtor(void* pArray, unsigned int nSize, int nCount, void (__fastcall* pfnCtor)(void*)); // 0x00403040
 
-int __cdecl FOG_IsExpansion();                                                                 // 0x00408F20
+int __cdecl FOG_IsExpansion(); // 0x00408F20
 
 int __cdecl GAME_IsExpansion(); // 0x0044DCC0
 
@@ -79,7 +79,7 @@ Unicode* __fastcall INV_PrefixColorCode(Unicode* pText, int nDigit);            
 
 int __fastcall GAME_GetUIVarState(unsigned int nUIVar); // 0x004538D0
 
-D2UnitStrc* __cdecl CUNIT_GetPlayerUnit();                                                               // 0x00463DD0
+D2UnitStrc* __cdecl CUNIT_GetPlayerUnit(); // 0x00463DD0
 
 D2UnitStrc* __cdecl CUNIT_GetPlayerUnit2();                                                           // 0x00463DE0
 
@@ -2243,7 +2243,7 @@ static void INV_DrawMercStats(D2UnitStrc* pUnit)
             for (int k = 0; k < 4; ++k)
             {
                 nValue = STATLIST_UnitGetStatValue(pUnit, aElem[k].nMinStat, 0);
-                const int nElemMax = STATLIST_UnitGetStatValue(pUnit, aElem[k].f_4, 0);
+                const int nElemMax = STATLIST_UnitGetStatValue(pUnit, aElem[k].nMaxStat, 0);
                 if (nValue || nElemMax)
                 {
                     nColor = aElem[k].nColor;

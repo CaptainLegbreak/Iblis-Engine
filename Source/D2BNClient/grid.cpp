@@ -114,24 +114,24 @@ static void __cdecl GRID_CopyDecodedKeys(Byte** first, Byte** second)
 {
     if (first)
     {
-        Byte* allocated = (Byte*)SMemAlloc(gnGidFileSize, gszGrid, 0x199, 0);
+        Byte* allocated = (Byte*)SMemAlloc(gnGidFileSize, ".\\grid.cpp", 0x199, 0);
         *first = allocated;
         sub_006829C0_CopyBuffer(allocated, gpGidFileData, gnGidFileSize);
     }
     if (second)
     {
-        Byte* allocated = (Byte*)SMemAlloc(gnClhFileSize, gszGrid, 0x19e, 0);
+        Byte* allocated = (Byte*)SMemAlloc(gnClhFileSize, ".\\grid.cpp", 0x19e, 0);
         *second = allocated;
         sub_006829C0_CopyBuffer(allocated, gpClhFileData, gnClhFileSize);
     }
     if (first && !GRID_DecodeAndValidate(*first, gnGidFileSize))
     {
-        SMemFree(*first, gszGrid, 0x1a6, 0);
+        SMemFree(*first, ".\\grid.cpp", 0x1a6, 0);
         *first = 0;
     }
     if (second && !GRID_DecodeAndValidate(*second, gnClhFileSize))
     {
-        SMemFree(*second, gszGrid, 0x1aa, 0);
+        SMemFree(*second, ".\\grid.cpp", 0x1aa, 0);
         *second = 0;
     }
 }

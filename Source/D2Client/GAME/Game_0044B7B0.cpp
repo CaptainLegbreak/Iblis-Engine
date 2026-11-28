@@ -49,7 +49,7 @@ extern "C" unsigned int __cdecl strlen(const char* pString);
 
 
 
-void __fastcall UI_ToggleListDialog(int nResolution); // 0x004549B0
+void __cdecl UI_ToggleListDialog(); // 0x004549B0
 
 
 

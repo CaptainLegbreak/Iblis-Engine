@@ -116,7 +116,7 @@ void __stdcall BNGatewayAccess::Unload()
         pCurGateway += SStrLen(pCurGateway) + 1;
         pCurGateway[0] = m_nCurGateway / 10 + '0';
         pCurGateway[1] = m_nCurGateway % 10 + '0';
-        const char* szValueName = m_bOverride ? gszOverrideGateways : gszDiabloGateways;
+        const char* szValueName = m_bOverride ? "Override Battle.net gateways" : "Diablo II Battle.net gateways";
         D2_ASSERT(!m_pGatewayList[m_nGatewayListSize - 1] && !m_pGatewayList[m_nGatewayListSize - 2], 0xB9);
         SRegSaveData("Configuration", szValueName, 0x82, m_pGatewayList, m_nGatewayListSize);
     }
@@ -218,13 +218,13 @@ void BNGatewayAccess::GetGatewayList(const char* szValueName)
 void BNGatewayAccess::GetBattlenetGatewayList()
 {
     m_bOverride = 0;
-    GetGatewayList(gszOverrideGateways);
+    GetGatewayList("Override Battle.net gateways");
     if (m_pGatewayList)
     {
         m_bOverride = 1;
         return;
     }
-    GetGatewayList(gszDiabloGateways);
+    GetGatewayList("Diablo II Battle.net gateways");
 }
 
 // 0x005182B0
@@ -251,7 +251,7 @@ char* __stdcall BNETGW_LoadGatewayFile(unsigned int* pSize)
 void BNGatewayAccess::WriteDefaultGatewayList()
 {
     unsigned int nSize;
-    BNDOWNLOAD_LogPrintf(gszWritingDefaultGateways);
+    BNDOWNLOAD_LogPrintf("Writing default gateway list");
     char* szText = BNETGW_LoadGatewayFile(&nSize);
     if (szText)
         UpdateGatewaysFromIni(szText);
@@ -476,7 +476,7 @@ void __stdcall BNGatewayAccess::UpdateGatewaysFromIni(char* szText)
                 m_bModified = 1;
 
                 const int nSize = 2 * strlen(tLocals.szTextCopy);
-                pVersionSection = (char*)SMemAlloc(nSize, gszBNetGWFile, 0x297, 0);
+                pVersionSection = (char*)SMemAlloc(nSize, ".\\BNetGW.cpp", 0x297, 0);
                 sprintf(pVersionSection, "%d", nVersion);
                 pDest = pVersionSection + SStrLen(pVersionSection) + 1;
                 *pDest = '0';
@@ -511,7 +511,7 @@ void __stdcall BNGatewayAccess::UpdateGatewaysFromIni(char* szText)
                             else
                             {
                                 nLen = 1;
-                                SStrCopy(pDest, gszZero, 2);
+                                SStrCopy(pDest, "0", 2);
                             }
                             pDest += nLen;
                             pDest = pDest + 1;

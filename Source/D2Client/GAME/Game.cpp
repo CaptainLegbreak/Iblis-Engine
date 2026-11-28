@@ -1037,13 +1037,13 @@ struct sub_00602750
     sub_00602750();
 };
 
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags);
+int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
 
 extern "C" const char gszIgnoreListSourceFile_006E6290[];
 
 unsigned char gnClientDifficulty;                                                                        // 0x007A060C
 
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags);
+void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags); // 0x00413020
 
 extern "C" const char szWardenClientFile[];
 
@@ -1144,7 +1144,7 @@ int __stdcall D2GFX_GetResolutionMode(); // 0x004F5160
 
 
 
-void __fastcall UI_ToggleListDialog(int nResolution); // 0x004549B0
+void __cdecl UI_ToggleListDialog(); // 0x004549B0
 
 
 

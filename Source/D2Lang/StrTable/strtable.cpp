@@ -159,10 +159,10 @@ wchar_t gwszEmptyString[2]; // 0x008829E8
 int __cdecl STRTABLE_OpenArchives()
 {
     D2_ASSERT(!ghD2DataMpq, 0x8A);
-    ghD2DataMpq = ARCHIVE_LoadMPQFile(gszD2DataMpq, 0, 0, 1000);
+    ghD2DataMpq = ARCHIVE_LoadMPQFile("d2data.mpq", 0, 0, 1000);
     if (!ghD2DataMpq)
         return 0;
-    ghPatchD2Mpq = ARCHIVE_LoadMPQFile(gszPatchD2Mpq, 0, 0, 1000);
+    ghPatchD2Mpq = ARCHIVE_LoadMPQFile("patch_d2.mpq", 0, 0, 1000);
     if (!ghPatchD2Mpq)
     {
         ARCHIVE_UnloadMPQFile((D2ArchiveHandleStrc*)ghD2DataMpq);
@@ -476,8 +476,7 @@ int __cdecl STRTABLE_GetLanguage()
 }
 
 // 0x005251C0
-int __cdecl STRTABLE_GetSystemLanguage()
-{
+int __stdcall STRTABLE_GetSystemLanguage(){
     void* hKey;
     if (!RegOpenKeyExA((void*)0x80000001, "Control Panel\\International", 0, 0x20019, &hKey))
     {
@@ -748,7 +747,7 @@ void __stdcall D2LANG_FormatInt(Unicode* pOut, int nValue, int nSize)
         Unicode wszStar[2];
         wszStar[0].wChar = 0;
         wszStar[1].wChar = 0;
-        sub_00526320_ToUnicode(wszStar, gszStar, 2);
+        sub_00526320_ToUnicode(wszStar, "*", 2);
         sub_005267E0(pOut, wszStar);
     }
 }
@@ -790,7 +789,7 @@ void __stdcall STR_GroupUintDigits(Unicode* pOut, unsigned int nValue, int nSize
     Unicode wszStar[2];
     wszStar[0].wChar = 0;
     wszStar[1].wChar = 0;
-    sub_00526320_ToUnicode(wszStar, gszStar, 2);
+    sub_00526320_ToUnicode(wszStar, "*", 2);
     sub_005267E0(pOut, wszStar);
 }
 
@@ -838,7 +837,7 @@ void __stdcall STR_GroupInt64Digits(Unicode* pOut, __int64 nValue, int nSize)
     Unicode wszStar[2];
     wszStar[0].wChar = 0;
     wszStar[1].wChar = 0;
-    sub_00526320_ToUnicode(wszStar, gszStar, 2);
+    sub_00526320_ToUnicode(wszStar, "*", 2);
     sub_005267E0(pOut, wszStar);
 }
 
@@ -909,7 +908,7 @@ void __stdcall STR_GroupUint64DigitsWithSuffix(Unicode* pOut, unsigned __int64 n
         Unicode wszStar[2];
         wszStar[0].wChar = 0;
         wszStar[1].wChar = 0;
-        sub_00526320_ToUnicode(wszStar, gszStar, 2);
+        sub_00526320_ToUnicode(wszStar, "*", 2);
         sub_005267E0(pOut, wszStar);
     }
 }

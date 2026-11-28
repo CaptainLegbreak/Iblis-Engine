@@ -46,7 +46,6 @@ void __fastcall QUESTS_UnitIterate(D2QuestDataStrc* pQuest, int nIterateState, D
 
 void __fastcall SUNIT_AttachSound(D2UnitStrc* unit, int updateType, D2UnitStrc* updateUnit); // 0x00553380
 
-struct Quest {char pad00[0xC];unsigned char state;char pad0D[0xD3];int id;};
 
 int __stdcall QUESTRECORD_GetQuestState(void*,int,int); // 0x0065C310
 
@@ -744,20 +743,25 @@ int __fastcall ACT5Q4_UnitIterate_AttachCompletionSound(D2GameStrc* game, D2Unit
 }
 
 // 0x0058B870
-bool __fastcall ACT5Q4_ActiveFilterCallback(Quest* quest,int npc,void* player,void* flags,void* extra) {
- if(npc==512) {
-  if(quest->state==1) {
-   if(!(QUESTRECORD_GetQuestState(flags,37,0) || QUESTRECORD_GetQuestState(flags,37,1))) goto inactive;
-   if(QUESTRECORD_GetQuestState(flags,quest->id,0)) goto inactive;
-   if(QUESTRECORD_GetQuestState(flags,quest->id,1)) goto inactive;
-  } else {
-   if(!QUESTRECORD_GetQuestState(flags,quest->id,13)) goto inactive;
-   if(QUESTRECORD_GetQuestState(flags,38,4)) goto inactive;
-  }
-  return true;
- }
+bool __fastcall ACT5Q4_ActiveFilterCallback(D2QuestDataStrc* pQuest, int nNpcId, D2UnitStrc* pPlayer, D2BitBufferStrc* pQuestFlags, D2UnitStrc* pNPC)
+{
+    if (nNpcId == 512)
+    {
+        if (pQuest->fState == 1)
+        {
+            if (!(QUESTRECORD_GetQuestState(pQuestFlags, 37, 0) || QUESTRECORD_GetQuestState(pQuestFlags, 37, 1))) goto inactive;
+            if (QUESTRECORD_GetQuestState(pQuestFlags, pQuest->eFilter, 0)) goto inactive;
+            if (QUESTRECORD_GetQuestState(pQuestFlags, pQuest->eFilter, 1)) goto inactive;
+        }
+        else
+        {
+            if (!QUESTRECORD_GetQuestState(pQuestFlags, pQuest->eFilter, 13)) goto inactive;
+            if (QUESTRECORD_GetQuestState(pQuestFlags, 38, 4)) goto inactive;
+        }
+        return true;
+    }
 inactive:
- return false;
+    return false;
 }
 
 static D2MonStatsTxt* MONSTERMODE_GetMonStatsTxtRecordInline(int nMonsterId)

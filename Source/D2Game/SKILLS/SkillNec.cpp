@@ -167,23 +167,13 @@ int __stdcall STATLIST_UnitGetItemStatOrSkillStatValue(D2UnitStrc* pUnit, int nS
 
 void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStatId, int nValue, int nLayer); // 0x00627260
 
-struct Unit
-{
-    int type;
-    int classId;
-    void* pool;
-    int id;
-    unsigned char unk_10[0xB4];
-    unsigned flags;
-};
+int __fastcall MONSTERUNIQUE_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
 
-extern int __fastcall sub_0046C140_TestMode(int,int);
+int __fastcall MONSTERUNIQUE_CheckMonTypeFlag(D2UnitStrc* pUnit, int nFlag); // 0x005A0180
 
-extern int __fastcall sub_005A0180_TestMonType(Unit*,int);
+int __fastcall SUNIT_IsDead(D2UnitStrc* pUnit); // 0x005541B0
 
-extern int __fastcall SUNIT_IsDead(Unit*);
-
-extern int __fastcall SUNIT_AreUnitsHostile(Game*,Unit*,Unit*);
+int __fastcall SUNIT_AreUnitsHostile(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pTarget); // 0x00554200
 
 extern const unsigned int gdwBitMasks[32]; // 0x006CE268
 
@@ -200,12 +190,12 @@ void __fastcall SCMD_SendUnitLifeAndPositionUpdate(D2ClientStrc* pClient, D2Unit
 
 void __fastcall D2GAME_UpdateSummonAI(D2GameStrc* pGame, D2UnitStrc* pUnit, int nNodeData, int nNodeIndex); // 0x005B1900
 
-int __stdcall sub_00625480(Unit*,int,unsigned short); // 0x00625480
+int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer); // 0x00625480
 
-D2StatListStrc* __stdcall sub_006251F0(void*,unsigned,unsigned,int,int); // 0x006251F0
+D2StatListStrc* __stdcall STATLIST_AllocStatList(D2PoolSystemStrc* pMemPool, unsigned int fFilter, unsigned int dwTimeout, int nUnitType, int nUnitGUID); // 0x006251F0
 
 
-void __stdcall sub_00627150(D2StatListStrc*,int,int,int); // 0x00627150
+void __stdcall STATLIST_SetStatIfListIsValid(D2StatListStrc* pStatList, int nStatId, int nValue, int nLayer); // 0x00627150
 
 enum D2C_Y09SummonConstants
 {
@@ -739,32 +729,67 @@ extern "C" __declspec(dllexport) int __fastcall SKILLS_IsDimVisionOrTerrorState(
     return 1;
 }
 
-inline int TestFlag(Unit* unit,unsigned mask)
+inline int TestFlag(D2UnitStrc* pUnit, unsigned int nMask)
 {
-    if (unit) return (unit->flags&mask)!=0;
+    if (pUnit)
+    {
+        return (pUnit->dwFlags & nMask) != 0;
+    }
     return 0;
 }
 
-static inline int GetType(Unit* unit)
+static inline int GetType(D2UnitStrc* pUnit)
 {
-    int type=6;
-    if (unit) type=unit->type;
-    return type;
+    int nType = 6;
+    if (pUnit)
+    {
+        nType = pUnit->dwUnitType;
+    }
+    return nType;
 }
 
 // 0x005C3420
-int __fastcall SKILLS_CanApplyCurseToTarget(Game* game,Unit* unit,Unit* target)
+int __fastcall SKILLS_CanApplyCurseToTarget(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pTarget)
 {
-    if (!target) return 0;
-    if (GetType(target)==1) {
-        if (!sub_0046C140_TestMode(target->classId,2)) return 0;
-        if (sub_005A0180_TestMonType(target,0x20)) return 0;
+    if (!pTarget)
+    {
+        return 0;
     }
-    if (!TestFlag(target,4)) return 0;
-    if (!TestFlag(target,8)) return 0;
-    if (!TestFlag(target,2)) return 0;
-    if (SUNIT_IsDead(target)) return 0;
-    return SUNIT_AreUnitsHostile(game,unit,target)!=0;
+
+    if (GetType(pTarget) == UNIT_MONSTER)
+    {
+        if (!MONSTERUNIQUE_TestMonModeFlag(pTarget->dwClassId, 2))
+        {
+            return 0;
+        }
+
+        if (MONSTERUNIQUE_CheckMonTypeFlag(pTarget, 0x20))
+        {
+            return 0;
+        }
+    }
+
+    if (!TestFlag(pTarget, 4))
+    {
+        return 0;
+    }
+
+    if (!TestFlag(pTarget, 8))
+    {
+        return 0;
+    }
+
+    if (!TestFlag(pTarget, 2))
+    {
+        return 0;
+    }
+
+    if (SUNIT_IsDead(pTarget))
+    {
+        return 0;
+    }
+
+    return SUNIT_AreUnitsHostile(pGame, pUnit, pTarget) != 0;
 }
 
 inline D2SkillsTxt* DATATBLS_GetSkillsTxtRecord(int nSkillId)
@@ -1358,17 +1383,34 @@ int __fastcall SKILLS_SrvDo061_Confuse(D2GameStrc* pGame, D2UnitStrc* pUnit, int
 }
 
 // 0x005C40D0
-void __fastcall SKILLS_SetSummonResistance(Unit* unit,Unit* pet)
+void __fastcall SKILLS_SetSummonResistance(D2UnitStrc* pUnit, D2UnitStrc* pPet)
 {
-    int resist=sub_00625480(unit,349,0);
-    if (!resist) return;
-    D2StatListStrc* list=sub_006251F0(!pet ? 0 : pet->pool,0,0,!pet ? 6 : pet->type,!pet ? -1 : pet->id);
-    if (!list) return;
-    D2COMMON_10475_PostStatToStatList(pet,list,1);
-    if(sub_00625480(pet,142,0)<=0) sub_00627150(list,39,resist,0);
-    if(sub_00625480(pet,144,0)<=0) sub_00627150(list,41,resist,0);
-    if(sub_00625480(pet,148,0)<=0) sub_00627150(list,43,resist,0);
-    sub_00627150(list,45,resist,0);
+    const int nResist = STATLIST_UnitGetStatValue(pUnit, STAT_PASSIVE_SUMMON_RESIST, 0);
+    if (!nResist)
+    {
+        return;
+    }
+
+    D2StatListStrc* pStatList = STATLIST_AllocStatList(!pPet ? 0 : pPet->pMemoryPool, 0, 0, !pPet ? 6 : pPet->dwUnitType, !pPet ? -1 : pPet->dwUnitId);
+    if (!pStatList)
+    {
+        return;
+    }
+
+    D2COMMON_10475_PostStatToStatList(pPet, pStatList, 1);
+    if (STATLIST_UnitGetStatValue(pPet, STAT_ITEM_ABSORBFIRE_PERCENT, 0) <= 0)
+    {
+        STATLIST_SetStatIfListIsValid(pStatList, STAT_FIRERESIST, nResist, 0);
+    }
+    if (STATLIST_UnitGetStatValue(pPet, STAT_ITEM_ABSORBLIGHT_PERCENT, 0) <= 0)
+    {
+        STATLIST_SetStatIfListIsValid(pStatList, STAT_LIGHTRESIST, nResist, 0);
+    }
+    if (STATLIST_UnitGetStatValue(pPet, STAT_ITEM_ABSORBCOLD_PERCENT, 0) <= 0)
+    {
+        STATLIST_SetStatIfListIsValid(pStatList, STAT_COLDRESIST, nResist, 0);
+    }
+    STATLIST_SetStatIfListIsValid(pStatList, STAT_POISONRESIST, nResist, 0);
 }
 
 inline D2MonsterDataStrc* MONSTERUNIQUE_GetMonsterDataInl(D2UnitStrc* pUnit)

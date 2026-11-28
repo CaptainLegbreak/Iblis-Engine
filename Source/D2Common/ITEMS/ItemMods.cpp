@@ -1637,11 +1637,6 @@ int __fastcall ITEMMODS_AssignByTimeStat(int nType, D2UnitStrc* pUnit, D2UnitStr
     return 1;
 }
 
-int __fastcall sub_M115_Emit_0065E600(unsigned int nMask)
-{
-    return ITEMMODS_GetSetItemsCountFromMask(nMask);
-}
-
 // 0x0065E610
 void __stdcall ITEMMODS_Nop(int nUnused1, int nUnused2, int nUnused3)
 {
@@ -2925,15 +2920,7 @@ void __fastcall ITEMMODS_UpdateFullSetBoni(D2UnitStrc* pUnit, D2UnitStrc* pItem,
             if (pSetsTxtRecord)
             {
                 const unsigned int nMask = ITEMS_GetSetItemsMask(pUnit, pItem, 1);
-                int nItems;
-                if (nMask >= 0x40)
-                {
-                    nItems = 0;
-                }
-                else
-                {
-                    nItems = gnSetItemsCount[nMask];
-                }
+                const int nItems = ITEMMODS_GetSetItemsCountFromMask(nMask);
 
                 const int nCount = nItems < pSetsTxtRecord->nSetItems - 1 ? nItems : pSetsTxtRecord->nSetItems - 1;
                 for (int i = 0; i < 2 * (nCount - 1); ++i)

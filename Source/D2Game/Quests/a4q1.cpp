@@ -268,13 +268,13 @@ extern char gpAct4Q4NpcMessages[];
 extern char gpAct3IntroNpcMessages[];
 
 
-int __stdcall ITEMS_GetBaseCode(D2UnitStrc* pItem);
+int __stdcall ITEMS_GetBaseCode(D2UnitStrc* pItem); // 0x00628590
 
 
 bool __fastcall ACT4Q4_StatusFilterCallback(D2QuestDataStrc* pQuest, D2UnitStrc* pPlayer, D2BitBufferStrc* pGlobalFlags, D2BitBufferStrc* pFlags, unsigned char* pStatus);
 
 
-void __fastcall ACT3Intro_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
+void __fastcall ACT3Intro_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg); // 0x005B6C60
 
 
 inline int CLIENTS_GetUnitX_Inline(D2UnitStrc* pUnit)

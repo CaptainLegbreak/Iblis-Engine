@@ -1905,8 +1905,7 @@ void __stdcall CelSetHardwareFreeCallback(PixelDataFreeCallback pfnCallback)
 }
 
 // 0x00601A40
-PixelDataFreeCallback __stdcall CelGetHardwareFreeCallback()
-{
+PixelDataFreeCallback __fastcall CelGetHardwareFreeCallback(struct D2CmpGfxHashStrc* pHash){
     return gpfnPixelDataFree;
 }
 
@@ -2078,7 +2077,7 @@ CELLIST* TSHashTable<CELLIST, HASHKEY_NONE>::InternalFind(unsigned int hashval, 
 template<>
 int TSHashTable<CELLIST, HASHKEY_NONE>::MonitorFullness(unsigned int slot);
 template<>
-HCELLIST__* TSExportTableSimple<CELLIST, HCELLIST__*, 0>::GenerateHandle();
+HCELLIST__* TSExportTableSimple<CELLIST, HCELLIST__*, 0>::GenerateHandle(); // 0x0052E6D0
 
 
 // 0x00601B10
@@ -2179,11 +2178,11 @@ struct D2CelEntryLinkHolderStrc
 {
     TSLink<TCELENTRY> m_link;
 
-    bool sub_00601DC0_IsLinked();
+    bool IsLinked(); // 0x00601DC0
 };
 
 // 0x00601DC0
-bool D2CelEntryLinkHolderStrc::sub_00601DC0_IsLinked()
+bool D2CelEntryLinkHolderStrc::IsLinked()
 {
     return m_link.m_next != 0;
 }
@@ -2254,7 +2253,7 @@ struct D2CelListArrayHolderStrc
 {
     TSGrowableArray<D2CelListList> m_array;
 
-    void sub_00603850_SetCount(unsigned int nCount);
+    void SetCount(unsigned int nCount); // 0x00603850
 };
 
 struct D2CelListRecordArrayHolderStrc
@@ -2262,7 +2261,7 @@ struct D2CelListRecordArrayHolderStrc
     TSGrowableArray<CELLIST> m_array;
 
     void CelListArrayGrow(unsigned int nCount);
-    CELLIST* sub_00604460_New();
+    CELLIST* New(); // 0x00604460
 };
 
 struct D2CelListPairStrc
@@ -2270,17 +2269,17 @@ struct D2CelListPairStrc
     unsigned int nFirst;
     unsigned int nSecond;
 
-    unsigned int sub_00603ED0_GetDifference();
+    unsigned int GetDifference(); // 0x00603ED0
 };
 
 // 0x00603850
-void D2CelListArrayHolderStrc::sub_00603850_SetCount(unsigned int nCount)
+void D2CelListArrayHolderStrc::SetCount(unsigned int nCount)
 {
     m_array.SetCount(nCount);
 }
 
 // 0x00603ED0
-unsigned int D2CelListPairStrc::sub_00603ED0_GetDifference()
+unsigned int D2CelListPairStrc::GetDifference()
 {
     return nFirst - nSecond;
 }
@@ -2294,7 +2293,7 @@ void D2CelListRecordArrayHolderStrc::CelListArrayGrow(unsigned int nCount)
 }
 
 // 0x00604460
-CELLIST* D2CelListRecordArrayHolderStrc::sub_00604460_New()
+CELLIST* D2CelListRecordArrayHolderStrc::New()
 {
     return m_array.New();
 }
@@ -2309,8 +2308,8 @@ template TCELENTRY* D2CelEntryList::Next(const TCELENTRY*);
 template CELLIST* TSList<CELLIST, TSGetExplicitLink<CELLIST> >::Next(const CELLIST*);
 template TCELENTRY* D2CelEntryList::RawNext(const TCELENTRY*);
 template void D2CelListSyncTable::Unlock(HLOCKEDCELLIST__*);
-template void D2CelListTable::Delete(CELLIST*);
-template void D2CelListSyncTable::DeleteUnlock(CELLIST*, HLOCKEDCELLIST__*);
+template void D2CelListTable::Delete(CELLIST*); // 0x0052E590
+template void D2CelListSyncTable::DeleteUnlock(CELLIST*, HLOCKEDCELLIST__*); // 0x0052E5D0
 template TCELENTRY* D2CelEntryList::DeleteNode(TCELENTRY*);
 template CELLIST* TSList<CELLIST, TSGetExplicitLink<CELLIST> >::DeleteNode(CELLIST*);
 template TSGrowableArray<CELLIST>::TSGrowableArray();

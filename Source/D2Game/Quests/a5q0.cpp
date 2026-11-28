@@ -144,53 +144,24 @@ void __fastcall ACT5Intro_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, 
     }
 }
 
-struct D2QuestCallbacks0058EA50Strc;
-
-struct D2QuestData0058EA50Strc;
-
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
-
-struct D2QuestCallbacks0058EA50Strc
-{
-    void* pfCallbackA0;
-    unsigned char unk_A4[0x28];
-    void* pfCallbackCC;
-    unsigned char unk_D0[0x3C - 0x30];
-};
-
-struct D2QuestData0058EA50Strc
-{
-    unsigned char unk_00[0x0A];
-    unsigned char nA;
-    unsigned char nB;
-    unsigned char nC;
-    unsigned char unk_0D[0x18 - 0x0D];
-    int n18;
-    unsigned char unk_1C[0xA0 - 0x1C];
-    D2QuestCallbacks0058EA50Strc tCallbacks;
-    void* pRecordDC;
-    int nE0;
-    unsigned char unk_E4[4];
-    void* pfStatusFilterE8;
-    void* pfActiveFilterEC;
-};
 
 extern unsigned char gaAct5IntroNpcMessages[]; // 0x00732FF8
 
 // 0x0058EA50
-void __fastcall ACT5Intro_InitQuestData(D2QuestData0058EA50Strc* pQuestData)
+void __fastcall ACT5Intro_InitQuestData(D2QuestDataStrc* pQuestData)
 {
-    memset(&pQuestData->tCallbacks, 0, sizeof(pQuestData->tCallbacks));
-    pQuestData->tCallbacks.pfCallbackA0 = (void*)ACT5Intro_Callback00_NpcActivate;
-    pQuestData->tCallbacks.pfCallbackCC = (void*)ACT5Intro_Callback11_ScrollMessage;
-    pQuestData->pRecordDC = gaAct5IntroNpcMessages;
-    pQuestData->nA = 1;
-    pQuestData->nC = 0;
-    pQuestData->nB = 0;
-    pQuestData->n18 = 0;
-    pQuestData->nE0 = 0x2A;
-    pQuestData->pfStatusFilterE8 = (void*)ACT5Intro_StatusFilterCallback;
-    pQuestData->pfActiveFilterEC = (void*)ACT5Intro_ActiveFilterCallback;
+    memset(pQuestData->pCallback, 0x00, sizeof(pQuestData->pCallback));
+    pQuestData->pCallback[0] = ACT5Intro_Callback00_NpcActivate;
+    pQuestData->pCallback[11] = ACT5Intro_Callback11_ScrollMessage;
+    pQuestData->pNPCMessages = gaAct5IntroNpcMessages;
+    pQuestData->bActive = 1;
+    pQuestData->fState = 0;
+    pQuestData->fLastState = 0;
+    pQuestData->pQuestDataEx = 0;
+    pQuestData->eFilter = 42;
+    pQuestData->pfStatusFilter = ACT5Intro_StatusFilterCallback;
+    pQuestData->pfActiveFilter = ACT5Intro_ActiveFilterCallback;
 }
 
 #pragma pack(push, 1)

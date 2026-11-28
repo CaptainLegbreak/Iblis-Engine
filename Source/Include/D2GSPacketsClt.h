@@ -204,9 +204,9 @@ struct D2GSPacketClt35 // 0x11 bytes, read by D2GAME_PACKETCALLBACK_Rcv0x35_Repa
     unsigned char nHeader; // 0x00
     int nNpcGUID; // 0x01
     int nItemGUID; // 0x05
-    unsigned short unk0x09; // 0x09
+    unsigned short nItemMode; // 0x09
     unsigned char unused0x0B[2]; // 0x0B
-    int unk0x0D; // 0x0D
+    int nRepairFlags; // 0x0D
 };
 
 struct D2GSPacketClt36 // 0x09 bytes, read by D2GAME_PACKETCALLBACK_Rcv0x36_HireMerc

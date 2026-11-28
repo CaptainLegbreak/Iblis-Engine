@@ -275,11 +275,8 @@ static D2StoredUnitRecordStrc* ROSTER_FindRosterUnit(int nUnitId)
     {
         if (pRec->dwUnitId == nUnitId)
             return pRec;
-        for (D2RosterCorpseStrc* pCorpse = pRec->pCorpse; pCorpse; pCorpse = pCorpse->pNext)
-        {
-            if (pCorpse->dwCorpseId == nUnitId)
-                return pRec;
-        }
+        if (ROSTER_HasCorpse(pRec, nUnitId))
+            return pRec;
     }
     return 0;
 }
@@ -336,21 +333,6 @@ static inline void ROSTER_FreeCorpses(D2StoredUnitRecordStrc* pRosterUnit)
     }
     pRosterUnit->pCorpse = 0;
 }
-
-int __fastcall sub_M119_Emit_004792C0(D2StoredUnitRecordStrc* pRosterUnit, unsigned int dwCorpseId)
-{
-    if (ROSTER_HasCorpse(pRosterUnit, dwCorpseId + 1))
-    {
-        ROSTER_FreeCorpses(pRosterUnit);
-    }
-    return 1;
-}
-
-
-
-
-
-
 
 // 0x0047AA40
 int Unicode::isWhitespace() const
@@ -411,14 +393,7 @@ void __cdecl ROSTER_FreeRosterLists()
         D2StoredUnitRecordStrc* pNext = pEntry->pNext;
         PLAYERLIST_FreeRosterInfoList(pEntry->pRosterInfo);
         pEntry->pRosterInfo = 0;
-        D2RosterCorpseStrc* pSub = pEntry->pCorpse;
-        while (pSub)
-        {
-            D2RosterCorpseStrc* pSubNext = pSub->pNext;
-            FOG_Free(pSub, ".\\GAME\\Roster.cpp", 0x110, 0);
-            pSub = pSubNext;
-        }
-        pEntry->pCorpse = 0;
+        ROSTER_FreeCorpses(pEntry);
         FOG_Free(pEntry, ".\\GAME\\Roster.cpp", 0x14D, 0);
         pEntry = pNext;
     }
@@ -430,14 +405,7 @@ void __cdecl ROSTER_FreeRosterLists()
         D2StoredUnitRecordStrc* pNext = pEntry->pNext;
         PLAYERLIST_FreeRosterInfoList(pEntry->pRosterInfo);
         pEntry->pRosterInfo = 0;
-        D2RosterCorpseStrc* pSub = pEntry->pCorpse;
-        while (pSub)
-        {
-            D2RosterCorpseStrc* pSubNext = pSub->pNext;
-            FOG_Free(pSub, ".\\GAME\\Roster.cpp", 0x110, 0);
-            pSub = pSubNext;
-        }
-        pEntry->pCorpse = 0;
+        ROSTER_FreeCorpses(pEntry);
         FOG_Free(pEntry, ".\\GAME\\Roster.cpp", 0x159, 0);
         pEntry = pNext;
     }

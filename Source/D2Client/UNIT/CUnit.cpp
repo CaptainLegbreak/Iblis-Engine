@@ -985,12 +985,6 @@ D2UnitStrc* __cdecl CUNIT_GetPlayerUnit2()
     return gpPlayerUnit;
 }
 
-void __fastcall sub_M109_Emit_00464E20(D2UnitStrc* pUnit, int nOverlay)
-{
-    if (pUnit)
-        CUNIT_PlayOverlaySound(pUnit, nOverlay);
-}
-
 // 0x00463DF0
 int __cdecl CUNIT_IsPlayerDeadOrMissing()
 {
@@ -1782,15 +1776,7 @@ void __fastcall CUNIT_SetOverlayWithSound(D2UnitStrc* pUnit, int nOverlay, int n
     else
         GFX_AddUnitOverlay(pUnit, nOverlay, 2, 0, 0, 0, 0, 0);
 
-    switch (nOverlay)
-    {
-    case 0x97:
-        sub_004B9A00(0x18C, pUnit, 0, 0, 0);
-        break;
-    case 0x98:
-        sub_004B9A00(0x18D, pUnit, 0, 0, 0);
-        break;
-    }
+    CUNIT_PlayOverlaySound(pUnit, nOverlay);
 }
 
 // 0x00464EC0

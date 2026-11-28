@@ -648,7 +648,7 @@ void __fastcall SUNIT_AddToUnitList(D2UnitStrc* pUnit, D2GameStrc* pGame)
 {
     D2UnitStrc** ppUnitList;
     if (pUnit->dwUnitType == UNIT_TILE)
-        ppUnitList = (D2UnitStrc**)((char*)pGame + 0x1B20);
+        ppUnitList = &pGame->pTileList;
     else
         ppUnitList = SUNIT_GetUnitList(pGame, pUnit->dwUnitType, pUnit->dwUnitId);
 

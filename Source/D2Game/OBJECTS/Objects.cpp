@@ -405,23 +405,23 @@ static void __cdecl OBJECTS_ApplySubclassClassId(D2UnitStrc* pUnit);
 
 void __stdcall DUNGEON_GetRoomCoordinates_Local(D2ActiveRoomStrc* pRoom, D2DrlgCoordsStrc* pCoords);
 
-int __stdcall SKILLS_Return1(int nArg);
+int __stdcall SKILLS_Return1(int nArg); // 0x00643880
 
-int __stdcall sub_00646260_AlwaysOne(int nArg);
+int __stdcall sub_00646260_AlwaysOne(int nArg); // 0x00646260
 
-int __stdcall sub_00646270_AlwaysOne(int nArg);
+int __stdcall sub_00646270_AlwaysOne(int nArg); // 0x00646270
 
-int __fastcall SKILLS_GetMinimum(int nA, int nB, int nUnused1, int nUnused2);
+int __fastcall SKILLS_GetMinimum(int nA, int nB, int nUnused1, int nUnused2); // 0x006436E0
 
-int __fastcall MISSILE_GetMinimum(int nA, int nB, int nUnused1, int nUnused2);
+int __fastcall MISSILE_GetMinimum(int nA, int nB, int nUnused1, int nUnused2); // 0x0064B700
 
-int __fastcall SKILLS_GetMaximum(int nA, int nB, int nUnused1, int nUnused2);
+int __fastcall SKILLS_GetMaximum(int nA, int nB, int nUnused1, int nUnused2); // 0x006436F0
 
-int __fastcall MISSILE_GetMaximum(int nA, int nB, int nUnused1, int nUnused2);
+int __fastcall MISSILE_GetMaximum(int nA, int nB, int nUnused1, int nUnused2); // 0x0064B710
 
-int __stdcall sub_00648390_AlwaysZero(int nUnused1, int nUnused2);
+int __stdcall sub_00648390_AlwaysZero(int nUnused1, int nUnused2); // 0x00648390
 
-void __fastcall SKILLS_ScaleUpDirection(int* pX, int* pY);
+void __fastcall SKILLS_ScaleUpDirection(int* pX, int* pY); // 0x004C5390
 
 inline D2MonStatsTxt* MONSTERMODE_GetMonStatsTxtRecord(int nMonsterId)
 {
@@ -979,9 +979,9 @@ void __fastcall OBJECTS_InitFunction27_GooPile(D2ObjInitFnStrc* pOp)
     pOp->pObject->pObjectData->InteractType = nInteractType;
 }
 
-void __stdcall GfxHashDumpStats();
+void __stdcall GfxHashDumpStats(); // 0x0060AB70
 
-void __stdcall sub_0060AC50_Nop();
+void __stdcall sub_0060AC50_Nop(); // 0x0060AC50
 
 // 0x0054FCB0
 void __fastcall OBJECTS_InitFunction03_Chest(D2ObjInitFnStrc* pOp)
@@ -1152,7 +1152,7 @@ void __fastcall OBJECTS_InitFunction11_Portal(D2WarpEventArgStrc* pArgs)
     const int eLevelId = DUNGEON_GetTownLevelIdFromActNo(nAct);
     D2_ASSERT(eLevelId <= 0xFF, 0x46F);
 
-    *((unsigned char*)pArgs->pUnit->pPlayerData + 4) = (unsigned char)eLevelId;
+    pArgs->pUnit->pObjectData->InteractType = (unsigned char)eLevelId;
 
     if (sub_E03_GetAnimMode(pArgs->pUnit) == 1)
     {
@@ -1937,9 +1937,9 @@ D2UnitStrc* __fastcall OBJECTS_PopulateFn5_Crate(D2GameStrc* pGame, D2ActiveRoom
     return pObject;
 }
 
-int __stdcall sub_00436E90_AlwaysOne(int nArg);
+int __stdcall sub_00436E90_AlwaysOne(int nArg); // 0x00436E90
 
-int __stdcall sub_004C6020_AlwaysOne(int nArg);
+int __stdcall sub_004C6020_AlwaysOne(int nArg); // 0x004C6020
 
 // 0x00552140
 int __fastcall OBJECTS_SpawnRandomItemGrid(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, D2DrlgCoordsStrc* pDrlgCoords)

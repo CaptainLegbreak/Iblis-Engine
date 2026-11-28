@@ -2125,8 +2125,7 @@ void __fastcall QUESTS_SendLogUpdateEx(D2UnitStrc* pPlayer, int nQuestId, unsign
 }
 
 // 0x00545990
-void __stdcall D2Game_10034_Return(int nUnused)
-{
+void __fastcall D2Game_10034_Return(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg, int nValue){
 }
 
 // 0x005459A0

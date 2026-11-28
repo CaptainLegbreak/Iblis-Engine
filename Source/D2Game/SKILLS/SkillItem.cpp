@@ -254,7 +254,7 @@ D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId);          
 
 int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* room); // 0x0061A1B0
 
-unsigned char __stdcall DRLG_GetActNoFromLevelId(int level); // 0x006427F0
+unsigned char __stdcall DRLG_GetActNoFromLevelId(int nLevelId); // 0x006427F0
 
 int __stdcall DUNGEON_GetTownLevelIdFromActNo(unsigned char act); // 0x0061AB70
 

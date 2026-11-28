@@ -465,8 +465,7 @@ void __fastcall ACT2Q5_InitQuestData(D2QuestDataStrc* pQuestData)
 }
 
 // 0x0059C330
-void __fastcall ACT2Q5_OnSummonerActivated(D2GameStrc* pGame)
-{
+void __fastcall ACT2Q5_OnSummonerActivated(D2GameStrc* pGame, D2UnitStrc* pUnit){
     D2QuestDataStrc* pQuestData = QUESTS_GetQuestData(pGame, 12);
     if (!pQuestData || pQuestData->bNotIntro != 1)
     {

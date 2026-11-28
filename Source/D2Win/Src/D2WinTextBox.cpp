@@ -1428,10 +1428,10 @@ int __fastcall D2Win_10051(D2WinTextBoxStrc* ptTextData, const Unicode* wszText,
             return TEXTBOX_AddWrappedText(ptTextData, pText, nColor, nIndent);
     }
 
-    D2WinTextBoxLineStrc* pLine = (D2WinTextBoxLineStrc*)FOG_Alloc(sizeof(D2WinTextBoxLineStrc), gszD2WinTextBoxCpp, 0x15D, 0);
+    D2WinTextBoxLineStrc* pLine = (D2WinTextBoxLineStrc*)FOG_Alloc(sizeof(D2WinTextBoxLineStrc), ".\\Src\\D2WinTextBox.cpp", 0x15D, 0);
     if (nIndent == 2)
     {
-        pLine->pColumns[0] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (UNICODE_StrLen(pText) + 6), gszD2WinTextBoxCpp, 0x161, 0);
+        pLine->pColumns[0] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (UNICODE_StrLen(pText) + 6), ".\\Src\\D2WinTextBox.cpp", 0x161, 0);
         pLine->pColumns[0][4].wChar = 0x20;
         pLine->pColumns[0][3].wChar = pLine->pColumns[0][4].wChar;
         pLine->pColumns[0][2].wChar = pLine->pColumns[0][3].wChar;
@@ -1441,7 +1441,7 @@ int __fastcall D2Win_10051(D2WinTextBoxStrc* ptTextData, const Unicode* wszText,
     }
     else
     {
-        pLine->pColumns[0] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (UNICODE_StrLen(pText) + 1), gszD2WinTextBoxCpp, 0x167, 0);
+        pLine->pColumns[0] = (Unicode*)FOG_Alloc(sizeof(Unicode) * (UNICODE_StrLen(pText) + 1), ".\\Src\\D2WinTextBox.cpp", 0x167, 0);
         sub_005267E0(pLine->pColumns[0], pText);
     }
 
@@ -1564,7 +1564,7 @@ int __fastcall TEXTBOX_AddWrappedText(D2WinTextBoxStrc* pTextBox, const Unicode*
         nMaxWidth -= D2Win_10121_GetTextWidth(wszSpaces);
     }
 
-    Unicode* pBuffer = (Unicode*)SMemAlloc(0x800, gszD2WinTextBoxCpp, 0x497, 0);
+    Unicode* pBuffer = (Unicode*)SMemAlloc(0x800, ".\\Src\\D2WinTextBox.cpp", 0x497, 0);
     Unicode* pText = pBuffer;
     sub_005267E0(pText, wszText);
 
@@ -1592,19 +1592,19 @@ int __fastcall TEXTBOX_AddWrappedText(D2WinTextBoxStrc* pTextBox, const Unicode*
         ++nSplit;
     }
 
-    Unicode* pFirst = (Unicode*)SMemAlloc(0x800, gszD2WinTextBoxCpp, 0x4B7, 0);
-    pText = (Unicode*)SMemAlloc(0x800, gszD2WinTextBoxCpp, 0x4B8, 0);
+    Unicode* pFirst = (Unicode*)SMemAlloc(0x800, ".\\Src\\D2WinTextBox.cpp", 0x4B7, 0);
+    pText = (Unicode*)SMemAlloc(0x800, ".\\Src\\D2WinTextBox.cpp", 0x4B8, 0);
     sub_00526790(pFirst, pBuffer, nSplit);
     pFirst[nSplit].wChar = 0;
     sub_00526790(pText, pChar, nLength - nSplit);
     pText[nLength - nSplit].wChar = 0;
-    SMemFree(pBuffer, gszD2WinTextBoxCpp, 0x4BF, 0);
+    SMemFree(pBuffer, ".\\Src\\D2WinTextBox.cpp", 0x4BF, 0);
 
     D2Win_10051(pTextBox, pFirst, nColor, 1, nIndent);
     D2Win_10051(pTextBox, pText, nColor, 0, nIndent == 1 ? 2 : nIndent);
 
-    SMemFree(pFirst, gszD2WinTextBoxCpp, 0x4C4, 0);
-    SMemFree(pText, gszD2WinTextBoxCpp, 0x4C5, 0);
+    SMemFree(pFirst, ".\\Src\\D2WinTextBox.cpp", 0x4C4, 0);
+    SMemFree(pText, ".\\Src\\D2WinTextBox.cpp", 0x4C5, 0);
     return 1;
 }
 
