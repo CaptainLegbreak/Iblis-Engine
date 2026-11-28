@@ -77,6 +77,81 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Findings
 
+- 2026-11-27 18:20 PT, item 6c, link findings at Codex 7442280 (docs/PORT_LINK.md, PR #8), by lane, the
+  most-referenced first (number = files that ask; `a` -> `b`: declared a, the definition at its address is b):
+  - **Codex lane 12:**
+    - type_disagreement (1833 symbols, 2557 refs): `FOG_AllocPool` 90; `D2COMMON_10475_PostStatToStatList` 36; `UNICODE_StrLen` 34; `FOG_FreePool` 30; `SUNIT_IterateUnitsOfType` 19; `QUESTS_CheckPlayerGUID` 19; `SCMD_RegisterMsgHandlers` 12; `DUNGEON_GetAdjacentRoomsListFromRoom` 12; `PATH_SetVelocity` 12; `SUNIT_ResetInteractInfo` 10
+    - local_copy (323 symbols, 839 refs): `sub_M106_Emit_0051DC70` 9; `ACT3Q7_StatusFilterCallback` 8; `ACT3Q5_Callback10_PlayerLeavesGame` 7; `sub_00401A60_UnlockSymbols` 6; `~D2Storm4167B0Strc` 5; `~D2Storm4168F0Strc` 5; `DRLGPRESET_GetLinkRawNext` 5; `D2ChatStormListCStrc` 5; `IGNORELIST_ResetStringList` 5; `??3@YAXPAX@Z` 4
+    - duplicate_data (84 symbols, 187 refs): `gpfnMcpMotdCallback` 4; `gawScrollSlots` 3; `gaStateStack` 3; `gSlotFirst` 3; `gSlotSecond` 3; `gbQuestDebug` 3; `gGameListLock` 3; `gpGame` 3; `gnGamesGUIDs` 3; `gdwGlobal_00882D14` 3
+  - **Codex lane 11:**
+    - different_identifier (149 symbols, 347 refs): `FOG_FreeServerMemory` -> `FOG_FreePool` 33; `D2COMMON_10170_PathSetTargetPos` -> `PATH_SetTargetPos` 19; `STATLIST_SetStat` -> `STATLIST_SetStatIfListIsValid` 17; `ITEMS_GetInvPage` -> `ITEMS_GetInventoryPage` 16; `PATH_SetTargetUnit` -> `PATH_SetPathTarget` 15; `D2Win_10034_MixRGB` -> `PALETTE_FindPaletteIndex` 14; `sgtDataTables` -> `gpPlayerClassTxt` 12; `D2COMMON_10476` -> `STATLIST_SetListExpireFrame` 11; `UNITS_GetDistanceToCoordinates` -> `DRLG_GetDistanceToXY` 8; `DUNGEON_GameTileToSubtileCoords` -> `SKILLS_GameTileToSubtileCoords` 7
+    - placeholder (1047 symbols, 1781 refs): `sub_004B9A00` -> `SOUNDINST_PlaySound` 44; `sub_005267E0` -> `strcpy` 39; `gnScreenWidth` -> `gnScreenWidth_0071146C` 38; `sub_0040B430` -> `FOG_AllocPool` 34; `sub_0040B480` -> `FOG_FreePool` 29; `sub_00526700` -> `strcat` 29; `ITEMS_CheckItemFlag` -> `sub_006280A0` 29; `sub_004F6480` -> `TEXTURE_CelDraw` 27; `sub_00526F20_ToUnicode` -> `win2Unicode` 22; `gdwBitMasks_006CE268` -> `gdwBitMasks` 19
+    - unsourced_data (750 symbols, 1270 refs): `gszEmptyAssertText` 287; `gszDataGlobal` 24; `gszTxtField_end` 18; `gszFormatD` 13; `gszNewline` 10; `gszNew` 8; `gszEmptyString` 7; `gszStringFormat` 7; `gszSpace` 6; `gszPathFormat` 6
+  - **Codex lane 13:**
+    - interior (9 symbols, 9 refs): `gbPanelFlag` -> `gaEscMenuUIState+0x104` 1; `gtUnitSndObject` -> `gaUnitSndObjects+0x13E0` 1; `gnRenderFlag` -> `gdwBitMasks+0x28` 1; `gnFlagSet0_006CE278` -> `gdwBitMasks+0x10` 1; `gdwBitMask5` -> `gdwBitMasks+0x14` 1; `gnFlagClear0` -> `gdwInvBitMasks+0x10` 1; `gnFlagClear1` -> `gdwInvBitMasks+0x14` 1; `gdwTitleMaskA` -> `gdwBitMasks+0x18` 1; `gdwBitMask7` -> `gdwBitMasks+0x1C` 1
+  - **Codex lane 12, the 172 `no_address` symbols** (no `// 0x` marker on any declaration the file sees, so
+    linkdebt.py can't see them), by file:
+    - D2BNClient/BNetGW.cpp: `Nth`
+    - D2CMP/SRC/CelCmp.cpp: `IGNORELIST_InternalClearStringTable`, `gszIgnoreListSourceFile_006E6290`, `gszTypeNewsTableItem`, `sub_00517ABB_BitScanForward1`, `~D2SGameDataStrc`, `~D2StormGameArrayStrc`, `~WardenModule`
+    - D2CMP/SRC/FastCmp.cpp: `sub_00517993_VirtualAlloc`, `sub_00605AA0_BuildTablesC`, `sub_00605B70_BuildTablesD`
+    - D2CMP/SRC/Tilecmp.cpp: `sub_005179B3_ConvertCelPixels`
+    - D2Client/CORE/WINMAIN.CPP: `gpfnLaunchInit`, `gpfnLaunchStates`
+    - D2Client/ENGINE/Gfx.cpp: `GFXUTIL_ForEachUnitInAdjacentRooms`, `sub_00517079_LoadFile`, `sub_M274_EmitBuildPath`
+    - D2Client/ENGINE/GfxUtil.cpp: `gTableView_00744304`
+    - D2Client/ENGINE/Particle.cpp: `gB28Archive`, `gB28Palette`, `gB28SubmitFlag`, `gB28SubmitItem`, `gB28Waypoint`, `gB28WaypointFlag`, `sub_0046F060_GetGfx`, `sub_004786D0_SendPacket`, `sub_004FB180_Palette`
+    - D2Client/GAME/Game.cpp: `IGNORELIST_InternalClearStringTable`, `gAllocation`, `gCleanupState`, `gCoordinateBase`, `gCoordinateOffset`, `gszIgnoreListSourceFile_006E6290`, `sub_004646A0_GetAuxiliary`, `szWardenClientFile`, `~WardenModule`
+    - D2Client/GAME/Game_0044B7B0.cpp: `gAllocation`, `gCleanupState`, `gCoordinateBase`, `gCoordinateOffset`
+    - D2Client/GAME/View.cpp: `sub_00473910`
+    - D2Client/GAME/Wall2.cpp: `sub_004DE410_DrawFloorTile`
+    - D2Client/UI/Hireables.cpp: `sub_K04_EmitUse`
+    - D2Client/UI/Party.cpp: `sub_K04_EmitUse`
+    - D2Client/UI/editbox.cpp: `Slot13`
+    - D2Client/UI/inv.cpp: `InitializePalette`, `ReleaseResource`, `gColor`, `gLookupHead_007BB5BC`, `gResourceA`, `gResourceB`, `gScreenHeight`, `gScreenWidth`, `gValue_00712F44`, `gValue_00712F48`, `gValue_007A6ABC`, `gValue_007A6ADC`, `gValue_007A6AE0`, `gValue_007A6AF0`, `gValue_007BB5D8`, `gValue_007BB5E4`, `gValue_007BB5E8`, `sub_0062C0B0_GetItemTypeClass`
+    - D2Client/UI/npcmenu.cpp: `DIALOG_AddTextLine`, `DIALOG_CreateDialog`
+    - D2Client/UI/npcmenu_004B5C60.cpp: `ListBoxWrapper`
+    - D2Client/UI/panel.cpp: `sub_00468730_MouseX`, `sub_00468740_MouseY`, `sub_00502280_SetTooltip`, `sub_00524A30_LocalizedText`
+    - D2Client/UI/spellsel.cpp: `sub_K05_EmitUse`
+    - D2Client/UI/text.cpp: `ListBoxWrapper`, `gB27_00726CCB`, `gB27_00726CDB`, `gB27_00726E01`, `gB27_00726E0F`, `gB27_00726E4F`, `gB27_00726E5D`, `gB27_00726E9D`, `gB27_00726EAB`, `gB27_00726F87`, `gB27_00726F95`, `gB27_00727247`, `gB27_00727257`, `gB27_00727297`, `gB27_007272A9`, `gB27_007272E1`, `gB27_007272EF`, `gB27_007BCBF0`, `gTables_00744304`, `gatBnHashCtx`, `gnHireMenuState`, `gnIdentifyMenu1State`, `gnIdentifyMenu2State`, `gnIdentifyMenu3State`, `gnIdentifyMenu4State`, `gnIdentifyMenu5State`, `gnImbueMenuState`, `gnPersonalizeMenuState`, `gnResurrectMenuState`, `gnSocketMenuState`, `gnTravelHarrogathState`, `gnTravelKurastDocksState`, `gnTravelLutGholeinState`, `gnVirtualPlayerCount`, `gpfnIdentifyMenu1Handler`, `gpfnIdentifyMenu2Handler`, `gpfnIdentifyMenu3Handler`, `gpfnIdentifyMenu4Handler`, `gpfnIdentifyMenu5Handler`, `gpfnResurrectMenuHandler`, `gpfnTravelHarrogathHandler`, `gwIdentifyMenu1StringId`, `gwIdentifyMenu2StringId`, `gwIdentifyMenu3StringId`, `gwIdentifyMenu4StringId`, `gwIdentifyMenu5StringId`, `gwTravelHarrogathStringId`, `sub_00525150`, `sub_L04_EmitUse`
+    - D2Client/UNIT/Monster.cpp: `sub_M103_EmitSink`
+    - D2Client/UNIT/PlrSkills.cpp: `sub_K06_EmitGettier1`, `sub_K06_EmitGettier2`, `sub_K06_EmitPuttier1`, `sub_K06_EmitPuttier2`
+    - D2Client/UNIT/UnitMode.cpp: `sub_0044DB10_GetFrame`, `sub_00480420_ValidatePath`, `sub_00639DF0_CheckState`, `sub_00650840_UpdatePath`, `sub_K04_EmitUse`
+    - D2Client/Unknown_0045FB80.cpp: `gbSkillPointsHighlight`, `gszFormatD`, `sub_00420290_HandleMsg`, `sub_00463DD0`, `sub_004B9A00`, `sub_00502280_SetPopUpText`
+    - D2Client/Unknown_00472210.cpp: `sub_004B9A00`
+    - D2Client/Unknown_0047CC90.cpp: `sub_K04_EmitUse`
+    - D2Client/Unknown_004B8720.cpp: `DIALOG_AddTextLine`, `DIALOG_CreateDialog`, `sub_00478600_SendPacket`
+    - D2Client/Unknown_004BBE10.cpp: `OnLButtonDown`
+    - D2Client/Unknown_004E4670.cpp: `sub_004E5A10_UseBonusCount`
+    - D2Client/WARDEN/WardenClient.cpp: `sub_K04_EmitUse`
+    - D2Common/Chat/Ignorelist.cpp: `gszTypeNewsTableItem`
+    - D2Common/DATATBLS/LvlTbls.cpp: `sub_00681E09_Exit`
+    - D2Common/DRLG/DrlgActivate.cpp: `gRoomExSetStatus`
+    - D2Common/DRLG/OutDesr.cpp: `sub_M127_EmitSink`
+    - D2Common/DRLG/OutWild.cpp: `gszEmptyAssertText`
+    - D2Common/ITEMS/Items.cpp: `sub_0045ADF0_GetX`, `sub_0045AE20_GetY`
+    - D2Common/UNITS/Units.cpp: `sub_0040B480_FreePool`
+    - D2Common/Unknown_006634F0.cpp: `sub_M102_UseBonusCount_00663A10`
+    - D2Direct3D/Src/d3dCore.cpp: `sub_006B1350_DirectDrawCreate`
+    - D2Direct3D/Src/d3dSubtileCache.cpp: `sub_006BABD0_Unlink`
+    - D2Game/GAME/Clients.cpp: `sub_0063E510_FillInventoryTables`
+    - D2Game/GAME/Game.cpp: `sub_0052C170_AllocGameId`
+    - D2Game/PLAYER/PlrMsg.cpp: `sub_0054CC30_StatRemoveCallback_ToggleStateOff`
+    - D2Game/Quests/a2q1.cpp: `gszA2Q1SourceFile`
+    - D2Game/SKILLS/SkillNec.cpp: `sub_0046C140_TestMode`, `sub_005A0180_TestMonType`
+    - D2Game/Unknown_00555C90.cpp: `sub_K11_EmitUse`
+    - D2Glide/Src/glCore.cpp: `gpfnGrDrawPoint`, `gpfnGrLfbLock`, `gpfnGrLfbUnlock`, `gpfnGrTexMaxAddress_0087EB44`, `gpfnGrTexMinAddress_0087EB24`
+    - D2Glide/Src/glSprite.cpp: `gpfnGrGlideState`
+    - D2Glide/Unknown_0050BD30.cpp: `gpfnGrDrawPoint`
+    - D2Glide/Unknown_0050F910.cpp: `gpfnGrLfbLock`, `gpfnGrLfbUnlock`
+    - D2Hell/Unknown_00516D8B.cpp: `gB27_00726CCB`, `gB27_00726CDB`, `gB27_00726E01`, `gB27_00726E0F`, `gB27_00726E4F`, `gB27_00726E5D`, `gB27_00726E9D`, `gB27_00726EAB`, `gB27_00726F87`, `gB27_00726F95`, `gB27_00727247`, `gB27_00727257`, `gB27_00727297`, `gB27_007272A9`, `gB27_007272E1`, `gB27_007272EF`, `gB27_007BCBF0`, `gnHireMenuState`, `gnIdentifyMenu1State`, `gnIdentifyMenu2State`, `gnIdentifyMenu3State`, `gnIdentifyMenu4State`, `gnIdentifyMenu5State`, `gnImbueMenuState`, `gnPersonalizeMenuState`, `gnResurrectMenuState`, `gnSocketMenuState`, `gnTravelHarrogathState`, `gnTravelKurastDocksState`, `gnTravelLutGholeinState`, `gnVirtualPlayerCount`, `gpfnIdentifyMenu1Handler`, `gpfnIdentifyMenu2Handler`, `gpfnIdentifyMenu3Handler`, `gpfnIdentifyMenu4Handler`, `gpfnIdentifyMenu5Handler`, `gpfnResurrectMenuHandler`, `gpfnTravelHarrogathHandler`, `gwIdentifyMenu1StringId`, `gwIdentifyMenu2StringId`, `gwIdentifyMenu3StringId`, `gwIdentifyMenu4StringId`, `gwIdentifyMenu5StringId`, `gwTravelHarrogathStringId`, `sub_005173EF_Display`, `sub_0051755C_LinkNode`, `sub_005176B4_Release`
+    - D2Lang/Unicode/UNISYS.CPP: `sub_00517079_LoadFile`
+    - D2Launch/Src/CharSel.cpp: `sub_00438F70`, `sub_005066C0_CreateComposite`, `unicode2Win`
+    - D2Launch/Src/MainMenus.cpp: `gControl`, `sub_004F9740_ControlFlag`, `sub_00525150_Language`
+    - D2Launch/Unknown_0043B7A0.cpp: `UnicodeChar`
+    - D2Multi/Src/ChatDlg.cpp: `UnicodeChar`
+    - Fog/Src/QServer/QServer98.cpp: `sub_006B0180_IsSocketSet`, `sub_006C9B6A_Accept`, `sub_006C9B70_Listen`
+    - Fog/Unknown_00402820.cpp: `sub_M127_EmitSink`, `sub_M452_EmitSink`
+    - Storm/SOURCE/SFILE.CPP: `IGNORELIST_InternalClearStringTable`, `gpfnReadErrorCallback_00779030`, `gszIgnoreListSourceFile_006E6290`
+
 - 2026-11-27 18:00 PT, proposal for item 6, for the coordinator to decide (no PR; branch lane14/link-aliases,
   on #7 with #6 merged in). The user had said to keep going without the coordinator; I started item 6, then
   the user said to rely on the coordinator again, so it's parked here. tools/link_aliases.py writes
@@ -130,6 +205,10 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
   entries after the file merges, worth a fix in Codex.
 
 ## Status
+
+- 2026-11-27 18:20 PT: 6b follow-up in PR #8 (PORT_LINK.md at 7442280; duplicates now told apart by symbol
+  type: 84 duplicate globals, as Codex finds, and 324 duplicate functions). 6c posted under Findings (by lane,
+  plus the 172 no_address symbols by file). Starting 6d (docs/REPLAY.md, tools/replay/).
 
 - 2026-11-27 18:00 PT: waiting on the coordinator. Open: #6 (link report + PKWARE MPQ test), #7 (sync to
   7442280). Item 6 proposal above. Codex's linkdebt.py and build now run in this sandbox (MSVC 2005 SP1 + CRT
