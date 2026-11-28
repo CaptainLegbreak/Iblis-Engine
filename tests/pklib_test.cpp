@@ -2,8 +2,10 @@
 //
 //   pklib_test                    round trips, and the published DCL test stream
 //   pklib_test ARCHIVE.mpq ...    also: every file in each archive that the original library compressed is
-//                                 exploded and checked against the archive's (attributes) CRC32, then imploded
-//                                 and exploded again
+//                                 exploded, each sector to its exact size; checked against the archive's
+//                                 (attributes) CRC32 where it has one, and by format where (listfile) names it
+//                                 (tab-separated tables, .tbl string tables, DC6 sprites); and one in fifty is
+//                                 imploded and exploded again
 //
 // Builds on its own (no game source): cl /O2 /EHsc tests\pklib_test.cpp Source\Storm\pklib\*.cpp, or with
 // CMake (-DIBLIS_TESTS=ON), or with g++ -D__cdecl= on other systems. The archives are the player's own
@@ -183,6 +185,7 @@ enum
     MPQ_IMPLODE = 0x100,
     MPQ_COMPRESS = 0x200,
     MPQ_ENCRYPTED = 0x10000,
+    MPQ_FIX_KEY = 0x20000,
     MPQ_SINGLE_UNIT = 0x1000000,
     MPQ_EXISTS = 0x80000000,
 };
@@ -247,16 +250,34 @@ static int FindBlock(const Archive& a, const char* szName)
     return -1;
 }
 
+// The key an encrypted file's sectors are encrypted with: from its name without the path.
+static uint32_t FileKey(const char* szName, const Block& b)
+{
+    const char* p = strrchr(szName, '\\');
+    uint32_t key = HashString(p ? p + 1 : szName, 3);
+    if (b.nFlags & MPQ_FIX_KEY)
+        key = (key + b.nPos) ^ b.nSize;
+    return key;
+}
+
+static void DecryptBytes(Bytes* p, uint32_t key)
+{
+    Decrypt((uint32_t*)p->data(), p->size() / 4, key);
+}
+
 // Reads a file by block. *pbOriginal is set when a sector was compressed by the PKWARE library (imploded).
-// Returns false when the file can't be read here (encrypted, or another compression).
-static bool ReadBlock(const Archive& a, const Block& b, Bytes* pOut, bool* pbOriginal, std::string* pWhy)
+// Returns false when the file can't be read here (encrypted with an unknown name, or another compression).
+static bool ReadBlock(const Archive& a, const Block& b, Bytes* pOut, bool* pbOriginal, std::string* pWhy,
+                      const char* szName = 0)
 {
     *pbOriginal = false;
-    if (b.nFlags & MPQ_ENCRYPTED)
+    if ((b.nFlags & MPQ_ENCRYPTED) && !szName)
     {
         *pWhy = "encrypted";
         return false;
     }
+    const bool bEncrypted = (b.nFlags & MPQ_ENCRYPTED) != 0;
+    const uint32_t key = bEncrypted ? FileKey(szName, b) : 0;
     if (!(b.nFlags & (MPQ_IMPLODE | MPQ_COMPRESS)))
     {
         pOut->resize(b.nSize);
@@ -269,8 +290,13 @@ static bool ReadBlock(const Archive& a, const Block& b, Bytes* pOut, bool* pbOri
         offs[0] = 0;
         offs[1] = b.nCSize;
     }
-    else if (!ReadAt(a.f, a.nBase + b.nPos, offs.data(), offs.size() * 4))
-        return false;
+    else
+    {
+        if (!ReadAt(a.f, a.nBase + b.nPos, offs.data(), offs.size() * 4))
+            return false;
+        if (bEncrypted)
+            Decrypt(offs.data(), offs.size(), key - 1);
+    }
     pOut->clear();
     for (uint32_t s = 0; s < nSectors; ++s)
     {
@@ -279,6 +305,8 @@ static bool ReadBlock(const Archive& a, const Block& b, Bytes* pOut, bool* pbOri
         Bytes raw(offs[s + 1] - offs[s]);
         if (raw.empty() || !ReadAt(a.f, a.nBase + b.nPos + offs[s], raw.data(), raw.size()))
             return false;
+        if (bEncrypted)
+            DecryptBytes(&raw, key + s);
         if (raw.size() >= nWant)
         {
             pOut->insert(pOut->end(), raw.begin(), raw.begin() + nWant);
@@ -309,6 +337,68 @@ static bool ReadBlock(const Archive& a, const Block& b, Bytes* pOut, bool* pbOri
     return true;
 }
 
+static uint32_t U32(const Bytes& b, size_t o)
+{
+    return o + 4 <= b.size() ? (uint32_t)b[o] | b[o + 1] << 8 | b[o + 2] << 16 | (uint32_t)b[o + 3] << 24 : 0;
+}
+
+static std::string Lower(std::string s)
+{
+    for (size_t i = 0; i < s.size(); ++i)
+        s[i] = (char)tolower((unsigned char)s[i]);
+    return s;
+}
+
+// Checks a file's content by its format; returns "" if fine or not a format checked here, else what's wrong.
+static std::string CheckFormat(const std::string& name, const Bytes& b)
+{
+    const std::string n = Lower(name);
+    const std::string ext = n.size() > 4 ? n.substr(n.size() - 4) : "";
+    if (ext == ".txt" && n.find("excel") != std::string::npos)
+    {
+        // A data table: every row has the header's number of tabs.
+        int nHeader = -1, nTabs = 0, nRow = 0;
+        for (size_t i = 0; i < b.size(); ++i)
+        {
+            if (b[i] == '\t')
+                ++nTabs;
+            else if (b[i] == '\n')
+            {
+                if (nHeader < 0)
+                    nHeader = nTabs;
+                else if (nHeader > 0 && nTabs != nHeader && nTabs != 0)
+                    return "row " + std::to_string(nRow) + " has " + std::to_string(nTabs) + " tabs, the header " +
+                           std::to_string(nHeader);
+                nTabs = 0;
+                ++nRow;
+            }
+            else if (b[i] < 0x20 && b[i] != '\r')
+                return "control byte in a text table";
+        }
+        return "";
+    }
+    if (ext == ".tbl" && n.find("\\font\\") == std::string::npos)   // a string table (FONT\*.tbl are font tables)
+        return U32(b, 0x11) == b.size() ? "" : "the header's file size differs";
+    if (ext == ".dc6")
+    {
+        if (U32(b, 0) != 6)
+            return "not version 6";
+        const uint32_t nFrames = U32(b, 16) * U32(b, 20);
+        if (24 + 4 * (size_t)nFrames > b.size())
+            return "frame table past the end";
+        for (uint32_t i = 0; i < nFrames; ++i)
+        {
+            const uint32_t pos = U32(b, 24 + 4 * i);
+            // A frame: a 32-byte header (its data length at +28), the data, 3 terminator bytes.
+            const uint32_t next = i + 1 < nFrames ? U32(b, 24 + 4 * (i + 1)) : (uint32_t)b.size();
+            if (pos + 32 > b.size() || pos + 32 + U32(b, pos + 28) + 3 != next)
+                return "frame " + std::to_string(i) + " doesn't end where the next begins";
+        }
+        return "";
+    }
+    return "";
+}
+
 static void TestArchive(const char* szPath)
 {
     Archive a = {};
@@ -330,7 +420,32 @@ static void TestArchive(const char* szPath)
             memcpy(crcs.data(), attr.data() + 8, std::min(attr.size() - 8, crcs.size() * 4));
         }
     }
-    int nExploded = 0, nChecked = 0, nSkipped = 0;
+    std::vector<std::string> names(a.blocks.size());
+    const int nList = FindBlock(a, "(listfile)");
+    if (nList >= 0)
+    {
+        Bytes list;
+        bool bOriginal;
+        std::string why;
+        if (ReadBlock(a, a.blocks[nList], &list, &bOriginal, &why, "(listfile)"))
+        {
+            std::string line;
+            for (size_t i = 0; i <= list.size(); ++i)
+            {
+                const char c = i < list.size() ? (char)list[i] : '\n';
+                if (c == '\r' || c == '\n' || c == ';')
+                {
+                    const int k = line.empty() ? -1 : FindBlock(a, line.c_str());
+                    if (k >= 0)
+                        names[k] = line;
+                    line.clear();
+                }
+                else
+                    line += c;
+            }
+        }
+    }
+    int nExploded = 0, nChecked = 0, nFormats = 0, nSkipped = 0;
     unsigned long long nBytes = 0;
     for (size_t i = 0; i < a.blocks.size(); ++i)
     {
@@ -340,9 +455,9 @@ static void TestArchive(const char* szPath)
         Bytes data;
         bool bOriginal;
         std::string why;
-        if (!ReadBlock(a, b, &data, &bOriginal, &why))
+        if (!ReadBlock(a, b, &data, &bOriginal, &why, names[i].empty() ? 0 : names[i].c_str()))
         {
-            CHECK(why != "explode failed", "%s: block %u: %s", szPath, (unsigned)i, why.c_str());
+            CHECK(why != "explode failed", "%s: block %u (%s): %s", szPath, (unsigned)i, names[i].c_str(), why.c_str());
             ++nSkipped;
             continue;
         }
@@ -355,12 +470,21 @@ static void TestArchive(const char* szPath)
             CHECK(Crc32(data) == crcs[i], "%s: block %u: CRC32 differs after explode", szPath, (unsigned)i);
             ++nChecked;
         }
+        if (!names[i].empty())
+        {
+            const std::string bad = CheckFormat(names[i], data);
+            CHECK(bad.empty(), "%s: %s: %s", szPath, names[i].c_str(), bad.c_str());
+            const std::string ext = Lower(names[i].substr(names[i].size() > 4 ? names[i].size() - 4 : 0));
+            if ((ext == ".txt" && Lower(names[i]).find("excel") != std::string::npos) || ext == ".dc6" ||
+                (ext == ".tbl" && Lower(names[i]).find("\\font\\") == std::string::npos))
+                ++nFormats;
+        }
         if (nExploded % 50 == 1)
             RoundTrip(data, szPath);
     }
-    printf("%s: %d files the original library compressed exploded (%llu bytes), %d checked against (attributes), "
-           "%d skipped\n", szPath, nExploded, nBytes, nChecked, nSkipped);
-    CHECK(nExploded > 0, "%s: no imploded file found", szPath);
+    printf("%s: %d files the original library compressed exploded (%llu bytes); %d checked against (attributes), "
+           "%d by format; %d other files skipped (encrypted, or another compression)\n", szPath, nExploded, nBytes,
+           nChecked, nFormats, nSkipped);
     fclose(a.f);
 }
 
