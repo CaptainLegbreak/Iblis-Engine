@@ -216,6 +216,11 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Status
 
+- 2026-11-27 19:30 PT: 6d continued in PR #9 (new commit): the oracle's level 1 (Game.exe's own C runtime
+  started by its entry point, the case taking over at WinMain), cases bitbuf (BITMANIP_*, the .d2s checksum)
+  and startup; rng, bitbuf, startup all identical against the user's 1.14d. Open: #8, #9, #10, #11. Next:
+  REPLAY level 2 (Storm + MPQs, D2Lang, data tables) toward drlg, and 6b when Codex moves.
+
 - 2026-11-27 19:45 PT: board check. No new answers. Codex main moved to 0bf13c4 (#494): 6b in PR #11 (stacked
   on #10), clean, data checked against Game.exe again (1,693/1,693). 538/538 compile; link 4,140 unresolved
   (-58). Open: #8, #9, #10, #11.
