@@ -83,7 +83,7 @@ struct D2MonTypeTxt;
 
 extern const int gaSetMaskToBonusMappingTable[0x40]; // 0x006DBD90
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 extern D2FileIndexTextStrc gaFileIndexText[]; // 0x0072D6C0
 

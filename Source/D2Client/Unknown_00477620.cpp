@@ -484,7 +484,7 @@ void __fastcall sub_00477980_DrawFpsStats()
     case 6:sprintf(text,"Direct3D");break;
     case 2:sprintf(text,"Software");break;
     case 7:sprintf(text,"RAVE");break;
-    default:sprintf(text,gszUnknownText);break;
+    default:sprintf(text,"Unknown");break;
     }
     D2GFX_OutputString(500,2,"Video: %s",text);
     if(!gbCacheStatsChecked){

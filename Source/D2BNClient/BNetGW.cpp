@@ -4,7 +4,7 @@
 #include "StormApi.h"
 #include "StormApi2.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 class BNGatewayAccess;
 
@@ -553,7 +553,7 @@ void __stdcall BNGatewayAccess::UpdateGatewaysFromIni(char* szText)
                 }
                 else
                 {
-                    FOG_DisplayHalt((&gszEmptyAssertText), sub_00408090(), 0x2E8); exit(-1);
+                    FOG_DisplayHalt((""), sub_00408090(), 0x2E8); exit(-1);
                 }
             }
         }
@@ -597,5 +597,5 @@ const char* __stdcall BNGatewayAccess::Realm(int nGateway)
         szRealm += SStrLen(szRealm) + 1;
     }
 
-    return &gszEmptyAssertText;
+    return "";
 }

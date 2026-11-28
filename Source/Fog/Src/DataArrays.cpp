@@ -23,7 +23,7 @@ extern "C" const char gszEmptyAssertText; // 0x006CC837
 
 extern "C" __declspec(noreturn) void __cdecl exit(int code); // 0x00681E09
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 unsigned short* __fastcall DATAARRAYS_GetEntry(D2DataArrayStrc* pTable, int nHandle); // 0x006BCC10
 
@@ -55,7 +55,7 @@ void __fastcall DATAARRAYS_Destroy(void* pBlock)
 void __fastcall DATAARRAYS_Reset(D2DataArrayStrc* array)
 {
     if (!array->bInitialized) {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x68);
+        FOG_DisplayHalt("", sub_00408090(), 0x68);
         exit(-1);
     }
     array->nLastUsed = -1;
@@ -72,7 +72,7 @@ unsigned int __fastcall DATAARRAYS_AllocateHandle(D2DataArrayStrc* pPool)
     unsigned int nHandle = -1;
     if (!pPool->bInitialized)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x87);
+        FOG_DisplayHalt("", sub_00408090(), 0x87);
         exit(-1);
     }
     unsigned short* pEntry = (unsigned short*)(pPool->pEntries + pPool->nStride * pPool->nFirstFree);
@@ -110,7 +110,7 @@ short* __fastcall DATAARRAYS_GetEntryOrHalt(void* pDataArray, int nHandle)
     short* pEntry = (short*)DATAARRAYS_GetEntry((D2DataArrayStrc*)pDataArray, nHandle);
     if (!pEntry)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 253);
+        FOG_DisplayHalt("", sub_00408090(), 253);
         exit(-1);
     }
     return pEntry;

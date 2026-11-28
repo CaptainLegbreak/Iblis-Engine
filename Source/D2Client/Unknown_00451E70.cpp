@@ -14,7 +14,7 @@
 #include "StormApi.h"
 #include "D2GfxApi.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 struct D2MsgHandlerEntryStrc;
 struct Pad40_00451F30;
 struct Obj00451F30;

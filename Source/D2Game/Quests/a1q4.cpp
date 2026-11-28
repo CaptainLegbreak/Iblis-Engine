@@ -19,7 +19,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define QUEST_A1Q4_CAIN 4
 
@@ -1522,7 +1522,7 @@ void __fastcall ACT1Q4_SendStoneOrderToClient(D2GameStrc* pGame, D2UnitStrc* pUn
                 packet.nParams[i] = pQuestDataEx->nStoneOrder[i] - 17;
                 if (packet.nParams[i] >= 5)
                 {
-                    FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 2175);
+                    FOG_DisplayHalt("", sub_00408090(), 2175);
                     exit(-1);
                 }
                 ++i;
@@ -1647,7 +1647,7 @@ int __fastcall ACT1Q4_IsCainNotCreated(D2GameStrc* pGame)
     {
         return ((D2Act1Quest4Strc*)pQuestData->pQuestDataEx)->bCainNotCreated;
     }
-    FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x99D);
+    FOG_DisplayHalt("", sub_00408090(), 0x99D);
     exit(-1);
 }
 

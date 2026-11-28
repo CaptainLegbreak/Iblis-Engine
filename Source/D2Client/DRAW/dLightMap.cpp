@@ -19,7 +19,7 @@
 
 #define INDICATOR_HOLD_MS 2000
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define LIGHT_MIN(a, b) ((a) < (b) ? (a) : (b))
 

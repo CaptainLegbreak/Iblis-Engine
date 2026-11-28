@@ -198,7 +198,7 @@ static int MAINMENUS_CheckAtAndDot(const char* szText)
 // 0x00436C70
 int __stdcall MAINMENUS_DeclineEmail(int nArg)
 {
-    gpFuncTable->pfnSetEmail((char*)&gszEmptyAssertText);
+    gpFuncTable->pfnSetEmail((char*)"");
     D2Win_StopMessageLoop();
     return 1;
 }

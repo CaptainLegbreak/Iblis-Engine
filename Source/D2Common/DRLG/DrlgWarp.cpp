@@ -375,7 +375,7 @@ int* __fastcall DRLGWARP_GetWarpIdArrayFromLevelId(D2DrlgStrc* pDrlg, int nLevel
     {
         if (!pDrlgWarp->nLevel)
         {
-            FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 418);
+            FOG_DisplayHalt("", sub_00408090(), 418);
             exit(-1);
         }
 

@@ -23,7 +23,7 @@
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 
 
@@ -164,12 +164,6 @@ static inline int TEXT_FindEntryIndex(int nId)
     return -1;
 }
 
-int __fastcall sub_M115_Emit_004A18E0(int nIndex, int nId)
-{
-    TEXT_SetQuestIndex(nIndex);
-    return TEXT_FindEntryIndex(nId);
-}
-
 // 0x004A1950
 static void TEXT_BuildQuestText(D2QuestTextMsgStrc* pMsg)
 {
@@ -179,15 +173,7 @@ static void TEXT_BuildQuestText(D2QuestTextMsgStrc* pMsg)
     pMsg->bStepChanged = 0;
     pMsg->bValid = 0;
 
-    int nIndex = -1;
-    for (int i = 0; i < 41; ++i)
-    {
-        if (gaQuestTable[i].nQuestId == pMsg->nQuestId)
-        {
-            nIndex = i;
-            break;
-        }
-    }
+    const int nIndex = TEXT_FindEntryIndex(pMsg->nQuestId);
 
     if (nIndex == -1)
     {
@@ -1458,7 +1444,7 @@ void __stdcall TEXT_LoadQuestPage(int nPage, int bReset)
         int nSelection = gtQuestLog.anPageSelection[nPage];
         if (nSelection != -1 || (nSelection = nFirst) != -1)
         {
-            gtQuestLog.nSelectedSlot = nSelection;
+            TEXT_SetQuestIndex(nSelection);
         }
     }
 
@@ -2062,7 +2048,7 @@ void __stdcall TEXT_QuestLButtonUpMsg(SMSGHANDLER_PARAMS* pMsg)
             if (nSlot == gtQuestLog.nPressedSlot)
             {
                 gtQuestLog.anPageSelection[gtQuestLog.nPage] = nSlot;
-                gtQuestLog.nSelectedSlot = nSlot;
+                TEXT_SetQuestIndex(nSlot);
             }
         }
         else if (gtQuestLog.bDescButtonDown == 1)

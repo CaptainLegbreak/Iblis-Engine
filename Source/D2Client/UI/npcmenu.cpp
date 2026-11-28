@@ -23,9 +23,9 @@
 #include <D2UnitData.h>
 #include "D2CommonApi2.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
-#define CHECK(c,line) if(!(c)) { FOG_DisplayHalt(&empty,sub_00408090(),line); exit(-1); }
+#define CHECK(c,line) if(!(c)) { FOG_DisplayHalt("",sub_00408090(),line); exit(-1); }
 
 struct D2StaticPathStrc;
 
@@ -294,7 +294,7 @@ D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType)
 
 void __fastcall NPCMENU_RemoveInventoryClientUnits(D2UnitStrc* pUnit); // 0x004B3790
 
-void __fastcall sub_004BA840_StopSound(int nHandle); // 0x004BA840
+void __fastcall SOUNDINST_StopSound(int nHandle); // 0x004BA840
 
 static int gnHandlerCount = 9;                                                                  // 0x007253DC
 #include "D2CommonApi3.h"
@@ -2119,7 +2119,7 @@ extern "C" void __fastcall NPCMENU_ClearNpcInventoryAndSound(int nUnitId)
     }
     if (gtNpcMenu.nSoundActive)
     {
-        sub_004BA840_StopSound(gtNpcMenu.nSoundHandle);
+        SOUNDINST_StopSound(gtNpcMenu.nSoundHandle);
     }
     gtNpcMenu.nSoundActive = 0;
     gtNpcMenu.nSoundHandle = 0;
@@ -2207,7 +2207,7 @@ int __fastcall NPCMENU_HandleTradeClick(D2UnitStrc* pPlayer, D2UnitStrc* pItem, 
             case 0xF6:
             case 0x109:
             case 0x208:
-                if (ITEMS_CheckItemFlag(pItem, 0x10, 0x999, gszNpcMenuFile) == 1)
+                if (ITEMS_CheckItemFlag(pItem, 0x10, 0x999, ".\\UI\\npcmenu.cpp") == 1)
                     return 0;
                 gtNpcMenu.nTradeMode = 4;
                 break;
@@ -2274,7 +2274,7 @@ void __fastcall NPCMENU_EndNpcInteraction(int nValue)
 
     if (gtNpcMenu.nSoundActive)
     {
-        sub_004BA840_StopSound(gtNpcMenu.nSoundHandle);
+        SOUNDINST_StopSound(gtNpcMenu.nSoundHandle);
     }
 
     gtNpcMenu.nSoundActive = 0;
@@ -2564,7 +2564,7 @@ int __cdecl NPCMENU_OpenTradeShop()
     {
         if (gtNpcMenu.nSoundHandle)
         {
-            sub_004BA840_StopSound(gtNpcMenu.nSoundHandle);
+            SOUNDINST_StopSound(gtNpcMenu.nSoundHandle);
             gtNpcMenu.nSoundHandle = 0;
         }
         gtNpcMenu.nSoundActive = 0;
@@ -2803,7 +2803,7 @@ static __forceinline int NPC_FindIndex_Inline(D2UnitStrc* pNpc)
 // 0x004B4830
 void __cdecl NPCMENU_BuildNpcMenu()
 {
-    if(gtNpcMenu.pMainMenuDialog){FOG_DisplayHalt(&gszEmptyAssertText,sub_00408090(),0xC74);exit(-1);}
+    if(gtNpcMenu.pMainMenuDialog){FOG_DisplayHalt("",sub_00408090(),0xC74);exit(-1);}
     if(!NPC_GetInteractUnit_Inline())
     {
         gtNpcMenu.nMenuState=0;
@@ -3200,7 +3200,7 @@ void __cdecl NPCMENU_OnTransactionResult()
  ROSTER_SetCtrlState(gtNpcMenu.pSubMenuDialog,1);
  DIALOG_AddTextLine(gtNpcMenu.pSubMenuDialog,D2LANG_GetStringFromTblIndex(text),0x15,0,1,1,0,0);
  DIALOG_AddTextLine(gtNpcMenu.pSubMenuDialog,D2LANG_GetStringFromTblIndex(0xd4b),0xf,0,0,1,NPCMENU_NpcMenuReturn,1);
- } else { FOG_DisplayHalt(&empty,sub_00408090(),0x13ad);exit(-1); }
+ } else { FOG_DisplayHalt("",sub_00408090(),0x13ad);exit(-1); }
 }
 
 static __forceinline void sub_004B5640_RefreshNpcMenu()
@@ -3638,7 +3638,7 @@ static void __stdcall NPCMENU_OpenNpcInteract(D2UnitStrc* pUnit, int bReopen)
     {
         if (gtNpcMenu.nSoundHandle)
         {
-            sub_004BA840_StopSound(gtNpcMenu.nSoundHandle);
+            SOUNDINST_StopSound(gtNpcMenu.nSoundHandle);
             gtNpcMenu.nSoundHandle = 0;
         }
         gtNpcMenu.nSoundActive = 0;

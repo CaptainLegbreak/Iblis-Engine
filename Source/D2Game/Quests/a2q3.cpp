@@ -144,7 +144,7 @@ int __fastcall ACT2Q3_UnitIterate_UpdateClient(D2GameStrc* pGame, D2UnitStrc* pU
 
 int __fastcall ACT2Q3_UnitIterate_UpdateQuestStateFlags(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pData); // 0x0059A4F0
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define ITEMQUAL_MAGIC 4
 
@@ -659,7 +659,7 @@ bool __fastcall ACT2Q3_SeqCallback(D2QuestDataStrc* pQuestData)
     {
         if (IsBadCodePtr((FARPROC)pQuestData->pfSeqFilter))
         {
-            FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), ASSERT_LINE);
+            FOG_DisplayHalt("", sub_00408090(), ASSERT_LINE);
             exit(-1);
         }
         return pQuest->pfSeqFilter(pQuest);
@@ -1082,7 +1082,7 @@ void __fastcall ACT2Q3_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2Q
             QUESTS_StateDebug(pQuestData, 5, gszA2Q3SourceFile, 0xDC);
             if (IsBadCodePtr((FARPROC)pQuestData->pfSeqFilter))
             {
-                FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0xDD);
+                FOG_DisplayHalt("", sub_00408090(), 0xDD);
                 exit(-1);
             }
             pQuestData->pfSeqFilter(pQuestData);

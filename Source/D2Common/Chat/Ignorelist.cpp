@@ -665,8 +665,6 @@ typedef void(__stdcall* PROFHOOKFN)(int nA, char* pBuffer, int nC);
 
 extern D2ProfileCounterStrc gaProfEntries[23]; // 0x00743800
 
-extern D2CompCodeTxt* gpCompCodeTxt; // 0x0096BCAC
-
 extern int gbCompileTxt; // 0x0096C8B4
 
 
@@ -882,10 +880,6 @@ public:
 };
 
 PROFHOOKFN gpfnProfHook; // 0x0096BC28
-
-int gnCompCodeTxtRecordCount; // 0x0096BCB4
-
-D2ExperienceDataTbl* gpExperienceTxt; // 0x0096C8A8
 
 struct D2StormHashKeyStrIStrc;
 

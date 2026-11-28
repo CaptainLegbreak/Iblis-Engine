@@ -26,7 +26,7 @@
 #include "D2CommonApi2.h"
 #include "D2CommonApi3.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define MAX(a, b) ((a) < (b) ? (b) : (a))
 
@@ -604,7 +604,7 @@ static int MISSILE_UseCharge(D2UnitStrc* pUnit); // 0x004CD310
 int __fastcall DATATBLS_ApplyRatio(int nValue, int nMultiplier, int nDivisor);                              // 0x00483360
 
 
-void __fastcall sub_004BA840_StopSound(void* pUnitSfx);                                                                 // 0x004BA840
+void __fastcall SOUNDINST_StopSound(void* pUnitSfx);                                                                 // 0x004BA840
 
 
 D2ActiveRoomStrc* __stdcall DUNGEON_FindRoomBySubtileCoordinates(void* pAct, int nX, int nY);                             // 0x00619DA0
@@ -6529,7 +6529,7 @@ D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams
                 void* pUnitSfx = UNITSND_FindUnitSfxInRange(pMissileParams->pOwner, 0x13A);
                 if (pUnitSfx)
                 {
-                    sub_004BA840_StopSound(pUnitSfx);
+                    SOUNDINST_StopSound(pUnitSfx);
                 }
             }
         }

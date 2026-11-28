@@ -16,7 +16,7 @@ struct D2UnitStrc;
 #define UNIT_PLAYER 0
 #define UNIT_MONSTER 1
 #define UNIT_OBJECT 2
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 struct D2HashedFileEntryStrc;
 struct D2HashedFileStrc;
 struct D2GfxListNodeStrc;
@@ -130,7 +130,7 @@ static int __stdcall GFX_LoadGfxNode(int* pValue, int nIndex, D2UnitStrc* pUnit)
     D2GfxListNodeStrc* pNode;
     if (GFX_FindGfxNode(nId, &pNode, pValue, pUnit, nIndex))
     {
-        D2GfxListNodeStrc* pNewNode = (D2GfxListNodeStrc*)FOG_Alloc(sizeof(D2GfxListNodeStrc), gszGfxFile, 0x434, 0);
+        D2GfxListNodeStrc* pNewNode = (D2GfxListNodeStrc*)FOG_Alloc(sizeof(D2GfxListNodeStrc), ".\\ENGINE\\Gfx.cpp", 0x434, 0);
         D2_ASSERT(pNewNode, 0x435);
         memset(pNewNode, 0, sizeof(D2GfxListNodeStrc));
 
@@ -311,7 +311,7 @@ int __fastcall GFX_IsUnitOnScreen(D2UnitStrc* unit,int x,int y,int unused,int ce
  void* gfx=GetModeGfx(unit,mode);
  if(!gfx) return 0;
  D2GfxHeaderStrc* header=sub_004DB040_GetLayerHeader(gfx);
- if(!header) { FOG_DisplayHalt(&gszEmptyAssertText,sub_00408090(),3539); exit(-1); }
+ if(!header) { FOG_DisplayHalt("",sub_00408090(),3539); exit(-1); }
  int width=gnScreenWidth;
  int height=gnScreenHeight;
  int left=header->left+x;

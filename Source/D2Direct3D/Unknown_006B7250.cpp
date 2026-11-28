@@ -4,7 +4,7 @@
 #include "FogApi.h"
 #include "D2GlideApi.h"
 
-#define ASSERT(expr,line) if (!(expr)) { FOG_DisplayHalt(gszEmptyString,sub_00408090(),line); exit(-1); }
+#define ASSERT(expr,line) if (!(expr)) { FOG_DisplayHalt("",sub_00408090(),line); exit(-1); }
 #define MIN(a,b) ((a)<(b)?(a):(b))
 #define MAX(a,b) ((a)>(b)?(a):(b))
 #define D2_MAX(a, b) ((a) > (b) ? (a) : (b))
@@ -606,7 +606,7 @@ void __fastcall sub_006B7980_DrawRectangle(int left, int top, int right, int bot
         return;
     if (bottom <= top)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x68);
+        FOG_DisplayHalt("", sub_00408090(), 0x68);
         exit(-1);
     }
     D3DCORE_SetColorCombineMode(2);

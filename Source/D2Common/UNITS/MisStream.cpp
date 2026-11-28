@@ -7,7 +7,7 @@
 struct D2PoolSystemStrc;
 struct D2ActiveRoomStrc;
 
-#define MS_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define MS_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2UnitStrc;
 struct D2PathPointStrc;
@@ -115,7 +115,7 @@ void __stdcall MISSTREAM_Update(D2UnitStrc* pUnit, D2UnitStrc* pMissile, int nAm
     int nPathPoints = PATH_GetPathPoints(pPath, &pPathPoints);
     if (nPathPoints != 0 && nPathPoints != 1) {
         D2MissileStreamStrc* ptStream = MISSILE_GetStream(pMissile);
-        if (!ptStream) { FOG_DisplayHalt(gszAssertExpression_006CC837, sub_00408090(), 138); exit(-1); }
+        if (!ptStream) { FOG_DisplayHalt("", sub_00408090(), 138); exit(-1); }
         int nRatio = nAmount / nStep;
         int bCreate = 0;
         int nTemp = nPathPoints - 1;
@@ -125,18 +125,18 @@ void __stdcall MISSTREAM_Update(D2UnitStrc* pUnit, D2UnitStrc* pMissile, int nAm
             unsigned int nSize = sizeof(int) * nPoints;
             ptStream->nCapacity = nPoints;
             D2PoolSystemStrc* const pPool = pMissile->pMemoryPool;
-            ptStream->pData = (int*)FOG_AllocPool(pPool, nSize, gszMisStreamSourceFile, 151, 0);
+            ptStream->pData = (int*)FOG_AllocPool(pPool, nSize, ".\\UNITS\\MisStream.cpp", 151, 0);
             memset(ptStream->pData, 0, nSize);
         } else if (ptStream->nCapacity < nPoints) {
             D2PoolSystemStrc* const pPool = pMissile->pMemoryPool;
-            ptStream->pData = (int*)FOG_ReallocPool(pPool, ptStream->pData, sizeof(int) * nPoints, gszMisStreamSourceFile, 154, 0);
+            ptStream->pData = (int*)FOG_ReallocPool(pPool, ptStream->pData, sizeof(int) * nPoints, ".\\UNITS\\MisStream.cpp", 154, 0);
         }
         int nMax = nTemp / nRatio;
         int nExtra = 0;
         if (bCreate) nExtra = 4 * (nRatio - nTemp) / nTemp;
         int nCurrent = nAmount;
         int nCycle = 4;
-        if (IsBadCodePtr((void*)pfCreate)) { FOG_DisplayHalt(gszAssertExpression_006CC837, sub_00408090(), 169); exit(-1); }
+        if (IsBadCodePtr((void*)pfCreate)) { FOG_DisplayHalt("", sub_00408090(), 169); exit(-1); }
         int nCounter = 0;
         int nIndex = 0;
         while (nIndex < nTemp) {

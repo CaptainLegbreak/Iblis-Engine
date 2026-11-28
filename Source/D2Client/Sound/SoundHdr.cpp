@@ -9,7 +9,7 @@
 #include "D2HellApi.h"
 #include "D2WinApi2.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2BinFileStrc;
 
@@ -508,7 +508,7 @@ void __fastcall SOUNDHDR_ReleaseCacheEntry(int nIndex)
         return;
     if (SoundChannelFind(nIndex))
     {
-        FOG_DisplayHalt(&gszEmptyAssertText_006CC837, sub_00408090(), 0x259);
+        FOG_DisplayHalt("", sub_00408090(), 0x259);
         exit(-1);
     }
     gdwCacheUsed -= pEntry->nSize;
@@ -730,7 +730,7 @@ void __cdecl SOUNDHDR_TickSound()
         SKILLDESC_UpdateEnvironSounds(gdwSoundTick);
         sub_004DCAA0_UpdateLevelSong(gdwSoundTick);
         SOUNDHDR_UpdateCache(gdwSoundTick);
-        sub_004BA020_UpdateSounds(gdwSoundTick);
+        SOUNDINST_UpdateSounds(gdwSoundTick);
         sub_004DF890_ReleaseFinishedSlots();
         ++gdwSoundTick;
         Sleep(0);

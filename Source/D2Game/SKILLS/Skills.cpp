@@ -37,7 +37,7 @@
 
 #define STATE_BLOODMANA 114
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 
 #define SKILLSFLAGINDEX_AURA 5
@@ -3540,14 +3540,14 @@ void __fastcall D2GAME_AssignSkill(D2UnitStrc* pUnit, int bLeftSkill, int nSkill
     SKILLS_GetSkillInfo(pSkill, &nFlags, 0, 0, 0);
     if ((!pUnit ? UNIT_INVALID : pUnit->dwUnitType) == UNIT_PLAYER)
     {
-        D2GAME_PACKETS_SendPacket0x23(UnitGetClient(pUnit, &gszSkillsSourceFile, 3499), (!pUnit ? UNIT_INVALID : pUnit->dwUnitType), !pUnit ? -1 : pUnit->dwUnitId, bLeftSkill, nSkillId, nFlags);
+        D2GAME_PACKETS_SendPacket0x23(UnitGetClient(pUnit, ".\\SKILLS\\Skills.cpp", 3499), (!pUnit ? UNIT_INVALID : pUnit->dwUnitType), !pUnit ? -1 : pUnit->dwUnitId, bLeftSkill, nSkillId, nFlags);
     }
 
     if (!bLeftSkill)
     {
         if (pRightSkill)
         {
-            D2SkillsTxt* pRightSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(pRightSkill, &gszSkillsSourceFile, 3507));
+            D2SkillsTxt* pRightSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(pRightSkill, ".\\SKILLS\\Skills.cpp", 3507));
             if (pRightSkillsTxtRecord && pRightSkillsTxtRecord->nFlags[SKILLSFLAGINDEX_AURA >> 3] & gdwBitMasks[SKILLSFLAGINDEX_AURA & 7])
             {
                 if (pRightSkillsTxtRecord->nAuraState >= 0 || pRightSkillsTxtRecord->nAuraState < sgptDataTables->nStatesTxtRecordCount)

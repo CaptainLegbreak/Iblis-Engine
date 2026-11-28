@@ -3,7 +3,7 @@
 #include "StormApi.h"
 #include "StormApi2.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText_006CC837, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2PoolSystemStrc;
 struct D2SNameNodeStrc;
@@ -168,11 +168,6 @@ static unsigned int __stdcall EXCEL_HashName(const char* szName)
     return SStrHash(szName, 0, 0);
 }
 
-unsigned int __stdcall sub_E01_Emit_006BCDF0(const char* szName)
-{
-    return EXCEL_HashName(szName);
-}
-
 // 0x006BCE00
 unsigned int __fastcall EXCEL_XorFoldBytes(int nUnused, unsigned int dwValue)
 {
@@ -216,7 +211,7 @@ static int __stdcall EXCEL_MapColumns(unsigned short* pOut, D2BinFileStrc* pList
         ++nNodes;
         D2SNameNodeStrc* pNode = pCursor++;
         const char* szName = pEntry->name;
-        unsigned int nHash = SStrHash(szName, 0, 0);
+        unsigned int nHash = EXCEL_HashName(szName);
         unsigned int nBucket = ((((nHash >> 8) ^ nHash) >> 16) ^ (nHash >> 8) ^ nHash) & 0xFF;
         pNode->nHash = nHash;
         pNode->pEntry = pEntry;
@@ -229,7 +224,7 @@ static int __stdcall EXCEL_MapColumns(unsigned short* pOut, D2BinFileStrc* pList
     const char* szString = pList->pDataBuffer;
     for (unsigned int i = 0; i < pList->nColumns; ++i)
     {
-        unsigned int nHash = SStrHash(szString, 0, 0);
+        unsigned int nHash = EXCEL_HashName(szString);
         unsigned int nBucket = ((((((nHash >> 8) ^ nHash) >> 8) ^ nHash) >> 8) ^ nHash) & 0xFF;
         for (D2SNameNodeStrc* pNode = aBuckets[nBucket]; pNode; pNode = pNode->pNext)
         {
@@ -615,7 +610,7 @@ int __stdcall FOG_GetLinkIndex(D2TxtLinkStrc* pLink, const char* szText, int bLo
     D2TxtLinkNodeStrc* pNode = pLink->pFirstNode;
     if (pLink->count && !pNode)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText_006CC837, sub_00408090(), 0x475);
+        FOG_DisplayHalt("", sub_00408090(), 0x475);
         exit(-1);
     }
 

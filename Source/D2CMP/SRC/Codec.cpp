@@ -867,7 +867,7 @@ int __fastcall CodecDecodeDccData(unsigned char* pData, D2PoolSystemStrc* pMemPo
                             char szError[0x200];
                             LOGMANAGER_WriteLogLine("Sprite Decompression Error -- File:%s", szFile);
                             sprintf(szError, "Error decompressing sprite - Possible corruption in data file: %s", szFile);
-                            FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x660);
+                            FOG_DisplayHalt("", sub_00408090(), 0x660);
                             exit(-1);
                         }
                         pOut += pHeader->nLength + pHeader->unk0x14 + 0x23;

@@ -149,7 +149,7 @@ void __cdecl INV_SetNpcStateTrade(); // 0x00487B80
 
 void __cdecl GAME_ResetMouseState(); // 0x0044DA40
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 struct D2PacketRecord7Strc;
 
 #pragma pack(push, 1)
@@ -435,7 +435,7 @@ void __cdecl USEITEM_DrawPanelUnit()
     }
     else
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x31D);
+        FOG_DisplayHalt("", sub_00408090(), 0x31D);
         exit(-1);
     }
 }

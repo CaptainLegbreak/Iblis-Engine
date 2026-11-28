@@ -430,15 +430,15 @@ int __stdcall SErrDisplayError(unsigned int nErrorCode,const char* szFile,int nL
         }
         p+=SStrLen(p);
     }
-    if(nErrorCode==0x85100000) wsprintfA(p,GetMessageText(7),szDescription?szDescription:&gszEmptyAssertText);
-    else wsprintfA(p,GetMessageText(8),szDescription?szDescription:&gszEmptyAssertText);
+    if(nErrorCode==0x85100000) wsprintfA(p,GetMessageText(7),szDescription?szDescription:"");
+    else wsprintfA(p,GetMessageText(8),szDescription?szDescription:"");
     p+=SStrLen(p);
     if(bRecoverable) SStrCopy(p,GetMessageText(10),0x7fffffff);
     else SStrCopy(p,GetMessageText(9),0x7fffffff);
     if(gpErrorReport_007790F8)
     {
         char szDiagnostic[0x104];
-        SStrPrintf(szDiagnostic,0x104,gszDiagnosticFormat_006CF330,szError,szName?szName:&gszEmptyAssertText,nLine);
+        SStrPrintf(szDiagnostic,0x104,gszDiagnosticFormat_006CF330,szError,szName?szName:"",nLine);
         gpErrorReport_007790F8(szDiagnostic,szMessage,0,0,nLine,0);
     }
     unsigned long nFlags=(bRecoverable?3:1)|0x52010;
@@ -446,7 +446,7 @@ int __stdcall SErrDisplayError(unsigned int nErrorCode,const char* szFile,int nL
     HANDLER* pHandler=(int)gHandlerList_00708420.m_terminator.m_next<=0?0:gHandlerList_00708420.m_terminator.m_next;
     while((int)pHandler>0)
     {
-        if(!pHandler->pfnHandler(nErrorCode,szError,szName,nLine,szDescription?szDescription:&gszEmptyAssertText)) goto DialogDone;
+        if(!pHandler->pfnHandler(nErrorCode,szError,szName,nLine,szDescription?szDescription:"")) goto DialogDone;
         pHandler=pHandler->m_link.m_next;
     }
     if(!gpErrorReport_007790F8)

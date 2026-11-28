@@ -208,7 +208,7 @@ void __stdcall WINDOW_OpenSmackCutscene(const char* szFile, int nMode, int nArg)
 void __stdcall sub_004FA450_SetActive(D2WinControlStrc* pControl); // 0x004FA450
 void __stdcall CLIENT_Initialize(int nArg, const char* szAddress); // 0x0052A750
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2CharSelCacheStrc
 {

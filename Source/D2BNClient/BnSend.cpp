@@ -37,7 +37,7 @@
 #include "BnclientApi.h"
 #include "D2DDrawApi.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2PlayerDataStrc;
 
@@ -851,7 +851,7 @@ int __fastcall BNSEND_SendReportVersion(unsigned int dwExeVersion, unsigned int 
 int __cdecl BNSEND_SendStartVersioning()
 {
     sub_00520C00_ClearReply(7);
-    BNDOWNLOAD_SetArchiveName(&gszEmptyAssertText);
+    BNDOWNLOAD_SetArchiveName("");
     D2BnLogonRequestStrc tRequest;
     memset(&tRequest, 0, sizeof(tRequest));
     tRequest.dwPlatform = 0x49583836;
@@ -1090,11 +1090,11 @@ int __fastcall BNSEND_SendStartAdvex(const char* szGameName, const char* szPassw
     tPacket.dwUnknown0C = 0;
     tPacket.f_10 = 0;
     if (!szGameName)
-        szGameName = &gszEmptyAssertText;
+        szGameName = "";
     if (!szPassword)
-        szPassword = &gszEmptyAssertText;
+        szPassword = "";
     if (!szStatstring)
-        szStatstring = &gszEmptyAssertText;
+        szStatstring = "";
     if (*szPassword)
         tPacket.dwState = 1;
     char* pText = tPacket.aData;
@@ -1156,7 +1156,7 @@ void* __fastcall BNSEND_GetGamesList(const char* szGameName, const char* szGameP
     }
     else
     {
-        pText += SStrCopy(pText, &gszEmptyAssertText, 0x100) + 1;
+        pText += SStrCopy(pText, "", 0x100) + 1;
     }
 
     if (szGamePassword)
@@ -1165,10 +1165,10 @@ void* __fastcall BNSEND_GetGamesList(const char* szGameName, const char* szGameP
     }
     else
     {
-        pText += SStrCopy(pText, &gszEmptyAssertText, 0x100) + 1;
+        pText += SStrCopy(pText, "", 0x100) + 1;
     }
 
-    const int nLength = SStrCopy(pText, &gszEmptyAssertText, 0x100);
+    const int nLength = SStrCopy(pText, "", 0x100);
     const int nSize = (int)(pText - tPacket.szText) + nLength + 1 + 0x10;
 
     sub_00520C00_ClearReply(9);
@@ -1528,14 +1528,14 @@ unsigned long __stdcall BNSEND_ResolveHostThread(void* pArguments)
 
     char** ppList = pHost->h_addr_list;
     int nCount = 0;
-    sub_0051A480_DebugLog(&gszEmptyAssertText);
+    sub_0051A480_DebugLog("");
     sub_0051A480_DebugLog("Original servlist:");
     while (ppList[nCount])
     {
         sub_0051A480_DebugLog("%d --> %s", nCount, inet_ntoa(*(D2InAddrStrc*)ppList[nCount]));
         ++nCount;
     }
-    sub_0051A480_DebugLog(&gszEmptyAssertText);
+    sub_0051A480_DebugLog("");
     sub_0051A480_DebugLog("Scrambled servlist:");
 
     srand(GetTickCount());
@@ -1548,7 +1548,7 @@ unsigned long __stdcall BNSEND_ResolveHostThread(void* pArguments)
         ((D2InAddrStrc*)ppList[j])->s_addr = ((D2InAddrStrc*)ppList[k])->s_addr;
         ((D2InAddrStrc*)ppList[k])->s_addr = nTemp;
     }
-    sub_0051A480_DebugLog(&gszEmptyAssertText);
+    sub_0051A480_DebugLog("");
 
     char* p = szOut;
     for (char** pp = pHost->h_addr_list; *pp; ++pp)

@@ -21,7 +21,7 @@ extern "C" const char gszEmptyAssertText;                                       
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 int __fastcall sub_004DF900_GetSoundPosition(void* pSound);                                                 // 0x004DF900
 
@@ -209,7 +209,7 @@ __declspec(noinline) int __fastcall SOUNDINST_IsTypeOneSound(int nKey)
 }
 
 // 0x004B95C0
-int __fastcall sub_004B95C0_IsHintPlaying(int nKey)
+int __fastcall SOUNDINST_IsHintPlaying(int nKey)
 {
     if (nKey)
     {
@@ -233,7 +233,7 @@ int __fastcall sub_004B95C0_IsHintPlaying(int nKey)
 }
 
 // 0x004B9610
-void* __fastcall sub_004B9610_GetSoundHandle(int nHintId)
+void* __fastcall SOUNDINST_FindSoundHandle(int nHintId)
 {
     for (D2SoundNodeStrc* pNode = gpSoundList_007C5458; pNode; pNode = pNode->pNext)
     {
@@ -893,7 +893,7 @@ static float sub_004BA020_MaxF(float a, float b)
 }
 
 // 0x004BA020
-void __fastcall sub_004BA020_UpdateSounds(unsigned int nTick)
+void __fastcall SOUNDINST_UpdateSounds(unsigned int nTick)
 {
     if (!gbClientSoundReady)
         return;
@@ -1208,7 +1208,7 @@ void __fastcall SOUNDINST_UpdateUnitHint(D2UnitStrc* pUnit, D2UnitStrc* pOther, 
 }
 
 // 0x004BA840
-void __fastcall sub_004BA840_StopSound(int nHandle)
+void __fastcall SOUNDINST_StopSound(int nHandle)
 {
     if (nHandle)
     {

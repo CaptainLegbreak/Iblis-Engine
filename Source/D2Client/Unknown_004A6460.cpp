@@ -441,7 +441,7 @@ extern D2TextBoxStrc* gpTextBox; // 0x007BF0A4
 
 
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2TextNodeStrc;
 
@@ -1972,7 +1972,7 @@ static int TEXT_ClaimLeftPanelClick(SMSGHANDLER_PARAMS* pMsg)
 {
     if (D2GFX_GetResolutionMode() == 2 && !AUTOMAP_IsCursorOverMiniPanelButton(pMsg) && pMsg->nXpos <= gnScreenWidth / 2 && pMsg->nYpos < gnScreenHeight - 0x2F)
     {
-        if (sub_00468830_GetCursorState() == 6)
+        if (CURSOR_GetCursorState() == 6)
             UI_CancelCursorItemUse();
         pMsg->bReturn = 1;
         sub_00420290_BreakHandlerChain(pMsg);
@@ -2483,7 +2483,7 @@ NEXT_TEXT:;
 
         case STAT_STAMINA:
             nValue >>= 8;
-            wsprintfA((char*)anNumber, gszFormatLd, nValue);
+            wsprintfA((char*)anNumber, "%ld", nValue);
             bCheckWidth = 1;
             break;
 

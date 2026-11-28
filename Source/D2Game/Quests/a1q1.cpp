@@ -73,7 +73,7 @@ void __fastcall QUESTS_StatusCyclerEx(D2GameStrc* game,D2UnitStrc* player,unsign
 
 void __fastcall QUESTS_UnitIterate(D2QuestDataStrc* pQuest, int nIterateState, D2UnitStrc* pUnit, int(__fastcall* pfIterate)(D2GameStrc*, D2UnitStrc*, void*), bool bIterate); // 0x00544300
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2QuestGUIDStrc;
 
@@ -654,7 +654,7 @@ bool __fastcall ACT1Q1_SeqCallback(D2QuestDataStrc* pQuestData)
     {
         if (IsBadCodePtr((FARPROC)pQuestData->pfSeqFilter))
         {
-            FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), ASSERT_LINE);
+            FOG_DisplayHalt("", sub_00408090(), ASSERT_LINE);
             exit(-1);
         }
         return pQuest->pfSeqFilter(pQuest);

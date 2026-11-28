@@ -4,7 +4,7 @@ The state of the engine's source under Visual Studio 2022. Kept current after ea
 (`tools/codex_sync.py`); the source fixes go to the Codex lanes, which make them in Codex and keep the byte-exact
 build, and they come back with the next sync.
 
-Last measured: 2026-11-28, Source/ at Codex 2600fd6 (#505).
+Last measured: 2026-11-28, Source/ at Codex 0055be2 (#506).
 
 ## Toolchain
 
@@ -47,7 +47,7 @@ The link is the next step: `docs/PORT_LINK.md`.
 
 ## Warnings worth a source fix
 
-At `/W1`, 48 warnings (59 at Codex 16572ad: Codex #502 made each twice-defined macro one definition and wrote the missing return in D2GAME_PACKETS_SendPacket0xAE). None stops the build; the ones below point at code whose behaviour can depend on the
+At `/W1`, 58 warnings. Codex #506 named the empty assert text in D2Common.h's D2_ASSERT (`&gszEmptyAssertText`), and ten files still define their own D2_ASSERT with `""`, so C4005 (macro redefined) is back at those ten: D2Common Maze.cpp, OutDesr.cpp, PathMisc.cpp, Skills.cpp, UnitFinds.cpp, Units.cpp; D2Gfx Window.cpp; D2Launch CharSel.cpp, CharSel_0042FFE0.cpp, MainMenus.cpp. Same text at runtime (an empty string); posted for the Codex lanes. None stops the build; the ones below point at code whose behaviour can depend on the
 compiler. Each is posted on the lane 14 board under Findings, by Codex module.
 
 ### A value-returning function that can end without `return` (C4715): 3 functions

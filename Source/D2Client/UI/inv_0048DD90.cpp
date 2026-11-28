@@ -87,7 +87,7 @@ int __cdecl sub_00468730();                                                     
 
 int __cdecl sub_00468740();                                                                                 // 0x00468740
 
-int __cdecl sub_00468830_GetCursorState();                                                                                 // 0x00468830
+int __cdecl CURSOR_GetCursorState();                                                                                 // 0x00468830
 
 unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB);                                                     // 0x00469AA0
 
@@ -1213,7 +1213,7 @@ void __stdcall INV_DrawItemTooltip(D2UnitStrc* pUnit, int nFlag)
             }
 
             const int nQuality = ITEMS_GetItemQuality(gpHoverItem);
-            if (sub_00468830_GetCursorState() == 8 || ITEMS_GetTransmogrify(gpHoverItem))
+            if (CURSOR_GetCursorState() == 8 || ITEMS_GetTransmogrify(gpHoverItem))
             {
                 INV_DrawTransmogrifyTooltip();
                 return;

@@ -32,7 +32,7 @@ extern "C" const char gszLRUCacheSourceFile[];                                  
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
-#define LRU_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define LRU_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 static __inline void __fastcall LRUCacheAppendUsed(D2LRUCacheStrc* pCache, D2LRUNodeStrc* pNode);
 

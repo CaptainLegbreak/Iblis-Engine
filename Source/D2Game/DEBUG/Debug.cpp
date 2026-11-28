@@ -12,7 +12,7 @@ struct D2Game5347F0Strc
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
 void __cdecl QUESTS_DisableSequences();                                                                      // 0x005449D0

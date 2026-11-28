@@ -41,7 +41,7 @@ void __stdcall sub_004FA590_RunLoop(D2LaunchCallback pfnCallback);              
 D2ComInterfaceStrc* __cdecl sub_00518C00();                                                           // 0x00518C00
 
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 
 

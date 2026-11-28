@@ -394,7 +394,7 @@ void __fastcall DRLGACTIVATE_RoomExPropagateUnsetStatus(D2DrlgRoomStrc* pDrlgRoo
         if (pNearRoom)
         {
             --pNearRoom->wRoomsInList[nStatus];
-            gRoomExUnsetStatus[nStatus](pNearRoom);
+            DRLGACTIVATE_CallRoomExUnsetStatus(pNearRoom, nStatus);
             if (nStatus < 3)
             {
                 DRLGACTIVATE_RoomExPropagateUnsetStatus(pNearRoom, nStatus + 1);
@@ -403,15 +403,13 @@ void __fastcall DRLGACTIVATE_RoomExPropagateUnsetStatus(D2DrlgRoomStrc* pDrlgRoo
     }
 }
 
-void __stdcall sub_M121_Emit_0061B5A0(D2DrlgRoomStrc* pDrlgRoom, unsigned char nStatus) { DRLGACTIVATE_CallRoomExUnsetStatus(pDrlgRoom, nStatus); }
-
 // 0x0061B610
 static inline void DRLGACTIVATE_RoomUnsetAndPropagateStatus(D2DrlgRoomStrc* pDrlgRoom, unsigned char nStatus)
 {
     if (pDrlgRoom->wRoomsInList[nStatus])
     {
         --pDrlgRoom->wRoomsInList[nStatus];
-        gRoomExUnsetStatus[nStatus](pDrlgRoom);
+        DRLGACTIVATE_CallRoomExUnsetStatus(pDrlgRoom, nStatus);
         DRLGACTIVATE_RoomExPropagateUnsetStatus(pDrlgRoom, nStatus + 1);
     }
 }
@@ -443,7 +441,7 @@ void __fastcall DRLGACTIVATE_UnsetClientIsInSight(D2DrlgStrc* pDrlg, int nLevelI
     if (pDrlgRoom && pDrlgRoom->wRoomsInList[1])
     {
         --pDrlgRoom->wRoomsInList[1];
-        gRoomExUnsetStatus[1](pDrlgRoom);
+        DRLGACTIVATE_CallRoomExUnsetStatus(pDrlgRoom, 1);
         DRLGACTIVATE_RoomExPropagateUnsetStatus(pDrlgRoom, 2);
     }
 }
@@ -462,7 +460,7 @@ void __fastcall DRLGACTIVATE_ChangeClientRoom(D2DrlgRoomStrc* pPreviousRoom, D2D
     if (pPreviousRoom && pPreviousRoom->wRoomsInList[0])
     {
         --pPreviousRoom->wRoomsInList[0];
-        gRoomExUnsetStatus[0](pPreviousRoom);
+        DRLGACTIVATE_CallRoomExUnsetStatus(pPreviousRoom, 0);
         DRLGACTIVATE_RoomExPropagateUnsetStatus(pPreviousRoom, 1);
     }
 }

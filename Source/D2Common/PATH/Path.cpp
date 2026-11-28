@@ -1670,7 +1670,7 @@ static int PATH_MissileToTarget(D2DynamicPathStrc* pPath, D2UnitStrc* pUnit)
         pPath->dwFlags |= 0x20;
         return pPath->dwPathPoints;
     default:
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x207);
+        FOG_DisplayHalt("", sub_00408090(), 0x207);
         exit(-1);
     }
 }

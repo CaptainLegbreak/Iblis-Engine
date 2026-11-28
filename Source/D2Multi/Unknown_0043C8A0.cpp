@@ -56,7 +56,7 @@ int __fastcall sub_0043C8A0_ReadSaveSummary(const char* szName, unsigned char* p
     int bResult = 0;
     if (!szName[0])
     {
-        FOG_DisplayHalt(&gszEmptyAssertText_006CC837, sub_00408090(), 0xE9);
+        FOG_DisplayHalt("", sub_00408090(), 0xE9);
         exit(-1);
     }
 

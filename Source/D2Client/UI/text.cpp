@@ -474,7 +474,7 @@ void* gpScroin2Cel; // 0x007BF270
 
 void* gpTextPanelFrameCel; // 0x007BF274
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2TextNodeStrc;
 
@@ -3491,7 +3491,7 @@ static int __stdcall TEXT_AdvanceTextBox(int bIgnore, D2TextBoxStrc* pTextBox)
     }
 
     const int bBusy = D2SOUND_GetMasterVolumeOption();
-    if (!gtTextState.hHintSound || sub_004B95C0_IsHintPlaying(gtTextState.hHintSound) || !bBusy)
+    if (!gtTextState.hHintSound || SOUNDINST_IsHintPlaying(gtTextState.hHintSound) || !bBusy)
     {
         gtTextState.hHintSound = 0;
         if (sub_0049D5A0_UpdateTextBox(pTextBox))
@@ -3821,7 +3821,7 @@ void __fastcall TEXT_UpdateTexts(D2ViewStrc* pView)
 
     if (gbTextBoxPending)
     {
-        gbTextBoxShown ? (void)0 : (FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0xD02), exit(-1));
+        gbTextBoxShown ? (void)0 : (FOG_DisplayHalt("", sub_00408090(), 0xD02), exit(-1));
         int nDrawn = 1;
         (gdwTextEndTick < GetTickCount()) ? (void)(nDrawn = 0) : (void)TEXT_DrawTextBoxAt(gpMainTextBox, &gtTextRect_007BF1D0);
         if (!nDrawn)

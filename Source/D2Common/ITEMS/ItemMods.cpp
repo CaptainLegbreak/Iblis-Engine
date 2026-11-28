@@ -50,7 +50,7 @@
 
 #pragma intrinsic(_ReadWriteBarrier)
 
-#define IM_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define IM_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define MAXIMUM(a,b) (((a)>(b))?(a):(b))
 

@@ -32,7 +32,7 @@
 
 #define QUESTSTATEFLAG_A1Q1 1
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2PoolSystemStrc;
 struct Obj005452C0;
@@ -444,7 +444,7 @@ void __fastcall ACT5Q2_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2Q
                         QUESTS_StateDebug(pQuestData, 5, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a5q2.cpp", 0x128);
                         if (IsBadCodePtr((FARPROC)pQuestData->pfSeqFilter))
                         {
-                            FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x129);
+                            FOG_DisplayHalt("", sub_00408090(), 0x129);
                             exit(-1);
                         }
                         pQuestData->pfSeqFilter(pQuestData);

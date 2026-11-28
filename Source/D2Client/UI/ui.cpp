@@ -336,7 +336,7 @@ extern "C" __declspec(dllimport) int __stdcall ReadFile(void* hFile, void* pBuff
 
 extern "C" char* __cdecl strcat(char* szDst, const char* szSrc);
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 

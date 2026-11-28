@@ -28,7 +28,7 @@
 
 #pragma intrinsic(strcpy)
 
-#define LVL_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define LVL_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2PoolSystemStrc;
 union D2SeedStrc;
@@ -70,7 +70,6 @@ struct D2LvlSubTxt;
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
 
-
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
@@ -79,7 +78,6 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
-D2LevelDefBin* gpLevelDefBin; // 0x0096C890
 
 extern "C" const char gszTxtFieldEnd[]; // 0x006D9060
 
@@ -148,7 +146,6 @@ void __fastcall sub_0040B480(D2PoolSystemStrc* pMemPool, void* pMemory, const ch
 
 void __fastcall DRLGTILESUB_FreeDrlgFile(D2LvlSubTxt* pLvlSubTxtRecord); // 0x00670630
 
-D2LvlPrestTxt* gpLvlPrestTxt; // 0x0096C894
 
 int* gpPortalLevels; // 0x0096C9F4
 
@@ -179,7 +176,6 @@ extern const char gszTilesDirectory[]; // 0x006E867C
 extern const char gszPathFormat[]; // 0x006D4124
 
 extern const char gszLvlSubTableName[]; // 0x006E8928
-
 
 
 __declspec(noreturn) void __cdecl sub_00681E09_Exit(int);
@@ -432,7 +428,7 @@ int* __fastcall DATATBLS_GetPortalLevels(int* pnPortalLevels)
 
 void __stdcall sub_M13_Emit_0061DD00(D2LevelDefBin* pLevelDefBin)
 {
-    gpLevelDefBin = pLevelDefBin;
+    sgtDataTables.pLevelDefBin = pLevelDefBin;
     DATATBLS_InitPortalLevels(pLevelDefBin);
 }
 
@@ -486,16 +482,16 @@ void __fastcall DATATBLS_LoadLevelDefsBin(void* hArchive)
         { gszTxtFieldEnd, 0, 0, 0, 0 },
     };
 
-    gpLevelDefBin = (D2LevelDefBin*)DATATBLS_CompileTxt(hArchive, "leveldefs", pTbl, 0, 0x9C);
-    DATATBLS_InitPortalLevels(gpLevelDefBin);
+    sgtDataTables.pLevelDefBin = (D2LevelDefBin*)DATATBLS_CompileTxt(hArchive, "leveldefs", pTbl, 0, 0x9C);
+    DATATBLS_InitPortalLevels(sgtDataTables.pLevelDefBin);
 }
 
 // 0x0061E440
 void __fastcall DATATBLS_UnloadLevelDefsBin()
 {
-    if (gpLevelDefBin)
+    if (sgtDataTables.pLevelDefBin)
     {
-        DATATBLS_UnloadBin(gpLevelDefBin);
+        DATATBLS_UnloadBin(sgtDataTables.pLevelDefBin);
     }
 
     if (gpPortalLevels)
@@ -509,7 +505,7 @@ D2LevelDefBin* __fastcall DATATBLS_GetLevelDefRecord(int nLevelId)
 {
     if (nLevelId >= 0 && nLevelId < sgptDataTables->nLevelsTxtRecordCount)
     {
-        return &gpLevelDefBin[nLevelId];
+        return &sgtDataTables.pLevelDefBin[nLevelId];
     }
 
     return 0;
@@ -696,9 +692,9 @@ void __fastcall DATATBLS_UnloadLvlPrestTxt()
         gppLvlPrestDrlgFiles = 0;
     }
 
-    if (gpLvlPrestTxt)
+    if (sgtDataTables.pLvlPrestTxt)
     {
-        DATATBLS_UnloadBin(gpLvlPrestTxt);
+        DATATBLS_UnloadBin(sgtDataTables.pLvlPrestTxt);
     }
 }
 
@@ -707,7 +703,7 @@ D2LvlPrestTxt* __stdcall DATATBLS_GetLvlPrestTxtRecord(int nId)
 {
     if (nId >= 0 && nId < sgptDataTables->nLvlPrestTxtRecordCount)
     {
-        return &gpLvlPrestTxt[nId];
+        return &sgtDataTables.pLvlPrestTxt[nId];
     }
 
     return 0;
@@ -718,9 +714,9 @@ D2LvlPrestTxt* __fastcall DATATBLS_GetLvlPrestTxtRecordFromLevelId(int nLevelId)
 {
     for (int i = 0; i < sgptDataTables->nLvlPrestTxtRecordCount; ++i)
     {
-        if (gpLvlPrestTxt[i].dwLevelId == nLevelId)
+        if (sgtDataTables.pLvlPrestTxt[i].dwLevelId == nLevelId)
         {
-            return &gpLvlPrestTxt[i];
+            return &sgtDataTables.pLvlPrestTxt[i];
         }
     }
 
@@ -863,7 +859,7 @@ void __fastcall DATATBLS_LoadLvlSubTxt(void* archive,int loadFiles,int extra)
   for(int i=0;i<gnLvlSubTxtRecordCount;++i) { if(rows[i].dwType>maxType)maxType=rows[i].dwType; }
   if(maxType) {
    int size=sizeof(int)*(maxType+1);
-   gpLvlSubTypeStartIds=(int*)FOG_AllocPool(0,size,gszLvlTblsSourceFile,0x3a6,0);
+   gpLvlSubTypeStartIds=(int*)FOG_AllocPool(0,size,".\\DATATBLS\\LvlTbls.cpp",0x3a6,0);
    memset(gpLvlSubTypeStartIds,0,size);
    int lastType=0;
    D2LvlSubTxt* txt=gpLvlSubTxt;
@@ -880,7 +876,7 @@ void __fastcall DATATBLS_LoadLvlSubTxt(void* archive,int loadFiles,int extra)
   }
  }
  if(loadFiles||extra) {
-  gppLvlSubDrlgFiles=(D2DrlgFileStrc**)FOG_Alloc(sizeof(D2DrlgFileStrc*)*gnLvlSubTxtRecordCount,gszLvlTblsSourceFile,0x3b6,0);
+  gppLvlSubDrlgFiles=(D2DrlgFileStrc**)FOG_Alloc(sizeof(D2DrlgFileStrc*)*gnLvlSubTxtRecordCount,".\\DATATBLS\\LvlTbls.cpp",0x3b6,0);
   memset(gppLvlSubDrlgFiles,0,sizeof(D2DrlgFileStrc*)*gnLvlSubTxtRecordCount);
  }
  D2LvlSubTxt* row=gpLvlSubTxt;
@@ -890,7 +886,7 @@ void __fastcall DATATBLS_LoadLvlSubTxt(void* archive,int loadFiles,int extra)
   if((expansion||!row->dwExpansion)&&(loadFiles||extra)) {
    DRLGPRESET_LoadDrlgFile(&gppLvlSubDrlgFiles[i],0,row->szFile);
    if(!gppLvlSubDrlgFiles[i]->nSubstGroups) {
-    FOG_DisplayHalt(&gszEmptyAssertText,sub_00408090(),0x3c8);sub_00681E09_Exit(-1);
+    FOG_DisplayHalt("",sub_00408090(),0x3c8);sub_00681E09_Exit(-1);
    }
   }
  }

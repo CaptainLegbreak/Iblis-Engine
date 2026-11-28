@@ -20,7 +20,7 @@
 #include "D2CommonApi2.h"
 #include "D2GfxApi.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define SKILLS_GetSkillsTxtRecord_E1120(nSkillId) \
     ((nSkillId) >= 0 && (nSkillId) < sgptDataTables->nSkillsTxtRecordCount ? &sgptDataTables->pSkillsTxt[nSkillId] : 0)

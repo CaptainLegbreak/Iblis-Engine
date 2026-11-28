@@ -22,7 +22,7 @@
 
 #define LEVEL_EFFECT_TICKS 30
 #define THRONE_MISSILE 0x27F
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 struct D2MissilesTxt;
 struct D2MonStatsTxt;
 struct D2MonStats2Txt;

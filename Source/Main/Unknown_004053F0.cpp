@@ -12,7 +12,7 @@
 #define CMD_INTEGER 1
 #define CMD_STRING 2
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 struct D2ConfigStrc;
 struct D2IniEntryStrc;
 struct Character;
@@ -96,7 +96,7 @@ void __stdcall sub_00405450_LoadIniSettings(char* pSettings)
             *(int*)pDest = GetPrivateProfileIntA(gaIniEntries_00705040[i].szSection, gaIniEntries_00705040[i].szKey, gaIniEntries_00705040[i].nDefault, szIni);
             break;
         case 2:
-            GetPrivateProfileStringA(gaIniEntries_00705040[i].szSection, gaIniEntries_00705040[i].szKey, &gszEmptyAssertText, pDest, 0x1B, szIni);
+            GetPrivateProfileStringA(gaIniEntries_00705040[i].szSection, gaIniEntries_00705040[i].szKey, "", pDest, 0x1B, szIni);
             break;
         }
     }

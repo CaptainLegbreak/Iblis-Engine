@@ -116,7 +116,7 @@ void __stdcall DRLGVER_SplitVerticesAtOrths(D2PoolSystemStrc* pMemPool, D2DrlgVe
             break;
 
         default:
-            FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 109);
+            FOG_DisplayHalt("", sub_00408090(), 109);
             exit(-1);
         }
 

@@ -15,7 +15,7 @@
 struct D2PoolSystemStrc;
 struct D2DrlgActStrc;
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 #define UNIT_MONSTER 1
 
 struct D2DrlgCoordsStrc;
@@ -236,7 +236,7 @@ inline int sub_0044BE50(D2UnitStrc* pUnit)
 // 0x0053A8E0
 void __fastcall LEVEL_AddClient(D2GameStrc* pGame, D2ActiveRoomStrc* hRoom, D2ClientStrc* pClient)
 {
-    if (!hRoom) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 207); exit(-1); }
+    if (!hRoom) { FOG_DisplayHalt("", sub_00408090(), 207); exit(-1); }
     D2DrlgCoordsStrc tCoords;
     DUNGEON_GetRoomCoordinates(hRoom, &tCoords);
     D2GAME_PACKETS_SendPacket0x07(pClient, DUNGEON_GetLevelIdFromRoom(hRoom), tCoords.nTileXPos, tCoords.nTileYPos);

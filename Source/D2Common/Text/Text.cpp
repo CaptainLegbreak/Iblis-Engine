@@ -1,7 +1,8 @@
 #include "FogApi.h"
+#include "D2TextMessage.h"
 #pragma intrinsic(memset)
 
-#define TEXT_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define TEXT_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2PoolSystemStrc;
 struct D2TextNodeStrc;
@@ -23,20 +24,6 @@ struct D2TextHeaderStrc
     unsigned short nCount;
     unsigned short pad0x06;
     D2TextNodeStrc* pNode;
-};
-
-struct D2MessageStrc
-{
-    unsigned char nMenu;
-    unsigned char pad0x01;
-    unsigned short nStringId;
-};
-
-struct D2MessageListStrc
-{
-    unsigned char bCount;
-    unsigned char pad0x01;
-    D2MessageStrc pMessages[8];
 };
 
 void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430

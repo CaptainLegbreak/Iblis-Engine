@@ -66,7 +66,7 @@ extern int gnAmbientDelay; // 0x007C8C94
 
 extern int gnAmbientTick; // 0x007C8C98
 
-void __fastcall sub_004BA840_StopSound(int nHandle); // 0x004BA840
+void __fastcall SOUNDINST_StopSound(int nHandle); // 0x004BA840
 
 struct D2ClientModuleListStrc
 {

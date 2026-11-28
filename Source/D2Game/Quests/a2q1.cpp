@@ -10,7 +10,7 @@
 
 #pragma function(memset)
 
-#define CHECK(p,line) if(!(p)){FOG_DisplayHalt(text_006CC837,sub_00408090(),line);sub_00681E09(-1);}
+#define CHECK(p,line) if(!(p)){FOG_DisplayHalt("",sub_00408090(),line);sub_00681E09(-1);}
 
 struct D2PoolSystemStrc;
 struct D2BitBufferStrc;
@@ -360,7 +360,7 @@ int __fastcall ACT2Q1_UnitIterate_SetCompletionFlag(D2GameStrc* pGame, D2UnitStr
     return 0;
 }
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 typedef void(__fastcall* PartyCallbackFunction)(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pArgs);
 
@@ -608,7 +608,7 @@ bool __fastcall ACT2Q1_SeqCallback(D2QuestDataStrc* pQuestData)
     {
         if (IsBadCodePtr((FARPROC)pQuestData->pfSeqFilter))
         {
-            FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), ASSERT_LINE);
+            FOG_DisplayHalt("", sub_00408090(), ASSERT_LINE);
             exit(-1);
         }
         return pQuest->pfSeqFilter(pQuest);

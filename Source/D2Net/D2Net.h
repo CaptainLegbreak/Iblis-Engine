@@ -25,7 +25,7 @@ typedef int (__fastcall* D2NetHandlerCallback)(D2QueueServerStrc* pServer, char*
 D2QueueServerStrc* __stdcall QSInit(int nState, int nSlots, int nPort, int bDisableNt, D2NetMessageCallback pfnProcess, D2NetClientCallback pfnOnNewClient, D2NetClientCallback pfnOnRemove, D2NetHandlerCallback pfnHandler); // 0x006BF760
 void __stdcall FOG_10170(D2QueueServerStrc* pServer, D2NetAddressCallback pfnCallback); // 0x006BF040
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 #define MAX_MSG_SIZE 516
 
 struct D2NetPacketRecStrc

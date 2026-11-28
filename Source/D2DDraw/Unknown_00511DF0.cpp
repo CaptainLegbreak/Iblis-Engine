@@ -234,7 +234,7 @@ void __fastcall sub_005122E0_DrawShadow(D2CmpCelContextStrc* pContext, int nX, i
 }
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                               // 0x00681EF0
 #pragma function(memset)
@@ -411,7 +411,7 @@ void __fastcall sub_00512D90_DDrawUtilFilledRect(tagRECT* pRect, unsigned char n
     }
 }
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2CoordPairStrc { int nX; int nY; };
 static void __stdcall sub_00512A50_DrawLine(const D2CoordPairStrc* pFrom, const D2CoordPairStrc* pTo, unsigned char nColor); // 0x00512A50
@@ -536,7 +536,7 @@ static void __stdcall sub_00512A50_DrawLine(const D2CoordPairStrc* pFrom, const 
     }
 }
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 // 0x00512CE0
 void __fastcall sub_00512CE0_DrawRect(tagRECT* pRect, int nColor)

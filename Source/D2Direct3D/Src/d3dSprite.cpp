@@ -954,7 +954,7 @@ int __stdcall D3DSPRITE_ClipSprite(D2SpriteInfoStrc* pInfo, int nX, int nY, cons
 
     if (pClip->nHeight <= 0)
     {
-        FOG_DisplayHalt(gszEmptyString, sub_00408090(), 1114);
+        FOG_DisplayHalt("", sub_00408090(), 1114);
         exit(-1);
     }
     return 0;

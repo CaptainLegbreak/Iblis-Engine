@@ -540,7 +540,7 @@ static D2RoomCoordListStrc* DRLGLOGIC_GetRoomCoordListAtTile(D2DrlgRoomStrc* pDr
 {
     if (!pDrlgRoom->pLogicalRoomInfo)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 668);
+        FOG_DisplayHalt("", sub_00408090(), 668);
         exit(-1);
     }
 
@@ -583,7 +583,7 @@ D2RoomCoordListStrc* __fastcall DRLGLOGIC_GetRoomCoordList(D2DrlgRoomStrc* pDrlg
 {
     if (!pDrlgRoom->pLogicalRoomInfo)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 717);
+        FOG_DisplayHalt("", sub_00408090(), 717);
         exit(-1);
     }
 

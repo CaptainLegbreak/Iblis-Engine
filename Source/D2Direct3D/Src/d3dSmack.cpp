@@ -314,7 +314,7 @@ void __cdecl D3DSMACK_UploadSmackFrameBuffer()
 
     if (!gapSmackSurfaces[1])
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x1DB);
+        FOG_DisplayHalt("", sub_00408090(), 0x1DB);
         exit(-1);
     }
 

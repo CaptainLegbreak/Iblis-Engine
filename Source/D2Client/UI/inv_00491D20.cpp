@@ -22,7 +22,7 @@ struct D2BitBufferStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 extern "C" __declspec(dllimport) short __stdcall GetAsyncKeyState(int vKey);
 
@@ -33,7 +33,7 @@ D2UnitStrc* __cdecl CUNIT_GetPlayerUnit(); // 0x00463DD0
 D2UnitStrc* __cdecl CUNIT_GetPlayerUnit2(); // 0x00463DE0
 void __fastcall CURSOR_SetCursorItemState(D2UnitStrc* pItem); // 0x00468070
 D2UnitStrc* __cdecl CURSOR_GetCursorItem(); // 0x004680A0
-int __cdecl sub_00468830_GetCursorState(); // 0x00468830
+int __cdecl CURSOR_GetCursorState(); // 0x00468830
 void __fastcall MSG_SendDword(char nHeader, int nArg); // 0x00478680
 void __fastcall MSG_SendTwoDwords(unsigned char nHeader, unsigned int d1, unsigned int d5); // 0x004786A0
 void __fastcall MSG_SendFourDwords(char nCommand, int nArg0, int nArg1, int nArg2, int nArg3); // 0x00478700
@@ -202,7 +202,7 @@ static int __stdcall INV_ClickInvGrid(D2UnitStrc* pUnit, D2InventoryStrc* pInven
     int nOutX;
     int nOutY;
 
-    if (sub_00468830_GetCursorState() == 6)
+    if (CURSOR_GetCursorState() == 6)
     {
         D2UnitStrc* pCursor = CURSOR_GetCursorItem();
         D2UnitStrc* pHit = INVENTORY_GetItemFromInventoryPage(pInventory, nGridX, nGridY, &nOutX, &nOutY, nRecord, nPage);
@@ -223,7 +223,7 @@ static int __stdcall INV_ClickInvGrid(D2UnitStrc* pUnit, D2InventoryStrc* pInven
             }
         }
     }
-    else if (sub_00468830_GetCursorState() == 8)
+    else if (CURSOR_GetCursorState() == 8)
     {
         D2UnitStrc* pHit = INVENTORY_GetItemFromInventoryPage(pInventory, nGridX, nGridY, &nOutX, &nOutY, nRecord, nPage);
         if (pHit)
@@ -523,7 +523,7 @@ static void __stdcall INV_ClickOutsidePanel(int nY, SMSGHANDLER_PARAMS* pMsg, in
     {
         return;
     }
-    if (sub_00468830_GetCursorState() == 6)
+    if (CURSOR_GetCursorState() == 6)
     {
         UI_CancelCursorItemUse();
     }
@@ -595,7 +595,7 @@ void __stdcall INV_HandlePanelClick(SMSGHANDLER_PARAMS* pMsg)
 BODY_FOUND:
             {
                 D2UnitStrc* cursor=INVENTORY_GetCursorItem(inventory);
-                if(sub_00468830_GetCursorState()==6 || sub_00468830_GetCursorState()==8) {
+                if(CURSOR_GetCursorState()==6 || CURSOR_GetCursorState()==8) {
 USE_BODY_ACTION:
                     result=gaBodyClick[bodyloc](player,inventory,bodyloc);
                     handled=1;
@@ -623,8 +623,8 @@ AFTER_BODY:
         pMsg->lResult=0;
         pMsg->bReturn=1;
         if(!result) {
-            if(sub_00468830_GetCursorState()==6) UI_CancelCursorItemUse();
-            else if(sub_00468830_GetCursorState()==8) MSG_SendDword(0x4C,-1);
+            if(CURSOR_GetCursorState()==6) UI_CancelCursorItemUse();
+            else if(CURSOR_GetCursorState()==8) MSG_SendDword(0x4C,-1);
         }
         sub_00420290_BreakHandlerChain(pMsg);
         gbHoverInGrid=0;
@@ -723,7 +723,7 @@ void __stdcall INV_HandleNpcClick(SMSGHANDLER_PARAMS* msg)
         if(x<0 || x>gtPlayerInvRect.nLeft || y<0 || y>gtPlayerInvRect.nBottom) goto OUTSIDE;
         msg->bReturn=1;msg->lResult=0;sub_00420290_BreakHandlerChain(msg);
         if(x<gtNpcInvGrid.nGridLeft || x>gtNpcInvGrid.nGridRight || y<gtNpcInvGrid.nGridTop || y>gtNpcInvGrid.nGridBottom) return;
-        if(sub_00468830_GetCursorState()==6 || !NPCMENU_GetInteractNpcId(&nArg)) return;
+        if(CURSOR_GetCursorState()==6 || !NPCMENU_GetInteractNpcId(&nArg)) return;
         D2UnitStrc* player=CUNIT_FindClientUnit(nArg,1);
         if(!player) return;
         Unicode text[64];int cost;

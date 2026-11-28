@@ -7,7 +7,7 @@
 #include "D2ClientApi.h"
 #include "D2GfxApi2.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define gnRowOffsets_007C9828 (ganRowOffsets + 32)
 

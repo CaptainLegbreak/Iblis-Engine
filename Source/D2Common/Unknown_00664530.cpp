@@ -9,8 +9,9 @@ struct D2MonStatsTxt;
 struct D2MonStats2CompStrc;
 struct D2MonStats2Txt;
 
-
 extern D2DataTablesStrc sgtDataTables; // 0x0096BC30
+
+
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 

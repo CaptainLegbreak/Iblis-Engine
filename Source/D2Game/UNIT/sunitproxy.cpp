@@ -18,7 +18,7 @@
 #include "D2CommonApi.h"
 #include "D2CommonApi2.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2PoolSystemStrc;
 struct D2NpcRecordStrc;
@@ -270,9 +270,9 @@ static inline unsigned int RollSeed(D2SeedStrc* pSeed)
 // 0x00536070
 void __fastcall SUNITPROXY_InitializeNpcControl(D2GameStrc* pGame)
 {
-    D2NpcRecordStrc* pRecords = (D2NpcRecordStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2NpcRecordStrc)*64, szSUnitProxyCppFile, 0xB7, 0);
+    D2NpcRecordStrc* pRecords = (D2NpcRecordStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2NpcRecordStrc)*64, ".\\UNIT\\sunitproxy.cpp", 0xB7, 0);
     memset(pRecords, 0, sizeof(D2NpcRecordStrc)*64);
-    D2NpcControlStrc* pControl = (D2NpcControlStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2NpcControlStrc), szSUnitProxyCppFile, 0xB9, 0);
+    D2NpcControlStrc* pControl = (D2NpcControlStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2NpcControlStrc), ".\\UNIT\\sunitproxy.cpp", 0xB9, 0);
     pControl->pFirstRecord = 0;
     pControl->nArraySize = 0;
     pControl->nNpcCount = 0;
@@ -740,7 +740,7 @@ void __fastcall SUNITPROXY_FreeVendorChain(D2GameStrc* pGame, D2UnitStrc* pPlaye
                     pGamble->pInventory = 0;
                 }
 
-                sub_0040B480(pGame->pMemoryPool, pGamble, szSUnitProxyCppFile, 0x48F, 0);
+                sub_0040B480(pGame->pMemoryPool, pGamble, ".\\UNIT\\sunitproxy.cpp", 0x48F, 0);
                 break;
             }
 
@@ -768,7 +768,7 @@ void __fastcall SUNITPROXY_FreeVendorChain(D2GameStrc* pGame, D2UnitStrc* pPlaye
                 pNpcRecord->pVendorChain = pVendorChain->pNext;
             }
 
-            sub_0040B480(pGame->pMemoryPool, pVendorChain, szSUnitProxyCppFile, 0x4A7, 0);
+            sub_0040B480(pGame->pMemoryPool, pVendorChain, ".\\UNIT\\sunitproxy.cpp", 0x4A7, 0);
             return;
         }
 

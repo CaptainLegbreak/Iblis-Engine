@@ -22,7 +22,7 @@
 
 static int BNDOWNLOAD_CheckStringBlock(const char* pBuffer, unsigned int nPos, unsigned int nCount, unsigned int nSize); // 0x00520A80
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2CriticalSectionStrc;
 
@@ -412,7 +412,7 @@ extern "C" int __cdecl rand(); // 0x00687461
 
 extern "C" void __cdecl srand(unsigned int nSeed); // 0x00687454
 
-#define CHECK(p,line) if(!(p)){FOG_DisplayHalt(&gszEmptyAssertText,sub_00408090(),line);exit(-1);}
+#define CHECK(p,line) if(!(p)){FOG_DisplayHalt("",sub_00408090(),line);exit(-1);}
 
 struct D2BigPowModStrc;
 
@@ -1440,7 +1440,7 @@ void __fastcall BNDOWNLOAD_RequestDownload(int nType, int nSubType, unsigned int
         return;
 
     if (!szLink)
-        szLink = &gszEmptyAssertText;
+        szLink = "";
 
     D2FileTimeStrc tCachedTime;
     void* pData;
@@ -1655,7 +1655,7 @@ int __fastcall BNDOWNLOAD_RequestNamedFile(const char* szText, int nLen)
     SMemCopy(gszAdList, szText, nLen);
     gnPercent = 0;
     LeaveCriticalSection(&gtDownloadLock);
-    SRegSaveData(gszAdListRegKey, gszAdListRegValue, 0x82, szText, nLen + 1);
+    SRegSaveData("Patch", "Patches", 0x82, szText, nLen + 1);
 
     D2FileTimeStrc tCachedTime;
     D2FileTimeStrc tFileTime;
@@ -1696,7 +1696,7 @@ int __fastcall BNDOWNLOAD_RequestNamedFile(const char* szText, int nLen)
     pRecord->nSubType = 2;
     pRecord->tFileTime = tFileTime;
     SStrCopy(pRecord->szFile, szText, 0x104);
-    SStrCopy(pRecord->szLink, &gszEmptyAssertText, 0x104);
+    SStrCopy(pRecord->szLink, "", 0x104);
     InterlockedIncrement(&gnPendingCount);
     return _beginthreadex(0, 0, BNDOWNLOAD_DownloadThread, pRecord, 0, &nThreadId);
 }
@@ -2045,7 +2045,7 @@ int __fastcall BNDOWNLOAD_HandleReportVersion(D2VersionReplyStrc* pReply, int nS
         break;
     }
 
-    SRegSaveData("Patch", "Patches", 0x82, &gszEmptyAssertText, 1);
+    SRegSaveData("Patch", "Patches", 0x82, "", 1);
 
     if (nResult == 1)
     {
@@ -2273,7 +2273,7 @@ int __fastcall BNDOWNLOAD_HandleAuthInfo(const unsigned char* pData, unsigned in
     sub_0051A540_SetValue(nServerToken);
     sub_0051A560_SetValue(nLogonType);
     BNDOWNLOAD_SetCheckRevisionValue(szValue);
-    BNDOWNLOAD_SetArchiveName(&gszEmptyAssertText);
+    BNDOWNLOAD_SetArchiveName("");
     BNDOWNLOAD_RequestDownload(0x80000001, 3, 0, 0, &tFileTime, szFileName, 0);
     return 1;
 }
@@ -2302,7 +2302,7 @@ int __fastcall BNDOWNLOAD_HandleAuthCheck(const unsigned char* pData, unsigned i
 
     gszReplyText[0] = 0;
     gnReplyReady = 0;
-    SRegSaveData("Patch", "Patches", 0x82, &gszEmptyAssertText, 1);
+    SRegSaveData("Patch", "Patches", 0x82, "", 1);
 
     switch (nCode)
     {

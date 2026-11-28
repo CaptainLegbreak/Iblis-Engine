@@ -9,7 +9,7 @@
 
 #pragma intrinsic(_ReadWriteBarrier)
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 
 #define PARTY_FIRST_ID 3
@@ -299,12 +299,12 @@ int __fastcall PARTY_AddPlayerToParty(D2GameStrc* pGame, short nPartyId, D2UnitS
     {
         if (!pParty)
         {
-            FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 254);
+            FOG_DisplayHalt("", sub_00408090(), 254);
             exit(-1);
         }
         else
         {
-            FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 255);
+            FOG_DisplayHalt("", sub_00408090(), 255);
             exit(-1);
         }
     }

@@ -33,7 +33,7 @@
 
 #pragma intrinsic(_ReadWriteBarrier)
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define MAX_MSG_SIZE 516
 
@@ -59,7 +59,6 @@ struct D2SGameDataStrc;
 struct D2ServerCallbackFunctions;
 
 
-struct D2NetPacketRecStrc;
 
 
 struct D2Net52BE10Strc;
@@ -81,13 +80,11 @@ struct D2StormListArrayStrc;
 
 struct D2StormHashTableStrc;
 
-struct D2StormListStrc;
 
 struct D2Storm4167B0Strc;
 
 struct D2Storm4168F0Strc;
 
-struct D2Storm416A90Strc;
 
 struct D2HashKeyNoneStrc;
 
@@ -191,14 +188,6 @@ typedef int (__fastcall* D2NET_Unk_Callback)(int, int, int, int);
 
 int __stdcall SERVER_SetRemoveClientCallback(D2NET_Unk_Callback pfCallback); // 0x0052B5C0
 
-
-struct D2NetPacketRecStrc
-{
-    unsigned char data[MAX_MSG_SIZE];
-    int nPacketSize;
-    unsigned long dwTickCount;
-    D2NetPacketRecStrc* pNext;
-};
 
 
 struct D2Net52BE10Strc
@@ -343,12 +332,6 @@ struct D2StormHashTableStrc
 
 extern unsigned short gwValue_0077905C;
 
-struct D2StormListStrc
-{
-    int m_linkoffset;
-    D2StormLinkStrc m_terminator;
-};
-
 struct D2Storm4167B0Strc
 {
     D2StormLinkStrc f_0;
@@ -361,13 +344,6 @@ struct D2Storm4168F0Strc
     D2StormLinkStrc f_0;
 
     ~D2Storm4168F0Strc();
-};
-
-struct D2Storm416A90Strc
-{
-    char pad00[0x14C];
-    int n14C;
-    int n150;
 };
 
 struct D2GameListStrc;
@@ -1228,7 +1204,7 @@ void __fastcall GAME_SynchronizePlayerWithClients(D2GameStrc* pGame, D2ClientStr
     D2UnitStrc* hNewUnit = CLIENTS_GetPlayerFromClient(pClient, 0);
     if (!hNewUnit)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x5A1);
+        FOG_DisplayHalt("", sub_00408090(), 0x5A1);
         exit(-1);
     }
     for (D2ClientStrc* pOtherClient = pGame->pClientList; pOtherClient; pOtherClient = pOtherClient->pNext)
@@ -3613,7 +3589,7 @@ void __fastcall sSrvSendGameInit(int nClientId, char* szGameName, unsigned char 
     ARENA_AllocArena(pGame, nArena, nFlags, nArenaTemplate);
     CLIENTS_SetGameData((D2ClientStrc*)pGame);
 
-    D2ClientStrc* pClient = ClientAddToGame(pGame, nClientId, nCharTemplate, szClientName, &gszEmptyAssertText, 0, nLocale, nUnused3, nUnused4);
+    D2ClientStrc* pClient = ClientAddToGame(pGame, nClientId, nCharTemplate, szClientName, "", 0, nLocale, nUnused3, nUnused4);
     SERVER_SetClientGameGUID(nClientId, hGame);
 
     if (pGame->nGameType == 1)
@@ -3741,7 +3717,7 @@ void __stdcall GAME_SendGameList(void* pArg)
         }
     }
 
-    D2GAME_PACKETS_SendGameListEntry(pArg, 0xFFFF, 0, &gszEmptyAssertText);
+    D2GAME_PACKETS_SendGameListEntry(pArg, 0xFFFF, 0, "");
 }
 
 // 0x0052E9B0

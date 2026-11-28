@@ -200,13 +200,13 @@ int __cdecl SELECT_GetHoverMonClassId(); // 0x00466DC0
 int __cdecl SELECT_GetHoverClassId(); // 0x00466DD0
 void __cdecl SELECT_ClearSelection(); // 0x00466FE0
 void __cdecl SELECT_UnlockHover(); // 0x00466FF0
-void __fastcall sub_00468040_ResetCursorState(int nArg, int nArg2); // 0x00468040
+void __fastcall CURSOR_ResetCursorState(int nArg, int nArg2); // 0x00468040
 void __fastcall CURSOR_SetCursorItemState(D2UnitStrc* pItem); // 0x00468070
 void __cdecl CURSOR_ShutdownCursor(); // 0x00468170
 void __cdecl CURSOR_DrawCursor(); // 0x004684C0
 int __cdecl sub_00468730(); // 0x00468730
 int __cdecl sub_00468740(); // 0x00468740
-int __cdecl sub_00468830_GetCursorState(); // 0x00468830
+int __cdecl CURSOR_GetCursorState(); // 0x00468830
 void __cdecl sub_00468F00_ShowBelt(); // 0x00468F00
 void __fastcall CMDTBL_ResetKeyConfig(int nArg); // 0x00469A60
 unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB); // 0x00469AA0
@@ -708,7 +708,7 @@ float __fastcall sub_004B93A0_ClampFloat(float fValue, float fMin, float fMax); 
 void __fastcall SOUNDINST_SetValue(int nKey, int nValue); // 0x004B9B50
 int __cdecl SOUNDINST_IsSongPlaying(); // 0x004B9C60
 void __cdecl SOUNDINST_FreeAllSounds(); // 0x004B9D20
-void __fastcall sub_004BA020_UpdateSounds(unsigned int nTick); // 0x004BA020
+void __fastcall SOUNDINST_UpdateSounds(unsigned int nTick); // 0x004BA020
 void __fastcall SOUNDINST_LockSoundsById(int nHintId); // 0x004BA890
 void __cdecl SOUNDINST_ToggleHints(); // 0x004BABC0
 void __fastcall OBJECT_UpdateObjectOverlay(D2UnitStrc* pUnit); // 0x004BC8D0

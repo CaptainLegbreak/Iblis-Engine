@@ -30,7 +30,7 @@
 
 #define STAT_ITEM_DEMONDAMAGE_PERCENT 121
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define UNIT_OBJECT 2
 
@@ -3693,7 +3693,7 @@ void __fastcall SUNITDMG_PartyCallback_ComputePartyExperience(D2GameStrc* game, 
     }
     if (data->count >= 8)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 3877);
+        FOG_DisplayHalt("", sub_00408090(), 3877);
         exit(-1);
     }
     data->players[data->count] = unit;

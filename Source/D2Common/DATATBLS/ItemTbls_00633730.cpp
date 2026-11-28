@@ -41,9 +41,10 @@ struct D2DataTablesStrc
     D2TxtLinkStrc* pColorsLinker;
     char unk0x9B8[0x23C];
     D2TxtLinkStrc* pItemTypesLinker;
-    char unk0xBF8[0x254];
-    D2MagicAffixDataTbl pMagicAffixDataTables;
+    char unk0xBF8[0x8C];
 };
+
+extern D2MagicAffixDataTbl sgtMagicItemModsDataTblDesc; // 0x0096CA7C
 
 enum
 {
@@ -129,21 +130,21 @@ void __fastcall DATATBLS_LoadMagicSuffix_Prefix_AutomagicTxt(void* hArchive)
     pMagicPrefix = (D2MagicAffixTxt*)DATATBLS_CompileTxt(hArchive, "magicprefix", pTbl, &nPrefixRecords, sizeof(D2MagicAffixTxt));
     pAutoMagic = (D2MagicAffixTxt*)DATATBLS_CompileTxt(hArchive, "automagic", pTbl, &nAutoMagicRecords, sizeof(D2MagicAffixTxt));
 
-    sgtDataTables.pMagicAffixDataTables.nMagicAffixTxtRecordCount = nSuffixRecords + nPrefixRecords + nAutoMagicRecords;
-    sgtDataTables.pMagicAffixDataTables.pMagicAffixTxt = (D2MagicAffixTxt*)FOG_AllocPool(0, sizeof(D2MagicAffixTxt) * sgtDataTables.pMagicAffixDataTables.nMagicAffixTxtRecordCount, ".\\DATATBLS\\ItemTbls.cpp", 663, 0);
+    sgtMagicItemModsDataTblDesc.nMagicAffixTxtRecordCount = nSuffixRecords + nPrefixRecords + nAutoMagicRecords;
+    sgtMagicItemModsDataTblDesc.pMagicAffixTxt = (D2MagicAffixTxt*)FOG_AllocPool(0, sizeof(D2MagicAffixTxt) * sgtMagicItemModsDataTblDesc.nMagicAffixTxtRecordCount, ".\\DATATBLS\\ItemTbls.cpp", 663, 0);
 
-    sgtDataTables.pMagicAffixDataTables.pMagicSuffix = sgtDataTables.pMagicAffixDataTables.pMagicAffixTxt;
-    memcpy(sgtDataTables.pMagicAffixDataTables.pMagicAffixTxt, pMagicSuffix, sizeof(D2MagicAffixTxt) * nSuffixRecords);
-    memcpy(sgtDataTables.pMagicAffixDataTables.pMagicPrefix = &sgtDataTables.pMagicAffixDataTables.pMagicSuffix[nSuffixRecords], pMagicPrefix, sizeof(D2MagicAffixTxt) * nPrefixRecords);
-    memcpy(sgtDataTables.pMagicAffixDataTables.pAutoMagic = &sgtDataTables.pMagicAffixDataTables.pMagicPrefix[nPrefixRecords], pAutoMagic, sizeof(D2MagicAffixTxt) * nAutoMagicRecords);
+    sgtMagicItemModsDataTblDesc.pMagicSuffix = sgtMagicItemModsDataTblDesc.pMagicAffixTxt;
+    memcpy(sgtMagicItemModsDataTblDesc.pMagicAffixTxt, pMagicSuffix, sizeof(D2MagicAffixTxt) * nSuffixRecords);
+    memcpy(sgtMagicItemModsDataTblDesc.pMagicPrefix = &sgtMagicItemModsDataTblDesc.pMagicSuffix[nSuffixRecords], pMagicPrefix, sizeof(D2MagicAffixTxt) * nPrefixRecords);
+    memcpy(sgtMagicItemModsDataTblDesc.pAutoMagic = &sgtMagicItemModsDataTblDesc.pMagicPrefix[nPrefixRecords], pAutoMagic, sizeof(D2MagicAffixTxt) * nAutoMagicRecords);
 
     DATATBLS_UnloadBin(pMagicSuffix);
     DATATBLS_UnloadBin(pMagicPrefix);
     DATATBLS_UnloadBin(pAutoMagic);
 
     const wchar_t* pUnicode = 0;
-    for (int i = 0; i < sgtDataTables.pMagicAffixDataTables.nMagicAffixTxtRecordCount; ++i)
+    for (int i = 0; i < sgtMagicItemModsDataTblDesc.nMagicAffixTxtRecordCount; ++i)
     {
-        sgtDataTables.pMagicAffixDataTables.pMagicAffixTxt[i].wTblIndex = STRTABLE_FindString(sgtDataTables.pMagicAffixDataTables.pMagicAffixTxt[i].szName, &pUnicode);
+        sgtMagicItemModsDataTblDesc.pMagicAffixTxt[i].wTblIndex = STRTABLE_FindString(sgtMagicItemModsDataTblDesc.pMagicAffixTxt[i].szName, &pUnicode);
     }
 }

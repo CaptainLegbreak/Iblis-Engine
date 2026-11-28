@@ -59,10 +59,6 @@ static long BNDOWNLOAD_GetTime(long* pTime)
 {
     return _time32(pTime);
 }
-long __stdcall sub_M106_Emit_0051DC70(long* pTime)
-{
-    return BNDOWNLOAD_GetTime(pTime);
-}
 static inline void SEED_Step(unsigned int* pSeed)
 {
     *pSeed = *pSeed * 0x19660D + 0x3C6EF35F;
@@ -71,7 +67,7 @@ static inline void SEED_Step(unsigned int* pSeed)
 // 0x00650DE0
 int __fastcall SEED_GetRandomValue(int nValue)
 {
-    unsigned int nSeed = _time32(0);
+    unsigned int nSeed = BNDOWNLOAD_GetTime(0);
     nSeed += GetTickCount();
     nSeed += nValue;
     SEED_Step(&nSeed);

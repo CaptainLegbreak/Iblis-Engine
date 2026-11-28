@@ -3,7 +3,7 @@
 #include "D2FogSafeSock.h"
 #include "StormApi.h"
 
-#define D2_ASSERT(x,line) do { if (!(x)) { FOG_DisplayHalt(gszAssert_006CC837, sub_00408090(), line); exit(-1); } } while (0)
+#define D2_ASSERT(x,line) do { if (!(x)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); } } while (0)
 
 struct FSafeSock;
 struct D2ThreadRecord006BC5A0Strc;
@@ -438,7 +438,7 @@ int __stdcall D2QSSOCKET_SendPacket(D2ThreadRecord006BC5A0Strc* pRecord, const u
     {
         if (!pData || (unsigned short)(nSize - 1) > 0x205E)
         {
-            FOG_DisplayHalt(gszAssert_006CC837, sub_00408090(), 93);
+            FOG_DisplayHalt("", sub_00408090(), 93);
             exit(-1);
         }
         nPayload = (unsigned short)nSize;
@@ -454,7 +454,7 @@ int __stdcall D2QSSOCKET_SendPacket(D2ThreadRecord006BC5A0Strc* pRecord, const u
         *(unsigned short*)&tHeader = (unsigned short)(nSize + 2);
         if (*(unsigned short*)&tHeader >= 0x2064)
         {
-            FOG_DisplayHalt(gszAssert_006CC837, sub_00408090(), 113);
+            FOG_DisplayHalt("", sub_00408090(), 113);
             exit(-1);
         }
         SMemCopy(buffer, &tHeader, 2);

@@ -42,7 +42,7 @@ void __fastcall INV_PlayCinematic(int nIndex); // 0x00482EF0
 
 void __fastcall VIEW_FireLevelEvent(int nIndex); // 0x0046B630
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 int gbQuestIntroFlagsReady; // 0x007C0ECC
 

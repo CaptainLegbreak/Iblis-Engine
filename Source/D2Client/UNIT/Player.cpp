@@ -24,7 +24,7 @@ struct D2SkillStrc;
 
 struct D2UnitStrc;
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2GfxLightStrc;
 
@@ -1653,12 +1653,12 @@ static int PLAYER_PrepareCommand(D2PlayerCmdStrc* pCmd)
     if ((pCmd->dwFlags & 2) && !pCmd->pTarget)
         bForce = 1;
     pCmd->pTarget = SELECT_GetSkillTarget(pCmd->pSkill, pCmd->pTarget, &pCmd->nX, &pCmd->nY, pCmd->dwFlags, bForce);
-    if (sub_00468830_GetCursorState() == 6)
+    if (CURSOR_GetCursorState() == 6)
     {
         UI_CancelCursorItemUse();
         return 1;
     }
-    if (sub_00468830_GetCursorState() == 8)
+    if (CURSOR_GetCursorState() == 8)
         MSG_SendDword(0x4C, -1);
     return 1;
 }
@@ -1840,7 +1840,7 @@ no_target:
             if (!PLAYER_CheckSkillUse(ppSkill, &nUseState, pCmd->pPlayer))
                 return;
             D2SkillStrc* pSkill = *ppSkill;
-            if (pSkill && !SKILLS_GetSkillIdFromSkill(pSkill, gszPlayerCpp, 0x7AF) && nUseState == 1 && !bNoTarget)
+            if (pSkill && !SKILLS_GetSkillIdFromSkill(pSkill, ".\\UNIT\\Player.cpp", 0x7AF) && nUseState == 1 && !bNoTarget)
             {
                 if (!PLAYER_ClampTarget(pCmd->pPlayer, pCmd))
                     return;
@@ -2025,9 +2025,9 @@ static int PLAYER_CmdLeftSkill(D2PlayerCmdStrc* pCmd)
         return 1;
     }
 
-    if (sub_00468830_GetCursorState() == 6)
+    if (CURSOR_GetCursorState() == 6)
         UI_CancelCursorItemUse();
-    else if (sub_00468830_GetCursorState() == 8)
+    else if (CURSOR_GetCursorState() == 8)
         MSG_SendDword(0x4C, -1);
 
     D2UnitStrc* pItem = INVENTORY_GetCursorItem(pCmd->pPlayer->pInventory);

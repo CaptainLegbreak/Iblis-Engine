@@ -19,7 +19,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define UNIT_MONSTER 1
 
@@ -468,7 +468,7 @@ static D2InactiveUnitListStrc* __stdcall SUNITINACTIVE_GetListNodeFromActAndCoor
 
     if (!bFound)
     {
-        D2InactiveUnitListStrc* pNew = (D2InactiveUnitListStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2InactiveUnitListStrc), gszSUnitInactiveSourceFile, 0x424, 0);
+        D2InactiveUnitListStrc* pNew = (D2InactiveUnitListStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2InactiveUnitListStrc), ".\\UNIT\\SUnitInactive.cpp", 0x424, 0);
         memset(&pNew->pInactiveItems, 0, 12);
         pNew->nX = nX;
         pNew->nY = nY;
@@ -1010,7 +1010,7 @@ fallbackLocation:
         }
 cleanup:
         if (node->pMapAI) DRLGPRESET_FreeMapAI(pGame->pMemoryPool,node->pMapAI);
-        FOG_FreeServerMemory(pGame->pMemoryPool,node,gszSUnitInactiveSourceFile,0x8C,0);
+        FOG_FreeServerMemory(pGame->pMemoryPool,node,".\\UNIT\\SUnitInactive.cpp",0x8C,0);
     }
 }
 

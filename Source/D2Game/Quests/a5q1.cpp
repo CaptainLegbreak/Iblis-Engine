@@ -147,7 +147,7 @@ bool __fastcall ACT4Q4_StatusFilterCallback(D2QuestDataStrc* pQuest, D2UnitStrc*
 void __fastcall ACT3Intro_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg);
 
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 typedef int(__fastcall* QUESTSEQFN)(D2QuestDataStrc* pQuestData);
 
@@ -724,7 +724,7 @@ bool __fastcall ACT5Q1_SeqCallback(D2QuestDataStrc* pQuestData)
     {
         if (IsBadCodePtr((FARPROC)pQuestData->pfSeqFilter))
         {
-            FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), ASSERT_LINE);
+            FOG_DisplayHalt("", sub_00408090(), ASSERT_LINE);
             exit(-1);
         }
         return pQuest->pfSeqFilter(pQuest);

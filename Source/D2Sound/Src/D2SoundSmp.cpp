@@ -428,7 +428,7 @@ int __fastcall D2SOUNDSMP_FillSoundBuffer(D2SoundStrc* sound,unsigned int source
   LeaveCriticalSection(&gtSoundLock);
   return 1;
  }
- FOG_DisplayHalt(gszEmptyAssert,sub_00408090(),221);
+ FOG_DisplayHalt("",sub_00408090(),221);
  exit(-1);
 }
 

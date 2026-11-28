@@ -1,13 +1,16 @@
 // The game's data tables: every .txt table loaded at start-up, with its record count and lookups (sgptDataTables).
-// D2DataTablesStrc is 0xC88 bytes in 1.14d: nothing reaches past bCompileTxt through sgptDataTables. The item, level
+// D2DataTablesStrc is 0xC84 bytes in 1.14d: nothing reaches past offset 0xC70 through sgptDataTables, and the loaders
+// only compile the way the game's do when gbCompileTxt, the next four bytes, is a global of its own. The item, level
 // and cube tables that D2MOO's 1.10 struct holds after it are their own files' globals here.
 #pragma once
 
 #include "D2Check.h"
 
+struct D2AnimDataTableStrc;
 struct D2AnimSeqRecordStrc;
 struct D2AnimSeqTxt;
 struct D2CharStatsTxt;
+struct D2CompCodeTxt;
 struct D2CubeMainTxt;
 struct D2DifficultyLevelsTxt;
 struct D2DrlgFileStrc;
@@ -16,6 +19,7 @@ struct D2HirelingTxt;
 struct D2ItemStatCostTxt;
 struct D2ItemTypesTxt;
 struct D2ItemsTxt;
+struct D2LevelDefBin;
 struct D2LevelsTxt;
 struct D2LvlPrestTxt;
 struct D2LvlSubTxt;
@@ -25,6 +29,7 @@ struct D2MissilesTxt;
 struct D2MonEquipTxt;
 struct D2MonLvlTxt;
 struct D2MonPresetTxt;
+struct D2MonSoundsTxt;
 struct D2MonStats2Txt;
 struct D2MonStatsTxt;
 struct D2MonTypeTxt;
@@ -95,21 +100,21 @@ struct D2DataTablesStrc
     void* pSkillCalcTxt; // 0x38
     D2TxtLinkStrc* pSkillCalcLinker; // 0x3C
     char* pSkillsCode; // 0x40
-    unsigned int nSkillsCodeSize; // 0x44
+    int nSkillsCodeSize; // 0x44
     int nSkillsCodeSizeEx; // 0x48
     char* pSkillDescCode; // 0x4C
-    unsigned int nSkillDescCodeSize; // 0x50
+    int nSkillDescCodeSize; // 0x50
     int nSkillDescCodeSizeEx; // 0x54
     void* pMissileCalcTxt; // 0x58
     D2TxtLinkStrc* pMissileCalcLinker; // 0x5C
-    void* pMissCode; // 0x60
+    char* pMissCode; // 0x60
     int nMissCodeSize; // 0x64
     int nMissCodeSizeEx; // 0x68
     void* pSkillCode; // 0x6C
-    D2TxtLinkStrc* unk0x70; // 0x70
+    D2TxtLinkStrc* pSkillCodeLinker; // 0x70
     void* pEventsTxt; // 0x74
     D2TxtLinkStrc* pEventsLinker; // 0x78
-    void* pCompCodeTxt; // 0x7C
+    D2CompCodeTxt* pCompCodeTxt; // 0x7C
     D2TxtLinkStrc* pCompCodeLinker; // 0x80
     int nCompCodeTxtRecordCount; // 0x84
     void* pMonAiTxt; // 0x88
@@ -117,7 +122,7 @@ struct D2DataTablesStrc
     int nMonAiTxtRecordCount; // 0x90
     D2TxtLinkStrc* pItemsLinker; // 0x94
     char* pItemsCode; // 0x98
-    unsigned int nItemsCodeSize; // 0x9C
+    int nItemsCodeSize; // 0x9C
     int nItemsCodeSizeEx; // 0xA0
     D2PropertiesTxt* pPropertiesTxt; // 0xA4
     D2TxtLinkStrc* pPropertiesLinker; // 0xA8
@@ -158,11 +163,11 @@ struct D2DataTablesStrc
     D2TxtLinkStrc* pTreasureClassExLinker; // 0x9B8
     D2TCExShortStrc* pTreasureClassEx; // 0x9BC
     int nTreasureClassEx; // 0x9C0
-    D2TCExShortStrc* pChestTreasureClasses[45]; // 0x9C4
+    D2TCExShortStrc* pChestTreasureClasses[3][5][3]; // 0x9C4
     D2MonStatsTxt* pMonStatsTxt; // 0xA78
     D2TxtLinkStrc* pMonStatsLinker; // 0xA7C
     int nMonStatsTxtRecordCount; // 0xA80
-    void* pMonSoundsTxt; // 0xA84
+    D2MonSoundsTxt* pMonSoundsTxt; // 0xA84
     D2TxtLinkStrc* pMonSoundsLinker; // 0xA88
     int nMonSoundsTxtRecordCount; // 0xA8C
     D2MonStats2Txt* pMonStats2Txt; // 0xA90
@@ -241,34 +246,54 @@ struct D2DataTablesStrc
     int nMonUModTxtRecordCount; // 0xC54
     D2LevelsTxt* pLevelsTxt; // 0xC58
     int nLevelsTxtRecordCount; // 0xC5C
-    void* pLevelDefBin; // 0xC60
+    D2LevelDefBin* pLevelDefBin; // 0xC60
     D2LvlPrestTxt* pLvlPrestTxt; // 0xC64
     int nLvlPrestTxtRecordCount; // 0xC68
     int nStuff; // 0xC6C
     int nShiftedStuff; // 0xC70
-    void* pAnimData; // 0xC74
+    D2AnimDataTableStrc* pAnimData; // 0xC74
     D2ExperienceDataTbl* pExperienceTxt; // 0xC78
     D2DifficultyLevelsTxt* pDifficultyLevelsTxt; // 0xC7C
     int nDifficultyLevelsTxtRecordCount; // 0xC80
-    int bCompileTxt; // 0xC84
 };
 
 D2_CHECK_SIZE(D2MagicAffixDataTbl, 0x14);
 D2_CHECK_SIZE(D2RuneDataTbl, 0x8);
 D2_CHECK_SIZE(D2GambleDataTbl, 0x198);
 D2_CHECK_SIZE(D2CollisionFieldStrc, 0x14);
-D2_CHECK_SIZE(D2DataTablesStrc, 0xC88);
+D2_CHECK_SIZE(D2DataTablesStrc, 0xC84);
+D2_CHECK_OFFSET(D2DataTablesStrc, pPlayerClassTxt, 0x0);
+D2_CHECK_OFFSET(D2DataTablesStrc, pMissileCalcTxt, 0x58);
+D2_CHECK_OFFSET(D2DataTablesStrc, pCompCodeTxt, 0x7C);
+D2_CHECK_OFFSET(D2DataTablesStrc, pPropertiesTxt, 0xA4);
 D2_CHECK_OFFSET(D2DataTablesStrc, nStatesTxtRecordCount, 0xC4);
-D2_CHECK_OFFSET(D2DataTablesStrc, pMonStatsTxt, 0xA78);
-D2_CHECK_OFFSET(D2DataTablesStrc, pSkillsTxt, 0xB98);
-D2_CHECK_OFFSET(D2DataTablesStrc, pItemStatCostTxt, 0xBCC);
-D2_CHECK_OFFSET(D2DataTablesStrc, pLevelsTxt, 0xC58);
 D2_CHECK_OFFSET(D2DataTablesStrc, pHirelingTxt, 0x1A0);
 D2_CHECK_OFFSET(D2DataTablesStrc, pNpcTxt, 0x9A8);
+D2_CHECK_OFFSET(D2DataTablesStrc, pColorsTxt, 0x9B0);
 D2_CHECK_OFFSET(D2DataTablesStrc, pTreasureClassEx, 0x9BC);
 D2_CHECK_OFFSET(D2DataTablesStrc, pChestTreasureClasses, 0x9C4);
+D2_CHECK_OFFSET(D2DataTablesStrc, pMonStatsTxt, 0xA78);
+D2_CHECK_OFFSET(D2DataTablesStrc, pMonSoundsTxt, 0xA84);
+D2_CHECK_OFFSET(D2DataTablesStrc, pMonStats2Txt, 0xA90);
 D2_CHECK_OFFSET(D2DataTablesStrc, pMonPresetTxt, 0xAA8);
+D2_CHECK_OFFSET(D2DataTablesStrc, pSuperUniquesTxt, 0xAD4);
+D2_CHECK_OFFSET(D2DataTablesStrc, pMissilesTxt, 0xB64);
+D2_CHECK_OFFSET(D2DataTablesStrc, pMonLvlTxt, 0xB70);
 D2_CHECK_OFFSET(D2DataTablesStrc, pMonSeqTxt, 0xB78);
 D2_CHECK_OFFSET(D2DataTablesStrc, pMonSeqTable, 0xB84);
+D2_CHECK_OFFSET(D2DataTablesStrc, pSkillDescTxt, 0xB8C);
+D2_CHECK_OFFSET(D2DataTablesStrc, pSkillsTxt, 0xB98);
+D2_CHECK_OFFSET(D2DataTablesStrc, pOverlayTxt, 0xBBC);
+D2_CHECK_OFFSET(D2DataTablesStrc, pCharStatsTxt, 0xBC4);
+D2_CHECK_OFFSET(D2DataTablesStrc, pItemStatCostTxt, 0xBCC);
+D2_CHECK_OFFSET(D2DataTablesStrc, pMonEquipTxt, 0xBE0);
+D2_CHECK_OFFSET(D2DataTablesStrc, pPetTypeTxt, 0xBE8);
+D2_CHECK_OFFSET(D2DataTablesStrc, pItemTypesTxt, 0xBF8);
+D2_CHECK_OFFSET(D2DataTablesStrc, pSetsTxt, 0xC0C);
+D2_CHECK_OFFSET(D2DataTablesStrc, pSetItemsTxt, 0xC18);
+D2_CHECK_OFFSET(D2DataTablesStrc, pUniqueItemsTxt, 0xC24);
+D2_CHECK_OFFSET(D2DataTablesStrc, pMonTypeTxt, 0xC3C);
+D2_CHECK_OFFSET(D2DataTablesStrc, pMonUModTxt, 0xC50);
+D2_CHECK_OFFSET(D2DataTablesStrc, pLevelsTxt, 0xC58);
 D2_CHECK_OFFSET(D2DataTablesStrc, pExperienceTxt, 0xC78);
-D2_CHECK_OFFSET(D2DataTablesStrc, bCompileTxt, 0xC84);
+D2_CHECK_OFFSET(D2DataTablesStrc, nDifficultyLevelsTxtRecordCount, 0xC80);

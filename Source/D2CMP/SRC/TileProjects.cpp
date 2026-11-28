@@ -9,7 +9,7 @@ void __fastcall FindTileDestroyTable(D2CmpFindTilesNodeStrc** ppBuckets);       
 static D2TileRecordStrc* gpTileRecords;                                                                   // 0x008ADBB4
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 extern "C" int __cdecl strcmp(const char* szString1, const char* szString2);

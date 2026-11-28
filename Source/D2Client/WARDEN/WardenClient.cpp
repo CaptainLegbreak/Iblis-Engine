@@ -29,7 +29,7 @@
 #include "StormApi2.h"
 #include "D2WinApi2.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define gnGlobal_007BCAA0 (gtPlayerInvRect.nLeft)
 

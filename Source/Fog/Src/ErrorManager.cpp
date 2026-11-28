@@ -87,7 +87,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall ResumeThread(void* hThr
 
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject);                                  // 0x006CC134
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2HostentStrc;
 
@@ -506,7 +506,7 @@ extern unsigned int gadwHuffmanMask[32];                                        
 
 struct D2CrashInputStrc;
 
-#define FOG_ASSERT(expr, line) if (!(expr)) { const char* szAssertFile = sub_00408090(); FOG_SOCKET_WSACleanup(); ERRORMANAGER_RaiseErrorReport(6, &gszEmptyAssertText, line, "Unrecoverable internal error %08x", szAssertFile); LOGMANAGER_CloseLogFiles(); exit(-1); }
+#define FOG_ASSERT(expr, line) if (!(expr)) { const char* szAssertFile = sub_00408090(); FOG_SOCKET_WSACleanup(); ERRORMANAGER_RaiseErrorReport(6, "", line, "Unrecoverable internal error %08x", szAssertFile); LOGMANAGER_CloseLogFiles(); exit(-1); }
 
 void __cdecl ERRORMANAGER_RaiseErrorReport(int nType, const char* szFile, int nLine, const char* szFormat, ...); // 0x00408900
 
@@ -568,12 +568,6 @@ int __cdecl sub_0040EB10()
     return 0;
 }
 
-// calling-convention shim (not game code)
-int __cdecl sub_M126_Emit_00401000(tm* pTm, const __int64* pTime)
-{
-    return ERRORMANAGER_ConvertLocalTime(pTm, pTime);
-}
-
 bool __stdcall sub_K01_Emit_00403FA0(const char* szPath, char* szOut, size_t nSize)
 {
     return ERRORMANAGER_CopyPathIfHasDirectory(szPath, szOut, nSize);
@@ -584,7 +578,7 @@ bool crashy::Report::OpenReport(const char* szFileName)
 {
     __int64 nTime = _time64(0);
     tm tTime;
-    _localtime64_s(&tTime, &nTime);
+    ERRORMANAGER_ConvertLocalTime(&tTime, &nTime);
     if (!gszLogDirectory[0])
     {
         if (!ERRORMANAGER_GetTempPathUtf8(gszLogDirectory))
@@ -1186,7 +1180,7 @@ void __cdecl ERRORMANAGER_LogSystemInfo()
 
     LOGMANAGER_WriteLogLine("Computer name: %s", szComputer);
     LOGMANAGER_WriteLogLine("------------------------------------------------------");
-    LOGMANAGER_WriteLogLine(&gszEmptyAssertText);
+    LOGMANAGER_WriteLogLine("");
 }
 
 // 0x00407970
@@ -1263,7 +1257,7 @@ static int __fastcall FOG_AppendBackslash(char* szPath, int nSize)
 // 0x00407F70
 void __fastcall ERRORMANAGER_LogText(void* pUnused, const char* szText)
 {
-    LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, szText);
+    LOGMANAGER_LogWritePrefixedLine("", szText);
 }
 
 // 0x00407F80
@@ -2196,7 +2190,7 @@ int __fastcall ERRORMANAGER_CrashHandler(D2CrashInputStrc* pInput)
             report.sub_00401380(gszMore4);
             SStrCopy(gszProcessPath,report.m_szText408,0x800);
             SStrPack(gszProcessPath,gszMinidump,0x800);
-            if (sub_00402820_WriteMiniDump(gszProcessPath,&gszEmptyAssertText,pInput->pException,0))
+            if (sub_00402820_WriteMiniDump(gszProcessPath,"",pInput->pException,0))
                 report.sub_00401220_AddFile(gszProcessPath,false);
             report.sub_00401380(gszMore5);
             report.sub_004011F0_Close();
@@ -2628,7 +2622,7 @@ void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0)
     void* pMemory = ERRORMANAGER_PoolAlloc(0, nSize, szFile, nLine);
     if (!pMemory)
     {
-        ERRORMANAGER_RaiseErrorReport(2, szFile, nLine, &gszEmptyAssertText);
+        ERRORMANAGER_RaiseErrorReport(2, szFile, nLine, "");
     }
     return pMemory;
 }
@@ -2646,7 +2640,7 @@ void* __fastcall FOG_Realloc(void* pMemory, int nSize, const char* szFile, int n
     void* pNew = ERRORMANAGER_PoolRealloc(0, pMemory, nSize, szFile, nLine);
     if (!pNew)
     {
-        ERRORMANAGER_RaiseErrorReport(2, szFile, nLine, &gszEmptyAssertText);
+        ERRORMANAGER_RaiseErrorReport(2, szFile, nLine, "");
     }
     return pNew;
 }
@@ -2657,7 +2651,7 @@ void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char
     void* pMemory = ERRORMANAGER_PoolAlloc(gbUsePools ? pMemPool : 0, nSize, szFile, nLine);
     if (!pMemory)
     {
-        ERRORMANAGER_RaiseErrorReport(2, szFile, nLine, &gszEmptyAssertText);
+        ERRORMANAGER_RaiseErrorReport(2, szFile, nLine, "");
     }
     return pMemory;
 }
@@ -2675,7 +2669,7 @@ void* __fastcall FOG_ReallocPool(D2PoolSystemStrc* pMemPool, void* pMemory, int 
     void* pNew = ERRORMANAGER_PoolRealloc(gbUsePools ? pMemPool : 0, pMemory, nSize, szFile, nLine);
     if (!pNew)
     {
-        ERRORMANAGER_RaiseErrorReport(2, szFile, nLine, &gszEmptyAssertText);
+        ERRORMANAGER_RaiseErrorReport(2, szFile, nLine, "");
     }
     return pNew;
 }
@@ -2741,7 +2735,7 @@ void __cdecl ERRORMANAGER_RaiseErrorReport(int nType, const char* szFile, int nL
     {
         szFormat = "<no reason given>";
     }
-    LOGMANAGER_LogWritePrefixed(&gszEmptyAssertText, gszStringFormat, "---finished error callback---\n");
+    LOGMANAGER_LogWritePrefixed("", gszStringFormat, "---finished error callback---\n");
     LOGMANAGER_CloseLogFiles();
     int bFatal = nErrorType == 5 || nErrorType == 6 || nErrorType == 2;
     if (!sub_004013A0_IsDebuggerAttached())
@@ -2847,7 +2841,7 @@ __declspec(noinline) int __fastcall ERRORMANAGER_ReportNestedError(const char* s
 {
     if (gbWritingCrashReport)
     {
-        LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, "\n***** ENCOUNTERED ERROR DURING ERROR HANDLING!!!\n%s,%d\n%s\n*****", ERRORMANAGER_StripSourcePath(szFile), nLine, szMessage);
+        LOGMANAGER_LogWritePrefixedLine("", "\n***** ENCOUNTERED ERROR DURING ERROR HANDLING!!!\n%s,%d\n%s\n*****", ERRORMANAGER_StripSourcePath(szFile), nLine, szMessage);
         return 1;
     }
     return 0;
@@ -3233,7 +3227,7 @@ void __fastcall ERRORMANAGER_ShowErrorBox(int nType, const char* szFile, int nLi
     if (szFile)
     {
         SStrPrintf(szMessage, 0x1000, "--------  FILE: %s    LINE: %d  --------\n\n", ERRORMANAGER_StripSourcePath(szFile), nLine);
-        LOGMANAGER_LogWritePrefixedNoNewline(&gszEmptyAssertText, gszStringFormat, szMessage);
+        LOGMANAGER_LogWritePrefixedNoNewline("", gszStringFormat, szMessage);
     }
     FOG_ASSERT(szFormat, 0x8DE);
     _vsnprintf(szMessage, 0x1000, szFormat, args);
@@ -3249,7 +3243,7 @@ void __fastcall ERRORMANAGER_ShowErrorBox(int nType, const char* szFile, int nLi
     SStrPrintf(szCaption, 0x100, "%s Error", "Diablo II");
     strcpy(szBoxText, szText);
     strcat(szText, "\n");
-    LOGMANAGER_LogWritePrefixed(&gszEmptyAssertText, gszStringFormat, szText);
+    LOGMANAGER_LogWritePrefixed("", gszStringFormat, szText);
     LOGMANAGER_CloseLogFiles();
     MessageBoxA(0, szBoxText, szCaption, 0x30);
 }
@@ -3375,19 +3369,19 @@ void __cdecl ERRORMANAGER_LogPoolError(const char* szFormat, ...)
     va_list args;
     va_start(args, szFormat);
     vsprintf(szText, szFormat, args);
-    LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, "--------------------------------------------------------");
-    LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, "ERROR: Out of memory!");
-    LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, gszPercentS_006FFC58, szText);
+    LOGMANAGER_LogWritePrefixedLine("", "--------------------------------------------------------");
+    LOGMANAGER_LogWritePrefixedLine("", "ERROR: Out of memory!");
+    LOGMANAGER_LogWritePrefixedLine("", gszPercentS_006FFC58, szText);
     D2MemoryStatusStrc tStatus;
     GlobalMemoryStatus(&tStatus);
     char szNumber[0x20];
-    LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, "total physical:     %s", Int64ToString(szNumber, sizeof(szNumber), tStatus.dwTotalPhys));
-    LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, "available physical: %s", Int64ToString(szNumber, sizeof(szNumber), tStatus.dwAvailPhys));
-    LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, "total page:         %s", Int64ToString(szNumber, sizeof(szNumber), tStatus.dwTotalPageFile));
-    LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, "available page:     %s", Int64ToString(szNumber, sizeof(szNumber), tStatus.dwAvailPageFile));
-    LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, "total virtual:      %s", Int64ToString(szNumber, sizeof(szNumber), tStatus.dwTotalVirtual));
-    LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, "available virtual:  %s", Int64ToString(szNumber, sizeof(szNumber), tStatus.dwAvailVirtual));
-    LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, &gszEmptyAssertText);
+    LOGMANAGER_LogWritePrefixedLine("", "total physical:     %s", Int64ToString(szNumber, sizeof(szNumber), tStatus.dwTotalPhys));
+    LOGMANAGER_LogWritePrefixedLine("", "available physical: %s", Int64ToString(szNumber, sizeof(szNumber), tStatus.dwAvailPhys));
+    LOGMANAGER_LogWritePrefixedLine("", "total page:         %s", Int64ToString(szNumber, sizeof(szNumber), tStatus.dwTotalPageFile));
+    LOGMANAGER_LogWritePrefixedLine("", "available page:     %s", Int64ToString(szNumber, sizeof(szNumber), tStatus.dwAvailPageFile));
+    LOGMANAGER_LogWritePrefixedLine("", "total virtual:      %s", Int64ToString(szNumber, sizeof(szNumber), tStatus.dwTotalVirtual));
+    LOGMANAGER_LogWritePrefixedLine("", "available virtual:  %s", Int64ToString(szNumber, sizeof(szNumber), tStatus.dwAvailVirtual));
+    LOGMANAGER_LogWritePrefixedLine("", "");
 }
 
 // 0x004098B0
@@ -3483,7 +3477,7 @@ void __cdecl sub_00409C70_Nop()
 void __cdecl FOG_DisplayWarning(const char* szMsg, const char* szFile, int nLine)
 {
     FOG_SOCKET_WSACleanup();
-    ERRORMANAGER_RaiseErrorReport(7, &gszEmptyAssertText, nLine, "Unrecoverable internal error %08x", szFile);
+    ERRORMANAGER_RaiseErrorReport(7, "", nLine, "Unrecoverable internal error %08x", szFile);
     LOGMANAGER_CloseLogFiles();
 }
 
@@ -3499,7 +3493,7 @@ void __cdecl ERRORMANAGER_DisplayDeadlock(unsigned long dwThreadId, int nTicks)
 void __cdecl FOG_DisplayError(int nCategory, const char* szMsg, const char* szFile, int nLine)
 {
     FOG_SOCKET_WSACleanup();
-    ERRORMANAGER_RaiseErrorReport(nCategory, &gszEmptyAssertText, nLine, "Unrecoverable internal error %08x", szFile);
+    ERRORMANAGER_RaiseErrorReport(nCategory, "", nLine, "Unrecoverable internal error %08x", szFile);
     LOGMANAGER_CloseLogFiles();
 }
 
@@ -3507,7 +3501,7 @@ void __cdecl FOG_DisplayError(int nCategory, const char* szMsg, const char* szFi
 void __cdecl FOG_DisplayAssert(const char* szMsg, const char* szFile, int nLine)
 {
     FOG_SOCKET_WSACleanup();
-    ERRORMANAGER_RaiseErrorReport(5, &gszEmptyAssertText, nLine, "Unrecoverable internal error %08x", szFile);
+    ERRORMANAGER_RaiseErrorReport(5, "", nLine, "Unrecoverable internal error %08x", szFile);
     LOGMANAGER_CloseLogFiles();
 }
 
@@ -3516,7 +3510,7 @@ void __cdecl FOG_DisplayAssert(const char* szMsg, const char* szFile, int nLine)
 extern "C" __declspec(noinline) void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine)
 {
     FOG_SOCKET_WSACleanup();
-    ERRORMANAGER_RaiseErrorReport(6, &gszEmptyAssertText, nLine, "Unrecoverable internal error %08x", szFile);
+    ERRORMANAGER_RaiseErrorReport(6, "", nLine, "Unrecoverable internal error %08x", szFile);
     LOGMANAGER_CloseLogFiles();
 }
 

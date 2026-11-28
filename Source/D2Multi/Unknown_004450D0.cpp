@@ -25,7 +25,7 @@ static void CHATDLG_ShowGameInfo(int nIndex)
     if (strlen(&pGame->szName[0x10]))
     {
         sub_004FCF80_SetTextA(gpGameInfoText, &pGame->szName[0x10]);
-        sub_004FCF80_SetTextA(gpGameInfoText, &gszEmptyAssertText);
+        sub_004FCF80_SetTextA(gpGameInfoText, "");
     }
     D2Win_10053(gpGameInfoText, 0);
     if (pGame->szName)

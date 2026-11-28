@@ -6,7 +6,7 @@
 
 extern "C" int __stdcall WSAStartup(unsigned short wVersionRequested, D2WSADataStrc* pData); // 0x006B0132
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2CriticalSectionStrc;
 
@@ -545,7 +545,7 @@ int __fastcall QSERVERNT_ServiceSlot(D2QueueServerStrc* pServer, int nSlot, unsi
             else if (bWrite)
                 pOwner = (D2QClientStrc*)((char*)pOverlapped - 0x5C);
             if (pClient != pOwner)
-                sub_006BE2F0_Nop(&gszEmptyAssertText, "GQCS1b nClientId %d does not match overlapped ptClient 0x%08X %d", nKey, pClient, nFlags);
+                sub_006BE2F0_Nop("", "GQCS1b nClientId %d does not match overlapped ptClient 0x%08X %d", nKey, pClient, nFlags);
         }
 
         {
@@ -608,7 +608,7 @@ int __fastcall QSERVERNT_ServiceSlot(D2QueueServerStrc* pServer, int nSlot, unsi
                 {
                     if (nError == 0x102)
                         break;
-                    FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x3C8);
+                    FOG_DisplayHalt("", sub_00408090(), 0x3C8);
                     exit(-1);
                 }
             }
@@ -642,7 +642,7 @@ unsigned long __stdcall QSERVERNT_ReleaseSlot(void* pParam)
     FOG_Free(pReq, ".\\Src\\QServer\\QServerNT.cpp", 686, 0);
     if (!pServer->bInitialized)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 687);
+        FOG_DisplayHalt("", sub_00408090(), 687);
         exit(-1);
     }
     while (!pServer->nSlots[nSlot])

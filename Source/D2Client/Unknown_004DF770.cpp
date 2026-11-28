@@ -22,7 +22,7 @@ D2SlotStrc gaSlots[16]; // 0x007C8A78
 
 int gbSoundSystemInit; // 0x007C8C78
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
@@ -375,7 +375,7 @@ void __fastcall sub_004DFC20_UpdateSoundSlot(D2SlotStrc* pSlot)
 {
     if (!pSlot->pObject)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x1E7);
+        FOG_DisplayHalt("", sub_00408090(), 0x1E7);
         exit(-1);
     }
 

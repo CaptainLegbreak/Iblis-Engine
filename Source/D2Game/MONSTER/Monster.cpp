@@ -52,22 +52,6 @@ inline D2MonStatsTxt* MONSTERMODE_GetMonStatsTxtRecord(int nMonsterId)
 
 struct D2MonStats2Txt;
 
-struct Data005734C0;
-
-struct Unit005734C0;
-
-struct Data005734E0;
-
-struct Unit005734E0;
-
-struct Data00573500;
-
-struct Unit00573500;
-
-struct Data00573520;
-
-struct Unit00573520;
-
 struct Data00573540;
 
 struct Unit00573540;
@@ -75,67 +59,6 @@ struct Unit00573540;
 struct Data00573570;
 
 struct Unit00573570;
-
-struct Data005734C0 { unsigned char bUnknown00[0x54]; unsigned int dwValue54; };
-
-struct Unit005734C0 {
-    int nType;
-    unsigned int dwUnknown04;
-    unsigned int dwUnknown08;
-    unsigned int dwUnknown0C;
-    unsigned int f_10;
-    Data005734C0* pData;
-};
-
-struct Data005734E0 { unsigned char bUnknown00[0x54]; unsigned int dwValue54; };
-
-struct Unit005734E0 { int nType; unsigned int dwUnknown04; unsigned int dwUnknown08; unsigned int dwUnknown0C; unsigned int dwUnknown10; Data005734E0* pData; };
-
-struct Data00573500 { unsigned char bUnknown00[0x58]; unsigned int dwValue58; };
-
-struct Unit00573500 {
-    int nType;
-    unsigned int dwUnknown04;
-    unsigned int dwUnknown08;
-    unsigned int dwUnknown0C;
-    unsigned int f_10;
-    Data00573500* pData;
-};
-
-struct Data00573520 {
-    unsigned int dwUnknown00;
-    unsigned int dwUnknown04;
-    unsigned int dwUnknown08;
-    unsigned int dwUnknown0C;
-    unsigned int f_10;
-    unsigned int dwUnknown14;
-    unsigned int dwUnknown18;
-    unsigned int dwUnknown1C;
-    unsigned int dwUnknown20;
-    unsigned int dwUnknown24;
-    unsigned int dwUnknown28;
-    unsigned int dwUnknown2C;
-    unsigned int dwUnknown30;
-    unsigned int dwUnknown34;
-    unsigned int dwUnknown38;
-    unsigned int dwUnknown3C;
-    unsigned int dwUnknown40;
-    unsigned int dwUnknown44;
-    unsigned int dwUnknown48;
-    unsigned int dwUnknown4C;
-    unsigned int dwUnknown50;
-    unsigned int dwUnknown54;
-    unsigned int dwValue58;
-};
-
-struct Unit00573520 {
-    int nType;
-    unsigned int dwUnknown04;
-    unsigned int dwUnknown08;
-    unsigned int dwUnknown0C;
-    unsigned int f_10;
-    Data00573520* pData;
-};
 
 struct Data00573540 {
     unsigned int dwUnknown00;
@@ -178,35 +101,35 @@ struct Data00573570 { unsigned char bUnknown00[0x5C]; unsigned short wFlags5C; }
 struct Unit00573570 { int nType; unsigned int dwUnknown04; unsigned int dwUnknown08; unsigned int dwUnknown0C; unsigned int dwUnknown10; Data00573570* pData; };
 
 // 0x005734C0
-extern "C" __declspec(dllexport) void __fastcall MONSTER_SetAiState(Unit005734C0* pUnit, unsigned int dwValue) {
-    if (pUnit && pUnit->nType == 1 && pUnit->pData) {
-        pUnit->pData->dwValue54 = dwValue;
+void __fastcall MONSTER_SetAiState(D2UnitStrc* pUnit, int nAiState) {
+    if (pUnit && pUnit->dwUnitType == UNIT_MONSTER && pUnit->pMonsterData) {
+        pUnit->pMonsterData->dwAiState = nAiState;
     }
 }
 
 // 0x005734E0
-extern "C" __declspec(dllexport) unsigned int __fastcall MONSTER_GetAiState(Unit005734E0* pUnit) {
-    Data005734E0* pData = (pUnit && pUnit->nType == 1) ? pUnit->pData : 0;
+int __fastcall MONSTER_GetAiState(D2UnitStrc* pUnit) {
+    D2MonsterDataStrc* pData = (pUnit && pUnit->dwUnitType == UNIT_MONSTER) ? pUnit->pMonsterData : 0;
     if (!pData) {
         return 1;
     }
-    return pData->dwValue54;
+    return pData->dwAiState;
 }
 
 // 0x00573500
-extern "C" __declspec(dllexport) void __fastcall MONSTER_SetLevelId(Unit00573500* pUnit, unsigned int dwValue) {
-    if (pUnit && pUnit->nType == 1 && pUnit->pData) {
-        pUnit->pData->dwValue58 = dwValue;
+void __fastcall MONSTER_SetLevelId(D2UnitStrc* pUnit, int nLevelId) {
+    if (pUnit && pUnit->dwUnitType == UNIT_MONSTER && pUnit->pMonsterData) {
+        pUnit->pMonsterData->nLevelId = nLevelId;
     }
 }
 
 // 0x00573520
-extern "C" __declspec(dllexport) unsigned int __fastcall sub_00573520(Unit00573520* pUnit) {
-    Data00573520* pData = (pUnit && pUnit->nType == 1) ? pUnit->pData : 0;
+int __fastcall sub_00573520(D2UnitStrc* pUnit) {
+    D2MonsterDataStrc* pData = (pUnit && pUnit->dwUnitType == UNIT_MONSTER) ? pUnit->pMonsterData : 0;
     if (!pData) {
         return 0;
     }
-    return pData->dwValue58;
+    return pData->nLevelId;
 }
 
 // 0x00573540
@@ -687,7 +610,7 @@ void __fastcall D2GAME_ITEMMODE_ServerStatlistCallback(D2GameStrc* pGame, D2Unit
 void __fastcall D2GAME_SetSkills(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int bRemove);            // 0x0056DEB0
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 D2AiControlStrc* __fastcall AIGENERAL_AllocAiControl(D2GameStrc* pGame);                                    // 0x0058EBC0
 D2MonsterModeDataStrc* __fastcall MONSTERMODE_AllocParams(D2GameStrc* pGame);                               // 0x005A6490
 D2MonsterInteractStrc* __fastcall MONSTERAI_AllocMonsterInteract(D2GameStrc* pGame);                        // 0x00572BA0
