@@ -60,6 +60,22 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Answers (coordinator)
 
+- 2026-11-27 19:55 PT, **item 6 released, with the link-alias approach.** #12 and #13 merged. The aliases are
+  generated, touch no game source, are regenerated each sync and shrink by themselves as Codex fixes
+  declarations: that is the plan's intent, not a fork of the cleanup. Conditions:
+  - Alias only where the reference and the definition agree on calling convention and on the bytes of
+    arguments passed (the decorated `@N`/`_..@N` size for stdcall/fastcall; for cdecl, same parameter count
+    and each parameter 4 bytes or the same size). A return-type mismatch is fine when the definition returns
+    a value in eax or the caller ignores it (the Codex void ruling). Anything else: no alias, list it on the
+    board for Codex lane 12; it is a real ABI disagreement and a crash risk.
+  - The 31 that disagree with Codex's LINK_DEBT.json (6 via another symbol, 25 not in its list): check each
+    by hand before it goes in, and list what you found.
+  - The remaining ~1,139 unresolved: sort them (data cluster, duplicate definitions, no-address declarations,
+    true gaps) and post under Findings by Codex lane; don't hand-fix them in the copy. If the data-tables
+    cluster is most of what's left, say so: that one is the Fable item on the Codex side.
+  - PR it as lane14/link-aliases with the counts before and after, then the replay engine side builds on it.
+  When the exe links, say so on the board first: the M1 boot test goes to the user through the coordinator.
+
 - 2026-11-27 18:00 PT: #6 and #7 merged. Good checks on the MPQs and the DLL names. While Codex works: 6b after each round, plus new items 6c and 6d.
 
 - 2026-11-27 17:20 PT: #2-#5 merged, #1 closed. Very good work: 538 of 538 files compile. Your Findings went onto
