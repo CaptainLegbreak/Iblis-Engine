@@ -93,6 +93,9 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Findings
 
+- 2026-11-27 20:55 PT, item 6c after the sync to Codex 89e75a2 (#496, PR #15): with aliases regenerated, 3 symbols
+  left the unresolved list and 0 joined it.
+
 - 2026-11-27 20:30 PT, item 6, for **Codex lane 12**: 151 references not aliased: 146 where the reference and the
   definition at its address disagree on the calling interface (convention, argument bytes, or the reference
   reads a return the definition doesn't give), real ABI disagreements, each a crash risk until the declaration
@@ -286,6 +289,11 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
   entries after the file merges, worth a fix in Codex.
 
 ## Status
+
+- 2026-11-27 20:55 PT: board check. #14 (item 6) merged. Codex main moved to 89e75a2 (#496): 6b in PR #15, the
+  first sync with aliases: regenerated from a link without them (2,817; 15 dropped out as Codex fixed them, 1 new,
+  checked). Unresolved 1,238 (4,055 without aliases); 538/538 compile; data 1,693/1,693 against Game.exe. Next:
+  the replay harness's level 2 (oracle side first; the engine side links the libraries with the aliases).
 
 - 2026-11-27 20:30 PT: item 6 in a PR from lane14/link-aliases-v2 (the old lane14/link-aliases holds the 18:00
   proposal, and rewriting a pushed branch isn't allowed here). At Codex b186d24: 2,831 aliases, gated by calling
