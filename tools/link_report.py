@@ -76,6 +76,9 @@ def bare(i):
 
 # ---------------------------------------------------------------- objects
 
+FUNCTIONS = set()                                # symbols some object defines as a function (COFF type 0x20)
+
+
 def coff_symbols(path):
     """{name: 'ext'|'static'} for the symbols an object defines (section number > 0)."""
     d = open(path, "rb").read()
@@ -96,6 +99,8 @@ def coff_symbols(path):
         else:
             name = raw.rstrip(b"\0").decode("latin-1")
         sec = struct.unpack_from(secfmt, d, o + 12)[0]
+        if sec > 0 and (struct.unpack_from("<H", d, o + size - 4)[0] & 0x30) == 0x20:
+            FUNCTIONS.add(name)
         cls = d[o + size - 2]; naux = d[o + size - 1]
         if sec > 0 and cls in (2, 3) and not name.startswith((".", "$", "??_C@", "__real@", "__xmm@")):
             if cls == 2 or name not in out:
@@ -295,7 +300,7 @@ def main():
         items.append(it)
     for sym, d in dups.items():
         units = d["units"]
-        kind = "local_copy" if re.match(r"^(\?[^@]+@@[YQAIEUS]|@|_\w+@\d+$)", sym) and "@@3" not in sym else "duplicate_data"
+        kind = "local_copy" if sym in FUNCTIONS else "duplicate_data"
         units.discard("?")
         items.append(dict(symbol=sym, identifier=ident(sym), category=kind, units=sorted(units), refs=len(units),
                           module=d["module"]))
