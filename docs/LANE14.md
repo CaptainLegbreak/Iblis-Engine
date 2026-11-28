@@ -93,6 +93,50 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Findings
 
+- 2026-11-27 20:30 PT, item 6, for **Codex lane 12**: 151 references not aliased: 146 where the reference and the
+  definition at its address disagree on the calling interface (convention, argument bytes, or the reference
+  reads a return the definition doesn't give), real ABI disagreements, each a crash risk until the declaration
+  matches. By module (reference -> reason, reference first):
+  - **D2Game** (50): `ACT1Q6_EmptyCallback` (bytes 0 vs 8); `ACT1Q7_Callback00_NpcActivate` (bytes 0 vs 8); `ACT2Q1_OnRadamentCreated` (__fastcall vs __stdcall); `ACT2Q4_OnJerhynSpawned` (__fastcall vs __stdcall); `ACT2Q4_OnPalaceGuardSpawned` (__fastcall vs __stdcall); `ACT2Q5_OnSummonerActivated` (bytes 8 vs 4); `ACT2Q5_OnSummonerCreated` (__fastcall vs __stdcall); `ACT3Q4_UnitIterate_UpdateCurrentQuestState` (return eax vs void); `ACT3Q6_SetObjectModes` (bytes 8 vs 4); `ACT5Q3_RemoveNihlathakFromTown` (bytes 8 vs 4); `ACT5Q4_OnNihlathakActivated` (bytes 8 vs 4); `AITHINK_ExecuteMonsterAiTick` (__cdecl vs __fastcall); `ARENA_Return0` (__fastcall vs __cdecl); `CLIENTS_GetPlayTime` (bytes 4 vs 0); `D2COMMON_10254_Return0` (return eax vs void); `D2GAME_ITEMS_UpdateStatList` (__fastcall vs __stdcall); `D2GAME_PACKETS_SendPacket0x22` (bytes 8 vs 20); `D2GAME_PACKETS_SendPacket0x7E` (bytes 8 vs 4); `D2GAME_PACKETS_SendPacket0x8F` (bytes 8 vs 4); `D2GAME_PACKETS_SendPacketSize06` (bytes 8 vs 16); `D2GAME_SAVE_SerializeItem` (__fastcall vs __stdcall); `D2GAME_Transmogrify` (__stdcall vs __fastcall); `D2Game_10034_Return` (__fastcall vs __stdcall); `GAME_SendAllClientPackets` (bytes 8 vs 4); `MISSMODE_FillDamageParams` (__fastcall vs __stdcall); `PLRMSG_CheckBeltItem` (__thiscall vs __fastcall); `PLRMSG_CheckCursorItem` (__thiscall vs __fastcall); `PLRMSG_CheckStoredItem` (__thiscall vs __fastcall); `PLRMSG_CheckStoredOrEquippedItem` (__thiscall vs __fastcall); `QUESTS_QuickRemovePlayerGUID` (bytes 4 vs 8); `SBigDel` (return eax vs void); `UNITS_GetPlayerName` (bytes 12 vs 4); `UNITS_InitializeStaticPath` (bytes unknown); `sITEMSAddStatsList` (__stdcall vs __fastcall); `sub_0052DF40_UnlockFirstGame` (__cdecl vs __fastcall); `sub_0052F6E0_LockFirstGame` (__cdecl vs __fastcall); `sub_005385D0_Nop` (__fastcall vs __stdcall); `sub_005531C0_GetClient` (bytes 20 vs 12); `sub_005531C0_MakeQuantityPacket` (bytes 24 vs 12); `sub_0055A2A0` (__stdcall vs __fastcall); `sub_0055D930_Nop` (__fastcall vs __stdcall); `sub_0055E9A0_Return0` (__fastcall vs __stdcall); `sub_0055F4F0_Nop` (__fastcall vs __stdcall); `sub_00568DB0_Return0` (__fastcall vs __cdecl); `sub_00581F60_HandleState` (bytes 8 vs 4); `sub_0058CFD0` (__fastcall vs __cdecl); `sub_005936B0_UpdateParty` (return eax vs void); `sub_005B7FE0_EmptyCallback` (__fastcall vs __cdecl); `sub_0063BE30_Return` (return eax vs void); `sub_0063E510_InventoryGridQuery` (return eax vs void)
+  - **D2Client** (32): `??1WardenModule` (__thiscall vs __fastcall); `D2COMMON_10160_PathUpdateDirection` (bytes unknown); `D2SOUND_IsEaxEnabled` (__fastcall vs __cdecl); `D2Win_10130_DrawFramedTextEx` (__stdcall vs __fastcall); `D2Win_10179_UpdatePaletteFlash` (__fastcall vs __stdcall); `DATATBLS_LoadAllTxts` (bytes 8 vs 12); `GAME_GetLadderFlag` (__fastcall vs __cdecl); `GAME_GetPing` (__stdcall vs __cdecl); `GAME_ResetMouseState` (__fastcall vs __cdecl); `GFX_PreloadForce` (__fastcall vs __cdecl); `INV_FormatArgs` (return eax vs void); `MSG_SendWardenPacket` (return eax vs void); `QUESTLOG_SendQuestUpdates` (__fastcall vs __cdecl); `SCALE_SetDefaultFactorPerspectiveFactor` (__cdecl vs __stdcall); `SKILLS_ScanArea` (return eax vs void); `SKILLS_SpawnOffsetMissile` (__thiscall vs __fastcall); `STRTABLE_LoadStringTables` (bytes 8 vs 12); `TEXTURE_CelDrawEx` (return eax vs void); `UI_ToggleListDialog` (__fastcall vs __cdecl); `sub_0040ABE0` (__stdcall vs __cdecl); `sub_00460190_DrawFrame` (__fastcall vs __cdecl); `sub_00463DD0` (__fastcall vs __cdecl); `sub_00477CA0_SendPacket67` (bytes 8 vs 4); `sub_00485410_AppendDamage` (return eax vs void); `sub_004B9070` (__fastcall vs __cdecl); `sub_004DDDF0_Nop` (__fastcall vs __cdecl); `sub_004F51D0_IsPerspective` (__cdecl vs __stdcall); `sub_004FA550` (__cdecl vs __fastcall); `sub_004FAC80` (bytes 4 vs 0); `sub_00514C90_GetSoundMode` (__fastcall vs __cdecl); `sub_005173D3_SetRecordHandler` (__stdcall vs __fastcall); `sub_006488A0_SetDirection` (bytes unknown)
+  - **D2Common** (11): `DATATBLS_AllocGlobalTileLibraryHash` (bytes 4 vs 0); `DATATBLS_GetAnimData` (__fastcall vs __cdecl); `DRLGOUTDOORS_AlterAdjacentPresetGridCells` (return eax vs void); `DRLGOUTDOORS_SetBlankGridCell` (return eax vs void); `DRLGOUTPLACE_CreateLevelConnections` (bytes 4 vs 8); `DRLG_GetActNoFromLevelId` (__fastcall vs __cdecl); `ITEMMODS_GetCalcParamValue_Return0` (__fastcall vs __cdecl); `PATH_ComputeDirectionFromPreciseCoords` (bytes unknown); `PATH_SimplifyToLines` (bytes unknown); `STATES_CheckStateMaskRestrictOnUnit` (bytes 4 vs 8); `sub_0063D710_InitCodes` (__cdecl vs __fastcall)
+  - **D2Launch** (9): `CHARSEL_HandleCharList` (return eax vs void); `Name` (__stdcall vs __thiscall); `Realm` (__stdcall vs __thiscall); `SetCurGateway` (__stdcall vs __thiscall); `Unload` (__stdcall vs __thiscall); `VIEW_SendMcpCharListRequest` (return eax vs void); `sub_0042E6B0` (__fastcall vs __cdecl); `sub_004309B0_ClearState` (return eax vs void); `sub_005041B0_Destroy` (return eax vs void)
+  - **D2Win** (8): `ANIMIMAGE_Destroy` (return eax vs void); `IMAGE2_Destroy` (return eax vs void); `IMAGE_Destroy` (return eax vs void); `PROGRESSBAR_Destroy` (return eax vs void); `SCROLLBAR_Destroy` (return eax vs void); `TIMER_Destroy` (return eax vs void); `WINDOW_PlayCutscene` (__cdecl vs __stdcall); `sub_004F6480` (return eax vs void)
+  - **Bnclient** (8): `SBigAdd` (return eax vs void); `SBigDiv` (return eax vs void); `SBigFromBinary` (return eax vs void); `SBigFromUnsigned` (return eax vs void); `SBigMod` (return eax vs void); `SBigNew` (return eax vs void); `SBigShl` (return eax vs void); `SBigSub` (return eax vs void)
+  - **D2Direct3D** (7): `D3DFLOORCACHE_FloorCacheRelease` (bytes 8 vs 4); `D3DFLOORCACHE_FloorCacheUnlink` (bytes 4 vs 8); `D3DSUBTILECACHE_SubtileCacheRelease` (bytes 8 vs 4); `D3DSUBTILECACHE_SubtileCacheUnlink` (bytes 4 vs 8); `sub_006B77B0_Call` (return eax vs void); `sub_006B7F70_ClearTarget` (__fastcall vs __cdecl); `sub_006B9F00_PresentFrame` (__stdcall vs __cdecl)
+  - **D2BNClient** (5): `BNDOWNLOAD_DecodeCDKey` (return eax vs void); `BNDOWNLOAD_InitCipherKeys` (__thiscall vs __fastcall); `Init` (__thiscall vs __fastcall); `sub_0051B060_SetAdText` (__fastcall vs __cdecl); `sub_00528480_HashThreeBlocks` (__thiscall vs __stdcall)
+  - **Storm** (5): `SBigFromBinary` (return eax vs void); `StormGetInstance` (__fastcall vs __cdecl); `sub_00420FE0_Top` (__thiscall vs __fastcall); `sub_004242C0_BigOp` (return eax vs void); `sub_00424B00_Square` (return eax vs void)
+  - **D2CMP** (4): `CelGetHardwareFreeCallback` (bytes 4 vs 0); `GfxHashDumpStats` (__thiscall vs __stdcall); `GfxHashFreeEntry` (__thiscall vs __fastcall); `sub_0060B130_Destroy` (__thiscall vs __cdecl)
+  - **Fog** (4): `Destroy` (__fastcall vs __thiscall); `FOG_SOCKET_WSACleanup` (__fastcall vs __cdecl); `STRTABLE_GetSystemLanguage` (__stdcall vs __cdecl); `sub_00525150` (__stdcall vs __cdecl)
+  - **D2Multi** (3): `CHATDLG_FillLadderList` (bytes 8 vs 20); `CHATDLG_SetPlayerName` (bytes 4 vs 12); `sub_005041B0_Destroy` (return eax vs void)
+  - **D2Hell** (2): `sub_005174E2_DestroyMember` (__fastcall vs __thiscall); `sub_0051763C_Destroy` (__fastcall vs __thiscall)
+  - **D2Gdi** (1): `CmpDoLensEffect` (return eax vs void)
+  - **D2Gfx** (1): `FOG_IsExpansion` (__fastcall vs __cdecl)
+  - **D2Glide** (1): `GLFLOORCACHE_ReleaseTileCache` (__stdcall vs __fastcall)
+- 2026-11-27 20:30 PT, item 6, what stays unresolved after the aliases (1,241 symbols, docs/PORT_LINK.md), by lane:
+  - **Not the data-tables cluster.** Only 3 of the 675 unsourced symbols are in 0x0096BC30-0x0096D66C. Most are short
+    .rdata strings no source defines, which Codex binds into the original string pool by address:
+    `gszEmptyAssertText` 287, `gszDataGlobal` 24, `gszTxtField_end` 18, `gszFormatD` 13, `gszNewline` 10, `gszNew` 8, `gszEmptyString` 7, `gszStringFormat` 7, `gszSpace` 6, `gszPathFormat` 6. **Lane 11**: one definition each (`const char gszEmptyAssertText[] = ""` and the like).
+    But 45 aliases (66 refs) bind names inside the cluster to their own definitions, without the cluster's layout:
+    code that reaches across neighbours there is item 7's (the Fable item on the Codex side), not fixed by linking.
+  - **no_address, 157 symbols (lane 12)**: listed by file in the 18:20 entry; still open.
+  - **Calling-interface disagreements, 151 (lane 12)**: the entry above.
+  - **A definition several symbols share, about 345 references (lane 12)**: two or more objects export a definition
+    with that identifier (overloads, copies); the reference can't be bound by name alone.
+  - **renamed_definition, 60 symbols (lane 12)**: the definition is `static` (or inline) where another file needs it;
+    e.g. `gpHoverItem` is `static` in inv.cpp, inv_0048BC10.cpp and inv_00491D20.cpp and external in
+    inv_0048DD90.cpp, and `gbGoldButtonDisabled` is `static` in inv_0048BC10.cpp and external in CUnit.cpp: one object
+    in 1.14d, several here. Fix: one definition, the rest `extern`.
+  - **interior, 7 (lane 13)**; **runtime library, 1** (`_ftol2_sse`-style CRT names).
+  - **Duplicates: 84 globals and 324 functions defined more than once (lane 12)**: copies kept for call sites and
+    globals defined in two files; the link needs one definition each.
+- 2026-11-27 20:30 PT, item 6, the hand check of the 31 that disagreed with Codex's LINK_DEBT.json: 3 of them were my
+  error, now fixed. functions.json names another function at 0x0053D960, 0x005E5280 and 0x00622E90 than the
+  source's marker does (e.g. `UNITS_MergeDualWieldWeaponStatLists`, at 0x00623C80, for `sub_00622E90_Nop`), so the
+  tool now takes the source's marker. The rest: 3 bind the one external definition of a global Codex names
+  `_gpHoverItem` / `_gbGoldButtonDisabled`; 25 bind the definition carrying the declared address (checked one by one:
+  20 functions, 5 tables the engine holds as source).
+
 - 2026-11-27 19:20 PT, item 6c after the sync to Codex b186d24 (#495, PR #13): 80 unresolved symbols resolved,
   12 new, each a declaration retyped in Codex while its definition or another file's declaration kept the old
   type (**lane 12**): `ARCHIVE_LoadMPQFile`, `AUTOMAP_UnregisterHandlerTable`, `D2CMPSpriteValidate`, `D3DSUBTILECACHE_SubtileCacheUnlink`, `DecompressLzw_BufferRead`, `DecompressLzw_BufferWrite`, `SBigFromBinary`, `SLogSetIndent`, `WINDOW_PlayCutscene`, `gpGridBuffer`, ``, `BNDOWNLOAD_HandleReportVersion`.
@@ -242,6 +286,12 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
   entries after the file merges, worth a fix in Codex.
 
 ## Status
+
+- 2026-11-27 20:30 PT: item 6 in a PR from lane14/link-aliases-v2 (the old lane14/link-aliases holds the 18:00
+  proposal, and rewriting a pushed branch isn't allowed here). At Codex b186d24: 2,831 aliases, gated by calling
+  interface; unresolved symbols 4,072 -> 1,241; duplicates unchanged (408). The exe does not link yet. 151
+  references refused as interface disagreements, the 31 checked by hand, and the rest sorted by lane: all under
+  Findings. Next: the replay engine side on top of this once it's in, and 6b when Codex moves.
 
 - 2026-11-27 19:20 PT: board check. #8-#11 merged. #9 was merged at its first commit, so its two later commits
   (replay level 1 + bitbuf, and the level 2 notes) are in PR #12. Codex main moved to b186d24 (#495): 6b in
