@@ -1,10 +1,13 @@
 #include "D2LanguageNames.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2Win32System.h"
+#include "D2CommonApi.h"
+#include "D2GfxApi.h"
+#include "D2CMPApi.h"
 
 
-void __fastcall SEED_InitLowSeed(D2SeedStrc* pSeed, unsigned int nLowSeed); // 0x00650E40
 
 inline unsigned __int64 SEED_RollRandomNumber(D2SeedStrc* pSeed)
 {
@@ -14,7 +17,6 @@ inline unsigned __int64 SEED_RollRandomNumber(D2SeedStrc* pSeed)
     return lSeed;
 }
 
-// build: symbol ?UNITS_GetWeaponClass@* 0x00623C60
 static inline int UNITS_GetWeaponClass(D2UnitStrc* pUnit)
 {
     if (!pUnit)
@@ -38,15 +40,13 @@ int __fastcall sub_00477620_RollUnitValue(D2UnitStrc* pUnit, unsigned short nOff
     return (unsigned int)SEED_RollRandomNumber(pSeed) % 30 + 9;
 }
 
-extern int gdwGlobal_007BB384; // 0x007BB384
+extern int gpBloodRemap; // 0x007BB384
 
 // 0x00477680
 int __cdecl DLIGHTMAP_GetLocalBloodPalette()
 {
-    return gdwGlobal_007BB384;
+    return gpBloodRemap;
 }
-
-int __stdcall D2GFX_TogglePerspective();                                                                    // 0x004F54B0
 
 // 0x00477690
 int __cdecl sub_00477690_TogglePerspective()
@@ -54,15 +54,11 @@ int __cdecl sub_00477690_TogglePerspective()
     return D2GFX_TogglePerspective();
 }
 
-int __stdcall D2GFX_ToggleBlendedShadows();                                                                 // 0x004F54D0
-
 // 0x004776A0
 int __cdecl sub_004776A0_ToggleBlendedShadows()
 {
     return D2GFX_ToggleBlendedShadows();
 }
-
-int __stdcall D2GFX_ToggleLowQuality();                                                                     // 0x004F54F0
 
 // 0x004776B0
 int __cdecl sub_004776B0_ToggleLowQuality()
@@ -73,7 +69,7 @@ int __cdecl sub_004776B0_ToggleLowQuality()
 void __stdcall D2GFX_SetGamma(void* pArg); // 0x004F5230
 
 // 0x004776C0
-void __fastcall sub_004776C0(void* pArg)
+void __fastcall sub_004776C0_SetGamma(void* pArg)
 {
     D2GFX_SetGamma(pArg);
 }
@@ -163,11 +159,10 @@ int __cdecl VIEW_IsAcceleratedRenderMode()
     return gnLightmapRenderMode >= 4;
 }
 
-void __cdecl VIEW_ToggleCacheStats();                                                               // 0x00477C00
 
 extern int gbCacheStats;                                                                           // 0x007BB3A4
 
-int gbCacheStatsChecked;                                                                                      // 0x007BB3AC
+extern int gbCacheStatsChecked; // 0x007BB3AC
 
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
@@ -188,7 +183,6 @@ void __cdecl sub_00477760_DrawCacheStats()
         sprintf(szText, "Tile Cache: (%.2fK) %3.2f%%, Misses: %d, %d percent utilized\n", (float)nSize * 0.0009765625, fPercent, nMisses, nUtilized);
         D2GFX_OutputString(10, 0x30, szText);
     }
-// build: symbol ?D2GFX_GetCacheResults@* 0x004F5290
     D2CacheStatsStrc* pStats = D2GFX_GetCacheResults();
     if (!pStats)
         return;
@@ -227,8 +221,6 @@ void __cdecl sub_00477970_Empty()
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-
-extern "C" void __cdecl D2CMPResetTileCacheHits(); // 0x005FE060
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
@@ -436,43 +428,28 @@ extern "C" __declspec(dllimport) void __stdcall GlobalMemoryStatus(D2MemoryStatu
 
 int __stdcall GAME_GetPing(); // 0x0044CE60
 
-int __cdecl GAME_GetSkippedFrames(); // 0x0044DAF0
 
-int __cdecl UI_GetGfxMemory(); // 0x0046F980
 
-int __cdecl UI_GetCofMemoryUsed(); // 0x0046F990
 
-int __cdecl UI_GetCofMemoryLimit(); // 0x0046F9A0
-
-int __cdecl D2CMPSpriteCacheGetMaxMemory(); // 0x005FEE40
-
-int __cdecl D2CMPCelDataCacheGetUsedMemory(); // 0x005FEE60
-
-int __cdecl D2CMPCelDataCacheGetMaxMemory(); // 0x005FEE70
 
 int __stdcall sub_0040ABE0(); // 0x0040ABE0
 
-void __cdecl sub_00481850(); // 0x00481850
-
-unsigned int __cdecl D2CMPSpriteCacheGetUsedMemory(); // 0x005FEE10
-
-int __cdecl D2GFX_GetDisplayType(); // 0x004F5140
 
 extern "C" const char gszUnknownText[]; // 0x006CC780
 
-unsigned int gnDisplayFps;        // 0x007BB390
+extern unsigned int gnDisplayFps; // 0x007BB390
 
-unsigned int gdwFpsCounterTick;        // 0x007BB394
+extern unsigned int gdwFpsCounterTick; // 0x007BB394
 
-unsigned int gnFpsCounterFrames;        // 0x007BB398
+extern unsigned int gnFpsCounterFrames; // 0x007BB398
 
-unsigned int gnCacheStatsFrames;        // 0x007BB39C
+extern unsigned int gnCacheStatsFrames; // 0x007BB39C
 
-unsigned int gdwCacheStatsStart;        // 0x007BB3A0
+extern unsigned int gdwCacheStatsStart; // 0x007BB3A0
 
-extern int g_007BB3A4; // 0x007BB3A4
+extern int gbCacheStats; // 0x007BB3A4
 
-extern int g_007BB3AC; // 0x007BB3AC
+extern int gbCacheStatsChecked; // 0x007BB3AC
 
 #define FRAME_INTERVAL 1000
 
@@ -483,14 +460,14 @@ extern int g_007BB3AC; // 0x007BB3AC
 #define MEMORY_SHIFT 20
 
 // 0x00477980
-void __fastcall sub_00477980()
+void __fastcall sub_00477980_DrawFpsStats()
 {
     unsigned int nNow=GetTickCount();
     unsigned int nElapsed=nNow-gdwFpsCounterTick;
-    if(g_007BB3A4 && !gdwCacheStatsStart){gdwCacheStatsStart=nNow;gnCacheStatsFrames=0;}
+    if(gbCacheStats && !gdwCacheStatsStart){gdwCacheStatsStart=nNow;gnCacheStatsFrames=0;}
     if(nElapsed<=FRAME_INTERVAL){++gnFpsCounterFrames;++gnCacheStatsFrames;}
     else {gdwFpsCounterTick=nNow;gnDisplayFps=gnFpsCounterFrames;gnFpsCounterFrames=0;}
-    if(!g_007BB3A4){gdwCacheStatsStart=0;return;}
+    if(!gbCacheStats){gdwCacheStatsStart=0;return;}
     D2GFX_OutputString(SCREEN_X,2,"%d FPS  %d Skip",gnDisplayFps,GAME_GetSkippedFrames());
     D2GFX_OutputString(SCREEN_RIGHT,2,"Ping: %d",GAME_GetPing());
     D2MemoryStatusStrc memory;
@@ -510,13 +487,13 @@ void __fastcall sub_00477980()
     default:sprintf(text,gszUnknownText);break;
     }
     D2GFX_OutputString(500,2,"Video: %s",text);
-    if(!g_007BB3AC){
+    if(!gbCacheStatsChecked){
         D2GFX_OutputString(SCREEN_X,120,"GFX Memory->%i",UI_GetGfxMemory());
         D2GFX_OutputString(SCREEN_X,132,"COF Memory->%i of %i",UI_GetCofMemoryUsed(),UI_GetCofMemoryLimit());
         D2GFX_OutputString(SCREEN_X,144,"Sprite Cache Memory->%i of %i",D2CMPSpriteCacheGetUsedMemory(),D2CMPSpriteCacheGetMaxMemory());
         D2GFX_OutputString(SCREEN_X,156,"Async Files->%i",sub_0040ABE0());
         D2GFX_OutputString(SCREEN_X,168,"CelData Cache Memory->%i of %i",D2CMPCelDataCacheGetUsedMemory(),D2CMPCelDataCacheGetMaxMemory());
-        sub_00481850();
+        sub_00481850_Nop();
         sub_00477760_DrawCacheStats();
     }
 }
@@ -535,7 +512,6 @@ void __cdecl VIEW_ToggleCacheStats()
     if (!gbCacheStats)
         return;
 
-// build: symbol ?D2GFX_GetCacheResults@* 0x004F5290
     D2CacheStatsStrc* pStats = D2GFX_GetCacheResults();
     if (pStats)
     {
@@ -559,7 +535,7 @@ void __cdecl sub_00477C60_CheckCacheStats()
     gbCacheStatsChecked = 1;
 }
 
-int gdwGlobal_007BB388; // 0x007BB388
+extern int gdwGlobal_007BB388; // 0x007BB388
 
 // 0x00477C90
 int __cdecl sub_00477C90()

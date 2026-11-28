@@ -1,3 +1,9 @@
+// A piece of ItemTbls.cpp (0x00631430-0x00639CC0), kept as its own file because the join doesn't build equal. Moved into
+// ItemTbls.cpp, this loader and DATATBLS_LoadRareSuffix_PrefixTxt (0x00633F40) swap the loads of their summed
+// record-count locals (and 0x00633F40 its commutative lea), and adding only the two field types this function needs
+// (TXTFIELD_WORD, TXTFIELD_CODETOBYTE) to ItemTbls.cpp's D2C_TxtFieldTypes, with no function moved, already flips
+// 0x00633F40. Placing those members in the existing later enum, in a new enum before the function or at the end of
+// D2C_TxtFieldTypes gives the same result, so the piece stays until the unit's declaration sensitivity is understood.
 struct D2TxtLinkStrc;
 
 struct D2BinFieldStrc

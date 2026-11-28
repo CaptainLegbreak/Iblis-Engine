@@ -3,7 +3,7 @@
 #include "D2GameStrc.h"
 #include "D2GameClient.h"
 #include "D2LanguageNames.h"
-// build: symbol _gaszLanguageNames 0x0073200C
+#include "FogApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -21,9 +21,6 @@ struct D2CriticalSectionStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -33,11 +30,10 @@ extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalS
 
 extern "C" __declspec(dllimport) int __stdcall QueryPerformanceFrequency(D2LargeIntegerStrc* pFrequency); // 0x006CC254
 
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-int __fastcall TASK_GetClockTime(); // 0x00564340
+#include "D2GameFuncs.h"
 
-D2LinkStrc* __fastcall TASK_LinkList_Remove(D2LinkStrc* pLink); // 0x005642E0
 
 void __stdcall TASK_BalanceQueues(D2TaskStrc* pTask); // 0x00564460
 
@@ -49,8 +45,6 @@ unsigned int gnNumberOfTasksCreated; // 0x0088C798
 
 static unsigned int gnGamesCount;        // 0x0088C79C
 
-extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC210
-extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC1FC
 
 // Fog's critical-section object; its constructor and destructor are out of line (0x0040EB50/0x0040EB60),
 // so the array below is built and torn down by the CRT's vector constructor and destructor iterators.
@@ -60,8 +54,6 @@ public:
     CCritSect();
     ~CCritSect();
 };
-// build: symbol ??0CCritSect@@QAE@XZ 0x0040EB50
-// build: symbol ??1CCritSect@@QAE@XZ 0x0040EB60
 
 // A critical section for the whole run whose constructor and destructor are inline:
 // the initializer calls InitializeCriticalSection itself.
@@ -71,12 +63,8 @@ struct CStaticCritSect : D2CriticalSectionStrc
     ~CStaticCritSect() { DeleteCriticalSection(this); }
 };
 
-// build: symbol ??__EgtTaskQueuesCriticalSections@@YAXXZ 0x006CAF90
-// build: symbol ??__FgtTaskQueuesCriticalSections@@YAXXZ 0x006CB4A0
 CCritSect gtTaskQueuesCriticalSections[32]; // 0x0088C7A8
 
-// build: symbol ??__EgTaskSlotsCriticalSection@@YAXXZ 0x006CAF70
-// build: symbol ??__FgTaskSlotsCriticalSection@@YAXXZ 0x006CB490
 CStaticCritSect gTaskSlotsCriticalSection; // 0x0088CAA8
 
 struct D2TaskQueueStrc
@@ -107,22 +95,8 @@ extern D2TaskQueueStrc* gpTaskQueues_0088C708[32]; // 0x0088C708
 
 static D2LinkStrc gpTaskQueueLink; // 0x0088C788
 
-D2GameStrc* __fastcall GAME_LockGame(int nGameGUID);                                                        // 0x0052E860
-
-void __fastcall GAME_UpdateProgress(D2GameStrc* pGame);                                                     // 0x0052D870
-
-void __fastcall D2GAME_PACKETS_SendGameLeft(int nClientId);                                             // 0x0053B220
 
 void __fastcall ClientRemoveFromGame(D2GameStrc* pGame, int nClientId, int bTriggerSave);          // 0x00539DA0
-
-void __fastcall GAME_LeaveGamesCriticalSection(D2GameStrc* pGame);                                          // 0x0052DA90
-
-void __fastcall GAME_CloseGame(int nGameGUID);                                                              // 0x0052E770
-
-void __fastcall TASK_LinkList_PushFront(D2LinkStrc* pList, D2LinkStrc* pLink);                              // 0x00564250
-
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
-
 
 
 extern "C" const char gszTaskSourceFile[];                                                                  // 0x006E11B8
@@ -136,7 +110,6 @@ struct D2TaskGameStrc
     unsigned int hGame;
     D2LinkStrc tLink;
 };
-
 
 
 // 0x005641C0
@@ -452,7 +425,7 @@ int __cdecl TASK_CreateQueue()
     EnterCriticalSection(&gtTaskQueuesCriticalSections[nIndex]);
     if (!gtTaskSlots[nIndex])
     {
-        D2TaskStrc* pTask = (D2TaskStrc*)sub_0040B430(0, sizeof(D2TaskStrc), ".\\GAME\\Task.cpp", 0x3FB, 0);
+        D2TaskStrc* pTask = (D2TaskStrc*)FOG_AllocPool(0, sizeof(D2TaskStrc), ".\\GAME\\Task.cpp", 0x3FB, 0);
         pTask->dwTaskQ = nIndex;
         pTask->nType = 0;
         D2LinkStrc* pBalanceLink = &pTask->pTaskBalanceLink;
@@ -702,8 +675,7 @@ void __stdcall TASK_TASK_ProcessGame(int nTaskNumber, D2TaskStrc* ptTask)
         return;
     }
     GAME_UpdateProgress(pGame);
-    sub_6FC39270(pGame, 0);
-// build: symbol ?SYSTEM_GetSyncTime@* 0x00410A80
+    GAME_SendAllClientPackets(pGame, 0);
     const int nTime = SYSTEM_GetSyncTime();
     const unsigned int nSyncTimer = pGame->nSyncTimer;
     if (nSyncTimer == 1 || nTime - nSyncTimer > 1800)
@@ -713,7 +685,7 @@ void __stdcall TASK_TASK_ProcessGame(int nTaskNumber, D2TaskStrc* ptTask)
         {
             pNext = pClient->pNext;
             D2GAME_PACKETS_SendGameLeft(pClient->dwClientId);
-            sub_0053B240_SendHeaderOnly0x06(pClient->dwClientId);
+            D2GAME_PACKETS_SendGameExit(pClient->dwClientId);
             ClientRemoveFromGame(pGame, pClient->dwClientId, 0);
         }
     }

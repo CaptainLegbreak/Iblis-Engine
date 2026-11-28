@@ -1,4 +1,8 @@
 #include "D2BNClient.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "StormApi.h"
+#include "StormApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -10,7 +14,6 @@ struct D2TimeZoneInformationStrc;
 
 struct Table;
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -18,7 +21,6 @@ extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize
 
 extern "C" unsigned int __cdecl strlen(const char* szString);
 
-void __stdcall SMemZero(void* pLocation, unsigned int nLength); // 0x0041D300
 
 void __cdecl BNDOWNLOAD_LogPrintf(const char* szFormat, ...); // 0x00518D40
 
@@ -62,7 +64,6 @@ private:
     void* m_pRealms;
 };
 
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
 
 struct Table { char pad0[8]; int count; char padC[4]; const char* data; int length; const char* Nth(int n); };
 
@@ -71,14 +72,6 @@ extern "C" int __cdecl abs(int nValue);
 extern "C" long __cdecl strtol(const char* szString, char** ppEnd, int nRadix); // 0x0068676E
 
 extern "C" unsigned long __cdecl strtoul(const char* szString, char** ppEnd, int nRadix); // 0x006867B2
-
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
-
-int __stdcall SStrCmpI(const char* szString1, const char* szString2, unsigned int nMaxChars); // 0x00413590
-
-int __stdcall SRegDeleteValue(const char* szKeyName, const char* szValueName, unsigned int nFlags); // 0x00414D90
-
-int __stdcall SRegSaveData(const char* szKeyName, const char* szValueName, unsigned int nFlags, const void* pData, unsigned long nSize); // 0x00415000
 
 extern "C" const char gszGatewayIsClosest[]; // 0x006DED44
 
@@ -90,15 +83,10 @@ extern "C" const char gszObsoleteGatewayList[]; // 0x006DEDC0
 
 int __cdecl BNDOWNLOAD_ConfigureLog(int nChannel, int nIndent); // 0x00518C70
 
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags);         // 0x00413020
-
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nMax);                     // 0x004135D0
-
 extern "C" const char gszBNetGWFile[];                                                              // 0x006DEC6C
 
 extern "C" const char gszZero[];                                                                    // 0x006D5D64
 
-// build: symbol ??4BNGatewayAccess@@QAEAAV0@ABV0@@Z 0x00517E40
 // 0x00517E40
 BNGatewayAccess& BNGatewayAccess::operator=(const BNGatewayAccess& source)
 {
@@ -115,10 +103,9 @@ int BNGatewayAccess::GetSystemTimeZone()
     const unsigned short nLangId = GetUserDefaultLangID();
     if ((nLangId & 0x3FF) == 9 && (nLangId >> 10) == 3)
         return 480;
-    return tTimeZone.f_0;
+    return tTimeZone.nBias;
 }
 
-// build: symbol ?Nth@BNGatewayAccess@@AAEPBDH@Z 0x00517FD0
 // 0x00517ED0
 void __stdcall BNGatewayAccess::Unload()
 {
@@ -129,11 +116,8 @@ void __stdcall BNGatewayAccess::Unload()
         pCurGateway += SStrLen(pCurGateway) + 1;
         pCurGateway[0] = m_nCurGateway / 10 + '0';
         pCurGateway[1] = m_nCurGateway % 10 + '0';
-// build: symbol ?gszDiabloGateways@* 0x006DEC8C
-// build: symbol ?gszOverrideGateways@* 0x006DECAC
         const char* szValueName = m_bOverride ? gszOverrideGateways : gszDiabloGateways;
         D2_ASSERT(!m_pGatewayList[m_nGatewayListSize - 1] && !m_pGatewayList[m_nGatewayListSize - 2], 0xB9);
-// build: symbol ?gszConfiguration@* 0x006DEC7C
         SRegSaveData(gszConfiguration, szValueName, 0x82, m_pGatewayList, m_nGatewayListSize);
     }
 
@@ -267,7 +251,6 @@ char* __stdcall BNETGW_LoadGatewayFile(unsigned int* pSize)
 void BNGatewayAccess::WriteDefaultGatewayList()
 {
     unsigned int nSize;
-// build: symbol ?gszWritingDefaultGateways@* 0x006DED24
     BNDOWNLOAD_LogPrintf(gszWritingDefaultGateways);
     char* szText = BNETGW_LoadGatewayFile(&nSize);
     if (szText)
@@ -578,7 +561,6 @@ void __stdcall BNGatewayAccess::UpdateGatewaysFromIni(char* szText)
 
 }
 
-// build: symbol ?PickClosestZone@BNGatewayAccess@@AAEXH@Z 0x00518580
 // 0x005184C0
 char* BNGatewayAccess::FindKey(char* pSection, const char* szKey)
 {

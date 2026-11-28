@@ -105,7 +105,7 @@ union D2WordArgStrc
     unsigned int dwValue;
     unsigned short wValue;
 };
-extern "C" const char gszNewLine_006FFCB0[]; // 0x006FFCB0
+extern "C" const char gszNewline[]; // 0x006FFCB0
 extern "C" const char gszNewLine2[]; // 0x006FFCD8
 
 struct D2ExceptionRecordStrc
@@ -178,7 +178,6 @@ bool __fastcall sub_00402820_WriteMiniDump(const char* szPath, const char* szCom
         return false;
     }
     EnterCriticalSection(&gtSymbolLock);
-// build: symbol ?ghDbgHelp@* 0x0098A680
     if (!ghDbgHelp && !sub_00401B00_LoadDbgHelp())
     {
         LeaveCriticalSection(&gtSymbolLock);
@@ -247,10 +246,8 @@ void __cdecl sub_004029F0_StopDbgHelpWorker()
     CloseHandle(ghDbgHelpWorkEvent);
     DeleteCriticalSection(&gtDbgHelpRequestLock);
     DeleteCriticalSection(&gtSymbolLock);
-// build: symbol ?gbSymInitialized@* 0x0098A6B0
     if (gbSymInitialized)
     {
-// build: symbol ?ghProcess@* 0x0074C6F0
         ((SymCleanupFn)gpfnSymCleanup)(ghProcess);
         gbSymInitialized = false;
     }
@@ -373,10 +370,10 @@ bool __stdcall sub_00402A90_GetDbgHelpModuleRange(void** ppBase, unsigned long* 
         return false;
     if (!GetModuleInformation(GetCurrentProcess(), ghDbgHelp, &tInfo, sizeof(tInfo)))
         return false;
-    // stands for the original reading both module-info fields before it loads the out pointers (no plain-C form found)
-    *ppBase = *(void* volatile*)&tInfo.lpBaseOfDll;
-    const unsigned long nSize = *(volatile unsigned long*)&tInfo.SizeOfImage;
-    *pSize = nSize;
+    *ppBase = tInfo.lpBaseOfDll;
+    // the size's out pointer is read through the address of the parameter before it (as the image reads it,
+    // after the first store; written as *pSize the compiler loads both out pointers first)
+    **(unsigned long**)(&ppBase + 1) = tInfo.SizeOfImage;
     return true;
 }
 
@@ -441,7 +438,7 @@ void __fastcall sub_004032F0_DumpRegisters(unsigned long dwThreadId, D2CrashPrin
         n += _snprintf_s(szText + n, 0x400 - n, -1, "%6s:0x%08x", "EBX", tContext.Ebx);
         n += _snprintf_s(szText + n, 0x400 - n, -1, "%6s:0x%08x", "ECX", tContext.Ecx);
         n += _snprintf_s(szText + n, 0x400 - n, -1, "%6s:0x%08x", "EDX", tContext.Edx);
-        n += _snprintf_s(szText + n, 0x400 - n, -1, gszNewLine_006FFCB0);
+        n += _snprintf_s(szText + n, 0x400 - n, -1, gszNewline);
         n += _snprintf_s(szText + n, 0x400 - n, -1, "%6s:0x%08x", "ESI", tContext.Esi);
         n += _snprintf_s(szText + n, 0x400 - n, -1, "%6s:0x%08x", "EDI", tContext.Edi);
         _snprintf_s(szText + n, 0x400 - n, -1, gszNewLine2);
@@ -453,7 +450,7 @@ void __fastcall sub_004032F0_DumpRegisters(unsigned long dwThreadId, D2CrashPrin
         n += _snprintf_s(szText + n, 0x400 - n, -1, "%6s:0x%08x", "ESP", tContext.Esp);
         n += _snprintf_s(szText + n, 0x400 - n, -1, "%6s:0x%08x", "EIP", tContext.Eip);
         n += _snprintf_s(szText + n, 0x400 - n, -1, "%6s:0x%08x", "FLG", tContext.EFlags);
-        n += _snprintf_s(szText + n, 0x400 - n, -1, gszNewLine_006FFCB0);
+        n += _snprintf_s(szText + n, 0x400 - n, -1, gszNewline);
         n += _snprintf_s(szText + n, 0x400 - n, -1, "%6s:0x%08x", "CS", tContext.SegCs);
         n += _snprintf_s(szText + n, 0x400 - n, -1, "%6s:0x%08x", "SS", tContext.SegSs);
         _snprintf_s(szText + n, 0x400 - n, -1, gszNewLine2);
@@ -472,7 +469,7 @@ void __fastcall sub_004032F0_DumpRegisters(unsigned long dwThreadId, D2CrashPrin
     {
         int n = _snprintf_s(szText, 0x400, -1, "%6s:0x%08x", "CTRL", tContext.FloatSave.ControlWord);
         n += _snprintf_s(szText + n, 0x400 - n, -1, "%6s:0x%08x", "STAT", tContext.FloatSave.StatusWord);
-        _snprintf_s(szText + n, 0x400 - n, -1, gszNewLine_006FFCB0);
+        _snprintf_s(szText + n, 0x400 - n, -1, gszNewline);
         pfnPrint(pContext, szText);
         for (unsigned int i = 0; i < 8; i++)
         {
@@ -487,10 +484,10 @@ void __fastcall sub_004032F0_DumpRegisters(unsigned long dwThreadId, D2CrashPrin
             const unsigned int dwHigh2 = *(unsigned int*)&tContext.FloatSave.RegisterArea[i * 10 + 4];
             tExponent.wValue = *(unsigned short*)&tContext.FloatSave.RegisterArea[i * 10 + 8];
             n += _snprintf_s(szText + n, 0x400 - n, -1, "%5s%d:0x%08x 0x%08x 0x%08x", "ST", i, dwLow2, dwHigh2, tExponent.dwValue);
-            _snprintf_s(szText + n, 0x400 - n, -1, gszNewLine_006FFCB0);
+            _snprintf_s(szText + n, 0x400 - n, -1, gszNewline);
             pfnPrint(pContext, szText);
         }
-        _snprintf_s(szText, 0x400, -1, gszNewLine_006FFCB0);
+        _snprintf_s(szText, 0x400, -1, gszNewline);
         pfnPrint(pContext, szText);
     }
     if (tContext.ContextFlags & 0x10020)
@@ -508,10 +505,10 @@ void __fastcall sub_004032F0_DumpRegisters(unsigned long dwThreadId, D2CrashPrin
             const unsigned int dwWord2b = *(unsigned int*)&tContext.FloatSave.RegisterArea[i * 16 + 8];
             const unsigned int dwWord3b = *(unsigned int*)&tContext.FloatSave.RegisterArea[i * 16 + 12];
             n += _snprintf_s(szText + n, 0x400 - n, -1, "%5s%d:0x%08x 0x%08x 0x%08x 0x%08x", "XMM", i, dwWord0b, dwWord1b, dwWord2b, dwWord3b);
-            _snprintf_s(szText + n, 0x400 - n, -1, gszNewLine_006FFCB0);
+            _snprintf_s(szText + n, 0x400 - n, -1, gszNewline);
             pfnPrint(pContext, szText);
         }
-        _snprintf_s(szText, 0x400, -1, gszNewLine_006FFCB0);
+        _snprintf_s(szText, 0x400, -1, gszNewline);
         pfnPrint(pContext, szText);
     }
 }
@@ -979,4 +976,209 @@ static bool sub_00404FF0_ReadRsds(const D2CvRsdsStrc* pCv, D2CrashModuleStrc* pM
     pModule->nAge = pCv->dwAge;
     sub_00404890_CopyRsdsGuid(pModule, pCv);
     return true;
+}
+
+extern "C" __declspec(dllimport) unsigned long __stdcall VirtualQuery(const void* pAddress, D2MemoryBasicInfoStrc* pBuffer, unsigned long nLength); // 0x006CC244
+
+// 0x00404F40
+static void __stdcall sub_00404F40_GetDebugDirectory64(unsigned long* pSize, unsigned long* pRva, const D2ImageOptionalHeader64Strc* pHeader)
+{
+    if (pHeader->NumberOfRvaAndSizes > 6)
+    {
+        const D2ImageDataDirStrc tDir = pHeader->DataDirectory[6];
+        *pRva = tDir.VirtualAddress;
+        *pSize = tDir.Size;
+    }
+}
+
+void __fastcall sub_G02_Emit_00404F40(const D2ImageOptionalHeader64Strc* pHeader, unsigned long* pOut)
+{
+    sub_00404F40_GetDebugDirectory64(&pOut[1], &pOut[0], pHeader);
+    sub_00404F40_GetDebugDirectory64(&pOut[3], &pOut[2], pHeader + 1);
+}
+
+// 0x00404F60
+static void __stdcall sub_00404F60_GetDebugDirectory32(unsigned long* pSize, unsigned long* pRva, const D2ImageOptionalHeaderStrc* pHeader)
+{
+    if (pHeader->NumberOfRvaAndSizes > 6)
+    {
+        const D2ImageDataDirStrc tDir = pHeader->DataDirectory[6];
+        *pRva = tDir.VirtualAddress;
+        *pSize = tDir.Size;
+    }
+}
+
+void __fastcall DebugDirectory32Context(const D2ImageOptionalHeaderStrc* pHeader, unsigned long* pOut)
+{
+    sub_00404F60_GetDebugDirectory32(&pOut[1], &pOut[0], pHeader);
+    sub_00404F60_GetDebugDirectory32(&pOut[3], &pOut[2], pHeader + 1);
+}
+
+// 0x00401480
+static unsigned char __stdcall ERRORMANAGER_GetStackRange(void** ppBase, unsigned long* pEnd, const void* pAddress)
+{
+    D2MemoryBasicInfoStrc tInfo;
+    if (!VirtualQuery(pAddress, &tInfo, sizeof(tInfo)))
+        return 0;
+    if (tInfo.State != 0x1000)
+        return 0;
+    if (tInfo.Type != 0x20000)
+        return 0;
+    if (tInfo.Protect != 4)
+        return 0;
+    *pEnd = (unsigned long)tInfo.BaseAddress + tInfo.RegionSize;
+    if (*pEnd <= (unsigned long)pAddress)
+        return 0;
+    *ppBase = tInfo.AllocationBase;
+    if (!VirtualQuery(tInfo.AllocationBase, &tInfo, sizeof(tInfo)))
+        return 0;
+    if (tInfo.Type != 0x20000)
+        return 0;
+    if (tInfo.BaseAddress != *ppBase)
+        return 0;
+    unsigned long dwEnd = (unsigned long)*ppBase + tInfo.RegionSize;
+    if (tInfo.State == 0x1000)
+    {
+        if (dwEnd != *pEnd)
+            return 0;
+        *ppBase = tInfo.AllocationBase;
+        return 1;
+    }
+    if (tInfo.State == 0x2000)
+    {
+        if (dwEnd >= *pEnd)
+            return 0;
+        *ppBase = tInfo.AllocationBase;
+        return 1;
+    }
+    return 0;
+}
+
+// 0x00401540
+static unsigned char __stdcall ERRORMANAGER_GetThreadStack(unsigned long* pStackSize, unsigned long dwThreadId, unsigned long* pStackTop, unsigned long* pStackPointer)
+{
+    D2ThreadContextStrc tContext;
+    void* hThread = 0;
+    tContext.ContextFlags = 0x10001;
+    if (GetCurrentThreadId() == dwThreadId)
+    {
+        RtlCaptureContext(&tContext);
+    }
+    else
+    {
+        hThread = OpenThread(0x4A, 0, dwThreadId);
+        if (!hThread)
+            return 0;
+        if (SuspendThread(hThread) == -1)
+            return 0;
+        if (!GetThreadContext(hThread, &tContext))
+        {
+            ResumeThread(hThread);
+            CloseHandle(hThread);
+            return 0;
+        }
+    }
+    *pStackPointer = tContext.Esp;
+    void* pBase;
+    unsigned long dwEnd;
+    unsigned char bResult = ERRORMANAGER_GetStackRange(&pBase, &dwEnd, (const void*)tContext.Esp);
+    if (bResult)
+    {
+        *pStackTop = dwEnd;
+        *pStackSize = dwEnd - (unsigned long)pBase;
+    }
+    if (hThread)
+    {
+        ResumeThread(hThread);
+        CloseHandle(hThread);
+    }
+    return bResult;
+}
+
+// 0x00405060
+int D2ThreadContextStrc::sub_00405060_CaptureFrames(unsigned long dwThreadId, D2StackFrameStrc* pFrames, int nSkipFrames)
+{
+    D2StackFrameStrc* pOut = pFrames;
+    unsigned int nMaxFrames = 0x80;
+    D2ThreadContextStrc tContext;
+    void* hThread = 0;
+    if (this)
+    {
+        tContext = *this;
+    }
+    else
+    {
+        if (GetCurrentThreadId() == dwThreadId)
+        {
+            tContext.ContextFlags = 0x10001;
+            RtlCaptureContext(&tContext);
+        }
+        else
+        {
+            tContext.ContextFlags = 0x10001;
+            hThread = OpenThread(0x4A, 0, dwThreadId);
+            if (!hThread)
+                return 0;
+            if (SuspendThread(hThread) == -1)
+                return 0;
+            if (!GetThreadContext(hThread, &tContext))
+            {
+                ResumeThread(hThread);
+                CloseHandle(hThread);
+                return 0;
+            }
+        }
+    }
+    unsigned int nCount = 0;
+    unsigned long dwPc = tContext.Eip;
+    unsigned long dwFrame = tContext.Ebp;
+    unsigned long dwStack = tContext.Esp;
+    unsigned long dwStackTop;
+    unsigned long dwStackSize;
+    unsigned long dwStackPointer;
+    if (!ERRORMANAGER_GetThreadStack(&dwStackSize, dwThreadId, &dwStackTop, &dwStackPointer))
+    {
+        if (hThread)
+        {
+            ResumeThread(hThread);
+            CloseHandle(hThread);
+        }
+        return 0;
+    }
+    __try
+    {
+        for (unsigned int i = 0; i < nMaxFrames; i++)
+        {
+            if (i >= (unsigned int)nSkipFrames)
+            {
+                pOut[nCount].dwPc = dwPc;
+                pOut[nCount].dwStack = dwStack;
+                pOut[nCount].dwFrame = dwFrame;
+                nCount++;
+                if (nCount >= nMaxFrames)
+                    break;
+            }
+            if (dwFrame <= dwStack)
+                break;
+            if (dwFrame + 8 > dwStackTop)
+                break;
+            unsigned long dwNext = *(unsigned long*)dwFrame;
+            if (dwNext & 3)
+                break;
+            if (dwNext <= dwFrame)
+                break;
+            dwPc = *(unsigned long*)(dwFrame + 4);
+            dwStack = dwFrame + 4;
+            dwFrame = dwNext;
+        }
+    }
+    __except (1)
+    {
+    }
+    if (hThread)
+    {
+        ResumeThread(hThread);
+        CloseHandle(hThread);
+    }
+    return nCount;
 }

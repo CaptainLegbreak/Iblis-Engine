@@ -1,4 +1,5 @@
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Constants.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
@@ -16,6 +17,15 @@
 #include "D2WinSplitText.h"
 #include "D2WaypointActRange.h"
 #include "D2MsgRecord.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "StormApi.h"
+#include "D2CommonApi2.h"
+#include "D2GfxApi.h"
+#include "D2WinApi.h"
+#include "StormApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -69,9 +79,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x00
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -90,80 +98,51 @@ struct D2RequestStrc
     int nType;
     D2UnitStrc* pUnit;
     int unk0x08[2];
-    int nArg0;
-    int nArg1;
-    int nArg2;
+    int nMissile;
+    int nX;
+    int nY;
     int unk0x1C[4];
-    int nArg3;
-    int nArg4;
+    int nSkill;
+    int nSkillLevel;
     int unk0x34[10];
 };
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
-int __cdecl ROSTER_IsAnyoneHostile(); // 0x0047A560
 
-int __cdecl CUNIT_IsTrading(); // 0x004B8A10
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 void __cdecl GAME_ResetMouseState(); // 0x0044DA40
 
-int __cdecl sub_0045AE90(); // 0x0045AE90
 
 extern "C" int __cdecl PLAYER_GetScreenOffsetX(); // 0x0045AFC0
 
 extern "C" int __cdecl PLAYER_GetScreenOffsetY(); // 0x0045AFD0
 
-int __cdecl GAME_IsExpansion(); // 0x0044DCC0
 
-int __fastcall GAME_GetUIVarState(unsigned int nUIVar); // 0x004538D0
 
 void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
 
-D2UnitStrc* __fastcall CUNIT_GetOwnerUnit(D2UnitStrc* pUnit); // 0x004639D0
 
 void* __fastcall sub_0046E570_GetGfxEntry(D2UnitStrc* pUnit, int nMode); // 0x0046E570
 
 void* __fastcall sub_0046E5A0_FindGfxNode(D2UnitStrc* pUnit, int nWeaponClassId, int nArg); // 0x0046E5A0
 
-void* __fastcall GFX_LoadUnitGfxNode(D2UnitStrc* pUnit, int nWeaponClassId, int nArg); // 0x0046FA80
 
 int __fastcall GFX_IsUnitOnScreen(D2UnitStrc* pUnit, int nX, int nY, int nArg1, int nArg2); // 0x004709A0
 
-D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc* pUnit); // 0x004648F0
 
 D2UnitStrc* __fastcall sub_004CD540_HandleRequest(D2RequestStrc* pRequest); // 0x004CD540
 
-void __fastcall MISSILE_AddMissileEffect(D2UnitStrc* pMissile, int nMissile, int nArg1, int nArg2, int nArg3); // 0x004CEFE0
 
 int __fastcall GFXUTIL_GetCofLayerValue(void* pEntry, int nArg); // 0x004DB0D0
 
 int __fastcall sub_004E60A0_AddSetPropText(D2UnitStrc* pItem, int nArg1, int nArg2, int nArg3, int nProp, int nArg5, int nArg6, int nArg7); // 0x004E60A0
 
-int __stdcall UNITS_GetPrecisionX(D2UnitStrc* pUnit); // 0x006203B0
 
-int __stdcall UNITS_GetPrecisionY(D2UnitStrc* pUnit); // 0x00620410
 
-int __stdcall UNITS_GetClientCoordX(D2UnitStrc* pUnit); // 0x00620650
 
-int __stdcall UNITS_GetClientCoordY(D2UnitStrc* pUnit); // 0x006206B0
-
-int __stdcall ITEMS_GetItemQuality(D2UnitStrc* pItem); // 0x00627E70
-
-unsigned int __stdcall ITEMS_GetSetItemsMask(D2UnitStrc* pPlayer, D2UnitStrc* pSetItem, int bDontIgnoreInputItem); // 0x0062A370
-
-D2SetItemsTxt* __stdcall ITEMS_GetSetItemsTxtRecordFromItem(D2UnitStrc* pItem); // 0x0062A490
-
-int __stdcall ITEMS_GetNoOfSetItemsFromItem(D2UnitStrc* pItem); // 0x0062B3A0
-
-int __stdcall STATES_CheckStateMaskOnUnit(D2UnitStrc* pUnit, int nState); // 0x0063A7B0
-
-int __stdcall COMPOSIT_GetWeaponClassId(D2UnitStrc* pUnit, D2InventoryStrc* pInventory, int* pWeaponClassId, int nAnimMode, int bUseConvertedMode); // 0x0064F380
-
-void __cdecl SELECT_ClearSelection(); // 0x00466FE0
 
 void __fastcall sub_00467430(D2RectStrc* pRect); // 0x00467430
 
@@ -177,15 +156,9 @@ int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg
 
 void __fastcall SOUNDINST_ArmHint(int nKey, int nGroup, int nOffset, unsigned int nCount); // 0x004B9EF0
 
-int __fastcall sub_004E0650_GetStringSound(unsigned short nStringId); // 0x004E0650
 
-int __cdecl WINDOW_GetWindow(); // 0x004F59A0
 
-int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
-
-void __fastcall MSG_SendWord(unsigned char nCmd, unsigned short nArg); // 0x004785B0
 
 void __stdcall INV_HandlePanelClick(SMSGHANDLER_PARAMS* pMsg); // 0x004912A0
 
@@ -193,45 +166,21 @@ int __stdcall HIREABLES_CanEquipHirelingItem(int nArg); // 0x004934D0
 
 int __fastcall SPELLSEL_GetSkillIconCel(D2SkillsTxt* pSkillsTxt); // 0x004A8C80
 
-int __fastcall SPELLSEL_GetSkillState(D2UnitStrc* pUnit, D2SkillStrc* pSkill); // 0x004A8D30
 
 void __fastcall SPELLSEL_DrawSkillInfoBase(int nValue, D2SkillsTxt* pSkillsTxt, int nOwnerGUID, int nCharges, int nState, int nX, int nY, int nArg); // 0x004A9690
 
-void __fastcall SPELLSEL_UpdateSkillButtonHover(short* pId, int nState, int nA, int nB, int nX, int nY); // 0x004A8D50
 
-void __fastcall SPELLSEL_DrawSkillQuantity(short* pId, int nState, int nQuantity, int nX, int nY); // 0x004AA1F0
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
 
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
 
-int __stdcall WAYPOINTS_GetLevelIdFromWaypointNo(unsigned short wWaypointNo, int* pLevelId); // 0x00660D90
 
-int __stdcall WAYPOINTS_GetWaypointNoFromLevelId(int nLevelId, unsigned short* pWaypointNo); // 0x00660E00
 
-int __stdcall WAYPOINTS_IsActivated(D2WaypointDataStrc* pData, unsigned short wField); // 0x00660E50
 
-int __stdcall DUNGEON_IsRoomInTown(D2ActiveRoomStrc* pRoom); // 0x0061AB00
 
-D2SkillsTxt* __fastcall SKILLS_GetSkillsTxtRecordFromSkill(D2SkillStrc* pSkill); // 0x00644140
-
-int __stdcall SKILLS_GetSkillLevel(D2UnitStrc* pUnit, D2SkillStrc* pSkill, int bBonus); // 0x006442A0
-
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, int nFlags); // 0x00412650
-
-D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
-
-int __fastcall CUNIT_GetBasePalShiftIndex(D2UnitStrc* pUnit); // 0x00463E50
-
-int __fastcall CUNIT_GetPalShiftIndex(D2UnitStrc* pUnit); // 0x00463EB0
-
-int __fastcall ROSTERPETS_IsOwnedByPlayer(D2UnitStrc* pUnit); // 0x004791B0
 
 void __cdecl CHAT_RecallChatLine(); // 0x0047B9C0
 
-void __stdcall CHAT_StepChatIndex(int nDelta); // 0x0047BA80
 
 extern const int gdwBitMasks[]; // 0x006CE268
 
@@ -239,7 +188,6 @@ extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 extern int gaSetPartialCounts_006DBD90[]; // 0x006DBD90
 
-extern int gnScreenWidth; // 0x0071146C
 
 extern D2OptionHeaderStrc gtMainOptionHeader; // 0x00713044
 
@@ -280,11 +228,8 @@ extern D2RosterPetStrc* gpRosterPets; // 0x007BB5BC
 extern D2InvRectStrc gtPlayerInvRect; // 0x007BCAA0
 
 
-extern int gnPanelOffsetX; // 0x007A2858
 
-extern int gnPanelOffsetY; // 0x007A285C
 
-extern char gbSent; // 0x007BF085
 
 extern int gnWaypointCount; // 0x007BF08A
 
@@ -292,19 +237,13 @@ extern int gnWaypointEnabledCount; // 0x007BF08E
 
 extern D2TextBoxStrc* gpTextBox; // 0x007BF0A4
 
-extern int gbTextBoxDone; // 0x007BF1BC
 
-extern int gnTextActive; // 0x007BF1C0
 
-extern unsigned long gnStartTick; // 0x007BF22C
 
-extern int gbTextSound; // 0x007BF230
 
 extern int gbTextSide; // 0x007BF236
 
 extern int gnGlobal_007BEEE8; // 0x007BEEE8
-
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags);         // 0x00413020
 
 int __fastcall MSG_SendWardenPacket(const void* pData, int nSize); // 0x00478830
 
@@ -402,9 +341,7 @@ struct D2RC4Strc;
 
 struct D2WardenFindArgStrc;
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
 
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
 
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
@@ -455,7 +392,6 @@ static void __stdcall WARDENCLIENT_HashModule(const char* szName, unsigned char*
 
 static int __stdcall WARDENCLIENT_VerifyModuleSignature(const char* szName, unsigned char* pData, const unsigned char* pModulus, const unsigned char* pExponent, unsigned int nExponentSize, unsigned int nSkip, unsigned int nSize, unsigned int nSignatureSize); // 0x0047FA20
 
-void __cdecl WARDENCLIENT_ActivatePendingModule(); // 0x00480230
 
 extern WardenModule* gpSlotHolder; // 0x007BC990
 
@@ -481,12 +417,10 @@ unsigned int gnWardenBufferSize; // 0x007BC98C
 
 static int __stdcall WARDENCLIENT_LoadModule(const unsigned char* pData, const unsigned char* pKey, unsigned int nSize); // 0x0047FC70
 
-int __fastcall WARDENCLIENT_InitWarden(int nValue); // 0x004803C0
 
 
 
 
-// build: symbol ?gtWardenIface@* 0x00721C98
 WardenClient gtWardenIface; // 0x00721C98
 
 
@@ -512,34 +446,24 @@ extern "C" size_t __cdecl strlen(const char* sz);
 
 extern "C" int __cdecl atoi(const char* szString);                                                          // 0x00681EBB
 
-int __stdcall SStrCmpI(const char* szString1, const char* szString2, unsigned int nMaxChars); // 0x00413590
 
 
-void __cdecl sub_00477C60_CheckCacheStats();                                                                // 0x00477C60
 
-void __cdecl VIEW_ToggleCacheStats();                                                               // 0x00477C00
 
-int __cdecl GAME_GetConnectionType();                                                                                 // 0x0044DB30
 
-void __cdecl SOUNDINST_ToggleHints();                                                                    // 0x004BABC0
 
 bool __fastcall CHAT_IsNarrowText(const Unicode* pText);                                            // 0x0047BD00
 
 int __stdcall CHAT_ParseChatCommand(char** ppText, char* pCode, char* szArgument);                  // 0x0047BAD0
 
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource);                                 // 0x00526700
 
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...);               // 0x005269D0
 
-int __fastcall sub_00526800(const Unicode* pString);                                                      // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString);                                                      // 0x00526800
 
 void __fastcall TEXT_PrintChatLine(const Unicode* pText, char nColor);                              // 0x0049E3A0
 
-void __fastcall MSG_SendStrings(const unsigned char* pData);                                       // 0x004787B0
-
-unsigned int __fastcall D2Win_10128(unsigned char nChar);                                                   // 0x00502550
 
 D2SplittedTextStrc* __fastcall D2WINFONT_SplitText(Unicode* pText, unsigned int* pLineCount, int nWidth);    // 0x00502970
 
@@ -552,7 +476,6 @@ extern unsigned char gbChatInputOpen;                                           
 
 extern int gnChatDrawCount;                                                                              // 0x007BB5EC
 
-extern int gbNoPickup;                                                                             // 0x007A6A90
 
 extern unsigned short gwChatHistoryCount;                                                          // 0x007BB5E4
 
@@ -566,19 +489,14 @@ Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x00526
 
 void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
 
-unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB); // 0x00469AA0
 
 const Unicode* __fastcall CMDTBL_GetKeyText(int nKey, int nArg2); // 0x00469DE0
 
-int __cdecl sub_00468730(); // 0x00468730
 
-int __cdecl sub_00468740(); // 0x00468740
 
 void __stdcall sub_0047E9A0_DrawSlots(int bDraw); // 0x0047E9A0
 
-int __cdecl sub_0047EA60_IsAnyPanelOpen(); // 0x0047EA60
 
-int __cdecl sub_0047EB50_IsAnyLeftPanelOpen(); // 0x0047EB50
 
 extern void* gpMiniPanelCel; // 0x007BC960
 
@@ -603,13 +521,7 @@ int gaSlotFrame[8]; // 0x007BC918
 int gbSlotBarBlocked; // 0x007BC970
 
 
-// build: symbol ??_FUnicode@@QAEXXZ 0x0042F530
-// build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 
-
-// build: symbol ??_7Library@NWardenClient@@6B@ 0x006D8E38
-// build: symbol ??_7WardenClient@@6B@ 0x006D8E68
-// build: symbol ??_R0?AUWardenClient@@@8 0x00721CC0
 // 0x0047F8B0
 void __fastcall WARDENCLIENT_SwapBytes(unsigned char* pA, unsigned char* pB)
 {
@@ -775,8 +687,6 @@ NWardenClient::Library::Library()
 {
 }
 
-// build: symbol ??1WardenModule@@QAE@XZ 0x004E06A0
-// build: symbol ??_GWardenModule@@QAEPAXI@Z 0x0047FC40
 // 0x0047FC40
 
 // 0x0047FC70
@@ -812,8 +722,6 @@ static int __stdcall WARDENCLIENT_LoadModule(const unsigned char* pData, const u
     D2RC4Strc tRc4;
     tRc4.sub_004E09B0_Init(pKey, 0x10);
     tRc4.ApplyKeystream(pBuffer, nSize);
-// build: symbol ?gabExponent@* 0x006D8D14
-// build: symbol ?gabModulus@* 0x006D8D18
     if (!WARDENCLIENT_VerifyModuleSignature(szName, pBuffer, gabModulus, gabExponent, 4, 0, nSize, 0x100))
     {
         SMemFree(pBuffer, ".\\WARDEN\\WardenClient.cpp", 0x17C, 0);
@@ -826,7 +734,7 @@ static int __stdcall WARDENCLIENT_LoadModule(const unsigned char* pData, const u
         SMemFree(pBuffer, ".\\WARDEN\\WardenClient.cpp", 0x185, 0);
         return 0;
     }
-    if (sub_006C79C0_Decompress(pModule, &nModuleSize, pBuffer + 4, nSize - 4))
+    if (uncompress(pModule, &nModuleSize, pBuffer + 4, nSize - 4))
     {
         SMemFree(pBuffer, ".\\WARDEN\\WardenClient.cpp", 0x18D, 0);
         SMemFree(pModule, ".\\WARDEN\\WardenClient.cpp", 0x18E, 0);
@@ -861,11 +769,8 @@ static int __stdcall WARDENCLIENT_LoadModule(const unsigned char* pData, const u
 // 0x0047FEE0
 static int __stdcall WARDENCLIENT_LoadModuleByKey(const unsigned char* pRc4Key, const unsigned char* pModuleKey)
 {
-// build: symbol ?gabBuiltinModuleKey@* 0x006D8768
     if (!SMemCmp(pModuleKey, gabBuiltinModuleKey, 0x10))
     {
-// build: symbol ?gabBuiltinModule@* 0x006D74B0
-// build: symbol ?gabBuiltinModuleRc4Key@* 0x006D8778
         return WARDENCLIENT_LoadModule(gabBuiltinModule, gabBuiltinModuleRc4Key, 0x12B2);
     }
     char szName[0x28];
@@ -977,10 +882,6 @@ WardenClient::WardenClient()
 
 struct D2UnitStrc;
 
-void WardenModule_EmitDelete(WardenModule* pModule)
-{
-    delete pModule;
-}
 
 // 0x004801D0
 void __cdecl WARDENCLIENT_UnloadWarden()
@@ -1009,7 +910,6 @@ void __cdecl WARDENCLIENT_ActivatePendingModule()
         gpSlotHolder = gpPendingWarden;
         gpPendingWarden = 0;
         gpSlotHolder->pObj = gpSlotHolder->pfnCreate(&gtWardenIface);
-// build: symbol ?gnWardenIfaceValue@* 0x00721C94
         int nValue = gnWardenIfaceValue;
         gpSlotHolder->pObj->Slot0(&nValue, 4);
     }
@@ -1060,7 +960,6 @@ int __fastcall WARDENCLIENT_InitWarden(int nValue)
 {
     sub_00480340();
     gnWardenIfaceValue = nValue;
-// build: symbol ?BNCLIENT_GetInterfaceTable@* 0x00518C10
     gpService = BNCLIENT_GetInterfaceTable();
     if (!gpService)
     {
@@ -1072,11 +971,6 @@ int __fastcall WARDENCLIENT_InitWarden(int nValue)
 }
 
 
-static inline int InBox(int nX, int nY, int nLeft, int nRight, int nTop, int nBottom)
-{
-    return nX >= nLeft && nX <= nRight && nY >= nTop && nY <= nBottom;
-}
-
 
 
 
@@ -1087,7 +981,6 @@ void __fastcall WARDENCLIENT_OpenTextPanel(unsigned short nStringId, int bSide, 
     if (!bSide)
     {
         gbTextSide = 0;
-// build: symbol ?gnTextTop@* 0x007225FC
         gnTextTop = 0x0C;
         gnTextLeft = (gnScreenWidth - 0x145) / 2;
     }
@@ -1110,9 +1003,7 @@ void __fastcall WARDENCLIENT_OpenTextPanel(unsigned short nStringId, int bSide, 
         gnHintId = 0;
     }
 
-// build: symbol ?ghHintSound@* 0x007BF24B
     ghHintSound = 0;
-// build: symbol ?gbTextFromObject@* 0x007BF20A
     gbTextFromObject = 0;
 
     D2RectStrc tRect;
@@ -1142,7 +1033,6 @@ void __fastcall WARDENCLIENT_OpenTextPanel(unsigned short nStringId, int bSide, 
 
     *(int*)gpTextBox->nScroll = 0;
     gnTextActive = 1;
-// build: symbol ?gbTextPanelOpen@* 0x007BF1FA
     gbTextPanelOpen = 1;
     if (!gbTextHandlersRegistered)
     {
@@ -1166,34 +1056,6 @@ void __fastcall WARDENCLIENT_OpenTextPanel(unsigned short nStringId, int bSide, 
 
 
 
-static D2MonStatsTxt* MONSTATS_GetTxtRecord(int nMonsterId)
-{
-    if (nMonsterId >= 0 && nMonsterId < sgptDataTables->nMonStatsTxtRecordCount)
-    {
-        return &sgptDataTables->pMonStatsTxt[nMonsterId];
-    }
-
-    return 0;
-}
-
-static D2SkillsTxt* SKILLS_GetSkillsTxtRecord(int nSkillId)
-{
-    if (nSkillId >= 0 && nSkillId < sgptDataTables->nSkillsTxtRecordCount)
-    {
-        return &sgptDataTables->pSkillsTxt[nSkillId];
-    }
-
-    return 0;
-}
-
-
-#pragma pack(push, 1)
-struct d2data_006D8778_t
-{
-    unsigned char b0[1432];
-    const void* p1;
-};
-#pragma pack(pop)
 
 #pragma pack(push, 1)
 struct d2data_00721C58_t
@@ -1216,15 +1078,42 @@ struct d2data_00721C58_t
 };
 #pragma pack(pop)
 
-extern "C" const unsigned char gData_006D74B0[4792]; // 0x006D74B0
-extern "C" const unsigned char gData_006D8768[16]; // 0x006D8768
-extern "C" const struct d2data_006D8778_t gData_006D8778; // 0x006D8778
-extern "C" const unsigned char gData_006D8D14[4]; // 0x006D8D14
-extern "C" const unsigned char gData_006D8D18[256]; // 0x006D8D18
+#pragma pack(push, 1)
+struct d2data_006D8778_t
+{
+    unsigned char b0[1432];
+    const void* p1;
+};
+#pragma pack(pop)
+
 extern "C" const int gData_006DBD70[6]; // 0x006DBD70
 extern "C" struct d2data_00721C58_t gData_00721C58; // 0x00721C58
+extern "C" const struct d2data_006D8778_t gData_006D8778; // 0x006D8778
 
-extern "C" const unsigned char gData_006D74B0[4792] = {
+extern int gnWardenIfaceValue = -1; // 0x00721C94
+
+extern "C" const int gData_006DBD70[6] = { 165, 166, 167, 168, 169, 170 }; // 0x006DBD70
+#pragma comment(linker, "/alternatename:?gaSetPropIds@@3PAHA=_gData_006DBD70")
+
+extern "C" struct d2data_00721C58_t gData_00721C58 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00721C58
+
+extern "C" const unsigned char gabBuiltinModule[4792] = {
     1, 0xEE, 0xDB, 0x35, 0xEF, 0x65, 0x51, 0x7F, 0xEA, 0xBA, 0x42, 0x1C, 0x6F, 0x96, 0xD7, 0x4B,
     0xC8, 0x94, 0x18, 0x94, 0x7B, 0x6F, 0x2B, 0xF3, 0xB1, 0x5A, 0x8E, 0xC4, 0x62, 0xF6, 0xD8, 0xFB,
     0x57, 0x85, 0xBD, 6, 0x29, 0x22, 0x69, 0xFC, 0x41, 0xE, 0x75, 0x5B, 0x2A, 0x74, 0x63, 0xDA,
@@ -1526,10 +1415,8 @@ extern "C" const unsigned char gData_006D74B0[4792] = {
     0x27, 0x46, 0xF4, 0x93, 0x95, 0x82, 0xA2, 0xB7, 0xE5, 2, 0x45, 0x4E, 0xB2, 0xD9, 0xBC, 0x78,
     0x2B, 4
 }; // 0x006D74B0
-#pragma comment(linker, "/alternatename:_gabBuiltinModule=_gData_006D74B0")
 
-extern "C" const unsigned char gData_006D8768[16] = { 0x69, 0x3E, 0xE4, 0xDD, 0xF4, 0x73, 0x6E, 0x7A, 2, 0xA5, 0x24, 0x8C, 0xB0, 0x4C, 0x4B, 0x5C }; // 0x006D8768
-#pragma comment(linker, "/alternatename:_gabBuiltinModuleKey=_gData_006D8768")
+extern "C" const unsigned char gabBuiltinModuleKey[16] = { 0x69, 0x3E, 0xE4, 0xDD, 0xF4, 0x73, 0x6E, 0x7A, 2, 0xA5, 0x24, 0x8C, 0xB0, 0x4C, 0x4B, 0x5C }; // 0x006D8768
 
 extern "C" const struct d2data_006D8778_t gData_006D8778 = {
     {
@@ -1628,10 +1515,9 @@ extern "C" const struct d2data_006D8778_t gData_006D8778 = {
 }; // 0x006D8778
 #pragma comment(linker, "/alternatename:_gabBuiltinModuleRc4Key=_gData_006D8778")
 
-extern "C" const unsigned char gData_006D8D14[4] = { 1, 0, 1 }; // 0x006D8D14
-#pragma comment(linker, "/alternatename:_gabExponent=_gData_006D8D14")
+extern "C" const unsigned char gabExponent[4] = { 1, 0, 1 }; // 0x006D8D14
 
-extern "C" const unsigned char gData_006D8D18[256] = {
+extern "C" const unsigned char gabModulus[256] = {
     0x6B, 0xCE, 0xF5, 0x2D, 0x2A, 0x7D, 0x7A, 0x67, 0x21, 0x21, 0x84, 0xC9, 0xBC, 0x25, 0xC7, 0xBC,
     0xDF, 0x3D, 0x8F, 0xD9, 0x47, 0xBC, 0x45, 0x48, 0x8B, 0x22, 0x85, 0x3B, 0xC5, 0xC1, 0xF4, 0xF5,
     0x3C, 0xC, 0x49, 0xBB, 0x56, 0xE0, 0x3D, 0xBC, 0xA2, 0xD2, 0x35, 0xC1, 0xF0, 0x74, 0x2E, 0x15,
@@ -1649,27 +1535,3 @@ extern "C" const unsigned char gData_006D8D18[256] = {
     0x7D, 0x25, 0xA6, 0xCD, 0x39, 0x6D, 0xDA, 0x76, 0xC, 0x79, 0xBF, 0x48, 0x25, 0xFC, 0x2D, 0xC5,
     0xFA, 0x53, 0x9B, 0x4D, 0x60, 0xF4, 0xEF, 0xC7, 0xEA, 0xAC, 0xA1, 0x7B, 3, 0xF4, 0xAF, 0xC7
 }; // 0x006D8D18
-#pragma comment(linker, "/alternatename:_gabModulus=_gData_006D8D18")
-
-extern "C" const int gData_006DBD70[6] = { 165, 166, 167, 168, 169, 170 }; // 0x006DBD70
-#pragma comment(linker, "/alternatename:?gaSetPropIds@@3PAHA=_gData_006DBD70")
-
-extern "C" struct d2data_00721C58_t gData_00721C58 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00721C58
-
-extern int gnWardenIfaceValue = -1; // 0x00721C94

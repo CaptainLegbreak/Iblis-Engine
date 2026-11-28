@@ -13,6 +13,8 @@
 #include "D2DrlgMaps.h"
 #include "D2ClientUi.h"
 #include "D2SoundEnvironTxt.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -40,9 +42,7 @@ struct D2SkillsTxt;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -61,8 +61,6 @@ extern D2DirRateStrc gaDirRate[]; // 0x00727ED8
 int __stdcall UNITS_GetAnimOrSeqMode(D2UnitStrc* pUnit); // 0x00621190
 
 void __stdcall D2COMMON_11013_ConvertMode(D2UnitStrc* pUnit, int* pType, int* pClass, int* pMode, const char* szFile, int nLine); // 0x00645270
-
-D2MonSoundsTxt* __stdcall DATATBLS_GetMonSoundsTxtRecordFromSoundId(int nSoundId); // 0x00656F90
 
 D2MonSoundsTxt* __stdcall DATATBLS_GetMonSoundsTxtRecordFromMonsterId(int nMonsterId); // 0x00656FC0
 
@@ -106,13 +104,13 @@ int __fastcall SOUNDHDR_GetGroupStart(int nId); // 0x00481890
 
 void __fastcall SOUNDHDR_AddVariantRefs(int nIndex, int nDelta); // 0x004822B0
 
-int __cdecl sub_0044DB00(); // 0x0044DB00
+int __cdecl sub_0044DB00_GetTickCounter(); // 0x0044DB00
 
-int __fastcall sub_004E40A0(int nRange); // 0x004E40A0
+int __fastcall sub_004E40A0_RollPlayerSeed(int nRange); // 0x004E40A0
 
 extern "C" int __fastcall SKILLDESC_RandomInRange(int nMin, int nMax); // 0x004E4100
 
-int __fastcall sub_004E4180(int nFrame, int nOffset, int nStepLength); // 0x004E4180
+int __fastcall sub_004E4180_GetCyclicDistance(int nFrame, int nOffset, int nStepLength); // 0x004E4180
 
 int __fastcall UNITSND_GetModeSound(D2UnitStrc* pUnit, int nMode); // 0x004CA810
 
@@ -124,23 +122,7 @@ void* __fastcall UNITSND_FindUnitSfxInRange(D2UnitStrc* pUnit, int nId); // 0x00
 
 void __fastcall UNITSND_PurgeUnitHints(D2UnitStrc* pUnit); // 0x004CAA10
 
-int __fastcall UNITS_GetHitClass(D2UnitStrc* pUnit); // 0x00623C20
-
-int __stdcall DRLG_UnitEdgeDistance(D2UnitStrc* pUnit, D2UnitStrc* pOther); // 0x006416D0
-
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-
-int __stdcall DUNGEON_IsRoomInTown(D2ActiveRoomStrc* pRoom); // 0x0061AB00
-
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
-
 D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
-
-D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitAndState(D2UnitStrc* pUnit, int nState); // 0x006256B0
-
-int __stdcall STATLIST_GetStatValue(D2StatListStrc* pStatList, int nStatId, unsigned short nLayer); // 0x00625D00
-
-D2SkillStrc* __fastcall SKILLS_GetHighestLevelSkillFromUnitAndId(D2UnitStrc* pUnit, int nSkillId); // 0x006439F0
 
 D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
@@ -154,6 +136,7 @@ void __fastcall sub_004DCE10_UpdateTimedHint(int nDelay, int nArg); // 0x004DCE1
 
 void __stdcall UNITSND_ReleaseMonsterSfx(D2UnitStrc* pUnit); // 0x004CB2C0
 
+// noinline: the original calls this; without it the compiler expands it into 0x004CC410.
 __declspec(noinline) void __fastcall UNITSND_AddUnitSoundRefs(D2UnitStrc* pUnit, int nDelta);
 
 unsigned int gnNeutralTick; // 0x007C88B8
@@ -217,15 +200,7 @@ struct D2TileLibraryEntryStrc;
 
 struct D2SoundEnvironTxtStrc;
 
-void __stdcall DUNGEON_GetRoomCoordinates(D2ActiveRoomStrc* pRoom, D2DrlgCoordsStrc* pCoords); // 0x00619730
-
-void __stdcall DUNGEON_GetAdjacentRoomsListFromRoom(D2ActiveRoomStrc* pRoom, D2ActiveRoomStrc*** pppRoomList, int* pnNumRooms); // 0x00619790
-
 D2SoundEnvironTxtStrc* __fastcall SOUNDHDR_GetSoundEnvironTxtRecord(int nEnvironId); // 0x00481920
-
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pDynamicPath); // 0x006488C0
-
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pDynamicPath); // 0x00648900
 
 void __fastcall UNITSND_GetHitSounds(D2UnitStrc* pUnit, int nHitClass, int bParam, int* pSound1, int* pSound2); // 0x004CA560
 
@@ -262,9 +237,7 @@ int __fastcall TEXT_TestQuestCondition(int nCondition); // 0x004A4180
 
 int __cdecl SOUNDINST_IsSpeechPlaying(); // 0x004B9C20
 
-int __cdecl sub_004DF880(); // 0x004DF880
-
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
+int __cdecl sub_004DF880_IsSoundSystemInit(); // 0x004DF880
 
 unsigned char __fastcall SOUNDHDR_GetGroupSize(int nId); // 0x004818C0
 
@@ -273,7 +246,7 @@ struct D2StatListStrc;
 
 struct D2SkillStrc;
 
-static inline void sub_004CA560_SetHitSound1(int nHitClass, int* pSound1)
+static inline void UNITSND_GetHitSounds(int nHitClass, int* pSound1)
 {
     switch (nHitClass & 0xF)
     {
@@ -286,7 +259,7 @@ static inline void sub_004CA560_SetHitSound1(int nHitClass, int* pSound1)
     }
 }
 
-static inline void sub_004CA560_SetHitSound2(int nHitClass, int* pSound1, int* pSound2, int nType, int bParam)
+static inline void UNITSND_GetHitSounds(int nHitClass, int* pSound1, int* pSound2, int nType, int bParam)
 {
     switch (nHitClass & 0xF0)
     {
@@ -631,6 +604,7 @@ void __fastcall sub_K06_Emitsfx74(D2UnitStrc* pUnit, int nSfxMode)
 }
 
 // 0x004CAB30
+// noinline: the original calls this; without it the compiler expands it into 0x004CB460.
 static __declspec(noinline) unsigned int UNITSND_ReadSoundTick(D2UnitStrc* pUnit)
 {
     D2_ASSERT(pUnit, 0xCBB);
@@ -709,7 +683,7 @@ static D2DrlgTileDataStrc* UNITSND_FindFloorTileAt(D2ActiveRoomStrc* pRoom, int 
     const int nTileX = (nX - tCoords.nSubtileX) / 5;
     const int nTileY = (nY - tCoords.nSubtileY) / 5;
     unsigned int nCount;
-    D2DrlgTileDataStrc* pTiles = sub_00619660_GetFloorTiles(pRoom, &nCount);
+    D2DrlgTileDataStrc* pTiles = DUNGEON_GetFloorTilesFromRoom(pRoom, &nCount);
     for (unsigned int i = 0; i < nCount; ++i)
     {
         D2DrlgTileDataStrc* pTile = &pTiles[i];
@@ -720,6 +694,7 @@ static D2DrlgTileDataStrc* UNITSND_FindFloorTileAt(D2ActiveRoomStrc* pRoom, int 
 }
 
 // 0x004CAD60
+// noinline: the original calls this; without it the compiler expands it into 0x004CADB0.
 static __declspec(noinline) int UNITSND_GetTileMaterial(D2DrlgTileDataStrc* pTileData)
 {
     D2TileLibraryEntryStrc* pTile = pTileData->pTile;
@@ -746,7 +721,7 @@ static __declspec(noinline) int UNITSND_GetTileMaterial(D2DrlgTileDataStrc* pTil
 int __fastcall UNITSND_GetUnitFloorMaterial(D2UnitStrc* pUnit)
 {
     int nRooms;
-    D2SoundEnvironTxtStrc* pSoundEnvironTxtRecord = SOUNDHDR_GetSoundEnvironTxtRecord(sub_004817A0_GetPlayerSoundEnviron());
+    D2SoundEnvironTxtStrc* pSoundEnvironTxtRecord = SOUNDHDR_GetSoundEnvironTxtRecord(UNITMODE_GetPlayerSoundEnviron());
     int nDefault = 1;
     if (pSoundEnvironTxtRecord && pSoundEnvironTxtRecord->nMaterial1 > 0 && pSoundEnvironTxtRecord->nMaterial1 < 7)
         nDefault = pSoundEnvironTxtRecord->nMaterial1;
@@ -878,16 +853,16 @@ void __fastcall UNITSND_UpdateFootsteps(D2UnitStrc* pUnit)
         }
     }
 
-    const unsigned int nTick = sub_0044DB00();
+    const unsigned int nTick = sub_0044DB00_GetTickCounter();
     const unsigned int nPeriod = nFrameCount / (nSteps * nSpeed);
     const unsigned int nElapsed = nTick - pUnit->dwSfxStepTicks;
     if (nSteps > 1 && nElapsed < nPeriod * 2 / 3)
         return;
 
     const unsigned int nStepLength = nFrameCount / nSteps;
-    const int nDist = sub_004E4180(nFrame, nOffset, nStepLength);
-    const int nDistNext = sub_004E4180(nFrame + nSpeed, nOffset, nStepLength);
-    const int nDistPrev = sub_004E4180(nFrame - nSpeed, nOffset, nStepLength);
+    const int nDist = sub_004E4180_GetCyclicDistance(nFrame, nOffset, nStepLength);
+    const int nDistNext = sub_004E4180_GetCyclicDistance(nFrame + nSpeed, nOffset, nStepLength);
+    const int nDistPrev = sub_004E4180_GetCyclicDistance(nFrame - nSpeed, nOffset, nStepLength);
     if (nDist >= nDistNext || nDist >= nDistPrev)
         return;
 
@@ -914,7 +889,7 @@ void __fastcall UNITSND_UpdateFootsteps(D2UnitStrc* pUnit)
         SOUNDINST_SetValue(hSound, nVolume);
     }
 
-    if (nLayerSound && (unsigned int)sub_004E40A0(100) < nChance)
+    if (nLayerSound && (unsigned int)sub_004E40A0_RollPlayerSeed(100) < nChance)
         sub_004B9A00(nLayerSound, pUnit, 0, 0, 0);
 
     UNITSND_WriteStepSoundTick(pUnit, nTick);
@@ -1300,7 +1275,7 @@ void __fastcall UNITSND_UpdateModeSound(D2UnitStrc* pUnit)
             && DRLG_UnitEdgeDistance(pUnit, sub_00463DD0_GetPlayerUnit()) < 0x14)
         {
             sub_004B9A00(0xE57, pUnit, 0, 0, 0);
-            UNITSND_WriteAsyncSoundTick(pUnit, sub_0044DB00());
+            UNITSND_WriteAsyncSoundTick(pUnit, sub_0044DB00_GetTickCounter());
         }
 
         D2_ASSERT(pUnit, 0xC8F);
@@ -1359,7 +1334,7 @@ void __fastcall UNITSND_UpdateModeSound(D2UnitStrc* pUnit)
 
     D2MonSoundsTxt* pNeutralRecord = UNITSND_GetMonSoundsRecord(pUnit);
     const int nNeutral = !pNeutralRecord ? 0 : pNeutralRecord->dwNeutral;
-    const unsigned int nTick = sub_0044DB00();
+    const unsigned int nTick = sub_0044DB00_GetTickCounter();
     const unsigned int nNeuTime = pMonSoundsTxtRecord->dwNeuTime;
     if (!nNeutral)
         return;
@@ -1377,7 +1352,7 @@ void __fastcall UNITSND_UpdateModeSound(D2UnitStrc* pUnit)
         return;
     if (!SOUNDINST_IsNearPlayer(pUnit))
         return;
-    if (sub_004E40A0(0xF))
+    if (sub_004E40A0_RollPlayerSeed(0xF))
         return;
 
     sub_004B9A00(nNeutral, pUnit, 0, 0, 0);
@@ -1398,7 +1373,7 @@ void __fastcall UNITSND_PlayAttackSound(D2UnitStrc* pUnit, int nMode, int bDelay
         if (!bDelay)
             nRate = 0;
         sub_004B9A00(nSound, pUnit, nRate, 0, 0);
-        pUnit->dwSfxTicks = sub_0044DB00();
+        pUnit->dwSfxTicks = sub_0044DB00_GetTickCounter();
         return;
     }
 
@@ -1435,18 +1410,18 @@ void __fastcall UNITSND_PlayAttackSound(D2UnitStrc* pUnit, int nMode, int bDelay
         bPlay = 0;
     if ((unsigned int)nChance < 100)
     {
-        if (sub_0044DB00() - gnSfxTick < 0xF)
+        if (sub_0044DB00_GetTickCounter() - gnSfxTick < 0xF)
             bPlay = 0;
         if (SOUNDINST_HasUnitSound(pUnit))
             goto second;
     }
 
-    if (bPlay && sub_004E40A0(100) < nChance)
+    if (bPlay && sub_004E40A0_RollPlayerSeed(100) < nChance)
     {
         UNITSND_ReleaseNeutralSfx(pUnit, 1);
         sub_004B9A00(nSound, pUnit, nDelay, 0, 0);
-        UNITSND_WriteSoundTick(pUnit, sub_0044DB00());
-        gnSfxTick = sub_0044DB00();
+        UNITSND_WriteSoundTick(pUnit, sub_0044DB00_GetTickCounter());
+        gnSfxTick = sub_0044DB00_GetTickCounter();
     }
 
 second:
@@ -1482,8 +1457,8 @@ static void UNITSND_PlayHitClassSound(D2UnitStrc* pUnit)
 {
     const int nSound = UNITSND_GetModeSound(pUnit, pUnit->dwLastHitClass);
     sub_004B9A00(nSound, pUnit, 0, 0, 0);
-    pUnit->dwSfxTicks = sub_0044DB00();
-    gnSfxTick = sub_0044DB00();
+    pUnit->dwSfxTicks = sub_0044DB00_GetTickCounter();
+    gnSfxTick = sub_0044DB00_GetTickCounter();
 }
 
 // 0x004CB890
@@ -1496,7 +1471,7 @@ static void UNITSND_PlaySkillSound(D2UnitStrc* pUnit, int nMode)
     if (!pMonSoundsTxtRecord)
         return;
 
-    const unsigned int nTick = sub_0044DB00();
+    const unsigned int nTick = sub_0044DB00_GetTickCounter();
     int nSound;
     if (nMode == 8)
         nSound = pMonSoundsTxtRecord->dwSkill[0];
@@ -1521,10 +1496,10 @@ static void UNITSND_PlaySkillSound(D2UnitStrc* pUnit, int nMode)
     }
 
     sub_004B9A00(nSound, pUnit, 0, 0, 0);
-    const unsigned int nNow = sub_0044DB00();
+    const unsigned int nNow = sub_0044DB00_GetTickCounter();
     D2_ASSERT(pUnit, 0xCC6);
     pUnit->dwSfxTicks = nNow;
-    gnSfxTick = sub_0044DB00();
+    gnSfxTick = sub_0044DB00_GetTickCounter();
 }
 
 // 0x004CB950
@@ -1537,12 +1512,12 @@ static void UNITSND_PlayFleeSound(D2UnitStrc* pUnit)
     if (!pMonSoundsTxtRecord)
         return;
 
-    if (sub_0044DB00() - gnSfxTick < 4)
+    if (sub_0044DB00_GetTickCounter() - gnSfxTick < 4)
         return;
 
-    sub_004B9A00(pMonSoundsTxtRecord->dwFlee, pUnit, sub_004E40A0(3) + 6, 0, 0);
-    UNITSND_WriteSoundTick(pUnit, sub_0044DB00());
-    gnSfxTick = sub_0044DB00();
+    sub_004B9A00(pMonSoundsTxtRecord->dwFlee, pUnit, sub_004E40A0_RollPlayerSeed(3) + 6, 0, 0);
+    UNITSND_WriteSoundTick(pUnit, sub_0044DB00_GetTickCounter());
+    gnSfxTick = sub_0044DB00_GetTickCounter();
 }
 
 // 0x004CB9C0
@@ -1752,7 +1727,7 @@ void __fastcall UNITSND_PlayPlayerSpeech(D2UnitStrc* pUnit, unsigned short nStri
 
     if (bCheckRepeat)
     {
-        unsigned int nTick = sub_0044DB00();
+        unsigned int nTick = sub_0044DB00_GetTickCounter();
         if (nSoundId == gnLastRequestSound && nTick - gnLastRequestTick < 0x4B)
         {
             return;
@@ -1766,6 +1741,7 @@ void __fastcall UNITSND_PlayPlayerSpeech(D2UnitStrc* pUnit, unsigned short nStri
 }
 
 // 0x004CC160
+// noinline: the original calls this; without it the compiler expands it into 0x004CC410.
 __declspec(noinline) void __fastcall UNITSND_AddUnitSoundRefs(D2UnitStrc* pUnit, int nDelta)
 {
     const int nType = UNITSND_GetUnitSndType(pUnit);
@@ -1812,7 +1788,7 @@ void __fastcall UNITSND_PlayInitSound(D2UnitStrc* pUnit)
     if (UNITSND_GetUnitSndType(pUnit) != 1)
         return;
 
-    const unsigned int nTick = sub_0044DB00();
+    const unsigned int nTick = sub_0044DB00_GetTickCounter();
     D2MonSoundsTxt* pMonSoundsTxtRecord = UNITSND_GetMonSoundsRecord(pUnit);
     if (!pMonSoundsTxtRecord)
         return;
@@ -1914,8 +1890,8 @@ static void __stdcall UNITSND_PlayHitSound(D2UnitStrc* pUnit, int nMode)
     }
 
 done:
-    pUnit->dwSfxTicks = sub_0044DB00();
-    gnSfxTick = sub_0044DB00();
+    pUnit->dwSfxTicks = sub_0044DB00_GetTickCounter();
+    gnSfxTick = sub_0044DB00_GetTickCounter();
 }
 
 // 0x004CA870
@@ -1958,7 +1934,7 @@ int __stdcall sub_M121_Emit_004CAC70(D2UnitStrc* pUnit) { return UNITSND_HasActi
 void* __fastcall UNITSND_FindUnitSfxInRange(D2UnitStrc* pUnit, int nId)
 {
     D2_ASSERT(pUnit, 0xC47);
-    if (!sub_004DF880())
+    if (!sub_004DF880_IsSoundSystemInit())
     {
         return 0;
     }
@@ -2058,7 +2034,7 @@ found:
 
     D2_ASSERT(pPlayer, 0xCBB);
     unsigned int dwSfxTicks = pPlayer->dwSfxTicks;
-    if (sub_0044DB00() - dwSfxTicks <= 0x3E)
+    if (sub_0044DB00_GetTickCounter() - dwSfxTicks <= 0x3E)
     {
         return;
     }
@@ -2070,55 +2046,6 @@ found:
 
     UNITSND_PlayPlayerSpeech(pPlayer, pEntry->f_2C);
 }
-
-#pragma pack(push, 1)
-struct d2data_00727EAC_t
-{
-    unsigned char b0[44];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00729F00_t
-{
-    unsigned char b0[44];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00729F2C_t
-{
-    unsigned char b0[44];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00729F58_t
-{
-    unsigned char b0[44];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00729F84_t
-{
-    unsigned char b0[44];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00729FB0_t
-{
-    unsigned char b0[44];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00729FDC_t
-{
-    unsigned char b0[44];
-};
-#pragma pack(pop)
 
 #pragma pack(push, 1)
 struct d2data_0072A024_t
@@ -2218,13 +2145,55 @@ struct d2data_0072A294_t
 };
 #pragma pack(pop)
 
-extern "C" struct d2data_00727EAC_t gData_00727EAC; // 0x00727EAC
-extern "C" struct d2data_00729F00_t gData_00729F00; // 0x00729F00
-extern "C" struct d2data_00729F2C_t gData_00729F2C; // 0x00729F2C
-extern "C" struct d2data_00729F58_t gData_00729F58; // 0x00729F58
-extern "C" struct d2data_00729F84_t gData_00729F84; // 0x00729F84
-extern "C" struct d2data_00729FB0_t gData_00729FB0; // 0x00729FB0
-extern "C" struct d2data_00729FDC_t gData_00729FDC; // 0x00729FDC
+#pragma pack(push, 1)
+struct d2data_00727EAC_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00729F00_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00729F2C_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00729F58_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00729F84_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00729FB0_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_00729FDC_t
+{
+    unsigned char b0[44];
+};
+#pragma pack(pop)
+
 extern "C" struct d2data_0072A024_t gData_0072A024; // 0x0072A024
 extern "C" struct d2data_0072A054_t gData_0072A054; // 0x0072A054
 extern "C" struct d2data_0072A084_t gData_0072A084; // 0x0072A084
@@ -2239,6 +2208,127 @@ extern "C" struct d2data_0072A204_t gData_0072A204; // 0x0072A204
 extern "C" struct d2data_0072A234_t gData_0072A234; // 0x0072A234
 extern "C" struct d2data_0072A264_t gData_0072A264; // 0x0072A264
 extern "C" struct d2data_0072A294_t gData_0072A294; // 0x0072A294
+extern "C" struct d2data_00727EAC_t gData_00727EAC; // 0x00727EAC
+extern "C" struct d2data_00729F00_t gData_00729F00; // 0x00729F00
+extern "C" struct d2data_00729F2C_t gData_00729F2C; // 0x00729F2C
+extern "C" struct d2data_00729F58_t gData_00729F58; // 0x00729F58
+extern "C" struct d2data_00729F84_t gData_00729F84; // 0x00729F84
+extern "C" struct d2data_00729FB0_t gData_00729FB0; // 0x00729FB0
+extern "C" struct d2data_00729FDC_t gData_00729FDC; // 0x00729FDC
+
+extern "C" struct d2data_0072A024_t gData_0072A024 = {
+    {
+        0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x26
+    }
+}; // 0x0072A024
+
+extern "C" struct d2data_0072A054_t gData_0072A054 = {
+    {
+        0x22, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x24, 0x00, 0x00, 0x00, 0x25, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x28
+    }
+}; // 0x0072A054
+
+extern "C" struct d2data_0072A084_t gData_0072A084 = {
+    {
+        0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x29
+    }
+}; // 0x0072A084
+
+extern "C" struct d2data_0072A0B4_t gData_0072A0B4 = {
+    {
+        0x1D, 0x00, 0x00, 0x00, 0x1E, 0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x2A
+    }
+}; // 0x0072A0B4
+
+extern "C" struct d2data_0072A0E4_t gData_0072A0E4 = {
+    {
+        0x1A, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x2B
+    }
+}; // 0x0072A0E4
+
+extern "C" struct d2data_0072A114_t gData_0072A114 = {
+    {
+        0x14, 0x00, 0x00, 0x00, 0x15, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00, 0x17, 0x00, 0x00, 0x00,
+        0x18, 0x00, 0x00, 0x00, 0x19, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x2C
+    }
+}; // 0x0072A114
+
+extern "C" struct d2data_0072A144_t gData_0072A144 = {
+    {
+        0x26, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x2E
+    }
+}; // 0x0072A144
+
+extern "C" struct d2data_0072A174_t gData_0072A174 = {
+    {
+        0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00,
+        0x06, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x2F
+    }
+}; // 0x0072A174
+
+extern "C" struct d2data_0072A1A4_t gData_0072A1A4 = {
+    {
+        0x4A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x00, 0x00, 0x37
+    }
+}; // 0x0072A1A4
+
+extern "C" struct d2data_0072A1D4_t gData_0072A1D4 = {
+    {
+        0x3A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0x38
+    }
+}; // 0x0072A1D4
+
+extern "C" struct d2data_0072A204_t gData_0072A204 = {
+    {
+        0x6E, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00, 0x4C
+    }
+}; // 0x0072A204
+
+extern "C" struct d2data_0072A234_t gData_0072A234 = {
+    {
+        0x78, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x4E
+    }
+}; // 0x0072A234
+
+extern "C" struct d2data_0072A264_t gData_0072A264 = {
+    {
+        0x79, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x4D
+    }
+}; // 0x0072A264
+
+extern "C" struct d2data_0072A294_t gData_0072A294 = {
+    {
+        0x84, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x24, 0x00, 0x00, 0x00, 0x4F
+    }
+}; // 0x0072A294
+
+extern D2LevelSpeechStrc* gapLevelSpeeches[15] = { (D2LevelSpeechStrc*)&gData_0072A024, (D2LevelSpeechStrc*)&gData_0072A054, (D2LevelSpeechStrc*)&gData_0072A084, (D2LevelSpeechStrc*)&gData_0072A0B4, (D2LevelSpeechStrc*)&gData_0072A0E4, (D2LevelSpeechStrc*)&gData_0072A114, (D2LevelSpeechStrc*)&gData_0072A144, (D2LevelSpeechStrc*)&gData_0072A174, (D2LevelSpeechStrc*)&gData_0072A1A4, (D2LevelSpeechStrc*)&gData_0072A1D4, (D2LevelSpeechStrc*)&gData_0072A204, (D2LevelSpeechStrc*)&gData_0072A234, (D2LevelSpeechStrc*)&gData_0072A264, (D2LevelSpeechStrc*)&gData_0072A294 }; // 0x0072A2C4
 
 extern "C" struct d2data_00727EAC_t gData_00727EAC = {
     {
@@ -2247,19 +2337,6 @@ extern "C" struct d2data_00727EAC_t gData_00727EAC = {
         0x79, 0x0B, 0x00, 0x00, 0x91, 0x0B, 0x00, 0x00, 0xD0, 0x0A
     }
 }; // 0x00727EAC
-
-extern D2DirRateStrc gaDirRate[14] = {
-    { 0 },
-    { 251, 6 },
-    { 262, 6 },
-    { 268, 6 },
-    { 274, 8 },
-    { 280, 8 },
-    { 286, 6 },
-    { 292, 8 },
-    { 268, 6 },
-    { 298, 6 }
-}; // 0x00727ED8
 
 extern D2UnitSndObjectStrc gaUnitSndObjects[121] = {
     { { 0 }, 2532, 8 },
@@ -2474,116 +2551,15 @@ extern "C" struct d2data_00729FDC_t gData_00729FDC = {
 
 extern D2UnitSndPlayerStrc* gapUnitSndPlayers[7] = { (D2UnitSndPlayerStrc*)&gData_00727EAC, (D2UnitSndPlayerStrc*)&gData_00729F84, (D2UnitSndPlayerStrc*)&gData_00729F2C, (D2UnitSndPlayerStrc*)&gData_00729F58, (D2UnitSndPlayerStrc*)&gData_00729F00, (D2UnitSndPlayerStrc*)&gData_00729FDC, (D2UnitSndPlayerStrc*)&gData_00729FB0 }; // 0x0072A008
 
-extern "C" struct d2data_0072A024_t gData_0072A024 = {
-    {
-        0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x26
-    }
-}; // 0x0072A024
-
-extern "C" struct d2data_0072A054_t gData_0072A054 = {
-    {
-        0x22, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x24, 0x00, 0x00, 0x00, 0x25, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x28
-    }
-}; // 0x0072A054
-
-extern "C" struct d2data_0072A084_t gData_0072A084 = {
-    {
-        0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x29
-    }
-}; // 0x0072A084
-
-extern "C" struct d2data_0072A0B4_t gData_0072A0B4 = {
-    {
-        0x1D, 0x00, 0x00, 0x00, 0x1E, 0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x2A
-    }
-}; // 0x0072A0B4
-
-extern "C" struct d2data_0072A0E4_t gData_0072A0E4 = {
-    {
-        0x1A, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x2B
-    }
-}; // 0x0072A0E4
-
-extern "C" struct d2data_0072A114_t gData_0072A114 = {
-    {
-        0x14, 0x00, 0x00, 0x00, 0x15, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00, 0x17, 0x00, 0x00, 0x00,
-        0x18, 0x00, 0x00, 0x00, 0x19, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x2C
-    }
-}; // 0x0072A114
-
-extern "C" struct d2data_0072A144_t gData_0072A144 = {
-    {
-        0x26, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x2E
-    }
-}; // 0x0072A144
-
-extern "C" struct d2data_0072A174_t gData_0072A174 = {
-    {
-        0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x2F
-    }
-}; // 0x0072A174
-
-extern "C" struct d2data_0072A1A4_t gData_0072A1A4 = {
-    {
-        0x4A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x00, 0x00, 0x37
-    }
-}; // 0x0072A1A4
-
-extern "C" struct d2data_0072A1D4_t gData_0072A1D4 = {
-    {
-        0x3A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00, 0x38
-    }
-}; // 0x0072A1D4
-
-extern "C" struct d2data_0072A204_t gData_0072A204 = {
-    {
-        0x6E, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00, 0x4C
-    }
-}; // 0x0072A204
-
-extern "C" struct d2data_0072A234_t gData_0072A234 = {
-    {
-        0x78, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x4E
-    }
-}; // 0x0072A234
-
-extern "C" struct d2data_0072A264_t gData_0072A264 = {
-    {
-        0x79, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x4D
-    }
-}; // 0x0072A264
-
-extern "C" struct d2data_0072A294_t gData_0072A294 = {
-    {
-        0x84, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x24, 0x00, 0x00, 0x00, 0x4F
-    }
-}; // 0x0072A294
-
-extern D2LevelSpeechStrc* gapLevelSpeeches[15] = { (D2LevelSpeechStrc*)&gData_0072A024, (D2LevelSpeechStrc*)&gData_0072A054, (D2LevelSpeechStrc*)&gData_0072A084, (D2LevelSpeechStrc*)&gData_0072A0B4, (D2LevelSpeechStrc*)&gData_0072A0E4, (D2LevelSpeechStrc*)&gData_0072A114, (D2LevelSpeechStrc*)&gData_0072A144, (D2LevelSpeechStrc*)&gData_0072A174, (D2LevelSpeechStrc*)&gData_0072A1A4, (D2LevelSpeechStrc*)&gData_0072A1D4, (D2LevelSpeechStrc*)&gData_0072A204, (D2LevelSpeechStrc*)&gData_0072A234, (D2LevelSpeechStrc*)&gData_0072A264, (D2LevelSpeechStrc*)&gData_0072A294 }; // 0x0072A2C4
+extern D2DirRateStrc gaDirRate[14] = {
+    { 0 },
+    { 251, 6 },
+    { 262, 6 },
+    { 268, 6 },
+    { 274, 8 },
+    { 280, 8 },
+    { 286, 6 },
+    { 292, 8 },
+    { 268, 6 },
+    { 298, 6 }
+}; // 0x00727ED8

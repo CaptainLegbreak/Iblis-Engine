@@ -3,6 +3,7 @@
 #include "D2GameTypes.h"
 #include "stpl.h"
 #include "D2Win32Message.h"
+#include "StormApi.h"
 
 struct HWND__;
 
@@ -43,7 +44,6 @@ int __stdcall SEvtUnregisterHandler(unsigned int nType, HWND__* hWnd, unsigned i
 int __stdcall SEvtUnregisterType(unsigned int nType, void* hWnd); // 0x00426810
 int __stdcall SEvtPopState(unsigned long dwId, void* pContext); // 0x004269C0
 
-int __stdcall SMsgDispatchMessage(void* hWnd, unsigned int uMsg, unsigned int wParam, int lParam, int* pbUseResult, int* plResult);
 int __stdcall SMsgRegisterCommand(HWND__* hWnd, unsigned int nId, SMSGHANDLER pHandler);
 int __stdcall SMsgRegisterKeyDown(HWND__* hWnd, unsigned int nId, SMSGHANDLER pHandler);
 int __stdcall SMsgRegisterKeyUp(HWND__* hWnd, unsigned int nId, SMSGHANDLER pHandler);
@@ -59,39 +59,10 @@ inline void* operator new(unsigned int, void* pPlace) throw()
     return pPlace;
 }
 
-// build: symbol ??__EgWndRecList_00708860@@YAXXZ 0x006CA8E0
-// build: symbol ??__FgWndRecList_00708860@@YAXXZ 0x006CB310
 TSList<WNDREC> gWndRecList_00708860; // 0x00708860
 
 void* gdwGlobal_007792F4; // 0x007792F4
 
-// build: symbol ??_R0?AUWNDREC@@@8 0x00708848
-// build: symbol _SMemAlloc@16 0x00413020
-// build: symbol _SMemFree@16 0x00412650
-// build: symbol ?Next@?$TSLink@UWNDREC@@@@QAEPAUWNDREC@@XZ 0x004203C0
-// build: symbol ?RawNext@?$TSLink@UWNDREC@@@@QAEPAUWNDREC@@XZ 0x004203D0
-// build: symbol ?NextLink@?$TSLink@UWNDREC@@@@QAEPAU1@H@Z 0x004203F0
-// build: symbol ?Unlink@?$TSLink@UWNDREC@@@@QAEXXZ 0x00420430
-// build: symbol ?InitializeTerminator@?$TSList@UWNDREC@@U?$TSGetLink@UWNDREC@@@@@@QAEXXZ 0x00420470
-// build: symbol ?Head@?$TSList@UWNDREC@@U?$TSGetLink@UWNDREC@@@@@@QAEPAUWNDREC@@XZ 0x00420490
-// build: symbol ??0?$TSLink@UWNDREC@@@@QAE@XZ 0x004204A0
-// build: symbol ??0?$TSList@UWNDREC@@U?$TSGetLink@UWNDREC@@@@@@QAE@XZ 0x004206A0
-// build: symbol ?Link@?$TSList@UWNDREC@@U?$TSGetLink@UWNDREC@@@@@@QAEPAU?$TSLink@UWNDREC@@@@PBUWNDREC@@@Z 0x00420520
-// build: symbol ?LinkNode@?$TSList@UWNDREC@@U?$TSGetLink@UWNDREC@@@@@@QAEXPAUWNDREC@@I0@Z 0x00420540
-// build: symbol ?Next@?$TSList@UWNDREC@@U?$TSGetLink@UWNDREC@@@@@@QAEPAUWNDREC@@PBU2@@Z 0x004205F0
-// build: symbol ??1?$TSLink@UWNDREC@@@@QAE@XZ 0x00420610
-// build: symbol ?UnlinkNode@?$TSList@UWNDREC@@U?$TSGetLink@UWNDREC@@@@@@QAEXPAUWNDREC@@@Z 0x00420650
-// build: symbol ?IsEmpty@?$TSList@UWNDREC@@U?$TSGetLink@UWNDREC@@@@@@QAEHXZ 0x004206C0
-// build: symbol ?RawNext@?$TSList@UWNDREC@@U?$TSGetLink@UWNDREC@@@@@@QAEPAUWNDREC@@PBU2@@Z 0x004206E0
-// build: symbol ??0?$TSLinkedNode@UWNDREC@@@@QAE@XZ 0x00420700
-// build: symbol ??1?$TSLinkedNode@UWNDREC@@@@QAE@XZ 0x00420710
-// build: symbol ?UnlinkAll@?$TSList@UWNDREC@@U?$TSGetLink@UWNDREC@@@@@@QAEXXZ 0x00420750
-// build: symbol ??1?$TSList@UWNDREC@@U?$TSGetLink@UWNDREC@@@@@@QAE@XZ 0x00420790
-// build: symbol ??0WNDREC@@QAE@XZ 0x004207D0
-// build: symbol ??1WNDREC@@QAE@XZ 0x004207E0
-// build: symbol ?NewNode@?$TSList@UWNDREC@@U?$TSGetLink@UWNDREC@@@@@@QAEPAUWNDREC@@III@Z 0x00420820
-// build: symbol ??_GWNDREC@@QAEPAXI@Z 0x00420880
-// build: symbol ?DeleteNode@?$TSList@UWNDREC@@U?$TSGetLink@UWNDREC@@@@@@QAEPAUWNDREC@@PAU2@@Z 0x00420970
 template WNDREC* TSLink<WNDREC>::Next();
 template WNDREC* TSLink<WNDREC>::RawNext();
 template TSLink<WNDREC>* TSLink<WNDREC>::NextLink(int);

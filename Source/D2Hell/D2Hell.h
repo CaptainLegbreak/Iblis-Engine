@@ -10,11 +10,9 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 extern "C" char* __cdecl strrchr(const char* szString, int nChar); // 0x00682990
 extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
-int __stdcall SFileOpenArchive(const char*,int,unsigned int,void**); // 0x0041BA60
-unsigned int __stdcall SStrCopy(char*,const char*,unsigned int); // 0x004135D0
-unsigned int __stdcall SStrPack(char*,const char*,unsigned int); // 0x00413800
-
+int __stdcall SFileOpenArchive(const char* szMpqName, int nPriority, unsigned int dwFlags, void** phMpq); // 0x0041BA60
+unsigned int __stdcall SStrCopy(char* dest,const char* source,unsigned int limit); // 0x004135D0
+unsigned int __stdcall SStrPack(char* dest, const char* source, unsigned int limit); // 0x00413800
 typedef int (__stdcall* ARCHIVE_ShowMessageFunctionPtr)();
 
 struct D2ArchiveHandleStrc
@@ -29,7 +27,5 @@ extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalS
 
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x006CC134
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-int __fastcall FOG_FOpenFile(const char* szFileName, void** phFile); // 0x004068E0
-void __cdecl LOGMANAGER_WriteLogLine(const char* szFormat, ...); // 0x00410610
 
-extern const unsigned char gCharacterClass_0074C5C8[]; // 0x0074C5C8
+extern const unsigned char gCharacterClass[]; // 0x0074C5C8

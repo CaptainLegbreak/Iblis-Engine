@@ -232,11 +232,11 @@ static D2MissilesTxt* DATATBLS_GetMissilesTxtRecord(int nMissileId)
 
 int __stdcall FOG_GetLinkIndex(D2TxtLinkStrc* pLinker, unsigned int dwCode, int bLogError); // 0x006BD130
 
-extern D2TxtLinkStrc* gpSkillCalcLinker_0096BC6C; // 0x0096BC6C
+extern D2TxtLinkStrc* gpSkillCalcLinker; // 0x0096BC6C
 
-extern D2TxtLinkStrc* gpSkillCodeLinker_0096BCA0; // 0x0096BCA0
+extern D2TxtLinkStrc* gpSkillCodeLinker; // 0x0096BCA0
 
-extern D2TxtLinkStrc* gpMissilesLinker_0096C798; // 0x0096C798
+extern D2TxtLinkStrc* gpMissilesLinker; // 0x0096C798
 
 extern char* gpMissCode; // 0x0096BC90
 
@@ -250,7 +250,7 @@ int __stdcall DATATBLS_CompileExpression(const char* szFormulaString, char* pOut
 
 static int __stdcall DATATBLS_ClampMissileField(D2BinFieldStrc* pFields, int nMissileId, int nOffset, int nType, int nMin, int nMax); // 0x00661A30
 
-D2TxtLinkStrc* gpMissileCalcLinker_0096BC8C; // 0x0096BC8C
+D2TxtLinkStrc* gpMissileCalcLinker; // 0x0096BC8C
 
 int gnMissCodeSize; // 0x0096BC94
 
@@ -341,9 +341,9 @@ int __fastcall DATATBLS_MissileLinkerResolveKeyword(char* szText, int* a2, int a
     {
         if (nKeywordNumber == 3)
         {
-            if (gpSkillCodeLinker_0096BCA0)
+            if (gpSkillCodeLinker)
             {
-                const int nRow = FOG_GetRowFromTxt(gpSkillCodeLinker_0096BCA0, szText, 0);
+                const int nRow = FOG_GetRowFromTxt(gpSkillCodeLinker, szText, 0);
                 if (nRow >= 0)
                 {
                     *a2 = 1;
@@ -351,16 +351,16 @@ int __fastcall DATATBLS_MissileLinkerResolveKeyword(char* szText, int* a2, int a
                 }
 
                 DATATBLS_TextToLinkCode(szText, szCode);
-                const int nIndex = FOG_GetLinkIndex(gpSkillCalcLinker_0096BC6C, *(unsigned int*)szCode, 1);
+                const int nIndex = FOG_GetLinkIndex(gpSkillCalcLinker, *(unsigned int*)szCode, 1);
                 *a2 = 0;
                 return nIndex;
             }
         }
         else if (nKeywordNumber == 4)
         {
-            if (gpMissilesLinker_0096C798)
+            if (gpMissilesLinker)
             {
-                const int nRow = FOG_GetRowFromTxt(gpMissilesLinker_0096C798, szText, 0);
+                const int nRow = FOG_GetRowFromTxt(gpMissilesLinker, szText, 0);
                 if (nRow >= 0)
                 {
                     *a2 = 1;
@@ -369,14 +369,14 @@ int __fastcall DATATBLS_MissileLinkerResolveKeyword(char* szText, int* a2, int a
             }
 
             DATATBLS_TextToLinkCode(szText, szCode);
-            const int nIndex = FOG_GetLinkIndex(gpMissileCalcLinker_0096BC8C, *(unsigned int*)szCode, 1);
+            const int nIndex = FOG_GetLinkIndex(gpMissileCalcLinker, *(unsigned int*)szCode, 1);
             *a2 = 0;
             return nIndex;
         }
     }
 
     DATATBLS_TextToLinkCode(szText, szCode);
-    const int nIndex = FOG_GetLinkIndex(gpMissileCalcLinker_0096BC8C, *(unsigned int*)szCode, 1);
+    const int nIndex = FOG_GetLinkIndex(gpMissileCalcLinker, *(unsigned int*)szCode, 1);
     *a2 = 0;
     return nIndex;
 }
@@ -664,8 +664,7 @@ void __fastcall DATATBLS_LoadMissilesTxt(void* hArchive)
 
 void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);             // 0x0040B480
 void __stdcall DATATBLS_UnloadBin(void* pBinFile);                                                               // 0x006125C0
-void __stdcall FOG_FreeLinker(D2TxtLinkStrc* pLinker);                                                      // 0x006BD0B0
-
+#include "FogApi2.h"
 // 0x00663210
 void __fastcall DATATBLS_UnloadMissilesTxt()
 {
@@ -717,456 +716,232 @@ struct d2data_0074669C_t
 };
 #pragma pack(pop)
 
-extern "C" const char gData_006EDEB8[12]; // 0x006EDEB8
-extern "C" const char gData_006EDEC4[12]; // 0x006EDEC4
-extern "C" const char gData_006EDED0[12]; // 0x006EDED0
-extern "C" const char gData_006EDEE8[12]; // 0x006EDEE8
-extern "C" const char gData_006EDF20[16]; // 0x006EDF20
-extern "C" const char gData_006EDF30[4]; // 0x006EDF30
-extern "C" const char gData_006EDF34[16]; // 0x006EDF34
-extern "C" const char gData_006EDF44[8]; // 0x006EDF44
-extern "C" const char gData_006EDF4C[12]; // 0x006EDF4C
-extern "C" const char gData_006EDF58[8]; // 0x006EDF58
-extern "C" const char gData_006EDF60[12]; // 0x006EDF60
-extern "C" const char gData_006EDF6C[12]; // 0x006EDF6C
-extern "C" const char gData_006EDF78[16]; // 0x006EDF78
-extern "C" const char gData_006EDF88[12]; // 0x006EDF88
-extern "C" const char gData_006EDF94[12]; // 0x006EDF94
-extern "C" const char gData_006EDFA0[8]; // 0x006EDFA0
-extern "C" const char gData_006EDFA8[12]; // 0x006EDFA8
-extern "C" const char gData_006EDFB4[8]; // 0x006EDFB4
-extern "C" const char gData_006EDFBC[12]; // 0x006EDFBC
-extern "C" const char gData_006EDFC8[8]; // 0x006EDFC8
-extern "C" const char gData_006EDFD0[8]; // 0x006EDFD0
-extern "C" const char gData_006EDFD8[12]; // 0x006EDFD8
-extern "C" const char gData_006EDFE4[12]; // 0x006EDFE4
-extern "C" const char gData_006EDFF0[12]; // 0x006EDFF0
-extern "C" const char gData_006EDFFC[8]; // 0x006EDFFC
-extern "C" const char gData_006EE004[8]; // 0x006EE004
-extern "C" const char gData_006EE00C[8]; // 0x006EE00C
-extern "C" const char gData_006EE014[8]; // 0x006EE014
-extern "C" const char gData_006EE01C[8]; // 0x006EE01C
-extern "C" const char gData_006EE024[8]; // 0x006EE024
-extern "C" const char gData_006EE02C[4]; // 0x006EE02C
-extern "C" const char gData_006EE030[12]; // 0x006EE030
-extern "C" const char gData_006EE03C[12]; // 0x006EE03C
-extern "C" const char gData_006EE048[12]; // 0x006EE048
-extern "C" const char gData_006EE054[12]; // 0x006EE054
-extern "C" const char gData_006EE060[12]; // 0x006EE060
-extern "C" const char gData_006EE06C[12]; // 0x006EE06C
-extern "C" const char gData_006EE078[12]; // 0x006EE078
-extern "C" const char gData_006EE084[12]; // 0x006EE084
-extern "C" const char gData_006EE090[12]; // 0x006EE090
-extern "C" const char gData_006EE09C[12]; // 0x006EE09C
-extern "C" const char gData_006EE0A8[12]; // 0x006EE0A8
-extern "C" const char gData_006EE0B4[12]; // 0x006EE0B4
-extern "C" const char gData_006EE0C0[12]; // 0x006EE0C0
-extern "C" const char gData_006EE0CC[12]; // 0x006EE0CC
-extern "C" const char gData_006EE0D8[12]; // 0x006EE0D8
-extern "C" const char gData_006EE0E4[12]; // 0x006EE0E4
-extern "C" const char gData_006EE0F0[8]; // 0x006EE0F0
-extern "C" const char gData_006EE0F8[16]; // 0x006EE0F8
-extern "C" const char gData_006EE108[8]; // 0x006EE108
-extern "C" const char gData_006EE110[8]; // 0x006EE110
-extern "C" const char gData_006EE118[8]; // 0x006EE118
-extern "C" const char gData_006EE120[12]; // 0x006EE120
-extern "C" const char gData_006EE12C[12]; // 0x006EE12C
-extern "C" const char gData_006EE138[12]; // 0x006EE138
-extern "C" const char gData_006EE144[8]; // 0x006EE144
-extern "C" const char gData_006EE14C[20]; // 0x006EE14C
-extern "C" const char gData_006EE160[20]; // 0x006EE160
-extern "C" const char gData_006EE174[20]; // 0x006EE174
-extern "C" const char gData_006EE188[20]; // 0x006EE188
-extern "C" const char gData_006EE19C[16]; // 0x006EE19C
-extern "C" const char gData_006EE1AC[16]; // 0x006EE1AC
-extern "C" const char gData_006EE1BC[16]; // 0x006EE1BC
-extern "C" const char gData_006EE1CC[16]; // 0x006EE1CC
-extern "C" const char gData_006EE1DC[16]; // 0x006EE1DC
-extern "C" const char gData_006EE1EC[16]; // 0x006EE1EC
-extern "C" const char gData_006EE1FC[16]; // 0x006EE1FC
-extern "C" const char gData_006EE20C[12]; // 0x006EE20C
-extern "C" const char gData_006EE218[12]; // 0x006EE218
-extern "C" const char gData_006EE224[12]; // 0x006EE224
-extern "C" const char gData_006EE230[20]; // 0x006EE230
-extern "C" const char gData_006EE244[12]; // 0x006EE244
-extern "C" const char gData_006EE250[12]; // 0x006EE250
-extern "C" const char gData_006EE25C[12]; // 0x006EE25C
-extern "C" const char gData_006EE268[12]; // 0x006EE268
-extern "C" const char gData_006EE274[8]; // 0x006EE274
-extern "C" const char gData_006EE27C[8]; // 0x006EE27C
-extern "C" const char gData_006EE284[12]; // 0x006EE284
-extern "C" const char gData_006EE290[12]; // 0x006EE290
-extern "C" const char gData_006EE29C[12]; // 0x006EE29C
-extern "C" const char gData_006EE2A8[12]; // 0x006EE2A8
-extern "C" const char gData_006EE2B4[12]; // 0x006EE2B4
-extern "C" const char gData_006EE2C0[12]; // 0x006EE2C0
-extern "C" const char gData_006EE2CC[12]; // 0x006EE2CC
-extern "C" const char gData_006EE2D8[12]; // 0x006EE2D8
-extern "C" const char gData_006EE2E4[12]; // 0x006EE2E4
-extern "C" const char gData_006EE2F0[12]; // 0x006EE2F0
-extern "C" const char gData_006EE2FC[12]; // 0x006EE2FC
-extern "C" const char gData_006EE308[12]; // 0x006EE308
-extern "C" const char gData_006EE314[12]; // 0x006EE314
-extern "C" const char gData_006EE320[12]; // 0x006EE320
-extern "C" const char gData_006EE32C[12]; // 0x006EE32C
-extern "C" const char gData_006EE338[12]; // 0x006EE338
-extern "C" const char gData_006EE344[12]; // 0x006EE344
-extern "C" const char gData_006EE350[12]; // 0x006EE350
-extern "C" const char gData_006EE35C[12]; // 0x006EE35C
-extern "C" const char gData_006EE368[12]; // 0x006EE368
-extern "C" const char gData_006EE374[8]; // 0x006EE374
-extern "C" const char gData_006EE37C[8]; // 0x006EE37C
-extern "C" const char gData_006EE384[12]; // 0x006EE384
-extern "C" const char gData_006EE390[16]; // 0x006EE390
-extern "C" const char gData_006EE3A0[8]; // 0x006EE3A0
-extern "C" const char gData_006EE3A8[8]; // 0x006EE3A8
-extern "C" const char gData_006EE3B0[12]; // 0x006EE3B0
-extern "C" const char gData_006EE3BC[12]; // 0x006EE3BC
-extern "C" const char gData_006EE3C8[12]; // 0x006EE3C8
-extern "C" const char gData_006EE3D4[12]; // 0x006EE3D4
-extern "C" const char gData_006EE3E0[8]; // 0x006EE3E0
-extern "C" const char gData_006EE3E8[8]; // 0x006EE3E8
-extern "C" const char gData_006EE3F0[12]; // 0x006EE3F0
-extern "C" const char gData_006EE3FC[12]; // 0x006EE3FC
-extern "C" const char gData_006EE408[8]; // 0x006EE408
 extern "C" struct d2data_00746660_t gData_00746660; // 0x00746660
 extern "C" struct d2data_0074669C_t gData_0074669C; // 0x0074669C
 
-extern "C" const char gData_006EDEB8[12] = "misscode"; // 0x006EDEB8
-#pragma comment(linker, "/alternatename:_gszMissCodeName=_gData_006EDEB8")
+extern "C" const char gszMissCodeName[12] = "misscode"; // 0x006EDEB8
 
-extern "C" const char gData_006EDEC4[12] = "missiles"; // 0x006EDEC4
-#pragma comment(linker, "/alternatename:_gszMissilesTxtName=_gData_006EDEC4")
+extern "C" const char gszMissilesTxtName[12] = "missiles"; // 0x006EDEC4
 
-extern "C" const char gData_006EDED0[12] = "DamageRate"; // 0x006EDED0
-#pragma comment(linker, "/alternatename:_gszTxtField_DamageRate=_gData_006EDED0")
+extern "C" const char gszTxtField_DamageRate[12] = "DamageRate"; // 0x006EDED0
 
-extern "C" const char gData_006EDEE8[12] = "AnimSpeed"; // 0x006EDEE8
-#pragma comment(linker, "/alternatename:_gszTxtField_AnimSpeed=_gData_006EDEE8")
+extern "C" const char gszTxtField_AnimSpeed[12] = "AnimSpeed"; // 0x006EDEE8
 
-extern "C" const char gData_006EDF20[16] = "SpecialSetup"; // 0x006EDF20
-#pragma comment(linker, "/alternatename:_gszTxtField_SpecialSetup=_gData_006EDF20")
+extern "C" const char gszTxtField_SpecialSetup[16] = "SpecialSetup"; // 0x006EDF20
 
-extern "C" const char gData_006EDF30[4] = "Qty"; // 0x006EDF30
-#pragma comment(linker, "/alternatename:_gszTxtField_Qty=_gData_006EDF30")
+extern "C" const char gszTxtField_Qty[4] = "Qty"; // 0x006EDF30
 
-extern "C" const char gData_006EDF34[16] = "AlwaysExplode"; // 0x006EDF34
-#pragma comment(linker, "/alternatename:_gszTxtField_AlwaysExplode=_gData_006EDF34")
+extern "C" const char gszTxtField_AlwaysExplode[16] = "AlwaysExplode"; // 0x006EDF34
 
-extern "C" const char gData_006EDF44[8] = "Size"; // 0x006EDF44
-#pragma comment(linker, "/alternatename:_gszTxtField_Size=_gData_006EDF44")
+extern "C" const char gszTxtField_Size[8] = "Size"; // 0x006EDF44
 
-extern "C" const char gData_006EDF4C[12] = "NextDelay"; // 0x006EDF4C
-#pragma comment(linker, "/alternatename:_gszTxtField_NextDelay=_gData_006EDF4C")
+extern "C" const char gszTxtField_NextDelay[12] = "NextDelay"; // 0x006EDF4C
 
-extern "C" const char gData_006EDF58[8] = "NextHit"; // 0x006EDF58
-#pragma comment(linker, "/alternatename:_gszTxtField_NextHit=_gData_006EDF58")
+extern "C" const char gszTxtField_NextHit[8] = "NextHit"; // 0x006EDF58
 
-extern "C" const char gData_006EDF60[12] = "ClientCol"; // 0x006EDF60
-#pragma comment(linker, "/alternatename:_gszTxtField_ClientCol=_gData_006EDF60")
+extern "C" const char gszTxtField_ClientCol[12] = "ClientCol"; // 0x006EDF60
 
-extern "C" const char gData_006EDF6C[12] = "Collision"; // 0x006EDF6C
-#pragma comment(linker, "/alternatename:_gszTxtField_Collision=_gData_006EDF6C")
+extern "C" const char gszTxtField_Collision[12] = "Collision"; // 0x006EDF6C
 
-extern "C" const char gData_006EDF78[16] = "CollideFriend"; // 0x006EDF78
-#pragma comment(linker, "/alternatename:_gszTxtField_CollideFriend=_gData_006EDF78")
+extern "C" const char gszTxtField_CollideFriend[16] = "CollideFriend"; // 0x006EDF78
 
-extern "C" const char gData_006EDF88[12] = "CollideKill"; // 0x006EDF88
-#pragma comment(linker, "/alternatename:_gszTxtField_CollideKill=_gData_006EDF88")
+extern "C" const char gszTxtField_CollideKill[12] = "CollideKill"; // 0x006EDF88
 
-extern "C" const char gData_006EDF94[12] = "CollideType"; // 0x006EDF94
-#pragma comment(linker, "/alternatename:_gszTxtField_CollideType=_gData_006EDF94")
+extern "C" const char gszTxtField_CollideType[12] = "CollideType"; // 0x006EDF94
 
-extern "C" const char gData_006EDFA0[8] = "SubStop"; // 0x006EDFA0
-#pragma comment(linker, "/alternatename:_gszTxtField_SubStop=_gData_006EDFA0")
+extern "C" const char gszTxtField_SubStop[8] = "SubStop"; // 0x006EDFA0
 
-extern "C" const char gData_006EDFA8[12] = "SubStart"; // 0x006EDFA8
-#pragma comment(linker, "/alternatename:_gszTxtField_SubStart=_gData_006EDFA8")
+extern "C" const char gszTxtField_SubStart[12] = "SubStart"; // 0x006EDFA8
 
-extern "C" const char gData_006EDFB4[8] = "SubLoop"; // 0x006EDFB4
-#pragma comment(linker, "/alternatename:_gszTxtField_SubLoop=_gData_006EDFB4")
+extern "C" const char gszTxtField_SubLoop[8] = "SubLoop"; // 0x006EDFB4
 
-extern "C" const char gData_006EDFBC[12] = "RandStart"; // 0x006EDFBC
-#pragma comment(linker, "/alternatename:_gszTxtField_RandStart=_gData_006EDFBC")
+extern "C" const char gszTxtField_RandStart[12] = "RandStart"; // 0x006EDFBC
 
-extern "C" const char gData_006EDFC8[8] = "AnimLen"; // 0x006EDFC8
-#pragma comment(linker, "/alternatename:_gszTxtField_AnimLen=_gData_006EDFC8")
+extern "C" const char gszTxtField_AnimLen[8] = "AnimLen"; // 0x006EDFC8
 
-extern "C" const char gData_006EDFD0[8] = "CelFile"; // 0x006EDFD0
-#pragma comment(linker, "/alternatename:_gszTxtField_CelFile=_gData_006EDFD0")
+extern "C" const char gszTxtField_CelFile[8] = "CelFile"; // 0x006EDFD0
 
-extern "C" const char gData_006EDFD8[12] = "LoopAnim"; // 0x006EDFD8
-#pragma comment(linker, "/alternatename:_gszTxtField_LoopAnim=_gData_006EDFD8")
+extern "C" const char gszTxtField_LoopAnim[12] = "LoopAnim"; // 0x006EDFD8
 
-extern "C" const char gData_006EDFE4[12] = "Activate"; // 0x006EDFE4
-#pragma comment(linker, "/alternatename:_gszTxtField_Activate=_gData_006EDFE4")
+extern "C" const char gszTxtField_Activate[12] = "Activate"; // 0x006EDFE4
 
-extern "C" const char gData_006EDFF0[12] = "InitSteps"; // 0x006EDFF0
-#pragma comment(linker, "/alternatename:_gszTxtField_InitSteps=_gData_006EDFF0")
+extern "C" const char gszTxtField_InitSteps[12] = "InitSteps"; // 0x006EDFF0
 
-extern "C" const char gData_006EDFFC[8] = "Flicker"; // 0x006EDFFC
-#pragma comment(linker, "/alternatename:_gszTxtField_Flicker=_gData_006EDFFC")
+extern "C" const char gszTxtField_Flicker[8] = "Flicker"; // 0x006EDFFC
 
-extern "C" const char gData_006EE004[8] = "Light"; // 0x006EE004
-#pragma comment(linker, "/alternatename:_gszTxtField_Light=_gData_006EE004")
+extern "C" const char gszTxtField_Light[8] = "Light"; // 0x006EE004
 
-extern "C" const char gData_006EE00C[8] = "Holy"; // 0x006EE00C
-#pragma comment(linker, "/alternatename:_gszTxtField_Holy=_gData_006EE00C")
+extern "C" const char gszTxtField_Holy[8] = "Holy"; // 0x006EE00C
 
-extern "C" const char gData_006EE014[8] = "Accel"; // 0x006EE014
-#pragma comment(linker, "/alternatename:_gszTxtField_Accel=_gData_006EE014")
+extern "C" const char gszTxtField_Accel[8] = "Accel"; // 0x006EE014
 
-extern "C" const char gData_006EE01C[8] = "MaxVel"; // 0x006EE01C
-#pragma comment(linker, "/alternatename:_gszTxtField_MaxVel=_gData_006EE01C")
+extern "C" const char gszTxtField_MaxVel[8] = "MaxVel"; // 0x006EE01C
 
-extern "C" const char gData_006EE024[8] = "VelLev"; // 0x006EE024
-#pragma comment(linker, "/alternatename:_gszTxtField_VelLev=_gData_006EE024")
+extern "C" const char gszTxtField_VelLev[8] = "VelLev"; // 0x006EE024
 
-extern "C" const char gData_006EE02C[4] = "Vel"; // 0x006EE02C
-#pragma comment(linker, "/alternatename:_gszTxtField_Vel=_gData_006EE02C")
+extern "C" const char gszTxtField_Vel[4] = "Vel"; // 0x006EE02C
 
-extern "C" const char gData_006EE030[12] = "Half2HSrc"; // 0x006EE030
-#pragma comment(linker, "/alternatename:_gszTxtField_Half2HSrc=_gData_006EE030")
+extern "C" const char gszTxtField_Half2HSrc[12] = "Half2HSrc"; // 0x006EE030
 
-extern "C" const char gData_006EE03C[12] = "SrcMissDmg"; // 0x006EE03C
-#pragma comment(linker, "/alternatename:_gszTxtField_SrcMissDmg=_gData_006EE03C")
+extern "C" const char gszTxtField_SrcMissDmg[12] = "SrcMissDmg"; // 0x006EE03C
 
-extern "C" const char gData_006EE048[12] = "SrcDamage"; // 0x006EE048
-#pragma comment(linker, "/alternatename:_gszTxtField_SrcDamage=_gData_006EE048")
+extern "C" const char gszTxtField_SrcDamage[12] = "SrcDamage"; // 0x006EE048
 
-extern "C" const char gData_006EE054[12] = "CltSrcTown"; // 0x006EE054
-#pragma comment(linker, "/alternatename:_gszTxtField_CltSrcTown=_gData_006EE054")
+extern "C" const char gszTxtField_CltSrcTown[12] = "CltSrcTown"; // 0x006EE054
 
-extern "C" const char gData_006EE060[12] = "MaxELev5"; // 0x006EE060
-#pragma comment(linker, "/alternatename:_gszTxtField_MaxELev5=_gData_006EE060")
+extern "C" const char gszTxtField_MaxELev5[12] = "MaxELev5"; // 0x006EE060
 
-extern "C" const char gData_006EE06C[12] = "MaxELev4"; // 0x006EE06C
-#pragma comment(linker, "/alternatename:_gszTxtField_MaxELev4=_gData_006EE06C")
+extern "C" const char gszTxtField_MaxELev4[12] = "MaxELev4"; // 0x006EE06C
 
-extern "C" const char gData_006EE078[12] = "MaxELev3"; // 0x006EE078
-#pragma comment(linker, "/alternatename:_gszTxtField_MaxELev3=_gData_006EE078")
+extern "C" const char gszTxtField_MaxELev3[12] = "MaxELev3"; // 0x006EE078
 
-extern "C" const char gData_006EE084[12] = "MaxELev2"; // 0x006EE084
-#pragma comment(linker, "/alternatename:_gszTxtField_MaxELev2=_gData_006EE084")
+extern "C" const char gszTxtField_MaxELev2[12] = "MaxELev2"; // 0x006EE084
 
-extern "C" const char gData_006EE090[12] = "MaxELev1"; // 0x006EE090
-#pragma comment(linker, "/alternatename:_gszTxtField_MaxELev1=_gData_006EE090")
+extern "C" const char gszTxtField_MaxELev1[12] = "MaxELev1"; // 0x006EE090
 
-extern "C" const char gData_006EE09C[12] = "MinELev5"; // 0x006EE09C
-#pragma comment(linker, "/alternatename:_gszTxtField_MinELev5=_gData_006EE09C")
+extern "C" const char gszTxtField_MinELev5[12] = "MinELev5"; // 0x006EE09C
 
-extern "C" const char gData_006EE0A8[12] = "MinELev4"; // 0x006EE0A8
-#pragma comment(linker, "/alternatename:_gszTxtField_MinELev4=_gData_006EE0A8")
+extern "C" const char gszTxtField_MinELev4[12] = "MinELev4"; // 0x006EE0A8
 
-extern "C" const char gData_006EE0B4[12] = "MinELev3"; // 0x006EE0B4
-#pragma comment(linker, "/alternatename:_gszTxtField_MinELev3=_gData_006EE0B4")
+extern "C" const char gszTxtField_MinELev3[12] = "MinELev3"; // 0x006EE0B4
 
-extern "C" const char gData_006EE0C0[12] = "MinELev2"; // 0x006EE0C0
-#pragma comment(linker, "/alternatename:_gszTxtField_MinELev2=_gData_006EE0C0")
+extern "C" const char gszTxtField_MinELev2[12] = "MinELev2"; // 0x006EE0C0
 
-extern "C" const char gData_006EE0CC[12] = "MinELev1"; // 0x006EE0CC
-#pragma comment(linker, "/alternatename:_gszTxtField_MinELev1=_gData_006EE0CC")
+extern "C" const char gszTxtField_MinELev1[12] = "MinELev1"; // 0x006EE0CC
 
-extern "C" const char gData_006EE0D8[12] = "MaxDamage"; // 0x006EE0D8
-#pragma comment(linker, "/alternatename:_gszTxtField_MaxDamage=_gData_006EE0D8")
+extern "C" const char gszTxtField_MaxDamage[12] = "MaxDamage"; // 0x006EE0D8
 
-extern "C" const char gData_006EE0E4[12] = "MinDamage"; // 0x006EE0E4
-#pragma comment(linker, "/alternatename:_gszTxtField_MinDamage=_gData_006EE0E4")
+extern "C" const char gszTxtField_MinDamage[12] = "MinDamage"; // 0x006EE0E4
 
-extern "C" const char gData_006EE0F0[8] = "Skill"; // 0x006EE0F0
-#pragma comment(linker, "/alternatename:_gszTxtField_Skill=_gData_006EE0F0")
+extern "C" const char gszTxtField_Skill[8] = "Skill"; // 0x006EE0F0
 
-extern "C" const char gData_006EE0F8[16] = "MissileSkill"; // 0x006EE0F8
-#pragma comment(linker, "/alternatename:_gszTxtField_MissileSkill=_gData_006EE0F8")
+extern "C" const char gszTxtField_MissileSkill[16] = "MissileSkill"; // 0x006EE0F8
 
-extern "C" const char gData_006EE108[8] = "zoffset"; // 0x006EE108
-#pragma comment(linker, "/alternatename:_gszTxtField_zoffset=_gData_006EE108")
+extern "C" const char gszTxtField_zoffset[8] = "zoffset"; // 0x006EE108
 
-extern "C" const char gData_006EE110[8] = "yoffset"; // 0x006EE110
-#pragma comment(linker, "/alternatename:_gszTxtField_yoffset=_gData_006EE110")
+extern "C" const char gszTxtField_yoffset[8] = "yoffset"; // 0x006EE110
 
-extern "C" const char gData_006EE118[8] = "xoffset"; // 0x006EE118
-#pragma comment(linker, "/alternatename:_gszTxtField_xoffset=_gData_006EE118")
+extern "C" const char gszTxtField_xoffset[8] = "xoffset"; // 0x006EE118
 
-extern "C" const char gData_006EE120[12] = "animrate"; // 0x006EE120
-#pragma comment(linker, "/alternatename:_gszTxtField_animrate=_gData_006EE120")
+extern "C" const char gszTxtField_animrate[12] = "animrate"; // 0x006EE120
 
-extern "C" const char gData_006EE12C[12] = "KnockBack"; // 0x006EE12C
-#pragma comment(linker, "/alternatename:_gszTxtField_KnockBack=_gData_006EE12C")
+extern "C" const char gszTxtField_KnockBack[12] = "KnockBack"; // 0x006EE12C
 
-extern "C" const char gData_006EE138[12] = "LevRange"; // 0x006EE138
-#pragma comment(linker, "/alternatename:_gszTxtField_LevRange=_gData_006EE138")
+extern "C" const char gszTxtField_LevRange[12] = "LevRange"; // 0x006EE138
 
-extern "C" const char gData_006EE144[8] = "Range"; // 0x006EE144
-#pragma comment(linker, "/alternatename:_gszTxtField_Range=_gData_006EE144")
+extern "C" const char gszTxtField_Range[8] = "Range"; // 0x006EE144
 
-extern "C" const char gData_006EE14C[20] = "CltHitSubMissile4"; // 0x006EE14C
-#pragma comment(linker, "/alternatename:_gszTxtField_CltHitSubMissile4=_gData_006EE14C")
+extern "C" const char gszTxtField_CltHitSubMissile4[20] = "CltHitSubMissile4"; // 0x006EE14C
 
-extern "C" const char gData_006EE160[20] = "CltHitSubMissile3"; // 0x006EE160
-#pragma comment(linker, "/alternatename:_gszTxtField_CltHitSubMissile3=_gData_006EE160")
+extern "C" const char gszTxtField_CltHitSubMissile3[20] = "CltHitSubMissile3"; // 0x006EE160
 
-extern "C" const char gData_006EE174[20] = "CltHitSubMissile2"; // 0x006EE174
-#pragma comment(linker, "/alternatename:_gszTxtField_CltHitSubMissile2=_gData_006EE174")
+extern "C" const char gszTxtField_CltHitSubMissile2[20] = "CltHitSubMissile2"; // 0x006EE174
 
-extern "C" const char gData_006EE188[20] = "CltHitSubMissile1"; // 0x006EE188
-#pragma comment(linker, "/alternatename:_gszTxtField_CltHitSubMissile1=_gData_006EE188")
+extern "C" const char gszTxtField_CltHitSubMissile1[20] = "CltHitSubMissile1"; // 0x006EE188
 
-extern "C" const char gData_006EE19C[16] = "CltSubMissile3"; // 0x006EE19C
-#pragma comment(linker, "/alternatename:_gszTxtField_CltSubMissile3=_gData_006EE19C")
+extern "C" const char gszTxtField_CltSubMissile3[16] = "CltSubMissile3"; // 0x006EE19C
 
-extern "C" const char gData_006EE1AC[16] = "CltSubMissile2"; // 0x006EE1AC
-#pragma comment(linker, "/alternatename:_gszTxtField_CltSubMissile2=_gData_006EE1AC")
+extern "C" const char gszTxtField_CltSubMissile2[16] = "CltSubMissile2"; // 0x006EE1AC
 
-extern "C" const char gData_006EE1BC[16] = "CltSubMissile1"; // 0x006EE1BC
-#pragma comment(linker, "/alternatename:_gszTxtField_CltSubMissile1=_gData_006EE1BC")
+extern "C" const char gszTxtField_CltSubMissile1[16] = "CltSubMissile1"; // 0x006EE1BC
 
-extern "C" const char gData_006EE1CC[16] = "HitSubMissile4"; // 0x006EE1CC
-#pragma comment(linker, "/alternatename:_gszTxtField_HitSubMissile4=_gData_006EE1CC")
+extern "C" const char gszTxtField_HitSubMissile4[16] = "HitSubMissile4"; // 0x006EE1CC
 
-extern "C" const char gData_006EE1DC[16] = "HitSubMissile3"; // 0x006EE1DC
-#pragma comment(linker, "/alternatename:_gszTxtField_HitSubMissile3=_gData_006EE1DC")
+extern "C" const char gszTxtField_HitSubMissile3[16] = "HitSubMissile3"; // 0x006EE1DC
 
-extern "C" const char gData_006EE1EC[16] = "HitSubMissile2"; // 0x006EE1EC
-#pragma comment(linker, "/alternatename:_gszTxtField_HitSubMissile2=_gData_006EE1EC")
+extern "C" const char gszTxtField_HitSubMissile2[16] = "HitSubMissile2"; // 0x006EE1EC
 
-extern "C" const char gData_006EE1FC[16] = "HitSubMissile1"; // 0x006EE1FC
-#pragma comment(linker, "/alternatename:_gszTxtField_HitSubMissile1=_gData_006EE1FC")
+extern "C" const char gszTxtField_HitSubMissile1[16] = "HitSubMissile1"; // 0x006EE1FC
 
-extern "C" const char gData_006EE20C[12] = "SubMissile3"; // 0x006EE20C
-#pragma comment(linker, "/alternatename:_gszTxtField_SubMissile3=_gData_006EE20C")
+extern "C" const char gszTxtField_SubMissile3[12] = "SubMissile3"; // 0x006EE20C
 
-extern "C" const char gData_006EE218[12] = "SubMissile2"; // 0x006EE218
-#pragma comment(linker, "/alternatename:_gszTxtField_SubMissile2=_gData_006EE218")
+extern "C" const char gszTxtField_SubMissile2[12] = "SubMissile2"; // 0x006EE218
 
-extern "C" const char gData_006EE224[12] = "SubMissile1"; // 0x006EE224
-#pragma comment(linker, "/alternatename:_gszTxtField_SubMissile1=_gData_006EE224")
+extern "C" const char gszTxtField_SubMissile1[12] = "SubMissile1"; // 0x006EE224
 
-extern "C" const char gData_006EE230[20] = "ExplosionMissile"; // 0x006EE230
-#pragma comment(linker, "/alternatename:_gszTxtField_ExplosionMissile=_gData_006EE230")
+extern "C" const char gszTxtField_ExplosionMissile[20] = "ExplosionMissile"; // 0x006EE230
 
-extern "C" const char gData_006EE244[12] = "ProgOverlay"; // 0x006EE244
-#pragma comment(linker, "/alternatename:_gszTxtField_ProgOverlay=_gData_006EE244")
+extern "C" const char gszTxtField_ProgOverlay[12] = "ProgOverlay"; // 0x006EE244
 
-extern "C" const char gData_006EE250[12] = "ProgSound"; // 0x006EE250
-#pragma comment(linker, "/alternatename:_gszTxtField_ProgSound=_gData_006EE250")
+extern "C" const char gszTxtField_ProgSound[12] = "ProgSound"; // 0x006EE250
 
-extern "C" const char gData_006EE25C[12] = "TravelSound"; // 0x006EE25C
-#pragma comment(linker, "/alternatename:_gszTxtField_TravelSound=_gData_006EE25C")
+extern "C" const char gszTxtField_TravelSound[12] = "TravelSound"; // 0x006EE25C
 
-extern "C" const char gData_006EE268[12] = "DmgCalc1"; // 0x006EE268
-#pragma comment(linker, "/alternatename:_gszTxtField_DmgCalc1=_gData_006EE268")
+extern "C" const char gszTxtField_DmgCalc1[12] = "DmgCalc1"; // 0x006EE268
 
-extern "C" const char gData_006EE274[8] = "dParam2"; // 0x006EE274
-#pragma comment(linker, "/alternatename:_gszTxtField_dParam2=_gData_006EE274")
+extern "C" const char gszTxtField_dParam2[8] = "dParam2"; // 0x006EE274
 
-extern "C" const char gData_006EE27C[8] = "dParam1"; // 0x006EE27C
-#pragma comment(linker, "/alternatename:_gszTxtField_dParam1=_gData_006EE27C")
+extern "C" const char gszTxtField_dParam1[8] = "dParam1"; // 0x006EE27C
 
-extern "C" const char gData_006EE284[12] = "CHitCalc1"; // 0x006EE284
-#pragma comment(linker, "/alternatename:_gszTxtField_CHitCalc1=_gData_006EE284")
+extern "C" const char gszTxtField_CHitCalc1[12] = "CHitCalc1"; // 0x006EE284
 
-extern "C" const char gData_006EE290[12] = "cHitPar3"; // 0x006EE290
-#pragma comment(linker, "/alternatename:_gszTxtField_cHitPar3=_gData_006EE290")
+extern "C" const char gszTxtField_cHitPar3[12] = "cHitPar3"; // 0x006EE290
 
-extern "C" const char gData_006EE29C[12] = "cHitPar2"; // 0x006EE29C
-#pragma comment(linker, "/alternatename:_gszTxtField_cHitPar2=_gData_006EE29C")
+extern "C" const char gszTxtField_cHitPar2[12] = "cHitPar2"; // 0x006EE29C
 
-extern "C" const char gData_006EE2A8[12] = "cHitPar1"; // 0x006EE2A8
-#pragma comment(linker, "/alternatename:_gszTxtField_cHitPar1=_gData_006EE2A8")
+extern "C" const char gszTxtField_cHitPar1[12] = "cHitPar1"; // 0x006EE2A8
 
-extern "C" const char gData_006EE2B4[12] = "SHitCalc1"; // 0x006EE2B4
-#pragma comment(linker, "/alternatename:_gszTxtField_SHitCalc1=_gData_006EE2B4")
+extern "C" const char gszTxtField_SHitCalc1[12] = "SHitCalc1"; // 0x006EE2B4
 
-extern "C" const char gData_006EE2C0[12] = "sHitPar3"; // 0x006EE2C0
-#pragma comment(linker, "/alternatename:_gszTxtField_sHitPar3=_gData_006EE2C0")
+extern "C" const char gszTxtField_sHitPar3[12] = "sHitPar3"; // 0x006EE2C0
 
-extern "C" const char gData_006EE2CC[12] = "sHitPar2"; // 0x006EE2CC
-#pragma comment(linker, "/alternatename:_gszTxtField_sHitPar2=_gData_006EE2CC")
+extern "C" const char gszTxtField_sHitPar2[12] = "sHitPar2"; // 0x006EE2CC
 
-extern "C" const char gData_006EE2D8[12] = "sHitPar1"; // 0x006EE2D8
-#pragma comment(linker, "/alternatename:_gszTxtField_sHitPar1=_gData_006EE2D8")
+extern "C" const char gszTxtField_sHitPar1[12] = "sHitPar1"; // 0x006EE2D8
 
-extern "C" const char gData_006EE2E4[12] = "CltCalc1"; // 0x006EE2E4
-#pragma comment(linker, "/alternatename:_gszTxtField_CltCalc1=_gData_006EE2E4")
+extern "C" const char gszTxtField_CltCalc1[12] = "CltCalc1"; // 0x006EE2E4
 
-extern "C" const char gData_006EE2F0[12] = "CltParam5"; // 0x006EE2F0
-#pragma comment(linker, "/alternatename:_gszTxtField_CltParam5=_gData_006EE2F0")
+extern "C" const char gszTxtField_CltParam5[12] = "CltParam5"; // 0x006EE2F0
 
-extern "C" const char gData_006EE2FC[12] = "CltParam4"; // 0x006EE2FC
-#pragma comment(linker, "/alternatename:_gszTxtField_CltParam4=_gData_006EE2FC")
+extern "C" const char gszTxtField_CltParam4[12] = "CltParam4"; // 0x006EE2FC
 
-extern "C" const char gData_006EE308[12] = "CltParam3"; // 0x006EE308
-#pragma comment(linker, "/alternatename:_gszTxtField_CltParam3=_gData_006EE308")
+extern "C" const char gszTxtField_CltParam3[12] = "CltParam3"; // 0x006EE308
 
-extern "C" const char gData_006EE314[12] = "CltParam2"; // 0x006EE314
-#pragma comment(linker, "/alternatename:_gszTxtField_CltParam2=_gData_006EE314")
+extern "C" const char gszTxtField_CltParam2[12] = "CltParam2"; // 0x006EE314
 
-extern "C" const char gData_006EE320[12] = "CltParam1"; // 0x006EE320
-#pragma comment(linker, "/alternatename:_gszTxtField_CltParam1=_gData_006EE320")
+extern "C" const char gszTxtField_CltParam1[12] = "CltParam1"; // 0x006EE320
 
-extern "C" const char gData_006EE32C[12] = "SrvCalc1"; // 0x006EE32C
-#pragma comment(linker, "/alternatename:_gszTxtField_SrvCalc1=_gData_006EE32C")
+extern "C" const char gszTxtField_SrvCalc1[12] = "SrvCalc1"; // 0x006EE32C
 
-extern "C" const char gData_006EE338[12] = "pSrvDmgFunc"; // 0x006EE338
-#pragma comment(linker, "/alternatename:_gszTxtField_pSrvDmgFunc=_gData_006EE338")
+extern "C" const char gszTxtField_pSrvDmgFunc[12] = "pSrvDmgFunc"; // 0x006EE338
 
-extern "C" const char gData_006EE344[12] = "pSrvHitFunc"; // 0x006EE344
-#pragma comment(linker, "/alternatename:_gszTxtField_pSrvHitFunc=_gData_006EE344")
+extern "C" const char gszTxtField_pSrvHitFunc[12] = "pSrvHitFunc"; // 0x006EE344
 
-extern "C" const char gData_006EE350[12] = "pSrvDoFunc"; // 0x006EE350
-#pragma comment(linker, "/alternatename:_gszTxtField_pSrvDoFunc=_gData_006EE350")
+extern "C" const char gszTxtField_pSrvDoFunc[12] = "pSrvDoFunc"; // 0x006EE350
 
-extern "C" const char gData_006EE35C[12] = "pCltHitFunc"; // 0x006EE35C
-#pragma comment(linker, "/alternatename:_gszTxtField_pCltHitFunc=_gData_006EE35C")
+extern "C" const char gszTxtField_pCltHitFunc[12] = "pCltHitFunc"; // 0x006EE35C
 
-extern "C" const char gData_006EE368[12] = "pCltDoFunc"; // 0x006EE368
-#pragma comment(linker, "/alternatename:_gszTxtField_pCltDoFunc=_gData_006EE368")
+extern "C" const char gszTxtField_pCltDoFunc[12] = "pCltDoFunc"; // 0x006EE368
 
-extern "C" const char gData_006EE374[8] = "SrcTown"; // 0x006EE374
-#pragma comment(linker, "/alternatename:_gszTxtField_SrcTown=_gData_006EE374")
+extern "C" const char gszTxtField_SrcTown[8] = "SrcTown"; // 0x006EE374
 
-extern "C" const char gData_006EE37C[8] = "Town"; // 0x006EE37C
-#pragma comment(linker, "/alternatename:_gszTxtField_Town=_gData_006EE37C")
+extern "C" const char gszTxtField_Town[8] = "Town"; // 0x006EE37C
 
-extern "C" const char gData_006EE384[12] = "ReturnFire"; // 0x006EE384
-#pragma comment(linker, "/alternatename:_gszTxtField_ReturnFire=_gData_006EE384")
+extern "C" const char gszTxtField_ReturnFire[12] = "ReturnFire"; // 0x006EE384
 
-extern "C" const char gData_006EE390[16] = "ApplyMastery"; // 0x006EE390
-#pragma comment(linker, "/alternatename:_gszTxtField_ApplyMastery=_gData_006EE390")
+extern "C" const char gszTxtField_ApplyMastery[16] = "ApplyMastery"; // 0x006EE390
 
-extern "C" const char gData_006EE3A0[8] = "SoftHit"; // 0x006EE3A0
-#pragma comment(linker, "/alternatename:_gszTxtField_SoftHit=_gData_006EE3A0")
+extern "C" const char gszTxtField_SoftHit[8] = "SoftHit"; // 0x006EE3A0
 
-extern "C" const char gData_006EE3A8[8] = "GetHit"; // 0x006EE3A8
-#pragma comment(linker, "/alternatename:_gszTxtField_GetHit=_gData_006EE3A8")
+extern "C" const char gszTxtField_GetHit[8] = "GetHit"; // 0x006EE3A8
 
-extern "C" const char gData_006EE3B0[12] = "ClientSend"; // 0x006EE3B0
-#pragma comment(linker, "/alternatename:_gszTxtField_ClientSend=_gData_006EE3B0")
+extern "C" const char gszTxtField_ClientSend[12] = "ClientSend"; // 0x006EE3B0
 
-extern "C" const char gData_006EE3BC[12] = "NoUniqueMod"; // 0x006EE3BC
-#pragma comment(linker, "/alternatename:_gszTxtField_NoUniqueMod=_gData_006EE3BC")
+extern "C" const char gszTxtField_NoUniqueMod[12] = "NoUniqueMod"; // 0x006EE3BC
 
-extern "C" const char gData_006EE3C8[12] = "NoMultiShot"; // 0x006EE3C8
-#pragma comment(linker, "/alternatename:_gszTxtField_NoMultiShot=_gData_006EE3C8")
+extern "C" const char gszTxtField_NoMultiShot[12] = "NoMultiShot"; // 0x006EE3C8
 
-extern "C" const char gData_006EE3D4[12] = "CanDestroy"; // 0x006EE3D4
-#pragma comment(linker, "/alternatename:_gszTxtField_CanDestroy=_gData_006EE3D4")
+extern "C" const char gszTxtField_CanDestroy[12] = "CanDestroy"; // 0x006EE3D4
 
-extern "C" const char gData_006EE3E0[8] = "CanSlow"; // 0x006EE3E0
-#pragma comment(linker, "/alternatename:_gszTxtField_CanSlow=_gData_006EE3E0")
+extern "C" const char gszTxtField_CanSlow[8] = "CanSlow"; // 0x006EE3E0
 
-extern "C" const char gData_006EE3E8[8] = "Pierce"; // 0x006EE3E8
-#pragma comment(linker, "/alternatename:_gszTxtField_Pierce=_gData_006EE3E8")
+extern "C" const char gszTxtField_Pierce[8] = "Pierce"; // 0x006EE3E8
 
-extern "C" const char gData_006EE3F0[12] = "Explosion"; // 0x006EE3F0
-#pragma comment(linker, "/alternatename:_gszTxtField_Explosion=_gData_006EE3F0")
+extern "C" const char gszTxtField_Explosion[12] = "Explosion"; // 0x006EE3F0
 
-extern "C" const char gData_006EE3FC[12] = "LastCollide"; // 0x006EE3FC
-#pragma comment(linker, "/alternatename:_gszTxtField_LastCollide=_gData_006EE3FC")
+extern "C" const char gszTxtField_LastCollide[12] = "LastCollide"; // 0x006EE3FC
 
-extern "C" const char gData_006EE408[8] = "Missile"; // 0x006EE408
-#pragma comment(linker, "/alternatename:_gszTxtField_Missile=_gData_006EE408")
+extern "C" const char gszTxtField_Missile[8] = "Missile"; // 0x006EE408
 
 extern "C" struct d2data_00746660_t gData_00746660 = {
     (const void*)"English",

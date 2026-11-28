@@ -1,9 +1,14 @@
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2CelContext.h"
 #include "D2ClientTypes.h"
 #include "D2ClientUi.h"
 #include "D2StormTypes.h"
 #include "D2ClientDialogWidget.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2GfxApi.h"
+#include "D2CMPApi.h"
 
 #pragma function(memset)
 
@@ -42,23 +47,17 @@ public:
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
-int __fastcall GAME_GetUIVarState(unsigned int nUIVar); // 0x004538D0
 
-int __cdecl sub_0045AE90(); // 0x0045AE90
 
 int __fastcall sub_0047F190_IsInMiniPanelRect(int nX, int nY); // 0x0047F190
 
-int __fastcall TEXT_IsInPanelButton(int nMode, int nX, int nY); // 0x004A6580
 
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
@@ -111,19 +110,13 @@ static void __cdecl sub_004B7100_Select(SelectionState* state, int step); // 0x0
 
 extern "C" void* __cdecl memset(void* pDest, int nValue, unsigned int nSize); // 0x00681EF0
 
-void __cdecl UI_StartUIVarDelay(); // 0x00453AE0
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
 void __cdecl GAME_ResetMouseState(); // 0x0044DA40
 
 void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
-void __fastcall CUNIT_SetDialogState(int nState); // 0x004898D0
 
-void __cdecl DIALOG_LoadDialogHotkeys(); // 0x004B7C60
-
-int __cdecl WINDOW_GetWindow(); // 0x004F59A0
 
 extern D2MsgHandlerEntryStrc gaDialogWheelHandlers[]; // 0x007273E4
 
@@ -131,19 +124,14 @@ extern D2MsgHandlerEntryStrc gaDialogHandlers[]; // 0x007273F0
 
 static inline void DIALOG_InitDialog(D2ClientDialogStrc* pDialog);
 
-extern "C" int __stdcall sub_00420290_QueueMessage(Message*); // 0x00420290
 
-extern "C" int __fastcall sub_004B9A00_Notify(int, void*, int, int, int); // 0x004B9A00
 
-unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB);                                                     // 0x00469AA0
 
-int __fastcall CUNIT_HasHotkeyBinding(int nA, int nB);                                                                // 0x00469D90
 
 void __stdcall ROSTERPETS_HandleDialogEscape(SMSGHANDLER_PARAMS* pMsg);                                     // 0x004B76D0
 
 struct D2RectStrc;
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 void __fastcall sub_00451E10_RegisterHandlerTable(int hWnd, D2MsgHandlerEntryStrc* pTable, int nCount); // 0x00451E10
 
@@ -180,13 +168,9 @@ extern const char* gaszDialogCels[]; // 0x007274AC
 
 D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nType); // 0x004788B0
 
-int __stdcall CelGetWidth(D2CelStrc* pCel); // 0x006018C0
-
-int __stdcall CelGetHeight(D2CelStrc* pCel); // 0x006018F0
-
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
-D2CelStrc* __stdcall CelGetHandle(D2CelContextStrc* pContext); // 0x00601840
+D2CelStrc* __stdcall CelGetHandle(D2GfxDataStrc* pContext); // 0x00601840
 
 
 static int DIALOG_FindDialogItem(D2ClientDialogStrc* pDialog, SMSGHANDLER_PARAMS* pMsg);
@@ -197,13 +181,12 @@ void __stdcall DIALOG_LButtonUpMsg(SMSGHANDLER_PARAMS* pMsg);
 
 void __stdcall DIALOG_LButtonDownMsg(SMSGHANDLER_PARAMS* pMsg);
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nArg6); // 0x0046EFD0
 
 void __fastcall UI_DrawRectangleBorder(D2RectStrc* pRect); // 0x00452E50
 
-int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
 void* __cdecl UI_GetFocusCel(); // 0x00453AB0
 
@@ -234,19 +217,18 @@ struct Obj004B8580 {
 
 int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 Unicode* __fastcall sub_00526790(Unicode* pDest, const Unicode* pSource, int nCount); // 0x00526790
 
-extern int gnScreenWidth; // 0x0071146C
 
-struct D2PanelCtrlStrc_004B8370
+struct ROSTER_SetCtrlState
 {
     char unk0x00[0x5C];
     int nState;
 };
 
-int gdwGlobal_007C0E5C; // 0x007C0E5C
+extern int gdwGlobal_007C0E5C; // 0x007C0E5C
 
 extern int gdwGlobal_007C0E54; // 0x007C0E54
 
@@ -408,13 +390,13 @@ static void __stdcall DIALOG_LButtonDownMsg(SMSGHANDLER_PARAMS* pMsg)
         {
             if (!pDialog->pfnOutside())
                 return;
-            if (GAME_GetUIVarState(6) && TEXT_IsInPanelButton(sub_0045AE90(), nX, nY))
+            if (GAME_GetUIVarState(6) && TEXT_IsInPanelButton(sub_0045AE90_GetPanelSlideMode(), nX, nY))
             {
                 pMsg->bReturn = 1;
                 pMsg->lResult = 0;
                 sub_00420290_BreakHandlerChain(pMsg);
             }
-            if (GAME_GetUIVarState(7) && sub_004A6630_IsInPanelButton2(sub_0045AE90(), nX, nY))
+            if (GAME_GetUIVarState(7) && TEXT_IsInRightPanelButton(sub_0045AE90_GetPanelSlideMode(), nX, nY))
                 goto handled;
             return;
         }
@@ -473,13 +455,6 @@ void __stdcall DIALOG_KeyMsg(SMSGHANDLER_PARAMS* pMsg)
     D2ClientDialogStrc* pDialog = gpDialogList;
     if (pDialog->bKeepKeys || !GAME_GetUIVarState(5))
         DIALOG_HandleDialogKey(pDialog->bModal == 0, pMsg);
-}
-
-static inline SelectionState* GetSelectionState(int line)
-{
-    SelectionState* state = gVar_007C0E54;
-    D2_ASSERT(state, line);
-    return state;
 }
 
 static inline bool DispatchWheelHandlers(HandlerNode* pNode, Message* pMessage)
@@ -625,6 +600,7 @@ extern "C" void __stdcall DIALOG_SelectNextAltMsg(Message* message)
 }
 
 // 0x004B7970
+// noinline: the original calls this; without it the compiler expands it into 0x004B7A90.
 static __declspec(noinline) int DIALOG_IsChatKey(D2ClientDialogStrc* pDialog, int nKey)
 {
     if (pDialog->bKeepKeys)
@@ -752,9 +728,9 @@ void __fastcall DIALOG_AddWidget(D2ClientDialogStrc* pDialog, void* pWidget, int
 D2ClientDialogStrc* __fastcall DIALOG_CreateDialogFromFile(int nArg1, int nArg2, int nArg8, int nArgC, int nType, int nArg14)
 {
     char szPath[0x104];
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
 
-    sub_004545C0(0);
+    UI_TogglePanelHandlers(0);
     CUNIT_SetDialogState(0);
     GAME_ResetMouseState();
     if (!nArg8)
@@ -791,12 +767,11 @@ D2ClientDialogStrc* __fastcall DIALOG_CreateDialogFromFile(int nArg1, int nArg2,
     pDialog->bActive = 0;
     pDialog->nState = 0;
     pDialog->bDrawCel = 1;
-// build: symbol ?gszDataGlobal@* 0x006D4118
     sprintf(szPath, "%s\\ui\\menu\\%s", gszDataGlobal, gaszDialogCels[nType]);
     pDialog->pCelFile = ARCHIVE_LoadClientCellFile(szPath, 0);
 
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = pDialog->pCelFile;
+    tContext.pCelFile = pDialog->pCelFile;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
     D2CelStrc* hCel = CelGetHandle(&tContext);
@@ -841,7 +816,7 @@ void __cdecl DIALOG_LoadDialogHotkeys()
 D2ClientDialogStrc* __fastcall DIALOG_CreateDialog(int nArg1, int nArg2, int nArg8, int nArgC, int nArg10, int nArg14,
     int nArg18, int nArg1C, int nArg20, int nArg24, int nArg28)
 {
-    sub_004545C0(0);
+    UI_TogglePanelHandlers(0);
     CUNIT_SetDialogState(0);
     GAME_ResetMouseState();
     if (!nArg8)
@@ -895,7 +870,7 @@ void __fastcall DIALOG_DestroyDialog(void* pRes)
     gnDialogCount -= 1;
     if (gnDialogCount == 0)
     {
-        sub_004545C0(1);
+        UI_TogglePanelHandlers(1);
         sub_00451E10_RegisterHandlerTable(WINDOW_GetWindow(), gaDialogHandlers, 0xE);
         sub_00451E10_RegisterHandlerTable(WINDOW_GetWindow(), gaDialogWheelHandlers, 1);
         CUNIT_SetDialogState(1);
@@ -931,7 +906,7 @@ void __fastcall DIALOG_DrawDialog(D2ClientDialogStrc* pDialog)
 {
     D2_ASSERT(pDialog, 0x48E);
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
 
     ++pDialog->nState;
@@ -947,7 +922,7 @@ void __fastcall DIALOG_DrawDialog(D2ClientDialogStrc* pDialog)
     {
         if (pDialog->pCelFile)
         {
-            tContext.pCellFile = pDialog->pCelFile;
+            tContext.pCelFile = pDialog->pCelFile;
             tContext.nFrame = 0;
             sub_004F6480(&tContext, pDialog->nX, pDialog->nY + pDialog->nHeight, -1, 5, 0);
         }
@@ -987,7 +962,7 @@ void __fastcall DIALOG_DrawDialog(D2ClientDialogStrc* pDialog)
 
             if (pDialog->nMode == 2)
             {
-                tContext.pCellFile = UI_GetFocusCel();
+                tContext.pCelFile = UI_GetFocusCel();
                 tContext.nFrame = gnSelectionFrame % 7;
                 sub_004F6480(&tContext, nLineX - 24, nLineY + 4, -1, 5, 0);
                 sub_004F6480(&tContext, pLine->nWidth + nLineX + 2, nLineY + 4, -1, 5, 0);
@@ -1032,7 +1007,7 @@ void __fastcall sub_004B82F0_Select(D2ClientDialogStrc* pDialog, int nIndex)
 }
 
 // 0x004B8370
-extern "C" void __fastcall ROSTER_SetCtrlState(D2PanelCtrlStrc_004B8370* pCtrl, int nState)
+extern "C" void __fastcall ROSTER_SetCtrlState(ROSTER_SetCtrlState* pCtrl, int nState)
 {
     D2_ASSERT(pCtrl, 1310);
     pCtrl->nState = nState;
@@ -1123,7 +1098,7 @@ void __fastcall DIALOG_GetRect(D2ClientDialogStrc* pDialog, D2RectStrc* pRect)
 }
 
 // 0x004B85E0
-int __cdecl sub_004B85E0()
+int __cdecl sub_004B85E0_GetDialogCount()
 {
     return gdwGlobal_007C0E5C;
 }
@@ -1147,7 +1122,7 @@ void __fastcall DIALOG_AddTextLine(D2ClientDialogStrc* pDialog, const Unicode* w
     pDialog->pLines[nIndex].nType = nType;
     pDialog->pLines[nIndex].pfnCallback = pfnCallback;
     pDialog->pLines[nIndex].bEnabled = bEnabled;
-    int nLen = sub_00526800(wszText) + 1;
+    int nLen = UNICODE_StrLen(wszText) + 1;
     if (nLen > 0x77)
         nLen = 0x77;
     sub_00526790(pDialog->pLines[nIndex].wszText, wszText, nLen);
@@ -1169,31 +1144,10 @@ void __fastcall DIALOG_AddTextLine(D2ClientDialogStrc* pDialog, const Unicode* w
 }
 
 // 0x004B70F0
-int __cdecl sub_004B70F0()
+int __cdecl sub_004B70F0_GetDialogList()
 {
     return gdwGlobal_007C0E54;
 }
-
-#pragma pack(push, 1)
-struct d2data_007273A8_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
 
 #pragma pack(push, 1)
 struct d2data_007273F0_t
@@ -1241,29 +1195,36 @@ struct d2data_00727404_t
 };
 #pragma pack(pop)
 
-extern "C" struct d2data_007273A8_t gData_007273A8; // 0x007273A8
+#pragma pack(push, 1)
+struct d2data_007273A8_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
+extern "C" char gszData_00727498[20]; // 0x00727498
 extern "C" struct d2data_007273F0_t gData_007273F0; // 0x007273F0
 extern "C" struct d2data_007273F8_t gData_007273F8; // 0x007273F8
 extern "C" struct d2data_00727404_t gData_00727404; // 0x00727404
-extern "C" char gszData_00727498[20]; // 0x00727498
+extern "C" struct d2data_007273A8_t gData_007273A8; // 0x007273A8
 
-extern "C" struct d2data_007273A8_t gData_007273A8 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x007273A8
+extern "C" char gszData_00727498[20] = "dialogbackground"; // 0x00727498
+
+extern const char* gaszDialogCels[1] = { (const char*)&gszData_00727498 }; // 0x007274AC
 
 extern D2MsgHandlerEntryStrc gaDialogWheelHandlers[1] = { { 0, 522, (void*)(unsigned int)&DIALOG_WheelMsg } }; // 0x007273E4
 
@@ -1309,6 +1270,20 @@ extern "C" struct d2data_00727404_t gData_00727404 = {
     (const void*)(unsigned int)&DIALOG_MouseMoveMsg
 }; // 0x00727404
 
-extern "C" char gszData_00727498[20] = "dialogbackground"; // 0x00727498
-
-extern const char* gaszDialogCels[1] = { (const char*)&gszData_00727498 }; // 0x007274AC
+extern "C" struct d2data_007273A8_t gData_007273A8 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007273A8

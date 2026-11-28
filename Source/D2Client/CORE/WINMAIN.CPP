@@ -3,6 +3,15 @@
 #include "D2McpPackets.h"
 #include "D2LaunchRequest.h"
 #include "D2MultiTypes.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "FogApi2.h"
+#include "D2GfxApi.h"
+#include "D2WinApi.h"
+#include "D2NetApi.h"
+#include "D2MCPClientApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -1480,15 +1489,12 @@ extern "C" unsigned long __cdecl strtoul(const char* szString, char** ppEnd, int
 
 extern "C" char* __cdecl strcpy(char* szDst, const char* szSrc);
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
 
 void __fastcall GAME_CalcCdKeyChecksum(char* szKey, unsigned int* pChecksum); // 0x00449890
 
 int __stdcall SCmdRegisterArgList(const D2CmdArgStrc* pArgList, unsigned int nCount); // 0x006C4E50
 
 int __stdcall SCmdProcess(const char* szCmdLine, int bSkipProgName, int (__stdcall* pfnExtra)(const char*), int (__stdcall* pfnError)(const char*)); // 0x006C4FB0
-
-unsigned short __stdcall FOG_ConnectionReceive(void* pConnection, char* pBuffer, int nSize); // 0x006BC120
 
 int __fastcall GAME_DispatchMcpPacket(const char* pPacket, unsigned int nSize); // 0x0044B190
 
@@ -1499,10 +1505,6 @@ int __stdcall WINMAIN_HandleExtraArgument(const char* szArgument); // 0x0044B5C0
 int __stdcall WINMAIN_HandleArgumentError(const char* szArgument); // 0x0044B5D0
 
 void __fastcall GAME_ShowLoadingMessage(int nError); // 0x0044E380
-
-int __stdcall CLIENT_DequeueGamePacket(unsigned char* pBuffer, unsigned int nBufferSize); // 0x0052A890
-
-int __stdcall CLIENT_DequeueSystemPacket(unsigned char* pBuffer, unsigned int nBufferSize); // 0x0052A8B0
 
 void __fastcall SCMD_HandleSystemPacket(unsigned char* pPacket, int nLength); // 0x0045C850
 
@@ -1524,9 +1526,7 @@ extern char gszClientCharName[]; // 0x007A05C4
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -1553,15 +1553,11 @@ struct D2McpInfoStrc
     char szName[0x20];
 };
 
-void __stdcall sub_00449DD0_SetValue(int nValue); // 0x00449DD0
-
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
 
 void __stdcall GAME_StripColorCodes(Unicode* pText); // 0x0044B230
 
-char* __fastcall sub_00526F70(char* szDest, const Unicode* pSource, int nCount); // 0x00526F70
 
 extern int gnMcpGameToken; // 0x00798FB0
 
@@ -1579,10 +1575,8 @@ int __stdcall WINMAIN_SetLaunchMode(const D2CmdParamsStrc* pParams, int nUnused)
 
 extern const char* gpszDefaultCaption_0070EE50; // 0x0070EE50
 
-// build: symbol ??__EgpszHelpCaption@@YAXXZ 0x006CA9A0
 const char* gpszHelpCaption = gpszDefaultCaption_0070EE50; // 0x007A0454
 
-// build: symbol ??__EgpszCaption_007A0450@@YAXXZ 0x006CA9B0
 const char* gpszCaption_007A0450 = gpszDefaultCaption_0070EE50; // 0x007A0450
 
 
@@ -1596,23 +1590,9 @@ struct D2ClientInterfaceStrc;
 
 typedef void (__fastcall* D2McpCallback)(int nId, unsigned int nSize, const unsigned char* pData);
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);                               // 0x0040B380
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
 
-void __stdcall sub_00449E30_SetValue(int nValue);                                                           // 0x00449E30
 
-void __stdcall sub_00449E50_SetValue(int nValue);                                                           // 0x00449E50
-
-void __stdcall MCPCONNECT_SetPacket(const char* pData, int nSize);                                     // 0x00449E70
-
-void __cdecl sub_006115F0_Empty();                                                                          // 0x006115F0
-
-void __cdecl sub_0052BDA0_Empty();                                                                          // 0x0052BDA0
-
-void __cdecl sub_0052BDB0_Empty();                                                                          // 0x0052BDB0
-
-void __cdecl PROFCORE_CloseLog();                                                                                // 0x00611600
 
 int __stdcall WINMAIN_LauncherRun(void* hInstance, D2ClientCharRecordStrc* pRecord);                   // 0x0044B8A0
 
@@ -1620,27 +1600,13 @@ void __cdecl RECORD_ToggleRecordPlayback();                                     
 
 void __cdecl RECORD_StartPlayback();                                                                  // 0x004518E0
 
-int __cdecl CLIENT_GetConnectionStatus();                                                                   // 0x0052B050
-
 int __fastcall SCMD_RunMessageLoop(int (__stdcall* pfnIdle)(int));                                     // 0x00451BB0
-
-void __stdcall SERVER_Initialize(int a1, int a2);                                                           // 0x0052B7A0
-
-void __stdcall CLIENT_Initialize(int nArg, const char* szAddress);                                               // 0x0052A750
-
-void __stdcall SERVER_SetMaxClientsPerGame(int nArg1);                                                   // 0x0052B250
-
-int __stdcall SERVER_SetHackListEnabled(int nArg1);                                                    // 0x0052B280
 
 void __stdcall GAME_InitGameDataTable(D2GameDataTableStrc* pGameDataTbl, void* pGameList);                  // 0x0052C0A0
 
 int __stdcall WINMAIN_PollSystemPackets(int nUnused);                                                  // 0x0044BAD0
 
 int __stdcall WINMAIN_PumpSystemPackets(int nUnused);                                                  // 0x0044BD20
-
-void __cdecl CLIENT_Release();                                                                                // 0x0052A7E0
-
-void __cdecl SERVER_Release();                                                              // 0x0052B2A0
 
 int __cdecl WINMAIN_PopStateValue();                                                                        // 0x0044B480
 
@@ -1675,10 +1641,6 @@ extern int gnRecordPos;                                                         
 
 void __cdecl RECORD_LoadRecordFile();                                                                 // 0x00451710
 
-int __fastcall WINMAIN_SendMcpCharCreate(const char* szText, int nValue, unsigned short wValue);
-
-int __fastcall WINMAIN_SendMcpCharLogon(const char* szText);
-
 int __fastcall WINMAIN_SendMcpJoinGame(const char* szName, const char* szRealm, unsigned short wRequestId);
 
 int __fastcall sub_0044A680_SendPacket08(const char* szText, unsigned short wRequestId);
@@ -1688,8 +1650,6 @@ int __fastcall sub_0044A710_SendPacket09(const char* szText, unsigned short wReq
 int __fastcall sub_0044A870_SendPacket0B(const char* szText1, const char* szText2);
 
 int __fastcall sub_0044A900_SendPacket0C(const char* szText);
-
-int __fastcall WINMAIN_SendMcpCharRank(const char* szName, int nB, int nC); // 0x0044AAE0
 
 // 0x00449920
 int __fastcall WINMAIN_DecodeCdKey(const char* szCdKey, unsigned int* pProduct, unsigned int* pValue)
@@ -1703,7 +1663,6 @@ int __fastcall WINMAIN_DecodeCdKey(const char* szCdKey, unsigned int* pProduct, 
     const char* p = szKey;
     while (*p)
     {
-// build: symbol ?gabCdKeyMap@* 0x006D59F0
         if (gabCdKeyMap[(unsigned char)*p++] > 0x17)
         {
             return 0;
@@ -1787,22 +1746,6 @@ extern unsigned char gabChunkBuffer[]; // 0x00799318
 
 extern "C" __declspec(dllimport) int __stdcall SetEvent(void* hEvent);                                      // 0x006CC130
 
-void __stdcall CHATDLG_SetCharLogonReceived(int nValue);                                                           // 0x00449C40
-
-void __stdcall CHATDLG_SetCharDeleteReceived(int nValue);                                                           // 0x00449C60
-
-void __stdcall CHATDLG_SetCharUpgradeReceived(int nValue);                                                           // 0x00449C80
-
-void __stdcall sub_00449C90_SetValue(int nValue);                                                           // 0x00449C90
-
-void __stdcall sub_00449CC0_SetValue(int nValue);                                                           // 0x00449CC0
-
-void __stdcall CHATDLG_SetMcpTexts(int nResult, const char* szText1, const char* szText2);                // 0x00449D10
-
-void __stdcall sub_00449D90_SetValue(int nValue);                                                           // 0x00449D90
-
-void __stdcall sub_00449DB0_SetValue(int nValue);                                                           // 0x00449DB0
-
 extern void* ghConnectEvent;                                                                       // 0x007992EC
 
 
@@ -1825,16 +1768,10 @@ extern void* ghConnectEvent;                                                    
 
 
 
-int gaStateStack[1]; // 0x007A0424
+int gaStateStack[4]; // 0x007A0424
 
-int gnStateStackCount; // 0x007A044C
+extern int gnStateStackCount; // 0x007A044C
 
-struct D2MonLvlTxt;
-
-struct D2MonLvlTxt
-{
-    char unk0x00[0x78];
-};
 
 // 0x0044B440
 void __fastcall WINMAIN_PushStateValue(int nValue)
@@ -1863,17 +1800,12 @@ struct D2CmdLineArgStrc
     const char* szValue;
 };
 
-int __stdcall SRegSaveString(const char* szKeyName, const char* szValueName, unsigned int nFlags, const char* szString); // 0x00415070
 
 // 0x0044B5E0
 int __stdcall WINMAIN_SaveDefaultCmdLine(D2CmdLineArgStrc* pArg, int nUnused)
 {
     return SRegSaveString("Diablo II", "Default Command Line", 0, pArg->szValue);
 }
-
-void* __cdecl WINDOW_GetWindow(); // 0x004F59A0
-
-void __stdcall WINDOW_ShowAll(); // 0x004F5F60
 
 // 0x0044B780
 void __cdecl WINMAIN_RaiseGameWindow()
@@ -1886,7 +1818,7 @@ void __cdecl WINMAIN_RaiseGameWindow()
 
 struct D2ConfigStrc;
 
-D2ConfigStrc* gpClientConfig; // 0x007A0438
+extern D2ConfigStrc* gpClientConfig; // 0x007A0438
 
 // 0x0044B7A0
 D2ConfigStrc* __cdecl WINMAIN_GetClientInfo()
@@ -1941,39 +1873,21 @@ void __cdecl WINMAIN_SetCharDiedFlag()
 // 0x0044B870
 void __cdecl WINMAIN_SetLaunchStateOne()
 {
-// build: symbol ?gnClientLaunchState@* 0x0070EE4C
     gnClientLaunchState = 1;
 }
 
 #pragma pack(push, 1)
-struct D2ClientInfoStrc
-{
-    char unk0x00[0x1EF];
-    union
-    {
-        unsigned short wFlags;
-        struct
-        {
-            unsigned char lowFlags;
-            unsigned char progress;
-        };
-    };
-    char unk0x1F1[0x33];
-    unsigned char nSoundArg;
-};
 #pragma pack(pop)
 
 // 0x0044B880
 void __fastcall WINMAIN_SetExitApplication(int nValue)
 {
-// build: symbol ?gbExitApplication@* 0x0070EE8C
     gbExitApplication = nValue;
 }
 
 // 0x0044B890
 int __cdecl WINMAIN_GetExitApplication()
 {
-// build: symbol ?gbExitApplication@* 0x0070EE8C
     return gbExitApplication;
 }
 
@@ -1983,11 +1897,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetModuleFileNameA(void
 
 typedef long (__stdcall* WNDPROC)(void* hWnd, unsigned int uMsg, unsigned int wParam, long lParam);
 
-void __cdecl FOG_SetMemoryPoolSystemMode(D2PoolSystemStrc* pSystem, int bFreePoolAlloc); // 0x00409FF0
-
 int __cdecl GAME_LoadLngModule(); // 0x00451330
-
-int __fastcall D2Win_10015(); // 0x004F8FE0
 
 int __stdcall D2Win_10014_SetWndProc(WNDPROC wndProc); // 0x004F8FC0
 
@@ -1997,19 +1907,17 @@ void* __stdcall sub_004FAC80(int nArg); // 0x004FAC80
 
 void __stdcall DATATBLS_LoadAllTxts(void* pArg, int bArg); // 0x00619300
 
-void __stdcall DATATBLS_UnloadAllBins(); // 0x00619140
 
 void __cdecl GAME_FreeLngModule(); // 0x00451290
 
-void __cdecl PROFCORE_WriteProfileCounters(); // 0x006116B0
 
 extern "C" int __cdecl GAME_ShutdownIfActive(); // 0x0044BB80
 
-void* ghLaunchInstance; // 0x007A043C
+extern void* ghLaunchInstance; // 0x007A043C
 
-char gszModulePath[260]; // 0x007A0320
+extern char gszModulePath[260]; // 0x007A0320
 
-int gnLaunchResult; // 0x007A0440
+extern int gnLaunchResult; // 0x007A0440
 
 
 // 0x0044C6E0
@@ -2095,7 +2003,6 @@ int __stdcall WINMAIN_SetLaunchMode(const D2CmdParamsStrc* pParams, int nUnused)
     {
         if (gaszLaunchModeNames[i] && !_stricmp(gaszLaunchModeNames[i], pParams->szValue))
         {
-// build: symbol ?gnClientLaunchState@* 0x0070EE4C
             gnClientLaunchState = i;
             return 1;
         }
@@ -2130,7 +2037,6 @@ int __stdcall WINMAIN_ProcessCommandLine(void* pArg)
         unsigned long nSize = 0xF;
         if (!gszClientCharName[0] && !GetUserNameA(gszClientCharName, &nSize))
         {
-// build: symbol ?gszStringFormat@* 0x006FFC58
             wsprintfA(gszClientCharName, gszStringFormat, "noname");
         }
     }
@@ -2143,7 +2049,6 @@ extern int (__cdecl* gpfnLaunchStates[])(); // 0x0070EE54
 int __stdcall WINMAIN_LauncherRun(void* hInstance, D2ConfigStrc* pRecord)
 {
     gpClientConfig = pRecord;
-// build: symbol ?ERRORMANAGER_FreeUnusedPoolBlocks@* 0x00409B80
     ERRORMANAGER_FreeUnusedPoolBlocks(0);
     FOG_SetMemoryPoolSystemMode(0, 1);
     ghLaunchInstance = hInstance;
@@ -2154,16 +2059,12 @@ int __stdcall WINMAIN_LauncherRun(void* hInstance, D2ConfigStrc* pRecord)
         return 0;
     D2Win_10015();
     D2Win_10014_SetWndProc((WNDPROC)SCMD_WindowProc);
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
-    if (!sub_005259C0(sub_004FAC80(FOG_IsExpansion()), 0))
+    if (!STRTABLE_LoadStringTables(sub_004FAC80(FOG_IsExpansion()), 0))
         return 0;
     int nLanguage;
-// build: symbol ?STRTABLE_GetLanguageInfoField@* 0x00525260
     STRTABLE_GetLanguageInfoField(&nLanguage, 0);
     DATATBLS_LoadAllTxts(sub_004FAC80(0), pRecord->dwGameType == 6);
-// build: symbol ?gnClientLaunchState@* 0x0070EE4C
     gnClientLaunchState = 3;
-// build: symbol ?gbExitApplication@* 0x0070EE8C
     gbExitApplication = 1;
     while (gnClientLaunchState != 1)
     {
@@ -2173,7 +2074,7 @@ int __stdcall WINMAIN_LauncherRun(void* hInstance, D2ConfigStrc* pRecord)
     }
     sub_004FA550();
     DATATBLS_UnloadAllBins();
-    sub_00524E40();
+    STRTABLE_UnloadStringTables();
     GAME_FreeLngModule();
     PROFCORE_WriteProfileCounters();
     GAME_ShutdownIfActive();
@@ -2235,6 +2136,18 @@ struct d2data_006D5BE0_t
 #pragma pack(pop)
 
 #pragma pack(push, 1)
+struct d2data_0070EE54_t
+{
+    unsigned char b0[8];
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
 struct d2data_0070EE10_t
 {
     const void* p0;
@@ -2255,29 +2168,16 @@ struct d2data_0070EE10_t
 };
 #pragma pack(pop)
 
-#pragma pack(push, 1)
-struct d2data_0070EE54_t
-{
-    unsigned char b0[8];
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-};
-#pragma pack(pop)
-
 extern "C" const struct d2data_006D5BE0_t gData_006D5BE0; // 0x006D5BE0
-extern "C" const D2CmdArgStrc gData_006D5BE8[8]; // 0x006D5BE8
-extern "C" struct d2data_0070EE10_t gData_0070EE10; // 0x0070EE10
 extern "C" struct d2data_0070EE54_t gData_0070EE54; // 0x0070EE54
+extern "C" struct d2data_0070EE10_t gData_0070EE10; // 0x0070EE10
 
 extern "C" const struct d2data_006D5BE0_t gData_006D5BE0 = {
     (const void*)(unsigned int)&RECORD_RegisterLngArgument,
     (const void*)"Available command line options:\n  -set[default command line]\t\tSet new default command line string\n  -lng[lngfile]\t\t\tUse \"lngfile\" for language resources\n"
 }; // 0x006D5BE0
 
-extern "C" const D2CmdArgStrc gData_006D5BE8[8] = {
+extern const D2CmdArgStrc gaCommandLineArgs[8] = {
     { 0, 0xFFFFFFFF, (const char *)"?", (void*)(unsigned int)&WINMAIN_ShowCommandLineHelp },
     { 0, 0xFFFFFFFF, (const char *)"h", (void*)(unsigned int)&WINMAIN_ShowCommandLineHelp },
     { 0, 0xFFFFFFFF, (const char *)"help", (void*)(unsigned int)&WINMAIN_ShowCommandLineHelp },
@@ -2287,42 +2187,8 @@ extern "C" const D2CmdArgStrc gData_006D5BE8[8] = {
     { 0, 0xFFFFFFFF, (const char *)"r", (void*)(unsigned int)&WINMAIN_HandleToggleFlagsOption },
     { 0, 0xFFFFFFFF, (const char *)"p", (void*)(unsigned int)&WINMAIN_HandlePlaybackOption }
 }; // 0x006D5BE8
-#pragma comment(linker, "/alternatename:?gaCommandLineArgs@@3QBUD2CmdArgStrc@@B=_gData_006D5BE8")
-
-extern "C" struct d2data_0070EE10_t gData_0070EE10 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0070EE10
-
-extern int gnClientLaunchState = 3; // 0x0070EE4C
-
-extern const char* gpszDefaultCaption_0070EE50 = "Diablo II"; // 0x0070EE50
-
-extern "C" struct d2data_0070EE54_t gData_0070EE54 = {
-    { 0x00 },
-    (const void*)(unsigned int)&GAME_RunGameSession,
-    (const void*)(unsigned int)&GAME_PushState,
-    (const void*)(unsigned int)&GAME_ShutdownClient,
-    (const void*)(unsigned int)&WINMAIN_StartSession,
-    (const void*)(unsigned int)&WINMAIN_StopSession
-}; // 0x0070EE54
 
 extern const char* gaszLaunchModeNames[7] = { 0, 0, "Game" }; // 0x0070EE70
-
-extern int gbExitApplication = 1; // 0x0070EE8C
 
 extern char gszServerIP[260] = "207.82.87.243"; // 0x0070EF20
 
@@ -2345,3 +2211,36 @@ extern char gszBattleNetIP[264] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 1
 }; // 0x0070F028
+
+extern int gnClientLaunchState = 3; // 0x0070EE4C
+
+extern "C" struct d2data_0070EE54_t gData_0070EE54 = {
+    { 0x00 },
+    (const void*)(unsigned int)&GAME_RunGameSession,
+    (const void*)(unsigned int)&GAME_PushState,
+    (const void*)(unsigned int)&GAME_ShutdownClient,
+    (const void*)(unsigned int)&WINMAIN_StartSession,
+    (const void*)(unsigned int)&WINMAIN_StopSession
+}; // 0x0070EE54
+
+extern int gbExitApplication = 1; // 0x0070EE8C
+
+extern const char* gpszDefaultCaption_0070EE50 = "Diablo II"; // 0x0070EE50
+
+extern "C" struct d2data_0070EE10_t gData_0070EE10 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x0070EE10

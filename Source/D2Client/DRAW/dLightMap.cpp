@@ -1,8 +1,12 @@
 #include "D2LanguageNames.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2Drlg.h"
 #include "D2Path.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2GfxApi.h"
 
 #pragma intrinsic(abs)
 
@@ -56,37 +60,24 @@ struct D2LightCellStrc
     unsigned char nBlue;
 };
 
-D2UnitStrc* __fastcall CUNIT_FindServerSideUnit(unsigned int nUnitId, int nUnitType); // 0x004639B0
 
-D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
-extern int gbBlendLightColor; // 0x00712B8C
 
-extern int gnCellOriginX_007B0A54; // 0x007B0A54
 
-extern int gnCellOriginY_007B0A58; // 0x007B0A58
 
 typedef void (__fastcall* ACTCALLBACKFN)(D2ActiveRoomStrc* pRoom);
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
-int __cdecl D2GFX_CheckLowQuality(); // 0x004F5210
-
-int __cdecl MISSILE_GetMissileLights(); // 0x004CCF30
 
 int __cdecl GAME_GetFramesPerSecond(); // 0x0044DAE0
-
-void __stdcall D2GFX_DebugDraw(unsigned int* pLight, unsigned int* pPlayerLight, int nXPos, int nYPos); // 0x004F68B0
 
 void __stdcall DUNGEON_SetActCallbackFunc(D2DrlgActStrc* pAct, ACTCALLBACKFN pActCallbackFunction); // 0x0061AF60
 
@@ -94,11 +85,8 @@ void __fastcall DLIGHTMAP_ActRoomCallback(D2ActiveRoomStrc* pRoom); // 0x0047593
 
 void __fastcall D2Win_10178_CopyGammaTable(unsigned char (*pRows)[0x100]); // 0x004FB1C0
 
-unsigned char* __stdcall GFX_BuildLerpTable(unsigned int nCount, int nSteps); // 0x00475B80
 
-unsigned char** __stdcall GFX_BuildLerpRowTable(unsigned int nCount, int nSteps); // 0x00475C40
 
-unsigned char** __stdcall SCMD_BuildRampTable(unsigned int nSize, int nSteps); // 0x00475D30
 
 extern unsigned int gdwLightMap_007A8A50[]; // 0x007A8A50
 
@@ -118,21 +106,19 @@ extern unsigned char** gppRampTable_007B954C; // 0x007B954C
 
 extern unsigned char* gpLerpTable40; // 0x007B9550
 
-extern int gdwGlobal_007BB384; // 0x007BB384
+extern int gpBloodRemap; // 0x007BB384
 
-void __stdcall D2GFX_SetGamma(void* pArg); // 0x004F5230
-
-extern int gdwGlobal_00712CCC; // 0x00712CCC
+extern int gnLightmapRenderMode; // 0x00712CCC
 
 extern int gdwGlobal_007BB38C; // 0x007BB38C
 
-extern int gdwGlobal_007BB3B4; // 0x007BB3B4
+extern int gnProgress; // 0x007BB3B4
 
 extern int gdwGlobal_00712F04; // 0x00712F04
 
-extern int gdwGlobal_007BC9B0; // 0x007BC9B0
+extern int gnSongMin; // 0x007BC9B0
 
-extern int gdwGlobal_007BC9B4; // 0x007BC9B4
+extern int gnSongMax; // 0x007BC9B4
 
 extern int gdwGlobal_007BC99C; // 0x007BC99C
 
@@ -177,7 +163,6 @@ int gnPathStepSignY; // 0x007A8A48
 
 static inline unsigned char DLIGHTMAP_IsCellBlocked(int nX, int nY); // 0x00474A30
 
-D2UnitStrc* __cdecl sub_00463DE0_GetPlayerUnit(); // 0x00463DE0
 
 int gnCellLimitX;                                                                                      // 0x007B0A5C
 
@@ -191,19 +176,13 @@ static void __stdcall DLIGHTMAP_SetupStepDirection(int nX, int nY, D2R01LightStr
 
 extern D2LightCellStrc gLightGrid_007B0E68[][48]; // 0x007B0E68
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
 
-void __stdcall DUNGEON_GetAdjacentRoomsListFromRoom(D2ActiveRoomStrc* pRoom, D2ActiveRoomStrc*** pppRoomList, int* pnNumRooms); // 0x00619790
 
-void __stdcall DUNGEON_GetRoomCoordinates(D2ActiveRoomStrc* pRoom, D2DrlgCoordsStrc* pCoords); // 0x00619730
 
-void __fastcall SCMD_GetRoomLight(D2ActiveRoomStrc* pRoom, int* pIntensity, unsigned char* pRed, unsigned char* pGreen, unsigned char* pBlue, int a6); // 0x00474550
 
 static void DLIGHTMAP_BlendLightCell(int nCol, int nRow); // 0x00474C00
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
 unsigned int __stdcall UNITS_GetPrecisionX(D2UnitStrc* pUnit); // 0x006203B0
 
@@ -213,7 +192,6 @@ int gnLightsAllocated; // 0x007B566C
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 
-extern int gnGlobal_00712B8C;                                                                               // 0x00712B8C
 
 static void __stdcall DLIGHTMAP_AddGridLight(int nIntensity, unsigned char nRed, unsigned char nGreen, unsigned char nBlue, int nY, int nX); // 0x004747C0
 
@@ -228,29 +206,20 @@ struct D2ActiveRoomStrc;
 
 struct D2DynamicPathStrc;
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit);                                                         // 0x0045ADF0
 
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit);                                                         // 0x0045AE20
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath);                                                  // 0x006488C0
 
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath);                                                  // 0x00648900
 
-unsigned short __stdcall COLLISION_CheckMask(D2ActiveRoomStrc* pRoom, int nX, int nY, unsigned short nMask); // 0x0064CB30
 
-int __fastcall DLIGHTMAP_GetDistance(int nDX, int nDY);                                                  // 0x00474080
 
 void __fastcall DLIGHTMAP_ReleaseLight(void* pResource);                                       // 0x004743D0
 
 void __stdcall DLIGHTMAP_UpdateLightGrid(int nArg);                                                                      // 0x00474610
 
-void __cdecl DLIGHTMAP_ScanGridCollision();                                                              // 0x004756D0
 
 int __cdecl DLIGHTMAP_GetIndicatorLevel();                                                               // 0x00475780
 
-extern int gnCellOriginX;                                                                               // 0x007B0A54
 
-extern int gnCellOriginY;                                                                               // 0x007B0A58
 
 int gnLightCount;                                                                                  // 0x007B5674
 
@@ -270,13 +239,12 @@ unsigned long gdwIndicatorTick; // 0x007B5678
 
 int gdwGlobal_007BB388; // 0x007BB388
 
-int gdwGlobal_007BCC48; // 0x007BCC48
+int gbNpcButtonHandled; // 0x007BCC48
 
 unsigned int gadwLightMapRows[64][64]; // 0x007A8A50
 
 static void __stdcall DLIGHTMAP_UpdateLight(int nLevel, D2R01LightStrc* pLight); // 0x004755A0
 
-void __cdecl DLIGHTMAP_RunLightPass(); // 0x00475800
 
 enum D2C_DLightMapConstants
 {
@@ -294,6 +262,7 @@ int __fastcall DLIGHTMAP_GetDistance(int nDX, int nDY)
 }
 
 // 0x004740D0
+// noinline: the original calls this; without it the compiler expands it into 0x004748D0, 0x004755A0.
 static __declspec(noinline) unsigned int __stdcall DLIGHTMAP_ApproxDistance(int nB, int nA)
 {
     const int nAbsA = abs(nA);
@@ -454,7 +423,7 @@ int __fastcall DLIGHTMAP_GetLightSize(D2R01LightStrc* pLight)
 }
 
 // 0x00474380
-int __cdecl sub_00474380()
+int __cdecl sub_00474380_Return32()
 {
     return 32;
 }
@@ -503,11 +472,6 @@ void __fastcall DLIGHTMAP_FadeOutLight(D2R01LightStrc* pLight)
     D2_ASSERT(pLight->nMode != LIGHT_TYPE_2, 0x190);
 }
 
-void __stdcall sub_R01_Emit_00474C00(int nRow, int nColA, int nColB)
-{
-    DLIGHTMAP_BlendLightCell(nColA, nRow);
-    DLIGHTMAP_BlendLightCell(nColB, nRow);
-}
 
 // 0x004744B0
 static void __stdcall DLIGHTMAP_FillLightGrid(int nX0, int nY0, int nX1, unsigned int nColor, int nY1)
@@ -527,7 +491,6 @@ static void __stdcall DLIGHTMAP_FillLightGrid(int nX0, int nY0, int nX1, unsigne
     }
 }
 
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
 
 #define gnGlobal_007A7430 (gtTimedBox.nValue)
 
@@ -541,11 +504,6 @@ struct D2ClientTimedBoxStrc;
 
 
 
-int __stdcall ROSTERPETS_GetPulseColor(unsigned char* pRed, unsigned char* pGreen, unsigned char* pBlue); // 0x0046BD50
-
-void __stdcall ENVIRONMENT_GetLightColorFromAct(void* pAct, unsigned char* pRed, unsigned char* pGreen, unsigned char* pBlue); // 0x0061C0B0
-
-int __stdcall ENVIRONMENT_GetIntensityFromAct(void* pAct); // 0x0061C0E0
 
 extern int gbChaosLightEvent; // 0x007A7460
 
@@ -584,7 +542,7 @@ void __fastcall SCMD_GetRoomLight(D2ActiveRoomStrc* pRoom, int* pIntensity, unsi
     }
 
     unsigned char nRoomIntensity;
-    sub_00619D70(pRoom, &nRoomIntensity, &nRed, &nGreen, &nBlue);
+    DUNGEON_GetRGB_IntensityFromRoom(pRoom, &nRoomIntensity, &nRed, &nGreen, &nBlue);
     nIntensity = nRoomIntensity;
     if (!nRed && !nGreen && !nBlue)
     {
@@ -635,14 +593,14 @@ void __stdcall DLIGHTMAP_UpdateLightGrid(int bClear)
             D2DrlgCoordsStrc tCoords;
             DUNGEON_GetRoomCoordinates(ppRoomList[i], &tCoords);
 
-            int nX0 = tCoords.nSubtileX - gnCellOriginX_007B0A54;
+            int nX0 = tCoords.nSubtileX - gnCellOriginX;
             int nX1 = nX0 + tCoords.nSubtileWidth;
             if (nX0 > 48 || nX1 < 0)
             {
                 continue;
             }
 
-            int nY0 = tCoords.nSubtileY - gnCellOriginY_007B0A58;
+            int nY0 = tCoords.nSubtileY - gnCellOriginY;
             int nY1 = nY0 + tCoords.nSubtileHeight;
             if (nY0 > 48 || nY1 < 0)
             {
@@ -684,13 +642,13 @@ void __cdecl DLIGHTMAP_ClearLightGrid()
 // 0x004747C0
 static void __stdcall DLIGHTMAP_AddGridLight(int nIntensity, unsigned char nRed, unsigned char nGreen, unsigned char nBlue, int nY, int nX)
 {
-    const int nGridX = (nX >> 3) - gnCellOriginX_007B0A54;
+    const int nGridX = (nX >> 3) - gnCellOriginX;
     if ((unsigned int)nGridX > 0x2F)
     {
         return;
     }
 
-    const int nGridY = (nY >> 3) - gnCellOriginY_007B0A58;
+    const int nGridY = (nY >> 3) - gnCellOriginY;
     if ((unsigned int)nGridY > 0x2F)
     {
         return;
@@ -732,20 +690,7 @@ static void __stdcall DLIGHTMAP_AddGridLight(int nIntensity, unsigned char nRed,
     }
 }
 
-int __stdcall sub_W04_Emit_004740D0(int nX, int nY, int nDx, int nDy)
-{
-    int nA = nX - nDx;
-    if (nA < 0) nA = -nA;
-    int nB = nY - nDy;
-    if (nB < 0) nB = -nB;
-    return DLIGHTMAP_ApproxDistance(nB, nA) + nX;
-}
 
-void __stdcall sub_W04_Emit_00474B50(D2R01LightStrc* pPoint, int nX, int nY)
-{
-    DLIGHTMAP_SetupStepDirection(nX, nY, pPoint);
-    DLIGHTMAP_SetupStepDirection(nY, nX, pPoint);
-}
 
 // 0x004748D0
 static void __stdcall DLIGHTMAP_AddAreaLight(D2R01LightStrc* pLight, int bNoClamp)
@@ -780,8 +725,8 @@ static void __stdcall DLIGHTMAP_AddAreaLight(D2R01LightStrc* pLight, int bNoClam
     const int nStartX = pLight->nX - (pLight->nX & 7) - nRadius;
     const int nStartY = pLight->nY - (pLight->nY & 7) - nRadius;
     const int nSpan = (nRadius * 2) >> 3;
-    if ((nStartX >> 3) > gnCellLimitX || (nStartX >> 3) + nSpan + 1 < gnCellOriginX_007B0A54
-        || (nStartY >> 3) > gnCellLimitY || (nStartY >> 3) + nSpan + 1 < gnCellOriginY_007B0A58)
+    if ((nStartX >> 3) > gnCellLimitX || (nStartX >> 3) + nSpan + 1 < gnCellOriginX
+        || (nStartY >> 3) > gnCellLimitY || (nStartY >> 3) + nSpan + 1 < gnCellOriginY)
     {
         return;
     }
@@ -810,7 +755,7 @@ static void __stdcall DLIGHTMAP_AddAreaLight(D2R01LightStrc* pLight, int bNoClam
 // 0x00474A30
 static inline unsigned char DLIGHTMAP_IsCellBlocked(int nX, int nY)
 {
-    nX = (nX >> 3) - gnCellOriginX_007B0A54;
+    nX = (nX >> 3) - gnCellOriginX;
     if (nX < 0)
     {
         return 1;
@@ -819,7 +764,7 @@ static inline unsigned char DLIGHTMAP_IsCellBlocked(int nX, int nY)
     {
         return 1;
     }
-    nY = (nY >> 3) - gnCellOriginY_007B0A58;
+    nY = (nY >> 3) - gnCellOriginY;
     if (nY < 0)
     {
         return 1;
@@ -831,13 +776,6 @@ static inline unsigned char DLIGHTMAP_IsCellBlocked(int nX, int nY)
     return gaLightGrid[nY][nX].f_0;
 }
 
-void __stdcall sub_P08_Emit_004747C0(D2P08LightSourceStrc* pSource, int nX, int nY, int nIntensity)
-{
-    if (nIntensity > 0)
-    {
-        DLIGHTMAP_AddGridLight(nIntensity, pSource->nRed, pSource->nGreen, pSource->nBlue, nY, nX);
-    }
-}
 
 // 0x00474A70
 static void DLIGHTMAP_BuildOverrideWindow(D2R01LightStrc* pLight)
@@ -914,14 +852,6 @@ static void __stdcall DLIGHTMAP_SetupStepDirection(int nX, int nY, D2R01LightStr
     }
 }
 
-void __stdcall sub_R01_Emit_004748D0(D2R01LightStrc* pLight, int nMode)
-{
-    if (pLight->nUnitType != 6)
-    {
-        DLIGHTMAP_AddAreaLight(pLight, nMode);
-    }
-    pLight->nRadius = 0;
-}
 
 // 0x00474C00
 static void DLIGHTMAP_BlendLightCell(int nCol, int nRow)
@@ -981,13 +911,13 @@ static void DLIGHTMAP_AddBlendedAreaLight(D2R01LightStrc* pLight)
     const int nStartY = pLight->nY - (pLight->nY & 7) - pLight->nRadius;
     const int nSpan = (pLight->nRadius * 2) >> 3;
     const int nCellStartX = nStartX >> 3;
-    if (nCellStartX > gnCellLimitX || nCellStartX + nSpan + 1 < gnCellOriginX_007B0A54)
+    if (nCellStartX > gnCellLimitX || nCellStartX + nSpan + 1 < gnCellOriginX)
     {
         return;
     }
 
     const int nCellStartY = nStartY >> 3;
-    if (nCellStartY > gnCellLimitY || nCellStartY + nSpan + 1 < gnCellOriginY_007B0A58)
+    if (nCellStartY > gnCellLimitY || nCellStartY + nSpan + 1 < gnCellOriginY)
     {
         return;
     }
@@ -1058,41 +988,6 @@ static void DLIGHTMAP_AddBlendedAreaLight(D2R01LightStrc* pLight)
     }
 }
 
-void __stdcall sub_E4F1_Emit_00474D70(int nLevel, D2R01LightStrc* pLight)
-{
-    if (!pLight->nMode && nLevel > 1)
-    {
-        DLIGHTMAP_AddBlendedAreaLight(pLight);
-        return;
-    }
-
-    pLight->nRadius = 0;
-}
-
-static inline unsigned char sub_K01_GetGridCellByte(int nX, int nY)
-{
-    const int nGridX = (nX >> 3) - gnCellOriginX;
-    if (nGridX < 0)
-    {
-        return 1;
-    }
-    if (nGridX >= 0x30)
-    {
-        return 1;
-    }
-
-    const int nGridY = (nY >> 3) - gnCellOriginY;
-    if (nGridY < 0)
-    {
-        return 1;
-    }
-    if (nGridY >= 0x30)
-    {
-        return 1;
-    }
-
-    return (unsigned char)gtGridCells_007B0E68[nGridY * 48 + nGridX].nFlag;
-}
 
 // 0x004750F0
 static void DLIGHTMAP_BuildLightMask(D2R01LightStrc* pLight)
@@ -1335,9 +1230,7 @@ void __cdecl DLIGHTMAP_ScanGridCollision()
 // 0x00475AA0
 void __fastcall SCMD_ReadGridCell(int nX, int nY, unsigned char* pValue0, unsigned char* pValue1, unsigned char* pValue2, unsigned char* pValue3)
 {
-// build: symbol ?gnCellOriginX@* 0x007B0A54
     int nCellX = (nX >> 3) - gnCellOriginX;
-// build: symbol ?gnCellOriginY@* 0x007B0A58
     int nCellY = (nY >> 3) - gnCellOriginY;
 
     if (nCellX < 0)
@@ -1360,7 +1253,7 @@ void __fastcall SCMD_ReadGridCell(int nX, int nY, unsigned char* pValue0, unsign
 
     D2GridCellStrc* pCell = &gtGridCells_007B0E68[nCellY * GRID_SIZE + nCellX];
     *pValue0 = pCell->nValue0;
-    if (gnGlobal_00712B8C)
+    if (gbBlendLightColor)
     {
         *pValue1 = pCell->nValue1;
         *pValue2 = pCell->f_6;
@@ -1444,10 +1337,6 @@ void __fastcall DLIGHTMAP_ActRoomCallback(D2ActiveRoomStrc* pRoom)
     }
 }
 
-void sub_M241_Emit_00474D70(D2R01LightStrc* pLight)
-{
-    DLIGHTMAP_BuildOverrideWindow(pLight);
-}
 
 // 0x00475B40
 void __cdecl DLIGHTMAP_InitLightTables()
@@ -1532,11 +1421,6 @@ void __fastcall sub_00475DE0_FreeIfSet(void* pMemory)
 
 
 
-int __stdcall D2GFX_TogglePerspective();                                                                    // 0x004F54B0
-
-int __stdcall D2GFX_ToggleBlendedShadows();                                                                 // 0x004F54D0
-
-int __stdcall D2GFX_ToggleLowQuality();                                                                     // 0x004F54F0
 
 
 
@@ -1544,8 +1428,6 @@ int __stdcall D2GFX_ToggleLowQuality();                                         
 
 
 
-
-void __cdecl VIEW_ToggleCacheStats();                                                               // 0x00477C00
 
 extern int gbCacheStats;                                                                           // 0x007BB3A4
 
@@ -1554,9 +1436,9 @@ int gbCacheStatsChecked;                                                        
 
 
 // 0x00478150
-int __cdecl sub_00478150()
+int __cdecl sub_00478150_GetProgress()
 {
-    return gdwGlobal_007BB3B4;
+    return gnProgress;
 }
 
 
@@ -1569,24 +1451,24 @@ int __cdecl sub_00478150()
 
 
 // 0x00486E00
-int __cdecl sub_00486E00()
+int __cdecl sub_00486E00_Return0()
 {
     return 0;
 }
 
 // 0x00489870
-int __cdecl sub_00489870()
+int __cdecl sub_00489870_GetNpcButtonHandled()
 {
-    return gdwGlobal_007BCC48;
+    return gbNpcButtonHandled;
 }
 
 // 0x00489CD0
-void __stdcall sub_00489CD0(int nUnused1)
+void __stdcall sub_00489CD0_Nop(int nUnused1)
 {
 }
 
 // 0x0048BDF0
-void __stdcall sub_0048BDF0(int nUnused1)
+void __stdcall sub_0048BDF0_Nop(int nUnused1)
 {
 }
 
@@ -1605,7 +1487,7 @@ int __cdecl DLIGHTMAP_GetTextHeader()
 }
 
 // 0x004A8A20
-int __cdecl sub_004A8A20()
+int __cdecl sub_004A8A20_Return7()
 {
     return 7;
 }

@@ -1,6 +1,7 @@
 #include "D2StatIds.h"
 
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 
 #include "D2Structs.h"
 
@@ -15,6 +16,9 @@
 #include "D2LevelTxt.h"
 
 #include "D2Unicode.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
+#include "D2CommonApi3.h"
 
 #define UNIT_MONSTER 1
 
@@ -26,43 +30,27 @@ union D2SeedStrc;
 
 struct D2MonStats2Txt;
 
-D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int nMonsterId); // 0x00451FE0
 
-void __fastcall CUNIT_FreeLight(D2UnitStrc* pUnit); // 0x00464930
 
 D2GfxLightStrc* __fastcall DLIGHTMAP_MakeLightEntry(D2UnitStrc* pUnit, int nArg1, int nArg2, int nArg3, int nArg4, int nArg5, int nArg6); // 0x00474160
 
 int __fastcall DLIGHTMAP_GetLightSize(D2GfxLightStrc* pLight); // 0x00474350
 
-void __fastcall sub_0046B3C0_UnitRequest25A(D2UnitStrc* pUnit);                                             // 0x0046B3C0
 
-void __fastcall sub_0046B530_SpawnMissileAtObject(D2UnitStrc* pUnit);                                       // 0x0046B530
 
-void __fastcall VIEW_SpawnBrDeathControl(D2UnitStrc* pUnit);                                           // 0x0046B680
 
 void __fastcall sub_0046B710_SpawnMissileAtObject173(D2UnitStrc* pUnit);                                                            // 0x0046B710
 
 void __fastcall VIEW_SpawnMissileNearObject(D2UnitStrc* pUnit);                                                            // 0x0046B850
 
-void __fastcall VIEW_SpawnMephistoDeath(D2UnitStrc* pUnit);                                          // 0x0046B9A0
 
-void __fastcall VIEW_SpawnAndarielDeath(D2UnitStrc* pUnit);                                               // 0x0046BA50
 
-void __fastcall sub_0046BA90_PlayerRequestAtUnit15B(D2UnitStrc* pUnit);                                     // 0x0046BA90
 
-void __fastcall sub_0046BB10_PlayerRequestAtUnit161(D2UnitStrc* pUnit);                                     // 0x0046BB10
 
-void __fastcall sub_0046BB90_PlayerRequestAtUnit16B(D2UnitStrc* pUnit);                                     // 0x0046BB90
 
-void __fastcall VIEW_SpawnIzualDeath(D2UnitStrc* pUnit);                                             // 0x0046BC10
 
-int __fastcall UI_SetTimerUnitId(D2UnitStrc* pUnit);                                              // 0x0046BC70
 
-void __fastcall sub_0046BC90_RequestAtMonster220(D2UnitStrc* pUnit);                                        // 0x0046BC90
 
-D2SkillStrc* __fastcall SKILLS_GetHighestLevelSkillFromUnitAndId(D2UnitStrc* pUnit, int nSkillId); // 0x006439F0
-
-void __stdcall SKILLS_AssignSkill(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int bRemove, const char* szFile, int nLine); // 0x00647280
 
 typedef void (__fastcall* UMODCALLBACK)(D2UnitStrc* pUnit, int nUMod, int bUnique);
 
@@ -83,9 +71,7 @@ static inline int GetUnitType(D2UnitStrc* unit)
     return !unit ? 6 : unit->dwUnitType;
 }
 
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer); // 0x00625480
 
-void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStatId, int nValue, unsigned short nLayer); // 0x00627260
 
 #define NULL 0
 
@@ -101,32 +87,20 @@ struct D2HoverModeStrc
 
 extern D2DataTablesStrc* sgptDataTables;                                                                    // 0x00744304
 
-// build: symbol ??__EgwszNameSeparator@@YAXXZ 0x006CAD00
 Unicode gwszNameSeparator[2]; // 0x007C0C58
 
 extern const D2HoverModeStrc gaHoverModes[];                                                       // 0x006DA488
 
-int __fastcall sub_0045C390_RollRandom(D2SeedStrc* pSeed, int nMax);                                        // 0x0045C390
+int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                                        // 0x0045C390
 
 int __cdecl INV_FormatArgs(wchar_t* wszDest, const wchar_t* wszFormat, ...);                          // 0x0048BE80
 
-int __fastcall MONSTER_IsChampionMonster(D2UnitStrc* pUnit);                                                             // 0x004AE320
 
 wchar_t* __fastcall D2LANG_GetStringFromTblIndex(unsigned short wIndex);                                    // 0x00524A30
 
 void __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength);                  // 0x00526320
 
 void __fastcall MONSTERS_SetMonsterNameInMonsterData(D2UnitStrc* pUnit, const wchar_t* wszName);                        // 0x0063E810
-
-void __fastcall SEED_InitLowSeed(D2SeedStrc* pSeed, int nSeed);                                             // 0x00650E40
-
-wchar_t* __fastcall DATATBLS_RollRandomUniquePrefixString(D2UnitStrc* pUnit);                                          // 0x00653ED0
-
-wchar_t* __fastcall DATATBLS_RollRandomUniqueSuffixString(D2UnitStrc* pUnit);                                          // 0x00653F10
-
-wchar_t* __fastcall DATATBLS_RollRandomUniqueAppellationString(D2UnitStrc* pUnit);                                     // 0x00653F50
-
-D2SuperUniquesTxt* __stdcall DATATBLS_GetSuperUniquesTxtRecord(int nSuperUniqueId);                         // 0x006556E0
 
 static D2MonsterDataStrc* CLIENT_GetMonsterData(D2UnitStrc* pUnit)
 {
@@ -184,7 +158,7 @@ unsigned char* __fastcall MONUNIQUE_GetMonUmods(D2UnitStrc* pUnit)
 }
 
 // 0x004AC760
-unsigned short __fastcall sub_004AC760_GetNameSeed(D2UnitStrc* pUnit)
+unsigned short __fastcall MONUNIQUE_GetMonsterDataWord14(D2UnitStrc* pUnit)
 {
     D2MonsterDataStrc* pMonsterData = MONUNIQUE_MonsterDataOf(pUnit);
     if (!pMonsterData)
@@ -279,7 +253,7 @@ void __fastcall MONUNIQUE_SetMonsterHoverName(D2UnitStrc* pUnit, int nMode, int 
     sub_00526320_ToUnicode(gwszNameSeparator, szSpace, 2);
 
     D2SeedStrc* pSeed = &pUnit->pSeed;
-    unsigned short nNameSeed = sub_004AC760_GetNameSeed(pUnit);
+    unsigned short nNameSeed = MONUNIQUE_GetMonsterDataWord14(pUnit);
     D2MonsterDataStrc* pMonsterData = (pUnit && sub_0044BE50(pUnit) == 1) ? pUnit->pMonsterData : NULL;
     if (pMonsterData && (pMonsterData->nTypeFlag & 2))
     {
@@ -376,7 +350,7 @@ void __fastcall MONUNIQUE_SetMonsterHoverName(D2UnitStrc* pUnit, int nMode, int 
 
     default:
         INV_FormatArgs(wszName, D2LANG_GetStringFromTblIndex(0x6B9), DATATBLS_RollRandomUniquePrefixString(pUnit), DATATBLS_RollRandomUniqueSuffixString(pUnit), 0);
-        if (sub_0045C390_RollRandom(pSeed, 100) < 50)
+        if (SEED_RollLimitedRandomNumber(pSeed, 100) < 50)
         {
             INV_FormatArgs(wszName, D2LANG_GetStringFromTblIndex(0x6BA), DATATBLS_RollRandomUniquePrefixString(pUnit), DATATBLS_RollRandomUniqueSuffixString(pUnit), DATATBLS_RollRandomUniqueAppellationString(pUnit), 0);
         }
@@ -420,7 +394,7 @@ void __fastcall MONUNIQUE_InitUModLight(D2UnitStrc* pUnit, int nUnused, int bIni
     }
 
     pUnit->pLight = pLight;
-    sub_00464CF0(pUnit, DLIGHTMAP_GetLightSize(pLight));
+    CUNIT_SetStartLight(pUnit, DLIGHTMAP_GetLightSize(pLight));
 }
 
 // 0x004ACD50
@@ -585,21 +559,7 @@ struct d2data_00724D3C_t
 };
 #pragma pack(pop)
 
-extern "C" const D2HoverModeStrc gData_006DA488[5]; // 0x006DA488
-extern "C" const int gData_006DA4C8[4]; // 0x006DA4C8
 extern "C" struct d2data_00724D3C_t gData_00724D3C; // 0x00724D3C
-
-extern "C" const D2HoverModeStrc gData_006DA488[5] = {
-    { 16, 0xC94 },
-    { 36, 0x2B4C },
-    { 37, 0x2B4D },
-    { 38, 0x2B4E },
-    { 39, 0x2B4F }
-}; // 0x006DA488
-#pragma comment(linker, "/alternatename:?gaHoverModes@@3QBUD2HoverModeStrc@@B=_gData_006DA488")
-
-extern "C" const int gData_006DA4C8[4] = { 1, 2, 3, 4 }; // 0x006DA4C8
-#pragma comment(linker, "/alternatename:?gaUModList@@3QBHB=_gData_006DA4C8")
 
 extern "C" struct d2data_00724D3C_t gData_00724D3C = {
     (const void*)"English",
@@ -618,6 +578,16 @@ extern "C" struct d2data_00724D3C_t gData_00724D3C = {
     (const void*)"Unknown",
     (const void*)"14"
 }; // 0x00724D3C
+
+extern const D2HoverModeStrc gaHoverModes[5] = {
+    { 16, 0xC94 },
+    { 36, 0x2B4C },
+    { 37, 0x2B4D },
+    { 38, 0x2B4E },
+    { 39, 0x2B4F }
+}; // 0x006DA488
+
+extern const int gaUModList[4] = { 1, 2, 3, 4 }; // 0x006DA4C8
 
 extern UMODCALLBACK gpfnUModCallbacks[44] = {
     0, (UMODCALLBACK)&MONUNIQUE_SetMonsterHoverName, 0, (UMODCALLBACK)&MONUNIQUE_InitUModLight, 0, 0, 0, 0, (UMODCALLBACK)&MONUNIQUE_ApplyResistantMod, (UMODCALLBACK)&MONUNIQUE_ApplyResistantMod, 0, (UMODCALLBACK)&MONUNIQUE_ClearDurielFlag, (UMODCALLBACK)&MONUNIQUE_SetMonsterHoverName, 0, 0, 0,

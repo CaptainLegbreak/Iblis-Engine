@@ -3,6 +3,7 @@
 #include "D2SkillIds.h"
 #include "D2StatIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2Txt.h"
 #include "D2CelContext.h"
@@ -13,6 +14,12 @@
 #include "D2Path.h"
 #include "D2ClientParty.h"
 #include "D2ClientTextPanel.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "StormApi.h"
+#include "D2CommonApi2.h"
+#include "D2GfxApi.h"
 
 struct D2ActiveRoomStrc;
 
@@ -38,7 +45,7 @@ struct D2Block1;
 
 struct D2UnitStrc;
 
-struct D2CelContextStrc;
+struct D2GfxDataStrc;
 
 struct SMSGHANDLER_PARAMS;
 
@@ -56,21 +63,15 @@ struct D2OrbSmoothStrc
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-extern int gnScreenWidth; // 0x0071146C
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-unsigned int __cdecl sub_0044DA90(); // 0x0044DA90
+unsigned int __cdecl sub_0044DA90_GetTickCounter(); // 0x0044DA90
 
-int __cdecl D2GFX_GetDisplayType(); // 0x004F5140
-
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
 
-int __stdcall STATLIST_GetMaxLifeFromUnit(D2UnitStrc* pUnit); // 0x00625D10
 
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
 
 D2OrbSmoothStrc gaOrbSmooth[3]; // 0x007BEF30
 
@@ -88,71 +89,46 @@ static int gbMiniPanelButtonDown;        // 0x007BEFD0
 
 static int gbRunButtonDown;        // 0x007BEFD8
 
-int __cdecl GAME_IsExitPending(); // 0x0044DA30
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
 
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
-void* __fastcall GAME_LoadUiCelFile(const char* szPath); // 0x004520C0
 
-int __fastcall GAME_GetUIVarState(unsigned int nUIVar); // 0x004538D0
 
-int __cdecl sub_00468730(); // 0x00468730
 
-int __cdecl sub_00468740(); // 0x00468740
 
-D2GfxMotionStrc* __fastcall GFX_GetGfxMotion(D2UnitStrc* pUnit); // 0x0046F060
 
-void __fastcall MSG_SendTwoDwords(unsigned char nHeader, unsigned int d1, unsigned int d5); // 0x004786A0
 
 extern int gnTabSelection; // 0x00724CE0
 
 extern int gnSkillPage; // 0x00724BEC
 
-extern unsigned char gnCharClass; // 0x007A0522
 
-extern int gnPanelOffsetX; // 0x007A2858
 
-extern int gnPanelOffsetY; // 0x007A285C
 
 void* gpPanelQuadCel; // 0x007BF018
 
 extern D2HotkeySlotTableStrc gtHotkeySlots_007C0300; // 0x007C0300
 
-extern int gaHotkeySkills[16]; // 0x007C06C8
 
-extern int gaHotkeyOwners[16]; // 0x007C0768
 
-extern int gaHotkeyLeft[16]; // 0x007C07B8
 
 extern int gbSkillSelectRight; // 0x007C07FC
 
 extern int gbSkillTabPressed; // 0x007C0C38
 
-int __cdecl ROSTER_IsAnyoneHostile(); // 0x0047A560
 
-D2UnitStrc* __stdcall INVENTORY_GetItemFromBodyLoc(D2InventoryStrc* pInventory, int nBodyLoc); // 0x0063BDE0
 
-unsigned int __stdcall ITEMS_CheckIfStackable(D2UnitStrc* pItem); // 0x006289F0
 
-int __stdcall ITEMSIsA(D2UnitStrc* pItem, int nItemType); // 0x00629BB0
 
-int __stdcall ITEMS_GetQuiverType(D2UnitStrc* pItem); // 0x0062E740
 
-D2ActiveRoomStrc* __cdecl CUNIT_GetPlayerRoom(); // 0x004646A0
-
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
 
 extern "C" int gnScreenWidth; // 0x0071146C
 
@@ -160,7 +136,6 @@ extern "C" int __cdecl sub_00468730_MouseX();
 
 extern "C" int __cdecl sub_00468740_MouseY();
 
-extern "C" unsigned int __fastcall sub_004538D0_UIState(unsigned int index);
 
 extern "C" const unsigned short* __fastcall sub_00524A30_LocalizedText(unsigned short index);
 
@@ -174,55 +149,32 @@ void __stdcall DATATBLS_GetBeltsTxtRecord(int nIndex, int nRow, D2UiRecordStrc* 
 
 void __stdcall DATATBLS_GetInvRectFromBeltsTxt(int nIndex, int bHigherRes, D2UiRectStrc* pInvRect, int nBoxId); // 0x00660D10
 
-D2UnitStrc* __stdcall INVENTORY_GetCursorItem(D2InventoryStrc* pInventory); // 0x0063C1E0
 
-D2UnitStrc* __stdcall INVENTORY_GetItemFromBeltSlot(D2InventoryStrc* pInventory, int nSlotId); // 0x0063C7F0
 
-int __cdecl sub_00468830(); // 0x00468830
 
-unsigned int __stdcall ITEMS_CheckIfBeltable(D2UnitStrc* pItem); // 0x0062BAD0
 
-int __fastcall ITEM_IsItemActionBlocked(D2UnitStrc* pItem); // 0x004C2240
 
-void __fastcall MSG_SendDword(char nHeader, int nArg); // 0x00478680
 
-void __fastcall MSG_SendDwords3(unsigned char nHeader, unsigned int d1, unsigned int d5, unsigned int d9); // 0x004786D0
 
-void __fastcall ITEM_SetUninterruptableState(D2UnitStrc* pItem); // 0x004C21F0
 
-int __fastcall ITEM_GetDropSound(D2UnitStrc* pItem); // 0x004C1D60
 
-int __fastcall ITEM_GetItemUseSound(D2UnitStrc* pItem); // 0x004C1E20
 
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
-int __cdecl GAME_IsExpansion(); // 0x0044DCC0
 
-int __cdecl CUNIT_IsPlayerDeadOrMissing(); // 0x00463DF0
 
-int __cdecl GAME_IsLeftClickRepeating(); // 0x0044BFE0
 
-void __cdecl UI_CancelCursorItemUse(); // 0x00453EC0
 
-int __fastcall UI_GetUIVarUnchecked(int nUIVar); // 0x00453A90
 
-void __stdcall sub_0065C1F0(int nId, int nGroup, D2Block1* pBlock); // 0x0065C1F0
-
-D2ItemsTxt* __stdcall DATATBLS_GetItemsTxtRecord(int nItemId); // 0x006335F0
 
 void __fastcall sub_0049FF90_Close(D2UnitStrc* pItem, D2ItemsTxt* pState); // 0x0049FF90
 
-void __fastcall UNITSND_PlayPlayerSpeech(D2UnitStrc* pUnit, unsigned short nStringId); // 0x004CB9C0
 
-int __fastcall ROSTERPETS_FindPetIdByOwner(D2UnitStrc* pOwner, int nPetType, int bAny); // 0x00478F20
 
-int __fastcall AUTOMAP_IsCursorOverMiniPanelButton(SMSGHANDLER_PARAMS* pMsg); // 0x00498DC0
 
 extern int gnBeltUiRecordRow; // 0x007A5218
 
-extern int gbPositionalSound; // 0x007A061C
 
 static int gnBeltHover; // 0x007BEF94
 
@@ -232,17 +184,12 @@ static int gnBeltRecordMode2; // 0x007BEF9C
 
 D2UnitStrc* gpBeltItemA; // 0x007BEFA8
 
-int __fastcall UI_CloseUIVars(int bArg1, int nArg2); // 0x00456300
 
 extern "C" size_t __cdecl strlen(const char* szString);
 
-int __fastcall sub_005262A0_Utf8CountChars(const char* pSrc, int nCount); // 0x005262A0
 
-int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 
 void __fastcall TEXT_DrawCenteredText(int nLeft, int nY, int nRight, const Unicode* wszText, int nColor); // 0x004A7080
 
@@ -262,11 +209,9 @@ void __cdecl PARTY_DrawRosterButtonHints(); // 0x0049B330
 
 void __cdecl PARTY_RefreshRosterIndices(); // 0x0049A9B0
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
 void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
 
-extern int gdwGlobal_007BEFA8; // 0x007BEFA8
 
 extern int gpBeltItemB; // 0x007BEFAC
 
@@ -274,11 +219,8 @@ extern void* gpPartyBoxesCel; // 0x007BF020
 
 extern unsigned char gnBoxColor; // 0x007BF034
 
-int __stdcall STATES_CheckStateMaskOnUnit(D2UnitStrc* pUnit, int nStateMask); // 0x0063A7B0
-
 void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nArg6); // 0x0046EFD0
 
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...); // 0x005269D0
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource); // 0x00526700
 
@@ -286,11 +228,8 @@ int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
 
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
-int __stdcall UNITS_GetInventoryRecordId(D2UnitStrc* pUnit, int nArg, int nMode); // 0x00621050
 
-void __fastcall UNITSND_PlayEventSound(int nUnitId, unsigned char nUnitType, unsigned short nEvent); // 0x004CBDE0
-
-unsigned char gabBeltHotkey[1]; // 0x007BEFB0
+unsigned char gabBeltHotkey[4]; // 0x007BEFB0
 
 static void __stdcall PANEL_ClickBeltBox(D2InventoryStrc* pInventory, int nX, int nY); // 0x00498870
 
@@ -304,35 +243,22 @@ unsigned char gnTextColorA; // 0x007BEFBB
 
 unsigned char gnTextColorB; // 0x007BEFE4
 
-int __stdcall SKILLS_GetSkillIdFromSkill(D2SkillStrc* pSkill, const char* szFile, int nLine); // 0x00643CE0
 
-int __stdcall SKILLS_GetSkillLevel(D2UnitStrc* pUnit, D2SkillStrc* pSkill, int bBonus); // 0x006442A0
 
-void __stdcall SKILLS_SetLeftActiveSkill(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID); // 0x00643BC0
 
-void __stdcall SKILLS_SetRightActiveSkill(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID); // 0x00643C50
 
-D2SkillStrc* __stdcall UNITS_GetLeftSkill(D2UnitStrc* pUnit); // 0x00620190
 
-D2SkillStrc* __stdcall UNITS_GetRightSkill(D2UnitStrc* pUnit); // 0x006201D0
-
-void __fastcall WARDENCLIENT_DrawSkillInfo(D2UnitStrc* pUnit, D2SkillStrc* pSkill, int nX, int nY, int nArg); // 0x00496BE0
-
-unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB);                                                     // 0x00469AA0
 
 const Unicode* __fastcall CMDTBL_GetKeyName(int nA, int nB);                                          // 0x0046A530
 
-int __fastcall GFX_DrawItemCel(D2UnitStrc* pItem, int nX, int nY); // 0x0046EE80
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc);                                     // 0x005267E0
 
-int __fastcall sub_00526800(const Unicode* pString);                                                      // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString);                                                      // 0x00526800
 
 int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile);  // 0x006280A0
 
-int __stdcall ITEMS_CheckIfUseable(D2UnitStrc* pItem);                                                              // 0x00628C20
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath);                                                  // 0x006488C0
 
 extern D2CelFileStrc* gpCellFile_007BEF10;                                                                  // 0x007BEF10
 
@@ -360,25 +286,20 @@ void* gpPartyBarCel; // 0x007BF028
 
 void __cdecl PARTY_DrawPlayerName(); // 0x0049A580
 
-void __stdcall D2GFX_DrawLine(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, unsigned char nAlpha); // 0x004F6380
-
 int __stdcall STATLIST_GetUnitBaseStat(D2UnitStrc* pUnit, int nStatId, int nLayer);                         // 0x006253B0
 
-void __fastcall SPELLSEL_AssignHotkey(int nHotkey); // 0x004A9E60
 
-void __stdcall sub_004AAAE0_DrawPagedPanel(void* pCellFile, int nPage); // 0x004AAAE0
 
-void __cdecl sub_004AB530_DrawTabCel(); // 0x004AB530
 
 struct D2StaticPathStrc;
 
-void __fastcall sub_004C21F0(D2UnitStrc* pItem);
+void __fastcall ITEM_SetUninterruptableState(D2UnitStrc* pItem);
 
 static void PANEL_HoverBeltBox(int nX, D2InventoryStrc* pInventory, int nY); // 0x00498930
 
 struct D2QtyWarnStrc;
 
-Unicode* __fastcall sub_00452170(Unicode* pText); // 0x00452170
+Unicode* __fastcall sub_00452170_ReturnText(Unicode* pText); // 0x00452170
 
 Unicode* __fastcall INV_PrefixColorCode(Unicode* pText, int nDigit); // 0x004521C0
 
@@ -388,11 +309,9 @@ int __cdecl INV_IsInvPanelTradeMode(); // 0x00489840
 
 void __fastcall INV_BuildItemName(D2UnitStrc* pItem, Unicode* pText, int nMaxLength); // 0x0048C060
 
-int __fastcall sub_004B2AD0(D2UnitStrc* pItem, int nArg, int* pOut, Unicode* pName, int nMaxLength); // 0x004B2AD0
+int __fastcall NPCMENU_GetTradeCostText(D2UnitStrc* pItem, int nArg, int* pOut, Unicode* pName, int nMaxLength); // 0x004B2AD0
 
 void __fastcall sub_004E6410_BuildPropText(D2UnitStrc* pItem, Unicode* wszText, int nUnused, int bFlag, const Unicode* wszExtra); // 0x004E6410
-
-int __stdcall ITEMS_GetItemQuality(D2UnitStrc* pItem); // 0x00627E70
 
 struct D2QtyWarnStrc
 {
@@ -419,21 +338,10 @@ void __stdcall INV_DrawWarningIcon(int nFrame); // 0x00497C50
 
 unsigned char __stdcall ITEMS_GetInvPage(D2UnitStrc* pItem); // 0x00628250
 
-unsigned char __stdcall ITEMS_GetQtyWarnCount(D2UnitStrc* pItem); // 0x00629800
 
-int __stdcall ITEMS_IsMagSetRarUniCrfOrTmp(D2UnitStrc* pItem); // 0x0062A0F0
 
-int __stdcall ITEMS_GetAmmoType(D2UnitStrc* pItem); // 0x0062E6F0
 
-D2UnitStrc* __stdcall INVENTORY_GetFirstItem(D2InventoryStrc* pInventory); // 0x0063B2C0
 
-D2UnitStrc* __stdcall INVENTORY_GetNextItem(D2UnitStrc* pItem); // 0x0063DFA0
-
-D2UnitStrc* __stdcall INVENTORY_UnitIsItem(D2UnitStrc* pItem); // 0x0063DFD0
-
-int __stdcall D2GFX_GetResolutionMode(); // 0x004F5160
-
-int __cdecl sub_0045AE90(); // 0x0045AE90
 
 void __cdecl PANEL_DrawBorderFrameLeft(); // 0x00498630
 
@@ -455,7 +363,7 @@ void __cdecl PANEL_DrawBelt(); // 0x00499040
 
 void __cdecl PANEL_ValidateActiveSkills(); // 0x00496CF0
 
-void __cdecl sub_00497A40_DrawPanelText();
+void __cdecl PANEL_DrawBeltItemHoverText();
 
 extern "C" void __cdecl PANEL_UpdateMiniPanelTooltip(); // 0x00498340
 
@@ -463,15 +371,10 @@ void* gpCtrlPnl7Cel; // 0x007BEF1C
 
 void* gp800CtrlPnl7Cel; // 0x007BEF74
 
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
 
-void __fastcall SPELLSEL_SetSkillSelectRight(int); // 0x004A8CE0
 
-int __cdecl GAME_GetAlwaysRun(); // 0x0044BE90
 
-void __fastcall GAME_SetAlwaysRun(int); // 0x0044BE80
 
-// build: symbol ?gbControlPanelMouseDown@* 0x00722358
 static int gbControlPanelMouseDown = 1; // 0x00722358
 
 static int gnGlobal_007BEFD4;        // 0x007BEFD4
@@ -480,19 +383,14 @@ void __stdcall PANEL_BeltClickMsg(SMSGHANDLER_PARAMS* pMsg); // 0x00499D10
 
 static void __stdcall PANEL_DrawDurabilityIcon(int nState, int bType, int nQuiverType, int nBodyLoc); // 0x00497CF0
 
-void __cdecl PANEL_DrawDurabilityIcons();
 
 static int __stdcall PANEL_GetBeltBoxAt(int nY, int nX); // 0x004987E0
 
 static void PANEL_BeltHotkey(int nSlot);
 
-void __cdecl PANEL_BeltHotkeyFirst();
 
-void __cdecl PANEL_BeltHotkeySecond();
 
-void __cdecl PANEL_BeltHotkeyThird();
 
-void __cdecl PANEL_BeltHotkeyFourth();
 
 void __stdcall PANEL_BeltMouseMove(SMSGHANDLER_PARAMS* __restrict pMsg); // 0x00499BB0
 
@@ -561,7 +459,7 @@ static int PANEL_GetSmoothedOrbValue(int nStatId)
     if (!nMax)
         return 0;
 
-    if (sub_0044DA90() <= 1)
+    if (sub_0044DA90_GetTickCounter() <= 1)
     {
         gaOrbSmooth[nIndex].f_8 = nValue;
         gaOrbSmooth[nIndex].nValue = nValue;
@@ -571,7 +469,7 @@ static int PANEL_GetSmoothedOrbValue(int nStatId)
     {
         gaOrbSmooth[nIndex].f_8 = nValue;
         gaOrbSmooth[nIndex].nValue = nValue;
-        const unsigned int nTick = sub_0044DA90();
+        const unsigned int nTick = sub_0044DA90_GetTickCounter();
         gaOrbSmooth[nIndex].nTick = nTick;
         gaOrbSmooth[nIndex].nPrevTick = nTick;
     }
@@ -584,7 +482,7 @@ static int PANEL_GetSmoothedOrbValue(int nStatId)
         if (nDiff >= nMax / 8)
         {
             gaOrbSmooth[nIndex].f_8 = nValue;
-            gaOrbSmooth[nIndex].nPrevTick = sub_0044DA90();
+            gaOrbSmooth[nIndex].nPrevTick = sub_0044DA90_GetTickCounter();
         }
         else
         {
@@ -595,11 +493,11 @@ static int PANEL_GetSmoothedOrbValue(int nStatId)
                 gaOrbSmooth[nIndex].f_8 = nLast;
         }
         gaOrbSmooth[nIndex].nValue = nValue;
-        gaOrbSmooth[nIndex].nTick = sub_0044DA90();
+        gaOrbSmooth[nIndex].nTick = sub_0044DA90_GetTickCounter();
     }
 
     const int nStart = gaOrbSmooth[nIndex].nTick;
-    const int nElapsed = sub_0044DA90() - nStart;
+    const int nElapsed = sub_0044DA90_GetTickCounter() - nStart;
     int nDuration = nStart - gaOrbSmooth[nIndex].nPrevTick;
     if (nDuration < 7)
         nDuration = 7;
@@ -640,10 +538,10 @@ void __cdecl PANEL_DrawLifeOrb()
             nHeight = 2;
     }
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
     tContext.nDirection = 0;
-    tContext.pCellFile = gpCellFile_007BEF68;
+    tContext.pCelFile = gpHlthManaCel;
     tContext.nFrame = 0;
     if (STATES_CheckState(sub_00463DD0_GetPlayerUnit(), STATE_HEALTHPOT))
     {
@@ -653,9 +551,9 @@ void __cdecl PANEL_DrawLifeOrb()
         if (nPoison > nHeight)
         {
             if (D2GFX_GetDisplayType() == 6)
-                sub_004F64E0(&tContext, 0x1C, gnScreenHeight - 0xD, nHeight, nPoison - nHeight, 0);
+                TEXTURE_CelDrawEx(&tContext, 0x1C, gnScreenHeight - 0xD, nHeight, nPoison - nHeight, 0);
             else
-                sub_004F64E0(&tContext, 0x1D, gnScreenHeight - 0xD, nHeight, nPoison - nHeight, 0);
+                TEXTURE_CelDrawEx(&tContext, 0x1D, gnScreenHeight - 0xD, nHeight, nPoison - nHeight, 0);
         }
     }
 
@@ -666,15 +564,15 @@ void __cdecl PANEL_DrawLifeOrb()
         {
         case 1:
         case 3:
-            sub_004F64E0(&tContext, 0x1D, gnScreenHeight - 0xD, 0, nHeight, 5);
+            TEXTURE_CelDrawEx(&tContext, 0x1D, gnScreenHeight - 0xD, 0, nHeight, 5);
             break;
         default:
-            sub_004F64E0(&tContext, 0x1D, gnScreenHeight - 0xD, 0, nHeight, 5);
+            TEXTURE_CelDrawEx(&tContext, 0x1D, gnScreenHeight - 0xD, 0, nHeight, 5);
             break;
         }
     }
 
-    tContext.pCellFile = gpCellFile_007BEF80;
+    tContext.pCelFile = gpOverlapCel;
     tContext.nFrame = 0;
     sub_004F6480(&tContext, 0x1C, gnScreenHeight - 5, -1, 5, 0);
 }
@@ -692,10 +590,10 @@ void __cdecl PANEL_DrawManaOrb()
         nMana = nMaxMana;
     const int nHeight = 80 * nMana / nMaxMana;
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
     tContext.nDirection = 0;
-    tContext.pCellFile = gpCellFile_007BEF68;
+    tContext.pCelFile = gpHlthManaCel;
     tContext.nFrame = 1;
     if (STATES_CheckState(sub_00463DD0_GetPlayerUnit(), STATE_MANAPOT))
     {
@@ -705,9 +603,9 @@ void __cdecl PANEL_DrawManaOrb()
         if (nShield > nHeight)
         {
             if (D2GFX_GetDisplayType() == 6)
-                sub_004F64E0(&tContext, gnScreenWidth - 0x70, gnScreenHeight - 0xD, nHeight, nShield - nHeight, 0);
+                TEXTURE_CelDrawEx(&tContext, gnScreenWidth - 0x70, gnScreenHeight - 0xD, nHeight, nShield - nHeight, 0);
             else
-                sub_004F64E0(&tContext, gnScreenWidth - 0x6F, gnScreenHeight - 0xD, nHeight, nShield - nHeight, 0);
+                TEXTURE_CelDrawEx(&tContext, gnScreenWidth - 0x6F, gnScreenHeight - 0xD, nHeight, nShield - nHeight, 0);
         }
     }
 
@@ -715,19 +613,19 @@ void __cdecl PANEL_DrawManaOrb()
     {
     case 1:
     case 3:
-        sub_004F64E0(&tContext, gnScreenWidth - 0x6F, gnScreenHeight - 0xD, 0, nHeight, 5);
+        TEXTURE_CelDrawEx(&tContext, gnScreenWidth - 0x6F, gnScreenHeight - 0xD, 0, nHeight, 5);
         break;
     default:
-        sub_004F64E0(&tContext, gnScreenWidth - 0x6F, gnScreenHeight - 0xD, 0, nHeight, 5);
+        TEXTURE_CelDrawEx(&tContext, gnScreenWidth - 0x6F, gnScreenHeight - 0xD, 0, nHeight, 5);
         break;
     }
 
-    tContext.pCellFile = gpCellFile_007BEF80;
+    tContext.pCelFile = gpOverlapCel;
     tContext.nFrame = 1;
     sub_004F6480(&tContext, gnScreenWidth - 0x6E, gnScreenHeight - 9, -1, 5, 0);
 }
 
-void __cdecl sub_00497300(); // 0x00497300
+void __cdecl INV_DrawKeyBindingPopup(); // 0x00497300
 
 
 
@@ -792,13 +690,13 @@ void __cdecl INV_DrawKeyBindingPopup()
     if (CUNIT_GetHotkeyBinding(0x23, 1) != 0xFFFF)
     {
         memset(wszKey, 0, sizeof(wszKeyBuf));
-        sub_005269D0(30, wszKey, D2LANG_GetStringFromTblIndex(0x1052), CMDTBL_GetKeyName(0x23, 1));
+        sub_005269D0_FormatText(30, wszKey, D2LANG_GetStringFromTblIndex(0x1052), CMDTBL_GetKeyName(0x23, 1));
         sub_00526700(wszText, wszKey);
     }
     if (CUNIT_GetHotkeyBinding(0x23, 0) != 0xFFFF)
     {
         memset(wszKey, 0, sizeof(wszKeyBuf));
-        sub_005269D0(30, wszKey, D2LANG_GetStringFromTblIndex(0x1052), CMDTBL_GetKeyName(0x23, 0));
+        sub_005269D0_FormatText(30, wszKey, D2LANG_GetStringFromTblIndex(0x1052), CMDTBL_GetKeyName(0x23, 0));
         sub_00526700(wszText, wszKey);
     }
     D2Win_10129_DrawFramedText(wszText, gnScreenWidth / 2 - 0x91, gnScreenHeight - 0x17, 0, 1);
@@ -819,9 +717,9 @@ void __cdecl VIEW_DrawRunButton()
 {
     int nX = sub_00468730();
     int nY = sub_00468740();
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpGlobal_007BEF0C;
+    tContext.pCelFile = gpRunButtonCel;
     tContext.nDirection = 0;
     if (GAME_GetAlwaysRun())
     {
@@ -849,7 +747,7 @@ void __cdecl VIEW_DrawRunButton()
     if (nX >= gnScreenWidth / 2 - 0x91 && nX <= gnScreenWidth / 2 - 0x80
         && nY >= gnScreenHeight - 0x1C && nY <= gnScreenHeight - 8)
     {
-        sub_00497300();
+        INV_DrawKeyBindingPopup();
     }
 }
 
@@ -898,7 +796,7 @@ void __cdecl PANEL_DrawStaminaBar()
     if (nMouseX >= gnScreenWidth / 2 - 0x7F && nMouseX <= gnScreenWidth / 2 - 0x19
         && nMouseY >= gnScreenHeight - 0x1B && nMouseY <= gnScreenHeight - 9)
     {
-        sub_005269D0(100, wszText, D2LANG_GetStringFromTblIndex(0x1044), nCur, nMax);
+        sub_005269D0_FormatText(100, wszText, D2LANG_GetStringFromTblIndex(0x1044), nCur, nMax);
         D2Win_10129_DrawFramedText(wszText, gnScreenWidth / 2 - 0x4C, gnScreenHeight - 0x34, nTextColor, 1);
     }
 }
@@ -923,7 +821,6 @@ int __cdecl HIREABLES_AreBeltRowsShown()
 // 0x004979F0
 int __cdecl HIREABLES_GetBeltRowCount()
 {
-// build: symbol ?gnUiRecordIndex@* 0x00722354
     switch (gnUiRecordIndex)
     {
     case 2:
@@ -949,11 +846,8 @@ void __fastcall VIEW_SetBeltSlotValue(int nX, int nArg)
 // 0x00498D60
 void __cdecl VIEW_ResetBeltHover()
 {
-// build: symbol ?gnBeltBox@* 0x0072235C
     gnBeltBox = -1;
-// build: symbol ?gnBeltRectX@* 0x00722360
     gnBeltRectX = -1;
-// build: symbol ?gnBeltRectY@* 0x00722364
     gnBeltRectY = -1;
     gnBeltHover = 0;
     gpBeltItemA = 0;
@@ -970,7 +864,6 @@ int __fastcall AUTOMAP_IsCursorOverMiniPanelButton(SMSGHANDLER_PARAMS* pMsg)
     const int nX = pMsg->nXpos;
     const int nY = pMsg->nYpos;
     D2UiRecordStrc tRecord;
-// build: symbol ?gnUiRecordIndex@* 0x00722354
     DATATBLS_GetBeltsTxtRecord(gnUiRecordIndex, gnBeltUiRecordRow, &tRecord);
     if (gbUiRecordMode)
     {
@@ -991,14 +884,14 @@ int __fastcall AUTOMAP_IsCursorOverMiniPanelButton(SMSGHANDLER_PARAMS* pMsg)
 // 0x00499500
 void __stdcall PANEL_OnMouseClick(SMSGHANDLER_PARAMS* pMsg)
 {
-    if (GAME_IsExitPending() || sub_00463DF0_StateBlocked())
+    if (GAME_IsExitPending() || CUNIT_IsPlayerDeadOrMissing())
     {
         pMsg->bReturn=0;
         return;
     }
     int nY=pMsg->nYpos;
     int nX=pMsg->nXpos;
-    if (sub_00498DC0_OverlayHit(pMsg))
+    if (AUTOMAP_IsCursorOverMiniPanelButton(pMsg))
     {
         gbControlPanelClicked=1;
         pMsg->bReturn=1;
@@ -1042,7 +935,6 @@ void __stdcall PANEL_OnMouseClick(SMSGHANDLER_PARAMS* pMsg)
             gbControlPanelClicked=1;
             sub_004B9A00_Sound(4,0,0,0,0);
         }
-// build: symbol ?gbControlPanelMouseDown@* 0x00722358
         gbControlPanelMouseDown=1;
         pMsg->bReturn=1;
         pMsg->lResult=0;
@@ -1061,13 +953,13 @@ static int sub_004977C0_IsInButtonRect(int nX, int nY)
 // 0x004977C0
 void __cdecl PANEL_DrawMiniPanelButton()
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpStateButtonCel_007BEF70;
+    tContext.pCelFile = gpStateButtonCel;
     tContext.nDirection = 0;
     if (GAME_GetUIVarState(21))
     {
-        if (gbGlobal_007BEFD0 && sub_004977C0_IsInButtonRect(sub_00468730(), sub_00468740()))
+        if (gbMiniPanelButtonDown && sub_004977C0_IsInButtonRect(sub_00468730(), sub_00468740()))
         {
             tContext.nFrame = 3;
         }
@@ -1078,7 +970,7 @@ void __cdecl PANEL_DrawMiniPanelButton()
     }
     else
     {
-        if (gbGlobal_007BEFD0 && sub_004977C0_IsInButtonRect(sub_00468730(), sub_00468740()))
+        if (gbMiniPanelButtonDown && sub_004977C0_IsInButtonRect(sub_00468730(), sub_00468740()))
         {
             tContext.nFrame = 1;
         }
@@ -1098,7 +990,6 @@ static void __stdcall PANEL_DrawBeltBoxFrame(int nBox, int nColor)
         return;
 
     D2UiRectStrc tRect;
-// build: symbol ?gnUiRecordIndex@* 0x00722354
     DATATBLS_GetInvRectFromBeltsTxt(gnUiRecordIndex, gnBeltUiRecordRow, &tRect, nBox);
     AUTOMAP_DrawFramedBox(tRect.nLeft, tRect.nTop, 0x1D, 0x1D, gabBeltColors[nColor], 0);
 }
@@ -1112,7 +1003,6 @@ static void __cdecl PANEL_DrawCursorBeltBox(D2InventoryStrc* pInventory)
 
     D2UiRecordStrc tRecord;
     DATATBLS_GetBeltsTxtRecord(gnUiRecordIndex, gnBeltUiRecordRow, &tRecord);
-// build: symbol ?gnBeltBox@* 0x0072235C
     if (gnBeltBox < 0 || gnBeltBox >= tRecord.nBoxes)
         return;
 
@@ -1123,7 +1013,7 @@ static void __cdecl PANEL_DrawCursorBeltBox(D2InventoryStrc* pInventory)
     }
 
     int nResult;
-    if (sub_0063C830_CanPlaceInBelt(pInventory, pItem, gnBeltBox, &nResult))
+    if (INVENTORY_GetUseableItemFromBeltSlot(pInventory, pItem, gnBeltBox, &nResult))
     {
         PANEL_DrawBeltBoxFrame(gnBeltBox, 3);
         return;
@@ -1132,7 +1022,6 @@ static void __cdecl PANEL_DrawCursorBeltBox(D2InventoryStrc* pInventory)
     PANEL_DrawBeltBoxFrame(gnBeltBox, 0);
 }
 
-// build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 // 0x00497A40
 void __cdecl PANEL_DrawBeltItemHoverText()
 {
@@ -1170,19 +1059,17 @@ void __cdecl PANEL_DrawBeltItemHoverText()
 
     sub_005267E0(wszText, INV_PrefixColorCode(wszProps, 3));
     sub_00526700(wszText, INV_PrefixColorCode(wszName, 0));
-// build: symbol ?gnBeltRectX@* 0x00722360
-// build: symbol ?gnBeltRectY@* 0x00722364
     if (gnBeltRectX < 0 || gnBeltRectY < 0)
     {
         return;
     }
 
-    sub_00452170(wszText);
+    sub_00452170_ReturnText(wszText);
     if (INV_IsInvPanelTradeMode())
     {
         Unicode wszSocket[0x40] = { 0 };
         int nUnused;
-        if (sub_004B2AD0(gpBeltItemA, 1, &nUnused, wszSocket, 0x40) && wszSocket[0].wChar)
+        if (NPCMENU_GetTradeCostText(gpBeltItemA, 1, &nUnused, wszSocket, 0x40) && wszSocket[0].wChar)
         {
             sub_00526700(wszText, D2LANG_GetStringFromTblIndex(0xF9E));
             sub_00526700(wszText, wszSocket);
@@ -1231,9 +1118,9 @@ static void __stdcall PANEL_DrawDurabilityIcon(int nState, int bType, int nQuive
         break;
     }
     int nOffset = 0;
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpCellFile_007BEF60;
+    tContext.pCelFile = gpDuroIconCel;
     tContext.nDirection = 0;
     tContext.nFrame = nFrame;
     if (GAME_GetUIVarState(10))
@@ -1319,7 +1206,6 @@ void __cdecl PANEL_DrawDurabilityIcons()
     D2InventoryStrc* pInventory = sub_00463DD0_GetPlayerUnit()->pInventory;
     for (int j = 0; j < 7; ++j)
     {
-// build: symbol ?gaDurabilityBodyLocs@* 0x007223E8
         const int nLoc = gaDurabilityBodyLocs[j];
         D2UnitStrc* pItem = INVENTORY_GetItemFromBodyLoc(pInventory, nLoc);
         if (!pItem || !ITEMS_HasDurability(pItem) || ITEMS_CheckIfStackable(pItem))
@@ -1382,7 +1268,7 @@ void __cdecl PANEL_DrawLifeManaText()
         if (pUnit && pUnit->dwUnitType == UNIT_PLAYER && pUnit->dwAnimMode != 0x11 && nLife >= 0 && nLife <= 1)
             nLife = 1;
 
-        sub_005269D0(100, wszLifeText, D2LANG_GetStringFromTblIndex(0x1045), nLife, nMaxLife);
+        sub_005269D0_FormatText(100, wszLifeText, D2LANG_GetStringFromTblIndex(0x1045), nLife, nMaxLife);
         sub_00526700(wszLife, wszLifeText);
         const int nHalfWidth = D2Win_10121_GetTextWidth(wszLife) / 2;
         D2Win_10117_DrawText(wszLife, 0x41 - nHalfWidth, gnScreenHeight - 0x5F, 0, 0);
@@ -1392,7 +1278,7 @@ void __cdecl PANEL_DrawLifeManaText()
         && nMouseY >= gnScreenHeight - 0x4B && nMouseY <= gnScreenHeight - 0xF))
     {
         const int nMana = PANEL_GetSmoothedOrbValue(8) >> 8;
-        sub_005269D0(100, wszManaText, D2LANG_GetStringFromTblIndex(0x1046), nMana, STATLIST_GetMaxManaFromUnit(pPlayer) >> 8);
+        sub_005269D0_FormatText(100, wszManaText, D2LANG_GetStringFromTblIndex(0x1046), nMana, STATLIST_GetMaxManaFromUnit(pPlayer) >> 8);
         sub_00526700(wszMana, wszManaText);
         const int nHalfWidth = D2Win_10121_GetTextWidth(wszMana) / 2;
         D2Win_10117_DrawText(wszMana, gnScreenWidth - nHalfWidth - 0x50, gnScreenHeight - 0x5F, 0, 0);
@@ -1422,7 +1308,7 @@ extern "C" void __cdecl PANEL_UpdateMiniPanelTooltip()
     if (mouseX >= gnScreenWidth / 2 - 8 && mouseX <= gnScreenWidth / 2 + 5
         && mouseY >= gnScreenHeight - 39 && mouseY <= gnScreenHeight - 13)
     {
-        if (sub_004538D0_UIState(21))
+        if (GAME_GetUIVarState(21))
             sub_00502280_SetTooltip(sub_00524A30_LocalizedText(4168), gnScreenWidth / 2 - 1, gnScreenHeight - 39, 0, 1);
         else
             sub_00502280_SetTooltip(sub_00524A30_LocalizedText(4167), gnScreenWidth / 2 - 1, gnScreenHeight - 39, 0, 1);
@@ -1432,7 +1318,7 @@ extern "C" void __cdecl PANEL_UpdateMiniPanelTooltip()
 // 0x004983D0
 static void PANEL_DrawControlPanelFrame(int nOffset)
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
     if (D2GFX_GetResolutionMode() - 2)
     {
@@ -1450,7 +1336,7 @@ static void PANEL_DrawControlPanelFrame(int nOffset)
             ARCHIVE_FreeClientCellFile(gpBorderFrameCel);
             gpBorderFrameCel = 0;
         }
-        tContext.pCellFile = gpCtrlPnl7Cel;
+        tContext.pCelFile = gpCtrlPnl7Cel;
         tContext.nDirection = 0;
         tContext.nFrame = 0;
         sub_004F6480(&tContext, 0, gnScreenHeight - nOffset, -1, 5, 0);
@@ -1474,7 +1360,7 @@ static void PANEL_DrawControlPanelFrame(int nOffset)
         {
             gp800CtrlPnl7Cel = GAME_LoadUiCelFile("Panel\\800CtrlPnl7");
         }
-        tContext.pCellFile = gp800CtrlPnl7Cel;
+        tContext.pCelFile = gp800CtrlPnl7Cel;
         tContext.nDirection = 0;
         tContext.nFrame = 0;
         sub_004F6480(&tContext, 0, gnScreenHeight - nOffset, -1, 5, 0);
@@ -1494,13 +1380,13 @@ static void PANEL_DrawControlPanelFrame(int nOffset)
 // 0x00498630
 void __cdecl PANEL_DrawBorderFrameLeft()
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
     if (!gpBorderFrameCel)
     {
         gpBorderFrameCel = GAME_LoadUiCelFile("Panel\\800BorderFrame");
     }
-    tContext.pCellFile = gpBorderFrameCel;
+    tContext.pCelFile = gpBorderFrameCel;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
     sub_004F6480(&tContext, 0, 253, -1, 5, 0);
@@ -1521,9 +1407,9 @@ void __cdecl PANEL_DrawBorderFrameRight()
     {
         gpBorderFrameCel = GAME_LoadUiCelFile("Panel\\800BorderFrame");
     }
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpBorderFrameCel;
+    tContext.pCelFile = gpBorderFrameCel;
     tContext.nDirection = 0;
     tContext.nFrame = 5;
     sub_004F6480(&tContext, 400, 63, -1, 5, 0);
@@ -1537,7 +1423,6 @@ void __cdecl PANEL_DrawBorderFrameRight()
     sub_004F6480(&tContext, 400, 553, -1, 5, 0);
 }
 
-// build: symbol @SCMD_WriteVariableValue@* 0x0053B0E0
 extern "C" void __fastcall SCMD_WriteVariableValue(BitStreamContext* stream, unsigned int value)
 {
     if (value < 256u)
@@ -1591,7 +1476,7 @@ static void __stdcall PANEL_ClickBeltBox(D2InventoryStrc* pInventory, int nX, in
 
     D2UnitStrc* pCursorItem = INVENTORY_GetCursorItem(pInventory);
     D2UnitStrc* pBeltItem = INVENTORY_GetItemFromBeltSlot(pInventory, nBox);
-    if (sub_00468830() == 6)
+    if (sub_00468830_GetCursorState() == 6)
     {
         return;
     }
@@ -1633,7 +1518,7 @@ static void PANEL_HoverBeltBox(int nX, D2InventoryStrc* pInventory, int nY)
     }
 
     D2UnitStrc* pCursorItem = INVENTORY_GetCursorItem(pInventory);
-    if (sub_00468830() == 6 || sub_00468830() == 8)
+    if (sub_00468830_GetCursorState() == 6 || sub_00468830_GetCursorState() == 8)
     {
         return;
     }
@@ -1693,7 +1578,7 @@ static void __stdcall PANEL_UseBeltSlot(int nSlot, D2UnitStrc* pPlayer, D2Invent
 
     D2Block1 tBlock1;
     const int nClass = UNITS_GetInventoryRecordId(pPlayer, 0, GAME_IsExpansion());
-    sub_0065C1F0(nClass, gnBeltUiRecordRow, &tBlock1);
+    DATATBLS_GetInventoryGridInfo(nClass, gnBeltUiRecordRow, &tBlock1);
     D2UnitStrc* pItem = INVENTORY_GetItemFromBeltSlot(pInventory, nSlot);
     if (!pItem)
     {
@@ -1714,7 +1599,7 @@ static void __stdcall PANEL_UseBeltSlot(int nSlot, D2UnitStrc* pPlayer, D2Invent
     }
 
     MSG_SendDwords3(0x26, pItem->dwUnitId, bShift, 0);
-    sub_004C21F0(pItem);
+    ITEM_SetUninterruptableState(pItem);
     if (bShift)
     {
         const int nPetId = ROSTERPETS_FindPetIdByOwner(pPlayer, 7, 0);
@@ -1747,13 +1632,6 @@ void __stdcall PANEL_CloseUIVarsMsg(SMSGHANDLER_PARAMS* pMsg)
     UI_CloseUIVars(1, 0);
 }
 
-void __stdcall sub_A11_Emit_00498870(SMSGHANDLER_PARAMS* pMsg)
-{
-    const int nX = pMsg->nXpos;
-    const int nY = pMsg->nYpos;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
-    PANEL_ClickBeltBox(pPlayer->pInventory, nX, nY);
-}
 
 static int __stdcall INV_CheckState(D2UnitStrc* pPlayer, D2UnitStrc* pItem, D2ItemsTxt* pState)
 {
@@ -1827,7 +1705,7 @@ void __fastcall PANEL_SetBeltType(int nIndex)
 // 0x00498E80
 void __cdecl PANEL_ClearPair()
 {
-    gdwGlobal_007BEFA8 = 0;
+    gpBeltItemA = 0;
     gpBeltItemB = 0;
 }
 
@@ -1869,7 +1747,7 @@ void __cdecl PANEL_DrawExperienceBar()
 
     if (nMouseX >= gnScreenWidth / 2 - 0x92 && nMouseX <= gnScreenWidth / 2 - 0x17 && nMouseY >= gnScreenHeight - 0x2B && nMouseY <= gnScreenHeight - 0x22)
     {
-        sub_005269D0(100, wszText, D2LANG_GetStringFromTblIndex(0x1043), nExperience, nNextExperience);
+        sub_005269D0_FormatText(100, wszText, D2LANG_GetStringFromTblIndex(0x1043), nExperience, nNextExperience);
         D2Win_10129_DrawFramedText(wszText, gnScreenWidth / 2 - 0x92, gnScreenHeight - 0x33, 0, 1);
     }
 
@@ -1975,11 +1853,11 @@ void __cdecl PANEL_DrawBelt()
             break;
         }
 
-        D2CelContextStrc tContext;
+        D2GfxDataStrc tContext;
         memset(&tContext, 0, sizeof(tContext));
         tContext.nDirection = 0;
         tContext.nFrame = 0;
-        tContext.pCellFile = gpCellFile_007BEF10;
+        tContext.pCelFile = gpCellFile_007BEF10;
         int nOffset = 0;
         unsigned char* pShow = abShow;
         for (int i = 0; i < 3; ++i)
@@ -2034,7 +1912,6 @@ void __cdecl PANEL_DrawBelt()
         D2UiRectStrc tRect;
         DATATBLS_GetInvRectFromBeltsTxt(gnUiRecordIndex, gnBeltUiRecordRow, &tRect, nBox);
         GFX_DrawItemCel(pItem, tRect.nLeft, tRect.nTop);
-// build: symbol ?gaBeltKeys@* 0x00722404
         if (nSlot < sizeof(gaBeltKeys) / sizeof(gaBeltKeys[0]) && ITEMS_CheckIfUseable(pItem))
         {
             Unicode wszKey[100];
@@ -2046,7 +1923,7 @@ void __cdecl PANEL_DrawBelt()
             if (CUNIT_GetHotkeyBinding(gaBeltKeys[nSlot], 1) != 0xFFFF || CUNIT_GetHotkeyBinding(gaBeltKeys[nSlot], 0) != 0xFFFF)
             {
                 sub_005267E0(wszKey, CMDTBL_GetKeyName(gaBeltKeys[nSlot], 1));
-                const int nLength = sub_00526800(wszKey);
+                const int nLength = UNICODE_StrLen(wszKey);
                 if (D2Win_10121_GetTextWidth(wszKey) > 0x1C)
                 {
                     Unicode* pEnd = &wszKey[nLength];
@@ -2076,11 +1953,11 @@ void __cdecl PANEL_DrawControlPanel()
     }
     if (D2GFX_GetResolutionMode() == 2)
     {
-        if (sub_0045AE90() == 2 || sub_0045AE90() == 3)
+        if (sub_0045AE90_GetPanelSlideMode() == 2 || sub_0045AE90_GetPanelSlideMode() == 3)
         {
             PANEL_DrawBorderFrameLeft();
         }
-        if (sub_0045AE90() == 1 || sub_0045AE90() == 3)
+        if (sub_0045AE90_GetPanelSlideMode() == 1 || sub_0045AE90_GetPanelSlideMode() == 3)
         {
             PANEL_DrawBorderFrameRight();
         }
@@ -2094,7 +1971,7 @@ void __cdecl PANEL_DrawControlPanel()
     PANEL_DrawMiniPanelButton();
     PANEL_DrawBelt();
     PANEL_ValidateActiveSkills();
-    sub_00497A40_DrawPanelText();
+    PANEL_DrawBeltItemHoverText();
     D2ActiveRoomStrc* pRoom = CUNIT_GetPlayerRoom();
     if (pRoom)
     {
@@ -2110,8 +1987,8 @@ void __cdecl PANEL_DrawControlPanel()
 
 static __forceinline void CancelCursorMode()
 {
-    if(sub_00468830()==6) UI_CancelCursorItemUse();
-    else if(sub_00468830()==8) MSG_SendDword(0x4C,-1);
+    if(sub_00468830_GetCursorState()==6) UI_CancelCursorItemUse();
+    else if(sub_00468830_GetCursorState()==8) MSG_SendDword(0x4C,-1);
 }
 
 // 0x004996A0
@@ -2277,11 +2154,11 @@ void __stdcall PANEL_BeltClickMsg(SMSGHANDLER_PARAMS* pMsg)
     {
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        if (sub_00468830() == 6)
+        if (sub_00468830_GetCursorState() == 6)
         {
             UI_CancelCursorItemUse();
         }
-        else if (sub_00468830() == 8)
+        else if (sub_00468830_GetCursorState() == 8)
         {
             MSG_SendDword(0x4C, -1);
         }
@@ -2314,6 +2191,13 @@ extern D2PartyRowStrc* gpRosterUnits;  // 0x007BF014
 
 
 #pragma pack(push, 1)
+struct d2data_00722368_t
+{
+    unsigned char b0[12];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
 struct d2data_00722318_t
 {
     const void* p0;
@@ -2334,35 +2218,8 @@ struct d2data_00722318_t
 };
 #pragma pack(pop)
 
-#pragma pack(push, 1)
-struct d2data_00722368_t
-{
-    unsigned char b0[12];
-};
-#pragma pack(pop)
-
-extern "C" struct d2data_00722318_t gData_00722318; // 0x00722318
 extern "C" struct d2data_00722368_t gData_00722368; // 0x00722368
-
-extern "C" struct d2data_00722318_t gData_00722318 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00722318
-
-extern int gnUiRecordIndex = 2; // 0x00722354
+extern "C" struct d2data_00722318_t gData_00722318; // 0x00722318
 
 extern int gnBeltBox = -1; // 0x0072235C
 
@@ -2390,4 +2247,24 @@ extern unsigned int gnQtyWarnCount = 5; // 0x007223E4
 
 extern int gaDurabilityBodyLocs[7] = { 1, 3, 8, 9, 10, 4, 5 }; // 0x007223E8
 
+extern int gnUiRecordIndex = 2; // 0x00722354
+
 extern int gaBeltKeys[4] = { 23, 24, 25, 26 }; // 0x00722404
+
+extern "C" struct d2data_00722318_t gData_00722318 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00722318

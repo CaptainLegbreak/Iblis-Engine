@@ -61,7 +61,7 @@ struct D2VxdHeaderStrc
 
 struct D2DosHeaderStrc
 {
-    unsigned short f_0;
+    unsigned short e_magic;
     unsigned short unk0x02[29];
     long nHeaderOffset;
 };
@@ -195,7 +195,7 @@ int __fastcall D2SOUNDUTIL_ReadVxdVersionResource(const char* szFileName, unsign
             __leave;
 
         const D2DosHeaderStrc* pDos = (const D2DosHeaderStrc*)pView;
-        if (pDos->f_0 != 0x5A4D)
+        if (pDos->e_magic != 0x5A4D)
         {
             SetLastError(0x0B);
             __leave;
@@ -293,43 +293,20 @@ int __fastcall D2SOUNDUTIL_GetVxdFileVersion(const char* szPath, unsigned int* p
     return 1;
 }
 
-#pragma pack(push, 1)
-struct d2data_0072F9B4_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
+extern "C" const char* gData_0072F9B4[15] = { // 0x0072F9B4
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
 };
-#pragma pack(pop)
-
-extern "C" struct d2data_0072F9B4_t gData_0072F9B4; // 0x0072F9B4
-
-extern "C" struct d2data_0072F9B4_t gData_0072F9B4 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0072F9B4

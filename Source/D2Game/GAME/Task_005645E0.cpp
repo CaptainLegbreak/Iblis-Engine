@@ -1,14 +1,16 @@
+// TASK_TASK_ProcessGame (0x005645E0) belongs to Task.cpp (it sits between 0x00564460 and 0x00564870) but stays
+// in a file of its own. In one file with Task.cpp's TASK_LinkList_Remove (0x005642E0) and TASK_LinkList_PushFront
+// (0x00564250) the compiler inlines both into it, where the image calls them. A noinline on TASK_LinkList_Remove
+// fixes 0x005645E0 but breaks TASK_FreeAllQueueSlots (0x00564890), which has it inline in the image.
 #include "D2GameTypes.h"
 #include "D2Game.h"
 #include "D2GameStrc.h"
 #include "D2GameClient.h"
+#include "FogApi.h"
 
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -28,23 +30,11 @@ struct D2LinkStrc;
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount();                                    // 0x006CC260
 
-D2GameStrc* __fastcall GAME_LockGame(int nGameGUID);                                                        // 0x0052E860
+#include "D2GameFuncs.h"
 
-void __fastcall GAME_UpdateProgress(D2GameStrc* pGame);                                                     // 0x0052D870
-
-void __fastcall D2GAME_PACKETS_SendGameLeft(int nClientId);                                             // 0x0053B220
 
 void __fastcall ClientRemoveFromGame(D2GameStrc* pGame, int nClientId, int bTriggerSave);          // 0x00539DA0
 
-void __fastcall GAME_LeaveGamesCriticalSection(D2GameStrc* pGame);                                          // 0x0052DA90
-
-void __fastcall GAME_CloseGame(int nGameGUID);                                                              // 0x0052E770
-
-void __fastcall TASK_LinkList_PushFront(D2LinkStrc* pList, D2LinkStrc* pLink);                              // 0x00564250
-
-D2LinkStrc* __fastcall TASK_LinkList_Remove(D2LinkStrc* pLink); // 0x005642E0
-
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
 
 extern "C" const char gszTaskSourceFile[];                                                                  // 0x006E11B8
 
@@ -54,8 +44,6 @@ extern D2CriticalSectionStrc gTaskSlotsCriticalSection;                         
 
 static void TASK_QueueIncrement(D2TaskStrc*, int*, int);
 
-
-int __fastcall TASK_GetClockTime();                                                                         // 0x00564340
 
 static D2TaskStrc* TASK_GetTaskFromTaskQueueLink(D2LinkStrc* pLink)
 {
@@ -162,8 +150,7 @@ void __stdcall TASK_TASK_ProcessGame(int nTaskNumber, D2TaskStrc* ptTask)
     if (D2GameStrc* pGame = GAME_LockGame(nGameHashKey))
     {
         GAME_UpdateProgress(pGame);
-        sub_6FC39270(pGame, 0);
-// build: symbol ?SYSTEM_GetSyncTime@* 0x00410A80
+        GAME_SendAllClientPackets(pGame, 0);
         const unsigned int nSyncTime = SYSTEM_GetSyncTime();
         const unsigned int nSyncTimer = pGame->nSyncTimer;
         if (nSyncTimer == 1)
@@ -176,7 +163,7 @@ IoTimeout:
             {
                 pNextClient = pCurrentClient->pNext;
                 D2GAME_PACKETS_SendGameLeft(pCurrentClient->dwClientId);
-                sub_0053B240_SendHeaderOnly0x06(pCurrentClient->dwClientId);
+                D2GAME_PACKETS_SendGameExit(pCurrentClient->dwClientId);
                 ClientRemoveFromGame(pGame, pCurrentClient->dwClientId, 0);
             }
         }

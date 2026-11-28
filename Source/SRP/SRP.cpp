@@ -1,7 +1,7 @@
 #include "SRP.h"
 #include "D2BnCryptTypes.h"
-
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags);         // 0x00413020
+#include "StormApi.h"
+#include "StormApi2.h"
 
 #define rol(value, bits) _rotl(value, bits)
 
@@ -27,9 +27,6 @@ struct D2BigServerRecordStrc;
 
 struct D2BigServerHandlesStrc;
 
-struct D2SrpSha1ContextStrc;
-
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
 
 struct D2BigServerRecordStrc
 {
@@ -62,13 +59,6 @@ unsigned char* __fastcall SHA_Interleave(unsigned char* pDest, const unsigned ch
 
 extern "C" unsigned int __cdecl _rotl(unsigned int nValue, int nShift);
 
-struct D2SrpSha1ContextStrc
-{
-    unsigned int aState[5];
-    unsigned int aCount[2];
-    unsigned char aBuffer[64];
-};
-
 struct D2Blob32Strc
 {
     unsigned char abData[0x20];
@@ -86,7 +76,6 @@ void __fastcall sub_0052A590_BigOp_425330(void* hResult, void* hArg1, void* hArg
 unsigned int __fastcall sub_0052A2A0_BigToBinary(void* hBig, void* pBuffer, unsigned int nSize);            // 0x0052A2A0
 void* __fastcall sub_0052A270_BigFromBinary(const void* pData, unsigned int nSize);                         // 0x0052A270
 int __fastcall sub_0052A2F0_BigCompareUnsigned(void* hBig, unsigned int nValue);                            // 0x0052A2F0
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize);                // 0x004135D0
 
 inline void* operator new(unsigned int nSize, void* pWhere) throw()
 {

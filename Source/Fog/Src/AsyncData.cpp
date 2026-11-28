@@ -1,4 +1,6 @@
 #include "Fog.h"
+#include "FogApi.h"
+#include "StormApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -8,7 +10,6 @@ struct AsyncData;
 struct AsyncDataLoadFileCallback;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 struct AsyncData
@@ -26,8 +27,6 @@ struct AsyncData
     AsyncData* pNextPostponedPriorityChange;
 };
 
-void __stdcall SFilePrioritizeRequest(void* hWnd, int nValue); // 0x0041AA80
-
 struct AsyncDataEventSlot
 {
     void* hEvent;
@@ -38,11 +37,6 @@ struct AsyncDataEventSlot
 extern "C" __declspec(dllimport) void* __stdcall CreateEventA(void* pAttributes, int bManualReset, int bInitialState, const char* szName); // 0x006CC228
 extern "C" __declspec(dllimport) unsigned long __stdcall WaitForSingleObject(void* hHandle, unsigned long dwMilliseconds); // 0x006CC230
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x006CC134
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
-void __stdcall SFileSetAsyncBudget(int nValue); // 0x004164A0
-void __stdcall SFileSetDataChunkSize(int nValue); // 0x00416570
-void __stdcall SFileCancelRequest(void* pBuffer); // 0x0041A930
 void __fastcall ASYNCDATA_Finish(AsyncData* pAsyncData); // 0x0040A4C0
 int __fastcall FOG_AsyncDataTestLoaded(AsyncData* pAsyncData); // 0x0040A7F0
 void __fastcall FOG_AsyncDataWaitAndGetBuffer(AsyncData* pAsyncData); // 0x0040A960
@@ -58,12 +52,6 @@ AsyncData* gpAsyncDataPostponed; // 0x0075AF90
 int __fastcall FOG_FreePool(void* pMemPool, void* pFree, const char* szFile, int nLine, int n0);            // 0x0040B480
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
-
-int __fastcall FOG_FOpenFile(const char* szFileName, void** phFile); // 0x004068E0
-
-int __fastcall FOG_FReadFile(void* hFile, void* pBuffer, int nToRead, int* pnRead, void* pOverlapped, int nArg7, int nArg6); // 0x00406900
-
-int __fastcall FOG_FGetFileSize(void* hFile, unsigned int* pnSizeHigh); // 0x00406930
 
 int __fastcall FOG_FSetFilePointer(void* hFile, long nOffset, long* pnOffsetHigh, int nMethod); // 0x00406940
 
@@ -407,4 +395,10 @@ void __fastcall FOG_AsyncDataFree(AsyncData* ptAsyncData)
         ptAsyncData->ptBuffer = 0;
     }
     FOG_FreeServerMemory(ptAsyncData->pMemPool, ptAsyncData, ".\\Src\\AsyncData.cpp", 717, 0);
+}
+
+// 0x0040ABE0
+int __cdecl sub_0040ABE0()
+{
+    return 0;
 }

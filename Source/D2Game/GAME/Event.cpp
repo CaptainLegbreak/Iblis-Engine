@@ -4,7 +4,7 @@
 #include "D2EventTimer.h"
 #include "D2Structs.h"
 #include "D2LanguageNames.h"
-// build: symbol _gaszLanguageNames 0x00731448
+#include "D2CommonApi.h"
 
 #define EVENTROW_PLAYER 0
 
@@ -28,21 +28,20 @@ typedef char QueueSizeCheck[(sizeof(D2EventTimerQueueStrc) == 0xA20) ? 1 : -1];
 
 typedef void(__fastcall* EventDefault3)(D2GameStrc*, D2UnitStrc*, int);
 
-D2EventTimerStrc* __fastcall SUNIT_GetTimerFromUnit(D2UnitStrc* pUnit); // 0x00553980
+#include "D2GameFuncs.h"
 
-void __fastcall D2GAME_EVENTS_Callback_6FC81BD0(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEvent, int nCustomId, int nCustomParam); // 0x00581220
+void __fastcall D2GAME_EVENTS_Callback(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEvent, int nCustomId, int nCustomParam); // 0x00581220
 
 void __fastcall MONSTERMODE_EventHandler(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEvent, int nCustomId, int nCustomParam); // 0x005A7F80
 
-void __fastcall D2GAME_OBJMODE_InvokeEventFunction_6FC75250(D2GameStrc* pGame, D2UnitStrc* pObject, int nEvent); // 0x00586AD0
+void __fastcall D2GAME_OBJMODE_InvokeEventFunction(D2GameStrc* pGame, D2UnitStrc* pObject, int nEvent); // 0x00586AD0
 
 void __fastcall MISSMODE_SrvDoEventCallback(D2GameStrc* pGame, D2UnitStrc* pMissile, int nEvent); // 0x005ADCC0
 
-void __fastcall D2GAME_Items_EventsHandler_6FC4A460(D2GameStrc* pGame, D2UnitStrc* pItem, int nEvent); // 0x00562DA0
+void __fastcall D2GAME_Items_EventsHandler(D2GameStrc* pGame, D2UnitStrc* pItem, int nEvent); // 0x00562DA0
 
 static void EVENT_FreeTimer(D2GameStrc* pGame, D2EventTimerStrc* pTimer); // 0x00540CD0
 
-void __fastcall EVENT_FreeUnitTimers(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00540EE0
 
 extern "C" void* __cdecl memset(void*, int, unsigned int); // 0x00681EF0
 
@@ -52,43 +51,22 @@ static D2EventTimerSlabListStrc* EVENT_AllocTimerSlab(D2GameStrc* pGame);
 
 static D2EventTimerStrc* __stdcall EVENT_AllocateTimer(D2GameStrc* pGame, D2EventTimerQueueStrc* pQueue);
 
-void __fastcall EVENT_AllocEventQueue(D2GameStrc* pGame);
 
 void __fastcall EVENT_SetRecurringEvent(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType, int nCustomId, int nCustomParam);
 
 void __fastcall EVENT_SetRecurringEventWithCallback(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType, EventTimerCallback pCallback, int nCustomId, int nCustomParam);
 
-void __fastcall EVENT_SetEvent(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType, int nExpireFrame, int nCustomId, int nCustomParam); // 0x005417D0
 
 void __fastcall EVENT_SetEventWithCallback(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType, int nExpireFrame, EventTimerCallback pCallback, int nCustomId, int nCustomParam);
-
-struct D2Unk00540B70Obj;
-
-struct D2Unk00540B70Owner;
-
-struct D2Unk00540B70Obj
-{
-    char unk0x000[0x504];
-    int f_504[1];
-};
-
-struct D2Unk00540B70Owner
-{
-    char unk0x00[0xB8];
-    D2Unk00540B70Obj* pObj;
-};
 
 void __fastcall FOG_FreePool(void*,void*,const char*,int,int); // 0x0040B480
 
 static void __stdcall EVENT_InsertInfiniteTimer(EventTimerCallback pCallback, int nCustomId, int nCustomParam, D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType);
 
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
 
 static void __stdcall EVENT_ScheduleTimer(D2UnitStrc* pUnit, EventTimerCallback pCallback, int nCustomId, int nCustomParam, D2GameStrc* pGame, int nEventType, int nExpireFrame);
 
-static void __stdcall EVENT_InsertInfiniteTimer(EventTimerCallback pCallback, int nCustomId, int nCustomParam, D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType);
 
-static void __stdcall EVENT_ScheduleTimer(D2UnitStrc* pUnit, EventTimerCallback pCallback, int nCustomId, int nCustomParam, D2GameStrc* pGame, int nEventType, int nExpireFrame);
 
 // 0x00540B20
 static inline D2EventTimerQueueStrc* EVENT_GetTimerQueue(D2GameStrc* pGame)
@@ -99,7 +77,6 @@ static inline D2EventTimerQueueStrc* EVENT_GetTimerQueue(D2GameStrc* pGame)
 // 0x00540B30
 static D2EventTimerStrc** __fastcall EVENT_GetQueuedTimerListHead(D2GameStrc* pGame, int nExpireFrame, int nUnitType)
 {
-// build: symbol ?gaSlotRows@* 0x006E0B9C
     const int nRow = gaSlotRows[nUnitType];
     D2EventTimerQueueStrc* pQueue = pGame->pTimerQueue;
     if (nExpireFrame == -1)
@@ -107,19 +84,14 @@ static D2EventTimerStrc** __fastcall EVENT_GetQueuedTimerListHead(D2GameStrc* pG
     return &pQueue->pHead[nRow][nExpireFrame % 64];
 }
 
-D2EventTimerStrc** __fastcall sub_M400_Emit_00540B30(D2GameStrc* pGame, int nExpireFrame, int nUnitType)
-{
-    return EVENT_GetQueuedTimerListHead(pGame, nExpireFrame + 7, nUnitType);
-}
-
 // 0x00540B70
-static int* __stdcall EVENT_GetTimerSlot(D2Unk00540B70Owner* pOwner, int nType, int nIndex)
+static D2EventTimerStrc** __stdcall EVENT_GetTimerListTail(D2GameStrc* pGame, int nUnitType, int nExpireFrame)
 {
-    if (nIndex == -1)
+    if (nExpireFrame == -1)
     {
         return 0;
     }
-    return &pOwner->pObj->f_504[gaSlotRows[nType] * 64 + nIndex % 64];
+    return &pGame->pTimerQueue->pTail[gaSlotRows[nUnitType]][nExpireFrame % 64];
 }
 
 // 0x00540BB0
@@ -144,7 +116,7 @@ static D2EventTimerStrc* sub_00540DF0_InitializeTimer(D2GameStrc* pGame, D2UnitS
 {
     D2EventTimerStrc* pTimer = EVENT_AllocateTimer(pGame, pGame->pTimerQueue);
     pTimer->pUnit = pUnit;
-    pTimer->pNext = sub_00553980_GetTimer(pUnit);
+    pTimer->pNext = SUNIT_GetTimerFromUnit(pUnit);
     if (pTimer->pNext)
         pTimer->pNext->pPrevious = pTimer;
     pTimer->pPrevious = 0;
@@ -198,30 +170,10 @@ static inline void EVENT_ReleaseTimer(D2EventTimerQueueStrc* pQueue, D2EventTime
     pTimer->nFlags = 2;
 }
 
-static inline D2EventTimerStrc** sub_6FC353D0(D2GameStrc* pGame, int nUnitType, int nExpireFrame)
-{
-    if (nExpireFrame == -1)
-    {
-        return &pGame->pTimerQueue->pInfinite[gaSlotRows[nUnitType]];
-    }
-    return &pGame->pTimerQueue->pHead[gaSlotRows[nUnitType]][nExpireFrame % 64];
-}
-
-static inline D2EventTimerStrc** sub_6FC353D0_00540CD0(D2GameStrc* pGame, int nUnitType, int nExpireFrame)
-{
-    const int nRow = gaSlotRows[nUnitType];
-    D2EventTimerQueueStrc* pTimerQueue = pGame->pTimerQueue;
-    if (nExpireFrame == -1)
-    {
-        return &pTimerQueue->pInfinite[nRow];
-    }
-    return &pTimerQueue->pHead[nRow][nExpireFrame % 64];
-}
-
 // 0x00540CD0
 static void EVENT_FreeTimer(D2GameStrc* pGame, D2EventTimerStrc* pTimer)
 {
-    D2EventTimerQueueStrc* pTimerQueue = pGame->pTimerQueue;
+    D2EventTimerQueueStrc* pTimerQueue = EVENT_GetTimerQueue(pGame);
     if (pTimer->nFlags & EVENTFLAG_0x1)
     {
         pTimer->nFlags |= EVENTFLAG_0x8;
@@ -237,16 +189,16 @@ static void EVENT_FreeTimer(D2GameStrc* pGame, D2EventTimerStrc* pTimer)
     }
     else
     {
-        D2EventTimerStrc** ppEventTimer = sub_6FC353D0_00540CD0(pGame, pTimer->nUnitType, pTimer->nExpireFrame);
+        D2EventTimerStrc** ppEventTimer = EVENT_GetQueuedTimerListHead(pGame, pTimer->nExpireFrame, pTimer->nUnitType);
         *ppEventTimer = pTimer->pNextFreeEventTimer;
     }
     if (pTimer->pNextFreeEventTimer)
     {
         pTimer->pNextFreeEventTimer->pPreviousQueuedTimer = pTimer->pPreviousQueuedTimer;
     }
-    else if (pTimer->nExpireFrame != -1)
+    else
     {
-        D2EventTimerStrc** ppEventTimer = &pGame->pTimerQueue->pTail[gaSlotRows[pTimer->nUnitType]][pTimer->nExpireFrame % 64];
+        D2EventTimerStrc** ppEventTimer = EVENT_GetTimerListTail(pGame, pTimer->nUnitType, pTimer->nExpireFrame);
         if (ppEventTimer && *ppEventTimer == pTimer)
         {
             *ppEventTimer = pTimer->pPreviousQueuedTimer;
@@ -267,11 +219,8 @@ static void EVENT_FreeTimer(D2GameStrc* pGame, D2EventTimerStrc* pTimer)
             SUNIT_SetTimerOnUnit(pTimer->pUnit, pTimer->pNext);
         }
     }
-    D2EventTimerSlabListStrc* pEventTimerArray = pTimerQueue->pSlabListHead;
-    pTimer->pNextFreeEventTimer = pEventTimerArray->pFreeEventTimerListHead;
-    pTimer->pPreviousQueuedTimer = 0;
-    pEventTimerArray->pFreeEventTimerListHead = pTimer;
-    pTimer->nFlags = EVENTFLAG_0x2;
+    EVENT_ReleaseTimer(pTimerQueue, pTimer);
+
 }
 
 void __fastcall EVENTS_DeleteByType(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType, int nEventCustomId)
@@ -337,14 +286,8 @@ static D2EventTimerStrc* __stdcall EVENT_AllocateUnitTimer(D2GameStrc* pGame, D2
     return pTimer;
 }
 
-void __stdcall sub_M113_Emit_00540B20(D2GameStrc* pGame, D2EventTimerStrc* pTimer, D2EventTimerStrc** ppHead)
-{
-    EVENT_PushFreeTimer(pTimer, ppHead);
-    EVENT_ReleaseTimer(EVENT_GetTimerQueue(pGame), pTimer);
-}
-
 // 0x00540E60
-void __fastcall D2GAME_EVENTS_Delete_6FC34840(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType, int nEventCustomId)
+void __fastcall D2GAME_EVENTS_Delete(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType, int nEventCustomId)
 {
     D2EventTimerStrc* pEventTimer = SUNIT_GetTimerFromUnit(pUnit);
     while (pEventTimer)
@@ -391,7 +334,7 @@ void __fastcall EVENT_FreeUnitTimers(D2GameStrc* pGame, D2UnitStrc* pUnit)
 }
 
 // 0x00540F30
-void __fastcall D2GAME_DeleteTimersOnUnit_6FC34A30(D2GameStrc* pGame, D2UnitStrc* pUnit)
+void __fastcall D2GAME_DeleteTimersOnUnit(D2GameStrc* pGame, D2UnitStrc* pUnit)
 {
     if (SUNIT_GetTimerFromUnit(pUnit))
     {
@@ -401,11 +344,11 @@ void __fastcall D2GAME_DeleteTimersOnUnit_6FC34A30(D2GameStrc* pGame, D2UnitStrc
     SUNIT_SetTimerOnUnit(pUnit, 0);
 }
 
-static __forceinline void EVENT_ExecuteEventsImpl5(EventTimerCallback pDefaultCallback, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer, int a4)
+static __forceinline void EVENT_ExecuteEventsImpl5(EventTimerCallback pDefaultCallback, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer, int bTimedEvents)
 {
     pTimerQueue->pCurrent = 0;
     D2EventTimerStrc* pTimer = pEventTimer;
-    if (a4)
+    if (bTimedEvents)
     {
         while (pTimer)
         {
@@ -451,11 +394,11 @@ static __forceinline void EVENT_ExecuteEventsImpl5(EventTimerCallback pDefaultCa
     }
 }
 
-static __forceinline void EVENT_ExecuteEventsImpl3(EventDefault3 pDefaultCallback, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer, int a4)
+static __forceinline void EVENT_ExecuteEventsImpl3(EventDefault3 pDefaultCallback, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer, int bTimedEvents)
 {
     pTimerQueue->pCurrent = 0;
     D2EventTimerStrc* pTimer = pEventTimer;
-    if (a4)
+    if (bTimedEvents)
     {
         while (pTimer)
         {
@@ -502,33 +445,33 @@ static __forceinline void EVENT_ExecuteEventsImpl3(EventDefault3 pDefaultCallbac
 }
 
 // 0x00540F60
-static void __stdcall EVENT_ExecutePlayerEvents(int a4, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer)
+static void __stdcall EVENT_ExecutePlayerEvents(int bTimedEvents, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer)
 {
-    EVENT_ExecuteEventsImpl5(D2GAME_EVENTS_Callback_6FC81BD0, pGame, pTimerQueue, pEventTimer, a4);
+    EVENT_ExecuteEventsImpl5(D2GAME_EVENTS_Callback, pGame, pTimerQueue, pEventTimer, bTimedEvents);
 }
 
 // 0x00541060
-static void __stdcall EVENT_ExecuteMonsterEvents(int a4, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer)
+static void __stdcall EVENT_ExecuteMonsterEvents(int bTimedEvents, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer)
 {
-    EVENT_ExecuteEventsImpl5(MONSTERMODE_EventHandler, pGame, pTimerQueue, pEventTimer, a4);
+    EVENT_ExecuteEventsImpl5(MONSTERMODE_EventHandler, pGame, pTimerQueue, pEventTimer, bTimedEvents);
 }
 
 // 0x00541160
-static void __stdcall EVENT_ExecuteObjectEvents(int a4, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer)
+static void __stdcall EVENT_ExecuteObjectEvents(int bTimedEvents, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer)
 {
-    EVENT_ExecuteEventsImpl3(D2GAME_OBJMODE_InvokeEventFunction_6FC75250, pGame, pTimerQueue, pEventTimer, a4);
+    EVENT_ExecuteEventsImpl3(D2GAME_OBJMODE_InvokeEventFunction, pGame, pTimerQueue, pEventTimer, bTimedEvents);
 }
 
 // 0x00541240
-static void __stdcall EVENT_ExecuteMissileEvents(int a4, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer)
+static void __stdcall EVENT_ExecuteMissileEvents(int bTimedEvents, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer)
 {
-    EVENT_ExecuteEventsImpl3(MISSMODE_SrvDoEventCallback, pGame, pTimerQueue, pEventTimer, a4);
+    EVENT_ExecuteEventsImpl3(MISSMODE_SrvDoEventCallback, pGame, pTimerQueue, pEventTimer, bTimedEvents);
 }
 
 // 0x00541320
-static void __stdcall EVENT_ExecuteItemEvents(int a4, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer)
+static void __stdcall EVENT_ExecuteItemEvents(int bTimedEvents, D2GameStrc* pGame, D2EventTimerQueueStrc* pTimerQueue, D2EventTimerStrc* pEventTimer)
 {
-    EVENT_ExecuteEventsImpl3(D2GAME_Items_EventsHandler_6FC4A460, pGame, pTimerQueue, pEventTimer, a4);
+    EVENT_ExecuteEventsImpl3(D2GAME_Items_EventsHandler, pGame, pTimerQueue, pEventTimer, bTimedEvents);
 }
 
 // 0x00541400
@@ -556,7 +499,7 @@ void __fastcall EVENT_FreeEventQueue(D2GameStrc* pGame)
 void __fastcall EVENT_AllocEventQueue(D2GameStrc* pGame)
 {
     if (pGame->pTimerQueue)
-        sub_00541400_FreeQueue(pGame);
+        EVENT_FreeEventQueue(pGame);
     D2EventTimerQueueStrc* pQueue = (D2EventTimerQueueStrc*)sub_0040B430_Alloc(pGame->pMemoryPool, sizeof(D2EventTimerQueueStrc), ".\\GAME\\Event.cpp", 807, 0);
     memset(pQueue, 0, sizeof(D2EventTimerQueueStrc));
     pQueue->pSlabListHead = EVENT_AllocTimerSlab(pGame);
@@ -580,10 +523,6 @@ void __fastcall EVENT_IterateEvents(D2GameStrc* pGame)
     EVENT_ExecuteItemEvents(1, pGame, pTimerQueue, pTimerQueue->pHead[EVENTROW_ITEM][pTimerQueue->nArrayIndex]);
 }
 
-
-struct Data00541860;
-
-struct Unit00541860;
 
 // 0x005415A0
 int __fastcall EVENT_GetEventFrame(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEvent)
@@ -623,13 +562,7 @@ static void __stdcall EVENT_InsertInfiniteTimer(EventTimerCallback pCallback, in
     pTimer->pCallback = pCallback;
     const int nUnitType = !pUnit ? 6 : pUnit->dwUnitType;
     D2EventTimerStrc** ppFirst = &pGame->pTimerQueue->pInfinite[gaSlotRows[nUnitType]];
-    pTimer->pNextFreeEventTimer = *ppFirst;
-    pTimer->pPreviousQueuedTimer = 0;
-    if (pTimer->pNextFreeEventTimer)
-    {
-        pTimer->pNextFreeEventTimer->pPreviousQueuedTimer = pTimer;
-    }
-    *ppFirst = pTimer;
+    EVENT_PushFreeTimer(pTimer, ppFirst);
 }
 
 // 0x005417D0
@@ -654,16 +587,6 @@ static inline D2EventTimerStrc** EVENT_GetTimerListHead(D2GameStrc* pGame, int n
     }
 
     return &pQueue->pHead[nIndex][nExpireFrame % 64];
-}
-
-static inline D2EventTimerStrc** EVENT_GetTimerListTail(D2GameStrc* pGame, int nUnitType, int nExpireFrame)
-{
-    if (nExpireFrame == -1)
-    {
-        return 0;
-    }
-
-    return &pGame->pTimerQueue->pTail[gaSlotRows[nUnitType]][nExpireFrame % 64];
 }
 
 // 0x00541680
@@ -727,11 +650,6 @@ static void __stdcall EVENT_ScheduleTimer(D2UnitStrc* pUnit, EventTimerCallback 
 void __fastcall EVENT_SetEventWithCallback(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType, int nExpireFrame, EventTimerCallback pCallback, int nCustomId, int nCustomParam)
 {
     EVENT_ScheduleTimer(pUnit, pCallback, nCustomId, nCustomParam, pGame, nEventType, nExpireFrame);
-}
-
-int* __fastcall sub_K10_EmitGetSlot(D2Unk00540B70Owner* pOwner, int nType)
-{
-    return EVENT_GetTimerSlot(pOwner, nType, nType + 1);
 }
 
 extern "C" const int gData_006E0B9C[6]; // 0x006E0B9C

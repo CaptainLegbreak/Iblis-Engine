@@ -15,7 +15,11 @@
 #include "D2DrlgPresets.h"
 #include "D2DrlgTiles.h"
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2StormLink.h"
+#include "FogApi.h"
+#include "D2CMPApi.h"
+#include "D2HellApi.h"
 
 struct D2MonPresetTxt
 {
@@ -33,16 +37,13 @@ extern "C" int __cdecl tolower(int nChar);                                      
 
 unsigned int __fastcall sub_006C9A38(const char* szString);                                                    // 0x006C9A38
 
-void* __fastcall ARCHIVE_AllocateBufferAndReadFile(void* hArchive, const char* szFileName, unsigned int* pnSize, const char* szFile, int nLine); // 0x00517079
-
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
-
-D2ItemsTxt* __stdcall DATATBLS_GetItemRecordFromItemCode(unsigned int dwCode, int* pItemId);                // 0x00633640
 
 D2MonPresetTxt* __stdcall DATATBLS_GetMonPresetTxtActSection(int nAct, int* pnRecords);                     // 0x00659B40
 
 int __fastcall DATATBLS_GetSuperUniquesTxtRecordCount(); // 0x00655710
 
+// Kept noinline: DRLGPRESET_ParseDS1File (0x00665950) calls it twice out of line in the image, and inlining it here changes that caller.
 __declspec(noinline) int __fastcall SKILLDESC_ValidateMonsterId(int nMonsterId); // 0x004E6C50
 
 int __fastcall DRLGPRESET_MapTileType(int nId);                                                             // 0x0066D7F0
@@ -70,77 +71,42 @@ struct D2RoomStrc;
 
 struct D2DrlgRoomStrc;
 
-extern "C" const char gszDrlgPresetSourceFile;                                                                    // 0x006EE7C4
 
 void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);          // 0x0040B430
 
 void __fastcall sub_0040B480(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0);         // 0x0040B480
 
-D2LvlPrestTxt* __stdcall DATATBLS_GetLvlPrestTxtRecord(int nLvlPrestId);                                                  // 0x0061F0B0
 
-D2DrlgRoomStrc* __fastcall DRLGROOM_AllocRoomEx(D2DrlgLevelStrc* pLevel, int nType);                            // 0x0066B3E0
 
-void __fastcall DRLGROOM_AddRoomExToLevel(D2DrlgLevelStrc* pLevel, D2DrlgRoomStrc* pDrlgRoom);                          // 0x0066B970
 
-void __fastcall DRLGGRID_FreeGrid(void* pMemPool, D2DrlgGridStrc* pGrid);                                     // 0x0067CD90
-
-void __fastcall DRLGVER_FreeVertices(void* pMemPool, D2DrlgVertexStrc** ppVertices);                              // 0x0067D1E0
-
-void __stdcall SKILLS_GameTileToSubtileCoords(int* pX, int* pY);                                                            // 0x00643560
 
 struct D2PresetUnitStrc* __fastcall DRLGROOM_AllocPresetUnit(D2DrlgRoomStrc* pDrlgRoom, void* pMemPool, int nUnitType, int nIndex, int nMode, int nX, int nY);   // 0x0066BF30
 
-int __fastcall DRLGGRID_GetGridEntry(D2DrlgGridStrc* pGrid, int nX, int nY);                                          // 0x0067C570
 
 void __fastcall DRLGGRID_AssignCellsOffsetsAndFlags(D2DrlgGridStrc* pGrid, int* pCellFlags, D2DrlgCoordStrc* pCoord, int nWidth, int* pBuffer);   // 0x0067CD30
 
-void __fastcall DRLGGRID_ResetGrid(D2DrlgGridStrc* pGrid);                                                       // 0x0067CDC0
 
 void __fastcall DRLGPRESET_AddPresetUnitToDrlgMap(void* pMemPool, D2DrlgMapStrc* pDrlgMap, D2SeedStrc* pSeed);                    // 0x00667620
 
 int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pCoord, int nX, int nY);                                          // 0x0066B980
 
-void __fastcall DRLGGRID_FillNewCellFlags(void* pMemPool, D2DrlgGridStrc* pGrid, int* pCellFlags, D2DrlgCoordStrc* pCoord, int nWidth);   // 0x0067CCC0
 
-void __fastcall DRLGGRID_AlterAllGridFlags(D2DrlgGridStrc* pGrid, int nFlags, int nOperation);                              // 0x0067C590
-
-void __fastcall DRLGGRID_AlterEdgeGridFlags(D2DrlgGridStrc* pGrid, int nFlags, int nOperation);                             // 0x0067C600
 
 D2LvlPrestTxt* __fastcall DATATBLS_GetLvlPrestTxtRecordFromLevelId(int nLevelId);                                                  // 0x0061F0E0
 
-D2DrlgMapStrc* __fastcall DRLGPRESET_AllocDrlgMap(D2DrlgLevelStrc* pLevel, int nLvlPrestId, D2DrlgCoordStrc* pDrlgCoord, D2SeedStrc* pSeed);   // 0x00666ED0
 
-int* __fastcall DRLGROOM_GetVisArrayFromLevelId(D2DrlgStrc* pDrlg, int nLevelId);                                                  // 0x0066C040
 
-D2DrlgLevelStrc* __stdcall DRLG_GetLevel(D2DrlgStrc* pDrlg, int nLevelId);                                     // 0x00642BB0
 
-void __stdcall DRLG_InitLevel(D2DrlgLevelStrc* pLevel);                                                        // 0x006424A0
 
-D2ActiveRoomStrc* __fastcall DRLGACTIVATE_InitializeRoomEx(D2DrlgRoomStrc* pDrlgRoom); // 0x0061B730
 
-int __fastcall DRLGWARP_GetWarpDestinationFromArray(D2DrlgLevelStrc* pLevel, unsigned char nWarpId); // 0x0066AF30
-
-void __fastcall DRLGGRID_AlterGridFlag(D2DrlgGridStrc* pGrid, int nX, int nY, int nFlags, int nOperation);             // 0x0067C4F0
-
-D2ObjectsTxt* __stdcall DATATBLS_GetObjectsTxtRecord(int nObjectId);                                                         // 0x00640E90
-
-void __fastcall DRLGROOMTILE_AllocTileGrid(D2DrlgRoomStrc* pDrlgRoom);                                                // 0x0066EEA0
-
-void __fastcall DRLGROOMTILE_CountAllTileTypes(D2DrlgRoomStrc* pDrlgRoom, D2DrlgGridStrc* pGrid, int bCheckCoordinatesValidity, int bKillEdgeX, int bKillEdgeY);   // 0x0066ECE0
 
 void __fastcall DRLGANIM_TestLoadAnimatedRoomTiles(D2DrlgRoomStrc* pDrlgRoom, D2DrlgGridStrc* pGrid, D2DrlgGridStrc* pTileTypeGrid, int nTileType, int bKillEdgeX, int bKillEdgeY);   // 0x0066D290
 
-void __fastcall DRLGROOMTILE_CountWallWarpTiles(D2DrlgRoomStrc* pDrlgRoom, D2DrlgGridStrc* pGrid, D2DrlgGridStrc* pTileTypeGrid, int bKillEdgeX, int bKillEdgeY);   // 0x0066EDB0
 
-void __fastcall DRLGROOMTILE_AllocTileData(D2DrlgRoomStrc* pDrlgRoom);                                                 // 0x0066EEE0
 
-void __fastcall DRLGROOMTILE_LoadInitRoomTiles(D2DrlgRoomStrc* pDrlgRoom, D2DrlgGridStrc* pGrid, D2DrlgGridStrc* pTileTypeGrid, int bCheckCoordinatesValidity, int bKillEdgeX, int bKillEdgeY);   // 0x0066EC10
 
-void __fastcall DRLGANIM_AllocAnimationTileGrids(D2DrlgRoomStrc* pDrlgRoom, int nAnimSpeed, D2DrlgGridStrc* pWallGrid, int nWallLayers, D2DrlgGridStrc* pFloorGrid, int nFloorLayers, D2DrlgGridStrc* pCellGrid);   // 0x0066D700
 
-void __fastcall DRLGLOGIC_InitializeDrlgCoordList(D2DrlgRoomStrc* pDrlgRoom, D2DrlgGridStrc* pTileTypeGrid, D2DrlgGridStrc* pFloorGrid, D2DrlgGridStrc* pWallGrid);   // 0x0066D110
 
-void __fastcall DRLGLOGIC_AllocCoordLists(D2DrlgRoomStrc* pDrlgRoom);                                               // 0x0066CCB0
 
 D2LevelFileListStrc* gpLevelFilesList;                                                                            // 0x0096D60C
 
@@ -154,8 +120,6 @@ struct CCritSect : D2CriticalSectionStrc
     ~CCritSect() { DeleteCriticalSection(this); }
 };
 
-// build: symbol ??__EgLevelFilesCriticalSection@@YAXXZ 0x006CB010
-// build: symbol ??__FgLevelFilesCriticalSection@@YAXXZ 0x006CB4E0
 CCritSect gLevelFilesCriticalSection;                                                                              // 0x0096D610
 
 extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc* pCriticalSection);          // 0x006CC218
@@ -170,25 +134,17 @@ extern "C" int __cdecl strcmp(const char* szLeft, const char* szRight);
 
 extern "C" char* __cdecl strcpy(char* szDest, const char* szSource);
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
-void __fastcall DRLGPRESET_LoadDrlgFile(D2DrlgFileStrc** ppDrlgFile, void* hArchive, const char* szFile);
 
-void __fastcall DRLGPRESET_FreeDrlgFile(D2DrlgFileStrc** ppDrlgFile);
 
 void __fastcall DRLGPRESET_ParseDS1File(D2DrlgFileStrc* pDrlgFile, void* hArchive, const char* szFile);                  // 0x00665950
 
-int __stdcall sub_00604B90(void* pTile);                                                                  // 0x00604B90
-
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(void);                                // 0x006CC260
 
-void __fastcall DRLGGRID_FillGrid(D2DrlgGridStrc* pGrid, int nWidth, int nHeight, int* pCellPos, int* pCellFlags);   // 0x0067CBF0
 
 extern "C" const char gszEmptyAssertText;                                                                          // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                               // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                                 // 0x00681E09
 
@@ -202,7 +158,6 @@ static void __stdcall DRLGPRESET_AddPresetRiverObjects(D2DrlgMapStrc* pDrlgMap, 
 
 static void DRLGPRESET_SpawnMapRivers(D2DrlgMapStrc* pDrlgMap, void* pMemPool); // 0x006663C0
 
-void __fastcall DRLGPRESET_AddPresetRoomMapTiles(D2DrlgRoomStrc* pDrlgRoom);
 
 #pragma intrinsic(memset)
 
@@ -234,13 +189,9 @@ struct D2CoordStrc;
 
 struct D2StormLinkStrc;
 
-struct D2StormListStrc;
-
 struct D2Storm4167B0Strc;
 
 struct D2Storm4168F0Strc;
-
-struct D2Storm416A90Strc;
 
 struct D2Unk00667420CStrc;
 
@@ -265,31 +216,18 @@ struct D2DrlgPresetInfoStrc;
 
 extern unsigned short gwValue_0077905C;
 
-struct D2StormListStrc
-{
-    int m_linkoffset;
-    D2StormLinkStrc m_terminator;
-};
-
 struct D2Storm4167B0Strc
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc tLink;
 
     ~D2Storm4167B0Strc();
 };
 
 struct D2Storm4168F0Strc
 {
-    D2StormLinkStrc f_0;
+    D2StormLinkStrc tLink;
 
     ~D2Storm4168F0Strc();
-};
-
-struct D2Storm416A90Strc
-{
-    char pad00[0x14C];
-    int n14C;
-    int n150;
 };
 
 struct D2Unk00667420CStrc
@@ -309,7 +247,6 @@ struct D2Unk00667420Strc
     D2Unk00667420BStrc* p14;
 };
 
-void __fastcall DRLGROOMTILE_CountAllTileTypes(D2DrlgRoomStrc* pDrlgRoom, D2DrlgGridStrc* pGrid, int bFillBlanks, int bKillEdgeX, int bKillEdgeY); // 0x0066ECE0
 
 static void DRLGPRESET_FindTombStoneTiles(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom);
 
@@ -323,35 +260,22 @@ static void __stdcall DRLGPRESET_InitPopsLocations(D2DrlgMapStrc* pDrlgMap, int 
 
 extern const char gszPresetFile[]; // 0x006EE7C4
 
-int __fastcall sub_0045C3E0(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
+int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
-void __fastcall DRLG_SetLevelPositionAndSize(D2DrlgStrc* pDrlg, D2DrlgLevelStrc* pLevel); // 0x00642D10
-
-D2DrlgRoomStrc* __fastcall DRLGPRESET_BuildArea(D2DrlgLevelStrc* pLevel, D2DrlgMapStrc* pDrlgMap, int nFlags, int bSingleRoom);
-
-D2MapAIStrc* __fastcall DRLGPRESET_CreateCopyOfMapAI(void* pMemPool, D2MapAIStrc* pMapAI);
-
-D2MapAIStrc* __fastcall DRLGPRESET_ChangeMapAI(D2MapAIStrc** ppMapAI1, D2MapAIStrc** ppMapAI2);
 
 void __fastcall DRLGPRESET_FreeMapAI(void* pMemPool, D2MapAIStrc* pMapAI);
 
 static void __stdcall DRLGPRESET_FreeDrlgGrids(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom);
 
-void __fastcall DRLGPRESET_FreePresetRoomData(D2DrlgRoomStrc* pDrlgRoom);
 
-void __fastcall DRLGPRESET_FreeDrlgGridsFromPresetRoom(D2DrlgRoomStrc* pDrlgRoom);
 
-void __fastcall DRLGPRESET_AllocPresetRoomData(D2DrlgRoomStrc* pDrlgRoom);
 
 void __fastcall DRLGPRESET_GetTombStoneTileCoords(D2DrlgRoomStrc* pDrlgRoom, D2CoordStrc** ppTombStoneTiles, int* pnTombStoneTiles);
 
 int __fastcall DRLGPRESET_SetPickedFileInDrlgMap(D2DrlgMapStrc* pDrlgMap, int nPickedFile);
 
-int __fastcall DRLGPRESET_GetSizeX(int nLvlPrestId);
 
-int __fastcall DRLGPRESET_GetSizeY(int nLvlPrestId);
 
-char* __fastcall DRLGPRESET_GetPickedLevelPrestFilePathFromRoomEx(D2DrlgRoomStrc* pDrlgRoom);
 
 void __fastcall DRLGPRESET_ResetDrlgMap(D2DrlgLevelStrc* pLevel, int bKeepPreset);
 
@@ -363,21 +287,13 @@ static void DRLGPRESET_SpawnRiver(D2DrlgMapStrc* pDrlgMap, int nX, int nY, void*
 
 static void __stdcall DRLGPRESET_AddNaviPresetUnit(D2DrlgMapStrc* pDrlgMap, void* pMemPool);
 
-void __fastcall DRLGPRESET_SpawnHardcodedPresetUnits(D2DrlgRoomStrc* pDrlgRoom);
-
 static void DRLGPRESET_MovePresetUnitsToRoom(D2DrlgRoomStrc* pDrlgRoom);
 
-void __fastcall DRLGPRESET_InitPresetRoomGrids(D2DrlgRoomStrc* pDrlgRoom);
 
 static void __stdcall DRLGPRESET_TogglePopsVisibility(D2DrlgRoomStrc* pDrlgRoom, int nPopSubIndex, D2DrlgCoordStrc* pDrlgCoord, int nTick, int bClose);
 
-void __fastcall DRLGPRESET_UpdatePops(D2DrlgRoomStrc* pDrlgRoom, int nX, int nY, int bOtherRoom);
 
-void __stdcall DUNGEON_GameTileToSubtileCoords(int* pX, int* pY);
 
-void __fastcall DRLGGRID_FillGrid(D2DrlgGridStrc* pGrid, int nWidth, int nHeight, int* pCellPos, int* pCellFlags);
-
-void __fastcall DRLGPRESET_GenerateLevel(D2DrlgLevelStrc* pLevel);
 
 void __fastcall DRLGPRESET_FreeDrlgMap(void* pMemPool, D2DrlgMapStrc* pDrlgMap);
 
@@ -449,12 +365,6 @@ void __cdecl DRLGPRESET_LockLevelFiles()
 void __cdecl DRLGPRESET_UnlockLevelFiles()
 {
     LeaveCriticalSection(&gLevelFilesCriticalSection);
-}
-
-void __fastcall sub_M107_Emit_00665810(D2PresetCodeStrc* pDst, const char* pSrc, int bCopy)
-{
-    if (bCopy)
-        DRLGPRESET_CopyCodePadded(pDst, pSrc);
 }
 
 void __fastcall sub_M107_Emit_00665900(int* pTileTypes, int nCount, int bMap)
@@ -805,41 +715,6 @@ int __fastcall SKILLDESC_ValidateMonsterId(int nMonsterId)
 {
 
     return nMonsterId / sgptDataTables->nMonStatsTxtRecordCount;
-}
-
-static void __fastcall DRLGPRESET_AddTombStoneTiles(void* pMemPool, D2DrlgRoomStrc* pDrlgRoom)
-{
-    D2DrlgPresetRoomStrc* pMaze = pDrlgRoom->pMaze;
-    int nTombStoneTiles = 0;
-
-    if (pMaze->pTombStoneTiles)
-    {
-        return;
-    }
-
-    pMaze->pTombStoneTiles = (D2CoordStrc*)sub_0040B430(pMemPool, 6 * sizeof(D2CoordStrc), &gszDrlgPresetSourceFile, 1964, 0);
-
-    for (int nY = 0; nY < pDrlgRoom->pDrlgCoord.nHeight; ++nY)
-    {
-        for (int nX = 0; nX < pDrlgRoom->pDrlgCoord.nWidth; ++nX)
-        {
-            const unsigned int nTileInfo = DRLGGRID_GetGridEntry(pMaze->pWallGrid, nX, nY);
-            if (((unsigned char)(nTileInfo >> 20) & 0x3F) == 10 && (unsigned char)(nTileInfo >> 8) >= 23 && (unsigned char)(nTileInfo >> 8) <= 27)
-            {
-                if (nTombStoneTiles < 6)
-                {
-                    int nTileX = nX + pDrlgRoom->pDrlgCoord.nPosX;
-                    int nTileY = nY + pDrlgRoom->pDrlgCoord.nPosY;
-                    SKILLS_GameTileToSubtileCoords(&nTileX, &nTileY);
-                    pMaze->pTombStoneTiles[nTombStoneTiles].nX = nTileX + 2;
-                    pMaze->pTombStoneTiles[nTombStoneTiles].nY = nTileY + 2;
-                    ++nTombStoneTiles;
-                }
-            }
-        }
-    }
-
-    pMaze->nTombStoneTiles = nTombStoneTiles;
 }
 
 static int DRLGPRESET_IsTileInsideCoord(D2DrlgCoordStrc* pDrlgCoord, D2DrlgRoomStrc* pDrlgRoom, D2DrlgTileDataStrc* pTileData)
@@ -1441,38 +1316,9 @@ static void __stdcall DRLGPRESET_InitPopsLocations(D2DrlgMapStrc* pDrlgMap, int 
     }
 }
 
-void __fastcall sub_Z16_EmitTombStoneTiles(D2DrlgRoomStrc* pDrlgRoom, void* pMemPool)
-{
-    if (pDrlgRoom->pDrlgCoord.nWidth == 9)
-        DRLGPRESET_FindTombStoneTiles(pMemPool, pDrlgRoom);
-}
-
-unsigned short __stdcall SFileGetLocale()
-{
-    return gwValue_0077905C;
-}
-
-void __stdcall sub_00416750_Nop()
-{
-}
-
-void __stdcall sub_00416760_Nop()
-{
-}
-
-char* __fastcall sub_004167A0_LinkNext(D2StormLinkStrc* pLink)
-{
-    return (int)pLink->m_next > 0 ? pLink->m_next : 0;
-}
-
 D2Storm4167B0Strc::~D2Storm4167B0Strc()
 {
-    f_0.Unlink();
-}
-
-char* __fastcall sub_004167F0_LinkNext(D2StormLinkStrc* pLink)
-{
-    return (int)pLink->m_next > 0 ? pLink->m_next : 0;
+    tLink.Unlink();
 }
 
 // 0x00666EB0
@@ -1487,84 +1333,9 @@ int __fastcall DRLGPRESET_SetPickedFileInDrlgMap(D2DrlgMapStrc* pDrlgMap, int nP
     return pDrlgMap->nPickedFile = nPickedFile;
 }
 
-char* __fastcall sub_00416820_LinkNext(D2StormLinkStrc* pLink)
-{
-    return (int)pLink->m_next > 0 ? pLink->m_next : 0;
-}
-
-char* __fastcall sub_00416830_LinkNext(D2StormLinkStrc* pLink)
-{
-    return (int)pLink->m_next > 0 ? pLink->m_next : 0;
-}
-
-char* __fastcall sub_00416840_LinkRawNext(D2StormLinkStrc* pLink)
-{
-    return pLink->m_next;
-}
-
-char* __fastcall sub_00416850_LinkNext(D2StormLinkStrc* pLink)
-{
-    return (int)pLink->m_next > 0 ? pLink->m_next : 0;
-}
-
-char* __fastcall sub_00416860_LinkPrev(D2StormLinkStrc* pLink)
-{
-    D2StormLinkStrc* pPrev = pLink->m_prevlink->m_prevlink;
-    return (int)pPrev->m_next > 0 ? pPrev->m_next : 0;
-}
-
-char* __fastcall sub_00416880_LinkRawNext(D2StormLinkStrc* pLink)
-{
-    return pLink->m_next;
-}
-
 D2Storm4168F0Strc::~D2Storm4168F0Strc()
 {
-    f_0.Unlink();
-}
-
-void __fastcall sub_004169F0_InitTerminator(D2StormListStrc* pList)
-{
-    pList->m_terminator.m_prevlink = &pList->m_terminator;
-    pList->m_terminator.m_next = (char*)~(unsigned int)&pList->m_terminator;
-}
-
-void __fastcall sub_00416A00_InitTerminator(D2StormListStrc* pList)
-{
-    pList->m_terminator.m_prevlink = &pList->m_terminator;
-    pList->m_terminator.m_next = (char*)~(unsigned int)&pList->m_terminator;
-}
-
-void __fastcall sub_00416A10_InitTerminator(D2StormListStrc* pList)
-{
-    pList->m_terminator.m_prevlink = &pList->m_terminator;
-    pList->m_terminator.m_next = (char*)~(unsigned int)&pList->m_terminator;
-}
-
-void __fastcall sub_00416A20_InitTerminator(D2StormListStrc* pList)
-{
-    pList->m_terminator.m_prevlink = &pList->m_terminator;
-    pList->m_terminator.m_next = (char*)~(unsigned int)&pList->m_terminator;
-}
-
-void __fastcall sub_00416A30_InitTerminator(D2StormListStrc* pList)
-{
-    pList->m_terminator.m_prevlink = &pList->m_terminator;
-    pList->m_terminator.m_next = (char*)~(unsigned int)&pList->m_terminator;
-}
-
-int __fastcall sub_00416A90_TestField150(D2Storm416A90Strc* pRecord)
-{
-    if (pRecord && pRecord->n150)
-        return 1;
-    return 0;
-}
-
-int __fastcall sub_00416AB0_TestField14C(D2Storm416A90Strc* pRecord)
-{
-    if (pRecord && pRecord->n14C)
-        return 1;
-    return 0;
+    tLink.Unlink();
 }
 
 static inline unsigned int SEED_RollRandomNumber(D2SeedStrc* pSeed)
@@ -1722,7 +1493,7 @@ static void __stdcall DRLGPRESET_TogglePopsVisibility(D2DrlgRoomStrc* ptRoom, in
                 pTileData->dwFlags &= ~8;
             }
         }
-        else if (!(pTileData->dwFlags & 0x100) && sub_00604B90(pTileData->pTile) == nPopSubIndex && DRLGPRESET_IsTileInsideCoord(&tDrlgCoord, ptRoom, pTileData))
+        else if (!(pTileData->dwFlags & 0x100) && TileGetStyle(pTileData->pTile) == nPopSubIndex && DRLGPRESET_IsTileInsideCoord(&tDrlgCoord, ptRoom, pTileData))
         {
             pTileData->dwPopFlags |= 2;
             if (bClose)
@@ -2435,7 +2206,7 @@ void __fastcall DRLGPRESET_InitLevelData(D2DrlgLevelStrc* pLevel)
 	const int nFiles = DRLGPRESET_GetFileCount(pLvlPrestTxtRecord);
 	if (nFiles)
 	{
-		pPreset->nDirection = sub_0045C3E0(&pLevel->pSeed, nFiles);
+		pPreset->nDirection = ITEMS_RollLimitedRandomNumber(&pLevel->pSeed, nFiles);
 	}
 	else
 	{
@@ -2532,26 +2303,6 @@ struct d2data_00748A98_t
 
 extern "C" struct d2data_00748A98_t gData_00748A98; // 0x00748A98
 
-extern "C" struct d2data_00748A98_t gData_00748A98 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00748A98
-
-extern const char* gpszPresetItemCodes[1] = { "HDM" }; // 0x00748AD4
-
 extern int gnPresetObjectIndices[5][150] = {
     {
     12, 37, 39, 35, 36, 5, 17, 18, 19, 20, 21, 22, 30, 70, 70, 69,
@@ -2604,3 +2355,24 @@ extern int gnPresetObjectIndices[5][150] = {
     568, 536, 537, 563, 570, 397
 }
 }; // 0x00748AD8
+
+extern const char* gpszPresetItemCodes[1] = { "HDM" }; // 0x00748AD4
+
+extern "C" struct d2data_00748A98_t gData_00748A98 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00748A98
+#include "D2CommonApi.h"

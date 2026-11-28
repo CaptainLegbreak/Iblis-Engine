@@ -1,6 +1,8 @@
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2Structs.h"
 #include "D2Path.h"
+#include "FogApi.h"
 
 #define D2_ABS(x) ((x) >= 0 ? (x) : -(x))
 
@@ -16,16 +18,16 @@ struct D2PathRayStrc;
 
 struct D2UnkPathStrc
 {
-    int unk0x00;
-    int unk0x04;
-    int unk0x08;
+    int nTestDir0;
+    int nTestDir1;
+    int nTestDir2;
 };
 
 struct D2UnkPathStrc2
 {
-    unsigned char unk0x00;
-    unsigned char unk0x01;
-    unsigned char unk0x02;
+    unsigned char nTestDir0;
+    unsigned char nTestDir1;
+    unsigned char nTestDir2;
 };
 
 extern const D2UnkPathStrc gaPathDirectionTriplets[25]; // 0x006F1518
@@ -56,27 +58,19 @@ struct D2PathRayStrc
     int bValid;
 };
 
-struct PathOwner;
 struct D2DynamicPathStrc;
 struct D2PathPointStrc;
 struct D2StaticPathStrc;
 struct D2UnitStrc;
 
-struct PathOwner { char pad0[0x2c]; D2DynamicPathStrc* pPath; };
 
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-unsigned char __stdcall PATH_GetDirection(D2DynamicPathStrc* pDynamicPath); // 0x006487F0
 
 
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pDynamicPath); // 0x006488C0
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pDynamicPath); // 0x00648900
 
-unsigned short __stdcall COLLISION_CheckMaskWithSize(D2ActiveRoomStrc* pRoom, int nX, int nY, int nUnitSize, unsigned short nMask); // 0x0064D9B0
 
 void __fastcall PATH_UpdateMotionVelocity(D2PathRayStrc* pRay); // 0x00678E30
 
@@ -164,13 +158,13 @@ static int __fastcall PATH_GetDirectionIndexXY(int nX1, int nY1, int nX2, int nY
 // 0x00678CB0
 int __fastcall PATH_GetAltFirstDirectionXY(int nX1, int nY1, int nX2, int nY2)
 {
-    return gaPathDirectionTripletsAlt[PATH_GetDirectionIndexXY(nX1, nY1, nX2, nY2)].unk0x00;
+    return gaPathDirectionTripletsAlt[PATH_GetDirectionIndexXY(nX1, nY1, nX2, nY2)].nTestDir0;
 }
 
 // 0x00678CF0
 int __fastcall PATH_GetFirstDirectionXY(int nX1, int nY1, int nX2, int nY2)
 {
-    return gaPathDirectionTriplets[PATH_GetDirectionIndexXY(nX1, nY1, nX2, nY2)].unk0x00;
+    return gaPathDirectionTriplets[PATH_GetDirectionIndexXY(nX1, nY1, nX2, nY2)].nTestDir0;
 }
 
 // 0x00678D30
@@ -178,9 +172,9 @@ void __fastcall PATH_GetDirectionTripletXY(int nX1, int nY1, int nX2, int nY2, i
 {
     int nIndex = PATH_GetDirectionIndexXY(nX1, nY1, nX2, nY2);
 
-    pTestDir[0] = gaPathDirectionTriplets[nIndex].unk0x00;
-    pTestDir[1] = gaPathDirectionTriplets[nIndex].unk0x04;
-    pTestDir[2] = gaPathDirectionTriplets[nIndex].unk0x08;
+    pTestDir[0] = gaPathDirectionTriplets[nIndex].nTestDir0;
+    pTestDir[1] = gaPathDirectionTriplets[nIndex].nTestDir1;
+    pTestDir[2] = gaPathDirectionTriplets[nIndex].nTestDir2;
 }
 
 // 0x00678DB0
@@ -188,9 +182,9 @@ void __fastcall PATH_GetAltDirectionTripletXY(int nX1, int nY1, int nX2, int nY2
 {
     int nIndex = PATH_GetDirectionIndexXY(nX1, nY1, nX2, nY2);
 
-    pTestDir[0] = gaPathDirectionTripletsAlt[nIndex].unk0x00;
-    pTestDir[1] = gaPathDirectionTripletsAlt[nIndex].unk0x01;
-    pTestDir[2] = gaPathDirectionTripletsAlt[nIndex].unk0x02;
+    pTestDir[0] = gaPathDirectionTripletsAlt[nIndex].nTestDir0;
+    pTestDir[1] = gaPathDirectionTripletsAlt[nIndex].nTestDir1;
+    pTestDir[2] = gaPathDirectionTripletsAlt[nIndex].nTestDir2;
 }
 
 // 0x00678C10
@@ -258,17 +252,17 @@ int __stdcall PATH_GetDirectionIndex(D2PathPointStrc pPoint1, D2PathPointStrc pP
 // 0x00678CD0
 int __stdcall PATH_GetAltFirstDirection(D2PathPointStrc pPoint1, D2PathPointStrc pPoint2)
 {
-    return gaPathDirectionTripletsAlt[PATH_GetDirectionIndex(pPoint1, pPoint2)].unk0x00;
+    return gaPathDirectionTripletsAlt[PATH_GetDirectionIndex(pPoint1, pPoint2)].nTestDir0;
 }
 
 // 0x00678D70
-void __fastcall PATH_GetDirections_6FDAB790(int* pTestDir, D2PathPointStrc pPoint1, D2PathPointStrc pPoint2)
+void __fastcall PATH_GetDirections(int* pTestDir, D2PathPointStrc pPoint1, D2PathPointStrc pPoint2)
 {
     int nIndex = PATH_GetDirectionIndex(pPoint1, pPoint2);
 
-    pTestDir[0] = gaPathDirectionTriplets[nIndex].unk0x00;
-    pTestDir[1] = gaPathDirectionTriplets[nIndex].unk0x04;
-    pTestDir[2] = gaPathDirectionTriplets[nIndex].unk0x08;
+    pTestDir[0] = gaPathDirectionTriplets[nIndex].nTestDir0;
+    pTestDir[1] = gaPathDirectionTriplets[nIndex].nTestDir1;
+    pTestDir[2] = gaPathDirectionTriplets[nIndex].nTestDir2;
 }
 
 // 0x00678DF0
@@ -276,15 +270,15 @@ void __fastcall PATH_GetAltDirectionTriplet(int* pTestDir, D2PathPointStrc pPoin
 {
     int nIndex = PATH_GetDirectionIndex(pPoint1, pPoint2);
 
-    pTestDir[0] = gaPathDirectionTripletsAlt[nIndex].unk0x00;
-    pTestDir[1] = gaPathDirectionTripletsAlt[nIndex].unk0x01;
-    pTestDir[2] = gaPathDirectionTripletsAlt[nIndex].unk0x02;
+    pTestDir[0] = gaPathDirectionTripletsAlt[nIndex].nTestDir0;
+    pTestDir[1] = gaPathDirectionTripletsAlt[nIndex].nTestDir1;
+    pTestDir[2] = gaPathDirectionTripletsAlt[nIndex].nTestDir2;
 }
 
 // 0x00678D10
 int __stdcall PATH_GetFirstDirection(D2PathPointStrc tPoint1, D2PathPointStrc tPoint2)
 {
-    return gaPathDirectionTriplets[PATH_GetDirectionIndex(tPoint1, tPoint2)].unk0x00;
+    return gaPathDirectionTriplets[PATH_GetDirectionIndex(tPoint1, tPoint2)].nTestDir0;
 }
 
 struct D2MotionPathStrc
@@ -298,8 +292,6 @@ struct D2MotionPathStrc
     char unk_1D[3];
     unsigned int nFlags;
 };
-
-void __fastcall PATH_GetDirectionVectorFromPoints(D2CoordStrc* pDirectionVector, int* pOutDirection, D2PathPointStrc tPoint1, D2PathPointStrc tPoint2); // 0x0064FD70
 
 // 0x00678E30
 int __fastcall PATH_UpdateMotionVelocity(D2MotionPathStrc* pPath)
@@ -332,39 +324,39 @@ int __fastcall PATH_UpdateMotionVelocity(D2MotionPathStrc* pPath)
 }
 
 // 0x00678F00
-void __fastcall PATH_NormalizeStep(int* a1, int* a2)
+void __fastcall PATH_NormalizeStep(int* pX, int* pY)
 {
-    if (*a1 >= 0)
+    if (*pX >= 0)
     {
-        while (*a1 > 65536)
+        while (*pX > 65536)
         {
-            *a1 >>= 1;
-            *a2 >>= 1;
+            *pX >>= 1;
+            *pY >>= 1;
         }
     }
     else
     {
-        while (*a1 < -65536)
+        while (*pX < -65536)
         {
-            *a1 >>= 1;
-            *a2 >>= 1;
+            *pX >>= 1;
+            *pY >>= 1;
         }
     }
 
-    if (*a2 >= 0)
+    if (*pY >= 0)
     {
-        while (*a2 > 65536)
+        while (*pY > 65536)
         {
-            *a1 >>= 1;
-            *a2 >>= 1;
+            *pX >>= 1;
+            *pY >>= 1;
         }
     }
     else
     {
-        while (*a2 < -65536)
+        while (*pY < -65536)
         {
-            *a1 >>= 1;
-            *a2 >>= 1;
+            *pX >>= 1;
+            *pY >>= 1;
         }
     }
 }
@@ -448,9 +440,7 @@ void __fastcall PATHUTIL_AdvanceTowardsTarget(D2DynamicPathStrc* ptPath)
     int angle = (dir8 - offset) & 0x1FF;
     float f = (float)ptPath->dwSpeed;
 
-// build: symbol ?FOG_10083_Cos_LUT@* 0x0040B330
     ptPath->tTargetCoord.X += (unsigned short)(int)(FOG_10083_Cos_LUT(angle) * f);
-// build: symbol ?FOG_10084_Sin_LUT@* 0x0040B350
     ptPath->tTargetCoord.Y += (unsigned short)(int)(FOG_10084_Sin_LUT(angle) * f);
 }
 
@@ -518,11 +508,27 @@ struct d2data_00749A20_t
 };
 #pragma pack(pop)
 
-extern "C" const D2UnkPathStrc gData_006F1518[25]; // 0x006F1518
-extern "C" const D2UnkPathStrc2 gData_006F1648[25]; // 0x006F1648
 extern "C" struct d2data_00749A20_t gData_00749A20; // 0x00749A20
 
-extern "C" const D2UnkPathStrc gData_006F1518[25] = {
+extern "C" struct d2data_00749A20_t gData_00749A20 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00749A20
+
+extern const D2UnkPathStrc gaPathDirectionTriplets[25] = {
     { 5, 4, 6 },
     { 4, 5, 6 },
     { 4, 3, 5 },
@@ -549,9 +555,8 @@ extern "C" const D2UnkPathStrc gData_006F1518[25] = {
     { 0, 1, 2 },
     { 1, 0, 2 }
 }; // 0x006F1518
-#pragma comment(linker, "/alternatename:?gaPathDirectionTriplets@@3QBUD2UnkPathStrc@@B=_gData_006F1518")
 
-extern "C" const D2UnkPathStrc2 gData_006F1648[25] = {
+extern const D2UnkPathStrc2 gaPathDirectionTripletsAlt[25] = {
     { 4, 6, 0xFF },
     { 4, 6, 0xFF },
     { 4, 2, 6 },
@@ -578,22 +583,3 @@ extern "C" const D2UnkPathStrc2 gData_006F1648[25] = {
     { 0, 2, 0xFF },
     { 0, 2, 0xFF }
 }; // 0x006F1648
-#pragma comment(linker, "/alternatename:?gaPathDirectionTripletsAlt@@3QBUD2UnkPathStrc2@@B=_gData_006F1648")
-
-extern "C" struct d2data_00749A20_t gData_00749A20 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00749A20

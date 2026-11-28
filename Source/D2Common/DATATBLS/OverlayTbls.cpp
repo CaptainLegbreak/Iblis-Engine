@@ -1,4 +1,5 @@
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2Records.h"
 #include "D2DataTbls.h"
 
@@ -6,7 +7,6 @@
 
 extern "C" const char gszTxtField_Filename[];                                                               // 0x006D90F4
 extern D2DataTablesStrc sgtDataTables;                                                                        // 0x0096BC30
-void* __stdcall DATATBLS_CompileTxt(void* hArchive, const char* szName, D2BinFieldStrc* pTbl, int* pRecordCount, int nRecordSize);// 0x006122F0
 
 // 0x00664150
 void __fastcall DATATBLS_LoadOverlayTxt(void* hArchive)

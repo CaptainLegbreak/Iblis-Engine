@@ -42,7 +42,7 @@ struct D2CmpBlockTableBStrc
 {
     unsigned char data[65536]; // 0x00
 
-    void sub_0060AB70_Destroy(); // 0x0060AB70
+    void GfxHashDumpStats(); // 0x0060AB70
 };
 
 struct D2Dc6FrameStrc

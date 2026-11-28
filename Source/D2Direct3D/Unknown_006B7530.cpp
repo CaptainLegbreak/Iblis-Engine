@@ -1,5 +1,6 @@
 #include "D2Direct3D.h"
 #include "D2Win32Base.h"
+#include "FogApi.h"
 
 #define WRITE_CORNER(i) pVertices[i].dwColor=PackGridColor(pPoints[i],nAlpha); pVertices[i].fX=(float)pPoints[i].nX; pVertices[i].fY=(float)pPoints[i].nY;
 struct D2DrawDeviceStrc;
@@ -21,8 +22,6 @@ struct D2RendererSettingsStrc;
 extern D2TLVertexStrc gaVertices[4]; // 0x00970F48
 static int __stdcall sub_006B7530_DrawGlyph(int nX, int nY, char nChar);
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 static void __stdcall sub_006B7FD0_GetPanelRect(int nSide, D2RectStrc* pRect, int* pOffset, int bFlag);
 
 struct D2TilePartStrc { short x,y; char unknown004[16]; };
@@ -36,7 +35,6 @@ struct D2DrawDeviceStrc { D2DrawVtableStrc* vtable; };
 extern D2TLVertexStrc gaQuadVertices[4]; // 0x00971630
 extern D2DrawDeviceStrc* gpDrawDevice; // 0x00970E78
 void __fastcall D3DFLOORCACHE_BindTileTexture(D2TilePartStrc*); // 0x006BBA00
-void __fastcall sub_006B9730_SetQuadColor(D2TLVertexStrc*,unsigned char,int); // 0x006B9730
 
 struct D2PerspectiveTileStrc { short nX,nY; char unknown04[0x10]; };
 
@@ -45,12 +43,8 @@ struct D2PerspectiveSpriteStrc { char unknown00[0x50]; int nTiles; D2Perspective
 extern D2TLVertexStrc gaPerspectiveVertices[15]; // 0x00971450
 extern unsigned short gaPerspectiveIndices[22]; // 0x0074C0D0
 void __fastcall sub_006B9860_Project(int nX,int nY,int nZ,int* pOutX,int* pOutY); // 0x006B9860
-void __fastcall sub_006B9730_SetColor(D2TLVertexStrc* pVertex,unsigned char nIndex,unsigned char nAlpha); // 0x006B9730
 void __fastcall D3DFLOORCACHE_BindTileTexture(D2PerspectiveTileStrc* pTile); // 0x006BBA00
 int __stdcall D2CMPTileValidate(void*, int, int); // 0x005FDEA0
-void __fastcall D3DCORE_SetAlphaBlendMode(int); // 0x006B1F40
-void __fastcall D3DCORE_SetTextureFilterMode(int); // 0x006B2030
-int __cdecl sub_006B9830_GetPerspective(); // 0x006B9830
 static int __stdcall sub_006B8950_Lit(int, D2TileStrc*, int, int, unsigned int*, unsigned char); // 0x006B8950
 static int __stdcall sub_006B87A0_DrawNoPerspective(D2TileStrc*, int, int, const unsigned int*, int, unsigned char); // 0x006B87A0
 
@@ -87,7 +81,6 @@ extern IndexStrip gIndexStrips[5]; // 0x009716B0
 extern const char gCreateFailure[]; // 0x006FC2C4
 extern const char gLockFailure[]; // 0x006FC330
 extern const char gUnlockFailure[]; // 0x006FC310
-void __fastcall D3DCORE_ShowD3DError(const char*,long); // 0x006B39B0
 void __fastcall D3DCORE_LogDDrawError(const char* szWhere, int hResult); // 0x006B20E0
 
 struct D2GridPointStrc { unsigned char nScale,nRed,nGreen,nBlue; int nX,nY; };
@@ -99,8 +92,6 @@ extern D2VertexBufferStrc* gpGridBuffer_00971734; // 0x00971734
 extern unsigned short gaFlatIndices[4]; // 0x0074C3D0
 extern unsigned short gaGridIndices[65]; // 0x009716B0
 extern unsigned char gabMultiplyTable[256][256]; // 0x00971740
-int __fastcall sub_006BB870_BindTileTexture(D2TileLibraryEntryStrc* pTile); // 0x006BB870
-void __fastcall D3DCORE_SetColorCombineMode(int nState); // 0x006B1EA0
 void __fastcall D3DCORE_LogDDrawError(const char* szWhere,int hResult); // 0x006B20E0
 extern int gnD3DOriginX; // 0x00981740
 extern int gnOriginY; // 0x00981744
@@ -109,7 +100,6 @@ extern int gnPerspectiveScale; // 0x00989748
 struct D2TileBlockStrc { short x,y; unsigned char unk_04[16]; };
 struct D2TileStrc { unsigned int type; unsigned char unk_04[0x4c]; int count; D2TileBlockStrc* blocks; };
 extern int gaGeometry[10][6][3]; // 0x0074C100
-extern D2TLVertexStrc gaGrid[15]; // 0x00971450
 extern unsigned short gaIndices[22]; // 0x0074C0D0
 extern const char gszAssert_006CC837[]; // 0x006CC837
 __declspec(noreturn) void __cdecl sub_00681E09_Exit(int);
@@ -118,10 +108,6 @@ void __fastcall sub_006B9780_SetColor(D2TLVertexStrc*,unsigned int,unsigned char
 void __fastcall D3DFLOORCACHE_BindTileTexture(D2TileBlockStrc*); // 0x006BBA00
 #define D3D_VERTEX_IN_RECT(v, r) ((v).fX >= (r).nLeft && (v).fX < (r).nRight && (v).fY >= (r).nTop && (v).fY < (r).nBottom)
 #define D2ASSERT(c,l) if(!(c)) { FOG_DisplayHalt(gszAssert_006CC837,sub_00408090(),l); sub_00681E09_Exit(-1); }
-extern D2TLVertexStrc gVertex0_00971630; // 0x00971630
-extern D2TLVertexStrc gtVertex1; // 0x00971650
-extern D2TLVertexStrc gtVertex2; // 0x00971670
-extern D2TLVertexStrc gtVertex3; // 0x00971690
 static int __stdcall sub_006B8DF0_DrawTransparentWallTile(D2TileStrc* pTile, unsigned char nAlpha, int nPosX, int nPosY, unsigned int* pLight, int nScreenPanels);
 int __stdcall D2CMPTileValidate(D2TileStrc*,int,int); // 0x005FDEA0
 
@@ -137,7 +123,7 @@ static int __stdcall sub_006B7530_DrawGlyph(int nX, int nY, char nChar)
 
     if (nX < 0)
     {
-        return gaGlyphWidths_00970FC8[nChar];
+        return ganGlyphWidths[nChar];
     }
 
     if ((unsigned char)(nChar - 0x20) <= 0x5F)
@@ -156,19 +142,16 @@ static int __stdcall sub_006B7530_DrawGlyph(int nX, int nY, char nChar)
         nChar -= 0x20;
         gpD3DDevice_00970E78->lpVtbl->SetTexture(gpD3DDevice_00970E78, 0, gapGlyphTextures_009712D0[nChar]);
         gpD3DDevice_00970E78->lpVtbl->DrawPrimitive(gpD3DDevice_00970E78, 6, 0x1C4, gaVertices, 4, 0x1C);
-        return gaGlyphWidths_00970FC8[nChar];
+        return ganGlyphWidths[nChar];
     }
 
-    return gaGlyphWidths_00970FC8[0];
+    return ganGlyphWidths[0];
 }
 
 
 typedef char* va_list;
 extern "C" __declspec(dllimport) int __stdcall wvsprintfA(char* szOut, const char* szFormat, va_list args);
 
-void __fastcall D3DCORE_SetColorCombineMode(int nState); // 0x006B1EA0
-void __fastcall D3DCORE_SetAlphaBlendMode(int nMode); // 0x006B1F40
-void __fastcall D3DCORE_SetTextureFilterMode(int nMode); // 0x006B2030
 
 // 0x006B7630
 void __fastcall sub_006B7630_DrawTextV(int nX, int nY, const char* szFormat, va_list args)
@@ -196,10 +179,8 @@ static void __stdcall sub_006B7FD0_GetPanelRect(int nSide, D2RectStrc* pRect, in
     D2_ASSERT(pRect, 0x53);
 
     pRect->nLeft = 0;
-// build: symbol ?gnRenderWidth@* 0x007C9138
     pRect->nRight = gnRenderWidth;
     pRect->nTop = 0;
-// build: symbol ?gnRenderHeight@* 0x007C913C
     pRect->nBottom = gnRenderHeight - 47;
 
     if (!bFlag)
@@ -335,19 +316,18 @@ Draw:
             int nStartX=nDrawX;
             do
             {
-                int nRowX=nStartX;
-
-                // the original keeps both row starts in memory and steps them separately; with a plain copy the two counters merge into one register
-                int nRowY=*(volatile int*)&nStartY;
+                // The tile's origin variables walk each row of three vertices; the row starts keep the next row's origin.
+                nDrawX=nStartX;
+                nDrawY=nStartY;
                 for(int j=0;j<3;++j)
                 {
-                    sub_006B9860_Project(nRowX,nRowY,0,&nOutX,&nSide);
+                    sub_006B9860_Project(nDrawX,nDrawY,0,&nOutX,&nSide);
                     pVertex->fY=(float)nSide;
                     pVertex->fX=(float)nOutX+fOffset;
                     sub_006B9730_SetColor(pVertex,nColor,nAlpha);
                     ++pVertex;
-                    nRowX+=0x8000;
-                    nRowY-=0x8000;
+                    nDrawX+=0x8000;
+                    nDrawY-=0x8000;
                 }
                 nStartX+=0x8000;
                 nStartY+=0x8000;
@@ -362,97 +342,28 @@ Draw:
     return nResult;
 }
 
-extern "C" const char gData_006FC310[32]; // 0x006FC310
-extern "C" const char gData_006FC330[28]; // 0x006FC330
-
 extern "C" const char gData_006FC310[32] = "Vertex buffer unlock failed!"; // 0x006FC310
 #pragma comment(linker, "/alternatename:?gUnlockFailure@@3QBDB=_gData_006FC310")
 
 extern "C" const char gData_006FC330[28] = "Vertex buffer lock failed!"; // 0x006FC330
 #pragma comment(linker, "/alternatename:?gLockFailure@@3QBDB=_gData_006FC330")
 
-extern unsigned short gaPerspectiveIndices[22] = {
-    0, 1, 3, 4, 6, 7, 9, 0xA, 0xC, 0xD, 0xD, 1, 1, 2, 4, 5,
-    7, 8, 0xA, 0xB, 0xD, 0xE
-}; // 0x0074C0D0
+unsigned short gaPerspectiveIndices[22] = { 0, 1, 3, 4, 6, 7, 9, 10, 12, 13, 13, 1, 1, 2, 4, 5, 7, 8, 10, 11, 13, 14 }; // 0x0074C0D0
 
-extern int gaGeometry[10][6][3] = {
-    { 0 },
-    {
-    { 0, 5, -40 },
-    { 0, 3, -56 },
-    { 0, 1, -72 },
-    { 0, -1, -88 },
-    { 0, -3, -104 },
-    { 0, -5, -120 }
-},
-    {
-    { -5, 0, -120 },
-    { -3, 0, -104 },
-    { -1, 0, -88 },
-    { 1, 0, -72 },
-    { 3, 0, -56 },
-    { 5, 0, -40 }
-},
-    {
-    { 0, 5, -40 },
-    { 0, 3, -56 },
-    { 0, 1, -72 },
-    { 1, 0, -72 },
-    { 3, 0, -56 },
-    { 5, 0, -40 }
-},
-    {
-    { -5, 0, -120 },
-    { -3, 0, -104 },
-    { -1, 0, -88 },
-    { 0, -1, -88 },
-    { 0, -3, -104 },
-    { 0, -5, -120 }
-},
-    {
-    { 0, 5, -40 },
-    { 0, 3, -56 },
-    { 0, 1, -72 },
-    { 1, 0, -72 },
-    { 3, 0, -56 },
-    { 5, 0, -40 }
-},
-    {
-    { 5, 10, 40 },
-    { 5, 8, 24 },
-    { 5, 6, 8 },
-    { 5, 4, -8 },
-    { 5, 2, -24 },
-    { 5, 0, -40 }
-},
-    {
-    { 0, 5, -40 },
-    { 2, 5, -24 },
-    { 4, 5, -8 },
-    { 6, 5, 8 },
-    { 8, 5, 24 },
-    { 10, 5, 40 }
-},
-    {
-    { 0, 5, -40 },
-    { 2, 5, -24 },
-    { 4, 5, -8 },
-    { 5, 4, -8 },
-    { 5, 2, -24 },
-    { 5, 0, -40 }
-},
-    {
-    { 0, 5, -40 },
-    { 2, 5, -24 },
-    { 4, 5, -8 },
-    { 5, 4, -8 },
-    { 5, 2, -24 },
-    { 5, 0, -40 }
-}
-}; // 0x0074C100
+int gaGeometry[10][6][3] = { // 0x0074C100
+    { { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 } },
+    { { 0, 5, -40 }, { 0, 3, -56 }, { 0, 1, -72 }, { 0, -1, -88 }, { 0, -3, -104 }, { 0, -5, -120 } },
+    { { -5, 0, -120 }, { -3, 0, -104 }, { -1, 0, -88 }, { 1, 0, -72 }, { 3, 0, -56 }, { 5, 0, -40 } },
+    { { 0, 5, -40 }, { 0, 3, -56 }, { 0, 1, -72 }, { 1, 0, -72 }, { 3, 0, -56 }, { 5, 0, -40 } },
+    { { -5, 0, -120 }, { -3, 0, -104 }, { -1, 0, -88 }, { 0, -1, -88 }, { 0, -3, -104 }, { 0, -5, -120 } },
+    { { 0, 5, -40 }, { 0, 3, -56 }, { 0, 1, -72 }, { 1, 0, -72 }, { 3, 0, -56 }, { 5, 0, -40 } },
+    { { 5, 10, 40 }, { 5, 8, 24 }, { 5, 6, 8 }, { 5, 4, -8 }, { 5, 2, -24 }, { 5, 0, -40 } },
+    { { 0, 5, -40 }, { 2, 5, -24 }, { 4, 5, -8 }, { 6, 5, 8 }, { 8, 5, 24 }, { 10, 5, 40 } },
+    { { 0, 5, -40 }, { 2, 5, -24 }, { 4, 5, -8 }, { 5, 4, -8 }, { 5, 2, -24 }, { 5, 0, -40 } },
+    { { 0, 5, -40 }, { 2, 5, -24 }, { 4, 5, -8 }, { 5, 4, -8 }, { 5, 2, -24 }, { 5, 0, -40 } }
+};
 
-extern unsigned short gaFlatIndices[4] = { 0, 5, 0x23, 0x1E }; // 0x0074C3D0
+unsigned short gaFlatIndices[4] = { 0, 5, 35, 30 }; // 0x0074C3D0
 
 // 0x006B87A0
 static int __stdcall sub_006B87A0_DrawNoPerspective(D2TileStrc* pTile, int nX, int nY, const unsigned int* pLight, int nPanels, unsigned char nAlpha)
@@ -492,19 +403,19 @@ static int __stdcall sub_006B87A0_DrawNoPerspective(D2TileStrc* pTile, int nX, i
             int nRight = x + 32;
             nDrawn = 1;
             D3DFLOORCACHE_BindTileTexture(&pTile->blocks[n]);
-            gVertex0_00971630.fX = (float)x;
-            gVertex0_00971630.fY = (float)nTop;
-            gtVertex1.fX = (float)x;
-            gtVertex1.fY = (float)y;
-            gtVertex2.fX = (float)nRight;
-            gtVertex2.fY = (float)y;
-            gtVertex3.fX = (float)nRight;
-            gtVertex3.fY = (float)nTop;
-            sub_006B9780_SetColor(&gVertex0_00971630, nLeftLight, nAlpha);
-            sub_006B9780_SetColor(&gtVertex1, nLeftLight, nAlpha);
-            sub_006B9780_SetColor(&gtVertex2, nRightLight, nAlpha);
-            sub_006B9780_SetColor(&gtVertex3, nRightLight, nAlpha);
-            gpDrawDevice->vtable->DrawPrimitive(gpDrawDevice, 6, 0x1C4, &gVertex0_00971630, 4, 28);
+            gaQuadVertices[0].fX = (float)x;
+            gaQuadVertices[0].fY = (float)nTop;
+            gaQuadVertices[1].fX = (float)x;
+            gaQuadVertices[1].fY = (float)y;
+            gaQuadVertices[2].fX = (float)nRight;
+            gaQuadVertices[2].fY = (float)y;
+            gaQuadVertices[3].fX = (float)nRight;
+            gaQuadVertices[3].fY = (float)nTop;
+            sub_006B9780_SetColor(&gaQuadVertices[0], nLeftLight, nAlpha);
+            sub_006B9780_SetColor(&gaQuadVertices[1], nLeftLight, nAlpha);
+            sub_006B9780_SetColor(&gaQuadVertices[2], nRightLight, nAlpha);
+            sub_006B9780_SetColor(&gaQuadVertices[3], nRightLight, nAlpha);
+            gpDrawDevice->vtable->DrawPrimitive(gpDrawDevice, 6, 0x1C4, &gaQuadVertices[0], 4, 28);
         }
     }
     return nDrawn;
@@ -539,22 +450,22 @@ static int __stdcall sub_006B8950_Lit(int nScreenPanels, D2TileStrc* pTile, int 
         int nScreenY;
 
         sub_006B9860_Project(nX0, nY0, nZ0, &nScreenX, &nScreenY);
-        gaGrid[0].fX = (float)nScreenX;
-        gaGrid[0].fY = (float)nScreenY;
+        gaPerspectiveVertices[0].fX = (float)nScreenX;
+        gaPerspectiveVertices[0].fY = (float)nScreenY;
         sub_006B9860_Project(nX0, nY0, nZ0 - 0x20, &nScreenX, &nScreenY);
-        gaGrid[12].fX = (float)nScreenX;
-        gaGrid[12].fY = (float)nScreenY;
+        gaPerspectiveVertices[12].fX = (float)nScreenX;
+        gaPerspectiveVertices[12].fY = (float)nScreenY;
         sub_006B9860_Project(nX1, nY1, nZ1 - 0x20, &nScreenX, &nScreenY);
-        gaGrid[14].fX = (float)nScreenX;
-        gaGrid[14].fY = (float)nScreenY;
+        gaPerspectiveVertices[14].fX = (float)nScreenX;
+        gaPerspectiveVertices[14].fY = (float)nScreenY;
         sub_006B9860_Project(nX1, nY1, nZ1, &nScreenX, &nScreenY);
-        gaGrid[2].fX = (float)nScreenX;
-        gaGrid[2].fY = (float)nScreenY;
+        gaPerspectiveVertices[2].fX = (float)nScreenX;
+        gaPerspectiveVertices[2].fY = (float)nScreenY;
 
-        if (D3D_VERTEX_IN_RECT(gaGrid[0], tRect)
-            || D3D_VERTEX_IN_RECT(gaGrid[12], tRect)
-            || D3D_VERTEX_IN_RECT(gaGrid[14], tRect)
-            || D3D_VERTEX_IN_RECT(gaGrid[2], tRect))
+        if (D3D_VERTEX_IN_RECT(gaPerspectiveVertices[0], tRect)
+            || D3D_VERTEX_IN_RECT(gaPerspectiveVertices[12], tRect)
+            || D3D_VERTEX_IN_RECT(gaPerspectiveVertices[14], tRect)
+            || D3D_VERTEX_IN_RECT(gaPerspectiveVertices[2], tRect))
         {
             const int nMidX = (nX0 + nX1) >> 1;
             const int nMidY = (nY0 + nY1) >> 1;
@@ -575,25 +486,25 @@ static int __stdcall sub_006B8950_Lit(int nScreenPanels, D2TileStrc* pTile, int 
                 if (nGridRow != 0 && nGridRow != 4)
                 {
                     sub_006B9860_Project(nX0, nY0, nZ0 - nDepth, &nScreenX, &nScreenY);
-                    gaGrid[nGridRow * 3].fX = (float)nScreenX;
-                    gaGrid[nGridRow * 3].fY = (float)nScreenY;
+                    gaPerspectiveVertices[nGridRow * 3].fX = (float)nScreenX;
+                    gaPerspectiveVertices[nGridRow * 3].fY = (float)nScreenY;
                     sub_006B9860_Project(nX1, nY1, nZ1 - nDepth, &nScreenX, &nScreenY);
-                    gaGrid[nGridRow * 3 + 2].fX = (float)nScreenX;
-                    gaGrid[nGridRow * 3 + 2].fY = (float)nScreenY;
+                    gaPerspectiveVertices[nGridRow * 3 + 2].fX = (float)nScreenX;
+                    gaPerspectiveVertices[nGridRow * 3 + 2].fY = (float)nScreenY;
                 }
 
                 sub_006B9860_Project(nMidX, nMidY, nMidZ - nDepth, &nScreenX, &nScreenY);
-                gaGrid[nGridRow * 3 + 1].fX = (float)nScreenX;
-                gaGrid[nGridRow * 3 + 1].fY = (float)nScreenY;
+                gaPerspectiveVertices[nGridRow * 3 + 1].fX = (float)nScreenX;
+                gaPerspectiveVertices[nGridRow * 3 + 1].fY = (float)nScreenY;
                 for (int nGridCol = 0; nGridCol < 3; ++nGridCol)
                 {
-                    D2TLVertexStrc* pVertex = &gaGrid[nGridRow * 3 + nGridCol];
+                    D2TLVertexStrc* pVertex = &gaPerspectiveVertices[nGridRow * 3 + nGridCol];
                     pVertex->fX = pVertex->fX + (float)nOffset;
                     sub_006B9780_SetColor(pVertex, aColors[nGridCol], nAlpha);
                 }
             }
 
-            gpDrawDevice->vtable->DrawIndexedPrimitive(gpDrawDevice, 5, 0x1c4, gaGrid, 15, gaIndices, 22, 0x1c);
+            gpDrawDevice->vtable->DrawIndexedPrimitive(gpDrawDevice, 5, 0x1c4, gaPerspectiveVertices, 15, gaIndices, 22, 0x1c);
             nResult = 1;
         }
     }
@@ -649,7 +560,7 @@ int __fastcall sub_006B8E90_DrawWallTile(D2TileStrc* pTile, int nPosX, int nPosY
 }
 
 // 0x006B8F10
-void __cdecl sub_006B8F10()
+void __cdecl sub_006B8F10_CreateGridVertexBuffer()
 {
     float xStep = (float)(160.0 / gTileWidth);
     xStep = (float)(xStep / 10.0);
@@ -830,10 +741,6 @@ void __fastcall sub_006B9910_ProjectPoint(int nX, int nY, int nUnused, int* pScr
 }
 
 int __stdcall D2CMPTileValidate(void*, int, int); // 0x005FDEA0
-void __fastcall D3DCORE_SetAlphaBlendMode(int); // 0x006B1F40
-void __fastcall D3DCORE_SetTextureFilterMode(int); // 0x006B2030
-int __cdecl sub_006B77A0_GetBlendedShadows(); // 0x006B77A0
-int __cdecl sub_006B9830_GetPerspective(); // 0x006B9830
 int __fastcall sub_006B83A0_DrawPerspective(void*, int, int, int, unsigned char, int); // 0x006B83A0
 int __fastcall sub_006B8220_DrawFlat(void*, int, int, int, unsigned char, int); // 0x006B8220
 
@@ -844,7 +751,7 @@ int __fastcall sub_006B86F0_DrawShadow(void* sprite, int x, int y, int mode, int
     if (D2CMPTileValidate(sprite, 1, 0))
     {
         unsigned char alpha = 255;
-        sub_006B1EA0_SetMode(1);
+        D3DCORE_SetColorCombineMode(1);
         if (sub_006B77A0_GetBlendedShadows())
         {
             D3DCORE_SetAlphaBlendMode(4);

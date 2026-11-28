@@ -2,6 +2,7 @@
 #include "D2StormTypes.h"
 #include "SValidate.h"
 #include "stpl.h"
+#include "StormApi.h"
 
 struct D2SCmdLink006C43A0Strc;
 struct PairStrc_006C4030;
@@ -155,13 +156,7 @@ extern "C" unsigned long __cdecl strtoul(const char* szString, char** ppEnd, int
 
 int __stdcall SMemFree(void* pLocation, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
 void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags); // 0x00413020
-void __stdcall SMemCopy(void* pDest, const void* pSource, unsigned int nSize); // 0x0041D2A0
 void __stdcall SMemZero(void* pDst, unsigned int nSize); // 0x0041D300
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
-unsigned int __stdcall SStrPack(char*, const char*, unsigned int); // 0x00413800
-const char* __stdcall SStrChr(const char* szString, char nChar); // 0x00413490
-void __stdcall SStrTokenize(const char** pszString, char* szBuffer, unsigned int nBufferChars, const char* szWhitespace, int* pQuoted); // 0x00413B80
 void* __cdecl StormGetInstance(); // 0x0041BEF0
 void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
 
@@ -174,11 +169,7 @@ extern "C" const char gszCmdWhitespace_006FCC4C[];                              
 extern const char gszPercentS_006FFC58[]; // 0x006FFC58
 extern const char gszNewline[]; // 0x006FFCB0
 
-// build: symbol ??__EgOptionList_0074C48C@@YAXXZ 0x006CB030
-// build: symbol ??__FgOptionList_0074C48C@@YAXXZ 0x006CB4F0
 TSList<CMDDEF> gOptionList_0074C48C; // 0x0074C48C
-// build: symbol ??__EgOptionList_0074C498@@YAXXZ 0x006CB050
-// build: symbol ??__FgOptionList_0074C498@@YAXXZ 0x006CB550
 TSList<CMDDEF> gOptionList_0074C498; // 0x0074C498
 int gnGlobal_00989C38; // 0x00989C38
 
@@ -206,27 +197,6 @@ static inline CMDDEF* OPTION_Next(CMDDEF* pLink)
     return (int)pLink > 0 ? pLink : 0;
 }
 
-// build: symbol ??_R0?AUCMDDEF@@@8 0x0074C474
-// build: symbol _SMemAlloc@16 0x00413020
-// build: symbol _SMemFree@16 0x00412650
-// build: symbol ?Next@?$TSLink@UCMDDEF@@@@QAEPAUCMDDEF@@XZ 0x006C4010
-// build: symbol ?RawNext@?$TSLink@UCMDDEF@@@@QAEPAUCMDDEF@@XZ 0x006C4020
-// build: symbol ?NextLink@?$TSLink@UCMDDEF@@@@QAEPAU1@H@Z 0x006C4040
-// build: symbol ?Unlink@?$TSLink@UCMDDEF@@@@QAEXXZ 0x006C4070
-// build: symbol ??0?$TSLink@UCMDDEF@@@@QAE@XZ 0x006C40F0
-// build: symbol ?Head@?$TSList@UCMDDEF@@U?$TSGetLink@UCMDDEF@@@@@@QAEPAUCMDDEF@@XZ 0x006C40E0
-// build: symbol ?Link@?$TSList@UCMDDEF@@U?$TSGetLink@UCMDDEF@@@@@@QAEPAU?$TSLink@UCMDDEF@@@@PBUCMDDEF@@@Z 0x006C4160
-// build: symbol ?LinkNode@?$TSList@UCMDDEF@@U?$TSGetLink@UCMDDEF@@@@@@QAEXPAUCMDDEF@@I0@Z 0x006C4180
-// build: symbol ?Next@?$TSList@UCMDDEF@@U?$TSGetLink@UCMDDEF@@@@@@QAEPAUCMDDEF@@PBU2@@Z 0x006C4230
-// build: symbol ??1?$TSLink@UCMDDEF@@@@QAE@XZ 0x006C4250
-// build: symbol ?UnlinkNode@?$TSList@UCMDDEF@@U?$TSGetLink@UCMDDEF@@@@@@QAEXPAUCMDDEF@@@Z 0x006C4290
-// build: symbol ?RawNext@?$TSList@UCMDDEF@@U?$TSGetLink@UCMDDEF@@@@@@QAEPAUCMDDEF@@PBU2@@Z 0x006C4380
-// build: symbol ?UnlinkAll@?$TSList@UCMDDEF@@U?$TSGetLink@UCMDDEF@@@@@@QAEXXZ 0x006C43F0
-// build: symbol ??1?$TSList@UCMDDEF@@U?$TSGetLink@UCMDDEF@@@@@@QAE@XZ 0x006C4430
-// build: symbol ?NewNode@?$TSList@UCMDDEF@@U?$TSGetLink@UCMDDEF@@@@@@QAEPAUCMDDEF@@III@Z 0x006C44C0
-// build: symbol ??_GCMDDEF@@QAEPAXI@Z 0x006C4520
-// build: symbol ?Clear@?$TSList@UCMDDEF@@U?$TSGetLink@UCMDDEF@@@@@@QAEXXZ 0x006C4760
-// build: symbol ?DeleteNode@?$TSList@UCMDDEF@@U?$TSGetLink@UCMDDEF@@@@@@QAEPAUCMDDEF@@PAU2@@Z 0x006C47B0
 template CMDDEF* TSLink<CMDDEF>::Next();
 template CMDDEF* TSLink<CMDDEF>::RawNext();
 template TSLink<CMDDEF>* TSLink<CMDDEF>::NextLink(int);
@@ -872,11 +842,12 @@ int __stdcall SCmdProcessCommandLine(OptionCallbackToken extra, D2ErrorCallback 
     return SCmdProcess(GetCommandLineA(), 1, extra, error);
 }
 
-extern "C" const char* const gData_006FCC24[3]; // 0x006FCC24
-extern "C" const char gData_006FCC4C[12]; // 0x006FCC4C
-
-extern "C" const char* const gData_006FCC24[3] = { "Invalid argument: %s", "The syntax of the command is incorrect.", "Unable to open response file: %s" }; // 0x006FCC24
+extern "C" const char* const gData_006FCC24[3] = { // 0x006FCC24
+    "Invalid argument: %s",
+    "The syntax of the command is incorrect.",
+    "Unable to open response file: %s"
+};
 #pragma comment(linker, "/alternatename:?gszErrorDefaults_006FCC24@@3PAPBDA=_gData_006FCC24")
 
-extern "C" const char gData_006FCC4C[12] = { 32, 44, 59, 34, 9, 10, 13, 26 }; // 0x006FCC4C
+extern "C" const char gData_006FCC4C[12] = " ,;\"\t\n\r\x1A"; // 0x006FCC4C
 #pragma comment(linker, "/alternatename:_gszCmdWhitespace_006FCC4C=_gData_006FCC4C")

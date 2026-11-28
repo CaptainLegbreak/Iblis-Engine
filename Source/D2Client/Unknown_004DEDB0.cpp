@@ -1,4 +1,5 @@
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 
 #include "D2DrlgMaps.h"
 
@@ -6,6 +7,7 @@
 
 #include "D2ClientSound.h"
 #include "D2ClientTileLight.h"
+#include "D2GfxApi.h"
 
 
 
@@ -33,20 +35,14 @@ extern D2LightOffsetsStrc gaLightOffsetsA[]; // 0x0072ABC8
 
 extern D2LightOffsetsStrc gaLightOffsetsB[]; // 0x0072A9E8
 
-int __cdecl sub_0045AE90(); // 0x0045AE90
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
 void __fastcall SCMD_ReadGridCell(int nX, int nY, unsigned char* pValue0, unsigned char* pValue1, unsigned char* pValue2, unsigned char* pValue3); // 0x00475AA0
 
-int __stdcall TILE_TileDrawTrans(D2TileLibraryEntryStrc* pTile, int nXPos, int nYPos, D2GfxLightStrc* pLight, int nScreenPanels, unsigned char nAlpha); // 0x004F6950
-
-int __stdcall TILE_TileDrawLit(D2TileLibraryEntryStrc* pTile, int nXPos, int nYPos, D2GfxLightStrc* pLight, int nScreenPanels); // 0x004F6920
-
 // 0x004DEDB0
 static D2LightOffsetsStrc* __stdcall sub_004DEDB0_GetLightOffsets(D2TileLibraryEntryStrc* pTile, unsigned int* pCount, int bAlternate)
 {
-// build: symbol ?gaLightSampleCounts@* 0x006DB9D8
     *pCount = gaLightSampleCounts[pTile->nLightDirection];
     if (bAlternate)
         return &gaLightOffsetsA[pTile->nLightDirection];
@@ -59,7 +55,7 @@ static void __stdcall sub_004DEDF0_UpdateTileLights(D2TileLightEntryStrc* pEntry
     if (!pEntry->pList)
         return;
 
-    const int nScreenPanels = sub_0045AE90();
+    const int nScreenPanels = sub_0045AE90_GetPanelSlideMode();
     const int bPerspective = sub_004F51D0_IsPerspective();
     const unsigned int nTick = GetTickCount();
     for (D2TileLightNodeStrc* pNode = pEntry->pList; pNode; pNode = pNode->pNext)
@@ -150,11 +146,8 @@ struct d2data_0072A9A8_t
 };
 #pragma pack(pop)
 
-extern "C" const unsigned int gData_006DB9D8[10]; // 0x006DB9D8
 extern "C" struct d2data_0072A9A8_t gData_0072A9A8; // 0x0072A9A8
-
-extern "C" const unsigned int gData_006DB9D8[10] = { 0, 6, 6, 6, 6, 6, 6, 6, 6, 6 }; // 0x006DB9D8
-#pragma comment(linker, "/alternatename:?gaLightSampleCounts@@3PAIA=_gData_006DB9D8")
+extern "C" const unsigned int gData_006DB9D8[10]; // 0x006DB9D8
 
 extern "C" struct d2data_0072A9A8_t gData_0072A9A8 = {
     (const void*)"English",
@@ -174,6 +167,9 @@ extern "C" struct d2data_0072A9A8_t gData_0072A9A8 = {
     (const void*)"14",
     { 0x00 }
 }; // 0x0072A9A8
+
+extern "C" const unsigned int gData_006DB9D8[10] = { 0, 6, 6, 6, 6, 6, 6, 6, 6, 6 }; // 0x006DB9D8
+#pragma comment(linker, "/alternatename:?gaLightSampleCounts@@3PAIA=_gData_006DB9D8")
 
 extern D2LightOffsetsStrc gaLightOffsetsB[10] = {
     { { 0 } },

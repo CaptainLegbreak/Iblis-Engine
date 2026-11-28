@@ -1,4 +1,5 @@
 #include "SRP.h"
+#include "StormApi2.h"
 
 struct FindSignatureTag
 {
@@ -31,10 +32,6 @@ struct D2SrpSha1ContextStrc
     unsigned int aCount[2];
     unsigned char aBuffer[64];
 };
-
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int dwFlags);         // 0x00413020
-
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int dwFlags);                 // 0x00412650
 
 void __fastcall sub_00529F80_SHA1Update(FindSignatureTag* context, unsigned char* data, unsigned int len); // 0x00529F80
 

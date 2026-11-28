@@ -1,6 +1,7 @@
 #include "D2CMP.h"
 #include "D2GfxTypes.h"
 #include "D2CmpTypes.h"
+#include "FogApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -24,13 +25,10 @@ struct D2CmpRGBStrc;
 
 struct D2CmpPaletteStrc;
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
 int __fastcall CmpScanRun(unsigned char nValue, const unsigned char* pData, const unsigned char* pEnd, int nMax, int* pbRunReachedEnd, int* pbRestReachedEnd); // 0x0060D310
 
-int __fastcall sub_0060D3A0_ScanOtherRun(const unsigned char* pData, const unsigned char* pEnd, unsigned char nValue, int nMax, int* pbRunReachedEnd, int* pbRestReachedEnd); // 0x0060D3A0
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -38,7 +36,6 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 typedef unsigned char (__stdcall* D2CmpMapColorFn)(unsigned char nRed, unsigned char nGreen, unsigned char nBlue);
 
-int __fastcall FOG_Free(void*, const char*, int, int); // 0x0040B3C0
 
 extern "C" void* __cdecl memcpy(void*, const void*, unsigned int); // 0x006829C0
 
@@ -98,7 +95,6 @@ unsigned char* __fastcall SubTileCompress(const unsigned char* pData, unsigned i
     unsigned int i;
     unsigned int nSize;
 
-// build: symbol ?gszSubTileFile@* 0x006E61F8
     pBuffer = (unsigned char*)FOG_Alloc(0xC20, gszSubTileFile, 0x1C, 0);
     pOut = pBuffer;
     nRow = 0;
@@ -160,7 +156,7 @@ D2CmpSubTileRecordStrc* __fastcall SubTileCreateRecord(const void* pSrc, int bRa
     else
     {
         int nLength;
-        pData = sub_0060D430_Compress(pSrc, &nLength);
+        pData = SubTileCompress(pSrc, &nLength);
         nSize = nLength;
     }
     D2CmpSubTileRecordStrc* pRecord = (D2CmpSubTileRecordStrc*)FOG_Alloc(sizeof(D2CmpSubTileRecordStrc), szSubTileFile, 0x6E, 0);
@@ -432,49 +428,12 @@ static void __stdcall SubTileConvertFloor24To8(D2CmpColorStrc tColor, D2CmpMapCo
     FOG_Free(pPixels, szTileCodecFile, 0x1C7, 0);
 }
 
-void __fastcall sub_M92_Emit_0060D7E0(D2CmpSubTileRecordStrc* pRecord)
-{
-    unsigned char* pData = pRecord->ptData;
-    if (SubTileHasTransparentPixel(pData))
-    {
-        sub_M92_EmitSinkA(pRecord);
-    }
-    else
-    {
-        sub_M92_EmitSinkB(pData, pRecord);
-    }
-}
-
 // @ref 0x0060D7E0
-static int sub_0060D7E0_HasTransparent(const unsigned char* pData)
-{
-    int nOffset = 14;
-    int nWidth = 4;
-    for (int nRow = 0; nRow < 15; ++nRow)
-    {
-        for (int nPixel = 0; nPixel < nWidth; ++nPixel)
-            if (!pData[nOffset + nPixel])
-                return 1;
-        pData += 32;
-        if (nRow < 7)
-        {
-            nOffset -= 2;
-            nWidth += 4;
-        }
-        else
-        {
-            nOffset += 2;
-            nWidth -= 4;
-        }
-    }
-    return 0;
-}
-
 // 0x0060DB20
 void __fastcall SubTileEncodeFloor(D2CmpSubTileRecordStrc* pRecord)
 {
     unsigned char* pData = pRecord->ptData;
-    if (sub_0060D7E0_HasTransparent(pData))
+    if (SubTileHasTransparentPixel(pData))
         SubTileCompressFloor(pRecord, pData);
     else
         SubTilePackFloor(pRecord, pData);

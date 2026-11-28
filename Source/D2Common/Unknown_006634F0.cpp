@@ -18,10 +18,12 @@
 #include "D2ItemsWorld.h"
 
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 
 #include "D2Structs.h"
 
 #include "D2LevelTxt.h"
+#include "D2CommonApi.h"
 
 struct D2InventoryStrc;
 
@@ -40,10 +42,6 @@ struct D2Roll20Strc;
 struct D2Roll28Strc;
 
 struct D2HirelingTxt;
-
-void __fastcall SEED_InitSeed(D2SeedStrc* pSeed); // 0x00650E30
-
-void __fastcall SEED_InitLowSeed(D2SeedStrc* pSeed, unsigned int nLowSeed); // 0x00650E40
 
 unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
@@ -114,7 +112,6 @@ D2HirelingTxt* __stdcall DATATBLS_GetNextHirelingTxtRecordFromClassId(int bExpan
 
 D2HirelingTxt* __stdcall DATATBLS_GetNextHirelingTxtRecordFromNameId(int bExpansion, unsigned short nNameId, D2HirelingTxt* pOldRecord); // 0x00656390
 
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer); // 0x00625480
 
 extern const int gnSetMaskToBonusMappingTable[0x40]; // 0x006EE440
 
@@ -122,13 +119,11 @@ void __fastcall sub_M102_UseBonusCount_00663A10(int nCount);
 
 D2UnitStrc* __stdcall INVENTORY_IsItemInInventory(D2InventoryStrc* pInventory, D2UnitStrc* pItem); // 0x0063E070
 
-int __stdcall INVENTORY_GetItemNodePage(D2UnitStrc* pItem); // 0x0063E020
 
-unsigned int __stdcall ITEMS_GetSetItemsMask(D2UnitStrc* pPlayer, D2UnitStrc* pSetItem, int bDontIgnoreInputItem); // 0x0062A370
 
 int __fastcall sub_00663A20_SetItemBonusStates(D2UnitStrc* pItem, unsigned int nSetItemMask); // 0x00663A20
 
-int __fastcall sub_00663B40_SetBonusStatList(D2UnitStrc* pUnit, D2UnitStrc* pItem, int a3); // 0x00663B40
+int __fastcall sub_00663B40_SetBonusStatList(D2UnitStrc* pUnit, D2UnitStrc* pItem, int nUpdateMode); // 0x00663B40
 
 // 0x006634F0
 int __fastcall sub_006634F0_RollSeededRecord(int nSeed, D2Rolled6634F0Strc* pOut, unsigned char nLevel)
@@ -231,39 +226,8 @@ struct d2data_007484C4_t
 };
 #pragma pack(pop)
 
-extern "C" const unsigned short gData_006EE410[9]; // 0x006EE410
-extern "C" const int gData_006EE424[7]; // 0x006EE424
-extern "C" const int gData_006EE440[0x40]; // 0x006EE440
 extern "C" struct d2data_00748488_t gData_00748488; // 0x00748488
 extern "C" struct d2data_007484C4_t gData_007484C4; // 0x007484C4
-extern "C" const int gData_007484CC[4]; // 0x007484CC
-extern "C" const int gData_007484DC[5]; // 0x007484DC
-extern "C" const int gData_007484F0[4]; // 0x007484F0
-extern "C" const int gData_00748500[5]; // 0x00748500
-extern "C" const int gData_00748514[4]; // 0x00748514
-extern "C" const int gData_00748524[5]; // 0x00748524
-extern "C" const int gData_00748538[4]; // 0x00748538
-extern "C" const int gData_00748548[4]; // 0x00748548
-extern "C" const D2Roll8Strc gData_00748558[4]; // 0x00748558
-extern "C" const D2Roll16Strc gData_00748578[6]; // 0x00748578
-extern "C" const D2Roll16Strc gData_007485D8[6]; // 0x007485D8
-extern "C" const D2Roll24Strc gData_00748638[6]; // 0x00748638
-extern "C" const D2Roll20Strc gData_007486C8[12]; // 0x007486C8
-extern "C" const D2Roll28Strc gData_007487B8[3]; // 0x007487B8
-
-extern "C" const unsigned short gData_006EE410[9] = { 0, 0xD2B, 0xD2C, 0x2B52, 0x2B50, 0x2B51, 0xD31, 0xD30, 0xD2F }; // 0x006EE410
-#pragma comment(linker, "/alternatename:_gnHirelingDescStringIds=_gData_006EE410")
-
-extern "C" const int gData_006EE424[7] = { 165, 166, 167, 168, 169, 170 }; // 0x006EE424
-#pragma comment(linker, "/alternatename:?gnItemSetStates@@3QBHB=_gData_006EE424")
-
-extern "C" const int gData_006EE440[0x40] = {
-    0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,
-    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
-    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
-    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6
-}; // 0x006EE440
-#pragma comment(linker, "/alternatename:?gnSetMaskToBonusMappingTable@@3QBHB=_gData_006EE440")
 
 extern "C" struct d2data_00748488_t gData_00748488 = {
     (const void*)"English",
@@ -283,42 +247,29 @@ extern "C" struct d2data_00748488_t gData_00748488 = {
     (const void*)"14"
 }; // 0x00748488
 
-extern "C" struct d2data_007484C4_t gData_007484C4 = {
-    { 0x00, 0x00, 0x00, 0x00, 0x06 }
-}; // 0x007484C4
+extern const int gnHirelingRollBase1[4] = { 0, 2, 4 }; // 0x007484CC
 
-extern "C" const int gData_007484CC[4] = { 0, 2, 4 }; // 0x007484CC
-#pragma comment(linker, "/alternatename:?gnHirelingRollBase1@@3QBHB=_gData_007484CC")
+extern const int gnHirelingRollCount1[5] = { 2, 2, 2, 0, 6 }; // 0x007484DC
 
-extern "C" const int gData_007484DC[5] = { 2, 2, 2, 0, 6 }; // 0x007484DC
-#pragma comment(linker, "/alternatename:?gnHirelingRollCount1@@3QBHB=_gData_007484DC")
+extern const int gnHirelingRollBase2[4] = { 0, 2, 4 }; // 0x007484F0
 
-extern "C" const int gData_007484F0[4] = { 0, 2, 4 }; // 0x007484F0
-#pragma comment(linker, "/alternatename:?gnHirelingRollBase2@@3QBHB=_gData_007484F0")
+extern const int gnHirelingRollCount2[5] = { 2, 2, 2, 0, 6 }; // 0x00748500
 
-extern "C" const int gData_00748500[5] = { 2, 2, 2, 0, 6 }; // 0x00748500
-#pragma comment(linker, "/alternatename:?gnHirelingRollCount2@@3QBHB=_gData_00748500")
+extern const int gnHirelingRollBase3[4] = { 0, 2, 4 }; // 0x00748514
 
-extern "C" const int gData_00748514[4] = { 0, 2, 4 }; // 0x00748514
-#pragma comment(linker, "/alternatename:?gnHirelingRollBase3@@3QBHB=_gData_00748514")
+extern const int gnHirelingRollCount3[5] = { 2, 2, 2, 0, 12 }; // 0x00748524
 
-extern "C" const int gData_00748524[5] = { 2, 2, 2, 0, 12 }; // 0x00748524
-#pragma comment(linker, "/alternatename:?gnHirelingRollCount3@@3QBHB=_gData_00748524")
+extern const int gnHirelingRollBase4[4] = { 0, 3, 6 }; // 0x00748538
 
-extern "C" const int gData_00748538[4] = { 0, 3, 6 }; // 0x00748538
-#pragma comment(linker, "/alternatename:?gnHirelingRollBase4@@3QBHB=_gData_00748538")
+extern const int gnHirelingRollCount4[4] = { 3, 3, 6 }; // 0x00748548
 
-extern "C" const int gData_00748548[4] = { 3, 3, 6 }; // 0x00748548
-#pragma comment(linker, "/alternatename:?gnHirelingRollCount4@@3QBHB=_gData_00748548")
-
-extern "C" const D2Roll8Strc gData_00748558[4] = {
+extern const D2Roll8Strc gaHirelingRollStart[4] = {
     { 150, 3 },
     { 300, 9 },
     { 600, 15 }
 }; // 0x00748558
-#pragma comment(linker, "/alternatename:?gaHirelingRollStart@@3QBUD2Roll8Strc@@B=_gData_00748558")
 
-extern "C" const D2Roll16Strc gData_00748578[6] = {
+extern const D2Roll16Strc gaHirelingRoll1[6] = {
     { 0, 30 },
     { 0, 60, 100, 2 },
     { 0, 120 },
@@ -326,9 +277,8 @@ extern "C" const D2Roll16Strc gData_00748578[6] = {
     { 0, 240 },
     { 1, 400, 170, 3 }
 }; // 0x00748578
-#pragma comment(linker, "/alternatename:?gaHirelingRoll1@@3QBUD2Roll16Strc@@B=_gData_00748578")
 
-extern "C" const D2Roll16Strc gData_007485D8[6] = {
+extern const D2Roll16Strc gaHirelingRoll2[6] = {
     { 0, 15 },
     { 1, 45, 80, 1 },
     { 0, 25 },
@@ -336,9 +286,8 @@ extern "C" const D2Roll16Strc gData_007485D8[6] = {
     { 0, 80 },
     { 1, 150, 125, 2 }
 }; // 0x007485D8
-#pragma comment(linker, "/alternatename:?gaHirelingRoll2@@3QBUD2Roll16Strc@@B=_gData_007485D8")
 
-extern "C" const D2Roll24Strc gData_00748638[6] = {
+extern const D2Roll24Strc gaHirelingRoll3[6] = {
     { 0, 1, 1, 3 },
     { 1, 1, 2, 4, 75, 2 },
     { 0, 1, 2, 6 },
@@ -346,9 +295,8 @@ extern "C" const D2Roll24Strc gData_00748638[6] = {
     { 1, 1, 4, 10, 200, 4 },
     { 0, 1, 3, 8 }
 }; // 0x00748638
-#pragma comment(linker, "/alternatename:?gaHirelingRoll3@@3QBUD2Roll24Strc@@B=_gData_00748638")
 
-extern "C" const D2Roll20Strc gData_007486C8[12] = {
+extern const D2Roll20Strc gaHirelingRoll4[12] = {
     { 0 },
     { 1, 55, 2, 0, 3371 },
     { 2, 85, 2, 0, 3372 },
@@ -362,14 +310,27 @@ extern "C" const D2Roll20Strc gData_007486C8[12] = {
     { 10, 190, 2, 3, 3379 },
     { 11, 130, 1, 3, 3380 }
 }; // 0x007486C8
-#pragma comment(linker, "/alternatename:?gaHirelingRoll4@@3QBUD2Roll20Strc@@B=_gData_007486C8")
 
-extern "C" const D2Roll28Strc gData_007487B8[3] = {
+extern const D2Roll28Strc gaHirelingRollLevel[3] = {
     { 0, 0, 0, 1, 1, 0, 1 },
     { 80, 40, 25, 2, 2, 3, 2 },
     { 120, 60, 40, 3, 3, 5, 3 }
 }; // 0x007487B8
-#pragma comment(linker, "/alternatename:?gaHirelingRollLevel@@3QBUD2Roll28Strc@@B=_gData_007487B8")
+
+extern "C" const unsigned short gnHirelingDescStringIds[9] = { 0, 0xD2B, 0xD2C, 0x2B52, 0x2B50, 0x2B51, 0xD31, 0xD30, 0xD2F }; // 0x006EE410
+
+extern const int gnSetMaskToBonusMappingTable[0x40] = {
+    0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6
+}; // 0x006EE440
+
+extern const int gnItemSetStates[7] = { 165, 166, 167, 168, 169, 170 }; // 0x006EE424
+
+extern "C" struct d2data_007484C4_t gData_007484C4 = {
+    { 0x00, 0x00, 0x00, 0x00, 0x06 }
+}; // 0x007484C4
 
 // 0x00663720
 const Unicode* __fastcall MONSTERS_GetHirelingDescString(int nId)
@@ -383,7 +344,7 @@ const Unicode* __fastcall MONSTERS_GetHirelingDescString(int nId)
 }
 
 // 0x00663740
-void __stdcall sub_00663740(int nUnused1)
+void __stdcall sub_00663740_Nop(int nUnused1)
 {
 }
 
@@ -564,11 +525,8 @@ __forceinline unsigned int ITEMS_GetStoreSetItemsMaskInline(D2UnitStrc* pUnit, D
 
 extern const int gnItemSetStates[]; // 0x006EE424
 
-int __stdcall ITEMS_GetItemQuality(D2UnitStrc* pItem); // 0x00627E70
 
-D2SetItemsTxt* __stdcall ITEMS_GetSetItemsTxtRecordFromItem(D2UnitStrc* pItem); // 0x0062A490
 
-int __stdcall ITEMS_GetNoOfSetItemsFromItem(D2UnitStrc* pItem); // 0x0062B3A0
 
 int __stdcall D2Common_10574(D2UnitStrc* pUnit, int nStateId, int bSet); // 0x006279A0
 
@@ -643,22 +601,11 @@ int __fastcall sub_00663A20_SetItemBonusStates(D2UnitStrc* pItem, unsigned int n
 
 extern D2DataTablesStrc* sgptDataTables;                                                                    // 0x00744304
 D2SetItemsTxt* __fastcall DATATBLS_GetSetItemsTxtRecord(int nIndex);                                    // 0x00483440
-D2StatListStrc* __stdcall STATLIST_AllocStatList(void* pMemPool, unsigned int fFlags, unsigned int dwTimeout, int nUnitType, int nUnitGUID); // 0x006251F0
-D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitAndState(D2UnitStrc* pUnit, int nState);             // 0x006256B0
-int __stdcall STATLIST_GetStatValue(D2StatListStrc* pStatList, int nStatId, unsigned short nLayer);        // 0x00625D00
-void __stdcall STATLIST_FreeStatList(D2StatListStrc* pStatList);                                           // 0x00626CD0
-void __stdcall D2COMMON_10475_PostStatToStatList(D2UnitStrc* pUnit, D2StatListStrc* pStatList, int bResetFlag); // 0x00626E10
-void __stdcall STATLIST_AddStat(D2StatListStrc* pStatList, int nStatId, int nValue, unsigned short nLayer); // 0x00627030
-void __stdcall STATLIST_RemoveAllStats(D2StatListStrc* pStatList);                                         // 0x00627340
-void __stdcall D2Common_10474(D2UnitStrc* pUnit, D2StatListStrc* pStatList);                               // 0x006277E0
-int __stdcall ITEMS_GetFileIndex(D2UnitStrc* pItem);                                                        // 0x00629DA0
-int __stdcall ITEMS_IsMagSetRarUniCrfOrTmp(D2UnitStrc* pItem);                                              // 0x0062A0F0
-void __fastcall ITEMMODS_UpdateFullSetBoni(D2UnitStrc* pUnit, D2UnitStrc* pItem, int nState);               // 0x00660120
 
 // 0x00663B40
-int __fastcall sub_00663B40_SetBonusStatList(D2UnitStrc* pUnit, D2UnitStrc* pItem, int a3)
+int __fastcall sub_00663B40_SetBonusStatList(D2UnitStrc* pUnit, D2UnitStrc* pItem, int nUpdateMode)
 {
-    if (a3 > 1)
+    if (nUpdateMode > 1)
     {
         return 0;
     }
@@ -699,7 +646,7 @@ int __fastcall sub_00663B40_SetBonusStatList(D2UnitStrc* pUnit, D2UnitStrc* pIte
         {
             if (nValue == STATLIST_GetStatValue(pStatList, STAT_VALUE, 0))
             {
-                if (a3 == 0)
+                if (nUpdateMode == 0)
                 {
                     STATLIST_RemoveAllStats(pStatList);
                 }
@@ -713,7 +660,7 @@ int __fastcall sub_00663B40_SetBonusStatList(D2UnitStrc* pUnit, D2UnitStrc* pIte
         ++i;
     }
 
-    if (a3 == 1)
+    if (nUpdateMode == 1)
     {
         return 0;
     }
@@ -730,7 +677,7 @@ int __fastcall sub_00663B40_SetBonusStatList(D2UnitStrc* pUnit, D2UnitStrc* pIte
     STATLIST_SetState(pStatList, nState);
 
 update:
-    switch (a3)
+    switch (nUpdateMode)
     {
     case 0:
         STATLIST_AddStat(pStatList, STAT_VALUE, nValue, 0);
@@ -747,7 +694,7 @@ update:
 }
 
 // 0x00663CC0
-int __stdcall ITEMS_UpdateSets(D2UnitStrc* pUnit, D2UnitStrc* pItem, int a3, int a4)
+int __stdcall ITEMS_UpdateSets(D2UnitStrc* pUnit, D2UnitStrc* pItem, int nUpdateMode, int bForceStateUpdate)
 {
     if (!pUnit)
     {
@@ -761,12 +708,12 @@ int __stdcall ITEMS_UpdateSets(D2UnitStrc* pUnit, D2UnitStrc* pItem, int a3, int
 
     const unsigned int nSetItemMask = ITEMS_GetStoreSetItemsMaskInline(pUnit, pItem);
 
-    if (a4 || !a3)
+    if (bForceStateUpdate || !nUpdateMode)
     {
         sub_00663A20_SetItemBonusStates(pItem, nSetItemMask);
     }
 
-    sub_00663B40_SetBonusStatList(pUnit, pItem, a3);
+    sub_00663B40_SetBonusStatList(pUnit, pItem, nUpdateMode);
 
     return 1;
 }

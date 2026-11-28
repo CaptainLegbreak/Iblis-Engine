@@ -1,4 +1,5 @@
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 
 #include "D2TxtTables.h"
 
@@ -6,14 +7,13 @@
 
 #include "D2Unicode.h"
 #include "D2Txt.h"
+#include "FogApi.h"
 
 struct D2BinFieldStrc;
 
 struct D2SkillsTxt;
 
 struct D2PetTypeTxt;
-
-void* __stdcall DATATBLS_CompileTxt(void* hArchive, const char* szName, D2BinFieldStrc* pTbl, int* pRecordCount, int nRecordSize); // 0x006122F0
 
 typedef unsigned int size_t;
 
@@ -27,31 +27,24 @@ struct D2PetTypeTxt
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern D2TxtLinkStrc* gpPettypeLinker_0096C81C; // 0x0096C81C
+extern D2TxtLinkStrc* gpPettypeLinker; // 0x0096C81C
 
-unsigned short __fastcall DATATBLS_GetStringIdFromReferenceString(char* szReference); // 0x006117B0
 
-void __fastcall DATATBLS_SkillCalcLinker(char* pSrc, void* pRecord, int nOffset, int nPosition, int nTxtRow, int nTxtColumn); // 0x00611BD0
 
-void __fastcall DATATBLS_SkillDescCalcLinker(char* pSrc, void* pRecord, int nOffset, int nPosition, int nTxtRow, int nTxtColumn); // 0x00611C70
 
-extern int gnPettypeTxtRecordCount_0096C820; // 0x0096C820
+extern int gnPettypeTxtRecordCount; // 0x0096C820
 
-extern void* gpSkillsCode_0096BC70; // 0x0096BC70
+extern void* gpSkillsCode; // 0x0096BC70
 
-extern void* gpSkillDescCode_0096BC7C; // 0x0096BC7C
+extern void* gpSkillDescCode; // 0x0096BC7C
 
-void __stdcall DATATBLS_UnloadBin(void* pBinFile); // 0x006125C0
 
-void __fastcall DATATBLS_GetBinFileHandle(void* hArchive, const char* szFile, void** ppFileHandle, int* pSize, int* pSizeEx); // 0x00613E90
 
 void __stdcall sub_006BD230_AddRecordToLinker(D2TxtLinkStrc* pLinker, int nCode); // 0x006BD230
 
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -59,9 +52,9 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, size_t nSize); // 0x0068
 
 extern D2TxtLinkStrc* gpPlayerClassLinker_0096BC34; // 0x0096BC34
 
-extern D2TxtLinkStrc* gpElemTypesLinker_0096BC4C; // 0x0096BC4C
+extern D2TxtLinkStrc* gpElemTypesLinker; // 0x0096BC4C
 
-extern D2TxtLinkStrc* gpPlrModeLinker_0096BC64; // 0x0096BC64
+extern D2TxtLinkStrc* gpPlrModeLinker; // 0x0096BC64
 
 extern D2TxtLinkStrc* gpEventsLinker_0096BCA8; // 0x0096BCA8
 
@@ -69,13 +62,13 @@ extern D2TxtLinkStrc* gpStatesLinker_0096BCF0; // 0x0096BCF0
 
 extern D2TxtLinkStrc* gpSoundsLinker_0096BDC8; // 0x0096BDC8
 
-extern D2TxtLinkStrc* gpMissilesLinker_0096C798; // 0x0096C798
+extern D2TxtLinkStrc* gpMissilesLinker; // 0x0096C798
 
-extern D2TxtLinkStrc* gpSkillDescLinker_0096C7C0; // 0x0096C7C0
+extern D2TxtLinkStrc* gpSkillDescLinker; // 0x0096C7C0
 
 extern D2TxtLinkStrc* gpSkillsLinker_0096C7CC; // 0x0096C7CC
 
-extern D2TxtLinkStrc* gpOverlayLinker_0096C7E8; // 0x0096C7E8
+extern D2TxtLinkStrc* gpOverlayLinker; // 0x0096C7E8
 
 extern D2TxtLinkStrc* gpItemStatCostLinker_0096C800; // 0x0096C800
 
@@ -83,33 +76,33 @@ extern D2TxtLinkStrc* gpItemTypesLinker_0096C824; // 0x0096C824
 
 extern int gbCompileTxt; // 0x0096C8B4
 
-extern void* gpSkillDescTxt_0096C7BC; // 0x0096C7BC
+extern void* gpSkillDescTxt; // 0x0096C7BC
 
-extern int gnSkillDescTxtRecordCount_0096C7C4; // 0x0096C7C4
+extern int gnSkillDescTxtRecordCount; // 0x0096C7C4
 
-extern D2SkillsTxt* gpSkillsTxt_0096C7C8; // 0x0096C7C8
+extern D2SkillsTxt* gpSkillsTxt; // 0x0096C7C8
 
-extern int gnSkillsTxtRecordCount_0096C7D0; // 0x0096C7D0
+extern int gnSkillsTxtRecordCount; // 0x0096C7D0
 
-extern int* gpClassSkillCount_0096C7D4; // 0x0096C7D4
+extern int* gpClassSkillCount; // 0x0096C7D4
 
-extern int gnHighestClassSkillCount_0096C7D8; // 0x0096C7D8
+extern int gnHighestClassSkillCount; // 0x0096C7D8
 
-extern short* gpClassSkillList_0096C7DC; // 0x0096C7DC
+extern short* gpClassSkillList; // 0x0096C7DC
 
-extern int gnPassiveSkills_0096C7E0; // 0x0096C7E0
+extern int gnPassiveSkills; // 0x0096C7E0
 
-extern short* gpPassiveSkills_0096C7E4; // 0x0096C7E4
+extern short* gpPassiveSkills; // 0x0096C7E4
 
 extern D2PetTypeTxt* gpPettypeTxt_0096C818; // 0x0096C818
 
-extern int gnSkillsCodeSize_0096BC74; // 0x0096BC74
+extern int gnSkillsCodeSize; // 0x0096BC74
 
-extern int gnSkillsCodeSizeEx_0096BC78; // 0x0096BC78
+extern int gnSkillsCodeSizeEx; // 0x0096BC78
 
-extern int gnSkillDescCodeSize_0096BC80; // 0x0096BC80
+extern int gnSkillDescCodeSize; // 0x0096BC80
 
-extern int gnSkillDescCodeSizeEx_0096BC84; // 0x0096BC84
+extern int gnSkillDescCodeSizeEx; // 0x0096BC84
 
 // 0x00613F80
 void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
@@ -124,7 +117,7 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
 
     D2BinFieldStrc pSkillDescTbl[] =
     {
-        { "skilldesc", 17, 0, 0, &gpSkillDescLinker_0096C7C0 },
+        { "skilldesc", 17, 0, 0, &gpSkillDescLinker },
         { "skillpage", 4, 0, 2, 0 },
         { "skillrow", 4, 0, 3, 0 },
         { "skillcolumn", 4, 0, 4, 0 },
@@ -140,18 +133,18 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         { "descatt", 3, 0, 20, 0 },
         { "ddam calc1", 25, 0, 24, (void*)DATATBLS_SkillDescCalcLinker },
         { "ddam calc2", 25, 0, 28, (void*)DATATBLS_SkillDescCalcLinker },
-        { "p1dmelem", 13, 0, 32, &gpElemTypesLinker_0096BC4C },
+        { "p1dmelem", 13, 0, 32, &gpElemTypesLinker },
         { "p1dmmin", 25, 0, 36, (void*)DATATBLS_SkillDescCalcLinker },
         { "p1dmmax", 25, 0, 48, (void*)DATATBLS_SkillDescCalcLinker },
-        { "p2dmelem", 13, 0, 33, &gpElemTypesLinker_0096BC4C },
+        { "p2dmelem", 13, 0, 33, &gpElemTypesLinker },
         { "p2dmmin", 25, 0, 40, (void*)DATATBLS_SkillDescCalcLinker },
         { "p2dmmax", 25, 0, 52, (void*)DATATBLS_SkillDescCalcLinker },
-        { "p3dmelem", 13, 0, 34, &gpElemTypesLinker_0096BC4C },
+        { "p3dmelem", 13, 0, 34, &gpElemTypesLinker },
         { "p3dmmin", 25, 0, 44, (void*)DATATBLS_SkillDescCalcLinker },
         { "p3dmmax", 25, 0, 56, (void*)DATATBLS_SkillDescCalcLinker },
-        { "descmissile1", 20, 0, 60, &gpMissilesLinker_0096C798 },
-        { "descmissile2", 20, 0, 62, &gpMissilesLinker_0096C798 },
-        { "descmissile3", 20, 0, 64, &gpMissilesLinker_0096C798 },
+        { "descmissile1", 20, 0, 60, &gpMissilesLinker },
+        { "descmissile2", 20, 0, 62, &gpMissilesLinker },
+        { "descmissile3", 20, 0, 64, &gpMissilesLinker },
         { "descline1", 4, 0, 66, 0 },
         { "desctexta1", 22, 0, 84, (void*)DATATBLS_GetStringIdFromReferenceString },
         { "desctextb1", 22, 0, 118, (void*)DATATBLS_GetStringIdFromReferenceString },
@@ -254,11 +247,11 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         { "prgcalc2", 25, 0, 60, (void*)DATATBLS_SkillCalcLinker },
         { "prgcalc3", 25, 0, 64, (void*)DATATBLS_SkillCalcLinker },
         { "prgdam", 4, 0, 68, 0 },
-        { "srvmissile", 20, 0, 70, &gpMissilesLinker_0096C798 },
-        { "srvmissilea", 20, 0, 72, &gpMissilesLinker_0096C798 },
-        { "srvmissileb", 20, 0, 74, &gpMissilesLinker_0096C798 },
-        { "srvmissilec", 20, 0, 76, &gpMissilesLinker_0096C798 },
-        { "srvoverlay", 20, 0, 78, &gpOverlayLinker_0096C7E8 },
+        { "srvmissile", 20, 0, 70, &gpMissilesLinker },
+        { "srvmissilea", 20, 0, 72, &gpMissilesLinker },
+        { "srvmissileb", 20, 0, 74, &gpMissilesLinker },
+        { "srvmissilec", 20, 0, 76, &gpMissilesLinker },
+        { "srvoverlay", 20, 0, 78, &gpOverlayLinker },
         { "lob", 26, 1, 4, 0 },
         { "decquant", 26, 0, 4, 0 },
         { "immediate", 26, 15, 4, 0 },
@@ -302,8 +295,8 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         { "passiveevent", 20, 0, 184, &gpEventsLinker_0096BCA8 },
         { "passiveeventfunc", 3, 0, 186, 0 },
         { "summon", 20, 0, 188, &pMonStatsLinker },
-        { "pettype", 21, 0, 190, &gpPettypeLinker_0096C81C },
-        { "summode", 13, 0, 191, &gpMonModeLinker_0096BC5C },
+        { "pettype", 21, 0, 190, &gpPettypeLinker },
+        { "summode", 13, 0, 191, &gpMonModeLinker },
         { "petmax", 25, 0, 192, (void*)DATATBLS_SkillCalcLinker },
         { "sumskill1", 20, 0, 196, &gpSkillsLinker_0096C7CC },
         { "sumsk1calc", 25, 0, 208, (void*)DATATBLS_SkillCalcLinker },
@@ -316,12 +309,12 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         { "sumskill5", 20, 0, 204, &gpSkillsLinker_0096C7CC },
         { "sumsk5calc", 25, 0, 224, (void*)DATATBLS_SkillCalcLinker },
         { "sumumod", 3, 0, 228, 0 },
-        { "sumoverlay", 20, 0, 230, &gpOverlayLinker_0096C7E8 },
-        { "cltmissile", 20, 0, 232, &gpMissilesLinker_0096C798 },
-        { "cltmissilea", 20, 0, 234, &gpMissilesLinker_0096C798 },
-        { "cltmissileb", 20, 0, 236, &gpMissilesLinker_0096C798 },
-        { "cltmissilec", 20, 0, 238, &gpMissilesLinker_0096C798 },
-        { "cltmissiled", 20, 0, 240, &gpMissilesLinker_0096C798 },
+        { "sumoverlay", 20, 0, 230, &gpOverlayLinker },
+        { "cltmissile", 20, 0, 232, &gpMissilesLinker },
+        { "cltmissilea", 20, 0, 234, &gpMissilesLinker },
+        { "cltmissileb", 20, 0, 236, &gpMissilesLinker },
+        { "cltmissilec", 20, 0, 238, &gpMissilesLinker },
+        { "cltmissiled", 20, 0, 240, &gpMissilesLinker },
         { "cltstfunc", 3, 0, 242, 0 },
         { "cltdofunc", 3, 0, 244, 0 },
         { "cltprgfunc1", 3, 0, 246, 0 },
@@ -336,19 +329,19 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         { "dosound a", 20, 0, 258, &gpSoundsLinker_0096BDC8 },
         { "dosound b", 20, 0, 260, &gpSoundsLinker_0096BDC8 },
         { "tgtsound", 20, 0, 266, &gpSoundsLinker_0096BDC8 },
-        { "tgtoverlay", 20, 0, 264, &gpOverlayLinker_0096C7E8 },
-        { "castoverlay", 20, 0, 262, &gpOverlayLinker_0096C7E8 },
-        { "cltoverlaya", 20, 0, 272, &gpOverlayLinker_0096C7E8 },
-        { "cltoverlayb", 20, 0, 274, &gpOverlayLinker_0096C7E8 },
+        { "tgtoverlay", 20, 0, 264, &gpOverlayLinker },
+        { "castoverlay", 20, 0, 262, &gpOverlayLinker },
+        { "cltoverlaya", 20, 0, 272, &gpOverlayLinker },
+        { "cltoverlayb", 20, 0, 274, &gpOverlayLinker },
         { "prgsound", 20, 0, 270, &gpSoundsLinker_0096BDC8 },
-        { "prgoverlay", 20, 0, 268, &gpOverlayLinker_0096C7E8 },
+        { "prgoverlay", 20, 0, 268, &gpOverlayLinker },
         { "cltcalc1", 25, 0, 276, (void*)DATATBLS_SkillCalcLinker },
         { "cltcalc2", 25, 0, 280, (void*)DATATBLS_SkillCalcLinker },
         { "cltcalc3", 25, 0, 284, (void*)DATATBLS_SkillCalcLinker },
         { "warp", 26, 38, 4, 0 },
-        { "anim", 13, 0, 16, &gpPlrModeLinker_0096BC64 },
-        { "seqtrans", 13, 0, 18, &gpPlrModeLinker_0096BC64 },
-        { "monanim", 13, 0, 17, &gpMonModeLinker_0096BC5C },
+        { "anim", 13, 0, 16, &gpPlrModeLinker },
+        { "seqtrans", 13, 0, 18, &gpPlrModeLinker },
+        { "monanim", 13, 0, 17, &gpMonModeLinker },
         { "seqnum", 4, 0, 19, 0 },
         { "seqinput", 4, 0, 22, 0 },
         { "range", 13, 0, 20, &pRangeLinker },
@@ -385,7 +378,7 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         { "ItemCltCheckStart", 26, 34, 4, 0 },
         { "ItemTarget", 4, 0, 288, 0 },
         { "ItemCastSound", 20, 0, 290, &gpSoundsLinker_0096BDC8 },
-        { "ItemCastOverlay", 20, 0, 292, &gpOverlayLinker_0096C7E8 },
+        { "ItemCastOverlay", 20, 0, 292, &gpOverlayLinker },
         { "InGame", 26, 10, 4, 0 },
         { "lineofsight", 4, 0, 399, 0 },
         { "attackrank", 4, 0, 398, 0 },
@@ -453,7 +446,7 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         { "MaxLevDam4", 2, 0, 464, 0 },
         { "MaxLevDam5", 2, 0, 468, 0 },
         { "DmgSymPerCalc", 25, 0, 472, (void*)DATATBLS_SkillCalcLinker },
-        { "EType", 13, 0, 476, &gpElemTypesLinker_0096BC4C },
+        { "EType", 13, 0, 476, &gpElemTypesLinker },
         { "EMin", 2, 0, 480, 0 },
         { "EMinLev1", 2, 0, 488, 0 },
         { "EMinLev2", 2, 0, 492, 0 },
@@ -510,14 +503,14 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
     }
 
     gpSkillsLinker_0096C7CC = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 1340);
-    gpSkillsTxt_0096C7C8 = (D2SkillsTxt*)DATATBLS_CompileTxt(hArchive, "skills", pSkillsTbl, &gnSkillsTxtRecordCount_0096C7D0, sizeof(D2SkillsTxt));
-    D2_ASSERT(gnSkillsTxtRecordCount_0096C7D0 < 32767, 1342);
+    gpSkillsTxt = (D2SkillsTxt*)DATATBLS_CompileTxt(hArchive, "skills", pSkillsTbl, &gnSkillsTxtRecordCount, sizeof(D2SkillsTxt));
+    D2_ASSERT(gnSkillsTxtRecordCount < 32767, 1342);
 
-    gnPassiveSkills_0096C7E0 = 0;
+    gnPassiveSkills = 0;
 
-    gpSkillDescLinker_0096C7C0 = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 1346);
-    gpSkillDescTxt_0096C7BC = DATATBLS_CompileTxt(hArchive, "skilldesc", pSkillDescTbl, &gnSkillDescTxtRecordCount_0096C7C4, 288);
-    D2_ASSERT(gnSkillDescTxtRecordCount_0096C7C4 < 32767, 1348);
+    gpSkillDescLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 1346);
+    gpSkillDescTxt = DATATBLS_CompileTxt(hArchive, "skilldesc", pSkillDescTbl, &gnSkillDescTxtRecordCount, 288);
+    D2_ASSERT(gnSkillDescTxtRecordCount < 32767, 1348);
 
     if (gbCompileTxt)
     {
@@ -528,85 +521,85 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         DATATBLS_UnloadBin(pSkillDesc);
     }
 
-    DATATBLS_GetBinFileHandle(hArchive, "skillscode", &gpSkillsCode_0096BC70, &gnSkillsCodeSize_0096BC74, &gnSkillsCodeSizeEx_0096BC78);
-    DATATBLS_GetBinFileHandle(hArchive, "skilldesccode", &gpSkillDescCode_0096BC7C, &gnSkillDescCodeSize_0096BC80, &gnSkillDescCodeSizeEx_0096BC84);
+    DATATBLS_GetBinFileHandle(hArchive, "skillscode", &gpSkillsCode, &gnSkillsCodeSize, &gnSkillsCodeSizeEx);
+    DATATBLS_GetBinFileHandle(hArchive, "skilldesccode", &gpSkillDescCode, &gnSkillDescCodeSize, &gnSkillDescCodeSizeEx);
 
-    gpClassSkillCount_0096C7D4 = (int*)FOG_AllocPool(0, 7 * sizeof(int), ".\\DATATBLS\\DataTbls.cpp", 1366, 0);
+    gpClassSkillCount = (int*)FOG_AllocPool(0, 7 * sizeof(int), ".\\DATATBLS\\DataTbls.cpp", 1366, 0);
     for (int nClass = 0; nClass < 7; ++nClass)
     {
-        gpClassSkillCount_0096C7D4[nClass] = 0;
+        gpClassSkillCount[nClass] = 0;
     }
 
     int nSkillId;
-    for (nSkillId = 0; nSkillId < gnSkillsTxtRecordCount_0096C7D0; ++nSkillId)
+    for (nSkillId = 0; nSkillId < gnSkillsTxtRecordCount; ++nSkillId)
     {
-        pSkillsTxtRecord = &gpSkillsTxt_0096C7C8[nSkillId];
+        pSkillsTxtRecord = &gpSkillsTxt[nSkillId];
         if (pSkillsTxtRecord->nCharClass >= 0 && pSkillsTxtRecord->nCharClass < 7)
         {
-            ++gpClassSkillCount_0096C7D4[pSkillsTxtRecord->nCharClass];
+            ++gpClassSkillCount[pSkillsTxtRecord->nCharClass];
         }
 
         if (nSkillId > 0)
         {
             if (pSkillsTxtRecord->nPassiveState < 0)
             {
-                goto LABEL_NEXT_SKILL;
+                goto NextSkill;
             }
         }
         else
         {
             if (pSkillsTxtRecord->nPassiveState < 0)
             {
-                goto LABEL_NEXT_SKILL;
+                goto NextSkill;
             }
         }
-        ++gnPassiveSkills_0096C7E0;
-LABEL_NEXT_SKILL:
+        ++gnPassiveSkills;
+NextSkill:
         ;
     }
 
-    gnHighestClassSkillCount_0096C7D8 = 0;
+    gnHighestClassSkillCount = 0;
     for (int nClass = 0; nClass < 7; ++nClass)
     {
-        if (gpClassSkillCount_0096C7D4[nClass] > gnHighestClassSkillCount_0096C7D8)
+        if (gpClassSkillCount[nClass] > gnHighestClassSkillCount)
         {
-            gnHighestClassSkillCount_0096C7D8 = gpClassSkillCount_0096C7D4[nClass];
+            gnHighestClassSkillCount = gpClassSkillCount[nClass];
         }
     }
 
-    gpClassSkillList_0096C7DC = (short*)FOG_AllocPool(0, sizeof(short) * 7 * gnHighestClassSkillCount_0096C7D8, ".\\DATATBLS\\DataTbls.cpp", 1398, 0);
-    memset(gpClassSkillList_0096C7DC, 0, sizeof(short) * 7 * gnHighestClassSkillCount_0096C7D8);
+    gpClassSkillList = (short*)FOG_AllocPool(0, sizeof(short) * 7 * gnHighestClassSkillCount, ".\\DATATBLS\\DataTbls.cpp", 1398, 0);
+    memset(gpClassSkillList, 0, sizeof(short) * 7 * gnHighestClassSkillCount);
 
     for (int nClass = 0; nClass < 7; ++nClass)
     {
-        gpClassSkillCount_0096C7D4[nClass] = 0;
+        gpClassSkillCount[nClass] = 0;
     }
 
-    gpPassiveSkills_0096C7E4 = (short*)FOG_AllocPool(0, sizeof(short) * gnPassiveSkills_0096C7E0, ".\\DATATBLS\\DataTbls.cpp", 1402, 0);
-    memset(gpPassiveSkills_0096C7E4, 0, sizeof(short) * gnPassiveSkills_0096C7E0);
-    gnPassiveSkills_0096C7E0 = 0;
+    gpPassiveSkills = (short*)FOG_AllocPool(0, sizeof(short) * gnPassiveSkills, ".\\DATATBLS\\DataTbls.cpp", 1402, 0);
+    memset(gpPassiveSkills, 0, sizeof(short) * gnPassiveSkills);
+    gnPassiveSkills = 0;
 
-    for (int i = 0; i < gnSkillsTxtRecordCount_0096C7D0; ++i)
+    for (int i = 0; i < gnSkillsTxtRecordCount; ++i)
     {
-        pSkillsTxtRecord = &gpSkillsTxt_0096C7C8[i];
+        pSkillsTxtRecord = &gpSkillsTxt[i];
         if (pSkillsTxtRecord->nCharClass >= 0 && pSkillsTxtRecord->nCharClass < 7)
         {
-            gpClassSkillList_0096C7DC[pSkillsTxtRecord->nCharClass * gnHighestClassSkillCount_0096C7D8 + gpClassSkillCount_0096C7D4[pSkillsTxtRecord->nCharClass]] = i;
-            ++gpClassSkillCount_0096C7D4[pSkillsTxtRecord->nCharClass];
+            gpClassSkillList[pSkillsTxtRecord->nCharClass * gnHighestClassSkillCount + gpClassSkillCount[pSkillsTxtRecord->nCharClass]] = i;
+            ++gpClassSkillCount[pSkillsTxtRecord->nCharClass];
         }
 
         if (pSkillsTxtRecord->nPassiveState >= 0)
         {
-            gpPassiveSkills_0096C7E4[gnPassiveSkills_0096C7E0] = i;
-            ++gnPassiveSkills_0096C7E0;
+            gpPassiveSkills[gnPassiveSkills] = i;
+            ++gnPassiveSkills;
         }
     }
 
-    for (nSkillId = 0; nSkillId < gnSkillsTxtRecordCount_0096C7D0; ++nSkillId)
+    for (nSkillId = 0; nSkillId < gnSkillsTxtRecordCount; ++nSkillId)
     {
-        if (gpSkillsTxt_0096C7C8[nSkillId].nPetType >= 0 && gpSkillsTxt_0096C7C8[nSkillId].nPetType < gnPettypeTxtRecordCount_0096C820)
+        if (gpSkillsTxt[nSkillId].nPetType >= 0 && gpSkillsTxt[nSkillId].nPetType < gnPettypeTxtRecordCount)
         {
-            D2PetTypeTxt* pPetTypeTxtRecord = &gpPettypeTxt_0096C818[gpSkillsTxt_0096C7C8[nSkillId].nPetType];
+            D2PetTypeTxt* pPetTypeTxtRecord = &gpPettypeTxt_0096C818[gpSkillsTxt[nSkillId].nPetType];
             if (pPetTypeTxtRecord->nSkillCount < 15)
             {
                 pPetTypeTxtRecord->wSkillIds[pPetTypeTxtRecord->nSkillCount] = nSkillId;

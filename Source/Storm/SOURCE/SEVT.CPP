@@ -18,8 +18,6 @@ struct CCritSect : D2CriticalSectionStrc
     ~CCritSect() { DeleteCriticalSection(this); }
 };
 
-// build: symbol ??__EgtSEvtLock@@YAXXZ 0x006CA920
-// build: symbol ??__FgtSEvtLock@@YAXXZ 0x006CB370
 CCritSect gtSEvtLock;                                                                           // 0x0077930C
 
 static D2StormEventTypeStrc** gppSEvtTypes_00779300;                                                        // 0x00779300
@@ -44,8 +42,6 @@ struct BREAKCMD : TSLinkedNode<BREAKCMD>
             SMemFree(pMemory, "delete", -1, 0);
     }
 };
-
-// build: symbol ??_GBREAKCMD@@QAEPAXI@Z 0x00426E20
 
 struct SEvtBreakCmdStrc;
 struct D2CriticalSectionStrc;
@@ -88,6 +84,7 @@ struct SEvtBreakCmdStrc
 void* __stdcall SMemAlloc(unsigned int nSize, const char* szLogName, int nLogLine, unsigned int nFlags); // 0x00413020
 
 
+#include "StormApi.h"
 // 0x0042B9D0
 void __cdecl sub_0042B9D0_Nop()
 {
@@ -126,8 +123,6 @@ inline void* __cdecl operator new(unsigned int nSize, void* pWhere) throw()
 extern TSList<BREAKCMD> gtSEvtBreakCmdList_007088E8; // 0x007088E8
 
 static long gnSEvtDispatchDepth_007792FC;                                                                   // 0x007792FC
-
-void __stdcall SMemCopy(void* pDest, const void* pSource, unsigned int nSize); // 0x0041D2A0
 
 void __stdcall CopyIdHashTable(_IDHASHTABLE* pDest, _IDHASHTABLE* pSource); // 0x00426180
 
@@ -459,14 +454,6 @@ struct D2SEvtCtorLinkStrc
     D2SEvtCtorLinkStrc();
 };
 
-struct D2SEvtAutoLinkStrc : D2StormLinkStrc
-{
-    ~D2SEvtAutoLinkStrc()
-    {
-        Unlink();
-    }
-};
-
 // 0x00426900
 char* __fastcall sub_00426900_Next(D2StormLinkStrc* pLink)
 {
@@ -745,19 +732,8 @@ sub_00426D80::~sub_00426D80()
     tLink.Unlink();
 }
 
-// build: symbol ??_R0?AUBREAKCMD@@@8 0x007088D0
-// build: symbol _SMemAlloc@16 0x00413020
-// build: symbol _SMemFree@16 0x00412650
-// build: symbol ?LinkNode@?$TSList@UBREAKCMD@@U?$TSGetLink@UBREAKCMD@@@@@@QAEXPAUBREAKCMD@@I0@Z 0x00426B00
-// build: symbol ?RawNext@?$TSList@UBREAKCMD@@U?$TSGetLink@UBREAKCMD@@@@@@QAEPAUBREAKCMD@@PBU2@@Z 0x00426C80
-// build: symbol ?UnlinkAll@?$TSList@UBREAKCMD@@U?$TSGetLink@UBREAKCMD@@@@@@QAEXXZ 0x00426CF0
-// build: symbol ??1?$TSList@UBREAKCMD@@U?$TSGetLink@UBREAKCMD@@@@@@QAE@XZ 0x00426D30
-// build: symbol ?NewNode@?$TSList@UBREAKCMD@@U?$TSGetLink@UBREAKCMD@@@@@@QAEPAUBREAKCMD@@III@Z 0x00426DC0
-// build: symbol ?DeleteNode@?$TSList@UBREAKCMD@@U?$TSGetLink@UBREAKCMD@@@@@@QAEPAUBREAKCMD@@PAU2@@Z 0x00426F20
 template TSList<BREAKCMD>::~TSList();
 template BREAKCMD* TSList<BREAKCMD>::DeleteNode(BREAKCMD*);
 template BREAKCMD* TSList<BREAKCMD>::RawNext(const BREAKCMD*);
 
-// build: symbol ??__EgtSEvtBreakCmdList_007088E8@@YAXXZ 0x006CA900
-// build: symbol ??__FgtSEvtBreakCmdList_007088E8@@YAXXZ 0x006CB380
 TSList<BREAKCMD> gtSEvtBreakCmdList_007088E8; // 0x007088E8

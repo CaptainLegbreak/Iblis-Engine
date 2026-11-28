@@ -16,6 +16,8 @@
 #include "D2GameTypes.h"
 #include "D2UnitData.h"
 #include "D2LanguageNames.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -64,52 +66,25 @@ struct D2DataTablesStrc;
 
 void __fastcall FOG_FreeServerMemory(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
-void __fastcall AIGENERAL_FreeAllMinionLists(D2GameStrc* pGame, D2MinionListStrc* pMinionList); // 0x0058F350
+#include "D2GameFuncs.h"
+#include "D2CommonApi2.h"
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
-
-unsigned char __stdcall DRLG_GetActNoFromLevelId(int nLevelId); // 0x006427F0
-
-void __stdcall DUNGEON_GetRoomCoordinates(D2ActiveRoomStrc* pRoom, D2DrlgCoordsStrc* pCoords); // 0x00619730
-
-int __stdcall ITEMS_GetCompactItemDataFromBitstreamDefault(unsigned char* pBitstream, unsigned int nSize, int bCheckForHeader, void* pItemSave); // 0x0062E410
 
 D2UnitStrc* __fastcall ITEMS_CreateItemFromBitstream(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, unsigned char* pBitstream, unsigned int nBufferSize, int bCheckForHeader, D2ItemSaveStrc* pItemSave, unsigned int* pSize, unsigned int dwVersion); // 0x00558CB0
 
-D2InventoryStrc* __stdcall INVENTORY_AllocInventory(void* pMemPool, D2UnitStrc* pOwner); // 0x0063ABD0
-
 int __stdcall INVENTORY_PlaceItemInSocket(D2InventoryStrc* pInventory, D2UnitStrc* pItem, int nPage); // 0x0063B210
 
-void __fastcall D2GAME_ITEMS_UpdateStatList_6FC4BC00(D2GameStrc* pGame, D2UnitStrc* pSocketable, D2UnitStrc* pItem); // 0x0055FE60
+void __fastcall D2GAME_ITEMS_UpdateStatList(D2GameStrc* pGame, D2UnitStrc* pSocketable, D2UnitStrc* pItem); // 0x0055FE60
 
 
-int __stdcall ITEMS_SerializeItemToBitstream(D2UnitStrc* pItem, unsigned char* pBitstream, int nSize, int bServer, int bSaveItemInv, int bGamble); // 0x006313E0
-
-int __fastcall ITEMS_GetGroundRemovalTime(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00558A10
-
-void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
-
-int __stdcall ITEMS_CheckIfSocketable(D2UnitStrc* pItem); // 0x00629900
-
-D2UnitStrc* __stdcall INVENTORY_GetFirstItem(D2InventoryStrc* pInventory); // 0x0063B2C0
-
-D2UnitStrc* __stdcall INVENTORY_GetNextItem(D2UnitStrc* pItem); // 0x0063DFA0
-
-D2UnitStrc* __stdcall INVENTORY_UnitIsItem(D2UnitStrc* pItem); // 0x0063DFD0
-
-D2UnitStrc* __stdcall INVENTORY_RemoveItemFromInventory(D2InventoryStrc* pInventory, D2UnitStrc* pItem); // 0x0063AD90
-
-void __fastcall SUNIT_RemoveUnit(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00555600
 
 static D2InactiveUnitListStrc* __stdcall SUNITINACTIVE_GetListNodeFromRoom(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int bAllocNewNode);
 
@@ -121,71 +96,30 @@ extern const unsigned int gdwBitMasks[32]; // 0x006CE268
 
 extern "C" const char gszSUnitInactiveSourceFile[]; // 0x006E0BC8
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
-
-D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitAndState(D2UnitStrc* pUnit, int nState); // 0x006256B0
-
-void __stdcall D2Common_10474(D2UnitStrc* pUnused, D2StatListStrc* pStatList); // 0x006277E0
-
-void __stdcall STATLIST_FreeStatList(D2StatListStrc* pStatList); // 0x00626CD0
-
-void __fastcall D2GAME_EVENTS_Delete_6FC34840(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEventType, int nEventCustomId); // 0x00540E60
-
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
-
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pPath); // 0x00648900
 
 int __fastcall AITHINK_GetSpecialStateFromAiControl(D2AiControlStrc* pAiControl); // 0x005B0D60
 
-unsigned short __fastcall MONSTERUNIQUE_GetNameSeed(D2UnitStrc* pUnit); // 0x005A0140
 
 int __fastcall MONSTERUNIQUE_CheckMonTypeFlag(D2UnitStrc* pUnit, int nFlag); // 0x005A0180
 
-short __fastcall MONSTERUNIQUE_GetBossHcIdx(D2UnitStrc* pUnit); // 0x005A01E0
 
 void __fastcall QUESTS_SetGoldenBirdSpawn(D2GameStrc* pGame, D2UnitStrc* pUnit); // 0x00544F20
 
-int __stdcall STATLIST_GetUnitAlignment(D2UnitStrc* pUnit); // 0x006259B0
-
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
-
-int __stdcall STATLIST_GetMaxLifeFromUnit(D2UnitStrc* pUnit); // 0x00625D10
 
 unsigned char* __fastcall MONSTERUNIQUE_GetUMods(D2UnitStrc* pUnit); // 0x005A0120
 
 void __fastcall AIGENERAL_GetAiControlInfo(D2UnitStrc* pUnit, int* pOwnerGUID, int* pOwnerType, int* pAiControlFlag1, int* pAiControlFlag2, D2MinionListStrc** ppMinionList); // 0x0058F440
 
-D2AiCmdStrc* __fastcall AIGENERAL_SetCurrentAiCommand(D2GameStrc* pGame, D2UnitStrc* pUnit, int nCmdParam, int bSet); // 0x0058EFA0
 
 D2MapAIStrc* __stdcall AIGENERAL_GetMapAiFromUnit(D2UnitStrc* pUnit); // 0x0058F000
 
 D2MapAIStrc* __fastcall DRLGPRESET_ChangeMapAI(D2MapAIStrc** ppMapAI1, D2MapAIStrc* pMapAI2); // 0x00666120
 
-int __fastcall AIGENERAL_GetAiControlParam(D2UnitStrc* pUnit, int nIndex); // 0x0058EC50
-
-D2ObjectsTxt* __stdcall DATATBLS_GetObjectsTxtRecord(int nObjectId); // 0x00640E90
-
-int __fastcall EVENT_GetEventFrame(D2GameStrc* pGame, D2UnitStrc* pUnit, int nEvent); // 0x005415A0
-
-int __fastcall SUNIT_IsDead(D2UnitStrc* pUnit); // 0x005541B0
-
-unsigned char __fastcall D2GAME_CheckIfSparklyChest_6FCBD7F0(D2UnitStrc* pUnit); // 0x005540D0
-
-void __fastcall SUNIT_SetAlignment(D2UnitStrc* pUnit, unsigned char nAlignNew, int a3); // 0x005543B0
-
-D2UnitStrc* __fastcall AIGENERAL_GetMinionOwner(D2UnitStrc* pUnit); // 0x0058F0D0
 
 int __fastcall PLAYERPETS_HandlePetDeactivation(D2GameStrc* pGame, D2UnitStrc* pOwner, D2UnitStrc* pUnit); // 0x005752B0
 
-void __fastcall AIGENERAL_SetAiControlParam(D2UnitStrc* pMonster, int nIndex, int nParamValue); // 0x0058EC00
-
-void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStatId, int nValue, unsigned short nLayer); // 0x00627260
 
 D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
-
-D2ActiveRoomStrc* __stdcall DUNGEON_FindRoomBySubtileCoordinates(D2DrlgActStrc* pAct, int nX, int nY); // 0x00619DA0
 
 static int SUNITINACTIVE_IsItemNodeAlive(D2InactiveItemNodeStrc* pNode, D2GameStrc* pGame);
 
@@ -195,18 +129,13 @@ struct D2AiControlStrc;
 
 struct D2DynamicPathStrc;
 
-// build: symbol ?gnInactiveCmdParam1@* 0x007314C0
 static int gnInactiveCmdParam1 = -559030611; // 0x007314C0
 
-// build: symbol ?gnInactiveNoXpParam2@* 0x007314C4
 static int gnInactiveNoXpParam2 = 1; // 0x007314C4
 
-// build: symbol ?gnInactiveNoTcParam2@* 0x007314C8
 static int gnInactiveNoTcParam2 = 2; // 0x007314C8
 
-int __fastcall MONSTER_CheckSummonerFlag(D2UnitStrc* pUnit, int nFlag);                                      // 0x00573540
 
-int __fastcall MONSTER_GetLevelId(D2UnitStrc* pUnit);                                                        // 0x00573520
 
 #define BITARRAY_CHECK(pBytes, nBit) ((pBytes)[(nBit) >> 3] & gdwBitMasks[(nBit) & 7])
 
@@ -216,17 +145,10 @@ struct D2InventoryStrc;
 
 struct D2ObjectsTxt;
 
-int __stdcall ITEMS_GetOwnerId(D2UnitStrc* pItem);                                                           // 0x00629F20
 
-int __stdcall UNITS_IsShrine(D2UnitStrc* pUnit);                                                     // 0x00621B00
 
-int __stdcall DRLG_GetSaveMonstersFromLevelId(int nLevelId);                                                // 0x00642820
 
-int __stdcall STATES_CheckStateMaskUdeadOnUnit(D2UnitStrc* pUnit);                                          // 0x0063A770
 
-void __fastcall TARGETS_RemoveUnitNode(D2GameStrc* pGame, D2UnitStrc* pUnit);                         // 0x005B1A90
-
-void __stdcall UNITROOM_UpdatePath(D2UnitStrc* pUnit);                                                      // 0x0064C450
 
 static void __stdcall SUNITINACTIVE_SaveSpecialMonsterParameters(D2GameStrc* pGame, D2InactiveMonsterNodeStrc* pNode, D2UnitStrc* pUnit); // 0x00541FE0
 
@@ -248,7 +170,6 @@ D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc*,int,int); // 0x00552F60
 
 void __fastcall SUNIT_Restore(D2GameStrc*,D2UnitStrc*,D2ActiveRoomStrc*,int,int); // 0x00554A30
 
-D2UnitStrc* __fastcall MONSTERSPAWN_SpawnWithUnitId(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nX, int nY, int nMonsterId, int nAnimMode, int nUnitGUID, int a8, short nFlags); // 0x005B30E0
 
 D2UnitStrc* __fastcall MONSTERUNIQUE_RestoreUniqueMonster(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int nX, int nY, int nClassId, int nUnitGUID, unsigned short nNameSeed, int bChampion, int bSuperUnique, short nBossHcIdx, unsigned char* pUMods); // 0x005A4440
 
@@ -256,37 +177,18 @@ D2UnitStrc* __fastcall MONSTERUNIQUE_RestoreMinion(D2GameStrc*,D2ActiveRoomStrc*
 
 int __fastcall MONSTERREGION_FindSpawnLocation(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, D2SpawnAreaStrc* pArea, int nClassId, int* pX, int* pY, int bAvoidWarps); // 0x0054DC40
 
-void __fastcall D2Common_10136(D2ActiveRoomStrc* pRoom, D2CoordStrc* pCoord, int nSize, unsigned short nMask, D2ActiveRoomStrc** ppRoom); // 0x0064E840
 
 void __fastcall AIGENERAL_SetAiControlInfo(D2GameStrc* pGame, D2UnitStrc* pUnit, unsigned int nOwnerGUID, unsigned int nOwnerType, int bSetFlag1, int bSetFlag2, D2MinionListStrc* pMinionList); // 0x0058F4D0
 
-void __fastcall AITHINK_ExecuteAiFn(D2GameStrc*,D2UnitStrc*,D2AiControlStrc*,int); // 0x005B0E00
 
-void __fastcall TARGETS_InsertUnitNode(D2GameStrc*,D2UnitStrc*,int,int); // 0x005B1990
-
-void __fastcall D2GAME_BOSSES_AssignUMod_6FC6FF10(D2GameStrc*,D2UnitStrc*,int,int); // 0x005A4850
+void __fastcall D2GAME_BOSSES_AssignUMod(D2GameStrc*,D2UnitStrc*,int,int); // 0x005A4850
 
 void __fastcall MONSTERREGION_AdjustCountsForInactiveMonster(D2MonsterRegionStrc**,int,int,int,int,int,D2UnitStrc*); // 0x00547ED0
 
-void __fastcall DRLGPRESET_FreeMapAI(void*,D2MapAIStrc*); // 0x00666130
 
-D2UnitStrc* __fastcall SUNIT_CreatePresetUnit(D2GameStrc*,D2ActiveRoomStrc*,int,int,int,int,int,int); // 0x005557D0
-
-D2ShrinesTxt* __stdcall DATATBLS_GetShrinesTxtRecord(int nShrineId); // 0x006414B0
-
-void __stdcall UNITS_SetShrineTxtRecordInObjectData(D2UnitStrc* pUnit, D2ShrinesTxt* pShrinesTxtRecord); // 0x00621BB0
-
-void __stdcall UNITS_ChangeAnimMode(D2UnitStrc*,int); // 0x00624690
-
-void __fastcall EVENT_SetEvent(D2GameStrc*,D2UnitStrc*,int,int,int,int); // 0x005417D0
-
-unsigned char __fastcall OBJECTS_GetRegenerateMax(D2ObjectsTxt*); // 0x00552AA0
-
-unsigned char __fastcall OBJECTS_GetRegenerateSteps(); // 0x00552AB0
 
 static void __stdcall SUNITINACTIVE_RestoreInactiveMonsters(D2GameStrc*,D2ActiveRoomStrc*);
 
-void __fastcall SUNITINACTIVE_RestoreInactiveUnits(D2GameStrc*,D2ActiveRoomStrc*); // 0x00542B40
 
 static void __stdcall SUNITINACTIVE_RestoreSpecialMonsterParameters(D2GameStrc* pGame, D2InactiveMonsterNodeStrc* pNode, D2UnitStrc* pUnit);
 
@@ -429,7 +331,7 @@ static D2UnitStrc* __stdcall SUNITINACTIVE_RestoreInactiveItem(D2GameStrc* pGame
             pBitstream += nSize;
             nAvailableSize -= nSize;
             INVENTORY_PlaceItemInSocket(pInventory, pSocketable, 1);
-            D2GAME_ITEMS_UpdateStatList_6FC4BC00(pGame, pSocketable, pItem);
+            D2GAME_ITEMS_UpdateStatList(pGame, pSocketable, pItem);
         }
     }
 
@@ -462,7 +364,7 @@ static void __stdcall SUNITINACTIVE_CompressInactiveItem(D2InactiveUnitListStrc*
     tNode.nFrame = ITEMS_GetGroundRemovalTime(pGame, pItem);
 
     const int nNodeSize = tNode.nBitstreamSize + 15;
-    D2InactiveItemNodeStrc* pItemNode = (D2InactiveItemNodeStrc*)sub_0040B430(pGame->pMemoryPool, nNodeSize, ".\\UNIT\\SUnitInactive.cpp", 0x1E2, 0);
+    D2InactiveItemNodeStrc* pItemNode = (D2InactiveItemNodeStrc*)FOG_AllocPool(pGame->pMemoryPool, nNodeSize, ".\\UNIT\\SUnitInactive.cpp", 0x1E2, 0);
     memcpy(pItemNode, &tNode, nNodeSize);
 
     D2InventoryStrc* pInventory;
@@ -536,12 +438,6 @@ static void SUNITINACTIVE_FreeInactiveMonsters(D2GameStrc* pGame, D2InactiveUnit
     }
 }
 
-D2InactiveMonsterNodeStrc* __stdcall sub_C899_Emit_00541DE0(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, int bAlloc)
-{
-    D2InactiveUnitListStrc* pList = SUNITINACTIVE_GetListNodeFromRoom(pGame, pRoom, bAlloc);
-    return pList ? pList->pInactiveMonsters : 0;
-}
-
 // 0x00541D20
 static D2InactiveUnitListStrc* __stdcall SUNITINACTIVE_GetListNodeFromActAndCoordinates(D2GameStrc* pGame, int nAct, int nX, int nY, int bAllocNewNode)
 {
@@ -572,7 +468,7 @@ static D2InactiveUnitListStrc* __stdcall SUNITINACTIVE_GetListNodeFromActAndCoor
 
     if (!bFound)
     {
-        D2InactiveUnitListStrc* pNew = (D2InactiveUnitListStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2InactiveUnitListStrc), gszSUnitInactiveSourceFile, 0x424, 0);
+        D2InactiveUnitListStrc* pNew = (D2InactiveUnitListStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2InactiveUnitListStrc), gszSUnitInactiveSourceFile, 0x424, 0);
         memset(&pNew->pInactiveItems, 0, 12);
         pNew->nX = nX;
         pNew->nY = nY;
@@ -877,9 +773,9 @@ static void __stdcall SUNITINACTIVE_CompressInactiveMonster(D2GameStrc* pGame, D
         }
     }
 
-    D2GAME_EVENTS_Delete_6FC34840(pGame, pUnit, 2, 0);
+    D2GAME_EVENTS_Delete(pGame, pUnit, 2, 0);
 
-    D2InactiveMonsterNodeStrc* pNode = (D2InactiveMonsterNodeStrc*)sub_0040B430(pGame->pMemoryPool, sizeof(D2InactiveMonsterNodeStrc), ".\\UNIT\\SUnitInactive.cpp", 0x528, 0);
+    D2InactiveMonsterNodeStrc* pNode = (D2InactiveMonsterNodeStrc*)FOG_AllocPool(pGame->pMemoryPool, sizeof(D2InactiveMonsterNodeStrc), ".\\UNIT\\SUnitInactive.cpp", 0x528, 0);
     memset(pNode, 0, sizeof(D2InactiveMonsterNodeStrc));
 
     pNode->nOwnerId = -1;
@@ -1002,10 +898,7 @@ inline D2AiControlStrc* AIGENERAL_GetAiControlFromUnitInline(D2UnitStrc* unit)
 // 0x005424F0
 static void __stdcall SUNITINACTIVE_RestoreInactiveMonsters(D2GameStrc* pGame,D2ActiveRoomStrc* pRoom)
 {
-    D2DrlgCoordsStrc coords;
-    DUNGEON_GetRoomCoordinates(pRoom,&coords);
-    const int act = DRLG_GetActNoFromLevelId(DUNGEON_GetLevelIdFromRoom(pRoom));
-    D2InactiveUnitListStrc* list = SUNITINACTIVE_GetListNodeFromActAndCoordinates(pGame,act,coords.nSubtileX,coords.nSubtileY,0);
+    D2InactiveUnitListStrc* list = SUNITINACTIVE_GetListNodeFromRoom(pGame, pRoom, 0);
     if (!list) return;
     D2InactiveMonsterNodeStrc* next = list->pInactiveMonsters;
     int chaos = 0;
@@ -1100,7 +993,7 @@ fallbackLocation:
                     int n = 9;
                     do
                     {
-                        if (*mods != *saved) D2GAME_BOSSES_AssignUMod_6FC6FF10(pGame,unit,*saved,0);
+                        if (*mods != *saved) D2GAME_BOSSES_AssignUMod(pGame,unit,*saved,0);
                         ++saved;
                         ++mods;
                         --n;
@@ -1340,7 +1233,7 @@ static void __stdcall SUNITINACTIVE_CompressInactiveUnit(D2GameStrc* pGame, D2Un
 
     if (!pList || tCoords.nSubtileX > pList->nX)
     {
-        D2InactiveUnitListStrc* pNew = (D2InactiveUnitListStrc*)sub_0040B430(pListGame->pMemoryPool, sizeof(D2InactiveUnitListStrc), ".\\UNIT\\SUnitInactive.cpp", 0x22E, 0);
+        D2InactiveUnitListStrc* pNew = (D2InactiveUnitListStrc*)FOG_AllocPool(pListGame->pMemoryPool, sizeof(D2InactiveUnitListStrc), ".\\UNIT\\SUnitInactive.cpp", 0x22E, 0);
         *pNew = D2InactiveUnitListStrc();
         pNew->nX = tCoords.nSubtileX;
         pNew->nY = tCoords.nSubtileY;
@@ -1364,7 +1257,7 @@ static void __stdcall SUNITINACTIVE_CompressInactiveUnit(D2GameStrc* pGame, D2Un
         return;
     }
 
-    D2InactiveUnitNodeStrc* pNode = (D2InactiveUnitNodeStrc*)sub_0040B430(pListGame->pMemoryPool, sizeof(D2InactiveUnitNodeStrc), ".\\UNIT\\SUnitInactive.cpp", 0x244, 0);
+    D2InactiveUnitNodeStrc* pNode = (D2InactiveUnitNodeStrc*)FOG_AllocPool(pListGame->pMemoryPool, sizeof(D2InactiveUnitNodeStrc), ".\\UNIT\\SUnitInactive.cpp", 0x244, 0);
     sub_00681EF0_memset(pNode, 0, sizeof(D2InactiveUnitNodeStrc));
     pNode->nX = CLIENTS_GetUnitXInl(pUnit);
     pNode->nY = CLIENTS_GetUnitYInl(pUnit);
@@ -1388,7 +1281,7 @@ static void __stdcall SUNITINACTIVE_CompressInactiveUnit(D2GameStrc* pGame, D2Un
 
         pNode->nMode = pUnit->dwAnimMode;
 
-        if (sub_00621B00_IsShrine(pUnit))
+        if (UNITS_IsShrine(pUnit))
         {
             pNode->nUnitId = (unsigned int)EVENT_GetEventFrame(pGame, pUnit, 5) >> 16;
             pNode->nFrame = (unsigned short)EVENT_GetEventFrame(pGame, pUnit, 5);
@@ -1654,7 +1547,7 @@ void __fastcall SUNITINACTIVE_CompressUnitIfNeeded(D2GameStrc* pGame, D2UnitStrc
         }
 
         D2ObjectsTxt* pObjectsTxtRecord = DATATBLS_GetObjectsTxtRecord(nClassId);
-        if (!pObjectsTxtRecord->nRestore || D2GAME_CheckIfSparklyChest_6FCBD7F0(pUnit) & 2)
+        if (!pObjectsTxtRecord->nRestore || D2GAME_CheckIfSparklyChest(pUnit) & 2)
         {
             bCompress = 0;
         }
@@ -1664,7 +1557,7 @@ void __fastcall SUNITINACTIVE_CompressUnitIfNeeded(D2GameStrc* pGame, D2UnitStrc
             bCompress = 0;
         }
 
-        D2GAME_EVENTS_Delete_6FC34840(pGame, pUnit, 1, 0);
+        D2GAME_EVENTS_Delete(pGame, pUnit, 1, 0);
     }
     check:
         if (!bCompress)
@@ -1681,7 +1574,7 @@ void __fastcall SUNITINACTIVE_CompressUnitIfNeeded(D2GameStrc* pGame, D2UnitStrc
         if (STATES_CheckState(pUnit, STATE_PLAYERBODY))
         {
         special:
-            D2GAME_EVENTS_Delete_6FC34840(pGame, pUnit, 1, 0);
+            D2GAME_EVENTS_Delete(pGame, pUnit, 1, 0);
             pUnit->dwFlagEx |= 0x100;
             SUNITINACTIVE_CompressInactiveUnit(pGame, pUnit);
             UNITROOM_UpdatePath(pUnit);

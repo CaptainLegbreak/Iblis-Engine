@@ -1,6 +1,5 @@
 #pragma once
 // Client sound: a SoundEnviron.txt record, as SoundHdr loads the table (sgptSoundEnvironTable) and
-// build: symbol ?SOUNDHDR_GetSoundEnvironTxtRecord@* 0x00481920
 // SOUNDHDR_GetSoundEnvironTxtRecord returns it: the song, the day and night ambience, the day and night
 // events and their delay, the indoors flag, two materials and the EAX settings.
 

@@ -2,6 +2,7 @@
 #include "D2GameTypes.h"
 #include "D2Win32System.h"
 #include "D2Win32OsVersion.h"
+#include "FogApi.h"
 
 
 struct D2TimeStampStrc
@@ -28,12 +29,10 @@ D2CriticalSectionStrc gtTimeLock;                                               
 D2TimeStampStrc gtTimeBase;                                                                        // 0x0075E878
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
 extern "C" __declspec(dllimport) int __stdcall GetDiskFreeSpaceA(const char* szRootPathName, unsigned long* pnSectorsPerCluster, unsigned long* pnBytesPerSector, unsigned long* pnFreeClusters, unsigned long* pnTotalClusters); // 0x006CC270
-int __fastcall FOG_GetSavePath(char* szPath, int nSize); // 0x00407050
 extern "C" const char gszKernel32[]; // 0x006CD6E4
 typedef int (__stdcall* D2GetDiskFreeSpaceExFn)(const char* szDirectory, unsigned __int64* pnFreeToCaller, unsigned __int64* pnTotal, unsigned __int64* pnTotalFree);
 

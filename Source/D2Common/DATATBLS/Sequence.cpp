@@ -1,6 +1,8 @@
 #include "D2Common.h"
+#include "D2CommonInternal.h"
 #include "D2Structs.h"
 #include "D2AnimData.h"
+#include "FogApi.h"
 
 struct D2InventoryStrc;
 
@@ -13,14 +15,11 @@ struct D2PlayerWeaponSequencesStrc
 
 extern D2PlayerWeaponSequencesStrc* gPlayerWeaponsSequenceTable[];                                                           // 0x007483B8
 extern const int gWeaponIndexToClassMap[14][2];                                                               // 0x00748418
-D2SkillStrc* __stdcall UNITS_GetUsedSkill(D2UnitStrc* pUnit);                                                 // 0x00620250
 int __fastcall SKILLS_GetSeqNumFromSkill(D2UnitStrc* pUnit, D2SkillStrc* pSkill);                                       // 0x00643D00
 void* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId);                                                           // 0x00451F80
 D2AnimSeqRecordStrc* __stdcall DATATBLS_GetMonSeqTableRecord(int nSequence);                                                // 0x00659E30
 int __stdcall COMPOSIT_GetWeaponClassId(D2UnitStrc* pUnit, D2InventoryStrc* pInventory, int* pWeaponClass, int nAnimMode, int bUseConvertedMode); // 0x0064F380
 extern "C" const char gszEmptyAssertText;                                                                         // 0x006CC837
-extern "C" const char* __cdecl sub_00408090();                                                              // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                  // 0x00408A60
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                                // 0x00681E09
 
 #define SEQ_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
@@ -161,27 +160,6 @@ void __stdcall DATATBLS_GetSequenceEvent(D2AnimSeqTxt* pMonSeqTxt, int nSeqFrame
 
     *pEvent = pMonSeqTxt[nSeqFramePoint >> 8].nEvent;
 }
-
-#pragma pack(push, 1)
-struct d2data_007466A0_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
 
 #pragma pack(push, 1)
 struct d2data_007466DC_t
@@ -973,7 +951,27 @@ struct d2data_00748310_t
 };
 #pragma pack(pop)
 
-extern "C" struct d2data_007466A0_t gData_007466A0; // 0x007466A0
+#pragma pack(push, 1)
+struct d2data_007466A0_t
+{
+    const void* p0;
+    const void* p1;
+    const void* p2;
+    const void* p3;
+    const void* p4;
+    const void* p5;
+    const void* p6;
+    const void* p7;
+    const void* p8;
+    const void* p9;
+    const void* p10;
+    const void* p11;
+    const void* p12;
+    const void* p13;
+    const void* p14;
+};
+#pragma pack(pop)
+
 extern "C" struct d2data_007466DC_t gaPlayerSequenceSacrifice_1HT; // 0x007466DC
 extern "C" struct d2data_00746708_t gaPlayerSequenceHandToHand1; // 0x00746708
 extern "C" struct d2data_00746758_t gaPlayerSequenceHandToHand2; // 0x00746758
@@ -1031,25 +1029,7 @@ extern "C" struct d2data_00748190_t gaPlayerSequenceUnmorph; // 0x00748190
 extern "C" struct d2data_007481F0_t gtPlayerWeaponsSequenceUnmorph; // 0x007481F0
 extern "C" struct d2data_00748298_t gaPlayerSequenceBladeFury; // 0x00748298
 extern "C" struct d2data_00748310_t gtPlayerWeaponsSequenceBladeFury; // 0x00748310
-extern "C" const int gData_00748418[14][2]; // 0x00748418
-
-extern "C" struct d2data_007466A0_t gData_007466A0 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x007466A0
+extern "C" struct d2data_007466A0_t gData_007466A0; // 0x007466A0
 
 extern "C" struct d2data_007466DC_t gaPlayerSequenceSacrifice_1HT = {
     {
@@ -1933,7 +1913,7 @@ extern D2PlayerWeaponSequencesStrc* gPlayerWeaponsSequenceTable[24] = {
     (D2PlayerWeaponSequencesStrc*)&gtPlayerWeaponsSequenceDragonClaw, (D2PlayerWeaponSequencesStrc*)&gtPlayerWeaponsSequenceProjection, (D2PlayerWeaponSequencesStrc*)&gtPlayerWeaponsSequenceArcticBlast, (D2PlayerWeaponSequencesStrc*)&gtPlayerWeaponsSequenceDragonTalon, (D2PlayerWeaponSequencesStrc*)&gtPlayerWeaponsSequenceDragonBreath, (D2PlayerWeaponSequencesStrc*)&gtPlayerWeaponsSequenceDragonFlight, (D2PlayerWeaponSequencesStrc*)&gtPlayerWeaponsSequenceUnmorph, (D2PlayerWeaponSequencesStrc*)&gtPlayerWeaponsSequenceBladeFury
 }; // 0x007483B8
 
-extern "C" const int gData_00748418[14][2] = {
+extern const int gWeaponIndexToClassMap[14][2] = {
     { 0 },
     { 1, 3 },
     { 2, 6 },
@@ -1949,4 +1929,21 @@ extern "C" const int gData_00748418[14][2] = {
     { 12, 12 },
     { 13, 13 }
 }; // 0x00748418
-#pragma comment(linker, "/alternatename:?gWeaponIndexToClassMap@@3QAY01$$CBHA=_gData_00748418")
+
+extern "C" struct d2data_007466A0_t gData_007466A0 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x007466A0

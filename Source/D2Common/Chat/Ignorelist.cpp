@@ -13,12 +13,14 @@
 #include "D2CmpCache.h"
 #include "D2ProfileCounter.h"
 #include "D2ExperienceTxt.h"
-
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags) throw(); // 0x00412650
+#include "FogApi.h"
+#include "StormApi.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "StormApi2.h"
 
 __declspec(nothrow) char* __stdcall SStrDup(const char* szString);                                                             // 0x00414310
 
-extern "C" int __stdcall SRegSaveValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long dwValue); // 0x004150E0
 
 struct D2StormHashKeyStrIAStrc
 {
@@ -523,7 +525,7 @@ struct D2CommonStormSlotArrayAViewStrc : D2CommonStormSlotArrayAStrc
     ~D2CommonStormSlotArrayAViewStrc();
 };
 
-extern "C" const char gszTypeNewsTableItem_0072FF8C[];
+extern "C" const char gszTypeNewsTableItem[];
 
 struct D2Storm408ElemStrc
 {
@@ -566,7 +568,6 @@ struct D2CommonStormSlotArrayBStrc
         m_chunk = 0;
     }
     ~D2CommonStormSlotArrayBStrc();                                                                         // 0x0060F950
-// build: symbol ??1D2CommonStormSlotArrayBStrc@@QAE@XZ 0x0060F950
 // 0x006107B0
     void Clear()
     {
@@ -625,16 +626,12 @@ struct D2CommonStormZeroFE70Strc
     D2CommonStormZeroFE70Strc();
 };
 
-// build: symbol ?gnTileTypeTable@* 0x006EEF88
 extern const int gnTileTypeTable[];
 
-void __stdcall DUNGEON_GameTileToClientCoords(int* pX, int* pY);
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -671,15 +668,12 @@ extern D2CompCodeTxt* gpCompCodeTxt; // 0x0096BCAC
 
 extern int gbCompileTxt; // 0x0096C8B4
 
-void __cdecl LOG_11100(int nA, int nB, int nC, int nFlags, const char* szFile, int nLine, const char* szFormat, ...); // 0x006248E0
 
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall FOG_FreePool(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
 
-int __fastcall DRLGROOM_GetWarpDestinationLevel(D2DrlgRoomStrc* pDrlgRoom, int nSourceLevel); // 0x0066BAC0
 
-extern "C" void* __stdcall sub_00413020(unsigned,const char*,int,unsigned); // 0x00413020
 
 extern "C" const char mappingName[]; // 0x0074362C
 
@@ -697,7 +691,7 @@ enum { ALLOC_FLAG = 8 };
 struct D2Object00610D30Strc
 {
     ~D2Object00610D30Strc(); // 0x00610AA0
-    void* sub_00610D30(unsigned int nFlags);
+    void* sub_00610D30_Delete(unsigned int nFlags);
     static void operator delete(void* pMemory)
     {
         if (pMemory)
@@ -748,11 +742,6 @@ template <class T, class KEY> class TSHashTable;
 typedef TSHashTable<StringEntryNode, HASHKEY_STRI> D2CommonStormHashTableAStrc;
 
 typedef TSHashTable<MappingEntryNode, HASHKEY_STRI> D2CommonStormHashTableBStrc;
-
-// build: symbol ??0?$TSHashTable@UStringEntryNode@@VHASHKEY_STRI@@@@QAE@XZ 0x006104A0
-// build: symbol ??0?$TSHashTable@UMappingEntryNode@@VHASHKEY_STRI@@@@QAE@XZ 0x00610B30
-// build: symbol ??1?$TSHashTable@UStringEntryNode@@VHASHKEY_STRI@@@@UAE@XZ 0x0060FD90
-// build: symbol ??1?$TSHashTable@UMappingEntryNode@@VHASHKEY_STRI@@@@UAE@XZ 0x00610550
 
 struct D2CommonStormSlotListCStrc : D2CommonStormSlotListBStrc
 {
@@ -899,11 +888,9 @@ D2ExperienceDataTbl* gpExperienceTxt; // 0x0096C8A8
 
 struct D2StormHashKeyStrIStrc;
 
-extern "C" void* __stdcall SMemReAlloc(void* pLocation, unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags); // 0x004133D0
+extern "C" const char gszTypeNameMappingEntryNode[]; // 0x0074362C
 
-extern "C" const char gszTypeNameMappingEntryNode_0074362C[]; // 0x0074362C
-
-extern "C" const char gszTypeNameStringEntryNode_0074364C[]; // 0x0074364C
+extern "C" const char gszTypeNameStringEntryNode[]; // 0x0074364C
 
 inline void* __cdecl operator new(unsigned int nSize, void* pWhere) throw();
 
@@ -982,11 +969,8 @@ extern "C" _iobuf* __cdecl fopen(const char* szFileName, const char* szMode);   
 
 extern "C" int __cdecl fclose(_iobuf* pFile);                                                               // 0x00681FDC
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize);                          // 0x004135D0
 
 extern "C" char* __cdecl strstr(const char* szString, const char* szSubString);
-
-extern "C" char* __stdcall SStrLower(char* szString); // 0x00414200
 
 __declspec(nothrow) void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags);          // 0x00413020
 
@@ -994,29 +978,18 @@ extern "C" int __cdecl fprintf(_iobuf*, const char*, ...); // 0x00684C94
 
 extern const char gszFileModeW[]; // 0x006FF97C
 
-extern const char gszFirstFormat_006CD90C[]; // 0x006CD90C
+extern const char gszLogLineFormat[]; // 0x006CD90C
 
 extern const char gszBangLineFormat[]; // 0x006E62A8
 
 void __cdecl operator delete(void* pMemory, void* pWhere) throw();
 
-extern "C" const char gszTypeNameStringEntryList_0074366C[];                                                          // 0x0074366C
 
-extern "C" const char gszTypeNameMappingEntryList_007436AC[];                                                         // 0x007436AC
 
-int __fastcall ERRORMANAGER_GetModuleDirectory(char* szPath, unsigned int nSize);                                    // 0x00406B60
 
-void __stdcall SMemZero(void* pDest, unsigned int nSize);                                                             // 0x0041D300
 
-const char* __stdcall SStrChrR(const char* szString, char nChar);                                                     // 0x004134D0
 
-unsigned int __stdcall SStrPack(char* szDest, const char* szSource, unsigned int nDestSize);                          // 0x00413800
 
-int __stdcall SRegLoadValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long* pValue); // 0x00414F10
-
-// build: symbol ??4D2StormHashKeyStrIAStrc@@QAEAAU0@ABU0@@Z 0x0060DCB0
-// build: symbol ??4D2StormHashKeyStrIBStrc@@QAEAAU0@ABU0@@Z 0x0060E130
-// build: symbol ??_7ChatIgnoreList@@6B@ 0x006E6248
 // 0x0060DC70
 D2StormHashKeyStrIAStrc::D2StormHashKeyStrIAStrc(const char* szString)
 {
@@ -1051,13 +1024,11 @@ D2StormHashKeyStrIBStrc::D2StormHashKeyStrIBStrc(const char* szString)
     m_str = SStrDup(szString);
 }
 
-// build: symbol ??_GChatIgnoreList@@UAEPAXI@Z 0x0060DD60
 inline void D2CommonChatIgnoreListStrc::operator delete(void* pMemory)
 {
     SMemFree(pMemory, "delete", -1, 0);
 }
 
-int __stdcall SStrCmpI(const char* szString1, const char* szString2, unsigned int nMaxChars); // 0x00413590
 struct D2CmpStringStrc
 {
     const char* szText;
@@ -1279,8 +1250,6 @@ static unsigned int __stdcall STORM_RoundUp(unsigned int nValue, unsigned int nA
     return nValue;
 }
 
-// build: symbol ??_7?$TSHashTable@UStringEntryNode@@VHASHKEY_STRI@@@@6B@ 0x006E62B4
-// build: symbol ??_7?$TSHashTable@UMappingEntryNode@@VHASHKEY_STRI@@@@6B@ 0x006E62C8
 // 0x0060E450
 D2CommonStormSlotLinkStrc* D2CommonStormSlotListAStrc::IGNORELIST_GetStringListLink(char* pNode)
 {
@@ -1324,10 +1293,6 @@ char* D2CommonStormSlotListAStrc::IGNORELIST_GetStringListRawNext(char* pNode)
     return Link(pNode)->m_next;
 }
 
-// build: symbol ??_GD2CommonMappingEntryNodeStrc@@QAEPAXI@Z 0x0060EDF0
-// build: symbol ??_GD2CommonStormSlotListAStrc@@QAEPAXI@Z 0x0060EFC0
-// build: symbol ??_GD2CommonStormSlotListBStrc@@QAEPAXI@Z 0x0060F300
-// build: symbol ??_GD2CommonStringEntryNodeStrc@@QAEPAXI@Z 0x0060F160
 // 0x0060E560
 void D2CommonStormSlotListAStrc::IGNORELIST_UnlinkStringListNode(char* pNode)
 {
@@ -1437,7 +1402,6 @@ D2ChatStormListDStrc::D2ChatStormListDStrc()
     m_terminator.m_next = (char*)~(unsigned int)&m_terminator;
 }
 
-// build: symbol ?UnlinkAll@D2CommonStormSlotListAStrc@@QAEXXZ 0x0060E820
 inline void D2CommonStormSlotListAStrc::UnlinkAll()
 {
     char* pNode;
@@ -1560,7 +1524,6 @@ void D2CommonStormSlotListAStrc::IGNORELIST_ChangeStringListLinkOffset(int nLink
     }
 }
 
-// build: symbol ?UnlinkAll@D2CommonStormSlotListBStrc@@QAEXXZ 0x0060ECB0
 inline void D2CommonStormSlotListBStrc::UnlinkAll()
 {
     char* pNode;
@@ -1662,7 +1625,7 @@ char* D2CommonStormSlotListBStrc::IGNORELIST_DeleteMappingListNode(D2CommonMappi
 {
     char* pNext = Link((char*)pNode)->Next();
     pNode->~D2CommonMappingEntryNodeStrc();
-    SMemFree(pNode, gszTypeNameMappingEntryNode_0074362C, -2, 0);
+    SMemFree(pNode, gszTypeNameMappingEntryNode, -2, 0);
     return pNext;
 }
 
@@ -1707,7 +1670,7 @@ int D2CommonIgnoreListStrc::IGNORELIST_SaveToFile()
     if (!pFile)
         return 0;
     for (char* pNode = m_table.m_fulllist.m_terminator.NextChecked(); (int)pNode > 0; pNode = ((D2CommonStormSlotLinkStrc*)(pNode + m_table.m_fulllist.m_linkoffset))->Next())
-        fprintf(pFile, gszFirstFormat_006CD90C, ((D2CommonStringEntryNodeStrc*)pNode)->m_key.m_str);
+        fprintf(pFile, gszLogLineFormat, ((D2CommonStringEntryNodeStrc*)pNode)->m_key.m_str);
     for (char* pNode = m_table2.m_fulllist.m_terminator.NextChecked(); (int)pNode > 0; pNode = ((D2CommonStormSlotLinkStrc*)(pNode + m_table2.m_fulllist.m_linkoffset))->Next())
         fprintf(pFile, gszBangLineFormat, ((D2CommonStringEntryNodeStrc*)pNode)->m_key.m_str);
     fclose(pFile);
@@ -1757,7 +1720,7 @@ char* D2CommonStormSlotListAStrc::IGNORELIST_DeleteStringListNode(D2CommonString
 {
     char* pNext = Link((char*)pNode)->Next();
     pNode->~D2CommonStringEntryNodeStrc();
-    SMemFree(pNode, gszTypeNameStringEntryNode_0074364C, -2, 0);
+    SMemFree(pNode, gszTypeNameStringEntryNode, -2, 0);
     return pNext;
 }
 
@@ -1785,10 +1748,10 @@ void D2CommonStormSlotArrayAStrc::IGNORELIST_ReallocStringSlotArray(unsigned int
     for (unsigned int i = nAlloc; i < m_count; i++)
         pOldData[i].~D2CommonStormSlotListAStrc();
     m_alloc = nAlloc;
-    m_data = (D2CommonStormSlotListAStrc*)SMemReAlloc(pOldData, nAlloc * sizeof(D2CommonStormSlotListAStrc), gszTypeNameStringEntryList_0074366C, -2, 0x10);
+    m_data = (D2CommonStormSlotListAStrc*)SMemReAlloc(pOldData, nAlloc * sizeof(D2CommonStormSlotListAStrc), gszTypeNameStringEntryList, -2, 0x10);
     if (!m_data)
     {
-        m_data = (D2CommonStormSlotListAStrc*)SMemAlloc(nAlloc * sizeof(D2CommonStormSlotListAStrc), gszTypeNameStringEntryList_0074366C, -2, 0);
+        m_data = (D2CommonStormSlotListAStrc*)SMemAlloc(nAlloc * sizeof(D2CommonStormSlotListAStrc), gszTypeNameStringEntryList, -2, 0);
         if (pOldData)
         {
             unsigned int nCount = nAlloc < m_count ? nAlloc : m_count;
@@ -1797,7 +1760,7 @@ void D2CommonStormSlotArrayAStrc::IGNORELIST_ReallocStringSlotArray(unsigned int
                 new (&m_data[i]) D2CommonStormSlotListAStrc(pOldData[i]);
                 pOldData[i].~D2CommonStormSlotListAStrc();
             }
-            SMemFree(pOldData, gszTypeNameStringEntryList_0074366C, -2, 0);
+            SMemFree(pOldData, gszTypeNameStringEntryList, -2, 0);
         }
     }
 }
@@ -1846,7 +1809,7 @@ D2CommonStormSlotArrayAStrc::~D2CommonStormSlotArrayAStrc()
     for (unsigned int i = 0; i < m_count; i++)
         m_data[i].~D2CommonStormSlotListAStrc();
     if (m_data)
-        SMemFree(m_data, gszTypeNameStringEntryList_0074366C, -2, 0);
+        SMemFree(m_data, gszTypeNameStringEntryList, -2, 0);
 }
 
 // 0x0060F690
@@ -1876,10 +1839,10 @@ void D2CommonStormSlotArrayBStrc::IGNORELIST_ReallocMappingSlotArray(unsigned in
     for (unsigned int i = nAlloc; i < m_count; i++)
         pOldData[i].~D2CommonStormSlotListBStrc();
     m_alloc = nAlloc;
-    m_data = (D2CommonStormSlotListBStrc*)SMemReAlloc(pOldData, nAlloc * sizeof(D2CommonStormSlotListBStrc), gszTypeNameMappingEntryList_007436AC, -2, 0x10);
+    m_data = (D2CommonStormSlotListBStrc*)SMemReAlloc(pOldData, nAlloc * sizeof(D2CommonStormSlotListBStrc), gszTypeNameMappingEntryList, -2, 0x10);
     if (!m_data)
     {
-        m_data = (D2CommonStormSlotListBStrc*)SMemAlloc(nAlloc * sizeof(D2CommonStormSlotListBStrc), gszTypeNameMappingEntryList_007436AC, -2, 0);
+        m_data = (D2CommonStormSlotListBStrc*)SMemAlloc(nAlloc * sizeof(D2CommonStormSlotListBStrc), gszTypeNameMappingEntryList, -2, 0);
         if (pOldData)
         {
             unsigned int nCount = nAlloc < m_count ? nAlloc : m_count;
@@ -1888,7 +1851,7 @@ void D2CommonStormSlotArrayBStrc::IGNORELIST_ReallocMappingSlotArray(unsigned in
                 new (&m_data[i]) D2CommonStormSlotListBStrc(pOldData[i]);
                 pOldData[i].~D2CommonStormSlotListBStrc();
             }
-            SMemFree(pOldData, gszTypeNameMappingEntryList_007436AC, -2, 0);
+            SMemFree(pOldData, gszTypeNameMappingEntryList, -2, 0);
         }
     }
 }
@@ -1921,7 +1884,6 @@ int D2CommonIgnoreListStrc::IGNORELIST_AppendLineToFile(const char* szLine)
     int bResult = 0;
     char szBuffer[0x100];
     SStrCopy(szBuffer, szLine, sizeof(szBuffer));
-// build: symbol ?gszNewline@* 0x006FFCB0
     SStrPack(szBuffer, gszNewline, sizeof(szBuffer));
     m_pFile = fopen(szFileName, "at+");
     if (m_pFile)
@@ -1996,15 +1958,6 @@ D2StormArray408Strc* D2StormArray408Strc::sub_0051D2C0_InitBase()
     return this;
 }
 
-void __cdecl sub_0051D2D0_Nop()
-{
-}
-
-void __cdecl sub_0051D2E0_Nop()
-{
-}
-
-// build: symbol ?BNNEWS_CopyNewsItem@* 0x0051D350
 void __fastcall BNNEWS_CopyNewsItem(D2Storm408ElemStrc* pDst, const D2Storm408ElemStrc* pSrc)
 {
     if (pDst)
@@ -2014,13 +1967,13 @@ void __fastcall BNNEWS_CopyNewsItem(D2Storm408ElemStrc* pDst, const D2Storm408El
 void D2StormArray408Strc::sub_0051D570_FreeData()
 {
     if (m_data)
-        SMemFree(m_data, gszTypeNewsTableItem_0072FF8C, -2, 0);
+        SMemFree(m_data, gszTypeNewsTableItem, -2, 0);
 }
 
 void D2StormArray408Strc::sub_0051D670_FreeData()
 {
     if (m_data)
-        SMemFree(m_data, gszTypeNewsTableItem_0072FF8C, -2, 0);
+        SMemFree(m_data, gszTypeNewsTableItem, -2, 0);
 }
 
 // 0x0060F930
@@ -2044,7 +1997,7 @@ D2CommonStormSlotArrayBStrc::~D2CommonStormSlotArrayBStrc()
     for (unsigned int i = 0; i < m_count; i++)
         m_data[i].~D2CommonStormSlotListBStrc();
     if (m_data)
-        SMemFree(m_data, gszTypeNameMappingEntryList_007436AC, -2, 0);
+        SMemFree(m_data, gszTypeNameMappingEntryList, -2, 0);
 }
 
 // 0x0060F9D0
@@ -2146,7 +2099,6 @@ int D2CommonIgnoreListStrc::IGNORELIST_IsTextFiltered(const char* szName)
     return 0;
 }
 
-// build: symbol ??_7?$TSHashTable@UStringEntryNode@@VHASHKEY_STRI@@@@6B@ 0x006E62B4
 // 0x0060FD50
 int D2CommonIgnoreListStrc::IGNORELIST_ContainsName(const char* szKey)
 {
@@ -2172,7 +2124,7 @@ D2CommonStormZeroAStrc::D2CommonStormZeroAStrc()
 void D2StormArray408Strc::sub_0051D6A0_Clear()
 {
     if (m_data)
-        SMemFree(m_data, gszTypeNewsTableItem_0072FF8C, -2, 0);
+        SMemFree(m_data, gszTypeNewsTableItem, -2, 0);
     m_alloc = 0;
     m_count = 0;
     m_data = 0;
@@ -2190,7 +2142,7 @@ D2StormArray408Strc* D2StormArray408Strc::sub_0051D720_Init()
 void D2StormArray408Strc::sub_0051D730_FreeData()
 {
     if (m_data)
-        SMemFree(m_data, gszTypeNewsTableItem_0072FF8C, -2, 0);
+        SMemFree(m_data, gszTypeNewsTableItem, -2, 0);
 }
 
 D2Storm408ElemStrc* D2StormArray408Strc::sub_0051D7A0_New()
@@ -2205,16 +2157,6 @@ D2CommonStormZeroBStrc::D2CommonStormZeroBStrc()
     m_value = 0;
 }
 
-void sub_F44_EmitMappingEntryNode(D2CommonMappingEntryNodeStrc* p)
-{
-    delete p;
-}
-
-void sub_F44_EmitStringEntryNode(D2CommonStringEntryNodeStrc* p)
-{
-    delete p;
-}
-
 
 
 // 0x0060FE50
@@ -2227,14 +2169,10 @@ D2CommonStormZeroFE70Strc::D2CommonStormZeroFE70Strc() : n0x04(0), n0x08(0), n0x
 {
 }
 
-// build: symbol ??_G?$TSHashTable@UStringEntryNode@@VHASHKEY_STRI@@@@UAEPAXI@Z 0x00610050
-// build: symbol ??_G?$TSHashTable@UMappingEntryNode@@VHASHKEY_STRI@@@@UAEPAXI@Z 0x00610800
-// build: symbol ??_GD2CommonStormSlotArrayAStrc@@QAEPAXI@Z 0x0060FFD0
-// build: symbol ??_GD2CommonStormSlotArrayBStrc@@QAEPAXI@Z 0x00610780
 // 0x0060FE90
 D2CommonStringEntryNodeStrc* D2CommonStormSlotListAStrc::IGNORELIST_NewStringListNode(int nLinkType, unsigned int nExtraBytes, unsigned int nFlags)
 {
-    D2CommonStringEntryNodeStrc* pNode = new (SMemAlloc(sizeof(D2CommonStringEntryNodeStrc) + nExtraBytes, gszTypeNameStringEntryNode_0074364C, -2, nFlags | 8)) D2CommonStringEntryNodeStrc;
+    D2CommonStringEntryNodeStrc* pNode = new (SMemAlloc(sizeof(D2CommonStringEntryNodeStrc) + nExtraBytes, gszTypeNameStringEntryNode, -2, nFlags | 8)) D2CommonStringEntryNodeStrc;
     if (nLinkType)
         IGNORELIST_LinkStringListNode((char*)pNode, nLinkType, 0);
     return pNode;
@@ -2243,7 +2181,7 @@ D2CommonStringEntryNodeStrc* D2CommonStormSlotListAStrc::IGNORELIST_NewStringLis
 // 0x0060FEF0
 D2CommonStringEntryNodeStrc* D2CommonStormHashTableAStrc::IGNORELIST_AllocStringTableNodeInList(D2CommonStormSlotListAStrc* pList, unsigned int nExtraBytes, unsigned int nFlags)
 {
-    void* pMemory = SMemAlloc(sizeof(D2CommonStringEntryNodeStrc) + nExtraBytes, gszTypeNameStringEntryNode_0074364C, -2, nFlags | 8);
+    void* pMemory = SMemAlloc(sizeof(D2CommonStringEntryNodeStrc) + nExtraBytes, gszTypeNameStringEntryNode, -2, nFlags | 8);
     D2CommonStringEntryNodeStrc* pNode = new (pMemory) D2CommonStringEntryNodeStrc;
     pList->LinkNode((char*)pNode, 1, 0);
     return pNode;
@@ -2253,7 +2191,7 @@ D2CommonStringEntryNodeStrc* D2CommonStormHashTableAStrc::IGNORELIST_AllocString
 void D2CommonStormHashTableAStrc::IGNORELIST_InternalDeleteStringTableNode(D2CommonStringEntryNodeStrc* pNode)
 {
     pNode->~D2CommonStringEntryNodeStrc();
-    SMemFree(pNode, gszTypeNameStringEntryNode_0074364C, -2, 0);
+    SMemFree(pNode, gszTypeNameStringEntryNode, -2, 0);
 }
 
 // 0x0060FFD0
@@ -2370,7 +2308,6 @@ int D2CommonIgnoreListStrc::IGNORELIST_IsListed(const char* szName)
     return 0;
 }
 
-// build: symbol ??_7?$TSHashTable@UMappingEntryNode@@VHASHKEY_STRI@@@@6B@ 0x006E62C8
 // 0x006104A0
 D2CommonStormHashTableAStrc::TSHashTable()
 {
@@ -2388,13 +2325,11 @@ D2CommonStormHashTableBStrc::~TSHashTable()
     IGNORELIST_InternalClearMappingTable(1);
 }
 
-// build: symbol ?DRLGANIM_MapTileType@* 0x0066D7E0
 int __fastcall DRLGANIM_MapTileType(int nId)
 {
     return gnTileTypeTable[nId];
 }
 
-// build: symbol ?DRLGANIM_TileToClientCoords@* 0x0066D800
 void __fastcall DRLGANIM_TileToClientCoords(int* pX, int* pY)
 {
     *pY += 1;
@@ -2407,7 +2342,6 @@ D2CommonStormZero6105F0Strc::D2CommonStormZero6105F0Strc() : n0x04(0), n0x08(0),
 {
 }
 
-// build: symbol ?IGNORELIST_LinkMappingListNode@List@@QAEXPADH0@Z 0x0060E890
 // 0x00610610
 D2CommonRecord610610Strc::D2CommonRecord610610Strc(int nValue)
     : f_4(0), f_8(0), nFieldC(0), nField10(0), nField14(0), nField18(nValue)
@@ -2417,7 +2351,7 @@ D2CommonRecord610610Strc::D2CommonRecord610610Strc(int nValue)
 // 0x00610630
 Node* List::IGNORELIST_NewMappingListNode(int linkType,unsigned extra,unsigned flags)
 {
-    void* memory=sub_00413020(sizeof(Node)+extra,mappingName,-2,flags|ALLOC_FLAG);
+    void* memory=SMemAlloc(sizeof(Node)+extra,mappingName,-2,flags|ALLOC_FLAG);
     Node* node=new(memory) Node;
     if(linkType) IGNORELIST_LinkMappingListNode((char*)node,linkType,0);
     return node;
@@ -2427,13 +2361,13 @@ Node* List::IGNORELIST_NewMappingListNode(int linkType,unsigned extra,unsigned f
 void D2CommonStormHashTableBStrc::IGNORELIST_InternalDeleteMappingTableNode(D2CommonMappingEntryNodeStrc* pNode)
 {
     pNode->~D2CommonMappingEntryNodeStrc();
-    SMemFree(pNode, gszTypeNameMappingEntryNode_0074362C, -2, 0);
+    SMemFree(pNode, gszTypeNameMappingEntryNode, -2, 0);
 }
 
 // 0x006106D0
 D2CommonMappingEntryNodeStrc* D2CommonStormHashTableBStrc::IGNORELIST_AllocMappingTableNodeInList(D2CommonStormSlotListBStrc* pList, unsigned int nExtraBytes, unsigned int nFlags)
 {
-    void* pMemory = SMemAlloc(sizeof(D2CommonMappingEntryNodeStrc) + nExtraBytes, gszTypeNameMappingEntryNode_0074362C, -2, nFlags | 8);
+    void* pMemory = SMemAlloc(sizeof(D2CommonMappingEntryNodeStrc) + nExtraBytes, gszTypeNameMappingEntryNode, -2, nFlags | 8);
     D2CommonMappingEntryNodeStrc* pNode = new (pMemory) D2CommonMappingEntryNodeStrc;
     pList->LinkNode((char*)pNode, 1, 0);
     return pNode;
@@ -2494,8 +2428,6 @@ int D2CommonStormHashTableAStrc::IGNORELIST_MonitorStringTableFullness(unsigned 
     return 0;
 }
 
-// build: symbol ??_7ChatIgnoreList@@6B@ 0x006E6248
-// build: symbol ??_7IgnoreList@@6B@ 0x006E62DC
 // 0x006108D0
 void D2CommonStormHashTableBStrc::IGNORELIST_GrowMappingTableSlots()
 {
@@ -2576,7 +2508,7 @@ int D2CommonStormHashTableBStrc::IGNORELIST_MonitorMappingTableFullness(unsigned
 }
 
 // 0x00610D30
-void* D2Object00610D30Strc::sub_00610D30(unsigned int nFlags)
+void* D2Object00610D30Strc::sub_00610D30_Delete(unsigned int nFlags)
 {
     this->~D2Object00610D30Strc();
     if (nFlags & 1)
@@ -2622,7 +2554,6 @@ D2CommonIgnoreListStrc* IGNORELIST_GetOrCreateIgnoreList()
     return gpIgnoreList;
 }
 
-// build: symbol ??3@YAXPAX0@Z 0x0040EB30
 // 0x00610F90
 int D2CommonIgnoreListStrc::IGNORELIST_AddAlias(const char* szName)
 {
@@ -2760,46 +2691,7 @@ int D2CommonIgnoreListStrc::IGNORELIST_StoreAccountAlias(char* szRaw, int nRawLe
     return 1;
 }
 
-void sub_F45_EmitHashTables(void* pTableA, void* pTableB)
-{
-    new (pTableA) D2CommonStormHashTableAStrc(0);
-    new (pTableB) D2CommonStormHashTableBStrc(0);
-}
-
-void sub_F45_EmitSlotArrays(D2CommonStormSlotArrayAStrc* pArrayA, D2CommonStormSlotArrayBStrc* pArrayB)
-{
-    delete pArrayA;
-    delete pArrayB;
-}
-
 extern "C" char gData_006F28F8[]; // 0x006F28F8
-
-#pragma pack(push, 1)
-struct d2data_0074362C_t
-{
-    unsigned char b0[24];
-    const void* p1;
-    unsigned char b2[4];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0074364C_t
-{
-    unsigned char b0[24];
-    const void* p1;
-    unsigned char b2[4];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_0074366C_t
-{
-    unsigned char b0[56];
-    const void* p1;
-    unsigned char b2[4];
-};
-#pragma pack(pop)
 
 #pragma pack(push, 1)
 struct d2data_00743780_t
@@ -2823,32 +2715,62 @@ struct d2data_00743780_t
 #pragma pack(pop)
 
 #pragma pack(push, 1)
+struct d2data_0074364C_t
+{
+    unsigned char b0[24];
+    const void* p1;
+    unsigned char b2[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0074366C_t
+{
+    unsigned char b0[56];
+    const void* p1;
+    unsigned char b2[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct d2data_0074362C_t
+{
+    unsigned char b0[24];
+    const void* p1;
+    unsigned char b2[4];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
 struct d2data_007437BC_t
 {
     unsigned char b0[4];
 };
 #pragma pack(pop)
 
-extern "C" const char gData_006E62A8[8]; // 0x006E62A8
-extern "C" struct d2data_0074362C_t gData_0074362C; // 0x0074362C
+extern "C" struct d2data_00743780_t gData_00743780; // 0x00743780
 extern "C" struct d2data_0074364C_t gData_0074364C; // 0x0074364C
 extern "C" struct d2data_0074366C_t gData_0074366C; // 0x0074366C
-extern "C" const char gData_007436AC[56]; // 0x007436AC
-extern "C" struct d2data_00743780_t gData_00743780; // 0x00743780
+extern "C" struct d2data_0074362C_t gData_0074362C; // 0x0074362C
 extern "C" struct d2data_007437BC_t gData_007437BC; // 0x007437BC
 
-extern "C" const char gData_006E62A8[8] = "!%s\n"; // 0x006E62A8
-#pragma comment(linker, "/alternatename:?gszBangLineFormat@@3QBDB=_gData_006E62A8")
-
-extern "C" struct d2data_0074362C_t gData_0074362C = {
-    {
-        0x2E, 0x3F, 0x41, 0x55, 0x4D, 0x61, 0x70, 0x70, 0x69, 0x6E, 0x67, 0x45, 0x6E, 0x74, 0x72, 0x79,
-        0x4E, 0x6F, 0x64, 0x65, 0x40, 0x40
-    },
-    (const void*)&gData_006F28F8,
-    { 0x00 }
-}; // 0x0074362C
-#pragma comment(linker, "/alternatename:_gszTypeNameMappingEntryNode_0074362C=_gData_0074362C")
+extern "C" struct d2data_00743780_t gData_00743780 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00743780
 
 extern "C" struct d2data_0074364C_t gData_0074364C = {
     {
@@ -2872,26 +2794,19 @@ extern "C" struct d2data_0074366C_t gData_0074366C = {
 }; // 0x0074366C
 #pragma comment(linker, "/alternatename:_gszTypeNameStringEntryList_0074366C=_gData_0074366C")
 
-extern "C" const char gData_007436AC[56] = ".?AV?$TSExplicitList@UMappingEntryNode@@$0?CCCCCCCD@@@"; // 0x007436AC
-#pragma comment(linker, "/alternatename:_gszTypeNameMappingEntryList_007436AC=_gData_007436AC")
+extern "C" const char gszTypeNameMappingEntryList_007436AC[56] = ".?AV?$TSExplicitList@UMappingEntryNode@@$0?CCCCCCCD@@@"; // 0x007436AC
 
-extern "C" struct d2data_00743780_t gData_00743780 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00743780
+extern const char gszBangLineFormat[8] = "!%s\n"; // 0x006E62A8
+
+extern "C" struct d2data_0074362C_t gData_0074362C = {
+    {
+        0x2E, 0x3F, 0x41, 0x55, 0x4D, 0x61, 0x70, 0x70, 0x69, 0x6E, 0x67, 0x45, 0x6E, 0x74, 0x72, 0x79,
+        0x4E, 0x6F, 0x64, 0x65, 0x40, 0x40
+    },
+    (const void*)&gData_006F28F8,
+    { 0x00 }
+}; // 0x0074362C
+#pragma comment(linker, "/alternatename:_gszTypeNameMappingEntryNode_0074362C=_gData_0074362C")
 
 extern "C" struct d2data_007437BC_t gData_007437BC = {
     { 0x00 }

@@ -1,4 +1,7 @@
+#include "D2LanguageNames.h"
+
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2CelContext.h"
 #include "D2ClientTypes.h"
 #include "D2ClientGame.h"
@@ -8,6 +11,12 @@
 #include "D2LevelTxt.h"
 #include "D2ClientUi.h"
 #include "D2StatIds.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "StormApi.h"
+#include "D2CommonApi2.h"
+#include "D2GfxApi.h"
 
 struct Unicode;
 
@@ -28,9 +37,7 @@ struct D2DialogTimerStrc
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
@@ -40,41 +47,26 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount();        
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                                // 0x00681EF0
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);                               // 0x0040B380
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg);                                     // 0x00420290
 
-int __cdecl GAME_IsExitPending();                                                                                 // 0x0044DA30
 
-void __cdecl GAME_ResetMouseButtons();                                                                                // 0x0044DA70
 
-void __cdecl UI_StartUIVarDelay();                                                                                // 0x00453AE0
 
-int __cdecl sub_00468730();                                                                                 // 0x00468730
 
-int __cdecl sub_00468740();                                                                                 // 0x00468740
 
 void __fastcall ROSTERPETS_RemoveHirelingEntries(int nUnused, int nKey);                                            // 0x00478AB0
 
 void __fastcall TEXT_DrawCenteredText(int nLeft, int nY, int nRight, const Unicode* wszText, int nColor);  // 0x004A7080
 
-int __stdcall INV_GetTableByte(int nUnused, int nIndex);                                           // 0x004B92E0
 
-int __stdcall D2GFX_GetResolutionMode(); // 0x004F5160
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
-int __fastcall D2Win_10127_SetFont(int nArg);                                                                      // 0x00502EF0
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex);                              // 0x00524A30
-
-extern int gnScreenWidth;                                                                               // 0x0071146C
 
 extern D2PanelAnimEntryStrc gaPanelAnim[];                                                         // 0x00712020
 
-extern int gnPanelOffsetX;                                                                               // 0x007A2858
 
-extern int gnPanelOffsetY;                                                                               // 0x007A285C
 
 extern int gbPopupOkPressed;                                                                               // 0x007A524C
 
@@ -117,7 +109,6 @@ static int gbRedraw;                                                            
 
 static D2DialogTimerStrc* gpTimer_007C0E54;                                                                 // 0x007C0E54
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 struct D2RosterPetStrc;
 
@@ -125,7 +116,6 @@ struct D2Packet81ArgsStrc;
 
 struct D2HirelingInfoStrc;
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
 struct D2HirelingInfoStrc
 {
@@ -135,17 +125,10 @@ struct D2HirelingInfoStrc
     int unk0x08[2];
 };
 
-D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
-void __fastcall CUNIT_UpdateAttackableFlag(D2UnitStrc* pUnit); // 0x004647D0
 
-void __fastcall ROSTERPETS_SetRosterEntry(int nKey, int nArg, int nType, int nValue); // 0x00478B10
 
-void __fastcall MONSTER_SetMonsterLight(D2UnitStrc* pUnit); // 0x004AE210
 
-void __fastcall MONSTER_InitHireling(D2UnitStrc* pUnit, D2HirelingInfoStrc* pInfo); // 0x004B1090
-
-int __stdcall UNITS_ChangeAnimMode(D2UnitStrc* pUnit, int nMode); // 0x00624690
 
 struct D2ClientEntryStrc;
 
@@ -301,9 +284,7 @@ void __fastcall ROSTERPETS_DropPetEntry(int nKey)
 
 struct D2PetTypeTxt;
 
-D2StoredUnitRecordStrc* __fastcall ROSTER_FindRosterUnitById(int nUnitId); // 0x00479BB0
 
-unsigned short __fastcall ROSTER_GetEntryIndex(D2StoredUnitRecordStrc* pEntry); // 0x00479BC0
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
@@ -392,9 +373,7 @@ D2ClientEntryStrc* __fastcall ROSTERPETS_FindEntry(int nKey)
 }
 
 
-unsigned int __fastcall GFXUTIL_TestRelationFlags(int nUnitId1, int nUnitId2, unsigned int nFlags); // 0x004DC440
 
-int __fastcall ROSTER_IsHostileRelation(int nUnitId1, int nUnitId2); // 0x0047A070
 
 static inline D2RosterPetStrc* PETS_FindRosterPetInl(int nUnitId)
 {
@@ -498,17 +477,14 @@ void __cdecl GFX_UpdatePetFlags()
             if (pUnit)
             {
                 int bSet = !ROSTERPETS_IsPetFriendly(pPlayer, pUnit);
-                sub_00463E20_SetUnitFlagA(pUnit, bSet);
-                sub_00463E80_SetUnitFlagB(pUnit, bSet);
+                CUNIT_SetBasePalShiftIndex(pUnit, bSet);
+                CUNIT_SetPalShiftIndex(pUnit, bSet);
             }
         }
     }
 }
 
 
-int __stdcall STATLIST_GetMaxLifeFromUnit(D2UnitStrc* pUnit); // 0x00625D10
-
-void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStatId, int nValue, int nLayer); // 0x00627260
 
 
 
@@ -648,9 +624,7 @@ int __fastcall ROSTERPETS_IsOwnedByPlayer(D2UnitStrc* pUnit)
     return 1;
 }
 
-int __fastcall CUNIT_GetBasePalShiftIndex(D2UnitStrc* pUnit); // 0x00463E50
 
-int __fastcall CUNIT_GetPalShiftIndex(D2UnitStrc* pUnit); // 0x00463EB0
 
 
 
@@ -673,9 +647,9 @@ void __fastcall WARDENCLIENT_UpdateOwnerPetFlags(int nOwnerId)
                     int bSet = !ROSTERPETS_IsOwnedByPlayer(pUnit);
                     if (nFlagB == CUNIT_GetBasePalShiftIndex(pUnit))
                     {
-                        sub_00463E80_SetUnitFlagB(pUnit, bSet);
+                        CUNIT_SetPalShiftIndex(pUnit, bSet);
                     }
-                    sub_00463E20_SetUnitFlagA(pUnit, bSet);
+                    CUNIT_SetBasePalShiftIndex(pUnit, bSet);
                 }
                 break;
             }
@@ -732,44 +706,3 @@ void __stdcall ROSTERPETS_HandlePanelButtonDown(SMSGHANDLER_PARAMS* pMsg)
 
 extern "C" void __cdecl CURSOR_DrawDefaultCursor(); // 0x004683C0
 extern "C" void __cdecl CURSOR_DrawCursorCel(); // 0x00468460
-
-#pragma pack(push, 1)
-struct d2data_00712E48_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
-
-extern "C" struct d2data_00712E48_t gData_00712E48; // 0x00712E48
-
-extern "C" struct d2data_00712E48_t gData_00712E48 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00712E48

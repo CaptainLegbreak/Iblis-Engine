@@ -4,7 +4,7 @@
 #include "D2Check.h"
 #include "D2Structs.h"
 
-struct D2CelContextStrc;
+struct D2GfxDataStrc;
 struct D2GlideTileStrc;
 struct D2TileLibraryEntryStrc;
 struct D2TLVertexStrc;
@@ -48,7 +48,7 @@ struct D2QuadRectStrc
 
 struct D2SpriteInfoStrc
 {
-    D2CelContextStrc* pContext; // 0x00
+    D2GfxDataStrc* pContext; // 0x00
     int nWidth; // 0x04
     int nHeight; // 0x08
     int nOffsetX; // 0x0C

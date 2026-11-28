@@ -2,18 +2,14 @@
 #include "D2CelContext.h"
 #include "D2CmpTypes.h"
 #include "D2Win32Base.h"
+#include "FogApi.h"
+#include "D2CMPApi.h"
 
 struct D2CelStrc;
 struct D2DDrawClipRectStrc;
 struct D2DDrawCelClipStrc;
 
 extern int gnDDrawClipLeft; // 0x0088129C
-int __stdcall CelGetWidth(D2CelStrc* pCel); // 0x006018C0
-int __stdcall CelGetHeight(D2CelStrc* pCel); // 0x006018F0
-int __stdcall CelGetOffsetX(D2CelStrc* pCel); // 0x00601920
-int __stdcall CelGetOffsetY(D2CelStrc* pCel); // 0x00601950
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 struct D2DDrawClipRectStrc
 {
@@ -31,13 +27,10 @@ struct D2DDrawCelClipStrc
     int nRows;
 };
 
-int __stdcall sub_006001F0(D2CelContextStrc* pContext, int nArg2, int nArg3);
-void __stdcall CelDrawEx(D2CmpCelContextStrc* pContext, int nX, int nY, int nArg4, int nArg5, unsigned char* pBuffer, int nHeight, int nPitch, int nArg9, int nArg10, int nClipTop, int nClipRows, int nArg13); // 0x00601650
-int __fastcall DDCORE_GetDrawModePalette(int nIndex, int* pType); // 0x00511D70
+int __stdcall D2CMPSpriteValidate(D2GfxDataStrc* pContext, int nArg2, int nArg3);
 
 extern D2PaletteTableStrc* gpGfxPaletteView; // 0x007C9150
 extern int gnDDrawClipRight; // 0x008812A0
-void __stdcall CmpDoLensEffect(unsigned char* pBuffer, int nPitch); // 0x00608C00
 
 int gnDDrawClipRight; // 0x008812A0
 
@@ -69,11 +62,9 @@ static int __stdcall sub_00511E10_IsCelOffScreen(D2CelStrc* pCel, int nX, int nY
     }
 
     nX += CelGetOffsetX(pCel);
-// build: symbol ?gnRenderWidth@* 0x007C9138
     if (nX < gnRenderWidth && nWidth + nX >= 0)
     {
         nY += CelGetOffsetY(pCel);
-// build: symbol ?gnRenderHeight@* 0x007C913C
         if (nY >= 0 && nY - nHeight < gnRenderHeight)
             return 0;
     }
@@ -123,14 +114,14 @@ static int __fastcall sub_00511E80_ClipCel(D2CelStrc* pCel, int nY, int nX, D2DD
 }
 
 // 0x00512250
-void __fastcall sub_00512250_DrawCel(D2CelContextStrc* pContext, int nX, int nY, const D2DDrawClipRectStrc* pClip, int nDrawMode)
+void __fastcall sub_00512250_DrawCel(D2GfxDataStrc* pContext, int nX, int nY, const D2DDrawClipRectStrc* pClip, int nDrawMode)
 {
     D2DDrawCelClipStrc tOut;
     tOut.nLeft = 0;
     tOut.nRight = 0;
     tOut.nFirstRow = 0;
     tOut.nRows = 0;
-    if (!sub_006001F0(pContext, 0, 1))
+    if (!D2CMPSpriteValidate(pContext, 0, 1))
         return;
     if (sub_00511E80_ClipCel(pContext->pCel, nY, nX, &tOut, pClip))
         return;
@@ -141,8 +132,8 @@ void __fastcall sub_00512250_DrawCel(D2CelContextStrc* pContext, int nX, int nY,
 // 0x00511FB0
 int __fastcall sub_00511FB0_DrawImage(void* pData, int nX, int nY, unsigned int dwGamma, int nDrawMode, void* pPalette)
 {
-    D2CelContextStrc* pContext = (D2CelContextStrc*)pData;
-    if (!sub_006001F0(pContext, 0, 1))
+    D2GfxDataStrc* pContext = (D2GfxDataStrc*)pData;
+    if (!D2CMPSpriteValidate(pContext, 0, 1))
         return 0;
 
     if (sub_00511E10_IsCelOffScreen(pContext->pCel, nX, nY, 0))
@@ -176,19 +167,14 @@ void __fastcall sub_005123B0_DDrawDebugFillBackBuffer(int nX, int nY)
 
 struct D2CelStrc;
 
-int __stdcall sub_006001F0(D2CelContextStrc* pContext, int nArg2, int nArg3);
-int __stdcall CelGetWidth(D2CelStrc* pCel);                                                                 // 0x006018C0
-int __stdcall CelGetHeight(D2CelStrc* pCel);                                                                // 0x006018F0
-int __stdcall CelGetOffsetX(D2CelStrc* pCel);                                                               // 0x00601920
-int __stdcall CelGetOffsetY(D2CelStrc* pCel);                                                               // 0x00601950
-int __fastcall DDCORE_GetDrawModePalette(int nIndex, int* pType);                                           // 0x00511D70
+int __stdcall D2CMPSpriteValidate(D2GfxDataStrc* pContext, int nArg2, int nArg3);
 int gnDDrawClipLeft;                                                                                // 0x0088129C
 
 // 0x005120A0
 int __fastcall sub_005120A0_DrawImagePalette(void* pData, int nX, int nY, unsigned int dwGamma, int nDrawMode, int nPalette)
 {
-    D2CelContextStrc* pContext = (D2CelContextStrc*)pData;
-    if (!sub_006001F0(pContext, 0, 1))
+    D2GfxDataStrc* pContext = (D2GfxDataStrc*)pData;
+    if (!D2CMPSpriteValidate(pContext, 0, 1))
         return 0;
 
     if (sub_00511E10_IsCelOffScreen(pContext->pCel, nX, nY, 0))
@@ -214,13 +200,7 @@ int __fastcall sub_005120A0_DrawImagePalette(void* pData, int nX, int nY, unsign
 }
 
 struct D2CelStrc;
-int __stdcall sub_006001F0_ValidateContext(D2CmpCelContextStrc*, int, int); // 0x006001F0
-int __stdcall CelGetWidth(D2CelStrc*); // 0x006018C0
-int __stdcall CelGetHeight(D2CelStrc*); // 0x006018F0
-int __stdcall CelGetOffsetX(D2CelStrc*); // 0x00601920
-int __stdcall CelGetOffsetY(D2CelStrc*); // 0x00601950
-int __fastcall DDCORE_GetDrawModePalette(int, int*); // 0x00511D70
-void __stdcall CelDrawEx(D2CmpCelContextStrc*, int, int, int, int, unsigned char*, int, int, int, int, int, int, int); // 0x00601650
+int __stdcall D2CMPSpriteValidate(D2CmpCelContextStrc*, int, int); // 0x006001F0
 extern int gnRenderWidth; // 0x007C9138
 extern int gnRenderHeight; // 0x007C913C
 extern unsigned char* gpScreenBuffer_007C9154; // 0x007C9154
@@ -228,26 +208,20 @@ extern unsigned char* gpScreenBuffer_007C9154; // 0x007C9154
 // 0x005121A0
 void __fastcall sub_005121A0_DrawClipped(D2CmpCelContextStrc* context, int x, int y, int top, int rows, int index)
 {
-    if (!sub_006001F0_ValidateContext(context, 0, 1)) return;
+    if (!D2CMPSpriteValidate(context, 0, 1)) return;
     if (sub_00511E10_IsCelOffScreen(context->pCel, x, y, 0)) return;
     int screenHeight = gnRenderHeight;
     CelDrawEx(context, x, y, gnDDrawClipLeft, gnDDrawClipRight, gpScreenBuffer_007C9154, screenHeight, gnRenderWidth, 0, DDCORE_GetDrawModePalette(index, &rows), top, rows, 0);
 }
 
 struct D2CelStrc;
-int __stdcall sub_006001F0(D2CmpCelContextStrc* pContext, int nArg2, int nArg3); // 0x006001F0
-int __stdcall CelGetWidth(D2CelStrc* pCel); // 0x006018C0
-int __stdcall CelGetHeight(D2CelStrc* pCel); // 0x006018F0
-int __stdcall CelGetOffsetX(D2CelStrc* pCel); // 0x00601920
-int __stdcall CelGetOffsetY(D2CelStrc* pCel); // 0x00601950
-int __cdecl DDCORE_GetBlendedShadows(); // 0x00512700
-void __stdcall CelDrawShadow(D2CmpCelContextStrc* pContext, int nX, int nY, int nClipLeft, int nClipRight, unsigned char* pBuffer, int nHeightLimit, int nPitch, int nTable, int nColor); // 0x00601730
+int __stdcall D2CMPSpriteValidate(D2CmpCelContextStrc* pContext, int nArg2, int nArg3); // 0x006001F0
 extern int* gpShadowTable_007C9150; // 0x007C9150
 
 // 0x005122E0
 void __fastcall sub_005122E0_DrawShadow(D2CmpCelContextStrc* pContext, int nX, int nY)
 {
-    if (!sub_006001F0(pContext, 0, 1))
+    if (!D2CMPSpriteValidate(pContext, 0, 1))
         return;
 
     if (sub_00511E10_IsCelOffScreen(pContext->pCel, nX, nY, 1))
@@ -260,7 +234,6 @@ void __fastcall sub_005122E0_DrawShadow(D2CmpCelContextStrc* pContext, int nX, i
 }
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
-extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);                               // 0x00681EF0
@@ -269,7 +242,6 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);    
 #define D2_MAX(a, b) ((a) > (b) ? (a) : (b))
 #define D2_MIN(a, b) ((a) < (b) ? (a) : (b))
 
-int __fastcall DDCORE_GetDrawModePalette(int nIndex, int* pType);                                           // 0x00511D70
 
 // 0x00512410
 int __fastcall GLVERTEX_CelFlatSpriteDraw(void* pData, int nX, int nY, unsigned int dwGamma, int nDrawMode, int nScreenMode, void* pPalette)
@@ -342,8 +314,6 @@ struct tagRECT;
 
 static void __fastcall DDRAW_PutPixel(int nX, int nY, unsigned char nColor)
 {
-// build: symbol ?gnRenderWidth@* 0x007C9138
-// build: symbol ?gnRenderHeight@* 0x007C913C
     if (nX >= 0 && nX < gnRenderWidth && nY >= 0 && nY < gnRenderHeight)
         gpScreenBuffer_007C9154[gnRenderWidth * nY + nX] = nColor;
 }
@@ -566,7 +536,6 @@ static void __stdcall sub_00512A50_DrawLine(const D2CoordPairStrc* pFrom, const 
     }
 }
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* pText, const char* pFile, int nLine); // 0x00408A60
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
 // 0x00512CE0

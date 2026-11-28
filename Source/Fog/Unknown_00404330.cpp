@@ -115,7 +115,6 @@ static bool sub_00404F20_EnumModules(D2CrashModuleListStrc* pList)
         bResult = sub_00404DC0_EnumModulesToolhelp(pList);
         if (!bResult)
         {
-// build: symbol ?ERRORMANAGER_EnumLoadedModules@* 0x00404E60
             return ERRORMANAGER_EnumLoadedModules(pList);
         }
     }

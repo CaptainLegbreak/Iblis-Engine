@@ -1,4 +1,6 @@
 #include "D2BNClient.h"
+#include "FogApi.h"
+#include "StormApi.h"
 
 #pragma intrinsic(strlen)
 
@@ -14,7 +16,6 @@ struct D2BnMessage00520440Strc;
 
 extern "C" size_t __cdecl strlen(const char* szString);
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -24,7 +25,6 @@ extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalS
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize); // 0x006829C0
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
 
 extern "C" const char gszBnMessQueueFile[]; // 0x006DF78C
 
@@ -51,16 +51,14 @@ D2BnMessageStrc* gpMessageTail; // 0x00882024
 extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC210
 extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC1FC
 extern int ganSlotArrayB[94]; // 0x008822A8
-void* gpBnStateArg; // 0x00882000
-D2CriticalSectionStrc gtMessageLock; // 0x00882004
-int gnBnState; // 0x0088201C
+extern void* gpBnStateArg; // 0x00882000
+extern D2CriticalSectionStrc gtMessageLock; // 0x00882004
+extern int gnBnState; // 0x0088201C
 
 // 0x005201E0
 void __cdecl BNMESSQUEUE_InitMessageQueue()
 {
-// build: symbol ?gpMessageHead@* 0x00882020
     gpMessageHead = 0;
-// build: symbol ?gpMessageTail@* 0x00882024
     gpMessageTail = 0;
     gnBnState = 0;
     InitializeCriticalSection(&gtMessageLock);
@@ -203,7 +201,6 @@ int __fastcall BNMESSQUEUE_GetState(D2BnStateStrc* pState)
     pState->nState = gnBnState;
     pState->pArg = gpBnStateArg;
     if (gnBnState == 0x1B)
-// build: symbol ?gszEmptyStateText@* 0x00881F80
         pState->pArg = gszEmptyStateText;
     LeaveCriticalSection(&gtMessageLock);
     return 1;

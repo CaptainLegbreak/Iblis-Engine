@@ -1,4 +1,5 @@
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Constants.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
@@ -15,6 +16,15 @@
 #include "D2Unicode.h"
 #include "D2WinSplitText.h"
 #include "D2ClientChatCommand.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "StormApi.h"
+#include "D2GfxApi.h"
+#include "D2WinApi.h"
+#include "D2CMPApi.h"
+#include "D2SoundApi.h"
 
 struct D2MsgHandlerEntryStrc;
 
@@ -44,7 +54,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 extern D2ClientFlagsLowStrc gtClientFlagsLow_00712EFC; // 0x00712EFC
 
@@ -61,9 +71,6 @@ extern Unicode gwszChatLine_007BB638[0x101]; // 0x007BB638
 
 void __fastcall SCMD_RegisterMsgHandlers(int hWnd, D2MsgHandlerEntryStrc* pTable, unsigned int nCount); // 0x00451DB0
 
-bool __cdecl CHAT_IsImeLanguage(); // 0x0047B010
-
-int __cdecl WINDOW_GetWindow(); // 0x004F59A0
 
 extern "C" int __stdcall ImmSimulateHotKey(int hWnd, unsigned long nHotKey); // 0x006B00E4
 
@@ -85,11 +92,8 @@ struct CANDIDATELIST
     unsigned long dwCount;
 };
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
 extern "C" int __stdcall ImmReleaseContext(int hWnd, HIMC hImc); // 0x006B00B4
 
@@ -135,7 +139,6 @@ Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc);           
 
 
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
@@ -171,99 +174,59 @@ struct D2MenuItemStrc
     D2CelFileStrc* pChoices[4];
 };
 
-int __stdcall SRegSaveValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long nValue); // 0x004150E0
 
-int __stdcall SRegLoadValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long* pValue); // 0x00414F10
 
-int __cdecl sub_004DF880();
 
 int __cdecl sub_004DF980_IsSoundMode1Or2();
 
-void __fastcall sub_004776C0(void* pArg);
+void __fastcall sub_004776C0_SetGamma(void* pArg);
 
-int __cdecl D2GFX_GetDisplayType(); // 0x004F5140
 
-int __cdecl sub_004DF940(); // 0x004DF940
 
-int __cdecl sub_004DF960(); // 0x004DF960
 
-int __cdecl sub_004E00D0_ToggleSoundMode01(); // 0x004E00D0
 
-int __cdecl sub_004E0140_ToggleSoundMode12(); // 0x004E0140
-
-void __stdcall D2GFX_SetPerspective(int bPerspective); // 0x004F51E0
-
-void __stdcall D2GFX_SetBlendShadows(int bBlendedShadows); // 0x004F5200
-
-void __fastcall GAME_SetResolution(int nResolution); // 0x0044BA20
 
 void __fastcall AUTOMAP_SetAutomapMode(int nMode); // 0x0045A720
 
-int __fastcall AUTOMAP_SetAutomapFade(int nFade); // 0x004576F0
 
-int __cdecl AUTOMAP_GetAutomapCenters(); // 0x00457740
 
-int __fastcall AUTOMAP_SaveAutomapCenters(int nValue); // 0x00457750
 
-int __cdecl AUTOMAP_GetAutomapParty(); // 0x004577B0
 
-int __cdecl AUTOMAP_GetAutomapPartyNames(); // 0x004577E0
 
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
 extern D2ViewStrc* gpClientView; // 0x007A0640
 
-extern int gnAutomapHeight_007A521C; // 0x007A521C
 
-extern int gnAutomapWidth; // 0x007A5220
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-void __fastcall GAME_SetAlwaysRun(int bAlwaysRun); // 0x0044BE80
 
-int __cdecl AUTOMAP_GetAutomapFade(); // 0x004576C0
 
-int __cdecl UI_GetAutomapMode(); // 0x0045A710
 
 void __fastcall ARCHIVE_FreeClientCellFile(void* pCel); // 0x00478A00
 
-extern int gbSmallPanel; // 0x007BC978
 
 extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA(const char* szText); // 0x006CC200
 
-void __fastcall QUESTLOG_ToggleQuestLog(int nMode); // 0x004A3FE0
 
-int __fastcall UI_CloseUIVars(int bArg1, int nArg2); // 0x00456300
 
-void __cdecl UI_DisableUIVarDelay(); // 0x00453AC0
 
-void __cdecl UI_EnableUIVarDelay(); // 0x00453AD0
 
-void __cdecl UI_StartUIVarDelay(); // 0x00453AE0
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-D2UnitStrc* __stdcall INVENTORY_GetCursorItem(D2InventoryStrc* pInventory); // 0x0063C1E0
 
-int __cdecl sub_00468830(); // 0x00468830
 
-void __fastcall CURSOR_SetCursorItemState(D2UnitStrc* pItem); // 0x00468070
 
-int __cdecl HIREABLES_AreBeltRowsShown(); // 0x004979E0
 
-int __cdecl HIREABLES_GetBeltRowCount(); // 0x004979F0
 
-int __fastcall GAME_GetUnitTypeOrInvalid(D2UnitStrc* pUnit); // 0x0044BE50
 
 void __cdecl GAME_ResetMouseState(); // 0x0044DA40
 
-void __cdecl GAME_ResetMouseButtons(); // 0x0044DA70
 
 static int gbSlotClicked; // 0x007BC97C
 
@@ -275,26 +238,17 @@ extern int gbAnyPanelOpen; // 0x007BC96C
 
 void __fastcall WINMAIN_SetExitApplication(int nValue); // 0x0044B880
 
-void __fastcall GAME_SetCinematicExit(int nValue); // 0x0044C860
-
-void __fastcall sub_0047E200_CloseMenus(int bRestore); // 0x0047E200
-
-static inline int sub_0047D500(D2OptionEntryStrc* pEntry);
-
-void __fastcall sub_0047F310_ShowPage2(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg);
-
-void __fastcall sub_0047F340_ShowPage3(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg);
-
-void __fastcall sub_0047F3A0_ShowPage4(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg);
-
-void __fastcall sub_0047F400_OpenPanel(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg);
-
-void __fastcall sub_0047F430_ShowPage0(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg);
 
 
-unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
+static inline int sub_0047D500_IsOptionEnabled(D2OptionEntryStrc* pEntry);
 
-void __stdcall SStrTokenize(const char** pszString, char* szBuffer, unsigned int nBufferChars, const char* szWhitespace, int* pQuoted); // 0x00413B80
+
+
+
+
+
+
+
 
 extern D2ChatCommandStrc gaChatCommands[3]; // 0x00712F7C
 
@@ -306,21 +260,16 @@ extern D2CelFileStrc* gpSliderKnob_007BC958; // 0x007BC958
 
 void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nStyle); // 0x0046EFD0
 
-void __fastcall D2Win_10134_DrawCellFile(D2CelFileStrc* pCellFile, int nX, int nY, int nFrame, int nColor, int nArg6); // 0x00502680
-
-int __stdcall TEXTURE_CelDraw(D2CelContextStrc* pContext, int nX, int nY, int nArg4, int nColor, int nArg6); // 0x004F6480
+int __stdcall TEXTURE_CelDraw(D2GfxDataStrc* pContext, int nX, int nY, int nArg4, int nColor, int nArg6); // 0x004F6480
 
 extern void* gpSlotCells; // 0x007BC964
 
-int __cdecl GAME_GetConnectionType(); // 0x0044DB30
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize);                // 0x004135D0
 
 extern "C" unsigned int __cdecl strlen(const char* szString);
 
 extern "C" char* __cdecl strncpy(char* szDest, const char* szSource, unsigned int nCount);                  // 0x00687330
 
-int __stdcall SStrCmpI(const char* szString1, const char* szString2, unsigned int nMaxChars); // 0x00413590
 
 
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...);                                    // 0x006823FD
@@ -331,19 +280,15 @@ Unicode* __fastcall sub_00526790(Unicode* pDest, const Unicode* pSource, int nCo
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength);                   // 0x00526F20
 
-int __cdecl GAME_IsExitPending();                                                                                 // 0x0044DA30
 
 extern unsigned char gbGlobal_007BB5E0;                                                                     // 0x007BB5E0
 
-extern int gnImeLanguage_007BB5F0;                                                                          // 0x007BB5F0
+extern int gnImeState;                                                                          // 0x007BB5F0
 
 int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText);                                             // 0x00501820
 
-int __fastcall D2Win_10127_SetFont(int nArg);                                                                      // 0x00502EF0
 
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
 
-extern int gnScreenWidth;                                                                               // 0x0071146C
 
 
 D2SplittedTextStrc* __fastcall D2WINFONT_SplitText(const Unicode* pText, int* pLineCount, int nWidth);       // 0x00502970
@@ -356,9 +301,7 @@ struct D2BnetChatPacketStrc;
 
 extern "C" int __cdecl strcmp(const char* a, const char* b);
 
-Unicode* __fastcall sub_00526E40_Utf8ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526E40
 
-int __cdecl UI_TickElapsed(); // 0x00454850
 
 extern int gnOptionArrowFrame; // 0x007BC944
 
@@ -370,33 +313,11 @@ static int gbOptionPressed; // 0x007BC948
 
 static int gbOptionDragging; // 0x007BC94C
 
-int __cdecl D2SOUND_GetMasterVolumeOption(); // 0x00514CC0
 
-int __cdecl D2SOUND_GetMusicVolumeOption(); // 0x00514CF0
 
-int __cdecl D2SOUND_GetPositionalBiasOption(); // 0x00514D20
 
-int __cdecl D2SOUND_GetNpcSpeechOption(); // 0x00514D50
 
-int __fastcall D2SOUND_SetMasterVolumeOption(int nValue); // 0x00514CD0
-
-int __fastcall D2SOUND_SetMusicVolumeOption(int nValue); // 0x00514D00
-
-int __fastcall D2SOUND_SetPositionalBiasOption(int nValue); // 0x00514D30
-
-int __fastcall sub_00514D60_SetNpcSpeech(int nValue); // 0x00514D60
-
-int __cdecl sub_004DF9B0_IsSoundMode2(); // 0x004DF9B0
-
-void __fastcall sub_004E0690_SetSoundTableFlag(int nValue); // 0x004E0690
-
-void __fastcall TEXT_SaveTextDisplaySetting(unsigned long nValue); // 0x0049D570
-
-void __stdcall D2GFX_SetLowQuality(int bLowQuality); // 0x004F5220
-
-void __fastcall MISSILE_SetMissileLights(int nValue); // 0x004CCF20
-
-extern int gaSlotX_007BC898[]; // 0x007BC898
+extern int gaSlotX[]; // 0x007BC898
 
 static void sub_0047D5C0_ActivateOption(SMSGHANDLER_PARAMS* pMsg);
 
@@ -430,7 +351,7 @@ void __fastcall sub_0047CDC0_MasterVolumeOption(D2MenuItemStrc* pItem, int nArg)
 // 0x0047CDE0
 int __fastcall sub_0047CDE0()
 {
-    return sub_004DF880();
+    return sub_004DF880_IsSoundSystemInit();
 }
 
 // 0x0047CDF0
@@ -472,7 +393,7 @@ void __fastcall sub_0047CED0_SoundMode2Option(D2MenuItemStrc* pItem, int nArg)
 // 0x0047CEE0
 int __fastcall sub_0047CEE0()
 {
-    return sub_004DF880();
+    return sub_004DF880_IsSoundSystemInit();
 }
 
 // 0x0047CEF0
@@ -500,7 +421,7 @@ void __fastcall sub_0047CEF0_NpcSpeechSelect(D2MenuItemStrc* pItem, SMSGHANDLER_
 void __fastcall sub_0047CF50_NpcSpeechOption(D2MenuItemStrc* pItem, int nArg)
 {
     pItem->dwMoveCount = D2SOUND_GetNpcSpeechOption();
-    if (sub_004DF880())
+    if (sub_004DF880_IsSoundSystemInit())
     {
         sub_0047CEF0_NpcSpeechSelect(pItem, (SMSGHANDLER_PARAMS*)nArg);
     }
@@ -572,7 +493,7 @@ static int sub_0047D520_FindOptionAtY(int nY)
 
         if (nResult >= 0)
         {
-            if (gpOptionEntries[nResult].nKind != -1 && sub_0047D500(&gpOptionEntries[nResult]))
+            if (gpOptionEntries[nResult].nKind != -1 && sub_0047D500_IsOptionEnabled(&gpOptionEntries[nResult]))
             {
                 return nResult;
             }
@@ -607,7 +528,7 @@ static void sub_0047D670_UpdateOptionSlider(int nX, int nY)
     }
 
     const unsigned int nOldValue = gpOptionEntries[gnOptionSelected].nValue;
-    if (sub_0047D500(&gpOptionEntries[gnOptionSelected]))
+    if (sub_0047D500_IsOptionEnabled(&gpOptionEntries[gnOptionSelected]))
     {
         switch (gpOptionEntries[gnOptionSelected].nKind)
         {
@@ -661,7 +582,6 @@ void __fastcall TEXT_PrintChatLine(const Unicode* pText, char nColor); // 0x0049
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource); // 0x00526700
 
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...); // 0x005269D0
 
 class D2SquelchListStrc
 {
@@ -693,14 +613,11 @@ struct D2OptionEntryStrc;
 
 struct D2EscMenuUIStateStrc;
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
-
-int __fastcall GAME_GetUIVarState(unsigned int nUIVar); // 0x004538D0
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
 
-int __fastcall D2Win_10127_SetFont(int nArg); // 0x00502EF0
 
-void __stdcall CHAT_StepChatIndex(int nDelta); // 0x0047BA80
+
 
 
 extern D2OptionHeaderStrc gtMainOptionHeader; // 0x00713044
@@ -734,7 +651,6 @@ extern D2OptionEntryStrc gaAutomapOptionEntries[]; // 0x0071D748
 extern D2OptionEntryStrc gaAutomapModeOptionEntries[]; // 0x0071F728
 
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
 
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
@@ -750,31 +666,21 @@ extern "C" int __cdecl atoi(const char* szString);                              
 
 
 
-void __cdecl sub_00477C60_CheckCacheStats();                                                                // 0x00477C60
 
-void __cdecl VIEW_ToggleCacheStats();                                                               // 0x00477C00
 
-int __cdecl GAME_GetConnectionType();                                                                                 // 0x0044DB30
 
-void __cdecl SOUNDINST_ToggleHints();                                                                    // 0x004BABC0
 
 int __stdcall CHAT_ParseChatCommand(char** ppText, char* pCode, char* szArgument);                  // 0x0047BAD0
 
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource);                                 // 0x00526700
 
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...);               // 0x005269D0
 
 void __fastcall TEXT_PrintChatLine(const Unicode* pText, char nColor);                              // 0x0049E3A0
 
-void __fastcall MSG_SendStrings(const unsigned char* pData);                                       // 0x004787B0
-
-unsigned int __fastcall D2Win_10128(unsigned char nChar);                                                   // 0x00502550
 
 D2SplittedTextStrc* __fastcall D2WINFONT_SplitText(Unicode* pText, unsigned int* pLineCount, int nWidth);    // 0x00502970
 
-extern int gbNoPickup;                                                                             // 0x007A6A90
 
 extern unsigned short gwChatHistoryCount;                                                          // 0x007BB5E4
 
@@ -787,21 +693,15 @@ extern Unicode gawszChatHistory_007BB840[8][257];                               
 
 extern "C" char* __cdecl strncpy(char* szDest, const char* szSource, unsigned int nCount); // 0x00687330
 
-D2StoredUnitRecordStrc* __fastcall ROSTER_GetNextStoredUnit(D2StoredUnitRecordStrc* pEntry); // 0x004795A0
 
 extern "C" const char* __fastcall ROSTER_GetEntryName(D2StoredUnitRecordStrc* pEntry); // 0x004795C0
 
-void __fastcall sub_0047DBB0_LoadOptionCels(D2OptionHeaderStrc* pHeader, D2OptionEntryStrc* pEntries); // 0x0047DBB0
 
 D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nType); // 0x004788B0
 
 D2CelFileStrc* __cdecl UI_GetPentspinCel(); // 0x00453AA0
 
-int __stdcall CelFileGetCelsPerDirection(D2CelFileStrc* pCelFile); // 0x006019F0
-
-D2CelStrc* __stdcall CelGetHandle(D2CelContextStrc* pContext); // 0x00601840
-
-int __stdcall CelGetWidth(D2CelStrc* pCel); // 0x006018C0
+D2CelStrc* __stdcall CelGetHandle(D2GfxDataStrc* pContext); // 0x00601840
 
 extern D2CelFileStrc* gpSliderDisabledCel; // 0x007BC950
 
@@ -820,19 +720,14 @@ Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x00526
 
 void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
 
-unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB); // 0x00469AA0
 
 const Unicode* __fastcall CMDTBL_GetKeyText(int nKey, int nArg2); // 0x00469DE0
 
-int __cdecl sub_00468730(); // 0x00468730
 
-int __cdecl sub_00468740(); // 0x00468740
 
 void __stdcall sub_0047E9A0_DrawSlots(int bDraw); // 0x0047E9A0
 
-int __cdecl sub_0047EA60_IsAnyPanelOpen(); // 0x0047EA60
 
-int __cdecl sub_0047EB50_IsAnyLeftPanelOpen(); // 0x0047EB50
 
 extern void* gpMiniPanelCel; // 0x007BC960
 
@@ -846,15 +741,15 @@ extern int gaSlotKind[]; // 0x007BC8D8
 
 extern int gaSlotFrame[]; // 0x007BC918
 
-int gaSlotX[8]; // 0x007BC898
+extern int gaSlotX[8]; // 0x007BC898
 
-int gaSlotY[8]; // 0x007BC8B8
+extern int gaSlotY[8]; // 0x007BC8B8
 
-int gaSlotKind[8]; // 0x007BC8D8
+extern int gaSlotKind[8]; // 0x007BC8D8
 
-int gaSlotFrame[8]; // 0x007BC918
+extern int gaSlotFrame[8]; // 0x007BC918
 
-int gbSlotBarBlocked; // 0x007BC970
+extern int gbSlotBarBlocked; // 0x007BC970
 
 #define D2_MIN(a, b) ((a) < (b) ? (a) : (b))
 
@@ -869,19 +764,19 @@ int gbSlotBarBlocked; // 0x007BC970
 // 0x0047CD80
 int __fastcall sub_0047CD80_IsSoundEnabled()
 {
-    return sub_004DF880();
+    return sub_004DF880_IsSoundSystemInit();
 }
 
 // 0x0047CD90
 int __fastcall sub_0047CD90_IsSoundEnabled()
 {
-    return sub_004DF880();
+    return sub_004DF880_IsSoundSystemInit();
 }
 
 // 0x0047CE30
 int __fastcall sub_0047CE30_Is3DSoundEnabled()
 {
-    return sub_004DF940();
+    return sub_004DF940_IsPositionalSoundEnabled();
 }
 
 // 0x0047CE40
@@ -899,7 +794,7 @@ int __fastcall sub_0047CE60_Is3DBiasEnabled()
 // 0x0047CEB0
 int __fastcall sub_0047CEB0_IsEAXEnabled()
 {
-    return sub_004DF960();
+    return sub_004DF960_IsEaxEnabled();
 }
 
 // 0x0047CEC0
@@ -960,14 +855,13 @@ void __fastcall sub_0047D130_PerspectiveChanged(D2OptionEntryStrc* pEntry, SMSGH
 {
     SRegSaveValue("Diablo II", "Perspective", 0, pEntry->nValue);
     D2GFX_SetPerspective(pEntry->nValue);
-    sub_00476000_SetViewRect(gpClientView, 0, 0, gnAutomapWidth, gnAutomapHeight_007A521C);
+    VIEW_SetViewRects(gpClientView, 0, 0, gnAutomapWidth, gnAutomapHeight_007A521C);
 }
 
 // 0x0047D180
 void __fastcall sub_0047D180_PerspectiveLoad(D2OptionEntryStrc* pEntry, int nArg)
 {
     SRegLoadValue("Diablo II", "Perspective", 0, (unsigned long*)&pEntry->nValue);
-// build: symbol ?D2GFX_CheckUnitPerspective@* 0x004F5170
     if (D2GFX_CheckUnitPerspective())
     {
         sub_0047D130_PerspectiveChanged(pEntry, 0);
@@ -989,7 +883,7 @@ void __fastcall sub_0047D200_GammaSelect(D2MenuItemStrc* pItem, SMSGHANDLER_PARA
 {
     const unsigned int nGamma = sub_0047CD00_SliderToValue(pItem, 0x37, 0xFF);
     SRegSaveValue("Diablo II", "Gamma", 0, nGamma);
-    sub_004776C0((void*)nGamma);
+    sub_004776C0_SetGamma((void*)nGamma);
 }
 
 // 0x0047D230
@@ -1084,7 +978,7 @@ void __fastcall sub_0047D480_AutoMapCentersLoad(D2OptionEntryStrc* pEntry, int n
 // 0x0047D490
 void __fastcall sub_0047D490_AutoMapPartyChanged(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg)
 {
-    sub_004577C0_SetValue(pEntry->nValue);
+    AUTOMAP_SaveAutomapParty(pEntry->nValue);
 }
 
 // 0x0047D4A0
@@ -1102,7 +996,7 @@ int __cdecl sub_0047D4B0_PartyNamesEnabled()
 // 0x0047D4C0
 void __fastcall sub_0047D4C0_AutoMapPartyNamesChanged(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg)
 {
-    sub_004577F0_SetValue(pEntry->nValue);
+    AUTOMAP_SaveAutomapPartyNames(pEntry->nValue);
 }
 
 // 0x0047D4D0
@@ -1112,7 +1006,7 @@ void __fastcall sub_0047D4D0_AutoMapPartyNamesLoad(D2OptionEntryStrc* pEntry, in
 }
 
 // 0x0047D500
-static inline int sub_0047D500(D2OptionEntryStrc* pEntry)
+static inline int sub_0047D500_IsOptionEnabled(D2OptionEntryStrc* pEntry)
 {
     return !pEntry->pfnEnabled || pEntry->pfnEnabled();
 }
@@ -1120,7 +1014,7 @@ static inline int sub_0047D500(D2OptionEntryStrc* pEntry)
 // 0x0047D5C0
 static void sub_0047D5C0_ActivateOption(SMSGHANDLER_PARAMS* pMsg)
 {
-    if (!sub_0047D500(&gpOptionEntries[gnOptionSelected]))
+    if (!sub_0047D500_IsOptionEnabled(&gpOptionEntries[gnOptionSelected]))
     {
         return;
     }
@@ -1179,9 +1073,7 @@ void __stdcall sub_0047D840_OptionMouseUp(SMSGHANDLER_PARAMS* pMsg)
     sub_00420290_BreakHandlerChain(pMsg);
 }
 
-int __cdecl GAME_GetAlwaysRun(); // 0x0044BE90
 
-void* __fastcall GAME_LoadUiCelFile(const char* szPath); // 0x004520C0
 
 extern int gbPanelFlag; // 0x0071315C
 
@@ -1227,7 +1119,7 @@ void __stdcall sub_0047D920_SelectPreviousOption(SMSGHANDLER_PARAMS* pMsg)
 void __stdcall sub_0047D9A0_OptionKeyLeft(SMSGHANDLER_PARAMS* pMsg)
 {
     const unsigned int nOldValue = gpOptionEntries[gnOptionSelected].nValue;
-    if (sub_0047D500(&gpOptionEntries[gnOptionSelected]))
+    if (sub_0047D500_IsOptionEnabled(&gpOptionEntries[gnOptionSelected]))
     {
         switch (gpOptionEntries[gnOptionSelected].nKind)
         {
@@ -1265,7 +1157,7 @@ void __stdcall sub_0047D9A0_OptionKeyLeft(SMSGHANDLER_PARAMS* pMsg)
 void __stdcall sub_0047DA90_OptionKeyRight(SMSGHANDLER_PARAMS* pMsg)
 {
     const unsigned int nOldValue = gpOptionEntries[gnOptionSelected].nValue;
-    if (sub_0047D500(&gpOptionEntries[gnOptionSelected]))
+    if (sub_0047D500_IsOptionEnabled(&gpOptionEntries[gnOptionSelected]))
     {
         switch (gpOptionEntries[gnOptionSelected].nKind)
         {
@@ -1316,11 +1208,9 @@ void __fastcall sub_0047DBB0_LoadOptionCels(D2OptionHeaderStrc* pHeader, D2Optio
     D2_ASSERT(pEntries, 0x4E9);
     char szPath[260] = {0};
     char szLang[4] = {0};
-// build: symbol ?STRTABLE_GetLanguageInfoField@* 0x00525260
     STRTABLE_GetLanguageInfoField(szLang, 0);
     for (int i = 0; i < pHeader->nCount; ++i)
     {
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
         if (pEntries[i].bExpansionOnly && !FOG_IsExpansion())
             continue;
         if (pEntries[i].szCelName[0])
@@ -1346,11 +1236,10 @@ void __fastcall sub_0047DBB0_LoadOptionCels(D2OptionHeaderStrc* pHeader, D2Optio
 // 0x0047DD70
 void __cdecl sub_0047DD70_LoadOptionMenus()
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     sub_0047DBB0_LoadOptionCels(&gtMainOptionHeader, gaMainOptionEntries);
     sub_0047DBB0_LoadOptionCels(&gtOptionsHeader, gaOptionsEntries);
     sub_0047DBB0_LoadOptionCels(&gtSoundOptionHeader, gaSoundOptionEntries);
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
     if (FOG_IsExpansion())
     {
         sub_0047DBB0_LoadOptionCels(&gtVideoResOptionHeader, gaVideoResOptionEntries);
@@ -1364,7 +1253,6 @@ void __cdecl sub_0047DD70_LoadOptionMenus()
     gpOptionHeader = &gtMainOptionHeader;
     gpOptionEntries = gaMainOptionEntries;
     char szPath[260] = {0};
-// build: symbol ?gszDataGlobal@* 0x006D4118
     sprintf(szPath, "%s\\UI\\Widgets\\OptBar", gszDataGlobal);
     gpSliderDisabledCel = ARCHIVE_LoadClientCellFile(szPath, 0);
     sprintf(szPath, "%s\\UI\\Widgets\\OptBarC", gszDataGlobal);
@@ -1372,8 +1260,8 @@ void __cdecl sub_0047DD70_LoadOptionMenus()
     sprintf(szPath, "%s\\UI\\Widgets\\OptSkull", gszDataGlobal);
     gpSliderKnobCel = ARCHIVE_LoadClientCellFile(szPath, 0);
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = UI_GetPentspinCel();
-    const unsigned int nFrames = CelFileGetCelsPerDirection((D2CelFileStrc*)tContext.pCellFile);
+    tContext.pCelFile = UI_GetPentspinCel();
+    const unsigned int nFrames = CelFileGetCelsPerDirection((D2CelFileStrc*)tContext.pCelFile);
     int nMax = 0;
     for (tContext.nFrame = 0; tContext.nFrame < nFrames; ++tContext.nFrame)
         nMax = D2_MAX(nMax, CelGetWidth(CelGetHandle(&tContext)));
@@ -1417,7 +1305,6 @@ void __cdecl sub_0047DFD0_FreeOptionMenus()
     sub_0047DF00_FreeOptionCels(&gtSoundOptionHeader, gaSoundOptionEntries);
     sub_0047DF00_FreeOptionCels(&gtOptionsHeader, gaOptionsEntries);
     sub_0047DF00_FreeOptionCels(&gtMainOptionHeader, gaMainOptionEntries);
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
     if (FOG_IsExpansion())
     {
         sub_0047DF00_FreeOptionCels(&gtVideoResOptionHeader, gaVideoResOptionEntries);
@@ -1482,7 +1369,6 @@ void __fastcall WARDENCLIENT_ToggleEscMenuUIState(int bSaveState, int nMenu)
         gpOptionEntries = gaSoundOptionEntries;
         break;
     case 3:
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
         if (FOG_IsExpansion())
         {
             gpOptionHeader = &gtVideoResOptionHeader;
@@ -1557,9 +1443,9 @@ void __stdcall sub_0047E260_DrawOptionSlider(D2OptionEntryStrc* pEntry, int nY, 
 
     D2Win_10134_DrawCellFile(*pbEnabled ? gpSliderEnabledCell_007BC954 : gpSliderDisabledCell_007BC950, nCellX, nScreenY, nFrame, nColor, -1);
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpSliderKnob_007BC958;
+    tContext.pCelFile = gpSliderKnob_007BC958;
     TEXTURE_CelDraw(&tContext, nKnobX, nKnobY, -1, nColor, 0);
 }
 
@@ -1592,7 +1478,6 @@ void __cdecl sub_0047E3D0_DrawOptions()
     for (int i = 0; i < gpOptionHeader->nCount; ++i)
     {
         gpOptionEntries[i].nY = 0;
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
         if (gpOptionEntries[i].bExpansionOnly && !FOG_IsExpansion())
         {
             continue;
@@ -1638,9 +1523,9 @@ void __cdecl sub_0047E3D0_DrawOptions()
         ++nRow;
     }
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = UI_GetPentspinCel();
+    tContext.pCelFile = UI_GetPentspinCel();
     if (gnOptionArrowFrame)
     {
         tContext.nFrame = 8 - gnOptionArrowFrame;
@@ -1680,9 +1565,9 @@ static void sub_0047E770_DrawModeCel(int nMode)
 {
     if (!nMode)
         return;
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpMiniPanelCel;
+    tContext.pCelFile = gpMiniPanelCel;
     switch (nMode)
     {
     case 1:
@@ -1703,13 +1588,11 @@ static void sub_0047E770_DrawModeCel(int nMode)
     }
 }
 
-// build: symbol ??_FUnicode@@QAEXXZ 0x0042F530
-// build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 // 0x0047E8B0
 static void sub_0047E8B0_LayoutSlots(int nMode)
 {
     int nSlots = 8;
-    if (gbSmallPanel_007BC978)
+    if (gbSmallPanel)
     {
         nSlots = 7;
     }
@@ -1720,7 +1603,7 @@ static void sub_0047E8B0_LayoutSlots(int nMode)
         return;
     }
     int nX = gnScreenWidth / 2 - 0x54;
-    if (gbSmallPanel_007BC978)
+    if (gbSmallPanel)
     {
         nX = gnScreenWidth / 2 - 0x4A;
     }
@@ -1732,7 +1615,7 @@ static void sub_0047E8B0_LayoutSlots(int nMode)
     else if (nMode == 3)
     {
         nX = gnScreenWidth / 2 + 0x39;
-        if (!gbSmallPanel_007BC978)
+        if (!gbSmallPanel)
         {
             nX = gnScreenWidth / 2 + 0x23;
         }
@@ -1746,7 +1629,7 @@ static void sub_0047E8B0_LayoutSlots(int nMode)
     {
         gaSlotX[i] = nX;
         gaSlotY[i] = nY;
-        if (gbSmallPanel_007BC978)
+        if (gbSmallPanel)
         {
             if (i == 3)
             {
@@ -1774,7 +1657,7 @@ void __stdcall sub_0047E9A0_DrawSlots(int bDraw)
         return;
     }
 
-    if (gbSmallPanel_007BC978)
+    if (gbSmallPanel)
     {
         nSlots = 7;
     }
@@ -1784,10 +1667,10 @@ void __stdcall sub_0047E9A0_DrawSlots(int bDraw)
     {
         for (;;)
         {
-            if (gnSlotState_007BC8F8[i] == 1)
+            if (gaSlotState[i] == 1)
             {
-                D2CelContextStrc tContext = {};
-                tContext.pCellFile = gpSlotCells;
+                D2GfxDataStrc tContext = {};
+                tContext.pCelFile = gpSlotCells;
                 tContext.nFrame = gaSlotFrame[i] + 1;
                 TEXTURE_CelDraw(&tContext, gaSlotX[i], gaSlotY[i], -1, 5, 0);
                 if (++i >= nSlots)
@@ -1795,8 +1678,8 @@ void __stdcall sub_0047E9A0_DrawSlots(int bDraw)
             }
             else
             {
-                D2CelContextStrc tContext = {};
-                tContext.pCellFile = gpSlotCells;
+                D2GfxDataStrc tContext = {};
+                tContext.pCelFile = gpSlotCells;
                 tContext.nFrame = gaSlotFrame[i];
                 TEXTURE_CelDraw(&tContext, gaSlotX[i], gaSlotY[i], -1, 5, 0);
                 if (++i >= nSlots)
@@ -1945,7 +1828,7 @@ void __stdcall sub_0047ED90_SlotsClickMsg(SMSGHANDLER_PARAMS* pMsg)
         return;
     if (INVENTORY_GetCursorItem(pInventory))
         return;
-    if (sub_00468830() != 7)
+    if (sub_00468830_GetCursorState() != 7)
         CURSOR_SetCursorItemState(0);
     int nCount = 8;
     if (gbSmallPanel)
@@ -1957,7 +1840,7 @@ void __stdcall sub_0047ED90_SlotsClickMsg(SMSGHANDLER_PARAMS* pMsg)
         const int nY = pMsg->nYpos;
         int nOffset = 0;
         for (int i = 0; i < nCount; ++i)
-            gnSlotState_007BC8F8[i] = 0;
+            gaSlotState[i] = 0;
         if (HIREABLES_AreBeltRowsShown() && HIREABLES_GetBeltRowCount() > 1)
             nOffset = -0x76;
         if (gbAnyLeftPanelOpen)
@@ -2035,7 +1918,7 @@ void __stdcall sub_0047EF30_SlotsClick(SMSGHANDLER_PARAMS* pMsg)
     }
     for (int i = 0; i < nSlots; ++i)
     {
-        if (nX > gaSlotX_007BC898[i] && nX < gaSlotX_007BC898[i] + 0x14)
+        if (nX > gaSlotX[i] && nX < gaSlotX[i] + 0x14)
         {
             if (gaSlotKind[i] == 7)
             {
@@ -2199,7 +2082,6 @@ void __fastcall sub_0047F310_ShowPage2(D2OptionEntryStrc* pEntry, SMSGHANDLER_PA
 void __fastcall sub_0047F340_ShowPage3(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg)
 {
     UI_SetUIVar(9, 0, 0);
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
     if (FOG_IsExpansion())
     {
         gpOptionHeader = &gtVideoResOptionHeader;
@@ -2313,13 +2195,13 @@ static void __stdcall sub_0047F490_ShowSlotTooltip(int nX, int nY, int nKind)
         if (CUNIT_GetHotkeyBinding(nHotKey, 1) != 0xFFFF)
         {
             memset(wszKey, 0, sizeof(wszKey));
-            sub_005269D0(30, wszKey, D2LANG_GetStringFromTblIndex(0x1052), CMDTBL_GetKeyText(nHotKey, 1));
+            sub_005269D0_FormatText(30, wszKey, D2LANG_GetStringFromTblIndex(0x1052), CMDTBL_GetKeyText(nHotKey, 1));
             sub_00526700(wszText, wszKey);
         }
         if (CUNIT_GetHotkeyBinding(nHotKey, 0) != 0xFFFF)
         {
             memset(wszKey, 0, sizeof(wszKey));
-            sub_005269D0(30, wszKey, D2LANG_GetStringFromTblIndex(0x1052), CMDTBL_GetKeyText(nHotKey, 0));
+            sub_005269D0_FormatText(30, wszKey, D2LANG_GetStringFromTblIndex(0x1052), CMDTBL_GetKeyText(nHotKey, 0));
             sub_00526700(wszText, wszKey);
         }
     }
@@ -2333,7 +2215,7 @@ static void sub_0047F650_UpdateSlotHover(int nMode)
     const int nMouseY = sub_00468740();
     int nOffset = 0;
     int nSlots = 8;
-    if (gbSmallPanel_007BC978)
+    if (gbSmallPanel)
     {
         nSlots = 7;
     }
@@ -2372,13 +2254,13 @@ void __cdecl sub_0047F710_UpdateSlotBar()
 {
     const int bAnyPanel = sub_0047EA60_IsAnyPanelOpen();
     const int bLeftPanel = sub_0047EB50_IsAnyLeftPanelOpen();
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     if (bAnyPanel && !bLeftPanel)
     {
         memset(&tContext, 0, sizeof(tContext));
-        tContext.pCellFile = gpMiniPanelCel;
+        tContext.pCelFile = gpMiniPanelCel;
         int nX = gnScreenWidth / 2;
-        if (gbSmallPanel_007BC978)
+        if (gbSmallPanel)
         {
             nX += 0x38;
         }
@@ -2397,9 +2279,9 @@ void __cdecl sub_0047F710_UpdateSlotBar()
     if (!bAnyPanel && !bLeftPanel)
     {
         memset(&tContext, 0, sizeof(tContext));
-        tContext.pCellFile = gpMiniPanelCel;
+        tContext.pCelFile = gpMiniPanelCel;
         int nX = gnScreenWidth / 2;
-        if (gbSmallPanel_007BC978)
+        if (gbSmallPanel)
         {
             nX -= 0x4A;
         }
@@ -2418,7 +2300,7 @@ void __cdecl sub_0047F710_UpdateSlotBar()
     if (!bAnyPanel && bLeftPanel)
     {
         memset(&tContext, 0, sizeof(tContext));
-        tContext.pCellFile = gpMiniPanelCel;
+        tContext.pCelFile = gpMiniPanelCel;
         sub_004F6480(&tContext, gnScreenWidth / 2 - 0xCD, gnScreenHeight - 0x2F, -1, 5, 0);
         sub_0047E8B0_LayoutSlots(1);
         sub_0047E9A0_DrawSlots(1);
@@ -2452,6 +2334,13 @@ extern "C" void __cdecl CHAT_SetMsgHandled(); // 0x0047B070
 extern "C" void __cdecl CHAT_CloseChatOnPanelClickMsg(); // 0x0047BC70
 
 #pragma pack(push, 1)
+struct d2data_00713058_t
+{
+    unsigned char b0[264];
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
 struct d2data_00713008_t
 {
     const void* p0;
@@ -2476,20 +2365,6 @@ struct d2data_00713008_t
 struct d2data_00713048_t
 {
     unsigned char b0[16];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00713058_t
-{
-    unsigned char b0[264];
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct d2data_00713160_t
-{
-    unsigned char b0[192];
 };
 #pragma pack(pop)
 
@@ -2521,38 +2396,21 @@ struct d2data_0071D738_t
 };
 #pragma pack(pop)
 
+#pragma pack(push, 1)
+struct d2data_00713160_t
+{
+    unsigned char b0[192];
+};
+#pragma pack(pop)
+
+extern "C" struct d2data_00713058_t gData_00713058; // 0x00713058
 extern "C" struct d2data_00713008_t gData_00713008; // 0x00713008
 extern "C" struct d2data_00713048_t gData_00713048; // 0x00713048
-extern "C" struct d2data_00713058_t gData_00713058; // 0x00713058
-extern "C" struct d2data_00713160_t gData_00713160; // 0x00713160
 extern "C" struct d2data_0071874C_t gData_0071874C; // 0x0071874C
 extern "C" struct d2data_00718760_t gData_00718760; // 0x00718760
 extern "C" struct d2data_0071D724_t gData_0071D724; // 0x0071D724
 extern "C" struct d2data_0071D738_t gData_0071D738; // 0x0071D738
-
-extern "C" struct d2data_00713008_t gData_00713008 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00713008
-
-extern D2OptionHeaderStrc gtMainOptionHeader = { 3 }; // 0x00713044
-
-extern "C" struct d2data_00713048_t gData_00713048 = {
-    { 0x32, 0x00, 0x00, 0x00, 0x27, 0x00, 0x00, 0x00, 0x33 }
-}; // 0x00713048
+extern "C" struct d2data_00713160_t gData_00713160; // 0x00713160
 
 extern "C" struct d2data_00713058_t gData_00713058 = {
     {
@@ -2577,28 +2435,23 @@ extern "C" struct d2data_00713058_t gData_00713058 = {
 }; // 0x00713058
 #pragma comment(linker, "/alternatename:?gaEscMenuUIState@@3PAUD2EscMenuUIStateStrc@@A=_gData_00713058")
 
-extern "C" struct d2data_00713160_t gData_00713160 = {
-    {
-        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x01
-    }
-}; // 0x00713160
-
-extern D2OptionEntryStrc gaMainOptionEntries[3] = {
-    { 0, 0, 0, "Options", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F2A0_ShowPage1 },
-    { 0, 0, 0, "Exit", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F2D0_ExitGame },
-    { 0, 0, 0, "ReturnToGame", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F300_CloseMenus }
-}; // 0x00713220
+extern "C" struct d2data_00713008_t gData_00713008 = {
+    (const void*)"English",
+    (const void*)"Spanish",
+    (const void*)"German",
+    (const void*)"French",
+    (const void*)"Portuguese",
+    (const void*)"Italian",
+    (const void*)"Japanese",
+    (const void*)"Korean",
+    (const void*)"Simplified Chinese",
+    (const void*)"Traditional Chinese",
+    (const void*)"Polish",
+    (const void*)"Russian",
+    (const void*)"English with Korean Chat",
+    (const void*)"Unknown",
+    (const void*)"14"
+}; // 0x00713008
 
 extern D2OptionHeaderStrc gtOptionsHeader = { 5, 50, 39, 51 }; // 0x00714210
 
@@ -2611,6 +2464,18 @@ extern D2OptionEntryStrc gaOptionsEntries[5] = {
     { 0, 0, 0, "CfgOptions", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F400_OpenPanel },
     { 0, 0, 0, "Previous", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F430_ShowPage0 }
 }; // 0x00714238
+
+extern D2OptionHeaderStrc gtMainOptionHeader = { 3 }; // 0x00713044
+
+extern "C" struct d2data_00713048_t gData_00713048 = {
+    { 0x32, 0x00, 0x00, 0x00, 0x27, 0x00, 0x00, 0x00, 0x33 }
+}; // 0x00713048
+
+extern D2OptionEntryStrc gaMainOptionEntries[3] = {
+    { 0, 0, 0, "Options", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F2A0_ShowPage1 },
+    { 0, 0, 0, "Exit", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F2D0_ExitGame },
+    { 0, 0, 0, "ReturnToGame", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F300_CloseMenus }
+}; // 0x00713220
 
 extern D2OptionEntryStrc gaSoundOptionEntries[8] = {
     { -1, 0, 0, "SoundOptions" },
@@ -2750,3 +2615,20 @@ extern D2OptionEntryStrc gaAutomapModeOptionEntries[7] = {
 } },
     { 0, 0, 0, "SPrevious", 0, (void (__fastcall *)(D2OptionEntryStrc *, SMSGHANDLER_PARAMS *))&sub_0047F460_ShowPage1Twin }
 }; // 0x0071F728
+
+extern "C" struct d2data_00713160_t gData_00713160 = {
+    {
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01
+    }
+}; // 0x00713160

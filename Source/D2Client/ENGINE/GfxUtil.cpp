@@ -1,6 +1,7 @@
 #include "D2StateIds.h"
 #include "D2StatIds.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
 #include "D2UnitData.h"
@@ -17,6 +18,12 @@
 #include "D2MonModes.h"
 #include "D2WinSplitText.h"
 #include "D2ClientBallistic.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
+#include "D2GfxApi.h"
+#include "D2CMPApi.h"
+#include "D2CommonApi3.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -86,7 +93,7 @@ struct D2UnitStrc;
 
 struct D2ActiveRoomStrc;
 
-struct D2GfxDataStrc;
+struct D2UnitGfxDataStrc;
 
 struct D2GfxMotionStrc;
 
@@ -128,12 +135,12 @@ struct D2RequestStrc
     int nType;
     D2UnitStrc* pUnit;
     int unk0x08[2];
-    int nArg0;
-    int nArg1;
-    int nArg2;
+    int nMissile;
+    int nX;
+    int nY;
     int unk0x1C[4];
-    int nArg3;
-    int nArg4;
+    int nSkill;
+    int nSkillLevel;
     int unk0x34[10];
 };
 
@@ -141,25 +148,17 @@ typedef int (__fastcall* UNITCALLBACKFN)(D2UnitStrc* pUnit, D2UnitStrc* pOther, 
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" void* __cdecl memset(void* pDest, int nValue, unsigned int nSize); // 0x00681EF0
 
-D2GfxDataStrc* __fastcall CUNIT_GetGfxData(D2UnitStrc* pUnit); // 0x00463E10
+D2UnitGfxDataStrc* __fastcall CUNIT_GetGfxData(D2UnitStrc* pUnit); // 0x00463E10
 
-D2GfxMotionStrc* __fastcall GFX_GetGfxMotion(D2UnitStrc* pUnit); // 0x0046F060
 
-int __fastcall CUNIT_IsDeadOrDying(D2UnitStrc* pUnit); // 0x00464820
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
 
-void __stdcall DUNGEON_GetAdjacentRoomsListFromRoom(D2ActiveRoomStrc* pRoom, D2ActiveRoomStrc*** pppRoomList, unsigned int* pnNumRooms); // 0x00619790
-
-int __stdcall DRLG_UnitEdgeDistance(D2UnitStrc* pUnit, D2UnitStrc* pOther); // 0x006416D0
 
 int __fastcall sub_004CD540_HandleRequest(D2RequestStrc* pRequest); // 0x004CD540
 
@@ -208,57 +207,30 @@ extern "C" double __cdecl sqrt(double x); // 0x006879C0
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
-extern int gnScreenWidth; // 0x0071146C
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
-D2ActiveRoomStrc* __cdecl CUNIT_GetPlayerRoom(); // 0x004646A0
 
 int __fastcall sub_004648F0_GetPathValue(D2UnitStrc* pUnit); // 0x004648F0
 
-D2RosterInfoStrc** __fastcall ROSTER_GetRosterInfoList(int nUnitId); // 0x0047A310
 
-D2UnitStrc* __fastcall AUTOMAP_RequestAtTarget(D2UnitStrc* pUnit, int nRequest, int nArg3, int nArg4); // 0x004C5420
 
-D2UnitStrc* __fastcall SKILLDESC_CltDoRandomMissile(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel); // 0x004E31C0
 
-int __stdcall D2GFX_GetResolutionMode(); // 0x004F5160
 
-int __stdcall CelGetWidth(D2CelStrc* pCel); // 0x006018C0
 
-int __stdcall CelGetHeight(D2CelStrc* pCel); // 0x006018F0
 
-int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* pRoom); // 0x0061A1B0
 
-D2SkillStrc* __stdcall UNITS_GetUsedSkill(D2UnitStrc* pUnit); // 0x00620250
-
-void __stdcall SKILLS_SetParam1(D2SkillStrc* pSkill, int nValue); // 0x00644560
-
-void __stdcall SKILLS_SetFlags(D2SkillStrc* pSkill, int nValue); // 0x00644660
-
-int __stdcall SKILLS_GetFlags(D2SkillStrc* pSkill); // 0x006446A0
-
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646CA0
 
 extern int gbCharArchiveLoaded; // 0x007A8928
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int nMonsterId); // 0x00451FE0
 
 D2MonGfxCacheStrc* __fastcall GFX_GetMonGfxCache(int nMonsterId); // 0x0046F9D0
 
-D2MissilesTxt* __fastcall sub_0046ACE0(int nMissileId); // 0x0046ACE0
-
-int __stdcall UNITS_GetAnimOrSeqMode(D2UnitStrc* pUnit); // 0x00621190
-
-void __stdcall D2COMMON_11013_ConvertMode(D2UnitStrc* pUnit, int* pType, int* pClass, int* pMode, const char* szFile, int nLine); // 0x00645270
 
 void __stdcall sub_006488A0_SetDirection(D2DynamicPathStrc* pPath, int nDirection); // 0x006488A0
 
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 
-D2ObjectsTxt* __stdcall DATATBLS_GetObjectsTxtRecord(int nObjectId); // 0x00640E90
 
 struct PartialSparseClear
 {
@@ -330,25 +302,15 @@ typedef char check_PartialLookupRecord_second[offsetof(PartialLookupRecord, seco
 
 typedef char check_PartialLookupHeader_records[offsetof(PartialLookupHeader, records) == 0x1C ? 1 : -1];
 
-D2UnitStrc* __fastcall CUNIT_GetOwnerUnit(D2UnitStrc* pUnit); // 0x004639D0
 
-int __fastcall GFX_GetConvertedUnitType(D2UnitStrc* pUnit); // 0x0046D9F0
 
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer); // 0x00625480
 
-extern "C" unsigned int __stdcall sub_006280A0(D2UnitStrc* pUnit, unsigned int dwMask, unsigned int dwUnused3, unsigned int dwUnused4); // 0x006280A0
+extern "C" unsigned int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pUnit, unsigned int dwMask, unsigned int dwUnused3, unsigned int dwUnused4); // 0x006280A0
 
-D2ItemsTxt* __stdcall DATATBLS_GetItemsTxtRecord(int nItemId); // 0x006335F0
 
-int __stdcall STATES_CheckStateMaskOnUnit(D2UnitStrc* pUnit, int nStateMask); // 0x0063A7B0
 
-D2UnitStrc* __stdcall INVENTORY_GetFirstItem(D2InventoryStrc* pInventory); // 0x0063B2C0
 
-D2UnitStrc* __stdcall INVENTORY_GetNextItem(D2UnitStrc* pItem); // 0x0063DFA0
 
-D2UnitStrc* __stdcall INVENTORY_UnitIsItem(D2UnitStrc* pItem); // 0x0063DFD0
-
-D2UnitStrc* __stdcall INVENTORY_GetCompositItem(D2InventoryStrc* pInventory, int nBodyLoc); // 0x0063C050
 
 static void GFXUTIL_ConvertDirection(int nSrcDirCount, int nDirCount, unsigned int* pDirection); // 0x004DB290
 
@@ -386,11 +348,7 @@ unsigned int gaClassTokens[3];                                                  
 
 D2InventoryStrc* __fastcall GFX_GetCompInventory(D2UnitStrc* pUnit, int* pOut);                    // 0x0046DB30
 
-int __stdcall COMPOSIT_GetWeaponClassId(D2UnitStrc* pUnit, D2InventoryStrc* pInventory, int* pWeaponClassId, int nAnimMode, int bUseConvertedMode); // 0x0064F380
 
-D2GfxListNodeStrc* __fastcall GFXUTIL_FindGfxListNode(D2UnitStrc* pUnit, int nId, int nMode); // 0x0046E5A0
-
-void* __fastcall GFX_LoadUnitGfxNode(D2UnitStrc* pUnit, int nWeaponClassId, int nArg);                 // 0x0046FA80
 
 D2CompEntryStrc* __fastcall sub_0046E570_GetGfxEntry(D2UnitStrc* pUnit, int nMode);                         // 0x0046E570
 
@@ -398,35 +356,23 @@ int __fastcall GFXUTIL_GetModeArg(D2UnitStrc* pUnit, int nType, int nClass);    
 
 unsigned char __fastcall GFXUTIL_GetMonComponentIndex(D2UnitStrc* pUnit, unsigned char nComponent);    // 0x004DA770
 
-int __fastcall MONSTERREGION_CheckMonStats2Flag(int nMonsterId, int nFlag);                                  // 0x004638A0
 
 void __fastcall GFXUTIL_GetArmorComponents(D2UnitStrc* pUnit, D2InventoryStrc* pInventory, int bSkip, unsigned char* pComponents); // 0x004DAAB0
-
-int __stdcall ITEMS_CanBeEquipped(D2UnitStrc* pItem);                                                     // 0x0062A4E0
 
 void __fastcall GFXUTIL_ConvertItemMode(D2UnitStrc* pUnit, int* pMode);                                    // 0x004DAA70
 
 int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile);   // 0x006280A0
 
-int __stdcall ITEMS_GetItemQuality(D2UnitStrc* pItem);                                                      // 0x00627E70
 
-int __stdcall ITEMS_GetFileIndex(D2UnitStrc* pItem);                                                        // 0x00629DA0
 
-D2SetItemsTxt* __fastcall DATATBLS_GetSetItemsTxtRecord(int nIndex);                                    // 0x00483440
-
-D2UniqueItemsTxt* __fastcall DATATBLS_GetUniqueItemsTxtRecord(int nIndex);                              // 0x00483470
-
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState);                                             // 0x00639DF0
 
 int __stdcall INVENTORY_GetEquippedShield(D2InventoryStrc* pInventory, D2UnitStrc** ppItem);                // 0x0063C8F0
 
-int __stdcall sub_006001F0(D2CelContextStrc* pContext, int nArg2, int nArg3);                // 0x006001F0
+int __stdcall sub_006001F0(D2GfxDataStrc* pContext, int nArg2, int nArg3);                // 0x006001F0
 
 extern "C" int __cdecl PLAYER_GetScreenOffsetY();                                                      // 0x0045AFD0
 
 extern "C" int __cdecl PLAYER_GetScreenOffsetX();                                                          // 0x0045AFC0
-
-int __stdcall UNITS_GetClientCoordY(D2UnitStrc* pUnit);                                                     // 0x006206B0
 
 int __fastcall GFX_IsUnitOnScreen(D2UnitStrc* pUnit, int nX, int nY, int nArg1, int nArg2);            // 0x004709A0
 
@@ -455,13 +401,13 @@ struct D2GfxCodeTableStrc
 
 static void GFXUTIL_CopyCompCode(D2CompCodeStrc* pDst, const char* pSrc); // 0x004DA720
 
-static void __stdcall GFXUTIL_SetMissileCelName(D2UnitStrc* pUnit, D2CelContextStrc* pToken); // 0x004DA8E0
+static void __stdcall GFXUTIL_SetMissileCelName(D2UnitStrc* pUnit, D2GfxDataStrc* pToken); // 0x004DA8E0
 
-static void GFXUTIL_SetItemCelName(D2UnitStrc* pUnit, D2CelContextStrc* pToken); // 0x004DABC0
+static void GFXUTIL_SetItemCelName(D2UnitStrc* pUnit, D2GfxDataStrc* pToken); // 0x004DABC0
 
 static unsigned int GFXUTIL_GetWeaponClassToken(D2UnitStrc* pUnit, int nComponent); // 0x004DAD80
 
-static int __stdcall GFXUTIL_FillMonsterCelContext(D2CompEntryListStrc* pList, unsigned int dwCode0, D2CelContextStrc* pToken, int nMode, D2MonCompInfoStrc* pClassInfo, D2CompArgStrc* pArgRec, int nRow); // 0x004DBB80
+static int __stdcall GFXUTIL_FillMonsterCelContext(D2CompEntryListStrc* pList, unsigned int dwCode0, D2GfxDataStrc* pToken, int nMode, D2MonCompInfoStrc* pClassInfo, D2CompArgStrc* pArgRec, int nRow); // 0x004DBB80
 
 struct D2CompRecordStrc;
 
@@ -485,25 +431,22 @@ union D2CompCodeStrc;
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
-int __cdecl sub_0045AE90(); // 0x0045AE90
 
 static int GFXUTIL_GetOverlayDirections(int nOverlay); // 0x004DAD50
 
-int __fastcall GFXUTIL_InitUnitCelContext(D2CelContextStrc* pToken, D2UnitStrc* pUnit, int nArg34, int nArg40, int nArg0, int* pItemId, unsigned char nComponent, int nMode); // 0x004DBB50
 
 int __fastcall GFXUTIL_GetComponentsMaxHeight(D2UnitStrc* pUnit, unsigned char* pList, unsigned char* pComponents, int* pMax, int nArg40, int nArg0); // 0x004DBD30
 
 void __fastcall GFXUTIL_GetUnitCelSize(D2UnitStrc* pUnit, int nArg40, int nArg0, int* pWidth, int* pHeight); // 0x004DBEA0
 
-static int __stdcall GFXUTIL_ResolveUnitCelContext(D2UnitStrc* pUnit, D2CelContextStrc* pToken, int nMode, int* pItemId); // 0x004DB7B0
+static int __stdcall GFXUTIL_ResolveUnitCelContext(D2UnitStrc* pUnit, D2GfxDataStrc* pToken, int nMode, int* pItemId); // 0x004DB7B0
 
-static int __stdcall GFXUTIL_FillMonsterCelContext(D2CompEntryListStrc* pList, unsigned int dwCode0, D2CelContextStrc* pToken, int nMode, D2MonCompInfoStrc* pClassInfo, D2CompArgStrc* pArgRec, int nRow); // 0x004DBB80
+static int __stdcall GFXUTIL_FillMonsterCelContext(D2CompEntryListStrc* pList, unsigned int dwCode0, D2GfxDataStrc* pToken, int nMode, D2MonCompInfoStrc* pClassInfo, D2CompArgStrc* pArgRec, int nRow); // 0x004DBB80
 
-int __fastcall GFXUTIL_InitMonsterCelContext(D2CelContextStrc* pToken, int nArg40, int nArg0, unsigned char nComponent, int nMode, unsigned int dwCode0, D2CompEntryListStrc* pList, D2MonCompInfoStrc* pClassInfo, D2CompArgStrc* pArgRec, int nRow); // 0x004DBCF0
+int __fastcall GFXUTIL_InitMonsterCelContext(D2GfxDataStrc* pToken, int nArg40, int nArg0, unsigned char nComponent, int nMode, unsigned int dwCode0, D2CompEntryListStrc* pList, D2MonCompInfoStrc* pClassInfo, D2CompArgStrc* pArgRec, int nRow); // 0x004DBCF0
 
 int __fastcall GFXUTIL_GetOverlayFrameCount(D2UnitStrc* pUnit, D2OverlaySourceStrc* pSrc); // 0x004DBE20
 
-int __fastcall GFXUTIL_HitTestUnitCel(D2UnitStrc* pUnit, int nX, int nY); // 0x004DBF20
 
 unsigned int gdwFadeTick; // 0x007C89CC
 
@@ -512,28 +455,23 @@ struct D2GfxNodeStrc
     int unk0x00[3];
     D2GfxNodeStrc* pNext;
 };
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
 
 
 D2BallisticStrc* __fastcall sub_0046F060(D2UnitStrc* pUnit); // 0x0046F060
 
-D2TokRecord* __stdcall DATATBLS_GetCompositTxtRecord(int nComposit);                                        // 0x0065B5E0
-
 D2TokRecord* __stdcall DATATBLS_GetMonModeTxtRecord(unsigned int nIndex, int bGetMode);                     // 0x0065B500
-
-D2TokRecord* __stdcall DATATBLS_GetArmTypeTxtRecord(int nId);                                               // 0x0065B620
 
 
 
 // 0x0046E5A0
 D2GfxListNodeStrc* __fastcall GFXUTIL_FindGfxListNode(D2UnitStrc* pUnit, int nId, int nMode)
 {
-    D2GfxDataStrc* pGfxData = CUNIT_GetGfxData(pUnit);
+    D2UnitGfxDataStrc* pGfxData = CUNIT_GetGfxData(pUnit);
     D2_ASSERT(pGfxData, 940);
 
     if (nMode == -1)
     {
-        nMode = sub_0046DA60_GetUnitMode(pUnit);
+        nMode = GFX_GetConvertedUnitMode(pUnit);
     }
 
     for (D2GfxListNodeStrc* pNode = pGfxData->pList; pNode; pNode = pNode->pNext)
@@ -610,11 +548,8 @@ int __stdcall GFXUTIL_GetMotionAY(D2UnitStrc* pUnit)
     return 0;
 }
 
-void __fastcall GFX_GetUnitCelOffsets(D2UnitStrc* pUnit, int nComponent, int* pOffsetX, int* pOffsetY); // 0x004706E0
 
 extern "C" int __stdcall PARTICLE_GetGfxOffsetX(D2UnitStrc* pUnit);                                     // 0x004DA0B0
-
-void __stdcall DUNGEON_GameToClientCoords(int* pX, int* pY);                                                // 0x00643290
 
 // 0x004DA340
 void __fastcall GFXUTIL_ClearMotionFlagTwo(D2UnitStrc* pMissile)
@@ -703,7 +638,7 @@ void __stdcall GFXUTIL_UpdateMotion(D2UnitStrc* pUnit)
                 pMotion->nClientZ += 10;
             }
             pMotion->nClientX += PARTICLE_GetGfxOffsetX(pOwner);
-            pMotion->nClientZ += sub_004DA0F0_GetUnitGfxOffsetZ(pOwner);
+            pMotion->nClientZ += PARTICLE_GetGfxClientZ(pOwner);
             pMotion->tA.nX = pMotion->nClientX;
             pMotion->tA.nY = pMotion->nClientY;
             DUNGEON_ClientToGameSubtileCoords(pX, pY);
@@ -804,7 +739,6 @@ int __fastcall GFXUTIL_GetGfxMotionFlag5(D2UnitStrc* pUnit)
 
 
 
-D2UnitStrc* __stdcall INVENTORY_GetItemFromBodyLoc(D2InventoryStrc* pInventory, int nBodyLoc); // 0x0063BDE0
 
 static int UNITS_GetClassIdInline(D2UnitStrc* pUnit)
 {
@@ -847,7 +781,7 @@ void __fastcall GFXUTIL_GetArmorComponents(D2UnitStrc* pUnit, D2InventoryStrc* p
 // 0x004DB1A0
 unsigned char __fastcall GFXUTIL_GetGfxEntryByte(D2UnitStrc* pUnit, int nIndex)
 {
-    D2GfxDataStrc* pGfxData = CUNIT_GetGfxData(pUnit);
+    D2UnitGfxDataStrc* pGfxData = CUNIT_GetGfxData(pUnit);
     if (!pGfxData)
         return 0;
     return pGfxData->aEntries[nIndex][0];
@@ -856,12 +790,6 @@ unsigned char __fastcall GFXUTIL_GetGfxEntryByte(D2UnitStrc* pUnit, int nIndex)
 struct Unicode;
 
 void* __fastcall sub_0046E5A0_FindGfxNode(D2UnitStrc* pUnit, int nWeaponClassId, int nArg); // 0x0046E5A0
-
-int __stdcall UNITS_GetPrecisionX(D2UnitStrc* pUnit); // 0x006203B0
-
-int __stdcall UNITS_GetPrecisionY(D2UnitStrc* pUnit); // 0x00620410
-
-int __stdcall UNITS_GetClientCoordX(D2UnitStrc* pUnit); // 0x00620650
 
 class D2SquelchListStrc
 {
@@ -887,8 +815,8 @@ int __fastcall GFXUTIL_UpdateUnitGfx(D2UnitStrc* pUnit, int nArg)
     int nY = 0;
     if (sub_004F51D0_IsPerspective())
     {
-        sub_004F6760_PrecisionToScreen(UNITS_GetPrecisionX(pUnit), UNITS_GetPrecisionY(pUnit), 0, &nX, &nY);
-        switch (sub_0045AE90())
+        SCALE_AdjustPerspectivePosition(UNITS_GetPrecisionX(pUnit), UNITS_GetPrecisionY(pUnit), 0, &nX, &nY);
+        switch (sub_0045AE90_GetPanelSlideMode())
         {
         case 1:
             nX -= gnScreenWidth / 4;
@@ -929,7 +857,7 @@ int __fastcall GFXUTIL_UpdateUnitGfx(D2UnitStrc* pUnit, int nArg)
         return 0;
     }
 
-    void* pEntry = sub_0046E570_GetGfxEntry(pUnit, sub_0046DA60_GetUnitMode(pUnit));
+    void* pEntry = sub_0046E570_GetGfxEntry(pUnit, GFX_GetConvertedUnitMode(pUnit));
     if (!pEntry)
     {
         return 0;
@@ -941,7 +869,7 @@ int __fastcall GFXUTIL_UpdateUnitGfx(D2UnitStrc* pUnit, int nArg)
 // 0x004DBEA0
 void __fastcall GFXUTIL_GetUnitCelSize(D2UnitStrc* pUnit, int nArg40, int nArg0, int* pWidth, int* pHeight)
 {
-    D2CelContextStrc tToken;
+    D2GfxDataStrc tToken;
     memset(&tToken, 0, sizeof(tToken));
     tToken.nFrame = nArg0;
     tToken.nArg34 = 0;
@@ -965,13 +893,13 @@ int __fastcall GFXUTIL_HitTestUnitCel(D2UnitStrc* pUnit, int nX, int nY)
     if (GFX_IsUnitOnScreen(pUnit, nScreenX, nScreenY, 0, 0))
     {
         UNITS_GetShiftedFrameMetrics(pUnit, &nFrameNo, &nFrameCount);
-        D2CelContextStrc tToken;
+        D2GfxDataStrc tToken;
         memset(&tToken, 0, sizeof(tToken));
         if (GFXUTIL_InitUnitCelContext(&tToken, pUnit, 0, UNITS_GetDirection(pUnit), nFrameNo, &nY, 1, -1) && sub_006001F0(&tToken, 0, 1))
         {
             D2CelStrc* const pCel = tToken.pCel;
             if (pCel)
-                return sub_004DAB40_CheckCel(pCel, nScreenX, nScreenY, 0);
+                return GFXUTIL_IsCelOnScreen(pCel, nScreenX, nScreenY, 0);
         }
     }
     return 0;
@@ -1002,7 +930,7 @@ void __cdecl GFXUTIL_DrawFadeBox()
     int nYEnd = gnScreenHeight - 47;
     int nXEnd = gnScreenWidth;
     int nXStart = 0;
-    switch (sub_0045AE90())
+    switch (sub_0045AE90_GetPanelSlideMode())
     {
     case 1:
         nXEnd -= gnScreenWidth / 2;
@@ -1178,19 +1106,10 @@ void* D2OffsetTableRefStrc::GetEntry(int nId)
 
 struct D2CoordStrc;
 
-int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pDynamicPath); // 0x006488C0
 
-int __stdcall PATH_GetYPosition(D2DynamicPathStrc* pDynamicPath); // 0x00648900
 
-int __stdcall UNITS_SetAnimStartFrame(D2UnitStrc* ptUnit); // 0x00624390
 
-unsigned char __stdcall DRLG_GetActNoFromLevelId(int nLevelId); // 0x006427F0
 
-int __stdcall UNITS_GetUnitSizeX(D2UnitStrc* pUnit); // 0x00620510
-
-D2ActiveRoomStrc* __stdcall COLLISION_GetFreeCoordinates(D2ActiveRoomStrc* pRoom, D2CoordStrc* pSpawnPoint, int nUnitSize, unsigned int nMask, int bAllowNeighboringRooms); // 0x0064E7B0
-
-int __stdcall D2Common_10231(D2DynamicPathStrc* pDynamicPath, D2UnitStrc* pUnit_unused, D2ActiveRoomStrc* pRooms, unsigned short nX, unsigned short nY); // 0x00650C20
 
 inline D2SkillsTxt* DATATBLS_GetSkillsTxtRecordStd(int nSkillId)
 {
@@ -1228,11 +1147,8 @@ static int UNITS_GetUnitYPosition(D2UnitStrc* pUnit)
     return pUnit->pDynamicPath ? PATH_GetYPosition(pUnit->pDynamicPath) : 0;
 }
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
-D2UnitStrc* __fastcall MISSILE_SubmitOwnerRequest(D2UnitStrc* pUnit, int nArg0, int nArg5, int nArg6, int nArg3, int nArg4); // 0x004CDBA0
 
 // 0x004E0A40
 int __fastcall GFXUTIL_SkillStartPlace(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
@@ -1283,6 +1199,19 @@ int __fastcall GFXUTIL_SkillStartPlace(D2UnitStrc* pUnit, int nSkillId, int nSki
     return 1;
 }
 
+enum { SUCCESS_VALUE = 1 };
+// 0x004E0BD0
+int __fastcall sub_004E0BD0_CltStartClearCollision(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
+{
+    if (pUnit)
+    {
+        pUnit->dwFlags &= ~0x0E;
+    }
+
+    COLLISION_ResetMaskWithPattern(UNITS_GetRoom(pUnit), UNITS_GetUnitXPosition(pUnit), UNITS_GetUnitYPosition(pUnit), 5, 0x1000);
+    return 1;
+}
+
 // 0x004E0C60
 int __fastcall GFXUTIL_CltDoResetActionFrame(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
 {
@@ -1298,19 +1227,25 @@ int __fastcall GFXUTIL_CltDoResetActionFrame(D2UnitStrc* pUnit, int nSkillId, in
     return 1;
 }
 
+// 0x004E0C90
+int __fastcall sub_004E0C90_SetSkillTargetPos(D2UnitStrc* unit, int skillId, int skillLevel)
+{
+    D2UnitStrc* target = CUNIT_GetPathTargetUnit(unit);
+    if (!target) return 0;
+    D2SkillStrc* skill = UNITS_GetUsedSkill(unit);
+    if (!skill) return 0;
+    SKILLS_SetParam1(skill, UNITS_GetUnitXPosition(target));
+    SKILLS_SetParam2(skill, UNITS_GetUnitYPosition(target));
+    return SUCCESS_VALUE;
+}
+
 extern const unsigned char gabFrameDirections[8][9]; // 0x006DBA08
 
 extern const unsigned char gabBaseDirections[8]; // 0x006DBA50
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
-int __fastcall ITEM_GetTargetPosition(D2UnitStrc* pUnit, int* pX, int* pY); // 0x004C52E0
 
-D2UnitStrc* __fastcall MISSILE_SubmitOwnerRequest(D2UnitStrc* pUnit, int nArg0, int nArg5, int nArg6, int nArg3, int nArg4); // 0x004CDBA0
-
-unsigned char __stdcall INVENTORY_GetEightWayDirection(unsigned char nIndex); // 0x0063E7A0
 
 inline D2SkillsTxt* SKILLS_GetSkillsTxtRecord(int nSkillId)
 {
@@ -1377,6 +1312,43 @@ int __fastcall GFXUTIL_SkillDoFrameOffset(D2UnitStrc* pUnit, int nSkillId, int n
     }
 
     MISSILE_SubmitOwnerRequest(pUnit, nMissile, nX, nY, nSkillId, nSkillLevel);
+    return 1;
+}
+
+// 0x004E0EB0
+int __fastcall sub_004E0EB0_CltStartPathToTarget(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
+{
+    if (!CUNIT_GetPathTargetUnit(pUnit))
+    {
+        return 0;
+    }
+
+    D2SkillStrc* pSkill = UNITS_GetUsedSkill(pUnit);
+    if (!pSkill)
+    {
+        return 0;
+    }
+
+    D2DynamicPathStrc* pPath = pUnit->pDynamicPath;
+    if (!pPath)
+    {
+        return 0;
+    }
+
+    PATH_SetNewDistance(pPath, 5);
+    PATH_SetType(pPath, 2);
+    D2Common_10142(pPath, pUnit, 0);
+    if (PATH_GetNumberOfPathPoints(pPath) <= 0)
+    {
+        PATH_SetType(pPath, 1);
+        D2Common_10142(pPath, pUnit, 0);
+        if (PATH_GetNumberOfPathPoints(pPath) <= 0)
+        {
+            return 0;
+        }
+    }
+
+    SKILLS_SetFlags(pSkill, 1);
     return 1;
 }
 
@@ -1581,7 +1553,7 @@ static int __stdcall GFXUTIL_GetUnitModeDirections(D2UnitStrc* pUnit, int nMode,
 
     case 3:
     {
-        D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0(nClassId);
+        D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(nClassId);
         if (pMissilesTxtRecord)
         {
             nDirections = pMissilesTxtRecord->nNumDirections;
@@ -1836,7 +1808,7 @@ int __fastcall GFXUTIL_IsPlayerMonsterOrObject(D2UnitStrc* pUnit)
 // 0x004DB1C0
 void __fastcall GFXUTIL_SetGfxEntryByte(D2UnitStrc* pUnit, int nIndex, unsigned char nValue)
 {
-    D2GfxDataStrc* pGfxData = CUNIT_GetGfxData(pUnit);
+    D2UnitGfxDataStrc* pGfxData = CUNIT_GetGfxData(pUnit);
     if (pGfxData)
     {
         pGfxData->aEntries[nIndex][0] = nValue;
@@ -1899,7 +1871,7 @@ int __fastcall GFXUTIL_GetCompTransparency(D2UnitStrc* pUnit, int nComponent, in
             for (D2UnitStrc* pItem = INVENTORY_GetFirstItem(pInventory); pItem; pItem = INVENTORY_GetNextItem(pItem))
             {
                 D2UnitStrc* pChecked = INVENTORY_UnitIsItem(pItem);
-                if (pChecked && sub_006280A0(pChecked, 0x400000, 0x5E6, (unsigned int)".\\ENGINE\\GfxUtil.cpp"))
+                if (pChecked && ITEMS_CheckItemFlag(pChecked, 0x400000, 0x5E6, (unsigned int)".\\ENGINE\\GfxUtil.cpp"))
                 {
                     *pOut = 1;
                     return 1;
@@ -1951,7 +1923,7 @@ int __fastcall GFXUTIL_GetCompTransparency(D2UnitStrc* pUnit, int nComponent, in
     case 7:
     {
         D2UnitStrc* pItem = INVENTORY_GetCompositItem(pInventory, 7);
-        if (pItem && sub_006280A0(pItem, 0x400000, 0x627, (unsigned int)".\\ENGINE\\GfxUtil.cpp"))
+        if (pItem && ITEMS_CheckItemFlag(pItem, 0x400000, 0x627, (unsigned int)".\\ENGINE\\GfxUtil.cpp"))
         {
             *pOut = 2;
             return 1;
@@ -1961,7 +1933,7 @@ int __fastcall GFXUTIL_GetCompTransparency(D2UnitStrc* pUnit, int nComponent, in
     case 6:
     {
         D2UnitStrc* pItem = INVENTORY_GetCompositItem(pInventory, 6);
-        if (pItem && sub_006280A0(pItem, 0x400000, 0x61C, (unsigned int)".\\ENGINE\\GfxUtil.cpp"))
+        if (pItem && ITEMS_CheckItemFlag(pItem, 0x400000, 0x61C, (unsigned int)".\\ENGINE\\GfxUtil.cpp"))
         {
             *pOut = 1;
             return 1;
@@ -1971,7 +1943,7 @@ int __fastcall GFXUTIL_GetCompTransparency(D2UnitStrc* pUnit, int nComponent, in
     case 5:
     {
         D2UnitStrc* pItem = INVENTORY_GetCompositItem(pInventory, 5);
-        if (pItem && sub_006280A0(pItem, 0x400000, 0x611, (unsigned int)".\\ENGINE\\GfxUtil.cpp"))
+        if (pItem && ITEMS_CheckItemFlag(pItem, 0x400000, 0x611, (unsigned int)".\\ENGINE\\GfxUtil.cpp"))
         {
             *pOut = 1;
             return 1;
@@ -1984,7 +1956,7 @@ int __fastcall GFXUTIL_GetCompTransparency(D2UnitStrc* pUnit, int nComponent, in
 }
 
 // 0x004DBB50
-int __fastcall GFXUTIL_InitUnitCelContext(D2CelContextStrc* pToken, D2UnitStrc* pUnit, int nArg34, int nArg40, int nArg0, int* pItemId, unsigned char nComponent, int nMode)
+int __fastcall GFXUTIL_InitUnitCelContext(D2GfxDataStrc* pToken, D2UnitStrc* pUnit, int nArg34, int nArg40, int nArg0, int* pItemId, unsigned char nComponent, int nMode)
 {
     pToken->nArg34 = nArg34;
     pToken->nDirection = nArg40;
@@ -2035,19 +2007,19 @@ static void __stdcall GFXUTIL_SetDeathDirection(unsigned int nDirection, int bSe
 }
 
 // 0x004DBB80
-static int __stdcall GFXUTIL_FillMonsterCelContext(D2CompEntryListStrc* pList, unsigned int dwCode0, D2CelContextStrc* pToken, int nMode, D2MonCompInfoStrc* pClassInfo, D2CompArgStrc* pArgRec, int nRow)
+static int __stdcall GFXUTIL_FillMonsterCelContext(D2CompEntryListStrc* pList, unsigned int dwCode0, D2GfxDataStrc* pToken, int nMode, D2MonCompInfoStrc* pClassInfo, D2CompArgStrc* pArgRec, int nRow)
 {
     D2_ASSERT(dwCode0, 0x3E2);
     D2_ASSERT(pList, 0x3E3);
 
-    pToken->nClass = pClassInfo->nClass;
+    pToken->nUnitIndex = pClassInfo->nClass;
     pToken->nMode = nMode;
     const unsigned char nComponent = pToken->nComponent;
-    pToken->nType = 1;
-    pToken->nArg1C = gaCompTokens[nComponent];
-    pToken->dwCode = dwCode0;
-    pToken->dwToken = 0x2074696C;
-    pToken->nArg18 = pArgRec->nArg18;
+    pToken->nUnitType = 1;
+    pToken->dwComponentToken = gaCompTokens[nComponent];
+    pToken->dwWClassToken = dwCode0;
+    pToken->dwArmorType = 0x2074696C;
+    pToken->dwUnitToken = pArgRec->nArg18;
 
     D2CompEntryStrc* pListEntry = pList->pEntry;
     D2_ASSERT(pListEntry, 0x3F0);
@@ -2064,30 +2036,30 @@ static int __stdcall GFXUTIL_FillMonsterCelContext(D2CompEntryListStrc* pList, u
 found:
 
     pToken->dwModeToken = gaMonModeTokens[nMode];
-    const int nClass = pToken->nClass;
+    const int nClass = pToken->nUnitIndex;
     const unsigned int nComponentId = pToken->nComponent;
     const unsigned char nIndex = pClassInfo->aComp[nRow][nComponentId];
     if (nMode != 0 && nMode != 0xC)
-        pToken->dwToken = sub_00664930_GetMonComponentToken(nClass, nComponentId, nIndex);
+        pToken->dwArmorType = D2Common_11070(nClass, nComponentId, nIndex);
     else if (MONSTERREGION_CheckMonStats2Flag(nClass, 0x10))
-        pToken->dwToken = sub_00664930_GetMonComponentToken(nClass, nComponentId, nIndex);
+        pToken->dwArmorType = D2Common_11070(nClass, nComponentId, nIndex);
 
     D2CompCodeStrc tCode;
     tCode.dwCode = 0;
     GFXUTIL_CopyCompCode(&tCode, pComp->szCode);
-    pToken->dwCode = tCode.dwCode;
-    D2_ASSERT(pToken->nArg1C, 0x425);
-    D2_ASSERT(pToken->nArg18, 0x426);
+    pToken->dwWClassToken = tCode.dwCode;
+    D2_ASSERT(pToken->dwComponentToken, 0x425);
+    D2_ASSERT(pToken->dwUnitToken, 0x426);
     D2_ASSERT(tCode.dwCode, 0x427);
-    if (!pToken->dwToken)
-        pToken->dwToken = 0x20787878;
+    if (!pToken->dwArmorType)
+        pToken->dwArmorType = 0x20787878;
     if (!pToken->dwModeToken)
         pToken->dwModeToken = 0x20787878;
     return 1;
 }
 
 // 0x004DBCF0
-int __fastcall GFXUTIL_InitMonsterCelContext(D2CelContextStrc* pToken, int nArg40, int nArg0, unsigned char nComponent, int nMode, unsigned int dwCode0, D2CompEntryListStrc* pList, D2MonCompInfoStrc* pClassInfo, D2CompArgStrc* pArgRec, int nRow)
+int __fastcall GFXUTIL_InitMonsterCelContext(D2GfxDataStrc* pToken, int nArg40, int nArg0, unsigned char nComponent, int nMode, unsigned int dwCode0, D2CompEntryListStrc* pList, D2MonCompInfoStrc* pClassInfo, D2CompArgStrc* pArgRec, int nRow)
 {
     pToken->nDirection = nArg40;
     pToken->nFrame = nArg0;
@@ -2104,7 +2076,7 @@ int __fastcall GFXUTIL_GetComponentsMaxHeight(D2UnitStrc* pUnit, unsigned char* 
     {
         const int nComponent = pComponents[i];
         D2_ASSERT(nComponent < 0x10, 0x59D);
-        D2CelContextStrc tToken;
+        D2GfxDataStrc tToken;
         memset(&tToken, 0, sizeof(tToken));
         tToken.nDirection = nArg40;
         tToken.nFrame = nArg0;
@@ -2166,7 +2138,7 @@ int __fastcall GFXUTIL_GetBodyLocItemShift(D2UnitStrc* pUnit, int nBodyLoc, int 
         return nDefault;
     }
 
-    if (pUnit && !sub_0046D9F0_TestUnit(pUnit))
+    if (pUnit && !GFX_GetConvertedUnitType(pUnit))
     {
         D2InventoryStrc* pInventory;
         D2UnitStrc* pOwner;
@@ -2182,7 +2154,7 @@ int __fastcall GFXUTIL_GetBodyLocItemShift(D2UnitStrc* pUnit, int nBodyLoc, int 
         if (pInventory)
         {
             D2UnitStrc* pItem = INVENTORY_GetCompositItem(pInventory, nBodyLoc);
-            if (!pItem && nBodyLoc != 1 && sub_0064F420_HasBodyLocFallback(nBodyLoc))
+            if (!pItem && nBodyLoc != 1 && COMPOSIT_IsArmorComponent(nBodyLoc))
             {
                 pItem = INVENTORY_GetCompositItem(pInventory, 1);
             }
@@ -2195,7 +2167,7 @@ int __fastcall GFXUTIL_GetBodyLocItemShift(D2UnitStrc* pUnit, int nBodyLoc, int 
                 }
 
                 unsigned char nShift;
-                const int nResult = sub_0062C100(pUnit, pItem, &nShift, 0);
+                const int nResult = ITEMS_GetColor(pUnit, pItem, &nShift, 0);
                 if (nResult)
                 {
                     return nResult;
@@ -2208,7 +2180,7 @@ int __fastcall GFXUTIL_GetBodyLocItemShift(D2UnitStrc* pUnit, int nBodyLoc, int 
 }
 
 // 0x004DB7B0
-static int __stdcall GFXUTIL_ResolveUnitCelContext(D2UnitStrc* pUnit, D2CelContextStrc* pToken, int nMode, int* pItemId)
+static int __stdcall GFXUTIL_ResolveUnitCelContext(D2UnitStrc* pUnit, D2GfxDataStrc* pToken, int nMode, int* pItemId)
 {
     int nType = 6;
     if (pUnit)
@@ -2216,17 +2188,16 @@ static int __stdcall GFXUTIL_ResolveUnitCelContext(D2UnitStrc* pUnit, D2CelConte
         nType = pUnit->dwUnitType;
         int nClass = pUnit->dwClassId;
         int nAnimMode = UNITS_GetAnimOrSeqMode(pUnit);
-// build: symbol ?gszGfxUtilCpp@* 0x006DB974
         D2COMMON_11013_ConvertMode(pUnit, &nType, &nClass, &nAnimMode, gszGfxUtilCpp, 0x2F0);
-        pToken->nType = nType;
-        pToken->nClass = nClass;
+        pToken->nUnitType = nType;
+        pToken->nUnitIndex = nClass;
         if (nMode == -1)
             nMode = nAnimMode;
         pToken->nMode = nMode;
     }
     else
     {
-        pToken->nType = nType;
+        pToken->nUnitType = nType;
     }
 
     switch (nType)
@@ -2237,10 +2208,10 @@ static int __stdcall GFXUTIL_ResolveUnitCelContext(D2UnitStrc* pUnit, D2CelConte
     {
         *pItemId = -1;
         D2InventoryStrc* pInventory = GetCompInventoryInline(pUnit);
-        pToken->nArg1C = gaCompTokens[pToken->nComponent];
+        pToken->dwComponentToken = gaCompTokens[pToken->nComponent];
         int nWeaponClassId;
-        pToken->dwCode = COMPOSIT_GetWeaponClassId(pUnit, pInventory, &nWeaponClassId, pToken->nMode, 0);
-        if (!GFXUTIL_FindGfxListNode(pUnit, pToken->dwCode, pToken->nMode) && !GFX_LoadUnitGfxNode(pUnit, pToken->dwCode, pToken->nMode))
+        pToken->dwWClassToken = COMPOSIT_GetWeaponClassId(pUnit, pInventory, &nWeaponClassId, pToken->nMode, 0);
+        if (!GFXUTIL_FindGfxListNode(pUnit, pToken->dwWClassToken, pToken->nMode) && !GFX_LoadUnitGfxNode(pUnit, pToken->dwWClassToken, pToken->nMode))
             return 0;
 
         D2CompEntryStrc* pEntry = sub_0046E570_GetGfxEntry(pUnit, pToken->nMode);
@@ -2250,8 +2221,8 @@ static int __stdcall GFXUTIL_ResolveUnitCelContext(D2UnitStrc* pUnit, D2CelConte
         if (!CUNIT_GetGfxData(pUnit))
             return 0;
 
-        pToken->dwToken = 0x2074696C;
-        pToken->nArg18 = GFXUTIL_GetModeArg(pUnit, pToken->nType, pToken->nClass);
+        pToken->dwArmorType = 0x2074696C;
+        pToken->dwUnitToken = GFXUTIL_GetModeArg(pUnit, pToken->nUnitType, pToken->nUnitIndex);
 
         D2CompRecordStrc* pComp = pEntry->aComps;
         for (int i = 0; i < pEntry->nCount; ++i, ++pComp)
@@ -2274,7 +2245,7 @@ found:
 
             if (!pInventory)
             {
-                pToken->dwToken = 0x2074696C;
+                pToken->dwArmorType = 0x2074696C;
                 return 0;
             }
 
@@ -2282,23 +2253,23 @@ found:
             D2ArmorCompsStrc tComps;
             GFXUTIL_GetArmorComponents(pUnit, pInventory, nType, &tComps.n0);
             D2UnitStrc* pItem = INVENTORY_GetCompositItem(pInventory, pToken->nComponent);
-            if (sub_0064F420_HasBodyLocFallback(pToken->nComponent))
+            if (COMPOSIT_IsArmorComponent(pToken->nComponent))
             {
                 if (pToken->nMode != 0x11 && pToken->nMode != 0)
-                    pToken->dwToken = gaClassTokens[sub_0064F500_GetFallbackIndex(pToken->nComponent, &tComps.n0)];
+                    pToken->dwArmorType = gaClassTokens[COMPOSIT_GetArmorTypeFromComponent(pToken->nComponent, &tComps.n0)];
                 else
-                    pToken->dwToken = 0x2074696C;
+                    pToken->dwArmorType = 0x2074696C;
             }
             else
             {
-                pToken->dwToken = GFXUTIL_GetWeaponClassToken(pUnit, pToken->nComponent);
-                if (pItem && !pToken->dwToken && ITEMS_CanBeEquipped(pItem))
-                    pToken->dwToken = ITEMS_GetAltGfx(pItem);
-                else if (!pToken->dwToken)
-                    pToken->dwToken = 0x2074696C;
+                pToken->dwArmorType = GFXUTIL_GetWeaponClassToken(pUnit, pToken->nComponent);
+                if (pItem && !pToken->dwArmorType && ITEMS_CanBeEquipped(pItem))
+                    pToken->dwArmorType = ITEMS_GetAltGfx(pItem);
+                else if (!pToken->dwArmorType)
+                    pToken->dwArmorType = 0x2074696C;
             }
 
-            if (!pToken->dwToken)
+            if (!pToken->dwArmorType)
                 return 0;
             break;
         }
@@ -2309,9 +2280,9 @@ found:
             const unsigned char nComp = pComp->nComponent;
             const unsigned char nIndex = GFXUTIL_GetMonComponentIndex(pUnit, nComp);
             if (nMonMode != 0 && nMonMode != 0xC)
-                pToken->dwToken = D2Common_11069(pUnit, nComp, nIndex);
-            else if (MONSTERREGION_CheckMonStats2Flag(pToken->nClass, 0x10))
-                pToken->dwToken = D2Common_11069(pUnit, nComp, nIndex);
+                pToken->dwArmorType = D2Common_11069(pUnit, nComp, nIndex);
+            else if (MONSTERREGION_CheckMonStats2Flag(pToken->nUnitIndex, 0x10))
+                pToken->dwArmorType = D2Common_11069(pUnit, nComp, nIndex);
             break;
         }
         case 2:
@@ -2322,17 +2293,17 @@ found:
         D2CompCodeStrc tCode;
         tCode.dwCode = 0;
         GFXUTIL_CopyCompCode(&tCode, pComp->szCode);
-        pToken->dwCode = tCode.dwCode;
-        if (!pToken->nArg1C || !pToken->nArg18 || !tCode.dwCode)
+        pToken->dwWClassToken = tCode.dwCode;
+        if (!pToken->dwComponentToken || !pToken->dwUnitToken || !tCode.dwCode)
             return 0;
 
         if (!pToken->dwModeToken)
             pToken->dwModeToken = 0x20787878;
-        if (!pToken->dwToken)
-            pToken->dwToken = 0x2074696C;
+        if (!pToken->dwArmorType)
+            pToken->dwArmorType = 0x2074696C;
 
         int nItemId;
-        if (DATATBLS_GetItemRecordFromItemCode(pToken->dwToken, &nItemId))
+        if (DATATBLS_GetItemRecordFromItemCode(pToken->dwArmorType, &nItemId))
             *pItemId = nItemId;
         return 1;
     }
@@ -2361,7 +2332,7 @@ found:
 int __fastcall GFXUTIL_GetOverlayFrameCount(D2UnitStrc* pUnit, D2OverlaySourceStrc* pSrc)
 {
     int nItemId;
-    D2CelContextStrc tToken;
+    D2GfxDataStrc tToken;
     memset(&tToken, 0, sizeof(tToken));
     tToken.nOverlay = pSrc->nOverlay;
     if (!GFXUTIL_InitUnitCelContext(&tToken, 0, 0, UNITS_GetDirection(pUnit), pSrc->nArg0, &nItemId, 1, -1))
@@ -2651,7 +2622,7 @@ void __cdecl GFXUTIL_InitModeTokens()
 
 
 // 0x004DA8E0
-static void __stdcall GFXUTIL_SetMissileCelName(D2UnitStrc* pUnit, D2CelContextStrc* pToken)
+static void __stdcall GFXUTIL_SetMissileCelName(D2UnitStrc* pUnit, D2GfxDataStrc* pToken)
 {
     if (!pUnit)
         return;
@@ -2795,15 +2766,15 @@ int __fastcall GFXUTIL_IsCelOnScreen(D2CelStrc* pCel, int nX, int nY, int bFlag)
 }
 
 // 0x004DABC0
-static void GFXUTIL_SetItemCelName(D2UnitStrc* pUnit, D2CelContextStrc* pToken)
+static void GFXUTIL_SetItemCelName(D2UnitStrc* pUnit, D2GfxDataStrc* pToken)
 {
-    D2ItemsTxt* pItemsTxtRecord = DATATBLS_GetItemsTxtRecord(sub_0046DAC0_GetItemClassId(pUnit));
+    D2ItemsTxt* pItemsTxtRecord = DATATBLS_GetItemsTxtRecord(GFX_GetConvertedClassId(pUnit));
     if (!pItemsTxtRecord)
         return;
 
     if (pToken->nMode == 4)
     {
-        const unsigned char nInvGfx = sub_006283F0_GetInvGfxIndex(pUnit);
+        const unsigned char nInvGfx = ITEMS_GetVarGfxIndex(pUnit);
         if (ITEMS_CheckItemFlag(pUnit, 0x10, 0x196, ".\\ENGINE\\GfxUtil.cpp") && ITEMS_GetItemQuality(pUnit) == ITEMQUAL_SET)
         {
             D2SetItemsTxt* pSet = DATATBLS_GetSetItemsTxtRecord(ITEMS_GetFileIndex(pUnit));
@@ -2844,9 +2815,9 @@ static void GFXUTIL_SetItemCelName(D2UnitStrc* pUnit, D2CelContextStrc* pToken)
             }
         }
 
-        if (sub_0062E8D0_HasAltInvGfx(pUnit))
+        if (ITEMS_GetVarInvGfxCount(pUnit))
         {
-            pToken->szName = sub_0062E920_GetAltInvGfxName(pUnit, nInvGfx);
+            pToken->szName = ITEMS_GetVarInvGfxString(pUnit, nInvGfx);
             return;
         }
 
@@ -2876,7 +2847,7 @@ static void GFXUTIL_SetItemCelName(D2UnitStrc* pUnit, D2CelContextStrc* pToken)
 }
 
 // 0x004DAD20
-void __fastcall GFXUTIL_SetOverlayCelName(D2UnitStrc* pUnit, D2CelContextStrc* pToken)
+void __fastcall GFXUTIL_SetOverlayCelName(D2UnitStrc* pUnit, D2GfxDataStrc* pToken)
 {
     const int nOverlay = pToken->nOverlay;
     D2OverlayTxt* pRecord = (nOverlay >= 0 && nOverlay < sgptDataTables->nOverlayTxtRecordCount) ? &sgptDataTables->pOverlayTxt[nOverlay] : 0;

@@ -140,7 +140,7 @@ extern static_tree_desc static_l_desc;                                          
 extern static_tree_desc static_d_desc;                                                            // 0x00708908
 extern static_tree_desc static_bl_desc;                                                           // 0x0070891C
 
-static const ct_data static_ltree_006D0EE0[L_CODES + 2] = {                                         // 0x006D0EE0
+static const ct_data static_ltree[L_CODES + 2] = {                                         // 0x006D0EE0
     {{ 12},{  8}},{{140},{  8}},{{ 76},{  8}},{{204},{  8}},{{ 44},{  8}},
     {{172},{  8}},{{108},{  8}},{{236},{  8}},{{ 28},{  8}},{{156},{  8}},
     {{ 92},{  8}},{{220},{  8}},{{ 60},{  8}},{{188},{  8}},{{124},{  8}},
@@ -725,7 +725,7 @@ void __fastcall _tr_flush_bits(deflate_state* s)
 void __fastcall _tr_align(deflate_state* s)
 {
     send_bits(s, (STATIC_TREES << 1), 3);
-    send_code(s, END_BLOCK, static_ltree_006D0EE0);
+    send_code(s, END_BLOCK, static_ltree);
     bi_flush(s);
 }
 
@@ -760,7 +760,7 @@ void __fastcall _tr_flush_block(deflate_state* s, char* buf, unsigned long store
 
     } else if (s->strategy == Z_FIXED || static_lenb == opt_lenb) {
         send_bits(s, (STATIC_TREES << 1) + last, 3);
-        compress_block(s, (const ct_data*)static_ltree_006D0EE0,
+        compress_block(s, (const ct_data*)static_ltree,
                        (const ct_data*)static_dtree);
     } else {
         send_bits(s, (DYN_TREES << 1) + last, 3);
@@ -792,99 +792,75 @@ int __fastcall _tr_tally(deflate_state* s, unsigned dist, unsigned lc)
     return (s->last_lit == s->lit_bufsize - 1);
 }
 
-extern char gData_006D0EE0[]; // 0x006D0EE0
-
-#pragma pack(push, 1)
-struct d2data_006D0E90_t
-{
-    unsigned char b0[80];
+extern const int gData_006D0D90[29] = { // 0x006D0D90
+    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+    0x00000001, 0x00000001, 0x00000001, 0x00000001, 0x00000002, 0x00000002, 0x00000002, 0x00000002,
+    0x00000003, 0x00000003, 0x00000003, 0x00000003, 0x00000004, 0x00000004, 0x00000004, 0x00000004,
+    0x00000005, 0x00000005, 0x00000005, 0x00000005, 0x00000000
 };
-#pragma pack(pop)
-
-extern const int gData_006D0D90[29]; // 0x006D0D90
-extern const unsigned char gData_006D0E04[20]; // 0x006D0E04
-extern const int gData_006D0E18[30]; // 0x006D0E18
-extern const struct d2data_006D0E90_t gData_006D0E90; // 0x006D0E90
-extern const ct_data gData_006D1360[30]; // 0x006D1360
-extern const int gData_006D16D8[30]; // 0x006D16D8
-extern const int gData_006D1750[30]; // 0x006D1750
-
-extern const int gData_006D0D90[29] = {
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2,
-    3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5
-}; // 0x006D0D90
 #pragma comment(linker, "/alternatename:_extra_lbits=_gData_006D0D90")
 
-extern const unsigned char gData_006D0E04[20] = {
-    0x10, 0x11, 0x12, 0, 8, 7, 9, 6, 0xA, 5, 0xB, 4, 0xC, 3, 0xD, 2,
-    0xE, 1, 0xF
-}; // 0x006D0E04
+extern const unsigned char gData_006D0E04[20] = { 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15, 0 }; // 0x006D0E04
 #pragma comment(linker, "/alternatename:_bl_order=_gData_006D0E04")
 
-extern const int gData_006D0E18[30] = {
-    0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
-    7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13
-}; // 0x006D0E18
+extern const int gData_006D0E18[30] = { // 0x006D0E18
+    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000001, 0x00000001, 0x00000002, 0x00000002,
+    0x00000003, 0x00000003, 0x00000004, 0x00000004, 0x00000005, 0x00000005, 0x00000006, 0x00000006,
+    0x00000007, 0x00000007, 0x00000008, 0x00000008, 0x00000009, 0x00000009, 0x0000000A, 0x0000000A,
+    0x0000000B, 0x0000000B, 0x0000000C, 0x0000000C, 0x0000000D, 0x0000000D
+};
 #pragma comment(linker, "/alternatename:_extra_dbits=_gData_006D0E18")
 
-extern const struct d2data_006D0E90_t gData_006D0E90 = {
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x07
-    }
-}; // 0x006D0E90
+extern const int gData_006D0E90[20] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7, 0 }; // 0x006D0E90
 
-extern const ct_data gData_006D1360[30] = {
+extern const ct_data gData_006D1360[30] = { // 0x006D1360
     { { 0 }, { 5 } },
-    { { 0x10 }, { 5 } },
+    { { 16 }, { 5 } },
     { { 8 }, { 5 } },
-    { { 0x18 }, { 5 } },
+    { { 24 }, { 5 } },
     { { 4 }, { 5 } },
-    { { 0x14 }, { 5 } },
-    { { 0xC }, { 5 } },
-    { { 0x1C }, { 5 } },
+    { { 20 }, { 5 } },
+    { { 12 }, { 5 } },
+    { { 28 }, { 5 } },
     { { 2 }, { 5 } },
-    { { 0x12 }, { 5 } },
-    { { 0xA }, { 5 } },
-    { { 0x1A }, { 5 } },
+    { { 18 }, { 5 } },
+    { { 10 }, { 5 } },
+    { { 26 }, { 5 } },
     { { 6 }, { 5 } },
-    { { 0x16 }, { 5 } },
-    { { 0xE }, { 5 } },
-    { { 0x1E }, { 5 } },
+    { { 22 }, { 5 } },
+    { { 14 }, { 5 } },
+    { { 30 }, { 5 } },
     { { 1 }, { 5 } },
-    { { 0x11 }, { 5 } },
+    { { 17 }, { 5 } },
     { { 9 }, { 5 } },
-    { { 0x19 }, { 5 } },
+    { { 25 }, { 5 } },
     { { 5 }, { 5 } },
-    { { 0x15 }, { 5 } },
-    { { 0xD }, { 5 } },
-    { { 0x1D }, { 5 } },
+    { { 21 }, { 5 } },
+    { { 13 }, { 5 } },
+    { { 29 }, { 5 } },
     { { 3 }, { 5 } },
-    { { 0x13 }, { 5 } },
-    { { 0xB }, { 5 } },
-    { { 0x1B }, { 5 } },
+    { { 19 }, { 5 } },
+    { { 11 }, { 5 } },
+    { { 27 }, { 5 } },
     { { 7 }, { 5 } },
-    { { 0x17 }, { 5 } }
-}; // 0x006D1360
+    { { 23 }, { 5 } }
+};
 #pragma comment(linker, "/alternatename:_static_dtree=_gData_006D1360")
 
-extern const int gData_006D16D8[30] = {
+extern const int gData_006D16D8[30] = { // 0x006D16D8
     0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 20, 24, 28,
-    32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224
-}; // 0x006D16D8
+    32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 0, 0
+};
 #pragma comment(linker, "/alternatename:_base_length=_gData_006D16D8")
 
-extern const int gData_006D1750[30] = {
+extern const int gData_006D1750[30] = { // 0x006D1750
     0, 1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192,
     256, 384, 512, 768, 1024, 1536, 2048, 3072, 4096, 6144, 8192, 12288, 16384, 24576
-}; // 0x006D1750
+};
 #pragma comment(linker, "/alternatename:_base_dist=_gData_006D1750")
 
-extern static_tree_desc static_l_desc = { (const ct_data *)&gData_006D0EE0, (const int *)&extra_lbits, 257, 286, 15 }; // 0x007088F4
+static_tree_desc static_l_desc = { static_ltree, extra_lbits, 257, 286, 15 }; // 0x007088F4
 
-extern static_tree_desc static_d_desc = { (const ct_data *)&static_dtree, (const int *)&extra_dbits, 0, 30, 15 }; // 0x00708908
+static_tree_desc static_d_desc = { static_dtree, extra_dbits, 0, 30, 15 }; // 0x00708908
 
-extern static_tree_desc static_bl_desc = { 0, (const int *)&gData_006D0E90, 0, 19, 7 }; // 0x0070891C
+static_tree_desc static_bl_desc = { 0, gData_006D0E90, 0, 19, 7 }; // 0x0070891C

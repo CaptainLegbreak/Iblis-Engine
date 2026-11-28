@@ -1,32 +1,21 @@
 #pragma once
 // Storm big-number buffer: a growable array of 32-bit limbs plus a start offset.
 
+#include "D2StormTypes.h"
 #include "D2StormArrayA.h"
-
-int __stdcall SMemFree(void* pLocation, const char* szFile, int nLine, unsigned int nFlags);                // 0x00412650
-extern char gszTypeNameUInt_00708874[];                                                                     // 0x00708874
+#include "stpl.h"
 
 struct BigBuffer
 {
     D2StormArrayAStrc m_array;
     unsigned int m_start;
 
-    BigBuffer()
+    BigBuffer() : m_start(0)
     {
-        m_array.m_alloc = 0;
-        m_array.m_count = 0;
-        m_array.m_data = 0;
-        m_array.m_chunk = 0;
-        m_start = 0;
-    }
-    ~BigBuffer()
-    {
-        if (m_array.m_data)
-            SMemFree(m_array.m_data, gszTypeNameUInt_00708874, -2, 0);
     }
     unsigned int Count() const
     {
-        return m_array.m_count - m_start;
+        return m_array.Count() - m_start;
     }
     int IsUsed(unsigned int nIndex) const
     {
@@ -45,11 +34,15 @@ struct BigBuffer
     {
         m_array.SetCount(m_start + nCount);
     }
+    void SetCountInline(unsigned int nCount)
+    {
+        m_array.SetCountInline(m_start + nCount);
+    }
     BigBuffer& operator=(const BigBuffer& tSource)
     {
         if (this != &tSource)
         {
-            m_array.sub_004215C0_Set(tSource.m_array.m_count, tSource.m_array.m_data);
+            m_array.Set(tSource.m_array.m_count, tSource.m_array.m_data);
         }
         m_array.m_chunk = tSource.m_array.m_chunk;
         m_start = tSource.m_start;
@@ -58,7 +51,12 @@ struct BigBuffer
     void CopyFrom(const BigBuffer& tSource)
     {
         if (this != &tSource)
-            m_array.sub_004215C0_Set(tSource.m_array.m_count, tSource.m_array.m_data);
+        {
+            D2StormArrayViewStrc tView;
+            tView.pData = tSource.m_array.m_data;
+            tView.nCount = tSource.m_array.m_count;
+            m_array.Set(tView.nCount, tView.pData);
+        }
         m_array.m_chunk = tSource.m_array.m_chunk;
         m_start = tSource.m_start;
     }

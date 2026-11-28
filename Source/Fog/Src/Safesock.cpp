@@ -9,6 +9,8 @@
 #include "D2FogTypes.h"
 #include "D2CmdArg.h"
 #include "D2FogSystemInfo.h"
+#include "FogApi.h"
+#include "StormApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -36,7 +38,6 @@ struct _iobuf;
 
 struct D2InspectorInfoStrc;
 
-struct D2CrashSubmitInfoStrc;
 
 typedef long (__stdcall* D2ExceptionFilterFn)(void* pExceptionPointers);
 
@@ -48,13 +49,9 @@ extern "C" __declspec(dllimport) unsigned long __stdcall WaitForSingleObject(voi
 
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x006CC134
 
-const char* __stdcall SStrChrR(const char* szString, char nChar); // 0x004134D0
-
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
-
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -83,16 +80,6 @@ struct AsyncDataEventSlot
 };
 
 extern "C" size_t __cdecl strlen(const char* szString);
-
-struct D2CrashSubmitInfoStrc
-{
-    const char* szName;
-    const char* szLocale;
-    const char* szFrom;
-    unsigned int dwFlags;
-    const char* apszLines[16];
-    int nLines;
-};
 
 void __fastcall ERRORMANAGER_DumpThread(unsigned long dwThreadId, D2ThreadContextStrc* pThreadContext, D2CrashPrintFn pfnPrint, void* pContext, bool bSymbols, bool bHeader, int nArg7); // 0x00403070
 
@@ -132,9 +119,6 @@ struct FSafeSock
 
 typedef void (__fastcall* D2CrashPrintFn)(void* pContext, const char* szText);
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
-
-// build: symbol _strrchr 0x00682990
 extern "C" char* __cdecl strrchr(const char* szString, int nChar);
 
 extern "C" int __stdcall WSAStartup(unsigned short wVersionRequested, D2WSADataStrc* pData);                // 0x006B0132
@@ -154,8 +138,6 @@ extern "C" int __stdcall getpeername(unsigned int nSocket, void* pAddress, int* 
 extern "C" int __stdcall ioctlsocket(unsigned int nSocket, long nCommand, unsigned long* pArgument);       // 0x006B015C
 
 void __fastcall ERRORMANAGER_DumpThread(unsigned long dwThreadId, int nArg2, D2CrashPrintFn pfnPrint, void* pContext, int nArg5, int nArg6, int nArg7); // 0x00403070
-
-void __cdecl LOGMANAGER_WriteLogLine(const char* szFormat, ...);                                                           // 0x00410610
 
 void* ghD2ServerServiceStatus;                                                                              // 0x0074C714
 
@@ -187,8 +169,6 @@ extern "C" char* __cdecl strcpy(char* szDest, const char* szSource);
 
 extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(D2CriticalSectionStrc* pLock); // 0x006CC210
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
-
 D2PoolDirectoryStrc gtPoolManager;                                                                   // 0x0074F0E8
 
 static D2MemPoolBlockStrc* __stdcall ERRORMANAGER_FindPoolBlock(void* pMemory, D2PoolSystemStrc* pSystem); // 0x004099D0
@@ -201,31 +181,16 @@ extern "C" __declspec(dllimport) void* __stdcall CreateThread(void* pAttributes,
 
 extern "C" int __stdcall setsockopt(unsigned int nSocket, int nLevel, int nOption, const char* pValue, int nLength); // 0x006B0162
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);                               // 0x0040B380
-
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
-
 extern "C" const char gszUnknownUpper[];                                                           // 0x006CCED8
 
 extern "C" int __stdcall recv(unsigned int nSocket, char* pBuffer, int nLength, int nFlags);                // 0x006B0174
 
 struct FSafeSock;
 
-struct D2LogMsgListStrc;
 
 class CCritSect;
 
 extern "C" int __cdecl sscanf(const char* szSource, const char* szFormat, ...); // 0x00684BD5
-
-int __fastcall FOG_SOCKET_WSAStartup(); // 0x0040D890
-
-struct D2LogMsgListStrc
-{
-    int m_linkoffset;
-    D2StormLinkStrc m_terminator;
-
-    void sub_0040FED0_DeleteAll();                                          // 0x0040FED0
-};
 
 FSafeSock* __fastcall FOG_SOCKET_ConnectEx(char* szHostAddress, int nPortNumber, unsigned long (__stdcall* pThreadProc)(void* pParam), void* lpParameter, const char* szName, int bNonBlocking); // 0x0040D8E0
 
@@ -294,7 +259,6 @@ int ganLogNewFile[20]; // 0x0075D298
 
 char gaszLogFilePaths[20][0x104]; // 0x0075D340
 
-int gnLogQueueCount; // 0x0075E870
 
 struct D2ToolhelpModuleEntryStrc;
 
@@ -322,7 +286,6 @@ char gszImageHlpSymSearchPath[4096]; // 0x0075BFB8
 
 int gbSymQuiet; // 0x0075CFB8
 
-// build: symbol ?strrchr@@YAPADPADH@Z 0x00401A30
 char* __cdecl strrchr(char* szString, int nChar)
 {
     return strrchr((const char*)szString, nChar);
@@ -377,7 +340,6 @@ const char* __fastcall FOG_GetHostIPAddress()
             closesocket(nSocket);
         }
     }
-// build: symbol ?gszStringFormat@* 0x006FFC58
     sprintf(gszResolvedHostIP, gszStringFormat, inet_ntoa(tLocal.sin_addr));
     WSACleanup();
     return gszResolvedHostIP;

@@ -2,13 +2,11 @@ typedef unsigned int size_t;
 typedef char* va_list;
 
 extern "C" char* __cdecl strrchr(const char* szString, int nChar);                                          // 0x00682990
-// build: symbol _wcsrchr 0x00685DF7
 extern "C" wchar_t* __cdecl wcsrchr(const wchar_t* szString, wchar_t nChar);
 extern "C" int __cdecl _vsnprintf(char* szDest, size_t nCount, const char* szFormat, va_list args);         // 0x00682F22
 extern "C" unsigned long __readfsdword(unsigned long nOffset);
 #pragma intrinsic(__readfsdword)
 
-// build: symbol ?wcsrchr@@YAPA_WPA_W_W@Z 0x00404100
 static inline wchar_t* wcsrchr(wchar_t* szString, wchar_t nChar)
 {
     return wcsrchr((const wchar_t*)szString, nChar);

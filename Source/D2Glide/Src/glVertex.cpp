@@ -17,7 +17,7 @@ extern unsigned char* sgbSmack8BitBuffer; // 0x00880BF0
 
 extern D2GlideSettingsStrc* gpGfxSettings; // 0x007C9148
 
-extern unsigned char* gpMulTable_00880B5C; // 0x00880B5C
+extern unsigned char* gpBlendTable; // 0x00880B5C
 
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
@@ -49,7 +49,6 @@ void __fastcall GLPERSPECTIVE_SetProjectOrigin(int nX, int nY); // 0x0050DD50
 
 void __cdecl GLVERTEX_PerspectiveClearScale(); // 0x0050DF00
 
-void __stdcall GLVERTEX_DecodeTileBlocks(D2TileLibraryEntryStrc* pTile, unsigned char* pDst); // 0x0050F980
 
 int __fastcall GLVERTEX_CelFlatSpriteDraw(void* pData, int nX, int nY, unsigned int dwGamma, int nDrawMode, int nScreenMode, void* pPalette); // 0x00512410
 
@@ -82,7 +81,7 @@ void __cdecl GLVERTEX_BuildBlendTable()
     {
         for (int x = 0; x < 256; ++x)
         {
-            gpMulTable_00880B5C[y * 256 + x] = (unsigned char)(x * y / 255);
+            gpBlendTable[y * 256 + x] = (unsigned char)(x * y / 255);
         }
     }
 }

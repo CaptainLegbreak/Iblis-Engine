@@ -14,7 +14,6 @@ using Storm::SFile::ARCHIVEREC;
 struct FILEREC;
 struct AUDIOSTREAM;
 
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
 
 // One block-table entry (0x2C bytes).
 struct D2StormBlockStrc

@@ -1,4 +1,8 @@
 #include "D2Hell.h"
+#include "FogApi.h"
+#include "FogApi.h"
+#include "FogApi2.h"
+#include "StormApi2.h"
 
 struct D2ArchiveHandleStrc;
 
@@ -10,7 +14,6 @@ unsigned int __fastcall ARCHIVE_GetFileSize(void* unused, void* file, unsigned i
 
 void __fastcall ARCHIVE_ReadFileToBuffer(void* hArchive, void* hFile, void* pBuffer, unsigned int dwBytesToRead); // 0x00516F85
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0); // 0x0040B380
 
 extern "C" __declspec(dllimport) char* __stdcall lstrcpyA(char* szDst, const char* szSrc);
 
@@ -20,14 +23,8 @@ static void* __stdcall ARCHIVE_FindAndOpenArchive(char* szOutPath, const char* s
 
 int __stdcall SFileCloseArchive(void* hArchive); // 0x00419A80
 
-int __fastcall FOG_FCloseFile(void* pArg); // 0x004068F0
-
-// build: symbol ?FOG_DisplayHalt@* 0x00408A60
 #define D2_ASSERT(expr,line) if(!(expr)) {FOG_DisplayHalt(&gszEmptyAssertText,sub_00408090(),line);exit(-1);}
 
-int __fastcall FOG_FGetFileSize(void*,unsigned int*);  // 0x00406930
-
-int __stdcall CopyFileRecName(void*,char*,unsigned int); // 0x00416230
 
 #define FAIL_LINE 0x5F
 
@@ -35,9 +32,6 @@ int __stdcall CopyFileRecName(void*,char*,unsigned int); // 0x00416230
 
 #define NULL_LINE 0x59
 
-int __fastcall FOG_FReadFile(void* hFile, void* pBuffer, int nToRead, int* pnRead, void* pOverlapped, int nArg7, int nArg6); // 0x00406900
-
-int __fastcall FOG_FSetFilePointer(void* hFile, long nOffset, long* pnOffsetHigh, int nMethod); // 0x00406940
 
 typedef unsigned long DWORD;
 
@@ -55,7 +49,6 @@ static void ARCHIVE_GetModuleDirectory(char* szPath); // 0x005170E7
 // 0x00516E46
 int __fastcall ARCHIVE_OpenFile(void* pUnused, const char* szFileName, void** phFile, int bAllowMissing)
 {
-// build: symbol ?FOG_FOpenFile@* 0x004068E0
     if (FOG_FOpenFile(szFileName, phFile))
         return 1;
 

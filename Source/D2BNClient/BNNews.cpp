@@ -1,5 +1,7 @@
 #include "D2BNClient.h"
 #include "D2Primitives.h"
+#include "FogApi.h"
+#include "StormApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -11,7 +13,6 @@ struct D2SystemTimeStrc;
 
 struct D2FileTimeStrc;
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -21,8 +22,6 @@ struct D2Storm408ElemStrc
     unsigned int nStamp;
     char szText[0x400];
 };
-
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
 
 extern "C" const char gszNewsItemTypeName_0072FF8C[]; // 0x0072FF8C
 
@@ -59,15 +58,9 @@ int gbNewsActive; // 0x00881C24
 
 int (__cdecl* gpfnNewsRefresh)(); // 0x00881C2C
 
-// build: symbol ??__EgtNewsItems@@YAXXZ 0x006CAEC0
-// build: symbol ??__FgtNewsItems@@YAXXZ 0x006CB450
 D2StormArray408Strc gtNewsItems;        // 0x00881C30
 
 unsigned int gnNewsFirstIndex;        // 0x00881C40
-
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags); // 0x00413020
-
-void* __stdcall SMemReAlloc(void* pLocation, unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags); // 0x004133D0
 
 int (__fastcall* gpfnNewsMessage)(unsigned int nStamp, const char* szText); // 0x00881C28
 
@@ -89,7 +82,6 @@ void __cdecl BNNEWS_ReportNews(); // 0x0051D510
 
 int __fastcall CACHE_LoadCachedFile(const char*, D2FileTimeStrc*, void**, unsigned int*); // 0x00519920
 
-extern const char* gpszNewsName; // 0x0072FF80
 
 unsigned int gnNewsNewest;        // 0x00881C44
 
@@ -98,15 +90,15 @@ extern "C" char* __cdecl strncpy(char*,const char*,unsigned);
 
 
 
-extern unsigned gnNewsLastStamp_00881C44; // 0x00881C44
+extern unsigned gnNewsNewest; // 0x00881C44
 
 // 0x0051D260
 void __fastcall BNNEWS_SelectNewsFile(int bAlternate)
 {
     D2_ASSERT(!gbNewsActive, 0x2F);
-    gpszNewsName_0072FF80 = "BNNews-D2DV";
+    gpszNewsName = "BNNews-D2DV";
     if (!bAlternate)
-        gpszNewsName_0072FF80 = "BNNews-D2XP";
+        gpszNewsName = "BNNews-D2XP";
 }
 
 inline unsigned int RoundUp(unsigned int nValue, unsigned int nAlign)
@@ -242,7 +234,7 @@ int __cdecl BNNEWS_SaveNews()
         D2FileTimeStrc tFileTime;
         GetSystemTime(&tSystemTime);
         SystemTimeToFileTime(&tSystemTime, &tFileTime);
-        int nResult = CACHE_WriteCachedFile(gpszNewsName_0072FF80, pBuffer, nSize, &tFileTime, -1, -1);
+        int nResult = CACHE_WriteCachedFile(gpszNewsName, pBuffer, nSize, &tFileTime, -1, -1);
         FOG_Free(pBuffer, gszBNNewsFile, 0x17B, 0);
         return nResult;
     }
@@ -265,7 +257,6 @@ void __cdecl BNNEWS_ReportNews()
     }
 }
 
-// build: symbol ??_GD2StormArray408Strc@@QAEPAXI@Z 0x0051D590
 inline void D2StormArray408Strc::operator delete(void* pMemory)
 {
     SMemFree(pMemory, "delete", -1, 0);
@@ -447,7 +438,7 @@ insert:
   } else if(gpfnNewsMessage)gpfnNewsMessage(0,text);
 next:;
  }
- gnNewsLastStamp_00881C44=last;
+ gnNewsNewest=last;
  unsigned index=0;
  while(index<gtNewsItems.m_count && gtNewsItems.m_data[index].nStamp<first)++index;
  gnNewsFirstIndex=index;
@@ -528,27 +519,13 @@ int __fastcall BNNEWS_TryDecodeCDKey(const char* szKey, void* pArg2, void* pArg3
 {
     if (!szKey)
         return 0;
-    sub_00522AE0_DecodeCDKey(szKey, pArg3, pArg2, pArg4);
+    BNDOWNLOAD_DecodeCDKey(szKey, pArg3, pArg2, pArg4);
     return 1;
 }
 
-#pragma pack(push, 1)
-struct d2data_0072FF84_t
-{
-    const void* p0;
-    unsigned char b1[4];
-};
-#pragma pack(pop)
-
-extern "C" struct d2data_0072FF84_t gData_0072FF84; // 0x0072FF84
-extern "C" const char gData_0072FF8C[24]; // 0x0072FF8C
-
 extern const char* gpszNewsName_0072FF80 = "BNNews-D2DV"; // 0x0072FF80
 
-extern "C" struct d2data_0072FF84_t gData_0072FF84 = {
-    (const void*)"~Nh",
-    { 0x00 }
-}; // 0x0072FF84
+extern "C" const char* gData_0072FF84[2] = { "~Nh", 0 }; // 0x0072FF84
 
 extern "C" const char gData_0072FF8C[24] = ".?AUItem@NewsTable@@"; // 0x0072FF8C
 #pragma comment(linker, "/alternatename:_gszTypeNewsTableItem_0072FF8C=_gData_0072FF8C")

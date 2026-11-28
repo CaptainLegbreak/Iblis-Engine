@@ -1,4 +1,5 @@
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 
 #include "D2Structs.h"
 
@@ -14,6 +15,10 @@
 
 #include "D2ClientSound.h"
 #include "D2ClientTileLight.h"
+#include "FogApi.h"
+#include "D2CommonApi.h"
+#include "D2CommonApi2.h"
+#include "D2GfxApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -26,9 +31,7 @@
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -69,17 +72,11 @@ extern D2LightOffsetsStrc gaLightOffsetsA[]; // 0x0072ABC8
 
 extern D2LightOffsetsStrc gaLightOffsetsB[]; // 0x0072A9E8
 
-int __cdecl sub_0045AE90(); // 0x0045AE90
 
-int __cdecl DLIGHTMAP_GetRenderMode(); // 0x00477730
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
 void __fastcall SCMD_ReadGridCell(int nX, int nY, unsigned char* pValue0, unsigned char* pValue1, unsigned char* pValue2, unsigned char* pValue3); // 0x00475AA0
-
-int __stdcall TILE_TileDrawTrans(D2TileLibraryEntryStrc* pTile, int nXPos, int nYPos, D2GfxLightStrc* pLight, int nScreenPanels, unsigned char nAlpha); // 0x004F6950
-
-int __stdcall TILE_TileDrawLit(D2TileLibraryEntryStrc* pTile, int nXPos, int nYPos, D2GfxLightStrc* pLight, int nScreenPanels); // 0x004F6920
 
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
@@ -158,25 +155,16 @@ extern const unsigned char gaDirection64To4[64]; // 0x006DBA60
 
 extern const unsigned char gaDirection4[4]; // 0x006DBA58
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
 
-D2UnitStrc* __fastcall CUNIT_GetPathTargetUnit(D2UnitStrc* pUnit); // 0x004648F0
 
 D2UnitStrc* __fastcall MISSILE_CreateClientMissile(D2MissileStrc* pMissileParams); // 0x004CD540
 
 void __stdcall sub_006488A0_SetDirection(D2DynamicPathStrc* pPath, int nDirection); // 0x006488A0
 
-int __stdcall SKILLS_EvaluateSkillFormula(D2UnitStrc* pUnit, unsigned int nCalc, int nSkillId, int nSkillLevel); // 0x00646CA0
-
-void __stdcall MISSILE_SetTotalFrames(D2UnitStrc* pMissile, int nTotalFrames); // 0x0064A2B0
-
-void __stdcall MISSILE_SetCurrentFrame(D2UnitStrc* pMissile, int nCurrentFrame); // 0x0064A330
 
 static D2LightOffsetsStrc* __stdcall sub_004DEDB0_GetLightOffsets(D2TileLibraryEntryStrc* pTile, unsigned int* pCount, int bAlternate)
 {
-// build: symbol ?gaLightSampleCounts@* 0x006DB9D8
     *pCount = gaLightSampleCounts[pTile->nLightDirection];
     if (bAlternate)
         return &gaLightOffsetsA[pTile->nLightDirection];
@@ -192,7 +180,7 @@ void __fastcall sub_004DF1C0_UpdateFadingTileLights(D2TileLightCtxStrc* pCtx)
     {
         if (pEntry->pFadeList)
         {
-            const int nScreenPanels = sub_0045AE90();
+            const int nScreenPanels = sub_0045AE90_GetPanelSlideMode();
             const int bPerspective = sub_004F51D0_IsPerspective();
             const int nLightDetail = DLIGHTMAP_GetRenderMode();
             const unsigned int nTick = GetTickCount();
@@ -520,19 +508,14 @@ int __fastcall sub_004E1120_SkillCreateTargetMissile(D2UnitStrc* pUnit, int nSki
     return 1;
 }
 
-extern "C" const unsigned char gData_006DBA58[4]; // 0x006DBA58
-extern "C" const unsigned char gData_006DBA60[64]; // 0x006DBA60
+extern const unsigned char gaDirection4[4] = { 0x31, 0x1F, 0x11 }; // 0x006DBA58
 
-extern "C" const unsigned char gData_006DBA58[4] = { 0x31, 0x1F, 0x11 }; // 0x006DBA58
-#pragma comment(linker, "/alternatename:?gaDirection4@@3QBEB=_gData_006DBA58")
-
-extern "C" const unsigned char gData_006DBA60[64] = {
+extern const unsigned char gaDirection64To4[64] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2,
     2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3,
     3, 3, 3, 3, 3, 3, 3, 3, 3
 }; // 0x006DBA60
-#pragma comment(linker, "/alternatename:?gaDirection64To4@@3QBEB=_gData_006DBA60")
 
 static inline D2SkillsTxt* SKILLS_GetSkillsTxtRecord(int nSkillId)
 {

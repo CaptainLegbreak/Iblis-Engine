@@ -19,18 +19,18 @@ struct D2CubeMainTxt;
 struct D2ShrinesTxt
 {
     unsigned char bCode; // 0x00
-    unsigned char unk0x01; // 0x01
-    unsigned short unk0x02; // 0x02
+    unsigned char pad0x01; // 0x01
+    unsigned short pad0x02; // 0x02
     int dwArg0; // 0x04
     int dwArg1; // 0x08
     int dwDurationInFrames; // 0x0C
     unsigned char nResetTimeInMins; // 0x10
     unsigned char nRarity; // 0x11
     unsigned short szViewname; // 0x12
-    unsigned char unk0x14[0x1E]; // 0x14
+    unsigned char unused0x14[30]; // 0x14
     char szNiftyphrase[128]; // 0x32
     unsigned char nEffectClass; // 0xB2
-    unsigned char unk0xB3; // 0xB3
+    unsigned char pad0xB3; // 0xB3
     unsigned int dwLevelMin; // 0xB4
 };
 
@@ -41,7 +41,7 @@ struct D2RunesTxt
     unsigned char nComplete; // 0x80
     unsigned char nServer; // 0x81
     unsigned short wStringId; // 0x82
-    unsigned short unk0x84; // 0x84
+    unsigned short unused0x84; // 0x84
     short wIType[6]; // 0x86
     short wEType[3]; // 0x92
     int nRune[6]; // 0x98
@@ -52,7 +52,7 @@ struct D2GemsTxt
 {
     char szName[32]; // 0x00
     char szLetter[6]; // 0x20
-    unsigned short unk0x26; // 0x26
+    unsigned short pad0x26; // 0x26
     union
     {
         unsigned char szItemCode[4]; // 0x28
@@ -96,23 +96,23 @@ struct D2MonSoundsTxt
     unsigned int dwFlee; // 0x78
     unsigned char nCvtMo1; // 0x7C
     unsigned char nCvtTgt1; // 0x7D
-    unsigned short unk0x7E; // 0x7E
+    unsigned short pad0x7E; // 0x7E
     int dwCvtSk1; // 0x80
     unsigned char nCvtMo2; // 0x84
     unsigned char nCvtTgt2; // 0x85
-    unsigned short unk0x86; // 0x86
+    unsigned short pad0x86; // 0x86
     int dwCvtSk2; // 0x88
     unsigned char nCvtMo3; // 0x8C
     unsigned char nCvtTgt3; // 0x8D
-    unsigned short unk0x8E; // 0x8E
+    unsigned short pad0x8E; // 0x8E
     int dwCvtSk3; // 0x90
 };
 
 struct D2BeltsTxt
 {
     unsigned char nIndex; // 0x00
-    unsigned char unk0x01; // 0x01
-    unsigned short unk0x02; // 0x02
+    unsigned char pad0x01; // 0x01
+    unsigned short pad0x02; // 0x02
     int nBoxes; // 0x04
     D2InvRectStrc beltBoxes[16]; // 0x08
 };
@@ -133,7 +133,7 @@ struct D2CubeParam
     short nModMin; // 0x06
     short nModMax; // 0x08
     unsigned char nModChance; // 0x0A
-    unsigned char unk0x0B; // 0x0B
+    unsigned char pad0x0B; // 0x0B
 };
 
 struct D2CubeOutputItem
@@ -159,12 +159,12 @@ struct D2CubeMainTxt
     unsigned char nMinDiff; // 0x02
     unsigned char nClass; // 0x03
     unsigned char nOp; // 0x04
-    unsigned char unk0x05; // 0x05
-    unsigned short unk0x06; // 0x06
+    unsigned char pad0x05; // 0x05
+    unsigned short pad0x06; // 0x06
     int nParam; // 0x08
     int nValue; // 0x0C
     unsigned char nNumInputs; // 0x10
-    unsigned char unk0x11; // 0x11
+    unsigned char pad0x11; // 0x11
     unsigned short wVersion; // 0x12
     D2CubeInputItem pInputItem[7]; // 0x14
     D2CubeOutputItem pOutputItem[3]; // 0x4C

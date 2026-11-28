@@ -17,8 +17,8 @@ struct D2ListBoxLineStrc
     Unicode wszText4[0x400];
     Unicode wszText5[0x400];
     short nFlags;
-    int unk0x3002;
     int nData;
+    int nColor;
     int nFont;
 };
 #pragma pack(pop)

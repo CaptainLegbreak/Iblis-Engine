@@ -1,4 +1,5 @@
 #include "Storm.h"
+#include "StormApi.h"
 
 #define STORM_MIN(a, b) (((a) < (b)) ? (a) : (b))
 
@@ -50,8 +51,6 @@ struct D2TargaHeaderStrc
 
 #pragma pack(pop)
 
-void __stdcall SMemCopy(void* pDest, const void* pSource, unsigned int nSize); // 0x0041D2A0
-
 struct D2PaletteColorStrc { unsigned char red, green, blue, alpha; };
 
 void __stdcall SMemZero(void* destination, unsigned int size); // 0x0041D300
@@ -94,8 +93,6 @@ struct D2BitOutputStrc
     int nBlockLength;
     unsigned char pBlock[256];
 };
-
-const char* __stdcall SStrChr(const char* szString, char c); // 0x00413490
 
 typedef unsigned char BYTE;
 
@@ -184,8 +181,6 @@ static int __stdcall DecodeBmpFile(unsigned char* pPalette, void* hFile, int* pW
 
 static void __stdcall AddOutputChar(unsigned char** ppOutput, int nChar, D2BitOutputStrc* pState); // 0x006C6370
 
-int __stdcall SBmpDecodeImage(int nType, const unsigned char* pData, unsigned int nDataSize, unsigned char* pPalette, unsigned char* pPixels, unsigned int nPixelsSize, int* pWidth, int* pHeight, int* pBitDepth);
-
 static int __stdcall DecodePcxMem(int* pWidth, const unsigned char* pData, int nDataSize, unsigned char* pPalette, unsigned char* pPixels, unsigned int nPixelsSize, int* pHeight, int* pBitDepth);
 
 static int __fastcall DecodeTgaPixels(const D2TargaHeaderStrc* pHeader, const unsigned char* pSrc, int nSrcSize, unsigned char* pDst, int nDstSize); // 0x006C5210
@@ -216,11 +211,11 @@ extern "C" __declspec(dllimport) int __stdcall CloseHandle(void*);
 
 extern "C" int __cdecl _stricmp(const char*, const char*); // 0x006841E9
 
-extern const char gszTga_006FCC7C[]; // 0x006FCC7C
+extern const char gszTga[]; // 0x006FCC7C
 
-extern const char gszPcx_006FCC74[]; // 0x006FCC74
+extern const char gszPcx[]; // 0x006FCC74
 
-extern const char gszGif_006FCC6C[]; // 0x006FCC6C
+extern const char gszGif[]; // 0x006FCC6C
 
 struct D2TgaSourceColorStrc
 {
@@ -240,8 +235,6 @@ int __stdcall SFileCloseFile(void* pArg); // 0x004198D0
 
 int __stdcall SFileOpenFile(const char* szFileName, void** phFile); // 0x00419980
 
-
-// build: base-profile
 
 #pragma pack(push,1)
 
@@ -776,15 +769,6 @@ static int __stdcall EncodeTgaFile(void* hFile, const unsigned char* pPixels, co
     return 1;
 }
 
-int __stdcall sub_006C5730_EmitCaller(int nUnused, const D2TgaFieldsStrc* pHeader, unsigned int nSize, D2PaletteColorStrc* pPalette, unsigned char* pDst, int nDstSize, int* pWidth, int* pHeight, int* pDepth)
-{
-    if (pWidth)
-    {
-        *pWidth = 0;
-    }
-    return DecodeTgaMem(pHeader, nSize, pPalette, pDst, nDstSize, pWidth, pHeight, pDepth);
-}
-
 // 0x006C59C0
 static void __stdcall FlipImage(unsigned char* pDst, int nRows, const unsigned char* pSrc, int nDstSize, int nRowWidth, int nStride)
 {
@@ -868,11 +852,6 @@ static void __fastcall Output(D2BitOutputStrc* pState, unsigned char** ppOutput,
         else
             pState->nCodeMask = (1 << pState->nCodeWidth) - 1;
     }
-}
-
-int __stdcall sub_006C54D0_Emit(void* hFile, unsigned char* pBuffer, unsigned int* pWidth, D2PaletteColorStrc* pPalette, int nBufferSize, unsigned int* pHeight, unsigned int* pBitDepth)
-{
-    return DecodeTgaFile(hFile, pPalette, pBuffer, pWidth, nBufferSize, pHeight, pBitDepth) + 3;
 }
 
 // 0x006C5B10
@@ -1176,11 +1155,6 @@ static int __stdcall DecodeBmpFile(unsigned char* pPalette, void* hFile, int* pW
     return 1;
 }
 
-int __stdcall sub_Emit_006C5F70(void* hFile, unsigned char* pPalette, unsigned char* pBuffer, unsigned int nBufferSize, int* pWidth, int* pHeight, int* pBitDepth)
-{
-    return DecodeBmpFile(pPalette, hFile, pWidth, pBuffer, nBufferSize, pHeight, pBitDepth) + 1;
-}
-
 // 0x006C60F0
 static int __stdcall DecodeBmpMem(int* pWidth, int* pHeight, unsigned int* pBitCount, const unsigned char* pData, unsigned char* pPalette, unsigned char* pPixels, int nPixelsSize)
 {
@@ -1478,11 +1452,6 @@ static int __stdcall EncodeGif256File(HANDLE hFile, const RGBQuad* pPalette, con
     return 1;
 }
 
-int __stdcall sub_Emit_006C6620(HANDLE hFile, const RGBQuad* pPalette, const unsigned char* pPixels, int nWidth, int nHeight)
-{
-    return EncodeGif256File(hFile, pPalette, pPixels, nWidth, nHeight);
-}
-
 // 0x006C6790
 static int __stdcall DecodePcxFile(void* hFile, unsigned char* pPalette, unsigned char* pPixels, unsigned int nPixelsSize, int* pWidth, int* pHeight, int* pBitDepth)
 {
@@ -1625,11 +1594,6 @@ int __stdcall SBmpDecodeImage(int nType, const unsigned char* pData, unsigned in
     return 0;
 }
 
-int __stdcall sub_Emit_006C6790(void* hFile, unsigned char* pPalette, unsigned char* pPixels, unsigned int nSize, int* pWidth, int* pHeight, int* pBitDepth)
-{
-    return DecodePcxFile(hFile, pPalette, pPixels, nSize, pWidth, pHeight, pBitDepth) + 2;
-}
-
 // 0x006C6B70
 int __stdcall SBmpLoadImage(const char* filename,unsigned char* palette,unsigned char* pixels,unsigned int bufferSize,int* width,int* height,int* bits)
 {
@@ -1673,7 +1637,7 @@ int __stdcall SBmpSaveImageEx(char* szFile, unsigned char* pPalette, unsigned ch
     VALIDATEEND;
 
     const char* pExtension = FindFileExtension(szFile);
-    if (pExtension && !_stricmp(pExtension, gszTga_006FCC7C))
+    if (pExtension && !_stricmp(pExtension, gszTga))
     {
         if (nBits != 8 && nBits != 24 && nBits != 32)
         {
@@ -1698,21 +1662,21 @@ int __stdcall SBmpSaveImageEx(char* szFile, unsigned char* pPalette, unsigned ch
 
     if (pExtension)
     {
-        if (!_stricmp(pExtension, gszPcx_006FCC74))
+        if (!_stricmp(pExtension, gszPcx))
         {
             const int nResult = EncodePcx256File(nWidth, nHeight, hFile, (D2PaletteStrc*)pPalette, pPixels);
             CloseHandle(hFile);
             return nResult;
         }
 
-        if (!_stricmp(pExtension, gszGif_006FCC6C))
+        if (!_stricmp(pExtension, gszGif))
         {
             const int nResult = EncodeGif256File(hFile, (const RGBQuad*)pPalette, pPixels, nWidth, nHeight);
             CloseHandle(hFile);
             return nResult;
         }
 
-        if (!_stricmp(pExtension, gszTga_006FCC7C))
+        if (!_stricmp(pExtension, gszTga))
         {
             const int nResult = EncodeTgaFile(hFile, pPixels, (const D2TgaSourceColorStrc*)pPalette, nWidth, nHeight, nBits, nPitch);
             CloseHandle(hFile);
@@ -1792,10 +1756,6 @@ int __stdcall SBmpSaveImage(char* szFile, unsigned char* pPalette, unsigned char
 {
     return SBmpSaveImageEx(szFile, pPalette, pPixels, nWidth, nHeight, nBits, 0);
 }
-
-extern "C" const char gData_006FCC6C[8]; // 0x006FCC6C
-extern "C" const char gData_006FCC74[8]; // 0x006FCC74
-extern "C" const char gData_006FCC7C[8]; // 0x006FCC7C
 
 extern "C" const char gData_006FCC6C[8] = ".gif"; // 0x006FCC6C
 #pragma comment(linker, "/alternatename:?gszGif_006FCC6C@@3QBDB=_gData_006FCC6C")

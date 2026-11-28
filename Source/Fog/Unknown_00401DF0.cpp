@@ -114,9 +114,6 @@ void __cdecl sub_00401A60_UnlockSymbols()
     LeaveCriticalSection(&gtSymbolLock);
 }
 
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
 // 0x00401DF0
 static bool __stdcall sub_00401DF0_GetModuleFromAddr(unsigned long dwAddress, char* szModule, unsigned long* pdwBase)
 {
@@ -392,9 +389,6 @@ void __fastcall sub_00403100_PrintFrames(unsigned long dwThreadId, D2StackFrameS
     }
 }
 
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
 // 0x004020D0
 static bool __stdcall sub_004020D0_GetLineFromAddr(unsigned long dwAddress, char* szFile, unsigned long* pLineNumber)
 {
@@ -423,9 +417,6 @@ static bool __stdcall sub_004020D0_GetLineFromAddr(unsigned long dwAddress, char
 }
 
 
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
 // 0x004021D0
 bool __stdcall sub_004021D0_EnumerateModules(void* pfnCallback, void* pContext)
 {
@@ -437,27 +428,6 @@ bool __stdcall sub_004021D0_EnumerateModules(void* pfnCallback, void* pContext)
     return gpfnEnumerateLoadedModules64(ghProcess, pfnCallback, pContext) != 0;
 }
 
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
 unsigned __int64 __stdcall sub_00402460_LoadModule(void* hFile, const char* szImageName,
     const char* szModuleName, unsigned __int64 qwBaseOfDll, unsigned long dwSizeOfDll); // 0x00402460
 
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc

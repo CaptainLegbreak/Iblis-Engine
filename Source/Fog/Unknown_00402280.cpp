@@ -18,9 +18,6 @@ void __cdecl sub_00401A60_UnlockSymbols()
     LeaveCriticalSection(&gtSymbolLock);
 }
 
-// build: ltcg-noroot D2SymbolLockGuardStrc::D2SymbolLockGuardStrc
-// build: ltcg-noroot D2SymbolLockGuardStrc::~D2SymbolLockGuardStrc
-
 // 0x00402280
 int __fastcall sub_00402280_SetSearchPath(const char* szSearchPath)
 {

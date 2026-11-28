@@ -1,4 +1,7 @@
 #include "Fog.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "StormApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText_006CC837, sub_00408090(), line); exit(-1); }
 
@@ -14,11 +17,11 @@ struct D2BinFileStrc;
 
 extern "C" const char gszEmptyAssertText_006CC837; // 0x006CC837
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
-
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
+
+extern "C" void* __cdecl memmove(void* pDst, const void* pSrc, unsigned int nSize);
 
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
@@ -50,13 +53,9 @@ struct D2TxtLinkNodeStrc
 
 extern "C" int __cdecl strcmp(const char* szLeft, const char* szRight);
 
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nDestSize); // 0x004135D0
-
 void __fastcall sub_004113C0(char* szText, int nLength); // 0x004113C0
 
 void __fastcall FOG_FreePool(void* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
-
-int __stdcall FOG_GetLinkIndex(D2TxtLinkStrc* pLink, const char* szText, int bLogError); // 0x006BD3C0
 
 static void EXCEL_InsertLinkNode(D2TxtLinkNodeStrc** ppNode, D2TxtLinkNodeStrc* pNew); // 0x006BD490
 
@@ -67,14 +66,6 @@ struct D2BinFileStrc
     int nRecordCount;
     unsigned int nColumns;
 };
-
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
-
-int __stdcall SStrCmp(const char* szString1, const char* szString2, int nMaxChars); // 0x00413550
-
-void __stdcall SMemCopy(void* pDest, const void* pSource, unsigned int nSize); // 0x0041D2A0
-
-extern "C" const char* __cdecl sub_00408090();                                       // 0x00408090
 
 #pragma intrinsic(memset)
 
@@ -93,6 +84,8 @@ struct D2BinFieldStrc { const char* name; unsigned type; int length,offset; void
 static int __stdcall EXCEL_MapColumns(unsigned short* pOut, D2BinFileStrc* pList, D2BinFieldStrc* pEntries); // 0x006BCE20
 
 int __stdcall sub_006BD230_AddCode(void*,unsigned); // 0x006BD230
+
+void* __fastcall FOG_ReallocPool(void* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
 
 int __stdcall FOG_10216_AddRecordToLinkingTable(D2TxtLinkStrc* pLinker, const char* szCode); // 0x006BD500
 
@@ -484,6 +477,55 @@ int __stdcall FOG_GetStringFromLinkIndex(D2TxtLinkStrc* linker, int index, char*
     return 0;
 }
 
+// 0x006BD230
+int __stdcall sub_006BD230_AddCode(void* pLinker, unsigned nCode)
+{
+    D2TxtLinkStrc* pLink = (D2TxtLinkStrc*)pLinker;
+    // The code is read and advanced in the argument area itself, addressed from the handle argument.
+    unsigned int& nKey = *(unsigned int*)(&pLinker + 1);
+    D2_ASSERT(pLink, 0x3D1);
+    D2_ASSERT(!pLink->pFirstNode, 0x3D8);
+
+    if (pLink->unk_04 <= pLink->count)
+    {
+        const int nNewCapacity = pLink->unk_04 + 64;
+        pLink->entries = (D2TxtLinkEntryStrc*)FOG_ReallocPool(0, pLink->entries, nNewCapacity * sizeof(D2TxtLinkEntryStrc), ".\\Src\\Excel\\Excel.cpp", 0x3DF, 0);
+        memset(&pLink->entries[pLink->unk_04], 0, 64 * sizeof(D2TxtLinkEntryStrc));
+        pLink->unk_04 = nNewCapacity;
+    }
+
+    int nLow;
+    for (;;)
+    {
+        D2TxtLinkEntryStrc* pEntries = pLink->entries;
+        nLow = 0;
+        int nHigh = pLink->count;
+        while (nLow < nHigh)
+        {
+            int nMid = nLow + (nHigh - nLow) / 2;
+            unsigned int nMidCode = pEntries[nMid].nCode;
+            if (nKey > nMidCode)
+                nLow = nMid + 1;
+            else if (nKey < nMidCode)
+                nHigh = nMid;
+            else
+                goto found;
+        }
+        break;
+    found:
+        ++nKey;
+    }
+
+    if (nLow < pLink->count)
+        memmove(&pLink->entries[nLow + 1], &pLink->entries[nLow], (pLink->count - nLow) * sizeof(D2TxtLinkEntryStrc));
+
+    pLink->entries[nLow].nCode = nKey;
+    pLink->entries[nLow].index = pLink->count;
+    const int nIndex = pLink->entries[nLow].index;
+    ++pLink->count;
+    return nIndex;
+}
+
 // 0x006BD330
 D2TxtLinkNodeStrc* __fastcall EXCEL_FindLinkNode(D2TxtLinkNodeStrc* pNode, int nId)
 {
@@ -694,8 +736,6 @@ extern "C" void __stdcall FOG_FreeLinker(D2TxtLinkStrc* pLinker)
         FOG_FreePool(0, pLinker, ".\\Src\\Excel\\Excel.cpp", 0x360, 0);
     }
 }
-
-extern "C" D2TxtLinkNodeStrc* const gData_0074C3D8; // 0x0074C3D8
 
 extern "C" D2TxtLinkNodeStrc* const gData_0074C3D8 = (D2TxtLinkNodeStrc* const)"?\?\?"; // 0x0074C3D8
 #pragma comment(linker, "/alternatename:?gpszFallback@@3QAUD2TxtLinkNodeStrc@@A=_gData_0074C3D8")

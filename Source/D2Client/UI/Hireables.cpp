@@ -1,5 +1,6 @@
 #include "D2LanguageNames.h"
 #include "D2Client.h"
+#include "D2ClientFuncs.h"
 #include "D2Structs.h"
 #include "D2DataTbls.h"
 #include "D2Txt.h"
@@ -8,6 +9,11 @@
 #include "D2LevelTxt.h"
 #include "D2Unicode.h"
 #include "D2ClientUiRecords.h"
+#include "StormApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "StormApi.h"
+#include "D2CommonApi2.h"
 
 #define D2_FREE_PANEL_CEL(pCel) if (pCel) { ARCHIVE_FreeClientCellFile(pCel); pCel = 0; }
 
@@ -15,52 +21,34 @@ struct D2PetTypeTxt;
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-int __stdcall SRegLoadValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long* pValue); // 0x00414F10
 
-void* __fastcall GAME_LoadUiCelFile(const char* szPath); // 0x004520C0
 
-int __fastcall GAME_GetUIVarState(unsigned int nUIVar); // 0x004538D0
 
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
 
-D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
 
-int __fastcall CUNIT_IsDeadOrDying(D2UnitStrc* pUnit); // 0x00464820
 
 void __fastcall ARCHIVE_FreeClientCellFile(void* pCel); // 0x00478A00
 
-int __fastcall ROSTERPETS_FindPetIdByOwner(D2UnitStrc* pUnit, int nType, int bAny); // 0x00478F20
 
 int __fastcall ROSTERPETS_HasPets(D2UnitStrc* pUnit); // 0x00478F70
 
 int __fastcall ROSTER_HasPartyMate(D2UnitStrc* pUnit); // 0x0047A2C0
 
-void __fastcall WARDENCLIENT_DrawSkillInfo(D2UnitStrc* pUnit, D2SkillStrc* pSkill, int nX, int nY, int nArg); // 0x00496BE0
 
 int __stdcall D2GFX_GetResolutionMode(); // 0x004F5160
 
-D2SkillStrc* __stdcall UNITS_GetLeftSkill(D2UnitStrc* pUnit); // 0x00620190
 
-D2SkillStrc* __stdcall UNITS_GetRightSkill(D2UnitStrc* pUnit); // 0x006201D0
 
-void __stdcall SKILLS_SetLeftActiveSkill(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID); // 0x00643BC0
 
-void __stdcall SKILLS_SetRightActiveSkill(D2UnitStrc* pUnit, int nSkillId, int nOwnerGUID); // 0x00643C50
 
-int __stdcall SKILLS_GetSkillIdFromSkill(D2SkillStrc* pSkill, const char* szFile, int nLine); // 0x00643CE0
-
-int __stdcall SKILLS_GetSkillLevel(D2UnitStrc* pUnit, D2SkillStrc* pSkill, int bBonus); // 0x006442A0
-
-extern int gnScreenWidth; // 0x0071146C
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 
 static int gnPetIconPopupState;                                                                               // 0x007BEECC
 
-extern void* gpCel_007BEF18; // 0x007BEF18
+extern void* gpBorderFrameCel; // 0x007BEF18
 
 extern void* gpCtrlPnl7Cel; // 0x007BEF1C
 
@@ -72,38 +60,30 @@ extern unsigned char gnTextColorA; // 0x007BEFBB
 
 extern unsigned char gnTextColorB; // 0x007BEFE4
 
-D2UnitStrc* __stdcall INVENTORY_GetCursorItem(D2InventoryStrc* pInventory); // 0x0063C1E0
 
 
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
-int __fastcall ROSTERPETS_GetHirelingClassId(int nUnitId); // 0x00479120
 
 extern const unsigned int gdwBitMasks[]; // 0x006CE268
 
 void** gpHirelingRecords; // 0x007BEEAC
 
-int __stdcall sub_00420290_BreakHandlerChain(SMSGHANDLER_PARAMS* pMsg); // 0x00420290
 
 void __fastcall VIEW_SetPetEntryValue(D2UnitStrc* pOwner, D2UnitStrc* pRecord, int nValue); // 0x00467410
 
-int __cdecl GAME_IsExpansion(); // 0x0044DCC0
 
 int __stdcall ITEMS_CheckItemFlag(D2UnitStrc*,unsigned int,int,const char*); // 0x006280A0
 
-int __stdcall ITEMSIsA(D2UnitStrc*,int); // 0x00629BB0
 
-unsigned int __stdcall ITEMS_CheckWeaponIfTwoHanded(D2UnitStrc*); // 0x006289C0
 
-int __stdcall ITEMS_CheckRequirements(D2UnitStrc*,D2UnitStrc*,int,int*,int*,int*); // 0x0062EAF0
 
-void __fastcall UNITSND_PlayEventSound(int,unsigned char,unsigned short); // 0x004CBDE0
 
-int gnGlobal_007BEEDC; // 0x007BEEDC
+extern int gnGlobal_007BEEDC; // 0x007BEEDC
 
 static int gbPopupPending; // 0x007BEEE0
 
-int gnGlobal_007BEEE8; // 0x007BEEE8
+extern int gnGlobal_007BEEE8; // 0x007BEEE8
 
 void* gpHelpBorderCel; // 0x007BEEEC
 
@@ -143,51 +123,39 @@ struct D2StoredUnitRecordStrc;
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount();                                    // 0x006CC260
 
-int __stdcall SRegSaveValue(const char* szKeyName, const char* szValueName, unsigned int nFlags, unsigned long dwValue); // 0x004150E0
 
-int __cdecl sub_0045AE90();                                                                                 // 0x0045AE90
 
 short __fastcall CUNIT_GetPlayerPartyId(D2UnitStrc* pUnit); // 0x00465400
 
 const Unicode* __fastcall CUNIT_GetUnitName(D2UnitStrc* pUnit);                                     // 0x00464A60
 
-int __fastcall ROSTERPETS_CountPets(D2UnitStrc* pOwner, int nPetType);                                 // 0x00478EE0
 
-int __fastcall ROSTER_GetPetLife(int nUnitId);                                                       // 0x00479080
 
-D2StoredUnitRecordStrc* __fastcall ROSTER_GetNextStoredUnit(D2StoredUnitRecordStrc* pEntry);              // 0x004795A0
 
 extern "C" const char* __fastcall ROSTER_GetEntryName(D2StoredUnitRecordStrc* pEntry); // 0x004795C0
 
 int __fastcall ROSTER_GetClassId(D2StoredUnitRecordStrc* pEntry);                                                // 0x00479BA0
 
-unsigned short __fastcall ROSTER_GetEntryIndex(D2StoredUnitRecordStrc* pEntry);                      // 0x00479BC0
 
-int __fastcall ROSTER_GetRecordUnitId(D2StoredUnitRecordStrc* pRecord);                              // 0x0047A0C0
 
-int __fastcall ROSTER_GetPartyLife(int nUnitId);                                                     // 0x0047A150
 
 D2CelFileStrc* __fastcall HIREABLES_GetPetIcon(D2UnitStrc* pOwner, int nPetType, int* pUnitId, int* pSingle); // 0x00493240
 
-void __stdcall INV_DrawIconNumber(int nValue, int nX);                                                // 0x00493100
 
 const Unicode* __fastcall CMDTBL_GetKeyName(int nA, int nB);                                         // 0x0046A530
 
-int __stdcall sub_004F6480(D2CelContextStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
+int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
 
-void __stdcall D2GFX_DrawBox(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned int dwColor, int eDrawMode); // 0x004F6300
+void __stdcall D2GFX_DrawBox(int nXStart, int nYStart, int nXEnd, int nYEnd, unsigned char nColor, int eDrawMode); // 0x004F6300
 
 int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText);                                             // 0x00501820
 
 void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered);          // 0x00502320
 
-int __fastcall D2Win_10127_SetFont(int nArg);                                                                      // 0x00502EF0
 
 void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5);    // 0x00502280
 
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex);                              // 0x00524A30
 
-Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource);                                 // 0x00526700
 
@@ -195,7 +163,6 @@ Unicode* __fastcall sub_00526790(Unicode* pDest, const Unicode* pSource, int nCo
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc);                                     // 0x005267E0
 
-void __cdecl sub_005269D0(int nBufferSize, Unicode* pBuffer, const Unicode* pFormat, ...);               // 0x005269D0
 
 extern D2CelFileStrc* gapHirelingIcons[7];                                                         // 0x007BEEB0
 
@@ -229,7 +196,6 @@ static inline int InBox(int nX, int nY, int nLeft, int nRight, int nTop, int nBo
     return nX >= nLeft && nX <= nRight && nY >= nTop && nY <= nBottom;
 }
 
-int __cdecl HIREABLES_GetHelpMenuSetting(); // 0x004942D0
 int __stdcall HIREABLES_CanEquipHirelingItem(int playSound); // 0x004934D0
 void __stdcall sub_K04_EmitUse(int nValue);
 
@@ -273,7 +239,6 @@ void __cdecl HIREABLES_LoadHirelingIcons()
     {
         gapHirelingIcons[nIcon] = (D2CelFileStrc*)GAME_LoadUiCelFile(aszClassIcons[i]);
     }
-// build: symbol ?FOG_IsExpansion@* 0x00408F20
     if (FOG_IsExpansion())
     {
         for (int i = 0; i < 7; ++i, ++nIcon)
@@ -338,7 +303,6 @@ void __cdecl VIEW_ResetLifeColors()
     gbLifeColorsInit = 0;
 }
 
-// build: symbol ??_H@YGXPAXIHP6EPAX0@Z@Z 0x00403040
 // 0x00492FA0
 static void __stdcall HIREABLES_DrawFittedText(int nX, int nY, int nColor, Unicode* pText)
 {
@@ -383,7 +347,7 @@ static void __stdcall HIREABLES_DrawRosterName(const char* szName, int nX, int n
 struct D2UnitStrc;
 
 
-int __fastcall sub_00526800(const Unicode* pString); // 0x00526800
+int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 
 // 0x00493100
@@ -407,7 +371,7 @@ void __stdcall INV_DrawIconNumber(int nValue, int nX)
     sub_00526320_ToUnicode(wszConverted, szNumber, 32);
     Unicode::strncpy(wszText, wszConverted, 32);
     wszText[31].wChar = 0;
-    Unicode* pEnd = &wszText[sub_00526800(wszText)];
+    Unicode* pEnd = &wszText[UNICODE_StrLen(wszText)];
     while (D2Win_10121_GetTextWidth(wszText) > 0x2E)
     {
         --pEnd;
@@ -447,17 +411,12 @@ static inline D2PetTypeTxt* sub_00493240_GetPetTypeTxtRecord(int nPetType)
     return 0;
 }
 
-int __cdecl GAME_GetConnectionType(); // 0x0044DB30
 
-unsigned short __fastcall CUNIT_GetHotkeyBinding(int nA, int nB); // 0x00469AA0
 
-int __cdecl sub_00468730(); // 0x00468730
 
-int __cdecl sub_00468740(); // 0x00468740
 
-void __fastcall MSG_SendWord(unsigned char nCmd, unsigned short nArg); // 0x004785B0
 
-int gnGlobal_007BEED4; // 0x007BEED4
+extern int gnGlobal_007BEED4; // 0x007BEED4
 
 // 0x004936E0
 void __stdcall WARDENCLIENT_HandlePetIconClick(SMSGHANDLER_PARAMS* pMsg)
@@ -629,7 +588,6 @@ void __cdecl TEXT_LoadPopupHireling()
 // 0x00494300
 static inline void HIREABLES_SetHelpMenuSetting(unsigned long dwValue)
 {
-// build: symbol ?gdwHelpMenu@* 0x00722310
     gdwHelpMenu = dwValue;
     SRegSaveValue("Diablo II", "Help Menu", 1, dwValue);
 }
@@ -682,26 +640,24 @@ void __stdcall D2GFX_DrawLine(int nXStart, int nYStart, int nXEnd, int nYEnd, un
 
 static int gbHelpCloseButtonDown; // 0x007BEEFC
 
-extern void* gpLevelCel; // 0x007C02DC
 
-extern void* gpLevelSocketCel; // 0x007C02E0
 
-int gnGlobal_007BEF04; // 0x007BEF04
+extern int gnGlobal_007BEF04; // 0x007BEF04
 
-int gbHelpButtonVisible; // 0x007BEF08
+extern int gbHelpButtonVisible; // 0x007BEF08
 
-void __cdecl sub_00499E30();
+void __cdecl PANEL_SetBlackColour();
 
 void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nArg6); // 0x0046EFD0
 
-unsigned char gnHelpShadeColor; // 0x007BEEF8
+extern unsigned char gnHelpShadeColor; // 0x007BEEF8
 
 // 0x004943B0
 void __cdecl VIEW_DrawHelpFrameLowRes()
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpHelpBorderCel;
+    tContext.pCelFile = gpHelpBorderCel;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
     sub_004F6480(&tContext, 0, 0x100, -1, 5, 0);
@@ -724,9 +680,9 @@ void __cdecl VIEW_DrawHelpFrameLowRes()
 // 0x004944F0
 void __cdecl VIEW_DrawHelpFrameHighRes()
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpHelpBorderCel;
+    tContext.pCelFile = gpHelpBorderCel;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
     sub_004F6480(&tContext, 0, 0x100, -1, 5, 0);
@@ -747,18 +703,17 @@ void __cdecl VIEW_DrawHelpFrameHighRes()
 // 0x004945F0
 void __cdecl VIEW_DrawHelpShade()
 {
-    sub_00499E30();
+    PANEL_SetBlackColour();
     AUTOMAP_DrawFramedBox(0, 0, gnScreenWidth, gnScreenHeight - 0x31, gnHelpShadeColor, 1);
 }
 
-void __cdecl GAME_ResetMouseButtons();                                                                                // 0x0044DA70
 
 // 0x00494620
 void __cdecl ROSTERPETS_DrawHelpColumn()
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpHelpYellowBulletCel;
+    tContext.pCelFile = gpHelpYellowBulletCel;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
     int nY = 0x49;
@@ -772,9 +727,9 @@ void __cdecl ROSTERPETS_DrawHelpColumn()
 // 0x00494680
 void __cdecl VIEW_DrawHelpLinesLowRes()
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpHelpWhiteBulletCel;
+    tContext.pCelFile = gpHelpWhiteBulletCel;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
     sub_004F6480(&tContext, 0x33, 0x19E, -1, 5, 0);
@@ -809,9 +764,9 @@ void __cdecl VIEW_DrawHelpLinesLowRes()
 // 0x00494A00
 void __cdecl VIEW_DrawHelpLinesHighRes()
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = gpHelpWhiteBulletCel;
+    tContext.pCelFile = gpHelpWhiteBulletCel;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
     sub_004F6480(&tContext, 0x37, 0x217, -1, 5, 0);
@@ -852,9 +807,9 @@ void __cdecl VIEW_DrawHelpLinesHighRes()
 // 0x00494E40
 void __cdecl VIEW_DrawHelpPanelCel()
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
-    tContext.pCellFile = sub_00454600();
+    tContext.pCelFile = sub_00454600();
     tContext.nFrame = (gbHelpCloseButtonDown != 0) + 10;
     tContext.nDirection = 0;
     if (D2GFX_GetResolutionMode() == 2)
@@ -867,10 +822,9 @@ void __cdecl VIEW_DrawHelpPanelCel()
     }
 }
 
-void __cdecl PANEL_SetBlackColour();                                                                                // 0x00499E30
 
 // 0x00494EB0
-void __cdecl sub_00494EB0()
+void __cdecl sub_00494EB0_DrawHelpShade()
 {
     PANEL_SetBlackColour();
     AUTOMAP_DrawFramedBox(0, 0, gnScreenWidth, gnScreenHeight - 0x31, gnHelpShadeColor, 1);
@@ -934,7 +888,7 @@ void __stdcall ROSTERPETS_HandleHelpButtonDown(SMSGHANDLER_PARAMS* pMsg)
 
 
 // 0x00494FB0
-void __stdcall sub_00494FB0(int nUnused1)
+void __stdcall sub_00494FB0_Nop(int nUnused1)
 {
 }
 
@@ -973,13 +927,13 @@ void __cdecl HIREABLES_DrawKeyHelp()
     if (CUNIT_GetHotkeyBinding(6, 1) != 0xFFFF)
     {
         memset(wszKey, 0, sizeof(wszKey));
-        sub_005269D0(30, wszKey, D2LANG_GetStringFromTblIndex(0x1052), CMDTBL_GetKeyName(6, 1));
+        sub_005269D0_FormatText(30, wszKey, D2LANG_GetStringFromTblIndex(0x1052), CMDTBL_GetKeyName(6, 1));
         sub_00526700(wszText, wszKey);
     }
     if (CUNIT_GetHotkeyBinding(6, 0) != 0xFFFF)
     {
         memset(wszKey, 0, sizeof(wszKey));
-        sub_005269D0(30, wszKey, D2LANG_GetStringFromTblIndex(0x1052), CMDTBL_GetKeyName(6, 0));
+        sub_005269D0_FormatText(30, wszKey, D2LANG_GetStringFromTblIndex(0x1052), CMDTBL_GetKeyName(6, 0));
         sub_00526700(wszText, wszKey);
     }
     const int nWidth = D2Win_10121_GetTextWidth(wszText);
@@ -998,14 +952,14 @@ void __cdecl VIEW_DrawHelpButtons()
     gbHelpButtonVisible = 0;
     if (!HIREABLES_GetHelpMenuSetting())
     {
-        D2CelContextStrc tContext;
+        D2GfxDataStrc tContext;
         memset(&tContext, 0, sizeof(tContext));
         HIREABLES_DrawKeyHelp();
-        tContext.pCellFile = gpLevelSocketCel;
+        tContext.pCelFile = gpLevelSocketCel;
         tContext.nDirection = 0;
         tContext.nFrame = 0;
         sub_004F6480(&tContext, gnScreenWidth - 0x4B, gnScreenHeight - 0xA0, -1, 5, 0);
-        tContext.pCellFile = gpLevelCel;
+        tContext.pCelFile = gpLevelCel;
         tContext.nFrame = gnGlobal_007BEF04 != 0;
         sub_004F6480(&tContext, gnScreenWidth - 0x48, gnScreenHeight - 0xA4, -1, 5, 0);
     }
@@ -1075,9 +1029,8 @@ extern void* gpCellFile_007BEF2C; // 0x007BEF2C
 
 extern void* gpCellFile_007BEF20; // 0x007BEF20
 
-int gdwGlobal_007BEEFC; // 0x007BEEFC
+extern int gdwGlobal_007BEEFC; // 0x007BEEFC
 
-int __cdecl STRTABLE_GetLanguage();                                                                         // 0x00525150
 
 const Unicode* __fastcall CMDTBL_GetKeyText(int nKey, int nArg2);                                     // 0x00469DE0
 
@@ -1146,28 +1099,28 @@ void __cdecl sub_00495410_DrawHelpText()
     {
         wszLine1[i].wChar = 0;
     }
-    sub_005269D0(sizeof(wszLine1Buf) / sizeof(wszLine1[0]), wszLine1, D2LANG_GetStringFromTblIndex(0x1067), CMDTBL_GetKeyText(0x22, 1));
+    sub_005269D0_FormatText(sizeof(wszLine1Buf) / sizeof(wszLine1[0]), wszLine1, D2LANG_GetStringFromTblIndex(0x1067), CMDTBL_GetKeyText(0x22, 1));
     D2Win_10117_DrawText(wszLine1, 0x75, 0x4E, 0, 0);
 
     for (int i = 0; i < 100; ++i)
     {
         wszLine2[i].wChar = 0;
     }
-    sub_005269D0(sizeof(wszLine2Buf) / sizeof(wszLine2[0]), wszLine2, D2LANG_GetStringFromTblIndex(0x1068), CMDTBL_GetKeyText(0x25, 1));
+    sub_005269D0_FormatText(sizeof(wszLine2Buf) / sizeof(wszLine2[0]), wszLine2, D2LANG_GetStringFromTblIndex(0x1068), CMDTBL_GetKeyText(0x25, 1));
     D2Win_10117_DrawText(wszLine2, 0x75, 0x62, 0, 0);
 
     for (int i = 0; i < 100; ++i)
     {
         wszLine3[i].wChar = 0;
     }
-    sub_005269D0(sizeof(wszLine3Buf) / sizeof(wszLine3[0]), wszLine3, D2LANG_GetStringFromTblIndex(0x1069), CMDTBL_GetKeyText(0x24, 1));
+    sub_005269D0_FormatText(sizeof(wszLine3Buf) / sizeof(wszLine3[0]), wszLine3, D2LANG_GetStringFromTblIndex(0x1069), CMDTBL_GetKeyText(0x24, 1));
     D2Win_10117_DrawText(wszLine3, 0x75, 0x76, 0, 0);
 
     for (int i = 0; i < 100; ++i)
     {
         wszLine4[i].wChar = 0;
     }
-    sub_005269D0(sizeof(wszLine4Buf) / sizeof(wszLine4[0]), wszLine4, D2LANG_GetStringFromTblIndex(0x106A), CMDTBL_GetKeyText(0x7, 1));
+    sub_005269D0_FormatText(sizeof(wszLine4Buf) / sizeof(wszLine4[0]), wszLine4, D2LANG_GetStringFromTblIndex(0x106A), CMDTBL_GetKeyText(0x7, 1));
     D2Win_10117_DrawText(wszLine4, 0x75, 0x8A, 0, 0);
 
     D2Win_10117_DrawText(D2LANG_GetStringFromTblIndex(0x106B), 0x75, 0x9E, 0, 0);
@@ -1180,7 +1133,7 @@ void __cdecl sub_00495410_DrawHelpText()
     {
         wszLine5[i].wChar = 0;
     }
-    sub_005269D0(sizeof(wszLine5Buf) / sizeof(wszLine5[0]), wszLine5, D2LANG_GetStringFromTblIndex(0x106E), CMDTBL_GetKeyText(0x6, 1));
+    sub_005269D0_FormatText(sizeof(wszLine5Buf) / sizeof(wszLine5[0]), wszLine5, D2LANG_GetStringFromTblIndex(0x106E), CMDTBL_GetKeyText(0x6, 1));
     D2Win_10117_DrawText(wszLine5, 0x75, 0xDA, 0, 0);
 
     D2Win_10117_DrawText(D2LANG_GetStringFromTblIndex(0x106F), GetCenteredX_Inl(0x106F, 0x3B), 0x1E1, 0, 0);
@@ -1250,28 +1203,28 @@ void __cdecl sub_00495DC0_DrawHelpText()
     {
         wszLine1[i].wChar = 0;
     }
-    sub_005269D0(sizeof(wszLine1Buf) / sizeof(wszLine1[0]), wszLine1, D2LANG_GetStringFromTblIndex(0x1067), CMDTBL_GetKeyText(0x22, 1));
+    sub_005269D0_FormatText(sizeof(wszLine1Buf) / sizeof(wszLine1[0]), wszLine1, D2LANG_GetStringFromTblIndex(0x1067), CMDTBL_GetKeyText(0x22, 1));
     D2Win_10117_DrawText(wszLine1, 0x75, 0x4E, 0, 0);
 
     for (int i = 0; i < 100; ++i)
     {
         wszLine2[i].wChar = 0;
     }
-    sub_005269D0(sizeof(wszLine2Buf) / sizeof(wszLine2[0]), wszLine2, D2LANG_GetStringFromTblIndex(0x1068), CMDTBL_GetKeyText(0x25, 1));
+    sub_005269D0_FormatText(sizeof(wszLine2Buf) / sizeof(wszLine2[0]), wszLine2, D2LANG_GetStringFromTblIndex(0x1068), CMDTBL_GetKeyText(0x25, 1));
     D2Win_10117_DrawText(wszLine2, 0x75, 0x62, 0, 0);
 
     for (int i = 0; i < 100; ++i)
     {
         wszLine3[i].wChar = 0;
     }
-    sub_005269D0(sizeof(wszLine3Buf) / sizeof(wszLine3[0]), wszLine3, D2LANG_GetStringFromTblIndex(0x1069), CMDTBL_GetKeyText(0x24, 1));
+    sub_005269D0_FormatText(sizeof(wszLine3Buf) / sizeof(wszLine3[0]), wszLine3, D2LANG_GetStringFromTblIndex(0x1069), CMDTBL_GetKeyText(0x24, 1));
     D2Win_10117_DrawText(wszLine3, 0x75, 0x76, 0, 0);
 
     for (int i = 0; i < 100; ++i)
     {
         wszLine4[i].wChar = 0;
     }
-    sub_005269D0(sizeof(wszLine4Buf) / sizeof(wszLine4[0]), wszLine4, D2LANG_GetStringFromTblIndex(0x106A), CMDTBL_GetKeyText(0x7, 1));
+    sub_005269D0_FormatText(sizeof(wszLine4Buf) / sizeof(wszLine4[0]), wszLine4, D2LANG_GetStringFromTblIndex(0x106A), CMDTBL_GetKeyText(0x7, 1));
     D2Win_10117_DrawText(wszLine4, 0x75, 0x8A, 0, 0);
 
     D2Win_10117_DrawText(D2LANG_GetStringFromTblIndex(0x106B), 0x75, 0x9E, 0, 0);
@@ -1284,7 +1237,7 @@ void __cdecl sub_00495DC0_DrawHelpText()
     {
         wszLine5[i].wChar = 0;
     }
-    sub_005269D0(sizeof(wszLine5Buf) / sizeof(wszLine5[0]), wszLine5, D2LANG_GetStringFromTblIndex(0x106E), CMDTBL_GetKeyText(0x6, 1));
+    sub_005269D0_FormatText(sizeof(wszLine5Buf) / sizeof(wszLine5[0]), wszLine5, D2LANG_GetStringFromTblIndex(0x106E), CMDTBL_GetKeyText(0x6, 1));
     D2Win_10117_DrawText(wszLine5, 0x75, 0xDA, 0, 0);
 
     D2Win_10117_DrawText(D2LANG_GetStringFromTblIndex(0x106F), GetCenteredXInline(0x106F, 0x37), 0x168, 0, 0);
@@ -1428,24 +1381,24 @@ void __cdecl INV_LoadPanelCels()
         {
             sprintf(szPath, "%s\\UI\\InvChar", szDataLocal_006D41A8);
         }
-        gpCellFile_007BEF64 = ARCHIVE_LoadClientCellFile(szPath, 0);
+        gpInvCharCel = ARCHIVE_LoadClientCellFile(szPath, 0);
     }
     else
     {
-        gpCellFile_007BEF64 = GAME_LoadUiCelFile(bExpansion ? "Panel\\InvChar6" : "Panel\\InvChar");
+        gpInvCharCel = GAME_LoadUiCelFile(bExpansion ? "Panel\\InvChar6" : "Panel\\InvChar");
     }
     gpCellFile_007BEF78 = GAME_LoadUiCelFile("Panel\\Arrow");
-    gpCellFile_007BEF24 = GAME_LoadUiCelFile("Panel\\Invwarn");
-    gpCellFile_007BEF60 = GAME_LoadUiCelFile("Panel\\DuroIcon");
-    gpCellFile_007BEF14 = GAME_LoadUiCelFile("Panel\\GemSocket");
+    gpInvWarnCel = GAME_LoadUiCelFile("Panel\\Invwarn");
+    gpDuroIconCel = GAME_LoadUiCelFile("Panel\\DuroIcon");
+    gpGemSocketCel = GAME_LoadUiCelFile("Panel\\GemSocket");
     gpCellFile_007BEF10 = GAME_LoadUiCelFile("Panel\\ctrlpnl_popbelt");
-    gpCellFile_007BEF68 = GAME_LoadUiCelFile("Panel\\Hlthmana");
-    gpCellFile_007BEF80 = GAME_LoadUiCelFile("Panel\\overlap");
-    gpStateButtonCel_007BEF70 = GAME_LoadUiCelFile("Panel\\menubutton");
+    gpHlthManaCel = GAME_LoadUiCelFile("Panel\\Hlthmana");
+    gpOverlapCel = GAME_LoadUiCelFile("Panel\\overlap");
+    gpStateButtonCel = GAME_LoadUiCelFile("Panel\\menubutton");
     gpCellFile_007BEF2C = GAME_LoadUiCelFile("Panel\\menupanel");
     gpCellFile_007BEF20 = GAME_LoadUiCelFile("Panel\\skillpoints");
-    gpGlobal_007BEF0C = GAME_LoadUiCelFile("Panel\\runbutton");
-    gpCellFile_007BEF28 = GAME_LoadUiCelFile("Panel\\hostilepic");
+    gpRunButtonCel = GAME_LoadUiCelFile("Panel\\runbutton");
+    gpHostilePicCel = GAME_LoadUiCelFile("Panel\\hostilepic");
     memset(gabGlobal_007BEF30, 0, sizeof(gabGlobal_007BEF30));
     SRegLoadValue("Diablo II", "Show HP Text", 0, &gdwShowHpText_007BEFDC);
     SRegLoadValue("Diablo II", "Show MP Text", 0, &gdwShowMpText_007BEFE0);
@@ -1467,7 +1420,7 @@ void __cdecl HIREABLES_FreePanelCels()
     D2_FREE_PANEL_CEL(gpGemSocketCel);
     D2_FREE_PANEL_CEL(gpPopBeltCel);
     D2_FREE_PANEL_CEL(gp800CtrlPnl7Cel);
-    D2_FREE_PANEL_CEL(gpCel_007BEF18);
+    D2_FREE_PANEL_CEL(gpBorderFrameCel);
     D2_FREE_PANEL_CEL(gpCtrlPnl7Cel);
     D2_FREE_PANEL_CEL(gpHlthManaCel);
     D2_FREE_PANEL_CEL(gpOverlapCel);
@@ -1481,30 +1434,21 @@ void __cdecl HIREABLES_FreePanelCels()
 
 struct D2SkillsTxt;
 
-int __cdecl ROSTER_IsAnyoneHostile(); // 0x0047A560
 
-int __cdecl CUNIT_IsTrading(); // 0x004B8A10
 
 int __fastcall SPELLSEL_GetSkillIconCel(D2SkillsTxt* pSkillsTxt); // 0x004A8C80
 
-int __fastcall SPELLSEL_GetSkillState(D2UnitStrc* pUnit, D2SkillStrc* pSkill); // 0x004A8D30
 
 void __fastcall SPELLSEL_DrawSkillInfoBase(int nValue, D2SkillsTxt* pSkillsTxt, int nOwnerGUID, int nCharges, int nState, int nX, int nY, int nArg); // 0x004A9690
 
-void __fastcall SPELLSEL_UpdateSkillButtonHover(short* pId, int nState, int nA, int nB, int nX, int nY); // 0x004A8D50
 
-void __fastcall SPELLSEL_DrawSkillQuantity(short* pId, int nState, int nQuantity, int nX, int nY); // 0x004AA1F0
 
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
 
-int __stdcall DUNGEON_IsRoomInTown(D2ActiveRoomStrc* pRoom); // 0x0061AB00
-
-D2SkillsTxt* __fastcall SKILLS_GetSkillsTxtRecordFromSkill(D2SkillStrc* pSkill); // 0x00644140
 
 // 0x00496B10
 void __cdecl WARDENCLIENT_DrawHostileIcon()
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
     int bPanel = 0;
     int nYOffset = 0;
@@ -1524,7 +1468,7 @@ void __cdecl WARDENCLIENT_DrawHostileIcon()
     {
         return;
     }
-    tContext.pCellFile = gpCellFile_007BEF28;
+    tContext.pCelFile = gpHostilePicCel;
     tContext.nDirection = 0;
     tContext.nFrame = 0;
     if (GAME_GetUIVarState(0x0A))
@@ -1587,17 +1531,17 @@ void __fastcall WARDENCLIENT_DrawSkillInfo(D2UnitStrc* pUnit, D2SkillStrc* pSkil
 
 
 
-static void __stdcall sub_00493A00_DrawLifeBar(int nPetType, int nX, int nUnitId)
+// 0x00493A00
+static void __stdcall sub_00493A00_DrawLifeBar(int nPetType, int nUnitId, int nX)
 {
     int nLife = nPetType ? ROSTER_GetPetLife(nUnitId) : ROSTER_GetPartyLife(nUnitId);
     if (!nLife)
         return;
 
-    nLife = nLife <= 0 ? 0 : nLife;
     const int nXEnd = nX + 0x2E;
-    if (nLife >= 100)
-        nLife = 100;
-    const int nXFill = nX + nLife * 0x2E / 100;
+    nLife = nLife <= 0 ? 0 : nLife;
+    const int nPct = nLife < 100 ? nLife : 100;
+    const int nXFill = nX + nPct * 0x2E / 100;
     if (!gbLifeColorsInit)
     {
         gbLifeColorsInit = 1;
@@ -1606,9 +1550,9 @@ static void __stdcall sub_00493A00_DrawLifeBar(int nPetType, int nX, int nUnitId
         gnLifeColorLow = D2Win_10034_MixRGB(0xFF, 0, 0);
     }
     unsigned char nColor = gnLifeColorHigh;
-    if (nLife < 50)
+    if (nPct < 50)
         nColor = gnLifeColorMid;
-    if (nLife < 25)
+    if (nPct < 25)
         nColor = gnLifeColorLow;
     D2GFX_DrawBox(nX, 0xE, nXFill, 0x13, nColor, 5);
     D2GFX_DrawBox(nXFill, 0xE, nXEnd, 0x13, 0, 5);
@@ -1799,7 +1743,6 @@ static void __stdcall HIREABLES_DrawUnitName(D2UnitStrc* pUnit, int nX, int nY)
 // 0x004942D0
 int __cdecl HIREABLES_GetHelpMenuSetting()
 {
-// build: symbol ?gdwHelpMenu@* 0x00722310
     if (gdwHelpMenu == 0xFFFFFFFF)
     {
         gdwHelpMenu = 0;
@@ -1808,95 +1751,98 @@ int __cdecl HIREABLES_GetHelpMenuSetting()
     return gdwHelpMenu;
 }
 
+// 0x00493B50
 static int __stdcall sub_00493B50_DrawRosterIcons(int* pnY, int* pbAlternate, D2UnitStrc* pPlayer, int* pnX)
 {
     int bDrawn = 0;
     const unsigned short nIndex = CUNIT_GetPlayerPartyId(pPlayer);
-    const int nPlayerId = pPlayer ? pPlayer->dwUnitId : -1;
-    if (nIndex == 0xFFFF || gnPetIconPopupState)
-        return 0;
+    int nPlayerId;
+    int nUnitId;
+    if (!pPlayer)
+        nPlayerId = -1;
+    else
+        nPlayerId = pPlayer->dwUnitId;
 
-    D2StoredUnitRecordStrc* pEntry = ROSTER_GetNextStoredUnit(0);
-    if (!pEntry)
-        return 0;
-
-    do
+    if (nIndex != 0xFFFF && !gnPetIconPopupState)
     {
-        if (ROSTER_GetEntryIndex(pEntry) != nIndex)
-            continue;
-
-        const int nUnitId = ROSTER_GetRecordUnitId(pEntry);
-        if (nUnitId == nPlayerId)
-            continue;
-
-        D2CelFileStrc* pCelFile;
-        switch (ROSTER_GetClassId(pEntry))
+        for (D2StoredUnitRecordStrc* pEntry = ROSTER_GetNextStoredUnit(0); pEntry; pEntry = ROSTER_GetNextStoredUnit(pEntry))
         {
-        case 0:
-            pCelFile = gapHirelingIcons[0];
-            break;
-        case 1:
-            pCelFile = gapHirelingIcons[1];
-            break;
-        case 2:
-            pCelFile = gapHirelingIcons[2];
-            break;
-        case 3:
-            pCelFile = gapHirelingIcons[3];
-            break;
-        case 4:
-            pCelFile = gapHirelingIcons[4];
-            break;
-        case 5:
-            pCelFile = gapHirelingIcons[5];
-            break;
-        case 6:
-            pCelFile = gapHirelingIcons[6];
-            break;
-        default:
-            continue;
+            if (nIndex != ROSTER_GetEntryIndex(pEntry))
+                continue;
+
+            nUnitId = ROSTER_GetRecordUnitId(pEntry);
+            if (nUnitId == nPlayerId)
+                continue;
+
+            D2CelFileStrc* pCelFile;
+            switch (ROSTER_GetClassId(pEntry))
+            {
+            case 0:
+                pCelFile = gapHirelingIcons[0];
+                break;
+            case 1:
+                pCelFile = gapHirelingIcons[1];
+                break;
+            case 4:
+                pCelFile = gapHirelingIcons[2];
+                break;
+            case 3:
+                pCelFile = gapHirelingIcons[3];
+                break;
+            case 2:
+                pCelFile = gapHirelingIcons[4];
+                break;
+            case 6:
+                pCelFile = gapHirelingIcons[5];
+                break;
+            case 5:
+                pCelFile = gapHirelingIcons[6];
+                break;
+            default:
+                continue;
+            }
+
+            if (!pCelFile)
+                continue;
+
+            sub_00493A00_DrawLifeBar(0, nUnitId, *pnX);
+            HIREABLES_DrawRosterName(ROSTER_GetEntryName(pEntry), *pnX, *pnY);
+            if (*pbAlternate)
+            {
+                *pnY -= *pbAlternate;
+                *pbAlternate = 0;
+            }
+            else
+            {
+                *pbAlternate = 10;
+                *pnY += 10;
+            }
+            D2GfxDataStrc tContext;
+            memset(&tContext, 0, sizeof(tContext));
+            tContext.pCelFile = pCelFile;
+            sub_004F6480(&tContext, *pnX, 0x3C, -1, 1, 0);
+            *pnX += 0x38;
+            bDrawn = 1;
         }
 
-        if (!pCelFile)
-            continue;
-
-        sub_00493A00_DrawLifeBar(0, *pnX, nUnitId);
-        HIREABLES_DrawRosterName(ROSTER_GetEntryName(pEntry), *pnX, *pnY);
-        if (*pbAlternate)
-        {
-            *pnY -= *pbAlternate;
-            *pbAlternate = 0;
-        }
-        else
-        {
-            *pbAlternate = 10;
-            *pnY += 10;
-        }
-        D2CelContextStrc tContext;
-        memset(&tContext, 0, sizeof(tContext));
-        tContext.pCellFile = pCelFile;
-        sub_004F6480(&tContext, *pnX, 0x3C, -1, 1, 0);
-        *pnX += 0x38;
-        bDrawn = 1;
+        if (bDrawn)
+            return 1;
     }
-    while ((pEntry = ROSTER_GetNextStoredUnit(pEntry)) != 0);
 
-    if (!bDrawn)
-        return 0;
-
-    return 1;
+    return 0;
 }
 
+// 0x00493CE0
 static int __stdcall sub_00493CE0_DrawSummonIcon(D2UnitStrc* pPlayer, int* pbAlternate, int* pnX, int* pnY)
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
     int nUnitId;
-    tContext.pCellFile = HIREABLES_GetPetIcon(pPlayer, 7, &nUnitId, 0);
-    if (!tContext.pCellFile)
+    tContext.pCelFile = HIREABLES_GetPetIcon(pPlayer, 7, &nUnitId, 0);
+    if (!tContext.pCelFile)
         return 0;
 
-    sub_00493A00_DrawLifeBar(7, *pnX, nUnitId);
+    sub_00493A00_DrawLifeBar(7, nUnitId, *pnX);
     HIREABLES_DrawUnitName(CUNIT_FindClientUnit(nUnitId, 1), *pnX, *pnY);
     if (*pbAlternate)
     {
@@ -1911,35 +1857,28 @@ static int __stdcall sub_00493CE0_DrawSummonIcon(D2UnitStrc* pPlayer, int* pbAlt
     gnPopupX = *pnX;
     gnPopupY = *pnY;
     if (gbPopupPending && gdwPopupTick && GetTickCount() - gdwPopupTick >= 700)
-    {
         gbPopupShown = 1;
-        sub_004F6480(&tContext, *pnX, 0x3C, -1, 7, 0);
-        *pnX += 0x38;
-        return 1;
-    }
 
     if (gbPopupShown)
-    {
         sub_004F6480(&tContext, *pnX, 0x3C, -1, 7, 0);
-        *pnX += 0x38;
-        return 1;
-    }
+    else
+        sub_004F6480(&tContext, *pnX, 0x3C, -1, 1, 0);
 
-    sub_004F6480(&tContext, *pnX, 0x3C, -1, 1, 0);
     *pnX += 0x38;
     return 1;
 }
 
+// 0x00493E10
 static int __stdcall sub_00493E10_DrawPetIcon(D2UnitStrc* pPlayer, int* pnX, int* pbAlternate, int nPetType, int* pnY)
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
     int nUnitId;
-    tContext.pCellFile = HIREABLES_GetPetIcon(pPlayer, nPetType, &nUnitId, 0);
-    if (!tContext.pCellFile)
+    tContext.pCelFile = HIREABLES_GetPetIcon(pPlayer, nPetType, &nUnitId, 0);
+    if (!tContext.pCelFile)
         return 0;
 
-    sub_00493A00_DrawLifeBar(nPetType, *pnX, nUnitId);
+    sub_00493A00_DrawLifeBar(nPetType, nUnitId, *pnX);
     HIREABLES_DrawPetTypeName(*pnX, *pnY, nPetType);
     if (*pbAlternate)
     {
@@ -1956,22 +1895,23 @@ static int __stdcall sub_00493E10_DrawPetIcon(D2UnitStrc* pPlayer, int* pnX, int
     return 1;
 }
 
-static int __stdcall sub_00493EB0_DrawPetCountIcon(D2UnitStrc* pPlayer, int* pnY, int* pbAlternate, int* pnX, int nPetType)
+// 0x00493EB0
+static int __stdcall sub_00493EB0_DrawPetCountIcon(D2UnitStrc* pPlayer, int* pnY, int* pbAlternate, int nPetType, int* pnX)
 {
     const int nCount = ROSTERPETS_CountPets(pPlayer, nPetType);
     if (!nCount)
         return 0;
 
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
     int nUnitId;
     int bSingle = 0;
-    tContext.pCellFile = HIREABLES_GetPetIcon(pPlayer, nPetType, &nUnitId, &bSingle);
-    if (!tContext.pCellFile)
+    tContext.pCelFile = HIREABLES_GetPetIcon(pPlayer, nPetType, &nUnitId, &bSingle);
+    if (!tContext.pCelFile)
         return 0;
 
     if (nCount == 1 && bSingle)
-        sub_00493A00_DrawLifeBar(nPetType, *pnX, ROSTERPETS_FindPetIdByOwner(pPlayer, nPetType, 0));
+        sub_00493A00_DrawLifeBar(nPetType, ROSTERPETS_FindPetIdByOwner(pPlayer, nPetType, 0), *pnX);
 
     INV_DrawIconNumber(nCount, *pnX);
     HIREABLES_DrawPetTypeName(*pnX, *pnY, nPetType);
@@ -1990,16 +1930,17 @@ static int __stdcall sub_00493EB0_DrawPetCountIcon(D2UnitStrc* pPlayer, int* pnY
     return 1;
 }
 
+// 0x00493F80
 static int __stdcall sub_00493F80_DrawPetIcon3(D2UnitStrc* pPlayer, int* pnX, int* pbAlternate, int nPetType, int* pnY)
 {
-    D2CelContextStrc tContext;
+    D2GfxDataStrc tContext;
     memset(&tContext, 0, sizeof(tContext));
     int nUnitId;
-    tContext.pCellFile = HIREABLES_GetPetIcon(pPlayer, nPetType, &nUnitId, 0);
-    if (!tContext.pCellFile)
+    tContext.pCelFile = HIREABLES_GetPetIcon(pPlayer, nPetType, &nUnitId, 0);
+    if (!tContext.pCelFile)
         return 0;
 
-    sub_00493A00_DrawLifeBar(nPetType, *pnX, nUnitId);
+    sub_00493A00_DrawLifeBar(nPetType, nUnitId, *pnX);
     HIREABLES_DrawPetTypeName(*pnX, *pnY, nPetType);
     if (*pbAlternate)
     {
@@ -2016,13 +1957,14 @@ static int __stdcall sub_00493F80_DrawPetIcon3(D2UnitStrc* pPlayer, int* pnX, in
     return 1;
 }
 
+// 0x00494020
 void __cdecl sub_00494020_DrawPetIcons()
 {
     D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
     int nY = 0x48;
     int bAlternate = 0;
     int nX = 0xF;
-    const int nMode = sub_0045AE90();
+    const int nMode = sub_0045AE90_GetPanelSlideMode();
     if (nMode != 3 && nMode != 2 && !GAME_GetUIVarState(9) && !GAME_GetUIVarState(0xB) && gnPetIconPopupState != 2)
     {
         if (GAME_IsExpansion() && !GAME_GetUIVarState(0x23) && gnPetIconPopupState != 2 && ROSTERPETS_FindPetIdByOwner(pPlayer, 7, 0) != -1)
@@ -2042,7 +1984,7 @@ void __cdecl sub_00494020_DrawPetIcons()
                 bAny |= sub_00493E10_DrawPetIcon(pPlayer, &nX, &bAlternate, i, &nY);
                 break;
             case 2:
-                bAny |= sub_00493EB0_DrawPetCountIcon(pPlayer, &nY, &bAlternate, &nX, i);
+                bAny |= sub_00493EB0_DrawPetCountIcon(pPlayer, &nY, &bAlternate, i, &nX);
                 break;
             case 3:
                 bAny |= sub_00493F80_DrawPetIcon3(pPlayer, &nX, &bAlternate, i, &nY);
@@ -2066,7 +2008,7 @@ void __cdecl sub_00494020_DrawPetIcons()
             const Unicode* wszSuffix = D2LANG_GetStringFromTblIndex(0x58A2);
             const Unicode* wszFormat = D2LANG_GetStringFromTblIndex(0x58A3);
             const Unicode* wszMiddle = D2LANG_GetStringFromTblIndex(0xF9E);
-            sub_005269D0(0x100, wszText, wszFormat, CMDTBL_GetKeyName(0x36, 1));
+            sub_005269D0_FormatText(0x100, wszText, wszFormat, CMDTBL_GetKeyName(0x36, 1));
             sub_00526700(wszText, wszMiddle);
             sub_00526700(wszText, wszSuffix);
             D2Win_10129_DrawFramedText(wszText, gnPopupX, gnPopupY + 0x24, 0, 0);

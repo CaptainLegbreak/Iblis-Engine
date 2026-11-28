@@ -3,6 +3,8 @@
 
 #include "D2Check.h"
 
+struct D2BooksTxt;
+
 struct D2BookDataTbl
 {
     int nBooksTxtRecordCount;

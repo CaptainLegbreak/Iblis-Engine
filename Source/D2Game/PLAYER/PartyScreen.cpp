@@ -2,7 +2,6 @@
 #include "D2Structs.h"
 #include "D2Packets.h"
 #include "D2LanguageNames.h"
-// build: symbol _gaszLanguageNames 0x0073C4FC
 struct D2GameStrc;
 
 struct D2PartyScreenCallbackStrc;
@@ -15,12 +14,8 @@ struct D2ClientStrc
     void PARTYSCREEN_SendEventUpdateToClient(int nUnitGUID, unsigned char nType);                           // 0x005A5690
 };
 
-D2ClientStrc* __fastcall UnitGetClient(D2UnitStrc* pPlayer, const char* szFile, int nLine); // 0x005531C0
-int __fastcall CLIENTS_CheckFlag(D2ClientStrc* pClient, unsigned short nFlag); // 0x00538670
-void __fastcall PLAYERLIST_AllocPlayerList(D2GameStrc* pGame, D2UnitStrc* pPlayer1, D2UnitStrc* pPlayer2); // 0x0055B140
-int __fastcall PLAYERLIST_CheckFlag(D2UnitStrc* pPlayer1, D2UnitStrc* pPlayer2, unsigned int nFlags); // 0x0055B300
-void __fastcall PLAYERLIST_ToggleFlag(D2GameStrc* pGame, D2UnitStrc* pPlayer1, D2UnitStrc* pPlayer2, unsigned int nFlags, int bSet); // 0x0055B260
-void __fastcall SCMD_Send0x75_PartyRosterUpdate(D2UnitStrc* pPlayer1, D2UnitStrc* pPlayer2); // 0x0053DA90
+#include "D2GameFuncs.h"
+#include "D2CommonApi.h"
 
 struct D2PartyScreenCallbackStrc
 {
@@ -30,15 +25,11 @@ struct D2PartyScreenCallbackStrc
 };
 
 short __fastcall SUNIT_GetPartyId(D2UnitStrc* pPlayer); // 0x00554630
-void __fastcall PLAYERLIST_SetPartyState(D2UnitStrc* pPlayer1, D2UnitStrc* pPlayer2, int a3); // 0x0055B3A0
-void __fastcall SCMD_BroadcastPlayerParty(D2GameStrc* pGame, D2UnitStrc* pPlayer); // 0x0053DEC0
 
-short __fastcall PLAYERLIST_GetPartyState(D2UnitStrc* pPlayer1, D2UnitStrc* pPlayer2); // 0x0055B3F0
-void __fastcall PLAYERLIST_SendPartyState(D2UnitStrc* pPlayer1, D2UnitStrc* pPlayer2); // 0x0055B440
 short __fastcall PARTY_CreateParty(D2GameStrc* pGame); // 0x00540100
-int __fastcall sub_00540320(D2GameStrc* pGame, short nPartyId, D2UnitStrc* pPlayer); // 0x00540320
+int __fastcall PARTY_AddPlayerToParty(D2GameStrc* pGame, short nPartyId, D2UnitStrc* pPlayer); // 0x00540320
 void __fastcall PLAYERLIST_ResetPendingPartyInvitations(D2GameStrc* pGame, D2UnitStrc* pPlayer); // 0x0055B650
-void __fastcall PARTYSCREEN_PlayerIterate_PartyJoined(D2GameStrc* pGame, D2UnitStrc* pLocalPlayer, void* a3); // 0x005A5970
+void __fastcall PARTYSCREEN_PlayerIterate_PartyJoined(D2GameStrc* pGame, D2UnitStrc* pLocalPlayer, void* pArgs); // 0x005A5970
 
 typedef void (__fastcall* SUNIT_IterateFn)(D2GameStrc* pGame, D2UnitStrc* pUnit, void* pArg);
 
@@ -49,17 +40,12 @@ enum { JOIN_RELATION = 2 };
 typedef void (__fastcall* PartyCallbackFunction)(D2GameStrc* pGame, D2UnitStrc* pPlayer, void* pArgs);
 
 void __fastcall PARTY_IteratePartyMembers(D2GameStrc* pGame, unsigned short nPartyId, PartyCallbackFunction pCallback, void* pArgs); // 0x00540510
-void __fastcall PARTY_LeaveParty(D2GameStrc* pGame, D2UnitStrc* pPlayer); // 0x005407A0
-void __fastcall PARTYSCREEN_PartyIterate_PlayerLeftParty(D2GameStrc* pGame, D2UnitStrc* pPlayer1, void* pArg); // 0x005A5C70
 
 extern "C" void* __cdecl memset(void*, int, unsigned int); // 0x00681EF0
 
 #pragma pack(push, 1)
 
-void __fastcall D2GAME_PACKETS_SendPacket0x5A_6FC3DEC0(D2ClientStrc* pClient, D2GSPacketSrv5A* pPacket); // 0x0053C850
 
-void __fastcall FRIENDLY_OpenHostility(D2GameStrc* pGame, D2UnitStrc* pPlayer1, D2UnitStrc* pPlayer2); // 0x005A60E0
-int __stdcall STATLIST_GetUnitBaseStat(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x006253B0
 #define PARTYSCREENTYPE_HOSTILE 3
 enum D2C_M187TrapConstants
 {
@@ -227,7 +213,7 @@ void D2ClientStrc::PARTYSCREEN_SendEventUpdateToClient(int nUnitGUID, unsigned c
         packet.nColor = 9;
         break;
     }
-    D2GAME_PACKETS_SendPacket0x5A_6FC3DEC0(this, &packet);
+    D2GAME_PACKETS_SendPacket0x5A(this, &packet);
 }
 
 // 0x005A5D20
@@ -252,7 +238,7 @@ static void PARTYSCREEN_UpdatePartyStateWithPlayer(D2UnitStrc* pLocalPlayer, D2U
     const unsigned short nPartyId = SUNIT_GetPartyId(pLocalPlayer);
     if (nPartyId == 0xFFFF)
     {
-        if (sub_6FCBA9D0(pOtherPlayer, pLocalPlayer) == 4)
+        if (PLAYERLIST_GetPartyState(pOtherPlayer, pLocalPlayer) == 4)
         {
             PLAYERLIST_SetPartyState(pLocalPlayer, pOtherPlayer, 2);
         }
@@ -285,13 +271,13 @@ void __fastcall PARTYSCREEN_AcceptInvitation(D2GameStrc* pGame, D2UnitStrc* pPla
     if (nPartyId == 0xFFFF)
     {
         nPartyId = PARTY_CreateParty(pGame);
-        sub_00540320(pGame, nPartyId, pTarget);
-        sub_00540320(pGame, nPartyId, pPlayer);
+        PARTY_AddPlayerToParty(pGame, nPartyId, pTarget);
+        PARTY_AddPlayerToParty(pGame, nPartyId, pPlayer);
         PLAYERLIST_ResetPendingPartyInvitations(pGame, pTarget);
     }
     else
     {
-        sub_00540320(pGame, nPartyId, pPlayer);
+        PARTY_AddPlayerToParty(pGame, nPartyId, pPlayer);
     }
 
     PLAYERLIST_ResetPendingPartyInvitations(pGame, pPlayer);
@@ -304,9 +290,9 @@ void __fastcall PARTYSCREEN_AcceptInvitation(D2GameStrc* pGame, D2UnitStrc* pPla
 }
 
 // 0x005A5970
-void __fastcall PARTYSCREEN_PlayerIterate_PartyJoined(D2GameStrc* pGame, D2UnitStrc* pLocalPlayer, void* a3)
+void __fastcall PARTYSCREEN_PlayerIterate_PartyJoined(D2GameStrc* pGame, D2UnitStrc* pLocalPlayer, void* pArgs)
 {
-    D2PartyScreenCallbackStrc* pArg = (D2PartyScreenCallbackStrc*)a3;
+    D2PartyScreenCallbackStrc* pArg = (D2PartyScreenCallbackStrc*)pArgs;
 
     const unsigned short nPartyId = SUNIT_GetPartyId(pLocalPlayer);
     PLAYERLIST_AllocPlayerList(pGame, pLocalPlayer, pArg->pPlayer1);
@@ -322,8 +308,8 @@ void __fastcall PARTYSCREEN_PlayerIterate_PartyJoined(D2GameStrc* pGame, D2UnitS
         UnitGetClient(pLocalPlayer, ".\\PLAYER\\PartyScreen.cpp", 183)->PARTYSCREEN_SendEventUpdateToClient(!pArg->pPlayer2 ? -1 : pArg->pPlayer2->dwUnitId, 7);
     }
 
-    sub_6FCBAA20(pLocalPlayer, pArg->pPlayer1);
-    sub_6FCBAA20(pLocalPlayer, pArg->pPlayer2);
+    PLAYERLIST_SendPartyState(pLocalPlayer, pArg->pPlayer1);
+    PLAYERLIST_SendPartyState(pLocalPlayer, pArg->pPlayer2);
     SCMD_BroadcastPlayerParty(pGame, pLocalPlayer);
 }
 
@@ -333,10 +319,10 @@ void __fastcall PARTYSCREEN_ReceivedInvitation(D2GameStrc* pGame, D2UnitStrc* pP
     PLAYERLIST_AllocPlayerList(pGame, pPlayer1, pPlayer2);
     PLAYERLIST_AllocPlayerList(pGame, pPlayer2, pPlayer1);
 
-    if (sub_6FCBA9D0(pPlayer1, pPlayer2))
+    if (PLAYERLIST_GetPartyState(pPlayer1, pPlayer2))
     {
-        sub_6FCBAA20(pPlayer1, pPlayer2);
-        sub_6FCBAA20(pPlayer2, pPlayer1);
+        PLAYERLIST_SendPartyState(pPlayer1, pPlayer2);
+        PLAYERLIST_SendPartyState(pPlayer2, pPlayer1);
         return;
     }
 
@@ -345,8 +331,8 @@ void __fastcall PARTYSCREEN_ReceivedInvitation(D2GameStrc* pGame, D2UnitStrc* pP
 
     UnitGetClient(pPlayer2, ".\\PLAYER\\PartyScreen.cpp", 306)->PARTYSCREEN_SendEventUpdateToClient(!pPlayer1 ? -1 : pPlayer1->dwUnitId, 5);
 
-    sub_6FCBAA20(pPlayer1, pPlayer2);
-    sub_6FCBAA20(pPlayer2, pPlayer1);
+    PLAYERLIST_SendPartyState(pPlayer1, pPlayer2);
+    PLAYERLIST_SendPartyState(pPlayer2, pPlayer1);
 }
 
 // 0x005A5B30
@@ -355,7 +341,7 @@ void __fastcall PARTYSCREEN_InvitationCancelled(D2GameStrc* pGame, D2UnitStrc* p
     PLAYERLIST_AllocPlayerList(pGame, pPlayer1, pPlayer2);
     PLAYERLIST_AllocPlayerList(pGame, pPlayer2, pPlayer1);
 
-    if (sub_6FCBA9D0(pPlayer1, pPlayer2) == 4)
+    if (PLAYERLIST_GetPartyState(pPlayer1, pPlayer2) == 4)
     {
         if (SUNIT_GetPartyId(pPlayer2) == -1)
         {
@@ -378,8 +364,8 @@ void __fastcall PARTYSCREEN_InvitationCancelled(D2GameStrc* pGame, D2UnitStrc* p
         UnitGetClient(pPlayer2, ".\\PLAYER\\PartyScreen.cpp", 274)->PARTYSCREEN_SendEventUpdateToClient(!pPlayer1 ? -1 : pPlayer1->dwUnitId, 6);
     }
 
-    sub_6FCBAA20(pPlayer1, pPlayer2);
-    sub_6FCBAA20(pPlayer2, pPlayer1);
+    PLAYERLIST_SendPartyState(pPlayer1, pPlayer2);
+    PLAYERLIST_SendPartyState(pPlayer2, pPlayer1);
 }
 
 // 0x005A5C70

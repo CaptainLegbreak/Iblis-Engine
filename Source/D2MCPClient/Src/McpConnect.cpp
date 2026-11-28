@@ -1,20 +1,18 @@
 #include "D2MCPClient.h"
 
 #include "D2GameTypes.h"
+#include "FogApi.h"
+#include "FogApi2.h"
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                              // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                    // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);                          // 0x006829C0
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0);                                // 0x0040B3C0
 
-void* __fastcall FOG_Alloc(int nSize, const char* szFile, int nLine, int n0);                               // 0x0040B380
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -32,21 +30,19 @@ int __fastcall WINMAIN_SendMcpCharLogon(int nA); // 0x0044A380
 
 void* ghThread;                                                                                    // 0x007992A4
 
-int gnResult_00798F58; // 0x00798F58
+extern int gnResult; // 0x00798F58
 
-char gszText_00798F60[28]; // 0x00798F60
+extern char gszMcpText2[28]; // 0x00798F60
 
-char gszText_00799294[4]; // 0x00799294
+extern char gszMcpText1[4]; // 0x00799294
 
 unsigned short __cdecl CHATDLG_GetRequestId();                                                         // 0x00449BD0
 
 void __cdecl CHATDLG_ClearReply();                                                                     // 0x00449D60
 
-void __stdcall sub_00449E50_SetValue(int nValue); // 0x00449E50
 
 void __cdecl D2MCPClientCloseMCP(); // 0x00449AD0
 
-void __stdcall CHATDLG_SetCharLogonReceived(int nValue); // 0x00449C40
 
 int __stdcall CHATDLG_RequestCharLogon(const char* szName);                                                    // 0x00449E10
 
@@ -60,29 +56,29 @@ extern int gnMcpGameToken; // 0x00798FB0
 
 extern int gdwMcpGameHash; // 0x00798F88
 
-int gbMcpCharCreateReceived; // 0x007992E8
+extern int gbMcpCharCreateReceived; // 0x007992E8
 
-int gbMcpCharLogonReceived; // 0x007992E0
+extern int gbMcpCharLogonReceived; // 0x007992E0
 
-int gbMcpCharDeleteReceived; // 0x00799298
+extern int gbMcpCharDeleteReceived; // 0x00799298
 
-int gbMcpCharUpgradeReceived; // 0x007992F0
+extern int gbMcpCharUpgradeReceived; // 0x007992F0
 
-int gbMcpPacket0BReceived; // 0x00799100
+extern int gbMcpPacket0BReceived; // 0x00799100
 
-int gbMcpPacket0CReceived; // 0x007992A0
+extern int gbMcpPacket0CReceived; // 0x007992A0
 
-char gabMcpReply[4]; // 0x00799108
+extern char gabMcpReply[4]; // 0x00799108
 
-int gbMcpPacket0DReceived; // 0x007992A8
+extern int gbMcpPacket0DReceived; // 0x007992A8
 
-int gbMcpPacket0FReceived; // 0x00798F5C
+extern int gbMcpPacket0FReceived; // 0x00798F5C
 
-int gbMcpServerAddressReceived; // 0x00798F84
+extern int gbMcpServerAddressReceived; // 0x00798F84
 
-int gnMcpCreateQueuePosition; // 0x00799104
+extern int gnMcpCreateQueuePosition; // 0x00799104
 
-int gbMcpCreateQueued; // 0x00798F7C
+extern int gbMcpCreateQueued; // 0x00798F7C
 
 void* gpMcpConnection; // 0x00798FB4
 
@@ -114,10 +110,6 @@ extern "C" __declspec(dllimport) void* __stdcall CreateThread(void* pAttributes,
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount();                                    // 0x006CC260
 
-int __fastcall FOG_SOCKET_GetPeerName(FSafeSock* pSafeSock, void* pAddress, int* pnLength); // 0x0040DEE0
-
-int __fastcall FOG_SOCKET_GetError(FSafeSock* pSafeSock, unsigned long* pFogError, unsigned long* pWSALastError); // 0x0040E0B0
-
 int __fastcall WINMAIN_SendMcpStartup(D2LaunchThreadRecordStrc* pRecord);                                // 0x0044A1D0
 
 int __fastcall WINMAIN_DispatchConnectPacket(const unsigned char* pData, unsigned int nSize, int nArg);         // 0x0044B1C0
@@ -130,8 +122,6 @@ void __stdcall D2QSSOCKET_ConnectAndWait(void* pConnection);                    
 
 void __stdcall D2QSSOCKET_Close(void* pConnection);                                                       // 0x006BC680
 
-D2QSSOCKET_SetPacketFormat* __stdcall D2QSSOCKET_CreateRecord(const char* szName, int nValue, const char* szLabel); // 0x006BC6A0
-
 FSafeSock* __stdcall D2QSSOCKET_GetSafeSock(void* pConnection);                                          // 0x006BC810
 
 D2LaunchThreadRecordStrc gtThreadRecord;                                                           // 0x00798FB8
@@ -140,7 +130,7 @@ D2LaunchThreadRecordStrc gtThreadRecord;                                        
 
 #define gnServerPort_00798FCC (gtThreadRecord.nData[5])
 
-int gnValue_0079929C;                                                                                       // 0x0079929C
+int gnConnectError;                                                                                       // 0x0079929C
 
 void* ghConnectEvent;                                                                              // 0x007992EC
 
@@ -183,7 +173,6 @@ int __cdecl MCPCONNECT_QueryAddress()
 }
 
 unsigned short __stdcall FOG_ConnectionReceive(void* pConnection, char* pBuffer, int nSize); // 0x006BC120
-int __fastcall GAME_DispatchMcpPacket(const char* pPacket, unsigned int nSize); // 0x0044B190
 extern int (__cdecl* const gpfnLaunchInit[1])(); // 0x006D5BE0
 extern int (__cdecl* gpfnLaunchStates[])(); // 0x0070EE54
 
@@ -225,13 +214,13 @@ int __cdecl GAME_GetMcpGameToken()
 // 0x00449BF0
 void __stdcall CHATDLG_SetMcpResult(int nValue)
 {
-    gnValue_0079929C = nValue;
+    gnConnectError = nValue;
 }
 
 // 0x00449C00
 int __cdecl GAME_GetConnectError()
 {
-    return gnValue_0079929C;
+    return gnConnectError;
 }
 
 // 0x00449C10
@@ -289,13 +278,13 @@ void __stdcall sub_00449C90_SetValue(int nValue)
 }
 
 // 0x00449CA0
-int __cdecl sub_00449CA0()
+int __cdecl sub_00449CA0_IsPacket0BReceived()
 {
     return gbMcpPacket0BReceived;
 }
 
 // 0x00449CB0
-int __cdecl sub_00449CB0()
+int __cdecl sub_00449CB0_IsPacket0CReceived()
 {
     return gbMcpPacket0CReceived;
 }
@@ -309,17 +298,17 @@ void __stdcall sub_00449CC0_SetValue(int nValue)
 // 0x00449CD0
 int __stdcall CHATDLG_GetMcpTexts(char* szText1, char* szText2)
 {
-    strcpy(szText1, gszText_00799294);
-    strcpy(szText2, gszText_00798F60);
-    return gnResult_00798F58;
+    strcpy(szText1, gszMcpText1);
+    strcpy(szText2, gszMcpText2);
+    return gnResult;
 }
 
 // 0x00449D10
 void __stdcall CHATDLG_SetMcpTexts(int nResult, const char* szText1, const char* szText2)
 {
-    strcpy(gszText_00799294, szText1);
-    strcpy(gszText_00798F60, szText2);
-    gnResult_00798F58 = nResult;
+    strcpy(gszMcpText1, szText1);
+    strcpy(gszMcpText2, szText2);
+    gnResult = nResult;
 }
 
 // 0x00449D50
@@ -335,7 +324,7 @@ void __cdecl CHATDLG_ClearReply()
 }
 
 // 0x00449D80
-int __cdecl sub_00449D80()
+int __cdecl sub_00449D80_IsPacket0DReceived()
 {
     return gbMcpPacket0DReceived;
 }
@@ -347,7 +336,7 @@ void __stdcall sub_00449D90_SetValue(int nValue)
 }
 
 // 0x00449DA0
-int __cdecl sub_00449DA0()
+int __cdecl sub_00449DA0_IsPacket0FReceived()
 {
     return gbMcpPacket0FReceived;
 }
@@ -413,7 +402,7 @@ void __stdcall sub_00449E50_SetValue(int nValue)
 }
 
 // 0x00449E60
-int __cdecl sub_00449E60()
+int __cdecl sub_00449E60_GetPacket()
 {
     return (int)gpMcpPacket;
 }
@@ -465,7 +454,7 @@ void __stdcall MCPCONNECT_WaitConnect(D2LaunchThreadRecordStrc* pRecord)
         ghConnectEvent = CreateEventA(0, 0, 0, 0);
     if (WINMAIN_SendMcpStartup(pRecord) == -1)
     {
-        gnValue_0079929C = 0xB;
+        gnConnectError = 0xB;
         return;
     }
     const unsigned long dwEndTick = GetTickCount() + 60000;
@@ -482,15 +471,14 @@ void __stdcall MCPCONNECT_WaitConnect(D2LaunchThreadRecordStrc* pRecord)
             break;
         Sleep(10);
     }
-    gnValue_0079929C = 2;
+    gnConnectError = 2;
 }
 
 // 0x0044A070
 int __cdecl MCPCONNECT_ConnectThread()
 {
-// build: symbol ?FOG_inet_ntoa@* 0x0040E080
     const char* szAddress = FOG_inet_ntoa(gnServerAddress_00798FC8);
-    gnValue_0079929C = 0;
+    gnConnectError = 0;
     void* pConnection = D2QSSOCKET_CreateRecord(szAddress, gnServerPort_00798FCC, "clt->mcp");
     gpMcpConnection = pConnection;
     D2QSSOCKET_SetPacketHandler(pConnection, WINMAIN_DispatchConnectPacket, 0);
@@ -511,10 +499,10 @@ int __cdecl MCPCONNECT_ConnectThread()
             char nValue = 1;
             FOG_ConnectionSend(pConnection, &nValue, 1);
             MCPCONNECT_WaitConnect(&gtThreadRecord);
-            return gnValue_0079929C == 0;
+            return gnConnectError == 0;
         }
     }
-    gnValue_0079929C = 2;
+    gnConnectError = 2;
     return 0;
 }
 
@@ -529,43 +517,20 @@ void __stdcall CHATDLG_StartThread(D2LaunchThreadRecordStrc* pRecord)
     }
 }
 
-#pragma pack(push, 1)
-struct d2data_0070EC80_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
+extern "C" const char* gData_0070EC80[15] = { // 0x0070EC80
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
 };
-#pragma pack(pop)
-
-extern "C" struct d2data_0070EC80_t gData_0070EC80; // 0x0070EC80
-
-extern "C" struct d2data_0070EC80_t gData_0070EC80 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x0070EC80

@@ -40,59 +40,30 @@
 #include "D2NetTypes.h"
 
 #include "D2NetTypes.h"
+#include "FogApi.h"
+#include "FogApi2.h"
 
-extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 
-extern "C" const char* __cdecl sub_00408090();                                                      // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine);                   // 0x00408A60
 
-extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
-
-void __fastcall CLIENT_ReadPacketFromBuffer(void* pBuffer, int nBufferSize);                                // 0x0052AEB0
-
-void __fastcall FOG_10222(const unsigned char* pData, unsigned int nSize);                                  // 0x0040B130
-
-int __fastcall FOG_CompressPacket(unsigned char* pOut, int nCapacity, const unsigned char* pIn, int nSize);       // 0x0040B1B0
-
-int __stdcall FOG_10157(void* pServer, unsigned int nKey, const void* pData, unsigned int nSize); // 0x006C03A0
-
-extern void* gpServer_00882D08;                                                                             // 0x00882D08
 
 #define GAME_PORT 4000
 
 
 typedef int (__fastcall* D2NET_Unk_Callback)(int, int, int, int);
 
-typedef int (__fastcall* D2NET_PacketCallback)(int, int, int, int);
-
-typedef int (__fastcall* D2NET_ReadPacketCallback)(QServer*, D2PacketBufferStrc*, int);
+// Several of the queue server's routines that the exports below return the result of return nothing: the exports
+// return what the routine leaves in EAX, so they call it through one of these types.
+typedef int (__stdcall* D2NetQServerCall1)(D2QueueServerStrc*, int);
+typedef int (__stdcall* D2NetQServerCall2)(D2QueueServerStrc*, int, int);
+typedef int (__stdcall* D2NetQServerCall3)(D2QueueServerStrc*, int, int, int);
+typedef int (__fastcall* D2NetQServerFastCall2)(D2QueueServerStrc*, int, int);
 
 int gnLocalClientGameGuid;                                                                         // 0x00882D0C
 
-QServer* __stdcall QSInit(int nState, int nSlots, int nPort, int bDisableNt, D2NET_PacketCallback pfnProcess, D2NET_PacketCallback pfnOnNewClient, D2NET_PacketCallback pfnOnRemove, D2NET_ReadPacketCallback pfnHandler); // 0x006BF760
-
-int __stdcall FOG_10165(QServer* pServer, int nClientId, const char* szFile, int nLine);                   // 0x006C06B0
-
-int __stdcall FOG_10170(QServer* pServer, int pfnCallback);                                                          // 0x006BF040
-
-int __stdcall FOG_10171(QServer* pServer, D2NET_Unk_Callback pfCallback);                                   // 0x006BF080
-
-int __stdcall FOG_10172(QServer* pServer, int nClientId, int dwGameGuid);                                   // 0x006BF0A0
-
-int __stdcall FOG_10173(void* pContainer, int nKey); // 0x006BF0C0
-
-int __stdcall FOG_10177(QServer* pServer, int dwMilliseconds);                                              // 0x006BEBC0
-
-void __stdcall FOG_10183_Return(QServer* pServer, int nUnused);                                             // 0x006BF600
-
-int __fastcall SERVER_SendToLocalClientCallback(QServer* nUnused, D2PacketBufferStrc* pPacketBuffer, int nBufferSize); // 0x0052B0E0
-
-int __fastcall SERVER_ValidateClientPacket(int a1, int a2, int a3, int a4);                                 // 0x0052B100
-
-int __fastcall SERVER_OnClientConnectedCallback(int pServer, int nClientId, int szFile, int nLine);                                                // 0x0052B720
+int __fastcall SERVER_SendToLocalClientCallback(D2QueueServerStrc* pUnused, D2PacketBufferStrc* pPacketBuffer, int nBufferSize); // 0x0052B0E0
 
 unsigned int __stdcall SERVER_SendPacketToClient(char nSendMode, void* pClientId, void* pPacketArg, unsigned int nPacketSize); // 0x0052B330
 
@@ -102,32 +73,8 @@ struct D2GSPacketSrvAFStrc
     unsigned char nCompression;
 };
 
-int __stdcall FOG_SetHackListEnabled(void* pObject, int nArg1); // 0x006BF4E0
-
-int __stdcall sub_006C0170(void* pObject, const unsigned char* pData, int nSize); // 0x006C0170
-
-int __stdcall sub_006BEAD0(void* pObject, int nMode, int nArg1, int nArg2); // 0x006BEAD0
-
-int __stdcall sub_006BEE20(void* pObject, int nArg1); // 0x006BEE20
-
-int __stdcall sub_006BEF40(void* pObject, int nArg1); // 0x006BEF40
-
-int __stdcall QSERVER_HackListClient(void* pObject, int nArg1, int nArg2, int nArg3); // 0x006C0530
-
-int __stdcall QSERVER_HackListIP(void* pObject, int nArg1, int nArg2, int nArg3); // 0x006C0600
-
-int __stdcall QSERVER_HackUnlistIP(void* pObject, int nArg1, int nArg2, int nArg3); // 0x006BEFB0
-
-int __stdcall QSERVER_DisconnectIP(void* pObject, int nArg1, int nArg2, int nArg3); // 0x006C06D0
-
-QServer* gpServer; // 0x00882D08
-
-int __fastcall SERVER_GetClientPacketSize(D2PacketBufferStrc* pBuffer, unsigned int nBufferSize, int* pSize); // 0x0052BC20
-
-int __fastcall QSERVER_CheckClientMask(void* pServer, int nClientId); // 0x006BF6C0
-
 // 0x0052B0E0
-int __fastcall SERVER_SendToLocalClientCallback(QServer* pUnused, D2PacketBufferStrc* pPacketBuffer, int nBufferSize)
+int __fastcall SERVER_SendToLocalClientCallback(D2QueueServerStrc* pUnused, D2PacketBufferStrc* pPacketBuffer, int nBufferSize)
 {
     CLIENT_ReadPacketFromBuffer(pPacketBuffer, nBufferSize);
     return 1;
@@ -140,7 +87,7 @@ int __fastcall SERVER_ValidateClientPacket(D2PacketBufferStrc* pPacketBuffer, in
         return 3;
     const unsigned char nHeader = pPacketBuffer->data[0];
     int nSize;
-    if (SERVER_GetClientPacketSize(pPacketBuffer, nBufferSize, &nSize))
+    if (SERVER_GetClientPacketSize(pPacketBuffer->data, nBufferSize, &nSize))
     {
         if (nHeader >= 0x71 && nHeader != 0xFF)
             return 4;
@@ -176,16 +123,6 @@ int __fastcall SERVER_ValidateClientPacket(D2PacketBufferStrc* pPacketBuffer, in
     return 3;
 }
 
-int __stdcall FOG_WaitForSingleObject(void* pObject, int nArg1); // 0x006BE4E0
-
-int __stdcall sub_006BE390(void* pObject, int nArg1, int nArg2); // 0x006BE390
-
-int __fastcall sub_006BF610(void* pObject, int nArg1, int nArg2); // 0x006BF610
-
-void __stdcall FOG_SetMaxClientsPerGame(void* pObject, int nArg1); // 0x006BE4A0
-
-int __stdcall sub_006BED90(void* pObject, int nArg1, int nArg2, int nArg3); // 0x006BED90
-
 // 0x0052B1F0
 int __stdcall SERVER_WaitForSingleObject(int nArg1)
 {
@@ -195,13 +132,13 @@ int __stdcall SERVER_WaitForSingleObject(int nArg1)
 // 0x0052B210
 int __stdcall SERVER_SwapSlotValue(int nArg1, int nArg2)
 {
-    return sub_006BE390(gpServer, nArg1, nArg2);
+    return FOG_10186(gpServer, nArg1, nArg2);
 }
 
 // 0x0052B230
 int __stdcall SERVER_AddKeyValuePair(int nArg1, int nArg2)
 {
-    return sub_006BF610(gpServer, nArg2, nArg1);
+    return ((D2NetQServerFastCall2)FOG_10187)(gpServer, nArg2, nArg1);
 }
 
 // 0x0052B250
@@ -209,9 +146,6 @@ void __stdcall SERVER_SetMaxClientsPerGame(int nArg1)
 {
     FOG_SetMaxClientsPerGame(gpServer, nArg1);
 }
-
-int __stdcall FOG_10180(void* pObject); // 0x006BE450
-void __stdcall FOG_10182_Return(void* pObject); // 0x006BF5F0
 
 // 0x0052B270
 int __fastcall D2NET_10027()
@@ -222,33 +156,33 @@ int __fastcall D2NET_10027()
 // 0x0052B280
 int __stdcall SERVER_SetHackListEnabled(int nArg1)
 {
-    return FOG_SetHackListEnabled(gpServer, nArg1);
+    return ((D2NetQServerCall1)FOG_SetHackListEnabled)(gpServer, nArg1);
 }
 
 // 0x0052B2A0
 void __cdecl SERVER_Release()
 {
     unsigned char nMessage = 0xB0;
-    sub_006C0170(gpServer, &nMessage, 1);
+    FOG_10152(gpServer, (char*)&nMessage, 1);
     gpServer = 0;
 }
 
 // 0x0052B2D0
 int __stdcall SERVER_ReadGamePacket(int nArg1, int nArg2)
 {
-    return sub_006BEAD0(gpServer, 1, nArg1, nArg2);
+    return FOG_10156(gpServer, 1, (void*)nArg1, nArg2);
 }
 
 // 0x0052B2F0
 int __stdcall SERVER_ReadSystemPacket(int nArg1, int nArg2)
 {
-    return sub_006BEAD0(gpServer, 0, nArg1, nArg2);
+    return FOG_10156(gpServer, 0, (void*)nArg1, nArg2);
 }
 
 // 0x0052B310
 int __stdcall SERVER_ReadAdminPacket(int nArg1, int nArg2)
 {
-    return sub_006BEAD0(gpServer, 2, nArg1, nArg2);
+    return FOG_10156(gpServer, 2, (void*)nArg1, nArg2);
 }
 
 // 0x0052B330
@@ -260,7 +194,7 @@ unsigned int __stdcall SERVER_SendPacketToClient(char nSendMode, void* pClientId
 
     if (NET_IsLocalConnection())
     {
-        CLIENT_ReadPacketFromBuffer((void*)pPacket, nPacketSize);
+        CLIENT_ReadPacketFromBuffer((D2PacketBufferStrc*)pPacket, nPacketSize);
         return nPacketSize;
     }
 
@@ -276,59 +210,59 @@ unsigned int __stdcall SERVER_SendPacketToClient(char nSendMode, void* pClientId
             if (++nFrameSize < 0xF0)
             {
                 frame[1] = (unsigned char)nFrameSize;
-                return FOG_10157(gpServer_00882D08, (unsigned int)pClientId, &frame[1], nFrameSize) != 0 ? nFrameSize : 0;
+                return FOG_10157(gpServer, (unsigned int)pClientId, (char*)&frame[1], nFrameSize) != 0 ? nFrameSize : 0;
             }
 
             ++nFrameSize;
             frame[0] = (unsigned char)((nFrameSize >> 8) | 0xF0);
             frame[1] = (unsigned char)nFrameSize;
-            return FOG_10157(gpServer_00882D08, (unsigned int)pClientId, frame, nFrameSize) != 0 ? nFrameSize : 0;
+            return FOG_10157(gpServer, (unsigned int)pClientId, (char*)frame, nFrameSize) != 0 ? nFrameSize : 0;
         }
     }
 
-    return FOG_10157(gpServer_00882D08, (unsigned int)pClientId, pPacket, nPacketSize) != 0 ? nPacketSize : 0;
+    return FOG_10157(gpServer, (unsigned int)pClientId, (char*)pPacket, nPacketSize) != 0 ? nPacketSize : 0;
 }
 
 // 0x0052B490
 int __stdcall CLIENT_ObjectCall_6BED90(int nArg1, int nArg2, int nArg3)
 {
-    return sub_006BED90(gpServer, nArg1, nArg2, nArg3);
+    return ((D2NetQServerCall3)FOG_10159)(gpServer, nArg1, nArg2, nArg3);
 }
 
 // 0x0052B4B0
 int __stdcall SERVER_GetIpAddressFromClientId(int nArg1)
 {
-    return sub_006BEE20(gpServer, nArg1);
+    return FOG_10158(gpServer, nArg1);
 }
 
 // 0x0052B4D0
 int __stdcall SERVER_GetSocketFromClientId(int nArg1)
 {
-    return sub_006BEF40(gpServer, nArg1);
+    return FOG_10161(gpServer, nArg1);
 }
 
 // 0x0052B4F0
 int __stdcall SERVER_HackListClient(int nArg1, int nArg2, int nArg3)
 {
-    return QSERVER_HackListClient(gpServer, nArg1, nArg2, nArg3);
+    return ((D2NetQServerCall3)QSERVER_HackListClient)(gpServer, nArg1, nArg2, nArg3);
 }
 
 // 0x0052B510
 int __stdcall SERVER_HackListIP(int nArg1, int nArg2, int nArg3)
 {
-    return QSERVER_HackListIP(gpServer, nArg1, nArg2, nArg3);
+    return ((D2NetQServerCall3)QSERVER_HackListIP)(gpServer, nArg1, nArg2, nArg3);
 }
 
 // 0x0052B530
 int __stdcall SERVER_HackUnlistIP(int nArg1, int nArg2, int nArg3)
 {
-    return QSERVER_HackUnlistIP(gpServer, nArg1, nArg2, nArg3);
+    return ((D2NetQServerCall3)QSERVER_HackUnlistIP)(gpServer, nArg1, nArg2, nArg3);
 }
 
 // 0x0052B550
 int __stdcall SERVER_DisconnectIP(int nArg1, int nArg2, int nArg3)
 {
-    return QSERVER_DisconnectIP(gpServer, nArg1, nArg2, nArg3);
+    return ((D2NetQServerCall3)QSERVER_DisconnectIP)(gpServer, nArg1, nArg2, nArg3);
 }
 
 // 0x0052B570
@@ -338,20 +272,20 @@ void __stdcall D2NET_10016(int nClientId)
 }
 
 // 0x0052B5A0
-void __stdcall D2NET_10018(int a1)
+void __stdcall D2NET_10018(int nClientId)
 {
     if (!gpServer)
     {
         return;
     }
 
-    FOG_10170(gpServer, a1);
+    FOG_10170(gpServer, (D2NetAddressCallback)nClientId);
 }
 
 // 0x0052B5C0
 int __stdcall SERVER_SetRemoveClientCallback(D2NET_Unk_Callback pfCallback)
 {
-    return FOG_10171(gpServer, pfCallback);
+    return ((D2NetQServerCall1)FOG_10171)(gpServer, (int)pfCallback);
 }
 
 // 0x0052B5E0
@@ -359,7 +293,7 @@ int __stdcall SERVER_SetClientGameGUID(int nClientId, int dwGameGuid)
 {
     if (nClientId)
     {
-        return FOG_10172(gpServer, nClientId, dwGameGuid);
+        return ((D2NetQServerCall2)FOG_10172)(gpServer, nClientId, dwGameGuid);
     }
 
     gnLocalClientGameGuid = dwGameGuid;
@@ -379,11 +313,11 @@ int __stdcall SERVER_GetClientGameGUID(int nClientId)
 }
 
 // 0x0052B640
-int __fastcall SERVER_EnqueueClientPacket(const unsigned char* pBuffer, unsigned short nBufferSize, int a3)
+int __fastcall SERVER_EnqueueClientPacket(const unsigned char* pBuffer, unsigned short nBufferSize, int nClientId)
 {
     D2_ASSERT(nBufferSize <= MAX_MSG_SIZE, 521);
 
-    return FOG_10175(gpServer, pBuffer, nBufferSize, a3);
+    return FOG_10175(gpServer, pBuffer, nBufferSize, nClientId);
 }
 
 // 0x0052B690
@@ -402,33 +336,31 @@ int __stdcall D2NET_10022(int dwMilliseconds)
 // 0x0052B6F0
 void __fastcall D2NET_10028_Return()
 {
-    FOG_10182_Return(gpServer);
+    FOG_10182_Return((int)gpServer);
 }
 
 // 0x0052B700
 void __stdcall D2NET_10029_Return(int nUnused)
 {
-    FOG_10183_Return(gpServer, nUnused);
+    FOG_10183_Return((int)gpServer, nUnused);
 }
 
-int __stdcall sub_0052B330(unsigned char nFlags, int nClientId, void* pPacket, int nSize); // 0x0052B330
-
 // 0x0052B720
-int __fastcall SERVER_OnClientConnectedCallback(QServer* pServer, int nClientId, const char* szFile, int nLine)
+int __fastcall SERVER_OnClientConnectedCallback(D2QueueServerStrc* pServer, int nClientId, const char* szFile, int nLine)
 {
     unsigned char data[2];
     data[0] = 0xAF;
     data[1] = 1;
-    sub_0052B330(0, nClientId, data, sizeof(data));
+    SERVER_SendPacketToClient(0, (void*)nClientId, data, sizeof(data));
     return 1;
 }
 
 // 0x0052B750
-int __fastcall SERVER_OnClientDisconnectedCallback(int a1, int a2, int a3, int a4)
+int __fastcall SERVER_OnClientDisconnectedCallback(int nArg1, int nClientId, int nArg3, int nArg4)
 {
     const unsigned char data[1] = { 0x70 };
 
-    FOG_10175(gpServer, data, sizeof(data), a2);
+    FOG_10175(gpServer, data, sizeof(data), nClientId);
     return 1;
 }
 
@@ -442,7 +374,7 @@ void __fastcall SERVER_SendConnectionInfo()
 }
 
 // 0x0052B7A0
-void __stdcall SERVER_Initialize(int a1, int a2)
+void __stdcall SERVER_Initialize(int nState, int bDisableNt)
 {
-    gpServer = QSInit(a1, 3, GAME_PORT, a2, SERVER_ValidateClientPacket, SERVER_OnClientConnectedCallback, SERVER_OnClientDisconnectedCallback, SERVER_SendToLocalClientCallback);
+    gpServer = QSInit(nState, 3, GAME_PORT, bDisableNt, (D2NetMessageCallback)SERVER_ValidateClientPacket, (D2NetClientCallback)SERVER_OnClientConnectedCallback, (D2NetClientCallback)SERVER_OnClientDisconnectedCallback, (D2NetHandlerCallback)SERVER_SendToLocalClientCallback);
 }

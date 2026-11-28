@@ -1,8 +1,8 @@
 #include "D2BNClient.h"
+#include "StormApi2.h"
 
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags);                  // 0x00412650
 void __cdecl BNMESSQUEUE_DeleteQueueLock();                                                                // 0x00520200
-void* gpField00Arg_0088185C;                                                                                // 0x0088185C
+void* gpField00Arg;                                                                                // 0x0088185C
 
 struct D2BnLogStrc
 {
@@ -38,10 +38,9 @@ void* D2BnLogStrc::sub_00518B90_GetHandle()
 // 0x00518BC0
 void __fastcall sub_00518BC0_Field00(void* pArg)
 {
-    gpField00Arg_0088185C = pArg;
+    gpField00Arg = pArg;
 }
 
-// build: symbol ??_GD2BnLogStrc@@QAEPAXI@Z 0x00518BD0
 void sub_F28_EmitScalarDeletingDestructor(D2BnLogStrc* pLog)
 {
     delete pLog;

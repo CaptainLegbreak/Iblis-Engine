@@ -7,6 +7,14 @@
 #include "D2LevelTxt.h"
 #include "D2LaunchRequest.h"
 #include "D2UnitDropPacket.h"
+#include "StormApi.h"
+#include "D2CommonApi.h"
+#include "D2LangApi.h"
+#include "D2CommonApi2.h"
+#include "D2GfxApi.h"
+#include "D2WinApi.h"
+#include "D2MCPClientApi.h"
+#include "StormApi2.h"
 #pragma intrinsic(strlen)
 struct D2UnitStrc;
 struct D2ActiveRoomStrc;
@@ -34,27 +42,22 @@ struct Unicode
     Unicode(unsigned short wValue);
 };
 extern "C" char* __cdecl strstr(const char* szString, const char* szSubString); // 0x00686900
-const Unicode* __fastcall D2LANG_GetStringFromTblIndex(unsigned short nIndex); // 0x00524A30
 extern "C" int __stdcall CHARSEL_CreateNotice(const Unicode* pTitle, const Unicode* pText, int nState, unsigned char nSel); // 0x0043A460
 static int gnCharEntryCount; // 0x00779DC4
-extern int gdwGlobal_0070CC08; // 0x0070CC08
+extern int gnSelectionB; // 0x0070CC08
 extern "C" int __cdecl strcmp(const char* sz1, const char* sz2);
-void __fastcall CONTROL_SetVisible(D2WinControlStrc* pControl, int bSet); // 0x004F9740
 int __fastcall MAINMENUS_ShowOptionDescription(unsigned int nArg, int nMode, int nStringId1, int nStringId2); // 0x004307A0
 void __fastcall CHARSEL_JoinSelectedWithDifficulty(SMSGHANDLER_PARAMS* pMsg, int nMode); // 0x00439AF0
 void __fastcall sub_004FC660_SetValue(D2WinControlStrc* pControl, int nValue); // 0x004FC660
-int __fastcall D2Win_StopMessageLoop(); // 0x004F9190
-int __cdecl sub_0042F6D0(); // 0x0042F6D0
+int __cdecl sub_0042F6D0_GetMenusDone(); // 0x0042F6D0
 extern D2WinControlStrc* gpControl_007795E0; // 0x007795E0
 extern D2WinControlStrc* gpControl_007795E4; // 0x007795E4
 extern void** gppSlots; // 0x00779988
 extern int gnSlotCount; // 0x0077998C
-unsigned int __stdcall SStrHash(const char* szString, unsigned int nFlags, unsigned int nSeed); // 0x00413CE0
-char* __fastcall MAINMENUS_GetSlotName(int nIndex); // 0x00430B50
 int __cdecl MAINMENUS_FreeSlots(); // 0x00430A20
 extern D2CharSelCacheStrc* gpCharSelCache; // 0x00779DE8
 static int gbFlag_00779C6C;             // 0x00779C6C
-extern char gszBaseName_00779B68[]; // 0x00779B68
+extern char gszCharName[]; // 0x00779B68
 struct D2GridCellStrc
 {
     int nFlag;
@@ -63,10 +66,7 @@ struct D2GridCellStrc
 typedef void (__stdcall* D2RecordHandlerFn)(int nArg1, int nArg2, int nArg3);
 extern "C" __declspec(dllimport) void __stdcall Sleep(unsigned long nMilliseconds); // 0x006CC258
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
-void* __stdcall SMemAlloc(unsigned int nSize, const char* szFile, int nLine, unsigned int nFlags); // 0x00413020
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
 void __cdecl CHATDLG_FillGameList(); // 0x00444E70
-void __fastcall WINMAIN_SendMcpGameListRequest(D2LaunchRequestStrc* pRequest, unsigned short wRequestId); // 0x0044A590
 void __cdecl RECORD_WriteRecordFile(); // 0x00451620
 extern "C" D2StatesTxt* __fastcall GAME_GetStatesTxtRecord(int nStateId); // 0x00452040
 void __cdecl AUTOMAP_SaveAutomapLayer(); // 0x004584C0
@@ -87,31 +87,16 @@ void __fastcall GFX_ClearGfxBytes(D2UnitStrc* pUnit, int nComponent); // 0x0046F
 void __fastcall GFX_RefreshUnitGfx(D2UnitStrc* pUnit, int nArg); // 0x00470610
 void __fastcall UNITMODE_SetUnitMode(D2UnitStrc* pUnit, int nArg); // 0x00480E70
 void __fastcall ITEM_UpdateItemLink(D2UnitStrc* pItem, D2UnitStrc* pUnit, int bForce, int bClamp); // 0x004C0EC0
-int __stdcall D2GFX_GetResolutionMode(); // 0x004F5160
-D2ActiveRoomStrc* __stdcall UNITS_GetRoom(D2UnitStrc* pUnit); // 0x00620BB0
-D2UnitStrc* __stdcall INVENTORY_GetFirstItem(D2InventoryStrc* pInventory); // 0x0063B2C0
-D2UnitStrc* __stdcall INVENTORY_GetNextItem(D2UnitStrc* pItem); // 0x0063DFA0
-int __stdcall INVENTORY_GetItemNodePage(D2UnitStrc* pItem); // 0x0063E020
-D2UnitStrc* __stdcall INVENTORY_UnitIsItem(D2UnitStrc* pItem); // 0x0063DFD0
-void __stdcall INVENTORY_UpdateWeaponGUIDOnRemoval(D2InventoryStrc* pInventory, D2UnitStrc* pItem); // 0x0063D2B0
-D2UnitStrc* __stdcall INVENTORY_RemoveItemFromInventory(D2InventoryStrc* pInventory, D2UnitStrc* pItem); // 0x0063AD90
 void __stdcall sub_0063BE30(D2InventoryStrc* pInventory, int nBodyLoc); // 0x0063BE30
-unsigned char __stdcall ITEMS_GetBodyLocation(D2UnitStrc* pItem); // 0x00627D40
-int __stdcall STATES_CheckState(D2UnitStrc* pUnit, int nState); // 0x00639DF0
-D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitAndState(D2UnitStrc* pUnit, int nState); // 0x006256B0
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
-void __stdcall PATH_SetMoveTestCollisionMask(D2DynamicPathStrc* pDynamicPath, int nMask); // 0x00648CE0
 void __stdcall sub_00649190_SetPathMode(D2UnitStrc* pUnit, int nMode); // 0x00649190
 int __stdcall sub_00650BE0_PlaceUnit(D2DynamicPathStrc* pDynamicPath, D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00650BE0
-unsigned char __stdcall PATH_GetDirection(D2DynamicPathStrc* pPath); // 0x006487F0
 void __stdcall sub_006488A0_SetDirection(D2DynamicPathStrc* pPath, int nDirection); // 0x006488A0
-unsigned short __stdcall COLLISION_CheckMask(D2ActiveRoomStrc* pRoom, int nX, int nY, unsigned short nMask); // 0x0064CB30
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 extern unsigned short gwRequestId; // 0x0070CD60
-extern int gnGlobal_007111CC; // 0x007111CC
-extern int gnGlobal_007111D0; // 0x007111D0
-extern int gnGlobal_007111D4; // 0x007111D4
+extern int gnProgressiveStatesBottomWide; // 0x007111CC
+extern int gnProgressiveStatesRight; // 0x007111D0
+extern int gnProgressiveStatesBottom; // 0x007111D4
 extern int gnScreenWidth; // 0x0071146C
 extern int gnScreenHeight; // 0x00711470
 extern unsigned short gwSavedRequestId; // 0x0077BBDC
@@ -122,10 +107,7 @@ extern int gnProgress; // 0x007BB3B4
 void __stdcall CHARSEL_AddToScrollValue(int nDelta); // 0x00439E60
 int __stdcall CHARSEL_HandleListKey(SMSGHANDLER_PARAMS* pMsg); // 0x00439E90
 static int gnTopRow; // 0x00779DC8
-unsigned int __stdcall SStrCopy(char* szDest, const char* szSource, unsigned int nMax); // 0x004135D0
-D2WinControlStrc* __fastcall MAINMENUS_CreateControl(int nId); // 0x0042F430
 void __fastcall MAINMENUS_ShowText(const Unicode* pText, D2LaunchDoneFn pfnDone); // 0x00433450
-void __cdecl CHARSEL_DisconnectBattleNet(); // 0x0043B9A0
 extern int gnBusy; // 0x00779DAC
 extern "C" unsigned int __cdecl strlen(const char* sz);
 struct D2LaunchCharEntryStrc
@@ -146,17 +128,10 @@ int __fastcall MAINMENUS_ReadPaletteFiles(const char* szFile1, const char* szFil
 int __stdcall CHARSEL_OnScroll(SMSGHANDLER_PARAMS* pMsg);                                              // 0x00439DF0
 int __cdecl CHARSEL_InitRealmScreen();                                                                 // 0x0043A2B0
 void __fastcall CHARSEL_UseName(char* szName);                                                         // 0x0043ADB0
-void __fastcall CONTROL_SetEnabled(D2WinControlStrc* pControl, int nFlags);                     // 0x004F96F0
-void __fastcall TEXTBOX_SetSmallGap(int nFont);                                                                    // 0x004FB590
-int __fastcall D2Win_10191(D2WinTextBoxStrc* pTextBox, int nMaxSteps);                                      // 0x004FC5E0
-int __fastcall D2Win_10194(D2WinTextBoxStrc* pTextBox, D2WinTextBoxStrc* pLinkedTextBox);                   // 0x004FC6A0
 int __fastcall D2Win_10195(D2WinTextBoxStrc* pTextBox, void(__stdcall* pfScrollCallback)(SMSGHANDLER_PARAMS*)); // 0x004FC6E0
-void __fastcall BUTTON_SetStringId(D2WinButtonStrc* pButton, int nStringId);                                // 0x00500BF0
 extern D2WinControlStrc* gpControl_007799F8;                                                                       // 0x007799F8
 extern void* gapRowControls[];                                                                     // 0x00779A20
-extern char gszPreferredRealm[];                                                                               // 0x00779A40
 extern void* gapRowControlsX[8];                                                                          // 0x00779B40
-extern D2WinControlStrc* gpControl_00779C84;                                                                       // 0x00779C84
 static int gnSelected;         // 0x0070CC00
 static D2WinControlStrc* gpCharSelectText; // 0x00779DD4
 static D2WinControlStrc* gpControl_00779DD0;        // 0x00779DD0
@@ -176,7 +151,9 @@ struct D2ListMsgStrc
 };
 int __stdcall CHARSEL_OnCharSelectOk(D2ListMsgStrc* pMsg); // 0x00439840
 char* __cdecl CHARSEL_StrStr(char* szString, const char* szSubString); // 0x0042E5B0
-// build: symbol ??0Unicode@@QAE@G@Z 0x0042E600
+// This piece stays apart from CharSel.cpp. It supplies the out-of-line Unicode::Unicode(unsigned short)
+// at 0x42E600, a COMDAT the linker takes from the first unit that emits it; CharSel.cpp inlines that
+// constructor at every use and emits no copy. It joins the unit that emits the constructor once that is found.
 Unicode::Unicode(unsigned short wValue)
 {
     wChar = wValue;
@@ -199,7 +176,6 @@ void __cdecl CHARSEL_RefreshRealmList(); // 0x004379F0
 // 0x00437A00
 static inline char* CHARSEL_GetSlotNameChecked(int nIndex)
 {
-// build: symbol ?GAME_GetSlotNameCount@* 0x00430B40
     if (nIndex < GAME_GetSlotNameCount())
         return MAINMENUS_GetSlotName(nIndex);
     return 0;
@@ -221,7 +197,6 @@ int __stdcall CHARSEL_OnHellDifficulty(SMSGHANDLER_PARAMS* pMsg); // 0x00439BC0
 void __stdcall CHARSEL_AddToScrollValue(int nDelta); // 0x00439E60
 int __stdcall CHARSEL_HandleListKey(SMSGHANDLER_PARAMS* pMsg); // 0x00439E90
 int __stdcall CHARSEL_OnListKeyDown(SMSGHANDLER_PARAMS* pMsg); // 0x0043A0D0
-// build: symbol ?CHARSEL_FindSlotByName@* 0x00437A20
 static int CHARSEL_FindSlotByName(const char* szName)
 {
     int i = 0;
@@ -243,62 +218,4 @@ void __cdecl CHARSEL_RequestGameList(); // 0x00445020
 void __cdecl UI_DrawProgressiveStates(); // 0x00453470
 void __cdecl DLIGHTMAP_ScanGridCollision(); // 0x004756D0
 void __fastcall MSG_ShowProgressSteps(int nDone, int nTotal); // 0x00478160
-// 0x0043A2B0
-int __cdecl CHARSEL_InitRealmScreen()
-{
-    unsigned short nStringId;
-    gnBusy = 0;
-// build: symbol ?gnLaunchMode@* 0x007795EC
-    if (gnLaunchMode == 1)
-    {
-        sub_00434060();
-        const int nCount = GAME_GetSlotNameCount();
-        if (nCount != -1)
-        {
-            if (nCount != 0)
-            {
-                D2WinControlStrc* pControl = MAINMENUS_CreateControl(0x7A);
-                sub_004FD830(pControl);
-                sub_004FDA50(pControl);
-                gpControl_00779DD0 = MAINMENUS_CreateControl(0x94);
-                gpCharSelectText = MAINMENUS_CreateControl(0x95);
-                MAINMENUS_CreateControl(0x69);
-                gpControl_00779D98 = MAINMENUS_CreateControl(0x6B);
-                gpControl_00779D8C = MAINMENUS_CreateControl(0x6C);
-                sub_004FC9B0_SetText(MAINMENUS_CreateControl(0x6A), D2LANG_GetStringFromTblIndex(0x2B32), 4, 0, 0);
-
-                if (!SRegLoadString("Diablo II", "Preferred Realm", 0, gszPreferredRealm, 0x100) || !CHARSEL_FindSlotByName(gszPreferredRealm))
-                {
-                    D2FuncRecordStrc* pRecord = gpFuncTable_0077ABF0->pfnGetRecord();
-                    const int nIndex = pRecord->nIndex;
-                    SStrCopy(gszPreferredRealm, sub_005180E0(pRecord, nIndex), 0x7FFFFFFF);
-                    SRegSaveString("Diablo II", "Preferred Realm", 0, gszPreferredRealm);
-                    if (!CHARSEL_FindSlotByName(gszPreferredRealm))
-                    {
-                        const char* szFirst = GAME_GetSlotNameCount() > 0 ? MAINMENUS_GetSlotName(0) : 0;
-                        SStrCopy(gszPreferredRealm, szFirst, 0x7FFFFFFF);
-                        SRegSaveString("Diablo II", "Preferred Realm", 0, gszPreferredRealm);
-                    }
-                }
-            }
-            else
-            {
-                CHARSEL_DisconnectBattleNet();
-                nStringId = 0x14AA;
-                goto fail;
-            }
-        }
-        else
-        {
-            CHARSEL_DisconnectBattleNet();
-            nStringId = 0x14E3;
-            goto fail;
-        }
-    }
-    return 1;
-
-fail:
-    MAINMENUS_ShowText(D2LANG_GetStringFromTblIndex(nStringId), sub_004336C0);
-    return 0;
-}
 void __cdecl CHARSEL_ShowString(); // 0x0043A610

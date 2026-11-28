@@ -1,3 +1,8 @@
+// This piece stays apart from SBig.cpp (a declaration difference). sub_00423100_Sub reads each buffer's
+// limb count through a copy of a one-member count struct (BigBuffer::IsUsed below), and that copy is what
+// keeps one of the counts in a stack slot as the original does. SBig.cpp's types (Source/Include
+// D2StormArrayA.h, D2StormBigBuffer.h) hold the count as a plain unsigned int, which every function in
+// SBig.cpp needs; with them this function comes out 324 bytes for the original's 330.
 void __stdcall SMemZero(void* pDest, unsigned int nSize);                                                   // 0x0041D300
 
 struct D2StormCountStrc

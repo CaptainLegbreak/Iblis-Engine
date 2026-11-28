@@ -1,6 +1,9 @@
 #include "D2Direct3D.h"
 #include "D2DDrawTypes.h"
 #include "D2Win32Types.h"
+#include "FogApi.h"
+#include "StormApi.h"
+#include "StormApi2.h"
 
 #define gnHandle_00989760 (gatVideoVertices[0].dwColor)
 
@@ -16,15 +19,13 @@ D2TLVertexStrc gatVideoVertices[4]; // 0x00989750
 
 extern void* gpBuffer_009897D0; // 0x009897D0
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* pText, const char* pFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern void* gpArray_009897D4[2]; // 0x009897D4
 
-extern void* gpArray_009897DC[2]; // 0x009897DC
+extern void* gapObjectsDC[2]; // 0x009897DC
 
 extern void* gpArray_009897E4[2]; // 0x009897E4
 
@@ -52,11 +53,8 @@ void __cdecl D3DSMACK_UploadSmackTextures(); // 0x006B9BD0
 
 extern D2D3DDeviceStrc* gpDevice_00970E78; // 0x00970E78
 
-void __fastcall D3DCORE_SetColorCombineMode(int nState); // 0x006B1EA0
 
-void __fastcall D3DCORE_SetAlphaBlendMode(int nState); // 0x006B1F40
 
-void __fastcall D3DCORE_SetTextureFilterMode(int nMode); // 0x006B2030
 
 static void __stdcall D3DSMACK_CopySmackBlock(unsigned short* pSource, unsigned short* pDest, int nDestPitch); // 0x006B9EB0
 
@@ -73,10 +71,6 @@ extern "C" __declspec(dllimport) void* __stdcall SmackOpen(const char* szName, u
 extern "C" __declspec(dllimport) void __stdcall SmackClose(void* hSmack); // 0x006CC608
 
 extern "C" __declspec(dllimport) void __stdcall SmackToBuffer(void* hSmack, unsigned int nLeft, unsigned int nTop, unsigned int nPitch, unsigned int nHeight, void* pBuffer, unsigned int nFlags); // 0x006CC60C
-
-int __stdcall SMemFree(void* pMemory, const char* szFile, int nLine, unsigned int nFlags); // 0x00412650
-
-int __stdcall SFileLoadFileEx(void* hMpq, const char* szFileName, void** ppBuffer, int* pnSize, int nExtraBytes, int nFlags, void* pOverlapped); // 0x0041B680
 
 int __stdcall SBmpDecodeImage(int nMode, void* pData, int nSize, tagPALETTEENTRY* pPalette, unsigned char* pDest, int nDestSize, int* pWidth, int* pHeight, int* pDepth); // 0x006C6A80
 
@@ -105,12 +99,12 @@ char* __fastcall D3DSMACK_CreateSmackSurfaces(char* pBuffer)
     for (int i = 0; i < 2; ++i)
     {
         void** ppFirst = &gpArray_009897D4[i];
-        void** ppSecond = &gpArray_009897DC[i];
+        void** ppSecond = &gapObjectsDC[i];
         D3DCORE_CreateMemoryTexture(ppFirst, ppSecond, 256, 64);
         D2_ASSERT(*ppFirst, 0x4A);
         D2_ASSERT(*ppSecond, 0x4B);
         ppFirst = &gpArray_009897E4[i];
-        ppSecond = &gpArray_009897EC[i];
+        ppSecond = &gapObjectsEC[i];
         int nResult = sub_006B58A0_Allocate(ppFirst, ppSecond, 256, 64);
         D2_ASSERT(*ppFirst, 0x4E);
         D2_ASSERT(*ppSecond, 0x4F);
@@ -158,7 +152,6 @@ void __cdecl D3DSMACK_UploadSmackTextures()
 {
     if (gpBuffer_009897D4)
     {
-// build: symbol ?gnRenderFlag@* 0x006CE290
         if (gnRenderFlags_0096F3A8 & gnRenderFlag)
         {
             D3DCORE_CopySurface(gpTarget_009897E4, gpBuffer_009897D4, 0x40);
@@ -207,7 +200,7 @@ static void __stdcall D3DSMACK_DrawSmackFrame(D2SmackRecordStrc* video, int widt
     gatVideoVertices[3].fRhw = 1.0f;
     gatVideoVertices[3].fU = 1.0f;
     gatVideoVertices[3].fV = 0.0f;
-    gpDevice_00970E78->lpVtbl->SetTexture(gpDevice_00970E78, 0, gpArray_009897EC[0]);
+    gpDevice_00970E78->lpVtbl->SetTexture(gpDevice_00970E78, 0, gapObjectsEC[0]);
     gpDevice_00970E78->lpVtbl->DrawPrimitive(gpDevice_00970E78, 6, 0x1C4, gatVideoVertices, 4, 0x1C);
 
     x += 256;
@@ -237,7 +230,7 @@ static void __stdcall D3DSMACK_DrawSmackFrame(D2SmackRecordStrc* video, int widt
     gatVideoVertices[3].fRhw = 1.0f;
     gatVideoVertices[3].fU = u;
     gatVideoVertices[3].fV = 0.0f;
-    gpDevice_00970E78->lpVtbl->SetTexture(gpDevice_00970E78, 0, gpArray_009897EC[1]);
+    gpDevice_00970E78->lpVtbl->SetTexture(gpDevice_00970E78, 0, gapObjectsEC[1]);
     gpDevice_00970E78->lpVtbl->DrawPrimitive(gpDevice_00970E78, 6, 0x1C4, gatVideoVertices, 4, 0x1C);
 }
 
@@ -261,7 +254,6 @@ void __fastcall D3DSMACK_PlaySmacker(D2SmackRecordStrc* video)
                         D3DSMACK_CloseSmacker(video);
                     else
                         SmackNextFrame(smack);
-// build: symbol ?gbRenderPaused@* 0x007C9144
                     if (gbRenderPaused)
                         return;
                     D3DSMACK_UploadSmackTextures();

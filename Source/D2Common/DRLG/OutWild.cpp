@@ -3,13 +3,14 @@
 #include "D2Drlg.h"
 #include "D2DrlgMaps.h"
 #include "D2DrlgRooms.h"
+#include "FogApi.h"
 
 typedef int BOOL;
 
 struct D2DrlgStrc;
 
 
-void __fastcall DRLGOUTDOORS_SpawnOutdoorLevelPresetEx(D2DrlgLevelStrc* pLevel, int nX, int nY, int nLevelPrestId, int nPickedFile, int a6); // 0x006743C0
+void __fastcall DRLGOUTDOORS_SpawnOutdoorLevelPresetEx(D2DrlgLevelStrc* pLevel, int nX, int nY, int nLevelPrestId, int nPickedFile, int bFlag); // 0x006743C0
 
 
 int __fastcall DRLGOUTDOORS_SpawnRandomOutdoorDS1(D2DrlgLevelStrc* pLevel, int nLvlPrestId, int nRand);
@@ -30,7 +31,7 @@ void __stdcall DRLGOUTDESR_SpawnRiverAndCliffCaves(D2DrlgLevelStrc* pLevel); // 
 
 D2DrlgLevelStrc* __stdcall DRLG_GetLevel(D2DrlgStrc* pDrlg, int nLevelId);
 
-int __fastcall DRLGOUTDOORS_SpawnPresetFarAway(D2DrlgLevelStrc* pLevel, D2DrlgCoordStrc* pCoords, int nLevelPrestId, int nPickedFile, int a5, int a6);
+int __fastcall DRLGOUTDOORS_SpawnPresetFarAway(D2DrlgLevelStrc* pLevel, D2DrlgCoordStrc* pCoords, int nLevelPrestId, int nPickedFile, int nOffset, int nFlags);
 
 int __fastcall DRLGGRID_GetGridEntry(D2DrlgGridStrc* pGrid, int nX, int nY);
 
@@ -38,9 +39,7 @@ void __stdcall DRLGOUTDESR_PlaceColumns(D2DrlgLevelStrc* pLevel, int nColumn); /
 
 extern "C" const char gszEmptyAssertText;
 
-extern "C" const char* __cdecl sub_00408090();
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);
 
@@ -78,7 +77,6 @@ static int DRLGOUTWILD_TestSpawnRiver(int nX, D2DrlgLevelStrc* pLevel)
     return 1;
 }
 
-// build: symbol ?DRLGOUTDESR_IsRectAdjacent@* 0x0067FFB0
 static inline int DRLGOUTDESR_IsRectAdjacent(D2DrlgOutRectStrc* pRect, D2DrlgOutRectStrc* pOther)
 {
     D2DrlgOutRectStrc* pBounds = pRect->pBounds;
@@ -93,7 +91,6 @@ static inline int DRLGOUTDESR_IsRectAdjacent(D2DrlgOutRectStrc* pRect, D2DrlgOut
     return 0;
 }
 
-// build: symbol ?DRLGOUTDESR_IsSpecialVertex@* 0x0067FFF0
 static inline BOOL DRLGOUTDESR_IsSpecialVertex(D2DrlgVertexStrc* pDrlgVertex)
 {
     D2DrlgVertexStrc* pNext = pDrlgVertex->pNext;
@@ -148,14 +145,6 @@ static void __stdcall DRLGOUTWILD_SpawnCottage(int bExtraCottage, int nLvlPrestI
         DRLGOUTDOORS_SpawnRandomOutdoorDS1(pLevel, nLvlPrestId, -1);
         DRLGOUTDOORS_SpawnRandomOutdoorDS1(pLevel, nLvlPrestId, -1);
     }
-}
-
-void __fastcall sub_M90_Emit_006804E0(D2DrlgLevelStrc* pLevel)
-{
-    DRLGOUTDOORS_SpawnRandomOutdoorDS1(pLevel, 0x2E, -1);
-    DRLGOUTWILD_SpawnCottage(0, 0x2F, pLevel);
-    DRLGOUTDOORS_SpawnOutdoorLevelPreset(pLevel, 0x1D, -1, 0, 15);
-    DRLGOUTWILD_SpawnCottage(1, 0x30, pLevel);
 }
 
 // 0x00680580
@@ -231,7 +220,6 @@ static void DRLGOUTWILD_SpawnSpecialPresets(D2DrlgLevelStrc* pLevel)
     }
 }
 
-// build: symbol ?DRLGOUTDESR_MarkVertexDirections@* 0x00680070
 static void DRLGOUTDESR_MarkVertexDirections(D2DrlgLevelStrc* pLevel)
 {
     D2DrlgOutdoorInfoStrc* pOutdoors = pLevel->pOutdoors;
@@ -393,12 +381,6 @@ void __fastcall DRLGOUTWILD_InitAct1OutdoorLevel(D2DrlgLevelStrc* pLevel)
         DRLGOUTDOORS_SpawnAct12Shrines(pLevel, 5);
     }
 
-    DRLGOUTWILD_SpawnSpecialPresets(pLevel);
-}
-
-void __fastcall sub_C07_Emit_00680580(D2DrlgLevelStrc* pLevel)
-{
-    DRLGOUTDOORS_SpawnAct12Shrines(pLevel, 5);
     DRLGOUTWILD_SpawnSpecialPresets(pLevel);
 }
 

@@ -1,5 +1,6 @@
 #include "D2Direct3D.h"
 #include "D2D3DTypes.h"
+#include "FogApi.h"
 
 struct D2SurfaceStrc;
 
@@ -9,15 +10,12 @@ struct D2TextureEntryStrc;
 
 struct D2TextureSetStrc;
 
-extern "C" const char* __cdecl sub_00408090(); // 0x00408090
 
-extern "C" void __cdecl FOG_DisplayHalt(const char* szText, const char* szFile, int nLine); // 0x00408A60
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-int __fastcall FOG_Free(void* pFree, const char* szFile, int nLine, int n0); // 0x0040B3C0
 
 struct D2SurfaceVtableStrc { void* unknown[31]; int (__stdcall* SetPalette)(D2SurfaceStrc*, void*); };
 
@@ -86,14 +84,12 @@ int __fastcall D3DTEXTURECACHE_AllocOrEvict(D2TexPoolStrc* pPool); // 0x006BA920
 // 0x006BA420
 int __fastcall sub_006BA420_Init(D2TexPoolStrc* pPool, int nBase, int nLimit, int nWidth, int nHeight)
 {
-// build: symbol ?gnBytesPerPixel@* 0x00970E80
 	int nUnit = gnBytesPerPixel * nWidth * nHeight;
 
 	pPool->nCapacity = (nLimit - nBase) / nUnit;
 	pPool->nCapacity = pPool->nCapacity < 0x400 ? pPool->nCapacity : 0x400;
 
 	int nSize = pPool->nCapacity * sizeof(D2TexPoolEntryStrc);
-// build: symbol ?gszTexPoolSourceFile@* 0x006FC36C
 	pPool->pEntries = (D2TexPoolEntryStrc*)FOG_Alloc(nSize, gszTexPoolSourceFile, 55, 0);
 	memset(pPool->pEntries, 0, nSize);
 
@@ -438,8 +434,6 @@ int __fastcall D3DTEXTURECACHE_AllocOrEvict(D2TexPoolStrc* pPool)
 	}
 	return nId;
 }
-
-extern "C" const char gData_006FC36C[28]; // 0x006FC36C
 
 extern "C" const char gData_006FC36C[28] = ".\\Src\\d3dTextureCache.cpp"; // 0x006FC36C
 #pragma comment(linker, "/alternatename:?gszTexPoolSourceFile@@3QBDB=_gData_006FC36C")

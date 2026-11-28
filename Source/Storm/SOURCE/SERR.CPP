@@ -125,35 +125,8 @@ char gszMessageBuffer_00779100[256]; // 0x00779100
 unsigned long gdwDebugMemory_00779200; // 0x00779200
 int gbDebugMemoryLoaded_00779204; // 0x00779204
 
-// build: symbol ??__EgHandlerList_00708420@@YAXXZ 0x006CA8A0
-// build: symbol ??__FgHandlerList_00708420@@YAXXZ 0x006CB2A0
 TSList<HANDLER> gHandlerList_00708420; // 0x00708420
 
-// build: symbol ??_R0?AUHANDLER@@@8 0x0070842C
-// build: symbol _SMemAlloc@16 0x00413020
-// build: symbol _SMemFree@16 0x00412650
-// build: symbol ?Next@?$TSLink@UHANDLER@@@@QAEPAUHANDLER@@XZ 0x0041C370
-// build: symbol ?RawNext@?$TSLink@UHANDLER@@@@QAEPAUHANDLER@@XZ 0x0041C380
-// build: symbol ?NextLink@?$TSLink@UHANDLER@@@@QAEPAU1@H@Z 0x0041C3A0
-// build: symbol ?Unlink@?$TSLink@UHANDLER@@@@QAEXXZ 0x0041C3D0
-// build: symbol ?Head@?$TSList@UHANDLER@@U?$TSGetLink@UHANDLER@@@@@@QAEPAUHANDLER@@XZ 0x0041C4E0
-// build: symbol ??0?$TSLink@UHANDLER@@@@QAE@XZ 0x0041C4F0
-// build: symbol ?Link@?$TSList@UHANDLER@@U?$TSGetLink@UHANDLER@@@@@@QAEPAU?$TSLink@UHANDLER@@@@PBUHANDLER@@@Z 0x0041C560
-// build: symbol ?LinkNode@?$TSList@UHANDLER@@U?$TSGetLink@UHANDLER@@@@@@QAEXPAUHANDLER@@I0@Z 0x0041C580
-// build: symbol ?Next@?$TSList@UHANDLER@@U?$TSGetLink@UHANDLER@@@@@@QAEPAUHANDLER@@PBU2@@Z 0x0041C630
-// build: symbol ??1?$TSLink@UHANDLER@@@@QAE@XZ 0x0041C650
-// build: symbol ?UnlinkNode@?$TSList@UHANDLER@@U?$TSGetLink@UHANDLER@@@@@@QAEXPAUHANDLER@@@Z 0x0041C690
-// build: symbol ?RawNext@?$TSList@UHANDLER@@U?$TSGetLink@UHANDLER@@@@@@QAEPAUHANDLER@@PBU2@@Z 0x0041C700
-// build: symbol ??0?$TSLinkedNode@UHANDLER@@@@QAE@XZ 0x0041C720
-// build: symbol ??1?$TSLinkedNode@UHANDLER@@@@QAE@XZ 0x0041C730
-// build: symbol ?UnlinkAll@?$TSList@UHANDLER@@U?$TSGetLink@UHANDLER@@@@@@QAEXXZ 0x0041C770
-// build: symbol ??1?$TSList@UHANDLER@@U?$TSGetLink@UHANDLER@@@@@@QAE@XZ 0x0041C7B0
-// build: symbol ??0HANDLER@@QAE@XZ 0x0041C7F0
-// build: symbol ??1HANDLER@@QAE@XZ 0x0041C800
-// build: symbol ?NewNode@?$TSList@UHANDLER@@U?$TSGetLink@UHANDLER@@@@@@QAEPAUHANDLER@@III@Z 0x0041C840
-// build: symbol ??_GHANDLER@@QAEPAXI@Z 0x0041C8A0
-// build: symbol ?Clear@?$TSList@UHANDLER@@U?$TSGetLink@UHANDLER@@@@@@QAEXXZ 0x0041C9C0
-// build: symbol ?DeleteNode@?$TSList@UHANDLER@@U?$TSGetLink@UHANDLER@@@@@@QAEPAUHANDLER@@PAU2@@Z 0x0041CA10
 template HANDLER* TSLink<HANDLER>::Next();
 template HANDLER* TSLink<HANDLER>::RawNext();
 template TSLink<HANDLER>* TSLink<HANDLER>::NextLink(int);
@@ -579,12 +552,20 @@ void __stdcall SErrReportResourceLeak(const char* szName)
     SErrReportNamedResourceLeak(szName, 0);
 }
 
-extern "C" const char* const gData_006CF2F4[12]; // 0x006CF2F4
-extern "C" const char gData_006CF330[12]; // 0x006CF330
-extern "C" const char gData_006CF33C[16]; // 0x006CF33C
-extern "C" const char gData_006CF34C[8]; // 0x006CF34C
-
-extern "C" const char* const gData_006CF2F4[12] = { "ERROR #%u (0x%08x)", "This application has encountered a critical error:\n\n%s\n", "Program:\t%s\n", "File:\t%s\nLine:\t%d\n", "Function:\t%s\n", "Object:\t%s\n", "Handle:\t%s\n", "Expr:\t%s\n\n", "\n%s\n\n", "Press OK to terminate the application.", "Do you wish to terminate the application?", "File:\t%s\n" }; // 0x006CF2F4
+extern "C" const char* const gData_006CF2F4[12] = { // 0x006CF2F4
+    "ERROR #%u (0x%08x)",
+    "This application has encountered a critical error:\n\n%s\n",
+    "Program:\t%s\n",
+    "File:\t%s\nLine:\t%d\n",
+    "Function:\t%s\n",
+    "Object:\t%s\n",
+    "Handle:\t%s\n",
+    "Expr:\t%s\n\n",
+    "\n%s\n\n",
+    "Press OK to terminate the application.",
+    "Do you wish to terminate the application?",
+    "File:\t%s\n"
+};
 #pragma comment(linker, "/alternatename:?gpszMessageFallback_006CF2F4@@3PAPBDA=_gData_006CF2F4")
 
 extern "C" const char gData_006CF330[12] = "%s %s:%i"; // 0x006CF330

@@ -42,7 +42,7 @@ struct RSA
 }
 
 extern "C" unsigned int __cdecl _rotl(unsigned int nValue, int nShift);
-extern "C" const unsigned char gaSha1Padding_00708890[]; // 0x00708890
+extern "C" const unsigned char gaSha1Padding[]; // 0x00708890
 
 // 0x00425720
 unsigned int __fastcall sub_00425720_Rotl(unsigned int nValue, int nShift)
@@ -238,7 +238,7 @@ void Sha1::sub_00425F00_Final(unsigned char* pDigest)
 {
     unsigned char aCount[8];
     sub_PutBE64(aCount, nBitCount);
-    Append(gaSha1Padding_00708890, ((0xFFFFFFF7 - ((unsigned int)nBitCount >> 3)) & 0x3F) + 1);
+    Append(gaSha1Padding, ((0xFFFFFFF7 - ((unsigned int)nBitCount >> 3)) & 0x3F) + 1);
     Append(aCount, 8);
     for (int i = 0; i < 5; i++)
     {
@@ -264,7 +264,7 @@ void* BigNum::sub_00426010_ReadFill(void* pBuffer, unsigned int nSize)
     unsigned int nRead;
     SBigToBinaryBuffer(hHandle, pBuffer, nSize, &nRead);
     if (nRead < nSize)
-        sub_0041D300_ZeroMemory((char*)pBuffer + nRead, nSize - nRead);
+        SMemZero((char*)pBuffer + nRead, nSize - nRead);
     return pBuffer;
 }
 
@@ -291,18 +291,5 @@ void Crypt::RSA::Process(void* pBuffer, unsigned int nSize)
     tOutput.sub_00426010_ReadFill(pBuffer, nSize);
 }
 
-extern "C" char gData_006F28F8[]; // 0x006F28F8
-
-#pragma pack(push, 1)
-struct d2data_00708890_t
-{
-    unsigned char b0[64];
-};
-#pragma pack(pop)
-
-extern "C" struct d2data_00708890_t gData_00708890; // 0x00708890
-
-extern "C" struct d2data_00708890_t gData_00708890 = {
-    { 0x80 }
-}; // 0x00708890
+extern "C" unsigned char gData_00708890[64] = { 0x80 }; // 0x00708890
 #pragma comment(linker, "/alternatename:_gaSha1Padding_00708890=_gData_00708890")
