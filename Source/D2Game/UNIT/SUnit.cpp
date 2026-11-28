@@ -1645,7 +1645,7 @@ void __stdcall SUNIT_SetInteractInfo(D2UnitStrc* pUnit, int nInteractUnitType, i
 }
 
 // 0x00554190
-extern "C" __declspec(dllexport) void __stdcall SUNIT_ResetInteractInfo(Obj00554190* pObj) {
+__declspec(dllexport) void __stdcall SUNIT_ResetInteractInfo(Obj00554190* pObj) {
     pObj->nValue64 = -1;
     pObj->nValue68 = 6;
     pObj->nValue6C = 0;

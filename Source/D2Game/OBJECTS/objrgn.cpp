@@ -672,7 +672,7 @@ D2ObjectRegionStrc* __fastcall OBJRGN_GetObjectRegionForLevel(D2GameStrc* pGame,
 }
 
 // 0x00546FA0
-extern "C" __declspec(dllexport) D2ObjectControlStrc* __fastcall OBJRGN_GetObjectControlFromGame(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom)
+__declspec(dllexport) D2ObjectControlStrc* __fastcall OBJRGN_GetObjectControlFromGame(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom)
 {
     return pGame->pObjectControl;
 }

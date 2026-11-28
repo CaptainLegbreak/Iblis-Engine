@@ -177,14 +177,14 @@ struct Data00573570 { unsigned char bUnknown00[0x5C]; unsigned short wFlags5C; }
 struct Unit00573570 { int nType; unsigned int dwUnknown04; unsigned int dwUnknown08; unsigned int dwUnknown0C; unsigned int dwUnknown10; Data00573570* pData; };
 
 // 0x005734C0
-extern "C" __declspec(dllexport) void __fastcall sub_005734C0(Unit005734C0* pUnit, unsigned int dwValue) {
+extern "C" __declspec(dllexport) void __fastcall MONSTER_SetAiState(Unit005734C0* pUnit, unsigned int dwValue) {
     if (pUnit && pUnit->nType == 1 && pUnit->pData) {
         pUnit->pData->dwValue54 = dwValue;
     }
 }
 
 // 0x005734E0
-extern "C" __declspec(dllexport) unsigned int __fastcall sub_005734E0(Unit005734E0* pUnit) {
+extern "C" __declspec(dllexport) unsigned int __fastcall MONSTER_GetAiState(Unit005734E0* pUnit) {
     Data005734E0* pData = (pUnit && pUnit->nType == 1) ? pUnit->pData : 0;
     if (!pData) {
         return 1;
@@ -193,7 +193,7 @@ extern "C" __declspec(dllexport) unsigned int __fastcall sub_005734E0(Unit005734
 }
 
 // 0x00573500
-extern "C" __declspec(dllexport) void __fastcall sub_00573500(Unit00573500* pUnit, unsigned int dwValue) {
+extern "C" __declspec(dllexport) void __fastcall MONSTER_SetLevelId(Unit00573500* pUnit, unsigned int dwValue) {
     if (pUnit && pUnit->nType == 1 && pUnit->pData) {
         pUnit->pData->dwValue58 = dwValue;
     }
@@ -209,7 +209,7 @@ extern "C" __declspec(dllexport) unsigned int __fastcall sub_00573520(Unit005735
 }
 
 // 0x00573540
-extern "C" __declspec(dllexport) int __fastcall sub_00573540(Unit00573540* pUnit, unsigned short wMask) {
+extern "C" __declspec(dllexport) int __fastcall MONSTER_CheckSummonerFlag(Unit00573540* pUnit, unsigned short wMask) {
     Data00573540* pData = (pUnit && pUnit->nType == 1) ? pUnit->pData : 0;
     if (!pData) {
         return 0;
@@ -218,7 +218,7 @@ extern "C" __declspec(dllexport) int __fastcall sub_00573540(Unit00573540* pUnit
 }
 
 // 0x00573570
-extern "C" __declspec(dllexport) void __fastcall sub_00573570(Unit00573570* pUnit, unsigned short wMask, int bSet) {
+extern "C" __declspec(dllexport) void __fastcall MONSTER_ToggleSummonerFlag(Unit00573570* pUnit, unsigned short wMask, int bSet) {
     if (pUnit && pUnit->nType == 1) {
         Data00573570* pData = pUnit->pData;
         if (pData) {

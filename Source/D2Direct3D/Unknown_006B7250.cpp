@@ -69,7 +69,7 @@ struct D2SurfaceVtableStrc { void* unk[31]; int (__stdcall *SetPalette)(D2Surfac
 
 struct D2SurfaceStrc { D2SurfaceVtableStrc* vtable; };
 
-void __fastcall D3DCORE_LogDDrawError(const char*, int); // 0x006B20E0
+void __fastcall D3DCORE_LogDDrawError(const char* szWhere, int hResult); // 0x006B20E0
 
 void __cdecl sub_006B72A0_CreateFontTextures(); // 0x006B72A0
 
@@ -483,7 +483,7 @@ void __cdecl sub_006B9150_ReleaseResource()
     }
 }
 
-unsigned char gaScaleTable_00971740[256][256]; // 0x00971740
+unsigned char gabMultiplyTable[256][256]; // 0x00971740
 
 // 0x006B96C0
 void __cdecl sub_006B96C0_BuildScaleTable()
@@ -492,7 +492,7 @@ void __cdecl sub_006B96C0_BuildScaleTable()
     {
         for (int j = 0; j < 256; ++j)
         {
-            gaScaleTable_00971740[i][j] = (unsigned char)((i * j) / 255);
+            gabMultiplyTable[i][j] = (unsigned char)((i * j) / 255);
         }
     }
 }

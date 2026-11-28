@@ -78,7 +78,7 @@ void __fastcall INV_PrefixColorCode(Unicode* wszText, int nLevel);              
 int __fastcall DATATBLS_ApplyRatio(int nValue, int nMultiplier, int nDivisor);                              // 0x00483360
 D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit();                                                               // 0x00463DD0
 int __cdecl GAME_GetLadderFlag();                                                                     // 0x0044DCA0
-int __cdecl GAME_IsExpansion();                                                                                 // 0x0044DCC0
+int __cdecl GAME_IsExpansion(); // 0x0044DCC0
 unsigned char __cdecl GAME_GetDifficulty();                                                         // 0x0044DCD0
 D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId);                          // 0x0046ACE0
 D2SkillDescTxt* __fastcall sub_004A89D0_SkillDescRec(int nSkillId);                                        // 0x004A89D0

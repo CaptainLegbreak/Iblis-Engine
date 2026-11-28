@@ -30,7 +30,7 @@ struct D2SubtileEntryStrc { char unknown[8]; D2SurfaceStrc* surface; char tail[1
 
 struct D2SubtileSetStrc { int count; char unknown[20]; D2SubtileEntryStrc* entries; };
 
-void __fastcall D3DCORE_LogDDrawError(const char*, int); // 0x006B20E0
+void __fastcall D3DCORE_LogDDrawError(const char* szWhere, int hResult); // 0x006B20E0
 
 struct D2Node006BABD0Strc
 {

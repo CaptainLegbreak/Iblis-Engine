@@ -29,7 +29,7 @@ struct D2FloorEntryStrc { char unknown[8]; D2SurfaceStrc* surface; char tail[12]
 
 struct D2FloorSetStrc { int count; char unknown[20]; D2FloorEntryStrc* entries; };
 
-void __fastcall D3DCORE_LogDDrawError(const char*, int); // 0x006B20E0
+void __fastcall D3DCORE_LogDDrawError(const char* szWhere, int hResult); // 0x006B20E0
 
 D2FloorPoolEntryStrc* __fastcall D3DFLOORCACHE_FloorCacheUnlink(D2FloorPoolStrc* pList); // 0x006BB1F0
 

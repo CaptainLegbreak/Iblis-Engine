@@ -18,7 +18,7 @@ struct D2InactiveItemNodeStrc
     int nOwnerId; // 0x08
     unsigned short nBitstreamSize; // 0x0C
     unsigned char pBitstream[1]; // 0x0E
-    unsigned char unk0x0F; // 0x0F
+    unsigned char pad0x0F; // 0x0F
 };
 
 struct D2InactiveMonsterNodeStrc
@@ -37,9 +37,9 @@ struct D2InactiveMonsterNodeStrc
     int nLevelId; // 0x2C
     unsigned short nNameSeed; // 0x30
     unsigned char nMonUMods[9]; // 0x32
-    unsigned char unk0x3B; // 0x3B
+    unsigned char pad0x3B; // 0x3B
     unsigned short nBossHcIdx; // 0x3C
-    unsigned short unk0x3E; // 0x3E
+    unsigned short pad0x3E; // 0x3E
     int nExperience; // 0x40
     int nMaxHitpoints; // 0x44
     int nHitpoints; // 0x48
@@ -62,8 +62,8 @@ struct D2InactiveUnitNodeStrc
     int nUnitId; // 0x20
     int nFrame; // 0x24
     unsigned char nInteractType; // 0x28
-    unsigned char unk0x29; // 0x29
-    unsigned short unk0x2A; // 0x2A
+    unsigned char pad0x29; // 0x29
+    unsigned short pad0x2A; // 0x2A
     int nDropItemCode; // 0x2C
     D2InactiveUnitNodeStrc* pNext; // 0x30
 };

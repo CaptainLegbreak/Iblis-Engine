@@ -8,13 +8,13 @@ fixes come back with the next sync. Remeasure after each sync:
     ninja -C build -k 0 2> link.log                       # or the Visual Studio build's output
     python tools/link_report.py build link.log ../Iblis-Codex --md links.md
 
-Last measured: 2026-11-27, Source/ at Codex b186d24 (#495) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
+Last measured: 2026-11-27, Source/ at Codex 89e75a2 (#496) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
 docs/PORT_COMPILE.md (every object of the 22 module libraries and the program, `/WHOLEARCHIVE`).
 
 ## Result
 
-The link of Game.exe fails with **1241 unresolved symbols** (LNK2001/LNK2019) and **408 symbols defined more than once** (LNK2005).
-Counted as references, one per symbol and file that asks for it: **3080**.
+The link of Game.exe fails with **1238 unresolved symbols** (LNK2001/LNK2019) and **408 symbols defined more than once** (LNK2005).
+Counted as references, one per symbol and file that asks for it: **3076**.
 
 Codex's count (21,648 references on Codex #492) counts every place in the code that uses a symbol; this report
 counts each symbol once per file. The categories are the same, with three differences:
@@ -40,7 +40,7 @@ on calling convention, argument bytes and return register (`tools/abi.py`); a re
 of function pointers) is bound for its address alone. No game source is changed, and an alias drops out when Codex
 fixes the declaration.
 
-At Codex b186d24: **2831 aliases** (1132 of them address-only), unresolved symbols **4,072 → 1241**. Checked against
+At Codex 89e75a2: **2817 aliases** (1132 of them address-only), unresolved symbols **4,055 → 1238**. Checked against
 Codex's own `LINK_DEBT.json` (linkdebt.py with the user's Game.exe): 2803 agree; 3 bind the same address through the
 one external definition where Codex names it differently (`gpHoverItem`, `gbGoldButtonDisabled`); 25 aren't in Codex's
 list (references in code Codex's ordinary link leaves out, or tables the engine holds as source) and were checked by
@@ -56,22 +56,22 @@ crash risk, for Codex lane 12): **151**, by kind: calling convention 76, return 
 | import | 0 | 0 |
 | runtime_library | 2 | 1 |
 | type_disagreement | 140 | 115 |
-| different_identifier | 198 | 91 |
-| placeholder | 234 | 143 |
+| different_identifier | 196 | 90 |
+| placeholder | 232 | 141 |
 | renamed_definition | 97 | 60 |
 | interior | 7 | 7 |
 | unsourced_data | 1159 | 675 |
 | no_address | 217 | 157 |
 | duplicate_data | 187 | 84 |
 | local_copy | 839 | 324 |
-| **total** | 3080 | 1649 |
+| **total** | 3076 | 1646 |
 
 ## By module (references)
 
 | Module | import | crt | type | ident | plchld | renamed | inter | unsrc | noaddr | dup | copy | total |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| D2Client | 0 | 0 | 32 | 29 | 89 | 45 | 0 | 294 | 122 | 54 | 459 | 1124 |
-| D2Game | 0 | 2 | 51 | 143 | 45 | 20 | 0 | 123 | 6 | 49 | 101 | 540 |
+| D2Client | 0 | 0 | 32 | 29 | 87 | 45 | 0 | 294 | 122 | 54 | 459 | 1122 |
+| D2Game | 0 | 2 | 51 | 141 | 45 | 20 | 0 | 123 | 6 | 49 | 101 | 538 |
 | D2Common | 0 | 0 | 8 | 6 | 14 | 4 | 0 | 263 | 9 | 8 | 88 | 400 |
 | Fog | 0 | 0 | 2 | 0 | 5 | 9 | 0 | 89 | 5 | 32 | 55 | 197 |
 | D2CMP | 0 | 0 | 3 | 3 | 4 | 3 | 0 | 46 | 6 | 0 | 39 | 104 |
@@ -112,7 +112,7 @@ crash risk, for Codex lane 12): **151**, by kind: calling convention 76, return 
 - `ACT2Q5_OnSummonerCreated` at 0x0059C3B0 -> `ACT2Q5_OnSummonerCreated`, in Source/D2Game/Quests/QUESTS.CPP
 - `ACT3Q4_UnitIterate_UpdateCurrentQuestState` at 0x005BA290 -> `ACT3Q4_UnitIterate_UpdateCurrentQuestState`, in Source/D2Game/Quests/a3q4.cpp
 
-**different_identifier** (91 symbols)
+**different_identifier** (90 symbols)
 
 - `UnicodeChar::UnicodeChar` at 0x0042F530 -> `NPCMENU_ClearUnicode`, in Source/D2Lang/Unknown_00527090.cpp
 - `UnicodeChar::UnicodeChar` at 0x0042F530 -> `NPCMENU_ClearUnicode`, in Source/D2Win/Src/D2WinEditBox.cpp
@@ -123,7 +123,7 @@ crash risk, for Codex lane 12): **151**, by kind: calling convention 76, return 
 - `AIGENERAL_GetAiControlFromUnit` at 0x00541860 -> `__declspec`, in Source/D2Game/SKILLS/SkillSor.cpp
 - `AIGENERAL_GetAiControlFromUnit` at 0x00541860 -> `__declspec`, in Source/D2Game/SKILLS/SkillItem.cpp
 
-**placeholder** (143 symbols)
+**placeholder** (141 symbols)
 
 - `WardenModule::~WardenModule` at 0x004E06A0 -> `sub_004E06A0_FreeModules`, in Source/D2Client/WARDEN/WardenClient.cpp
 - `WardenModule::~WardenModule` at 0x004E06A0 -> `sub_004E06A0_FreeModules`, in Source/D2Client/Unknown_004DF1C0.cpp

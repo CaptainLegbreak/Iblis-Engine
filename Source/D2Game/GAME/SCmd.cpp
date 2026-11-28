@@ -203,7 +203,7 @@ void __fastcall D2GAME_PACKETS_SendPacketSize06(D2ClientStrc* pClient, unsigned 
 
 struct D2SkillListStrc;
 
-void __fastcall FOG_FreePool(void*, void*, const char*, int, int); // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 extern "C" const char gszSCmdSourceFile[];                                                             // 0x006D69E4
 

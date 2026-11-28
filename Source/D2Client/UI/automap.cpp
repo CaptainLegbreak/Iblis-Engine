@@ -1349,7 +1349,7 @@ void __stdcall AUTOMAP_RevealRoomCallback(D2ActiveRoomStrc* pRoom); // 0x0045915
 
 static D2AutomapCellBlockStrc* gpAutomapCellBlocks; // 0x007A5158
 
-static int gnAutomapCellCount_007A515C; // 0x007A515C
+static int gnAutomapCellCount; // 0x007A515C
 
 extern D2AutomapCellBlockStrc* gpCellBlocks_007A5158; // 0x007A5158
 
@@ -2499,7 +2499,7 @@ void __cdecl AUTOMAP_ResetAutomapCells()
             FOG_Free(pFree, ".\\UI\\automap.cpp", 0x51E, 0);
         }
         gpAutomapCellBlocks = 0;
-        gnAutomapCellCount_007A515C = 0;
+        gnAutomapCellCount = 0;
         gpAutomapContext->pFloors = 0;
         gpAutomapContext->pWalls = 0;
         gpAutomapContext->pObjects = 0;

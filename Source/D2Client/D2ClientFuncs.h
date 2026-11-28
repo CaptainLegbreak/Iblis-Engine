@@ -425,7 +425,7 @@ int __fastcall AUTOMAP_IsCursorOverMiniPanelButton(SMSGHANDLER_PARAMS* pMsg); //
 int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
 D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 int __fastcall GAME_GetUIVarState(unsigned int nUIVar); // 0x004538D0
-extern "C" int __cdecl GAME_IsExpansion(); // 0x0044DCC0
+int __cdecl GAME_IsExpansion(); // 0x0044DCC0
 void __fastcall MSG_SendTwoDwords(unsigned char nHeader, unsigned int d1, unsigned int d5); // 0x004786A0
 void* __fastcall GAME_LoadUiCelFile(const char* szFile); // 0x004520C0
 int __fastcall SCMD_RunMessageLoop(int (__stdcall* pfnIdle)(int)); // 0x00451BB0

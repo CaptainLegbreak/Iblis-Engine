@@ -133,7 +133,7 @@ void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
 
-void __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pMemory, const char* szFile, int nLine, int n0); // 0x0040B480
+int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
 
 
 
@@ -208,7 +208,7 @@ typedef int BOOL;
 
 void* __fastcall FOG_ReallocPool(D2PoolSystemStrc* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
 
-int __stdcall UNITS_GetInventoryRecordId(D2UnitStrc* pUnit, int nInvPage, int bLoD); // 0x00621050
+int __stdcall UNITS_GetInventoryRecordId(D2UnitStrc* hUnit, int nInvPage, int bLoD); // 0x00621050
 
 void __stdcall ITEMS_GetDimensions(D2UnitStrc* pItem, unsigned char* pWidth, unsigned char* pHeight, const char* szFile, int nLine); // 0x006286C0
 

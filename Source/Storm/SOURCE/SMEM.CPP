@@ -1571,4 +1571,4 @@ extern "C" const unsigned __int64 gData_006CEE70[16] = { // 0x006CEE70
 };
 #pragma comment(linker, "/alternatename:_gqwSStrHash64Table_006CEE70=_gData_006CEE70")
 
-unsigned int gnHeapId_00708344 = 0x80000000; // 0x00708344
+unsigned int gnHeapId = 0x80000000; // 0x00708344

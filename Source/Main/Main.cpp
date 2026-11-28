@@ -559,7 +559,7 @@ extern "C" const char* gData_00706584[15] = { // 0x00706584
 
 int gbD2ServerStopEvent = 1; // 0x007065C0
 
-extern const char* gaszModuleTypes_007065C4[6] = { "modstate0", "client", "server", "multiplayer", "launcher", "expand" }; // 0x007065C4
+extern const char* gaszModuleTypes[6] = { "modstate0", "client", "server", "multiplayer", "launcher", "expand" }; // 0x007065C4
 
 char gszServiceName[32] = "DIABLO2SRV\0\0Diablo II Server"; // 0x007065DC
 

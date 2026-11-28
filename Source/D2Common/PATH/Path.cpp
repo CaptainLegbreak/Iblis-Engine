@@ -723,8 +723,7 @@ void __fastcall PATH_SetNewDirection(D2DynamicPathStrc* pDynamicPath, unsigned c
 }
 
 // 0x00648690
-void __stdcall PATH_SetVelocity(D2DynamicPathStrc* pDynamicPath, int nVelocity, int nUnused3, int nUnused4)
-{
+void __stdcall PATH_SetVelocity(D2DynamicPathStrc* pDynamicPath, int nVelocity, const char* szFile, int nLine){
     if (pDynamicPath)
     {
         if (nVelocity != pDynamicPath->dwVelocity)

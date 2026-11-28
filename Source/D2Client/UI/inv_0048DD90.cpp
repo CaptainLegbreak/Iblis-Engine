@@ -71,7 +71,7 @@ void __fastcall NPCMENU_ClearUnicode(void* pThis);                              
 
 int __cdecl FOG_IsExpansion();                                                                 // 0x00408F20
 
-int __cdecl GAME_IsExpansion();                                                                                 // 0x0044DCC0
+int __cdecl GAME_IsExpansion(); // 0x0044DCC0
 
 Unicode* __fastcall sub_00452170_ReturnText(Unicode* pText);                                                           // 0x00452170
 

@@ -235,7 +235,7 @@ D2WinAccountListStrc* __fastcall ACCOUNTLIST_Create(int nX, int nY, int nWidth, 
     pAccountList->controlHeader.eType = D2WIN_ACCOUNTLIST;
     pAccountList->controlHeader.dwFlags |= gdwBitMasks[0];
     pAccountList->controlHeader.dwFlags |= gdwBitMasks[2];
-    pAccountList->unk0x4C = nField4C;
+    pAccountList->unused0x4C = nField4C;
     pAccountList->controlHeader.nImageX = nX;
     pAccountList->controlHeader.nImageY = nY;
     pAccountList->controlHeader.nWidth = nWidth;
@@ -253,12 +253,12 @@ D2WinAccountListStrc* __fastcall ACCOUNTLIST_Create(int nX, int nY, int nWidth, 
     if (pFont)
     {
         pAccountList->eFont = pFont->eFont;
-        pAccountList->unk0x54 = pFont->field_04;
+        pAccountList->nTextColor = pFont->field_04;
     }
     else
     {
         pAccountList->eFont = 1;
-        pAccountList->unk0x54 = 0;
+        pAccountList->nTextColor = 0;
     }
     CONTROL_AppendToList(&pAccountList->controlHeader);
     return pAccountList;
