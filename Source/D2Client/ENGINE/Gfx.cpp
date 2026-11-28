@@ -35,7 +35,7 @@ struct D2UnitStrc;
 
 struct D2UnitTargetStrc;
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define UNIT_PLAYER 0
 
@@ -1929,7 +1929,7 @@ AdvanceToNextNode:
         GFX_RecalcStateOverlays(ptGfxInfo, pUnit, pNode);
     }
 
-    FOG_Free(pNode, gszGfxFile, 0x1E1, 0);
+    FOG_Free(pNode, ".\\ENGINE\\Gfx.cpp", 0x1E1, 0);
 }
 
 // 0x0046E100
@@ -2980,7 +2980,7 @@ static int __stdcall GFX_DrawGfxUnit(unsigned int dwColor, int nArg, int bOverla
     const int nClassValue = !pUnit ? -1 : pUnit->dwClassId;
     int nClassId = nClassValue;
     int nMode = UNITS_GetAnimOrSeqMode(pUnit);
-    D2COMMON_11013_ConvertMode(pUnit, &nUnitType, &nClassId, &nMode, gszGfxFile, 0x52B);
+    D2COMMON_11013_ConvertMode(pUnit, &nUnitType, &nClassId, &nMode, ".\\ENGINE\\Gfx.cpp", 0x52B);
     int nDrawX = nX - PLAYER_GetScreenOffsetX();
     int nDrawY = nY - PLAYER_GetScreenOffsetY();
     int bPerspective = D2GFX_CheckPerspective();
@@ -3534,7 +3534,7 @@ int __fastcall GFX_DrawUnit(D2UnitStrc* pUnit, unsigned int dwColor, int nX, int
     const int nClassValue = !pUnit ? -1 : pUnit->dwClassId;
     int nClassId = nClassValue;
     int nMode = UNITS_GetAnimOrSeqMode(pUnit);
-    D2COMMON_11013_ConvertMode(pUnit, &nUnitType, &nClassId, &nMode, gszGfxFile, 0xAF0);
+    D2COMMON_11013_ConvertMode(pUnit, &nUnitType, &nClassId, &nMode, ".\\ENGINE\\Gfx.cpp", 0xAF0);
 
     int nOffsetX = 0;
     int nOffsetY = 0;

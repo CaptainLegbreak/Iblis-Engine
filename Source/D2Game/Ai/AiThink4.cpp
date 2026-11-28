@@ -48,7 +48,7 @@ struct D2GameStrc;
 
 struct D2UnitStrc;
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define D2_MAX(a, b) ((a) > (b) ? (a) : (b))
 
@@ -998,6 +998,10 @@ enum D2C_M408OblivionKnightAi
     OBLIVIONKNIGHT_AI_PARAM_APPROACH_DISTANCE = 7,
 };
 
+// Placed by count (docs/declaration-order.md): AITHINK_Fn085_HighPriest (0x005E0490) takes this function's address
+// and stops matching when 10 more names are declared ahead of this line. It has room for at least 8 fewer.
+D2UnitStrc* __fastcall AITHINK_TargetCallback_HighPriest(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pTarget, void* pCallbackArg); // 0x005E0430
+
 enum D2C_M422FingerMageAi
 {
     FINGERMAGE_AI_PARAM_ATTACK_CHANCE_PCT = 0,
@@ -1011,8 +1015,6 @@ enum D2C_M422FingerMageAi
 };
 
 extern D2CoordStrc gaHighPriestSkillOffsets[]; // 0x006E337C
-
-D2UnitStrc* __fastcall AITHINK_TargetCallback_HighPriest(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pTarget, void* pCallbackArg); // 0x005E0430
 
 static D2AiControlStrc* AIGENERAL_GetAiControlFromUnitInline(D2UnitStrc* pUnit)
 {
@@ -5937,7 +5939,7 @@ int __fastcall AITHINK_RollDiabloAction(D2AiControlStrc* pAi,D2UnitStrc* pUnit,D
     D2SkillStrc* pSkill=UNITS_GetLeftSkill(pTarget);
     if(pSkill)
     {
-        int nSkill=SKILLS_GetSkillIdFromSkill(pSkill,gszAiThink4Source,639);
+        int nSkill=SKILLS_GetSkillIdFromSkill(pSkill,".\\Ai\\AiThink4.cpp",639);
         if(nSkill==59 || nSkill==56)bDangerousSkill=1;
         if(nSkill==51) {if(SKILLS_GetSkillLevel(pTarget,pSkill,1)>3)bDangerousSkill=1;}
         else if(nSkill==27) {if(SKILLS_GetSkillLevel(pTarget,pSkill,1)>7)bDangerousSkill=1;}
@@ -5945,7 +5947,7 @@ int __fastcall AITHINK_RollDiabloAction(D2AiControlStrc* pAi,D2UnitStrc* pUnit,D
     pSkill=UNITS_GetRightSkill(pTarget);
     if(pSkill)
     {
-        int nSkill=SKILLS_GetSkillIdFromSkill(pSkill,gszAiThink4Source,646);
+        int nSkill=SKILLS_GetSkillIdFromSkill(pSkill,".\\Ai\\AiThink4.cpp",646);
         if(nSkill==59 || nSkill==56)bDangerousSkill=1;
         if(nSkill==51) {if(SKILLS_GetSkillLevel(pTarget,pSkill,1)>3)bDangerousSkill=1;}
         else if(nSkill==27) {if(SKILLS_GetSkillLevel(pTarget,pSkill,1)>7)bDangerousSkill=1;}
@@ -6069,7 +6071,7 @@ int __fastcall AITHINK_RollUberDiabloAction(D2AiControlStrc* pAi,D2UnitStrc* pUn
     D2SkillStrc* pSkill=UNITS_GetLeftSkill(pTarget);
     if(pSkill)
     {
-        int nSkill=SKILLS_GetSkillIdFromSkill(pSkill,gszAiThink4Source,1356);
+        int nSkill=SKILLS_GetSkillIdFromSkill(pSkill,".\\Ai\\AiThink4.cpp",1356);
         if(nSkill==59 || nSkill==56)bDangerousSkill=1;
         if(nSkill==51) {if(SKILLS_GetSkillLevel(pTarget,pSkill,1)>3)bDangerousSkill=1;}
         else if(nSkill==27) {if(SKILLS_GetSkillLevel(pTarget,pSkill,1)>7)bDangerousSkill=1;}
@@ -6077,7 +6079,7 @@ int __fastcall AITHINK_RollUberDiabloAction(D2AiControlStrc* pAi,D2UnitStrc* pUn
     pSkill=UNITS_GetRightSkill(pTarget);
     if(pSkill)
     {
-        int nSkill=SKILLS_GetSkillIdFromSkill(pSkill,gszAiThink4Source,1363);
+        int nSkill=SKILLS_GetSkillIdFromSkill(pSkill,".\\Ai\\AiThink4.cpp",1363);
         if(nSkill==59 || nSkill==56)bDangerousSkill=1;
         if(nSkill==51) {if(SKILLS_GetSkillLevel(pTarget,pSkill,1)>3)bDangerousSkill=1;}
         else if(nSkill==27) {if(SKILLS_GetSkillLevel(pTarget,pSkill,1)>7)bDangerousSkill=1;}
@@ -7249,7 +7251,7 @@ void __fastcall AITHINK_Fn106_143_ShadowMaster(D2GameStrc* pGame, D2UnitStrc* pU
     {
         for (D2SkillStrc* pSkill = SKILLS_GetFirstSkillFromSkillList(pSkillList); pSkill; pSkill = SKILLS_GetNextSkill(pSkill))
         {
-            const int nSkillId = SKILLS_GetSkillIdFromSkill(pSkill, szAiThink4File, 3443);
+            const int nSkillId = SKILLS_GetSkillIdFromSkill(pSkill, ".\\Ai\\AiThink4.cpp", 3443);
             D2SkillsTxt* pSkillsTxtRecord = SKILLS_GetSkillsTxtRecord(nSkillId);
             if (pSkillsTxtRecord)
             {
@@ -7435,7 +7437,7 @@ void __fastcall AITHINK_Fn106_143_ShadowMaster(D2GameStrc* pGame, D2UnitStrc* pU
 
         for (D2SkillStrc* pSkill = SKILLS_GetFirstSkillFromSkillList(pSkillList); pSkill; pSkill = SKILLS_GetNextSkill(pSkill))
         {
-            const int nSkillId = SKILLS_GetSkillIdFromSkill(pSkill, szAiThink4File, 3645);
+            const int nSkillId = SKILLS_GetSkillIdFromSkill(pSkill, ".\\Ai\\AiThink4.cpp", 3645);
             int nResistance = SKILLS_GetSkillLevel(pUnit, pSkill, 1);
             D2SkillsTxt* pSkillsTxtRecord = SKILLS_GetSkillsTxtRecord(nSkillId);
             if (pSkillsTxtRecord)
@@ -8865,7 +8867,7 @@ void __fastcall AITHINK_Fn131_Wussie(D2GameStrc* pGame,D2UnitStrc* pUnit,D2AiTic
                     packet.type = 1;
                     const int nUnitGUID = !pUnit ? -1 : pUnit->dwUnitId;
                     packet.guid = nUnitGUID;
-                    D2GAME_SendPacket0x8A(UnitGetClient(pPlayer,gszAiThink4,0x14FF),&packet);
+                    D2GAME_SendPacket0x8A(UnitGetClient(pPlayer,".\\Ai\\AiThink4.cpp",0x14FF),&packet);
                 }
             }
         }
@@ -8895,7 +8897,7 @@ void __fastcall AITHINK_Fn128_Nihlathak(D2GameStrc* pGame, D2UnitStrc* pUnit, D2
         pSkill = SKILLS_GetHighestLevelSkillFromUnitAndId(pUnit, pMonStatsTxt->nSkill[0]);
         if (pSkill && AIUTIL_IsGettingHit(pUnit))
         {
-            AITACTICS_UseSkillInRange(pUnit, AI_PARAM(pGame, pMonStatsTxt, 1), SKILLS_GetSkillIdFromSkill(pSkill, gszAiThink4File, 0x1537), SKILLS_GetSkillMode(pSkill));
+            AITACTICS_UseSkillInRange(pUnit, AI_PARAM(pGame, pMonStatsTxt, 1), SKILLS_GetSkillIdFromSkill(pSkill, ".\\Ai\\AiThink4.cpp", 0x1537), SKILLS_GetSkillMode(pSkill));
             return;
         }
         AITACTICS_IdleInNeutralMode(pGame, pUnit, 25);
@@ -8904,7 +8906,7 @@ void __fastcall AITHINK_Fn128_Nihlathak(D2GameStrc* pGame, D2UnitStrc* pUnit, D2
     pSkill = SKILLS_GetHighestLevelSkillFromUnitAndId(pUnit, pMonStatsTxt->nSkill[0]);
     if (pSkill && bCombat && AI_ROLL_PERCENT(pSeed) < AI_PARAM(pGame, pMonStatsTxt, 0))
     {
-        AITACTICS_UseSkillInRange(pUnit, AI_PARAM(pGame, pMonStatsTxt, 1), SKILLS_GetSkillIdFromSkill(pSkill, gszAiThink4File, 0x1544), SKILLS_GetSkillMode(pSkill));
+        AITACTICS_UseSkillInRange(pUnit, AI_PARAM(pGame, pMonStatsTxt, 1), SKILLS_GetSkillIdFromSkill(pSkill, ".\\Ai\\AiThink4.cpp", 0x1544), SKILLS_GetSkillMode(pSkill));
         return;
     }
     if (nTargetDistance < AI_PARAM(pGame, pMonStatsTxt, 4) && AI_ROLL_PERCENT(pSeed) < 40)
@@ -9499,27 +9501,11 @@ void __fastcall AITHINK_Fn133_Ancient(D2GameStrc* pGame, D2UnitStrc* pUnit, D2Ai
     }
 }
 
-// 0x0040D530
-int __cdecl EXCEPTIONS_ReleaseAllSymbols()
-{
-    return EXCEPTIONS_ReleaseSymbols(1);
-}
+int __cdecl EXCEPTIONS_ReleaseAllSymbols();
 
-// 0x004A5010
-void __cdecl TEXT_ResetKeyConfigDefaults()
-{
-    CMDTBL_ResetKeyConfig(0);
-}
+void __cdecl TEXT_ResetKeyConfigDefaults();
 
-// 0x004A51E0
-void __cdecl TEXT_FreeTextSliderCel()
-{
-    if (gpKeyConfigSliderCel)
-    {
-        ARCHIVE_FreeClientCellFile(gpKeyConfigSliderCel);
-        gpKeyConfigSliderCel = 0;
-    }
-}
+void __cdecl TEXT_FreeTextSliderCel();
 
 // 0x005EF1E0
 int __fastcall AITHINK_BaalThroneCheckAiParamFlag(D2AiTickParamStrc* pAiTickParam, int nFlag)

@@ -19,7 +19,7 @@
 #include "StormApi.h"
 #include "FogApi.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2PoolSystemStrc;
 struct D2MonsterDataStrc;
@@ -1024,7 +1024,7 @@ void __fastcall D2GAME_PACKETS_SendPacket0x9E_9F_A0(D2ClientStrc* pClient, D2Uni
 
 // 0x0053BFD0
 void __fastcall D2GAME_PACKETS_SendPacket0xA0_A1_A2(D2ClientStrc* client,D2UnitStrc* unit,unsigned short stat,unsigned int base,unsigned int full) {
- if(stat>=0xFF) {FOG_DisplayHalt(text_006CC837,sub_00408090(),1069);sub_00681E09(-1);}
+ if(stat>=0xFF) {FOG_DisplayHalt("",sub_00408090(),1069);sub_00681E09(-1);}
  full-=base;
  const int fitsWord=full<0xFFFF;
  if(full<0xFF) {
@@ -1294,7 +1294,7 @@ void __fastcall D2GAME_PACKETS_SendPacket0x26_ServerMessage(D2ClientStrc* pClien
     int nMessageLength = 0;
     if (strlen(pPacket->szMessage) >= 256)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x5BA);
+        FOG_DisplayHalt("", sub_00408090(), 0x5BA);
         exit(-1);
     }
     if (pPacket->szMessage[255])

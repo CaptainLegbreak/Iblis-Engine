@@ -1466,7 +1466,7 @@ static void __stdcall DRLGPRESET_TogglePopsVisibility(D2DrlgRoomStrc* ptRoom, in
 {
     if (!ptRoom->ptDrlgTiles)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 2619);
+        FOG_DisplayHalt("", sub_00408090(), 2619);
         exit(-1);
     }
 

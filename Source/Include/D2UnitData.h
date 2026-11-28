@@ -109,7 +109,7 @@ struct D2MonsterDataStrc
     };
     unsigned char unused0x4C[4]; // 0x4C
     int pVision; // 0x50
-    unsigned char dwAiState[0x4]; // 0x54
+    unsigned int dwAiState; // 0x54
     int nLevelId; // 0x58
 };
 

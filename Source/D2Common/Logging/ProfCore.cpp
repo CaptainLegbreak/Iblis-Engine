@@ -9,10 +9,6 @@ typedef int (__cdecl* PROFHOOK0096BC24FN)();
 
 extern D2ProfileCounterStrc gaProfEntries[23]; // 0x00743800
 void __cdecl LOGGING_CloseLog(); // 0x00624B20
-extern D2TxtLinkStrc* gpSkillsLinker_0096C7CC; // 0x0096C7CC
-extern D2TxtLinkStrc* gpMissilesLinker; // 0x0096C798
-extern D2TxtLinkStrc* gpSkillCalcLinker; // 0x0096BC6C
-extern D2TxtLinkStrc* gpMissileCalcLinker; // 0x0096BC8C
 
 extern PROFHOOK0096BC24FN gpfnProfSecondaryHook; // 0x0096BC24
 

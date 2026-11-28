@@ -394,7 +394,7 @@ int __fastcall DRLGOUTSIEGE_GetSecondaryBorderPresetId(D2DrlgLevelStrc* pLevel, 
 {
     if (nType != 48 && nType != 49)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 388);
+        FOG_DisplayHalt("", sub_00408090(), 388);
         exit(-1);
     }
 
@@ -412,7 +412,7 @@ int __fastcall DRLGOUTSIEGE_GetSecondaryBorderPresetId(D2DrlgLevelStrc* pLevel, 
         }
     }
 
-    FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 421);
+    FOG_DisplayHalt("", sub_00408090(), 421);
     exit(-1);
 }
 
@@ -504,7 +504,7 @@ void __stdcall DRLGOUTSIEGE_PlaceSpecialPresets(D2DrlgLevelStrc* pLevel)
 
             if (!(bPlaced || !gAct5LevelPresets[i].bRequired))
             {
-                FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 537);
+                FOG_DisplayHalt("", sub_00408090(), 537);
                 exit(-1);
             }
         }
@@ -549,7 +549,7 @@ static void DRLGOUTSIEGE_PlacePrisons(D2DrlgLevelStrc* pLevel)
     D2DrlgOutdoorInfoStrc* pInfo = pLevel->pOutdoors;
     if (!pInfo)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 564);
+        FOG_DisplayHalt("", sub_00408090(), 564);
         exit(-1);
     }
 
@@ -578,7 +578,7 @@ static void DRLGOUTSIEGE_PlacePrisons(D2DrlgLevelStrc* pLevel)
 
     if (nPlaced < 3)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 601);
+        FOG_DisplayHalt("", sub_00408090(), 601);
         exit(-1);
     }
 }
@@ -600,27 +600,27 @@ static void DRLGOUTSIEGE_ConnectBarricadeAndSiege(D2DrlgLevelStrc* ptLevelData)
 {
     if (!ptLevelData)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 623);
+        FOG_DisplayHalt("", sub_00408090(), 623);
         exit(-1);
     }
 
     if (ptLevelData->eLevelId != LEVEL_ID_ACT5_BARRICADE_1)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 624);
+        FOG_DisplayHalt("", sub_00408090(), 624);
         exit(-1);
     }
 
     D2DrlgOutdoorInfoStrc* pInfo = ptLevelData->pOutdoors;
     if (!pInfo)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 627);
+        FOG_DisplayHalt("", sub_00408090(), 627);
         exit(-1);
     }
 
     D2LvlPrestRecordStrc* pRecord = sub_0061F0B0(0x370);
     if (!pRecord)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 631);
+        FOG_DisplayHalt("", sub_00408090(), 631);
         exit(-1);
     }
 
@@ -636,14 +636,14 @@ void __stdcall DRLGOUTSIEGE_PlaceSiegeToTownPresets(D2DrlgLevelStrc* pLevel)
     D2DrlgOutdoorInfoStrc* pInfo = pLevel->pOutdoors;
     if (!pInfo)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 650);
+        FOG_DisplayHalt("", sub_00408090(), 650);
         exit(-1);
     }
 
     D2LvlPrestRecordStrc* pRecord = sub_0061F0B0(0x361);
     if (!pRecord)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 653);
+        FOG_DisplayHalt("", sub_00408090(), 653);
         exit(-1);
     }
 
@@ -653,7 +653,7 @@ void __stdcall DRLGOUTSIEGE_PlaceSiegeToTownPresets(D2DrlgLevelStrc* pLevel)
     {
         if (nX < 0)
         {
-            FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 660);
+            FOG_DisplayHalt("", sub_00408090(), 660);
             exit(-1);
         }
 

@@ -427,7 +427,7 @@ void __stdcall D2Common_10474(D2UnitStrc* pUnused, D2StatListStrc* pStatList); /
 int __stdcall D2Common_11033(int nLevel, int nParam, int nMax); // 0x00645B20
 int __fastcall DATATBLS_AppendMemoryBuffer(char** ppCodes, int* pSize, int* pSizeEx, void* pBuffer, int nBufferSize); // 0x006118B0
 void __fastcall DATATBLS_FreeTreasureClassEx(); // 0x00654D50
-void __fastcall DATATBLS_GetBinFileHandle(void* hArchive, const char* szFile, void** ppFileHandle, int* pSize, int* pSizeEx); // 0x00613E90
+void __fastcall DATATBLS_GetBinFileHandle(void* hArchive, const char* szFile, char** ppFileHandle, int* pSize, int* pSizeEx); // 0x00613E90
 unsigned int __stdcall DATATBLS_GetCodeFromCompCodeTxt(int nCompCode); // 0x006117D0
 int __stdcall DATATBLS_GetMaxLevel(int nClass); // 0x00611830
 unsigned short __fastcall DATATBLS_GetStringIdFromReferenceString(char* szReference); // 0x006117B0

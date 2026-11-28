@@ -25,7 +25,7 @@
 #include "D2CMPApi.h"
 #include "D2CommonApi3.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define UNIT_PLAYER 0
 
@@ -2188,7 +2188,7 @@ static int __stdcall GFXUTIL_ResolveUnitCelContext(D2UnitStrc* pUnit, D2GfxDataS
         nType = pUnit->dwUnitType;
         int nClass = pUnit->dwClassId;
         int nAnimMode = UNITS_GetAnimOrSeqMode(pUnit);
-        D2COMMON_11013_ConvertMode(pUnit, &nType, &nClass, &nAnimMode, gszGfxUtilCpp, 0x2F0);
+        D2COMMON_11013_ConvertMode(pUnit, &nType, &nClass, &nAnimMode, ".\\ENGINE\\GfxUtil.cpp", 0x2F0);
         pToken->nUnitType = nType;
         pToken->nUnitIndex = nClass;
         if (nMode == -1)

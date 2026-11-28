@@ -1,64 +1,25 @@
 extern "C" void _ReadWriteBarrier(void);
 #pragma intrinsic(_ReadWriteBarrier)
 
-struct D2TxtLinkStrc;
+#include "D2Records.h"
+#include "D2Txt.h"
+#include "D2DataTbls.h"
 
-struct D2UnusedPadStrc
-{
-    int nPad000;
-    int nPad001;
-    int nPad002;
-    int nPad003;
-    int nPad004;
-    int nPad005;
-    int nPad006;
-    int nPad007;
-    int nPad008;
-    int nPad009;
-    int nPad010;
-    int nPad011;
-    int nPad012;
-    int nPad013;
-    int nPad014;
-    int nPad015;
-};
+extern D2DataTablesStrc sgtDataTables; // 0x0096BC30
+extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
-struct D2BinFieldStrc
-{
-    const char* szFieldName;
-    int nFieldType;
-    int nFieldLength;
-    int nFieldOffset;
-    void* pLinker;
-};
+int __stdcall FOG_GetLinkIndex(D2TxtLinkStrc* pLinker, unsigned int dwCode, int bLogError); // 0x006BD130
+int __fastcall DATATBLS_AppendMemoryBuffer(char** ppCodes, int* pSize, int* pSizeEx, void* pBuffer, int nBufferSize); // 0x006118B0
+int __fastcall DATATBLS_MapMissilesTxtKeywordToNumber(char* szKey); // 0x00661800
+int __fastcall DATATBLS_MissileLinkerResolveKeyword(char* szText, int* a2, int a3, int nKeywordNumber); // 0x00661880
+int __stdcall DATATBLS_CompileExpression(const char* szFormulaString, char* pOutBuffer, int nOutBufferSize, int (__fastcall* pfnKeywordToNumber)(char*), int (__cdecl* pfnGetParameterCount)(), int (__fastcall* pfnLinkParse)(char*, int*, int, int)); // 0x006C1AE0
+static int __stdcall DATATBLS_ClampMissileField(D2BinFieldStrc* pFields, int nMissileId, int nOffset, int nType, int nMin, int nMax); // 0x00661A30
+int __stdcall FOG_GetRowFromTxt(D2TxtLinkStrc* pLinker, const char* szText, int nColumn); // 0x006BD3C0
+int __stdcall SStrCmpI(const char* szString1, const char* szString2, int nMaxChars); // 0x00413590
+D2TxtLinkStrc* __stdcall FOG_AllocLinker(const char* szFile, int nLine);                                    // 0x006BD040
 
-struct D2MissilesTxt
-{
-    char unk0x000[0x183];
-    unsigned char nCollideType;
-    char unk0x184[0x20];
-};
-
-struct D2DataTablesStrc
-{
-    char unk0x000[0x1C];
-    D2TxtLinkStrc* pElemTypesLinker;
-    char unk0x020[0x40];
-    void* pMissCode;
-    int nMissCodeSize;
-    int nMissCodeSizeEx;
-    char unk0x06C[0x04];
-    D2TxtLinkStrc* pSkillsLinker;
-    char unk0x074[0x124];
-    D2TxtLinkStrc* pSoundsLinker;
-    char unk0x19C[0x9C8];
-    D2MissilesTxt* pMissilesTxt;
-    D2TxtLinkStrc* pMissilesLinker;
-    int nMissilesTxtRecordCount;
-    char unk0xB70[0x48];
-    D2TxtLinkStrc* pOverlayLinker;
-};
-
+// Placed by count: DATATBLS_LoadMissilesTxt (0x00661B20) is equal only with the two externs and nine prototypes
+// above ahead of the field-name strings; one name more or fewer flips it. See docs/declaration-order.md.
 extern "C" const char gszTxtField_Missile[];                                                                // 0x006EE408
 extern "C" const char gszTxtField_LastCollide[];                                                            // 0x006EE3FC
 extern "C" const char gszTxtField_Explosion[];                                                              // 0x006EE3F0
@@ -211,10 +172,7 @@ extern "C" const char gszMissilesTxtName[];                                     
 extern "C" const char gszMissCodeName[];                                                                    // 0x006EDEB8
 extern "C" const char gszMissileTblsSourceFile[];                                                           // 0x006EDEF4
 void* __stdcall DATATBLS_CompileTxt(void* hArchive, const char* szName, D2BinFieldStrc* pTbl, int* pRecordCount, int nRecordSize);// 0x006122F0
-D2TxtLinkStrc* __stdcall FOG_AllocLinker(const char* szFile, int nLine);                                    // 0x006BD040
-void __fastcall DATATBLS_GetBinFileHandle(void* hArchive, const char* szFile, void** ppFileHandle, int* pSize, int* pSizeEx);// 0x00613E90
-extern D2DataTablesStrc sgtDataTables;                                                                        // 0x0096BC30
-extern D2DataTablesStrc* sgptDataTables;                                                                    // 0x00744304
+void __fastcall DATATBLS_GetBinFileHandle(void* hArchive, const char* szFile, char** ppFileHandle, int* pSize, int* pSizeEx);// 0x00613E90
 
 static D2MissilesTxt* DATATBLS_GetMissilesTxtRecord(int nMissileId)
 {
@@ -230,35 +188,6 @@ static D2MissilesTxt* DATATBLS_GetMissilesTxtRecord(int nMissileId)
 
 #define D2_MIN(a, b) (((a) < (b)) ? (a) : (b))
 
-int __stdcall FOG_GetLinkIndex(D2TxtLinkStrc* pLinker, unsigned int dwCode, int bLogError); // 0x006BD130
-
-extern D2TxtLinkStrc* gpSkillCalcLinker; // 0x0096BC6C
-
-extern D2TxtLinkStrc* gpSkillCodeLinker; // 0x0096BCA0
-
-extern D2TxtLinkStrc* gpMissilesLinker; // 0x0096C798
-
-extern char* gpMissCode; // 0x0096BC90
-
-int __fastcall DATATBLS_AppendMemoryBuffer(char** ppCodes, int* pSize, int* pSizeEx, void* pBuffer, int nBufferSize); // 0x006118B0
-
-int __fastcall DATATBLS_MapMissilesTxtKeywordToNumber(char* szKey); // 0x00661800
-
-int __fastcall DATATBLS_MissileLinkerResolveKeyword(char* szText, int* a2, int a3, int nKeywordNumber); // 0x00661880
-
-int __stdcall DATATBLS_CompileExpression(const char* szFormulaString, char* pOutBuffer, int nOutBufferSize, int (__fastcall* pfnKeywordToNumber)(char*), int (__cdecl* pfnGetParameterCount)(), int (__fastcall* pfnLinkParse)(char*, int*, int, int)); // 0x006C1AE0
-
-static int __stdcall DATATBLS_ClampMissileField(D2BinFieldStrc* pFields, int nMissileId, int nOffset, int nType, int nMin, int nMax); // 0x00661A30
-
-D2TxtLinkStrc* gpMissileCalcLinker; // 0x0096BC8C
-
-int gnMissCodeSize; // 0x0096BC94
-
-int gnMissCodeSizeEx; // 0x0096BC98
-
-int __stdcall FOG_GetRowFromTxt(D2TxtLinkStrc* pLinker, const char* szText, int nColumn); // 0x006BD3C0
-
-int __stdcall SStrCmpI(const char* szString1, const char* szString2, int nMaxChars); // 0x00413590
 
 // 0x006617B0
 static void DATATBLS_TextToLinkCode(const char* szText, char* szCode)
@@ -341,9 +270,9 @@ int __fastcall DATATBLS_MissileLinkerResolveKeyword(char* szText, int* a2, int a
     {
         if (nKeywordNumber == 3)
         {
-            if (gpSkillCodeLinker)
+            if (sgtDataTables.pSkillCodeLinker)
             {
-                const int nRow = FOG_GetRowFromTxt(gpSkillCodeLinker, szText, 0);
+                const int nRow = FOG_GetRowFromTxt(sgtDataTables.pSkillCodeLinker, szText, 0);
                 if (nRow >= 0)
                 {
                     *a2 = 1;
@@ -351,16 +280,16 @@ int __fastcall DATATBLS_MissileLinkerResolveKeyword(char* szText, int* a2, int a
                 }
 
                 DATATBLS_TextToLinkCode(szText, szCode);
-                const int nIndex = FOG_GetLinkIndex(gpSkillCalcLinker, *(unsigned int*)szCode, 1);
+                const int nIndex = FOG_GetLinkIndex(sgtDataTables.pSkillCalcLinker, *(unsigned int*)szCode, 1);
                 *a2 = 0;
                 return nIndex;
             }
         }
         else if (nKeywordNumber == 4)
         {
-            if (gpMissilesLinker)
+            if (sgtDataTables.pMissilesLinker)
             {
-                const int nRow = FOG_GetRowFromTxt(gpMissilesLinker, szText, 0);
+                const int nRow = FOG_GetRowFromTxt(sgtDataTables.pMissilesLinker, szText, 0);
                 if (nRow >= 0)
                 {
                     *a2 = 1;
@@ -369,14 +298,14 @@ int __fastcall DATATBLS_MissileLinkerResolveKeyword(char* szText, int* a2, int a
             }
 
             DATATBLS_TextToLinkCode(szText, szCode);
-            const int nIndex = FOG_GetLinkIndex(gpMissileCalcLinker, *(unsigned int*)szCode, 1);
+            const int nIndex = FOG_GetLinkIndex(sgtDataTables.pMissileCalcLinker, *(unsigned int*)szCode, 1);
             *a2 = 0;
             return nIndex;
         }
     }
 
     DATATBLS_TextToLinkCode(szText, szCode);
-    const int nIndex = FOG_GetLinkIndex(gpMissileCalcLinker, *(unsigned int*)szCode, 1);
+    const int nIndex = FOG_GetLinkIndex(sgtDataTables.pMissileCalcLinker, *(unsigned int*)szCode, 1);
     *a2 = 0;
     return nIndex;
 }
@@ -404,7 +333,7 @@ void __fastcall DATATBLS_MissileCalcLinker(char* pSrc, void* pRecord, int nOffse
         return;
     }
 
-    *(int*)((char*)pRecord + nOffset) = DATATBLS_AppendMemoryBuffer(&gpMissCode, &gnMissCodeSize, &gnMissCodeSizeEx, pBuffer, nBufferSize);
+    *(int*)((char*)pRecord + nOffset) = DATATBLS_AppendMemoryBuffer(&sgtDataTables.pMissCode, &sgtDataTables.nMissCodeSize, &sgtDataTables.nMissCodeSizeEx, pBuffer, nBufferSize);
 }
 
 // 0x00661A30
@@ -549,7 +478,7 @@ void __fastcall DATATBLS_LoadMissilesTxt(void* hArchive)
         { gszTxtField_yoffset, 3, 0, 164, 0 },
         { gszTxtField_zoffset, 3, 0, 166, 0 },
         { gszTxtField_MissileSkill, 26, 15, 4, 0 },
-        { gszTxtField_Skill, 20, 0, 404, &sgtDataTables.pSkillsLinker },
+        { gszTxtField_Skill, 20, 0, 404, &sgtDataTables.pSkillCodeLinker },
         { gszTxtField_MinDamage, 2, 0, 176, 0 },
         { gszTxtField_MinLevDam1, 2, 0, 184, 0 },
         { gszTxtField_MinLevDam2, 2, 0, 188, 0 },

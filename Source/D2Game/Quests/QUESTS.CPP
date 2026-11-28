@@ -27,7 +27,7 @@
 #include "D2CommonApi3.h"
 #include "D2ClientApi.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define QUEST_A2Q3_TAINTEDSUN 10
 
@@ -638,7 +638,7 @@ D2SeedStrc* __fastcall QUESTS_GetGlobalSeed(D2GameStrc* pGame)
         return &pGame->pQuestControl->pSeed;
     }
 
-    FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 507);
+    FOG_DisplayHalt("", sub_00408090(), 507);
     exit(-1);
 }
 
@@ -1023,7 +1023,7 @@ void __fastcall QUESTS_RefreshStatus(D2QuestDataStrc* pQuest, unsigned char* pSt
         {
             if (pQuest->eFilter >= 41)
             {
-                FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 1109);
+                FOG_DisplayHalt("", sub_00408090(), 1109);
                 exit(-1);
             }
             *pStatus = pQuest->fLastState;
@@ -1104,7 +1104,7 @@ void __fastcall QUESTS_UnitIterate(D2QuestDataStrc* pQuest, int nIterateState, D
             return;
         }
 
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 1464);
+        FOG_DisplayHalt("", sub_00408090(), 1464);
         exit(-1);
     }
 }

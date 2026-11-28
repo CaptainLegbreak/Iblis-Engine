@@ -8,13 +8,13 @@ fixes come back with the next sync. Remeasure after each sync:
     ninja -C build -k 0 2> link.log                       # or the Visual Studio build's output
     python tools/link_report.py build link.log ../Iblis-Codex --md links.md
 
-Last measured: 2026-11-28, Source/ at Codex 2600fd6 (#505) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
+Last measured: 2026-11-28, Source/ at Codex 0055be2 (#506) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
 docs/PORT_COMPILE.md (every object of the 22 module libraries and the program, `/WHOLEARCHIVE`).
 
 ## Result
 
-The link of Game.exe fails with **1058 unresolved symbols** (LNK2001/LNK2019) and **408 symbols defined more than once** (LNK2005).
-Counted as references, one per symbol and file that asks for it: **2774**.
+The link of Game.exe fails with **1013 unresolved symbols** (LNK2001/LNK2019) and **402 symbols defined more than once** (LNK2005).
+Counted as references, one per symbol and file that asks for it: **2461**.
 
 Codex's count (21,648 references on Codex #492) counts every place in the code that uses a symbol; this report
 counts each symbol once per file. The categories are the same, with three differences:
@@ -40,14 +40,14 @@ on calling convention, argument bytes and return register (`tools/abi.py`); a re
 of function pointers) is bound for its address alone. No game source is changed, and an alias drops out when Codex
 fixes the declaration.
 
-At Codex 2600fd6: **2805 aliases** (1132 of them address-only), unresolved symbols with them **1058** (1222 at 16572ad). Checked against
+At Codex 0055be2: **2775 aliases** (1131 of them address-only), unresolved symbols with them **1013** (1222 at 16572ad). Checked against
 Codex's own `LINK_DEBT.json` (linkdebt.py with the user's Game.exe): 2803 agree; 3 bind the same address through the
 one external definition where Codex names it differently (`gpHoverItem`, `gbGoldButtonDisabled`); 25 aren't in Codex's
 list (references in code Codex's ordinary link leaves out, or tables the engine holds as source) and were checked by
 hand: each binds to the definition carrying the declared address.
 
 Not aliased because the reference and the definition disagree on the calling interface (a real ABI disagreement, a
-crash risk, for Codex lane 12): **148**, by kind: calling convention 74, return eax 38, argument bytes 36. They are listed on the lane 14 board.
+crash risk, for Codex lane 12): **147**, by kind: calling convention 73, return eax 38, argument bytes 36. They are listed on the lane 14 board.
 
 ## Totals
 
@@ -55,43 +55,43 @@ crash risk, for Codex lane 12): **148**, by kind: calling convention 74, return 
 |---|---:|---:|
 | import | 0 | 0 |
 | runtime_library | 2 | 1 |
-| type_disagreement | 133 | 112 |
-| different_identifier | 196 | 90 |
-| placeholder | 232 | 141 |
+| type_disagreement | 132 | 111 |
+| different_identifier | 188 | 86 |
+| placeholder | 231 | 140 |
 | renamed_definition | 100 | 61 |
 | interior | 6 | 6 |
-| unsourced_data | 863 | 498 |
-| no_address | 216 | 156 |
+| unsourced_data | 579 | 459 |
+| no_address | 215 | 155 |
 | duplicate_data | 187 | 84 |
-| local_copy | 839 | 324 |
-| **total** | 2774 | 1466 |
+| local_copy | 821 | 318 |
+| **total** | 2461 | 1415 |
 
 ## By module (references)
 
 | Module | import | crt | type | ident | plchld | renamed | inter | unsrc | noaddr | dup | copy | total |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| D2Client | 0 | 0 | 26 | 29 | 87 | 46 | 0 | 205 | 121 | 54 | 459 | 1027 |
-| D2Game | 0 | 2 | 51 | 141 | 45 | 21 | 0 | 116 | 6 | 49 | 101 | 532 |
-| D2Common | 0 | 0 | 8 | 6 | 14 | 4 | 0 | 132 | 9 | 8 | 88 | 269 |
-| Fog | 0 | 0 | 2 | 0 | 5 | 10 | 0 | 67 | 5 | 32 | 55 | 176 |
-| D2CMP | 0 | 0 | 3 | 3 | 4 | 3 | 0 | 44 | 6 | 0 | 39 | 102 |
-| D2Direct3D | 0 | 0 | 6 | 7 | 2 | 0 | 0 | 81 | 1 | 0 | 0 | 97 |
-| Storm | 0 | 0 | 3 | 0 | 26 | 5 | 0 | 18 | 3 | 4 | 33 | 92 |
-| D2Win | 0 | 0 | 7 | 1 | 17 | 2 | 0 | 54 | 0 | 2 | 4 | 87 |
-| D2Launch | 0 | 0 | 8 | 3 | 12 | 6 | 4 | 23 | 7 | 4 | 8 | 75 |
-| D2Hell | 0 | 0 | 0 | 1 | 4 | 0 | 0 | 6 | 47 | 0 | 9 | 67 |
-| D2Multi | 0 | 0 | 3 | 0 | 7 | 1 | 2 | 29 | 1 | 18 | 4 | 65 |
-| D2BNClient | 0 | 0 | 4 | 4 | 6 | 0 | 0 | 25 | 1 | 0 | 4 | 44 |
-| D2Glide | 0 | 0 | 1 | 0 | 1 | 0 | 0 | 19 | 9 | 6 | 6 | 42 |
-| D2Sound | 0 | 0 | 0 | 0 | 2 | 2 | 0 | 7 | 0 | 2 | 8 | 21 |
-| Bnclient | 0 | 0 | 8 | 0 | 0 | 0 | 0 | 2 | 0 | 0 | 11 | 21 |
-| D2MCPClient | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 13 | 0 | 2 | 0 | 15 |
-| D2Lang | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 5 | 0 | 0 | 6 | 12 |
-| Main | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 6 | 0 | 4 | 0 | 10 |
-| D2DDraw | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 3 | 0 | 2 | 2 | 7 |
-| D2Net | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 | 0 | 0 | 2 | 4 |
+| D2Client | 0 | 0 | 26 | 29 | 87 | 46 | 0 | 129 | 121 | 54 | 459 | 951 |
+| D2Game | 0 | 2 | 51 | 133 | 44 | 21 | 0 | 36 | 6 | 49 | 76 | 418 |
+| D2Common | 0 | 0 | 7 | 6 | 14 | 4 | 0 | 108 | 8 | 8 | 88 | 243 |
+| Fog | 0 | 0 | 2 | 0 | 5 | 10 | 0 | 55 | 5 | 32 | 57 | 166 |
+| D2CMP | 0 | 0 | 3 | 3 | 4 | 3 | 0 | 31 | 6 | 0 | 39 | 89 |
+| Storm | 0 | 0 | 3 | 0 | 26 | 5 | 0 | 14 | 3 | 4 | 33 | 88 |
+| D2Direct3D | 0 | 0 | 6 | 7 | 2 | 0 | 0 | 63 | 1 | 0 | 0 | 79 |
+| D2Launch | 0 | 0 | 8 | 3 | 12 | 6 | 4 | 21 | 7 | 4 | 8 | 73 |
+| D2Win | 0 | 0 | 7 | 1 | 17 | 2 | 0 | 39 | 0 | 2 | 4 | 72 |
+| D2Hell | 0 | 0 | 0 | 1 | 4 | 0 | 0 | 4 | 47 | 0 | 9 | 65 |
+| D2Multi | 0 | 0 | 3 | 0 | 7 | 1 | 2 | 26 | 1 | 18 | 4 | 62 |
+| D2BNClient | 0 | 0 | 4 | 4 | 6 | 0 | 0 | 17 | 1 | 0 | 4 | 36 |
+| D2Glide | 0 | 0 | 1 | 0 | 1 | 0 | 0 | 8 | 9 | 6 | 6 | 31 |
+| D2Sound | 0 | 0 | 0 | 0 | 2 | 2 | 0 | 4 | 0 | 2 | 14 | 24 |
+| Bnclient | 0 | 0 | 8 | 0 | 0 | 0 | 0 | 2 | 0 | 0 | 10 | 20 |
+| D2MCPClient | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 11 | 0 | 2 | 0 | 13 |
+| D2Lang | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 3 | 0 | 0 | 6 | 10 |
+| Main | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 3 | 0 | 4 | 0 | 7 |
+| D2DDraw | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 2 | 2 | 5 |
 | D2Gfx | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 3 | 0 | 0 | 0 | 4 |
-| D2Gdi | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 3 | 0 | 0 | 0 | 4 |
+| D2Gdi | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 2 |
+| D2Net | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 | 2 |
 | SRP | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
 
 ## Examples, per category
@@ -101,7 +101,7 @@ crash risk, for Codex lane 12): **148**, by kind: calling convention 74, return 
 - `exit` at 0x00681E09, in Source/D2Game/UNIT/SUnitDmg.cpp
 - `exit` at 0x00681E09, in Source/D2Game/Ai/AiThink.cpp
 
-**type_disagreement** (112 symbols)
+**type_disagreement** (111 symbols)
 
 - `ACT1Q6_EmptyCallback` at 0x00596BA0 -> `ACT1Q6_EmptyCallback`, in Source/D2Game/Unknown_00596BB0.cpp
 - `ACT1Q7_Callback00_NpcActivate` at 0x00596A90 -> `ACT1Q7_Callback00_NpcActivate`, in Source/D2Game/Unknown_00596BB0.cpp
@@ -112,7 +112,7 @@ crash risk, for Codex lane 12): **148**, by kind: calling convention 74, return 
 - `ACT2Q5_OnSummonerCreated` at 0x0059C3B0 -> `ACT2Q5_OnSummonerCreated`, in Source/D2Game/Quests/QUESTS.CPP
 - `ACT3Q4_UnitIterate_UpdateCurrentQuestState` at 0x005BA290 -> `ACT3Q4_UnitIterate_UpdateCurrentQuestState`, in Source/D2Game/Quests/a3q4.cpp
 
-**different_identifier** (90 symbols)
+**different_identifier** (86 symbols)
 
 - `UnicodeChar::UnicodeChar` at 0x0042F530 -> `NPCMENU_ClearUnicode`, in Source/D2Lang/Unknown_00527090.cpp
 - `UnicodeChar::UnicodeChar` at 0x0042F530 -> `NPCMENU_ClearUnicode`, in Source/D2Win/Src/D2WinEditBox.cpp
@@ -123,7 +123,7 @@ crash risk, for Codex lane 12): **148**, by kind: calling convention 74, return 
 - `AIGENERAL_GetAiControlFromUnit` at 0x00541860 -> `__declspec`, in Source/D2Game/SKILLS/SkillSor.cpp
 - `AIGENERAL_GetAiControlFromUnit` at 0x00541860 -> `__declspec`, in Source/D2Game/SKILLS/SkillItem.cpp
 
-**placeholder** (141 symbols)
+**placeholder** (140 symbols)
 
 - `WardenModule::~WardenModule` at 0x004E06A0 -> `sub_004E06A0_FreeModules`, in Source/D2Client/WARDEN/WardenClient.cpp
 - `WardenModule::~WardenModule` at 0x004E06A0 -> `sub_004E06A0_FreeModules`, in Source/D2Client/Unknown_004DF1C0.cpp
@@ -154,18 +154,18 @@ crash risk, for Codex lane 12): **148**, by kind: calling convention 74, return 
 - `gnFlagClear1` at 0x006CE2FC -> `gdwInvBitMasks+0x14`, in Source/D2Launch/Src/CharSel.cpp
 - `gnFlagSet0_006CE278` at 0x006CE278 -> `gdwBitMasks+0x10`, in Source/D2Launch/Src/CharSel.cpp
 
-**unsourced_data** (498 symbols)
+**unsourced_data** (459 symbols)
 
-- `empty` at 0x006CC837, in Source/D2Client/UI/npcmenu.cpp
 - `gAvailableMemory` at 0x0096F4D0, in Source/D2Direct3D/Src/d3dCore.cpp
 - `gBufferCopies` at 0x00970E80, in Source/D2Direct3D/Src/d3dCore.cpp
 - `gCmpPool` at 0x0088CAE0, in Source/D2CMP/SRC/SpriteCache.cpp
 - `gCmpPool` at 0x0088CAE0, in Source/D2CMP/SRC/CelCmp.cpp
 - `gCmpTilePool` at 0x0088DB20, in Source/D2CMP/SRC/SpriteCache.cpp
 - `gCmpTilePool` at 0x0088DB20, in Source/D2CMP/SRC/CelCmp.cpp
-- `gCoopError` at 0x006DE0A8, in Source/D2Direct3D/Src/d3dCore.cpp
+- `gCreateFailure` at 0x006FC2C4, in Source/D2Direct3D/Unknown_006B7530.cpp
+- `gIndexStrips` at 0x009716B0, in Source/D2Direct3D/Unknown_006B7530.cpp
 
-**no_address** (156 symbols)
+**no_address** (155 symbols)
 
 - `ListBoxWrapper::ListBoxWrapper`, in Source/D2Client/UI/text.cpp
 - `ListBoxWrapper::ListBoxWrapper`, in Source/D2Client/UI/npcmenu_004B5C60.cpp
@@ -187,10 +187,10 @@ crash risk, for Codex lane 12): **148**, by kind: calling convention 74, return 
 - `gdwPlayerPos`, in Source/D2Game/GAME/Clients.cpp, Source/D2Game/GAME/Game.cpp, Source/D2Game/OBJECTS/objrgn.cpp
 - `gnAct`, in Source/D2Game/GAME/Clients.cpp, Source/D2Game/GAME/Game.cpp, Source/D2Game/OBJECTS/objrgn.cpp
 
-**local_copy** (324 symbols)
+**local_copy** (318 symbols)
 
-- `sub_M106_Emit_0051DC70`, in Source/Bnclient/Unknown_00520DC0.cpp, Source/Bnclient/Unknown_00527BE0.cpp, Source/D2BNClient/BnDownload.cpp, Source/D2B
 - `ACT3Q7_StatusFilterCallback`, in Source/D2Game/Quests/a2q0.cpp, Source/D2Game/Quests/a2q7.cpp, Source/D2Game/Quests/a2q8.cpp, Source/D2Game/Quests/a3q0.c
+- `sub_M106_Emit_0051DC70`, in Source/Bnclient/Unknown_00520DC0.cpp, Source/Bnclient/Unknown_00527BE0.cpp, Source/D2BNClient/BnDownload.cpp, Source/D2B
 - `ACT3Q5_Callback10_PlayerLeavesGame`, in Source/D2Game/Quests/a2q1.cpp, Source/D2Game/Quests/a2q2.cpp, Source/D2Game/Quests/a2q4.cpp, Source/D2Game/Quests/a2q5.c
 - `sub_00401A60_UnlockSymbols`, in Source/Fog/Unknown_00401010.cpp, Source/Fog/Unknown_00401DF0.cpp, Source/Fog/Unknown_00402280.cpp, Source/Fog/Unknown_00
 - `D2ChatStormListCStrc::D2ChatStormListCStrc`, in Source/D2Client/GAME/Game.cpp, Source/D2Common/Chat/Ignorelist.cpp, Source/Storm/SOURCE/SERR.CPP, Source/Storm/SOURCE/SE

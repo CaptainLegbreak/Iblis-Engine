@@ -15,7 +15,7 @@
 
 #pragma function(memset)
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct Unicode;
 
@@ -1069,9 +1069,9 @@ void __fastcall EDITBOX_SetChangeCallback(D2WinEditBoxStrc* ptEditData, void* pf
 const char* __cdecl EDITBOX_GetClipboardText()
 {
     if (!IsClipboardFormatAvailable(1))
-        return &gszEmptyAssertText;
+        return "";
     if (!OpenClipboard(WINDOW_GetWindow()))
-        return &gszEmptyAssertText;
+        return "";
     void* hData = GetClipboardData(1);
     if (hData)
     {

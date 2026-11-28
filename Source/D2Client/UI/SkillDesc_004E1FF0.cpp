@@ -159,7 +159,7 @@ void __fastcall SOUNDINST_ArmHint(int nKey, int nGroup, int nOffset, unsigned in
 
 
 
-void __fastcall sub_004BA840_StopSound(int nHandle); // 0x004BA840
+void __fastcall SOUNDINST_StopSound(int nHandle); // 0x004BA840
 
 extern "C" int __fastcall SKILLDESC_RandomInRange(int nMin, int nMax); // 0x004E4100
 
@@ -1049,11 +1049,11 @@ static void __stdcall SKILLDESC_DrawDamageRange(int nColor, int nY, int nMin, in
     }
     else if (nMin >= 10000)
     {
-        wsprintfA(szText, "%s%dK-%dK", &gszEmptyAssertText, (nMin + 500) / 1000, (nMax + 500) / 1000);
+        wsprintfA(szText, "%s%dK-%dK", "", (nMin + 500) / 1000, (nMax + 500) / 1000);
     }
     else
     {
-        wsprintfA(szText, "%s%d-%dK", &gszEmptyAssertText, nMin, (nMax + 500) / 1000);
+        wsprintfA(szText, "%s%d-%dK", "", nMin, (nMax + 500) / 1000);
     }
     sub_00526320_ToUnicode(wszText, szText, 32);
     int nWidth = 0;
@@ -1813,8 +1813,6 @@ int __fastcall SKILLDESC_GetSkillParamSix(int nSkillId)
     return pSkillsTxtRecord->dwParam[5];
 }
 
-extern "C" char gD2DataTables[]; // 0x0096BC30
-
 #pragma pack(push, 1)
 struct d2data_0072D8D8_t
 {
@@ -1867,8 +1865,6 @@ struct d2data_0072D8D8_t
 #pragma pack(pop)
 
 extern "C" struct d2data_0072D8D8_t gData_0072D8D8; // 0x0072D8D8
-
-extern D2DataTablesStrc* sgptDataTables = (D2DataTablesStrc*)&gD2DataTables; // 0x00744304
 
 extern const int gaSetMaskToBonusMappingTable[0x40] = {
     0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,

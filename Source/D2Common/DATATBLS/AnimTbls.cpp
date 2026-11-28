@@ -32,7 +32,7 @@ void __stdcall D2Common_10884_COMPOSIT_unk(D2UnitStrc* pUnit, int nClassId, int 
 extern "C" const char gszEmptyAssertText;                                                                         // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                                // 0x00681E09
 
-#define ANIM_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define ANIM_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 // 0x0066A770
 D2AnimDataTableStrc* __fastcall DATATBLS_LoadAnimDataD2(void* hArchive)

@@ -1031,10 +1031,6 @@ extern "C" const char gszEmptyAssertText;                                       
 
 
 
-int gpCharstatsTxt; // 0x0096C7F4
-
-int gpAnimData; // 0x0096C8A4
-
 int gnShrinesTxtRecordCount; // 0x0096D46C
 
 char* __fastcall sub_0060E280_AddLinkOffset(char* pNode, int nLinkOffset);
@@ -2856,18 +2852,6 @@ void __stdcall sub_00611610(int nUnused1)
 // 0x00611640
 void __stdcall sub_00611640(int nUnused1)
 {
-}
-
-// 0x00611D10
-int __cdecl DATATBLS_GetCharstatsTxtTable()
-{
-    return gpCharstatsTxt;
-}
-
-// 0x00611D20
-int __cdecl DATATBLS_GetAnimData()
-{
-    return gpAnimData;
 }
 
 // 0x00641500

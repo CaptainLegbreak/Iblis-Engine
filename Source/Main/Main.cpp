@@ -336,11 +336,6 @@ static int __stdcall MAIN_GetProc(void* hModule, const char* szName, void** ppPr
     return 1;
 }
 
-int __stdcall sub_K01_Emit_00406190(void* hModule, const char* szName, void** ppProc)
-{
-    return MAIN_GetProc(hModule, szName, ppProc);
-}
-
 // 0x004061C0
 int __cdecl MAIN_DenyProcessAccess()
 {
@@ -352,22 +347,22 @@ int __cdecl MAIN_DenyProcessAccess()
     void* hAdvapi = LoadLibraryA("advapi32.dll");
     if (hAdvapi)
     {
-        D2AllocateAndInitializeSidFn pfnAllocSid = (D2AllocateAndInitializeSidFn)GetProcAddress(hAdvapi, "AllocateAndInitializeSid");
-        if (pfnAllocSid)
+        void* pfnAllocSid;
+        if (MAIN_GetProc(hAdvapi, "AllocateAndInitializeSid", &pfnAllocSid))
         {
-            D2InitializeAclFn pfnInitAcl = (D2InitializeAclFn)GetProcAddress(hAdvapi, "InitializeAcl");
-            if (pfnInitAcl)
+            void* pfnInitAcl;
+            if (MAIN_GetProc(hAdvapi, "InitializeAcl", &pfnInitAcl))
             {
-                D2AddAccessDeniedAceFn pfnAddDenied = (D2AddAccessDeniedAceFn)GetProcAddress(hAdvapi, "AddAccessDeniedAce");
-                if (pfnAddDenied)
+                void* pfnAddDenied;
+                if (MAIN_GetProc(hAdvapi, "AddAccessDeniedAce", &pfnAddDenied))
                 {
-                    D2SetSecurityInfoFn pfnSetSec = (D2SetSecurityInfoFn)GetProcAddress(hAdvapi, "SetSecurityInfo");
-                    if (pfnSetSec)
+                    void* pfnSetSec;
+                    if (MAIN_GetProc(hAdvapi, "SetSecurityInfo", &pfnSetSec))
                     {
-                        if (pfnAllocSid(&tAuthority, 1, 0, 0, 0, 0, 0, 0, 0, 0, &pSid)
-                            && pfnInitAcl(aAcl, sizeof(aAcl), 2)
-                            && pfnAddDenied(aAcl, 2, 0xF01FFFFE, pSid)
-                            && !pfnSetSec(hProcess, 6, 0x80000004, 0, 0, aAcl, 0))
+                        if (((D2AllocateAndInitializeSidFn)pfnAllocSid)(&tAuthority, 1, 0, 0, 0, 0, 0, 0, 0, 0, &pSid)
+                            && ((D2InitializeAclFn)pfnInitAcl)(aAcl, sizeof(aAcl), 2)
+                            && ((D2AddAccessDeniedAceFn)pfnAddDenied)(aAcl, 2, 0xF01FFFFE, pSid)
+                            && !((D2SetSecurityInfoFn)pfnSetSec)(hProcess, 6, 0x80000004, 0, 0, aAcl, 0))
                         {
                             bResult = 1;
                         }
@@ -452,7 +447,7 @@ int sub_M371_Emit_00406470(int nAdd)
 // 0x004064C0
 int __fastcall GameInit(int argc, const char** argv)
 {
-    const char* lpArgvCmd = &gszEmptyAssertText;
+    const char* lpArgvCmd = "";
     if (argc > 1)
     {
         lpArgvCmd = argv[argc - 1];

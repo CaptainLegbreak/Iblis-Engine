@@ -25,7 +25,7 @@
 #include "D2CMPApi.h"
 #include "D2CommonApi3.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define D2_MAX(a, b) (((a) > (b)) ? (a) : (b))
 
@@ -184,7 +184,7 @@ void __stdcall D2COMMON_10475_PostStatToStatList(D2UnitStrc* pUnit, D2StatListSt
 void __stdcall STATLIST_SetStat(D2StatListStrc* pStatList, int nStatId, int nValue, unsigned short nLayer); // 0x00627150
 
 
-void __fastcall sub_004BA840_StopSound(int nHandle); // 0x004BA840
+void __fastcall SOUNDINST_StopSound(int nHandle); // 0x004BA840
 
 typedef int (__fastcall* CLIENTSKILLSTARTFN)(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel);
 
@@ -2422,7 +2422,7 @@ void __fastcall SKILLS_ApplySkillLevelBonus(D2UnitStrc* pUnit, int nA, int nB, u
     while (pSkill)
     {
         D2SkillStrc* pNextSkill = SKILLS_GetNextSkill(pSkill);
-        D2SkillsTxt* pSkillsTxtRecord = SKILLCLT_GetSkillsTxtRecord(nSkillId = SKILLS_GetSkillIdFromSkill(pSkill, gszSkillsCppFile, 2420));
+        D2SkillsTxt* pSkillsTxtRecord = SKILLCLT_GetSkillsTxtRecord(nSkillId = SKILLS_GetSkillIdFromSkill(pSkill, ".\\SKILLS\\Skills.cpp", 2420));
         if (!pSkillsTxtRecord)
         {
             continue;
@@ -2444,7 +2444,7 @@ void __fastcall SKILLS_ApplySkillLevelBonus(D2UnitStrc* pUnit, int nA, int nB, u
             D2SkillStrc* pUnitSkill = SKILLS_GetSkillById(pUnit, nSkillId, -1);
             if (pUnitSkill && !SKILLS_GetSkillLevel(pUnit, pUnitSkill, 1))
             {
-                SKILLS_RemoveSkill(pUnit, nSkillId, gszSkillsCppFile, 2465);
+                SKILLS_RemoveSkill(pUnit, nSkillId, ".\\SKILLS\\Skills.cpp", 2465);
             }
         }
 

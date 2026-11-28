@@ -3,7 +3,7 @@
 #include "D2CmpTypes.h"
 #include "FogApi.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define GetRValue(rgb) ((unsigned char)(rgb))
 

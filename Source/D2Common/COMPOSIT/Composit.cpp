@@ -4,7 +4,7 @@
 #include "D2Txt.h"
 #include "FogApi.h"
 
-#define CP_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define CP_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 #define COF_PAD 0x20
 #define TOKEN_CHAR(c) ((char)(c) == COF_PAD ? 0 : (char)(c))
 
@@ -158,7 +158,7 @@ unsigned int __stdcall COMPOSIT_GetArmorTypeFromComponent(int eComponent, unsign
         return pArmorComponents[5];
 
     default:
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 628);
+        FOG_DisplayHalt("", sub_00408090(), 628);
         exit(-1);
     }
 }
@@ -178,7 +178,7 @@ static __forceinline void COMPOSIT_FormatPathInto(char* path,unsigned int classC
  m[1]=TOKEN_CHAR(((char*)&modeCode)[1]);
  m[2]=TOKEN_CHAR(((char*)&modeCode)[2]);
  m[3]=0;
- if(full)wsprintfA(path,"%s\\%s\\COF\\%s%s%s.COF",prefix,c,c,m,w);else wsprintfA(path,gszCofTokenFormat,c,m,w);
+ if(full)wsprintfA(path,"%s\\%s\\COF\\%s%s%s.COF",prefix,c,c,m,w);else wsprintfA(path,"%s%s%s",c,m,w);
 }
 
 // 0x0064F5B0

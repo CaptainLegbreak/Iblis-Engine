@@ -704,13 +704,13 @@ static D2UnitStrc* __stdcall CUNIT_FindUnitInTable(D2UnitStrc** ppTable, unsigne
 // 0x00463990
 D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType)
 {
-    return CUNIT_FindUnitInTable(&gapClientUnitTable[nUnitType * 0x80], nUnitId, nUnitId & 0x7F, nUnitType);
+    return CUNIT_FindUnitInTable(CUNIT_GetClientHashTable(nUnitType), nUnitId, nUnitId & 0x7F, nUnitType);
 }
 
 // 0x004639B0
 D2UnitStrc* __fastcall CUNIT_FindServerSideUnit(unsigned int nUnitId, int nUnitType)
 {
-    return CUNIT_FindUnitInTable(&gapServerUnitTable[nUnitType * 0x80], nUnitId, nUnitId & 0x7F, nUnitType);
+    return CUNIT_FindUnitInTable(CUNIT_GetServerHashTable(nUnitType), nUnitId, nUnitId & 0x7F, nUnitType);
 }
 
 // 0x004639D0
@@ -724,9 +724,9 @@ D2UnitStrc* __fastcall CUNIT_GetOwnerUnit(D2UnitStrc* pUnit)
         const int nHash = nOwnerGUID & 0x7F;
         if (nOwnerType == 3)
         {
-            return CUNIT_FindUnitInTable(&gapServerUnitTable[nOwnerType * 0x80], nOwnerGUID, nHash, nOwnerType);
+            return CUNIT_FindUnitInTable(CUNIT_GetServerHashTable(nOwnerType), nOwnerGUID, nHash, nOwnerType);
         }
-        return CUNIT_FindUnitInTable(&gapClientUnitTable[nOwnerType * 0x80], nOwnerGUID, nHash, nOwnerType);
+        return CUNIT_FindUnitInTable(CUNIT_GetClientHashTable(nOwnerType), nOwnerGUID, nHash, nOwnerType);
     }
     return 0;
 }
@@ -787,12 +787,12 @@ static int CUNIT_AddUnitToTable(D2UnitStrc* pUnit)
     if (UNIT_HasFlag(pUnit, 0x200000))
     {
         nHash = nUnitId & 0x7F;
-        ppTable = &gapServerUnitTable[nType * 0x80];
+        ppTable = CUNIT_GetServerHashTable(nType);
     }
     else
     {
         nHash = nUnitId & 0x7F;
-        ppTable = &gapClientUnitTable[nType * 0x80];
+        ppTable = CUNIT_GetClientHashTable(nType);
     }
 
     D2UnitStrc* pNext = ppTable[nHash];
@@ -3243,11 +3243,6 @@ void __cdecl CUNIT_ClearAiTargets()
     }
 }
 
-
-D2UnitStrc* __fastcall sub_M109_Emit_00463920(int nUnitType, int nHash)
-{
-    return CUNIT_GetClientHashTable(nUnitType)[nHash] ? CUNIT_GetServerHashTable(nUnitType)[nHash] : 0;
-}
 
 void __fastcall sub_M109_Emit_00463C60(D2UnitStrc* pUnit)
 {

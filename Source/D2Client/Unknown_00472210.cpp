@@ -12,7 +12,7 @@
 #include "D2CMPApi.h"
 #include "D2CommonApi2.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 struct CellResource;
 union D2SeedStrc;
 struct D2WeatherSplashStrc;
@@ -180,7 +180,7 @@ int __cdecl sub_M112_Emit_00473720()
 
 int gbPhaseBusy; // 0x007A8A20
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 #define M341_ROLL_SEED_LOW(pSeed, nOut)                                                                     \
     {                                                                                                       \
         const unsigned __int64 lSeed = (pSeed)->nHighSeed + 0x6AC690C5i64 * (pSeed)->nLowSeed;              \
@@ -238,7 +238,7 @@ static void sub_00473090_InitParticle(D2SeedStrc* pSeed);
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 int __fastcall sub_00472280_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange);                                 // 0x00472280
 int __fastcall DATAARRAYS_AllocateHandle(D2WeatherStrc* pArray);                                             // 0x006BCB40

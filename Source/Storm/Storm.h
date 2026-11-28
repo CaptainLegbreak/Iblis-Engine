@@ -129,7 +129,7 @@ unsigned long __stdcall SFileSetFilePointer(void* hFile, long lDistanceToMove, l
 void __stdcall SErrSetLastError(unsigned int); // 0x0041C340
 void __stdcall SMemZero(void* pDest, unsigned int nSize); // 0x0041D300
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define D2_MIN(a, b) ((a) < (b) ? (a) : (b))
 

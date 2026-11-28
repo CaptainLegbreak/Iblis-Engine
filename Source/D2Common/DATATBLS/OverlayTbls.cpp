@@ -6,7 +6,7 @@
 
 
 extern "C" const char gszTxtField_Filename[];                                                               // 0x006D90F4
-extern D2DataTablesStrc sgtDataTables;                                                                        // 0x0096BC30
+extern D2DataTablesStrc sgtDataTables; // 0x0096BC30
 
 // 0x00664150
 void __fastcall DATATBLS_LoadOverlayTxt(void* hArchive)

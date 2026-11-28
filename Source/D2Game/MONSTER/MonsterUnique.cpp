@@ -42,7 +42,7 @@
 
 #define MONTYPEFLAG_RESURRECTED 8
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define UNITFLAG_NOXP 0x04000000
 

@@ -32,7 +32,7 @@
 #include "D2ClientApi.h"
 #include "D2WinApi2.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2ClientListNodeStrc;
 
@@ -279,7 +279,7 @@ int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int n
 
 
 
-void __fastcall sub_004BA840_StopSound(int nHandle); // 0x004BA840
+void __fastcall SOUNDINST_StopSound(int nHandle); // 0x004BA840
 
 int gdwViewEffectStartTick; // 0x007B8D10
 
@@ -373,7 +373,7 @@ struct Obj004DCF10
 
 typedef char Obj004DCF10Size[(sizeof(Obj004DCF10) == 0xEABC) ? 1 : -1];
 
-#define SYN_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define SYN_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 void __fastcall sub_004DDDF0_Nop(void* rows, void* data); // 0x004DDDF0
 
@@ -833,7 +833,7 @@ static void VIEW_UpdateShakeSound(int nIntensity)
         return;
     }
 
-    sub_004BA840_StopSound(ghShakeSound);
+    SOUNDINST_StopSound(ghShakeSound);
     ghShakeSound = 0;
 }
 

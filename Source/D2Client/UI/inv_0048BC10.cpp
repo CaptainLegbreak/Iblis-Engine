@@ -69,7 +69,7 @@ D2UnitStrc* __cdecl CUNIT_GetPlayerUnit(); // 0x00463DD0
 
 int __cdecl CUNIT_IsPlayerDeadOrMissing(); // 0x00463DF0
 
-void __fastcall sub_00468040_ResetCursorState(int nArg, int nArg2); // 0x00468040
+void __fastcall CURSOR_ResetCursorState(int nArg, int nArg2); // 0x00468040
 
 void __fastcall CURSOR_SetCursorItemState(D2UnitStrc* pItem); // 0x00468070
 
@@ -79,7 +79,7 @@ int __cdecl sub_00468730(); // 0x00468730
 
 int __cdecl sub_00468740(); // 0x00468740
 
-int __cdecl sub_00468830_GetCursorState(); // 0x00468830
+int __cdecl CURSOR_GetCursorState(); // 0x00468830
 
 void __fastcall MSG_SendShorts(char nHeader, short nArg1, short nArg2, short nArg3); // 0x00478600
 
@@ -617,7 +617,7 @@ int __cdecl INV_CanUseCursor()
         {
             return 0;
         }
-        const int nMode = sub_00468830_GetCursorState();
+        const int nMode = CURSOR_GetCursorState();
         if (nMode == 7 || nMode == 1 || nMode == 4)
         {
             return 1;

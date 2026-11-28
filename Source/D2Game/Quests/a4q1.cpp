@@ -22,7 +22,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2PoolSystemStrc;
 struct D2StaticPathStrc;
@@ -790,7 +790,7 @@ void __fastcall ACT4Q1_Callback11_ScrollMessage(D2QuestDataStrc* pQuestData, D2Q
                     QUESTS_StateDebug(pQuestData, 5, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a4q1.cpp", 0xDE);
                     if (IsBadCodePtr((FARPROC)pQuestData->pfSeqFilter))
                     {
-                        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0xDF);
+                        FOG_DisplayHalt("", sub_00408090(), 0xDF);
                         exit(-1);
                     }
                     pQuestData->pfSeqFilter(pQuestData);
@@ -1434,55 +1434,4 @@ void __fastcall ACT4Q1_AttachCompletionSoundToPlayers(D2GameStrc* pGame)
 }
 
 
-// 0x005B7A60
-int __fastcall OBJECTS_OperateFunction28_LamEsenTome(D2ObjOperateFnStrc* pOp, int nOperate)
-{
-    D2QuestDataStrc* pQuestData = QUESTS_GetQuestData(pOp->pGame, 15);
-    if (!pQuestData || !pQuestData->bNotIntro)
-    {
-        return 0;
-    }
-
-    if (!pOp->hObject || pOp->hObject->dwAnimMode == OBJMODE_NEUTRAL)
-    {
-        D2GameStrc* pGame = pOp->pGame;
-        D2BitBufferStrc* pQuestFlags = UNITS_GetPlayerData(pOp->hPlayer)->pQuestData[pGame->nDifficulty];
-        if (QUESTRECORD_GetQuestState(pQuestFlags, 17, 0) == 1)
-        {
-            SUNIT_AttachSound(pOp->hPlayer, 19, pOp->hPlayer);
-            return 0;
-        }
-
-        pOp->hObject->dwDropItemCode = ' bbb';
-        int nItemLevel;
-        if (D2GAME_DropItemAtUnit(pOp->pGame, pOp->hObject, 2, &nItemLevel, 0, -1, 0))
-        {
-            UNITS_ChangeAnimMode(pOp->hObject, 2);
-
-            D2Act3Quest1Strc* pQuestDataEx = (D2Act3Quest1Strc*)pQuestData->pQuestDataEx;
-            pQuestDataEx->nTomesInGame += 1;
-            pQuestDataEx->bTomeActive = 1;
-            pQuestDataEx->bTomeDropped = 1;
-            pQuestDataEx->nTomeObjectMode = 2;
-            pQuestDataEx->nTomeGUID = !pOp->hObject ? -1 : pOp->hObject->dwUnitId;
-
-            pQuestData->pCallback[0] = ACT3Q1_Callback00_NpcActivate;
-            pQuestData->pCallback[11] = ACT3Q1_Callback11_ScrollMessage;
-
-            if (pQuestData->fState != 3)
-            {
-                QUESTS_StateDebug(pQuestData, 3, "d:\\diablo2\\Diablo2\\Source\\D2Game/Quests/a3q1.cpp", 699);
-            }
-
-            if (pQuestData->fLastState != 1)
-            {
-                pQuestData->nStatusFlags = 0;
-                QUESTS_UnitIterate(pQuestData, 1, 0, ACT3Q1_UnitIterate_StatusCyclerEx, false);
-            }
-        }
-    }
-
-    return 0;
-}
-
-
+int __fastcall OBJECTS_OperateFunction28_LamEsenTome(D2ObjOperateFnStrc* pOp, int nOperate);

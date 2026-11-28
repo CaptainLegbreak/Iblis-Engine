@@ -2091,7 +2091,7 @@ static int __stdcall D3DCORE_DetectDirect3D(HINSTANCE hInstance)
 // 0x006B4E80
 int __fastcall D3DCORE_LoadVideoConfiguration(void* window) {
     D2FogSystemInfoStrc* info=FOG_GetSystemInfo();
-    if (!info) { FOG_DisplayHalt(gszEmptyString,sub_00408090(),1032); exit(-1); }
+    if (!info) { FOG_DisplayHalt("",sub_00408090(),1032); exit(-1); }
     if (info->nOsKind==1) return 0;
     D2VideoKeyStrc key=gtVideoKey;
     if (gbSeen && !gbConfigured) {
@@ -2122,15 +2122,15 @@ int __fastcall D3DCORE_LoadVideoConfiguration(void* window) {
 // 0x006B4FD0
 static int D3DCORE_InitFullscreen(void* window,int mode)
 {
-    if(gnInitialized) { FOG_DisplayHalt(&gszEmptyAssertText,sub_00408090(),0x50F); exit(-1); }
+    if(gnInitialized) { FOG_DisplayHalt("",sub_00408090(),0x50F); exit(-1); }
     long error;
     const char* msg;
     ghWindow=window;
     if(mode==0) { gnWidth=640; gnHeight=480; } else { gnWidth=800; gnHeight=600; }
     switch(mode) { case 0: case 2: gnModeFlag=1; break; default: gnModeFlag=0; break; }
-    DD_CHECK(gpDraw->SetCooperativeLevel(window,0x411),gCoopError);
+    DD_CHECK(gpDraw->SetCooperativeLevel(window,0x411),"SetCooperativeLevel failed!");
     error=gpDraw->SetDisplayMode(gnWidth,gnHeight,32,0,0);
-    if(error) { D3DCORE_LogDDrawError(gDisplayError,error); return 0; }
+    if(error) { D3DCORE_LogDDrawError("SetDisplayMode failed!",error); return 0; }
     MoveWindow(window,0,0,gnWidth,gnHeight,1);
     gnInitialized=1; gnState=0;
     SurfaceDesc desc;
@@ -2247,7 +2247,7 @@ int __fastcall D3DCORE_CreateSurface(void* window,int mode)
 // 0x006B5630
 void __fastcall D3DCORE_PauseSurface(void* window, int mode, int paused)
 {
-    if (!gpRenderCriticalSection) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x7b0); exit(-1); }
+    if (!gpRenderCriticalSection) { FOG_DisplayHalt("", sub_00408090(), 0x7b0); exit(-1); }
     EnterCriticalSection(gpRenderCriticalSection);
     if (paused) {
         gbRenderPaused = 1;
@@ -2285,7 +2285,7 @@ void __fastcall D3DCORE_OpenSmackCutscene(int a, int b, int c)
 int __fastcall D3DCORE_StartDraw(int clear, int unused, int unusedA, int unusedB)
 {
     if (gbRenderPaused) return 0;
-    if (!gpRenderCriticalSection) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x842); exit(-1); }
+    if (!gpRenderCriticalSection) { FOG_DisplayHalt("", sub_00408090(), 0x842); exit(-1); }
     EnterCriticalSection(gpRenderCriticalSection);
     if (clear) sub_006B7F70_ClearTarget(0);
     gnColorCombineMode = 0;

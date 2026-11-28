@@ -799,7 +799,7 @@ static void CHAT_DrawBlinkingCaret(int nY, int nColor, int nX)
     }
 }
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2MenuItemStrc;
 
@@ -1799,7 +1799,7 @@ static void __stdcall CHAT_HandleChatCommand(const Unicode* pLine, char* szText,
                 sub_00526700(wszText, D2LANG_GetStringFromTblIndex(0x2BA2));
             TEXT_PrintChatLine(wszText, 3);
         }
-        else if (!CHAT_CompareCommand(pText, "/ignore ") || !CHAT_CompareCommand(pText, gszCmdSquelch))
+        else if (!CHAT_CompareCommand(pText, "/ignore ") || !CHAT_CompareCommand(pText, "/squelch "))
         {
             Unicode wszText[0x208];
             Unicode wszLine[0x208];
@@ -1818,7 +1818,7 @@ static void __stdcall CHAT_HandleChatCommand(const Unicode* pLine, char* szText,
             }
             TEXT_PrintChatLine(wszLine, 3);
         }
-        else if (!CHAT_CompareCommand(pText, "/unignore ") || !CHAT_CompareCommand(pText, gszCmdUnsquelch))
+        else if (!CHAT_CompareCommand(pText, "/unignore ") || !CHAT_CompareCommand(pText, "/unsquelch "))
         {
             Unicode wszText[0x208];
             Unicode wszLine[0x208];

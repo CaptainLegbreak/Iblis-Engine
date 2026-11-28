@@ -117,7 +117,7 @@ void __stdcall GDICORE_PerspectiveTransformScale(int unused1, int unused2, int u
 
 void __cdecl GDICORE_PerspectiveClearScale(); // 0x006C80A0
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 
 extern int gnValue_007C913C; // 0x007C913C
@@ -774,7 +774,7 @@ int __stdcall GDICORE_ClipCel(D2CelStrc* cel, int x, int y, const D2ClipRectStrc
         result->rowCount = y - result->skipRows - top + 1;
     if (result->rowCount <= 0)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 209);
+        FOG_DisplayHalt("", sub_00408090(), 209);
         exit(-1);
     }
     return 0;

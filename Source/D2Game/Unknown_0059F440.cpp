@@ -115,44 +115,7 @@ static inline void* GetMonsterInteract(D2UnitStrc* unit) {
 }
 
 static
-// 0x0059EF70
-void __stdcall ACT2Q4_InitializeJerhynMonster(D2QuestDataStrc* quest,D2ActiveRoomStrc* room,D2CoordStrc* coords) {
-    D2QuestExStrc* ex=quest->ex;
-    if (ex->oldSpawned==1) {
-        D2UnitStrc* unit=SUNIT_GetServerUnit(quest->game,1,ex->unitId);
-        if (unit) {
-            void* interact=GetMonsterInteract(unit);
-            if (MONSTERAI_HasInteractUnit(interact)) {
-                MONSTERAI_CloseNpcInteractions(quest->game,unit,0,1);
-                return;
-            }
-            GAME_RemoveUnit(unit,quest->game);
-            ex->oldSpawned=0;
-        }
-    }
-    if (ex->spawned==1) return;
-    D2QuestDataStrc* other=QUESTS_GetQuestData(quest->game,13);
-    int bDone=1;
-    if (other && other->notIntro && other->state < 2) bDone=0;
-    if (bDone) coords->nX+=15;
-    else coords->nX-=10;
-    coords->nY-=3;
-    D2ActiveRoomStrc* found=sub_00463740_FindRoomAtPoint(room,coords->nX,coords->nY);
-    QUESTS_GetFreePosition(room,coords,3,0x100,&found,9,100);
-    D2UnitStrc* npc=D2GAME_SpawnMonster(quest->game,found,coords->nX,coords->nY,MONSTER_JERHYN,1,-1,0);
-    if (!npc) npc=D2GAME_SpawnMonster(quest->game,found,coords->nX,coords->nY,MONSTER_JERHYN,1,2,0);
-    if (npc) {
-        npc->dwFlags|=0x03000000;
-        ex=quest->ex;
-        ex->spawned=1;
-        if (!ex->coordinatesSet) {
-            ex->coordinatesSet=1;
-            ex->x=coords->nX;
-            ex->y=coords->nY;
-        }
-    }
-}
-
+void __stdcall ACT2Q4_InitializeJerhynMonster(D2QuestDataStrc* quest,D2ActiveRoomStrc* room,D2CoordStrc* coords);
 
 // 0x0059F580
 void __fastcall ACT2Q4_GetAndUpdatePalaceNpcState(D2GameStrc* pGame, D2UnitStrc* pUnit, int* pContinueAi, int* pIdle)

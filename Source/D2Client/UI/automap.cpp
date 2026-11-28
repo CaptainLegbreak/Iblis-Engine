@@ -35,7 +35,7 @@
 
 #define OFFSET(T, M) ((unsigned int)&(((T*)0)->M))
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2WardenIfaceStrc;
 
@@ -2453,37 +2453,37 @@ void __cdecl AUTOMAP_SaveAutomapLayer()
     }
     if (tSave.dwFloorSize)
     {
-        tSave.pFloors = FOG_Alloc(tSave.dwFloorSize, gszAutomapFile, 0x4EA, 0);
+        tSave.pFloors = FOG_Alloc(tSave.dwFloorSize, ".\\UI\\automap.cpp", 0x4EA, 0);
         gpAutomapSaveBuffer = tSave.pFloors;
         AUTOMAP_StoreCells(gpAutomapContext->pFloors);
     }
     if (tSave.dwWallsSize)
     {
-        tSave.pWalls = FOG_Alloc(tSave.dwWallsSize, gszAutomapFile, 0x4F1, 0);
+        tSave.pWalls = FOG_Alloc(tSave.dwWallsSize, ".\\UI\\automap.cpp", 0x4F1, 0);
         gpAutomapSaveBuffer = tSave.pWalls;
         AUTOMAP_StoreCells(gpAutomapContext->pWalls);
     }
     if (tSave.nObjects)
     {
-        tSave.pObjects = FOG_Alloc(tSave.nObjects, gszAutomapFile, 0x4F8, 0);
+        tSave.pObjects = FOG_Alloc(tSave.nObjects, ".\\UI\\automap.cpp", 0x4F8, 0);
         gpAutomapSaveBuffer = tSave.pObjects;
         AUTOMAP_StoreCells(gpAutomapContext->pObjects);
     }
     if (tSave.dwExtraSize)
     {
-        tSave.pExtras = FOG_Alloc(tSave.dwExtraSize, gszAutomapFile, 0x4FF, 0);
+        tSave.pExtras = FOG_Alloc(tSave.dwExtraSize, ".\\UI\\automap.cpp", 0x4FF, 0);
         gpAutomapSaveBuffer = tSave.pExtras;
         AUTOMAP_StoreCells(gpAutomapContext->pExtras);
     }
     AUTOMAP_WriteAutomapLayer(&tSave);
     if (tSave.pFloors)
-        FOG_Free(tSave.pFloors, gszAutomapFile, 0x509, 0);
+        FOG_Free(tSave.pFloors, ".\\UI\\automap.cpp", 0x509, 0);
     if (tSave.pWalls)
-        FOG_Free(tSave.pWalls, gszAutomapFile, 0x50A, 0);
+        FOG_Free(tSave.pWalls, ".\\UI\\automap.cpp", 0x50A, 0);
     if (tSave.pObjects)
-        FOG_Free(tSave.pObjects, gszAutomapFile, 0x50B, 0);
+        FOG_Free(tSave.pObjects, ".\\UI\\automap.cpp", 0x50B, 0);
     if (tSave.pExtras)
-        FOG_Free(tSave.pExtras, gszAutomapFile, 0x50C, 0);
+        FOG_Free(tSave.pExtras, ".\\UI\\automap.cpp", 0x50C, 0);
 }
 
 // 0x00458680

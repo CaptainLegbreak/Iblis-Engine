@@ -19,7 +19,7 @@
 
 #define UNIT_OBJECT 2
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2GfxLayerStrc;
 
@@ -581,18 +581,18 @@ void __fastcall GFX_LoadGlobalHashedFile(unsigned char nIndex)
 // 0x0046F490
 static void __stdcall GFX_BuildMonsterCofPath(int nMode, char* szPath, unsigned int* pCode, int nMonsterId)
 {
-    if (!((nMonsterId >= 0 && nMonsterId < sgptDataTables->nMonStatsTxtRecordCount) ? (D2MonStatsTxt*)((char*)sgptDataTables->pMonStatsTxt + nMonsterId * sizeof(D2MonStatsTxt)) : 0))
+    if (!((nMonsterId >= 0 && nMonsterId < sgptDataTables->nMonStatsTxtRecordCount) ? &sgptDataTables->pMonStatsTxt[nMonsterId] : 0))
     {
         return;
     }
 
-    D2MonStats2Txt* pMonStats2TxtRecord = DATATBLS_GetMonStats2TxtRecordInl(((nMonsterId >= 0 && nMonsterId < sgptDataTables->nMonStatsTxtRecordCount) ? (D2MonStatsTxt*)((char*)sgptDataTables->pMonStatsTxt + nMonsterId * sizeof(D2MonStatsTxt)) : 0)->wMonStatsEx);
+    D2MonStats2Txt* pMonStats2TxtRecord = DATATBLS_GetMonStats2TxtRecordInl(((nMonsterId >= 0 && nMonsterId < sgptDataTables->nMonStatsTxtRecordCount) ? &sgptDataTables->pMonStatsTxt[nMonsterId] : 0)->wMonStatsEx);
     if (!pMonStats2TxtRecord)
     {
         return;
     }
 
-    unsigned int dwMonCode = ((nMonsterId >= 0 && nMonsterId < sgptDataTables->nMonStatsTxtRecordCount) ? (D2MonStatsTxt*)((char*)sgptDataTables->pMonStatsTxt + nMonsterId * sizeof(D2MonStatsTxt)) : 0)->dwCode;
+    unsigned int dwMonCode = ((nMonsterId >= 0 && nMonsterId < sgptDataTables->nMonStatsTxtRecordCount) ? &sgptDataTables->pMonStatsTxt[nMonsterId] : 0)->dwCode;
     D2MonModeTxt* pModeTxtRecord = DATATBLS_GetMonModeTxtRecord(nMode, 1);
     D2_ASSERT(pModeTxtRecord, 0xE86);
 
@@ -850,7 +850,7 @@ static int __stdcall GFX_LoadUnitLayers(int bAsync, int nMode, D2UnitStrc* pUnit
     int nType = pUnit->dwUnitType;
     int nClass = pUnit->dwClassId;
     int nAnimMode = UNITS_GetAnimOrSeqMode(pUnit);
-    D2COMMON_11013_ConvertMode(pUnit, &nType, &nClass, &nAnimMode, gszGfxFile, 0x6CD);
+    D2COMMON_11013_ConvertMode(pUnit, &nType, &nClass, &nAnimMode, ".\\ENGINE\\Gfx.cpp", 0x6CD);
     int nB;
     GFXUTIL_GetLayerInfo(pUnit, nType, nClass, nMode, &nDirection, &nA, &nB, nArg, 0);
     unsigned char* pOrder = GFXUTIL_GetLayerOrder(pLayer, nA, 0);
@@ -898,7 +898,7 @@ static void __stdcall GFX_PreloadMonsterMode(int bAsync, D2UnitStrc* pUnit, int 
     const int nClassValue = !pUnit ? -1 : pUnit->dwClassId;
     nClass = nClassValue;
     nAnimMode = UNITS_GetAnimOrSeqMode(pUnit);
-    D2COMMON_11013_ConvertMode(pUnit, &nType, &nClass, &nAnimMode, gszGfxFile, 0x70A);
+    D2COMMON_11013_ConvertMode(pUnit, &nType, &nClass, &nAnimMode, ".\\ENGINE\\Gfx.cpp", 0x70A);
     if (nClass >= sgptDataTables->nMonStatsTxtRecordCount || gpPoolBlock[nClass].nModeFlags[nMode])
     {
         return;
@@ -1040,7 +1040,7 @@ static void GFX_PreloadRoomUnits(int bAsync)
             const int nClassValue = !pUnit ? -1 : pUnit->dwClassId;
             nClass = nClassValue;
             nAnimMode = UNITS_GetAnimOrSeqMode(pUnit);
-            D2COMMON_11013_ConvertMode(pUnit, &nType, &nClass, &nAnimMode, gszGfxFile, 0x7AA);
+            D2COMMON_11013_ConvertMode(pUnit, &nType, &nClass, &nAnimMode, ".\\ENGINE\\Gfx.cpp", 0x7AA);
             if (nType == 1)
             {
                 if (nClass < sgptDataTables->nMonStatsTxtRecordCount && (nAnimMode != 0xC || !gpPoolBlock[nClass].nModeFlags[0xC]))

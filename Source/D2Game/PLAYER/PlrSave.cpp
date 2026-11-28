@@ -2839,45 +2839,7 @@ void __fastcall SUNITPROXY_AllocNpcInventory(D2GameStrc* pGame, D2NpcRecordStrc*
     }
 }
 
-// 0x00537190
-void __fastcall SUNITPROXY_FreeNpcGamble(D2GameStrc* pGame, D2UnitStrc* pNpc, D2UnitStrc* pPlayer)
-{
-    int nIndex;
-    D2NpcRecordStrc* pNpcRecord = SUNITPROXY_GetNpcRecordFromClassId(pGame, !pNpc ? -1 : pNpc->dwClassId, &nIndex);
-    const int nPlayerGUID = !pPlayer ? -1 : pPlayer->dwUnitId;
-
-    if (pNpcRecord && pNpcRecord->bGambleInit)
-    {
-        D2NpcGambleStrc* pPreviousGamble = 0;
-        for (D2NpcGambleStrc* pGamble = pNpcRecord->pGamble; pGamble; pGamble = pGamble->pNext)
-        {
-            if (pGamble->dwGUID == nPlayerGUID)
-            {
-                if (pPreviousGamble)
-                {
-                    pPreviousGamble->pNext = pGamble->pNext;
-                }
-                else
-                {
-                    pNpcRecord->pGamble = pGamble->pNext;
-                }
-
-                if (pGamble->pInventory)
-                {
-                    SUNITPROXY_RemoveInventoryItems(pGame, pGamble->pInventory);
-                    INVENTORY_FreeInventory(pGamble->pInventory);
-                    pGamble->pInventory = 0;
-                }
-
-                sub_0040B480(pGame->pMemoryPool, pGamble, ".\\UNIT\\sunitproxy.cpp", 0x5D0, 0);
-                return;
-            }
-
-            pPreviousGamble = pGamble;
-        }
-    }
-}
-
+void __fastcall SUNITPROXY_FreeNpcGamble(D2GameStrc* pGame, D2UnitStrc* pNpc, D2UnitStrc* pPlayer);
 
 // 0x00537340
 void __fastcall SUNITPROXY_UpdateNpcsOnActChange(D2GameStrc* pGame, D2UnitStrc* pUnit, int nCurrentLevelId, int nDestLevelId)

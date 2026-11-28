@@ -12,7 +12,7 @@
 #include "StormApi.h"
 #include "D2HellApi.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define D2_MAX(a, b) ((a) > (b) ? (a) : (b))
 
@@ -1987,12 +1987,12 @@ void __fastcall CelDrawRle(D2CelStrc* pCel, unsigned char* pDest, int nX, int nL
     const int nWidth = pCel->width;
     if ((unsigned int)nPitch < (unsigned int)nWidth)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 1514);
+        FOG_DisplayHalt("", sub_00408090(), 1514);
         exit(-1);
     }
     if ((unsigned int)(nSkipRows + nRows) > pCel->height)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 1515);
+        FOG_DisplayHalt("", sub_00408090(), 1515);
         exit(-1);
     }
 
@@ -2301,7 +2301,7 @@ static inline const char* __fastcall SkipCelRows(const char* current,int rows)
 void __fastcall CelDrawRleShadow(const D2CelStrc* cel,unsigned char* dst,int x,int clipLeft,int clipRight,unsigned int pitch,int skip,int rows,const unsigned char* table,int color)
 {
  int startX=x;
- if(pitch<cel->width) { FOG_DisplayHalt(gszEmptyAssert,sub_00408090(),1871);exit(-1); }
+ if(pitch<cel->width) { FOG_DisplayHalt("",sub_00408090(),1871);exit(-1); }
  const char* src=SkipCelRows((const char*)cel+32,skip*2);
  int step=-(int)pitch;
  unsigned char* nextRow=dst+step;

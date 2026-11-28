@@ -17,7 +17,7 @@ typedef int (__fastcall* D2McpPacketHandler)(const unsigned char* pPacket, unsig
 
 
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2CmdParamsStrc;
 

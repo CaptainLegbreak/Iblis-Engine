@@ -542,7 +542,7 @@ int __fastcall MONSTER_IsChampionMonster(D2UnitStrc* pUnit); // 0x004AE320
 int __fastcall MONSTER_IsGhostlyMonster(D2UnitStrc* pUnit); // 0x004AE340
 int __fastcall MONSTER_IsConvertible(D2UnitStrc* pUnit); // 0x004B11F0
 int __fastcall MONSTER_HandleSequenceStop(D2UnitStrc* pUnit, D2MonAnimRecStrc* pRecord); // 0x004B1280
-int __fastcall sub_004B95C0_IsHintPlaying(int nKey); // 0x004B95C0
+int __fastcall SOUNDINST_IsHintPlaying(int nKey); // 0x004B95C0
 int __fastcall sub_004B9610_FindHint(int nId); // 0x004B9610
 int __fastcall UNITSND_GetFootstepSound(D2UnitStrc* pUnit, int nMode); // 0x004CAEB0
 int __fastcall MISSILE_GetSkillMissileRange(int nSkillId, int nSkillLevel); // 0x004CC7C0

@@ -5,6 +5,8 @@
 #include "FogApi.h"
 #include "D2HellApi.h"
 
+extern D2DataTablesStrc sgtDataTables; // 0x0096BC30
+
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 struct D2CubeMainTxt;
@@ -21,7 +23,6 @@ enum
     TXTFIELD_NAMETODWORD = 19,
     TXTFIELD_CUSTOMLINK = 23,
 };
-extern D2DataTablesStrc sgtDataTables;                                                                      // 0x0096BC30
 
 // cubemain.txt: the Horadric Cube recipes. In 1.14d they are this file's own globals, not D2DataTablesStrc fields.
 D2CubeMainTxt* gpCubeMainTxt; // 0x0096D628

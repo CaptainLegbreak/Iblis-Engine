@@ -22,7 +22,7 @@ void __cdecl WINDOW_LoadGammaSettings(); // 0x004F8EA0
 
 extern D2GraphicsInterfaceStrc* gpGraphicsInterface; // 0x007C8CC0
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #include "D2Win32Types.h"
 

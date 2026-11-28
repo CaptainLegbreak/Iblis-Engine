@@ -3,6 +3,9 @@
 #include "D2TxtItems.h"
 #include "D2LevelTxt.h"
 #include "D2Records.h"
+#include "D2DataTbls.h"
+
+extern D2DataTablesStrc sgtDataTables; // 0x0096BC30
 
 extern "C" const char gszEmptyAssertText;
 
@@ -37,13 +40,6 @@ extern "C" const char gszPandemoniumPortal[]; // 0x006EE878
 
 extern "C" const char gszPandemoniumFinalePortal[]; // 0x006EE85C
 
-extern D2TxtLinkStrc* gpItemTypesLinker_0096C824; // 0x0096C824
-
-
-extern D2SetItemsTxt* gpSetItemsTxt_0096C848; // 0x0096C848
-
-
-extern D2UniqueItemsTxt* gpUniqueItemsTxt_0096C854; // 0x0096C854
 
 static int __stdcall sub_00668A90_ParseCubeInput(D2CubeOutputItem* pInput, char* szInput);
 
@@ -167,7 +163,7 @@ static inline int DATATBLS_StringToCode(const char* szText)
 static __forceinline int sub_00668A90_LookupItem(D2CubeOutputItem* pInput, char* szText)
 {
     int nLinkId;
-    if (strlen(szText) <= 4 && (nLinkId = FOG_GetLinkIndex(gpItemTypesLinker_0096C824, DATATBLS_StringToCode(szText), 0)) >= 0)
+    if (strlen(szText) <= 4 && (nLinkId = FOG_GetLinkIndex(sgtDataTables.pItemTypesLinker, DATATBLS_StringToCode(szText), 0)) >= 0)
     {
         pInput->nType = 0xFD;
         pInput->wBaseItemId = nLinkId;
@@ -175,38 +171,38 @@ static __forceinline int sub_00668A90_LookupItem(D2CubeOutputItem* pInput, char*
     else
     {
         nLinkId = -1;
-        if (gpUniqueItemsLinker)
+        if (sgtDataTables.pUniqueItemsLinker)
         {
-            nLinkId = FOG_GetRowFromTxt(gpUniqueItemsLinker, szText, 0);
+            nLinkId = FOG_GetRowFromTxt(sgtDataTables.pUniqueItemsLinker, szText, 0);
         }
         if (nLinkId >= 0)
         {
             int nItemId;
-            DATATBLS_GetItemRecordFromItemCode(gpUniqueItemsTxt_0096C854[nLinkId].dwCode, &nItemId);
+            DATATBLS_GetItemRecordFromItemCode(sgtDataTables.pUniqueItemsTxt[nLinkId].dwCode, &nItemId);
             pInput->wItemFlags |= 8;
             pInput->nType = 0xFC;
             pInput->nQuality = 7;
             pInput->wItemID = nLinkId + 1;
             pInput->wBaseItemId = nItemId;
-            pInput->nILvl = gpUniqueItemsTxt_0096C854[nLinkId].nLevel;
+            pInput->nILvl = sgtDataTables.pUniqueItemsTxt[nLinkId].nLevel;
         }
         else
         {
             nLinkId = -1;
-            if (gpSetItemsLinker)
+            if (sgtDataTables.pSetItemsLinker)
             {
-                nLinkId = FOG_GetRowFromTxt(gpSetItemsLinker, szText, 0);
+                nLinkId = FOG_GetRowFromTxt(sgtDataTables.pSetItemsLinker, szText, 0);
             }
             if (nLinkId >= 0)
             {
                 int nItemId;
-                DATATBLS_GetItemRecordFromItemCode(gpSetItemsTxt_0096C848[nLinkId].dwItemCode, &nItemId);
+                DATATBLS_GetItemRecordFromItemCode(sgtDataTables.pSetItemsTxt[nLinkId].dwItemCode, &nItemId);
                 pInput->wItemFlags |= 8;
                 pInput->nType = 0xFC;
                 pInput->nQuality = 5;
                 pInput->wItemID = nLinkId + 1;
                 pInput->wBaseItemId = nItemId;
-                pInput->nILvl = (unsigned char)gpSetItemsTxt_0096C848[nLinkId].wLvl;
+                pInput->nILvl = (unsigned char)sgtDataTables.pSetItemsTxt[nLinkId].wLvl;
             }
             return 0;
         }
@@ -264,14 +260,14 @@ static __forceinline int DATATBLS_CubeInputFindUniqueOrSet(D2CubeInputItem* pCub
 {
     int nLinkId = -1;
 
-    if (gpUniqueItemsLinker)
+    if (sgtDataTables.pUniqueItemsLinker)
     {
-        nLinkId = FOG_GetRowFromTxt(gpUniqueItemsLinker, szInput, 0);
+        nLinkId = FOG_GetRowFromTxt(sgtDataTables.pUniqueItemsLinker, szInput, 0);
     }
 
     if (nLinkId >= 0)
     {
-        D2UniqueItemsTxt* pUniqueItemsTxtRecord = &gpUniqueItemsTxt_0096C854[nLinkId];
+        D2UniqueItemsTxt* pUniqueItemsTxtRecord = &sgtDataTables.pUniqueItemsTxt[nLinkId];
         DATATBLS_GetItemRecordFromItemCode(pUniqueItemsTxtRecord->dwCode, pBaseItemId);
         pCubeInput->wInputFlags |= 0x41;
         pCubeInput->nQuality = 7;
@@ -282,9 +278,9 @@ static __forceinline int DATATBLS_CubeInputFindUniqueOrSet(D2CubeInputItem* pCub
 
     int nSetId = -1;
 
-    if (gpSetItemsLinker)
+    if (sgtDataTables.pSetItemsLinker)
     {
-        nSetId = FOG_GetRowFromTxt(gpSetItemsLinker, szInput, 0);
+        nSetId = FOG_GetRowFromTxt(sgtDataTables.pSetItemsLinker, szInput, 0);
     }
 
     if (nSetId < 0)
@@ -292,7 +288,7 @@ static __forceinline int DATATBLS_CubeInputFindUniqueOrSet(D2CubeInputItem* pCub
         return 0;
     }
 
-    D2SetItemsTxt* pSetItemsTxtRecord = &gpSetItemsTxt_0096C848[nSetId];
+    D2SetItemsTxt* pSetItemsTxtRecord = &sgtDataTables.pSetItemsTxt[nSetId];
     DATATBLS_GetItemRecordFromItemCode(pSetItemsTxtRecord->dwItemCode, pBaseItemId);
     pCubeInput->wInputFlags |= 0x41;
     pCubeInput->nQuality = 5;
@@ -353,7 +349,7 @@ static int __stdcall sub_00668600_CubeMainInputParser(D2CubeInputItem* pCubeInpu
 
             if (strlen(szInput) <= 4)
             {
-                nLinkId = FOG_GetLinkIndex(gpItemTypesLinker_0096C824, DATATBLS_StringToCode(szInput), 0);
+                nLinkId = FOG_GetLinkIndex(sgtDataTables.pItemTypesLinker, DATATBLS_StringToCode(szInput), 0);
             }
 
             if (nLinkId >= 0)
@@ -667,9 +663,9 @@ void __fastcall DATATBLS_CubeMainParamLinker(char* pSrc, void* pRecord, int nOff
         }
         else
         {
-            if (gTxtLink_0096C800)
+            if (sgtDataTables.pItemStatCostLinker)
             {
-                nValue = FOG_GetRowFromTxt(gTxtLink_0096C800, pSrc, 0);
+                nValue = FOG_GetRowFromTxt(sgtDataTables.pItemStatCostLinker, pSrc, 0);
                 if (nValue >= 0)
                 {
                     *(int*)pRecord = nValue;

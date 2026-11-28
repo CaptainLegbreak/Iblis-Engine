@@ -28,7 +28,7 @@
 #include "D2CommonApi.h"
 #include "D2ClientApi.h"
 
-#define CHECK(p,line) if (!(p)) { FOG_DisplayHalt(text_006CC837,sub_00408090(),line); sub_00681E09(-1); }
+#define CHECK(p,line) if (!(p)) { FOG_DisplayHalt("",sub_00408090(),line); sub_00681E09(-1); }
 
 struct Unicode;
 

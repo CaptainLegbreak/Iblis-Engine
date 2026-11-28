@@ -107,7 +107,7 @@ void __cdecl sub_00681E09_Exit(int); // 0x00681E09
 void __fastcall sub_006B9780_SetColor(D2TLVertexStrc*,unsigned int,unsigned char); // 0x006B9780
 void __fastcall D3DFLOORCACHE_BindTileTexture(D2TileBlockStrc*); // 0x006BBA00
 #define D3D_VERTEX_IN_RECT(v, r) ((v).fX >= (r).nLeft && (v).fX < (r).nRight && (v).fY >= (r).nTop && (v).fY < (r).nBottom)
-#define D2ASSERT(c,l) if(!(c)) { FOG_DisplayHalt(gszAssert_006CC837,sub_00408090(),l); sub_00681E09_Exit(-1); }
+#define D2ASSERT(c,l) if(!(c)) { FOG_DisplayHalt("",sub_00408090(),l); sub_00681E09_Exit(-1); }
 static int __stdcall sub_006B8DF0_DrawTransparentWallTile(D2TileStrc* pTile, unsigned char nAlpha, int nPosX, int nPosY, unsigned int* pLight, int nScreenPanels);
 int __stdcall D2CMPTileValidate(D2TileStrc*,int,int); // 0x005FDEA0
 

@@ -27,7 +27,7 @@ D2TimedHintStrc gtTimedHint;                                                    
 int gnSpeechLevelId;                                                                                      // 0x007C8A04
 
 int __fastcall SOUNDINST_IsTypeOneSound(void* pEntry);                                                                  // 0x004B9590
-void* __fastcall sub_004B9610_GetSoundHandle(int nId);                                                                     // 0x004B9610
+void* __fastcall SOUNDINST_FindSoundHandle(int nId);                                                                     // 0x004B9610
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4);           // 0x004B9A00
 int __fastcall SOUNDINST_GetPosition(void* pEntry);                                                      // 0x004B9D50
 
@@ -129,7 +129,7 @@ void __fastcall sub_004DCAA0_UpdateLevelSong(unsigned int dwTick)
         }
     }
 
-    if (gnCurrentSongId && bEnabled && !sub_004B9610_GetSoundHandle(gnCurrentSongId))
+    if (gnCurrentSongId && bEnabled && !SOUNDINST_FindSoundHandle(gnCurrentSongId))
     {
         const int nOffset = 4 * (gnCurrentSongId - SOUNDHDR_GetSongMin());
         int nValue = *(int*)(sub_00481810() + nOffset);
@@ -151,7 +151,7 @@ void __fastcall sub_004DCAA0_UpdateLevelSong(unsigned int dwTick)
     }
 
     D2SoundsTxt* pSoundTxt = SOUNDHDR_GetSoundRecord(gnCurrentSongId);
-    void* pEntry = sub_004B9610_GetSoundHandle(gnCurrentSongId);
+    void* pEntry = SOUNDINST_FindSoundHandle(gnCurrentSongId);
     if (!pEntry || !SOUNDINST_IsTypeOneSound(pEntry))
     {
         return;
@@ -185,7 +185,7 @@ void __fastcall ITEM_ShowTimedHint(void* pOwner, int nDelayA, int nDelayC, unsig
     if (gnCurrentSongId)
     {
         D2SoundsTxt* pSoundTxt = SOUNDHDR_GetSoundRecord(gnCurrentSongId);
-        void* pEntry = sub_004B9610_GetSoundHandle(gnCurrentSongId);
+        void* pEntry = SOUNDINST_FindSoundHandle(gnCurrentSongId);
         if (pEntry && SOUNDINST_IsTypeOneSound(pEntry))
         {
             const int nValue = nIndex > 0 ? pSoundTxt->nBlock[nIndex - 1] : 0;

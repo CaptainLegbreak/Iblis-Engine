@@ -864,19 +864,7 @@ struct D2LinkStrc
     D2LinkStrc* pNext;
 };
 
-struct D2MessageStrc
-{
-    unsigned char nMenu;
-    unsigned char pad0x01;
-    unsigned short nStringId;
-};
-
-struct D2MessageListStrc
-{
-    unsigned char bCount;
-    unsigned char pad0x01;
-    D2MessageStrc pMessages[8];
-};
+#include "D2TextMessage.h"
 
 struct D2MinionListStrc
 {
@@ -884,40 +872,7 @@ struct D2MinionListStrc
     D2MinionListStrc* pNext;
 };
 
-struct D2MissileDamageDataStrc
-{
-    int nFlags;
-    int nMinDamage;
-    int nMaxDamage;
-    int nFireMinDamage;
-    int nFireMaxDamage;
-    int nFireLength;
-    int nLightMinDamage;
-    int nLightMaxDamage;
-    int nMagicMinDamage;
-    int nMagicMaxDamage;
-    int nColdMinDamage;
-    int nColdMaxDamage;
-    int nColdLength;
-    int nPoisonMinDamage;
-    int nPoisonMaxDamage;
-    int nPoisonLength;
-    int nPoisonCount;
-    int nLifeDrainMinDamage;
-    int nLifeDrainMaxDamage;
-    int nManaDrainMinDamage;
-    int nManaDrainMaxDamage;
-    int nStaminaDrainMinDamage;
-    int nStaminaDrainMaxDamage;
-    int nStunLength;
-    int nBurningMin;
-    int nBurningMax;
-    int nBurnLength;
-    int nDemonDamagePercent;
-    int nUndeadDamagePercent;
-    int nDamageTargetAC;
-    int nDamagePercent;
-};
+#include "D2MissileDamage.h"
 
 struct D2MissileUnitFindTableStrc
 {

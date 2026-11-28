@@ -77,29 +77,11 @@ extern "C" const char gszFileModeWb[]; // 0x006D69E0
 
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 
-D2StatesTxt* gpStatesTxt; // 0x0096BCEC
 
-
-
-extern D2ExperienceDataTbl* gpExperienceTxt; // 0x0096C8A8
 struct D2CompCodeTxt
 {
     unsigned int dwCode;
 };
-extern D2CompCodeTxt* gpCompCodeTxt; // 0x0096BCAC
-extern int gnCompCodeTxtRecordCount; // 0x0096BCB4
-
-char* gpSkillsCode; // 0x0096BC70
-
-int gnSkillsCodeSize; // 0x0096BC74
-
-int gnSkillsCodeSizeEx; // 0x0096BC78
-
-char* gpSkillDescCode; // 0x0096BC7C
-
-int gnSkillDescCodeSize; // 0x0096BC80
-
-int gnSkillDescCodeSizeEx; // 0x0096BC84
 
 
 int __fastcall DATATBLS_MapSkillsTxtKeywordToNumber(char* szKey); // 0x00611930
@@ -110,11 +92,6 @@ int __fastcall DATATBLS_SkillsCalcParamCallback(char* szText, int* pResult, int 
 
 int __stdcall DATATBLS_CompileExpression(const char* szFormulaString, char* pOutBuffer, int nOutBufferSize, int (__fastcall* pfnKeywordToNumber)(char*), int (__fastcall* pfnGetParameterCount)(int), int (__fastcall* pfnLinkParse)(char*, int*, int, int)); // 0x006C1AE0
 
-D2TxtLinkStrc* gpSkillsLinker_0096C7CC; // 0x0096C7CC
-
-D2TxtLinkStrc* gpMissilesLinker; // 0x0096C798
-
-extern D2TxtLinkStrc* gpMissileCalcLinker; // 0x0096BC8C
 
 int __stdcall FOG_GetLinkIndex(D2TxtLinkStrc* pLinker, unsigned int dwCode, int bLogError); // 0x006BD130
 
@@ -133,14 +110,8 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
-int gnDifficultylevelsTxtRecordCount; // 0x0096C8B0
 
 extern D2ObjectsTxt* gpObjectsTxt; // 0x0096D470
-
-
-
-
-
 
 
 void __stdcall D2Common_10884_COMPOSIT_unk(D2UnitStrc* pUnit, int nClassId, int nMode, int nUnitType, D2InventoryStrc* pInventory, char* szPath, int* pWeaponClassCode, int bAddPathPrefix, int bDetermine); // 0x0064F5B0
@@ -152,31 +123,6 @@ void* __fastcall DATATBLS_ReadExcelFile(void* hArchive, const char* szName, cons
 
 extern "C" const char gszBinExtension[]; // 0x006DCC68
 
-int gbCompileTxt; // 0x0096C8B4
-
-D2TxtLinkStrc* gpStatesLinker_0096BCF0; // 0x0096BCF0
-
-int gnStatesTxtRecordCount; // 0x0096BCF4
-
-void* gpSkillDescTxt; // 0x0096C7BC
-
-D2TxtLinkStrc* gpSkillDescLinker; // 0x0096C7C0
-
-int gnSkillDescTxtRecordCount; // 0x0096C7C4
-
-D2SkillsTxt* gpSkillsTxt; // 0x0096C7C8
-
-int gnSkillsTxtRecordCount; // 0x0096C7D0
-
-int* gpClassSkillCount; // 0x0096C7D4
-
-int gnHighestClassSkillCount; // 0x0096C7D8
-
-short* gpClassSkillList; // 0x0096C7DC
-
-int gnPassiveSkills; // 0x0096C7E0
-
-short* gpPassiveSkills; // 0x0096C7E4
 
 extern "C" char* __cdecl strncpy(char*, const char*, unsigned int); // 0x00687330
 
@@ -208,7 +154,11 @@ void __stdcall FOG_FreeBinFile(D2BinFileStrc* pBinFile); // 0x006BCDA0
 
 extern "C" const char gszHitclassTxtName[]; // 0x006DCF50
 
-extern D2DataTablesStrc gD2DataTables; // 0x0096BC30
+// Every .txt table the game loads. sgptDataTables is how the rest of the game reaches it.
+D2DataTablesStrc sgtDataTables; // 0x0096BC30
+
+// Set while the tables are compiled from .txt; it follows the struct and is not a member of it.
+int gbCompileTxt; // 0x0096C8B4
 
 void __fastcall DATATBLS_LoadItemTypesTxt(void* hArchive); // 0x00638D80
 
@@ -271,7 +221,7 @@ void __fastcall DATATBLS_LoadArmTypeTxt(void* hArchive); // 0x0065B350
 
 void __stdcall DATATBLS_LoadExperienceTxt(void* hArchive); // 0x00613D30
 
-void* __fastcall DATATBLS_LoadAnimDataD2(void* hArchive); // 0x0066A770
+D2AnimDataTableStrc* __fastcall DATATBLS_LoadAnimDataD2(void* hArchive); // 0x0066A770
 
 void __fastcall DATATBLS_LoadSomeMonsterTxts(void* hArchive); // 0x0065A400
 
@@ -312,26 +262,9 @@ void __fastcall DATATBLS_LoadLvlSubTxt(void* hArchive, int bLoadFiles, int extra
 
 void __fastcall DATATBLS_UnloadSoundsTxt(); // 0x00659C30
 
-extern D2TxtLinkStrc* gpCompCodeLinker; // 0x0096BCB0
-
-D2TxtLinkStrc* gpPlayerClassLinker_0096BC34; // 0x0096BC34
-
-D2TxtLinkStrc* gpElemTypesLinker; // 0x0096BC4C
-
-extern D2TxtLinkStrc* gpHitClassLinker_0096BC54; // 0x0096BC54
-
-extern D2TxtLinkStrc* gpHireDescLinker; // 0x0096BCE8
-
-D2TxtLinkStrc* gpPlrModeLinker; // 0x0096BC64
-
-D2TxtLinkStrc* gpSkillCalcLinker; // 0x0096BC6C
-
-D2TxtLinkStrc* gpEventsLinker_0096BCA8; // 0x0096BCA8
 
 extern "C" const char gszTxtField_int[]; // 0x006E67EC
 
-
-D2TxtLinkStrc* gpBodyLocsLinker_0096BC3C; // 0x0096BC3C
 
 void __fastcall DATATBLS_InitUnicodeClassNamesInCharStatsTxt(void* pTable, int nRecordCount, int nRecordSize, int nNameOffset, int nUnicodeNameOffset, int nNameLength); // 0x00612600
 
@@ -398,12 +331,6 @@ struct D2PetTypeTxt
     short wSkillIds[15];
     short unk0xDE;
 };
-
-
-
-
-extern int gnPettypeTxtRecordCount; // 0x0096C820
-
 
 
 void __stdcall sub_006BD230_AddRecordToLinker(D2TxtLinkStrc* pLinker, int nCode); // 0x006BD230
@@ -496,85 +423,9 @@ void __fastcall DATATBLS_UnloadCharTemplateTxt(); // 0x00665740
 
 void __fastcall D2COMMON_10916_Return(); // 0x0066A280
 
-extern D2AnimDataTableStrc* gpAnimData; // 0x0096C8A4
-
-D2ItemTypesTxt* gpItemTypesTxt_0096C828; // 0x0096C828
-
-int gnItemTypesTxtRecordCount_0096C82C; // 0x0096C82C
-
-D2DifficultyLevelsTxt* gpDifficultylevelsTxt; // 0x0096C8AC
 
 D2RuneDataTbl sgtRuneWordsTblDesc; // 0x0096CA98
 
-void* gpCompCodeTxt_0096BCAC; // 0x0096BCAC
-
-void* gpPlayerClassTxt; // 0x0096BC30
-
-void* gpBodyLocsTxt; // 0x0096BC38
-
-void* gpStorePageTxt; // 0x0096BC40
-
-D2TxtLinkStrc* gpStorePageLinker_0096BC44; // 0x0096BC44
-
-void* gpElemTypesTxt; // 0x0096BC48
-
-void* gpHitClassTxt; // 0x0096BC50
-
-void* gpColorsTxt; // 0x0096C5E0
-
-D2TxtLinkStrc* gpColorsLinker; // 0x0096C5E4
-
-void* gpHireDescTxt; // 0x0096BCE4
-
-void* gpMonModeTxt; // 0x0096BC58
-
-void* gpPlrModeTxt; // 0x0096BC60
-
-void* gpMonAiTxt; // 0x0096BCB8
-
-D2TxtLinkStrc* gpMonAiLinker; // 0x0096BCBC
-
-void* gpMonPlaceTxt; // 0x0096C6CC
-
-D2TxtLinkStrc* gpMonPlaceLinker; // 0x0096C6D0
-
-void* gpSkillCalcTxt; // 0x0096BC68
-
-void* gpMissileCalcTxt; // 0x0096BC88
-
-void* gpSkillCodeTxt; // 0x0096BC9C
-
-D2TxtLinkStrc* gpSkillCodeLinker; // 0x0096BCA0
-
-void* gpEventsTxt; // 0x0096BCA4
-
-int gnCharstatsTxtRecordCount; // 0x0096C7F8
-
-D2TxtLinkStrc* gpSoundsLinker_0096BDC8; // 0x0096BDC8
-
-D2TxtLinkStrc* gpOverlayLinker; // 0x0096C7E8
-
-D2TxtLinkStrc* gpItemStatCostLinker_0096C800; // 0x0096C800
-
-D2TxtLinkStrc* gpItemTypesLinker_0096C824; // 0x0096C824
-
-D2PetTypeTxt* gpPettypeTxt_0096C818; // 0x0096C818
-
-unsigned int* gpStateMasks; // 0x0096BCF8
-
-unsigned int* gfStateMasks[40]; // 0x0096BCFC
-
-short* gpProgressiveStates; // 0x0096BD9C
-
-short* gpCurseStates; // 0x0096BDA4
-
-short* gpTransformStates; // 0x0096BDAC
-
-short* gpActionStates; // 0x0096BDB4
-
-D2TxtLinkStrc* gTxtLink_0096C81C; // 0x0096C81C
-
-int gnPettypeTxtRecordCount; // 0x0096C820
 
 // 0x006117B0
 unsigned short __fastcall DATATBLS_GetStringIdFromReferenceString(char* szReference)
@@ -599,9 +450,9 @@ static int DATATBLS_GetMaxLevelFromTable(D2ExperienceDataTbl* pExperienceTxt, in
 // 0x006117D0
 unsigned int __stdcall DATATBLS_GetCodeFromCompCodeTxt(int nCompCode)
 {
-    if (nCompCode >= gnCompCodeTxtRecordCount)
+    if (nCompCode >= sgtDataTables.nCompCodeTxtRecordCount)
         return 0;
-    return gpCompCodeTxt[nCompCode].dwCode;
+    return sgtDataTables.pCompCodeTxt[nCompCode].dwCode;
 }
 
 // 0x00611800
@@ -609,7 +460,7 @@ unsigned int __stdcall DATATBLS_GetLevelThreshold(int nClass, unsigned int dwLev
 {
     if (nClass < 0 || nClass >= 7)
         nClass = 0;
-    return gpExperienceTxt->aLevels[dwLevel].dwClass[nClass];
+    return sgtDataTables.pExperienceTxt->aLevels[dwLevel].dwClass[nClass];
 }
 
 // 0x00611830
@@ -617,7 +468,7 @@ int __stdcall DATATBLS_GetMaxLevel(int nClass)
 {
     if (nClass < 0 || nClass >= 7)
         nClass = 0;
-    return gpExperienceTxt->tMax.dwClass[nClass];
+    return sgtDataTables.pExperienceTxt->tMax.dwClass[nClass];
 }
 
 // 0x00611860
@@ -628,7 +479,7 @@ unsigned int __stdcall DATATBLS_GetCurrentLevelFromExp(int nClass, unsigned int 
         nClass = 0;
     }
 
-    D2ExperienceDataTbl* pExperienceTxt = gpExperienceTxt;
+    D2ExperienceDataTbl* pExperienceTxt = sgtDataTables.pExperienceTxt;
     int nMaxLevel = DATATBLS_GetMaxLevelFromTable(pExperienceTxt, nClass);
     int nLevel = 0;
     while (dwExperience >= pExperienceTxt->aLevels[nLevel].dwClass[nClass] && nLevel < nMaxLevel)
@@ -743,9 +594,9 @@ int __fastcall DATATBLS_SkillsCalcParamCallback(char* szText, int* pResult, int 
         {
         case 3:
         {
-            if (gpSkillsLinker_0096C7CC)
+            if (sgtDataTables.pSkillsLinker)
             {
-                const int nRow = FOG_GetRowFromTxt(gpSkillsLinker_0096C7CC, szText, 0);
+                const int nRow = FOG_GetRowFromTxt(sgtDataTables.pSkillsLinker, szText, 0);
                 if (nRow >= 0)
                 {
                     *pResult = 1;
@@ -753,15 +604,15 @@ int __fastcall DATATBLS_SkillsCalcParamCallback(char* szText, int* pResult, int 
                 }
             }
             DATATBLS_MakeCalcCode(szText, szCode);
-            const int nIndex = FOG_GetLinkIndex(gpSkillCalcLinker, *(unsigned int*)szCode, 1);
+            const int nIndex = FOG_GetLinkIndex(sgtDataTables.pSkillCalcLinker, *(unsigned int*)szCode, 1);
             *pResult = 0;
             return nIndex;
         }
         case 4:
         {
-            if (gpMissilesLinker)
+            if (sgtDataTables.pMissilesLinker)
             {
-                const int nRow = FOG_GetRowFromTxt(gpMissilesLinker, szText, 0);
+                const int nRow = FOG_GetRowFromTxt(sgtDataTables.pMissilesLinker, szText, 0);
                 if (nRow >= 0)
                 {
                     *pResult = 1;
@@ -769,15 +620,15 @@ int __fastcall DATATBLS_SkillsCalcParamCallback(char* szText, int* pResult, int 
                 }
             }
             DATATBLS_MakeCalcCode(szText, szCode);
-            const int nIndex = FOG_GetLinkIndex(gpMissileCalcLinker, *(unsigned int*)szCode, 1);
+            const int nIndex = FOG_GetLinkIndex(sgtDataTables.pMissileCalcLinker, *(unsigned int*)szCode, 1);
             *pResult = 0;
             return nIndex;
         }
         case 5:
         {
-            if (gpItemStatCostLinker)
+            if (sgtDataTables.pItemStatCostLinker)
             {
-                const int nRow = FOG_GetRowFromTxt(gpItemStatCostLinker, szText, 0);
+                const int nRow = FOG_GetRowFromTxt(sgtDataTables.pItemStatCostLinker, szText, 0);
                 if (nRow >= 0)
                 {
                     *pResult = 1;
@@ -800,9 +651,9 @@ int __fastcall DATATBLS_SkillsCalcParamCallback(char* szText, int* pResult, int 
         }
         case 6:
         {
-            if (gpSkillsLinker_0096C7CC)
+            if (sgtDataTables.pSkillsLinker)
             {
-                const int nRow = FOG_GetRowFromTxt(gpSkillsLinker_0096C7CC, szText, 0);
+                const int nRow = FOG_GetRowFromTxt(sgtDataTables.pSkillsLinker, szText, 0);
                 if (nRow >= 0)
                 {
                     *pResult = 1;
@@ -810,14 +661,14 @@ int __fastcall DATATBLS_SkillsCalcParamCallback(char* szText, int* pResult, int 
                 }
             }
             DATATBLS_MakeCalcCode(szText, szCode);
-            const int nIndex = FOG_GetLinkIndex(gpSkillCalcLinker, *(unsigned int*)szCode, 1);
+            const int nIndex = FOG_GetLinkIndex(sgtDataTables.pSkillCalcLinker, *(unsigned int*)szCode, 1);
             *pResult = 0;
             return nIndex;
         }
         }
     }
     DATATBLS_MakeCalcCode(szText, szCode);
-    const int nIndex = FOG_GetLinkIndex(gpSkillCalcLinker, *(unsigned int*)szCode, 1);
+    const int nIndex = FOG_GetLinkIndex(sgtDataTables.pSkillCalcLinker, *(unsigned int*)szCode, 1);
     *pResult = 0;
     return nIndex;
 }
@@ -845,7 +696,7 @@ void __fastcall DATATBLS_SkillCalcLinker(char* pSrc, void* pRecord, int nOffset,
         return;
     }
 
-    *(int*)((char*)pRecord + nOffset) = DATATBLS_AppendMemoryBuffer(&gpSkillsCode, &gnSkillsCodeSize, &gnSkillsCodeSizeEx, pBuffer, nBufferSize);
+    *(int*)((char*)pRecord + nOffset) = DATATBLS_AppendMemoryBuffer(&sgtDataTables.pSkillsCode, &sgtDataTables.nSkillsCodeSize, &sgtDataTables.nSkillsCodeSizeEx, pBuffer, nBufferSize);
 }
 
 // 0x00611C70
@@ -871,25 +722,25 @@ void __fastcall DATATBLS_SkillDescCalcLinker(char* pSrc, void* pRecord, int nOff
         return;
     }
 
-    *(int*)((char*)pRecord + nOffset) = DATATBLS_AppendMemoryBuffer(&gpSkillDescCode, &gnSkillDescCodeSize, &gnSkillDescCodeSizeEx, pBuffer, nBufferSize);
+    *(int*)((char*)pRecord + nOffset) = DATATBLS_AppendMemoryBuffer(&sgtDataTables.pSkillDescCode, &sgtDataTables.nSkillDescCodeSize, &sgtDataTables.nSkillDescCodeSizeEx, pBuffer, nBufferSize);
 }
 
 // 0x00611D30
 D2DifficultyLevelsTxt* __stdcall DATATBLS_GetDifficultyLevelsTxtRecord(int nDifficulty)
 {
     nDifficulty = nDifficulty > 0 ? nDifficulty : 0;
-    if (nDifficulty >= gnDifficultylevelsTxtRecordCount - 1)
+    if (nDifficulty >= sgtDataTables.nDifficultyLevelsTxtRecordCount - 1)
     {
-        nDifficulty = gnDifficultylevelsTxtRecordCount - 1;
+        nDifficulty = sgtDataTables.nDifficultyLevelsTxtRecordCount - 1;
     }
-    return &gpDifficultylevelsTxt[nDifficulty];
+    return &sgtDataTables.pDifficultyLevelsTxt[nDifficulty];
 }
 
 // 0x00611D60
 void __fastcall DATATBLS_BuildStateMask(unsigned int* pMask, int nFlag)
 {
-    D2StatesTxt* pStatesTxt = gpStatesTxt;
-    for (int i = 0; i < gnStatesTxtRecordCount; ++i)
+    D2StatesTxt* pStatesTxt = sgtDataTables.pStatesTxt;
+    for (int i = 0; i < sgtDataTables.nStatesTxtRecordCount; ++i)
     {
         if (pStatesTxt[i].nStateFlags[nFlag >> 3] & gdwBitMasks[nFlag & 7])
             pMask[i >> 5] |= gdwBitMasks[i & 0x1F];
@@ -899,11 +750,11 @@ void __fastcall DATATBLS_BuildStateMask(unsigned int* pMask, int nFlag)
 // 0x00611DC0
 void __fastcall DATATBLS_BuildStateListByFlag(short** ppList, short* pnCount, int nFlag)
 {
-    *ppList = (short*)FOG_AllocPool(0, sizeof(short) * gnStatesTxtRecordCount, ".\\DATATBLS\\DataTbls.cpp", 1611, 0);
-    memset(*ppList, 0, sizeof(short) * gnStatesTxtRecordCount);
-    D2StatesTxt* pStatesTxt = gpStatesTxt;
+    *ppList = (short*)FOG_AllocPool(0, sizeof(short) * sgtDataTables.nStatesTxtRecordCount, ".\\DATATBLS\\DataTbls.cpp", 1611, 0);
+    memset(*ppList, 0, sizeof(short) * sgtDataTables.nStatesTxtRecordCount);
+    D2StatesTxt* pStatesTxt = sgtDataTables.pStatesTxt;
     *pnCount = 0;
-    for (int i = 0; i < gnStatesTxtRecordCount; ++i)
+    for (int i = 0; i < sgtDataTables.nStatesTxtRecordCount; ++i)
     {
         if (pStatesTxt[i].nStateFlags[nFlag >> 3] & gdwBitMasks[nFlag & 7])
         {
@@ -916,11 +767,11 @@ void __fastcall DATATBLS_BuildStateListByFlag(short** ppList, short* pnCount, in
 // 0x00611E60
 void __fastcall DATATBLS_BuildStateListByField(short** ppList, short* pnCount, int nFieldOffset)
 {
-    *ppList = (short*)FOG_AllocPool(0, sizeof(short) * gnStatesTxtRecordCount, ".\\DATATBLS\\DataTbls.cpp", 1634, 0);
-    memset(*ppList, 0, sizeof(short) * gnStatesTxtRecordCount);
-    D2StatesTxt* pStatesTxt = gpStatesTxt;
+    *ppList = (short*)FOG_AllocPool(0, sizeof(short) * sgtDataTables.nStatesTxtRecordCount, ".\\DATATBLS\\DataTbls.cpp", 1634, 0);
+    memset(*ppList, 0, sizeof(short) * sgtDataTables.nStatesTxtRecordCount);
+    D2StatesTxt* pStatesTxt = sgtDataTables.pStatesTxt;
     *pnCount = 0;
-    for (int i = 0; i < gnStatesTxtRecordCount; ++i)
+    for (int i = 0; i < sgtDataTables.nStatesTxtRecordCount; ++i)
     {
         if (*(short*)((char*)&pStatesTxt[i] + nFieldOffset) > 0)
         {
@@ -1209,133 +1060,133 @@ static void DATATBLS_LoadSomeTxts(void* hArchive)
 
     D2BinFieldStrc pCompCodeTbl[] =
     {
-        { gszTxtField_code, 10, 0, 0, &gD2DataTables.pCompCodeLinker },
+        { gszTxtField_code, 10, 0, 0, &sgtDataTables.pCompCodeLinker },
         { gszTxtField_end, 0, 0, 0, 0 },
     };
-    gD2DataTables.pCompCodeLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 115);
-    gD2DataTables.pCompCodeTxt = DATATBLS_CompileTxt(hArchive, "compcode", pCompCodeTbl, &gD2DataTables.nCompCodeTxtRecordCount, 4);
+    sgtDataTables.pCompCodeLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 115);
+    sgtDataTables.pCompCodeTxt = (D2CompCodeTxt*)DATATBLS_CompileTxt(hArchive, "compcode", pCompCodeTbl, &sgtDataTables.nCompCodeTxtRecordCount, 4);
 
-    if (gD2DataTables.bCompileTxt)
+    if (gbCompileTxt)
     {
         D2BinFieldStrc pPlayerClassTbl[] =
         {
-            { gszTxtField_code, 10, 0, 0, &gD2DataTables.pPlayerClassLinker },
+            { gszTxtField_code, 10, 0, 0, &sgtDataTables.pPlayerClassLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pPlayerClassLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 132);
-        gD2DataTables.pPlayerClassTxt = DATATBLS_CompileTxt(hArchive, "playerclass", pPlayerClassTbl, &nRecordCount, 4);
+        sgtDataTables.pPlayerClassLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 132);
+        sgtDataTables.pPlayerClassTxt = DATATBLS_CompileTxt(hArchive, "playerclass", pPlayerClassTbl, &nRecordCount, 4);
 
         D2BinFieldStrc pBodyLocsTbl[] =
         {
-            { gszTxtField_code, 10, 0, 0, &gD2DataTables.pBodyLocsLinker },
+            { gszTxtField_code, 10, 0, 0, &sgtDataTables.pBodyLocsLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pBodyLocsLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 144);
-        gD2DataTables.pBodyLocsTxt = DATATBLS_CompileTxt(hArchive, "bodylocs", pBodyLocsTbl, &nRecordCount, 4);
+        sgtDataTables.pBodyLocsLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 144);
+        sgtDataTables.pBodyLocsTxt = DATATBLS_CompileTxt(hArchive, "bodylocs", pBodyLocsTbl, &nRecordCount, 4);
 
         D2BinFieldStrc pStorePageTbl[] =
         {
-            { gszTxtField_code, 10, 0, 0, &gD2DataTables.pStorePageLinker },
+            { gszTxtField_code, 10, 0, 0, &sgtDataTables.pStorePageLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pStorePageLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 156);
-        gD2DataTables.pStorePageTxt = DATATBLS_CompileTxt(hArchive, "storepage", pStorePageTbl, &nRecordCount, 4);
+        sgtDataTables.pStorePageLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 156);
+        sgtDataTables.pStorePageTxt = DATATBLS_CompileTxt(hArchive, "storepage", pStorePageTbl, &nRecordCount, 4);
 
         D2BinFieldStrc pElemTypesTbl[] =
         {
-            { gszTxtField_code, 10, 0, 0, &gD2DataTables.pElemTypesLinker },
+            { gszTxtField_code, 10, 0, 0, &sgtDataTables.pElemTypesLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pElemTypesLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 168);
-        gD2DataTables.pElemTypesTxt = DATATBLS_CompileTxt(hArchive, "elemtypes", pElemTypesTbl, &nRecordCount, 4);
+        sgtDataTables.pElemTypesLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 168);
+        sgtDataTables.pElemTypesTxt = DATATBLS_CompileTxt(hArchive, "elemtypes", pElemTypesTbl, &nRecordCount, 4);
 
         D2BinFieldStrc pHitClassTbl[] =
         {
-            { gszTxtField_code, 10, 0, 0, &gD2DataTables.pHitClassLinker },
+            { gszTxtField_code, 10, 0, 0, &sgtDataTables.pHitClassLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pHitClassLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 184);
-        gD2DataTables.pHitClassTxt = DATATBLS_CompileTxt(hArchive, gszHitclassTxtName, pHitClassTbl, &nRecordCount, 4);
+        sgtDataTables.pHitClassLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 184);
+        sgtDataTables.pHitClassTxt = DATATBLS_CompileTxt(hArchive, gszHitclassTxtName, pHitClassTbl, &nRecordCount, 4);
 
         D2BinFieldStrc pColorsTbl[] =
         {
-            { gszTxtField_code, 10, 0, 0, &gD2DataTables.pColorsLinker },
+            { gszTxtField_code, 10, 0, 0, &sgtDataTables.pColorsLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pColorsLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 196);
-        gD2DataTables.pColorsTxt = DATATBLS_CompileTxt(hArchive, "colors", pColorsTbl, &nRecordCount, 4);
+        sgtDataTables.pColorsLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 196);
+        sgtDataTables.pColorsTxt = DATATBLS_CompileTxt(hArchive, "colors", pColorsTbl, &nRecordCount, 4);
 
         D2BinFieldStrc pHireDescTbl[] =
         {
-            { gszTxtField_code, 10, 0, 0, &gD2DataTables.pHireDescLinker },
+            { gszTxtField_code, 10, 0, 0, &sgtDataTables.pHireDescLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pHireDescLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 208);
-        gD2DataTables.pHireDescTxt = DATATBLS_CompileTxt(hArchive, "hiredesc", pHireDescTbl, &nRecordCount, 4);
+        sgtDataTables.pHireDescLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 208);
+        sgtDataTables.pHireDescTxt = DATATBLS_CompileTxt(hArchive, "hiredesc", pHireDescTbl, &nRecordCount, 4);
 
         D2BinFieldStrc pMonModeTbl[] =
         {
-            { gszTxtField_code, 10, 0, 0, &gD2DataTables.pMonModeLinker },
+            { gszTxtField_code, 10, 0, 0, &sgtDataTables.pMonModeLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pMonModeLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 220);
-        gD2DataTables.pMonModeTxtStub = DATATBLS_CompileTxt(hArchive, "monmode", pMonModeTbl, &nRecordCount, 4);
+        sgtDataTables.pMonModeLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 220);
+        sgtDataTables.pMonModeTxtStub = DATATBLS_CompileTxt(hArchive, "monmode", pMonModeTbl, &nRecordCount, 4);
 
         D2BinFieldStrc pPlrModeTbl[] =
         {
-            { gszTxtField_code, 10, 0, 0, &gD2DataTables.pPlrModeLinker },
+            { gszTxtField_code, 10, 0, 0, &sgtDataTables.pPlrModeLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pPlrModeLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 232);
-        gD2DataTables.pPlrModeTxtStub = DATATBLS_CompileTxt(hArchive, "plrmode", pPlrModeTbl, &nRecordCount, 4);
+        sgtDataTables.pPlrModeLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 232);
+        sgtDataTables.pPlrModeTxtStub = DATATBLS_CompileTxt(hArchive, "plrmode", pPlrModeTbl, &nRecordCount, 4);
 
         D2BinFieldStrc pMonAiTbl[] =
         {
-            { "AI", 17, 0, 0, &gD2DataTables.pMonAiLinker },
+            { "AI", 17, 0, 0, &sgtDataTables.pMonAiLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pMonAiLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 244);
-        gD2DataTables.pMonAiTxt = DATATBLS_CompileTxt(hArchive, "monai", pMonAiTbl, &gD2DataTables.nMonAiTxtRecordCount, 2);
+        sgtDataTables.pMonAiLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 244);
+        sgtDataTables.pMonAiTxt = DATATBLS_CompileTxt(hArchive, "monai", pMonAiTbl, &sgtDataTables.nMonAiTxtRecordCount, 2);
 
         D2BinFieldStrc pMonPlaceTbl[] =
         {
-            { gszTxtField_code, 17, 0, 0, &gD2DataTables.pMonPlaceLinker },
+            { gszTxtField_code, 17, 0, 0, &sgtDataTables.pMonPlaceLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pMonPlaceLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 256);
-        gD2DataTables.pMonPlaceTxt = DATATBLS_CompileTxt(hArchive, "monplace", pMonPlaceTbl, &gD2DataTables.nMonPlaceTxtRecordCount, 2);
+        sgtDataTables.pMonPlaceLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 256);
+        sgtDataTables.pMonPlaceTxt = DATATBLS_CompileTxt(hArchive, "monplace", pMonPlaceTbl, &sgtDataTables.nMonPlaceTxtRecordCount, 2);
 
         D2BinFieldStrc pSkillCalcTbl[] =
         {
-            { gszTxtField_code, 10, 0, 0, &gD2DataTables.pSkillCalcLinker },
+            { gszTxtField_code, 10, 0, 0, &sgtDataTables.pSkillCalcLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pSkillCalcLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 268);
-        gD2DataTables.pSkillCalcTxt = DATATBLS_CompileTxt(hArchive, "skillcalc", pSkillCalcTbl, &nRecordCount, 4);
+        sgtDataTables.pSkillCalcLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 268);
+        sgtDataTables.pSkillCalcTxt = DATATBLS_CompileTxt(hArchive, "skillcalc", pSkillCalcTbl, &nRecordCount, 4);
 
         D2BinFieldStrc pMissileCalcTbl[] =
         {
-            { gszTxtField_code, 10, 0, 0, &gD2DataTables.pMissileCalcLinker },
+            { gszTxtField_code, 10, 0, 0, &sgtDataTables.pMissileCalcLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pMissileCalcLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 280);
-        gD2DataTables.pMissileCalcTxt = DATATBLS_CompileTxt(hArchive, "misscalc", pMissileCalcTbl, &nRecordCount, 4);
+        sgtDataTables.pMissileCalcLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 280);
+        sgtDataTables.pMissileCalcTxt = DATATBLS_CompileTxt(hArchive, "misscalc", pMissileCalcTbl, &nRecordCount, 4);
 
         D2BinFieldStrc pSkillCodeTbl[] =
         {
-            { "skill", 17, 0, 0, &gD2DataTables.unk0x70 },
+            { "skill", 17, 0, 0, &sgtDataTables.pSkillCodeLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.unk0x70 = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 291);
-        gD2DataTables.pSkillCode = DATATBLS_CompileTxt(hArchive, "skills", pSkillCodeTbl, &nRecordCount, 2);
+        sgtDataTables.pSkillCodeLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 291);
+        sgtDataTables.pSkillCode = DATATBLS_CompileTxt(hArchive, "skills", pSkillCodeTbl, &nRecordCount, 2);
 
         D2BinFieldStrc pEventsTbl[] =
         {
-            { "event", 17, 0, 0, &gD2DataTables.pEventsLinker },
+            { "event", 17, 0, 0, &sgtDataTables.pEventsLinker },
             { gszTxtField_end, 0, 0, 0, 0 },
         };
-        gD2DataTables.pEventsLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 303);
-        gD2DataTables.pEventsTxt = DATATBLS_CompileTxt(hArchive, "events", pEventsTbl, &nRecordCount, 2);
+        sgtDataTables.pEventsLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 303);
+        sgtDataTables.pEventsTxt = DATATBLS_CompileTxt(hArchive, "events", pEventsTbl, &nRecordCount, 2);
     }
 }
 
@@ -1353,41 +1204,41 @@ static void DATATBLS_UnloadBinInline(void* pBinFile)
 // 0x00612EA0
 void __stdcall DATATBLS_UnloadCompCodeAndCompileBins()
 {
-    DATATBLS_UnloadBinInline(gpCompCodeTxt_0096BCAC);
-    FOG_FreeLinker(gpCompCodeLinker);
+    DATATBLS_UnloadBinInline(sgtDataTables.pCompCodeTxt);
+    FOG_FreeLinker(sgtDataTables.pCompCodeLinker);
 
     if (gbCompileTxt)
     {
-        DATATBLS_UnloadBinInline(gpPlayerClassTxt);
-        FOG_FreeLinker(gpPlayerClassLinker_0096BC34);
-        DATATBLS_UnloadBinInline(gpBodyLocsTxt);
-        FOG_FreeLinker(gpBodyLocsLinker_0096BC3C);
-        DATATBLS_UnloadBinInline(gpStorePageTxt);
-        FOG_FreeLinker(gpStorePageLinker_0096BC44);
-        DATATBLS_UnloadBinInline(gpElemTypesTxt);
-        FOG_FreeLinker(gpElemTypesLinker);
-        DATATBLS_UnloadBinInline(gpHitClassTxt);
-        FOG_FreeLinker(gpHitClassLinker_0096BC54);
-        DATATBLS_UnloadBinInline(gpColorsTxt);
-        FOG_FreeLinker(gpColorsLinker);
-        DATATBLS_UnloadBinInline(gpHireDescTxt);
-        FOG_FreeLinker(gpHireDescLinker);
-        DATATBLS_UnloadBinInline(gpMonModeTxt);
-        FOG_FreeLinker(gpMonModeLinker);
-        DATATBLS_UnloadBinInline(gpPlrModeTxt);
-        FOG_FreeLinker(gpPlrModeLinker);
-        DATATBLS_UnloadBinInline(gpMonAiTxt);
-        FOG_FreeLinker(gpMonAiLinker);
-        DATATBLS_UnloadBinInline(gpMonPlaceTxt);
-        FOG_FreeLinker(gpMonPlaceLinker);
-        DATATBLS_UnloadBinInline(gpSkillCalcTxt);
-        FOG_FreeLinker(gpSkillCalcLinker);
-        DATATBLS_UnloadBinInline(gpMissileCalcTxt);
-        FOG_FreeLinker(gpMissileCalcLinker);
-        DATATBLS_UnloadBinInline(gpSkillCodeTxt);
-        FOG_FreeLinker(gpSkillCodeLinker);
-        DATATBLS_UnloadBinInline(gpEventsTxt);
-        FOG_FreeLinker(gpEventsLinker_0096BCA8);
+        DATATBLS_UnloadBinInline(sgtDataTables.pPlayerClassTxt);
+        FOG_FreeLinker(sgtDataTables.pPlayerClassLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pBodyLocsTxt);
+        FOG_FreeLinker(sgtDataTables.pBodyLocsLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pStorePageTxt);
+        FOG_FreeLinker(sgtDataTables.pStorePageLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pElemTypesTxt);
+        FOG_FreeLinker(sgtDataTables.pElemTypesLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pHitClassTxt);
+        FOG_FreeLinker(sgtDataTables.pHitClassLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pColorsTxt);
+        FOG_FreeLinker(sgtDataTables.pColorsLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pHireDescTxt);
+        FOG_FreeLinker(sgtDataTables.pHireDescLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pMonModeTxtStub);
+        FOG_FreeLinker(sgtDataTables.pMonModeLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pPlrModeTxtStub);
+        FOG_FreeLinker(sgtDataTables.pPlrModeLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pMonAiTxt);
+        FOG_FreeLinker(sgtDataTables.pMonAiLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pMonPlaceTxt);
+        FOG_FreeLinker(sgtDataTables.pMonPlaceLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pSkillCalcTxt);
+        FOG_FreeLinker(sgtDataTables.pSkillCalcLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pMissileCalcTxt);
+        FOG_FreeLinker(sgtDataTables.pMissileCalcLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pSkillCode);
+        FOG_FreeLinker(sgtDataTables.pSkillCodeLinker);
+        DATATBLS_UnloadBinInline(sgtDataTables.pEventsTxt);
+        FOG_FreeLinker(sgtDataTables.pEventsLinker);
     }
 }
 
@@ -1427,28 +1278,28 @@ void __stdcall DATATBLS_LoadCharStatsTxt(void* hArchive)
         { "StrSkillTab2", 22, 0, 86, (void*)DATATBLS_GetStringIdFromReferenceString },
         { "StrSkillTab3", 22, 0, 88, (void*)DATATBLS_GetStringIdFromReferenceString },
         { "StrClassOnly", 22, 0, 90, (void*)DATATBLS_GetStringIdFromReferenceString },
-        { "StartSkill", 20, 0, 172, &gTxtLink_0096C7CC },
-        { "Skill 1", 20, 0, 174, &gTxtLink_0096C7CC },
-        { "Skill 2", 20, 0, 176, &gTxtLink_0096C7CC },
-        { "Skill 3", 20, 0, 178, &gTxtLink_0096C7CC },
-        { "Skill 4", 20, 0, 180, &gTxtLink_0096C7CC },
-        { "Skill 5", 20, 0, 182, &gTxtLink_0096C7CC },
-        { "Skill 6", 20, 0, 184, &gTxtLink_0096C7CC },
-        { "Skill 7", 20, 0, 186, &gTxtLink_0096C7CC },
-        { "Skill 8", 20, 0, 188, &gTxtLink_0096C7CC },
-        { "Skill 9", 20, 0, 190, &gTxtLink_0096C7CC },
-        { "Skill 10", 20, 0, 192, &gTxtLink_0096C7CC },
+        { "StartSkill", 20, 0, 172, &sgtDataTables.pSkillsLinker },
+        { "Skill 1", 20, 0, 174, &sgtDataTables.pSkillsLinker },
+        { "Skill 2", 20, 0, 176, &sgtDataTables.pSkillsLinker },
+        { "Skill 3", 20, 0, 178, &sgtDataTables.pSkillsLinker },
+        { "Skill 4", 20, 0, 180, &sgtDataTables.pSkillsLinker },
+        { "Skill 5", 20, 0, 182, &sgtDataTables.pSkillsLinker },
+        { "Skill 6", 20, 0, 184, &sgtDataTables.pSkillsLinker },
+        { "Skill 7", 20, 0, 186, &sgtDataTables.pSkillsLinker },
+        { "Skill 8", 20, 0, 188, &sgtDataTables.pSkillsLinker },
+        { "Skill 9", 20, 0, 190, &sgtDataTables.pSkillsLinker },
+        { "Skill 10", 20, 0, 192, &sgtDataTables.pSkillsLinker },
         { "StatPerLevel", 4, 0, 80, 0 },
-        { "item1loc", 13, 0, 96, &gpBodyLocsLinker_0096BC3C },
-        { "item2loc", 13, 0, 104, &gpBodyLocsLinker_0096BC3C },
-        { "item3loc", 13, 0, 112, &gpBodyLocsLinker_0096BC3C },
-        { "item4loc", 13, 0, 120, &gpBodyLocsLinker_0096BC3C },
-        { "item5loc", 13, 0, 128, &gpBodyLocsLinker_0096BC3C },
-        { "item6loc", 13, 0, 136, &gpBodyLocsLinker_0096BC3C },
-        { "item7loc", 13, 0, 144, &gpBodyLocsLinker_0096BC3C },
-        { "item8loc", 13, 0, 152, &gpBodyLocsLinker_0096BC3C },
-        { "item9loc", 13, 0, 160, &gpBodyLocsLinker_0096BC3C },
-        { "item10loc", 13, 0, 168, &gpBodyLocsLinker_0096BC3C },
+        { "item1loc", 13, 0, 96, &sgtDataTables.pBodyLocsLinker },
+        { "item2loc", 13, 0, 104, &sgtDataTables.pBodyLocsLinker },
+        { "item3loc", 13, 0, 112, &sgtDataTables.pBodyLocsLinker },
+        { "item4loc", 13, 0, 120, &sgtDataTables.pBodyLocsLinker },
+        { "item5loc", 13, 0, 128, &sgtDataTables.pBodyLocsLinker },
+        { "item6loc", 13, 0, 136, &sgtDataTables.pBodyLocsLinker },
+        { "item7loc", 13, 0, 144, &sgtDataTables.pBodyLocsLinker },
+        { "item8loc", 13, 0, 152, &sgtDataTables.pBodyLocsLinker },
+        { "item9loc", 13, 0, 160, &sgtDataTables.pBodyLocsLinker },
+        { "item10loc", 13, 0, 168, &sgtDataTables.pBodyLocsLinker },
         { "item1", 9, 0, 92, 0 },
         { "item1count", 4, 0, 97, 0 },
         { "item2", 9, 0, 100, 0 },
@@ -1472,8 +1323,8 @@ void __stdcall DATATBLS_LoadCharStatsTxt(void* hArchive)
         { gszTxtField_end, 0, 0, 0, 0 },
     };
 
-    gpCharstatsTxt = DATATBLS_CompileTxt(hArchive, "charstats", pTbl, &gnCharstatsTxtRecordCount, 196);
-    DATATBLS_InitUnicodeClassNamesInCharStatsTxt(gpCharstatsTxt, gnCharstatsTxtRecordCount, 196, 32, 0, 16);
+    sgtDataTables.pCharStatsTxt = (D2CharStatsTxt*)DATATBLS_CompileTxt(hArchive, "charstats", pTbl, &sgtDataTables.nCharStatsTxtRecordCount, 196);
+    DATATBLS_InitUnicodeClassNamesInCharStatsTxt(sgtDataTables.pCharStatsTxt, sgtDataTables.nCharStatsTxtRecordCount, 196, 32, 0, 16);
 }
 
 // 0x00613D30
@@ -1492,23 +1343,23 @@ void __stdcall DATATBLS_LoadExperienceTxt(void* hArchive)
         { gszTxtField_end, 0, 0, 0, 0 },
     };
 
-    gpExperienceTxt = (D2ExperienceDataTbl*)DATATBLS_CompileTxt(hArchive, "experience", pTbl, 0, 32);
+    sgtDataTables.pExperienceTxt = (D2ExperienceDataTbl*)DATATBLS_CompileTxt(hArchive, "experience", pTbl, 0, 32);
 }
 
 // 0x00613E60
 unsigned int __stdcall DATATBLS_GetExpRatio(int nLevel)
 {
-    if (!gpExperienceTxt)
+    if (!sgtDataTables.pExperienceTxt)
         return 0;
     if (nLevel <= 0)
-        return gpExperienceTxt->tMax.dwExpRatio;
-    if (nLevel > (int)gpExperienceTxt->tMax.dwClass[0])
+        return sgtDataTables.pExperienceTxt->tMax.dwExpRatio;
+    if (nLevel > (int)sgtDataTables.pExperienceTxt->tMax.dwClass[0])
         return 0;
-    return gpExperienceTxt->aLevels[nLevel].dwExpRatio;
+    return sgtDataTables.pExperienceTxt->aLevels[nLevel].dwExpRatio;
 }
 
 // 0x00613E90
-void __fastcall DATATBLS_GetBinFileHandle(void* hArchive, const char* szFile, void** ppFileHandle, int* pSize, int* pSizeEx)
+void __fastcall DATATBLS_GetBinFileHandle(void* hArchive, const char* szFile, char** ppFileHandle, int* pSize, int* pSizeEx)
 {
     int nSize;
     char szFilePath[0x104];
@@ -1523,7 +1374,7 @@ void __fastcall DATATBLS_GetBinFileHandle(void* hArchive, const char* szFile, vo
         }
         FOG_FreePool(0, *ppFileHandle, ".\\DATATBLS\\DataTbls.cpp", 0x275, 0);
     }
-    *ppFileHandle = DATATBLS_ReadExcelFile(hArchive, szFile, gszBinExtension, &nSize, ".\\DATATBLS\\DataTbls.cpp", 0x27A);
+    *ppFileHandle = (char*)DATATBLS_ReadExcelFile(hArchive, szFile, gszBinExtension, &nSize, ".\\DATATBLS\\DataTbls.cpp", 0x27A);
     *pSizeEx = nSize;
     *pSize = nSize;
 }
@@ -1536,43 +1387,43 @@ void __fastcall DATATBLS_LoadSkills(void* hArchive) {
 // 0x00617C30
 void __fastcall DATATBLS_UnloadSkills_SkillDescTxt()
 {
-    if (gpClassSkillCount)
+    if (sgtDataTables.nClassSkillCount)
     {
-        FOG_FreePool(0, gpClassSkillCount, ".\\DATATBLS\\DataTbls.cpp", 0x5B8, 0);
-        gpClassSkillCount = 0;
+        FOG_FreePool(0, sgtDataTables.nClassSkillCount, ".\\DATATBLS\\DataTbls.cpp", 0x5B8, 0);
+        sgtDataTables.nClassSkillCount = 0;
     }
-    if (gpClassSkillList)
+    if (sgtDataTables.nClassSkillList)
     {
-        FOG_FreePool(0, gpClassSkillList, ".\\DATATBLS\\DataTbls.cpp", 0x5BE, 0);
-        gpClassSkillList = 0;
+        FOG_FreePool(0, sgtDataTables.nClassSkillList, ".\\DATATBLS\\DataTbls.cpp", 0x5BE, 0);
+        sgtDataTables.nClassSkillList = 0;
     }
-    gnHighestClassSkillCount = 0;
-    if (gpPassiveSkills)
+    sgtDataTables.nHighestClassSkillCount = 0;
+    if (sgtDataTables.pPassiveSkills)
     {
-        FOG_FreePool(0, gpPassiveSkills, ".\\DATATBLS\\DataTbls.cpp", 0x5C5, 0);
-        gpPassiveSkills = 0;
+        FOG_FreePool(0, sgtDataTables.pPassiveSkills, ".\\DATATBLS\\DataTbls.cpp", 0x5C5, 0);
+        sgtDataTables.pPassiveSkills = 0;
     }
-    gnPassiveSkills = 0;
-    if (gpSkillsCode)
+    sgtDataTables.nPassiveSkills = 0;
+    if (sgtDataTables.pSkillsCode)
     {
-        FOG_FreePool(0, gpSkillsCode, ".\\DATATBLS\\DataTbls.cpp", 0x5CC, 0);
-        gpSkillsCode = 0;
+        FOG_FreePool(0, sgtDataTables.pSkillsCode, ".\\DATATBLS\\DataTbls.cpp", 0x5CC, 0);
+        sgtDataTables.pSkillsCode = 0;
     }
-    gnSkillsCodeSize = 0;
-    gnSkillsCodeSizeEx = 0;
-    if (gpSkillDescCode)
+    sgtDataTables.nSkillsCodeSize = 0;
+    sgtDataTables.nSkillsCodeSizeEx = 0;
+    if (sgtDataTables.pSkillDescCode)
     {
-        FOG_FreePool(0, gpSkillDescCode, ".\\DATATBLS\\DataTbls.cpp", 0x5D4, 0);
-        gpSkillDescCode = 0;
+        FOG_FreePool(0, sgtDataTables.pSkillDescCode, ".\\DATATBLS\\DataTbls.cpp", 0x5D4, 0);
+        sgtDataTables.pSkillDescCode = 0;
     }
-    gnSkillDescCodeSize = 0;
-    gnSkillDescCodeSizeEx = 0;
-    DATATBLS_UnloadBinInline(gpSkillsTxt);
-    FOG_FreeLinker(gpSkillsLinker_0096C7CC);
-    gnSkillsTxtRecordCount = 0;
-    DATATBLS_UnloadBinInline(gpSkillDescTxt);
-    FOG_FreeLinker(gpSkillDescLinker);
-    gnSkillDescTxtRecordCount = 0;
+    sgtDataTables.nSkillDescCodeSize = 0;
+    sgtDataTables.nSkillDescCodeSizeEx = 0;
+    DATATBLS_UnloadBinInline(sgtDataTables.pSkillsTxt);
+    FOG_FreeLinker(sgtDataTables.pSkillsLinker);
+    sgtDataTables.nSkillsTxtRecordCount = 0;
+    DATATBLS_UnloadBinInline(sgtDataTables.pSkillDescTxt);
+    FOG_FreeLinker(sgtDataTables.pSkillDescLinker);
+    sgtDataTables.nSkillDescTxtRecordCount = 0;
 }
 
 // 0x00617D90
@@ -1605,8 +1456,8 @@ void __stdcall DATATBLS_LoadDifficultyLevelsTxt(void* hArchive)
         { gszTxtField_end, 0, 0, 0, 0 },
     };
 
-    gpDifficultylevelsTxt = (D2DifficultyLevelsTxt*)DATATBLS_CompileTxt(hArchive, "difficultylevels", pTbl, &gnDifficultylevelsTxtRecordCount, 88);
-    TBL_ASSERT(gnDifficultylevelsTxtRecordCount == 3, 1567);
+    sgtDataTables.pDifficultyLevelsTxt = (D2DifficultyLevelsTxt*)DATATBLS_CompileTxt(hArchive, "difficultylevels", pTbl, &sgtDataTables.nDifficultyLevelsTxtRecordCount, 88);
+    TBL_ASSERT(sgtDataTables.nDifficultyLevelsTxtRecordCount == 3, 1567);
 }
 
 // 0x00618100
@@ -1614,7 +1465,7 @@ void __fastcall DATATBLS_LoadStatesTxt(void* hArchive)
 {
     D2BinFieldStrc pTbl[] =
     {
-        { "state", TXTFIELD_NAMETOINDEX, 0, 0, &gD2DataTables.pStatesLinker },
+        { "state", TXTFIELD_NAMETOINDEX, 0, 0, &sgtDataTables.pStatesLinker },
         { "group", TXTFIELD_WORD, 0, 30, 0 },
         { "nosend", TXTFIELD_BIT, 0, 16, 0 },
         { "hide", TXTFIELD_BIT, 2, 16, 0 },
@@ -1656,90 +1507,90 @@ void __fastcall DATATBLS_LoadStatesTxt(void* hArchive)
         { "nooverlays", TXTFIELD_BIT, 35, 16, 0 },
         { "notondead", TXTFIELD_BIT, 39, 16, 0 },
         { "noclear", TXTFIELD_BIT, 36, 16, 0 },
-        { "overlay1", TXTFIELD_NAMETOWORD, 0, 2, &gD2DataTables.pOverlayLinker },
-        { "overlay2", TXTFIELD_NAMETOWORD, 0, 4, &gD2DataTables.pOverlayLinker },
-        { "overlay3", TXTFIELD_NAMETOWORD, 0, 6, &gD2DataTables.pOverlayLinker },
-        { "overlay4", TXTFIELD_NAMETOWORD, 0, 8, &gD2DataTables.pOverlayLinker },
-        { "pgsvoverlay", TXTFIELD_NAMETOWORD, 0, 14, &gD2DataTables.pOverlayLinker },
-        { "castoverlay", TXTFIELD_NAMETOWORD, 0, 10, &gD2DataTables.pOverlayLinker },
-        { "removerlay", TXTFIELD_NAMETOWORD, 0, 12, &gD2DataTables.pOverlayLinker },
-        { "stat", TXTFIELD_NAMETOWORD, 0, 24, &gD2DataTables.pItemStatCostLinker },
+        { "overlay1", TXTFIELD_NAMETOWORD, 0, 2, &sgtDataTables.pOverlayLinker },
+        { "overlay2", TXTFIELD_NAMETOWORD, 0, 4, &sgtDataTables.pOverlayLinker },
+        { "overlay3", TXTFIELD_NAMETOWORD, 0, 6, &sgtDataTables.pOverlayLinker },
+        { "overlay4", TXTFIELD_NAMETOWORD, 0, 8, &sgtDataTables.pOverlayLinker },
+        { "pgsvoverlay", TXTFIELD_NAMETOWORD, 0, 14, &sgtDataTables.pOverlayLinker },
+        { "castoverlay", TXTFIELD_NAMETOWORD, 0, 10, &sgtDataTables.pOverlayLinker },
+        { "removerlay", TXTFIELD_NAMETOWORD, 0, 12, &sgtDataTables.pOverlayLinker },
+        { "stat", TXTFIELD_NAMETOWORD, 0, 24, &sgtDataTables.pItemStatCostLinker },
         { "setfunc", TXTFIELD_WORD, 0, 26, 0 },
         { "remfunc", TXTFIELD_WORD, 0, 28, 0 },
-        { "missile", TXTFIELD_NAMETOWORD, 0, 58, &gD2DataTables.pMissilesLinker },
-        { "skill", TXTFIELD_NAMETOWORD, 0, 56, &gD2DataTables.unk0x70 },
+        { "missile", TXTFIELD_NAMETOWORD, 0, 58, &sgtDataTables.pMissilesLinker },
+        { "skill", TXTFIELD_NAMETOWORD, 0, 56, &sgtDataTables.pSkillCodeLinker },
         { "colorpri", TXTFIELD_BYTE, 0, 32, 0 },
         { "colorshift", TXTFIELD_BYTE, 0, 33, 0 },
         { "light-r", TXTFIELD_BYTE, 0, 34, 0 },
         { "light-g", TXTFIELD_BYTE, 0, 35, 0 },
         { "light-b", TXTFIELD_BYTE, 0, 36, 0 },
-        { "onsound", TXTFIELD_NAMETOWORD, 0, 38, &gD2DataTables.pSoundsLinker },
-        { "offsound", TXTFIELD_NAMETOWORD, 0, 40, &gD2DataTables.pSoundsLinker },
-        { "itemtype", TXTFIELD_CODETOWORD, 0, 42, &gD2DataTables.pItemTypesLinker },
-        { "itemtrans", TXTFIELD_CODETOBYTE, 0, 44, &gD2DataTables.pColorsLinker },
+        { "onsound", TXTFIELD_NAMETOWORD, 0, 38, &sgtDataTables.pSoundsLinker },
+        { "offsound", TXTFIELD_NAMETOWORD, 0, 40, &sgtDataTables.pSoundsLinker },
+        { "itemtype", TXTFIELD_CODETOWORD, 0, 42, &sgtDataTables.pItemTypesLinker },
+        { "itemtrans", TXTFIELD_CODETOBYTE, 0, 44, &sgtDataTables.pColorsLinker },
         { "gfxtype", TXTFIELD_BYTE, 0, 45, 0 },
         { "gfxclass", TXTFIELD_WORD, 0, 46, 0 },
-        { "cltevent", TXTFIELD_NAMETOWORD, 0, 48, &gD2DataTables.pEventsLinker },
+        { "cltevent", TXTFIELD_NAMETOWORD, 0, 48, &sgtDataTables.pEventsLinker },
         { "clteventfunc", TXTFIELD_WORD, 0, 50, 0 },
         { "cltactivefunc", TXTFIELD_WORD, 0, 52, 0 },
         { "srvactivefunc", TXTFIELD_WORD, 0, 54, 0 },
         { gszTxtField_end, TXTFIELD_NONE, 0, 0, 0 },
     };
 
-    gD2DataTables.pStatesLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 1735);
-    gD2DataTables.pStatesTxt = (D2StatesTxt*)DATATBLS_CompileTxt(hArchive, "states", pTbl, &gD2DataTables.nStatesTxtRecordCount, sizeof(D2StatesTxt));
+    sgtDataTables.pStatesLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 1735);
+    sgtDataTables.pStatesTxt = (D2StatesTxt*)DATATBLS_CompileTxt(hArchive, "states", pTbl, &sgtDataTables.nStatesTxtRecordCount, sizeof(D2StatesTxt));
 
-    D2_ASSERT(gD2DataTables.nStatesTxtRecordCount < 256, 1737);
+    D2_ASSERT(sgtDataTables.nStatesTxtRecordCount < 256, 1737);
 
-    unsigned int nMaskSize = sizeof(unsigned int) * ((gD2DataTables.nStatesTxtRecordCount + 32 - 1) / 32);
+    unsigned int nMaskSize = sizeof(unsigned int) * ((sgtDataTables.nStatesTxtRecordCount + 32 - 1) / 32);
     unsigned int nSize = 40 * nMaskSize;
-    gD2DataTables.pStateMasks = (unsigned int*)FOG_AllocPool(0, nSize, ".\\DATATBLS\\DataTbls.cpp", 1742, 0);
-    memset(gD2DataTables.pStateMasks, 0, nSize);
+    sgtDataTables.pStateMasks = (unsigned int*)FOG_AllocPool(0, nSize, ".\\DATATBLS\\DataTbls.cpp", 1742, 0);
+    memset(sgtDataTables.pStateMasks, 0, nSize);
 
     for (int i = 0; i < 40; ++i)
     {
-        gD2DataTables.fStateMasks[i] = &gD2DataTables.pStateMasks[i * (nMaskSize / sizeof(unsigned int))];
-        DATATBLS_BuildStateMask(gD2DataTables.fStateMasks[i], i);
+        sgtDataTables.fStateMasks[i] = &sgtDataTables.pStateMasks[i * (nMaskSize / sizeof(unsigned int))];
+        DATATBLS_BuildStateMask(sgtDataTables.fStateMasks[i], i);
     }
 
-    DATATBLS_BuildStateListByFlag(&gD2DataTables.pProgressiveStates, &gD2DataTables.nProgressiveStates, 4);
-    DATATBLS_BuildStateListByFlag(&gD2DataTables.pCurseStates, &gD2DataTables.nCurseStates, 11);
-    DATATBLS_BuildStateListByFlag(&gD2DataTables.pTransformStates, &gD2DataTables.nTransformStates, 16);
-    DATATBLS_BuildStateListByFlag(&gD2DataTables.pActionStates, &gD2DataTables.nActionStates, 5);
-    DATATBLS_BuildStateListByField(&gD2DataTables.pColourStates, &gD2DataTables.nColourStates, 42);
+    DATATBLS_BuildStateListByFlag(&sgtDataTables.pProgressiveStates, &sgtDataTables.nProgressiveStates, 4);
+    DATATBLS_BuildStateListByFlag(&sgtDataTables.pCurseStates, &sgtDataTables.nCurseStates, 11);
+    DATATBLS_BuildStateListByFlag(&sgtDataTables.pTransformStates, &sgtDataTables.nTransformStates, 16);
+    DATATBLS_BuildStateListByFlag(&sgtDataTables.pActionStates, &sgtDataTables.nActionStates, 5);
+    DATATBLS_BuildStateListByField(&sgtDataTables.pColourStates, &sgtDataTables.nColourStates, 42);
 }
 
 // 0x00618C90
 void __fastcall DATATBLS_UnloadStatesTxt()
 {
-    if (gpStateMasks)
+    if (sgtDataTables.pStateMasks)
     {
-        FOG_FreePool(0, gpStateMasks, ".\\DATATBLS\\DataTbls.cpp", 0x6E8, 0);
-        gpStateMasks = 0;
+        FOG_FreePool(0, sgtDataTables.pStateMasks, ".\\DATATBLS\\DataTbls.cpp", 0x6E8, 0);
+        sgtDataTables.pStateMasks = 0;
     }
-    if (gpProgressiveStates)
+    if (sgtDataTables.pProgressiveStates)
     {
-        FOG_FreePool(0, gpProgressiveStates, ".\\DATATBLS\\DataTbls.cpp", 0x6ED, 0);
-        gpProgressiveStates = 0;
+        FOG_FreePool(0, sgtDataTables.pProgressiveStates, ".\\DATATBLS\\DataTbls.cpp", 0x6ED, 0);
+        sgtDataTables.pProgressiveStates = 0;
     }
-    if (gpCurseStates)
+    if (sgtDataTables.pCurseStates)
     {
-        FOG_FreePool(0, gpCurseStates, ".\\DATATBLS\\DataTbls.cpp", 0x6F2, 0);
-        gpCurseStates = 0;
+        FOG_FreePool(0, sgtDataTables.pCurseStates, ".\\DATATBLS\\DataTbls.cpp", 0x6F2, 0);
+        sgtDataTables.pCurseStates = 0;
     }
-    if (gpTransformStates)
+    if (sgtDataTables.pTransformStates)
     {
-        FOG_FreePool(0, gpTransformStates, ".\\DATATBLS\\DataTbls.cpp", 0x6F7, 0);
-        gpTransformStates = 0;
+        FOG_FreePool(0, sgtDataTables.pTransformStates, ".\\DATATBLS\\DataTbls.cpp", 0x6F7, 0);
+        sgtDataTables.pTransformStates = 0;
     }
-    if (gpActionStates)
+    if (sgtDataTables.pActionStates)
     {
-        FOG_FreePool(0, gpActionStates, ".\\DATATBLS\\DataTbls.cpp", 0x6FC, 0);
-        gpActionStates = 0;
+        FOG_FreePool(0, sgtDataTables.pActionStates, ".\\DATATBLS\\DataTbls.cpp", 0x6FC, 0);
+        sgtDataTables.pActionStates = 0;
     }
-    memset(gfStateMasks, 0, sizeof(gfStateMasks));
-    DATATBLS_UnloadBinInline(gpStatesTxt);
-    FOG_FreeLinker(gpStatesLinker_0096BCF0);
+    memset(sgtDataTables.fStateMasks, 0, sizeof(sgtDataTables.fStateMasks));
+    DATATBLS_UnloadBinInline(sgtDataTables.pStatesTxt);
+    FOG_FreeLinker(sgtDataTables.pStatesLinker);
 }
 
 // 0x00618D90
@@ -1747,7 +1598,7 @@ void __fastcall DATATBLS_LoadPetTypeTxt(void* hArchive)
 {
     D2BinFieldStrc pTbl[] =
     {
-        { "pet type", 18, 0, 0, &gTxtLink_0096C81C },
+        { "pet type", 18, 0, 0, &sgtDataTables.pPetTypeLinker },
         { "group", 3, 0, 8, 0 },
         { "basemax", 3, 0, 10, 0 },
         { "warp", 26, 0, 4, 0 },
@@ -1770,35 +1621,35 @@ void __fastcall DATATBLS_LoadPetTypeTxt(void* hArchive)
         { gszTxtField_end, 0, 0, 0, 0 },
     };
 
-    gTxtLink_0096C81C = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 1833);
-    gpPettypeTxt = DATATBLS_CompileTxt(hArchive, "pettype", pTbl, &gnPettypeTxtRecordCount, 224);
-    TBL_ASSERT(gnPettypeTxtRecordCount < 256, 1835);
-    gnPettypeTxtRecordCount = gnPettypeTxtRecordCount <= 0 ? 0 : gnPettypeTxtRecordCount;
-    if (gnPettypeTxtRecordCount >= 256)
+    sgtDataTables.pPetTypeLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 1833);
+    sgtDataTables.pPetTypeTxt = (D2PetTypeTxt*)DATATBLS_CompileTxt(hArchive, "pettype", pTbl, &sgtDataTables.nPetTypeTxtRecordCount, 224);
+    TBL_ASSERT(sgtDataTables.nPetTypeTxtRecordCount < 256, 1835);
+    sgtDataTables.nPetTypeTxtRecordCount = sgtDataTables.nPetTypeTxtRecordCount <= 0 ? 0 : sgtDataTables.nPetTypeTxtRecordCount;
+    if (sgtDataTables.nPetTypeTxtRecordCount >= 256)
     {
-        gnPettypeTxtRecordCount = 256;
+        sgtDataTables.nPetTypeTxtRecordCount = 256;
     }
 }
 
 // 0x00619100
 void __fastcall DATATBLS_UnloadPetTypeTxt()
 {
-    DATATBLS_UnloadBinInline(gpPettypeTxt);
-    FOG_FreeLinker(gpPettypeLinker);
+    DATATBLS_UnloadBinInline(sgtDataTables.pPetTypeTxt);
+    FOG_FreeLinker(sgtDataTables.pPetTypeLinker);
 }
 
 // 0x00619140
 void __stdcall DATATBLS_UnloadAllBins()
 {
     DATATBLS_UnloadCompCodeAndCompileBins();
-    DATATBLS_UnloadBinInline(gpCharstatsTxt);
+    DATATBLS_UnloadBinInline(sgtDataTables.pCharStatsTxt);
     DATATBLS_UnloadMissilesTxt();
     DATATBLS_UnloadOverlayTxt();
     DATATBLS_UnloadSkills_SkillDescTxt();
     DATATBLS_UnloadItemStatCostTxt();
     DATATBLS_UnloadStatesTxt();
-    DATATBLS_UnloadBinInline(gpPettypeTxt);
-    FOG_FreeLinker(gpPettypeLinker);
+    DATATBLS_UnloadBinInline(sgtDataTables.pPetTypeTxt);
+    FOG_FreeLinker(sgtDataTables.pPetTypeLinker);
     DATATBLS_UnloadItemsTxt();
     DATATBLS_UnloadPropertiesTxt();
     DATATBLS_UnloadMagicSuffix_Prefix_AutomagicTxt();
@@ -1814,8 +1665,8 @@ void __stdcall DATATBLS_UnloadAllBins()
     DATATBLS_UnloadItemTypesTxt();
     DATATBLS_FreeMonTypeTxt();
     DATATBLS_UnloadPlrMode_Type_MonMode_ObjMode_Type_Composit_ArmtypeTxt();
-    DATATBLS_UnloadBinInline(gpExperienceTxt);
-    DATATBLS_UnloadAnimDataD2(gpAnimData);
+    DATATBLS_UnloadBinInline(sgtDataTables.pExperienceTxt);
+    DATATBLS_UnloadAnimDataD2(sgtDataTables.pAnimData);
     DATATBLS_UnloadSomeMonsterTxts();
     DATATBLS_UnloadLevelsTxt();
     DATATBLS_UnloadLevelDefsBin();
@@ -1838,7 +1689,7 @@ void __stdcall DATATBLS_UnloadAllBins()
     DATATBLS_UnloadCubeMainTxt();
     DATATBLS_UnloadCharTemplateTxt();
     D2COMMON_10916_Return();
-    DATATBLS_UnloadBinInline(gpDifficultylevelsTxt);
+    DATATBLS_UnloadBinInline(sgtDataTables.pDifficultyLevelsTxt);
 }
 
 // 0x00619300
@@ -1876,7 +1727,7 @@ void __stdcall DATATBLS_LoadAllTxts(void* hArchive, int bLoadFiles, int extra)
     DATATBLS_LoadCompositTxt(hArchive);
     DATATBLS_LoadArmTypeTxt(hArchive);
     DATATBLS_LoadExperienceTxt(hArchive);
-    gD2DataTables.pAnimData = DATATBLS_LoadAnimDataD2(hArchive);
+    sgtDataTables.pAnimData = DATATBLS_LoadAnimDataD2(hArchive);
     DATATBLS_LoadSomeMonsterTxts(hArchive);
     DATATBLS_LoadLevelsTxt(hArchive);
     DATATBLS_LoadLevelDefsBin(hArchive);
@@ -1916,95 +1767,52 @@ int __stdcall STATLIST_GetUnitStatBonus(D2UnitStrc* pUnit, int nStatId, unsigned
     return nValue - STATLIST_GetBaseStatValue(pStatList, nStatId, nLayer);
 }
 
-#pragma pack(push, 1)
-struct d2data_007442C8_t
+// 0x00611D10
+D2CharStatsTxt* __fastcall DATATBLS_GetCharstatsTxtTable()
 {
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
-    const void* p11;
-    const void* p12;
-    const void* p13;
-    const void* p14;
-};
-#pragma pack(pop)
+    return sgtDataTables.pCharStatsTxt;
+}
 
-#pragma pack(push, 1)
-struct d2data_0074430C_t
+// 0x00611D20
+D2AnimDataTableStrc* __fastcall DATATBLS_GetAnimData()
 {
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
-    const void* p4;
-    const void* p5;
-    const void* p6;
-    const void* p7;
-    const void* p8;
-    const void* p9;
-    const void* p10;
+    return sgtDataTables.pAnimData;
+}
+
+extern "C" const char* gData_007442C8[15] = { // 0x007442C8
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish",
+    "Russian",
+    "English with Korean Chat",
+    "Unknown",
+    "14"
 };
-#pragma pack(pop)
 
-#pragma pack(push, 1)
-struct d2data_00744338_t
-{
-    const void* p0;
-    const void* p1;
-    const void* p2;
-    const void* p3;
+D2DataTablesStrc* sgptDataTables = &sgtDataTables; // 0x00744304
+
+int DATATBLS_LoadFromBin = 1; // 0x00744308
+
+extern "C" const char* gData_0074430C[11] = { // 0x0074430C
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Portuguese",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Simplified Chinese",
+    "Traditional Chinese",
+    "Polish"
 };
-#pragma pack(pop)
 
-extern "C" struct d2data_007442C8_t gData_007442C8; // 0x007442C8
-extern "C" struct d2data_0074430C_t gData_0074430C; // 0x0074430C
-extern "C" struct d2data_00744338_t gData_00744338; // 0x00744338
-
-extern "C" struct d2data_007442C8_t gData_007442C8 = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish",
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x007442C8
-
-extern int DATATBLS_LoadFromBin = 1; // 0x00744308
-
-extern "C" struct d2data_0074430C_t gData_0074430C = {
-    (const void*)"English",
-    (const void*)"Spanish",
-    (const void*)"German",
-    (const void*)"French",
-    (const void*)"Portuguese",
-    (const void*)"Italian",
-    (const void*)"Japanese",
-    (const void*)"Korean",
-    (const void*)"Simplified Chinese",
-    (const void*)"Traditional Chinese",
-    (const void*)"Polish"
-}; // 0x0074430C
-
-extern "C" struct d2data_00744338_t gData_00744338 = {
-    (const void*)"Russian",
-    (const void*)"English with Korean Chat",
-    (const void*)"Unknown",
-    (const void*)"14"
-}; // 0x00744338
+extern "C" const char* gData_00744338[4] = { "Russian", "English with Korean Chat", "Unknown", "14" }; // 0x00744338

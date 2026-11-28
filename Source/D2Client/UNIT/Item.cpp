@@ -221,7 +221,7 @@ D2SoundsTxt* __fastcall SOUNDHDR_GetSoundRecord(int nId); // 0x00481860
 
 int __fastcall SOUNDINST_IsTypeOneSound(void* pEntry); // 0x004B9590
 
-void* __fastcall sub_004B9610_GetSoundHandle(int nId); // 0x004B9610
+void* __fastcall SOUNDINST_FindSoundHandle(int nId); // 0x004B9610
 
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 

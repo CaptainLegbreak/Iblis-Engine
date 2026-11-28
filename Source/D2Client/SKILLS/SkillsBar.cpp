@@ -233,7 +233,7 @@ static int __stdcall SKILLS_AdjustTargetPosition(int nSkillId, D2UnitStrc* pUnit
 }
 
 
-void __fastcall sub_004BA840_StopSound(void* pUnitSfx); // 0x004BA840
+void __fastcall SOUNDINST_StopSound(void* pUnitSfx); // 0x004BA840
 
 // 0x004C83C0
 int __fastcall SKILLSBAR_SkillCltStartPosition(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel)
@@ -897,7 +897,7 @@ int __fastcall SKILLSBAR_SkillCltDoCollide(D2UnitStrc* pUnit, int nSkillId, int 
         PATH_SetFootprintCollisionMask(pDynamicPath, nMask);
         PATH_SetMoveTestCollisionMask(pDynamicPath, bPlayer ? 0x1C09 : 0x3C01);
         SKILLS_SetFlags(pSkill, 0);
-        sub_004BA840_StopSound(UNITSND_FindUnitSfxInRange(pUnit, 0x9E3));
+        SOUNDINST_StopSound(UNITSND_FindUnitSfxInRange(pUnit, 0x9E3));
     }
     else if (nFlags & 1)
     {

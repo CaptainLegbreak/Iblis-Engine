@@ -6,7 +6,7 @@
 #include "FogApi.h"
 #include "StormApi.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2CriticalSectionStrc;
 
@@ -204,7 +204,7 @@ void __stdcall FOG_StartServer(D2QueueServerStrc* pServer, unsigned int nValue)
     }
     else
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 297);
+        FOG_DisplayHalt("", sub_00408090(), 297);
         exit(-1);
     }
 }
@@ -1311,7 +1311,7 @@ static void __stdcall sRemoveClient(D2QueueServerStrc* pServer, unsigned int nCl
 
     if (!pClient)
     {
-        sub_006BE2F0_Nop(&gszEmptyAssertText, "[sRemoveClient]  Couldn't remove TCLIENT id = %d", nClientId);
+        sub_006BE2F0_Nop("", "[sRemoveClient]  Couldn't remove TCLIENT id = %d", nClientId);
         sub_006BE300_Nop("QSRV", "[sRemoveClient]  Couldn't remove TCLIENT id = %d", nClientId);
         LeaveCriticalSection((D2CriticalSectionStrc*)&pServer->pClientLocks[nBucket]);
         return;
@@ -1357,7 +1357,7 @@ static void __stdcall sRemoveClient(D2QueueServerStrc* pServer, unsigned int nCl
 
     if (!pFound)
     {
-        sub_006BE2F0_Nop(&gszEmptyAssertText, "[sRemoveClient]  Couldn't remove TCLIENT %d %s from IP-hash",
+        sub_006BE2F0_Nop("", "[sRemoveClient]  Couldn't remove TCLIENT %d %s from IP-hash",
             nClientId, sub_006B013E_FormatAddress(*pAddress));
     }
     else
@@ -1675,7 +1675,7 @@ void __fastcall QSrvCloseRemoteConnection(D2QueueServerStrc* pServer, int nKey, 
     LeaveCriticalSection(&pConnection->tLock);
 
     if (nResult)
-        LOGMANAGER_LogWritePrefixedLine(&gszEmptyAssertText, "[QSrvCloseRemoteConnection] *** closesocket() err = %d ***", WSAGetLastError());
+        LOGMANAGER_LogWritePrefixedLine("", "[QSrvCloseRemoteConnection] *** closesocket() err = %d ***", WSAGetLastError());
 
     QSERVER_ReleaseClient(pServer, pConnection);
     if (nResult == -1)

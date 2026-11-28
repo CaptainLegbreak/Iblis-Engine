@@ -339,87 +339,6 @@ static void __stdcall CLIENTS_SendPlayerAssign(D2ClientStrc* pClient, D2UnitStrc
     D2GAME_PACKETS_SendPacketSize06(pClient, 0x0B, nUnitType, nUnitGUID);
 }
 
-struct D2StoredUnitRecordStrc
-{
-    char unk0x00[0x66];
-    char szName[1];
-};
-
-struct ROSTER_SetCtrlState
-{
-    char unk0x00[0x5C];
-    int nState;
-};
-
-struct D2SoundObjStrc_00515A30
-{
-    char unk0x00[0x40];
-    int nValue40;
-    int nValue44;
-};
-
-struct D2LinkStrc_004CA990
-{
-    void* pFirst;
-};
-
-struct D2OwnerStrc_004CA990
-{
-    char unk0x00[0x78];
-    D2LinkStrc_004CA990* pLink;
-};
-
-typedef char check_ptr_width[(sizeof(void*) == 4) ? 1 : -1];
-
-typedef char check_size_entry[(sizeof(D2StoredUnitRecordStrc) == 0x67) ? 1 : -1];
-
-typedef char check_size_ctrl[(sizeof(ROSTER_SetCtrlState) == 0x60) ? 1 : -1];
-
-typedef char check_size_sound[(sizeof(D2SoundObjStrc_00515A30) == 0x48) ? 1 : -1];
-
-typedef char check_size_owner[(sizeof(D2OwnerStrc_004CA990) == 0x7C) ? 1 : -1];
-
-// 0x004795C0
-extern "C" const char* __fastcall ROSTER_GetEntryName(D2StoredUnitRecordStrc* pEntry)
-{
-    D2_ASSERT(pEntry, 372);
-    return pEntry->szName;
-}
-
-// 0x004B8370
-extern "C" void __fastcall ROSTER_SetCtrlState(ROSTER_SetCtrlState* pCtrl, int nState)
-{
-    D2_ASSERT(pCtrl, 1310);
-    pCtrl->nState = nState;
-}
-
-// 0x004CA990
-extern "C" void* __fastcall UNITSND_GetLinkFirst(D2OwnerStrc_004CA990* pOwner)
-{
-    D2_ASSERT(pOwner, 3171);
-    D2LinkStrc_004CA990* pLink = pOwner->pLink;
-    if (pLink)
-    {
-        return pLink->pFirst;
-    }
-
-    return 0;
-}
-
-// 0x00515A30
-extern "C" void __fastcall D2SOUND_SetSoundNoLoop(D2SoundObjStrc_00515A30* pSound, int nValue)
-{
-    D2_ASSERT(pSound, 815);
-    pSound->nValue40 = nValue;
-}
-
-// 0x00515A60
-extern "C" void __fastcall D2SOUND_SetSoundLoopStart(D2SoundObjStrc_00515A30* pSound, int nValue)
-{
-    D2_ASSERT(pSound, 826);
-    pSound->nValue44 = nValue;
-}
-
 // 0x00537970
 extern "C" void __fastcall CLIENTS_SetPlayerUnitAlive(D2ClientStrc* pClient)
 {
@@ -473,11 +392,8 @@ struct D2UnitProxyStrc;
 struct D2NpcGambleStrc;
 
 
-struct Pad40_00536B40;
 
-struct Pad400_00536B40;
 
-struct Obj00536B40;
 
 struct D2ItemsTxt;
 
@@ -508,68 +424,6 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x00
 
 
 int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
-
-struct Pad40_00536B40 {
-    unsigned int dw00;
-    unsigned int dw04;
-    unsigned int dw08;
-    unsigned int f_C;
-    unsigned int dw10;
-    unsigned int dw14;
-    unsigned int dw18;
-    unsigned int dw1C;
-    unsigned int dw20;
-    unsigned int dw24;
-    unsigned int dw28;
-    unsigned int dw2C;
-    unsigned int dw30;
-    unsigned int dw34;
-    unsigned int dw38;
-    unsigned int dw3C;
-};
-
-struct Pad400_00536B40 {
-    Pad40_00536B40 t000;
-    Pad40_00536B40 t040;
-    Pad40_00536B40 t080;
-    Pad40_00536B40 t0C0;
-    Pad40_00536B40 t100;
-    Pad40_00536B40 t140;
-    Pad40_00536B40 t180;
-    Pad40_00536B40 t1C0;
-    Pad40_00536B40 t200;
-    Pad40_00536B40 t240;
-    Pad40_00536B40 t280;
-    Pad40_00536B40 t2C0;
-    Pad40_00536B40 t300;
-    Pad40_00536B40 t340;
-    Pad40_00536B40 t380;
-    Pad40_00536B40 t3C0;
-};
-
-struct Obj00536B40 {
-    Pad400_00536B40 tPad0000;
-    Pad400_00536B40 tPad0400;
-    Pad400_00536B40 tPad0800;
-    Pad400_00536B40 tPad0C00;
-    Pad400_00536B40 tPad1000;
-    Pad400_00536B40 tPad1400;
-    Pad400_00536B40 tPad1800;
-    Pad40_00536B40 tPad1C00;
-    Pad40_00536B40 tPad1C40;
-    Pad40_00536B40 tPad1C80;
-    Pad40_00536B40 tPad1CC0;
-    unsigned int dwUnknown1D00;
-    unsigned int dwUnknown1D04;
-    unsigned int dwUnknown1D08;
-    unsigned int dwUnknown1D0C;
-    unsigned int dwUnknown1D10;
-    unsigned int dwUnknown1D14;
-    unsigned int dwUnknown1D18;
-    unsigned int dwUnknown1D1C;
-    unsigned int dwUnknown1D20;
-    unsigned int dwValue1D24;
-};
 
 
 unsigned char gbUnitProxyItemCacheInitialized[17]; // 0x00883E88
@@ -1479,7 +1333,6 @@ struct D2Act5Quest4Strc;
 struct D2StatesTxt;
 
 
-struct D2SavedItemStrc;
 
 
 struct D2DrlgActStrc;
@@ -1547,30 +1400,6 @@ extern int gnUnchangedSaveCount; // 0x00883D6C
 
 
 
-
-struct D2SavedItemStrc
-{
-    unsigned char nBodyLoc;
-    unsigned char nSocketedItems;
-    int nItemLevel;
-    int nItemId;
-    unsigned char nSpawnType;
-    unsigned char nItemQuality;
-    int nQuantity;
-    int nMinDurability;
-    int nMaxDurability;
-    int nX;
-    int nY;
-    int nItemIndex;
-    unsigned int nItemFlags;
-    unsigned int nSeed;
-    unsigned int nItemSeed;
-    unsigned char nInvPage;
-    unsigned char nEarLevel;
-    char szName[16];
-    unsigned short nItemFormat;
-    unsigned int nItemCode;
-};
 
 
 
@@ -1912,42 +1741,6 @@ int gnAct;                                                                      
 
 #pragma pack(push,1)
 
-struct Request {
-#if INPUT_PREFIX
- char movedPrefix[INPUT_PREFIX];
-#endif
- int client; unsigned char unused,command;
-};
-
-
-struct Array8
-{
-    unsigned int values[8];
-};
-
-struct ServerInfo {
- unsigned int a,b,c,d,e,f,g,h,i,j;
- char description[128];
- unsigned int a8,ac,b0,b4,b8,bc,c0,c4,c8,cc,d0;
- unsigned short d4;
- unsigned int d6,da,de,e2,e6;
- unsigned short unusedEA;
- unsigned int ec;
- Array8 f0;
- unsigned int f110;
-};
-
-struct Reply {
- unsigned char command;
- unsigned int a,b,c,d,e,f,g,h,i,j;
- char description[128];
- unsigned int a9,ad,b1,b5,b9,bd;
- Array8 c1;
- unsigned int e1,e5,e9,ed,f1;
- unsigned short f5;
- unsigned int f7,fb,ff,f103,f107,f10b,f10f,f113,f117;
- char reserved[0x4A];
-};
 
 long gnAdminConnectionCount;         // 0x00883D64
 

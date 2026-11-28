@@ -3,7 +3,7 @@
 #pragma function(memcpy)
 #pragma intrinsic(memset)
 
-#define FIELD_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define FIELD_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 struct D2PoolSystemStrc;
 #define FIELD_CELL(pFieldArg, nPosX, nPosY) \
     *reinterpret_cast<unsigned char*>(gtCollisionField.nCenterX \

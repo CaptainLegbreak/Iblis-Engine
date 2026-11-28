@@ -43,7 +43,7 @@ void __fastcall D2GAME_PACKETS_SendPacket0xA9_StateOff(D2ClientStrc* pClient, un
 #define D2_MAX(a,b) (((a)>(b))?(a):(b))
 
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define NPC_LEVEL_COUNT 5
 

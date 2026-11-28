@@ -425,12 +425,12 @@ void __fastcall PATHUTIL_AdvanceTowardsTarget(D2DynamicPathStrc* ptPath)
 {
     if (ptPath == 0)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x1ea);
+        FOG_DisplayHalt("", sub_00408090(), 0x1ea);
         exit(-1);
     }
     if (ptPath->hTarget == 0)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x1eb);
+        FOG_DisplayHalt("", sub_00408090(), 0x1eb);
         exit(-1);
     }
 

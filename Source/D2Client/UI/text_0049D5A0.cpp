@@ -29,7 +29,7 @@ struct D2TextScrollStrc
 
 extern "C" const char gszEmptyAssertText;                                                                   // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 extern "C" __declspec(dllimport) unsigned long __stdcall timeGetTime(void);                                // 0x006CC544
 
@@ -243,7 +243,7 @@ static int __stdcall TEXT_AdvanceTextBox(int bIgnore, D2TextScrollStrc* pTextBox
     }
 
     const int bBusy = D2SOUND_GetMasterVolumeOption();
-    if (!gtTextState.hHintSound || sub_004B95C0_IsHintPlaying(gtTextState.hHintSound) || !bBusy)
+    if (!gtTextState.hHintSound || SOUNDINST_IsHintPlaying(gtTextState.hHintSound) || !bBusy)
     {
         gtTextState.hHintSound = 0;
         if (TEXT_UpdateScrollText(pTextBox))

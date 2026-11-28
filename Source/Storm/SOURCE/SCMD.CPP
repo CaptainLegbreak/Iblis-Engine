@@ -445,7 +445,7 @@ void D2FogUnlinkStrc::sub_006C4480_Unlink() { tLink.Unlink(); }
 int __stdcall SCmdRegisterArgument(unsigned int dwFlags, unsigned int dwId, const char* szName, void* pVariable, unsigned int nBytes, int nSetValue, int nSetMask, OptionCallback pfnCallback)
 {
     if (!szName)
-        szName = gszEmptyString;
+        szName = "";
     int nNameLength = SStrLen(szName);
 
     VALIDATEBEGIN;
@@ -830,7 +830,7 @@ int __stdcall SCmdProcess(const char* szCommandLine, int bSkipFirst, OptionCallb
 
     if (pfnError && !bResult)
     {
-        GenerateError(pfnError, 0x8510006D, &gszEmptyAssertText);
+        GenerateError(pfnError, 0x8510006D, "");
     }
 
     return nValid ? bResult : 0;

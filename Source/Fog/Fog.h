@@ -95,7 +95,7 @@ void* __fastcall ERRORMANAGER_PoolReallocLarge(D2PoolSystemStrc* pSystem, void* 
 
 #define QS_IS_READ(f) (((f) & 1) == 1)
 #define QS_IS_WRITE(f) (((f) & 3) == 2)
-#define S_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText_006CC837, sub_00408090(), line); exit(-1); }
+#define S_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 #define _INTSIZEOF(n) ((sizeof(n) + sizeof(int) - 1) & ~(sizeof(int) - 1))
 
 // the default of a switch whose every value is a listed case: the compiler is told it cannot be reached

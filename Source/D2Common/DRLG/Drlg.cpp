@@ -981,14 +981,14 @@ void __fastcall DRLG_UpdateRoomExCoordinates(D2DrlgLevelStrc* pLevel)
 
     if (!pLevel)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 739);
+        FOG_DisplayHalt("", sub_00408090(), 739);
         exit(-1);
     }
 
     D2DrlgRoomStrc* pDrlgRoom = pLevel->ptRoomFirst;
     if (!pDrlgRoom)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 740);
+        FOG_DisplayHalt("", sub_00408090(), 740);
         exit(-1);
     }
 
@@ -998,13 +998,13 @@ void __fastcall DRLG_UpdateRoomExCoordinates(D2DrlgLevelStrc* pLevel)
 
     if (pLevel->nWidth < nTileX[1] - nTileX[0])
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 747);
+        FOG_DisplayHalt("", sub_00408090(), 747);
         exit(-1);
     }
 
     if (pLevel->nHeight < nTileY[1] - nTileY[0])
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 748);
+        FOG_DisplayHalt("", sub_00408090(), 748);
         exit(-1);
     }
 

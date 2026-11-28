@@ -145,7 +145,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x00
 
 
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2MenuItemStrc;
 
@@ -1806,7 +1806,7 @@ void __stdcall MINIPANEL_SlotsClickMsg(SMSGHANDLER_PARAMS* pMsg)
         return;
     if (INVENTORY_GetCursorItem(pInventory))
         return;
-    if (sub_00468830_GetCursorState() != 7)
+    if (CURSOR_GetCursorState() != 7)
         CURSOR_SetCursorItemState(0);
     int nCount = 8;
     if (gbSmallPanel)

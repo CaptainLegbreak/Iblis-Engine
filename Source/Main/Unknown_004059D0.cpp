@@ -25,7 +25,7 @@ extern "C" _iobuf* __cdecl fopen(const char* szFileName, const char* szMode); //
 extern "C" int __cdecl fputc(int nChar, _iobuf* pFile); // 0x00682058
 int __fastcall ARCHIVE_LoadExpansionArchives(int (__cdecl* pfnPlayDisc)(), int (__cdecl* pfnExpansionDisc)(), int nUnused, D2ConfigStrc* pCfg); // 0x004FAEC0
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 extern D2ModeEntryStrc gaModeTable[6]; // 0x00706554
 extern void* gpModeContext_0074C718; // 0x0074C718

@@ -67,7 +67,7 @@ void __fastcall SPELLSEL_UpdateSkillButtonHover(D2SkillsTxt* pSkillsTxt, int nSt
 
 void __fastcall SPELLSEL_DrawSkillQuantity(D2SkillsTxt* pSkillsTxt, int nState, int nQuantity, int nX, int nY); // 0x004AA1F0
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2HotkeySlotTableStrc;
 

@@ -7,7 +7,10 @@
 
 #include "D2Unicode.h"
 #include "D2Txt.h"
+#include "D2DataTbls.h"
 #include "FogApi.h"
+
+extern D2DataTablesStrc sgtDataTables; // 0x0096BC30
 
 struct D2PoolSystemStrc;
 struct D2BinFieldStrc;
@@ -28,17 +31,7 @@ struct D2PetTypeTxt
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
-extern D2TxtLinkStrc* gpPettypeLinker; // 0x0096C81C
-
-
-
-
-extern int gnPettypeTxtRecordCount; // 0x0096C820
-
-extern void* gpSkillsCode; // 0x0096BC70
-
-extern void* gpSkillDescCode; // 0x0096BC7C
-
+extern int gbCompileTxt; // 0x0096C8B4
 
 
 void __stdcall sub_006BD230_AddRecordToLinker(D2TxtLinkStrc* pLinker, int nCode); // 0x006BD230
@@ -46,64 +39,10 @@ void __stdcall sub_006BD230_AddRecordToLinker(D2TxtLinkStrc* pLinker, int nCode)
 void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 
-
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, size_t nSize); // 0x00681EF0
 
-extern D2TxtLinkStrc* gpPlayerClassLinker_0096BC34; // 0x0096BC34
-
-extern D2TxtLinkStrc* gpElemTypesLinker; // 0x0096BC4C
-
-extern D2TxtLinkStrc* gpPlrModeLinker; // 0x0096BC64
-
-extern D2TxtLinkStrc* gpEventsLinker_0096BCA8; // 0x0096BCA8
-
-extern D2TxtLinkStrc* gpStatesLinker_0096BCF0; // 0x0096BCF0
-
-extern D2TxtLinkStrc* gpSoundsLinker_0096BDC8; // 0x0096BDC8
-
-extern D2TxtLinkStrc* gpMissilesLinker; // 0x0096C798
-
-extern D2TxtLinkStrc* gpSkillDescLinker; // 0x0096C7C0
-
-extern D2TxtLinkStrc* gpSkillsLinker_0096C7CC; // 0x0096C7CC
-
-extern D2TxtLinkStrc* gpOverlayLinker; // 0x0096C7E8
-
-extern D2TxtLinkStrc* gpItemStatCostLinker_0096C800; // 0x0096C800
-
-extern D2TxtLinkStrc* gpItemTypesLinker_0096C824; // 0x0096C824
-
-extern int gbCompileTxt; // 0x0096C8B4
-
-extern void* gpSkillDescTxt; // 0x0096C7BC
-
-extern int gnSkillDescTxtRecordCount; // 0x0096C7C4
-
-extern D2SkillsTxt* gpSkillsTxt; // 0x0096C7C8
-
-extern int gnSkillsTxtRecordCount; // 0x0096C7D0
-
-extern int* gpClassSkillCount; // 0x0096C7D4
-
-extern int gnHighestClassSkillCount; // 0x0096C7D8
-
-extern short* gpClassSkillList; // 0x0096C7DC
-
-extern int gnPassiveSkills; // 0x0096C7E0
-
-extern short* gpPassiveSkills; // 0x0096C7E4
-
-extern D2PetTypeTxt* gpPettypeTxt_0096C818; // 0x0096C818
-
-extern int gnSkillsCodeSize; // 0x0096BC74
-
-extern int gnSkillsCodeSizeEx; // 0x0096BC78
-
-extern int gnSkillDescCodeSize; // 0x0096BC80
-
-extern int gnSkillDescCodeSizeEx; // 0x0096BC84
 
 // 0x00613F80
 void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
@@ -118,7 +57,7 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
 
     D2BinFieldStrc pSkillDescTbl[] =
     {
-        { "skilldesc", 17, 0, 0, &gpSkillDescLinker },
+        { "skilldesc", 17, 0, 0, &sgtDataTables.pSkillDescLinker },
         { "skillpage", 4, 0, 2, 0 },
         { "skillrow", 4, 0, 3, 0 },
         { "skillcolumn", 4, 0, 4, 0 },
@@ -134,18 +73,18 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         { "descatt", 3, 0, 20, 0 },
         { "ddam calc1", 25, 0, 24, (void*)DATATBLS_SkillDescCalcLinker },
         { "ddam calc2", 25, 0, 28, (void*)DATATBLS_SkillDescCalcLinker },
-        { "p1dmelem", 13, 0, 32, &gpElemTypesLinker },
+        { "p1dmelem", 13, 0, 32, &sgtDataTables.pElemTypesLinker },
         { "p1dmmin", 25, 0, 36, (void*)DATATBLS_SkillDescCalcLinker },
         { "p1dmmax", 25, 0, 48, (void*)DATATBLS_SkillDescCalcLinker },
-        { "p2dmelem", 13, 0, 33, &gpElemTypesLinker },
+        { "p2dmelem", 13, 0, 33, &sgtDataTables.pElemTypesLinker },
         { "p2dmmin", 25, 0, 40, (void*)DATATBLS_SkillDescCalcLinker },
         { "p2dmmax", 25, 0, 52, (void*)DATATBLS_SkillDescCalcLinker },
-        { "p3dmelem", 13, 0, 34, &gpElemTypesLinker },
+        { "p3dmelem", 13, 0, 34, &sgtDataTables.pElemTypesLinker },
         { "p3dmmin", 25, 0, 44, (void*)DATATBLS_SkillDescCalcLinker },
         { "p3dmmax", 25, 0, 56, (void*)DATATBLS_SkillDescCalcLinker },
-        { "descmissile1", 20, 0, 60, &gpMissilesLinker },
-        { "descmissile2", 20, 0, 62, &gpMissilesLinker },
-        { "descmissile3", 20, 0, 64, &gpMissilesLinker },
+        { "descmissile1", 20, 0, 60, &sgtDataTables.pMissilesLinker },
+        { "descmissile2", 20, 0, 62, &sgtDataTables.pMissilesLinker },
+        { "descmissile3", 20, 0, 64, &sgtDataTables.pMissilesLinker },
         { "descline1", 4, 0, 66, 0 },
         { "desctexta1", 22, 0, 84, (void*)DATATBLS_GetStringIdFromReferenceString },
         { "desctextb1", 22, 0, 118, (void*)DATATBLS_GetStringIdFromReferenceString },
@@ -236,8 +175,8 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
 
     D2BinFieldStrc pSkillsTbl[] =
     {
-        { "skill", 17, 0, 0, &gpSkillsLinker_0096C7CC },
-        { "charclass", 13, 0, 12, &gpPlayerClassLinker_0096BC34 },
+        { "skill", 17, 0, 0, &sgtDataTables.pSkillsLinker },
+        { "charclass", 13, 0, 12, &sgtDataTables.pPlayerClassLinker },
         { "skilldesc", 20, 0, 404, &pSkillDescLinker },
         { "srvstfunc", 3, 0, 44, 0 },
         { "srvdofunc", 3, 0, 46, 0 },
@@ -248,115 +187,115 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         { "prgcalc2", 25, 0, 60, (void*)DATATBLS_SkillCalcLinker },
         { "prgcalc3", 25, 0, 64, (void*)DATATBLS_SkillCalcLinker },
         { "prgdam", 4, 0, 68, 0 },
-        { "srvmissile", 20, 0, 70, &gpMissilesLinker },
-        { "srvmissilea", 20, 0, 72, &gpMissilesLinker },
-        { "srvmissileb", 20, 0, 74, &gpMissilesLinker },
-        { "srvmissilec", 20, 0, 76, &gpMissilesLinker },
-        { "srvoverlay", 20, 0, 78, &gpOverlayLinker },
+        { "srvmissile", 20, 0, 70, &sgtDataTables.pMissilesLinker },
+        { "srvmissilea", 20, 0, 72, &sgtDataTables.pMissilesLinker },
+        { "srvmissileb", 20, 0, 74, &sgtDataTables.pMissilesLinker },
+        { "srvmissilec", 20, 0, 76, &sgtDataTables.pMissilesLinker },
+        { "srvoverlay", 20, 0, 78, &sgtDataTables.pOverlayLinker },
         { "lob", 26, 1, 4, 0 },
         { "decquant", 26, 0, 4, 0 },
         { "immediate", 26, 15, 4, 0 },
         { "aurafilter", 2, 0, 80, 0 },
-        { "aurastate", 20, 0, 128, &gpStatesLinker_0096BCF0 },
-        { "auratargetstate", 20, 0, 130, &gpStatesLinker_0096BCF0 },
+        { "aurastate", 20, 0, 128, &sgtDataTables.pStatesLinker },
+        { "auratargetstate", 20, 0, 130, &sgtDataTables.pStatesLinker },
         { "auralencalc", 25, 0, 96, (void*)DATATBLS_SkillCalcLinker },
         { "aurarangecalc", 25, 0, 100, (void*)DATATBLS_SkillCalcLinker },
-        { "aurastat1", 20, 0, 84, &gpItemStatCostLinker_0096C800 },
+        { "aurastat1", 20, 0, 84, &sgtDataTables.pItemStatCostLinker },
         { "aurastatcalc1", 25, 0, 104, (void*)DATATBLS_SkillCalcLinker },
-        { "aurastat2", 20, 0, 86, &gpItemStatCostLinker_0096C800 },
+        { "aurastat2", 20, 0, 86, &sgtDataTables.pItemStatCostLinker },
         { "aurastatcalc2", 25, 0, 108, (void*)DATATBLS_SkillCalcLinker },
-        { "aurastat3", 20, 0, 88, &gpItemStatCostLinker_0096C800 },
+        { "aurastat3", 20, 0, 88, &sgtDataTables.pItemStatCostLinker },
         { "aurastatcalc3", 25, 0, 112, (void*)DATATBLS_SkillCalcLinker },
-        { "aurastat4", 20, 0, 90, &gpItemStatCostLinker_0096C800 },
+        { "aurastat4", 20, 0, 90, &sgtDataTables.pItemStatCostLinker },
         { "aurastatcalc4", 25, 0, 116, (void*)DATATBLS_SkillCalcLinker },
-        { "aurastat5", 20, 0, 92, &gpItemStatCostLinker_0096C800 },
+        { "aurastat5", 20, 0, 92, &sgtDataTables.pItemStatCostLinker },
         { "aurastatcalc5", 25, 0, 120, (void*)DATATBLS_SkillCalcLinker },
-        { "aurastat6", 20, 0, 94, &gpItemStatCostLinker_0096C800 },
+        { "aurastat6", 20, 0, 94, &sgtDataTables.pItemStatCostLinker },
         { "aurastatcalc6", 25, 0, 124, (void*)DATATBLS_SkillCalcLinker },
-        { "auraevent1", 20, 0, 132, &gpEventsLinker_0096BCA8 },
+        { "auraevent1", 20, 0, 132, &sgtDataTables.pEventsLinker },
         { "auraeventfunc1", 3, 0, 138, 0 },
-        { "auraevent2", 20, 0, 134, &gpEventsLinker_0096BCA8 },
+        { "auraevent2", 20, 0, 134, &sgtDataTables.pEventsLinker },
         { "auraeventfunc2", 3, 0, 140, 0 },
-        { "auraevent3", 20, 0, 136, &gpEventsLinker_0096BCA8 },
+        { "auraevent3", 20, 0, 136, &sgtDataTables.pEventsLinker },
         { "auraeventfunc3", 3, 0, 142, 0 },
-        { "auratgtevent", 20, 0, 144, &gpEventsLinker_0096BCA8 },
+        { "auratgtevent", 20, 0, 144, &sgtDataTables.pEventsLinker },
         { "auratgteventfunc", 3, 0, 146, 0 },
-        { "passivestate", 20, 0, 148, &gpStatesLinker_0096BCF0 },
-        { "passiveitype", 15, 0, 150, &gpItemTypesLinker_0096C824 },
-        { "passivestat1", 20, 0, 152, &gpItemStatCostLinker_0096C800 },
+        { "passivestate", 20, 0, 148, &sgtDataTables.pStatesLinker },
+        { "passiveitype", 15, 0, 150, &sgtDataTables.pItemTypesLinker },
+        { "passivestat1", 20, 0, 152, &sgtDataTables.pItemStatCostLinker },
         { "passivecalc1", 25, 0, 164, (void*)DATATBLS_SkillCalcLinker },
-        { "passivestat2", 20, 0, 154, &gpItemStatCostLinker_0096C800 },
+        { "passivestat2", 20, 0, 154, &sgtDataTables.pItemStatCostLinker },
         { "passivecalc2", 25, 0, 168, (void*)DATATBLS_SkillCalcLinker },
-        { "passivestat3", 20, 0, 156, &gpItemStatCostLinker_0096C800 },
+        { "passivestat3", 20, 0, 156, &sgtDataTables.pItemStatCostLinker },
         { "passivecalc3", 25, 0, 172, (void*)DATATBLS_SkillCalcLinker },
-        { "passivestat4", 20, 0, 158, &gpItemStatCostLinker_0096C800 },
+        { "passivestat4", 20, 0, 158, &sgtDataTables.pItemStatCostLinker },
         { "passivecalc4", 25, 0, 176, (void*)DATATBLS_SkillCalcLinker },
-        { "passivestat5", 20, 0, 160, &gpItemStatCostLinker_0096C800 },
+        { "passivestat5", 20, 0, 160, &sgtDataTables.pItemStatCostLinker },
         { "passivecalc5", 25, 0, 180, (void*)DATATBLS_SkillCalcLinker },
-        { "passiveevent", 20, 0, 184, &gpEventsLinker_0096BCA8 },
+        { "passiveevent", 20, 0, 184, &sgtDataTables.pEventsLinker },
         { "passiveeventfunc", 3, 0, 186, 0 },
         { "summon", 20, 0, 188, &pMonStatsLinker },
-        { "pettype", 21, 0, 190, &gpPettypeLinker },
-        { "summode", 13, 0, 191, &gpMonModeLinker },
+        { "pettype", 21, 0, 190, &sgtDataTables.pPetTypeLinker },
+        { "summode", 13, 0, 191, &sgtDataTables.pMonModeLinker },
         { "petmax", 25, 0, 192, (void*)DATATBLS_SkillCalcLinker },
-        { "sumskill1", 20, 0, 196, &gpSkillsLinker_0096C7CC },
+        { "sumskill1", 20, 0, 196, &sgtDataTables.pSkillsLinker },
         { "sumsk1calc", 25, 0, 208, (void*)DATATBLS_SkillCalcLinker },
-        { "sumskill2", 20, 0, 198, &gpSkillsLinker_0096C7CC },
+        { "sumskill2", 20, 0, 198, &sgtDataTables.pSkillsLinker },
         { "sumsk2calc", 25, 0, 212, (void*)DATATBLS_SkillCalcLinker },
-        { "sumskill3", 20, 0, 200, &gpSkillsLinker_0096C7CC },
+        { "sumskill3", 20, 0, 200, &sgtDataTables.pSkillsLinker },
         { "sumsk3calc", 25, 0, 216, (void*)DATATBLS_SkillCalcLinker },
-        { "sumskill4", 20, 0, 202, &gpSkillsLinker_0096C7CC },
+        { "sumskill4", 20, 0, 202, &sgtDataTables.pSkillsLinker },
         { "sumsk4calc", 25, 0, 220, (void*)DATATBLS_SkillCalcLinker },
-        { "sumskill5", 20, 0, 204, &gpSkillsLinker_0096C7CC },
+        { "sumskill5", 20, 0, 204, &sgtDataTables.pSkillsLinker },
         { "sumsk5calc", 25, 0, 224, (void*)DATATBLS_SkillCalcLinker },
         { "sumumod", 3, 0, 228, 0 },
-        { "sumoverlay", 20, 0, 230, &gpOverlayLinker },
-        { "cltmissile", 20, 0, 232, &gpMissilesLinker },
-        { "cltmissilea", 20, 0, 234, &gpMissilesLinker },
-        { "cltmissileb", 20, 0, 236, &gpMissilesLinker },
-        { "cltmissilec", 20, 0, 238, &gpMissilesLinker },
-        { "cltmissiled", 20, 0, 240, &gpMissilesLinker },
+        { "sumoverlay", 20, 0, 230, &sgtDataTables.pOverlayLinker },
+        { "cltmissile", 20, 0, 232, &sgtDataTables.pMissilesLinker },
+        { "cltmissilea", 20, 0, 234, &sgtDataTables.pMissilesLinker },
+        { "cltmissileb", 20, 0, 236, &sgtDataTables.pMissilesLinker },
+        { "cltmissilec", 20, 0, 238, &sgtDataTables.pMissilesLinker },
+        { "cltmissiled", 20, 0, 240, &sgtDataTables.pMissilesLinker },
         { "cltstfunc", 3, 0, 242, 0 },
         { "cltdofunc", 3, 0, 244, 0 },
         { "cltprgfunc1", 3, 0, 246, 0 },
         { "cltprgfunc2", 3, 0, 248, 0 },
         { "cltprgfunc3", 3, 0, 250, 0 },
         { "stsuccessonly", 26, 12, 4, 0 },
-        { "stsound", 20, 0, 252, &gpSoundsLinker_0096BDC8 },
-        { "stsoundclass", 20, 0, 254, &gpSoundsLinker_0096BDC8 },
+        { "stsound", 20, 0, 252, &sgtDataTables.pSoundsLinker },
+        { "stsoundclass", 20, 0, 254, &sgtDataTables.pSoundsLinker },
         { "stsounddelay", 26, 13, 4, 0 },
         { "weaponsnd", 26, 14, 4, 0 },
-        { "dosound", 20, 0, 256, &gpSoundsLinker_0096BDC8 },
-        { "dosound a", 20, 0, 258, &gpSoundsLinker_0096BDC8 },
-        { "dosound b", 20, 0, 260, &gpSoundsLinker_0096BDC8 },
-        { "tgtsound", 20, 0, 266, &gpSoundsLinker_0096BDC8 },
-        { "tgtoverlay", 20, 0, 264, &gpOverlayLinker },
-        { "castoverlay", 20, 0, 262, &gpOverlayLinker },
-        { "cltoverlaya", 20, 0, 272, &gpOverlayLinker },
-        { "cltoverlayb", 20, 0, 274, &gpOverlayLinker },
-        { "prgsound", 20, 0, 270, &gpSoundsLinker_0096BDC8 },
-        { "prgoverlay", 20, 0, 268, &gpOverlayLinker },
+        { "dosound", 20, 0, 256, &sgtDataTables.pSoundsLinker },
+        { "dosound a", 20, 0, 258, &sgtDataTables.pSoundsLinker },
+        { "dosound b", 20, 0, 260, &sgtDataTables.pSoundsLinker },
+        { "tgtsound", 20, 0, 266, &sgtDataTables.pSoundsLinker },
+        { "tgtoverlay", 20, 0, 264, &sgtDataTables.pOverlayLinker },
+        { "castoverlay", 20, 0, 262, &sgtDataTables.pOverlayLinker },
+        { "cltoverlaya", 20, 0, 272, &sgtDataTables.pOverlayLinker },
+        { "cltoverlayb", 20, 0, 274, &sgtDataTables.pOverlayLinker },
+        { "prgsound", 20, 0, 270, &sgtDataTables.pSoundsLinker },
+        { "prgoverlay", 20, 0, 268, &sgtDataTables.pOverlayLinker },
         { "cltcalc1", 25, 0, 276, (void*)DATATBLS_SkillCalcLinker },
         { "cltcalc2", 25, 0, 280, (void*)DATATBLS_SkillCalcLinker },
         { "cltcalc3", 25, 0, 284, (void*)DATATBLS_SkillCalcLinker },
         { "warp", 26, 38, 4, 0 },
-        { "anim", 13, 0, 16, &gpPlrModeLinker },
-        { "seqtrans", 13, 0, 18, &gpPlrModeLinker },
-        { "monanim", 13, 0, 17, &gpMonModeLinker },
+        { "anim", 13, 0, 16, &sgtDataTables.pPlrModeLinker },
+        { "seqtrans", 13, 0, 18, &sgtDataTables.pPlrModeLinker },
+        { "monanim", 13, 0, 17, &sgtDataTables.pMonModeLinker },
         { "seqnum", 4, 0, 19, 0 },
         { "seqinput", 4, 0, 22, 0 },
         { "range", 13, 0, 20, &pRangeLinker },
         { "weapsel", 4, 0, 360, 0 },
-        { "itypea1", 15, 0, 24, &gpItemTypesLinker_0096C824 },
-        { "itypea2", 15, 0, 26, &gpItemTypesLinker_0096C824 },
-        { "itypea3", 15, 0, 28, &gpItemTypesLinker_0096C824 },
-        { "etypea1", 15, 0, 36, &gpItemTypesLinker_0096C824 },
-        { "etypea2", 15, 0, 38, &gpItemTypesLinker_0096C824 },
-        { "itypeb1", 15, 0, 30, &gpItemTypesLinker_0096C824 },
-        { "itypeb2", 15, 0, 32, &gpItemTypesLinker_0096C824 },
-        { "itypeb3", 15, 0, 34, &gpItemTypesLinker_0096C824 },
-        { "etypeb1", 15, 0, 40, &gpItemTypesLinker_0096C824 },
-        { "etypeb2", 15, 0, 42, &gpItemTypesLinker_0096C824 },
+        { "itypea1", 15, 0, 24, &sgtDataTables.pItemTypesLinker },
+        { "itypea2", 15, 0, 26, &sgtDataTables.pItemTypesLinker },
+        { "itypea3", 15, 0, 28, &sgtDataTables.pItemTypesLinker },
+        { "etypea1", 15, 0, 36, &sgtDataTables.pItemTypesLinker },
+        { "etypea2", 15, 0, 38, &sgtDataTables.pItemTypesLinker },
+        { "itypeb1", 15, 0, 30, &sgtDataTables.pItemTypesLinker },
+        { "itypeb2", 15, 0, 32, &sgtDataTables.pItemTypesLinker },
+        { "itypeb3", 15, 0, 34, &sgtDataTables.pItemTypesLinker },
+        { "etypeb1", 15, 0, 40, &sgtDataTables.pItemTypesLinker },
+        { "etypeb2", 15, 0, 42, &sgtDataTables.pItemTypesLinker },
         { "maxlvl", 3, 0, 300, 0 },
         { "progressive", 26, 2, 4, 0 },
         { "finishing", 26, 3, 4, 0 },
@@ -378,8 +317,8 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         { "ItemCheckStart", 26, 33, 4, 0 },
         { "ItemCltCheckStart", 26, 34, 4, 0 },
         { "ItemTarget", 4, 0, 288, 0 },
-        { "ItemCastSound", 20, 0, 290, &gpSoundsLinker_0096BDC8 },
-        { "ItemCastOverlay", 20, 0, 292, &gpOverlayLinker },
+        { "ItemCastSound", 20, 0, 290, &sgtDataTables.pSoundsLinker },
+        { "ItemCastOverlay", 20, 0, 292, &sgtDataTables.pOverlayLinker },
         { "InGame", 26, 10, 4, 0 },
         { "lineofsight", 4, 0, 399, 0 },
         { "attackrank", 4, 0, 398, 0 },
@@ -407,9 +346,9 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         { "reqdex", 3, 0, 376, 0 },
         { "reqint", 3, 0, 378, 0 },
         { "reqvit", 3, 0, 380, 0 },
-        { "reqskill1", 20, 0, 382, &gpSkillsLinker_0096C7CC },
-        { "reqskill2", 20, 0, 384, &gpSkillsLinker_0096C7CC },
-        { "reqskill3", 20, 0, 386, &gpSkillsLinker_0096C7CC },
+        { "reqskill1", 20, 0, 382, &sgtDataTables.pSkillsLinker },
+        { "reqskill2", 20, 0, 384, &sgtDataTables.pSkillsLinker },
+        { "reqskill3", 20, 0, 386, &sgtDataTables.pSkillsLinker },
         { "delay", 25, 0, 400, (void*)DATATBLS_SkillCalcLinker },
         { "usemanaondo", 26, 37, 4, 0 },
         { "startmana", 3, 0, 388, 0 },
@@ -447,7 +386,7 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         { "MaxLevDam4", 2, 0, 464, 0 },
         { "MaxLevDam5", 2, 0, 468, 0 },
         { "DmgSymPerCalc", 25, 0, 472, (void*)DATATBLS_SkillCalcLinker },
-        { "EType", 13, 0, 476, &gpElemTypesLinker },
+        { "EType", 13, 0, 476, &sgtDataTables.pElemTypesLinker },
         { "EMin", 2, 0, 480, 0 },
         { "EMinLev1", 2, 0, 488, 0 },
         { "EMinLev2", 2, 0, 492, 0 },
@@ -467,9 +406,9 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         { "ELevLen3", 2, 0, 544, 0 },
         { "ELenSymPerCalc", 25, 0, 548, (void*)DATATBLS_SkillCalcLinker },
         { "restrict", 4, 0, 552, 0 },
-        { "state1", 20, 0, 554, &gpStatesLinker_0096BCF0 },
-        { "state2", 20, 0, 556, &gpStatesLinker_0096BCF0 },
-        { "state3", 20, 0, 558, &gpStatesLinker_0096BCF0 },
+        { "state1", 20, 0, 554, &sgtDataTables.pStatesLinker },
+        { "state2", 20, 0, 556, &sgtDataTables.pStatesLinker },
+        { "state3", 20, 0, 558, &sgtDataTables.pStatesLinker },
         { "aitype", 4, 0, 560, 0 },
         { "aibonus", 3, 0, 562, 0 },
         { "cost mult", 2, 0, 564, 0 },
@@ -503,15 +442,15 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         pSkillDesc = DATATBLS_CompileTxt(hArchive, "skilldesc", pSkillDescLinkTbl, &nRecordCount, 2);
     }
 
-    gpSkillsLinker_0096C7CC = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 1340);
-    gpSkillsTxt = (D2SkillsTxt*)DATATBLS_CompileTxt(hArchive, "skills", pSkillsTbl, &gnSkillsTxtRecordCount, sizeof(D2SkillsTxt));
-    D2_ASSERT(gnSkillsTxtRecordCount < 32767, 1342);
+    sgtDataTables.pSkillsLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 1340);
+    sgtDataTables.pSkillsTxt = (D2SkillsTxt*)DATATBLS_CompileTxt(hArchive, "skills", pSkillsTbl, &sgtDataTables.nSkillsTxtRecordCount, sizeof(D2SkillsTxt));
+    D2_ASSERT(sgtDataTables.nSkillsTxtRecordCount < 32767, 1342);
 
-    gnPassiveSkills = 0;
+    sgtDataTables.nPassiveSkills = 0;
 
-    gpSkillDescLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 1346);
-    gpSkillDescTxt = DATATBLS_CompileTxt(hArchive, "skilldesc", pSkillDescTbl, &gnSkillDescTxtRecordCount, 288);
-    D2_ASSERT(gnSkillDescTxtRecordCount < 32767, 1348);
+    sgtDataTables.pSkillDescLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 1346);
+    sgtDataTables.pSkillDescTxt = (D2SkillDescTxt*)DATATBLS_CompileTxt(hArchive, "skilldesc", pSkillDescTbl, &sgtDataTables.nSkillDescTxtRecordCount, 288);
+    D2_ASSERT(sgtDataTables.nSkillDescTxtRecordCount < 32767, 1348);
 
     if (gbCompileTxt)
     {
@@ -522,22 +461,22 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
         DATATBLS_UnloadBin(pSkillDesc);
     }
 
-    DATATBLS_GetBinFileHandle(hArchive, "skillscode", &gpSkillsCode, &gnSkillsCodeSize, &gnSkillsCodeSizeEx);
-    DATATBLS_GetBinFileHandle(hArchive, "skilldesccode", &gpSkillDescCode, &gnSkillDescCodeSize, &gnSkillDescCodeSizeEx);
+    DATATBLS_GetBinFileHandle(hArchive, "skillscode", &sgtDataTables.pSkillsCode, &sgtDataTables.nSkillsCodeSize, &sgtDataTables.nSkillsCodeSizeEx);
+    DATATBLS_GetBinFileHandle(hArchive, "skilldesccode", &sgtDataTables.pSkillDescCode, &sgtDataTables.nSkillDescCodeSize, &sgtDataTables.nSkillDescCodeSizeEx);
 
-    gpClassSkillCount = (int*)FOG_AllocPool(0, 7 * sizeof(int), ".\\DATATBLS\\DataTbls.cpp", 1366, 0);
+    sgtDataTables.nClassSkillCount = (int*)FOG_AllocPool(0, 7 * sizeof(int), ".\\DATATBLS\\DataTbls.cpp", 1366, 0);
     for (int nClass = 0; nClass < 7; ++nClass)
     {
-        gpClassSkillCount[nClass] = 0;
+        sgtDataTables.nClassSkillCount[nClass] = 0;
     }
 
     int nSkillId;
-    for (nSkillId = 0; nSkillId < gnSkillsTxtRecordCount; ++nSkillId)
+    for (nSkillId = 0; nSkillId < sgtDataTables.nSkillsTxtRecordCount; ++nSkillId)
     {
-        pSkillsTxtRecord = &gpSkillsTxt[nSkillId];
+        pSkillsTxtRecord = &sgtDataTables.pSkillsTxt[nSkillId];
         if (pSkillsTxtRecord->nCharClass >= 0 && pSkillsTxtRecord->nCharClass < 7)
         {
-            ++gpClassSkillCount[pSkillsTxtRecord->nCharClass];
+            ++sgtDataTables.nClassSkillCount[pSkillsTxtRecord->nCharClass];
         }
 
         if (nSkillId > 0)
@@ -554,53 +493,53 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
                 goto NextSkill;
             }
         }
-        ++gnPassiveSkills;
+        ++sgtDataTables.nPassiveSkills;
 NextSkill:
         ;
     }
 
-    gnHighestClassSkillCount = 0;
+    sgtDataTables.nHighestClassSkillCount = 0;
     for (int nClass = 0; nClass < 7; ++nClass)
     {
-        if (gpClassSkillCount[nClass] > gnHighestClassSkillCount)
+        if (sgtDataTables.nClassSkillCount[nClass] > sgtDataTables.nHighestClassSkillCount)
         {
-            gnHighestClassSkillCount = gpClassSkillCount[nClass];
+            sgtDataTables.nHighestClassSkillCount = sgtDataTables.nClassSkillCount[nClass];
         }
     }
 
-    gpClassSkillList = (short*)FOG_AllocPool(0, sizeof(short) * 7 * gnHighestClassSkillCount, ".\\DATATBLS\\DataTbls.cpp", 1398, 0);
-    memset(gpClassSkillList, 0, sizeof(short) * 7 * gnHighestClassSkillCount);
+    sgtDataTables.nClassSkillList = (short*)FOG_AllocPool(0, sizeof(short) * 7 * sgtDataTables.nHighestClassSkillCount, ".\\DATATBLS\\DataTbls.cpp", 1398, 0);
+    memset(sgtDataTables.nClassSkillList, 0, sizeof(short) * 7 * sgtDataTables.nHighestClassSkillCount);
 
     for (int nClass = 0; nClass < 7; ++nClass)
     {
-        gpClassSkillCount[nClass] = 0;
+        sgtDataTables.nClassSkillCount[nClass] = 0;
     }
 
-    gpPassiveSkills = (short*)FOG_AllocPool(0, sizeof(short) * gnPassiveSkills, ".\\DATATBLS\\DataTbls.cpp", 1402, 0);
-    memset(gpPassiveSkills, 0, sizeof(short) * gnPassiveSkills);
-    gnPassiveSkills = 0;
+    sgtDataTables.pPassiveSkills = (unsigned short*)FOG_AllocPool(0, sizeof(short) * sgtDataTables.nPassiveSkills, ".\\DATATBLS\\DataTbls.cpp", 1402, 0);
+    memset(sgtDataTables.pPassiveSkills, 0, sizeof(short) * sgtDataTables.nPassiveSkills);
+    sgtDataTables.nPassiveSkills = 0;
 
-    for (int i = 0; i < gnSkillsTxtRecordCount; ++i)
+    for (int i = 0; i < sgtDataTables.nSkillsTxtRecordCount; ++i)
     {
-        pSkillsTxtRecord = &gpSkillsTxt[i];
+        pSkillsTxtRecord = &sgtDataTables.pSkillsTxt[i];
         if (pSkillsTxtRecord->nCharClass >= 0 && pSkillsTxtRecord->nCharClass < 7)
         {
-            gpClassSkillList[pSkillsTxtRecord->nCharClass * gnHighestClassSkillCount + gpClassSkillCount[pSkillsTxtRecord->nCharClass]] = i;
-            ++gpClassSkillCount[pSkillsTxtRecord->nCharClass];
+            sgtDataTables.nClassSkillList[pSkillsTxtRecord->nCharClass * sgtDataTables.nHighestClassSkillCount + sgtDataTables.nClassSkillCount[pSkillsTxtRecord->nCharClass]] = i;
+            ++sgtDataTables.nClassSkillCount[pSkillsTxtRecord->nCharClass];
         }
 
         if (pSkillsTxtRecord->nPassiveState >= 0)
         {
-            gpPassiveSkills[gnPassiveSkills] = i;
-            ++gnPassiveSkills;
+            sgtDataTables.pPassiveSkills[sgtDataTables.nPassiveSkills] = i;
+            ++sgtDataTables.nPassiveSkills;
         }
     }
 
-    for (nSkillId = 0; nSkillId < gnSkillsTxtRecordCount; ++nSkillId)
+    for (nSkillId = 0; nSkillId < sgtDataTables.nSkillsTxtRecordCount; ++nSkillId)
     {
-        if (gpSkillsTxt[nSkillId].nPetType >= 0 && gpSkillsTxt[nSkillId].nPetType < gnPettypeTxtRecordCount)
+        if (sgtDataTables.pSkillsTxt[nSkillId].nPetType >= 0 && sgtDataTables.pSkillsTxt[nSkillId].nPetType < sgtDataTables.nPetTypeTxtRecordCount)
         {
-            D2PetTypeTxt* pPetTypeTxtRecord = &gpPettypeTxt_0096C818[gpSkillsTxt[nSkillId].nPetType];
+            D2PetTypeTxt* pPetTypeTxtRecord = &sgtDataTables.pPetTypeTxt[sgtDataTables.pSkillsTxt[nSkillId].nPetType];
             if (pPetTypeTxtRecord->nSkillCount < 15)
             {
                 pPetTypeTxtRecord->wSkillIds[pPetTypeTxtRecord->nSkillCount] = nSkillId;

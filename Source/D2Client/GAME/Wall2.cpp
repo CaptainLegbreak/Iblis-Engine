@@ -15,7 +15,7 @@ void __stdcall D2Common_10052(D2ActiveRoomStrc* pRoom, Rectangle* pRect); // 0x0
 D2UnitStrc* __stdcall DUNGEON_GetFirstUnitInRoom(D2ActiveRoomStrc* pRoom); // 0x00619EA0
 
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2WallCellStrc;
 

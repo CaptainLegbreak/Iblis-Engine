@@ -426,42 +426,6 @@ void __fastcall GAME_ProcessAdminMessage(void* pData, int nSize);               
 
 #pragma pack(push,1)
 
-struct Request {
-#if INPUT_PREFIX
- char movedPrefix[INPUT_PREFIX];
-#endif
- int client; unsigned char unused,command;
-};
-
-
-struct Array8
-{
-    unsigned int values[8];
-};
-
-struct ServerInfo {
- unsigned int a,b,c,d,e,f,g,h,i,j;
- char description[128];
- unsigned int a8,ac,b0,b4,b8,bc,c0,c4,c8,cc,d0;
- unsigned short d4;
- unsigned int d6,da,de,e2,e6;
- unsigned short unusedEA;
- unsigned int ec;
- Array8 f0;
- unsigned int f110;
-};
-
-struct Reply {
- unsigned char command;
- unsigned int a,b,c,d,e,f,g,h,i,j;
- char description[128];
- unsigned int a9,ad,b1,b5,b9,bd;
- Array8 c1;
- unsigned int e1,e5,e9,ed,f1;
- unsigned short f5;
- unsigned int f7,fb,ff,f103,f107,f10b,f10f,f113,f117;
- char reserved[0x4A];
-};
 
 #pragma pack(pop)
 
@@ -783,7 +747,6 @@ struct D2PackedGuidStrc;
 
 struct D2MessageStrc;
 
-struct D2GSPacketSrv27;
 
 
 struct D2QuestGUIDStrc;
@@ -799,14 +762,6 @@ struct D2ObjOperateFnStrc;
 
 int __fastcall MONSTERUNIQUE_CheckMonTypeFlag(D2UnitStrc* pUnit, int nFlag); // 0x005A0180
 
-
-struct D2GSPacketSrv27
-{
-    unsigned char nHeader;
-    unsigned char nUnitType;
-    int dwUnitGUID;
-    D2MessageListStrc tMessageList;
-};
 
 
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* szFormat, ...); // 0x006CC468

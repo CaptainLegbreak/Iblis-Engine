@@ -182,7 +182,7 @@ void __cdecl GRID_LockCDKeys()
 
     if (gpGidFileData || gpClhFileData)
     {
-        FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x213);
+        FOG_DisplayHalt("", sub_00408090(), 0x213);
         exit(-1);
     }
 

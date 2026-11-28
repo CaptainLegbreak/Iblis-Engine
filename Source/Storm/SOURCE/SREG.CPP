@@ -304,7 +304,7 @@ int __stdcall SRegSaveData(const char* szKeyName, const char* szValueName, unsig
     VALIDATEEND;
     if (!pData)
     {
-        pData = &gszEmptyString_006CC837;
+        pData = "";
     }
     return InternalSaveEntry(szKeyName, szValueName, nFlags, ((nFlags & 0x80) | 0x60) >> 5, (const unsigned char*)pData, nSize);
 }

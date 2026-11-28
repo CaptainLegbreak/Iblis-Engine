@@ -18,7 +18,7 @@
 #include "D2CommonApi.h"
 #include "D2CommonApi2.h"
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define D2_MAX(a, b) (((a) > (b)) ? (a) : (b))
 
@@ -44,7 +44,7 @@ extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 
 
-void __fastcall sub_004BA840_StopSound(void* pUnitSfx); // 0x004BA840
+void __fastcall SOUNDINST_StopSound(void* pUnitSfx); // 0x004BA840
 
 
 
@@ -88,7 +88,7 @@ void __fastcall SKILLS_EndLoopSoundSkill(D2UnitStrc* pUnit, int nSkillId)
         if (nFlags & 1)
             SKILLS_SetFlags(pSkill, nFlags | 2);
     }
-    sub_004BA840_StopSound(UNITSND_FindUnitSfxInRange(pUnit, 0x9E3));
+    SOUNDINST_StopSound(UNITSND_FindUnitSfxInRange(pUnit, 0x9E3));
 }
 
 // 0x004C9460

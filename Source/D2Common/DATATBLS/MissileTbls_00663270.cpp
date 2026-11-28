@@ -11,6 +11,7 @@
 
 extern D2DataTablesStrc sgtDataTables; // 0x0096BC30
 
+
 static D2MissilesTxt* DATATBLS_GetMissilesTxtRecord(int nMissileId)
 {
     if (nMissileId >= 0 && nMissileId < sgtDataTables.nMissilesTxtRecordCount)

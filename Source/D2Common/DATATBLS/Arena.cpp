@@ -3,7 +3,7 @@
 #include "FogApi.h"
 #pragma function(memset)
 
-#define ARENA_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define ARENA_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 struct D2TxtLinkStrc;
 struct D2BinFieldStrc;

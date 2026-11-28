@@ -19,7 +19,7 @@
 
 #define STAT_HITPOINTS 6
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define UNIT_PLAYER 0
 
@@ -969,11 +969,11 @@ D2UnitStrc* __fastcall PLRMODE_CreateDeadBody(D2GameStrc* pGame,D2UnitStrc* pUni
 
   char szMessage[256];
   D2_MAYBE_UNUSED(szMessage);
-  FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x2FF); exit(-1);
+  FOG_DisplayHalt("", sub_00408090(), 0x2FF); exit(-1);
  }
  D2UnitStrc* pCorpse=SUNIT_AllocUnitData(0,pUnit->dwClassId,nX,nY,pGame,pCorpseRoom,1,17,0);
  D2_ASSERT(pCorpse,0x304);
- D2ClientStrc* pClient=UnitGetClient(pUnit,gszPlrModesSourceFile,0x306);
+ D2ClientStrc* pClient=UnitGetClient(pUnit,".\\PLAYER\\PlrModes.cpp",0x306);
  pCorpse->dwFlags&=~4;
  SUNIT_InitClientInPlayerData(pCorpse,pClient);
  UNITS_SetNameInPlayerData(pCorpse,CLIENTS_GetName(pClient));
@@ -1003,7 +1003,7 @@ D2UnitStrc* __fastcall PLRMODE_CreateDeadBody(D2GameStrc* pGame,D2UnitStrc* pUni
   D2UnitStrc* pDupedItem=ITEMS_Duplicate(pGame,hItem,pUnit,1);
   if(nBodyLoc==-1) {
    int nRecord=UNITS_GetInventoryRecordId(pCorpse,0,pGame->bExpansion);
-   if(INVENTORY_PlaceItemAtFreePosition(pCorpseInventory,pDupedItem,nRecord,0,0,gszPlrModesSourceFile,0x349) && INVENTORY_PlaceItemInSocket(pCorpseInventory,pDupedItem,1)) {
+   if(INVENTORY_PlaceItemAtFreePosition(pCorpseInventory,pDupedItem,nRecord,0,0,".\\PLAYER\\PlrModes.cpp",0x349) && INVENTORY_PlaceItemInSocket(pCorpseInventory,pDupedItem,1)) {
     if(pDupedItem) pDupedItem->dwFlags&=~2;
     UNITS_ChangeAnimMode(pDupedItem,0);
     if(pDupedItem) pDupedItem->dwFlags&=~0x02000000;
@@ -1253,7 +1253,7 @@ static void __stdcall sRestoreWeapon(D2GameStrc* pGame, D2UnitStrc* pPlayer, D2U
 
         if (ITEMSIsA(pWeapon, 0x2D) && ITEMS_IsMagSetRarUniCrfOrTmp(pWeapon))
         {
-            if (!ITEMS_CheckItemFlag(pWeapon, 0x100, 0x513, gszPlrModesSourceFile))
+            if (!ITEMS_CheckItemFlag(pWeapon, 0x100, 0x513, ".\\PLAYER\\PlrModes.cpp"))
             {
                 ITEMMODE_BreakItem(pGame, pPlayer, pWeapon);
             }
@@ -1276,7 +1276,7 @@ static void __stdcall sRestoreWeapon(D2GameStrc* pGame, D2UnitStrc* pPlayer, D2U
             while ((pItem = INVENTORY_GetBackPackItemByType(pPlayer->pInventory, nItemType, pItem)) != 0)
             {
                 const int nItemClassId = !pItem ? -1 : pItem->dwClassId;
-                if (GAME_GetUnitClassId(pWeapon) == nItemClassId && !ITEMS_CheckItemFlag(pItem, 0x100, 0x531, gszPlrModesSourceFile))
+                if (GAME_GetUnitClassId(pWeapon) == nItemClassId && !ITEMS_CheckItemFlag(pItem, 0x100, 0x531, ".\\PLAYER\\PlrModes.cpp"))
                 {
                     break;
                 }

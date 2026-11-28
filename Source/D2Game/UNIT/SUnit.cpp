@@ -29,7 +29,7 @@
 struct D2PoolSystemStrc;
 struct D2MapAIStrc;
 
-#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
+#define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
 #define NUM_UNIT_TYPES 6
 
@@ -662,7 +662,7 @@ void __fastcall SUNIT_AddToUnitList(D2UnitStrc* pUnit, D2GameStrc* pGame)
             {
                 char szMessage[256];
                 D2_MAYBE_UNUSED(szMessage);
-                FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x355);
+                FOG_DisplayHalt("", sub_00408090(), 0x355);
                 exit(-1);
             }
             break;
@@ -1068,7 +1068,7 @@ void __fastcall SUNIT_StoreRoomTile(D2W11RoomTileOwnerStrc* pOwner, D2ActiveRoom
 // 0x00553720
 D2UnitStrc* __fastcall SUNIT_GetPortalOwner(D2GameStrc* pGame, D2UnitStrc* pUnit)
 {
-    if (!pUnit) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 1930); exit(-1); }
+    if (!pUnit) { FOG_DisplayHalt("", sub_00408090(), 1930); exit(-1); }
     const unsigned char nLevelId = pUnit->pObjectData->InteractType;
     const int nAct = DRLG_GetActNoFromLevelId(nLevelId);
     const int nX = pUnit->pObjectData->DestRoomCooords.nX;
