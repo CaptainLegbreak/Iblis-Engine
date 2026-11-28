@@ -500,7 +500,7 @@ void __fastcall UI_DrawUnitHover(D2UnitStrc* pUnit); // 0x00454F30
 
 
 
-void __cdecl sub_0047E3D0_DrawOptions(); // 0x0047E3D0
+void __cdecl ESCMENU_DrawOptions(); // 0x0047E3D0
 
 
 void __cdecl UI_DrawPetHover(); // 0x00452D20
@@ -552,7 +552,7 @@ void __cdecl VIEW_DrawHelpButtons(); // 0x00495180
 
 void __cdecl PANEL_DrawLifeManaText(); // 0x00498120
 
-void __cdecl sub_0047F710_UpdateSlotBar(); // 0x0047F710
+void __cdecl MINIPANEL_UpdateSlotBar(); // 0x0047F710
 
 void __cdecl CHAT_DrawChatPanel(); // 0x0047B720
 
@@ -653,13 +653,13 @@ void __cdecl CMDTBL_DisableHotkeyHandlers(); // 0x0046ACB0
 
 void __fastcall sub_00472890(D2DrlgActStrc* pAct); // 0x00472890
 
-void __cdecl sub_0047DFD0_FreeOptionMenus(); // 0x0047DFD0
+void __cdecl ESCMENU_FreeOptionMenus(); // 0x0047DFD0
 
-void __cdecl sub_0047E720_LoadAlwaysRun(); // 0x0047E720
+void __cdecl ESCMENU_LoadAlwaysRun(); // 0x0047E720
 
-void __cdecl sub_0047E750_SaveAlwaysRun(); // 0x0047E750
+void __cdecl ESCMENU_SaveAlwaysRun(); // 0x0047E750
 
-void __cdecl sub_0047F130_SaveMiniPanel(); // 0x0047F130
+void __cdecl MINIPANEL_SaveMiniPanel(); // 0x0047F130
 
 
 void __cdecl INV_FreeInvPanelCels(); // 0x00486980
@@ -1593,7 +1593,7 @@ void __cdecl UI_LoadPlayerUI()
     QUESTLOG_ResetQuestPages();
     TEXT_LoadPopupHireling();
     AUTOMAP_ResetBaseOffset(1);
-    sub_0047E720_LoadAlwaysRun();
+    ESCMENU_LoadAlwaysRun();
 }
 
 // 0x00453DE0
@@ -1623,7 +1623,7 @@ void __cdecl UI_FreePlayerUI()
         ARCHIVE_FreeClientCellFile(gpYouDiedInstCel);
         gpYouDiedInstCel = 0;
     }
-    sub_0047E750_SaveAlwaysRun();
+    ESCMENU_SaveAlwaysRun();
     CURSOR_SetCursorItemState(0);
 }
 
@@ -2147,9 +2147,9 @@ void __cdecl AUTOMAP_InitAutomap(); // 0x0045A4C0
 
 void __cdecl CMDTBL_EnableHotkeyHandlers(); // 0x0046AC70
 
-void __cdecl sub_0047DD70_LoadOptionMenus(); // 0x0047DD70
+void __cdecl ESCMENU_LoadOptionMenus(); // 0x0047DD70
 
-void __cdecl sub_0047F0C0_LoadMiniPanel(); // 0x0047F0C0
+void __cdecl MINIPANEL_LoadMiniPanel(); // 0x0047F0C0
 
 void __cdecl INV_LoadInvPanelCels(); // 0x004868B0
 
@@ -3018,7 +3018,7 @@ void __cdecl UI_InitUI()
 {
     char szPath[0x104];
     INV_LoadPanelCels();
-    sub_0047F0C0_LoadMiniPanel();
+    MINIPANEL_LoadMiniPanel();
     TEXT_LoadTextSettings();
     TEXT_LoadLevelCels();
     HIREABLES_LoadHirelingIcons();
@@ -3154,7 +3154,7 @@ load_cels:
     TEXT_LoadTextSliderCel();
     TEXT_ResetQuestPanel();
     CMDTBL_EnableHotkeyHandlers();
-    sub_0047DD70_LoadOptionMenus();
+    ESCMENU_LoadOptionMenus();
     TEXT_InitTextSlider();
 }
 
@@ -3183,7 +3183,7 @@ void __cdecl UI_ShutdownUI()
     }
     D2Win_10116();
     TEXT_FreeTextResources();
-    sub_0047F130_SaveMiniPanel();
+    MINIPANEL_SaveMiniPanel();
     HIREABLES_FreeHelpCels();
     TEXT_FreeLevelCels();
     HIREABLES_FreeHirelingIcons();
@@ -3224,7 +3224,7 @@ void __cdecl UI_ShutdownUI()
         gpLoadingCell = 0;
     }
     CMDTBL_DisableHotkeyHandlers();
-    sub_0047DFD0_FreeOptionMenus();
+    ESCMENU_FreeOptionMenus();
     TEXT_FreeTextSliderCel();
 }
 
@@ -3247,7 +3247,7 @@ void __fastcall UI_DrawUIPanels(D2ViewStrc* pView)
     gwszHoverLine[0].wChar = 0;
     gwszHoverText[0] = 0;
     if (gaUIVarStates[9])
-        sub_0047E3D0_DrawOptions();
+        ESCMENU_DrawOptions();
     if (gaUIVarStates[11])
         TEXT_DrawKeyConfigPanel();
     UI_DrawUnitHover(SELECT_GetSelectedUnit());
@@ -3316,7 +3316,7 @@ void __fastcall UI_DrawUIPanels(D2ViewStrc* pView)
         QUESTLOG_DrawQuestButton();
     PANEL_DrawLifeManaText();
     if (gaUIVarStates[21])
-        sub_0047F710_UpdateSlotBar();
+        MINIPANEL_UpdateSlotBar();
     if (gaUIVarStates[5])
         CHAT_DrawChatPanel();
     if (gaUIVarStates[33])
@@ -3573,13 +3573,13 @@ void __fastcall UI_DrawUnitHoverName(D2UnitStrc* pUnit)
 
 extern "C" void __cdecl TEXT_QuestButtonDownMsg(); // 0x004A2A20
 extern "C" void __cdecl SCMD_HandleResetMessage(); // 0x00452090
-extern "C" void __cdecl sub_0047D7F0_OptionMouseDown(); // 0x0047D7F0
-extern "C" void __cdecl sub_0047D840_OptionMouseUp(); // 0x0047D840
-extern "C" void __cdecl sub_0047D8A0_SelectNextOption(); // 0x0047D8A0
-extern "C" void __cdecl sub_0047D920_SelectPreviousOption(); // 0x0047D920
-extern "C" void __cdecl sub_0047D9A0_OptionKeyLeft(); // 0x0047D9A0
-extern "C" void __cdecl sub_0047DA90_OptionKeyRight(); // 0x0047DA90
-extern "C" void __cdecl sub_0047DB80_OptionActivate(); // 0x0047DB80
+extern "C" void __cdecl ESCMENU_OptionMouseDown(); // 0x0047D7F0
+extern "C" void __cdecl ESCMENU_OptionMouseUp(); // 0x0047D840
+extern "C" void __cdecl ESCMENU_SelectNextOption(); // 0x0047D8A0
+extern "C" void __cdecl ESCMENU_SelectPreviousOption(); // 0x0047D920
+extern "C" void __cdecl ESCMENU_OptionKeyLeft(); // 0x0047D9A0
+extern "C" void __cdecl ESCMENU_OptionKeyRight(); // 0x0047DA90
+extern "C" void __cdecl ESCMENU_OptionActivate(); // 0x0047DB80
 extern "C" void __cdecl INV_NpcPanelMouseMove(); // 0x00486EF0
 extern "C" void __cdecl INV_UpdateInventoryHover(); // 0x004873A0
 extern "C" void __cdecl INV_ResetShopCursorMsg(); // 0x00488910
@@ -3640,8 +3640,8 @@ extern "C" void __cdecl TEXT_ClearEntryKeyMsg(); // 0x004A5BF0
 extern "C" void __cdecl TEXT_KeyConfigButtonUpMsg(); // 0x004A5F10
 extern "C" void __cdecl TEXT_ApplyEntryMsg(); // 0x004A5F70
 extern "C" void __cdecl TEXT_CancelKeyConfigMsg(); // 0x004A5C70
-extern "C" void __cdecl sub_0047ED90_SlotsClickMsg(); // 0x0047ED90
-extern "C" void __cdecl sub_0047EF30_SlotsClick(); // 0x0047EF30
+extern "C" void __cdecl MINIPANEL_SlotsClickMsg(); // 0x0047ED90
+extern "C" void __cdecl MINIPANEL_SlotsClick(); // 0x0047EF30
 extern "C" void __cdecl ROSTERPETS_HandleHelpButtonDown(); // 0x00494F30
 extern "C" void __cdecl INV_HelpCloseButtonMsg(); // 0x00496720
 extern "C" char gData_007A28A0[]; // 0x007A28A0
@@ -4084,13 +4084,13 @@ extern "C" const D2MsgHandlerEntryStrc gData_006D600C[2] = {
 #pragma comment(linker, "/alternatename:?gaNewSkillsHandlers@@3PAUD2MsgHandlerEntryStrc@@A=_gData_006D600C")
 
 extern "C" const D2MsgHandlerEntryStrc gData_006D6030[7] = {
-    { 0, 513, (void*)(unsigned int)&sub_0047D7F0_OptionMouseDown },
-    { 0, 514, (void*)(unsigned int)&sub_0047D840_OptionMouseUp },
-    { 3, 40, (void*)(unsigned int)&sub_0047D8A0_SelectNextOption },
-    { 3, 38, (void*)(unsigned int)&sub_0047D920_SelectPreviousOption },
-    { 3, 37, (void*)(unsigned int)&sub_0047D9A0_OptionKeyLeft },
-    { 3, 39, (void*)(unsigned int)&sub_0047DA90_OptionKeyRight },
-    { 3, 13, (void*)(unsigned int)&sub_0047DB80_OptionActivate }
+    { 0, 513, (void*)(unsigned int)&ESCMENU_OptionMouseDown },
+    { 0, 514, (void*)(unsigned int)&ESCMENU_OptionMouseUp },
+    { 3, 40, (void*)(unsigned int)&ESCMENU_SelectNextOption },
+    { 3, 38, (void*)(unsigned int)&ESCMENU_SelectPreviousOption },
+    { 3, 37, (void*)(unsigned int)&ESCMENU_OptionKeyLeft },
+    { 3, 39, (void*)(unsigned int)&ESCMENU_OptionKeyRight },
+    { 3, 13, (void*)(unsigned int)&ESCMENU_OptionActivate }
 }; // 0x006D6030
 #pragma comment(linker, "/alternatename:?gaEscMenuHandlers@@3PAUD2MsgHandlerEntryStrc@@A=_gData_006D6030")
 
@@ -4264,9 +4264,9 @@ extern "C" const D2MsgHandlerEntryStrc gData_006D60C0[13] = {
 
 extern "C" const struct d2data_006D6204_t gData_006D6204 = {
     { 0x00, 0x00, 0x00, 0x00, 0x01, 0x02 },
-    (const void*)(unsigned int)&sub_0047EF30_SlotsClick,
+    (const void*)(unsigned int)&MINIPANEL_SlotsClick,
     { 0x00, 0x00, 0x00, 0x00, 0x02, 0x02 },
-    (const void*)(unsigned int)&sub_0047ED90_SlotsClickMsg
+    (const void*)(unsigned int)&MINIPANEL_SlotsClickMsg
 }; // 0x006D6204
 #pragma comment(linker, "/alternatename:?gtMiniPanelHandlers_006D6204@@3PAUD2MsgHandlerEntryStrc@@A=_gData_006D6204")
 

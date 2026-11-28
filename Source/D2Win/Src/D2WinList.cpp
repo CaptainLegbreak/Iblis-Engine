@@ -121,7 +121,7 @@ int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 extern int ganListFontHeight[]; // 0x006DD024
 
-int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl);                                           // 0x004F9310
+int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl); // 0x004F9310
 
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength);                   // 0x00526F20

@@ -132,7 +132,7 @@ struct z_stream
 };
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, size_t nSize); // 0x006829C0
-unsigned long __fastcall adler32(unsigned long adler, const unsigned char* buf, unsigned int len); // 0x0042B660
+extern "C" unsigned long __fastcall adler32(unsigned long adler, const unsigned char* buf, unsigned int len); // 0x0042B660
 
 typedef enum {
     HEAD,

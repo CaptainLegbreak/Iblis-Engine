@@ -52,7 +52,7 @@ extern tagPOINT gtMousePosition;                                                
 
 D2WinPopUpStrc* gpPopUp;                                                                           // 0x0087E974
 
-int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl);                                           // 0x004F9310
+int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl); // 0x004F9310
 
 int __stdcall CONTROL_AppendToList(D2WinControlStrc* pControl); // 0x004F9210
 

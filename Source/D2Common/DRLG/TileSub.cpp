@@ -88,7 +88,7 @@ extern const D2UnkDrlgRoomTileStrc2 gaDrlgRoomTilePresetUnits[];                
 
 extern const D2CoordStrc gaWarpTileOffsets[4];                                                     // 0x006EF554
 
-unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                          // 0x0045C390
+unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 

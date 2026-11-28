@@ -53,7 +53,7 @@ extern int gbChannelTableInit;                                                  
 
 void __cdecl sub_00419F30(); // 0x00419F30
 
-D2DirectSoundStrc* __cdecl D2SOUND_GetDirectSound(); // 0x00513B50
+int __cdecl D2SOUND_GetDirectSound(); // 0x00513B50
 
 
 extern int gnChannelTableSel; // 0x008817A4

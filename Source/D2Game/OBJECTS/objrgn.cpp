@@ -45,7 +45,7 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode);
 extern "C" void* __cdecl memset(void* pDest, int nValue, unsigned int nSize);
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
-void* __fastcall FOG_AllocPool(void* pPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 #include "D2GameFuncs.h"
 #include "FogApi2.h"
 #include "D2NetApi.h"
@@ -225,7 +225,7 @@ extern "C" size_t __cdecl strlen(const char* szString);
 extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...); // 0x006823FD
 
 
-void __fastcall ClientRemoveFromGame(D2GameStrc* pGame, int nClientId, int bTriggerSave); // 0x00539DA0
+void __fastcall ClientRemoveFromGame(D2GameStrc* ptGame,void* hClientId,int bTriggerSave); // 0x00539DA0
 
 void __fastcall D2GAME_PACKETS_SendGameListEntry(void* pClientId, unsigned short nGameId, int nClients, const char* szGameName); // 0x0053B1B0
 

@@ -480,9 +480,9 @@ void __stdcall D2COMMON_10475_PostStatToStatList(D2UnitStrc* pUnit, D2StatListSt
 
 int __stdcall DRLG_GetDistanceToXY(D2UnitStrc* pUnit, int nX, int nY); // 0x006417F0
 
-extern "C" unsigned int __stdcall PATH_GetLastPointX(D2DynamicPathStrc* pPath); // 0x00648A40
+unsigned int __stdcall PATH_GetLastPointX(D2DynamicPathStrc* pDynamicPath); // 0x00648A40
 
-extern "C" unsigned int __stdcall PATH_GetLastPointY(D2DynamicPathStrc* pPath); // 0x00648A60
+unsigned int __stdcall PATH_GetLastPointY(D2DynamicPathStrc* pDynamicPath); // 0x00648A60
 
 extern "C" void __stdcall PATH_SetTargetPos(D2DynamicPathStrc* pPath, unsigned short wX, unsigned short wY); // 0x00648AD0
 

@@ -30,7 +30,7 @@ struct D2RosterPetStrc
     int dwUnitId; // 0x08
     int dwOwnerId; // 0x0C
     int nArg10; // 0x10
-    int unk0x14[2]; // 0x14
+    int unused0x14[2]; // 0x14
     int nLifePercent; // 0x1C
     int bDead; // 0x20
     D2ClientEntryStrc tEntry; // 0x24
@@ -40,7 +40,7 @@ struct D2RosterPetStrc
 struct D2RosterGroupStrc
 {
     unsigned short wPartyId; // 0x00
-    unsigned short unk0x02; // 0x02
+    unsigned short unused0x02; // 0x02
     D2StoredUnitRecordStrc* pFirst; // 0x04
     D2RosterGroupStrc* pNext; // 0x08
 };
@@ -82,10 +82,10 @@ struct D2UnitSfxNodeStrc
 
 struct D2WeatherStrc
 {
-    int unk0x00[68]; // 0x00
+    int unused0x00[68]; // 0x00
     int nLastParticle; // 0x110
     int nCount; // 0x114
-    int unk0x118; // 0x118
+    int unused0x118; // 0x118
     union
     {
         D2WeatherSplashStrc* pRecords; // 0x11C

@@ -654,7 +654,7 @@ int __stdcall MAINMENUS_OnCloseBox(int nArg); // 0x004334D0
 int __stdcall sub_004DA0B0_GetUnitGfxOffsetX(D2UnitStrc* pUnit); // 0x004DA0B0
 int __stdcall PARTICLE_GetGfxClientZ(D2UnitStrc* pUnit); // 0x004DA0F0
 int __stdcall sub_004E89A0(D2UnitStrc*, int*, int*, int*, D2SkillStrc*); // 0x004E89A0
-int __stdcall TEXTURE_CelDrawEx(D2GfxDataStrc* pContext, int nX, int nY, int nTop, int nHeight, int nDrawMode); // 0x004F64E0
+void __stdcall TEXTURE_CelDrawEx(D2GfxDataStrc* pData, int nXPos, int nYPos, int nSkipLines, int nDrawLines, int eDrawMode); // 0x004F64E0
 int __stdcall SCALE_CheckPerspectivePosition(int nPrecisionX, int nPrecisionY); // 0x004F66E0
 int __stdcall CLIENT_Send(int nSize, int nFlags, void* pData); // 0x0052AE50
 int __stdcall D2CMPSpriteFindAsynchSiblings(int nKeyA, int nKeyB, int nKeyC); // 0x005FF300
@@ -798,7 +798,7 @@ void __fastcall CUNIT_SetPalShiftIndex(D2UnitStrc* pUnit, int bSet); // 0x00463E
 void __fastcall CUNIT_UpdateAttackableFlag(D2UnitStrc* pUnit); // 0x004647D0
 void __fastcall CUNIT_SetStartLight(D2UnitStrc* pUnit, int nRadius); // 0x00464CF0
 void __fastcall CUNIT_SetPathTargetToTargetUnit(D2UnitStrc* pUnit, int nArg); // 0x00465BF0
-void __fastcall CUNIT_RemoveServerSideUnit(int nUnitId, int nUnitType); // 0x00465F00
+void __fastcall CUNIT_RemoveServerSideUnit(unsigned int nUnitId, int nUnitType); // 0x00465F00
 void __fastcall CMDTBL_SetHotkeyHandlers(int nArg1, int nArg2); // 0x0046AA20
 void __fastcall sub_0046BFF0(D2UnitStrc* pUnit); // 0x0046BFF0
 void __fastcall GFX_SetGfxMotionFlag(D2UnitStrc* pUnit, D2GfxMotionStrc* pMotion); // 0x0046F070
@@ -849,7 +849,7 @@ void __fastcall sub_004DC7B0(D2CellPosStrc* pPos, unsigned int nColor, int nArg)
 void __fastcall GFXUTIL_ApplySoundEnviron(int nEnvironId); // 0x004DF6C0
 void __fastcall sub_004DF7B0(void* pStream); // 0x004DF7B0
 void __fastcall sub_004F9740_SetControlState(D2WinControlStrc* pControl, int bSet); // 0x004F9740
-void __fastcall D2Win_10179_UpdatePaletteFlash(); // 0x004FB0D0
+void __stdcall D2Win_10179_UpdatePaletteFlash(); // 0x004FB0D0
 void __fastcall D2Win_10176_StartPaletteFlash(int bActive); // 0x004FB130
 void __fastcall sub_004FB480_SetActA(unsigned char nAct); // 0x004FB480
 void __fastcall sub_004FCF80_SetTextA(D2WinControlStrc* pControl, const char* szText); // 0x004FCF80
@@ -1645,25 +1645,7 @@ struct D2GridUnitStrc
     D2GridInfoStrc* pInfo;
 };
 
-struct D2HirelingInitStrc
-{
-    int nId;
-    int nLevel;
-    int nHitpoints;
-    int nStrength;
-    int nDexterity;
-    int nGold;
-    int nExperience;
-    int nDefense;
-    int nMinDamage;
-    int nMaxDamage;
-    int nShare;
-    int nResist;
-    int nHireDesc;
-    int field_34;
-    short nFlags;
-    short unk0x3A;
-};
+#include "D2HirelingInit.h"
 
 struct D2HotkeySlotTableStrc
 {

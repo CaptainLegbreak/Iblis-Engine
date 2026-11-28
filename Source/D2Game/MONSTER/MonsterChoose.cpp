@@ -14,7 +14,7 @@ extern "C" __declspec(noreturn) void __cdecl exit(int); // 0x00681E09
 extern "C" void* __cdecl memcpy(void*, const void*, unsigned int);
 extern "C" int __cdecl memcmp(const void*, const void*, unsigned int);
 D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int); // 0x00451FE0
-unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc*, int); // 0x0045C390
+unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
 static inline unsigned int RollRandom(D2SeedStrc* pSeed)
 {
  unsigned __int64 nSeed = pSeed->nHighSeed + 0x6AC690C5i64 * pSeed->nLowSeed;

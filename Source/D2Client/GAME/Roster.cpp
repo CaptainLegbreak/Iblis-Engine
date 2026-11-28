@@ -398,7 +398,7 @@ void __fastcall sub_00479770_Shim(unsigned short* pIds, int nCount)
 {
     for (int i = 0; i < nCount; ++i)
     {
-        ROSTER_GetOrAddGroup(pIds[i])->unk0x02 = 1;
+        ROSTER_GetOrAddGroup(pIds[i])->unused0x02 = 1;
     }
 }
 

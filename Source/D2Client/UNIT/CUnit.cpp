@@ -66,7 +66,7 @@ struct D2PalShiftEntryStrc
 extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(FARPROC lpfn);                                  // 0x006CC34C
 
 
-int __cdecl sub_0044DA90_GetTickCounter();                                                                                 // 0x0044DA90
+int __cdecl sub_0044DA90_GetTickCounter(); // 0x0044DA90
 
 int __fastcall RECORD_DispatchRecordedMessage(D2MsgRecordStrc* pRecord);                                          // 0x00451880
 

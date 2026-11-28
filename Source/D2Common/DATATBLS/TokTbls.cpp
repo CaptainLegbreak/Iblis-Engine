@@ -35,7 +35,7 @@ D2ObjModeTypeTxt* gpObjType;                                                    
 D2ObjModeTypeTxt* gpObjMode;                                                                                // 0x0096D4D4
 
 
-void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);                          // 0x006829C0
 

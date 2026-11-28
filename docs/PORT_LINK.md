@@ -8,13 +8,13 @@ fixes come back with the next sync. Remeasure after each sync:
     ninja -C build -k 0 2> link.log                       # or the Visual Studio build's output
     python tools/link_report.py build link.log ../Iblis-Codex --md links.md
 
-Last measured: 2026-11-27, Source/ at Codex 3f6ca97 (#498) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
+Last measured: 2026-11-27, Source/ at Codex 16572ad (#499) (tools/CODEX_SYNC), `link` 14.44.35230.0, the CMake build of
 docs/PORT_COMPILE.md (every object of the 22 module libraries and the program, `/WHOLEARCHIVE`).
 
 ## Result
 
-The link of Game.exe fails with **1224 unresolved symbols** (LNK2001/LNK2019) and **408 symbols defined more than once** (LNK2005).
-Counted as references, one per symbol and file that asks for it: **3062**.
+The link of Game.exe fails with **1222 unresolved symbols** (LNK2001/LNK2019) and **408 symbols defined more than once** (LNK2005).
+Counted as references, one per symbol and file that asks for it: **3057**.
 
 Codex's count (21,648 references on Codex #492) counts every place in the code that uses a symbol; this report
 counts each symbol once per file. The categories are the same, with three differences:
@@ -40,14 +40,14 @@ on calling convention, argument bytes and return register (`tools/abi.py`); a re
 of function pointers) is bound for its address alone. No game source is changed, and an alias drops out when Codex
 fixes the declaration.
 
-At Codex 3f6ca97: **2807 aliases** (1132 of them address-only), unresolved symbols **4,031 → 1224**. Checked against
+At Codex 16572ad: **2794 aliases** (1132 of them address-only), unresolved symbols **4,016 → 1222**. Checked against
 Codex's own `LINK_DEBT.json` (linkdebt.py with the user's Game.exe): 2803 agree; 3 bind the same address through the
 one external definition where Codex names it differently (`gpHoverItem`, `gbGoldButtonDisabled`); 25 aren't in Codex's
 list (references in code Codex's ordinary link leaves out, or tables the engine holds as source) and were checked by
 hand: each binds to the definition carrying the declared address.
 
 Not aliased because the reference and the definition disagree on the calling interface (a real ABI disagreement, a
-crash risk, for Codex lane 12): **151**, by kind: calling convention 76, return eax 39, argument bytes 36. They are listed on the lane 14 board.
+crash risk, for Codex lane 12): **149**, by kind: calling convention 76, return eax 39, argument bytes 36. They are listed on the lane 14 board.
 
 ## Totals
 
@@ -55,7 +55,7 @@ crash risk, for Codex lane 12): **151**, by kind: calling convention 76, return 
 |---|---:|---:|
 | import | 0 | 0 |
 | runtime_library | 2 | 1 |
-| type_disagreement | 140 | 115 |
+| type_disagreement | 135 | 113 |
 | different_identifier | 196 | 90 |
 | placeholder | 232 | 141 |
 | renamed_definition | 97 | 60 |
@@ -64,18 +64,18 @@ crash risk, for Codex lane 12): **151**, by kind: calling convention 76, return 
 | no_address | 217 | 157 |
 | duplicate_data | 187 | 84 |
 | local_copy | 839 | 324 |
-| **total** | 3062 | 1632 |
+| **total** | 3057 | 1630 |
 
 ## By module (references)
 
 | Module | import | crt | type | ident | plchld | renamed | inter | unsrc | noaddr | dup | copy | total |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| D2Client | 0 | 0 | 32 | 29 | 87 | 45 | 0 | 281 | 122 | 54 | 459 | 1109 |
+| D2Client | 0 | 0 | 28 | 29 | 87 | 45 | 0 | 281 | 122 | 54 | 459 | 1105 |
 | D2Game | 0 | 2 | 51 | 141 | 45 | 20 | 0 | 123 | 6 | 49 | 101 | 538 |
 | D2Common | 0 | 0 | 8 | 6 | 14 | 4 | 0 | 263 | 9 | 8 | 88 | 400 |
 | Fog | 0 | 0 | 2 | 0 | 5 | 9 | 0 | 89 | 5 | 32 | 55 | 197 |
 | D2CMP | 0 | 0 | 3 | 3 | 4 | 3 | 0 | 46 | 6 | 0 | 39 | 104 |
-| Storm | 0 | 0 | 4 | 0 | 26 | 5 | 0 | 27 | 3 | 4 | 33 | 102 |
+| Storm | 0 | 0 | 3 | 0 | 26 | 5 | 0 | 27 | 3 | 4 | 33 | 101 |
 | D2Direct3D | 0 | 0 | 6 | 7 | 2 | 0 | 0 | 83 | 1 | 0 | 0 | 99 |
 | D2Win | 0 | 0 | 7 | 1 | 17 | 2 | 0 | 64 | 0 | 2 | 4 | 97 |
 | D2Launch | 0 | 0 | 8 | 3 | 12 | 6 | 4 | 28 | 7 | 4 | 8 | 80 |
@@ -101,7 +101,7 @@ crash risk, for Codex lane 12): **151**, by kind: calling convention 76, return 
 - `exit` at 0x00681E09, in Source/D2Game/UNIT/SUnitDmg.cpp
 - `exit` at 0x00681E09, in Source/D2Game/Ai/AiThink.cpp
 
-**type_disagreement** (115 symbols)
+**type_disagreement** (113 symbols)
 
 - `ACT1Q6_EmptyCallback` at 0x00596BA0 -> `ACT1Q6_EmptyCallback`, in Source/D2Game/Unknown_00596BB0.cpp
 - `ACT1Q7_Callback00_NpcActivate` at 0x00596A90 -> `ACT1Q7_Callback00_NpcActivate`, in Source/D2Game/Unknown_00596BB0.cpp

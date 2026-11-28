@@ -162,7 +162,7 @@ extern "C" unsigned int gnA5Q2NpcActivateIndices[]; // 0x00734270
 extern "C" int __fastcall sub_0045C390_Roll(Seed*, int); // 0x0045C390
 extern "C" int __fastcall CUNIT_GetMonsterBaseId(Unit*); // 0x00463860
 int __fastcall CUNIT_ValidateMonsterId(int nMonsterId); // 0x00463900
-extern "C" int __fastcall SKILLS_GetMonsterClassFromChain(int, int); // 0x0054DA60
+int __fastcall SKILLS_GetMonsterClassFromChain(int nMonsterId, int nNoInChain); // 0x0054DA60
 extern "C" int __fastcall SUNIT_IsDead(Unit*); // 0x005541B0
 extern "C" int __fastcall D2GAME_GetSummonIdFromSkill(Unit*, int, int, int, int*, int, int); // 0x0056E620
 extern "C" int __fastcall MONSTER_Reinitialize(Game*, Unit*, int, int); // 0x00574370
@@ -175,7 +175,7 @@ extern "C" int __stdcall PATH_GetXPosition(StaticPath*); // 0x006488C0
 extern "C" int __stdcall PATH_GetYPosition(StaticPath*); // 0x00648900
 extern "C" int __stdcall sub_0064A210(D2UnitStrc* pMissile); // 0x0064A210
 extern "C" int __stdcall sub_0064A280(D2UnitStrc* pMissile); // 0x0064A280
-extern "C" int __stdcall DATATBLS_GetMonsterChainInfo(int, int*, int*); // 0x006510C0
+int __stdcall DATATBLS_GetMonsterChainInfo(int nMonsterId, int* pMaxChainId, int* pChainId); // 0x006510C0
 extern "C" unsigned int __cdecl fread(void* pBuffer, unsigned int nSize, unsigned int nCount, _iobuf* pFile); // 0x00684782
 extern "C" unsigned int __security_cookie; // 0x00749DE0
 extern "C" void __cdecl _chkstk(); // 0x006831B0
@@ -404,7 +404,7 @@ int __stdcall UNITS_TestCollisionByCoordinates(D2UnitStrc* pUnit, int nX, int nY
 int __stdcall sub_0061ABF0(int nActData, int nLevelId); // 0x0061ABF0
 int __stdcall UNITS_IsShrine(D2UnitStrc* pUnit); // 0x00621B00
 int __stdcall sub_006253B0_GetBaseStat(D2UnitStrc*,int,int); // 0x006253B0
-int __stdcall STATLIST_GetUnitStatBonus(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625560
+int __stdcall STATLIST_GetUnitStatBonus(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer); // 0x00625560
 int __stdcall STATLIST_SetStatValue(D2StatListStrc* pStatList, int nStatId, int nValue, unsigned short nLayer); // 0x006270B0
 int __stdcall sub_006287A0_TestFlags(unsigned int dwFlags, unsigned int dwMask); // 0x006287A0
 int __stdcall sub_00628C70(D2UnitStrc* pItem); // 0x00628C70

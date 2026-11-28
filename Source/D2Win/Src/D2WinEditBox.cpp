@@ -170,7 +170,7 @@ int __fastcall EDITBOX_DrawMultiLine(D2WinEditBoxStrc* pEditBox);               
 
 int __fastcall EDITBOX_DrawSingleLine(D2WinEditBoxStrc* pEditBox);                                        // 0x004FFE50
 
-int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl);                                           // 0x004F9310
+int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl); // 0x004F9310
 
 extern "C" __declspec(dllimport) int __stdcall CloseClipboard();                                            // 0x006CC51C
 

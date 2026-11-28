@@ -156,7 +156,7 @@ typedef void (__fastcall* MinionCallbackFunc)(D2UnitStrc* pUnit, void* pArg1, vo
 
 extern UModInitFunc gpfnUModInitFunctions[];                                                         // 0x0073C008
 
-unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                          // 0x0045C390
+unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
 
 unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                         // 0x0045C3E0
 

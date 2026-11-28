@@ -35,7 +35,7 @@ struct D2Record42Strc
 struct D2QuestLogStateStrc
 {
     int nState; // 0x000: 0 closed, 1 or 2 open
-    int unk0x004; // 0x004
+    int unused0x04; // 0x04
     int nMsgCount; // 0x008: quests shown on the page
     int nQuestAct; // 0x00C
     unsigned int nA8; // 0x010
@@ -60,11 +60,11 @@ struct D2QuestLogStateStrc
         D2Record42Strc tQuestRecord; // 0x0BD
         struct
         {
-            unsigned char unk0x0BD; // 0x0BD
+            unsigned char unused0xBD; // 0xBD
             unsigned char abQuestStepsA[41]; // 0x0BE: the step of each quest, by quest index
         };
     };
-    unsigned char unk0x0E7; // 0x0E7
+    unsigned char unused0xE7; // 0xE7
     unsigned char abQuestStepsB[41]; // 0x0E8: the step last shown, by quest index
     D2QuestTextMsgStrc aMsgs[6]; // 0x111: the quests on the page
     int anAnim[6]; // 0xF8D
@@ -77,7 +77,7 @@ struct D2QuestLogStateStrc
     char bQuestUnitsSpawned; // 0xFC8
     unsigned int nQuestUnitId; // 0xFC9
     unsigned int nQuestPacketValue; // 0xFCD
-    char unk0xFD1[3]; // 0xFD1
+    char unused0xFD1[3]; // 0xFD1
     int n26C; // 0xFD4
     int n270; // 0xFD8
 

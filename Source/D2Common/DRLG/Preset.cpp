@@ -38,7 +38,7 @@ extern "C" int __cdecl tolower(int nChar);                                      
 
 unsigned int __fastcall sub_006C9A38(const char* szString);                                                    // 0x006C9A38
 
-void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 D2MonPresetTxt* __stdcall DATATBLS_GetMonPresetTxtActSection(int nAct, int* pnRecords);                     // 0x00659B40
 

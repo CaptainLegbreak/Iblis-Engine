@@ -80,7 +80,7 @@ extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 
 
-D2PacketBufferStrc* __fastcall CUNIT_GetPacketList(void* pArg); // 0x00464770
+D2PacketListStrc* __fastcall CUNIT_GetPacketList(D2UnitStrc* pUnit); // 0x00464770
 
 void __fastcall CUNIT_SetPacketList(void* pArg, D2PacketBufferStrc* pBuffer); // 0x004647A0
 
@@ -287,9 +287,9 @@ void __stdcall PATH_SetTargetUnit(D2DynamicPathStrc* pPath, D2UnitStrc* pTargetU
 
 void __stdcall SKILLS_SetFlags(D2SkillStrc* pSkill, int nValue);                                            // 0x00644660
 
-int __stdcall PATH_GetLastPointX(D2DynamicPathStrc* pPath);                                            // 0x00648A40
+unsigned int __stdcall PATH_GetLastPointX(D2DynamicPathStrc* pDynamicPath); // 0x00648A40
 
-int __stdcall PATH_GetLastPointY(D2DynamicPathStrc* pPath);                                            // 0x00648A60
+unsigned int __stdcall PATH_GetLastPointY(D2DynamicPathStrc* pDynamicPath); // 0x00648A60
 
 D2ActiveRoomStrc* __stdcall PATH_GetNextRoom(D2DynamicPathStrc* pDynamicPath);                              // 0x00648AA0
 

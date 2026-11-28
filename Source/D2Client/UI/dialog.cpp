@@ -57,7 +57,7 @@ extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x00
 
 
 
-int __fastcall sub_0047F190_IsInMiniPanelRect(int nX, int nY); // 0x0047F190
+int __fastcall MINIPANEL_IsInMiniPanelRect(int nX, int nY); // 0x0047F190
 
 
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
@@ -312,7 +312,7 @@ void __stdcall DIALOG_LButtonUpMsg(SMSGHANDLER_PARAMS* pMsg)
     const int nX = pMsg->nXpos;
     const int nY = pMsg->nYpos;
     D2ClientDialogStrc* pDialog = gpDialogList;
-    if (GAME_GetUIVarState(0x15) && sub_0047F190_IsInMiniPanelRect(nX, nY))
+    if (GAME_GetUIVarState(0x15) && MINIPANEL_IsInMiniPanelRect(nX, nY))
     {
         if (!pDialog)
             return;
@@ -381,7 +381,7 @@ static void __stdcall DIALOG_LButtonDownMsg(SMSGHANDLER_PARAMS* pMsg)
         const int nY = pMsg->nYpos;
         if (nX >= pDialog->nX - 4 && nX <= pDialog->nX + pDialog->nWidth + 4 && nY >= pDialog->nY - 4 && nY <= pDialog->nY + pDialog->nHeight + 4)
             goto handled;
-        if (GAME_GetUIVarState(0x15) && sub_0047F190_IsInMiniPanelRect(nX, nY))
+        if (GAME_GetUIVarState(0x15) && MINIPANEL_IsInMiniPanelRect(nX, nY))
             return;
         if (pDialog->pfnOutside)
         {

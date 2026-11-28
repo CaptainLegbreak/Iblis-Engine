@@ -337,25 +337,7 @@ struct D2DifficultyLevelsGambleStrc
 
 struct D2HirelingInitStrc;
 
-struct D2HirelingInitStrc
-{
-    int nId;
-    int nLevel;
-    int nHitpoints;
-    int nStrength;
-    int nDexterity;
-    int nGold;
-    int nExperience;
-    int nDefense;
-    int nMinDamage;
-    int nMaxDamage;
-    int nShare;
-    int nResist;
-    int nHireDesc;
-    int field_34;
-    short nFlags;
-    short unk0x3A;
-};
+#include "D2HirelingInit.h"
 
 int __fastcall MONSTERS_GetActFromHirelingTxt(int bExpansion, int nClassId, unsigned short nNameId); // 0x00663750
 

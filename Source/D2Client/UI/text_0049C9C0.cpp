@@ -18,7 +18,7 @@ int __cdecl sub_00468740(); // 0x00468740
 int __cdecl FOG_IsExpansion(); // 0x00408F20
 int __cdecl GAME_IsExpansion(); // 0x0044DCC0
 D2BitBufferStrc* __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
-int __stdcall QUESTRECORD_GetQuestState(D2BitBufferStrc*,int,int); // 0x0065C310
+int __stdcall QUESTRECORD_GetQuestState(D2BitBufferStrc* hQuestRecord, int nQuest, int nState); // 0x0065C310
 void* __cdecl sub_00454600_GetCloseButtonCell(); // 0x00454600
 int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc*); // 0x0061A1B0
 const Unicode* __fastcall UI_GetLevelName(int nLevelId); // 0x00453E70

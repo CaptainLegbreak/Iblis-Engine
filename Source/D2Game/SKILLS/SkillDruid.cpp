@@ -267,7 +267,7 @@ struct D2MonStatsTxt;
 int __fastcall AIUTIL_GetDistanceToCoordinates_FullUnitSize(D2UnitStrc* pTarget, D2UnitStrc* pSource); // 0x005DC380
 
 
-void __fastcall AITACTICS_SetAiParam(D2UnitStrc* pUnit, int nParam, int nValue, int nArg); // 0x005DE190
+void __fastcall AITACTICS_SetAiParam(D2UnitStrc* pUnit, int nParam, int nValue, unsigned char nArg); // 0x005DE190
 
 
 D2AiCmdStrc* __fastcall AIGENERAL_GetCurrentAiCommandFromUnit(D2UnitStrc*); // 0x0058EE80

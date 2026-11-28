@@ -487,7 +487,7 @@ const Unicode* __fastcall CMDTBL_GetKeyText(int nKey, int nArg2); // 0x00469DE0
 
 
 
-void __stdcall sub_0047E9A0_DrawSlots(int bDraw); // 0x0047E9A0
+void __stdcall MINIPANEL_DrawSlots(int bDraw); // 0x0047E9A0
 
 
 

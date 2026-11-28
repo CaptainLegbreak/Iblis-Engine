@@ -176,23 +176,7 @@ extern "C" const char gszMonsterAISourceFile[]; // 0x006E1560
 
 static int __stdcall MONSTERAI_TryStartNpcInteraction(D2GameStrc* pGame, D2MonsterInteractStrc* pMonInteract, char nQuestFlags, D2UnitStrc* pTarget, D2UnitStrc* pUnit);
 
-struct D2HirelingInitStrc
-{
-    int nId;
-    int nLevel;
-    int nHitpoints;
-    int nStrength;
-    int nDexterity;
-    int nGold;
-    int nExperience;
-    int nDefense;
-    int nMinDamage;
-    int nMaxDamage;
-    int nShare;
-    int nResist;
-    int nHireDesc;
-    int unk0x34[2];
-};
+#include "D2HirelingInit.h"
 
 
 void __fastcall D2GAME_BOSSES_AssignUMod(D2GameStrc* pGame, D2UnitStrc* pUnit, int nUMod, int bUnique); // 0x005A4850
