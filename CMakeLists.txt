@@ -102,14 +102,16 @@ endif()
 
 if(IBLIS_REPLAY)
   # The oracle maps the player's stock 1.14d Game.exe at 0x00400000, so it keeps that address free.
-  add_executable(replay_oracle tools/replay/oracle.cpp tools/replay/cases.cpp)
+  add_executable(replay_oracle tools/replay/oracle.cpp tools/replay/oracle_image.cpp tools/replay/cases.cpp)
   target_link_libraries(replay_oracle PRIVATE bcrypt)
   target_link_options(replay_oracle PRIVATE /DYNAMICBASE:NO /BASE:0x20000000)
 
   # Until the engine links as a whole, the engine runner links only the game files its cases call; what they
   # don't call stays unresolved (/FORCE:UNRESOLVED).
-  set(IBLIS_REPLAY_GAME_SOURCES Source/D2Client/GAME/SCmd.cpp Source/D2Common/Unknown_00650D70.cpp)
-  add_executable(replay_engine tools/replay/engine.cpp tools/replay/cases.cpp ${IBLIS_REPLAY_GAME_SOURCES})
+  set(IBLIS_REPLAY_GAME_SOURCES Source/D2Client/GAME/SCmd.cpp Source/D2Common/Unknown_00650D70.cpp
+    Source/Fog/Unknown_00410790.cpp)
+  add_executable(replay_engine tools/replay/engine.cpp tools/replay/engine_links.cpp tools/replay/cases.cpp
+    ${IBLIS_REPLAY_GAME_SOURCES})
   foreach(_src IN LISTS IBLIS_REPLAY_GAME_SOURCES)
     string(REGEX MATCH "^Source/[^/]+" _module "${_src}")
     set_property(SOURCE ${_src} APPEND PROPERTY INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/${_module}")

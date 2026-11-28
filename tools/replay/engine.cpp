@@ -4,6 +4,13 @@
 void __fastcall SEED_InitLowSeed(D2SeedStrc* pSeed, unsigned int nLowSeed);
 unsigned __int64 __fastcall SEED_RollRandomNumber(D2SeedStrc* pSeed);
 unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);
+void __stdcall BITMANIP_Initialize(D2BitBufferStrc* pBuffer, unsigned char* pBitStream, int nSize);
+extern "C" int __stdcall BITMANIP_GetSize(D2BitBufferStrc* pBuffer);
+void __stdcall BITMANIP_Write(D2BitBufferStrc* pBuffer, int nValue, int nBits);
+unsigned int __stdcall sub_00410F60_ReadBits(D2BitBufferStrc* pBuffer, int nBits);
+int __stdcall BITMANIP_ReadSigned(D2BitBufferStrc* pBuffer, int nBits);
+void __stdcall BITMANIP_GoToNextByte(D2BitBufferStrc* pBuffer);
+int __stdcall FOG_ComputeChecksum(unsigned char* pData, int nSize);
 
 bool replay::Bind(Functions* f, int, char**)
 {
@@ -11,4 +18,10 @@ bool replay::Bind(Functions* f, int, char**)
     REPLAY_FUNCTIONS(REPLAY_BIND)
 #undef REPLAY_BIND
     return true;
+}
+
+int replay::Start(int, void (*pfnCase)())
+{
+    pfnCase();
+    return 0;
 }
