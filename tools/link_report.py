@@ -150,9 +150,12 @@ def marked_names(line):
     return names
 
 
+DEF_HEADERS = {}                                 # VA -> a function definition's first line, from the source
+
+
 class SourceIndex:
     def __init__(self):
-        self.text = {}; self.marks = {}
+        self.text = {}; self.marks = {}; self.lines = {}
 
     def read(self, path):
         if path not in self.text:
@@ -176,7 +179,7 @@ class SourceIndex:
                     q = os.path.normpath(os.path.join(d, h)).replace(os.sep, "/")
                     if os.path.exists(os.path.join(ENGINE, q)):
                         order.append(q); break
-        out = {}
+        out = {}; lines = {}
         for f in seen:
             for line in self.read(f).split("\n"):
                 m = MARK.search(line)
@@ -186,18 +189,23 @@ class SourceIndex:
                 for n in marked_names(line):
                     out.setdefault(n, va)
                     out.setdefault(bare(n), va)
+                    lines.setdefault(n, line)
+                    lines.setdefault(bare(n), line)
         self.marks[path] = out
+        self.lines[path] = lines
         return out
 
 
 # ---------------------------------------------------------------- main
 
-def main():
-    a = sys.argv[1:]
-    build, log, codex = a[:3]
-    jout = a[a.index("--json") + 1] if "--json" in a else None
-    mout = a[a.index("--md") + 1] if "--md" in a else None
+SOURCE = None
 
+
+def analyse(build, log, codex):
+    """Every unresolved and duplicate symbol of the link, placed and sorted; also {identifier: symbols an object
+    defines externally}."""
+    global SOURCE
+    SOURCE = SourceIndex()
     functions = json.load(open(os.path.join(codex, "build", "functions.json")))["functions"]
     plan = json.load(open(os.path.join(codex, "build", "data_plan.json")))
     starts = {}                                  # VA -> (identifier, size, kind)
@@ -215,8 +223,9 @@ def main():
                 bm = re.match(r"^\s*//\s*(0x[0-9A-Fa-f]{8})\s*$", line)
                 if bm and k + 1 < len(lines):      # a function definition, its address on the line above
                     va = int(bm.group(1), 16)
+                    DEF_HEADERS.setdefault(va, lines[k + 1])
                     fm = DECL_FN.search(lines[k + 1].split("//")[0])
-                    if fm and (va not in starts or starts[va][0] is None):
+                    if fm:                         # the source's marker wins over functions.json's (older) name
                         starts[va] = (fm.group(1), starts.get(va, (None, 1))[1], "func")
                     continue
                 m = MARK.search(line)
@@ -239,7 +248,7 @@ def main():
     by_base = collections.defaultdict(set)
     for (mod, base), rel in objpaths.items():
         by_base[base].add(rel)
-    src = SourceIndex()
+    src = SOURCE
     refs = {}                                    # (symbol, unit) -> item
     dups = {}
     for raw in open(log, encoding="latin-1"):
@@ -305,6 +314,15 @@ def main():
         items.append(dict(symbol=sym, identifier=ident(sym), category=kind, units=sorted(units), refs=len(units),
                           module=d["module"]))
 
+    return items, defined_ids
+
+
+def main():
+    a = sys.argv[1:]
+    build, log, codex = a[:3]
+    jout = a[a.index("--json") + 1] if "--json" in a else None
+    mout = a[a.index("--md") + 1] if "--md" in a else None
+    items, _ = analyse(build, log, codex)
     report = summarise(items)
     if jout:
         json.dump(dict(report, items=items), open(jout, "w"), indent=1)

@@ -65,7 +65,7 @@ foreach(_module IN LISTS IBLIS_MODULES)
   list(APPEND IBLIS_LIBRARIES ${_module})
 endforeach()
 
-add_executable(Game WIN32 ${IBLIS_Main_SOURCES} Source/Main/res/Game.rc)
+add_executable(Game WIN32 ${IBLIS_Main_SOURCES} Source/Main/link_aliases.cpp Source/Main/res/Game.rc)
 target_compile_options(Game PRIVATE ${IBLIS_COMMON_OPTIONS})
 target_compile_definitions(Game PRIVATE ${IBLIS_COMMON_DEFINITIONS})
 target_include_directories(Game PRIVATE Source/Main Source/Include .)
