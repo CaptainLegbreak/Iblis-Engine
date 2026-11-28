@@ -46,16 +46,23 @@ each level of setup is one shared function on each side:
 2. **`bitbuf` (level 0, passing).** The bit buffer every save, item and packet is written and read through
    (Fog's `BITMANIP_*`), over runs of 200 fields of 1 to 32 bits with byte alignments, one run written past its
    end; then reading back, signed reads, and `FOG_ComputeChecksum`, the `.d2s` checksum, over each buffer.
-3. **`startup` (level 1, passing).** Game.exe's own C runtime started as at a stock start, then `rng` and
+3. **`sfile` (level 1, oracle side passing).** Storm reading the player's archives through its own `SFile`
+   functions: each archive's `(listfile)`, then the first 40 and every 25th file it lists, as name, size and
+   CRC32. On the engine side this is the engine's Storm and its open PKWARE explode. The oracle reads the user's
+   d2data.mpq (471 lines). The engine's Storm reads the listfile and the first six files identically, then stops:
+   `GetCallerId` (SMEM.CPP) writes four globals no source defines (`gdwCallerId`, `gdwCallerWord`,
+   `gnCallerLine`, `gszCallerFile`, 0x007768A8-0x007768B4: unsourced data, Codex lane 11), which the forced
+   link leaves at address 0. It passes once those have definitions.
+4. **`startup` (level 1, passing).** Game.exe's own C runtime started as at a stock start, then `rng` and
    `bitbuf` again: proves the level 1 setup.
-4. **`drlg` (level 3).** For each seed, each act and difficulty: allocate the act and its levels, initialise
+5. **`drlg` (level 3).** For each seed, each act and difficulty: allocate the act and its levels, initialise
    every level, and dump per level its id, size and position, its rooms (position, size, type, preset and file
    index) in a fixed order, and its exits. Map generation is where a wrong roll or a different
    evaluation order shows first.
-5. **`drops` (level 4).** A server game on a fixed seed, a monster of a given class killed by a player of a given
+6. **`drops` (level 4).** A server game on a fixed seed, a monster of a given class killed by a player of a given
    level and magic find: the item list (codes, qualities, affixes, sockets, the seeds of each item). Repeated
    for unique and champion monsters and for chests.
-6. **`save` (level 4).** Create a character of each class, run a fixed script (move, pick up, equip, level up),
+7. **`save` (level 4).** Create a character of each class, run a fixed script (move, pick up, equip, level up),
    save; compare the `.d2s` bytes, and load the stock save in the engine and save it again.
 
 The roadmap's M2 check (map generation, drops, combat, saves) is these four, plus combat (a seeded hit table)
@@ -89,7 +96,8 @@ would begin. The case then leaves with `ExitProcess`, never returning into the g
 ## The engine runner until the engine links
 
 `replay_engine` links only the game files its cases call (`IBLIS_REPLAY_GAME_SOURCES` in CMakeLists.txt) with
-`/FORCE:UNRESOLVED`. Two rules keep that honest:
+`/FORCE:UNRESOLVED`, and for `sfile` the Storm and Fog libraries with the link aliases
+(`Source/Main/link_aliases.cpp`). Two rules keep that honest:
 
 - Every function and global a case reaches must be bound to its definition. Those files still name some of
   them differently from the definitions (docs/PORT_LINK.md); `tools/replay/engine_links.cpp` binds those names
@@ -104,6 +112,7 @@ Once the engine links as a whole, the runner links the engine's libraries instea
 
 ## State
 
+- `sfile`: the oracle side runs; the engine side waits for Storm's unsourced globals (see the case).
 - `rng`, `bitbuf`, `startup`: identical between stock 1.14d and the engine (2,169, 1,993 and 4,163 lines; MSVC
   19.44 under wine, the user's 1.14d install).
 - Next: level 2 (Storm with the player's MPQs, D2Lang, the data tables), toward `drlg`. What the source says:
