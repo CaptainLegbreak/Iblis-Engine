@@ -1124,7 +1124,7 @@ D2SkillsTxt* __fastcall SKILLS_GetSkillsTxtRecordFromSkill(D2SkillStrc* pSkill);
 
 
 
-void __stdcall DATATBLS_GetBeltsTxtRecord(int nIndex, int nRow, D2UiRecordStrc* pRecord); // 0x00660CB0
+void __stdcall DATATBLS_GetBeltsTxtRecord(int nIndex, int bHigherRes, D2BeltsTxt* pRecord); // 0x00660CB0
 
 extern D2AutomapPairStrc gaAutomapPairs[49]; // 0x00711258
 

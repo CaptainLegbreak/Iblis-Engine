@@ -51,7 +51,7 @@ struct D2GlideSpriteVertexStrc
     float oow; // 0x0C
     float sow; // 0x10
     float tow; // 0x14
-    float unk0x18; // 0x18
+    float unused0x18; // 0x18
 };
 
 struct D2GlideTexInfoStrc
@@ -100,10 +100,10 @@ struct D2GlideTileStrc
     short nPosX; // 0x00
     short nPosY; // 0x02
     short nCacheIndex; // 0x04
-    short unk0x06; // 0x06
+    short unused0x06; // 0x06
     unsigned short nFormat; // 0x08
     unsigned short nLength; // 0x0A
-    int unk0x0C; // 0x0C
+    int unused0x0C; // 0x0C
     unsigned char* pData; // 0x10
 };
 

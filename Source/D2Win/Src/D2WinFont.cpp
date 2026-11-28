@@ -78,7 +78,7 @@ unsigned int gdwLastShiftedTickCount;                                           
 bool gbKoreanFonts;                                                                                // 0x00841EC6
 
 struct D2CelStrc;
-void __stdcall TEXTURE_CelDrawEx(D2GfxDataStrc* pContext, int nX, int nY, int nSkipLines, int nDrawLines, int nDrawMode); // 0x004F64E0
+void __stdcall TEXTURE_CelDrawEx(D2GfxDataStrc* pData, int nXPos, int nYPos, int nSkipLines, int nDrawLines, int eDrawMode); // 0x004F64E0
 extern "C" const char gszD2WinFontSourceFile[]; // 0x006DC9FC
 
 Unicode gwszFramedText[1024];                                                                      // 0x00841EC8
@@ -155,7 +155,7 @@ static void FONT_LoadFontTable(int nFont); // 0x00501580
 
 int __fastcall D2Win_10127_SetFont(int nFontSize); // 0x00502EF0
 
-void* __fastcall FOG_AllocPool(void* pPool, int nSize, const char* szFile, int nLine, int n0);              // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 void __fastcall D2Win_10118_DrawBlendedText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered, int eDrawMode);
 

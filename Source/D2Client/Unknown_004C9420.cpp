@@ -53,7 +53,7 @@ void __fastcall sub_004BA840_StopSound(void* pUnitSfx); // 0x004BA840
 #define SKILLSFLAGINDEX_PRGSTACK 7
 
 
-int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                                   // 0x0045C390
+unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
 
 int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                                  // 0x0045C3E0
 

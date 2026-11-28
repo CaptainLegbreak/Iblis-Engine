@@ -417,7 +417,7 @@ void __cdecl GAME_InitGameState()
     GAME_ReadColorFlag();
     if (!gpClientView)
         gpClientView = VIEW_CreateView();
-    sub_0047F1D0_LoadResolution();
+    MINIPANEL_LoadResolution();
     GAME_LoadLoadingScreen();
     UI_DrawLoadingScreen(1);
     if (gnGameType == 7 || gnGameType == 9 || gnGameType == 6 || gnGameType == 8)

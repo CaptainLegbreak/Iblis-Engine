@@ -61,7 +61,7 @@ int __stdcall BUTTON_HandleMouseUp(SMSGHANDLER_PARAMS* pMsg);                   
 
 int __stdcall BUTTON_HandleVirtualKeyInput(SMSGHANDLER_PARAMS* pMsg);                                       // 0x005011F0
 
-int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl);                                           // 0x004F9310
+int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl); // 0x004F9310
 
 // 0x005009A0
 extern "C" void __fastcall BUTTON_SetIsPressed(D2WinButtonStrc* ptBtnData, int bIsPressed)

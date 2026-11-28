@@ -143,9 +143,9 @@ void __fastcall CLIENTS_PacketDataList_Append(D2ClientStrc* pClient, D2PacketDat
 
 D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID); // 0x00552F60
 
-int __stdcall PATH_GetLastPointX(D2DynamicPathStrc* pPath); // 0x00648A40
+unsigned int __stdcall PATH_GetLastPointX(D2DynamicPathStrc* pDynamicPath); // 0x00648A40
 
-int __stdcall PATH_GetLastPointY(D2DynamicPathStrc* pPath); // 0x00648A60
+unsigned int __stdcall PATH_GetLastPointY(D2DynamicPathStrc* pDynamicPath); // 0x00648A60
 
 
 extern const char text_006CC837[]; // 0x006CC837

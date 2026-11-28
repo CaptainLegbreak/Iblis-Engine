@@ -87,7 +87,7 @@ D2UnitStrc* __fastcall SUNIT_IterateUnitsOfType(D2GameStrc* pGame, int nType, vo
 #include "D2GameFuncs.h"
 #include "D2ClientApi.h"
 
-void __fastcall D2Game_10034_Return(D2QuestDataStrc* pQuestData, D2QuestArgStrc* pQuestArg, int nValue); // 0x00545990
+void __stdcall D2Game_10034_Return(int nUnused); // 0x00545990
 
 D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId); // 0x00543640
 

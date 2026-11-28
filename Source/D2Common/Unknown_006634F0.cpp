@@ -386,25 +386,7 @@ unsigned int __stdcall MONSTERS_GetHirelingResurrectionCost(D2UnitStrc* pHirelin
 
 #define D2_MAX(a, b) ((a) > (b) ? (a) : (b))
 
-struct D2HirelingInitStrc
-{
-    int nId;
-    int nLevel;
-    int nHitpoints;
-    int nStrength;
-    int nDexterity;
-    int nGold;
-    int nExperience;
-    int nDefense;
-    int nMinDamage;
-    int nMaxDamage;
-    int nShare;
-    int nResist;
-    int nHireDesc;
-    int field_34;
-    short nFlags;
-    short unk0x3A;
-};
+#include "D2HirelingInit.h"
 
 D2HirelingTxt* __stdcall DATATBLS_GetNextHirelingTxtRecordFromActAndDifficulty(int bExpansion, int nAct, int nDifficulty, D2HirelingTxt* pOldRecord); // 0x00656580
 

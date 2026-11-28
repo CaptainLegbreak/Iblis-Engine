@@ -38,7 +38,7 @@ int __fastcall SMACK_Draw(D2WinControlStrc* pControl); // 0x00506A90
 
 int __stdcall SMACK_HandleMouseDown(SMSGHANDLER_PARAMS* pMsg); // 0x00506B10
 
-int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl);                                           // 0x004F9310
+int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl); // 0x004F9310
 
 
 // 0x00506A80

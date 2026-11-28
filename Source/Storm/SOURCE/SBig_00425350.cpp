@@ -104,8 +104,8 @@ struct D2StormBigStrc
 };
 
 unsigned int __stdcall BigHighBitIndex(BigBuffer* pQueue);                              // 0x004213B0
-int __stdcall sub_004212F0_Compare(BigBuffer* pLeft, BigBuffer* pRight);                      // 0x004212F0
-int __stdcall sub_004242C0_BigOp(BigBuffer* pResult, BigBuffer* pA, BigBuffer* pB, BigStack* pStack); // 0x004242C0
+int __stdcall sub_004212F0_Compare(const BigBuffer* pLeft, const BigBuffer* pRight); // 0x004212F0
+void __stdcall sub_004242C0_BigOp(BigBuffer* pResult, const BigBuffer* pB, const BigBuffer* pC, BigStack* pStack); // 0x004242C0
 void __stdcall sub_00424B00_BigSquare(BigBuffer* pResult, BigBuffer* pA, BigStack* pStack); // 0x00424B00
 unsigned int __stdcall sub_00421470_FindLowestSetBit(BigBuffer* pQueue);                            // 0x00421470
 extern const unsigned int gaSBigFermatBases[1];                                                         // 0x006CFF70

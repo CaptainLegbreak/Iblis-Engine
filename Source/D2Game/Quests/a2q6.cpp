@@ -71,7 +71,7 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" void* __cdecl memset(void*,int,unsigned int);
 
-void* __fastcall FOG_AllocPool(void*,int,const char*,int,int); // 0x0040B430
+void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
 extern char npc_messages[]; // 0x0073B288
 

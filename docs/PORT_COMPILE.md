@@ -4,7 +4,7 @@ The state of the engine's source under Visual Studio 2022. Kept current after ea
 (`tools/codex_sync.py`); the source fixes go to the Codex lanes, which make them in Codex and keep the byte-exact
 build, and they come back with the next sync.
 
-Last measured: 2026-11-27, Source/ at Codex 3f6ca97 (#498).
+Last measured: 2026-11-27, Source/ at Codex 16572ad (#499).
 
 ## Toolchain
 

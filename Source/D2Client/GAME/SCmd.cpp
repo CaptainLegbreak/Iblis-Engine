@@ -2821,7 +2821,7 @@ void __fastcall SCMD_HandleTownPortalState(const D2PacketRecord7Strc* pPacket)
 void __fastcall SCMD_HandlePlayCinematic(const D2GSPacketSrv61* pPacket)
 {
     sub_004B9320_PlayCinematicFromPacket((const D2CinematicPacketStrc*)pPacket);
-    sub_0047F1D0_LoadResolution();
+    MINIPANEL_LoadResolution();
 }
 
 // 0x0045E670

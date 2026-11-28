@@ -134,7 +134,7 @@ unsigned int __fastcall UNICODE_StrLen(const Unicode* pString);                 
 
 Unicode* __fastcall sub_00526F20(Unicode* pDst, const char* szSrc, int nMaxLength);                  // 0x00526F20
 
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer);                        // 0x00625480
+int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer); // 0x00625480
 
 int __stdcall STATLIST_UnitGetItemStatOrSkillStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer);         // 0x00625500
 
@@ -153,7 +153,7 @@ int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nL
 int __stdcall ITEMS_CheckIfSocketable(D2UnitStrc* pItem);                                                   // 0x00629900
 
 
-unsigned char __stdcall ITEMS_GetSockets(D2UnitStrc* pItem); // 0x006299B0
+int __stdcall ITEMS_GetSockets(D2UnitStrc* hItem); // 0x006299B0
 
 
 

@@ -311,17 +311,17 @@ int __cdecl CHAT_IsNumberDisplayEnabled(); // 0x0047A980
 int __cdecl CHAT_HasClassOverride(); // 0x0047AA30
 bool __cdecl CHAT_IsImeLanguage(); // 0x0047B010
 void __stdcall CHAT_StepChatIndex(int nDelta); // 0x0047BA80
-void __fastcall sub_0047DBB0_LoadOptionCels(D2OptionHeaderStrc* pHeader, D2OptionEntryStrc* pEntries); // 0x0047DBB0
+void __fastcall ESCMENU_LoadOptionCels(D2OptionHeaderStrc* pHeader, D2OptionEntryStrc* pEntries); // 0x0047DBB0
 void __fastcall WARDENCLIENT_ToggleEscMenuUIState(int bSaveState, int nMenu); // 0x0047E090
-int __cdecl sub_0047EA60_IsAnyPanelOpen(); // 0x0047EA60
-int __cdecl sub_0047EB50_IsAnyLeftPanelOpen(); // 0x0047EB50
-void __cdecl sub_0047F1D0_LoadResolution(); // 0x0047F1D0
+int __cdecl MINIPANEL_IsAnyPanelOpen(); // 0x0047EA60
+int __cdecl MINIPANEL_IsAnyLeftPanelOpen(); // 0x0047EB50
+void __cdecl MINIPANEL_LoadResolution(); // 0x0047F1D0
 int __cdecl sub_0047F210_IsMouseInSlots(); // 0x0047F210
-void __fastcall sub_0047F310_ShowPage2(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg); // 0x0047F310
-void __fastcall sub_0047F340_ShowPage3(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg); // 0x0047F340
-void __fastcall sub_0047F3A0_ShowPage4(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg); // 0x0047F3A0
-void __fastcall sub_0047F400_OpenPanel(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg); // 0x0047F400
-void __fastcall sub_0047F430_ShowPage0(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg); // 0x0047F430
+void __fastcall MINIPANEL_ShowPage2(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg); // 0x0047F310
+void __fastcall MINIPANEL_ShowPage3(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg); // 0x0047F340
+void __fastcall MINIPANEL_ShowPage4(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg); // 0x0047F3A0
+void __fastcall MINIPANEL_OpenPanel(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg); // 0x0047F400
+void __fastcall MINIPANEL_ShowPage0(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg); // 0x0047F430
 void __cdecl WARDENCLIENT_ActivatePendingModule(); // 0x00480230
 void __fastcall GFX_RefreshPathTarget(D2UnitStrc* pUnit); // 0x00480420
 void __cdecl sub_00481830_StopAllSounds(); // 0x00481830

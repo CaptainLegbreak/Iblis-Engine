@@ -98,7 +98,7 @@ int __cdecl INV_FormatArgs(wchar_t* wszDest, const wchar_t* wszFormat, ...);    
 
 wchar_t* __fastcall D2LANG_GetStringFromTblIndex(unsigned short wIndex);                                    // 0x00524A30
 
-void __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength);                  // 0x00526320
+Unicode* __fastcall sub_00526320_ToUnicode(Unicode* pDest, const char* szSource, int nLength); // 0x00526320
 
 void __fastcall MONSTERS_SetMonsterNameInMonsterData(D2UnitStrc* pUnit, const wchar_t* wszName);                        // 0x0063E810
 

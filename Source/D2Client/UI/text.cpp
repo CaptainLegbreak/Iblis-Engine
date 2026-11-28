@@ -693,7 +693,7 @@ extern D2MsgHandlerEntryStrc gaKeyCaptureWheelHandlers[]; // 0x0072478C
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
-int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, int nLayer); // 0x00625480
+int __stdcall STATLIST_UnitGetStatValue(D2UnitStrc* pUnit, int nStatId, unsigned short nLayer); // 0x00625480
 
 
 

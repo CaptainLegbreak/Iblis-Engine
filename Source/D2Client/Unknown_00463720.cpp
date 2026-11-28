@@ -42,7 +42,7 @@ unsigned int __cdecl sub_0044DA90_GetTickCounter();
 unsigned int __cdecl GAME_GetInteractDeadline(); // 0x0044DAC0
 D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId);
 int __stdcall PLAYER_IsPendingMode(int nArg1, int nArg2); // 0x00461D60
-int __fastcall CUNIT_CanUseSkill(D2UnitStrc* pUnit, D2SkillStrc* pSkill); // 0x00464600
+int __fastcall CUNIT_CanUseSkill(D2UnitStrc* pUnit, int nArg); // 0x00464600
 D2UnitStrc* __cdecl SELECT_GetSelectedUnit(); // 0x00467A10
 D2UnitStrc* __fastcall SELECT_GetSkillTarget(D2SkillStrc* pSkill, D2UnitStrc* pTarget, int* pX, int* pY, unsigned int dwFlags, int bForce); // 0x00467880
 int __cdecl INV_GetScreenHeightMinusPanel(); // 0x00454970

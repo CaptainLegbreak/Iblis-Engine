@@ -923,7 +923,7 @@ int __stdcall ITEMS_GetFileIndex(D2UnitStrc* pItem);                            
 
 D2LowQualityItemsTxt* __stdcall DATATBLS_GetLowQualityItemsTxtRecord(int nId);                              // 0x006375C0
 
-unsigned int __stdcall INVENTORY_GetItemCount(D2InventoryStrc* pInventory);                                          // 0x0063CD60
+int __stdcall INVENTORY_GetItemCount(D2InventoryStrc* pInventory); // 0x0063CD60
 
 void __fastcall INV_BuildItemName(D2UnitStrc* pItem, Unicode* pText, int nMaxLength); // 0x0048C060
 
@@ -946,7 +946,7 @@ void __fastcall sub_004DBEA0(D2UnitStrc* pUnit, int nArg2, int nArg3, unsigned i
 
 unsigned char __stdcall ITEMS_GetInvPage(D2UnitStrc* pItem); // 0x00628250
 
-unsigned char __stdcall ITEMS_GetSockets(D2UnitStrc* pItem); // 0x006299B0
+int __stdcall ITEMS_GetSockets(D2UnitStrc* hItem); // 0x006299B0
 
 
 

@@ -892,7 +892,7 @@ void __fastcall WINMAIN_SetExitApplication(int nValue); // 0x0044B880
 
 
 
-static inline int sub_0047D500_IsOptionEnabled(D2OptionEntryStrc* pEntry);
+static inline int ESCMENU_IsOptionEnabled(D2OptionEntryStrc* pEntry); // 0x0047D500
 
 
 
@@ -1241,7 +1241,7 @@ extern int gnOptionLastY; // 0x007BC984
 
 
 
-static void sub_0047D5C0_ActivateOption(SMSGHANDLER_PARAMS* pMsg);
+static void ESCMENU_ActivateOption(SMSGHANDLER_PARAMS* pMsg); // 0x0047D5C0
 
 
 
@@ -1631,7 +1631,7 @@ const Unicode* __fastcall CMDTBL_GetKeyText(int nKey, int nArg2); // 0x00469DE0
 
 
 
-void __stdcall sub_0047E9A0_DrawSlots(int bDraw); // 0x0047E9A0
+void __stdcall MINIPANEL_DrawSlots(int bDraw); // 0x0047E9A0
 
 
 

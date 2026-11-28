@@ -39,7 +39,7 @@ struct D2WinAccountListFontStrc
     int field_04;
 };
 
-int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl);                                           // 0x004F9310
+int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl); // 0x004F9310
 
 enum D2ControlTypes
 {

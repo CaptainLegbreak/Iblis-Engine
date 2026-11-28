@@ -23,11 +23,11 @@ extern const int gnOutdoorScanYOffsets[4]; // 0x006F2800
 
 struct D2DrlgGridStrc;
 
-void __stdcall sub_00680D70_CollectRoadStarts(D2DrlgLevelStrc* pLevel); // 0x00680D70
+void __stdcall DRLGOUTDOORS_CollectRoadStarts(D2DrlgLevelStrc* pLevel); // 0x00680D70
 
-void __stdcall sub_00681000_SetRoadEnds(D2DrlgLevelStrc* pLevel); // 0x00681000
+void __stdcall DRLGOUTDOORS_SetRoadEnds(D2DrlgLevelStrc* pLevel); // 0x00681000
 
-int __fastcall sub_006817D0_BuildRoad(D2DrlgLevelStrc* pLevel, int nRoad); // 0x006817D0
+int __fastcall DRLGOUTDOORS_BuildRoad(D2DrlgLevelStrc* pLevel, int nRoad); // 0x006817D0
 
 extern const int gnAct1PathOffsetX[4]; // 0x006F2820
 
@@ -65,7 +65,7 @@ static void DRLGOUTDOORS_CalculatePathCoordinates(D2DrlgLevelStrc* pLevel, D2Drl
 }
 
 // 0x00681000
-void __stdcall sub_00681000_SetRoadEnds(D2DrlgLevelStrc* pLevel)
+void __stdcall DRLGOUTDOORS_SetRoadEnds(D2DrlgLevelStrc* pLevel)
 {
     D2DrlgOutdoorInfoStrc* pOutdoors = pLevel->pOutdoors;
     int nX = -1;
@@ -169,7 +169,7 @@ static inline unsigned int SEED_RollRandomNumber(D2SeedStrc* pSeed)
 }
 
 // 0x00681240
-static void __stdcall sub_00681240_PlaceRoadVertices(D2DrlgLevelStrc* pLevel, int nRoad)
+static void __stdcall DRLGOUTDOORS_PlaceRoadVertices(D2DrlgLevelStrc* pLevel, int nRoad)
 {
     D2PoolSystemStrc* pMemPool = pLevel->pDrlg->pMempool;
     D2DrlgOutdoorInfoStrc* pOutdoors = pLevel->pOutdoors;
@@ -219,15 +219,15 @@ static void __stdcall sub_00681240_PlaceRoadVertices(D2DrlgLevelStrc* pLevel, in
 void __fastcall DRLGOUTDOORS_SpawnAct1DirtPaths(D2DrlgLevelStrc* pLevel)
 {
     D2DrlgOutdoorInfoStrc* pOutdoors = pLevel->pOutdoors;
-    sub_00680D70_CollectRoadStarts(pLevel);
-    sub_00681000_SetRoadEnds(pLevel);
+    DRLGOUTDOORS_CollectRoadStarts(pLevel);
+    DRLGOUTDOORS_SetRoadEnds(pLevel);
 
     for (int nPath = 0; nPath < pOutdoors->nVertices; ++nPath)
     {
-        if (sub_006817D0_BuildRoad(pLevel, nPath))
+        if (DRLGOUTDOORS_BuildRoad(pLevel, nPath))
         {
             DRLGGRID_SetVertexGridFlags(&pOutdoors->pGrid[2], pOutdoors->pRoads[nPath], 0x80);
-            sub_00681240_PlaceRoadVertices(pLevel, nPath);
+            DRLGOUTDOORS_PlaceRoadVertices(pLevel, nPath);
         }
     }
 }
