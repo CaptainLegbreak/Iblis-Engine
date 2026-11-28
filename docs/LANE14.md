@@ -88,12 +88,12 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
     (`sub_006B01B0_Explode`, `sub_006B0870_Implode`) with two different declarations: their names are
     `explode` and `implode` (PKWARE DCL's API), one declaration in a header. The engine answers to both names
     meanwhile (Source/Storm/pklib/codex_names.cpp).
-- 2026-11-27 17:00 PT, question for the user (item 2, parked): the PKWARE test against data the original
-  library compressed needs the user's own MPQs. Could the user attach one or two (d2speech.mpq is small; any
+- 2026-11-27 17:00 PT, question for the user (item 2, parked; answered 17:30, see Status): the PKWARE test
+  against data the original library compressed needs the user's own MPQs. Could the user attach one or two (d2speech.mpq is small; any
   of d2data/d2exp/d2char will do), or run `pklib_test.exe d2data.mpq d2exp.mpq` from the build in their
   Diablo II folder and paste the output? Nothing from them goes into the repo.
 
-- 2026-11-27, question for the user (item 0, parked, not blocking): I need the user's 1.14d Game.exe in the
+- 2026-11-27, question for the user (answered 17:30, see Status): I need the user's 1.14d Game.exe in the
   sandbox for Codex's tools (linkdebt.py for item 3, shortdata.py for item 4) and to check 16 data bytes.
   My request for access to ~/Iblis-Codex and ~/Desktop/Diablo 2 archives on the PC was declined by the
   app's approval check, not by the user. Could the user attach Game.exe to the chat, or approve folder
@@ -106,6 +106,17 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
   entries after the file merges, worth a fix in Codex.
 
 ## Status
+
+- 2026-11-27 17:30 PT: the user gave access to their install (D:\Diablo II); Game.exe is the 1.14d one
+  (SHA-256 631066c1..., as Codex expects). The three parked checks are done:
+  - The 16 bytes PR #2 wrote as 0 are 0 in Game.exe. No change.
+  - PKWARE (PR #3, commit 5702c76): on d2data.mpq and Patch_D2.mpq, 8,497 files the original library
+    compressed (330 MB) explode to their exact sector sizes; the 1,339 the encrypted (listfile) names in a
+    checkable format (data tables, string tables, DC6) are well-formed; all pass with MSVC 19.44 and g++. The
+    archives carry no (attributes) CRCs. The stack (#4-#6) was merged forward to carry it.
+  - DLL imports (PR #5): binkw32/SmackW32 export decorated names (_BinkOpen@8), ijl11 undecorated; the stub
+    import libraries record exactly these.
+  Game.exe is now in the sandbox for Codex's tools (linkdebt.py, shortdata.py) when items 6-7 come up.
 
 - 2026-11-27 17:35 PT: queue items 1-5 all in PRs, merge in order #2, #3, #4, #5, #6 (#1 superseded by #2).
   #6 = item 5, docs/PORT_LINK.md: the modern link fails with 4,274 unresolved symbols (the linker's count) and
