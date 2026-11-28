@@ -4215,30 +4215,6 @@ void __fastcall SKILLDESC_RefreshSkills(D2UnitStrc* pUnit)
     }
 }
 
-struct D2RequestStrc;
-
-struct D2RequestStrc
-{
-    int nType;
-    D2UnitStrc* pUnit;
-    D2UnitStrc* pOtherUnit;
-    int unk0x0C;
-    int nMissile;
-    int nX;
-    int nY;
-    int nTargetX;
-    int nTargetY;
-    int nGfxArg;
-    int nVelocity;
-    int nSkill;
-    int nSkillLevel;
-    int unk0x34[8];
-    void* pfCallback;
-    int nIndex;
-};
-
-D2UnitStrc* __fastcall sub_004CD540_HandleRequest(D2RequestStrc* pRequest); // 0x004CD540
-
 
 static int UNITS_GetXPositionInline(D2UnitStrc* pUnit)
 {
@@ -4291,10 +4267,10 @@ int __fastcall SKILLDESC_CreateMissileVolley(D2UnitStrc* pUnit, int nCount, int 
         }
     }
 
-    D2RequestStrc tRequest;
+    D2MissileStrc tRequest;
     memset(&tRequest, 0, sizeof(tRequest));
-    tRequest.nType = 0x21;
-    tRequest.pUnit = pUnit;
+    tRequest.dwFlags = 0x21;
+    tRequest.pOwner = pUnit;
     tRequest.nX = UNITS_GetXPositionInline(pUnit);
     tRequest.nY = UNITS_GetYPositionInline(pUnit);
     tRequest.nTargetX = nTargetX;
@@ -4302,16 +4278,16 @@ int __fastcall SKILLDESC_CreateMissileVolley(D2UnitStrc* pUnit, int nCount, int 
     tRequest.nSkill = nArg3;
     tRequest.nSkillLevel = nArg4;
     tRequest.nMissile = nArg0;
-    tRequest.pfCallback = SKILLDESC_InitCappedChargedPath;
+    tRequest.pInitFunc = SKILLDESC_InitCappedChargedPath;
     if (bClearPathFlag)
     {
-        tRequest.nType |= 0x2000;
+        tRequest.dwFlags |= 0x2000;
     }
 
     for (int i = 0; i < nCount; ++i)
     {
-        tRequest.nIndex = i;
-        D2UnitStrc* pMissile = sub_004CD540_HandleRequest(&tRequest);
+        tRequest.nInitArg = i;
+        D2UnitStrc* pMissile = MISSILE_CreateClientMissile(&tRequest);
         if (pMissile)
         {
             if (bClearPathFlag)

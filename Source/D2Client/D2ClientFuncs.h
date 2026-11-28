@@ -34,19 +34,21 @@ struct D2UnitTargetStrc;
 struct D2MissilesTxt;
 struct D2UnitStrc;
 struct D2CinematicPacketStrc;
-struct D2ClientPacket7Strc;
-struct D2GSPacketSrv42Strc;
+struct D2GSPacketSrv98;
+struct D2GSPacketSrv42;
 struct D2GSPacketSrv5E;
-struct D2GSPacketSrv7DStrc;
+struct D2GSPacketSrv7D;
 struct D2GSPacketSrv9C;
 struct D2GSPacketSrv9D;
 struct D2HirelingInfoStrc;
 struct D2ItemStatCostTxt;
-struct D2PacketRecord11Strc;
+struct D2GSPacketSrv47;
+struct D2GSPacketSrv48;
 struct D2PacketRecord13Strc;
 struct D2PacketRecord6Strc;
-struct D2PacketRecord7Strc;
-struct D2PacketRecord8Strc;
+struct D2GSPacketSrv8A;
+struct D2GSPacketSrv58;
+struct D2GSPacketSrv3F;
 struct D2SkillsTxt;
 struct D2TileLightCtxStrc;
 
@@ -671,13 +673,13 @@ void __fastcall MONSTER_RunUModMissileCallbacks(D2UnitStrc* pUnit, D2UnitStrc* p
 int __fastcall MONSTER_IsUniqueMonster(D2UnitStrc* pUnit); // 0x004AE360
 void __fastcall MONSTER_FreeClientUnit(D2UnitStrc* pUnit); // 0x004AED30
 void __fastcall MONSTER_InitHireling(D2UnitStrc* pUnit, D2HirelingInfoStrc* pInfo); // 0x004B1090
-void __fastcall MONSTER_SetMinionSpawnClass(D2ClientPacket7Strc* pPacket); // 0x004B1240
+void __fastcall MONSTER_SetMinionSpawnClass(D2GSPacketSrv98* pPacket); // 0x004B1240
 void __stdcall NPCMENU_PickNpcChoice(D2NpcEntryStrc* pEntry); // 0x004B1680
 int __cdecl sub_004B1DC0_Return0(); // 0x004B1DC0
 void __cdecl NPCMENU_ResetSlots(); // 0x004B3290
 void __cdecl NPCMENU_ResetNpcMenu(); // 0x004B32F0
 void __fastcall NPCMENU_ReloadHirelingPopup(unsigned short nArg); // 0x004B3340
-void __fastcall NPCMENU_OnNpcWantsInteract(D2PacketRecord6Strc* pPacket); // 0x004B3380
+void __fastcall NPCMENU_OnNpcWantsInteract(D2GSPacketSrv8A* pPacket); // 0x004B3380
 int __cdecl NPCMENU_IsAnyDialogOpen(); // 0x004B34A0
 int __cdecl NPCMENU_IsGambleShop(); // 0x004B3500
 int __cdecl NPCMENU_HireMercHandler(); // 0x004B3660
@@ -720,24 +722,24 @@ void __cdecl USEITEM_InitUseItemPanel(); // 0x004BF9D0
 void __cdecl USEITEM_FreeUseItemPanel(); // 0x004C0100
 void __cdecl USEITEM_DrawPanelUnit(); // 0x004C01E0
 int __cdecl sub_004C0440_Thunk(); // 0x004C0440
-void __fastcall USEITEM_HandleUseItemPacket(D2PacketRecord7Strc* pPacket); // 0x004C0550
+void __fastcall USEITEM_HandleUseItemPacket(D2GSPacketSrv58* pPacket); // 0x004C0550
 void __fastcall USEITEM_OpenNpcItemPanel(int nValue); // 0x004C0620
 void __cdecl SHOWITEMS_DrawUnitNames(); // 0x004C0810
 void __fastcall ITEM_UpdateItemLink(D2UnitStrc* pItem, D2UnitStrc* pUnit, int bForce, int bClamp); // 0x004C0EC0
 void __fastcall ITEM_ReleaseItemUnit(D2UnitStrc* pUnit); // 0x004C1A70
 void __fastcall ITEM_UpdateItemAnim(D2UnitStrc* pUnit); // 0x004C1AD0
 void __fastcall ITEM_HandleItemCommand(int nEvent, D2UnitStrc* pUnit, int bSet, int nMode); // 0x004C1B80
-void __fastcall ITEM_RefreshUnitItemsFromPacket(D2PacketRecord11Strc* pPacket, int nArg); // 0x004C1BC0
-void __fastcall ITEM_RefreshUnitItemsFromRecord(D2PacketRecord11Strc* pPacket); // 0x004C1BF0
+void __fastcall ITEM_RefreshUnitItemsFromPacket(D2GSPacketSrv47* pPacket, int nArg); // 0x004C1BC0
+void __fastcall ITEM_RefreshUnitItemsFromRecord(D2GSPacketSrv48* pPacket); // 0x004C1BF0
 int __fastcall ITEM_GetItemUseSound(D2UnitStrc* pItem); // 0x004C1E20
 void __cdecl ITEM_ResetWeaponClasses(); // 0x004C1E30
 void __fastcall ITEM_UpdateItemStat(unsigned int nA, unsigned char nB, unsigned int nC, unsigned int nD, unsigned short nE); // 0x004C1F30
 void __fastcall ITEM_SetItemFlagFromPacket(D2PacketRecord13Strc* pPacket); // 0x004C2020
-void __fastcall ITEM_ClearCursorItemFromPacket(D2GSPacketSrv42Strc* pPacket); // 0x004C2050
+void __fastcall ITEM_ClearCursorItemFromPacket(D2GSPacketSrv42* pPacket); // 0x004C2050
 void __fastcall ITEM_HandleItemToCursor(D2GSPacketSrv9C* pPacket); // 0x004C20B0
 void __fastcall ITEM_SetUninterruptableState(D2UnitStrc* pUnit); // 0x004C21F0
 int __fastcall ITEM_IsItemActionBlocked(D2UnitStrc* pUnit); // 0x004C2240
-void __fastcall ITEM_HandleItemStatePacket(D2GSPacketSrv7DStrc* pPacket); // 0x004C2270
+void __fastcall ITEM_HandleItemStatePacket(D2GSPacketSrv7D* pPacket); // 0x004C2270
 void __fastcall ITEM_HandleOwnedItemToCursor(D2GSPacketSrv9D* pPacket); // 0x004C2340
 void __fastcall ITEM_RemoveEquippedItems(D2UnitStrc* pUnit); // 0x004C23E0
 void __fastcall ITEM_HandleGroundToCursor(D2GSPacketSrv9C* pPacket); // 0x004C2650
@@ -756,7 +758,7 @@ void __fastcall ITEM_HandleCursorBeltSwap(D2GSPacketSrv9C* pPacket); // 0x004C40
 void __fastcall ITEM_HandlePutInBelt(D2GSPacketSrv9C* pPacket); // 0x004C4130
 void __fastcall ITEM_HandleRemoveFromBelt(D2GSPacketSrv9C* pPacket); // 0x004C42A0
 void __fastcall ITEM_HandleBeltSwap(D2GSPacketSrv9C* pPacket); // 0x004C45C0
-void __fastcall ITEM_HandleUseStackableItem(D2PacketRecord8Strc* pPacket); // 0x004C4620
+void __fastcall ITEM_HandleUseStackableItem(D2GSPacketSrv3F* pPacket); // 0x004C4620
 void __fastcall ITEM_HandleAutoUnequip(D2GSPacketSrv9D* pPacket); // 0x004C4740
 void __fastcall ITEM_HandleItemToSocket(D2GSPacketSrv9D* pPacket); // 0x004C4990
 void __fastcall ITEM_HandleGridItemToBody(D2GSPacketSrv9D* pPacket); // 0x004C4AA0

@@ -148,9 +148,7 @@ struct D2QuestInitTableStrc;
 
 struct D2GSPacketSrv91;
 
-struct Obj00545290;
 
-struct Obj005452C0;
 
 struct D2DrlgCoordsStrc;
 
@@ -225,10 +223,6 @@ extern D2QuestInitTableStrc sgQuestInit[]; // 0x00731510
 
 
 
-
-struct Obj00545290 { unsigned int dwValues[32]; unsigned short wCount80; };
-
-struct Obj005452C0 { unsigned char bUnknown00[0x1C]; unsigned int dwValues1C[32]; unsigned short wCount9C; };
 
 
 

@@ -149,18 +149,18 @@ static int __stdcall DRLGTILESUB_TestReplaceSubPreset(int nX, int nY, D2DrlgSubs
 
 extern int __fastcall sub_0045C3E0_RollLimited(D2SeedStrc* pSeed, int nLimit); // 0x0045C3E0
 
-static int __stdcall sub_0066F350_GetFloorGridEntry(D2LvlSubTxt* pLvlSubTxtRecord, int nX, int nY);
+static int __stdcall DRLGTILESUB_GetFloorGridEntry(D2LvlSubTxt* pLvlSubTxtRecord, int nX, int nY); // 0x0066F350
 
-static int __stdcall sub_0066F380_GetWallGridEntry(D2LvlSubTxt* pLvlSubTxtRecord, int nX, int nY);
+static int __stdcall DRLGTILESUB_GetFirstWallGridEntry(D2LvlSubTxt* pLvlSubTxtRecord, int nX, int nY); // 0x0066F380
 
 static void __stdcall DRLGROOMTILE_LinkedTileDataManager(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom1, D2DrlgRoomStrc* pDrlgRoom2, D2DrlgTileDataStrc* pTileData, int nTileType, unsigned int nPackedTileInformation, int nX, int nY);
 
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* szFormat, ...);             // 0x006CC468
 
 
-int __stdcall sub_0066FCF0_CanPlaceSubstGroup(int nX, int nY, D2UnkOutdoorStrc2* pOutdoor, D2DrlgSubstGroupStrc* pSubstGroup, D2LvlSubTxt* pLvlSubTxtRecord); // 0x0066FCF0
+int __stdcall DRLGTILESUB_CanPlaceSubstGroup(int nX, int nY, D2UnkOutdoorStrc2* pOutdoor, D2DrlgSubstGroupStrc* pSubstGroup, D2LvlSubTxt* pLvlSubTxtRecord); // 0x0066FCF0
 
-void __fastcall sub_006707A0_SubstWaypointShrine(D2UnkOutdoorStrc2* pOutdoor); // 0x006707A0
+void __fastcall DRLGTILESUB_SubstWaypointShrine(D2UnkOutdoorStrc2* pOutdoor); // 0x006707A0
 
 static inline unsigned int SEED_RollRandomNumberHighFirst(D2SeedStrc* pSeed)
 {

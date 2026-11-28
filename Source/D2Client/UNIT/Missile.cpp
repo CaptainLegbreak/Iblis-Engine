@@ -306,33 +306,9 @@ extern const int gaCltHitRingOffsetX[8];                                        
 
 void __fastcall SKILLDESC_InitCappedChargedPath(D2UnitStrc* pMissile);                                          // 0x004E2ED0
 
-struct D2RequestStrc;
-
 struct D2MissileScanArgStrc;
 
 struct D2SpawnOffsetMissileView;
-
-struct D2RequestStrc
-{
-    int nType;
-    D2UnitStrc* pUnit;
-    D2UnitStrc* pOtherUnit;
-    int unk0x0C;
-    int nMissile;
-    int nX;
-    int nY;
-    int nTargetX;
-    int nTargetY;
-    int nGfxArg;
-    int nVelocity;
-    int nSkill;
-    int nSkillLevel;
-    int unk0x34[8];
-    void* pfCallback;
-    int nIndex;
-};
-
-D2UnitStrc* __fastcall sub_004CD540_HandleRequest(D2RequestStrc* pRequest); // 0x004CD540
 
 int __stdcall PATH_GetXPosition(D2DynamicPathStrc* pPath); // 0x006488C0
 
@@ -2302,17 +2278,17 @@ D2UnitStrc* __fastcall MISSILE_SubmitOwnerRequest(D2UnitStrc* pUnit, int nArg0, 
         }
     }
 
-    D2RequestStrc tRequest;
+    D2MissileStrc tRequest;
     memset(&tRequest, 0, sizeof(tRequest));
-    tRequest.nType = 0x20;
-    tRequest.pUnit = pOwner;
-    tRequest.pOtherUnit = pUnit;
+    tRequest.dwFlags = 0x20;
+    tRequest.pOwner = pOwner;
+    tRequest.pOrigin = pUnit;
     tRequest.nTargetX = nArg5;
     tRequest.nTargetY = nArg6;
     tRequest.nSkill = nArg3;
     tRequest.nSkillLevel = nArg4;
     tRequest.nMissile = nArg0;
-    return sub_004CD540_HandleRequest(&tRequest);
+    return MISSILE_CreateClientMissile(&tRequest);
 }
 
 // 0x004D39C0
@@ -2746,10 +2722,10 @@ D2UnitStrc* __fastcall MISSILE_SubmitOffsetRequest(D2UnitStrc* pUnit, int nArg0,
         nRange = 30;
     }
 
-    D2RequestStrc tRequest;
+    D2MissileStrc tRequest;
     memset(&tRequest, 0, sizeof(tRequest));
-    tRequest.nType = 0x521;
-    tRequest.pUnit = pOwner;
+    tRequest.dwFlags = 0x521;
+    tRequest.pOwner = pOwner;
     tRequest.nX = CLIENTS_GetUnitX(pUnit) + nOffsetX;
     tRequest.nY = CLIENTS_GetUnitY(pUnit) + nOffsetY;
     tRequest.nTargetX = nTargetX;
@@ -2758,7 +2734,7 @@ D2UnitStrc* __fastcall MISSILE_SubmitOffsetRequest(D2UnitStrc* pUnit, int nArg0,
     tRequest.nSkill = nArg3;
     tRequest.nSkillLevel = nArg4;
     tRequest.nMissile = nArg0;
-    return sub_004CD540_HandleRequest(&tRequest);
+    return MISSILE_CreateClientMissile(&tRequest);
 }
 
 // 0x004D37F0
@@ -5639,17 +5615,17 @@ D2UnitStrc* __fastcall MISSILE_SubmitTargetRequest(D2UnitStrc* pUnit, int nArg0,
         return 0;
     }
 
-    D2RequestStrc tRequest;
+    D2MissileStrc tRequest;
     memset(&tRequest, 0, sizeof(tRequest));
-    tRequest.nType = 0x420;
-    tRequest.pUnit = pOwner;
-    tRequest.pOtherUnit = pUnit;
+    tRequest.dwFlags = 0x420;
+    tRequest.pOwner = pOwner;
+    tRequest.pOrigin = pUnit;
     tRequest.nTargetX = nTargetX;
     tRequest.nTargetY = nTargetY;
     tRequest.nSkill = nArg3;
     tRequest.nSkillLevel = nArg4;
     tRequest.nMissile = nArg0;
-    return sub_004CD540_HandleRequest(&tRequest);
+    return MISSILE_CreateClientMissile(&tRequest);
 }
 
 struct D2ActiveRoomStrc;
@@ -6551,16 +6527,16 @@ D2UnitStrc* __fastcall MISSILE_SubmitMissileRequest(D2UnitStrc* pUnit, int nRequ
         return 0;
     }
 
-    D2RequestStrc tRequest;
+    D2MissileStrc tRequest;
     memset(&tRequest, 0, sizeof(tRequest));
-    tRequest.nType = 1;
-    tRequest.pUnit = pUnit;
+    tRequest.dwFlags = 1;
+    tRequest.pOwner = pUnit;
     tRequest.nX = nX;
     tRequest.nY = nY;
     tRequest.nSkill = nA;
     tRequest.nSkillLevel = nB;
     tRequest.nMissile = nRequest;
-    return sub_004CD540_HandleRequest(&tRequest);
+    return MISSILE_CreateClientMissile(&tRequest);
 }
 
 

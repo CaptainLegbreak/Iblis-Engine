@@ -61,8 +61,6 @@ struct D2UnitFlagsStrc;
 
 struct D2GSPacketSrv17;
 
-struct D2ClientPacket7Strc;
-
 struct D2ClientPacket6Strc;
 
 struct D2SaveChunkPacketStrc;
@@ -81,19 +79,11 @@ struct D2ClientUnitUpdateStrc;
 
 struct D2GSPacketSrv27Strc;
 
-struct D2GSPacketSrv42Strc;
-
-struct D2GSPacketSrv74Strc;
-
-struct D2GSPacketSrv7DStrc;
-
 struct D2UnitDropItemsPacketStrc;
 
 struct D2GSPacketSrv62;
 
 struct D2SkillLevelEntryStrc;
-
-struct D2PacketRecord11Strc;
 
 struct D2UnitStatPacketStrc;
 
@@ -112,8 +102,6 @@ struct D2Packet96RecordStrc;
 struct D2PacketListStrc;
 
 struct D2PacketTableEntryStrc;
-
-struct D2GSPacketCoordinateStrc;
 
 struct D2GSPacketSrv92;
 
@@ -146,17 +134,6 @@ struct D2GSPacketSrv17
     unsigned char unk0x07;
     unsigned char unk0x08[2];
     unsigned char unk0x0A[2];
-};
-
-struct D2ClientPacket7Strc
-{
-    unsigned char nHeader;
-    unsigned char nUnitGUID0;
-    unsigned char nUnitGUID1;
-    unsigned char nUnitGUID2;
-    unsigned char nUnitGUID3;
-    unsigned char nValue0;
-    unsigned char nValue1;
 };
 
 struct D2ClientPacket6Strc
@@ -350,52 +327,6 @@ struct D2GSPacketSrv27Strc
     int nData24;
 };
 
-struct D2GSPacketSrv42Strc
-{
-    unsigned char nHeader;
-    unsigned char nUnitType;
-    unsigned char nUnitGUID0;
-    unsigned char nUnitGUID1;
-    unsigned char nUnitGUID2;
-    unsigned char nUnitGUID3;
-};
-
-struct D2GSPacketSrv74Strc
-{
-    unsigned char nHeader;
-    unsigned char unk0x01;
-    unsigned char unk0x02;
-    unsigned char unk0x03;
-    unsigned char unk0x04;
-    unsigned char unk0x05;
-    unsigned char unk0x06;
-    unsigned char unk0x07;
-    unsigned char unk0x08;
-    unsigned char unk0x09;
-};
-
-struct D2GSPacketSrv7DStrc
-{
-    unsigned char nHeader;
-    unsigned char nUnitType;
-    unsigned char unk0x02;
-    unsigned char unk0x03;
-    unsigned char unk0x04;
-    unsigned char unk0x05;
-    unsigned char unk0x06;
-    unsigned char unk0x07;
-    unsigned char unk0x08;
-    unsigned char unk0x09;
-    unsigned char unk0x0A;
-    unsigned char unk0x0B;
-    unsigned char unk0x0C;
-    unsigned char unk0x0D;
-    unsigned char unk0x0E;
-    unsigned char unk0x0F;
-    unsigned char unk0x10;
-    unsigned char unk0x11;
-};
-
 extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 extern void* gpBloodRemap; // 0x007BB384
@@ -409,7 +340,6 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 
 
-void __fastcall SCMD_DropUnitItems(D2GSPacketSrv74Strc* pPacket); // 0x00462F60
 
 
 
@@ -485,21 +415,6 @@ extern "C" void __cdecl INV_ClearSkillPointsHighlight(); // 0x004AA8F0
 
 
 #pragma pack(push, 1)
-struct D2PacketRecord11Strc
-{
-    unsigned char nHeader;
-    unsigned char nUnitType;
-    unsigned char unk0x02;
-    union
-    {
-        int nUnitId;
-        unsigned long dwUnitId;
-    };
-    unsigned char unk0x07;
-    unsigned char unk0x08;
-    unsigned char unk0x09;
-    unsigned char unk0x0A;
-};
 #pragma pack(pop)
 
 #pragma pack(push, 1)
@@ -644,18 +559,6 @@ extern "C" const char gszSCmdSourceFile[];
 int gnPacketRecordSize; // 0x007A5230
 
 #pragma pack(push, 1)
-struct D2GSPacketCoordinateStrc
-{
-    unsigned char nHeader;
-    unsigned char nUnitType;
-    int nUnitId;
-    unsigned short f_6;
-    unsigned char unk0x08[2];
-    unsigned char nArg3;
-    unsigned short wArg4;
-    unsigned short wArg5;
-    unsigned short wArg6;
-};
 #pragma pack(pop)
 
 
@@ -795,19 +698,7 @@ struct D2ByteRecordStrc;
 
 struct D2PacketRecord6Strc;
 
-struct D2PacketRecord7Strc;
-
-struct D2PacketRecord8Strc;
-
 struct D2PacketRecord13Strc;
-
-struct D2PacketRecord15Strc;
-
-struct D2PacketRecord21Strc;
-
-struct D2GSPacket5AStrc;
-
-struct D2GSPacket81Strc;
 
 struct D2GSPacket91Strc;
 
@@ -865,29 +756,6 @@ struct D2PacketRecord6Strc
     unsigned char unk0x05;
 };
 
-struct D2PacketRecord7Strc
-{
-    unsigned char nHeader;
-    unsigned char unk0x01;
-    unsigned char unk0x02;
-    unsigned char unk0x03;
-    unsigned char unk0x04;
-    unsigned char unk0x05;
-    unsigned char unk0x06;
-};
-
-struct D2PacketRecord8Strc
-{
-    unsigned char nHeader;
-    unsigned char unk0x01;
-    unsigned char unk0x02;
-    unsigned char unk0x03;
-    unsigned char unk0x04;
-    unsigned char unk0x05;
-    unsigned char unk0x06;
-    unsigned char unk0x07;
-};
-
 struct D2PacketRecord13Strc
 {
     unsigned char nHeader;
@@ -903,75 +771,6 @@ struct D2PacketRecord13Strc
     unsigned char unk0x0A;
     unsigned char unk0x0B;
     unsigned char unk0x0C;
-};
-
-struct D2PacketRecord15Strc
-{
-    unsigned char nHeader;
-    unsigned char unk0x01;
-    unsigned char unk0x02;
-    unsigned char unk0x03;
-    unsigned char unk0x04;
-    unsigned char unk0x05;
-    unsigned char unk0x06;
-    unsigned char unk0x07;
-    unsigned char unk0x08;
-    unsigned char unk0x09;
-    unsigned char unk0x0A;
-    unsigned char unk0x0B;
-    unsigned char unk0x0C;
-    unsigned char unk0x0D;
-    unsigned char unk0x0E;
-};
-
-struct D2PacketRecord21Strc
-{
-    unsigned char nHeader;
-    unsigned char unk0x01;
-    unsigned char unk0x02;
-    unsigned char unk0x03;
-    unsigned char unk0x04;
-    unsigned char unk0x05;
-    unsigned char unk0x06;
-    unsigned char unk0x07;
-    unsigned char unk0x08;
-    unsigned char unk0x09;
-    unsigned char unk0x0A;
-    unsigned char unk0x0B;
-    unsigned char unk0x0C;
-    unsigned char unk0x0D;
-    unsigned char unk0x0E;
-    unsigned char unk0x0F;
-    unsigned char unk0x10;
-    unsigned char unk0x11;
-    unsigned char unk0x12;
-    unsigned char unk0x13;
-    unsigned char unk0x14;
-};
-
-struct D2GSPacket5AStrc
-{
-    int nData00;
-    int nData04;
-    int nData08;
-    int nData0C;
-    int nData10;
-    int f_14;
-    int nData18;
-    int nData1C;
-    int nData20;
-    int nData24;
-};
-
-struct D2GSPacket81Strc
-{
-    unsigned char nHeader;
-    unsigned char nByte01;
-    unsigned short nWord02;
-    int nArg04;
-    int nArg08;
-    int nArg0C;
-    int nArg10;
 };
 
 struct D2GSPacket91Strc
@@ -995,26 +794,26 @@ extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(FARPROC lpfn); // 0x
 
 extern "C" __declspec(dllimport) short __stdcall GetKeyState(int nVirtKey); // 0x006CC45C
 
-void __fastcall sub_0049EB10(D2GSPacket5AStrc* pPacket); // 0x0049EB10
+void __fastcall sub_0049EB10(D2GSPacketSrv5A* pPacket); // 0x0049EB10
 
 void __fastcall NPCMENU_HandleNpcTransaction(D2PacketSrv2AStrc* pPacket); // 0x004B6390
 
 
 
 
-void __fastcall sub_004B9210(D2PacketRecord15Strc* pPacket); // 0x004B9210
+void __fastcall sub_004B9210(D2GSPacketSrv50* pPacket); // 0x004B9210
 
-void __fastcall NPCMENU_StoreMessage(D2PacketRecord7Strc* pPacket); // 0x004B3240
+void __fastcall NPCMENU_StoreMessage(const D2GSPacketSrv4E* pPacket); // 0x004B3240
 
 
 
 void __fastcall NPCMENU_FlagNpcEntries(D2GSPacket91Strc* pPacket); // 0x004B3510
 
-void __fastcall ITEM_ApplyTownPortalState(D2PacketRecord7Strc* pPacket); // 0x004BDF30
+void __fastcall ITEM_ApplyTownPortalState(D2GSPacketSrv60* pPacket); // 0x004BDF30
 
-void __fastcall TEXT_OpenWaypointPanel(D2PacketRecord21Strc* pPacket); // 0x0049CF90
+void __fastcall TEXT_OpenWaypointPanel(D2GSPacketSrv63* pPacket); // 0x0049CF90
 
-void __fastcall TEXT_SetNameFromPacket(D2PacketRecord21Strc* pPacket); // 0x004B9010
+void __fastcall TEXT_SetNameFromPacket(D2GSPacketSrv78* pPacket); // 0x004B9010
 
 void __fastcall ROSTERPETS_AssignMercEntry(int nKey, int nArg, int nType, int nValue, D2Packet81ArgsStrc* pArgs); // 0x00478BB0
 
@@ -1893,10 +1692,10 @@ static void SCMD_RefreshUnitItems(D2UnitStrc* pUnit)
     {
         const int nUnitType = pUnit ? pUnit->dwUnitType : UNIT_INVALID;
         const int nUnitId = pUnit->dwUnitId;
-        D2PacketRecord11Strc tPacket;
+        D2GSPacketSrv47 tPacket;
         tPacket.nHeader = 0x47;
         tPacket.nUnitType = (unsigned char)nUnitType;
-        tPacket.nUnitId = nUnitId;
+        tPacket.nUnitGUID = nUnitId;
         ITEM_RefreshUnitItemsFromPacket(&tPacket, 0);
     }
 }
@@ -2468,9 +2267,9 @@ void __fastcall SCMD_HandleSetActiveSkill(const D2GSPacketSrv23* pPacket)
 }
 
 // 0x0045DE50
-void __fastcall SCMD_HandleSetMinionClass(const D2ClientPacket7Strc* pPacket)
+void __fastcall SCMD_HandleSetMinionClass(const D2GSPacketSrv98* pPacket)
 {
-    D2ClientPacket7Strc tPacket = *pPacket;
+    D2GSPacketSrv98 tPacket = *pPacket;
     MONSTER_SetMinionSpawnClass(&tPacket);
 }
 
@@ -2489,11 +2288,11 @@ void __fastcall SCMD_HandleTriggerSkillOnUnit(const D2GSPacketSrv99* pPacket)
 }
 
 // 0x0045DEC0
-void __fastcall SCMD_HandleTriggerSkillAtPosition(const D2GSPacketCoordinateStrc* pPacket)
+void __fastcall SCMD_HandleTriggerSkillAtPosition(const D2GSPacketSrv9A* pPacket)
 {
-    D2UnitStrc* pUnit=CUNIT_FindClientUnit(pPacket->nUnitId,pPacket->nUnitType);
+    D2UnitStrc* pUnit=CUNIT_FindClientUnit(pPacket->nUnitGUID,pPacket->nUnitType);
     if(pUnit)
-        SKILLS_DoSkillAtPosition(pUnit,pPacket->f_6,pPacket->nArg3,pPacket->wArg4,pPacket->wArg5,pPacket->wArg6);
+        SKILLS_DoSkillAtPosition(pUnit,(unsigned short)pPacket->nSkillId,pPacket->nSkillLevel,pPacket->nX,pPacket->nY,pPacket->nItemEffect);
 }
 
 // 0x0045DF00
@@ -2599,9 +2398,9 @@ void __fastcall SCMD_HandleItemStatUpdate(D2GSPacketSrv3E* pPacket)
 }
 
 // 0x0045E220
-void __fastcall SCMD_HandleUseStackableItem(const D2PacketRecord8Strc* pPacket)
+void __fastcall SCMD_HandleUseStackableItem(const D2GSPacketSrv3F* pPacket)
 {
-    D2PacketRecord8Strc tPacket = *pPacket;
+    D2GSPacketSrv3F tPacket = *pPacket;
     ITEM_HandleUseStackableItem(&tPacket);
 }
 
@@ -2613,9 +2412,9 @@ void __fastcall SCMD_HandleSetItemFlag(const D2PacketRecord13Strc* pPacket)
 }
 
 // 0x0045E270
-void __fastcall SCMD_HandleClearCursor(const D2GSPacketSrv42Strc* pPacket)
+void __fastcall SCMD_HandleClearCursor(const D2GSPacketSrv42* pPacket)
 {
-    D2GSPacketSrv42Strc tPacket = *pPacket;
+    D2GSPacketSrv42 tPacket = *pPacket;
     ITEM_ClearCursorItemFromPacket(&tPacket);
 }
 
@@ -2625,16 +2424,16 @@ void __fastcall SCMD_Packet45(const D2GSPacketSrv45* pPacket)
 }
 
 // 0x0045E2A0
-void __fastcall SCMD_HandleRefreshItems(const D2PacketRecord11Strc* pPacket)
+void __fastcall SCMD_HandleRefreshItems(const D2GSPacketSrv47* pPacket)
 {
-    D2PacketRecord11Strc tPacket = *pPacket;
+    D2GSPacketSrv47 tPacket = *pPacket;
     ITEM_RefreshUnitItemsFromPacket(&tPacket, 1);
 }
 
 // 0x0045E2D0
-void __fastcall SCMD_HandleRefreshItemsRecord(const D2PacketRecord11Strc* pPacket)
+void __fastcall SCMD_HandleRefreshItemsRecord(const D2GSPacketSrv48* pPacket)
 {
-    D2PacketRecord11Strc tPacket = *pPacket;
+    D2GSPacketSrv48 tPacket = *pPacket;
     ITEM_RefreshUnitItemsFromRecord(&tPacket);
 }
 
@@ -2651,10 +2450,10 @@ void __fastcall SCMD_HandleInitEnvironment(D2EnvironmentPacketStrc* pPacket)
         D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         if (pPlayer)
         {
-            D2PacketRecord11Strc tPacket;
+            D2GSPacketSrv47 tPacket;
             const int nUnitType = !pPlayer ? 6 : pPlayer->dwUnitType;
             tPacket.nUnitType = (unsigned char)nUnitType;
-            tPacket.dwUnitId = !pPlayer ? -1 : pPlayer->dwUnitId;
+            tPacket.nUnitGUID = !pPlayer ? -1 : pPlayer->dwUnitId;
             tPacket.nHeader = 0x47;
             ITEM_RefreshUnitItemsFromPacket(&tPacket, 0);
         }
@@ -2662,9 +2461,9 @@ void __fastcall SCMD_HandleInitEnvironment(D2EnvironmentPacketStrc* pPacket)
 }
 
 // 0x0045E370
-void __fastcall SCMD_HandleUiPacket(const D2PacketRecord15Strc* pPacket)
+void __fastcall SCMD_HandleUiPacket(const D2GSPacketSrv50* pPacket)
 {
-    D2PacketRecord15Strc tPacket = *pPacket;
+    D2GSPacketSrv50 tPacket = *pPacket;
     sub_004B9210(&tPacket);
 }
 
@@ -2681,9 +2480,9 @@ void __fastcall SCMD_HandleClearMercList(const D2GSPacketSrv4F* pPacket)
 }
 
 // 0x0045E3D0
-void __fastcall SCMD_HandleMercForHire(const D2PacketRecord7Strc* pPacket)
+void __fastcall SCMD_HandleMercForHire(const D2GSPacketSrv4E* pPacket)
 {
-    D2PacketRecord7Strc tPacket = *pPacket;
+    D2GSPacketSrv4E tPacket = *pPacket;
     NPCMENU_StoreMessage(&tPacket);
 }
 
@@ -2716,9 +2515,9 @@ void __fastcall SCMD_HandleMonsterEnchants(const unsigned char* p)
 }
 
 // 0x0045E490
-void __fastcall SCMD_HandleOpenPanel(const D2PacketRecord7Strc* pPacket)
+void __fastcall SCMD_HandleOpenPanel(const D2GSPacketSrv58* pPacket)
 {
-    D2PacketRecord7Strc tPacket = *pPacket;
+    D2GSPacketSrv58 tPacket = *pPacket;
     USEITEM_HandleUseItemPacket(&tPacket);
 }
 
@@ -2729,9 +2528,9 @@ void __fastcall SCMD_HandleAssignPlayer(const D2GSPacketSrv59* pPacket)
 }
 
 // 0x0045E070
-void __fastcall SCMD_HandleEventMessage(const D2GSPacket5AStrc* pPacket)
+void __fastcall SCMD_HandleEventMessage(const D2GSPacketSrv5A* pPacket)
 {
-    D2GSPacket5AStrc tPacket = *pPacket;
+    D2GSPacketSrv5A tPacket = *pPacket;
     sub_0049EB10(&tPacket);
 }
 
@@ -2790,9 +2589,9 @@ void __fastcall SCMD_HandleSetPortalFlags(const D2GSPacketSrv5F* pPacket)
 }
 
 // 0x0045E610
-void __fastcall SCMD_HandleTownPortalState(const D2PacketRecord7Strc* pPacket)
+void __fastcall SCMD_HandleTownPortalState(const D2GSPacketSrv60* pPacket)
 {
-    D2PacketRecord7Strc tPacket = *pPacket;
+    D2GSPacketSrv60 tPacket = *pPacket;
     D2_ASSERT(CUNIT_GetPlayerUnit2(), 3361);
     ITEM_ApplyTownPortalState(&tPacket);
 }
@@ -2805,9 +2604,9 @@ void __fastcall SCMD_HandlePlayCinematic(const D2GSPacketSrv61* pPacket)
 }
 
 // 0x0045E670
-void __fastcall SCMD_HandleWaypointMenu(const D2PacketRecord21Strc* pPacket)
+void __fastcall SCMD_HandleWaypointMenu(const D2GSPacketSrv63* pPacket)
 {
-    D2PacketRecord21Strc tPacket = *pPacket;
+    D2GSPacketSrv63 tPacket = *pPacket;
     TEXT_OpenWaypointPanel(&tPacket);
 }
 
@@ -2862,9 +2661,9 @@ void __fastcall SCMD_HandleCreateMissile(const D2GSPacketSrv73* pPacket)
 }
 
 // 0x0045E7B0
-void __fastcall SCMD_HandlePlayerCorpse(const D2GSPacketSrv74Strc* pPacket)
+void __fastcall SCMD_HandlePlayerCorpse(const D2UnitDropItemsPacketStrc* pPacket)
 {
-    D2GSPacketSrv74Strc tPacket = *pPacket;
+    D2UnitDropItemsPacketStrc tPacket = *pPacket;
     SCMD_DropUnitItems(&tPacket);
 }
 
@@ -2881,9 +2680,9 @@ void __fastcall SCMD_HandleTradeAction(const D2GSPacketSrv77* pPacket)
 }
 
 // 0x0045E810
-void __fastcall SCMD_HandleTradePartnerName(const D2PacketRecord21Strc* pPacket)
+void __fastcall SCMD_HandleTradePartnerName(const D2GSPacketSrv78* pPacket)
 {
-    D2PacketRecord21Strc tPacket = *pPacket;
+    D2GSPacketSrv78 tPacket = *pPacket;
     TEXT_SetNameFromPacket(&tPacket);
 }
 
@@ -2915,9 +2714,9 @@ void __fastcall SCMD_HandlePetAction(const D2GSPacketSrv7A* pPacket)
 }
 
 // 0x0045E930
-void __fastcall SCMD_HandleSetItemState(const D2GSPacketSrv7DStrc* pPacket)
+void __fastcall SCMD_HandleSetItemState(const D2GSPacketSrv7D* pPacket)
 {
-    D2GSPacketSrv7DStrc tPacket = *pPacket;
+    D2GSPacketSrv7D tPacket = *pPacket;
     ITEM_HandleItemStatePacket(&tPacket);
 }
 
@@ -2980,13 +2779,13 @@ void __fastcall SCMD_HandleUniqueEvent(const D2GSPacketSrv89* pPacket)
 }
 
 // 0x0045E890
-void __fastcall SCMD_HandleAssignMerc(const D2GSPacket81Strc* pPacket)
+void __fastcall SCMD_HandleAssignMerc(const D2GSPacketSrv81* pPacket)
 {
     D2Packet81ArgsStrc tArgs;
-    tArgs.nArg0C = pPacket->nArg0C;
-    tArgs.nArg10 = pPacket->nArg10;
+    tArgs.nArg0C = pPacket->nSeed;
+    tArgs.nArg10 = pPacket->nName;
     tArgs.nZero = 0;
-    ROSTERPETS_AssignMercEntry(pPacket->nArg08, pPacket->nArg04, pPacket->nByte01, pPacket->nWord02, &tArgs);
+    ROSTERPETS_AssignMercEntry(pPacket->nPetGUID, pPacket->nUnitGUID, pPacket->nPetType, pPacket->nPetClass, &tArgs);
 }
 
 // 0x0045E8D0
@@ -3010,9 +2809,9 @@ void __fastcall SCMD_HandleUseScroll(const D2PacketRecord6Strc* pPacket)
 }
 
 // 0x0045EA40
-void __fastcall SCMD_HandleNpcWantsInteract(const D2PacketRecord6Strc* pPacket)
+void __fastcall SCMD_HandleNpcWantsInteract(const D2GSPacketSrv8A* pPacket)
 {
-    D2PacketRecord6Strc tPacket = *pPacket;
+    D2GSPacketSrv8A tPacket = *pPacket;
     NPCMENU_OnNpcWantsInteract(&tPacket);
 }
 

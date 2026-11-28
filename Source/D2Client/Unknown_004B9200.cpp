@@ -14,16 +14,6 @@
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 
-#pragma pack(push, 1)
-struct D2UiPacketStrc_004B9210
-{
-    unsigned char nHeader;
-    unsigned short nType;
-    unsigned short nArg;
-};
-
-#pragma pack(pop)
-
 struct D2CinematicPacketStrc
 {
     unsigned char nHeader;
@@ -43,11 +33,11 @@ unsigned char gaQuestIntroFlags[37]; // 0x007C0EA4
 extern "C" void __fastcall QUESTLOG_SetQuestPacketValue(unsigned int value); // 0x004A3100
 
 
-void __fastcall QUESTLOG_AcceptShortPacket(D2UiPacketStrc_004B9210* pPacket); // 0x004A28A0
+void __fastcall QUESTLOG_AcceptShortPacket(D2GSPacketSrv50* pPacket); // 0x004A28A0
 
-void __fastcall NPCMENU_OnNpcPacketStoreSubId(D2UiPacketStrc_004B9210* pPacket); // 0x004B25C0
+void __fastcall NPCMENU_OnNpcPacketStoreSubId(D2GSPacketSrv50* pPacket); // 0x004B25C0
 
-void __fastcall TEXT_AcceptWordPacket(D2UiPacketStrc_004B9210* pPacket); // 0x0049FF60
+void __fastcall TEXT_AcceptWordPacket(D2GSPacketSrv50* pPacket); // 0x0049FF60
 
 void __fastcall WINMAIN_SetExitApplication(int nValue); // 0x0044B880
 
@@ -67,16 +57,16 @@ void __cdecl sub_004B9200_ResetTable()
 }
 
 // 0x004B9210
-void __fastcall sub_004B9210_DispatchUiPacket(D2UiPacketStrc_004B9210* pPacket)
+void __fastcall sub_004B9210_DispatchUiPacket(D2GSPacketSrv50* pPacket)
 {
-    switch (pPacket->nType)
+    switch (pPacket->nQuestId)
     {
     case 36:
-        QUESTLOG_SetQuestPacketValue(pPacket->nArg);
+        QUESTLOG_SetQuestPacketValue(pPacket->nParams[0]);
         return;
 
     case 2:
-        NPCMENU_ReloadHirelingPopup(pPacket->nArg);
+        NPCMENU_ReloadHirelingPopup(pPacket->nParams[0]);
         return;
 
     case 1:

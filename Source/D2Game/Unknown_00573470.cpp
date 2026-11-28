@@ -11,12 +11,6 @@
 struct D2MonStatsTxt;
 struct D2MonStats2Txt;
 struct D2MonsterDataStrc;
-struct Data005734C0;
-struct Data005734E0;
-struct Unit005734E0;
-struct Data00573500;
-struct Data00573570;
-struct Unit00573570;
 
 struct D2MonStatsTxt
 {
@@ -44,18 +38,6 @@ struct D2DataTablesStrc
 
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
-
-struct Data005734C0 { unsigned char bUnknown00[0x54]; unsigned int dwValue54; };
-
-struct Data005734E0 { unsigned char bUnknown00[0x54]; unsigned int dwValue54; };
-
-struct Unit005734E0 { int nType; unsigned int dwUnknown04; unsigned int dwUnknown08; unsigned int dwUnknown0C; unsigned int dwUnknown10; Data005734E0* pData; };
-
-struct Data00573500 { unsigned char bUnknown00[0x58]; unsigned int dwValue58; };
-
-struct Data00573570 { unsigned char bUnknown00[0x5C]; unsigned short wFlags5C; };
-
-struct Unit00573570 { int nType; unsigned int dwUnknown04; unsigned int dwUnknown08; unsigned int dwUnknown0C; unsigned int dwUnknown10; Data00573570* pData; };
 
 // 0x00573470
 D2MonStats2Txt* __fastcall sub_00573470_GetMonStats2Record(int nMonsterId)

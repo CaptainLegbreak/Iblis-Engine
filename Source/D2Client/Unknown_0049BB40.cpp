@@ -11,7 +11,6 @@
 #include "StormApi.h"
 
 struct D2PartyRowStrc;
-struct D2PacketRecord21Strc;
 struct D2WaypointMenuEntryStrc;
 struct D2WaypointRowRectStrc;
 
@@ -20,17 +19,12 @@ struct D2WaypointRowRectStrc;
 extern D2PartyRowStrc* gpRosterUnits; // 0x007BF014
 extern int gnWaypointSelected; // 0x007BF06D
 
-struct D2PacketRecord21Strc
-{
-    unsigned char nHeader;
-    unsigned char nUnitGUID[4];
-    unsigned char pWaypointData[16];
-};
 D2BitBufferStrc* __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
 void __cdecl WARDENCLIENT_BuildWaypointList(); // 0x0049C7F0
 void __cdecl GAME_ResetMouseState(); // 0x0044DA40
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 #include "D2WaypointLayout.h"
+#include "D2Packets.h"
 extern D2WaypointLayoutStrc gaLayouts[9]; // 0x007224E8
 extern bool gbWaypointClosePressed; // 0x007BF06C
 // 0x0049BB40
@@ -475,14 +469,14 @@ void __cdecl sub_0049CF50_SendWaypointClose()
 }
 
 // 0x0049CF90
-void __fastcall TEXT_OpenWaypointPanel(D2PacketRecord21Strc* pPacket)
+void __fastcall TEXT_OpenWaypointPanel(D2GSPacketSrv63* pPacket)
 {
     if (UI_SetUIVar(0x14, 0, 1) == 1)
     {
         GAME_ResetMouseState();
         TEXT_UpdateWaypointAct();
-        gnWaypointId = *(int*)pPacket->nUnitGUID;
-        WAYPOINTS_CopyAndValidateWaypointData(gpWaypointData, pPacket->pWaypointData);
+        gnWaypointId = *(int*)pPacket->dwUnitId;
+        WAYPOINTS_CopyAndValidateWaypointData(gpWaypointData, pPacket->pData);
         gbSent = 0;
         WARDENCLIENT_BuildWaypointList();
     }

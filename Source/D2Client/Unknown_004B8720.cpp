@@ -15,6 +15,7 @@
 #include "D2LangApi.h"
 #include "D2CommonApi2.h"
 #include "D2WinApi2.h"
+#include "D2Packets.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
@@ -83,13 +84,6 @@ extern int gnTradePartnerUnitId; // 0x007C0E60
 extern "C" int gPacketState; // 0x007C0E7C
 
 Unicode gwszTradePartnerName[16]; // 0x007C0E84
-
-struct D2NamePacketStrc
-{
-    unsigned char nHeader;
-    char szName[16];
-    unsigned char nValue[4];
-};
 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, size_t nSize); // 0x00681EB0
 
@@ -591,13 +585,13 @@ void __cdecl sub_004B91F0_CloseWait()
 }
 
 // 0x004B9010
-void __fastcall TEXT_SetNameFromPacket(D2NamePacketStrc* pPacket)
+void __fastcall TEXT_SetNameFromPacket(D2GSPacketSrv78* pPacket)
 {
     char szName[16];
     memcpy(szName, pPacket->szName, 16);
     szName[15] = 0;
     sub_00526F20_ToUnicode(gwszTradePartnerName, szName, 16);
-    gnTradePartnerUnitId = *(int*)pPacket->nValue;
+    gnTradePartnerUnitId = pPacket->dwPlayerGUID;
 }
 
 

@@ -67,7 +67,6 @@ struct D2CoordStrc;
 
 union D2SeedStrc;
 
-struct D2CorpsePositionStrc;
 
 struct D2ItemsTxt;
 
@@ -250,8 +249,6 @@ int __stdcall INVENTORY_PlaceItemInBodyLoc(D2InventoryStrc*,D2UnitStrc*,int); //
 void __fastcall SUNITDMG_DropCorpseGold(D2GameStrc*,D2UnitStrc*,D2UnitStrc*,int,int); // 0x0057F390
 
 void __fastcall D2GAME_SendPacket0x8E_CorpseAssign_ToAllPlayers(D2GameStrc*,int,int,int); // 0x0053DF80
-
-struct D2CorpsePositionStrc { D2CoordStrc coords; D2ActiveRoomStrc* room; };
 
 static int __stdcall PLRMODE_FreeStaleCorpses(D2GameStrc* pGame, D2UnitStrc* pUnit);
 

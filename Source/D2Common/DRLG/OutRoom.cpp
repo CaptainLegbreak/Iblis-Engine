@@ -50,7 +50,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize);
 
 void __fastcall DRLG_OUTDOORS_GenerateDirtPath(D2DrlgLevelStrc* pLevel, D2DrlgRoomStrc* pRoom);                                // 0x00680C80
 
-void __fastcall sub_006707A0_SubstWaypointShrine(D2DrlgOutdoorTileCtxStrc* pCtx);                                                // 0x006707A0
+void __fastcall DRLGTILESUB_SubstWaypointShrine(D2DrlgOutdoorTileCtxStrc* pCtx);                                                // 0x006707A0
 
 
 
@@ -103,7 +103,7 @@ void __fastcall DRLGOUTROOM_InitOutdoorRoomGrids(D2DrlgRoomStrc* pRoom)
         tCtx.n30 = pLevelDef->dwSubWaypoint;
         tCtx.n34 = 0;
         tCtx.n38 = nSubType1;
-        sub_006707A0_SubstWaypointShrine(&tCtx);
+        DRLGTILESUB_SubstWaypointShrine(&tCtx);
     }
 
     if (nSubType2)
@@ -111,13 +111,13 @@ void __fastcall DRLGOUTROOM_InitOutdoorRoomGrids(D2DrlgRoomStrc* pRoom)
         tCtx.n30 = pLevelDef->dwSubShrine;
         tCtx.n34 = 0;
         tCtx.n38 = nSubType2;
-        sub_006707A0_SubstWaypointShrine(&tCtx);
+        DRLGTILESUB_SubstWaypointShrine(&tCtx);
     }
 
     tCtx.n30 = pOutdoor->nTileInfo64;
     tCtx.n34 = pOutdoor->nTileInfo68;
     tCtx.n38 = pOutdoor->nTileInfo6C;
-    sub_006707A0_SubstWaypointShrine(&tCtx);
+    DRLGTILESUB_SubstWaypointShrine(&tCtx);
 
     switch (pLevel->nLevelType)
     {
