@@ -180,7 +180,7 @@ void __fastcall sub_004DF1C0_UpdateFadingTileLights(D2TileLightCtxStrc* pCtx)
     {
         if (pEntry->pFadeList)
         {
-            const int nScreenPanels = sub_0045AE90_GetPanelSlideMode();
+            const int nScreenPanels = UI_GetPanelSlideMode();
             const int bPerspective = sub_004F51D0_IsPerspective();
             const int nLightDetail = DLIGHTMAP_GetRenderMode();
             const unsigned int nTick = GetTickCount();

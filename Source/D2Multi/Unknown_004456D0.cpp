@@ -87,8 +87,8 @@ int __stdcall sub_004456D0_SubmitCreateGame(int nArg)
         UNICODE_ToAscii(tLogin.szText0x10, pPassword, 0x10);
         UNICODE_ToAscii(tLogin.szText0x20, pDesc, 0x20);
         tLogin.nValue0x40 = 0;
-        sub_00411320_CapitalizeWords(tLogin.szText0x00);
-        sub_00411320_CapitalizeWords(tLogin.szText0x10);
+        STRING_CapitalizeWords(tLogin.szText0x00);
+        STRING_CapitalizeWords(tLogin.szText0x10);
         tLogin.nValue0x40 = tLogin.nValue0x40 & 0xFFFF8FFF | (gnDiffSelect << 12);
 
         if (strlen(tLogin.szText0x00) < 1)

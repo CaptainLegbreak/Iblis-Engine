@@ -69,7 +69,7 @@ int __cdecl INV_ToggleLowQuality()
 void __stdcall D2GFX_SetGamma(void* pArg); // 0x004F5230
 
 // 0x004776C0
-void __fastcall sub_004776C0_SetGamma(void* pArg)
+void __fastcall VIEW_SetGamma(void* pArg)
 {
     D2GFX_SetGamma(pArg);
 }

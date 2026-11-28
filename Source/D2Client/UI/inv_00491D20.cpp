@@ -431,7 +431,7 @@ int __cdecl GAME_IsExitPending(); // 0x0044DA30
 int __cdecl CUNIT_IsPlayerDeadOrMissing(); // 0x00463DF0
 void __cdecl INV_LoadUiRecords(); // 0x004835B0
 int __cdecl HIREABLES_AreBeltRowsShown(); // 0x004979E0
-int __cdecl sub_0045AE90_GetPanelSlideMode(); // 0x0045AE90
+int __cdecl UI_GetPanelSlideMode(); // 0x0045AE90
 void __cdecl UI_CancelCursorItemUse(); // 0x00453EC0
 int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
 int __fastcall AUTOMAP_IsCursorOverMiniPanelButton(SMSGHANDLER_PARAMS*); // 0x00498DC0
@@ -519,7 +519,7 @@ static void __stdcall INV_ClickOutsidePanel(int nY, SMSGHANDLER_PARAMS* pMsg, in
     {
         return;
     }
-    if (sub_0045AE90_GetPanelSlideMode() == 1 && nX < gnScreenWidth / 2)
+    if (UI_GetPanelSlideMode() == 1 && nX < gnScreenWidth / 2)
     {
         return;
     }
@@ -527,7 +527,7 @@ static void __stdcall INV_ClickOutsidePanel(int nY, SMSGHANDLER_PARAMS* pMsg, in
     {
         UI_CancelCursorItemUse();
     }
-    if (sub_0045AE90_GetPanelSlideMode() == 3 && gnInvPanelMode == 0 && nX < gnScreenWidth / 2)
+    if (UI_GetPanelSlideMode() == 3 && gnInvPanelMode == 0 && nX < gnScreenWidth / 2)
     {
         return;
     }

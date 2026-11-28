@@ -292,7 +292,7 @@ void __fastcall GAME_SetResolution(int nResolution)
     gnAutomapHeight_007A521C = gnScreenHeight - 40;
     gnSavedScreenWidth = gnScreenWidth;
     sub_004F90A0(nResolution);
-    PLAYER_SetPanelSlide(sub_0045AE90_GetPanelSlideMode());
+    PLAYER_SetPanelSlide(UI_GetPanelSlideMode());
     AUTOMAP_ResetBaseOffset(1);
     sub_00457440_Nop(nResolution);
     UI_ToggleListDialog(nResolution);

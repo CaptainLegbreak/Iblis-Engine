@@ -225,7 +225,7 @@ extern "C" int __stdcall ImmReleaseContext(int hWnd, HIMC__* hImc); // 0x006B00B
 
 extern "C" int __stdcall ImmGetConversionStatus(HIMC__* hImc, unsigned long* pConversion, unsigned long* pSentence); // 0x006B00DE
 
-int __fastcall sub_00472280_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange); // 0x00472280
+int __fastcall SEED_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange); // 0x00472280
 
 void __cdecl sub_00472400_ResetPhaseState(); // 0x00472400
 
@@ -343,11 +343,11 @@ struct D2InventoryStrc;
 extern const char gszGfxFile[];                                                                    // 0x006D6C1C
 extern int gnScreenWidth;                                                                               // 0x0071146C
 int __cdecl GAME_GetColorFlag();                                                                                 // 0x0044DC60
-int __cdecl sub_0045AE90_GetPanelSlideMode();                                                                         // 0x0045AE90
+int __cdecl UI_GetPanelSlideMode();                                                                         // 0x0045AE90
 D2UnitStrc* __cdecl CUNIT_GetPlayerUnit(); // 0x00463DD0
 int __fastcall CUNIT_TickDrawDelay(D2UnitStrc* pUnit);                                          // 0x00464C40
 D2UnitStrc* __cdecl SELECT_GetSelectedUnit();                                                             // 0x00467A10
-D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId);                                    // 0x0046ACE0
+D2MissilesTxt* __fastcall VIEW_GetMissilesTxtRecord(int nMissileId);                                    // 0x0046ACE0
 void __stdcall GFX_DrawUnitOverlays(D2UnitStrc* pUnit, unsigned int dwColor, int bFront, int nX, int nY, int bLift); // 0x0046E300
 unsigned char* __cdecl DLIGHTMAP_GetLocalBloodPalette();                                                                      // 0x00477680
 extern "C" int __stdcall PARTICLE_GetGfxOffsetX(D2UnitStrc* pUnit);                                     // 0x004DA0B0
@@ -2022,7 +2022,7 @@ void __stdcall GFX_DrawUnitOverlays(D2UnitStrc* pUnit, unsigned int nColor, int 
     if (bPerspective && (!pUnit || pUnit->dwUnitType != UNIT_ITEM || UNITS_GetAnimOrSeqMode(pUnit) == 3))
     {
         SCALE_AdjustPerspectivePosition(UNITS_GetPrecisionX(pUnit), UNITS_GetPrecisionY(pUnit), 0, &nX, &nY);
-        switch (sub_0045AE90_GetPanelSlideMode())
+        switch (UI_GetPanelSlideMode())
         {
         case 1:
             nX -= gnScreenWidth / 4;
@@ -2968,7 +2968,7 @@ static int __stdcall GFX_DrawGfxUnit(unsigned int dwColor, int nArg, int bOverla
     int nDrawX = nX - PLAYER_GetScreenOffsetX();
     int nDrawY = nY - PLAYER_GetScreenOffsetY();
     int bPerspective = D2GFX_CheckPerspective();
-    int nBorder = sub_0045AE90_GetPanelSlideMode();
+    int nBorder = UI_GetPanelSlideMode();
     if (bPerspective)
     {
         switch (nBorder)
@@ -3141,7 +3141,7 @@ int __fastcall GFX_DrawSimpleUnitShadow(D2UnitStrc* pUnit)
     int nY = nOffsetY - PLAYER_GetScreenOffsetY() + UNITS_GetClientCoordY(pUnit) + GFXUTIL_GetMotionAY(pUnit);
     if (bPerspective)
     {
-        switch (sub_0045AE90_GetPanelSlideMode())
+        switch (UI_GetPanelSlideMode())
         {
         case 1:
             nX += -(gnScreenWidth / 4);
@@ -3257,7 +3257,7 @@ int __fastcall GFX_DrawUnitShadow(D2UnitStrc* pUnit)
 
     if (bPerspective)
     {
-        switch (sub_0045AE90_GetPanelSlideMode())
+        switch (UI_GetPanelSlideMode())
         {
         case 1:
             nDrawX += -(gnScreenWidth_0071146C / 4);
@@ -3368,7 +3368,7 @@ int __fastcall GFX_GetHealthBarOffset(D2UnitStrc* pUnit)
     int nY = nOffsetY - PLAYER_GetScreenOffsetY() + UNITS_GetClientCoordY(pUnit);
     if (bPerspective)
     {
-        switch (sub_0045AE90_GetPanelSlideMode())
+        switch (UI_GetPanelSlideMode())
         {
         case 1:
             nX += -(gnScreenWidth / 4);
@@ -3410,7 +3410,7 @@ int __fastcall GFX_DrawUnitHealthBar(D2UnitStrc* pUnit)
         {
             int nZ = PARTICLE_GetGfxClientZ(pUnit);
             SCALE_AdjustPerspectivePosition(UNITS_GetPrecisionX(pUnit), UNITS_GetPrecisionY(pUnit), nZ, &nX, &nY);
-            switch (sub_0045AE90_GetPanelSlideMode())
+            switch (UI_GetPanelSlideMode())
             {
             case 1:
                 nX += -(gnScreenWidth / 4);
@@ -3592,7 +3592,7 @@ int __fastcall GFX_DrawUnit(D2UnitStrc* pUnit, unsigned int dwColor, int nX, int
     const int nDrawY = nOffsetY + nY - PLAYER_GetScreenOffsetY();
     if (bPerspective)
     {
-        switch (sub_0045AE90_GetPanelSlideMode())
+        switch (UI_GetPanelSlideMode())
         {
         case 1:
             nDrawX -= gnScreenWidth / 4;
@@ -3614,7 +3614,7 @@ int __fastcall GFX_DrawUnit(D2UnitStrc* pUnit, unsigned int dwColor, int nX, int
 
     if (nUnitType == UNIT_MISSILE)
     {
-        D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(pUnit->dwClassId);
+        D2MissilesTxt* pMissilesTxtRecord = VIEW_GetMissilesTxtRecord(pUnit->dwClassId);
         int nDrawMode = 5;
         if (pMissilesTxtRecord->nTrans == 1)
         {

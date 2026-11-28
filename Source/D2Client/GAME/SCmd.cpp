@@ -1227,16 +1227,6 @@ enum { USE_RESULT = 0 };
 
 
 
-class D2SquelchListStrc
-{
-public:
-    virtual void Squelch(const char* szName);
-    virtual void Unsquelch(const char* szName);
-    virtual int IsSquelched(const char* szName);
-    virtual void VirtSlot3();
-    virtual void VirtSlot4();
-    virtual int IsFiltered(const char* szText);
-};
 
 struct D2LaunchMsgStrc;
 
@@ -1363,19 +1353,19 @@ void __stdcall SCMD_ShowPopUpText(const Unicode* wszText, int nX, int nY, int nA
 // 0x0045C300
 unsigned int __fastcall SCMD_ReadVarUnsigned(D2BitBufferStrc* pBuffer)
 {
-    if (!sub_00411020_ReadBits(pBuffer, 1))
-        return sub_00411020_ReadBits(pBuffer, 8);
-    if (!sub_00411020_ReadBits(pBuffer, 1))
-        return sub_00411020_ReadBits(pBuffer, 0x10);
-    return sub_00411020_ReadBits(pBuffer, 0x20);
+    if (!BITMANIP_Read(pBuffer, 1))
+        return BITMANIP_Read(pBuffer, 8);
+    if (!BITMANIP_Read(pBuffer, 1))
+        return BITMANIP_Read(pBuffer, 0x10);
+    return BITMANIP_Read(pBuffer, 0x20);
 }
 
 // 0x0045C340
 unsigned int __fastcall SCMD_ReadVarUnsignedShort(D2BitBufferStrc* pBuffer)
 {
-    if (!sub_00411020_ReadBits(pBuffer, 1))
-        return sub_00411020_ReadBits(pBuffer, 8);
-    return sub_00411020_ReadBits(pBuffer, 0x10);
+    if (!BITMANIP_Read(pBuffer, 1))
+        return BITMANIP_Read(pBuffer, 8);
+    return BITMANIP_Read(pBuffer, 0x10);
 }
 
 inline unsigned __int64 SEED_RollRandomNumberInline(D2SeedStrc* pSeed)
@@ -2243,16 +2233,16 @@ static void SCMD_ReadVitalsUpdate(unsigned char* pData, D2Packet18RecordStrc* pR
 {
     D2BitBufferStrc tBuffer;
     BITMANIP_Initialize(&tBuffer, pData, 0xF);
-    pRecord->nHeader = sub_00411020_ReadBits(&tBuffer, 8);
-    pRecord->nLife = sub_00411020_ReadBits(&tBuffer, 15);
-    pRecord->nMana = sub_00411020_ReadBits(&tBuffer, 15);
-    pRecord->nStamina = sub_00411020_ReadBits(&tBuffer, 15);
-    pRecord->nValue07 = sub_00411020_ReadBits(&tBuffer, 7);
-    pRecord->nValue08 = sub_00411020_ReadBits(&tBuffer, 7);
-    pRecord->nX = sub_00411020_ReadBits(&tBuffer, 16);
-    pRecord->nY = sub_00411020_ReadBits(&tBuffer, 16);
-    pRecord->nDeltaX = sub_00411020_ReadBits(&tBuffer, 8);
-    pRecord->nDeltaY = sub_00411020_ReadBits(&tBuffer, 8);
+    pRecord->nHeader = BITMANIP_Read(&tBuffer, 8);
+    pRecord->nLife = BITMANIP_Read(&tBuffer, 15);
+    pRecord->nMana = BITMANIP_Read(&tBuffer, 15);
+    pRecord->nStamina = BITMANIP_Read(&tBuffer, 15);
+    pRecord->nValue07 = BITMANIP_Read(&tBuffer, 7);
+    pRecord->nValue08 = BITMANIP_Read(&tBuffer, 7);
+    pRecord->nX = BITMANIP_Read(&tBuffer, 16);
+    pRecord->nY = BITMANIP_Read(&tBuffer, 16);
+    pRecord->nDeltaX = BITMANIP_Read(&tBuffer, 8);
+    pRecord->nDeltaY = BITMANIP_Read(&tBuffer, 8);
 }
 
 // 0x0045D9B0
@@ -2288,14 +2278,14 @@ static void SCMD_ReadVitalsAndPosition(unsigned char* pData, D2Packet95RecordStr
 {
     D2BitBufferStrc tBuffer;
     BITMANIP_Initialize(&tBuffer, pData, 0xD);
-    pRecord->nHeader = sub_00411020_ReadBits(&tBuffer, 8);
-    pRecord->nLife = sub_00411020_ReadBits(&tBuffer, 15);
-    pRecord->nMana = sub_00411020_ReadBits(&tBuffer, 15);
-    pRecord->nStamina = sub_00411020_ReadBits(&tBuffer, 15);
-    pRecord->nX = sub_00411020_ReadBits(&tBuffer, 16);
-    pRecord->nY = sub_00411020_ReadBits(&tBuffer, 16);
-    pRecord->nDeltaX = sub_00411020_ReadBits(&tBuffer, 8);
-    pRecord->nDeltaY = sub_00411020_ReadBits(&tBuffer, 8);
+    pRecord->nHeader = BITMANIP_Read(&tBuffer, 8);
+    pRecord->nLife = BITMANIP_Read(&tBuffer, 15);
+    pRecord->nMana = BITMANIP_Read(&tBuffer, 15);
+    pRecord->nStamina = BITMANIP_Read(&tBuffer, 15);
+    pRecord->nX = BITMANIP_Read(&tBuffer, 16);
+    pRecord->nY = BITMANIP_Read(&tBuffer, 16);
+    pRecord->nDeltaX = BITMANIP_Read(&tBuffer, 8);
+    pRecord->nDeltaY = BITMANIP_Read(&tBuffer, 8);
 }
 
 // 0x0045DB20
@@ -2329,12 +2319,12 @@ static void SCMD_ReadWalkVerify(unsigned char* pData, D2Packet96RecordStrc* pRec
 {
     D2BitBufferStrc tBuffer;
     BITMANIP_Initialize(&tBuffer, pData, 9);
-    pRecord->nHeader = sub_00411020_ReadBits(&tBuffer, 8);
-    pRecord->nStamina = sub_00411020_ReadBits(&tBuffer, 15);
-    pRecord->nX = sub_00411020_ReadBits(&tBuffer, 16);
-    pRecord->nY = sub_00411020_ReadBits(&tBuffer, 16);
-    pRecord->nDeltaX = sub_00411020_ReadBits(&tBuffer, 8);
-    pRecord->nDeltaY = sub_00411020_ReadBits(&tBuffer, 8);
+    pRecord->nHeader = BITMANIP_Read(&tBuffer, 8);
+    pRecord->nStamina = BITMANIP_Read(&tBuffer, 15);
+    pRecord->nX = BITMANIP_Read(&tBuffer, 16);
+    pRecord->nY = BITMANIP_Read(&tBuffer, 16);
+    pRecord->nDeltaX = BITMANIP_Read(&tBuffer, 8);
+    pRecord->nDeltaY = BITMANIP_Read(&tBuffer, 8);
 }
 
 // 0x0045DC50
@@ -2591,29 +2581,29 @@ void __fastcall SCMD_HandleItemStatUpdate(D2GSPacketSrv3E* pPacket)
     BITMANIP_Initialize(&tBuffer, pPacket->pBuffer, pPacket->nSize - 2);
 
     unsigned int nA;
-    if (!sub_00411020_ReadBits(&tBuffer, 1))
-        nA = sub_00411020_ReadBits(&tBuffer, 8);
-    else if (!sub_00411020_ReadBits(&tBuffer, 1))
-        nA = sub_00411020_ReadBits(&tBuffer, 16);
+    if (!BITMANIP_Read(&tBuffer, 1))
+        nA = BITMANIP_Read(&tBuffer, 8);
+    else if (!BITMANIP_Read(&tBuffer, 1))
+        nA = BITMANIP_Read(&tBuffer, 16);
     else
-        nA = sub_00411020_ReadBits(&tBuffer, 32);
+        nA = BITMANIP_Read(&tBuffer, 32);
 
-    const unsigned char nB = sub_00411020_ReadBits(&tBuffer, 1);
-    const unsigned int nC = sub_00411020_ReadBits(&tBuffer, 9);
+    const unsigned char nB = BITMANIP_Read(&tBuffer, 1);
+    const unsigned int nC = BITMANIP_Read(&tBuffer, 9);
 
     unsigned int nD;
-    if (!sub_00411020_ReadBits(&tBuffer, 1))
-        nD = sub_00411020_ReadBits(&tBuffer, 8);
-    else if (!sub_00411020_ReadBits(&tBuffer, 1))
-        nD = sub_00411020_ReadBits(&tBuffer, 16);
+    if (!BITMANIP_Read(&tBuffer, 1))
+        nD = BITMANIP_Read(&tBuffer, 8);
+    else if (!BITMANIP_Read(&tBuffer, 1))
+        nD = BITMANIP_Read(&tBuffer, 16);
     else
-        nD = sub_00411020_ReadBits(&tBuffer, 32);
+        nD = BITMANIP_Read(&tBuffer, 32);
 
     unsigned short nE;
-    if (!sub_00411020_ReadBits(&tBuffer, 1))
-        nE = sub_00411020_ReadBits(&tBuffer, 8);
+    if (!BITMANIP_Read(&tBuffer, 1))
+        nE = BITMANIP_Read(&tBuffer, 8);
     else
-        nE = sub_00411020_ReadBits(&tBuffer, 16);
+        nE = BITMANIP_Read(&tBuffer, 16);
 
     ITEM_UpdateItemStat(nA, nB, nC, nD, nE);
 }
@@ -3324,7 +3314,7 @@ void __fastcall SCMD_HandleSetState(D2GSPacketSrvA8* pPacket)
     D2BitBufferStrc tBuffer;
     BITMANIP_Initialize(&tBuffer, pPacket->pData, pPacket->nSize - 8);
     int nPrev = 0;
-    int nStatId = sub_00411020_ReadBits(&tBuffer, 9);
+    int nStatId = BITMANIP_Read(&tBuffer, 9);
     while (nStatId < STAT_ID_END)
     {
         if (nStatId < 0 || nStatId >= sgptDataTables->nItemStatCostTxtRecordCount)
@@ -3343,10 +3333,10 @@ void __fastcall SCMD_HandleSetState(D2GSPacketSrvA8* pPacket)
         if (pItemStatCostTxtRecord->nSendBits < 32 && pItemStatCostTxtRecord->nItemStatFlags[ITEMSTATCOSTFLAGINDEX_SIGNED >> 3] & gdwBitMasks[ITEMSTATCOSTFLAGINDEX_SIGNED & 7])
             nValue = BITMANIP_ReadSigned(&tBuffer, pItemStatCostTxtRecord->nSendBits);
         else
-            nValue = sub_00411020_ReadBits(&tBuffer, pItemStatCostTxtRecord->nSendBits);
+            nValue = BITMANIP_Read(&tBuffer, pItemStatCostTxtRecord->nSendBits);
 
         nPrev = PLRSKILLS_SetStateStat(pUnit, nPrev, nState, nStatId, nValue, nLayer);
-        nStatId = sub_00411020_ReadBits(&tBuffer, 9);
+        nStatId = BITMANIP_Read(&tBuffer, 9);
     }
 
     PLRSKILLS_StartClientState(pUnit, nState);
@@ -3413,14 +3403,14 @@ void __fastcall SCMD_HandleAddUnitStates(D2GSPacketSrvAA* pPacket)
 
     D2BitBufferStrc tBuffer;
     BITMANIP_Initialize(&tBuffer, pPacket->pStream, pPacket->nSize - 7);
-    int nState = sub_00411020_ReadBits(&tBuffer, 8);
+    int nState = BITMANIP_Read(&tBuffer, 8);
     while (nState < STATE_ID_END)
     {
         PLRSKILLS_BeginState(pUnit, nState);
-        if (sub_00411020_ReadBits(&tBuffer, 1))
+        if (BITMANIP_Read(&tBuffer, 1))
         {
             int nPrev = 0;
-            int nStatId = sub_00411020_ReadBits(&tBuffer, 9);
+            int nStatId = BITMANIP_Read(&tBuffer, 9);
             while (nStatId < STAT_ID_END)
             {
                 if (nStatId < 0 || nStatId >= sgptDataTables->nItemStatCostTxtRecordCount)
@@ -3439,14 +3429,14 @@ void __fastcall SCMD_HandleAddUnitStates(D2GSPacketSrvAA* pPacket)
                 if (pItemStatCostTxtRecord->nSendBits < 32 && pItemStatCostTxtRecord->nItemStatFlags[ITEMSTATCOSTFLAGINDEX_SIGNED >> 3] & gdwBitMasks[ITEMSTATCOSTFLAGINDEX_SIGNED & 7])
                     nValue = BITMANIP_ReadSigned(&tBuffer, pItemStatCostTxtRecord->nSendBits);
                 else
-                    nValue = sub_00411020_ReadBits(&tBuffer, pItemStatCostTxtRecord->nSendBits);
+                    nValue = BITMANIP_Read(&tBuffer, pItemStatCostTxtRecord->nSendBits);
 
                 nPrev = PLRSKILLS_SetStateStat(pUnit, nPrev, nState, nStatId, nValue, nLayer);
-                nStatId = sub_00411020_ReadBits(&tBuffer, 9);
+                nStatId = BITMANIP_Read(&tBuffer, 9);
             }
         }
         PLRSKILLS_StartClientState(pUnit, nState);
-        nState = sub_00411020_ReadBits(&tBuffer, 8);
+        nState = BITMANIP_Read(&tBuffer, 8);
     }
 }
 
@@ -3478,36 +3468,36 @@ void __fastcall SCMD_HandleAssignMonster(D2PacketSpawnStrc* pPacket)
     unsigned char aComponents[16];
     unsigned char aMods[9];
     BITMANIP_Initialize(&tBuffer, pPacket->aData, pPacket->nLength - 13);
-    unsigned char nMode = (unsigned char)sub_00411020_ReadBits(&tBuffer, 4);
+    unsigned char nMode = (unsigned char)BITMANIP_Read(&tBuffer, 4);
     unsigned char* pComponents = 0;
-    if (sub_00411020_ReadBits(&tBuffer, 1))
+    if (BITMANIP_Read(&tBuffer, 1))
     {
         D2MonStats2Txt* pRecord = GetMonStats2TxtRecordFromMonsterId(nClassId);
         if (!pRecord) return;
         pComponents = aComponents;
         for (int i = 0; i < 16; ++i)
-            aComponents[i] = (unsigned char)sub_00411020_ReadBits(&tBuffer, Log2Ceil(pRecord->nComponentChoiceCounts[i]));
+            aComponents[i] = (unsigned char)BITMANIP_Read(&tBuffer, Log2Ceil(pRecord->nComponentChoiceCounts[i]));
     }
     unsigned char* pMods = 0;
     unsigned short nFlags = 0;
     int nUniqueId = -1;
     int nSpecial = 0;
     unsigned short nPalette = 0;
-    if (sub_00411020_ReadBits(&tBuffer, 1))
+    if (BITMANIP_Read(&tBuffer, 1))
     {
-        nFlags = sub_00411020_ReadBits(&tBuffer, 1) ? 4 : 0;
-        nFlags |= sub_00411020_ReadBits(&tBuffer, 1) ? 8 : 0;
-        nFlags |= sub_00411020_ReadBits(&tBuffer, 1) ? 2 : 0;
-        nFlags |= sub_00411020_ReadBits(&tBuffer, 1) ? 16 : 0;
-        nFlags |= sub_00411020_ReadBits(&tBuffer, 1) ? 64 : 0;
+        nFlags = BITMANIP_Read(&tBuffer, 1) ? 4 : 0;
+        nFlags |= BITMANIP_Read(&tBuffer, 1) ? 8 : 0;
+        nFlags |= BITMANIP_Read(&tBuffer, 1) ? 2 : 0;
+        nFlags |= BITMANIP_Read(&tBuffer, 1) ? 16 : 0;
+        nFlags |= BITMANIP_Read(&tBuffer, 1) ? 64 : 0;
         if (nFlags & 2) nSpecial = (unsigned short)BITMANIP_ReadSigned(&tBuffer, 16);
         for (int i = 0; i < 9; ++i) aMods[i] = 0;
         pMods = aMods;
         int nModIndex = 0;
-        for (unsigned char nMod = (unsigned char)sub_00411020_ReadBits(&tBuffer, 8); nMod; nMod = (unsigned char)sub_00411020_ReadBits(&tBuffer, 8))
+        for (unsigned char nMod = (unsigned char)BITMANIP_Read(&tBuffer, 8); nMod; nMod = (unsigned char)BITMANIP_Read(&tBuffer, 8))
             aMods[nModIndex++] = nMod;
-        nPalette = (unsigned char)sub_00411020_ReadBits(&tBuffer, 16);
-        if (sub_00411020_ReadBits(&tBuffer, 1)) nUniqueId = sub_00411020_ReadBits(&tBuffer, 32);
+        nPalette = (unsigned char)BITMANIP_Read(&tBuffer, 16);
+        if (BITMANIP_Read(&tBuffer, 1)) nUniqueId = BITMANIP_Read(&tBuffer, 32);
     }
     D2UnitSpawnStrc tSpawn;
     memset(&tSpawn, 0, sizeof(tSpawn));
@@ -3529,11 +3519,11 @@ void __fastcall SCMD_HandleAssignMonster(D2PacketSpawnStrc* pPacket)
     }
     if (MONSTERS_GetHirelingTypeId(pUnit) && nMode == 1) pUnit->dwFlagEx &= ~0x40000;
     STATLIST_SetUnitStat(pUnit, STAT_PIERCE_IDX, (unsigned short)(nX + nY), 0);
-    if (sub_00411020_ReadBits(&tBuffer, 1)) UNITS_StoreOwnerTypeAndGUID(pUnit, 0, sub_00411020_ReadBits(&tBuffer, 31));
-    if (sub_00411020_ReadBits(&tBuffer, 1))
+    if (BITMANIP_Read(&tBuffer, 1)) UNITS_StoreOwnerTypeAndGUID(pUnit, 0, BITMANIP_Read(&tBuffer, 31));
+    if (BITMANIP_Read(&tBuffer, 1))
     {
         D2StatListStrc* pStatList = 0;
-        for (int nStat = sub_00411020_ReadBits(&tBuffer, 9); nStat < 511; nStat = sub_00411020_ReadBits(&tBuffer, 9))
+        for (int nStat = BITMANIP_Read(&tBuffer, 9); nStat < 511; nStat = BITMANIP_Read(&tBuffer, 9))
         {
             D2ItemStatCostTxt* pRecord = GetItemStatCostTxtRecord(nStat);
             if (!pRecord || pRecord->nSendBits <= 0) return;
@@ -3543,7 +3533,7 @@ void __fastcall SCMD_HandleAssignMonster(D2PacketSpawnStrc* pPacket)
             if (pRecord->nSendBits < 32 && (pRecord->nItemStatFlags[0] & (unsigned char)gdwBitMasks[1]))
                 nValue = BITMANIP_ReadSigned(&tBuffer, pRecord->nSendBits);
             else
-                nValue = sub_00411020_ReadBits(&tBuffer, pRecord->nSendBits);
+                nValue = BITMANIP_Read(&tBuffer, pRecord->nSendBits);
             if (!pStatList)
             {
                 pStatList = STATLIST_GetStatListFromUnitStateAndFlag(pUnit, 0, 0x40);

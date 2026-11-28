@@ -13,7 +13,7 @@ class Report
 public:
     Report();                                                               // 0x00401070
     virtual ~Report();                                                      // 0x004010D0
-    bool sub_00401220_AddFile(const char* szPath, bool bCopy);              // 0x00401220
+    bool AddFile(const char* szPath, bool bCopy);              // 0x00401220
 
     _iobuf* m_pFile;
     char m_szText08[0x400];
@@ -125,7 +125,7 @@ static bool __stdcall ERRORMANAGER_CopyFileName(const char* szPath, char* szOut,
 static bool __stdcall ERRORMANAGER_CopyFileUtf8(const char* szSource, const char* szDest); // 0x00404450
 
 // 0x00401220
-bool crashy::Report::sub_00401220_AddFile(const char* szPath, bool bCopy)
+bool crashy::Report::AddFile(const char* szPath, bool bCopy)
 {
     if (m_nLineCount >= 16)
     {

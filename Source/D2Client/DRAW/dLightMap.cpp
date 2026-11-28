@@ -31,7 +31,6 @@ struct D2UnitRefStrc;
 
 struct D2LightCellStrc;
 
-struct D2P08LightSourceStrc;
 
 struct D2R01LightStrc;
 
@@ -137,13 +136,6 @@ struct D2GridCellStrc
     unsigned char nValue3;
 };
 
-struct D2P08LightSourceStrc
-{
-    unsigned char unk0x00[0x25];
-    unsigned char nRed;
-    unsigned char nGreen;
-    unsigned char nBlue;
-};
 
 unsigned int gadwReciprocals[0x100]; // 0x007B0A68
 
@@ -511,16 +503,6 @@ extern D2ClientTimedBoxStrc gtTimedBox; // 0x007A742C
 
 extern D2DrlgActStrc* gpDrlgAct_007A0634; // 0x007A0634
 
-class D2SquelchListStrc
-{
-public:
-    virtual void Squelch(const char* szName);
-    virtual void Unsquelch(const char* szName);
-    virtual int IsSquelched(const char* szName);
-    virtual void VirtSlot3();
-    virtual void VirtSlot4();
-    virtual int IsFiltered(const char* szText);
-};
 
 int __fastcall SCMD_GetLevelLight(D2ActiveRoomStrc* pRoom, unsigned char* pRed, unsigned char* pGreen, unsigned char* pBlue); // 0x0046BDD0
 
@@ -1202,7 +1184,7 @@ static void __stdcall DLIGHTMAP_UpdateLight(int nLevel, D2R01LightStrc* pLight)
     DLIGHTMAP_AddAreaLight(pLight, nLevel);
 }
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
 
 // 0x004756D0
@@ -1218,7 +1200,7 @@ void __cdecl DLIGHTMAP_ScanGridCollision()
     {
         for (int nX = 0; nX < 0x30; ++nX)
         {
-            pRoom = sub_00463740_FindRoomAtPoint(pRoom, gnCellOriginX + nX, gnCellOriginY + nY);
+            pRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, gnCellOriginX + nX, gnCellOriginY + nY);
             if (!pRoom)
                 pRoom = UNITS_GetRoom(pPlayer);
             if (COLLISION_CheckMask(pRoom, gnCellOriginX + nX, gnCellOriginY + nY, 0x22))

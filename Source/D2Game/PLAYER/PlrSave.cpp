@@ -1820,54 +1820,54 @@ int __fastcall PLRSAVE_ReadLegacyItemData(D2SavedItemStrc* pSavedItem, unsigned 
     D2BitBufferStrc tBitBuffer;
     BITMANIP_Initialize(&tBitBuffer, pData, 0x40);
 
-    pSavedItem->nItemFlags = sub_00411020_ReadBits(&tBitBuffer, 32);
+    pSavedItem->nItemFlags = BITMANIP_Read(&tBitBuffer, 32);
 
     if (ITEMS_CheckIfFlagIsSet(pSavedItem->nItemFlags, 0x100000))
     {
         if (ITEMS_CheckIfFlagIsSet(pSavedItem->nItemFlags, 0x200000))
         {
-            pSavedItem->nItemFormat = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 10);
-            pSavedItem->nBodyLoc = sub_00411020_ReadBits(&tBitBuffer, 5);
+            pSavedItem->nItemFormat = (unsigned char)BITMANIP_Read(&tBitBuffer, 10);
+            pSavedItem->nBodyLoc = BITMANIP_Read(&tBitBuffer, 5);
             pSavedItem->nItemLevel = 1;
-            pSavedItem->nSpawnType = sub_00411020_ReadBits(&tBitBuffer, 3);
-            pSavedItem->nX = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 5);
-            pSavedItem->nY = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 3);
-            pSavedItem->nInvPage = sub_00411020_ReadBits(&tBitBuffer, 8);
+            pSavedItem->nSpawnType = BITMANIP_Read(&tBitBuffer, 3);
+            pSavedItem->nX = (unsigned char)BITMANIP_Read(&tBitBuffer, 5);
+            pSavedItem->nY = (unsigned char)BITMANIP_Read(&tBitBuffer, 3);
+            pSavedItem->nInvPage = BITMANIP_Read(&tBitBuffer, 8);
 
             if (ITEMS_CheckIfFlagIsSet(pSavedItem->nItemFlags, 0x10000))
             {
                 pSavedItem->nItemCode = 0x20726165;
-                pSavedItem->nItemIndex = sub_00411020_ReadBits(&tBitBuffer, 3);
-                pSavedItem->nEarLevel = sub_00411020_ReadBits(&tBitBuffer, 8);
+                pSavedItem->nItemIndex = BITMANIP_Read(&tBitBuffer, 3);
+                pSavedItem->nEarLevel = BITMANIP_Read(&tBitBuffer, 8);
 
                 for (unsigned int i = 0; i < 16; ++i)
                 {
-                    pSavedItem->szName[i] = sub_00411020_ReadBits(&tBitBuffer, 7);
+                    pSavedItem->szName[i] = BITMANIP_Read(&tBitBuffer, 7);
                 }
             }
             else
             {
-                pSavedItem->nItemCode = sub_00411020_ReadBits(&tBitBuffer, 32);
+                pSavedItem->nItemCode = BITMANIP_Read(&tBitBuffer, 32);
             }
         }
         else
         {
-            pSavedItem->nItemFormat = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 10);
-            pSavedItem->nItemCode = sub_00411020_ReadBits(&tBitBuffer, 32);
-            pSavedItem->nBodyLoc = sub_00411020_ReadBits(&tBitBuffer, 5);
-            pSavedItem->nSocketedItems = sub_00411020_ReadBits(&tBitBuffer, 3);
-            pSavedItem->nItemLevel = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 12);
-            pSavedItem->nSpawnType = sub_00411020_ReadBits(&tBitBuffer, 3);
-            pSavedItem->nItemQuality = sub_00411020_ReadBits(&tBitBuffer, 4);
+            pSavedItem->nItemFormat = (unsigned char)BITMANIP_Read(&tBitBuffer, 10);
+            pSavedItem->nItemCode = BITMANIP_Read(&tBitBuffer, 32);
+            pSavedItem->nBodyLoc = BITMANIP_Read(&tBitBuffer, 5);
+            pSavedItem->nSocketedItems = BITMANIP_Read(&tBitBuffer, 3);
+            pSavedItem->nItemLevel = (unsigned char)BITMANIP_Read(&tBitBuffer, 12);
+            pSavedItem->nSpawnType = BITMANIP_Read(&tBitBuffer, 3);
+            pSavedItem->nItemQuality = BITMANIP_Read(&tBitBuffer, 4);
             pSavedItem->nQuantity = BITMANIP_ReadSigned(&tBitBuffer, 20);
-            pSavedItem->nMinDurability = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 8);
-            pSavedItem->nMaxDurability = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 8);
-            pSavedItem->nX = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 5);
-            pSavedItem->nY = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 3);
+            pSavedItem->nMinDurability = (unsigned char)BITMANIP_Read(&tBitBuffer, 8);
+            pSavedItem->nMaxDurability = (unsigned char)BITMANIP_Read(&tBitBuffer, 8);
+            pSavedItem->nX = (unsigned char)BITMANIP_Read(&tBitBuffer, 5);
+            pSavedItem->nY = (unsigned char)BITMANIP_Read(&tBitBuffer, 3);
             pSavedItem->nItemIndex = BITMANIP_ReadSigned(&tBitBuffer, 10);
-            pSavedItem->nSeed = sub_00411020_ReadBits(&tBitBuffer, 32);
-            pSavedItem->nItemSeed = sub_00411020_ReadBits(&tBitBuffer, 32);
-            pSavedItem->nInvPage = sub_00411020_ReadBits(&tBitBuffer, 8);
+            pSavedItem->nSeed = BITMANIP_Read(&tBitBuffer, 32);
+            pSavedItem->nItemSeed = BITMANIP_Read(&tBitBuffer, 32);
+            pSavedItem->nInvPage = BITMANIP_Read(&tBitBuffer, 8);
         }
 
         pSavedItem->nItemId = DATATBLS_GetItemIdFromItemCode(pSavedItem->nItemCode);
@@ -1878,20 +1878,20 @@ int __fastcall PLRSAVE_ReadLegacyItemData(D2SavedItemStrc* pSavedItem, unsigned 
 
     if (ITEMS_CheckIfFlagIsSet(pSavedItem->nItemFlags, 0x10000))
     {
-        pSavedItem->nBodyLoc = sub_00411020_ReadBits(&tBitBuffer, 5);
+        pSavedItem->nBodyLoc = BITMANIP_Read(&tBitBuffer, 5);
         pSavedItem->nItemLevel = 1;
         BITMANIP_ReadSigned(&tBitBuffer, 10);
         pSavedItem->nItemId = DATATBLS_GetItemIdFromItemCode(0x20726165);
-        pSavedItem->nSpawnType = sub_00411020_ReadBits(&tBitBuffer, 3);
-        pSavedItem->nX = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 5);
-        pSavedItem->nY = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 3);
+        pSavedItem->nSpawnType = BITMANIP_Read(&tBitBuffer, 3);
+        pSavedItem->nX = (unsigned char)BITMANIP_Read(&tBitBuffer, 5);
+        pSavedItem->nY = (unsigned char)BITMANIP_Read(&tBitBuffer, 3);
         pSavedItem->nItemIndex = BITMANIP_ReadSigned(&tBitBuffer, 10);
-        pSavedItem->nInvPage = sub_00411020_ReadBits(&tBitBuffer, 8);
-        pSavedItem->nEarLevel = sub_00411020_ReadBits(&tBitBuffer, 8);
+        pSavedItem->nInvPage = BITMANIP_Read(&tBitBuffer, 8);
+        pSavedItem->nEarLevel = BITMANIP_Read(&tBitBuffer, 8);
 
         for (unsigned int i = 0; i < 16; ++i)
         {
-            pSavedItem->szName[i] = sub_00411020_ReadBits(&tBitBuffer, 7);
+            pSavedItem->szName[i] = BITMANIP_Read(&tBitBuffer, 7);
             if (!pSavedItem->szName[i])
             {
                 break;
@@ -1902,21 +1902,21 @@ int __fastcall PLRSAVE_ReadLegacyItemData(D2SavedItemStrc* pSavedItem, unsigned 
         return 25;
     }
 
-    pSavedItem->nBodyLoc = sub_00411020_ReadBits(&tBitBuffer, 5);
-    pSavedItem->nSocketedItems = sub_00411020_ReadBits(&tBitBuffer, 3);
-    pSavedItem->nItemLevel = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 12);
+    pSavedItem->nBodyLoc = BITMANIP_Read(&tBitBuffer, 5);
+    pSavedItem->nSocketedItems = BITMANIP_Read(&tBitBuffer, 3);
+    pSavedItem->nItemLevel = (unsigned char)BITMANIP_Read(&tBitBuffer, 12);
     const int nItemId = BITMANIP_ReadSigned(&tBitBuffer, 10);
-    pSavedItem->nSpawnType = sub_00411020_ReadBits(&tBitBuffer, 3);
-    pSavedItem->nItemQuality = sub_00411020_ReadBits(&tBitBuffer, 4);
+    pSavedItem->nSpawnType = BITMANIP_Read(&tBitBuffer, 3);
+    pSavedItem->nItemQuality = BITMANIP_Read(&tBitBuffer, 4);
     pSavedItem->nQuantity = BITMANIP_ReadSigned(&tBitBuffer, 20);
-    pSavedItem->nMinDurability = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 8);
-    pSavedItem->nMaxDurability = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 8);
-    pSavedItem->nX = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 5);
-    pSavedItem->nY = (unsigned char)sub_00411020_ReadBits(&tBitBuffer, 3);
+    pSavedItem->nMinDurability = (unsigned char)BITMANIP_Read(&tBitBuffer, 8);
+    pSavedItem->nMaxDurability = (unsigned char)BITMANIP_Read(&tBitBuffer, 8);
+    pSavedItem->nX = (unsigned char)BITMANIP_Read(&tBitBuffer, 5);
+    pSavedItem->nY = (unsigned char)BITMANIP_Read(&tBitBuffer, 3);
     pSavedItem->nItemIndex = BITMANIP_ReadSigned(&tBitBuffer, 10);
-    pSavedItem->nSeed = sub_00411020_ReadBits(&tBitBuffer, 32);
-    pSavedItem->nItemSeed = sub_00411020_ReadBits(&tBitBuffer, 32);
-    pSavedItem->nInvPage = sub_00411020_ReadBits(&tBitBuffer, 8);
+    pSavedItem->nSeed = BITMANIP_Read(&tBitBuffer, 32);
+    pSavedItem->nItemSeed = BITMANIP_Read(&tBitBuffer, 32);
+    pSavedItem->nInvPage = BITMANIP_Read(&tBitBuffer, 8);
 
     if (nItemId >= 0)
     {

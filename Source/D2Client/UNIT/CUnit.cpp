@@ -492,7 +492,7 @@ void __fastcall CUNIT_FreeUnitModStats(D2UnitStrc* pUnit); // 0x00463D80
 
 void __fastcall CUNIT_SyncFromServerUnit(D2UnitStrc* pUnit); // 0x00465070
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int id); // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int id); // 0x0045C4B0
 
 
 extern unsigned int gdwBitMasks[]; // 0x006CE268
@@ -1788,14 +1788,14 @@ int __fastcall CUNIT_IsPetSkillTarget(D2UnitStrc* unit, D2UnitStrc* target)
         D2SkillStrc* skill = UNITS_GetLeftSkill(unit);
         if (skill)
         {
-            D2SkillsTxt* record = sub_0045C4B0_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(skill, ".\\UNIT\\CUnit.cpp", 0xB4A));
+            D2SkillsTxt* record = SCMD_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(skill, ".\\UNIT\\CUnit.cpp", 0xB4A));
             if (record && (record->nFlags[3] & gdwBitMasks[1]))
                 enabled = 1;
         }
         skill = UNITS_GetRightSkill(unit);
         if (skill)
         {
-            D2SkillsTxt* record = sub_0045C4B0_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(skill, ".\\UNIT\\CUnit.cpp", 0xB55));
+            D2SkillsTxt* record = SCMD_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(skill, ".\\UNIT\\CUnit.cpp", 0xB55));
             if (record && (record->nFlags[3] & gdwBitMasks[1]))
                 enabled = 1;
         }
@@ -3077,7 +3077,7 @@ static void CUNIT_SpawnPresetUnitInRoom(D2ActiveRoomStrc* pRoom, D2PresetUnitStr
 int __fastcall CUNIT_IsUnitSelectable(D2UnitStrc* pUnit, int nX, int nY, int bHitTest)
 {
     const int nMouseX=sub_00468730();
-    switch(sub_0045AE90_GetPanelSlideMode())
+    switch(UI_GetPanelSlideMode())
     {
     case 3: return 0;
     case 1: if(nMouseX>=gnScreenWidth_0071146C/2) return 0; break;

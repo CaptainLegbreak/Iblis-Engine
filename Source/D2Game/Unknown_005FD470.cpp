@@ -54,7 +54,7 @@ int __fastcall MONSTERSPAWN_CheckSkillPlacement(D2GameStrc* pGame, D2UnitStrc* p
         if (nSkillId == SKILL_MONTELEPORT)
         {
             if (!pUnit) return 0;
-            D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+            D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
             if (!pRoom || DUNGEON_IsRoomInTown(pRoom) || COLLISION_CheckAnyCollisionWithPattern(pRoom, nX, nY, PATH_GetUnitCollisionPattern(pUnit), 0x3C01)) return 0;
             const int nUnitX = CLIENTS_GetUnitX(pUnit);
             const int nUnitY = CLIENTS_GetUnitY(pUnit);
@@ -63,7 +63,7 @@ int __fastcall MONSTERSPAWN_CheckSkillPlacement(D2GameStrc* pGame, D2UnitStrc* p
         if (pSkillsTxt->wSrvDoFunc == 67)
         {
             if (!pUnit) return 0;
-            D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+            D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
             if (!pRoom || DUNGEON_IsRoomInTown(pRoom)) return 0;
             const int nUnitX = CLIENTS_GetUnitX(pUnit);
             const int nUnitY = CLIENTS_GetUnitY(pUnit);
@@ -72,7 +72,7 @@ int __fastcall MONSTERSPAWN_CheckSkillPlacement(D2GameStrc* pGame, D2UnitStrc* p
         if (nSkillId == SKILL_DESERTTURRET)
         {
             if (!pUnit) return 0;
-            D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+            D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
             if (!pRoom || DUNGEON_IsRoomInTown(pRoom)) return 0;
             const int nUnitX = CLIENTS_GetUnitX(pUnit);
             const int nUnitY = CLIENTS_GetUnitY(pUnit);

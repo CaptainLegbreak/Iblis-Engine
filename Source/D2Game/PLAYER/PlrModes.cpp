@@ -228,7 +228,7 @@ extern "C" const char gszPlrModesSourceFile[]; // 0x006E17E0
 
 unsigned int __stdcall INVENTORY_GetCorpseCount(D2InventoryStrc*); // 0x0063D5F0
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc*,int,int); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc*,int,int); // 0x00463740
 
 D2UnitStrc* __fastcall SUNIT_AllocUnitData(int,int,int,int,D2GameStrc*,D2ActiveRoomStrc*,char,int,unsigned int); // 0x00555230
 
@@ -257,7 +257,7 @@ static int __stdcall PLRMODE_FreeStaleCorpses(D2GameStrc* pGame, D2UnitStrc* pUn
 
 unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
 
 extern unsigned int gdwBitMasks[]; // 0x006CE268
@@ -443,7 +443,7 @@ int __fastcall PLRMODE_CanInterruptCurrentMode(D2GameStrc* pGame, D2UnitStrc* pU
 
     const int nUsedSkillId = SKILLS_GetSkillIdFromSkill(pUsedSkill, ".\\PLAYER\\PlrModes.cpp", 185);
 
-    D2SkillsTxt* pUsedSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nUsedSkillId);
+    D2SkillsTxt* pUsedSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nUsedSkillId);
     if (!pUsedSkillsTxtRecord)
     {
         return 1;
@@ -964,7 +964,7 @@ D2UnitStrc* __fastcall PLRMODE_CreateDeadBody(D2GameStrc* pGame,D2UnitStrc* pUni
  D2InventoryStrc* pInventory=pUnit->pInventory;
  if(INVENTORY_GetCorpseCount(pInventory)>15) {PLRMODE_DropItemsOnCorpseOverflow(pGame,pUnit);return 0;}
  D2_ASSERT(pInitialRoom,0x2FD);
- D2ActiveRoomStrc* pCorpseRoom=sub_00463740_FindRoomAtPoint(pInitialRoom,nX,nY);
+ D2ActiveRoomStrc* pCorpseRoom=COLLISION_GetRoomBySubTileCoordinates(pInitialRoom,nX,nY);
  if (!pCorpseRoom) {
 
   char szMessage[256];

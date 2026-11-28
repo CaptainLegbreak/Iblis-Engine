@@ -58,19 +58,19 @@ extern void* ghClientConnectToHostThreadHandle; // 0x00882CE0
 
 extern unsigned long gdwThreadId; // 0x00882B30
 
-int __stdcall sub_006BE390(void* pObject, int nArg1, int nArg2); // 0x006BE390
+int __stdcall FOG_SetServerValue(void* pObject, int nArg1, int nArg2); // 0x006BE390
 
-int __fastcall sub_006BF610(void* pObject, int nArg1, int nArg2); // 0x006BF610
+int __fastcall FOG_AddAddressMask(void* pObject, int nArg1, int nArg2); // 0x006BF610
 
-int __stdcall sub_006C0170(void* pObject, const unsigned char* pData, int nSize); // 0x006C0170
+int __stdcall FOG_ShutdownServer(void* pObject, const unsigned char* pData, int nSize); // 0x006C0170
 
-int __stdcall sub_006BEAD0(void* pObject, int nMode, int nArg1, int nArg2); // 0x006BEAD0
+int __stdcall FOG_PopQueuedMessage(void* pObject, int nMode, int nArg1, int nArg2); // 0x006BEAD0
 
-int __stdcall sub_006BED90(void* pObject, int nArg1, int nArg2, int nArg3); // 0x006BED90
+int __stdcall FOG_GetClientIPString(void* pObject, int nArg1, int nArg2, int nArg3); // 0x006BED90
 
-int __stdcall sub_006BEE20(void* pObject, int nArg1); // 0x006BEE20
+int __stdcall FOG_GetClientAddress(void* pObject, int nArg1); // 0x006BEE20
 
-int __stdcall sub_006BEF40(void* pObject, int nArg1); // 0x006BEF40
+int __stdcall FOG_GetClientSocket(void* pObject, int nArg1); // 0x006BEF40
 
 static inline void CLIENT_StartConnectThread(const char* szIpAddress); // 0x0052A730
 
@@ -84,7 +84,7 @@ extern "C" void* __cdecl memmove(void* pDest, const void* pSource, size_t nSize)
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(void); // 0x006CC260
 
-int __fastcall FOG_10219(unsigned char* pData); // 0x0040ADB0
+int __fastcall FOG_BuildHuffmanCodes(unsigned char* pData); // 0x0040ADB0
 
 int __fastcall SERVER_GetServerPacketSize(D2PacketBufferStrc* pBuffer, int nBufferSize, int* pSize); // 0x0052B920
 
@@ -436,7 +436,7 @@ int __stdcall CLIENT_ParseReceiveBuffer()
                     pDest += 2;
                 } while (--nCount);
 
-                FOG_10219(abProcessed);
+                FOG_BuildHuffmanCodes(abProcessed);
             }
         }
         else if (pPacketBuffer->data[0] == 0x8F)

@@ -678,7 +678,7 @@ D2ActiveRoomStrc* __stdcall DUNGEON_FindActSpawnLocationEx(D2DrlgActStrc* ptAct,
         D2_ASSERT(COLLISION_GetFreeCoordinates(pRoom, &tCoord, nUnitSize, 0x1C09, 0), 568);
         *pX = tCoord.nX;
         *pY = tCoord.nY;
-        return sub_00463740_FindRoomAtPoint(pRoom, *pX, *pY);
+        return COLLISION_GetRoomBySubTileCoordinates(pRoom, *pX, *pY);
     }
     return 0;
 }
@@ -686,7 +686,7 @@ D2ActiveRoomStrc* __stdcall DUNGEON_FindActSpawnLocationEx(D2DrlgActStrc* ptAct,
 // 0x0061B130
 int __stdcall D2Common_10095(D2ActiveRoomStrc* pRoom, int nX, int nY)
 {
-    D2ActiveRoomStrc* pFoundRoom = sub_00463740_FindRoomAtPoint(pRoom, nX, nY);
+    D2ActiveRoomStrc* pFoundRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY);
     if (!pFoundRoom)
         return 0;
     return DRLGLOGIC_GetRoomCoordListIndex(pFoundRoom->pDrlgRoom, nX, nY);

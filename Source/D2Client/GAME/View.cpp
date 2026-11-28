@@ -273,7 +273,7 @@ extern int gpLastHoverItem; // 0x007BCBF8
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
 
-int __fastcall sub_00472280_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange); // 0x00472280
+int __fastcall SEED_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange); // 0x00472280
 
 int __fastcall sub_004B9A00(int nSoundId, int nArg1, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
@@ -559,16 +559,6 @@ void __cdecl VIEW_FreeLerpTables()
     VIEW_FreeCels();
 }
 
-class D2SquelchListStrc
-{
-public:
-    virtual void Squelch(const char* szName);
-    virtual void Unsquelch(const char* szName);
-    virtual int IsSquelched(const char* szName);
-    virtual void VirtSlot3();
-    virtual void VirtSlot4();
-    virtual int IsFiltered(const char* szText);
-};
 
 // 0x00476A80
 void __fastcall SCMD_StartTimedEffect(int nArg0, int nArg1, int nArg2, int nArg3)
@@ -766,7 +756,7 @@ void __fastcall VIEW_PrepareView(D2ViewStrc* pView, int nArg)
     D2_ASSERT(pView, 0x1DD);
     if (pView->tRect.right || pView->tRect.bottom)
     {
-        if (sub_0045AE90_GetPanelSlideMode() != 3)
+        if (UI_GetPanelSlideMode() != 3)
             WALL2_PrepareWallCells(pView, nArg);
         pView->dwFlags &= ~1;
     }
@@ -1127,8 +1117,8 @@ void __fastcall VIEW_AdjustViewPos(int* pX, int* pY)
     if (nMagnitude)
     {
         D2SeedStrc* pSeed = &CUNIT_GetPlayerUnit()->pSeed;
-        gnViewShiftX = sub_00472280_RollInRange(pSeed, -nMagnitude, 2 * nMagnitude);
-        const int nOffsetY = sub_00472280_RollInRange(pSeed, -nMagnitude, 2 * nMagnitude);
+        gnViewShiftX = SEED_RollInRange(pSeed, -nMagnitude, 2 * nMagnitude);
+        const int nOffsetY = SEED_RollInRange(pSeed, -nMagnitude, 2 * nMagnitude);
         *pX += gnViewShiftX;
         *pY += nOffsetY;
         gnViewShiftY = nOffsetY;

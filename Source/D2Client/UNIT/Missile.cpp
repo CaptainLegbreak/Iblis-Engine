@@ -184,7 +184,7 @@ void __fastcall FOG_FreeServerMemory(D2PoolSystemStrc* pMemPool, void* pMemory, 
 
 int __stdcall ITEMS_CheckItemFlag(D2UnitStrc* pItem, unsigned int dwFlag, int nLine, const char* szFile); // 0x006280A0
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
 
 
@@ -292,7 +292,7 @@ void __stdcall PATH_SetTargetUnit(D2DynamicPathStrc* pPath, D2UnitStrc* pTargetU
 
 D2UnitStrc* __fastcall sub_004C5EB0_FindDestination(D2UnitStrc* pUnit, int nX, int nY, int nRange, int nArg5, int nUnitId, int nArg7); // 0x004C5EB0
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
 
 void __fastcall MISSMODE_CatapultChargedBall_LightningTrailingJavelin_SubmissileInitFunc(D2UnitStrc* pMissile, int nUnused); // 0x004CCCC0
@@ -973,7 +973,7 @@ int __fastcall MISSILE_CltHitSpiral(D2UnitStrc* pMissile, D2UnitStrc* pHitUnit)
     {
         const int nSkillId = MISSILE_GetSkill(pMissile);
         const int nSkillLevel = MISSILE_GetLevel(pMissile);
-        D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+        D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
         if (!pSkillsTxtRecord)
             return 1;
         nCount = SKILLS_EvaluateSkillFormula(pOwner, pSkillsTxtRecord->dwCalc[3], nSkillId, nSkillLevel);
@@ -2009,7 +2009,7 @@ void __fastcall MISSILE_CltDoMissile(D2UnitStrc* pMissile)
         MISSILE_FlickerLight(pMissile);
     D2ActiveRoomStrc* pRoom = UNITS_GetRoom(pMissile);
     if (!pRoom)
-        pRoom = sub_00463740_FindRoomAtPoint(0, UNITS_GetUnitXPosition(pMissile), UNITS_GetUnitYPosition(pMissile));
+        pRoom = COLLISION_GetRoomBySubTileCoordinates(0, UNITS_GetUnitXPosition(pMissile), UNITS_GetUnitYPosition(pMissile));
     if (!(pMissilesTxtRecord->nMissileFlags[10 >> 3] & gdwBitMasks[10 & 7]) && DUNGEON_IsRoomInTown(pRoom))
     {
         MISSILE_CltDoDefault(pMissile);
@@ -2613,7 +2613,7 @@ void __fastcall MISSILE_CltDoSeededSpawn(D2UnitStrc* pMissile)
         return;
     }
     int nSkill = MISSILE_GetSkill(pMissile);
-    D2SkillsTxt* pSkill = sub_0045C4B0_GetSkillsTxtRecord(nSkill);
+    D2SkillsTxt* pSkill = SCMD_GetSkillsTxtRecord(nSkill);
     if (!pSkill) {
         MISSILE_CltDoDefault(pMissile);
         return;
@@ -3929,7 +3929,7 @@ int __fastcall MISSILE_CltHitBurst(D2UnitStrc* pMissile, D2UnitStrc* pUnit)
     if (nCount <= 0)
     {
         const int nSkill = MISSILE_GetSkill(pMissile);
-        D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkill);
+        D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkill);
         if (!pSkillsTxtRecord)
         {
             return 1;
@@ -4826,7 +4826,7 @@ int __fastcall MISSILE_SkillDoClearTarget(D2UnitStrc* pUnit, int nSkillId, int n
 
     SKILLS_SetParam2(pSkill, 0);
     SKILLS_SetParam3(pSkill, 0);
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
     if (!pRoom)
     {
         return 0;
@@ -5763,7 +5763,7 @@ int __fastcall MISSILE_CltHitChain(D2UnitStrc* pMissile, D2UnitStrc* pUnit)
     {
         const int nSkillId = sub_0064A280(pMissile);
         const int nLevel = sub_0064A210(pMissile);
-        D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+        D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
         if (!pSkillsTxtRecord)
         {
             return 1;
@@ -5896,7 +5896,7 @@ void __fastcall MISSILE_SpawnMissileInRadius(D2UnitStrc* pOwner, D2UnitStrc* pUn
         nX += UNITS_GetUnitXPosition(pUnit);
         nY += UNITS_GetUnitYPosition(pUnit);
 
-        D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+        D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
         if (!pRoom || COLLISION_CheckAnyCollisionWithPattern(pRoom, nX, nY, 0, 1))
         {
             continue;

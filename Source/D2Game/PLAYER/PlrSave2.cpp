@@ -1333,7 +1333,7 @@ int __fastcall PLRSAVE2_ReadStatsEx(D2GameStrc* pGame, D2UnitStrc* pUnit, unsign
     D2BitBufferStrc bitBuffer;
     BITMANIP_Initialize(&bitBuffer, pData, pEnd - pData);
 
-    for (int nStatId = sub_00411020_ReadBits(&bitBuffer, 9); nStatId < 511; nStatId = sub_00411020_ReadBits(&bitBuffer, 9))
+    for (int nStatId = BITMANIP_Read(&bitBuffer, 9); nStatId < 511; nStatId = BITMANIP_Read(&bitBuffer, 9))
     {
         D2ItemStatCostTxt* pItemStatCostTxtRecord = SKILLS_GetItemStatCostTxtRecord(nStatId);
         if (!pItemStatCostTxtRecord || pItemStatCostTxtRecord->nCsvBits <= 0)
@@ -1354,7 +1354,7 @@ int __fastcall PLRSAVE2_ReadStatsEx(D2GameStrc* pGame, D2UnitStrc* pUnit, unsign
         }
         else
         {
-            nValue = sub_00411020_ReadBits(&bitBuffer, pItemStatCostTxtRecord->nCsvBits);
+            nValue = BITMANIP_Read(&bitBuffer, pItemStatCostTxtRecord->nCsvBits);
         }
 
         STATLIST_SetUnitStat(pUnit, nStatId, nValue, nLayer);
@@ -1497,7 +1497,7 @@ int __fastcall PLRSAVE2_ReadStats(D2GameStrc* pGame, D2UnitStrc* pUnit, unsigned
 
     unsigned char* pHeaderData = pData;
     pData += nHeaderSectionLength;
-    if (&pData[4 * sub_00411170_SumByteTable(pHeaderData, nHeaderSectionLength)] > pEnd)
+    if (&pData[4 * BITMANIP_SumByteTable(pHeaderData, nHeaderSectionLength)] > pEnd)
     {
         return PLRSAVE2ERROR_BAD_STATS;
     }

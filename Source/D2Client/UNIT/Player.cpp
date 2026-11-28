@@ -163,7 +163,7 @@ extern int gnStringCount; // 0x00711EF0
 extern D2StringRefStrc gaStringRefs[]; // 0x00711DDC
 
 
-extern "C" int __fastcall sub_004D9FC0_GetSkillUseState(D2UnitStrc* unit,D2SkillStrc* skill); // 0x004D9FC0
+extern "C" int __fastcall PLRSKILLS_GetSkillUseState(D2UnitStrc* unit,D2SkillStrc* skill); // 0x004D9FC0
 
 D2SkillsTxt* __fastcall SKILLS_GetSkillsTxtRecordFromSkill(D2SkillStrc* pSkill); // 0x00644140
 
@@ -305,7 +305,7 @@ unsigned short __stdcall COLLISION_CheckMaskWithPattern(D2ActiveRoomStrc* pRoom,
 
 D2ActiveRoomStrc* __stdcall COLLISION_GetFreeCoordinates(D2ActiveRoomStrc* pRoom, D2CoordStrc* pSpawnPoint, int nUnitSize, unsigned int nMask, int bAllowNeighboringRooms); // 0x0064E7B0
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
 void __fastcall AUTOMAP_SetUnitLightRadius(D2UnitStrc* pUnit, int nValue); // 0x00460930
 
@@ -644,7 +644,7 @@ void __fastcall PLAYER_HandleStatChanged(D2GameStrc* pGame, D2UnitStrc* pOwner, 
             }
             else if (!pSkill)
             {
-                D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+                D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
                 if (nStatId == 97 || (pSkillsTxtRecord && pSkillsTxtRecord->nCharClass == (!pOwner ? -1 : pOwner->dwClassId)))
                 {
                     SKILLS_AssignSkill(pOwner, nSkillId, 0, 0, ".\\UNIT\\Player.cpp", 232);
@@ -829,7 +829,7 @@ static int __stdcall PLAYER_CheckSkillUse(D2SkillStrc** ppSkill, int* pUseState,
     if (!ppSkill || !*ppSkill)
         return 0;
 
-    int nUseState = sub_004D9FC0_GetSkillUseState(pUnit, *ppSkill);
+    int nUseState = PLRSKILLS_GetSkillUseState(pUnit, *ppSkill);
     if (pUseState)
         *pUseState = nUseState;
 
@@ -841,7 +841,7 @@ static int __stdcall PLAYER_CheckSkillUse(D2SkillStrc** ppSkill, int* pUseState,
         && (pSkillsTxt->nFlags[3] & gdwBitMasks[4]))
     {
         *ppSkill = SKILLS_GetHighestLevelSkillFromUnitAndId(pUnit, SKILL_ATTACK);
-        nUseState = sub_004D9FC0_GetSkillUseState(pUnit, *ppSkill);
+        nUseState = PLRSKILLS_GetSkillUseState(pUnit, *ppSkill);
     }
 
     if (nUseState == 5 || nUseState == 0)

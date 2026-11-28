@@ -2601,7 +2601,7 @@ int __fastcall SUNIT_CanAllyBeTargetedBySkill(D2GameStrc* pGame, D2UnitStrc* pOw
         return 0;
     }
 
-    D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+    D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
     if (!pSkillsTxtRecord || !(pSkillsTxtRecord->nFlags[SKILLSFLAGINDEX_TARGETALLY >> 3] & gdwBitMasks[SKILLSFLAGINDEX_TARGETALLY & 7]))
     {
         return 0;
@@ -2678,10 +2678,10 @@ int __fastcall SUNIT_TeleportUnit(D2GameStrc* pGame, D2UnitStrc* hUnit, D2Active
     tCoords.nY = nY;
     if (!pRoom)
     {
-        pRoom = sub_00463740_FindRoomAtPoint(0, tCoords.nX, tCoords.nY);
+        pRoom = COLLISION_GetRoomBySubTileCoordinates(0, tCoords.nX, tCoords.nY);
         if (!pRoom)
         {
-            pRoom = sub_00463740_FindRoomAtPoint(pUnitRoom, tCoords.nX, tCoords.nY);
+            pRoom = COLLISION_GetRoomBySubTileCoordinates(pUnitRoom, tCoords.nX, tCoords.nY);
         }
     }
 

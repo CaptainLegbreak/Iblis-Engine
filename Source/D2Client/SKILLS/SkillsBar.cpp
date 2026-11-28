@@ -70,14 +70,14 @@ void __stdcall PATH_SetVelocity(D2DynamicPathStrc* pDynamicPath, int nVelocity, 
 
 D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
 
-extern "C" D2CharStatsTxt* __fastcall sub_004833E0_GetCharStatsTxtRecord(int nClass); // 0x004833E0
+extern "C" D2CharStatsTxt* __fastcall INV_GetCharStatsTxtRecord(int nClass); // 0x004833E0
 
 
 
 
 void __stdcall PATH_SetTargetUnit(D2DynamicPathStrc* pPath, D2UnitStrc* pTargetUnit); // 0x00648B90
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
 
 void __stdcall PATH_SetUnitDeadCollision(D2UnitStrc* pUnit, int nArg); // 0x00649F70
@@ -200,7 +200,7 @@ static int __stdcall SKILLS_AdjustTargetPosition(int nSkillId, D2UnitStrc* pUnit
     int nTries = 3;
     while (nTries)
     {
-        D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), tCoord.nX, tCoord.nY);
+        D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), tCoord.nX, tCoord.nY);
         pRoom = COLLISION_GetFreeCoordinates(pRoom, &tCoord, UNITS_GetUnitSizeX(pUnit), 0x1C09, 1);
         const int nAdjustedX = tCoord.nX;
         const int nAdjustedY = tCoord.nY;
@@ -342,7 +342,7 @@ int __fastcall SKILLSBAR_SetRunPath(D2UnitStrc* pUnit, D2SkillStrc* pSkill)
     }
     else
     {
-        nVelocity = sub_004833E0_GetCharStatsTxtRecord(nClassId)->nRunSpeed << 8;
+        nVelocity = INV_GetCharStatsTxtRecord(nClassId)->nRunSpeed << 8;
     }
 
     PATH_SetVelocity(pDynamicPath, nVelocity, gszSkillsBarSourceFile, 567);
@@ -451,7 +451,7 @@ static void __stdcall SKILLSBAR_LeapBounceFromTarget(D2UnitStrc* pUnit, D2SkillS
 
     nX = 3 * nX - 2 * CLIENTS_GetUnitXInline(pTarget);
     nY = 3 * nY - 2 * CLIENTS_GetUnitYInline(pTarget);
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
     if (!pRoom || !DUNGEON_IsRoomInTown(pRoom))
     {
         D2COMMON_10170_PathSetTargetPos(pPath, nX, nY);
@@ -846,7 +846,7 @@ int __fastcall SKILLSBAR_SkillCltStartRun(D2UnitStrc* pUnit, int nSkillId, int n
 
     if (bPlayer)
     {
-        D2CharStatsTxt* pCharStatsTxtRecord = sub_004833E0_GetCharStatsTxtRecord(pUnit->dwClassId);
+        D2CharStatsTxt* pCharStatsTxtRecord = INV_GetCharStatsTxtRecord(pUnit->dwClassId);
         if (pCharStatsTxtRecord)
         {
             PATH_SetVelocity(pPath, pCharStatsTxtRecord->nWalkSpeed << 8, gszSkillsBarSourceFile, 1177);

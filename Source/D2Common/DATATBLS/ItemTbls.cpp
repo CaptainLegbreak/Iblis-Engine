@@ -75,7 +75,7 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 
 void __fastcall DATATBLS_GetBinFileHandle(void* hArchive, const char* szFile, char** ppFileHandle, int* pSize, int* pSizeEx); // 0x00613E90
 
-void __stdcall sub_006BD230_AddLinkCode(D2TxtLinkStrc* pLinker, unsigned int dwCode); // 0x006BD230
+void __stdcall FOG_AddLinkCode(D2TxtLinkStrc* pLinker, unsigned int dwCode); // 0x006BD230
 
 struct D2RareAffixTxt
 {
@@ -617,7 +617,7 @@ void __fastcall DATATBLS_LoadItemsTxt(void* hArchive)
     {
         for (int i = 0; i < gnItemsTxtRecordCount; ++i)
         {
-            sub_006BD230_AddLinkCode(sgtDataTables.pItemsLinker, gpItemsTxt[i].dwCode);
+            FOG_AddLinkCode(sgtDataTables.pItemsLinker, gpItemsTxt[i].dwCode);
         }
     }
 
@@ -1683,7 +1683,7 @@ enum
     TXTFIELD_CODETOBYTE = 13,
 };
 
-void __stdcall FOG_10215(D2TxtLinkStrc* pLink, int nCode);                                                  // 0x006BD230
+void __stdcall FOG_AddLinkCode(D2TxtLinkStrc* pLink, int nCode);                                                  // 0x006BD230
 
 
 extern int gbLoadFromBin;                                                                          // 0x00744308
@@ -1771,7 +1771,7 @@ void __fastcall DATATBLS_LoadItemTypesTxt(void* hArchive)
     {
         for (int i = 0; i < sgtDataTables.nItemTypesTxtRecordCount; ++i)
         {
-            FOG_10215(sgtDataTables.pItemTypesLinker, *(int*)&sgtDataTables.pItemTypesTxt[i].szCode[0]);
+            FOG_AddLinkCode(sgtDataTables.pItemTypesLinker, *(int*)&sgtDataTables.pItemTypesTxt[i].szCode[0]);
         }
     }
 

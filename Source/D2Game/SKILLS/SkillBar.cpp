@@ -117,7 +117,7 @@ void __stdcall STATLIST_SetListExpireFrame(D2StatListStrc* pStatList, int nExpir
 
 void __stdcall D2COMMON_10475_PostStatToStatList(D2UnitStrc* pUnit, D2StatListStrc* pStatList, int bResetFlag); // 0x00626E10
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
 int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
@@ -153,7 +153,7 @@ struct D2CharStatsTxtRun;
 D2MonStatsTxtRun* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
 
 
-D2CharStatsTxtRun* __fastcall sub_004833E0_GetCharStatsTxtRecord(int nClassId); // 0x004833E0
+D2CharStatsTxtRun* __fastcall INV_GetCharStatsTxtRecord(int nClassId); // 0x004833E0
 
 
 D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* ptGame, int nUnitType, int nUnitGUID); // 0x00552F60
@@ -772,7 +772,7 @@ int __fastcall SKILLS_SrvDo075_GrimWard(D2GameStrc* pGame, D2UnitStrc* pUnit, in
         return 0;
     }
 
-    pRoom = sub_00463740_FindRoomAtPoint(pRoom, coords.nX, coords.nY);
+    pRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, coords.nX, coords.nY);
     if (!pRoom)
     {
         return 0;
@@ -1500,7 +1500,7 @@ static int __stdcall SKILLS_FindLeapTargetPosition(D2UnitStrc* pUnit, int nSkill
     nCounter = 3;
     while (nCounter)
     {
-        D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), coords.nX, coords.nY);
+        D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), coords.nX, coords.nY);
         pRoom = COLLISION_GetFreeCoordinates(pRoom, &coords, UNITS_GetUnitSizeX(pUnit), 0x1C09, 1);
         nX = coords.nX;
         nY = coords.nY;
@@ -1585,7 +1585,7 @@ static int __stdcall SKILLS_CanLeapToPosition(D2UnitStrc* pUnit, int nX, int nY,
         return 0;
     }
 
-    pRoom = sub_00463740_FindRoomAtPoint(pRoom, nX, nY);
+    pRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY);
     if (!pRoom)
     {
         return 0;
@@ -1681,7 +1681,7 @@ int __fastcall SKILLS_SrvSt40_Leap(D2GameStrc* pGame, D2UnitStrc* pUnit, int nSk
         }
     }
 
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
     COLLISION_SetMaskWithPattern(pRoom, nX, nY, PATH_GetUnitCollisionPattern(pUnit), 0x80);
     SUNIT_SetUninterruptable(pUnit, 1);
     STATES_ToggleState(pUnit, 0x12, 1);
@@ -1744,7 +1744,7 @@ static int __stdcall SKILLS_SetVelocityForLeap(D2GameStrc* pGame, D2UnitStrc* pU
     }
     else
     {
-        nVelocity = sub_004833E0_GetCharStatsTxtRecord(!pUnit ? -1 : pUnit->dwClassId)->nRunSpeed << 8;
+        nVelocity = INV_GetCharStatsTxtRecord(!pUnit ? -1 : pUnit->dwClassId)->nRunSpeed << 8;
     }
 
     PATH_SetVelocity(pPath, nVelocity, ".\\SKILLS\\SkillBar.cpp", 0x6C2);
@@ -1806,7 +1806,7 @@ static int __stdcall SKILLS_ApplySandLeaperKnockback(D2GameStrc* pGame, int nX, 
 
     nX = 3 * nX - 2 * CLIENTS_GetUnitX(pTarget);
     nY = 3 * nY - 2 * CLIENTS_GetUnitY(pTarget);
-    D2ActiveRoomStrc* pTargetRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+    D2ActiveRoomStrc* pTargetRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
     if (pTargetRoom && DUNGEON_IsRoomInTown(pTargetRoom))
     {
         return 0;

@@ -5,11 +5,11 @@ extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, size_t nSize);
 extern "C" void* __cdecl memset(void* pDst, int nValue, size_t nSize);
 
 BOOLEAN __stdcall AUTOMAP_IsDebugDirectorySizeValid(unsigned int nValue);
-static bool __stdcall sub_004049A0_ReadImageInfo(D2CrashModuleStrc* pModule, const D2ImageDosHeaderStrc* pImage);
-bool sub_00404F80_ReadNb10(D2CrashModuleStrc* pModule, const D2CvNb10Strc* pCv); // 0x00404F80
-bool sub_00404FF0_ReadRsds(const D2CvRsdsStrc* pCv, D2CrashModuleStrc* pModule); // 0x00404FF0
+static bool __stdcall ERRORMANAGER_ReadImageInfo(D2CrashModuleStrc* pModule, const D2ImageDosHeaderStrc* pImage); // 0x004049A0
+bool ERRORMANAGER_ReadNb10(D2CrashModuleStrc* pModule, const D2CvNb10Strc* pCv); // 0x00404F80
+bool ERRORMANAGER_ReadRsds(const D2CvRsdsStrc* pCv, D2CrashModuleStrc* pModule); // 0x00404FF0
 
-static int sub_00404730_GetImageKind(const D2ImageOptionalHeaderStrc* pHeader)
+static int ERRORMANAGER_GetImageKind(const D2ImageOptionalHeaderStrc* pHeader)
 {
     if (pHeader->Magic == 0x10B)
     {
@@ -22,7 +22,7 @@ static int sub_00404730_GetImageKind(const D2ImageOptionalHeaderStrc* pHeader)
     return 0;
 }
 
-static bool sub_00404760_IsDosHeaderValid(const D2ImageDosHeaderStrc* pImage)
+static bool ERRORMANAGER_IsDosHeaderValid(const D2ImageDosHeaderStrc* pImage)
 {
     if (IsBadReadPtr(pImage, 0x40))
     {
@@ -35,7 +35,7 @@ static bool sub_00404760_IsDosHeaderValid(const D2ImageDosHeaderStrc* pImage)
     return true;
 }
 
-static inline bool sub_00404780_IsNtHeaderValid(const D2ImageNtHeadersStrc* pNt)
+static inline bool ERRORMANAGER_IsNtHeaderValid(const D2ImageNtHeadersStrc* pNt)
 {
     if (IsBadReadPtr(pNt, 4))
     {
@@ -53,7 +53,7 @@ static inline bool sub_00404780_IsNtHeaderValid(const D2ImageNtHeadersStrc* pNt)
     {
         return false;
     }
-    if (!sub_00404730_GetImageKind(&pNt->OptionalHeader))
+    if (!ERRORMANAGER_GetImageKind(&pNt->OptionalHeader))
     {
         return false;
     }
@@ -67,11 +67,11 @@ static inline bool GetDebugDirectoryEntry(const D2ImageDataDirStrc* pDir, unsign
     return (!tDir.VirtualAddress && !tDir.Size) || (tDir.VirtualAddress && AUTOMAP_IsDebugDirectorySizeValid(*pSize));
 }
 
-static bool sub_004047D0_GetDebugDirectory(const D2ImageOptionalHeaderStrc* pHeader, unsigned long* pRva, unsigned long* pSize);
+static bool ERRORMANAGER_GetDebugDirectory(const D2ImageOptionalHeaderStrc* pHeader, unsigned long* pRva, unsigned long* pSize); // 0x004047D0
 // 0x004047D0
-static bool sub_004047D0_GetDebugDirectory(const D2ImageOptionalHeaderStrc* pHeader, unsigned long* pRva, unsigned long* pSize)
+static bool ERRORMANAGER_GetDebugDirectory(const D2ImageOptionalHeaderStrc* pHeader, unsigned long* pRva, unsigned long* pSize)
 {
-    const int nKind = sub_00404730_GetImageKind(pHeader);
+    const int nKind = ERRORMANAGER_GetImageKind(pHeader);
     if (!nKind)
     {
         return false;
@@ -91,18 +91,18 @@ BOOLEAN __stdcall AUTOMAP_IsDebugDirectorySizeValid(unsigned int nValue)
     return nValue >= 0x1C;
 }
 
-static void sub_00404860_SetNb10Info(D2CrashModuleStrc* pModule, const D2CvNb10Strc* pCv)
+static void ERRORMANAGER_SetNb10Info(D2CrashModuleStrc* pModule, const D2CvNb10Strc* pCv)
 {
     pModule->nTimeStamp = pCv->dwSignature;
     memset(&pModule->tGuid, 0, sizeof(pModule->tGuid));
 }
 
-static void sub_00404890_CopyRsdsGuid(D2CrashModuleStrc* pModule, const D2CvRsdsStrc* pCv)
+static void ERRORMANAGER_CopyRsdsGuid(D2CrashModuleStrc* pModule, const D2CvRsdsStrc* pCv)
 {
     pModule->tGuid = pCv->tGuid;
 }
 
-static bool sub_004048C0_ReadCodeView(const unsigned long* pCv, D2CrashModuleStrc* pModule, unsigned int nSize)
+static bool ERRORMANAGER_ReadCodeView(const unsigned long* pCv, D2CrashModuleStrc* pModule, unsigned int nSize)
 {
     if (nSize < 4)
     {
@@ -114,22 +114,22 @@ static bool sub_004048C0_ReadCodeView(const unsigned long* pCv, D2CrashModuleStr
     }
     if (*pCv == 0x3031424E)
     {
-        return sub_00404F80_ReadNb10(pModule, (const D2CvNb10Strc*)pCv);
+        return ERRORMANAGER_ReadNb10(pModule, (const D2CvNb10Strc*)pCv);
     }
     if (*pCv == 0x53445352)
     {
-        return sub_00404FF0_ReadRsds((const D2CvRsdsStrc*)pCv, pModule);
+        return ERRORMANAGER_ReadRsds((const D2CvRsdsStrc*)pCv, pModule);
     }
     return false;
 }
 
-static bool __stdcall sub_00404900_FindCodeView(const D2ImageDosHeaderStrc* pImage, const D2ImageDebugDirStrc* pDirs, D2CrashModuleStrc* pModule, unsigned long nSize)
+static bool __stdcall ERRORMANAGER_FindCodeView(const D2ImageDosHeaderStrc* pImage, const D2ImageDebugDirStrc* pDirs, D2CrashModuleStrc* pModule, unsigned long nSize)
 {
     const unsigned int nCount = nSize / sizeof(D2ImageDebugDirStrc);
     for (unsigned int i = 0; i < nCount; i++)
     {
         const unsigned long* pData = (const unsigned long*)((const char*)pImage + pDirs[i].AddressOfRawData);
-        if (pDirs[i].Type == 2 && sub_004048C0_ReadCodeView(pData, pModule, pDirs[i].SizeOfData))
+        if (pDirs[i].Type == 2 && ERRORMANAGER_ReadCodeView(pData, pModule, pDirs[i].SizeOfData))
         {
             return true;
         }
@@ -138,15 +138,15 @@ static bool __stdcall sub_00404900_FindCodeView(const D2ImageDosHeaderStrc* pIma
 }
 
 // 0x004049A0
-static bool __stdcall sub_004049A0_ReadImageInfo(D2CrashModuleStrc* pModule, const D2ImageDosHeaderStrc* pImage)
+static bool __stdcall ERRORMANAGER_ReadImageInfo(D2CrashModuleStrc* pModule, const D2ImageDosHeaderStrc* pImage)
 {
     pModule->pBase = (void*)pImage;
-    if (!sub_00404760_IsDosHeaderValid(pImage))
+    if (!ERRORMANAGER_IsDosHeaderValid(pImage))
     {
         return false;
     }
     const D2ImageNtHeadersStrc* pNt = (const D2ImageNtHeadersStrc*)((const char*)pImage + pImage->e_lfanew);
-    if (!sub_00404780_IsNtHeaderValid(pNt))
+    if (!ERRORMANAGER_IsNtHeaderValid(pNt))
     {
         return false;
     }
@@ -162,18 +162,18 @@ static bool __stdcall sub_004049A0_ReadImageInfo(D2CrashModuleStrc* pModule, con
     }
     unsigned long nRva = 0;
     unsigned long nSize = 0;
-    if (sub_004047D0_GetDebugDirectory(&pNt->OptionalHeader, &nRva, &nSize) && nRva && nSize)
+    if (ERRORMANAGER_GetDebugDirectory(&pNt->OptionalHeader, &nRva, &nSize) && nRva && nSize)
     {
         const D2ImageDebugDirStrc* pDirs = (const D2ImageDebugDirStrc*)((const char*)pImage + nRva);
         if (!IsBadReadPtr(pDirs, nSize) && AUTOMAP_IsDebugDirectorySizeValid(nSize))
         {
-            sub_00404900_FindCodeView(pImage, pDirs, pModule, nSize);
+            ERRORMANAGER_FindCodeView(pImage, pDirs, pModule, nSize);
         }
     }
     return true;
 }
 
-bool D2ModuleStrc::sub_00404AB0_VisitModule(void* pContext, const wchar_t* wszName, int nNameLength)
+bool D2ModuleStrc::ERRORMANAGER_VisitModule(void* pContext, const wchar_t* wszName, int nNameLength)
 {
     D2CrashModuleStrc tModule;
     tModule.pBase = 0;
@@ -216,7 +216,7 @@ bool D2ModuleStrc::sub_00404AB0_VisitModule(void* pContext, const wchar_t* wszNa
     }
     pName = pName ? pName + 1 : tModule.szName;
     memcpy(tModule.szName, pName, sizeof(tModule.szName));
-    if (!sub_004049A0_ReadImageInfo(&tModule, (const D2ImageDosHeaderStrc*)this))
+    if (!ERRORMANAGER_ReadImageInfo(&tModule, (const D2ImageDosHeaderStrc*)this))
     {
         return true;
     }

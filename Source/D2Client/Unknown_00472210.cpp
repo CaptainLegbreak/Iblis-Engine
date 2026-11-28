@@ -17,7 +17,6 @@ struct CellResource;
 union D2SeedStrc;
 struct D2WeatherSplashStrc;
 struct D2PeriodLightStrc;
-struct D2B10EmitWeatherStrc;
 
 extern "C" double __cdecl fabs(double x);
 
@@ -34,13 +33,6 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 extern D2DrlgActStrc* gpDrlgAct_007A0634; // 0x007A0634
 extern const D2PeriodLightStrc gaPeriodLights[]; // 0x006D6E40
 
-struct D2B10EmitWeatherStrc
-{
-    char unk0x00[0x10];
-    int nValue;
-    char unk0x14[0x10];
-    unsigned char nOut2;
-};
 
 extern CellResource* gHelpBorder;
 extern CellResource* gWhiteBullet;
@@ -52,7 +44,7 @@ extern "C" const char gHelpBorder800File[];
 extern "C" const char gHelpBorderFile[];
 extern "C" const char gWhiteBulletFile[];
 extern "C" const char gYellowBulletFile[];
-int __fastcall sub_00472280_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange); // 0x00472280
+int __fastcall SEED_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange); // 0x00472280
 void __cdecl sub_00472400_ResetPhaseState(); // 0x00472400
 extern unsigned int gnPhaseMax; // 0x007A89C0
 extern int gnPhase; // 0x007A8A24
@@ -166,7 +158,7 @@ static inline unsigned __int64 sub_U01_RollSeedInline(D2SeedStrc* pSeed)
     return lSeed;
 }
 
-int __fastcall sub_00472280_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange);
+int __fastcall SEED_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange); // 0x00472280
 
 static inline void sub_00473720_GetLevelWeather(int* pRain, int* pMud);
 
@@ -198,7 +190,7 @@ struct D2PeriodLightStrc;
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);
 
-int __fastcall sub_00472280_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange); // 0x00472280
+int __fastcall SEED_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange); // 0x00472280
 int __fastcall DATAARRAYS_AllocateHandle(D2WeatherStrc* pArray); // 0x006BCB40
 
 struct D2WeatherLineStrc
@@ -240,7 +232,7 @@ extern "C" const char gszEmptyAssertText;                                       
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode);                                               // 0x00681E09
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
-int __fastcall sub_00472280_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange);                                 // 0x00472280
+int __fastcall SEED_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange);                                 // 0x00472280
 int __fastcall DATAARRAYS_AllocateHandle(D2WeatherStrc* pArray);                                             // 0x006BCB40
 void __fastcall sub_00472C80_StepSplashes(int nUnused);                                                     // 0x00472C80
 void __fastcall sub_00472D10_StepBubbles(int nUnused);                                                      // 0x00472D10
@@ -254,7 +246,7 @@ static void sub_00473090_InitParticle(D2SeedStrc* pSeed);
 
 void __stdcall sub_004732C0_StepParticles(D2SeedStrc* pSeed);                                              // 0x004732C0
 
-int __fastcall sub_00472280_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange);                                 // 0x00472280
+int __fastcall SEED_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange);                                 // 0x00472280
 int __fastcall DATAARRAYS_AllocateHandle(D2WeatherStrc* pArray);                                             // 0x006BCB40
 void __fastcall sub_00472C80_StepSplashes(int nUnused);                                                     // 0x00472C80
 void __fastcall sub_00472D10_StepBubbles(int nUnused);                                                      // 0x00472D10
@@ -314,7 +306,7 @@ static inline unsigned int sub_00472400_SeedStep(D2SeedStrc* pSeed)
 }
 
 // 0x00472210
-int __fastcall sub_00472210_SeedRollMasked(D2SeedStrc* pSeed, int nMax)
+int __fastcall SEED_RollMasked(D2SeedStrc* pSeed, int nMax)
 {
     return SEED_RollRandomNumberInline_00472210(pSeed) & (nMax - 1);
 }
@@ -326,7 +318,7 @@ int __fastcall sub_00472240_RollMaskOffset(D2SeedStrc* pSeed, int nOffset, int n
 }
 
 // 0x00472280
-int __fastcall sub_00472280_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange)
+int __fastcall SEED_RollInRange(D2SeedStrc* pSeed, int nOffset, int nRange)
 {
     return nOffset + RNG_RollLimitedRef(pSeed, nRange);
 }
@@ -392,7 +384,7 @@ void __cdecl sub_00472400_ResetPhaseState()
         gnWindAngleMin = 42;
         gnBaseWindAngleMax = 170;
         gnWindAngleMax = 170;
-        gnPhaseLevel = gnPhaseMax = sub_00472280_RollInRange(pSeed, 0x20, 0x38);
+        gnPhaseLevel = gnPhaseMax = SEED_RollInRange(pSeed, 0x20, 0x38);
         return;
 
     case LEVEL_TUNDRAWASTELANDS:
@@ -400,7 +392,7 @@ void __cdecl sub_00472400_ResetPhaseState()
         gnWindAngleMax = 56;
         gnBaseWindAngleMin = 28;
         gnBaseWindAngleMax = 56;
-        gnPhaseLevel = gnPhaseMax = sub_00472280_RollInRange(pSeed, 0x20, 0x70);
+        gnPhaseLevel = gnPhaseMax = SEED_RollInRange(pSeed, 0x20, 0x70);
         return;
 
     case LEVEL_ROCKYSUMMIT:
@@ -713,17 +705,17 @@ void __fastcall sub_00472DA0_CreateSplash(int nX, int nY, int nFixX, int nFixY)
     D2WeatherSplashStrc* pSplash = &gpWeatherSplashes->pRecords[(short)(nRecord >> 16)];
     if (D2GFX_CheckPerspective())
     {
-        pSplash->nX = (sub_00472280_RollInRange(pSeed, 0, 5) << 16) + nFixX;
-        pSplash->nY = (sub_00472280_RollInRange(pSeed, 0, 5) << 16) + nFixY;
+        pSplash->nX = (SEED_RollInRange(pSeed, 0, 5) << 16) + nFixX;
+        pSplash->nY = (SEED_RollInRange(pSeed, 0, 5) << 16) + nFixY;
     }
     else
     {
-        const int nRoll = sub_00472280_RollInRange(pSeed, 0, 0x50);
+        const int nRoll = SEED_RollInRange(pSeed, 0, 0x50);
         int nDist = nRoll - 0x28;
         if (nDist < 0)
             nDist = -nDist;
         const int nSpread = 0x50 - (nDist << 1);
-        pSplash->nX = sub_00472280_RollInRange(pSeed, -nSpread, 2 * nSpread) + nX;
+        pSplash->nX = SEED_RollInRange(pSeed, -nSpread, 2 * nSpread) + nX;
         pSplash->nY = nRoll + nY;
     }
 
@@ -750,17 +742,17 @@ void __fastcall sub_00472EC0_CreateBubble(int nX, int nY, int nFixX, int nFixY)
     int nNewY;
     if (D2GFX_CheckPerspective())
     {
-        pBubble->nX = ((sub_00472280_RollInRange(pSeed, 0, 5) - 2) << 16) + nFixX;
-        nNewY = ((sub_00472280_RollInRange(pSeed, 0, 5) - 2) << 16) + nFixY;
+        pBubble->nX = ((SEED_RollInRange(pSeed, 0, 5) - 2) << 16) + nFixX;
+        nNewY = ((SEED_RollInRange(pSeed, 0, 5) - 2) << 16) + nFixY;
     }
     else
     {
-        const int nRoll = sub_00472280_RollInRange(pSeed, 0, 0x50);
+        const int nRoll = SEED_RollInRange(pSeed, 0, 0x50);
         int nDist = nRoll - 0x28;
         if (nDist < 0)
             nDist = -nDist;
         const int nSpread = 0x50 - (nDist << 1);
-        pBubble->nX = sub_00472280_RollInRange(pSeed, -nSpread, 2 * nSpread) + nX;
+        pBubble->nX = SEED_RollInRange(pSeed, -nSpread, 2 * nSpread) + nX;
         nNewY = nRoll + nY - 0x1E;
     }
     pBubble->nY = nNewY;
@@ -827,9 +819,9 @@ static void sub_00473090_InitParticle(D2SeedStrc* pSeed)
 
     D2WeatherParticleStrc* pParticle = &gpWeatherParticles->pParticles[(short)(nRecord >> 0x10)];
     pParticle->bDrop = 0;
-    pParticle->nX = sub_00472280_RollInRange(pSeed, 0, gnScreenWidth);
-    pParticle->nYEnd = sub_00472280_RollInRange(pSeed, 0x28, gnScreenHeight - 0x57);
-    pParticle->nY = sub_00472280_RollInRange(pSeed, -0x14, pParticle->nYEnd + 0x14);
+    pParticle->nX = SEED_RollInRange(pSeed, 0, gnScreenWidth);
+    pParticle->nYEnd = SEED_RollInRange(pSeed, 0x28, gnScreenHeight - 0x57);
+    pParticle->nY = SEED_RollInRange(pSeed, -0x14, pParticle->nYEnd + 0x14);
     pParticle->nFrame = (unsigned int)sub_U01_RollSeedInline(pSeed) & 0x1FF;
 
     const float fRatio = (float)(pParticle->nYEnd - 0x28) / (gnScreenHeight - 0x57);
@@ -961,7 +953,7 @@ void __cdecl sub_00473470_DrawWeatherParticles()
     int nLeft = 0;
     int nRight = gnScreenWidth;
     int nBottom = gnScreenHeight - 47;
-    switch (sub_0045AE90_GetPanelSlideMode())
+    switch (UI_GetPanelSlideMode())
     {
     case 1:
         nRight -= gnScreenWidth / 4 * 2;
@@ -1018,7 +1010,7 @@ extern "C" void __cdecl sub_004736C0_DrawPanelShade()
     int left = 0;
     int bottom = gnScreenHeight - 47;
     int right = gnScreenWidth;
-    switch (sub_0045AE90_GetPanelSlideMode())
+    switch (UI_GetPanelSlideMode())
     {
     case 1:
         right -= (gnScreenWidth / 4) * 2;
@@ -1091,7 +1083,7 @@ static void sub_004737B0_StepWind(D2SeedStrc* pSeed)
         if (bSplash)
         {
             gnWindCountdown = (unsigned int)sub_U01_RollSeedInline(pSeed) % 875 + 250;
-            gnTargetAngle = sub_00472280_RollInRange(pSeed, gnWindAngleMin, gnWindAngleMax);
+            gnTargetAngle = SEED_RollInRange(pSeed, gnWindAngleMin, gnWindAngleMax);
         }
         else
         {
@@ -1138,15 +1130,15 @@ void __cdecl sub_00473910_UpdateWeather()
             }
             else
             {
-                gnLightningCountdown = sub_00472280_RollInRange(pSeed, 500, 1500);
+                gnLightningCountdown = SEED_RollInRange(pSeed, 500, 1500);
                 gbLightningFlash = 0;
                 if (gbPlayThunderSound)
                 {
-                    const int nDelay = sub_00472280_RollInRange(pSeed, 25, 50);
+                    const int nDelay = SEED_RollInRange(pSeed, 25, 50);
                     const int hSound = sub_004B9A00(0xCA, 0, nDelay, 0, 0);
                     if (hSound)
                     {
-                        SOUNDINST_MoveSound(hSound, sub_00472280_RollInRange(pSeed, -200, 400), sub_00472280_RollInRange(pSeed, -200, 400), 0);
+                        SOUNDINST_MoveSound(hSound, SEED_RollInRange(pSeed, -200, 400), SEED_RollInRange(pSeed, -200, 400), 0);
                     }
                 }
                 else
@@ -1177,7 +1169,7 @@ void __fastcall sub_00473A70_DrawWeatherSplashes(D2WeatherStrc* pWeather, D2Weat
     int nLeft = 0;
     int nRight = gnScreenWidth;
     int nBottom = gnScreenHeight - 47;
-    switch (sub_0045AE90_GetPanelSlideMode())
+    switch (UI_GetPanelSlideMode())
     {
     case 1:
     {
@@ -1335,7 +1327,7 @@ void __fastcall sub_00473D00_SetPhase(int nPhase)
 
     case 1:
         sub_004726F0_RollAct5Weather(0);
-        gnPhaseMax = sub_00472280_RollInRange(&pPlayer->pSeed, 0x20, 0xE0);
+        gnPhaseMax = SEED_RollInRange(&pPlayer->pSeed, 0x20, 0xE0);
         break;
 
     case 2:
@@ -1388,7 +1380,7 @@ void __stdcall GFX_StepWeatherPhase(D2SeedStrc* pSeed)
         {
             nPhase = 0;
         }
-        gnPhaseTotal = sub_00472280_RollInRange(pSeed, gaWeatherPhaseOffset[nPhase], gaWeatherPhaseRange[nPhase]);
+        gnPhaseTotal = SEED_RollInRange(pSeed, gaWeatherPhaseOffset[nPhase], gaWeatherPhaseRange[nPhase]);
         gnPhaseLeft = gnPhaseTotal;
         sub_00473D00_SetPhase(nPhase);
     }

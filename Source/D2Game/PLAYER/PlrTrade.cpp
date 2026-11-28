@@ -51,9 +51,7 @@ struct D2PlayerDataStrc;
 struct D2CubeItemStrc;
 
 
-struct Item;
 
-struct ItemRecordTable;
 
 void __stdcall SUNIT_ResetInteractInfo(D2UnitStrc* pUnit); // 0x00554190
 
@@ -134,17 +132,11 @@ int __stdcall ITEMS_GetItemType(D2UnitStrc* pItem); // 0x0062B400
 
 static void __stdcall PLRTRADE_HandleCubeInteraction(D2GameStrc* pGame, D2UnitStrc* pPlayer); // 0x005665F0
 
-struct Seed { unsigned low,high; };
+#include "D2ItemDataTbl.h"
 
-struct Game { char pad0[0x78]; unsigned short format; char pad7A[0x56]; Seed seed; };
+D2ItemDataTbl* __stdcall DATATBLS_GetItemDataTables(); // 0x00633590
 
-struct Item { char pad0[0xF6]; unsigned short format; char padF8[5]; unsigned char level; char padFE[0x35]; unsigned char spawnable; char pad134[0x74]; };
-
-struct ItemRecordTable { int count; Item* records; };
-
-ItemRecordTable* __stdcall sub_00633590(); // 0x00633590
-
-unsigned __fastcall ITEMS_RollLimitedRandomNumber(Seed*,int); // 0x0045C3E0
+unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
 int __stdcall ITEMS_CheckItemTypeIdByItemId(int,int); // 0x00629A90
 
@@ -1052,29 +1044,54 @@ static int __stdcall PLRTRADE_CheckCubeInputs(D2GameStrc* pGame, D2CubeItemStrc*
 }
 
 // 0x00565930
-short __fastcall PLRTRADE_RollRandomItemClassOfSameType(Game* game,int level,int type)
+unsigned short __fastcall PLRTRADE_RollRandomItemClassOfSameType(D2GameStrc* pGame, int nLevel, int nItemType)
 {
     short choices[256];
-    ItemRecordTable* table=sub_00633590();
-    int count=0;
-    if(!table) { FOG_DisplayHalt("",sub_00408090(),0x384); exit(-1); }
-    int start=ITEMS_RollLimitedRandomNumber(&game->seed,table->count);
-    int stop=start-1;
-    if(stop<0) stop=table->count-1;
-    int index=start;
-    while(index!=stop) {
-        if(count>=256) break;
-        if(ITEMS_CheckItemTypeIdByItemId(index,type)) {
-            Item* record=&table->records[index];
-            if(record->spawnable && (record->format<EXPANSION_FORMAT || game->format>=EXPANSION_FORMAT) && record->level<=level) {
-                choices[count++]=(short)index;
+    D2ItemDataTbl* pItemDataTables = DATATBLS_GetItemDataTables();
+    int nCount = 0;
+    if (!pItemDataTables)
+    {
+        FOG_DisplayHalt("", sub_00408090(), 0x384);
+        exit(-1);
+    }
+
+    const int nStart = ITEMS_RollLimitedRandomNumber(&pGame->pGameSeed, pItemDataTables->nItemsTxtRecordCount);
+    int nStop = nStart - 1;
+    if (nStop < 0)
+    {
+        nStop = pItemDataTables->nItemsTxtRecordCount - 1;
+    }
+
+    int nIndex = nStart;
+    while (nIndex != nStop)
+    {
+        if (nCount >= 256)
+        {
+            break;
+        }
+
+        if (ITEMS_CheckItemTypeIdByItemId(nIndex, nItemType))
+        {
+            D2ItemsTxt* pItemsTxtRecord = &pItemDataTables->pItemsTxt[nIndex];
+            if (pItemsTxtRecord->nSpawnable && (pItemsTxtRecord->wVersion < EXPANSION_FORMAT || pGame->wItemFormat >= EXPANSION_FORMAT) && pItemsTxtRecord->nLevel <= nLevel)
+            {
+                choices[nCount++] = (short)nIndex;
             }
         }
-        ++index;
-        if(index>=table->count) index=0;
+
+        ++nIndex;
+        if (nIndex >= pItemDataTables->nItemsTxtRecordCount)
+        {
+            nIndex = 0;
+        }
     }
-    if(!count) return 0;
-    return choices[ITEMS_RollLimitedRandomNumber(&game->seed,count)];
+
+    if (!nCount)
+    {
+        return 0;
+    }
+
+    return choices[ITEMS_RollLimitedRandomNumber(&pGame->pGameSeed, nCount)];
 }
 
 // 0x00565A80

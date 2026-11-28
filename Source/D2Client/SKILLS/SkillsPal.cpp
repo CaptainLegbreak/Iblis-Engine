@@ -18,7 +18,7 @@ struct D2GameStrc;
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
 int __fastcall DATATBLS_ApplyRatio(int nValue, int nMultiplier, int nDivisor); // 0x00483360
-extern "C" D2CharStatsTxt* __fastcall sub_004833E0_GetCharStatsTxtRecord(int nClass); // 0x004833E0
+extern "C" D2CharStatsTxt* __fastcall INV_GetCharStatsTxtRecord(int nClass); // 0x004833E0
 D2UnitStrc* __stdcall SUNIT_GetTargetUnit(D2GameStrc*, D2UnitStrc*); // 0x00553540
 void __fastcall SUNIT_SetCombatMode(D2GameStrc*, D2UnitStrc*, int); // 0x00553570
 int __fastcall SKILLS_StartBasicAttack(D2GameStrc*, D2UnitStrc*, D2UnitStrc*); // 0x0056E230
@@ -171,7 +171,7 @@ int __fastcall SKILLSPAL_StartCharge(D2UnitStrc* pUnit,int nSkillId,int nSkillLe
  int nVelocity=256;
  SKILLS_SetParam4(pSkill,7);
  if(UNITS_GetUnitTypeChecked(pUnit)==0){
-  D2CharStatsTxt* rec=sub_004833E0_GetCharStatsTxtRecord(pUnit->dwClassId);
+  D2CharStatsTxt* rec=INV_GetCharStatsTxtRecord(pUnit->dwClassId);
   if(rec)nVelocity=rec->nRunSpeed<<8;
  }else{
   int id=pUnit->dwClassId;

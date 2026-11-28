@@ -22,7 +22,7 @@ inline unsigned __int64 SEED_RollRandomNumberInline(D2SeedStrc* pSeed)
 
 
 // 0x0045C4B0
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId)
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId)
 {
     if (nSkillId >= 0 && nSkillId < sgptDataTables->nSkillsTxtRecordCount)
         return &sgptDataTables->pSkillsTxt[nSkillId];

@@ -5235,8 +5235,8 @@ int __stdcall CHATDLG_JoinByName(int nArg)
     {
         UNICODE_ToAscii(szName, pName, 0x100);
         UNICODE_ToAscii(szPassword, pPassword, 0x100);
-        sub_00411320_CapitalizeWords(szName);
-        sub_00411320_CapitalizeWords(szPassword);
+        STRING_CapitalizeWords(szName);
+        STRING_CapitalizeWords(szPassword);
 
         if (MCPCONNECT_QueryAddress())
         {

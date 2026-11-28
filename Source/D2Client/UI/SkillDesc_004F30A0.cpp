@@ -1255,7 +1255,7 @@ int __fastcall SKILLDESC_CreateCorpseExplosionMissiles(D2UnitStrc* pUnit, int nS
     else if (pMonStats2TxtRecord->nFlags[1] & gdwBitMasks[3])
     {
         SKILLS_SpawnMissileRing(pUnit, &tMissileParams, 3, 3);
-        const short nSubMissile = sub_0046ACE0_GetMissilesTxtRecord(nMissile)->wSubMissile[0];
+        const short nSubMissile = VIEW_GetMissilesTxtRecord(nMissile)->wSubMissile[0];
         if (nSubMissile > 0 && nSubMissile < sgptDataTables->nMissilesTxtRecordCount)
         {
             tMissileParams.nMissile = nSubMissile;
@@ -1265,7 +1265,7 @@ int __fastcall SKILLDESC_CreateCorpseExplosionMissiles(D2UnitStrc* pUnit, int nS
     else
     {
         SKILLS_SpawnMissileRing(pUnit, &tMissileParams, 2, 2);
-        const short nSubMissile = sub_0046ACE0_GetMissilesTxtRecord(nMissile)->wSubMissile[1];
+        const short nSubMissile = VIEW_GetMissilesTxtRecord(nMissile)->wSubMissile[1];
         if (nSubMissile > 0 && nSubMissile < sgptDataTables->nMissilesTxtRecordCount)
         {
             tMissileParams.nMissile = nSubMissile;

@@ -14,14 +14,14 @@ class Report
 public:
     Report();
     virtual ~Report();
-    bool sub_004011F0_Close();
-    bool sub_00401210_IsOpen();
+    bool Close(); // 0x004011F0
+    bool IsOpen(); // 0x00401210
     int sub_00401380(const char* szFormat, ...);
-    char* sub_004072A0_GetLine(int nIndex);
+    char* GetLine(int nIndex); // 0x004072A0
     int Printf(const char* szFormat, ...);
     char* sub_00407270_GetText08();
     char* sub_00407280_GetText408();
-    int sub_00407290_GetLineCount();
+    int GetLineCount(); // 0x00407290
 
     _iobuf* m_pFile;
     char m_szText08[0x400];
@@ -82,7 +82,7 @@ crashy::Report::~Report()
 }
 
 // 0x004011F0
-bool crashy::Report::sub_004011F0_Close()
+bool crashy::Report::Close()
 {
     if (m_pFile)
     {
@@ -93,7 +93,7 @@ bool crashy::Report::sub_004011F0_Close()
 }
 
 // 0x00401210
-bool crashy::Report::sub_00401210_IsOpen()
+bool crashy::Report::IsOpen()
 {
     return m_pFile != 0;
 }
@@ -119,13 +119,13 @@ char* crashy::Report::sub_00407280_GetText408()
 }
 
 // 0x00407290
-int crashy::Report::sub_00407290_GetLineCount()
+int crashy::Report::GetLineCount()
 {
     return m_nLineCount;
 }
 
 // 0x004072A0
-char* crashy::Report::sub_004072A0_GetLine(int nIndex)
+char* crashy::Report::GetLine(int nIndex)
 {
     return m_aszLines[nIndex];
 }
@@ -156,7 +156,7 @@ void __cdecl sub_00407300_Empty()
 }
 
 // 0x00407540
-static inline void sub_00407540_MakeAppSubdir(char* szPath, unsigned int nSize)
+static inline void ERRORMANAGER_MakeAppSubdir(char* szPath, unsigned int nSize)
 {
     *szPath = 0;
     if (EXCEPTIONS_GetAppPath(szPath, nSize))
@@ -168,7 +168,7 @@ static inline void sub_00407540_MakeAppSubdir(char* szPath, unsigned int nSize)
 
 void __fastcall sub_M111_Emit_00407540(char* szPath, unsigned int nSize, int* pDone)
 {
-    sub_00407540_MakeAppSubdir(szPath, nSize);
+    ERRORMANAGER_MakeAppSubdir(szPath, nSize);
     *pDone = 1;
 }
 

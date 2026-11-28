@@ -60,7 +60,7 @@ void __cdecl sub_004B17A0_ProcessNpcEntries()
 }
 
 // 0x004B1D70
-int __cdecl sub_004B1D70_FindNpcEntry()
+int __cdecl NPCMENU_FindNpcEntry()
 {
     int i = 0;
     int bFound = 0;

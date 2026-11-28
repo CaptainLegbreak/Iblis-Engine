@@ -8,6 +8,7 @@
 #include "D2GameClient.h"
 #include "FogApi.h"
 #include "D2CommonApi.h"
+#include "D2SquelchList.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -110,12 +111,6 @@ struct D2PlayerDataStrc;
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-class D2SquelchListStrc
-{
-public:
-    virtual void Squelch(const char* szName);
-    virtual void Unsquelch(const char* szName);
-};
 
 
 void __fastcall MSG_SendPvpCommand(int nCommand, int nUnitId, int bSet); // 0x00478740

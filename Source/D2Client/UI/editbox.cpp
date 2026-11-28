@@ -22,7 +22,6 @@ class ButtonImplementation;
 class EditBoxImplementation;
 class ButtonWrapper;
 class EditBoxWrapper;
-class SpinnerImplementation;
 
 typedef int (__fastcall* EDITBOX_FILTER)(EditBoxImplementation* pEditBox, SMSGHANDLER_PARAMS* pMsg);
 typedef void (*EDITBOX_CALLBACK)();
@@ -151,68 +150,7 @@ public:
     EditBoxImplementation* pImpl;
 };
 
-class SpinnerImplementation : public UIWidget
-{
-public:
-    SpinnerImplementation(int nX, int nY, int bHorizontal, int nArg0C);
-    virtual ~SpinnerImplementation();
-    virtual void Draw();
-    virtual int OnMouseWheel(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnLButtonDown(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnLButtonUp(SMSGHANDLER_PARAMS* pMsg);
-    virtual int MsgSlot05(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnKeyDown(SMSGHANDLER_PARAMS* pMsg);
-    virtual int MsgSlot07(SMSGHANDLER_PARAMS* pMsg);
-    virtual int MsgSlot08(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnKeyRight(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnKeyLeft(SMSGHANDLER_PARAMS* pMsg);
-    virtual int GetValue();
-    virtual int sub_004BBFB0_GetRepeatStep();
 
-    int HitTestUpArrow(SMSGHANDLER_PARAMS* pMsg);
-    int HitTestDownArrow(SMSGHANDLER_PARAMS* pMsg);
-
-    int nX;
-    int nY;
-    int nUpX;
-    int nUpY;
-    int nDownX;
-    int nDownY;
-    int bWheelStep;
-    int nArrowHeight;
-    int nArrowWidth;
-    int f_2C;
-    int bMouseDown;
-    int bUpPressed;
-    int bDownPressed;
-    void (__cdecl* pfUnk0x3C)();
-    unsigned int nUnk0x3CCalls;
-    unsigned int unk0x44;
-    unsigned int dwLastStepTick;
-    int unk0x4C;
-    void* pCellFile;
-};
-
-class SpinnerWrapper : public UIWidget
-{
-public:
-    SpinnerWrapper(int nX, int nY, int bHorizontal, int nArg0C);
-    virtual ~SpinnerWrapper();
-    virtual void Draw();
-    virtual int OnMouseWheel(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnLButtonDown(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnLButtonUp(SMSGHANDLER_PARAMS* pMsg);
-    virtual int MsgSlot05(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnKeyDown(SMSGHANDLER_PARAMS* pMsg);
-    virtual int MsgSlot07(SMSGHANDLER_PARAMS* pMsg);
-    virtual int MsgSlot08(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnKeyRight(SMSGHANDLER_PARAMS* pMsg);
-    virtual int OnKeyLeft(SMSGHANDLER_PARAMS* pMsg);
-    virtual int GetValue();
-    virtual int sub_004BC330_ForwardSlot30(int nArg);
-
-    SpinnerImplementation* pImpl;
-};
 
 #pragma pack(pop)
 
@@ -234,33 +172,7 @@ int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
 
-struct D2MouseMessageStrc
-{
-    char unk_00[0xC];
-    unsigned short nX;
-    unsigned short nY;
-};
 
-struct D2ButtonPairStrc
-{
-    char unk_00[0x10];
-    int nFirstX;
-    int nFirstY;
-    int nSecondX;
-    int nSecondY;
-    int unk_20;
-    int nHeight;
-    int nWidth;
-    int unk_2C;
-    int f_30;
-    int bFirst;
-    int bSecond;
-    void (__cdecl* pCallback)();
-    int unk_40;
-    unsigned long nTick;
-    int unk_48;
-    int bInvoking;
-};
 
 extern "C" void _ReadWriteBarrier(void);
 

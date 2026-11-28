@@ -13,7 +13,7 @@ static inline wchar_t* wcsrchr(wchar_t* szString, wchar_t nChar)
 }
 
 // 0x004041D0
-static inline int sub_004041D0_VFormatText(char* szDest, size_t nSize, const char* szFormat, va_list args)
+static inline int ERRORMANAGER_VFormatText(char* szDest, size_t nSize, const char* szFormat, va_list args)
 {
     const int nResult = _vsnprintf(szDest, nSize - 1, szFormat, args);
     szDest[nSize - 1] = 0;
@@ -21,13 +21,13 @@ static inline int sub_004041D0_VFormatText(char* szDest, size_t nSize, const cha
 }
 
 // 0x004046D0
-void* __cdecl sub_004046D0_GetCurrentTeb()
+void* __cdecl ERRORMANAGER_GetCurrentTeb()
 {
     return (void*)__readfsdword(0x18);
 }
 
 // 0x004046E0
-static inline const char* sub_004046E0_GetFileName(const char* szPath)
+static inline const char* ERRORMANAGER_GetFileName(const char* szPath)
 {
     const char* pSep = 0;
     const char* p = strrchr(szPath, '/');
@@ -55,10 +55,10 @@ wchar_t* sub_M123_Emit_00404100(wchar_t* szString)
 
 int sub_M123_Emit_004041D0(char* szDest, const char* szFormat, ...)
 {
-    return sub_004041D0_VFormatText(szDest, 0x100, szFormat, (va_list)(&szFormat + 1));
+    return ERRORMANAGER_VFormatText(szDest, 0x100, szFormat, (va_list)(&szFormat + 1));
 }
 
 const char* sub_M123_Emit_004046E0(const char* szPath)
 {
-    return sub_004046E0_GetFileName(szPath);
+    return ERRORMANAGER_GetFileName(szPath);
 }

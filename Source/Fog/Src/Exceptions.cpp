@@ -163,7 +163,7 @@ extern "C" int __cdecl _stricmp(const char* szString1, const char* szString2); /
 
 void __cdecl LOGMANAGER_LogWritePrefixed(const char* szPrefix, const char* szFormat, ...); // 0x00410740
 
-char* __fastcall sub_004113E0_EscapeString(char* szDst, const char* szSrc, int nSize, char cQuote); // 0x004113E0
+char* __fastcall STRING_Escape(char* szDst, const char* szSrc, int nSize, char cQuote); // 0x004113E0
 
 D2ModuleInfoStrc* __fastcall EXCEPTIONS_FindModuleByAddress(unsigned long dwAddress, D2ModuleInfoStrc* pList); // 0x0040BCB0
 
@@ -565,7 +565,7 @@ void __fastcall EXCEPTIONS_DumpAnnotatedStack(void* hProcess, D2ThreadContextStr
             unsigned long dwValueDisplacement;
             const char* szName = gpfnSymGetSymFromAddr(hProcess, dwValue, &dwValueDisplacement, &tSymbol.tSymbol) ? tSymbol.tSymbol.szName : gszUnknown;
             if (!_stricmp(szName, "`string'") && !dwValueDisplacement)
-                LOGMANAGER_LogWritePrefixed("", gszStackStringLine, dwValue, pValueModule->szName, szName, sub_004113E0_EscapeString(szEscaped, (const char*)dwValue, 0x50, 0));
+                LOGMANAGER_LogWritePrefixed("", gszStackStringLine, dwValue, pValueModule->szName, szName, STRING_Escape(szEscaped, (const char*)dwValue, 0x50, 0));
             else
                 LOGMANAGER_LogWritePrefixed("", gszStackSymbolLine, dwValue, pValueModule->szName, szName, dwValueDisplacement);
             nLines += 3;

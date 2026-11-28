@@ -148,7 +148,7 @@ D2BinFileStrc* __stdcall FOG_CreateBinFile(void* pDataBuffer, int nBufferSize); 
 
 int __stdcall FOG_GetRecordCountFromBinFile(D2BinFileStrc* pBinFile); // 0x006BCDE0
 
-void __stdcall FOG_10207(D2BinFileStrc* pBinFile, D2BinFieldStrc* pBinField, void* pTxt, int nRecordCount, int nRecordSize); // 0x006BD780
+void __stdcall FOG_ParseBinFields(D2BinFileStrc* pBinFile, D2BinFieldStrc* pBinField, void* pTxt, int nRecordCount, int nRecordSize); // 0x006BD780
 
 void __stdcall FOG_FreeBinFile(D2BinFileStrc* pBinFile); // 0x006BCDA0
 
@@ -333,7 +333,7 @@ struct D2PetTypeTxt
 };
 
 
-void __stdcall sub_006BD230_AddRecordToLinker(D2TxtLinkStrc* pLinker, int nCode); // 0x006BD230
+void __stdcall FOG_AddLinkCode(D2TxtLinkStrc* pLinker, int nCode); // 0x006BD230
 
 void __stdcall DATATBLS_UnloadCompCodeAndCompileBins(); // 0x00612EA0
 
@@ -950,7 +950,7 @@ void* __stdcall DATATBLS_CompileTxt(void* hArchive, const char* szName, D2BinFie
         nRecordCount = FOG_GetRecordCountFromBinFile(pBinFile);
         pTxt = FOG_AllocPool(0, nRecordSize * nRecordCount, ".\\DATATBLS\\DataTbls.cpp", 2249, 0);
         memset(pTxt, 0, nRecordSize * nRecordCount);
-        FOG_10207(pBinFile, pTbl, pTxt, nRecordCount, nRecordSize);
+        FOG_ParseBinFields(pBinFile, pTbl, pTxt, nRecordCount, nRecordSize);
         FOG_FreeBinFile(pBinFile);
 
         strcpy(szPath, szName);
@@ -983,7 +983,7 @@ void* __stdcall DATATBLS_CompileTxt(void* hArchive, const char* szName, D2BinFie
         nRecordCount = FOG_GetRecordCountFromBinFile(pBinFile);
         pTxt = FOG_AllocPool(0, nRecordSize * nRecordCount, ".\\DATATBLS\\DataTbls.cpp", 2308, 0);
         memset(pTxt, 0, nRecordSize * nRecordCount);
-        FOG_10207(pBinFile, pTbl, pTxt, nRecordCount, nRecordSize);
+        FOG_ParseBinFields(pBinFile, pTbl, pTxt, nRecordCount, nRecordSize);
         FOG_FreeBinFile(pBinFile);
     }
 

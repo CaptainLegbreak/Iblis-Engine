@@ -178,7 +178,7 @@ unsigned char* __stdcall D2CMPPalShiftGetTransform(int nSet, int nIndex); // 0x0
 unsigned int __stdcall D2CMP_10079_GetTileFlags(D2TileLibraryEntryStrc* pTile); // 0x00604BC0
 unsigned int __stdcall SStrHash(const char* szString, unsigned int nFlags, unsigned int nSeed); // 0x00413CE0
 unsigned int __stdcall SStrLen(const char* szString); // 0x00413750
-unsigned int __stdcall sub_00411020_ReadBits(D2BitBufferStrc* pBuffer, int nBits); // 0x00411020
+unsigned int __stdcall BITMANIP_Read(D2BitBufferStrc* pBuffer, int nBits); // 0x00411020
 unsigned int __stdcall SStrPack(char* dest, const char* source, unsigned int limit); // 0x00413800
 void __cdecl sub_0063D710_InitCodes(); // 0x0063D710
 void __fastcall DRLGACTIVATE_RoomExPropagateSetStatus(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom, unsigned char nStatus); // 0x0061B390

@@ -55,7 +55,7 @@ void __stdcall sub_K06_EmitPuttier1(int nValue, int nOther);
 int __stdcall sub_K06_EmitGettier2(int nValue);
 void __stdcall sub_K06_EmitPuttier2(int nValue, int nOther);
 void __fastcall sub_004BA790_ReleaseUnitSfx(void* pUnitSfx, D2UnitStrc* pUnit, int bForce); // 0x004BA790
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
 
 
@@ -692,9 +692,9 @@ void __fastcall PLRSKILLS_StateClearCollision(D2UnitStrc* pUnit, int nState)
 
     SKILLS_SetParam2(pSkill, 0);
     SKILLS_SetParam3(pSkill, 0);
-    if (sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY))
+    if (COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY))
     {
-        D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+        D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
         COLLISION_ResetMaskWithPattern(pRoom, nX, nY, COLLISION_PATTERN_SMALL_UNIT_PRESENCE, 0x100);
     }
 }
@@ -1534,7 +1534,7 @@ int __fastcall PLRSKILLS_SkillStartMarkTarget(D2UnitStrc* pUnit, int nSkillId, i
 
     SKILLS_SetParam2(pSkill, nX);
     SKILLS_SetParam3(pSkill, nY);
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
     COLLISION_SetMaskWithPattern(pRoom, nX, nY, 1, 0x100);
     return 1;
 }

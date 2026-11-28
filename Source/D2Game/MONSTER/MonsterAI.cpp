@@ -106,7 +106,7 @@ extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 void __fastcall AITACTICS_AddMessage(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pScrollTarget, unsigned short wMessage, int bScrollMessage); // 0x005DE330
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
 void __fastcall D2GAME_SetSkills(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int bRemove); // 0x0056DEB0
 
@@ -306,7 +306,7 @@ void __fastcall MONSTERAI_UpdateMercStatsAndSkills(D2GameStrc* ptGame, D2UnitStr
             return;
         }
 
-        D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(pHirelingTxtRecord->dwSkill[i]);
+        D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(pHirelingTxtRecord->dwSkill[i]);
         if (pSkillsTxtRecord && nLevel >= pSkillsTxtRecord->wReqLevel)
         {
             int nSkillLevel = pHirelingTxtRecord->nLevel[i] + (nLevelUps * pHirelingTxtRecord->nSLvlPerLvl[i] >> 5);

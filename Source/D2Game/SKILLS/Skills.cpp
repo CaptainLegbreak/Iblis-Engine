@@ -108,7 +108,7 @@ int __stdcall PATH_ComputeSquaredDistance(int nX1, int nY1, int nX2, int nY2); /
 #include "D2CommonApi2.h"
 #include "D2CommonApi3.h"
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
 
 
 int __fastcall SKILLS_ConsumeItemQuantity(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pItem); // 0x0056C310
@@ -203,7 +203,7 @@ void __stdcall UNITFINDS_InitializeUnitFindData(D2PoolSystemStrc* pMemPool, D2Un
 
 typedef void (__fastcall* SKILLS_AREAEFFECTFN)(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pTarget, int nSkillLevel, int nParam);
 
-extern "C" D2PetTypeTxt* __fastcall sub_00478A20_GetPetTypeTxtRecord(int petType); // 0x00478A20
+extern "C" D2PetTypeTxt* __fastcall ROSTERPETS_GetPetTypeTxtRecord(int petType); // 0x00478A20
 
 
 typedef char H15_CheckSkillsTxtSize[sizeof(D2SkillsTxt) == 0x23C ? 1 : -1];
@@ -279,7 +279,7 @@ static int __stdcall SKILLS_ConsumeItemSkillCharge(D2GameStrc*, D2SkillStrc*, in
 
 int __fastcall D2GAME_RollElementalDamage(D2UnitStrc* pUnit, D2DamageStrc* pDamage, int nSkillId, int nSkillLevel); // 0x0056E0C0
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
 struct D2CurseStrc;
 
@@ -416,7 +416,7 @@ typedef int (__fastcall* SKILLSTARTFUNC)(D2GameStrc* pGame, D2UnitStrc* pUnit, i
 
 extern SKILLSTARTFUNC gpfnSkillSrvStartFunctions[];                                                    // 0x00732140
 
-D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId);                          // 0x0046ACE0
+D2MissilesTxt* __fastcall VIEW_GetMissilesTxtRecord(int nMissileId);                          // 0x0046ACE0
 
 
 
@@ -877,7 +877,7 @@ void __fastcall SKILLS_UpdatePetLimitForSkill(D2GameStrc* pGame, D2UnitStrc* pPl
         return;
     }
 
-    D2PetTypeSkillListStrc* pPetTypeTxtRecord = (D2PetTypeSkillListStrc*)sub_00478A20_GetPetTypeTxtRecord((signed char)pSkillsTxtRecord->nPetType);
+    D2PetTypeSkillListStrc* pPetTypeTxtRecord = (D2PetTypeSkillListStrc*)ROSTERPETS_GetPetTypeTxtRecord((signed char)pSkillsTxtRecord->nPetType);
     if (!pPetTypeTxtRecord)
     {
         return;
@@ -887,7 +887,7 @@ void __fastcall SKILLS_UpdatePetLimitForSkill(D2GameStrc* pGame, D2UnitStrc* pPl
     for (int i = 0; i < pPetTypeTxtRecord->nSkillCount; ++i)
     {
         const int nPetSkillId = pPetTypeTxtRecord->wSkillIds[i];
-        D2SkillsTxt* pPetSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nPetSkillId);
+        D2SkillsTxt* pPetSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nPetSkillId);
         if (pPetSkillsTxtRecord)
         {
             D2SkillStrc* pSkill = SKILLS_GetHighestLevelSkillFromUnitAndId(pPlayer, nPetSkillId);
@@ -1344,7 +1344,7 @@ int __fastcall SKILLS_IterateTargetsAroundTarget(D2GameStrc* pGame, unsigned int
         return 0;
     }
 
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
     if (!pRoom)
     {
         return 0;
@@ -1835,7 +1835,7 @@ int __fastcall SKILLS_SrvSt03_Unsummon(D2GameStrc* game, D2UnitStrc* unit, int s
         return 0;
     if (AIGENERAL_GetMinionOwner(target) != unit)
         return 0;
-    D2PetTypeTxt* petType = sub_00478A20_GetPetTypeTxtRecord(PLAYERPETS_GetPetTypeFromPetGUID(unit, target->dwUnitId));
+    D2PetTypeTxt* petType = ROSTERPETS_GetPetTypeTxtRecord(PLAYERPETS_GetPetTypeFromPetGUID(unit, target->dwUnitId));
     if (!petType)
         return 0;
     if (!(petType->nPetFlags[0] & gdwBitMasks[3]))
@@ -2431,7 +2431,7 @@ int __fastcall SKILLS_ExecuteSkill(D2GameStrc* pGame, D2UnitStrc* pUnit, int nSk
         nResult = pDoFunc(pGame, pUnit, nSkillId, nSkillLevel);
     }
 
-    if (pSkillsTxtRecord->wSrvMissile >= 0 && sub_0046ACE0_GetMissilesTxtRecord(pSkillsTxtRecord->wSrvMissile))
+    if (pSkillsTxtRecord->wSrvMissile >= 0 && VIEW_GetMissilesTxtRecord(pSkillsTxtRecord->wSrvMissile))
     {
         pUnit->dwFlags |= UNITFLAG_SKSRVDOFUNC;
 
@@ -2724,7 +2724,7 @@ D2UnitStrc* __fastcall D2GAME_CreateLinkPortal(D2GameStrc* pGame, int nUnused, D
 
     if (QUESTS_PortalCheck(pGame, &coords, nSourceLevel, &pRoom))
     {
-        pRoom = sub_00463740_FindRoomAtPoint(pRoom, coords.nX, coords.nY);
+        pRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, coords.nX, coords.nY);
     }
 
     if (!pRoom)
@@ -2809,7 +2809,7 @@ int __fastcall D2GAME_CreatePortalObject(D2GameStrc* pGame, D2UnitStrc* pUnit, D
     const int nTargetX = coords.nX;
     const int nTargetY = coords.nY;
 
-    D2ActiveRoomStrc* pTargetRoom = sub_00463740_FindRoomAtPoint(hRoom, nTargetX, nTargetY);
+    D2ActiveRoomStrc* pTargetRoom = COLLISION_GetRoomBySubTileCoordinates(hRoom, nTargetX, nTargetY);
     if (!pTargetRoom)
     {
         return 0;
@@ -3098,7 +3098,7 @@ D2UnitStrc* __fastcall D2GAME_SummonPet(D2GameStrc* pGame, D2SummonArgStrc* pSum
     }
 
     D2ActiveRoomStrc* pOwnerRoom = UNITS_GetRoom(pSummonArg->pOwner);
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(pOwnerRoom, nX, nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(pOwnerRoom, nX, nY);
     if (!pRoom)
     {
         return 0;
@@ -3192,7 +3192,7 @@ void __fastcall SKILLS_ApplyCurseAroundTarget(D2GameStrc* pGame, int nFlags, D2U
         findArg.nX = nX;
         findArg.nY = nY;
         findArg.nSize = nRange;
-        D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+        D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
         if (pRoom)
         {
             D2UnitFindDataStrc findData;
@@ -3225,7 +3225,7 @@ void __fastcall SKILLS_ApplyAreaEffect(D2GameStrc* pGame, D2EffectStrc* pEffect)
     unitFindArg.nY = pEffect->nY;
     unitFindArg.nSize = nParam;
 
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pEffect->pUnit), pEffect->nX, pEffect->nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pEffect->pUnit), pEffect->nX, pEffect->nY);
     if (pRoom)
     {
         D2UnitFindDataStrc unitFindData;
@@ -3547,7 +3547,7 @@ void __fastcall D2GAME_AssignSkill(D2UnitStrc* pUnit, int bLeftSkill, int nSkill
     {
         if (pRightSkill)
         {
-            D2SkillsTxt* pRightSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(pRightSkill, ".\\SKILLS\\Skills.cpp", 3507));
+            D2SkillsTxt* pRightSkillsTxtRecord = SCMD_GetSkillsTxtRecord(SKILLS_GetSkillIdFromSkill(pRightSkill, ".\\SKILLS\\Skills.cpp", 3507));
             if (pRightSkillsTxtRecord && pRightSkillsTxtRecord->nFlags[SKILLSFLAGINDEX_AURA >> 3] & gdwBitMasks[SKILLSFLAGINDEX_AURA & 7])
             {
                 if (pRightSkillsTxtRecord->nAuraState >= 0 || pRightSkillsTxtRecord->nAuraState < sgptDataTables->nStatesTxtRecordCount)

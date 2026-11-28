@@ -180,7 +180,7 @@ int __fastcall GAME_GetUnitTypeOrInvalid(D2UnitStrc* pUnit); // 0x0044BE50
 extern "C" __declspec(dllimport) int __stdcall PtInRect(const tagRECT*,tagPOINT);
 
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc*,int,int); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc*,int,int); // 0x00463740
 
 
 
@@ -939,7 +939,7 @@ D2UnitStrc* __fastcall D2GAME_SpawnNormalMonster(D2UnkMonCreateStrc* pCreate)
     if(pRecord2->nSpawnCol==1 && !(pCreate->nMonsterId>=0x102 && pCreate->nMonsterId<=0x107) && pCreate->nMonsterId!=MONSTER_HELLMETEOR)
     {
         MONSTERSPAWN_FindFloorPosition(pRoom,&nSpawnX,&nSpawnY);
-        pRoom=sub_00463740_FindRoomAtPoint(pRoom,nSpawnX,nSpawnY);
+        pRoom=COLLISION_GetRoomBySubTileCoordinates(pRoom,nSpawnX,nSpawnY);
     }
     else
     {

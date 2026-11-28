@@ -69,7 +69,7 @@ extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 #include "D2GfxApi.h"
 
 
-D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId); // 0x0046ACE0
+D2MissilesTxt* __fastcall VIEW_GetMissilesTxtRecord(int nMissileId); // 0x0046ACE0
 
 int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
 
@@ -148,7 +148,7 @@ extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
 
 
 
@@ -756,7 +756,7 @@ int __fastcall SKILLS_SrvSt47_Jump(D2GameStrc* pGame, D2UnitStrc* pUnit, int nSk
         nY = 2 * nTargetY - CLIENTS_GetUnitY(pUnit);
     }
 
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
     if (!pRoom)
     {
         return 0;
@@ -1012,7 +1012,7 @@ int __fastcall SKILLS_SrvSt49_Nest_EvilHutSpawner(D2GameStrc* pGame, D2UnitStrc*
     SKILLS_SetParam3(pSkill, nY);
     SKILLS_SetParam4(pSkill, nSpawnMode);
 
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
     COLLISION_SetMaskWithPattern(pRoom, nX, nY, 1, 0x100);
     SUNIT_SetUninterruptable(pUnit, 1);
     D2GAME_EVENTS_Delete(pGame, pUnit, EVENTTYPE_ENDANIM, 0);
@@ -1041,7 +1041,7 @@ int __fastcall SKILLS_SrvDo091_Nest_EvilHutSpawner(D2GameStrc* pGame, D2UnitStrc
     const int nY = SKILLS_GetParam3(pSkill);
     const int nAnimMode = SKILLS_GetParam4(pSkill);
 
-    D2ActiveRoomStrc* pRoom = sub_00463740_FindRoomAtPoint(UNITS_GetRoom(pUnit), nX, nY);
+    D2ActiveRoomStrc* pRoom = COLLISION_GetRoomBySubTileCoordinates(UNITS_GetRoom(pUnit), nX, nY);
     if (!pRoom || !nX || !nY)
     {
         return 0;
@@ -1410,7 +1410,7 @@ int __fastcall SKILLS_SrvDo095_MonInferno(D2GameStrc* pGame, D2UnitStrc* pUnit, 
         return 0;
     }
 
-    D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(nMissile);
+    D2MissilesTxt* pMissilesTxtRecord = VIEW_GetMissilesTxtRecord(nMissile);
     D2MissileStrc missileParams;
     memset(&missileParams, 0, sizeof(missileParams));
     missileParams.dwFlags = 0x25;
@@ -1478,7 +1478,7 @@ int __fastcall SKILLS_SrvDo152_DiabLight(D2GameStrc* pGame, D2UnitStrc* pUnit, i
         return 0;
     }
 
-    D2MissilesTxt* pMissilesTxtRecord = sub_0046ACE0_GetMissilesTxtRecord(nMissile);
+    D2MissilesTxt* pMissilesTxtRecord = VIEW_GetMissilesTxtRecord(nMissile);
     D2MissileStrc missileParams;
     memset(&missileParams, 0, sizeof(missileParams));
     missileParams.dwFlags = 0x25;
@@ -1670,7 +1670,7 @@ int __fastcall SKILLS_SrvDo098_MonTeleport(D2GameStrc* pGame, D2UnitStrc* pUnit,
     const int nY = D2COMMON_10176_PathGetFirstPointY(pUnit->pDynamicPath);
 
     D2ActiveRoomStrc* pRoom = UNITS_GetRoom(pUnit);
-    pRoom = sub_00463740_FindRoomAtPoint(pRoom, nX, nY);
+    pRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY);
     if (!pRoom)
     {
         D2UnitStrc* pOwner = AIGENERAL_GetMinionOwner(pUnit);
@@ -2573,7 +2573,7 @@ int __fastcall SKILLS_SrvDo148_DoomKnightMissile(D2GameStrc* pGame, D2UnitStrc* 
 
     const unsigned char nComponent = (pUnit && pUnit->dwUnitType == UNIT_MONSTER && pUnit->pMonsterData) ? pUnit->pMonsterData->nComponent[10] : 0;
     nMissileId += nComponent;
-    if (nMissileId >= sgptDataTables->nMissilesTxtRecordCount || !sub_0046ACE0_GetMissilesTxtRecord(nMissileId))
+    if (nMissileId >= sgptDataTables->nMissilesTxtRecordCount || !VIEW_GetMissilesTxtRecord(nMissileId))
     {
         return 0;
     }
@@ -2617,7 +2617,7 @@ int __fastcall SKILLS_SrvDo149_NecromageMissile(D2GameStrc* pGame, D2UnitStrc* p
 
     const unsigned char nComponent = (pUnit && pUnit->dwUnitType == UNIT_MONSTER && pUnit->pMonsterData) ? pUnit->pMonsterData->nComponent[11] : 0;
     nMissileId += nComponent;
-    if (nMissileId >= sgptDataTables->nMissilesTxtRecordCount || !sub_0046ACE0_GetMissilesTxtRecord(nMissileId))
+    if (nMissileId >= sgptDataTables->nMissilesTxtRecordCount || !VIEW_GetMissilesTxtRecord(nMissileId))
     {
         return 0;
     }
@@ -2661,7 +2661,7 @@ int __fastcall SKILLS_SrvDo110_Hireable_RogueMissile(D2GameStrc* pGame, D2UnitSt
     int nMissileId = D2COMMON_11039_CheckWeaponIsMissileBased(pUnit, &nSkillLevel);
     if (nMissileId && nMissileId != MISSILE_BOLT)
     {
-        if (sub_0046ACE0_GetMissilesTxtRecord(nMissileId))
+        if (VIEW_GetMissilesTxtRecord(nMissileId))
         {
             SKILLS_CreateMissileAtOffset(pGame, nMissileId, pUnit, nSkillId, nSkillLevel, 0, 0, 0, 0, 0);
             return 1;
@@ -2671,7 +2671,7 @@ int __fastcall SKILLS_SrvDo110_Hireable_RogueMissile(D2GameStrc* pGame, D2UnitSt
     }
 
     nMissileId = pSkillsTxtRecord->wSrvMissileA;
-    if (nMissileId < 0 || nMissileId >= sgptDataTables->nMissilesTxtRecordCount || !sub_0046ACE0_GetMissilesTxtRecord(nMissileId))
+    if (nMissileId < 0 || nMissileId >= sgptDataTables->nMissilesTxtRecordCount || !VIEW_GetMissilesTxtRecord(nMissileId))
     {
         return 0;
     }
@@ -2806,7 +2806,7 @@ D2UnitStrc* __fastcall SKILLS_CreateSpiderLayMissile(D2GameStrc* pGame, D2UnitSt
         const int nX = nUnitX + nXOffset;
         const int nY = nUnitY + nYOffset;
         D2ActiveRoomStrc* pRoom = UNITS_GetRoom(pUnit);
-        sub_00463740_FindRoomAtPoint(pRoom, nX, nY);
+        COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY);
         D2MissileStrc missileParams;
         memset(&missileParams, 0, sizeof(missileParams));
         missileParams.dwFlags = 0x21;

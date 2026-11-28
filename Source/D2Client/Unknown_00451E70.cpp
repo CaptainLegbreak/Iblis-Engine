@@ -145,16 +145,6 @@ extern void* ghAccelerators; // 0x007A0708
 
 enum { USE_RESULT = 0 };
 
-class D2SquelchListStrc
-{
-public:
-    virtual void Squelch(const char* szName);
-    virtual void Unsquelch(const char* szName);
-    virtual int IsSquelched(const char* szName);
-    virtual void VirtSlot3();
-    virtual void VirtSlot4();
-    virtual int IsFiltered(const char* szText);
-};
 
 
 
@@ -389,7 +379,7 @@ inline D2ItemTypesTxt* DATATBLS_GetItemTypesTxtRecord(int nItemType)
 
 
 // 0x00478A20
-extern "C" D2PetTypeTxt* __fastcall sub_00478A20_GetPetTypeTxtRecord(int nPetType)
+extern "C" D2PetTypeTxt* __fastcall ROSTERPETS_GetPetTypeTxtRecord(int nPetType)
 {
     if (nPetType >= 0 && nPetType < sgptDataTables->nPetTypeTxtRecordCount)
     {
@@ -400,7 +390,7 @@ extern "C" D2PetTypeTxt* __fastcall sub_00478A20_GetPetTypeTxtRecord(int nPetTyp
 }
 
 // 0x004833E0
-extern "C" D2CharStatsTxt* __fastcall sub_004833E0_GetCharStatsTxtRecord(int nClass)
+extern "C" D2CharStatsTxt* __fastcall INV_GetCharStatsTxtRecord(int nClass)
 {
     if (nClass >= 0 && nClass < sgptDataTables->nCharStatsTxtRecordCount)
     {

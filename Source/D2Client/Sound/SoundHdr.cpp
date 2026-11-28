@@ -47,7 +47,7 @@ void* __fastcall sub_00517079(void* hArchive, const char* szPath, int* pSize, co
 
 D2BinFileStrc* __stdcall FOG_CreateBinFile(void* pDataBuffer, int nBufferSize); // 0x006BD640
 
-void __stdcall FOG_10207(D2BinFileStrc* pBinFile, D2BinFieldStrc* pBinField, void* pTxt, int nRecordCount, int nRecordSize); // 0x006BD780
+void __stdcall FOG_ParseBinFields(D2BinFileStrc* pBinFile, D2BinFieldStrc* pBinField, void* pTxt, int nRecordCount, int nRecordSize); // 0x006BD780
 
 unsigned int gnCacheLastTick; // 0x007BC9C0
 
@@ -84,7 +84,7 @@ void __fastcall D2SOUNDUTIL_ListRemove(D2ClientCacheNodeStrc** ppList, int nId);
 void __fastcall D2SOUNDUTIL_ListAddTail(D2ClientCacheNodeStrc** ppList, int nId); // 0x00516A70
 
 
-int __fastcall sub_004E40A0_RollPlayerSeed(int nRange); // 0x004E40A0
+int __fastcall SKILLDESC_RollPlayerSeed(int nRange); // 0x004E40A0
 
 typedef char NodeFlags[(OFFSET(PlayerNode, flags) == 4) ? 1 : -1];
 
@@ -289,7 +289,7 @@ void __cdecl SOUNDHDR_LoadSoundTables()
     D2SoundsTxt* pSounds = (D2SoundsTxt*)FOG_Alloc(gnClientSoundsTxtRecordCount * sizeof(D2SoundsTxt), ".\\Sound\\SoundHdr.cpp", 0x106, 0);
     sgptSoundHeaderTable = pSounds;
     memset(pSounds, 0, gnClientSoundsTxtRecordCount * sizeof(D2SoundsTxt));
-    FOG_10207(pBinFile, pTbl2, pSounds, gnClientSoundsTxtRecordCount, sizeof(D2SoundsTxt));
+    FOG_ParseBinFields(pBinFile, pTbl2, pSounds, gnClientSoundsTxtRecordCount, sizeof(D2SoundsTxt));
     FOG_FreeBinFile(pBinFile);
 
     wsprintfA(szPath, "%s\\soundenviron.txt", "DATA\\GLOBAL\\EXCEL");
@@ -299,7 +299,7 @@ void __cdecl SOUNDHDR_LoadSoundTables()
     D2SoundEnvironTxtStrc* pSoundEnviron = (D2SoundEnvironTxtStrc*)FOG_Alloc(gnSoundEnvironTxtRecordCount * sizeof(D2SoundEnvironTxtStrc), ".\\Sound\\SoundHdr.cpp", 0x112, 0);
     sgptSoundEnvironTable = pSoundEnviron;
     memset(pSoundEnviron, 0, gnSoundEnvironTxtRecordCount * sizeof(D2SoundEnvironTxtStrc));
-    FOG_10207(pBinFile, pTbl, pSoundEnviron, gnSoundEnvironTxtRecordCount, sizeof(D2SoundEnvironTxtStrc));
+    FOG_ParseBinFields(pBinFile, pTbl, pSoundEnviron, gnSoundEnvironTxtRecordCount, sizeof(D2SoundEnvironTxtStrc));
     FOG_FreeBinFile(pBinFile);
 
     int nGroupStart = 0;
@@ -575,12 +575,12 @@ int __fastcall SOUNDHDR_PickVariant(int nIndex)
         return nIndex;
 
     int nRecent = nVariants - 1 < 2 ? nVariants - 1 : 2;
-    if (nVariants <= 3 && !sub_004E40A0_RollPlayerSeed(nVariants + 1))
+    if (nVariants <= 3 && !SKILLDESC_RollPlayerSeed(nVariants + 1))
         --nRecent;
 
     for (;;)
     {
-        const int nResult = sub_004E40A0_RollPlayerSeed(pEntry->nGroupSize) + nIndex;
+        const int nResult = SKILLDESC_RollPlayerSeed(pEntry->nGroupSize) + nIndex;
         bool bFound = false;
         for (int i = 0; i < nRecent; i++)
         {

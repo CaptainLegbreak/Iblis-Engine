@@ -795,7 +795,7 @@ void __stdcall WALL2_FillGridLight(D2GridCellStrc* pCells, int nX, int nY, int n
 
 void __stdcall WALL2_FillCellLights(D2GridCellStrc* pCells, int nSubX, int nSubY, int nZ, int nMode, int bCorners); // 0x004DE260
 
-int __fastcall sub_00472280_RollInRange(int nSeed, int nZero, int nMax); // 0x00472280
+int __fastcall SEED_RollInRange(int nSeed, int nZero, int nMax); // 0x00472280
 
 static void __stdcall WALL2_BuildSmallFlatGrid(D2GridCoordStrc tX, int nY, int bCorners, D2GridCellStrc* pCells, int nMode); // 0x004DDFD0
 
@@ -1112,7 +1112,7 @@ void __thiscall D2GridLightStrc::ApplyUnitLight(D2GridUnitStrc* pUnit, int nArg,
 
     if (pInfo->wFlags & 2)
     {
-        const int nRoll = sub_00472280_RollInRange(f_1C, 0, 1000);
+        const int nRoll = SEED_RollInRange(f_1C, 0, 1000);
         const int nFixX = nSubX << 16;
         const int nFixY = nSubY << 16;
         if (bEffectA && nRoll < nLimitA)
@@ -1172,7 +1172,7 @@ void __thiscall D2FloorTileViewStrc::UpdateView(void* pArgument)
     bTickFlag = 0;
     bMudFlag = 0;
     nPhase = (int)(sub_00473C80_GetPhaseLevel() * 1000.0);
-    const int nBorderType = sub_0045AE90_GetPanelSlideMode();
+    const int nBorderType = UI_GetPanelSlideMode();
     nBorder = nBorderType;
     pArg = (D2FloorViewArgStrc*)pArgument;
 

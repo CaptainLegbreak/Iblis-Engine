@@ -438,7 +438,7 @@ struct D2CvNb10Strc
 
 struct D2ModuleStrc
 {
-    bool sub_00404AB0_VisitModule(void* pContext, const wchar_t* wszName, int nNameLength);                 // 0x00404AB0
+    bool ERRORMANAGER_VisitModule(void* pContext, const wchar_t* wszName, int nNameLength);                 // 0x00404AB0
 };
 struct D2ModuleEntry32Strc
 {

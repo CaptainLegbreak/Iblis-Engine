@@ -114,7 +114,7 @@ struct D2ThreadContextStrc
     unsigned long SegSs; // 0xC8
     unsigned char ExtendedRegisters[512]; // 0xCC
 
-    int sub_00405060_CaptureFrames(unsigned long dwThreadId, D2StackFrameStrc* pFrames, int nSkipFrames);
+    int CaptureFrames(unsigned long dwThreadId, D2StackFrameStrc* pFrames, int nSkipFrames); // 0x00405060
 };
 
 struct D2StackFrameStrc

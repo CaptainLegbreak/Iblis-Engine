@@ -47,7 +47,7 @@ struct D2BitCodeStrc
 
 extern unsigned int gadwLowMasks[]; // 0x006CE368
 
-unsigned int __stdcall sub_00410F60_ReadBits(D2BitBufferStrc* pBuffer, int nBits); // 0x00410F60
+unsigned int __stdcall BITMANIP_ReadBits(D2BitBufferStrc* pBuffer, int nBits); // 0x00410F60
 
 struct D2TimedRecordStrc
 {
@@ -85,7 +85,7 @@ static void __stdcall ReportHeapError(const char* szFile, int nLine, unsigned in
 
 static void FreeBlock(D2SMemHeapStrc* pHeap, D2SMemBlockStrc* pBlock); // 0x00411AA0
 
-void __cdecl sub_00411280_ResetRecords(); // 0x00411280
+void __cdecl SYSTEM_ResetTimerRecords(); // 0x00411280
 
 extern "C" size_t __cdecl strlen(const char* szString);
 
@@ -124,31 +124,31 @@ static int BNSEND_MapKeyChar(unsigned char cChar)
 }
 
 // 0x00410B10
-void __stdcall sub_00410B10(unsigned char* pBits, int nBit)
+void __stdcall BITMANIP_SetBitState(unsigned char* pBits, int nBit)
 {
     pBits[nBit >> 3] |= gdwBitMasks[nBit & 7];
 }
 
 // 0x00410B30
-int __stdcall sub_00410B30(unsigned char* pBits, int nBit)
+int __stdcall BITMANIP_GetBitState(unsigned char* pBits, int nBit)
 {
     return pBits[nBit >> 3] & gdwBitMasks[nBit & 7];
 }
 
 // 0x00410B50
-void __stdcall sub_00410B50(unsigned char* pBits, int nBit)
+void __stdcall BITMANIP_ClearBitState(unsigned char* pBits, int nBit)
 {
     pBits[nBit >> 3] &= gdwInvBitMasks[nBit & 7];
 }
 
 // 0x00410B70
-void __stdcall sub_00410B70(unsigned char* pBits, int nBit)
+void __stdcall BITMANIP_ToggleBitState(unsigned char* pBits, int nBit)
 {
     pBits[nBit >> 3] ^= gdwBitMasks[nBit & 7];
 }
 
 // 0x00410B90
-void __stdcall sub_00410B90(const unsigned char* pA, const unsigned char* pB, unsigned char* pOut, int nBits)
+void __stdcall BITMANIP_AndBits(const unsigned char* pA, const unsigned char* pB, unsigned char* pOut, int nBits)
 {
     nBits = (nBits + 7) / 8;
     const int nAligned = 4 * (nBits / 4);
@@ -190,7 +190,7 @@ void __stdcall BITMANIP_OrBits(const unsigned char* pA, const unsigned char* pB,
 }
 
 // 0x00410CF0
-void __stdcall sub_00410CF0_NotBits(const unsigned char* pIn, unsigned char* pOut, int nBits)
+void __stdcall BITMANIP_NotBits(const unsigned char* pIn, unsigned char* pOut, int nBits)
 {
     const int nBytes = (nBits + 7) / 8;
     const int nAligned = 4 * (nBytes / 4);
@@ -211,7 +211,7 @@ void __stdcall sub_00410CF0_NotBits(const unsigned char* pIn, unsigned char* pOu
 }
 
 // 0x00410D90
-void __stdcall sub_00410D90_XorBits(const unsigned char* pA, const unsigned char* pB, unsigned char* pOut, int nBits)
+void __stdcall BITMANIP_XorBits(const unsigned char* pA, const unsigned char* pB, unsigned char* pOut, int nBits)
 {
     nBits = (nBits + 7) / 8;
     int nAligned = 4 * (nBits / 4);
@@ -288,7 +288,7 @@ void __stdcall BITMANIP_Write(D2BitBufferStrc* pBuffer, int nValue, int nBits)
 }
 
 // 0x00410F60
-unsigned int __stdcall sub_00410F60_ReadBits(D2BitBufferStrc* pBuffer, int nBits)
+unsigned int __stdcall BITMANIP_ReadBits(D2BitBufferStrc* pBuffer, int nBits)
 {
     int n = pBuffer->nPosBits + nBits + 8 * pBuffer->nPos - pBuffer->nBits;
 
@@ -337,15 +337,15 @@ unsigned int __stdcall sub_00410F60_ReadBits(D2BitBufferStrc* pBuffer, int nBits
 }
 
 // 0x00411020
-unsigned int __stdcall sub_00411020_ReadBits(D2BitBufferStrc* pBuffer, int nBits)
+unsigned int __stdcall BITMANIP_Read(D2BitBufferStrc* pBuffer, int nBits)
 {
-    return sub_00410F60_ReadBits(pBuffer, nBits);
+    return BITMANIP_ReadBits(pBuffer, nBits);
 }
 
 // 0x00411030
 int __stdcall BITMANIP_ReadSigned(D2BitBufferStrc* pBuffer, int nBits)
 {
-    int nValue = sub_00410F60_ReadBits(pBuffer, nBits);
+    int nValue = BITMANIP_ReadBits(pBuffer, nBits);
     if (nBits < 32 && ((1 << (nBits - 1)) & nValue))
     {
         nValue |= ~((1 << nBits) - 1);
@@ -369,13 +369,13 @@ void __stdcall BITMANIP_GoToNextByte(D2BitBufferStrc* pBuffer)
 }
 
 // 0x004110B0
-void __stdcall sub_004110B0_WriteCode(D2BitBufferStrc* pBuffer, D2BitCodeStrc* pCodes, int nIndex)
+void __stdcall BITMANIP_WriteCode(D2BitBufferStrc* pBuffer, D2BitCodeStrc* pCodes, int nIndex)
 {
     BITMANIP_Write(pBuffer, pCodes[nIndex].nValue, pCodes[nIndex].nBits);
 }
 
 // 0x004110D0
-int __stdcall sub_004110D0_ReadTreeCode(D2BitBufferStrc* pBuffer, int* pTree)
+int __stdcall BITMANIP_ReadTreeCode(D2BitBufferStrc* pBuffer, int* pTree)
 {
     int nNode = 0;
     for (;;)
@@ -408,7 +408,7 @@ int __stdcall FOG_ComputeChecksum(unsigned char* pData, int nSize)
 }
 
 // 0x00411170
-int __stdcall sub_00411170_SumByteTable(unsigned char* pData, int nSize)
+int __stdcall BITMANIP_SumByteTable(unsigned char* pData, int nSize)
 {
     int nTotal = 0;
     for (unsigned char* pEnd = pData + nSize; pData < pEnd; ++pData)
@@ -419,7 +419,7 @@ int __stdcall sub_00411170_SumByteTable(unsigned char* pData, int nSize)
 }
 
 // 0x004111A0
-int __stdcall sub_004111A0_GetLowestSetBit(unsigned int nValue)
+int __stdcall BITMANIP_GetLowestSetBit(unsigned int nValue)
 {
     if (nValue)
     {
@@ -433,7 +433,7 @@ int __stdcall sub_004111A0_GetLowestSetBit(unsigned int nValue)
 }
 
 // 0x00411210
-void __cdecl sub_00411210_InitTimer()
+void __cdecl SYSTEM_InitTimer()
 {
     __int64 nFrequency;
     QueryPerformanceFrequency(&nFrequency);
@@ -444,7 +444,7 @@ void __cdecl sub_00411210_InitTimer()
 }
 
 // 0x00411280
-void __cdecl sub_00411280_ResetRecords()
+void __cdecl SYSTEM_ResetTimerRecords()
 {
     for (unsigned int i = 0; i < gnRecordCount; ++i)
     {
@@ -454,7 +454,7 @@ void __cdecl sub_00411280_ResetRecords()
 }
 
 // 0x004112B0
-unsigned long __cdecl sub_004112B0_GetTickCount()
+unsigned long __cdecl SYSTEM_GetTickCount()
 {
     return GetTickCount();
 }
@@ -472,7 +472,7 @@ unsigned short __stdcall FOG_ComputeStringCRC16(const char* szString)
 }
 
 // 0x00411320
-void __stdcall sub_00411320_CapitalizeWords(char* szText)
+void __stdcall STRING_CapitalizeWords(char* szText)
 {
     int bNewWord = 1;
     if (!szText)
@@ -505,7 +505,7 @@ void __stdcall sub_00411320_CapitalizeWords(char* szText)
 }
 
 // 0x004113C0
-void __fastcall sub_004113C0(char* szString, int nLength)
+void __fastcall STRING_ToLowerN(char* szString, int nLength)
 {
     for (char* pEnd = szString + nLength; *szString && szString < pEnd; ++szString)
     {
@@ -514,7 +514,7 @@ void __fastcall sub_004113C0(char* szString, int nLength)
 }
 
 // 0x004113E0
-char* __fastcall sub_004113E0_EscapeString(char* szDst, const char* szSrc, int nSize, char cQuote)
+char* __fastcall STRING_Escape(char* szDst, const char* szSrc, int nSize, char cQuote)
 {
     const char* pSrc = szSrc;
 

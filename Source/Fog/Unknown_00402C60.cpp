@@ -3,17 +3,17 @@
 
 
 extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x006CC134
-bool __stdcall sub_00404C60_EnumModulesPsapi(void* pContext); // 0x00404C60
+bool __stdcall ERRORMANAGER_EnumModulesPsapi(void* pContext); // 0x00404C60
 
 extern "C" size_t __cdecl strlen(const char* szString);
 extern "C" void __cdecl qsort(void* pBase, unsigned int nCount, unsigned int nSize, int (__cdecl* pfCompare)(const void*, const void*)); // 0x00685B50
 int __cdecl ERRORMANAGER_CompareUInt(const void* p1, const void* p2); // 0x00402C10
-static void sub_00402FE0_InitModuleList(D2CrashModuleListStrc* pList);
-static bool sub_00404DC0_EnumModulesToolhelp(void* pContext);
-static bool sub_00404F20_EnumModules(D2CrashModuleListStrc* pList);
+static void ERRORMANAGER_InitModuleList(D2CrashModuleListStrc* pList); // 0x00402FE0
+static bool ERRORMANAGER_EnumModulesToolhelp(void* pContext); // 0x00404DC0
+static bool ERRORMANAGER_EnumModules(D2CrashModuleListStrc* pList); // 0x00404F20
 
 // 0x00402C60
-static void sub_00402C60_FormatModule(char* szOut, const D2CrashModuleStrc* pModule)
+static void ERRORMANAGER_FormatModule(char* szOut, const D2CrashModuleStrc* pModule)
 {
     char szGuid[0x28];
     char szVersion[0x10];
@@ -30,7 +30,7 @@ static void sub_00402C60_FormatModule(char* szOut, const D2CrashModuleStrc* pMod
         pModule->nTimeStamp, szGuid, pModule->nAge, pModule->nTimeDateStamp, szVersion);
 }
 
-static bool sub_00404DC0_EnumModulesToolhelp(void* pContext)
+static bool ERRORMANAGER_EnumModulesToolhelp(void* pContext)
 {
     void* hSnapshot = CreateToolhelp32Snapshot(8, 0);
     if (hSnapshot == (void*)-1)
@@ -43,7 +43,7 @@ static bool sub_00404DC0_EnumModulesToolhelp(void* pContext)
     {
         do
         {
-            if (!tEntry.modBaseAddr->sub_00404AB0_VisitModule(pContext, tEntry.szModule, -1))
+            if (!tEntry.modBaseAddr->ERRORMANAGER_VisitModule(pContext, tEntry.szModule, -1))
             {
                 break;
             }
@@ -55,12 +55,12 @@ static bool sub_00404DC0_EnumModulesToolhelp(void* pContext)
 }
 
 // 0x00404F20
-static bool sub_00404F20_EnumModules(D2CrashModuleListStrc* pList)
+static bool ERRORMANAGER_EnumModules(D2CrashModuleListStrc* pList)
 {
-    bool bResult = sub_00404C60_EnumModulesPsapi(pList);
+    bool bResult = ERRORMANAGER_EnumModulesPsapi(pList);
     if (!bResult)
     {
-        bResult = sub_00404DC0_EnumModulesToolhelp(pList);
+        bResult = ERRORMANAGER_EnumModulesToolhelp(pList);
         if (!bResult)
         {
             return ERRORMANAGER_EnumLoadedModules(pList);
@@ -70,17 +70,17 @@ static bool sub_00404F20_EnumModules(D2CrashModuleListStrc* pList)
 }
 
 // 0x00402EE0
-void __fastcall sub_00402EE0_DumpModules(D2CrashPrintFn pfnPrint, void* pContext)
+void __fastcall ERRORMANAGER_DumpModules(D2CrashPrintFn pfnPrint, void* pContext)
 {
     D2CrashModuleListStrc tList;
     char szLine[0x400];
-    sub_00402FE0_InitModuleList(&tList);
+    ERRORMANAGER_InitModuleList(&tList);
     tList.nCount = 0;
-    sub_00404F20_EnumModules(&tList);
+    ERRORMANAGER_EnumModules(&tList);
     qsort(tList.aModules, tList.nCount, sizeof(D2CrashModuleStrc), ERRORMANAGER_CompareUInt);
     for (unsigned int i = 0; i < tList.nCount; i++)
     {
-        sub_00402C60_FormatModule(szLine, &tList.aModules[i]);
+        ERRORMANAGER_FormatModule(szLine, &tList.aModules[i]);
         const size_t nLength = strlen(szLine);
         if (nLength >= 0x3FF)
         {
@@ -96,7 +96,7 @@ void __fastcall sub_00402EE0_DumpModules(D2CrashPrintFn pfnPrint, void* pContext
     }
 }
 
-static void sub_00402FE0_InitModuleList(D2CrashModuleListStrc* pList)
+static void ERRORMANAGER_InitModuleList(D2CrashModuleListStrc* pList)
 {
     D2CrashModuleStrc* pModule = pList->aModules;
     for (int i = 0xFF; i >= 0; i--)

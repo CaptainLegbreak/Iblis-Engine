@@ -271,7 +271,7 @@ void __fastcall MONSTERMODE_AddSandLeaperKnockback(D2GameStrc* pGame, D2UnitStrc
 unsigned char __fastcall MONSTERMODE_GetHpPercent128(D2UnitStrc* pUnit); // 0x005A5650
 
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
 
 void __fastcall sub_005347B0_Stub5(D2GameStrc* pGame, D2UnitStrc* pAttacker, D2UnitStrc* pDefender, int nChance, int nRand); // 0x005347B0
@@ -314,7 +314,7 @@ void __stdcall D2COMMON_10475_PostStatToStatList(D2UnitStrc* pUnit, D2StatListSt
 void __stdcall STATLIST_SetStat(D2StatListStrc* pStatList, int nStatId, int nValue, int nLayer); // 0x00627150
 
 
-int __fastcall sub_00472210_SeedRollMasked(D2SeedStrc* pSeed, int nMax); // 0x00472210
+int __fastcall SEED_RollMasked(D2SeedStrc* pSeed, int nMax); // 0x00472210
 
 static unsigned int SUNITDMG_GetHitClass(D2DamageStrc* pDamage, unsigned int nBaseHitClass); // 0x0057CE30
 
@@ -364,7 +364,7 @@ struct D2ResistTableEntryStrc;
 
 struct D2UnitFindArgStrc;
 
-int __fastcall sub_00472280_RollInRange(D2SeedStrc*,int,int); // 0x00472280
+int __fastcall SEED_RollInRange(D2SeedStrc*,int,int); // 0x00472280
 
 
 struct D2DamageContextStrc
@@ -396,7 +396,7 @@ typedef int (__fastcall* DAMAGECALLBACK)(D2GameStrc* pGame, D2UnitStrc* pUnit, D
 
 extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(DAMAGECALLBACK lpfn); // 0x006CC34C
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
 
 void __stdcall UNITFINDS_InitializeUnitFindData(D2PoolSystemStrc* pMemPool, D2UnitFindDataStrc* pUnitFindData, D2ActiveRoomStrc* pRoom, int nX, int nY, int nSize, void* pfnUnitTest, D2UnitFindArgStrc* pUnitFindArg); // 0x0065A950
@@ -1195,14 +1195,14 @@ void __fastcall SUNITDMG_FillDamageValues(D2GameStrc* pGame,D2UnitStrc* pAttacke
             if(pWeapon)
             {
                 int nChance=SKILLS_GetWeaponMasteryBonus(pAttacker,pWeapon,0,2);
-                if(nChance>0 && sub_00472280_RollInRange(&pAttacker->pSeed,0,100)<nChance) goto critical;
+                if(nChance>0 && SEED_RollInRange(&pAttacker->pSeed,0,100)<nChance) goto critical;
             }
         }
         {
             int nChance=STATLIST_UnitGetStatValue(pAttacker,STAT_PASSIVE_CRITICAL_STRIKE,0);
-            if(nChance>0 && sub_00472280_RollInRange(&pAttacker->pSeed,0,100)<nChance) goto critical;
+            if(nChance>0 && SEED_RollInRange(&pAttacker->pSeed,0,100)<nChance) goto critical;
             nChance=STATLIST_UnitGetItemStatOrSkillStatValue(pAttacker,STAT_ITEM_DEADLYSTRIKE,0);
-            if(nChance<=0 || sub_00472280_RollInRange(&pAttacker->pSeed,0,100)>=nChance) goto elemental;
+            if(nChance<=0 || SEED_RollInRange(&pAttacker->pSeed,0,100)>=nChance) goto elemental;
         }
 critical:
         pDamage->dwPhysDamage*=2;
@@ -2038,12 +2038,12 @@ static int __stdcall SUNITDMG_ShouldSkipHitRecovery(D2UnitStrc* pUnit, D2DamageS
         return 1;
     }
 
-    if (pDamage->dwDmgTotal < nMaxLife / (nDivisor / 2) && !sub_00472210_SeedRollMasked(&pUnit->pSeed, 2))
+    if (pDamage->dwDmgTotal < nMaxLife / (nDivisor / 2) && !SEED_RollMasked(&pUnit->pSeed, 2))
     {
         return 1;
     }
 
-    if (pDamage->dwDmgTotal < nMaxLife / (nDivisor / 4) && !sub_00472210_SeedRollMasked(&pUnit->pSeed, 4))
+    if (pDamage->dwDmgTotal < nMaxLife / (nDivisor / 4) && !SEED_RollMasked(&pUnit->pSeed, 4))
     {
         return 1;
     }
@@ -2330,7 +2330,7 @@ void __fastcall SUNITDMG_ExecuteMissileDamage(D2GameStrc* pGame, D2UnitStrc* pAt
 
                 if (SKILLS_GetHighestLevelSkillFromUnitAndId(pUnit, nSkillId))
                 {
-                    D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+                    D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nSkillId);
                     if (pSkillsTxtRecord && pSkillsTxtRecord->wStSound > 0)
                     {
                         SUNIT_AttachSound(pUnit, 0x0C, pUnit);
@@ -3152,7 +3152,7 @@ int __fastcall SUNITDMG_SetMissileDamageFlagsForNearbyUnits(D2GameStrc* pGame, D
 
     bResult = 0;
     pRoom = UNITS_GetRoom(pUnit);
-    pRoom = sub_00463740_FindRoomAtPoint(pRoom, nX, nY);
+    pRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY);
 
     nFlags = nUnitFindFlags;
     if (!nUnitFindFlags)

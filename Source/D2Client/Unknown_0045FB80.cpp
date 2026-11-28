@@ -33,7 +33,7 @@ extern int gaSkillButtonState[];
 
 void __stdcall sub_00420290_HandleMsg(SMSGHANDLER_PARAMS* pMsg);
 int __fastcall GAME_GetUnitClassId(D2UnitStrc* pUnit); // 0x00451F60
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 D2UnitStrc* __cdecl sub_00463DD0();
 void __stdcall CURSOR_HandleButtonUp(SMSGHANDLER_PARAMS* pMsg); // 0x00467FA0
 void __fastcall TEXT_DrawCenteredText(int nLeft, int nY, int nRight, const Unicode* wszText, int nColor); // 0x004A7080
@@ -152,11 +152,11 @@ void __stdcall sub_004AB7E0_SkillTreeLButtonDown(SMSGHANDLER_PARAMS* pMsg)
             for (int i = 0; i < SKILLS_GetPlayerSkillCount(nClassId); ++i)
             {
                 const int nSkillId = SKILLS_GetClassSkillId(nClassId, i);
-                D2SkillsTxt* pSkillsTxt = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+                D2SkillsTxt* pSkillsTxt = SCMD_GetSkillsTxtRecord(nSkillId);
                 if (!pSkillsTxt)
                     continue;
 
-                D2SkillDescTxt* pDesc = sub_004A89D0_SkillDescRec(nSkillId);
+                D2SkillDescTxt* pDesc = TEXT_GetSkillDescTxtRecord(nSkillId);
                 if (!pDesc)
                     continue;
 
@@ -238,10 +238,10 @@ void __stdcall sub_004AB7E0_SkillTreeLButtonDown(SMSGHANDLER_PARAMS* pMsg)
             for (int i = 0; i < SKILLS_GetPlayerSkillCount(nClassId); ++i)
             {
                 const int nSkillId = SKILLS_GetClassSkillId(nClassId, i);
-                if (!sub_0045C4B0_GetSkillsTxtRecord(nSkillId))
+                if (!SCMD_GetSkillsTxtRecord(nSkillId))
                     continue;
 
-                D2SkillDescTxt* pDesc = sub_004A89D0_SkillDescRec(nSkillId);
+                D2SkillDescTxt* pDesc = TEXT_GetSkillDescTxtRecord(nSkillId);
                 if (!pDesc)
                     continue;
 
@@ -337,11 +337,11 @@ LNotHandled:
             for (int i = 0; i < SKILLS_GetPlayerSkillCount(nClassId); ++i)
             {
                 const int nSkillId = SKILLS_GetClassSkillId(nClassId, i);
-                D2SkillsTxt* pSkillsTxt = sub_0045C4B0_GetSkillsTxtRecord(nSkillId);
+                D2SkillsTxt* pSkillsTxt = SCMD_GetSkillsTxtRecord(nSkillId);
                 if (!pSkillsTxt)
                     continue;
 
-                D2SkillDescTxt* pDesc = sub_004A89D0_SkillDescRec(nSkillId);
+                D2SkillDescTxt* pDesc = TEXT_GetSkillDescTxtRecord(nSkillId);
                 if (!pDesc)
                     continue;
 

@@ -478,7 +478,7 @@ void __cdecl INV_SetRenderModeDirect3D(); // 0x00477710
 
 void __cdecl INV_SetRenderModeRave(); // 0x00477720
 
-void __fastcall sub_004776C0_SetGamma(int nGamma); // 0x004776C0
+void __fastcall VIEW_SetGamma(int nGamma); // 0x004776C0
 
 void __cdecl D2GFX_EnableVSync(); // 0x004F5270
 
@@ -1699,16 +1699,6 @@ typedef char D2MsgHandlerEntrySize[(sizeof(D2MsgHandlerEntryStrc) == 12) ? 1 : -
 extern int gbGameServerReady; // 0x007A0618
 void __cdecl GAME_DrawLoadingText(); // 0x0044CB60
 unsigned long gdwPingSamples; // 0x007A04CC
-class D2SquelchListStrc
-{
-public:
-    virtual void Squelch(const char* szName);
-    virtual void Unsquelch(const char* szName);
-    virtual int IsSquelched(const char* szName);
-    virtual void VirtSlot3();
-    virtual void VirtSlot4();
-    virtual int IsFiltered(const char* szText);
-};
 struct D2LaunchMsgStrc;
 struct D2MsgRecordStrc;
 struct D2MsgRecordChunkStrc;
@@ -2454,7 +2444,7 @@ void __stdcall GAME_HandleLeftButtonUp(SMSGHANDLER_PARAMS* pMsg)
 static inline int GAME_IsInLeftPanel(int nX, int nY)
 {
     int bLeftPanel = 0;
-    if (sub_0045AE90_GetPanelSlideMode() == 2 && nX > 0 && nX < gnScreenWidth / 2 && nY > 0 && nY < gnScreenHeight - 0x2F)
+    if (UI_GetPanelSlideMode() == 2 && nX > 0 && nX < gnScreenWidth / 2 && nY > 0 && nY < gnScreenHeight - 0x2F)
     {
         bLeftPanel = 1;
     }
@@ -2465,7 +2455,7 @@ static inline int GAME_IsInLeftPanel(int nX, int nY)
 static inline int GAME_IsInRightPanel(int nX, int nY)
 {
     int bRightPanel = 0;
-    if (sub_0045AE90_GetPanelSlideMode() == 1 && nX > gnScreenWidth / 2 && nX < gnScreenWidth && nY > 0 && nY < gnAutomapHeight_007A521C)
+    if (UI_GetPanelSlideMode() == 1 && nX > gnScreenWidth / 2 && nX < gnScreenWidth && nY > 0 && nY < gnAutomapHeight_007A521C)
     {
         bRightPanel = 1;
     }
@@ -2478,19 +2468,19 @@ void __stdcall GAME_HandleRightButtonDown(SMSGHANDLER_PARAMS* pMsg)
     gnRightClickState = 4;
     gbClickHandled = 0;
     SELECT_UnlockHover();
-    if (!gbPositionalSound || sub_0045AE90_GetPanelSlideMode() == 3)
+    if (!gbPositionalSound || UI_GetPanelSlideMode() == 3)
     {
         return;
     }
     const int nY = pMsg->nYpos;
     const int nX = pMsg->nXpos;
     int bLeftPanel = 0;
-    if (sub_0045AE90_GetPanelSlideMode() == 2 && nX > 0 && nX < gnScreenWidth / 2 && nY > 0 && nY < gnScreenHeight - 0x2F)
+    if (UI_GetPanelSlideMode() == 2 && nX > 0 && nX < gnScreenWidth / 2 && nY > 0 && nY < gnScreenHeight - 0x2F)
     {
         bLeftPanel = 1;
     }
     int bRightPanel = 0;
-    if (sub_0045AE90_GetPanelSlideMode() == 1 && nX > gnScreenWidth / 2 && nX < gnScreenWidth && nY > 0 && nY < gnAutomapHeight_007A521C)
+    if (UI_GetPanelSlideMode() == 1 && nX > gnScreenWidth / 2 && nX < gnScreenWidth && nY > 0 && nY < gnAutomapHeight_007A521C)
     {
         bRightPanel = 1;
     }
@@ -2849,7 +2839,7 @@ void __fastcall GAME_DrawGameView(int bNoCursor)
 
     D2Win_10179_UpdatePaletteFlash();
     AUTOMAP_UpdateAutomapOrigin();
-    if (sub_0045AE90_GetPanelSlideMode() != 3)
+    if (UI_GetPanelSlideMode() != 3)
         VIEW_PrepareSceneLighting(gpClientView);
     UI_DrawUIPanels(gpClientView);
     D2Win_UpdateAndDraw();
@@ -3417,7 +3407,7 @@ void __fastcall sub_0044D7C0_ApplyConfigNop(D2ConfigStrc* pConfig)
 void __fastcall GAME_ApplyConfigGamma(D2ConfigStrc* pConfig)
 {
     if (pConfig->dwGamma)
-        sub_004776C0_SetGamma(pConfig->dwGamma);
+        VIEW_SetGamma(pConfig->dwGamma);
 }
 
 // 0x0044D7E0

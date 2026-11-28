@@ -79,7 +79,7 @@ unsigned char __stdcall ENVIRONMENT_GetIntensityFromAct(void* pAct);            
 void __stdcall ENVIRONMENT_GetLightColorFromAct(void* pAct, unsigned char* pR, unsigned char* pG, unsigned char* pB);           // 0x0061C0B0
 void __fastcall SCMD_ReadGridCell(int nX, int nY, unsigned char* pB0, unsigned char* pB1, unsigned char* pB2, unsigned char* pB3); // 0x00475AA0
 int __cdecl DLIGHTMAP_GetRenderMode(); // 0x00477730
-int __cdecl sub_0045AE90_GetPanelSlideMode();                                                                         // 0x0045AE90
+int __cdecl UI_GetPanelSlideMode();                                                                         // 0x0045AE90
 void __stdcall D2GFX_FloorTileDraw(D2GridInfoStrc* pInfo, D2GridCellStrc* pCells, int nX, int nY, int nSubX, int nSubY, int nAlpha, int nMode, int nArg); // 0x004F68E0
 void __stdcall WALL2_FillGridLight(D2GridCellStrc* pCells, int nX, int nY, int nSubX, int nSubY, int nZ, int nMode, int bCorners); // 0x004DE070
 void __stdcall WALL2_FillCellLights(D2GridCellStrc* pCells, int nSubX, int nSubY, int nZ, int nMode, int bCorners); // 0x004DE260
@@ -131,7 +131,7 @@ void __fastcall DFLOOR_UpdateFloorView(D2ViewStrc* pView)
     const int nOffX = 0x50 - pView->nOffX;
     const int nOffY = -0x50 - pView->nOffY;
     const unsigned int nCount = pView->nSize * pView->nSize;
-    const int nMode = sub_0045AE90_GetPanelSlideMode();
+    const int nMode = UI_GetPanelSlideMode();
     D2GridCellStrc tLarge[8 * 8];
     D2GridCellStrc tSmall[6 * 6];
 

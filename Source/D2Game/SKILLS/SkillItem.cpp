@@ -245,11 +245,11 @@ enum D2C_J10SkillItemConstants
     SKILLSFLAGINDEX_ITEMTGTDO = 29,
 };
 
-int __fastcall sub_00472210_SeedRollMasked(D2SeedStrc* pSeed, int nMax);                                     // 0x00472210
+int __fastcall SEED_RollMasked(D2SeedStrc* pSeed, int nMax);                                     // 0x00472210
 
 int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                                   // 0x0045C3E0
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId);                                      // 0x0045C4B0
+D2SkillsTxt* __fastcall SCMD_GetSkillsTxtRecord(int nSkillId);                                      // 0x0045C4B0
 
 
 int __stdcall DUNGEON_GetLevelIdFromRoom(D2ActiveRoomStrc* room); // 0x0061A1B0
@@ -298,7 +298,7 @@ enum D2C_G4Constants
 };
 
 
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY);            // 0x00463740
+D2ActiveRoomStrc* __fastcall COLLISION_GetRoomBySubTileCoordinates(D2ActiveRoomStrc* pRoom, int nX, int nY);            // 0x00463740
 
 
 
@@ -495,7 +495,7 @@ int __fastcall SKILLITEM_EventFunc08_Howl(D2GameStrc* pGame, int nEvent, D2UnitS
         return 0;
     }
 
-    if (sub_00472210_SeedRollMasked(&pAttacker->pSeed, 128) >= nChance)
+    if (SEED_RollMasked(&pAttacker->pSeed, 128) >= nChance)
     {
         return 0;
     }
@@ -1094,7 +1094,7 @@ int __fastcall SKILLITEM_EventFunc21_SkillOnGetHit(D2GameStrc* pGame, int nEvent
         return 0;
     }
 
-    if (!sub_0045C4B0_GetSkillsTxtRecord(nTriggeredSkillId))
+    if (!SCMD_GetSkillsTxtRecord(nTriggeredSkillId))
     {
         return 0;
     }
@@ -1545,7 +1545,7 @@ int __fastcall SKILLITEM_EventFunc20_SkillOnAttackHitKill(D2GameStrc* pGame, int
         return 0;
     }
 
-    D2SkillsTxt* pSkillsTxtRecord = sub_0045C4B0_GetSkillsTxtRecord(nTriggeredSkillId);
+    D2SkillsTxt* pSkillsTxtRecord = SCMD_GetSkillsTxtRecord(nTriggeredSkillId);
     if (!pSkillsTxtRecord)
     {
         return 0;
@@ -1707,7 +1707,7 @@ int __fastcall SKILLITEM_TimerCallback_ReanimateMonster(D2GameStrc* pGame, int n
     const int nX = CLIENTS_GetUnitX(pCorpse);
     const int nY = CLIENTS_GetUnitY(pCorpse);
     D2ActiveRoomStrc* pRoom = UNITS_GetRoom(pCorpse);
-    pRoom = sub_00463740_FindRoomAtPoint(pRoom, nX, nY);
+    pRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY);
     if (!pRoom)
         return 0;
     D2MonStats2Txt* pMonStats2 = UNITS_GetMonStats2TxtRecordFromMonsterId(nMonsterId);
@@ -2249,7 +2249,7 @@ int __fastcall MONSTERSPAWN_CanSpawnAtSpawnerExit(int nMonsterId, D2ActiveRoomSt
     {
     case 206:
     {
-        D2ActiveRoomStrc* pTargetRoom = sub_00463740_FindRoomAtPoint(pRoom, nX, nY + 3);
+        D2ActiveRoomStrc* pTargetRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY + 3);
         if (!pTargetRoom)
             return 0;
         if (COLLISION_CheckMaskWithSize(pTargetRoom, nX, nY + 3, 2, 0x3C01))
@@ -2258,7 +2258,7 @@ int __fastcall MONSTERSPAWN_CanSpawnAtSpawnerExit(int nMonsterId, D2ActiveRoomSt
     }
     case 228:
         nY += 2;
-        pRoom = sub_00463740_FindRoomAtPoint(pRoom, nX, nY);
+        pRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY);
         if (!pRoom)
             return 0;
         if (COLLISION_CheckMaskWithSize(pRoom, nX, nY, 2, 0x3C01))
@@ -2267,7 +2267,7 @@ int __fastcall MONSTERSPAWN_CanSpawnAtSpawnerExit(int nMonsterId, D2ActiveRoomSt
     case 298:
         if (!nFlag)
         {
-            pRoom = sub_00463740_FindRoomAtPoint(pRoom, nX, nY);
+            pRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY);
             if (!pRoom)
                 return 0;
             if (COLLISION_CheckMaskWithSize(pRoom, nX, nY, 2, 0x3C01))
@@ -2278,7 +2278,7 @@ int __fastcall MONSTERSPAWN_CanSpawnAtSpawnerExit(int nMonsterId, D2ActiveRoomSt
     {
         int nAdjustedX = nX - 2;
         int nAdjustedY = nY - 2;
-        D2ActiveRoomStrc* pTargetRoom = sub_00463740_FindRoomAtPoint(pRoom, nAdjustedX, nAdjustedY);
+        D2ActiveRoomStrc* pTargetRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nAdjustedX, nAdjustedY);
         if (!pTargetRoom)
             return 0;
         if (COLLISION_CheckMaskWithSize(pTargetRoom, nAdjustedX, nAdjustedY, 2, 0x1C0))
@@ -2289,7 +2289,7 @@ int __fastcall MONSTERSPAWN_CanSpawnAtSpawnerExit(int nMonsterId, D2ActiveRoomSt
     {
         nX += 2;
         nY += 4;
-        D2ActiveRoomStrc* pTargetRoom = sub_00463740_FindRoomAtPoint(pRoom, nX, nY);
+        D2ActiveRoomStrc* pTargetRoom = COLLISION_GetRoomBySubTileCoordinates(pRoom, nX, nY);
         if (!pTargetRoom)
             return 0;
         if (COLLISION_CheckMaskWithSize(pTargetRoom, nX, nY, 2, 0x3C01))

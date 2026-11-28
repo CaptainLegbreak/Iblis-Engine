@@ -34,7 +34,7 @@ extern "C" const char gszEmptyAssertText; // 0x006CC837
 extern int gbCompileTxt; // 0x0096C8B4
 
 
-void __stdcall sub_006BD230_AddRecordToLinker(D2TxtLinkStrc* pLinker, int nCode); // 0x006BD230
+void __stdcall FOG_AddLinkCode(D2TxtLinkStrc* pLinker, int nCode); // 0x006BD230
 
 void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
@@ -419,11 +419,11 @@ void __stdcall DATATBLS_LoadSkills_SkillDescTxt(void* hArchive)
     if (gbCompileTxt)
     {
         pRangeLinker = FOG_AllocLinker(".\\DATATBLS\\DataTbls.cpp", 1311);
-        sub_006BD230_AddRecordToLinker(pRangeLinker, 0x656E6F6E);
-        sub_006BD230_AddRecordToLinker(pRangeLinker, 0x20683268);
-        sub_006BD230_AddRecordToLinker(pRangeLinker, 0x20676E72);
-        sub_006BD230_AddRecordToLinker(pRangeLinker, 0x68746F62);
-        sub_006BD230_AddRecordToLinker(pRangeLinker, 0x20636F6C);
+        FOG_AddLinkCode(pRangeLinker, 0x656E6F6E);
+        FOG_AddLinkCode(pRangeLinker, 0x20683268);
+        FOG_AddLinkCode(pRangeLinker, 0x20676E72);
+        FOG_AddLinkCode(pRangeLinker, 0x68746F62);
+        FOG_AddLinkCode(pRangeLinker, 0x20636F6C);
 
         D2BinFieldStrc pMonStatsTbl[] =
         {

@@ -18,10 +18,10 @@ extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject);      
 
 void* gahPsapiModules[0x400];                                                                      // 0x00992B20
 
-bool __stdcall sub_00404C60_EnumModulesPsapi(void* pContext);
+bool __stdcall ERRORMANAGER_EnumModulesPsapi(void* pContext); // 0x00404C60
 
 // 0x00404330
-bool __stdcall sub_00404330_FileExistsUtf8(const char* szPath)
+bool __stdcall ERRORMANAGER_FileExistsUtf8(const char* szPath)
 {
     __declspec(align(8)) wchar_t wszPath[0x104];
     if (!MultiByteToWideChar(0xFDE9, 0, szPath, -1, wszPath, 0x104))
@@ -39,7 +39,7 @@ bool __stdcall sub_00404330_FileExistsUtf8(const char* szPath)
 }
 
 // 0x00404C60
-bool __stdcall sub_00404C60_EnumModulesPsapi(void* pContext)
+bool __stdcall ERRORMANAGER_EnumModulesPsapi(void* pContext)
 {
     void* hProcess = GetCurrentProcess();
     void* hPsapi = LoadLibraryW(L"psapi.dll");
@@ -67,7 +67,7 @@ bool __stdcall sub_00404C60_EnumModulesPsapi(void* pContext)
                     {
                         wszName[0] = 0;
                     }
-                    if (!tInfo.lpBaseOfDll->sub_00404AB0_VisitModule(pContext, wszName, -1))
+                    if (!tInfo.lpBaseOfDll->ERRORMANAGER_VisitModule(pContext, wszName, -1))
                     {
                         break;
                     }
@@ -83,7 +83,7 @@ bool __stdcall sub_00404C60_EnumModulesPsapi(void* pContext)
 }
 
 // 0x00404DC0
-static bool sub_00404DC0_EnumModulesToolhelp(void* pContext)
+static bool ERRORMANAGER_EnumModulesToolhelp(void* pContext)
 {
     void* hSnapshot = CreateToolhelp32Snapshot(8, 0);
     if (hSnapshot == (void*)-1)
@@ -96,7 +96,7 @@ static bool sub_00404DC0_EnumModulesToolhelp(void* pContext)
     {
         do
         {
-            if (!tEntry.modBaseAddr->sub_00404AB0_VisitModule(pContext, tEntry.szModule, -1))
+            if (!tEntry.modBaseAddr->ERRORMANAGER_VisitModule(pContext, tEntry.szModule, -1))
             {
                 break;
             }
@@ -107,12 +107,12 @@ static bool sub_00404DC0_EnumModulesToolhelp(void* pContext)
     return true;
 }
 
-static bool sub_00404F20_EnumModules(D2CrashModuleListStrc* pList)
+static bool ERRORMANAGER_EnumModules(D2CrashModuleListStrc* pList)
 {
-    bool bResult = sub_00404C60_EnumModulesPsapi(pList);
+    bool bResult = ERRORMANAGER_EnumModulesPsapi(pList);
     if (!bResult)
     {
-        bResult = sub_00404DC0_EnumModulesToolhelp(pList);
+        bResult = ERRORMANAGER_EnumModulesToolhelp(pList);
         if (!bResult)
         {
             return ERRORMANAGER_EnumLoadedModules(pList);
@@ -123,5 +123,5 @@ static bool sub_00404F20_EnumModules(D2CrashModuleListStrc* pList)
 
 bool __stdcall sub_M321_Emit_00404F20(D2CrashModuleListStrc* pList)
 {
-    return sub_00404F20_EnumModules(pList);
+    return ERRORMANAGER_EnumModules(pList);
 }
