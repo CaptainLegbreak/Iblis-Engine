@@ -77,6 +77,13 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Findings
 
+- 2026-11-27 19:45 PT, question for the coordinator (6d, not blocking): the replay harness's next level (Storm with
+  the player's MPQs, D2Lang, the data tables, toward the drlg case) can be built on the oracle side now, but its
+  engine side needs the engine to link as a whole, i.e. item 6. The link-alias proposal (18:00 entry below,
+  branch lane14/link-aliases, 4,193 -> 1,139 unresolved, 3,023/3,054 matching Codex's own bindings) would be the
+  first step. Release item 6 now, or keep it until Codex's link debt is lower? Meanwhile I'll do the oracle side
+  of level 2 and the syncs.
+
 - 2026-11-27 19:45 PT, item 6c after the sync to Codex 0bf13c4 (#494, PR #11): 59 unresolved symbols resolved,
   one new. **D2Client (the lane that made d5f903fe6):** `gpNpcPlayerUnit` (0x007C0DD4) is now a member of
   `gtNpcMenu` (UI/npcmenu.cpp), but D2ClientFuncs.h:906 still declares it on its own and UNIT/Monster.cpp:3035
