@@ -11,6 +11,7 @@
 #include "D2Packets.h"
 #include "D2LanguageNames.h"
 #include "D2CommonApi.h"
+#include "D2ClientApi.h"
 
 typedef void(__fastcall* MISSILEINITFUNC)(D2UnitStrc* pMissile, int nInitArg);
 
@@ -19,14 +20,6 @@ extern "C" D2DataTablesStrc* sgptDataTables;                                    
 extern unsigned int gdwBitMasks[];                                                                          // 0x006CE268
 
 extern D2MissileUnitFindTableStrc gtMissileCollisionModes[];                                                // 0x0073C720
-
-D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId);                                    // 0x0046ACE0
-
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit);                                                         // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit);                                                         // 0x0045AE20
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY);              // 0x00463740
 
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
@@ -60,7 +53,6 @@ union D2SeedStrc;
 
 #pragma pack(pop)
 
-extern const unsigned char gnMissileFlag_006CE27C; // 0x006CE27C
 
 
 
@@ -493,7 +485,7 @@ void __fastcall MISSILES_SyncToClient(D2ClientStrc* pClient, D2GameStrc* pGame, 
     if (!pOwner)
         return;
     D2MissilesTxt* pMissilesTxt = GetMissilesTxtRecord(pMissile->dwClassId);
-    if (!pMissilesTxt || !(pMissilesTxt->nMissileFlags[0] & gnMissileFlag_006CE27C))
+    if (!pMissilesTxt || !(pMissilesTxt->nMissileFlags[0] & gdwBitMasks[5]))
         return;
     D2GSPacketSrv73 packet = {};
     packet.nHeader = 0x73;

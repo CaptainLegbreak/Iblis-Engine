@@ -5,6 +5,7 @@
 #include "D2DrlgMaps.h"
 #include "FogApi.h"
 #include "D2CMPApi.h"
+#include "D2GlideApi.h"
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
@@ -315,7 +316,6 @@ void __fastcall sub_006C8F70_RectDiamond(tagRECT* pRect, int nValue)
     sub_006C8DA0_DrawLine(&ptLeft, &ptTop, nValue);
 }
 
-extern int gnRenderWidth;                                                                         // 0x007C9138
 extern int gnRenderHeight;                                                                        // 0x007C913C
 extern unsigned char* gpSurfaceBits_007C9154;                                                               // 0x007C9154
 
@@ -439,7 +439,6 @@ void __fastcall sub_006C9030_DrawRect(tagRECT* pRect, int nColor)
     sub_006C8DA0_DrawLine(&aCorners[0], &aCorners[1], nColor);
 }
 
-extern int gnRenderWidth;                                                                         // 0x007C9138
 extern int gnRenderHeight;                                                                        // 0x007C913C
 extern unsigned char* gpSurfaceBits_007C9154;                                                               // 0x007C9154
 

@@ -471,13 +471,10 @@ extern int gnGlobal_007BCA40; // 0x007BCA40
 
 static int gnInvMouseX; // 0x007BCA4C
 
-extern int gnGlobal_007BCAA0; // 0x007BCAA0
+extern D2InvRectStrc gtPlayerInvRect; // 0x007BCAA0
 
-extern int gnGlobal_007BCAA4; // 0x007BCAA4
 
-extern int gnGlobal_007BCAA8; // 0x007BCAA8
 
-extern int gnGlobal_007BCAAC; // 0x007BCAAC
 
 static int gnInvMouseY; // 0x007BCBD8
 
@@ -2017,7 +2014,7 @@ int __stdcall WARDENCLIENT_HandlePanelAreaClick(SMSGHANDLER_PARAMS* pMsg)
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
     sub_00420290_BreakHandlerChain(pMsg);
-    if (nX >= gnGlobal_007BCAA0 && nX < gnGlobal_007BCAA4 && nY >= gnGlobal_007BCAA8 && nY <= gnGlobal_007BCAAC)
+    if (nX >= gtPlayerInvRect.nLeft && nX < gtPlayerInvRect.nRight && nY >= gtPlayerInvRect.nTop && nY <= gtPlayerInvRect.nBottom)
     {
         INV_HandlePanelClick(pMsg);
         return 1;
@@ -2045,8 +2042,8 @@ void __stdcall INV_OnStashButtonUp(SMSGHANDLER_PARAMS* pMsg)
     }
     if (AUTOMAP_IsCursorOverMiniPanelButton(pMsg) == 1)
         return;
-    if ((nX >= gnGlobal_007BCAA0 && nX < gnGlobal_007BCAA4
-        && nY >= gnGlobal_007BCAA8 && nY <= gnGlobal_007BCAAC)
+    if ((nX >= gtPlayerInvRect.nLeft && nX < gtPlayerInvRect.nRight
+        && nY >= gtPlayerInvRect.nTop && nY <= gtPlayerInvRect.nBottom)
         || INV_IsInTradeGrid(nX, nY))
     {
         INV_HandlePanelClick(pMsg);

@@ -30,7 +30,7 @@ struct D2ItemExtraDataStrc
     D2UnitStrc* pNextItem; // 0x08
     unsigned char nNodePos; // 0x0C
     unsigned char nNodePosOther; // 0x0D
-    unsigned short unk0x0E; // 0x0E
+    unsigned short pad0x0E; // 0x0E
     D2UnitStrc* pPreviousGridItem; // 0x10
     D2UnitStrc* pNextGridItem; // 0x14
 };
@@ -40,7 +40,7 @@ struct D2MonRegDataStrc
     short nMonHcIdx; // 0x00
     unsigned char nRarity; // 0x02
     unsigned char nComponentVariantsMax; // 0x03
-    int unk0x04[12]; // 0x04
+    unsigned char nComponentVariants[3][16]; // 0x04
 };
 
 // Item qualities: the value of D2ItemDataStrc::dwQualityNo.
@@ -82,7 +82,7 @@ struct D2ItemDataStrc
     unsigned char nEarLvl; // 0x48
     unsigned char nInvGfxIdx; // 0x49
     char szPlayerName[16]; // 0x4A
-    unsigned short unk0x5A; // 0x5A
+    unsigned short pad0x5A; // 0x5A
     D2ItemExtraDataStrc pExtraData; // 0x5C
 };
 
@@ -92,7 +92,7 @@ struct D2ItemDropStrc
     D2SeedStrc* pSeed; // 0x04
     D2GameStrc* pGame; // 0x08
     int nItemLvl; // 0x0C
-    int unk0x10; // 0x10
+    int unused0x10; // 0x10
     int nId; // 0x14
     int nSpawnType; // 0x18
     int nX; // 0x1C
@@ -138,28 +138,28 @@ struct D2ObjectControlStrc
     unsigned short wGroupCount[97]; // 0x1048
     unsigned short wRoomsTried; // 0x110A
     unsigned short wRoomsNoGroup; // 0x110C
-    unsigned short unk0x110E; // 0x110E
+    unsigned short pad0x110E; // 0x110E
     D2ObjectRoomCoordStrc* pObjectRoomCoord; // 0x1110
 };
 
 struct D2MonsterRegionStrc
 {
     unsigned char nAct; // 0x00
-    unsigned char unk0x01; // 0x01
-    unsigned short unk0x02; // 0x02
+    unsigned char pad0x01; // 0x01
+    unsigned short pad0x02; // 0x02
     int nCount; // 0x04
     int nPopulated; // 0x08
     int nMonsterRegionLevel; // 0x0C
     unsigned char nMonCount; // 0x10
     unsigned char nTotalRarity; // 0x11
     unsigned char nSpawnCount; // 0x12
-    unsigned char unk0x13; // 0x13
+    unsigned char pad0x13; // 0x13
     D2MonRegDataStrc pMonData[13]; // 0x14
     int nMonsterCount; // 0x2B8
     unsigned char nBossMin; // 0x2BC
     unsigned char nBossMax; // 0x2BD
     unsigned char nMonWander; // 0x2BE
-    unsigned char unk0x2BF; // 0x2BF
+    unsigned char pad0x2BF; // 0x2BF
     int dwlevel; // 0x2C0
     int nWanderingCount; // 0x2C4
     unsigned int dwUniqueCount; // 0x2C8
@@ -167,8 +167,8 @@ struct D2MonsterRegionStrc
     unsigned int dwMonKillCount; // 0x2D0
     int nTrapVariant; // 0x2D4
     unsigned char nQuest; // 0x2D8
-    unsigned char unk0x2D9; // 0x2D9
-    unsigned short unk0x2DA; // 0x2DA
+    unsigned char pad0x2D9; // 0x2D9
+    unsigned short pad0x2DA; // 0x2DA
     int nDungeonLevel; // 0x2DC
     int nDungeonLevelEx; // 0x2E0
 };

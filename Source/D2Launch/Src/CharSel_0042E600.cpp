@@ -15,6 +15,8 @@
 #include "D2WinApi.h"
 #include "D2MCPClientApi.h"
 #include "StormApi2.h"
+#include "D2ClientApi.h"
+#include "D2MultiApi.h"
 #pragma intrinsic(strlen)
 struct D2UnitStrc;
 struct D2ActiveRoomStrc;
@@ -49,7 +51,6 @@ extern "C" int __cdecl strcmp(const char* sz1, const char* sz2);
 int __fastcall MAINMENUS_ShowOptionDescription(unsigned int nArg, int nMode, int nStringId1, int nStringId2); // 0x004307A0
 void __fastcall CHARSEL_JoinSelectedWithDifficulty(SMSGHANDLER_PARAMS* pMsg, int nMode); // 0x00439AF0
 void __fastcall sub_004FC660_SetValue(D2WinControlStrc* pControl, int nValue); // 0x004FC660
-int __cdecl sub_0042F6D0_GetMenusDone(); // 0x0042F6D0
 extern D2WinControlStrc* gpControl_007795E0; // 0x007795E0
 extern D2WinControlStrc* gpControl_007795E4; // 0x007795E4
 extern void** gppSlots; // 0x00779988
@@ -66,44 +67,20 @@ struct D2GridCellStrc
 typedef void (__stdcall* D2RecordHandlerFn)(int nArg1, int nArg2, int nArg3);
 extern "C" __declspec(dllimport) void __stdcall Sleep(unsigned long nMilliseconds); // 0x006CC258
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
-void __cdecl CHATDLG_FillGameList(); // 0x00444E70
-void __cdecl RECORD_WriteRecordFile(); // 0x00451620
-extern "C" D2StatesTxt* __fastcall GAME_GetStatesTxtRecord(int nStateId); // 0x00452040
-void __cdecl AUTOMAP_SaveAutomapLayer(); // 0x004584C0
-void __cdecl AUTOMAP_ResetAutomapCells(); // 0x00458680
-void __cdecl AUTOMAP_LoadAutomapLayer(); // 0x00458750
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-void __fastcall UI_DrawLoadingScreen(int nArg); // 0x004565E0
-unsigned char __stdcall AUTOMAP_GetItemComponent(D2UnitStrc* pUnit, D2UnitStrc* pItem); // 0x00462EE0
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
-D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
-D2UnitStrc* __cdecl sub_00463DE0_GetPlayerUnit(); // 0x00463DE0
-int __fastcall CUNIT_IsDeadOrDying(D2UnitStrc* pUnit); // 0x00464820
-void __fastcall CUNIT_RemoveClientSideUnit(unsigned int nUnitId, int nUnitType); // 0x00465EE0
-void __fastcall GFX_DrawProgressiveStateOverlays(D2UnitStrc* pUnit, int nOverlay, int nX, int nY); // 0x0046E1B0
-void __fastcall GFX_ClearGfxBytes(D2UnitStrc* pUnit, int nComponent); // 0x0046F280
-void __fastcall GFX_RefreshUnitGfx(D2UnitStrc* pUnit, int nArg); // 0x00470610
-void __fastcall UNITMODE_SetUnitMode(D2UnitStrc* pUnit, int nArg); // 0x00480E70
-void __fastcall ITEM_UpdateItemLink(D2UnitStrc* pItem, D2UnitStrc* pUnit, int bForce, int bClamp); // 0x004C0EC0
 void __stdcall sub_0063BE30(D2InventoryStrc* pInventory, int nBodyLoc); // 0x0063BE30
 void __stdcall sub_00649190_SetPathMode(D2UnitStrc* pUnit, int nMode); // 0x00649190
 int __stdcall sub_00650BE0_PlaceUnit(D2DynamicPathStrc* pDynamicPath, D2UnitStrc* pUnit, D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00650BE0
 void __stdcall sub_006488A0_SetDirection(D2DynamicPathStrc* pPath, int nDirection); // 0x006488A0
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 extern unsigned int gdwBitMasks[]; // 0x006CE268
-extern unsigned short gwRequestId; // 0x0070CD60
 extern int gnProgressiveStatesBottomWide; // 0x007111CC
 extern int gnProgressiveStatesRight; // 0x007111D0
 extern int gnProgressiveStatesBottom; // 0x007111D4
 extern int gnScreenWidth; // 0x0071146C
 extern int gnScreenHeight; // 0x00711470
-extern unsigned short gwSavedRequestId; // 0x0077BBDC
 extern void* gpGlobal_007A0634; // 0x007A0634
 extern void* gpAutomapContext; // 0x007A5164
 extern D2GridCellStrc gtGridCells_007B0E68[]; // 0x007B0E68
-extern int gnProgress; // 0x007BB3B4
 void __stdcall CHARSEL_AddToScrollValue(int nDelta); // 0x00439E60
 int __stdcall CHARSEL_HandleListKey(SMSGHANDLER_PARAMS* pMsg); // 0x00439E90
 static int gnTopRow; // 0x00779DC8
@@ -143,7 +120,6 @@ extern int gbOverlaysEnabled; // 0x007A289C
 extern int gnOverlayStep; // 0x007A3138
 extern int gnCellOriginX; // 0x007B0A54
 extern int gnCellOriginY; // 0x007B0A58
-void __fastcall SCMD_DropUnitItems(D2UnitDropItemsPacketStrc* pPacket); // 0x00462F60
 struct D2ListMsgStrc
 {
     void* hWnd;
@@ -209,13 +185,7 @@ static int CHARSEL_FindSlotByName(const char* szName)
     }
     return 0;
 }
-void __stdcall RECORD_RecordHandler(int nArg1, int nArg2, int nArg3); // 0x00451920
-void __stdcall AUTOMAP_SetAutomapContext(void* pContext); // 0x00458CD0
 extern unsigned long gdwLastClick; // 0x00779DEC
 int __stdcall CHARSEL_OnListClick(D2ListMsgStrc* pMsg); // 0x0043A9D0
 void __cdecl CHARSEL_InitCharList(); // 0x0043AE30
-void __cdecl CHARSEL_RequestGameList(); // 0x00445020
-void __cdecl UI_DrawProgressiveStates(); // 0x00453470
-void __cdecl DLIGHTMAP_ScanGridCollision(); // 0x004756D0
-void __fastcall MSG_ShowProgressSteps(int nDone, int nTotal); // 0x00478160
 void __cdecl CHARSEL_ShowString(); // 0x0043A610

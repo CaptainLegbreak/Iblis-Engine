@@ -6,6 +6,7 @@
 #include "D2DrlgTiles.h"
 #include "D2Drlg.h"
 #include "FogApi.h"
+#include "D2ClientApi.h"
 
 #define LVLPREST_ACT3_JUNGLE_HEAD 573
 #define LVLPREST_ACT3_JUNGLE_TAIL 574
@@ -21,7 +22,6 @@ struct D2DrlgOutdoorInfoStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
-unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C390
 extern const int gnJungleDefOffsets[3]; // 0x006F2370
 extern const int gnJungleFiles[18]; // 0x006F2328
 int __fastcall DRLGOUTDOORS_SpawnOutdoorLevelPreset(D2DrlgLevelStrc* pLevel, int nLevelPrestId, int nRand, int nOffset, char nFlags); // 0x00674730

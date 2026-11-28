@@ -371,9 +371,7 @@ extern int g007C0D5B; // 0x007C0D5B
 
 extern void* g007C0D67; // 0x007C0D67
 
-extern int g007C0D8E; // 0x007C0D8E
 
-extern int g007C0D96; // 0x007C0D96
 
 extern int g007C0DE1; // 0x007C0DE1
 
@@ -3239,15 +3237,15 @@ void __cdecl NPCMENU_OnTransactionResult()
   switch(gtPacket2A.nActionType) {
    case 0:
     sub_004B9A00(g007C0D5B,0,0,0,0); g007C0D5B=0;
-    if(!CUNIT_FindClientUnit(g007C0D8E,4)) { g007C0D96=1; return; }
+    if(!CUNIT_FindClientUnit(gtPacket2A.nUnitId,4)) { gbNpcActionPending=1; return; }
     break;
    case 1:
     sub_004B9A00(0xdd,0,0,0,0);
-    if(CUNIT_FindClientUnit(g007C0D8E,4)) { g007C0D96=1; return; }
+    if(CUNIT_FindClientUnit(gtPacket2A.nUnitId,4)) { gbNpcActionPending=1; return; }
     break;
    case 5: TEXT_LoadPopupHireling(); break;
   }
-  g007C0D96=0;
+  gbNpcActionPending=0;
   if(g007C0D67) { DIALOG_DestroyDialog(g007C0D67);g007C0D67=0; }
   SELECT_ClearSelection(); g007C0DE0=0;g007C0DE1=0;g007C0DE5=0;g007C0C6B=3;
   INV_SelectFirstButton();INV_RestoreSelectedShopButton();return;

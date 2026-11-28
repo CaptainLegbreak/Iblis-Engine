@@ -9,6 +9,7 @@
 #include "FogApi.h"
 #include "D2SoundApi.h"
 #include "StormApi2.h"
+#include "D2DDrawApi.h"
 
 extern int gbRenderPaused; // 0x007C9144
 extern int gnRenderWidth; // 0x007C9138
@@ -65,23 +66,9 @@ extern int gbSurfaceActive_007C9140; // 0x007C9140
 
 // 0x0050FD10
 
-void __cdecl DDRAW_DrawVideoFrame(); // 0x005136F0
-
 extern int gnRenderHeight; // 0x007C913C
 
-extern unsigned int gnGlideBinkY; // 0x00880C04
-
-extern unsigned int gnGlideBinkFlags; // 0x00880C14
-
 extern D2DDrawSurfaceStrc* gpDDrawPrimarySurface; // 0x00881278
-
-extern unsigned int gnDDrawBinkY; // 0x008816B8
-
-extern unsigned int gnDDrawBinkFlags; // 0x008816C8
-
-void __fastcall DDCORE_SetPalette(tagPALETTEENTRY* pPalette); // 0x00510160
-
-extern D2PaletteTableStrc* gpGfxPaletteView; // 0x007C9150
 
 extern tagPALETTEENTRY gaDDrawSavedPalette[256]; // 0x00880D40
 

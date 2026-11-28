@@ -27,6 +27,7 @@
 #include "D2LangApi.h"
 #include "D2GfxApi.h"
 #include "D2HellApi.h"
+#include "D2GlideApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -207,8 +208,6 @@ static int TEXTBOX_CountLinesFromCurrent(D2WinTextBoxStrc* pTextBox); // 0x004FB
 int __stdcall CONTROL_RemoveFromList(D2WinControlStrc* pControl);                                           // 0x004F9310
 
 void __fastcall sub_004FB6A0_ClearText(D2WinControlStrc* pControl);                                         // 0x004FB6A0
-
-void __fastcall SCROLLBAR_Destroy(void* pArg);                                                                   // 0x00507EE0
 
 void __fastcall FONT_DrawTextWithBackground(const Unicode* wszText, int nX, int nY, int nWidth, int nColor, int eDrawMode, int nTextColor); // 0x005025C0
 

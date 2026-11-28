@@ -112,7 +112,7 @@ D2SkillStrc* __fastcall SKILLS_GetSkillById(D2UnitStrc* pUnit, int nSkillId, int
 D2StatListStrc* __stdcall STATLIST_GetStatListFromUnitStateOrFlag(D2UnitStrc* pUnit, int nState, int nFlag); // 0x00625790
 D2TCExShortStrc* __stdcall DATATBLS_GetTreasureClassExRecordFromIdAndLevel(unsigned short wTCId, int nLvl); // 0x00654E00
 D2TimerArgStrc* __fastcall UNITS_GetTimerArg(D2UnitStrc* pUnit); // 0x006234F0
-D2UniqueItemsTxt* __fastcall DATATBLS_GetUniqueItemsTxtRecord(int nUniqueItemId); // 0x00483470
+D2UniqueItemsTxt* __fastcall DATATBLS_GetUniqueItemsTxtRecord(int nIndex); // 0x00483470
 D2UnitEventStrc* __fastcall SUNITEVENT_GetEvent(D2GameStrc*, D2UnitStrc*, int, int, int); // 0x005C0BE0
 D2UnitStrc* __fastcall ITEMS_DropRandomItemAtCoordinates(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, D2CoordStrc* pCoords, D2ItemDropStrc* pItemDrop); // 0x00559130
 D2UnitStrc* __fastcall MONSTERSPAWN_SpawnAtUnit(D2GameStrc* pGame, D2UnitStrc* pUnit, int nMonsterId, int nAnimMode, int nMaxSearchRings, short nFlags); // 0x005B23C0
@@ -160,7 +160,7 @@ extern "C" int gnAct2Quest5NpcIndices[]; // 0x0073B278
 extern "C" unsigned int gnA5Q2NpcActivateIndices[]; // 0x00734270
 extern "C" int __fastcall sub_0045C390_Roll(Seed*, int); // 0x0045C390
 extern "C" int __fastcall CUNIT_GetMonsterBaseId(Unit*); // 0x00463860
-extern "C" int __fastcall CUNIT_ValidateMonsterId(int); // 0x00463900
+int __fastcall CUNIT_ValidateMonsterId(int nMonsterId); // 0x00463900
 extern "C" int __fastcall SKILLS_GetMonsterClassFromChain(int, int); // 0x0054DA60
 extern "C" int __fastcall SUNIT_IsDead(Unit*); // 0x005541B0
 extern "C" int __fastcall D2GAME_GetSummonIdFromSkill(Unit*, int, int, int, int*, int, int); // 0x0056E620
@@ -223,7 +223,7 @@ extern const int gnUnitListOffsets[6]; // 0x006E10E0
 extern const unsigned char gnAndrialSprayDirections[8]; // 0x006E3188
 extern const unsigned char gnAndrialSprayOffsets[72]; // 0x006E3140
 extern const unsigned char gnMaggotLayDirections[8]; // 0x006E3138
-extern int __fastcall DATATBLS_ApplyRatio(int,int,int); // 0x00483360
+int __fastcall DATATBLS_ApplyRatio(int nValue, int nMultiplier, int nDivisor); // 0x00483360
 extern int __fastcall SUNITEVENT_Trigger(Game*,int,Unit*,Unit*,Damage*); // 0x005C0C30
 extern int __stdcall sub_00625480_Stat(Unit*,int,int); // 0x00625480
 extern int __stdcall STATLIST_UnitGetItemStatOrSkillStatValue(Unit*,int,int); // 0x00625500

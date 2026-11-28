@@ -773,8 +773,8 @@ void __cdecl sub_004FA550(); // 0x004FA550
 void __cdecl ARCHIVE_UnloadExpansionArchives(); // 0x004FAD70
 void __cdecl D2SOUNDFAST_FadeOutWaves(); // 0x00515020
 void __cdecl STRTABLE_UnloadStringTables(); // 0x00524E40
-void __cdecl GAME_ProcessNetworkMessages(); // 0x0052CFE0
-void __cdecl GAME_CloseAllGames(); // 0x0052E9C0
+void __fastcall GAME_ProcessNetworkMessages(); // 0x0052CFE0
+void __stdcall GAME_CloseAllGames(); // 0x0052E9C0
 void __cdecl LOG_11100(int nThreadId, int nLogLevel, int nComponent, int nSubsystem, const char* szContext, int nSequence, const char* szFormat, ...); // 0x006248E0
 void __fastcall ARCHIVE_CloseFile(void* hArchive, void* hFile); // 0x00516E84
 void __fastcall ARCHIVE_ReadFileToBuffer(void* hArchive, void* hFile, void* pBuffer, unsigned int dwBytesToRead); // 0x00516F85
@@ -960,7 +960,7 @@ void __stdcall D2GFX_FloorTileDraw(D2GridInfoStrc* pInfo, D2GridCellStrc* pCells
 void __stdcall TILE_ShadowTileDraw(int nHandle, int nX, int nY, int nArg4, int nArg5); // 0x004F6980
 void __stdcall sub_004F90A0(int nResolution); // 0x004F90A0
 void __stdcall STRTABLE_GetLanguageInfoField(void* pOut, int nField); // 0x00525260
-void __stdcall GAME_UpdateClients(int nArg1, int nArg2); // 0x0052FD90
+int __stdcall GAME_UpdateClients(int bForceUpdate1, int bForceUpdate2); // 0x0052FD90
 void __stdcall D2CMPPalShiftSetAct(int nAct); // 0x00600C00
 void __stdcall DUNGEON_CallRoomCallback(D2ActiveRoomStrc* pRoom, void* pfCallback, D2WallRoomArgStrc* pArg); // 0x00619BD0
 void __stdcall DUNGEON_GetRGB_IntensityFromRoom(D2ActiveRoomStrc* pRoom, unsigned char* pIntensity, unsigned char* pRed, unsigned char* pGreen, unsigned char* pBlue); // 0x00619D70

@@ -28,7 +28,6 @@ extern int gnWidth_007C9138; // 0x007C9138
 extern unsigned int gnRenderFlags_0096F3A8; // 0x0096F3A8
 extern void* gapGlyphTextures_009712D0[]; // 0x009712D0
 extern void* ghDDrawWindow_007C9140; // 0x007C9140
-extern void* gapObjectsEC[2]; // 0x009897EC
 int __fastcall sub_006B58A0_CreateTexture(D2D3DObjStrc** ppTexture, D2D3DObjStrc** ppSurface, int nWidth, int nHeight); // 0x006B58A0
 unsigned int __fastcall D3DCORE_GetColor(unsigned int index); // 0x006B1D50
 void __cdecl D3DCORE_Flush(); // 0x006B3800

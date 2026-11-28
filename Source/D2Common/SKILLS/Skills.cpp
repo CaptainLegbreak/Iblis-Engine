@@ -44,6 +44,7 @@
 #include "D2DrlgOutdoor.h"
 #include "FogApi.h"
 #include "D2CommonApi.h"
+#include "D2ClientApi.h"
 
 #define LVLSUB_UNUSED_INVALID -1
 
@@ -199,12 +200,6 @@ D2SkillStrc* __stdcall UNITS_GetStartSkill(D2UnitStrc* pUnit); // 0x00620150
 
 int __stdcall SKILLS_GetRequiredLevelBasedOnCurrent(D2UnitStrc* pUnit, int nSkillId); // 0x00644750
 
-D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId); // 0x00451F80
-
-
-
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
-
 int __fastcall SKILLS_GetBaseSkillLevelById(D2UnitStrc* pUnit, int nSkillId); // 0x006447B0
 
 int __stdcall UNITS_IsSoftMonster(D2UnitStrc* pUnit); // 0x00621F60
@@ -220,13 +215,6 @@ int __stdcall D2Common_11014_ConvertShapeShiftedMode(int nArrayIndex, int nMonst
 
 
 
-
-
-
-
-
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
 
 
 
@@ -336,38 +324,16 @@ struct D2ItemsTxt;
 unsigned char __stdcall ITEMS_GetBodyLocation(D2UnitStrc* pItem); // 0x00627D40
 
 
-int __fastcall SKILLDESC_GetSkillParamByLevel(int nSkillId, int nSkillLevel); // 0x004E6CA0
-
 int __stdcall D2Common_11034(int nSkillLevel, int nSkillId); // 0x00645B70
 
-int __fastcall MISSILE_GetSkillMissileRange(int nSkillId, int nLevel); // 0x004CC7C0
-
 int __stdcall D2Common_11035(int nSkillLevel, int nSkillId); // 0x00645BC0
-
-int __fastcall SKILLDESC_GetSummonLevel(int nSkillId, int nSkillLevel); // 0x004EFCB0
 
 int __fastcall SKILLS_GetSkillParam7Formula(int nSkillId, int nSkillLevel); // 0x00643580
 
 
-int __fastcall SKILLS_GetFirstSkillParam(int nSkillId); // 0x004C9460
-
-int __fastcall SKILLDESC_GetSkillParamTwo(int nSkillId); // 0x004EFC20
-
-int __fastcall SKILLDESC_GetSkillParamThree(int nSkillId); // 0x004EFC50
-
-int __fastcall SKILLDESC_GetSkillParamFour(int nSkillId); // 0x004EFC80
-
-int __fastcall SKILLDESC_GetSkillParamFive(int nSkillId); // 0x004E6C70
-
-int __fastcall SKILLDESC_GetSkillParamSix(int nSkillId); // 0x004F4110
-
 int __stdcall SKILLS_GetElementalLength(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int bFlag); // 0x00644F20
 
 int __stdcall D2Common_11032(D2UnitStrc* pUnit, int nSkillId, int nSkillLevel, int nType); // 0x00647E00
-
-D2SkillDescTxt* __fastcall sub_004A89D0_SkillDescRec(int nSkillId); // 0x004A89D0
-
-D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId); // 0x0046ACE0
 
 static D2SkillStrc* SKILLS_GetHighestLevelSkillFromSkillId(D2UnitStrc* pUnit, int nSkillId);
 
@@ -637,8 +603,6 @@ int __fastcall SKILLS_GetMaximum(int nA, int nB, int nUnused1, int nUnused2)
 {
     return nA > nB ? nA : nB;
 }
-
-unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
 // 0x00643700
 int __fastcall DUNGEON_SkillCalcGetRandomNumberInRange(int nMin, int nMax, int nUnused, void* pUserData)

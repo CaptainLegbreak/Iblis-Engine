@@ -9,14 +9,14 @@
 #include "D2CelContext.h"
 #include "D2Win32RgbQuad.h"
 #include "FogApi.h"
+#include "D2GlideApi.h"
+#include "D2DDrawApi.h"
 
 extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(D2CriticalSectionStrc* pCriticalSection);
 
 extern void* gpArg1_007C9148; // 0x007C9148
 
 extern void* gpArg2_007C914C; // 0x007C914C
-
-extern D2CriticalSectionStrc* gpRenderCriticalSection; // 0x007C9134
 
 extern "C" __declspec(dllimport) void __stdcall DeleteCriticalSection(D2CriticalSectionStrc* pCriticalSection);
 
@@ -59,10 +59,6 @@ extern "C" __declspec(dllimport) int __stdcall DeleteDC(void* hDC);
 void* __stdcall WINDOW_GetWindow(); // 0x004F59A0
 
 extern int gnRenderHeight; // 0x007C913C
-
-
-extern D2PaletteTableStrc* gpGfxPaletteView; // 0x007C9150
-
 
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
@@ -139,8 +135,6 @@ int __stdcall CelGetOffsetX(D2CelStrc* pCel);                                   
 int __stdcall CelGetOffsetY(D2CelStrc* pCel);                                                               // 0x00601950
 
 
-extern D2PaletteTableStrc* gpGfxPaletteView;                                                               // 0x007C9150
-
 void __stdcall CelDrawEx(D2GfxDataStrc* pContext, int nX, int nY, int nOriginX, int nModeWidth, unsigned char* pBuffer, int nHeight, int nWidth, int nArg9, unsigned char* pCaps, int nSkipTop, int nDrawHeight, int nArg13); // 0x00601650
 
 void __stdcall CelDrawShadow(D2GfxDataStrc* pContext, int nX, int nY, int nArg4, int nArg5, unsigned char* pBuffer, int nHeight, int nPitch, unsigned char* pShadowTable, int nArg10); // 0x00601730
@@ -166,7 +160,6 @@ struct D2ClipResultStrc { int left, right, skipRows, rowCount; };
 extern const char gszEmptyAssertText; // 0x006CC837
 __declspec(noreturn) void __cdecl exit(int code); // 0x00681E09
 
-extern D2PaletteTableStrc* gpGfxPaletteView; // 0x007C9150
 int __stdcall CmpDoLensEffect(unsigned char* pPixel, int nStride); // 0x00608C00
 int __fastcall GDICORE_DrawImage(void* context, int second, int third, int fourth, int fifth, int last); // 0x006C84B0
 extern "C" __declspec(dllimport) void* __stdcall CreateFontA(int height, int width, int escapement, int orientation, int weight, unsigned long italic, unsigned long underline, unsigned long strikeout, unsigned long charset, unsigned long outPrecision, unsigned long clipPrecision, unsigned long quality, unsigned long pitchAndFamily, const char* face); // 0x006CC0E0
@@ -187,8 +180,6 @@ extern "C" __declspec(dllimport) int __stdcall DeleteDC(void* hdc); // 0x006CC0D
 void* __cdecl sub_006C8020_GetBufferBitmap(); // 0x006C8020
 extern unsigned long gdwGdiDebugTextColor; // 0x0074C5C0
 extern void* ghGdiDebugFont; // 0x0098A170
-
-extern D2GfxSettingsStrc* gpGfxSettings; // 0x007C9148
 
 int __fastcall GDICORE_Init(void* pArg1, void* pArg2); // 0x006C7A70
 int __cdecl GDICORE_Close(); // 0x006C7AB0
@@ -297,7 +288,6 @@ extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalS
 extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(D2CriticalSectionStrc* pCriticalSection);
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
-extern D2CriticalSectionStrc* gpRenderCriticalSection; // 0x007C9134
 extern int gnValue_007C9144; // 0x007C9144
 
 
@@ -320,10 +310,6 @@ extern "C" __declspec(dllimport) unsigned int __stdcall SetPaletteEntries(void* 
 extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 extern D2RgbQuad006C7FA0Strc gatGdiColors[256]; // 0x00989C40
 extern D2PaletteEntry006C7C10Strc gatGamePalette[256]; // 0x007C8CC8
-
-extern D2PaletteTableStrc* gpGfxPaletteView; // 0x007C9150
-
-
 
 void* ghRenderWindow; // 0x007C9140
 

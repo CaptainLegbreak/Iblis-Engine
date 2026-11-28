@@ -28,6 +28,7 @@
 #include "D2CommonLevelNode.h"
 #include "FogApi.h"
 #include "D2LangApi.h"
+#include "D2ClientApi.h"
 
 struct D2DrlgRoomStrc;
 
@@ -194,9 +195,6 @@ unsigned char __fastcall DRLGACTIVATE_GetRoomStatusFlags(D2DrlgRoomStrc*); // 0x
 
 void* __fastcall FOG_ReallocPool(void* pMemPool, void* pMemory, int nSize, const char* szFile, int nLine, int n0); // 0x0040B4B0
 
-unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
-
-
 D2SeedStrc* __stdcall ITEMS_GetItemSeed(D2UnitStrc* pItem); // 0x00627D90
 
 struct Room { char pad[0x10]; RoomEx* roomEx[2]; };
@@ -223,8 +221,6 @@ typedef void (__fastcall* LEVELNODEFN)(D2CommonLevelNodeStrc* pNode);
 extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(FARPROC lpfn); // 0x006CC34C
 
 extern const LEVELNODEFN gpfnRoomExSetStatus[]; // 0x00744384
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
 
 void __fastcall DUNGEON_FreeRoom(void* pMemPool, D2ActiveRoomStrc* pRoom); // 0x0061A840
 

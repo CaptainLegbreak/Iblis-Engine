@@ -2,6 +2,7 @@
 #include "D2DDrawTypes.h"
 #include "D2D3DTypes.h"
 #include "FogApi.h"
+#include "D2GlideApi.h"
 
 #define ASSERT(expr,line) if (!(expr)) { FOG_DisplayHalt(gszEmptyString,sub_00408090(),line); exit(-1); }
 #define MIN(a,b) ((a)<(b)?(a):(b))
@@ -71,8 +72,6 @@ struct D2SurfaceStrc { D2SurfaceVtableStrc* vtable; };
 void __fastcall D3DCORE_LogDDrawError(const char*, int); // 0x006B20E0
 
 void __cdecl sub_006B72A0_CreateFontTextures(); // 0x006B72A0
-
-extern D2GfxSettingsStrc* gpGfxSettings; // 0x007C9148
 
 struct D2DeviceVtbl006B77B0Strc
 {
@@ -425,7 +424,7 @@ void __fastcall sub_006B7D80_DrawRectangle(D2RectStrc* rect,int color) {
 // 0x006B7F70
 void __cdecl sub_006B7F70_ClearTarget()
 {
-    if (gnRenderFlags_0096F3A8 & gnRenderFlag)
+    if (gnRenderFlags_0096F3A8 & gdwBitMasks[10])
     {
         D3DCORE_Flush();
         return;

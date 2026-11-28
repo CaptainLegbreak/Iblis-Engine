@@ -565,7 +565,6 @@ typedef void (__fastcall* StatListRemoveCallback)(D2UnitStrc* pUnit, int nState,
 
 typedef int (__fastcall* CLTHITFUNC)(D2UnitStrc* pMissile, D2UnitStrc* pTarget);
 
-extern "C" unsigned char gbChargeMissileMask_006CE270;                                                     // 0x006CE270
 
 extern int gnCltHitFuncCount;                                                                      // 0x0072A504
 
@@ -595,7 +594,6 @@ static inline int UNITS_TestFlagBit(D2UnitStrc* pUnit, int nBit)
 
 extern D2DataTablesStrc* sgptDataTables_00744304; // 0x00744304
 
-extern const unsigned char gbFlagMask_006CE270; // 0x006CE270
 
 static int MISSILE_UseCharge(D2UnitStrc* pUnit); // 0x004CD310
 
@@ -6064,7 +6062,7 @@ D2UnitStrc* __fastcall MISSILE_CltMissileHit(D2UnitStrc* pMissile, D2UnitStrc* p
                 return 0;
         }
 
-        if (pOwner && pTarget && (pMissilesTxtRecord->nMissileFlags[0] & gbChargeMissileMask_006CE270) && (unsigned int)pOwner->dwUnitType <= 1)
+        if (pOwner && pTarget && (pMissilesTxtRecord->nMissileFlags[0] & gdwBitMasks[2]) && (unsigned int)pOwner->dwUnitType <= 1)
         {
             if (STATES_CheckState(pOwner, STATE_PIERCE) || STATLIST_UnitGetItemStatOrSkillStatValue(pOwner, STAT_ITEM_PIERCE, 0))
                 nResult = MISSILE_UseCharge(pMissile);
@@ -6157,7 +6155,7 @@ static int MISSILE_UseCharge(D2UnitStrc* pUnit)
 	int nResult = 3;
 	D2MissilesTxt* pMissilesTxtRecord = DATATBLS_GetMissilesTxtRecord(MISSILE_GetClassId(pUnit));
 
-	if (!(pMissilesTxtRecord->nMissileFlags[0] & gbFlagMask_006CE270))
+	if (!(pMissilesTxtRecord->nMissileFlags[0] & gdwBitMasks[2]))
 	    return nResult;
 		const int nValue = STATLIST_UnitGetStatValue(pUnit, STAT_PIERCE_IDX, 0);
 		if (nValue)

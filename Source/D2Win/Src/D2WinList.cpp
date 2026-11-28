@@ -24,6 +24,7 @@
 #include "D2WinListData.h"
 #include "FogApi.h"
 #include "D2LangApi.h"
+#include "D2ClientApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -57,8 +58,6 @@ typedef int (__fastcall* D2WinControlFn)(D2WinControlStrc* pControl);
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-extern unsigned char gabBeltHotkey[]; // 0x007BEFB0
-
 extern int gnBeltBox; // 0x0072235C
 
 extern int gnBeltRectX; // 0x00722360
@@ -67,23 +66,7 @@ extern int gnBeltRectY; // 0x00722364
 
 extern int gnBeltHover; // 0x007BEF94
 
-extern D2UnitStrc* gpBeltItemA; // 0x007BEFA8
-
-extern int gpBeltItemB; // 0x007BEFAC
-
 extern int gnPetIconPopupState; // 0x007BEECC
-
-extern unsigned char gnLifeColorHigh; // 0x007BEED0
-
-extern unsigned char gnLifeColorMid; // 0x007BEED1
-
-extern unsigned char gnLifeColorLow; // 0x007BEED2
-
-extern unsigned char gbLifeColorsInit; // 0x007BEED3
-
-extern unsigned char gnTextColorRed; // 0x007BEFBA
-
-extern unsigned char gabBeltColors[4]; // 0x007BEF6C
 
 extern int gnHoverTopX; // 0x00721E3C
 
@@ -97,13 +80,7 @@ extern int gnHoverCellX; // 0x00721E4C
 
 extern int gnHoverCellY; // 0x00721E50
 
-extern int gbHoverInGrid; // 0x007BCBE4
-
 extern int gbHoverInBodyLoc; // 0x007BCBE8
-
-extern int gnInvPanelMode; // 0x007BCBF0
-
-extern D2UnitStrc* gpHoverItem; // 0x007BCBF4
 
 extern int gpLastHoverItem; // 0x007BCBF8
 

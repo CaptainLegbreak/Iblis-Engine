@@ -9,6 +9,7 @@
 #include "FogApi2.h"
 #include "StormApi2.h"
 #include "D2NetApi.h"
+#include "D2ClientApi.h"
 
 typedef void (__fastcall* D2McpCallbackFn)(unsigned short wRequestId, unsigned char* pData);
 
@@ -85,36 +86,14 @@ extern "C" unsigned long __cdecl strtoul(const char* szString, char** ppEnd, int
 extern "C" char* __cdecl strcpy(char* szDst, const char* szSrc);
 
 
-void __fastcall GAME_CalcCdKeyChecksum(char* szKey, unsigned int* pChecksum); // 0x00449890
-
 int __stdcall SCmdProcess(const char* szCmdLine, int bSkipProgName, int (__stdcall* pfnExtra)(const char*), int (__stdcall* pfnError)(const char*)); // 0x006C4FB0
 
-
-int __fastcall GAME_RunInitHandlers(void* pArg); // 0x0044D9F0
-
-int __stdcall WINMAIN_HandleExtraArgument(const char* szArgument); // 0x0044B5C0
-
-int __stdcall WINMAIN_HandleArgumentError(const char* szArgument); // 0x0044B5D0
-
-void __fastcall GAME_ShowLoadingMessage(int nError); // 0x0044E380
-
-void __fastcall SCMD_HandleSystemPacket(unsigned char* pPacket, int nLength); // 0x0045C850
-
-void __fastcall SCMD_ProcessPackets(unsigned char* pPacket, int nLength); // 0x0045F7B0
-
-extern void* gpMcpConnection; // 0x00798FB4
 
 extern const char* gaszLaunchModeNames[7]; // 0x0070EE70
 
 extern const D2CmdArgStrc gaCommandLineArgs[8]; // 0x006D5BE8
 
 extern int (__cdecl* const gpfnLaunchInit[1])(); // 0x006D5BE0
-
-extern char gszClientCharName[]; // 0x007A05C4
-
-
-
-
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
@@ -166,10 +145,6 @@ extern D2McpInfoStrc gtMcpInfo; // 0x0079910C
 
 extern int gdwGlobal_00799108; // 0x00799108
 
-int __stdcall WINMAIN_ShowCommandLineHelp(const D2CmdParamsStrc* pParams, int nUnused); // 0x0044B4E0
-
-int __stdcall WINMAIN_SetLaunchMode(const D2CmdParamsStrc* pParams, int nUnused); // 0x0044B600
-
 extern const char* gpszDefaultCaption_0070EE50; // 0x0070EE50
 
 
@@ -193,21 +168,9 @@ void __stdcall MCPCONNECT_SetPacket(const char* pData, int nSize);              
 
 
 
-int __stdcall WINMAIN_LauncherRun(void* hInstance, D2ClientCharRecordStrc* pRecord);                   // 0x0044B8A0
-
-void __cdecl RECORD_ToggleRecordPlayback();                                                                    // 0x004519A0
-
-void __cdecl RECORD_StartPlayback();                                                                  // 0x004518E0
-
 int __fastcall SCMD_RunMessageLoop(int (__stdcall* pfnIdle)(int));                                     // 0x00451BB0
 
 void __stdcall GAME_InitGameDataTable(D2GameDataTableStrc* pGameDataTbl, void* pGameList);                  // 0x0052C0A0
-
-int __stdcall WINMAIN_PollSystemPackets(int nUnused);                                                  // 0x0044BAD0
-
-int __stdcall WINMAIN_PumpSystemPackets(int nUnused);                                                  // 0x0044BD20
-
-int __cdecl WINMAIN_PopStateValue();                                                                        // 0x0044B480
 
 void (__fastcall* gpfnMcpMotdCallback)(void* pArg);                                                       // 0x00799308
 
@@ -234,11 +197,6 @@ struct D2McpCreateGameStrc;
 
 extern int gnGlobal_00798FB0; // 0x00798FB0
 
-
-extern int gnRecordPos;                                                                              // 0x007A2784
-
-
-void __cdecl RECORD_LoadRecordFile();                                                                 // 0x00451710
 
 int __fastcall WINMAIN_SendMcpCharCreate(const char* szText, int nValue, unsigned short wValue);
 
@@ -293,9 +251,6 @@ struct D2ClientPacket19Strc
     unsigned char f_3;
     unsigned char nValue3;
 };
-
-extern void* gpMcpConnection; // 0x00798FB4
-
 
 // 0x0044A980
 void __cdecl sub_0044A980_SendPacket0D()
@@ -395,8 +350,6 @@ void __stdcall sub_00449D90_SetValue(int nValue);                               
 void __stdcall sub_00449DB0_SetValue(int nValue);                                                           // 0x00449DB0
 
 extern void* ghConnectEvent;                                                                       // 0x007992EC
-
-extern unsigned short gwMcpReplyRequestId; // 0x00798F80
 
 extern D2McpCallbackFn gpfnMcpPacket08Callback; // 0x007992F8
 
@@ -1062,8 +1015,6 @@ int __fastcall WINMAIN_HandleMcpMotd(const unsigned char* pPacket, unsigned int 
         ((D2McpCallback)gpfnMcpMotdCallback)(pPacket[1], nSize - 2, pPacket + 2);
     return 1;
 }
-void __cdecl RECORD_StartPlayback(); // 0x004518E0
-
 extern "C" void __cdecl sub_0044AFC0(); // 0x0044AFC0
 
 extern "C" const char* gData_0070ECC0[15] = { // 0x0070ECC0

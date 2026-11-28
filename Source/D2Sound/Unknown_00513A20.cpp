@@ -1,4 +1,5 @@
 #include "D2Sound.h"
+#include "D2GlideApi.h"
 
 extern "C" int __cdecl strcmp(const char* szLeft, const char* szRight);
 
@@ -39,8 +40,6 @@ extern int gbEaxEnabled; // 0x00881770
 extern int gnEaxVersion; // 0x00881774
 
 extern int gbEaxRoomOff; // 0x00881778
-
-extern int gfSoundExpansion; // 0x00881790
 
 // 0x00513AE0
 int __cdecl D2SOUND_IsExpansion()

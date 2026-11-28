@@ -13,6 +13,7 @@
 #include "StormApi.h"
 #include "D2GfxApi.h"
 #include "StormApi2.h"
+#include "D2WinApi2.h"
 
 class UIWidget;
 class ListBoxImplementation;
@@ -31,11 +32,6 @@ D2CelFileStrc* __fastcall ARCHIVE_LoadClientCellFile(const char* szFile, int nTy
 int __fastcall PANEL_CountLinesInView(ListBoxImplementation* pListBox); // 0x004BE340
 
 int __stdcall sub_004F6480(D2GfxDataStrc* pContext, int nX, int nY, int nGamma, int nDrawMode, int nPalette); // 0x004F6480
-
-int __fastcall D2Win_10123(const Unicode* wszText, int nLength); // 0x00501730
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
-
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
 

@@ -19,6 +19,7 @@
 #include "FogApi.h"
 #include "FogApi2.h"
 #include "D2HellApi.h"
+#include "D2BNClientApi.h"
 
 #pragma intrinsic(strcpy)
 
@@ -119,7 +120,7 @@ struct D2CmpValueObjStrc
     int nValue;
 };
 
-extern D2CmpBlockTableAStrc gCmpBlockTableA; // 0x0088CB20
+D2CmpBlockTableAStrc gCmpBlockTableA; // 0x0088CB20
 
 D2CmpBlockTableBStrc gCmpBlockTableB; // 0x0088DB58
 
@@ -396,16 +397,6 @@ extern "C" int gpKeyFile3Data;
 extern "C" int gnValue_0088CB0C; // 0x0088CB0C
 
 extern "C" int gnValue_0088CB10; // 0x0088CB10
-
-extern "C" int __cdecl BNDOWNLOAD_HasPendingDownloads(); // 0x0051E5E0
-
-extern "C" int __cdecl BNDOWNLOAD_SetDisconnected(); // 0x00520AD0
-
-extern "C" void __fastcall BNDOWNLOAD_ClearReply(unsigned char nSlot); // 0x00520C00
-
-extern "C" int __fastcall BNDOWNLOAD_GetReplyValue(unsigned char nSlot); // 0x00520C20
-
-extern "C" int __fastcall GRID_GetCDKey(int bSecond); // 0x00523AB0
 
 static int gnCmpPoolArg;                                                                           // 0x0088CB18
 

@@ -20,6 +20,7 @@
 #include "StormApi.h"
 #include "D2CommonApi2.h"
 #include "D2GfxApi.h"
+#include "D2WinApi2.h"
 
 struct D2ActiveRoomStrc;
 
@@ -210,9 +211,6 @@ void __cdecl PARTY_DrawRosterButtonHints(); // 0x0049B330
 void __cdecl PARTY_RefreshRosterIndices(); // 0x0049A9B0
 
 
-void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
-
-
 extern int gpBeltItemB; // 0x007BEFAC
 
 extern void* gpPartyBoxesCel; // 0x007BF020
@@ -223,11 +221,6 @@ void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, i
 
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource); // 0x00526700
-
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
-
 
 unsigned char gabBeltHotkey[4]; // 0x007BEFB0
 

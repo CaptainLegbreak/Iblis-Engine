@@ -32,6 +32,7 @@
 #include "StormApi.h"
 #include "D2CommonApi.h"
 #include "FogApi.h"
+#include "D2ClientApi.h"
 
 #pragma function(memset)
 
@@ -178,10 +179,6 @@ struct D2CharStatsTxt;
 struct D2BitBufferStrc;
 
 struct D2ItemsTxt;
-
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc*); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc*); // 0x0045AE20
 
 int __stdcall UNITS_ChangeAnimMode(D2UnitStrc*,int); // 0x00624690
 

@@ -117,6 +117,7 @@ void __fastcall CLIENTS_GetGuildEmblem(D2ClientStrc* pClient, unsigned char* pBa
 
 #include "D2GameFuncs.h"
 #include "FogApi2.h"
+#include "D2ClientApi.h"
 
 int __fastcall CLIENTS_GetPlayTime(D2ClientStrc* pClient); // 0x005385C0
 
@@ -230,9 +231,6 @@ int __stdcall UNITS_ChangeAnimMode(D2UnitStrc* pUnit, int nMode); // 0x00624690
 D2UnitStrc* __fastcall ITEMS_CreateItemFromBitstream(D2GameStrc* pGame, D2ActiveRoomStrc* pRoom, unsigned char* pBitstream, unsigned int nBufferSize, int bCheckForHeader, D2ItemSaveStrc* pItemSave, unsigned int* pSize, unsigned int dwVersion); // 0x00558CB0
 
 
-int __fastcall GAME_GetUnitGUID(D2UnitStrc* pUnit); // 0x00451F50
-
-
 int __stdcall UNITS_GetInventoryGoldLimit(D2UnitStrc* pUnit); // 0x00622E70
 
 int __stdcall STATLIST_GetMaxStaminaFromUnit(D2UnitStrc* pUnit); // 0x00625DB0
@@ -300,10 +298,6 @@ struct D2CorpseSaveStrc
     int nX;
     int nY;
 };
-
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit);                                                         // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit);                                                         // 0x0045AE20
 
 D2UnitStrc* __fastcall SUNIT_GetServerUnit(D2GameStrc* pGame, int nUnitType, int nUnitGUID);                // 0x00552F60
 

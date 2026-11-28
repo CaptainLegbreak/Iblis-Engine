@@ -25,6 +25,7 @@
 #include "D2WinApi.h"
 #include "D2CMPApi.h"
 #include "D2SoundApi.h"
+#include "D2WinApi2.h"
 
 struct D2MsgHandlerEntryStrc;
 
@@ -769,8 +770,6 @@ void __cdecl CHAT_CloseChatInput()
 }
 
 
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
-
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
 unsigned long gdwBlinkTick; // 0x007BC890
@@ -994,11 +993,6 @@ void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMa
 
 
 extern int gnImeState;                                                                          // 0x007BB5F0
-
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText);                                             // 0x00501820
-
-
-
 
 // 0x0047B4F0
 void __stdcall CHAT_DrawImeText(int nX, int nY)
@@ -1632,9 +1626,6 @@ static int CHAT_HandleHelpCommand(char* szInput, const char* szCommand)
 
 
 Unicode* __fastcall sub_005267E0(Unicode* pDst, const Unicode* pSrc); // 0x005267E0
-
-void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
-
 
 const Unicode* __fastcall CMDTBL_GetKeyText(int nKey, int nArg2); // 0x00469DE0
 

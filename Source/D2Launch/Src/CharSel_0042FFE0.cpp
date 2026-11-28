@@ -7,14 +7,14 @@
 #include "D2LangApi.h"
 #include "D2WinApi.h"
 #include "StormApi2.h"
+#include "D2ClientApi.h"
+#include "D2MultiApi.h"
+#include "D2BNClientApi.h"
 int __fastcall MAINMENUS_ReadPaletteFiles(const char* szFile1, const char* szFile2); // 0x0042F2E0
 void __cdecl MAINMENUS_ShowLocalAddress();                                                                                // 0x0042FF20
 int __cdecl MAINMENUS_FreeSlots();                                                                       // 0x00430A20
 void __cdecl MAINMENUS_UpdateTwoEditOk();                                                                                // 0x00436CF0
 int __stdcall MAINMENUS_OnTwoEditChange(int nArg);                                                                       // 0x00436D40
-void __cdecl CHATDLG_DestroyDialogControls();                                                                // 0x0043DB20
-void __cdecl CHATDLG_DestroyPopupControls();                                                                           // 0x0043EA20
-void __cdecl CHATDLG_DestroyCreateControls();                                                                                // 0x00443220
 int __cdecl CHATDLG_DestroyGameListControls();                                                                                 // 0x00444E20
 extern D2WinControlStrc* gpControl_00779338;                                                                // 0x00779338
 extern D2WinControlStrc* gpControl_00779344;                                                                // 0x00779344
@@ -27,8 +27,6 @@ extern int gbGatewayFlag;                                                       
 extern D2WinControlStrc* gpControl_007799D4;                                                                       // 0x007799D4
 extern int gfConnectCancelled;                                                                              // 0x007799D8
 extern D2CharSelCacheStrc* gpCharSelCache;                                                         // 0x00779DE8
-extern D2WinControlStrc* gpControlMain;                                                            // 0x0077BC4C
-extern D2WinControlStrc* gbSelectActive;                                                                   // 0x0077BD00
 extern D2WinControlStrc* gpControl_0077BD90;                                                                       // 0x0077BD90
 extern D2WinControlStrc* gpWaitText_0077BD9C;                                                               // 0x0077BD9C
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
@@ -72,10 +70,7 @@ void __fastcall CHARSEL_UseName(char* szName); // 0x0043ADB0
 int __fastcall D2Win_10051(D2WinControlStrc* pTextBox, const Unicode* wszText, int nColor, char bIsWrapped, int nIndent); // 0x004FC9B0
 extern D2CelFileStrc* gpCharSelectBckgCelFile; // 0x00779768
 extern int gnTopRow; // 0x00779DC8
-int __cdecl GAME_GetStopMainLoop(); // 0x0042FA30
 void __cdecl MAINMENUS_UpdateProgress(); // 0x0042F990
-int __cdecl sub_0042F6D0_GetMenusDone(); // 0x0042F6D0
-void __cdecl sub_00518C20_DeleteQueueLock(); // 0x00518C20
 extern "C" int __cdecl strcmp(const char* sz1, const char* sz2);
 int __fastcall MAINMENUS_ShowOptionDescription(unsigned int nArg, int nMode, int nStringId1, int nStringId2); // 0x004307A0
 void __fastcall CHARSEL_JoinSelectedWithDifficulty(SMSGHANDLER_PARAMS* pMsg, int nMode); // 0x00439AF0
@@ -247,7 +242,6 @@ static long BNDOWNLOAD_GetTime(long* pTime)
 {
     return _time32(pTime);
 }
-void __cdecl CHATDLG_ResetLaunchState(); // 0x0043F8C0
 long __stdcall sub_M106_Emit_0051DC70(long* pTime)
 {
     return BNDOWNLOAD_GetTime(pTime);

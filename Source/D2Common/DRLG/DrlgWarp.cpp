@@ -6,6 +6,7 @@
 #include "D2DrlgTiles.h"
 #include "D2DrlgWarp.h"
 #include "FogApi.h"
+#include "D2ClientApi.h"
 
 struct D2ActiveRoomStrc;
 
@@ -128,8 +129,6 @@ struct D2LvlWarpTxt
 
 unsigned int __fastcall DRLGROOM_CheckWaypointFlags(D2DrlgRoomStrc* pDrlgRoom); // 0x0066BAA0
 
-
-int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
 void __fastcall DRLGOUTPLACE_CreateLevelConnections(D2DrlgStrc* pDrlg); // 0x00678AD0
 

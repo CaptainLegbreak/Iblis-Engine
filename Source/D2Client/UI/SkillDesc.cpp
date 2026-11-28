@@ -16,6 +16,7 @@
 #include "D2MonTypeTxt.h"
 #include "D2LevelTxt.h"
 #include "D2CommonApi2.h"
+#include "D2WinApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -131,10 +132,6 @@ unsigned int gnAmbientTick; // 0x007C8C98
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szOut, const char* szFormat, ...); // 0x006CC468
 
 extern "C" const char gszFmtRange[];                                                                // 0x006D9D70
-
-extern unsigned int gdwBitMasks_006CE268[]; // 0x006CE268
-
-void __fastcall D2Win_10131_GetTextDimensions(const Unicode* pText, int* pWidth, int* pHeight); // 0x00502520
 
 
 void __fastcall TEXT_DrawCenteredText(int nLeft, int nY, int nRight, const Unicode* wszText, int nColor); // 0x004A7080
@@ -276,7 +273,6 @@ void __fastcall sub_004BA790_ReleaseUnitSfx(void* pUnitSfx, D2UnitStrc* pUnit, i
 
 int __fastcall sub_004B9A00(int nSoundId, D2UnitStrc* pUnit, int nArg2, int nArg3, int nArg4); // 0x004B9A00
 
-extern const unsigned char gbSkillFlagMask_006CE270; // 0x006CE270
 
 D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nSubtileX, int nSubtileY); // 0x00463740
 
@@ -445,8 +441,6 @@ extern "C" const char szFmtD_006D57BC[]; // 0x006D57BC
 
 struct D2MissilesTxt;
 
-
-void __fastcall D2Win_10129_DrawFramedText(const Unicode* wszText, int nX, int nY, int nArg4, int nArg5); // 0x00502280
 
 int __fastcall SPELLSEL_GetSkillMaxLevel(int); // 0x004AA8B0
 
@@ -668,7 +662,7 @@ int __fastcall SKILLDESC_GetCltMissileId(D2UnitStrc* pUnit, int nSkillId)
 		return -1;
 	}
 
-	if (pSkillsTxtRecord->nFlags[0] & gbSkillFlagMask_006CE270)
+	if (pSkillsTxtRecord->nFlags[0] & gdwBitMasks[2])
 	{
 		if (pSkillsTxtRecord->nAuraState >= 0 && pSkillsTxtRecord->nAuraState < sgptDataTables->nStatesTxtRecordCount
 			&& pSkillsTxtRecord->wAuraStat[0] >= 0 && pSkillsTxtRecord->wAuraStat[0] < sgptDataTables->nItemStatCostTxtRecordCount)
@@ -1979,7 +1973,7 @@ static int __stdcall sub_004E85C0_AppendManaCost(Unicode* wszOut, int nSkillId, 
 
 static inline int SDPHYS_TestFlag(const unsigned char* pFlags, int nBit)
 {
-    return pFlags[nBit >> 3] & gdwBitMasks_006CE268[nBit & 7];
+    return pFlags[nBit >> 3] & gdwBitMasks[nBit & 7];
 }
 
 // 0x004E86F0
@@ -2153,7 +2147,7 @@ static int __stdcall SKILLDESC_GetAttackRatingValues(D2UnitStrc* pUnit, D2UnitSt
     int nBonus = SKILLS_GetWeaponMasteryBonus(pUnit, pItem, pSkill, 0);
     nBonus += STATLIST_UnitGetItemStatOrSkillStatValue(pUnit, STAT_ITEM_TOHIT_PERCENT, 0);
     nBonus += SKILLS_GetToHitFactor(pUnit, pSkillsTxt->nSkillId, nLevel);
-    if (pSkillsTxt->nFlags[3 >> 3] & gdwBitMasks_006CE268[3 & 7])
+    if (pSkillsTxt->nFlags[3 >> 3] & gdwBitMasks[3 & 7])
     {
         int nProgressive = STATLIST_UnitGetStatValue(pUnit, STAT_PROGRESSIVE_TOHIT, 0);
         if (nProgressive)
@@ -2978,7 +2972,7 @@ int __stdcall sub_004E89A0_GetElementalDamage(D2UnitStrc* pUnit, int* pMinDamage
     if (pSkill)
     {
         D2SkillsTxt* pSkillsTxt = SKILLS_GetSkillsTxtRecordFromSkill(pSkill);
-        if (pSkillsTxt && (pSkillsTxt->nFlags[3 >> 3] & gdwBitMasks_006CE268[3 & 7]))
+        if (pSkillsTxt && (pSkillsTxt->nFlags[3 >> 3] & gdwBitMasks[3 & 7]))
         {
             SKILLDESC_AddProgressiveDamage(pUnit, pMinDamage, pMaxDamage, pColor);
         }

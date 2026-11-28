@@ -20,6 +20,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 #include "D2CMPApi.h"
+#include "D2NetApi2.h"
 
 #pragma intrinsic(_ReadWriteBarrier)
 
@@ -111,10 +112,6 @@ struct D2DynamicPathStrc;
 
 
 void __fastcall ITEMMODE_RecalcEquippedItemStates(D2GameStrc* pGame, D2UnitStrc* pUnit, int nArg); // 0x0055DBC0
-
-extern void* gpServer; // 0x00882D08
-
-
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 

@@ -28,6 +28,7 @@
 #include "D2CMPApi.h"
 #include "StormApi2.h"
 #include "D2CommonApi3.h"
+#include "D2ClientApi.h"
 
 struct D2UnitStrc;
 
@@ -135,10 +136,6 @@ struct D2OverlayTxt
 };
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
-
-
-unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
-
 
 
 D2UnitGfxDataStrc* __fastcall CUNIT_GetGfxData(D2UnitStrc* pUnit); // 0x00463E10

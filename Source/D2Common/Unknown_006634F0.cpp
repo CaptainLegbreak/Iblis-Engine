@@ -24,6 +24,7 @@
 
 #include "D2LevelTxt.h"
 #include "D2CommonApi.h"
+#include "D2ClientApi.h"
 
 struct D2InventoryStrc;
 
@@ -42,8 +43,6 @@ struct D2Roll20Strc;
 struct D2Roll28Strc;
 
 struct D2HirelingTxt;
-
-unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
 struct D2Rolled6634F0Strc
 {

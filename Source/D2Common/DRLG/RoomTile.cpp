@@ -15,6 +15,7 @@
 #include "D2DrlgOutdoor.h"
 #include "FogApi.h"
 #include "D2CMPApi.h"
+#include "D2ClientApi.h"
 
 #pragma function(memset)
 
@@ -88,13 +89,7 @@ extern const D2UnkDrlgRoomTileStrc2 gaDrlgRoomTilePresetUnits[];                
 
 extern const D2CoordStrc gaWarpTileOffsets[4];                                                     // 0x006EF554
 
-unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                          // 0x0045C390
-
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
-
-int __fastcall SKILLDESC_ValidateMonsterId(int nMonsterId);                                              // 0x004E6C50
-
-
 
 int __fastcall DRLGROOM_AreXYInsideCoordinates(D2DrlgCoordStrc* pCoords, int nX, int nY);                   // 0x0066B980
 

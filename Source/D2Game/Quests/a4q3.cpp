@@ -55,6 +55,7 @@ D2QuestDataStrc* __fastcall QUESTS_GetQuestData(D2GameStrc* pGame, int nId); // 
 
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
+#include "D2ClientApi.h"
 
 void __fastcall QUESTS_StatusCyclerEx(D2GameStrc* game,D2UnitStrc* player,unsigned char id); // 0x00544190
 
@@ -397,8 +398,6 @@ void __fastcall ACT4Q3_InitQuestData(D2QuestDataStrc* pQuestData)
 
 union D2SeedStrc;
 
-
-unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc*, int); // 0x0045C390
 
 extern unsigned int gnHellforgeRunesNormal[]; // 0x0073E114
 

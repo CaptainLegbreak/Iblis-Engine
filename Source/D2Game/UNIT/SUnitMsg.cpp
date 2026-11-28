@@ -31,6 +31,7 @@ extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize
 int __stdcall BITMANIP_GetSize(D2BitBufferStrc* pBuffer); // 0x00410E90
 
 #include "D2GameFuncs.h"
+#include "D2ClientApi.h"
 
 void __fastcall D2GAME_PACKETS_SendPacket0xA7_StateOn(D2ClientStrc* pClient, unsigned char nUnitType, unsigned long dwUnitId, unsigned char nState); // 0x0053E260
 
@@ -163,10 +164,6 @@ struct D2UnitPacketSkillEventStrc
 
 int __fastcall sub_00451F30_TestUnitFlag(D2UnitStrc*, int); // 0x00451F30
 
-D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int); // 0x00451F80
-
-int __fastcall ITEMS_CheckUnitFlagEx(D2UnitStrc*, unsigned int); // 0x00463720
-
 void __fastcall PLAYER_SynchronizeItemsToClient(D2UnitStrc*, D2ClientStrc*); // 0x00534F80
 
 
@@ -285,8 +282,6 @@ struct D2UnitPacketListStrc
 };
 
 int __fastcall GAME_GetUnitTypeOrInvalid(D2UnitStrc* pUnit);                                        // 0x0044BE50
-
-int __fastcall GAME_GetUnitGUID(D2UnitStrc* pUnit);                                                 // 0x00451F50
 
 void __fastcall D2GAME_PACKETS_SendPacket0x9E_9F_A0(D2ClientStrc* pClient, D2UnitStrc* pUnit, unsigned short nStatId, unsigned int nValue); // 0x0053BEE0
 

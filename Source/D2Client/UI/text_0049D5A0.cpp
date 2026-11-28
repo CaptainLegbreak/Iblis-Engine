@@ -4,6 +4,7 @@
 #include "D2WinSplitText.h"
 #include "FogApi.h"
 #include "D2SoundApi.h"
+#include "D2WinApi2.h"
 struct D2SelectionRectStrc;
 #pragma pack(push, 2)
 struct D2TextScrollStrc
@@ -30,9 +31,6 @@ extern "C" __declspec(dllimport) unsigned long __stdcall timeGetTime(void);     
 
 void __fastcall UI_DrawRectangleBorder(D2RectStrc* pRect);                                               // 0x00452E50
 void __fastcall AUTOMAP_DrawFramedBox(int nX, int nY, int nWidth, int nHeight, int nArg5, int nArg6); // 0x0046EFD0
-void __fastcall D2WINFONT_DrawClippedFontText(const Unicode* pText, int nX, int nY, int nTextColor, int nSkipLines, int nDrawLines); // 0x00501DF0
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered);          // 0x00502320
-
 extern int gbTextSide;                                                                             // 0x007BF236
 extern int gnGlobal_007BF264;                                                                               // 0x007BF264
 

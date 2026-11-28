@@ -18,6 +18,7 @@
 #include "FogApi.h"
 #include "StormApi2.h"
 #include "D2CMPApi.h"
+#include "BnclientApi.h"
 
 static int BNDOWNLOAD_CheckStringBlock(const char* pBuffer, unsigned int nPos, unsigned int nCount, unsigned int nSize); // 0x00520A80
 
@@ -512,10 +513,6 @@ struct D2BnAccountLogonStrc
 extern D2BigLoginRecordStrc gtLoginRecord; // 0x00882680
 
 
-void __cdecl sub_00524740_ClearKeySchedules(); // 0x00524740
-
-void __cdecl sub_005241A0_ClearHashContexts(); // 0x005241A0
-
 extern unsigned char gabNewVerifier[0x40]; // 0x00882640
 
 extern D2BigPairStrc gtBigPair; // 0x0088273C
@@ -531,12 +528,6 @@ void __fastcall BNDOWNLOAD_DecodeKeyDigits(const char* szKey, unsigned char* pOu
 void __stdcall BNDOWNLOAD_SubstituteKeyNibbles(unsigned int* pKey); // 0x00522980
 
 
-void __fastcall sub_00524280_InitHashContext(int nIndex); // 0x00524280
-
-void __fastcall sub_00524200_HashBlock(int nIndex, const void* pBlock, unsigned int* pDigest); // 0x00524200
-
-void __fastcall sub_00524780_SetKey(int nIndex, int bEncrypt, const D2IdeaUserKeyStrc* pUserKey); // 0x00524780
-
 extern "C" void __fastcall __security_check_cookie(unsigned int); // 0x00681A48
 
 struct D2CipherKeyView {
@@ -544,8 +535,6 @@ struct D2CipherKeyView {
 };
 
 void __fastcall sub_005241C0_GetDigest(int,void*); // 0x005241C0
-
-void __fastcall sub_00524760_CipherBlock(int,const unsigned short*,unsigned short*); // 0x00524760
 
 static unsigned int BNDOWNLOAD_CountTerminatedBytes(unsigned int maxLength, unsigned int length, const unsigned char* data); // 0x00523280
 

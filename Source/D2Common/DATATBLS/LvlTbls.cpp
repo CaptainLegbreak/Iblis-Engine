@@ -130,6 +130,7 @@ struct D2AutomapRecordStrc
 };
 
 #include "D2AutomapIndexStrc.h"
+#include "D2ClientApi.h"
 
 
 extern D2SeedStrc* gpAutomapSeed; // 0x00744504
@@ -245,8 +246,6 @@ D2AutomapIndexStrc gaAutomapIndex[36]; // 0x0096C8D0
 extern D2DataTablesStrc sgtDataTables; // 0x0096BC30
 
 
-
-unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
 struct Act;
 

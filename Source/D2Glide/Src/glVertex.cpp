@@ -1,5 +1,6 @@
 #include "D2Glide.h"
 #include "D2DrlgMaps.h"
+#include "D2DDrawApi.h"
 
 struct D2GlideSettingsStrc;
 
@@ -27,8 +28,6 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
-int __fastcall sub_00511FB0_DrawImage(void* pData, int nX, int nY, unsigned int dwGamma, int nDrawMode, void* pPalette); // 0x00511FB0
-
 extern int gnProjectOriginX; // 0x00880B60
 
 extern int gnProjectOriginY; // 0x00880B68
@@ -49,8 +48,6 @@ void __fastcall GLPERSPECTIVE_SetProjectOrigin(int nX, int nY); // 0x0050DD50
 
 void __cdecl GLVERTEX_PerspectiveClearScale(); // 0x0050DF00
 
-
-int __fastcall GLVERTEX_CelFlatSpriteDraw(void* pData, int nX, int nY, unsigned int dwGamma, int nDrawMode, int nScreenMode, void* pPalette); // 0x00512410
 
 int gnProjectOriginX; // 0x00880B60
 

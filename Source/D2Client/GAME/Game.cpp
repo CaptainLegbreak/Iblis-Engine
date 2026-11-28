@@ -32,6 +32,10 @@
 #include "D2SoundApi.h"
 #include "D2NetApi.h"
 #include "D2HellApi.h"
+#include "D2MCPClientApi2.h"
+#include "D2WinApi2.h"
+#include "D2LaunchApi.h"
+#include "D2MultiApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -271,19 +275,9 @@ struct D2GameStrc;
 
 struct D2AutomapRecordStrc;
 
-extern int gbStopMainLoop; // 0x0077932C
-
-extern int gfConnectCancelled; // 0x007799D8
-
-extern char gszPreferredRealm[]; // 0x00779A40
-
 extern int gfCharSelCancelled; // 0x0077AC04
 
 extern int gdwGlobal_0077BBF8; // 0x0077BBF8
-
-extern char gszChannelName[]; // 0x00798D30
-
-extern int ghThread; // 0x007992A4
 
 extern char gszMcpGameServerIP[]; // 0x007992CC
 
@@ -292,8 +286,6 @@ extern int gnMcpGameToken; // 0x00798FB0
 extern int gdwGlobal_0079929C; // 0x0079929C
 
 extern int gdwMcpGameHash; // 0x00798F88
-
-extern int gpMcpPacket; // 0x007992F4
 
 extern int gbConnectFailed; // 0x007A0460
 
@@ -1242,10 +1234,6 @@ void __cdecl CHAT_ResetChatHistory();                                           
 
 
 
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText);                                             // 0x00501820
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered);         // 0x00502320
-
 D2RecordHandlerFn __fastcall sub_005173D3_SetRecordHandler(D2RecordHandlerFn pfnHandler);                  // 0x005173D3
 
 Unicode* __fastcall sub_005267E0(Unicode* pDest, const Unicode* pSource);                                 // 0x005267E0
@@ -1696,7 +1684,6 @@ void __fastcall sub_00468820_Nop(int nArg1, int nArg2); // 0x00468820
 void __fastcall sub_00477980_DrawFpsStats(); // 0x00477980
 #pragma pack(push, 1)
 #pragma pack(pop)
-D2SplittedTextStrc* __fastcall D2WINFONT_SplitText(const Unicode* pText, int* pLineCount, int nWidth); // 0x00502970
 extern unsigned short gawLoadingStrings[]; // 0x0070F384
 int gnLoadingIndex; // 0x007A05D4
 D2PongDataStrc gtPongData; // 0x007A04D4

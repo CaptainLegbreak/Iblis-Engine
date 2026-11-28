@@ -12,6 +12,7 @@ extern "C" int __cdecl sprintf(char* szDest, const char* szFormat, ...);
 #include "D2MCPClientApi.h"
 #include "D2LangApi.h"
 #include "D2CommonApi2.h"
+#include "D2LaunchApi.h"
 
 struct D2ConfigStrc;
 
@@ -70,7 +71,6 @@ void __stdcall D2ServerServiceMain(unsigned long dwArgc, char** lpszArgv); // 0x
 void __stdcall D2ServerServiceHandlerProc(unsigned long dwCtrlCode); // 0x00406410
 
 typedef int BOOL;
-void __fastcall MAINMENUS_InitStorm(int nDirectFlags, int nValue); // 0x00406870
 int __fastcall ARCHIVE_LoadExpansionArchives(int (__cdecl* pfnPlayDisc)(), int (__cdecl* pfnExpansionDisc)(), int nUnused, D2ConfigStrc* pCfg); // 0x004FAEC0
 int gnMode; // 0x0074C704
 int gbUseKeyhook; // 0x0074C708

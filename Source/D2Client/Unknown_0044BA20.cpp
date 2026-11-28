@@ -15,6 +15,7 @@
 #include "D2GfxApi.h"
 #include "D2NetApi.h"
 #include "D2MCPClientApi.h"
+#include "D2MCPClientApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -144,9 +145,6 @@ struct D2McpInfoStrc
 
 void __fastcall sub_00526F20_ToUnicode(Unicode* pDst, const char* szSrc, int nMaxLength); // 0x00526F20
 
-void __stdcall GAME_StripColorCodes(Unicode* pText); // 0x0044B230
-
-
 extern int gnMcpGameToken; // 0x00798FB0
 
 extern int gdwMcpGameHash; // 0x00798F88
@@ -256,61 +254,6 @@ extern unsigned char gabChunkBuffer[]; // 0x00799318
 
 
 extern "C" __declspec(dllimport) int __stdcall SetEvent(void* hEvent);                                      // 0x006CC130
-
-
-
-
-
-
-
-
-
-extern void* ghConnectEvent;                                                                       // 0x007992EC
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

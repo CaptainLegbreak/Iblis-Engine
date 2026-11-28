@@ -39,6 +39,7 @@
 #include "D2InventoryPair.h"
 #include "FogApi.h"
 #include "D2CommonApi.h"
+#include "D2ClientApi.h"
 
 #define STAT_ITEM_INDESCTRUCTIBLE 152
 
@@ -211,18 +212,6 @@ int __stdcall DATATBLS_GetItemIdFromItemCode(unsigned int dwCode); // 0x00633680
 
 
 
-int __fastcall GAME_GetUnitClassId(D2UnitStrc* pUnit); // 0x00451F60
-
-D2SetItemsTxt* __fastcall DATATBLS_GetSetItemsTxtRecord(int nIndex); // 0x00483440
-
-D2UniqueItemsTxt* __fastcall DATATBLS_GetUniqueItemsTxtRecord(int nIndex); // 0x00483470
-
-
-
-
-
-
-
 void __stdcall STATLIST_SetUnitStat(D2UnitStrc* pUnit, int nStat, int nValue, int nLayer); // 0x00627260
 
 
@@ -364,8 +353,6 @@ int __stdcall STATLIST_GetFullStatsDataFromUnit(D2UnitStrc* pUnit, D2StatStrc* p
 D2NpcTxt* __stdcall DATATBLS_GetNpcTxtRecord(unsigned int dwNpcId); // 0x00656900
 
 
-D2MonStatsTxt* __fastcall DATATBLS_GetMonStatsTxtRecord(int nMonsterId);                                    // 0x00451F80
-
 static void __stdcall ITEMS_CalculateAdditionalCostsForSocketables(D2UnitStrc* pItem, int* pSellCost, int* pBuyCost, int* pRepCost); // 0x006292F0
 
 static void __stdcall ITEMS_CalculateAdditionalCostsForItemSkill(D2UnitStrc* pItem, int* pSellCost, int* pBuyCost, int* pRepCost, unsigned int nDivisor); // 0x0062EDD0
@@ -415,10 +402,6 @@ struct D2CoordStrc;
 
 struct D2StaticPathStrc;
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-
 void __stdcall ITEMS_GetRealmData(D2UnitStrc* pItem, int* pRealmData0, int* pRealmData1); // 0x00629E40
 
 void __stdcall ITEMS_SerializeItemComplete(D2UnitStrc* pItem, D2BitBufferStrc* pBuffer, int bServer, int bGamble); // 0x0062FFF0
@@ -426,12 +409,6 @@ void __stdcall ITEMS_SerializeItemComplete(D2UnitStrc* pItem, D2BitBufferStrc* p
 
 
 static void __stdcall ITEMS_WriteBitsToBitstream(D2BitBufferStrc* pBuffer, unsigned int nData, int nBits); // 0x0062AF50
-
-D2ItemStatCostTxt* __fastcall PLAYER_GetItemStatCostTxtRecord(int nStatId);                           // 0x0045C4F0
-
-
-
-
 
 unsigned short __stdcall ITEMS_GetRarePrefixId(D2UnitStrc* pItem);                                          // 0x00627FE0
 
@@ -452,8 +429,6 @@ static void __stdcall ITEMS_SerializeItemCompact(int bServer, D2UnitStrc* pItem,
 static int ITEMS_HasSocketedItem(D2UnitStrc* pItem);
 
 int __stdcall ITEMS_IsSocketable(D2UnitStrc* pItem);
-
-int __fastcall GAME_GetUnitGUID(D2UnitStrc* pUnit);                                                 // 0x00451F50
 
 void* __fastcall GFXUTIL_GetNextRosterInfo(D2UnitStrc* pUnit);                                         // 0x004DC0B0
 
@@ -505,8 +480,6 @@ struct D2SkillsTxt;
 
 unsigned short __stdcall ITEMS_GetAutoAffix(D2UnitStrc*); // 0x00627F20
 
-
-int __fastcall ITEMS_CheckUnitFlagEx(D2UnitStrc*, unsigned int); // 0x00463720
 
 int __fastcall GAME_GetUnitTypeOrInvalid(D2UnitStrc*); // 0x0044BE50
 

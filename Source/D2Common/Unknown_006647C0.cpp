@@ -4,6 +4,7 @@
 #include "D2DataTbls.h"
 #include "D2Txt.h"
 #include "D2CommonApi.h"
+#include "D2ClientApi.h"
 
 
 enum
@@ -22,8 +23,6 @@ extern D2DataTablesStrc* sgptDataTables;                                        
 extern int gnMonStatsMissileOffsets[];                                                             // 0x006EA938
 extern const unsigned int* gpSkeletonComponentCodes[16];                                           // 0x007489A8
 extern const unsigned int* gpArcherComponentCodes[16];                                             // 0x00748A18
-
-D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int nMonsterId);                        // 0x00451FE0
 
 static D2MonStats2Txt* MONSTERS_GetMonStats2TxtRecordInline(int nMonsterId)
 {

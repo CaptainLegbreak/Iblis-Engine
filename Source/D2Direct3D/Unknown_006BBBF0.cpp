@@ -6,6 +6,7 @@
 #include "FogApi.h"
 #include "D2SoundApi.h"
 #include "StormApi2.h"
+#include "D2GlideApi.h"
 
 struct D2CriticalSectionStrc;
 
@@ -19,7 +20,6 @@ extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalS
 extern "C" __declspec(dllimport) void __stdcall BinkNextFrame(D2BinkStrc* pBink); // 0x006CC5BC
 extern "C" __declspec(dllimport) int __stdcall BinkCopyToBuffer(D2BinkStrc* pBink, void* pDest, int nDestPitch, unsigned int nDestHeight, unsigned int nDestX, unsigned int nDestY, unsigned int nFlags); // 0x006CC5C0
 extern "C" __declspec(dllimport) int __stdcall BinkDoFrame(D2BinkStrc* pBink); // 0x006CC5C4
-extern D2CriticalSectionStrc* gpRenderCriticalSection; // 0x007C9134
 extern D2DDSurfaceStrc* gpSurface_00970E68; // 0x00970E68
 extern unsigned int gnBinkX; // 0x00989C0C
 extern D2BinkStrc* gpBink; // 0x00989C10

@@ -6,6 +6,7 @@
 #include "D2Structs.h"
 #include "D2DataTbls.h"
 #include "D2CommonApi.h"
+#include "D2ClientApi.h"
 
 struct D2SkillsTxt;
 
@@ -15,9 +16,6 @@ struct D2SkillsTxt { char unk_00[8]; unsigned char nFlags[4]; char unk_0C[0x22];
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 extern const unsigned int gdwBitMasks[32]; // 0x006CE268
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
 static inline D2SkillsTxt* GetSkillsRecord(int nSkillId)

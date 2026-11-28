@@ -23,29 +23,21 @@ extern void* gpBuffer_009897D0; // 0x009897D0
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
-extern void* gpArray_009897D4[2]; // 0x009897D4
+// The smacker frame goes through two halves (0x100 x 0x40 each): a system-memory surface and its texture, which
+// the decoder writes, and a device surface and its texture, which are drawn.
+D2DDSurfaceStrc* gapSmackSurfaces[2]; // 0x009897D4
 
-extern void* gapObjectsDC[2]; // 0x009897DC
+D2D3DTextureStrc* gapSmackSourceTextures[2]; // 0x009897DC
 
-extern void* gpArray_009897E4[2]; // 0x009897E4
+D2DDSurfaceStrc* gapSmackDeviceSurfaces[2]; // 0x009897E4
 
-void __fastcall D3DCORE_CreateMemoryTexture(void** ppFirst, void** ppSecond, int nCount, int nSize); // 0x006B3730
+D2D3DTextureStrc* gapSmackTextures[2]; // 0x009897EC
 
-int __fastcall sub_006B58A0_Allocate(void** ppFirst, void** ppSecond, int nCount, int nSize); // 0x006B58A0
+int __fastcall D3DCORE_CreateMemoryTexture(D2DDSurfaceStrc** ppSurface, D2D3DTextureStrc** ppTexture, int nWidth, int nHeight); // 0x006B3730
 
-extern D2D3DObjStrc* gapObjectsD4_009897D4[2]; // 0x009897D4
+int __fastcall D3DCORE_CreateDeviceTexture(D2DDSurfaceStrc** ppSurface, D2D3DTextureStrc** ppTexture, int nWidth, int nHeight); // 0x006B58A0
 
-extern D2D3DObjStrc* gapObjectsDC_009897DC[2]; // 0x009897DC
-
-extern D2D3DObjStrc* gapSmackTextures[2]; // 0x009897E4
-
-extern D2D3DObjStrc* gapObjectsEC_009897EC[2]; // 0x009897EC
-
-extern void* gpBuffer_009897D4; // 0x009897D4
-
-extern void* gpBuffer_009897D8; // 0x009897D8
-
-void __fastcall D3DCORE_CopySurface(void* pTarget, void* pBuffer, int nSize); // 0x006B38A0
+void __fastcall D3DCORE_CopySurface(D2DDSurfaceStrc* pDst, D2DDSurfaceStrc* pSrc, int nRows); // 0x006B38A0
 
 void __fastcall D3DSMACK_CloseSmacker(D2SmackRecordStrc* video); // 0x006B9BB0
 
@@ -98,14 +90,14 @@ char* __fastcall D3DSMACK_CreateSmackSurfaces(char* pBuffer)
 {
     for (int i = 0; i < 2; ++i)
     {
-        void** ppFirst = &gpArray_009897D4[i];
-        void** ppSecond = &gapObjectsDC[i];
+        D2DDSurfaceStrc** ppFirst = &gapSmackSurfaces[i];
+        D2D3DTextureStrc** ppSecond = &gapSmackSourceTextures[i];
         D3DCORE_CreateMemoryTexture(ppFirst, ppSecond, 256, 64);
         D2_ASSERT(*ppFirst, 0x4A);
         D2_ASSERT(*ppSecond, 0x4B);
-        ppFirst = &gpArray_009897E4[i];
-        ppSecond = &gapObjectsEC[i];
-        int nResult = sub_006B58A0_Allocate(ppFirst, ppSecond, 256, 64);
+        ppFirst = &gapSmackDeviceSurfaces[i];
+        ppSecond = &gapSmackTextures[i];
+        int nResult = D3DCORE_CreateDeviceTexture(ppFirst, ppSecond, 256, 64);
         D2_ASSERT(*ppFirst, 0x4E);
         D2_ASSERT(*ppSecond, 0x4F);
         D2_ASSERT(nResult, 0x50);
@@ -118,10 +110,10 @@ void __cdecl D3DSMACK_ReleaseSmackSurfaces()
 {
     for (int i = 0; i < 2; ++i)
     {
-        RELEASE(gapObjectsDC_009897DC[i]);
-        RELEASE(gapObjectsD4_009897D4[i]);
-        RELEASE(gapObjectsEC_009897EC[i]);
+        RELEASE(gapSmackSourceTextures[i]);
+        RELEASE(gapSmackSurfaces[i]);
         RELEASE(gapSmackTextures[i]);
+        RELEASE(gapSmackDeviceSurfaces[i]);
     }
 }
 
@@ -135,32 +127,20 @@ void __fastcall D3DSMACK_CloseSmacker(D2SmackRecordStrc* pRecord)
     }
 }
 
-D2D3DTextureStrc* gpValue_009897DC; // 0x009897DC
-
-D2D3DTextureStrc* gpSmackSourceTexture; // 0x009897E0
-
-void* gpTarget_009897E4; // 0x009897E4
-
-void* gpTarget; // 0x009897E8
-
-D2D3DTextureStrc* gpObject_009897EC; // 0x009897EC
-
-D2D3DTextureStrc* gpSmackTexture; // 0x009897F0
-
 // 0x006B9BD0
 void __cdecl D3DSMACK_UploadSmackTextures()
 {
-    if (gpBuffer_009897D4)
+    if (gapSmackSurfaces[0])
     {
         if (gnRenderFlags_0096F3A8 & gnRenderFlag)
         {
-            D3DCORE_CopySurface(gpTarget_009897E4, gpBuffer_009897D4, 0x40);
-            D3DCORE_CopySurface(gpTarget, gpBuffer_009897D8, 0x40);
+            D3DCORE_CopySurface(gapSmackDeviceSurfaces[0], gapSmackSurfaces[0], 0x40);
+            D3DCORE_CopySurface(gapSmackDeviceSurfaces[1], gapSmackSurfaces[1], 0x40);
         }
         else
         {
-            gpObject_009897EC->lpVtbl->Load(gpObject_009897EC, gpValue_009897DC);
-            gpSmackTexture->lpVtbl->Load(gpSmackTexture, gpSmackSourceTexture);
+            gapSmackTextures[0]->lpVtbl->Load(gapSmackTextures[0], gapSmackSourceTextures[0]);
+            gapSmackTextures[1]->lpVtbl->Load(gapSmackTextures[1], gapSmackSourceTextures[1]);
         }
     }
 }
@@ -200,7 +180,7 @@ static void __stdcall D3DSMACK_DrawSmackFrame(D2SmackRecordStrc* video, int widt
     gatVideoVertices[3].fRhw = 1.0f;
     gatVideoVertices[3].fU = 1.0f;
     gatVideoVertices[3].fV = 0.0f;
-    gpDevice_00970E78->lpVtbl->SetTexture(gpDevice_00970E78, 0, gapObjectsEC[0]);
+    gpDevice_00970E78->lpVtbl->SetTexture(gpDevice_00970E78, 0, gapSmackTextures[0]);
     gpDevice_00970E78->lpVtbl->DrawPrimitive(gpDevice_00970E78, 6, 0x1C4, gatVideoVertices, 4, 0x1C);
 
     x += 256;
@@ -230,7 +210,7 @@ static void __stdcall D3DSMACK_DrawSmackFrame(D2SmackRecordStrc* video, int widt
     gatVideoVertices[3].fRhw = 1.0f;
     gatVideoVertices[3].fU = u;
     gatVideoVertices[3].fV = 0.0f;
-    gpDevice_00970E78->lpVtbl->SetTexture(gpDevice_00970E78, 0, gapObjectsEC[1]);
+    gpDevice_00970E78->lpVtbl->SetTexture(gpDevice_00970E78, 0, gapSmackTextures[1]);
     gpDevice_00970E78->lpVtbl->DrawPrimitive(gpDevice_00970E78, 6, 0x1C4, gatVideoVertices, 4, 0x1C);
 }
 
@@ -295,10 +275,6 @@ void __fastcall sub_006B9EB0_Shim(unsigned short* pSource, unsigned short* pDest
 
 unsigned char* gpFrameBuffer_009897D0; // 0x009897D0
 
-D2DDSurfaceStrc* gapSmackSurfaces; // 0x009897D4
-
-D2DDSurfaceStrc* gpMemSurfaceB; // 0x009897D8
-
 static void __stdcall sub_006B9EB0_CopyWithAlpha(const unsigned short* pSrc, unsigned char* pDst, int nPitch)
 {
     for (int nRow = 64; nRow; --nRow)
@@ -317,36 +293,36 @@ static void __stdcall sub_006B9EB0_CopyWithAlpha(const unsigned short* pSrc, uns
 void __cdecl D3DSMACK_UploadSmackFrameBuffer()
 {
     D2DDSurfaceDesc2Strc tDesc = { sizeof(D2DDSurfaceDesc2Strc) };
-    if (!gapSmackSurfaces)
+    if (!gapSmackSurfaces[0])
     {
         return;
     }
 
-    long hResult = gapSmackSurfaces->lpVtbl->Lock(gapSmackSurfaces, 0, &tDesc, 0x21, 0);
+    long hResult = gapSmackSurfaces[0]->lpVtbl->Lock(gapSmackSurfaces[0], 0, &tDesc, 0x21, 0);
     if (hResult)
     {
         D3DCORE_LogDDrawError(gszFailedToLockMemorySurface, hResult);
     }
     sub_006B9EB0_CopyWithAlpha((const unsigned short*)gpFrameBuffer_009897D0, (unsigned char*)tDesc.lpSurface, tDesc.lPitch);
-    hResult = gapSmackSurfaces->lpVtbl->Unlock(gapSmackSurfaces, 0);
+    hResult = gapSmackSurfaces[0]->lpVtbl->Unlock(gapSmackSurfaces[0], 0);
     if (hResult)
     {
         D3DCORE_LogDDrawError(gszFailedToUnlockMemorySurface, hResult);
     }
 
-    if (!gpMemSurfaceB)
+    if (!gapSmackSurfaces[1])
     {
         FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), 0x1DB);
         exit(-1);
     }
 
-    hResult = gpMemSurfaceB->lpVtbl->Lock(gpMemSurfaceB, 0, &tDesc, 0x21, 0);
+    hResult = gapSmackSurfaces[1]->lpVtbl->Lock(gapSmackSurfaces[1], 0, &tDesc, 0x21, 0);
     if (hResult)
     {
         D3DCORE_LogDDrawError(gszFailedToLockMemorySurface, hResult);
     }
     sub_006B9EB0_CopyWithAlpha((const unsigned short*)(gpFrameBuffer_009897D0 + 0x200), (unsigned char*)tDesc.lpSurface, tDesc.lPitch);
-    hResult = gpMemSurfaceB->lpVtbl->Unlock(gpMemSurfaceB, 0);
+    hResult = gapSmackSurfaces[1]->lpVtbl->Unlock(gapSmackSurfaces[1], 0);
     if (hResult)
     {
         D3DCORE_LogDDrawError(gszFailedToUnlockMemorySurface, hResult);

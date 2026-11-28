@@ -31,6 +31,7 @@
 #include "D2GfxApi.h"
 #include "D2CMPApi.h"
 #include "StormApi2.h"
+#include "D2WinApi2.h"
 
 #define OFFSET(T, M) ((unsigned int)&(((T*)0)->M))
 
@@ -1030,10 +1031,6 @@ void __fastcall SOUNDHDR_ReleaseCacheEntry(int index); // 0x004823E0
 
 
 const Unicode* __fastcall UI_GetLevelName(int nLevelId); // 0x00453E70
-
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
-
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
 
 void __fastcall ARCHIVE_FreeClientCellFile(void* pCel); // 0x00478A00
 

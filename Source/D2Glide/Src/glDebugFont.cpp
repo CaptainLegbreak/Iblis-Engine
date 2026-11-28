@@ -1,6 +1,7 @@
 #include "D2Glide.h"
 #include "D2DrlgMaps.h"
 #include "FogApi.h"
+#include "D2GfxApi2.h"
 
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
@@ -15,8 +16,6 @@ extern int ganSubtileRowWidth[]; // 0x0072DB84
 extern int ganSubtileRowSrcOffset[]; // 0x0072DBC0
 
 extern unsigned long gdwGlideDebugFontTextColor; // 0x0072F2B0
-
-extern int gnScreenPitch; // 0x007D544C
 
 extern int gaGlideDebugFontCharWidths[96]; // 0x008802C8
 

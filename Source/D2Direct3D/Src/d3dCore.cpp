@@ -10,6 +10,8 @@
 #include "StormApi.h"
 #include "FogApi.h"
 #include "D2HellApi.h"
+#include "D2GlideApi.h"
+#include "D2DDrawApi.h"
 
 extern "C" __declspec(dllimport) long __stdcall RegCloseKey(void* hKey);
 extern "C" __declspec(dllimport) long __stdcall RegCreateKeyExA(void* hKey, const char* lpSubKey, unsigned long Reserved, char* lpClass, unsigned long dwOptions, unsigned long samDesired, void* lpSecurityAttributes, void** phkResult, unsigned long* lpdwDisposition);
@@ -118,7 +120,7 @@ struct D2PixelFormat006B1B60Strc
 };
 
 extern D2PixelFormat006B1B60Strc gtWantedFormat; // 0x0074C024
-extern const unsigned long gnFormatCap; // 0x006CE28C
+extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 #define DD_CHECK(expr,message) { error=(expr); if(error) { D3DCORE_LogDDrawError(message,error); goto Fail; } }
 
@@ -309,9 +311,7 @@ extern int gnModeFlag; // 0x00970E8C
 
 extern int gnFlags; // 0x0096F3A8
 
-extern const unsigned long gdwGammaMask; // 0x006CE278
 
-extern const unsigned long gdwAgpMask; // 0x006CE26C
 
 extern unsigned long gnWidth; // 0x007C9138
 
@@ -468,7 +468,6 @@ void __cdecl sub_006B96C0_BuildScaleTable(); // 0x006B96C0
 void __cdecl sub_006B97D0_BuildScaleTable(); // 0x006B97D0
 
 
-extern const unsigned int gnDeviceFlagMask_006CE268; // 0x006CE268
 
 extern const D2GuidStrc gtIidDirectDraw4; // 0x006FF8D8
 
@@ -483,8 +482,6 @@ extern unsigned int gnDeviceFlags_0096F3A8; // 0x0096F3A8
 extern D2GuidStrc gDeviceGuid_0096F3AC; // 0x0096F3AC
 
 extern D2ComObjectStrc* gpDirect3D3; // 0x00970E64
-
-extern D2GfxSettingsStrc* gpGfxSettings; // 0x007C9148
 
 extern D2DDrawSurfaceStrc* gpDevice_00970E68; // 0x00970E68
 
@@ -523,8 +520,6 @@ extern D2ComObject006B5550Strc* gpObject_00970E60; // 0x00970E60
 
 
 extern D2CriticalSectionStrc* gpCriticalSection_007C9134; // 0x007C9134
-
-extern int gbRenderPaused; // 0x007C9144
 
 extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(D2CriticalSectionStrc*);
 
@@ -576,10 +571,6 @@ extern D2ComObjectStrc* gpPrimarySurface; // 0x00970E68
 
 typedef long (__stdcall* D2DDFlipFn)(D2ComObjectStrc* pThis, D2ComObjectStrc* pTarget, unsigned long dwFlags);
 
-extern int gnSceneScaleFactor; // 0x007B57E4
-
-extern D2PaletteTableStrc* gpGfxPaletteView; // 0x007C9150
-
 D2PaletteTableStrc gPaletteView; // 0x0096F280
 
 extern D2ComObjectStrc* gpRenderSurface; // 0x00970E6C
@@ -596,12 +587,9 @@ typedef long (__stdcall* D2DDSetGammaRampFn)(D2ComObjectStrc* pThis, unsigned lo
 
 extern unsigned int gnCapabilities_0096F3A8;                                                                // 0x0096F3A8
 
-extern const unsigned int gdwBitMask7_006CE284;                                                             // 0x006CE284
-
-extern const unsigned int gdwBitMask8;                                                             // 0x006CE288
 
 
-extern const unsigned int gnGammaMask_006CE278;                                                             // 0x006CE278
+
 
 extern int gnGammaScale;                                                                           // 0x0074C020
 
@@ -624,9 +612,7 @@ int __cdecl D3DCORE_InitCutsceneMode(); // 0x006B3420
 
 extern unsigned int gnRenderFlags_0096F3A8; // 0x0096F3A8
 
-extern const unsigned int gnRenderFlag_006CE284; // 0x006CE284
 
-extern const unsigned int gdwBitMask8; // 0x006CE288
 
 extern "C" const char gszFailedToLockDest[];                                                       // 0x006FB130
 
@@ -760,7 +746,6 @@ struct D2GammaControlVTableStrc
 
 struct D2GammaControlStrc { D2GammaControlVTableStrc* pVTable; };
 
-extern const unsigned int gnGammaMask_006CE278; // 0x006CE278
 
 extern unsigned int gnCapabilities_0096F3A8; // 0x0096F3A8
 
@@ -1013,15 +998,6 @@ extern int gnSecondaryRenderer; // 0x0096F3A0
 extern const D2DDGuidStrc gIIDDirectDraw4; // 0x006FF8D8
 extern const D2DDGuidStrc gIIDDirect3D3; // 0x006FF558
 extern const D2DDGuidStrc gIIDHardwareDevice; // 0x006FF518
-extern const DWORD gFlag_006CE268; // 0x006CE268
-extern const DWORD gdwBitMask1; // 0x006CE26C
-extern const DWORD gbChargeMissileMask; // 0x006CE270
-extern const DWORD gdwBitMask3; // 0x006CE274
-extern const DWORD gFlag_006CE278; // 0x006CE278
-extern const DWORD gdwBitMask5; // 0x006CE27C
-extern const DWORD gFlag_006CE284; // 0x006CE284
-extern const DWORD gFlag_006CE288; // 0x006CE288
-extern const DWORD gFlag_006CE28C; // 0x006CE28C
 extern const DWORD gdwInvBitMasks; // 0x006CE2E8
 extern const char gszEnumD3DCleanupFailed[]; // 0x006FB8A4
 extern const char gszEnumD3DCaughtFailure[]; // 0x006FB8D4
@@ -1086,8 +1062,6 @@ extern D2TextureCacheStrc gTextureCache_00970EE4; // 0x00970EE4
 extern D2TextureCacheStrc gTextureCache_00970F00; // 0x00970F00
 
 extern int gbD3DBusy; // 0x00970E50
-extern char gnFloorCacheSize[]; // 0x007C90C8
-
 // 0x006B1A30
 void __cdecl ATL::sub_006B1A30_ThrowAtlException(long error)
 {
@@ -1184,7 +1158,7 @@ int __stdcall D3D_EnumTextureFormatCallback(D2PixelFormat006B1B60Strc* pFormat, 
     {
         return 1;
     }
-    *pFlags |= gnFormatCap;
+    *pFlags |= gdwBitMasks[9];
     return 1;
 }
 
@@ -1213,7 +1187,7 @@ void __fastcall D3DCORE_SetGlobalScale(int nValue)
 // 0x006B1C20
 unsigned int __cdecl D3DCORE_GetMaskedFlags()
 {
-    return gnDeviceFlags_0096F3A8 & gnGammaMask_006CE278;
+    return gnDeviceFlags_0096F3A8 & gdwBitMasks[4];
 }
 
 // 0x006B1C30
@@ -1489,11 +1463,11 @@ int __cdecl D3DCORE_InitCutsceneMode()
     gnRenderHeight = 480;
 
     unsigned int nBpp = 16;
-    if (gdwBitMask7_006CE284 & gnCapabilities_0096F3A8)
+    if (gdwBitMasks[7] & gnCapabilities_0096F3A8)
     {
         nBpp = 32;
     }
-    else if (gdwBitMask8 & gnCapabilities_0096F3A8)
+    else if (gdwBitMasks[8] & gnCapabilities_0096F3A8)
     {
         nBpp = 24;
     }
@@ -1534,7 +1508,7 @@ int __cdecl D3DCORE_BeginCutScene()
         return 0;
     }
 
-    if (!(gnRenderFlags_0096F3A8 & gnRenderFlag_006CE284) && !(gnRenderFlags_0096F3A8 & gdwBitMask8))
+    if (!(gnRenderFlags_0096F3A8 & gdwBitMasks[7]) && !(gnRenderFlags_0096F3A8 & gdwBitMasks[8]))
     {
         return 1;
     }
@@ -1554,7 +1528,7 @@ struct D2GammaRampStrc
 void __fastcall D3DCORE_SetGamma(int nGamma)
 {
     D2GammaRampStrc ramp;
-    if (gnCapabilities_0096F3A8 & gnGammaMask_006CE278)
+    if (gnCapabilities_0096F3A8 & gdwBitMasks[4])
     {
         EXCEL_BuildGammaTable(nGamma, (unsigned short*)ramp.red, gnGammaScale, 2, 256, 65535);
         memcpy(ramp.green, ramp.red, sizeof(ramp.red));
@@ -1920,7 +1894,7 @@ int __stdcall D3DCORE_EnumerateD3DDevices(D2DDGuidStrc* guid,char* description,c
   if(index>=2) { LOGMANAGER_WriteLogLine(gszMaxDisplayCountFormat,index,2); return 0; }
   D2RendererInfoStrc* display=&gaDisplays[index];
   memset(display,0,0x134);
-  if(!guid) display->flags|=gFlag_006CE268;
+  if(!guid) display->flags|=gdwBitMasks[0];
   else { display->flags&=gdwInvBitMasks; display->guid=*guid; }
   HRESULT hr=sub_006B1350_DirectDrawCreate((D2GuidStrc*)guid,(D2ComObjectStrc**)&dd,0);
   if(hr) { D3DCORE_LogDDrawError(gszEnumDirectDrawCreateFailed,hr); goto Cleanup; }
@@ -1947,13 +1921,13 @@ int __stdcall D3DCORE_EnumerateD3DDevices(D2DDGuidStrc* guid,char* description,c
   int hasUI=0,hasGame=0,has32=0,has24=0;
   int invalid=0;
   for(int i=0;i<display->modeCount;++i) {
-   if(display->modes[i].flags&gbChargeMissileMask) has32=1;
-   if(display->modes[i].flags&gdwBitMask3) has24=1;
-   if(display->modes[i].flags&gFlag_006CE268) hasUI=1;
-   if(display->modes[i].flags&gdwBitMask1) hasGame=1;
+   if(display->modes[i].flags&gdwBitMasks[2]) has32=1;
+   if(display->modes[i].flags&gdwBitMasks[3]) has24=1;
+   if(display->modes[i].flags&gdwBitMasks[0]) hasUI=1;
+   if(display->modes[i].flags&gdwBitMasks[1]) hasGame=1;
   }
-  if(has32) { LOGMANAGER_WriteLogLine(gszSupports32BitCutscenes); display->flags|=gFlag_006CE284; }
-  if(has24) { LOGMANAGER_WriteLogLine(gszSupports24BitCutscenes); display->flags|=gFlag_006CE288; }
+  if(has32) { LOGMANAGER_WriteLogLine(gszSupports32BitCutscenes); display->flags|=gdwBitMasks[7]; }
+  if(has24) { LOGMANAGER_WriteLogLine(gszSupports24BitCutscenes); display->flags|=gdwBitMasks[8]; }
   if(!hasUI) { LOGMANAGER_WriteLogLine(gszNoUIDisplayMode); invalid=1; }
   if(!hasGame) { LOGMANAGER_WriteLogLine(gszNoGameDisplayMode); goto Cleanup; }
   if(invalid) goto Cleanup;
@@ -1970,9 +1944,9 @@ int __stdcall D3DCORE_EnumerateD3DDevices(D2DDGuidStrc* guid,char* description,c
   hr=gpIDirectDraw4_00970E60->vtbl->GetCaps(gpIDirectDraw4_00970E60,&caps,0);
   if(hr) { D3DCORE_LogDDrawError(gszGetDD4CapsFailed,hr); goto Cleanup; }
   if(!(caps.caps&1)) { LOGMANAGER_WriteLogLine(gszNo3DSupport); goto Cleanup; }
-  if(caps.caps2&0x20000) display->flags|=gFlag_006CE278;
+  if(caps.caps2&0x20000) display->flags|=gdwBitMasks[4];
   else LOGMANAGER_WriteLogLine(gszNoGammaControl);
-  if(caps.caps2&0x100000) { display->flags|=gdwBitMask5; LOGMANAGER_WriteLogLine(gszSupportsGammaCalibration); }
+  if(caps.caps2&0x100000) { display->flags|=gdwBitMasks[5]; LOGMANAGER_WriteLogLine(gszSupportsGammaCalibration); }
   gpIDirect3D3_00970E64->vtbl->CreateDevice(gpIDirect3D3_00970E64,&gIIDHardwareDevice,back,&device,0);
   if(!device) { LOGMANAGER_WriteLogLine(gszNoHardware3D); goto Cleanup; }
   D3DDEVICEDESC hardware,software;
@@ -1983,8 +1957,8 @@ int __stdcall D3DCORE_EnumerateD3DDevices(D2DDGuidStrc* guid,char* description,c
   if(hardware.textureCaps&0x100) LOGMANAGER_WriteLogLine(gszSupportsNonPow2Textures);
   if(hardware.flags&0x40) {
   if(!(hardware.textureCaps&1)) LOGMANAGER_WriteLogLine(gszNoPerspectiveTextures);
-  if(hardware.textureCaps&0x20) { LOGMANAGER_WriteLogLine(gszRequiresSquareTextures); display->flags|=gbChargeMissileMask; goto Cleanup; }
-  if(hardware.textureFilterCaps&0x20) display->flags|=gdwBitMask3;
+  if(hardware.textureCaps&0x20) { LOGMANAGER_WriteLogLine(gszRequiresSquareTextures); display->flags|=gdwBitMasks[2]; goto Cleanup; }
+  if(hardware.textureFilterCaps&0x20) display->flags|=gdwBitMasks[3];
   else LOGMANAGER_WriteLogLine(gszNoMipmapping);
   display->videoTotal=caps.videoTotal;display->videoFree=caps.videoFree;
   LOGMANAGER_WriteLogLine(gszVideoMemoryFormat,display->videoTotal/1048576.0f,display->videoFree/1048576.0f);
@@ -1997,7 +1971,7 @@ int __stdcall D3DCORE_EnumerateD3DDevices(D2DDGuidStrc* guid,char* description,c
   if(hr) { D3DCORE_LogDDrawError(gszLocalMemoryFailed,hr); goto Cleanup; }
   LOGMANAGER_WriteLogLine(gszLocalMemoryFormat,display->localTotal/1048576.0f,display->localFree/1048576.0f);
   if((caps.caps2&0x200)&&(hardware.devCaps&0x1000)) {
-   display->flags|=gdwBitMask1;
+   display->flags|=gdwBitMasks[1];
    memset(&memoryCaps,0,sizeof(memoryCaps));memoryCaps.caps=0x20005000;
    hr=gpIDirectDraw4_00970E60->vtbl->GetAvailableVidMem(gpIDirectDraw4_00970E60,&memoryCaps,&display->agpTotal,&display->agpFree);
    if(hr) D3DCORE_LogDDrawError(gszAgpMemoryFailed,hr);
@@ -2007,7 +1981,7 @@ int __stdcall D3DCORE_EnumerateD3DDevices(D2DDGuidStrc* guid,char* description,c
   if(hr) { D3DCORE_ShowD3DError(gszEnumTextureFormatsFailed,hr); goto Cleanup; }
 
   int textures=0;
-  if(display->flags&gFlag_006CE28C) { LOGMANAGER_WriteLogLine(gszSupports1555Textures); textures=1; }
+  if(display->flags&gdwBitMasks[9]) { LOGMANAGER_WriteLogLine(gszSupports1555Textures); textures=1; }
   if(!textures) { LOGMANAGER_WriteLogLine(gszNoTextureFormats); goto Cleanup; }
   if(gnDisplayCount==0) {
    gPrimarySelection.flags=display->flags;gPrimarySelection.guid=display->guid;
@@ -2172,7 +2146,7 @@ static int D3DCORE_InitFullscreen(void* window,int mode)
     Caps caps;
     memset(&caps,0,sizeof(caps)); caps.flags=4;
     DD_CHECK(gpPrimary->GetAttachedSurface(&caps,&gpBack),gAttachedError);
-    if(gnFlags & gdwGammaMask)
+    if(gnFlags & gdwBitMasks[4])
     {
         DD_CHECK(gpPrimary->QueryInterface(&gGammaGuid,&gpGamma),gGammaInterfaceError);
         DD_CHECK(gpGamma->GetGammaRamp(0,gGammaRamp),gGammaError);
@@ -2195,7 +2169,7 @@ static int D3DCORE_InitFullscreen(void* window,int mode)
     memset(&caps,0,sizeof(caps)); caps.flags=0x10005000;
     error=gpDraw->GetAvailableMemory(&caps,&gnLocalTotal,&gnLocalFree);
     if(error) D3DCORE_LogDDrawError(gLocalError,error);
-    if(gnFlags & gdwAgpMask)
+    if(gnFlags & gdwBitMasks[1])
     {
         memset(&caps,0,sizeof(caps)); caps.flags=0x20005000;
         error=gpDraw->GetAvailableMemory(&caps,&gnAgpTotal,&gnAgpFree);
@@ -2407,7 +2381,7 @@ int __fastcall D3DCORE_Init(int nArg1, int nArg2)
     gpTileDrawFunctions = nArg2;
 
     int hResult;
-    if (gnDeviceFlags_0096F3A8 & gnDeviceFlagMask_006CE268)
+    if (gnDeviceFlags_0096F3A8 & gdwBitMasks[0])
     {
         hResult = sub_006B1350_DirectDrawCreate(0, &pDirectDraw, 0);
     }
@@ -2669,9 +2643,7 @@ extern int gnVideoState; // 0x00970E44
 
 extern D2ComObject006B3420Strc* gpPrimary_00970E68; // 0x00970E68
 
-extern const unsigned int gdwBitMask7_006CE284; // 0x006CE284
 
-extern const unsigned int gdwBitMask8; // 0x006CE288
 
 extern int gnRenderHeight; // 0x007C913C
 
@@ -2700,8 +2672,6 @@ struct D2ComObjectStrc;
 struct BufferPool;
 struct BufferPool { unsigned int count; char unknown[24]; };
 extern unsigned int gRenderFlags; // 0x0096F3A8
-extern const unsigned int gPrimaryRenderMask; // 0x006CE26C
-extern const unsigned int gCompactRenderMask; // 0x006CE280
 extern unsigned int gAvailableMemory; // 0x0096F4D0
 extern unsigned int gPreferredMemory; // 0x0096F4D8
 extern unsigned int gTileWidth; // 0x0096F4DC
@@ -2740,7 +2710,7 @@ void __cdecl sub_006B3080_InitBufferPools()
  unsigned int memory;
  gBufferCopies=2;
  gUsePreferredMemory=0;
- if((gRenderFlags&gPrimaryRenderMask) && gAvailableMemory<0xD00000) {
+ if((gRenderFlags&gdwBitMasks[1]) && gAvailableMemory<0xD00000) {
   gUsePreferredMemory=1;
   if(gPreferredMemory>=0x2000000)gPreferredMemory=0x2000000;
   memory=gAvailableMemory;
@@ -2752,7 +2722,7 @@ void __cdecl sub_006B3080_InitBufferPools()
  char* current = 0;char* start;unsigned int remaining;
  if(gnModeFlag) {
   unsigned int width,height;
-  if(gRenderFlags&gCompactRenderMask){width=160;height=80;}else{width=256;height=128;}
+  if(gRenderFlags&gdwBitMasks[6]){width=160;height=80;}else{width=256;height=128;}
   gTileHeight=height;gTileWidth=width;
   unsigned int tileSize=2*width*height;
   unsigned int primary=memory/2<0x600000?memory/2:0x600000;

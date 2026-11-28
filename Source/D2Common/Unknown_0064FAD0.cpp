@@ -13,6 +13,7 @@
 
 #include "D2AnimData.h"
 #include "FogApi.h"
+#include "D2ClientApi.h"
 
 #define D2_ABS(x) ((x) >= 0 ? (x) : -(x))
 
@@ -41,12 +42,6 @@ extern "C" const char gszEmptyAssertText; // 0x006CC837
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern const D2CoordStrc gtPathZeroVelocity; // 0x006EB7D4
-
-D2ActiveRoomStrc* __fastcall sub_00463740_FindRoomAtPoint(D2ActiveRoomStrc* pRoom, int nX, int nY); // 0x00463740
-
-
-
-
 
 void __stdcall COLLISION_ResetMaskWithSize(D2ActiveRoomStrc* pRoom, int nX, int nY, int nUnitSize, int nMask); // 0x0064EBA0
 

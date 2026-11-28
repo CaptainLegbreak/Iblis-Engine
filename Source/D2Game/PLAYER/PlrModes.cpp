@@ -100,7 +100,6 @@ struct D2PlayerModeChartStrc
 
 extern D2PlayerModeChartStrc gaPlayerModeChart[]; // 0x006E1740
 
-extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
@@ -261,7 +260,7 @@ unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax
 D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
 
 
-extern const unsigned char gbMask_006CE284; // 0x006CE284
+extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 
 
@@ -455,7 +454,7 @@ int __fastcall PLRMODE_CanInterruptCurrentMode(D2GameStrc* pGame, D2UnitStrc* pU
         return 1;
     }
 
-    if (pUsedSkillsTxtRecord->nFlags[3] & gbMask_006CE284)
+    if (pUsedSkillsTxtRecord->nFlags[3] & gdwBitMasks[7])
     {
         if ((STATES_CheckState(pUnit, STATE_CONCENTRATION)
             && (int)(SEED_RollLimitedRandomNumber(&pUnit->pSeed, 100)) < sub_GetConcStat(pUnit))

@@ -1,4 +1,5 @@
 #include "Bnclient.h"
+#include "D2BNClientApi.h"
 
 struct D2BigPowModStrc;
 
@@ -11,10 +12,6 @@ struct D2IdeaUserKeyStrc;
 struct D2IdeaKeyScheduleStrc;
 
 extern int gnLastStatus_0072FFA8; // 0x0072FFA8
-
-int __fastcall BNMESSQUEUE_SetError(int nError); // 0x005204A0
-
-int __fastcall BNSEND_SetErrorText(int nError, const char* szText); // 0x005204D0
 
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260
 
@@ -42,11 +39,6 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 extern D2BnHashCtxStrc gatBnHashCtx[]; // 0x00882760
 
 extern D2IdeaKeyScheduleStrc gaIdeaKeySchedules[]; // 0x00882878
-
-void __fastcall BNDOWNLOAD_FillRandomBytes(unsigned char* pBuffer, int nSize); // 0x00522BC0
-
-unsigned int __fastcall BNDOWNLOAD_DecryptData(unsigned char* pBuffer, unsigned int nSize, unsigned char* pKey); // 0x00522E10
-
 
 #define IDEA_MUL(x, y) (x = IdeaMul((x) & 0xFFFF, y))
 

@@ -200,11 +200,8 @@ static void MONSTERSPAWN_SpawnMinionParty(D2UnkMonCreateStrc* pMonCreate, D2Unit
 
 int __fastcall GAME_GetUnitTypeOrInvalid(D2UnitStrc* pUnit); // 0x0044BE50
 
-extern unsigned char gbNeverCount_006CE270; // 0x006CE270
 
-extern unsigned int gdwSetBoss_006CE278; // 0x006CE278
 
-extern unsigned int gdwBossTransfer_006CE27C; // 0x006CE27C
 
 extern "C" __declspec(dllimport) int __stdcall PtInRect(const tagRECT*,tagPOINT);
 

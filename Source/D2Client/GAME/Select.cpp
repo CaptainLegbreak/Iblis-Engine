@@ -557,7 +557,6 @@ static D2UnitStrc* __stdcall SELECT_FindSkillTarget(D2SkillStrc* pSkill, D2UnitS
     return pUnit;
 }
 
-extern const unsigned int gdwMask_006CE278;                                                                 // 0x006CE278
 
 static inline int UNITS_IsSelectable(D2UnitStrc* pUnit)
 {
@@ -596,7 +595,7 @@ static D2UnitStrc* __stdcall SELECT_FindAdjacentTarget(D2SkillsTxt* pSkillsTxtRe
             D2UnitStrc* pTarget = D2Common_10407(pRoom, nX, nY, SELECT_IsMonsterUnit, 0, 1);
             if (UNITS_IsSelectable(pTarget))
             {
-                if (!(pSkillsTxtRecord->nFlags[2] & gdwMask_006CE278)
+                if (!(pSkillsTxtRecord->nFlags[2] & gdwBitMasks[4])
                     || (pTarget->dwUnitType == UNIT_MONSTER && MONSTERREGION_CheckMonStats2Flag(pTarget->dwClassId, 6))
                     || CUNIT_IsHostileTo(pUnit, pTarget))
                 {

@@ -8,6 +8,7 @@
 #include "D2DrlgMaps.h"
 #include "D2WinApi.h"
 #include "D2HellApi.h"
+#include "D2WinApi2.h"
 
 struct D2TileLibraryBlockStrc
 {
@@ -26,8 +27,6 @@ struct D2TileLibraryBlockStrc
 #define D2_MAX(a, b) (((a) > (b)) ? (a) : (b))
 
 #define D2_MIN(a, b) (((a) < (b)) ? (a) : (b))
-
-extern int gnViewMatrixAdjust; // 0x007C8CC4
 
 int __fastcall WINDOW_SetVideoMode(int nMode); // 0x004F4FF0
 
@@ -203,8 +202,6 @@ struct D2CacheStatsStrc;
 extern int gfFixedAspectRatio; // 0x0072DA7C
 
 extern int gnDisplayType; // 0x007C8CB0
-
-extern int gnViewMatrixAdjust; // 0x007C8CC4
 
 typedef long (__stdcall* WNDPROC)(void*, unsigned int, unsigned int, long);
 
@@ -2604,8 +2601,6 @@ void __fastcall CMNSUBTILE_SetPaletteTables(D2PaletteTableStrc* pPaletteTables)
         gatLightPalettes[i] = *(D2PaletteStrc*)gtPaletteTables.pShadowLightGammaPalettes[i];
     }
 }
-
-void __fastcall WINDOW_SetScreenBuffer(unsigned char* pBuffer, int nWidth, int nHeight, int nArg4); // 0x004F8DE0
 
 #pragma pack(push, 1)
 struct d2data_0072DA60_t

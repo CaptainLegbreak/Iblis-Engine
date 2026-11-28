@@ -36,6 +36,7 @@
 #include "FogApi.h"
 #include "StormApi.h"
 #include "D2CommonApi.h"
+#include "D2ClientApi.h"
 
 #define FP16_SHIFT 16
 
@@ -141,9 +142,6 @@ extern D2AnimUnkStrc gaMonModesAnimModulatorsExpansion[]; // 0x006E8CD0
 
 void* __fastcall sub_0040B430(void* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
 
-D2SkillsTxt* __fastcall sub_0045C4B0_GetSkillsTxtRecord(int nSkillId); // 0x0045C4B0
-
-
 extern void __stdcall STATLIST_FreeStatListEx(D2UnitStrc*); // 0x00626D10
 
 extern void __stdcall SKILLS_FreeSkillList(D2UnitStrc*); // 0x00643A60
@@ -166,8 +164,6 @@ extern "C" void __stdcall STATLIST_SetState(D2StatListStrc* pStatList, unsigned 
 
 
 
-D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int); // 0x00451FE0
-
 unsigned char __stdcall ITEMS_GetMeleeRange(D2UnitStrc*); // 0x006288D0
 
 int __stdcall COMPOSIT_GetWeaponClassId(D2UnitStrc*, D2InventoryStrc*, int*, int, int); // 0x0064F380
@@ -180,9 +176,6 @@ int __stdcall UNITS_GetDirectionToCoords(D2UnitStrc* pUnit, int nNewX, int nNewY
 
 
 D2SkillsTxt* __fastcall SKILLS_GetSkillsTxtRecordFromSkill(D2SkillStrc* pSkill); // 0x00644140
-
-
-int __fastcall ITEMS_CheckUnitFlagEx(D2UnitStrc* pUnit, unsigned int dwMask); // 0x00463720
 
 
 unsigned char __stdcall ITEMS_GetHitClassFromItem(D2UnitStrc* pItem); // 0x0062A180
@@ -210,12 +203,6 @@ struct D2InventoryRecordMapStrc;
 struct D2AnimModeModulatorStrc;
 
 struct D2AnimModeStatBasePercentageStrc;
-
-D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId); // 0x0046ACE0
-
-
-
-
 
 unsigned char __stdcall ITEMS_GetBodyLocation(D2UnitStrc* pItem); // 0x00627D40
 
@@ -325,10 +312,6 @@ int __stdcall D2Common_10531_SetStatInStatListLayer0(D2StatListStrc* pStatList, 
 
 
 
-int __fastcall sub_0046C140_TestMonModeFlag(int nMonsterId, int nMode); // 0x0046C140
-
-
-
 void __stdcall STATLIST_DeactivateTemporaryStates(D2UnitStrc* pUnit); // 0x006272E0
 
 static int __stdcall UNITS_CanAnimModeUseVelocityModifier(int nUnitType, int nAnimMode, D2UnitStrc* pUnit, int nClassId);
@@ -366,8 +349,6 @@ struct D2BitBufferStrc;
 struct D2RosterInfoStrc;
 
 void* __fastcall FOG_AllocPool(void* pMemPool, int nSize, const char* szFile, int nLine, int n0);           // 0x0040B430
-
-D2RosterInfoStrc* __fastcall GFXUTIL_GetNextRosterInfo(D2RosterInfoStrc* pRosterInfo); // 0x004DC0B0
 
 int __stdcall DUNGEON_GetPortalFlagFromLevelId(int nLevelId);                                               // 0x0061AE30
 
@@ -426,16 +407,8 @@ int __fastcall UNITS_CanMonsterBlock(D2UnitStrc* pUnit); // 0x006225F0
 
 union D2SeedStrc;
 
-int __fastcall CLIENTS_GetUnitX(D2UnitStrc* pUnit); // 0x0045ADF0
-
-int __fastcall CLIENTS_GetUnitY(D2UnitStrc* pUnit); // 0x0045AE20
-
-
-
 void __stdcall UNITS_InitializeSequence(D2UnitStrc* pUnit); // 0x00621260
 
-
-unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
 static void UNITS_CharacterStartRunningOrKnockback(D2UnitStrc* pUnit, int nClassId);
 

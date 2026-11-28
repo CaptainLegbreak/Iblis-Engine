@@ -32,6 +32,10 @@
 #include "D2WinApi.h"
 #include "D2NetApi.h"
 #include "D2CommonApi3.h"
+#include "D2ClientApi.h"
+#include "D2NetApi2.h"
+#include "BnclientApi.h"
+#include "D2DDrawApi.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -241,14 +245,6 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" __declspec(dllimport) int __stdcall IsBadCodePtr(D2FarProcFn lpfn); // 0x006CC34C
 
-void __fastcall DLIGHTMAP_ReleaseLight(void* pResource); // 0x004743D0
-
-void __cdecl TEXT_ResetTextBox(); // 0x0049F960
-
-
-
-int __fastcall UI_SetUIVar(unsigned int nUIVar, unsigned int nState, int nArg); // 0x00455F20
-
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
 extern D2WheelCallbackFn gpfnWheelUp; // 0x007A7404
@@ -257,13 +253,7 @@ extern D2WheelCallbackFn gpfnWheelDown; // 0x007A7408
 
 extern D2HotkeyStrc gtHotkeys_007A6F90[NUM_HOTKEYS]; // 0x007A6F90
 
-extern D2UnitStrc* gapAiTargets[]; // 0x007A7470
-
 extern unsigned char gabColors_007BCAD8[5]; // 0x007BCAD8
-
-extern int gnInvPanelMode; // 0x007BCBF0
-
-extern int gbGoldButtonDisabled; // 0x007BCE2C
 
 extern int gnDialogState; // 0x00721E34
 
@@ -279,21 +269,11 @@ extern int gnHoverCellX; // 0x00721E4C
 
 extern int gnHoverCellY; // 0x00721E50
 
-extern int gbHoverInGrid; // 0x007BCBE4
-
 extern int gbHoverInBodyLoc; // 0x007BCBE8
-
-extern int gpHoverItem; // 0x007BCBF4
 
 extern int gpLastHoverItem; // 0x007BCBF8
 
 extern int gbTextPanelOpen; // 0x007BF1FA
-
-extern D2TextHeaderStrc* gpTextHeader; // 0x007BF250
-
-extern int gnTradeState; // 0x007C0E7C
-
-extern unsigned char* gpDDrawDebugFontGlyphs; // 0x008815AC
 
 void* gpReply;                                                                                     // 0x008818D0
 
@@ -376,8 +356,6 @@ int __fastcall BNDOWNLOAD_ApplyPatches(int* pResult); // 0x0051ED00
 
 int __cdecl BNDOWNLOAD_ResetReplies(); // 0x00520B30
 
-void __cdecl sub_00521B50_ReseedLogin(); // 0x00521B50
-
 int __fastcall BNSEND_SendAccountChange(const char* szAccountName, const char* szOldPassword, const char* szNewPassword); // 0x005221F0
 
 
@@ -420,16 +398,9 @@ struct D2AuthCheckPacketStrc
 };
 int __fastcall BNDOWNLOAD_RunCheckRevision(unsigned int* pExeVersion, unsigned int* pExeHash, char* szText); // 0x0051E6D0
 unsigned int __fastcall sub_00523020_GetAlignedData(unsigned int nSize); // 0x00523020
-void __fastcall sub_005241C0_GetDigest(int nIndex, unsigned int* pDigest); // 0x005241C0
-void __fastcall sub_00524200_HashBlock(int nIndex, const void* pBlock, unsigned int* pDigest); // 0x00524200
-void __fastcall sub_00524760_CipherBlock(int nIndex, const unsigned short* pIn, unsigned short* pOut); // 0x00524760
-void __cdecl sub_00524740_ClearKeySchedules(); // 0x00524740
-void __cdecl sub_005241A0_ClearHashContexts(); // 0x005241A0
 extern unsigned int gdwBnClientToken; // 0x00882530
 
 D2BigPairStrc gtBigPair;                                                                           // 0x0088273C
-
-extern void* gpServer; // 0x00882D08
 
 struct D2BnKeyValuePacketStrc
 {
@@ -1731,8 +1702,6 @@ void __cdecl BNDOWNLOAD_StopDownloads(); // 0x0051E5D0
 extern "C" int __cdecl BNDOWNLOAD_HasPendingDownloads(); // 0x0051E5E0
 int __cdecl BNMESSQUEUE_FreeAllMessages(); // 0x00520440
 extern "C" int __cdecl BNDOWNLOAD_SetDisconnected(); // 0x00520AD0
-void __cdecl sub_00521B90_ClearSrpState(); // 0x00521B90
-
 // 0x0051C470
 int __cdecl sub_0051C470_CloseBNetConnection()
 {

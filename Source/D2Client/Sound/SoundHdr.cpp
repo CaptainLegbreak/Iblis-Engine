@@ -7,6 +7,7 @@
 #include "D2CommonApi.h"
 #include "FogApi2.h"
 #include "D2HellApi.h"
+#include "D2WinApi2.h"
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt(&gszEmptyAssertText, sub_00408090(), line); exit(-1); }
 
@@ -102,10 +103,6 @@ void* __fastcall Allocate(unsigned int bytes, const char* file, int line, unsign
 void* __cdecl sub_004646A0();
 
 const unsigned short* __fastcall UI_GetLevelName(int levelId); // 0x00453E70
-
-int __fastcall D2Win_10121_GetTextWidth(const unsigned short* text); // 0x00501820
-
-void __fastcall D2Win_10117_DrawText(const unsigned short* text, int x, int y, int color, int mode); // 0x00502320
 
 D2ClientCacheNodeStrc* gpCacheList; // 0x007BC9B8
 

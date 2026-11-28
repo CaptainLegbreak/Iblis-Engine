@@ -13,6 +13,7 @@
 #include "FogApi.h"
 #include "D2CommonApi.h"
 #include "D2CommonApi2.h"
+#include "D2ClientApi.h"
 
 #define PETTYPE_SINGLE 1
 
@@ -129,8 +130,6 @@ extern "C" D2PetTypeTxt* __fastcall sub_00478A20_GetPetTypeTxtRecord(int nPetTyp
 
 struct D2ClientStrc;
 
-
-int __fastcall GAME_GetUnitGUID(D2UnitStrc*); // 0x00451F50
 
 typedef int (__stdcall* FARPROC)();
 

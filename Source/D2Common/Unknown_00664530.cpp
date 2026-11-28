@@ -3,6 +3,7 @@
 #include "D2DataTbls.h"
 #include "D2Txt.h"
 #include "D2TxtTables.h"
+#include "D2ClientApi.h"
 
 struct D2MonStatsTxt;
 struct D2MonStats2CompStrc;
@@ -12,8 +13,6 @@ struct D2MonStats2Txt;
 extern D2DataTablesStrc sgtDataTables; // 0x0096BC30
 extern D2DataTablesStrc* sgptDataTables; // 0x00744304
 
-
-D2MonStats2Txt* __fastcall UNITS_GetMonStats2TxtRecordFromMonsterId(int nMonsterId); // 0x00451FE0
 
 static D2OverlayTxt* DATATBLS_GetOverlayTxtRecord(int nOverlay)
 {

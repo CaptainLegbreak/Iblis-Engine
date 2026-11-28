@@ -21,8 +21,8 @@
 #include "StormApi.h"
 #include "D2LangApi.h"
 #include "D2WinApi.h"
-
-int __cdecl sub_0042F6D0_GetMenusDone(); // 0x0042F6D0
+#include "D2ClientApi.h"
+#include "D2BNClientApi.h"
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
 
@@ -45,16 +45,7 @@ D2ComInterfaceStrc* __cdecl sub_00518C00();                                     
 
 
 
-int __cdecl GAME_GetStopMainLoop(); // 0x0042FA30
-
 void __cdecl MAINMENUS_UpdateProgress(); // 0x0042F990
-
-
-void __cdecl sub_00518C20_DeleteQueueLock(); // 0x00518C20
-
-
-
-
 
 
 void __fastcall MAINMENUS_SetValue(int nValue); // 0x0042FF10

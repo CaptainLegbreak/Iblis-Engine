@@ -204,7 +204,6 @@ typedef void (__fastcall* SKILLS_AREAEFFECTFN)(D2GameStrc* pGame, D2UnitStrc* pU
 
 extern "C" D2PetTypeTxt* __fastcall sub_00478A20_GetPetTypeTxtRecord(int petType); // 0x00478A20
 
-extern const unsigned char gnPetFlag_006CE274; // 0x006CE274
 
 typedef char H15_CheckSkillsTxtSize[sizeof(D2SkillsTxt) == 0x23C ? 1 : -1];
 
@@ -1845,7 +1844,7 @@ int __fastcall SKILLS_SrvSt03_Unsummon(D2GameStrc* game, D2UnitStrc* unit, int s
     D2PetTypeTxt* petType = sub_00478A20_GetPetTypeTxtRecord(PLAYERPETS_GetPetTypeFromPetGUID(unit, target->dwUnitId));
     if (!petType)
         return 0;
-    if (!(petType->nPetFlags[0] & gnPetFlag_006CE274))
+    if (!(petType->nPetFlags[0] & gdwBitMasks[3]))
         return 0;
     D2SkillStrc* skill = UNITS_GetUsedSkill(unit);
     if (!skill)

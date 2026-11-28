@@ -24,6 +24,7 @@ void __stdcall PATH_SetVelocity(D2DynamicPathStrc* pDynamicPath, int nVelocity, 
 
 #include "D2GameFuncs.h"
 #include "D2CommonApi2.h"
+#include "D2ClientApi.h"
 
 
 struct D2AiParamStrc;
@@ -37,8 +38,6 @@ void __fastcall MONSTERAI_FreeMonsterInteract(D2GameStrc* pGame, D2MonsterIntera
 
 
 
-
-unsigned int __fastcall ITEMS_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax); // 0x0045C3E0
 
 inline D2MonStatsTxt* MONSTERMODE_GetMonStatsTxtRecord(int nMonsterId)
 {
@@ -540,7 +539,7 @@ void __fastcall MONSTER_SetComponents(D2MonRegDataStrc* pMonRegData, D2UnitStrc*
 
     if (pMonRegData && pMonRegData->nComponentVariantsMax > 0)
     {
-        const D2ComponentVariantStrc* pVariants = (const D2ComponentVariantStrc*)pMonRegData->unk0x04;
+        const D2ComponentVariantStrc* pVariants = (const D2ComponentVariantStrc*)pMonRegData->nComponentVariants;
         const D2ComponentVariantStrc* pVariant = &pVariants[ITEMS_RollLimitedRandomNumber(&pUnit->pSeed, pMonRegData->nComponentVariantsMax)];
         D2ComponentVariantStrc* pComponents = (D2ComponentVariantStrc*)sub_00573AE0_GetComponents(pUnit);
         if (pComponents)
@@ -683,7 +682,6 @@ struct D2MonPropTxt
 };
 
 void __fastcall MONSTER_SetComponents(D2MonRegDataStrc* pMonRegData, D2UnitStrc* pUnit);                   // 0x005739D0
-unsigned int __fastcall SEED_RollLimitedRandomNumber(D2SeedStrc* pSeed, int nMax);                          // 0x0045C390
 D2MonStats2Txt* __fastcall sub_00573470_GetMonStats2Record(int nMonsterId);                                                    // 0x00573470
 D2InventoryStrc* __fastcall SUNITPROXY_GetNpcInventory(D2GameStrc* pGame, int nNpc);                        // 0x00536B20
 void __fastcall D2GAME_ITEMMODE_ServerStatlistCallback(D2GameStrc* pGame, D2UnitStrc* pUnit, D2UnitStrc* pOther, int nLayerStatId, int nPreviousValue, int nNewValue); // 0x0055B800

@@ -3,6 +3,7 @@
 #include "D2GameTypes.h"
 #include "D2FogTypes.h"
 #include "D2ExceptionPointers.h"
+#include "D2ClientApi.h"
 
 struct D2CriticalSectionStrc;
 struct D2MiniDumpRequestStrc;
@@ -92,9 +93,6 @@ extern D2CriticalSectionStrc gtSymbolLock; // 0x0098A6F0
 
 extern int gbRightClickConsumed; // 0x007A0670
 extern int gbPopupDismissed; // 0x007A5254
-extern int gdwGlobal_007BC974; // 0x007BC974
-extern int gpHoverItem; // 0x007BCBF4
-
 extern "C" int __stdcall GetModuleInformation(void* hProcess, void* hModule, D2PsapiModuleInfoStrc* pInfo, unsigned long cb); // 0x006B13C8
 void __stdcall sub_M452_EmitSink(D2CrashModuleListStrc* pList);
 

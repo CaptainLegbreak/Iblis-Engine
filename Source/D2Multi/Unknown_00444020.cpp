@@ -12,6 +12,7 @@
 #include "FogApi.h"
 #include "D2LangApi.h"
 #include "D2WinApi.h"
+#include "D2WinApi2.h"
 
 extern int gnChatLaunchMode; // 0x0077BBE4
 
@@ -28,8 +29,6 @@ struct D2GameListRecordStrc;
 
 struct D2LaunchFuncsStrc;
 
-
-void __fastcall D2Win_10044(D2WinControlStrc* pControl, const Unicode* pText); // 0x004FD060
 
 extern D2WinControlInitStrc gtHelpBckgImageInit; // 0x0070E9E0
 

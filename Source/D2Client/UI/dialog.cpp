@@ -9,6 +9,7 @@
 #include "StormApi.h"
 #include "D2GfxApi.h"
 #include "D2CMPApi.h"
+#include "D2WinApi2.h"
 
 #pragma function(memset)
 
@@ -190,8 +191,6 @@ void __fastcall UI_DrawRectangleBorder(D2RectStrc* pRect); // 0x00452E50
 
 void* __cdecl UI_GetFocusCel(); // 0x00453AB0
 
-void __fastcall D2Win_10117_DrawText(const Unicode* wszText, int nX, int nY, int nColor, int bCentered); // 0x00502320
-
 int gnSelectionFrame; // 0x007C0E50
 
 struct Obj004B8580 {
@@ -214,8 +213,6 @@ struct Obj004B8580 {
     unsigned int dwUnknown40;
     int nValue44;
 };
-
-int __fastcall D2Win_10121_GetTextWidth(const Unicode* wszText); // 0x00501820
 
 int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 

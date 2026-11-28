@@ -2,6 +2,7 @@
 #include "D2BnCryptTypes.h"
 #include "StormApi.h"
 #include "StormApi2.h"
+#include "BnclientApi.h"
 
 #define rol(value, bits) _rotl(value, bits)
 
@@ -41,10 +42,6 @@ struct D2BigServerRecordStrc
     unsigned char abServerProof[0x14];
 };
 
-int __fastcall sub_0052A350_BigOp_423790(void* hResult, void* hLeft, void* hRight); // 0x0052A350
-
-int __fastcall sub_0052A3B0_BigOp_423AC0(void* hResult, void* hLeft, void* hRight); // 0x0052A3B0
-
 extern "C" int __cdecl memcmp(const void* pBuffer1, const void* pBuffer2, unsigned int nSize);
 
 struct D2BigServerHandlesStrc
@@ -71,11 +68,6 @@ struct D2BigRecordStrc
     char szName[0x20];
     D2Blob32Strc tThird;
 };
-
-void __fastcall sub_0052A590_BigOp_425330(void* hResult, void* hArg1, void* hArg2, void* hArg3);           // 0x0052A590
-unsigned int __fastcall sub_0052A2A0_BigToBinary(void* hBig, void* pBuffer, unsigned int nSize);            // 0x0052A2A0
-void* __fastcall sub_0052A270_BigFromBinary(const void* pData, unsigned int nSize);                         // 0x0052A270
-int __fastcall sub_0052A2F0_BigCompareUnsigned(void* hBig, unsigned int nValue);                            // 0x0052A2F0
 
 inline void* operator new(unsigned int nSize, void* pWhere) throw()
 {
