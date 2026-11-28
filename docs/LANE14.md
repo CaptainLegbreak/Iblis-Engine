@@ -206,6 +206,13 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Status
 
+- 2026-11-27 18:45 PT: 6d in PR #9: docs/REPLAY.md (design: two runners, the oracle maps the player's stock
+  Game.exe in-process and calls 1.14d at its addresses; cases rng -> C runtime/Fog -> tables -> drlg -> drops
+  and save) and tools/replay/ with the first case: rng, 2,169 lines identical between stock 1.14d and the
+  engine (MSVC 19.44 under wine, the user's install). Open: #8 (PORT_LINK.md at 7442280), #9. Item 6
+  proposal parked under Findings. Next unless told otherwise: 6b when Codex main moves; REPLAY level 1
+  (Game.exe's C runtime init in the oracle) toward the drlg case.
+
 - 2026-11-27 18:20 PT: 6b follow-up in PR #8 (PORT_LINK.md at 7442280; duplicates now told apart by symbol
   type: 84 duplicate globals, as Codex finds, and 324 duplicate functions). 6c posted under Findings (by lane,
   plus the 172 no_address symbols by file). Starting 6d (docs/REPLAY.md, tools/replay/).
