@@ -287,7 +287,7 @@ static D2StoredUnitRecordStrc* ROSTER_FindRosterUnit(int nUnitId)
 // 0x00479320
 D2StoredUnitRecordStrc* __cdecl ROSTER_GetPlayerRosterUnit()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2StoredUnitRecordStrc* pRec = ROSTER_FindRosterUnit(!pPlayer ? -1 : pPlayer->dwUnitId);
     D2_ASSERT(pRec, 0x75);
     return pRec;
@@ -724,7 +724,7 @@ static void ROSTER_MovePlayerToFront(int nPlayerId)
 // noinline: the original calls this; without it the compiler expands it into 0x0047A850, 0x0047A8B0.
 __declspec(noinline) void __cdecl ROSTER_RebuildRosterOrder()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     const int nPlayerId = !pPlayer ? -1 : pPlayer->dwUnitId;
     D2StoredUnitRecordStrc* pRec = ROSTER_FindRosterUnit(nPlayerId);
     const unsigned short wPartyId = pRec ? pRec->wPartyId : 0xFFFF;
@@ -850,7 +850,7 @@ int __fastcall ROSTER_TestLootFlag(D2StoredUnitRecordStrc* pEntry)
 {
     if (pEntry)
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         return GFXUTIL_TestRelationFlags(!pPlayer ? -1 : pPlayer->dwUnitId, pEntry->dwUnitId, 1);
     }
     return 0;
@@ -861,7 +861,7 @@ int __fastcall ROSTER_TestMuteFlag(D2StoredUnitRecordStrc* pEntry)
 {
     if (pEntry)
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         return GFXUTIL_TestRelationFlags(!pPlayer ? -1 : pPlayer->dwUnitId, pEntry->dwUnitId, 2);
     }
     return 0;
@@ -872,7 +872,7 @@ int __fastcall ROSTER_TestSquelchFlag(D2StoredUnitRecordStrc* pEntry)
 {
     if (pEntry)
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         return GFXUTIL_TestRelationFlags(!pPlayer ? -1 : pPlayer->dwUnitId, pEntry->dwUnitId, 4);
     }
     return 0;
@@ -883,7 +883,7 @@ int __fastcall ROSTER_TestHostileFlag(D2StoredUnitRecordStrc* pEntry)
 {
     if (pEntry)
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         if (GFXUTIL_TestRelationFlags(!pPlayer ? -1 : pPlayer->dwUnitId, pEntry->dwUnitId, 8))
             return 1;
     }
@@ -901,7 +901,7 @@ extern "C" __declspec(dllexport) unsigned int __fastcall ROSTER_GetPartyFlags(Ob
 // 0x00479D30
 static void ROSTER_ToggleRelationFlag(D2StoredUnitRecordStrc* pEntry, unsigned short nFlag)
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     const int nPlayerId = !pPlayer ? -1 : pPlayer->dwUnitId;
     D2_ASSERT(pEntry, 0x463);
     PLAYERLIST_AddRosterInfo(nPlayerId, pEntry->dwUnitId);
@@ -914,7 +914,7 @@ void __fastcall ROSTER_ToggleLoot(D2StoredUnitRecordStrc* pEntry)
     if (pEntry)
     {
         ROSTER_ToggleRelationFlag(pEntry, 1);
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         MSG_SendPvpCommand(1, pEntry->dwUnitId, GFXUTIL_TestRelationFlags(!pPlayer ? -1 : pPlayer->dwUnitId, pEntry->dwUnitId, 1));
     }
 }
@@ -925,7 +925,7 @@ void __fastcall ROSTER_ToggleMute(D2StoredUnitRecordStrc* pEntry)
     if (pEntry)
     {
         ROSTER_ToggleRelationFlag(pEntry, 2);
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         MSG_SendPvpCommand(2, pEntry->dwUnitId, GFXUTIL_TestRelationFlags(!pPlayer ? -1 : pPlayer->dwUnitId, pEntry->dwUnitId, 2));
     }
 }
@@ -936,9 +936,9 @@ void __fastcall ROSTER_ToggleSquelch(D2StoredUnitRecordStrc* pEntry)
     if (pEntry)
     {
         ROSTER_ToggleRelationFlag(pEntry, 4);
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         MSG_SendPvpCommand(3, pEntry->dwUnitId, GFXUTIL_TestRelationFlags(!pPlayer ? -1 : pPlayer->dwUnitId, pEntry->dwUnitId, 4));
-        pPlayer = sub_00463DD0_GetPlayerUnit();
+        pPlayer = CUNIT_GetPlayerUnit();
         if (GFXUTIL_TestRelationFlags(!pPlayer ? -1 : pPlayer->dwUnitId, pEntry->dwUnitId, 4))
             sub_00611560_GetSquelchList()->Squelch(pEntry->szNameEx);
         else
@@ -983,7 +983,7 @@ inline int ROSTER_TestPvpFlag4Inl(D2StoredUnitRecordStrc* pEntry)
 {
     if (pEntry)
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         return GFXUTIL_TestRelationFlags(!pPlayer ? -1 : pPlayer->dwUnitId, pEntry->dwUnitId, 4);
     }
     return 0;
@@ -1077,7 +1077,7 @@ void __fastcall ROSTER_RemoveRosterUnit(int nUnitId)
 // 0x00479F60
 D2StoredUnitRecordStrc* __cdecl ROSTER_LeaveParty()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2StoredUnitRecordStrc* pRec = ROSTER_FindRosterUnit(!pPlayer ? -1 : pPlayer->dwUnitId);
     D2_ASSERT(pRec, 0x4ED);
     pRec->wPartyId = 0xFFFF;
@@ -1096,7 +1096,7 @@ void __cdecl ROSTER_SendLeaveParty()
 // 0x00479FE0
 void __fastcall ROSTER_ToggleHostile(D2StoredUnitRecordStrc* pEntry)
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     const int nPlayerId = !pPlayer ? -1 : pPlayer->dwUnitId;
     if (!pEntry)
         return;
@@ -1160,7 +1160,7 @@ void __fastcall ROSTER_SetPosition(int nUnitId, int nX, int nY)
 // 0x0047A120
 int __fastcall ROSTER_IsInPlayerParty(D2StoredUnitRecordStrc* pRecord)
 {
-    if (pRecord && pRecord->wPartyId != 0xFFFF && CUNIT_GetPlayerPartyId(sub_00463DD0_GetPlayerUnit()) == pRecord->wPartyId)
+    if (pRecord && pRecord->wPartyId != 0xFFFF && CUNIT_GetPlayerPartyId(CUNIT_GetPlayerUnit()) == pRecord->wPartyId)
     {
         return 1;
     }
@@ -1311,7 +1311,7 @@ void __fastcall ROSTER_SetPvpFlags(int nUnitId1, int nUnitId2, unsigned short wF
     PLAYERLIST_AddRosterInfo(nUnitId1, nUnitId2);
     GFXUTIL_SetRelationFlags(nUnitId1, nUnitId2, wFlags);
     PARTY_RebuildRosterUnits();
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (nUnitId2 == (!pPlayer ? -1 : pPlayer->dwUnitId))
         WARDENCLIENT_UpdateOwnerPetFlags(nUnitId1);
 }
@@ -1393,7 +1393,7 @@ int __fastcall ROSTER_IsSameParty(int nUnitId1, int nUnitId2)
 int __cdecl ROSTER_IsAnyoneHostile()
 {
     D2StoredUnitRecordStrc* pRoster = gpStoredUnits;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     const int nPlayerId = !pPlayer ? -1 : pPlayer->dwUnitId;
     for (; pRoster; pRoster = pRoster->pNext)
     {
@@ -1406,7 +1406,7 @@ int __cdecl ROSTER_IsAnyoneHostile()
 // 0x0047A5B0
 int __fastcall ROSTER_IsHostileToPlayer(D2StoredUnitRecordStrc* pEntry)
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (pEntry && pPlayer && GFXUTIL_TestRelationFlags(pEntry->dwUnitId, !pPlayer ? -1 : pPlayer->dwUnitId, 8))
         return 1;
     return 0;
@@ -1415,7 +1415,7 @@ int __fastcall ROSTER_IsHostileToPlayer(D2StoredUnitRecordStrc* pEntry)
 // 0x0047A5E0
 int __fastcall ROSTER_IsPlayerHostile(D2StoredUnitRecordStrc* pEntry)
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (pEntry && pPlayer && GFXUTIL_TestRelationFlags(!pPlayer ? -1 : pPlayer->dwUnitId, pEntry->dwUnitId, 8))
         return 1;
     return 0;
@@ -1424,7 +1424,7 @@ int __fastcall ROSTER_IsPlayerHostile(D2StoredUnitRecordStrc* pEntry)
 // 0x0047A610
 int __fastcall ROSTER_AllowsPlayerLoot(D2StoredUnitRecordStrc* pEntry)
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (pEntry && pPlayer && GFXUTIL_TestRelationFlags(pEntry->dwUnitId, !pPlayer ? -1 : pPlayer->dwUnitId, 1))
         return 1;
     return 0;
@@ -1433,7 +1433,7 @@ int __fastcall ROSTER_AllowsPlayerLoot(D2StoredUnitRecordStrc* pEntry)
 // 0x0047A640
 int __fastcall ROSTER_PlayerAllowsLoot(D2StoredUnitRecordStrc* pEntry)
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (pEntry && pPlayer && GFXUTIL_TestRelationFlags(!pPlayer ? -1 : pPlayer->dwUnitId, pEntry->dwUnitId, 1))
         return 1;
     return 0;
@@ -1464,7 +1464,7 @@ void __fastcall ROSTER_SetPartyLife(int nUnitGUID, unsigned char nLifePct)
 int __fastcall ROSTER_GetOtherPartyLife(int nUnitId)
 {
     D2StoredUnitRecordStrc* pRec = ROSTER_FindRosterUnit(nUnitId);
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (nUnitId != (!pPlayer ? -1 : pPlayer->dwUnitId) && pRec)
         return pRec->dwPartyLife;
     return 0;

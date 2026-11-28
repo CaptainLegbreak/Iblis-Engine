@@ -153,7 +153,6 @@ set(IBLIS_D2Client_SOURCES
     Source/D2Client/Unknown_004BC1B0_004BE770.cpp
     Source/D2Client/Unknown_004BC500.cpp
     Source/D2Client/Unknown_004BDFD0.cpp
-    Source/D2Client/Unknown_004C51D0.cpp
     Source/D2Client/Unknown_004C9420.cpp
     Source/D2Client/Unknown_004C9D50.cpp
     Source/D2Client/Unknown_004D1300.cpp
@@ -521,13 +520,15 @@ set(IBLIS_D2Win_SOURCES
     Source/D2Win/Src/D2WinSmack.cpp
     Source/D2Win/Src/D2WinTextBox.cpp
     Source/D2Win/Src/D2WinTimer.cpp
+    Source/D2Win/Src/D2WRegister.cpp
     Source/D2Win/Unknown_004F6F60.cpp
     Source/D2Win/Unknown_004FDA80.cpp
-    Source/D2Win/Unknown_00506C40.cpp
 )
 
 set(IBLIS_Fog_SOURCES
     Source/Fog/Src/AsyncData.cpp
+    Source/Fog/Src/BitManip/BitManip.cpp
+    Source/Fog/Src/Calc.cpp
     Source/Fog/Src/D2QSQueue.cpp
     Source/Fog/Src/D2QSSocket.cpp
     Source/Fog/Src/DataArrays.cpp
@@ -556,8 +557,6 @@ set(IBLIS_Fog_SOURCES
     Source/Fog/Unknown_004049A0.cpp
     Source/Fog/Unknown_00404AB0.cpp
     Source/Fog/Unknown_00408090.cpp
-    Source/Fog/Unknown_00410790.cpp
-    Source/Fog/Unknown_006C0B80.cpp
 )
 
 set(IBLIS_Main_SOURCES
@@ -662,7 +661,6 @@ set_source_files_properties(
     Source/D2Client/Unknown_004B9200.cpp
     Source/D2Client/Unknown_004BC500.cpp
     Source/D2Client/Unknown_004BDFD0.cpp
-    Source/D2Client/Unknown_004C51D0.cpp
     Source/D2Client/Unknown_004C9420.cpp
     Source/D2Client/Unknown_004C9D50.cpp
     Source/D2Client/Unknown_004D9FC0.cpp
@@ -896,6 +894,8 @@ set_source_files_properties(
     Source/D2Net/Unknown_0052B910.cpp
     Source/D2Net/Unknown_0052BDA0.cpp
     Source/Fog/Src/AsyncData.cpp
+    Source/Fog/Src/BitManip/BitManip.cpp
+    Source/Fog/Src/Calc.cpp
     Source/Fog/Src/D2QSQueue.cpp
     Source/Fog/Src/D2QSSocket.cpp
     Source/Fog/Src/DataArrays.cpp
@@ -913,8 +913,6 @@ set_source_files_properties(
     Source/Fog/Unknown_00404100.cpp
     Source/Fog/Unknown_004047D0.cpp
     Source/Fog/Unknown_004049A0.cpp
-    Source/Fog/Unknown_00410790.cpp
-    Source/Fog/Unknown_006C0B80.cpp
     Source/Main/Main.cpp
     Source/Main/Unknown_004053F0.cpp
     Source/Main/Unknown_004059D0.cpp
@@ -1082,9 +1080,9 @@ set_source_files_properties(
     Source/D2Win/Src/D2WinSmack.cpp
     Source/D2Win/Src/D2WinTextBox.cpp
     Source/D2Win/Src/D2WinTimer.cpp
+    Source/D2Win/Src/D2WRegister.cpp
     Source/D2Win/Unknown_004F6F60.cpp
     Source/D2Win/Unknown_004FDA80.cpp
-    Source/D2Win/Unknown_00506C40.cpp
     PROPERTIES COMPILE_OPTIONS "/TP;/Gy;/O2;/Oy-;/Ob2;/Gd;/GS-")
 
 # /TP /Gy /O2 /Oy- /Ob1 /Gd

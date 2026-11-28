@@ -145,18 +145,6 @@ struct D2TimeZoneInformationStrc
     long nDaylightBias;
 };
 
-struct FSafeSock
-{
-    int bConnected;
-    int bConnecting;
-    unsigned int nSocket;
-    D2CriticalSectionStrc tCriticalSection;
-    void* hThread;
-    unsigned long nThreadId;
-    int bStopping;
-    unsigned long nFogErrorCode;
-    unsigned long nWSALastError;
-    char szName[64];
-};
+#include "D2FogSafeSock.h"
 
 typedef unsigned int size_t;

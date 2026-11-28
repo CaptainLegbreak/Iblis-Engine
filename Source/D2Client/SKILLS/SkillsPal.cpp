@@ -151,7 +151,7 @@ int __fastcall SKILLSPAL_StartCharge(D2UnitStrc* pUnit,int nSkillId,int nSkillLe
  if(!pSkill)return 0;
  D2SkillsTxt* pRecord=SKILLS_GetSkillsTxtRecord(nSkillId);
  if(!pRecord)return 0;
- if(SKILLS_GetSkillIdFromSkill(pSkill,".\\SKILLS\\SkillsPal.cpp",0x176)==nSkillId && pUnit==sub_00463DD0_GetPlayerUnit() && (SKILLS_GetFlags(pSkill)&1))return 0;
+ if(SKILLS_GetSkillIdFromSkill(pSkill,".\\SKILLS\\SkillsPal.cpp",0x176)==nSkillId && pUnit==CUNIT_GetPlayerUnit() && (SKILLS_GetFlags(pSkill)&1))return 0;
  D2DynamicPathStrc* pPath=pUnit->pDynamicPath;
  if(!pPath)return 0;
  D2UnitStrc* pTarget=CUNIT_GetPathTargetUnit(pUnit);

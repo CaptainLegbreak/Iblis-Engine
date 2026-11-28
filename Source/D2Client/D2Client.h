@@ -536,7 +536,7 @@ int __fastcall sub_004807C0(D2UnitStrc* pUnit); // 0x004807C0
 int __fastcall sub_00480C10_UnitEvent(int nEvent, D2UnitStrc* pUnit, int* pArgs, int nFlag); // 0x00480C10
 int __fastcall INV_ClickNpcPanel(SMSGHANDLER_PARAMS* pMsg); // 0x00489190
 int __fastcall TEXT_IsInRightPanelButton(int nMode, int nX, int nY); // 0x004A6630
-int __fastcall sub_004AC7E0_CheckMonTypeFlag(D2UnitStrc* pUnit, unsigned short nFlag); // 0x004AC7E0
+int __fastcall MONUNIQUE_CheckMonTypeFlag(D2UnitStrc* pUnit, unsigned short nFlag); // 0x004AC7E0
 int __fastcall NPCMENU_GetMonsterTypeFlags(D2UnitStrc* pUnit, int nMode); // 0x004AE080
 int __fastcall MONSTER_IsChampionMonster(D2UnitStrc* pUnit); // 0x004AE320
 int __fastcall MONSTER_IsGhostlyMonster(D2UnitStrc* pUnit); // 0x004AE340
@@ -821,7 +821,7 @@ void __fastcall TEXT_FreeHoverText(D2HoverTextStrc* pHoverText); // 0x0049F3D0
 void __fastcall TEXT_HandleChatPacket(D2ChatMessageStrc* pMessage); // 0x0049F490
 void __fastcall TEXT_ShowNpcMessage(D2UnitStrc* pUnit, unsigned short nMessage, int nArg); // 0x004A10E0
 void __fastcall QUESTLOG_SendQuestUpdates(int nCount); // 0x004A2760
-void __fastcall sub_004AC780_SetMonsterWord(D2UnitStrc* pUnit, unsigned short nValue); // 0x004AC780
+void __fastcall MONUNIQUE_SetNameSeed(D2UnitStrc* pUnit, unsigned short nValue); // 0x004AC780
 void __fastcall MONUNIQUE_ToggleMonTypeFlag(D2UnitStrc* pUnit, unsigned short nFlag, int bSet); // 0x004AC810
 void __fastcall MONUNIQUE_ApplyUMods(D2UnitStrc* pUnit); // 0x004AD020
 void __fastcall MONSTER_OwnerMissileHit(D2UnitStrc* pUnit); // 0x004AE3C0

@@ -330,7 +330,7 @@ static int __stdcall SKILLDESC_GetStatDisplayValue(int nValue, D2ItemStatCostTxt
         if (!pBase)
             return 0;
 
-        nValue = (STATLIST_UnitGetStatValue(sub_00463DD0_GetPlayerUnit(), nOpBase, 0) >> pBase->nValShift) * nValue >> pRecord->nOpParam;
+        nValue = (STATLIST_UnitGetStatValue(CUNIT_GetPlayerUnit(), nOpBase, 0) >> pBase->nValShift) * nValue >> pRecord->nOpParam;
     }
 
     nValue >>= pRecord->nValShift;
@@ -880,7 +880,7 @@ static int __stdcall SKILLDESC_BuildStatText(D2UnitStrc* pUnit, D2StatListStrc* 
 
         D2UnitStrc* pPlayer = pUnit;
         if (!pPlayer || pPlayer->dwUnitType != UNIT_PLAYER)
-            pPlayer = sub_00463DD0_GetPlayerUnit();
+            pPlayer = CUNIT_GetPlayerUnit();
 
         const int nClass = !pPlayer ? -1 : pPlayer->dwClassId;
         if (pSkillsTxt->nCharClass == nClass && nDisplay > 3)

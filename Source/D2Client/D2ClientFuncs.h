@@ -175,8 +175,8 @@ unsigned char __stdcall AUTOMAP_GetItemComponent(D2UnitStrc* pUnit, D2UnitStrc* 
 int __fastcall CUNIT_GetMonsterBaseId(D2UnitStrc* pUnit); // 0x00463860
 D2UnitStrc* __fastcall CUNIT_FindServerSideUnit(unsigned int nUnitId, int nUnitType); // 0x004639B0
 void __cdecl CUNIT_ClearUnitTables(); // 0x00463C70
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
-D2UnitStrc* __cdecl sub_00463DE0_GetPlayerUnit(); // 0x00463DE0
+D2UnitStrc* __cdecl CUNIT_GetPlayerUnit(); // 0x00463DD0
+D2UnitStrc* __cdecl CUNIT_GetPlayerUnit2(); // 0x00463DE0
 int __cdecl CUNIT_IsPlayerDeadOrMissing(); // 0x00463DF0
 int __fastcall CUNIT_GetBasePalShiftIndex(D2UnitStrc* pUnit); // 0x00463E50
 int __fastcall CUNIT_GetPalShiftIndex(D2UnitStrc* pUnit); // 0x00463EB0
@@ -324,7 +324,7 @@ void __fastcall MINIPANEL_OpenPanel(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAM
 void __fastcall MINIPANEL_ShowPage0(D2OptionEntryStrc* pEntry, SMSGHANDLER_PARAMS* pMsg); // 0x0047F430
 void __cdecl WARDENCLIENT_ActivatePendingModule(); // 0x00480230
 void __fastcall GFX_RefreshPathTarget(D2UnitStrc* pUnit); // 0x00480420
-void __cdecl sub_00481830_StopAllSounds(); // 0x00481830
+void __cdecl UNITMODE_StopAllSounds(); // 0x00481830
 void __cdecl sub_00481850_Nop(); // 0x00481850
 void __cdecl SOUNDHDR_TickSound(); // 0x00482C20
 void __fastcall INV_UpdateAuxBattleNetAddress(int nIndex); // 0x00482CA0
@@ -661,7 +661,7 @@ void __stdcall sub_004AAAE0_DrawPagedPanel(void* pCellFile, int nPage); // 0x004
 void __cdecl sub_004ABF10_ClearSkillStates(); // 0x004ABF10
 void __cdecl sub_004AC690_DrawSkillPanel(); // 0x004AC690
 unsigned char* __fastcall MONUNIQUE_GetMonUmods(D2UnitStrc* pUnit); // 0x004AC740
-short __fastcall sub_004AC7C0_GetSuperUniqueId(D2UnitStrc* pUnit); // 0x004AC7C0
+short __fastcall MONUNIQUE_GetBossHcIdx(D2UnitStrc* pUnit); // 0x004AC7C0
 void __stdcall MONSTER_RunUModCallbacks(D2UnitStrc* pUnit, void* pArgument, int nMode); // 0x004ADD90
 void __fastcall MONSTER_RunUModCommandCallbacks(D2UnitStrc* pUnit); // 0x004ADE40
 void __fastcall MONSTER_RunUModUpdateCallbacks(D2UnitStrc* pUnit); // 0x004ADE50

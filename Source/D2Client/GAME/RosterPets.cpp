@@ -262,7 +262,7 @@ void __fastcall ROSTERPETS_DropPetEntry(int nKey)
         {
             if (pNode->nType == 7)
             {
-                D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+                D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
                 if (pNode->dwOwnerId == (!pPlayer ? -1 : pPlayer->dwUnitId))
                 {
                     pNode->bDead = 1;
@@ -306,7 +306,7 @@ int __fastcall ROSTERPETS_GetPetOwnerRelation(int nUnitId)
     {
         if (pPet->dwUnitId == nUnitId)
         {
-            D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+            D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
             const int nPlayerId = !pPlayer ? -1 : pPlayer->dwUnitId;
             if (pPet->dwOwnerId == nPlayerId)
             {
@@ -342,7 +342,7 @@ int __fastcall ROSTERPETS_GetPetRelation(int nUnitId)
                 return 3;
             }
 
-            D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+            D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
             const int nPlayerId = !pPlayer ? -1 : pPlayer->dwUnitId;
             if (pPet->dwOwnerId == nPlayerId)
             {
@@ -468,7 +468,7 @@ struct D2GfxLightStrc;
 void __cdecl GFX_UpdatePetFlags()
 {
     D2RosterPetStrc* pPet = gpRosterPets;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     for (; pPet; pPet = pPet->pNext)
     {
         if (pPet->nType == 4)
@@ -615,7 +615,7 @@ int __fastcall ROSTER_GetPetType(int nUnitId)
 int __fastcall ROSTERPETS_IsOwnedByPlayer(D2UnitStrc* pUnit)
 {
     const int nOwnerId = ROSTERPETS_FindRosterIndex(!pUnit ? -1 : pUnit->dwUnitId);
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     const int nPlayerId = pPlayer ? pPlayer->dwUnitId : -1;
     D2_ASSERT(nPlayerId != -1, 0x225);
     if (nOwnerId != -1)

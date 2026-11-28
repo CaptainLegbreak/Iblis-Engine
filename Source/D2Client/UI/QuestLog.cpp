@@ -561,7 +561,7 @@ static void TEXT_SetQuestPage_Inline(int nPage)
 // 0x004A2300
 void __cdecl QUESTLOG_UpdateQuestPage()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (pPlayer)
     {
         D2ActiveRoomStrc* pRoom = UNITS_GetRoom(pPlayer);
@@ -1364,7 +1364,7 @@ void __fastcall QUESTLOG_SpawnQuestUnits(int nX, int nY)
 {
     if (gtQuestLog.bHasQuestPacketValue)
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         int nCount = SEED_RollLimitedRandomNumber(&pPlayer->pSeed, 3) + 2;
         for (int i = 0; i < nCount; ++i)
         {

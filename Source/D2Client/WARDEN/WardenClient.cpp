@@ -1037,7 +1037,7 @@ void __fastcall WARDENCLIENT_OpenTextPanel(unsigned short nStringId, int bSide, 
     const int nSoundId = sub_004E0650_GetStringSound(nStringId);
     if (nSoundId)
     {
-        gtTextState.hHintSound = sub_004B9A00(nSoundId, sub_00463DD0_GetPlayerUnit(), 5, 0, 0);
+        gtTextState.hHintSound = sub_004B9A00(nSoundId, CUNIT_GetPlayerUnit(), 5, 0, 0);
         gnHintId = nSoundId;
     }
 

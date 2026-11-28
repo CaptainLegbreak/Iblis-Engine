@@ -1,3 +1,6 @@
+// A piece of text.cpp, kept as its own file because its declarations disagree with text.cpp's: it views the text
+// box as a D2TextScrollStrc where text.cpp (and TEXT_AdvanceTextBox's prototype) use D2TextBoxStrc. It joins once
+// the two records are one type.
 #include "D2Unicode.h"
 #include "D2Client.h"
 #include "D2ClientFuncs.h"

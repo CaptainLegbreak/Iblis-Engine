@@ -45,7 +45,7 @@ extern "C" int __fastcall sub_004D9FC0_GetSkillUseState(D2UnitStrc* unit,D2Skill
     int status = SKILLS_GetUseState(unit,skill);
     if (status)
         return status;
-    if (unit == sub_00463DE0_GetPlayerUnit())
+    if (unit == CUNIT_GetPlayerUnit2())
     {
         unsigned int first = sub_0044DA90_GetTickCounter();
         unsigned int second = GAME_GetSkillDelayUntil();

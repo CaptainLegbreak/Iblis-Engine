@@ -992,7 +992,7 @@ static void __stdcall GFX_PreloadPlayerMode(int bAsync, D2UnitStrc* pUnit, int n
 // 0x00470070
 static void GFX_PreloadRoomUnits(int bAsync)
 {
-    D2ActiveRoomStrc* pRoom = UNITS_GetRoom(sub_00463DD0_GetPlayerUnit());
+    D2ActiveRoomStrc* pRoom = UNITS_GetRoom(CUNIT_GetPlayerUnit());
     if (!pRoom)
     {
         return;

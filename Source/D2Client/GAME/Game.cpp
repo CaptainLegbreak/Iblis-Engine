@@ -1655,7 +1655,7 @@ void __cdecl PLAYER_ClearCommandPending(); // 0x00462920
 void __cdecl SELECT_UpdateHoverUnit(); // 0x00467AC0
 int __cdecl CHAT_HandleBnetChatMessage(); // 0x0047BDF0
 void __fastcall WARDENCLIENT_TickModule(int nDelta); // 0x00480320
-void __fastcall sub_00481600_RunPendingAction(D2UnitStrc* pPlayer); // 0x00481600
+void __fastcall UNITMODE_RunPendingAction(D2UnitStrc* pPlayer); // 0x00481600
 extern unsigned int gdwFrameTime; // 0x0070EF1C
 extern unsigned int gdwLastCheck_007A04A0; // 0x007A04A0
 unsigned int gdwLastFrame; // 0x007A0490
@@ -2364,7 +2364,7 @@ void __stdcall GAME_HandleLeftButtonDown(SMSGHANDLER_PARAMS* pMsg)
     if (gbPositionalSound)
     {
         gbLeftButtonDown = 1;
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         int nFlags = 0;
         if (gbRunKeyHeld)
             nFlags = 8;
@@ -2407,7 +2407,7 @@ void __cdecl GAME_StartClick()
     if (gbPositionalSound && gbLeftButtonDown && !gbClickHandled)
     {
         gbLeftClickRepeating = 1;
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         const int nFlags = sub_0044BEC0_GetClickFlags_static();
         if (pPlayer && pPlayer->dwUnitType == UNIT_PLAYER)
         {
@@ -2438,7 +2438,7 @@ void __cdecl GAME_ResetLeftClick()
     SELECT_UnlockHover();
     if (gbPositionalSound)
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         if (pPlayer && pPlayer->dwUnitType == UNIT_PLAYER)
             PLAYER_PlayerCommand(2, sub_00468730(), sub_00468740(), CLIENT_GetClickFlags_inl());
     }
@@ -2502,7 +2502,7 @@ void __stdcall GAME_HandleRightButtonDown(SMSGHANDLER_PARAMS* pMsg)
         return;
     }
     gbRightButtonDown = 1;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     const int nFlags = sub_0044BEC0_GetClickFlags_static();
     if (pPlayer && pPlayer->dwUnitType == UNIT_PLAYER)
     {
@@ -2520,7 +2520,7 @@ void __cdecl GAME_StartRightClick()
     if (gbPositionalSound && gbRightButtonDown)
     {
         gbRightClickConsumed = 1;
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         const int nFlags = CLIENT_GetClickFlags_inl();
         if (pPlayer && pPlayer->dwUnitType == UNIT_PLAYER)
             PLAYER_PlayerCommand(4, sub_00468730(), sub_00468740(), nFlags);
@@ -2547,7 +2547,7 @@ void __stdcall GAME_HandleRightButtonUp(SMSGHANDLER_PARAMS* pMsg)
     SELECT_UnlockHover();
     if (gbPositionalSound)
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         if (pPlayer && pPlayer->dwUnitType == UNIT_PLAYER)
         {
             gbRightButtonDown = PLAYER_PlayerCommand(5, pMsg->nXpos, pMsg->nYpos, pMsg->wParamLow);
@@ -2821,7 +2821,7 @@ void __fastcall GAME_DrawGameView(int bNoCursor)
     if (WINDOW_GetState())
         return;
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2RectStrc tRect;
     sub_00476070_GetViewRect(gpClientView, &tRect.nLeft, &tRect.nTop, &tRect.nRight, &tRect.nBottom);
     int nY;
@@ -4699,7 +4699,7 @@ int __stdcall GAME_RunGameFrame(int nUnused)
 {
     int bFrame = 0;
     int bDrawn = 0;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (gnGameType == 0 || gnGameType == 1)
     {
         if (WINDOW_GetState())
@@ -4782,7 +4782,7 @@ int __stdcall GAME_RunGameFrame(int nUnused)
 
         if (gbPositionalSound)
         {
-            sub_00481600_RunPendingAction(pPlayer);
+            UNITMODE_RunPendingAction(pPlayer);
         }
     }
 
@@ -4969,7 +4969,7 @@ int __cdecl GAME_RunGameSession()
     SCMD_RunMessageLoop(GAME_RunGameFrame);
     GetTickCount();
     D2SOUNDSMP_FadeOutMasterVolume(180);
-    sub_00481830_StopAllSounds();
+    UNITMODE_StopAllSounds();
     if(GAME_IsTimerRunning(&gtLoadingTimer) && !gnDifficultyDirty && !gnCinematicPlayed)SCMD_RunMessageLoop(GAME_LoadingTimerCallback);
     if(RECORD_IsRecordingEnabled())RECORD_WriteRecordFile();
     if(gnBetaScreens)

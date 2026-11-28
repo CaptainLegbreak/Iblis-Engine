@@ -677,7 +677,7 @@ void __fastcall MONSTER_SetMonsterLight(D2UnitStrc* pUnit)
 int __fastcall MONSTER_IsChampionMonster(D2UnitStrc* pUnit)
 {
     if (pUnit && pUnit->dwUnitType == UNIT_MONSTER)
-        return sub_004AC7E0_CheckMonTypeFlag(pUnit, 0x04);
+        return MONUNIQUE_CheckMonTypeFlag(pUnit, 0x04);
     return 0;
 }
 
@@ -685,7 +685,7 @@ int __fastcall MONSTER_IsChampionMonster(D2UnitStrc* pUnit)
 int __fastcall MONSTER_IsGhostlyMonster(D2UnitStrc* pUnit)
 {
     if (pUnit && pUnit->dwUnitType == UNIT_MONSTER)
-        return sub_004AC7E0_CheckMonTypeFlag(pUnit, 0x40);
+        return MONUNIQUE_CheckMonTypeFlag(pUnit, 0x40);
     return 0;
 }
 
@@ -693,7 +693,7 @@ int __fastcall MONSTER_IsGhostlyMonster(D2UnitStrc* pUnit)
 int __fastcall MONSTER_IsUniqueMonster(D2UnitStrc* pUnit)
 {
     if (pUnit && pUnit->dwUnitType == UNIT_MONSTER)
-        return sub_004AC7E0_CheckMonTypeFlag(pUnit, 0x08);
+        return MONUNIQUE_CheckMonTypeFlag(pUnit, 0x08);
     return 0;
 }
 
@@ -701,7 +701,7 @@ int __fastcall MONSTER_IsUniqueMonster(D2UnitStrc* pUnit)
 int __fastcall MONSTER_IsMinionMonster(D2UnitStrc* pUnit)
 {
     if (pUnit && pUnit->dwUnitType == UNIT_MONSTER)
-        return sub_004AC7E0_CheckMonTypeFlag(pUnit, 0x10);
+        return MONUNIQUE_CheckMonTypeFlag(pUnit, 0x10);
     return 0;
 }
 
@@ -709,7 +709,7 @@ int __fastcall MONSTER_IsMinionMonster(D2UnitStrc* pUnit)
 int __fastcall MONSTER_IsSuperUniqueMonster(D2UnitStrc* pUnit)
 {
     if (pUnit && pUnit->dwUnitType == UNIT_MONSTER)
-        return sub_004AC7E0_CheckMonTypeFlag(pUnit, 0x02);
+        return MONUNIQUE_CheckMonTypeFlag(pUnit, 0x02);
     return 0;
 }
 
@@ -800,7 +800,7 @@ static void MONSTER_HandleMonsterEvent(D2UnitStrc* pUnit, int nEvent)
     {
     case 0x14B:
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         if (pPlayer)
         {
             UNITS_SetTargetUnitForDynamicUnit(pUnit, pPlayer);
@@ -819,7 +819,7 @@ static void MONSTER_HandleMonsterEvent(D2UnitStrc* pUnit, int nEvent)
         break;
     case 0x158:
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         D2DirectionArgStrc tDirection;
         tDirection.nDirection = sub_I07_SeedRoll(&pPlayer->pSeed) & 0x3F;
         D2DynamicPathStrc* pPath = pUnit->pDynamicPath;
@@ -2456,7 +2456,7 @@ void __fastcall MONSTER_HandleMonsterCommand(int nCommand, D2UnitStrc* pUnit, D2
     case 9:
     {
         D2COMMON_10212_PATH_SetMoveFlags(pUnit, 0);
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         if (!(pMonStats2Txt->nFlags[2] & gdwBitMasks[3]))
             PATH_SetUnitDeadCollision(pUnit, 0);
 
@@ -2641,7 +2641,7 @@ void __fastcall MONSTER_InitHireling(D2UnitStrc* pUnit, D2HirelingInfoStrc* pInf
     const int nAct = MONSTERS_GetActFromHirelingTxt(GAME_IsExpansion(), 0, pInfo->wNameId);
     const int nDifficulty = GAME_GetDifficulty();
     D2HirelingInitStrc hirelingInit;
-    if (!MONSTERS_HirelingInit(GAME_IsExpansion(), sub_00463DD0_GetPlayerUnit(), pInfo->nSeed, nAct, nDifficulty, &hirelingInit))
+    if (!MONSTERS_HirelingInit(GAME_IsExpansion(), CUNIT_GetPlayerUnit(), pInfo->nSeed, nAct, nDifficulty, &hirelingInit))
     {
         return;
     }
@@ -2953,7 +2953,7 @@ void __fastcall MONSTER_UpdateMonsterClient(D2UnitStrc* pUnit)
         && pUnit->dwAnimMode == 1 && !sub_00451F30_TestUnitFlag(pUnit, 0x200)
         && nClassId != 0x219 && nClassId != 0x21A && nClassId != 0x21B)
     {
-        D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
         if (pPlayer && (unsigned int)D2Common_10399(pUnit, pPlayer) < 7)
         {
             D2SeedStrc* pSeed = &pUnit->pSeed;

@@ -90,7 +90,7 @@ extern D2UiCelFileStrc gaPanelCels[7]; // 0x00724BF0
 // 0x004AA900
 int __cdecl sub_004AA900_IsStateOrValue()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (pPlayer && STATES_CheckState(pPlayer, STATE_UNINTERRUPTABLE))
     {
         return 1;
@@ -435,7 +435,7 @@ void __stdcall sub_004AB7E0_SkillTreeLButtonDown(SMSGHANDLER_PARAMS* pMsg)
     if (AUTOMAP_IsCursorOverMiniPanelButton(pMsg))
         return;
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
         return;
 
@@ -593,7 +593,7 @@ void __stdcall sub_004ABC30_SkillTreeLButtonUp(SMSGHANDLER_PARAMS* pMsg)
 {
     const int nMouseX = pMsg->nXpos;
     const int nMouseY = pMsg->nYpos;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
         return;
 
@@ -743,7 +743,7 @@ static void __stdcall sub_004ABF60_DrawSkillIcon(int nSkillId, D2SkillsTxt* pSki
     if (!(gdwBitMasks[10 & 7] & pSkillsTxt->nFlags[10 >> 3]))
         nMode = 1;
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     const int nBaseLevel = SKILLS_GetSkillLevel(pPlayer, SKILLS_GetSkillById(pPlayer, nSkillId, -1), 0);
     const int nBonus = SKILLS_GetBonusSkillLevelFromSkillId(pPlayer, nSkillId);
     if (!nBaseLevel && nBonus && nState != -1)
@@ -759,9 +759,9 @@ static void __stdcall sub_004ABF60_DrawSkillIcon(int nSkillId, D2SkillsTxt* pSki
     if (nMouseX > nX && nMouseX < nX + 0x30 && nMouseY > nY - 0x30 && nMouseY < nY)
     {
         if (nState != -1)
-            SKILLDESC_ShowSkillPopup(sub_00463DD0_GetPlayerUnit(), nSkillId, nSkillLevel, 0, nX, nY);
+            SKILLDESC_ShowSkillPopup(CUNIT_GetPlayerUnit(), nSkillId, nSkillLevel, 0, nX, nY);
         else
-            SKILLDESC_ShowSkillPopupB(sub_00463DD0_GetPlayerUnit(), nSkillId, nSkillLevel, 0, nX, nY);
+            SKILLDESC_ShowSkillPopupB(CUNIT_GetPlayerUnit(), nSkillId, nSkillLevel, 0, nX, nY);
     }
 
     if (nBaseLevel || nSkillLevel)
@@ -792,7 +792,7 @@ static void __stdcall sub_004ABF60_DrawSkillIcon(int nSkillId, D2SkillsTxt* pSki
         }
 
         int nColor = 0;
-        D2UnitStrc* const pPlayerUnit = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* const pPlayerUnit = CUNIT_GetPlayerUnit();
         const int nBonusLevel = SKILLS_GetBonusSkillLevelFromSkillId(pPlayerUnit, nSkillId);
         if (nBonusLevel > 0)
             nColor = 3;
@@ -806,7 +806,7 @@ static void __stdcall sub_004ABF60_DrawSkillIcon(int nSkillId, D2SkillsTxt* pSki
 // 0x004ABF10
 void __cdecl sub_004ABF10_ClearSkillStates()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (pPlayer)
     {
         for (int i = 0; i < SKILLS_GetPlayerSkillCount(GAME_GetUnitClassId(pPlayer)); ++i)
@@ -822,7 +822,7 @@ void __cdecl sub_004ABF10_ClearSkillStates()
 // 0x004AC200
 void __cdecl sub_004AC200_RefreshSkillTree()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
     {
         return;
@@ -844,7 +844,7 @@ void __cdecl sub_004AC200_RefreshSkillTree()
     wsprintfA(szText, "%i", STATLIST_GetUnitBaseStat(pPlayer, STAT_SKILLPTS, 0));
     sub_00526320_ToUnicode(wszText, szText, 9);
 
-    D2UnitStrc* pUnit = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pUnit = CUNIT_GetPlayerUnit();
     if ((pUnit && STATES_CheckState(pUnit, STATE_UNINTERRUPTABLE)) || gbSkillPointsHighlight)
     {
         D2Win_10117_DrawText(wszText, gnScreenWidth - gnPanelOffsetX - 0x34, gnScreenHeight + gnPanelOffsetY - 0x190, 1, 0);
@@ -940,7 +940,7 @@ void __cdecl sub_004AC200_RefreshSkillTree()
 // 0x004AC4D0
 void __cdecl sub_004AC4D0_DrawSkillTree()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
         return;
 
@@ -996,7 +996,7 @@ int gnGlobal_007C0C40; // 0x007C0C40
 // 0x004AC690
 void __cdecl sub_004AC690_DrawSkillPanel()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     D2Win_10127_SetFont(1);
     gbSkillPanelDrawn = 1;
     sub_004AAAE0_DrawPagedPanel(gaPanelCels[gnCharClass].pCelFile, gnSkillPage);

@@ -974,13 +974,13 @@ void __fastcall CUNIT_SetPlayerUnit(D2UnitStrc* pUnit)
 }
 
 // 0x00463DD0
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit()
+D2UnitStrc* __cdecl CUNIT_GetPlayerUnit()
 {
     return gpPlayerUnit;
 }
 
 // 0x00463DE0
-D2UnitStrc* __cdecl sub_00463DE0_GetPlayerUnit()
+D2UnitStrc* __cdecl CUNIT_GetPlayerUnit2()
 {
     return gpPlayerUnit;
 }
@@ -2955,7 +2955,7 @@ D2UnitStrc* __fastcall CUNIT_AddClientMonster(D2UnitSpawnStrc* pSpawn, void* pAr
     SEED_InitLowSeed(&pUnit->pSeed, pUnit->dwInitSeed);
     MONSTER_SetClientFlags(pUnit, 0);
     MONUNIQUE_ToggleMonTypeFlag(pUnit, (unsigned short)pSpawn->tExtra.nArg10, 1);
-    if (sub_004AC7E0_CheckMonTypeFlag(pUnit, 2))
+    if (MONUNIQUE_CheckMonTypeFlag(pUnit, 2))
     {
         sub_004AC7A0(pUnit, nArg5);
     }
@@ -2964,7 +2964,7 @@ D2UnitStrc* __fastcall CUNIT_AddClientMonster(D2UnitSpawnStrc* pSpawn, void* pAr
     MONSTERS_SetMonsterNameInMonsterData(pUnit, D2LANG_GetStringFromTblIndex(pMonStatsTxtRecord->wNameStr));
     if (pArg3)
     {
-        sub_004AC780_SetMonsterWord(pUnit, nArg4);
+        MONUNIQUE_SetNameSeed(pUnit, nArg4);
         unsigned char* pBytes = MONUNIQUE_GetMonUmods(pUnit);
         pBytes[0] = pArg3[0];
         pBytes[1] = pArg3[1];
@@ -3011,9 +3011,9 @@ D2UnitStrc* __fastcall CUNIT_AddClientMonster(D2UnitSpawnStrc* pSpawn, void* pAr
         }
     }
 
-    if (sub_004AC7E0_CheckMonTypeFlag(pUnit, 2))
+    if (MONUNIQUE_CheckMonTypeFlag(pUnit, 2))
     {
-        D2SuperUniquesTxt* pSuperUniquesTxtRecord = DATATBLS_GetSuperUniquesTxtRecord(sub_004AC7C0_GetSuperUniqueId(pUnit));
+        D2SuperUniquesTxt* pSuperUniquesTxtRecord = DATATBLS_GetSuperUniquesTxtRecord(MONUNIQUE_GetBossHcIdx(pUnit));
         if (pSuperUniquesTxtRecord->nModes[GAME_GetDifficulty()])
         {
             nMode = pSuperUniquesTxtRecord->nModes[GAME_GetDifficulty()];

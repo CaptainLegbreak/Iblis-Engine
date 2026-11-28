@@ -344,7 +344,7 @@ extern const char gszGfxFile[];                                                 
 extern int gnScreenWidth;                                                                               // 0x0071146C
 int __cdecl GAME_GetColorFlag();                                                                                 // 0x0044DC60
 int __cdecl sub_0045AE90_GetPanelSlideMode();                                                                         // 0x0045AE90
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit();                                                               // 0x00463DD0
+D2UnitStrc* __cdecl CUNIT_GetPlayerUnit();                                                               // 0x00463DD0
 int __fastcall CUNIT_TickDrawDelay(D2UnitStrc* pUnit);                                          // 0x00464C40
 D2UnitStrc* __cdecl SELECT_GetSelectedUnit();                                                             // 0x00467A10
 D2MissilesTxt* __fastcall sub_0046ACE0_GetMissilesTxtRecord(int nMissileId);                                    // 0x0046ACE0
@@ -956,7 +956,7 @@ int __fastcall GFX_FindCorpseCallback(D2UnitStrc* pUnit, D2UnitStrc* pTarget, D2
     }
 
     const int nDistance = DRLG_UnitEdgeDistance(pUnit, pTarget);
-    if (nDistance >= 3 && nDistance <= 25 && DRLG_UnitEdgeDistance(pTarget, sub_00463DD0_GetPlayerUnit()) > 7 && SEED_RollLimitedRandomNumber(&pUnit->pSeed, 2))
+    if (nDistance >= 3 && nDistance <= 25 && DRLG_UnitEdgeDistance(pTarget, CUNIT_GetPlayerUnit()) > 7 && SEED_RollLimitedRandomNumber(&pUnit->pSeed, 2))
     {
         *pDistance = nDistance;
         *ppTarget = pTarget;
@@ -1238,7 +1238,7 @@ static void GFX_AiType3(D2UnitStrc* pUnit)
         int* pState = MONSTER_GetAiValuePtr(pUnit);
         if (pState)
         {
-            D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+            D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
             const int nDistance = DRLG_UnitEdgeDistance(pUnit, pPlayer);
             if (*pState && nDistance > 25)
             {
@@ -1475,7 +1475,7 @@ static void sub_0046D310_AiType7(D2UnitStrc* pUnit)
 // 0x0046D450
 static void GFX_AiType8(D2UnitStrc* pUnit)
 {
-    if (!sub_00463DE0_GetPlayerUnit())
+    if (!CUNIT_GetPlayerUnit2())
     {
         AI_SetTimer_Inline(pUnit, 5);
         return;
@@ -1576,7 +1576,7 @@ void __fastcall GFX_RunClientAi(D2UnitStrc* pUnit)
     D2UnitStrc* pTarget = GFX_FindNearestTarget(pUnit, &nDistance);
     if (!pTarget)
     {
-        pTarget = sub_00463DD0_GetPlayerUnit();
+        pTarget = CUNIT_GetPlayerUnit();
         if (!pTarget)
         {
             AI_SetTimer_Inline(pUnit, 25);
@@ -2610,7 +2610,7 @@ void __fastcall GFX_AddUnitOverlay(D2UnitStrc* pUnit, int nOverlay, int nType, i
     if (!FOG_IsExpansion() && pTxt->wPreDraw >= 0x64)
         return;
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (pUnit)
     {
         if (UNIT_HasFlagEx(pUnit, 0x40000))
@@ -2995,7 +2995,7 @@ static int __stdcall GFX_DrawGfxUnit(unsigned int dwColor, int nArg, int bOverla
     }
     int bRestoreTown = 0;
     int nTown = D2GFX_CheckUnitPerspective();
-    if (nTown && bPerspective && pUnit == sub_00463DD0_GetPlayerUnit() && nUnitType == 0)
+    if (nTown && bPerspective && pUnit == CUNIT_GetPlayerUnit() && nUnitType == 0)
     {
         D2GFX_SetTownMode(0);
         bRestoreTown = 1;
@@ -3039,7 +3039,7 @@ static int __stdcall GFX_DrawGfxUnit(unsigned int dwColor, int nArg, int bOverla
     int bUseItemShift = 1;
     if (STATES_CheckStateMaskGreenOnUnit(pUnit))
     {
-        if (pUnit != sub_00463DD0_GetPlayerUnit())
+        if (pUnit != CUNIT_GetPlayerUnit())
         {
             bUseItemShift = 0;
         }
@@ -3225,7 +3225,7 @@ int __fastcall GFX_DrawUnitShadow(D2UnitStrc* pUnit)
 
     bTownMode = 0;
     nPrevMode = D2GFX_CheckUnitPerspective();
-    if (nPrevMode && D2GFX_CheckPerspective() && pUnit == sub_00463DD0_GetPlayerUnit() && !GFX_GetConvertedUnitType(pUnit))
+    if (nPrevMode && D2GFX_CheckPerspective() && pUnit == CUNIT_GetPlayerUnit() && !GFX_GetConvertedUnitType(pUnit))
     {
         D2GFX_SetTownMode(0);
         bTownMode = 1;
@@ -3568,7 +3568,7 @@ int __fastcall GFX_DrawUnit(D2UnitStrc* pUnit, unsigned int dwColor, int nX, int
 
     const int nPaletteShift = pUnit->nPaletteIndex;
     unsigned char* pPalShift = 0;
-    if (nPaletteShift && pUnit != sub_00463DD0_GetPlayerUnit())
+    if (nPaletteShift && pUnit != CUNIT_GetPlayerUnit())
     {
         pPalShift = D2Win_10175_GetPL2Shift(nPaletteShift - 1);
     }

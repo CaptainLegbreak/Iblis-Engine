@@ -422,6 +422,12 @@ int __stdcall sub_00648390_AlwaysZero(int nUnused1, int nUnused2)
     return 0;
 }
 
+// 0x004C51D0
+int __cdecl sub_004C51D0_GetStatesTxtRecordCount()
+{
+    return sgptDataTables->nStatesTxtRecordCount;
+}
+
 // 0x004C5390
 void __fastcall SKILLS_ScaleUpDirection(int* pX, int* pY)
 {
@@ -447,6 +453,20 @@ inline D2SkillsTxt* SKILLS_GetSkillsTxtRecord(int nSkillId)
         return &sgptDataTables->pSkillsTxt[nSkillId];
     }
     return 0;
+}
+
+// 0x004C53D0
+void __fastcall sub_004C53D0_ScaleDownDirection(int* pX, int* pY)
+{
+    int nY = *pY;
+    int nX = -*pX;
+    while (nX * nX + nY * nY > 3)
+    {
+        nY /= 2;
+        nX /= 2;
+    }
+    *pX = nY;
+    *pY = nX;
 }
 
 // 0x004C54F0
@@ -1332,7 +1352,7 @@ static int __stdcall SKILLS_StartClientSkill(int nOwnerGUID, int nSkillLevel, D2
         {
             SKILLS_AddSkill(pUnit, nSkillId);
             pSkill = SKILLS_GetSkillById(pUnit, nSkillId, nOwnerGUID);
-            if (pSkill && pUnit == sub_00463DD0_GetPlayerUnit() && nOwnerGUID == -1)
+            if (pSkill && pUnit == CUNIT_GetPlayerUnit() && nOwnerGUID == -1)
             {
                 SKILLS_SetFlags(pSkill, 8);
             }
@@ -1368,7 +1388,7 @@ static int __stdcall SKILLS_StartClientSkill(int nOwnerGUID, int nSkillLevel, D2
         }
     }
 
-    if (pUnit != sub_00463DD0_GetPlayerUnit())
+    if (pUnit != CUNIT_GetPlayerUnit())
     {
         const int nMaxLevel = SPELLSEL_GetSkillMaxLevel(nSkillId);
         if (nSkillLevel > nMaxLevel)
@@ -1397,7 +1417,7 @@ static int __stdcall SKILLS_StartClientSkill(int nOwnerGUID, int nSkillLevel, D2
         UNITS_SetUsedSkill(pUnit, NULL);
         int aArgs[7] = {};
         sub_00480C10_UnitEvent(7, pUnit, aArgs, 0);
-        if (pUnit == sub_00463DD0_GetPlayerUnit())
+        if (pUnit == CUNIT_GetPlayerUnit())
         {
             UNITSND_PlayPlayerSpeech(pUnit, 0x18);
         }
@@ -1680,7 +1700,7 @@ int __fastcall SKILLS_DoClientSkill(D2UnitStrc* unit,int skillId,int skillLevel,
   if(target)GFX_AddUnitOverlay(target,skill->wTgtOverlay,2,0,0,0,0,0);
  }
  int delay=SKILLS_EvaluateSkillFormula(unit,skill->dwDelay,skillId,skillLevel);
- if(delay>0 && sub_00463DD0_GetPlayerUnit()==unit){
+ if(delay>0 && CUNIT_GetPlayerUnit()==unit){
   if(delay>12)delay=12;
   if(skill->nAnim!=18 || !(unit->dwSeqFrame & 0xffffff00))
    GAME_SetSkillDelayUntil(sub_0044DA90_GetTickCounter()+delay);

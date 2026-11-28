@@ -65,7 +65,7 @@ int __cdecl sub_0045AE90_GetPanelSlideMode(); // 0x0045AE90
 
 D2UnitStrc* __fastcall CUNIT_FindClientUnit(unsigned int nUnitId, int nUnitType); // 0x00463990
 
-D2UnitStrc* __cdecl sub_00463DD0_GetPlayerUnit(); // 0x00463DD0
+D2UnitStrc* __cdecl CUNIT_GetPlayerUnit(); // 0x00463DD0
 
 int __cdecl CUNIT_IsPlayerDeadOrMissing(); // 0x00463DF0
 
@@ -603,7 +603,7 @@ int __cdecl INV_ResetNpcButtons()
     gaNpcButtons[2].bActive = 0;
     gaNpcButtons[3].bActive = 0;
     gnInvPanelMode = 1;
-    D2InventoryStrc* pInventory = sub_00463DD0_GetPlayerUnit()->pInventory;
+    D2InventoryStrc* pInventory = CUNIT_GetPlayerUnit()->pInventory;
     CURSOR_SetCursorItemState(INVENTORY_GetCursorItem(pInventory));
     return 1;
 }
@@ -612,7 +612,7 @@ int __cdecl INV_CanUseCursor()
 {
     if (gnInvPanelMode == 1 || gnInvPanelMode == 2 || gnInvPanelMode == 4 || gnInvPanelMode == 3)
     {
-        D2InventoryStrc* pInventory = sub_00463DD0_GetPlayerUnit()->pInventory;
+        D2InventoryStrc* pInventory = CUNIT_GetPlayerUnit()->pInventory;
         if (INVENTORY_GetCursorItem(pInventory))
         {
             return 0;

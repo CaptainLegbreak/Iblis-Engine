@@ -401,7 +401,7 @@ static int ORB_AbsValue(int nValue)
 // 0x00496CF0
 void __cdecl PANEL_ValidateActiveSkills()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (!pPlayer)
     {
         return;
@@ -428,7 +428,7 @@ void __cdecl PANEL_ValidateActiveSkills()
 static int PANEL_GetSmoothedOrbValue(int nStatId)
 {
     int bCheckDrop = 1;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     int nValue = STATLIST_UnitGetStatValue(pPlayer, nStatId, 0);
     int nIndex;
     int nMax = 0;
@@ -517,7 +517,7 @@ static int PANEL_GetSmoothedOrbValue(int nStatId)
 // 0x00496F80
 void __cdecl PANEL_DrawLifeOrb()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     const int nLife = PANEL_GetSmoothedOrbValue(6);
     const int nMaxLife = STATLIST_GetMaxLifeFromUnit(pPlayer);
     if (!nMaxLife)
@@ -526,7 +526,7 @@ void __cdecl PANEL_DrawLifeOrb()
     int nHeight = 80 * nLife / nMaxLife;
     if (nHeight >= 1 && nHeight <= 2)
     {
-        D2UnitStrc* pUnit = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pUnit = CUNIT_GetPlayerUnit();
         if (pUnit && pUnit->dwUnitType == UNIT_PLAYER && pUnit->dwAnimMode != 0x11)
             nHeight = 2;
     }
@@ -536,9 +536,9 @@ void __cdecl PANEL_DrawLifeOrb()
     tContext.nDirection = 0;
     tContext.pCelFile = gpHlthManaCel;
     tContext.nFrame = 0;
-    if (STATES_CheckState(sub_00463DD0_GetPlayerUnit(), STATE_HEALTHPOT))
+    if (STATES_CheckState(CUNIT_GetPlayerUnit(), STATE_HEALTHPOT))
     {
-        int nPoison = 80 * STATLIST_UnitGetStatValue(sub_00463DD0_GetPlayerUnit(), STAT_HPREGEN, 0) / 100;
+        int nPoison = 80 * STATLIST_UnitGetStatValue(CUNIT_GetPlayerUnit(), STAT_HPREGEN, 0) / 100;
         if (nPoison > 80)
             nPoison = 80;
         if (nPoison > nHeight)
@@ -550,7 +550,7 @@ void __cdecl PANEL_DrawLifeOrb()
         }
     }
 
-    tContext.nFrame = STATES_CheckState(sub_00463DD0_GetPlayerUnit(), STATE_POISON) ? 2 : 0;
+    tContext.nFrame = STATES_CheckState(CUNIT_GetPlayerUnit(), STATE_POISON) ? 2 : 0;
     if (nHeight)
     {
         switch (D2GFX_GetDisplayType())
@@ -573,7 +573,7 @@ void __cdecl PANEL_DrawLifeOrb()
 // 0x00497110
 void __cdecl PANEL_DrawManaOrb()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     int nMana = PANEL_GetSmoothedOrbValue(8);
     const int nMaxMana = STATLIST_GetMaxManaFromUnit(pPlayer);
     if (!nMaxMana)
@@ -588,9 +588,9 @@ void __cdecl PANEL_DrawManaOrb()
     tContext.nDirection = 0;
     tContext.pCelFile = gpHlthManaCel;
     tContext.nFrame = 1;
-    if (STATES_CheckState(sub_00463DD0_GetPlayerUnit(), STATE_MANAPOT))
+    if (STATES_CheckState(CUNIT_GetPlayerUnit(), STATE_MANAPOT))
     {
-        int nShield = 80 * STATLIST_UnitGetStatValue(sub_00463DD0_GetPlayerUnit(), STAT_MANARECOVERY, 0) / 100;
+        int nShield = 80 * STATLIST_UnitGetStatValue(CUNIT_GetPlayerUnit(), STAT_MANARECOVERY, 0) / 100;
         if (nShield > 80)
             nShield = 80;
         if (nShield > nHeight)
@@ -747,7 +747,7 @@ void __cdecl VIEW_DrawRunButton()
 // 0x004975B0
 void __cdecl PANEL_DrawStaminaBar()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     const int nStamina = PANEL_GetSmoothedOrbValue(10);
     int nMaxStamina = STATLIST_GetMaxStaminaFromUnit(pPlayer);
     if (!gnTextColorRed)
@@ -1196,7 +1196,7 @@ void __cdecl PANEL_DrawQuantityWarningIcons()
 // 0x00497FE0
 void __cdecl PANEL_DrawDurabilityIcons()
 {
-    D2InventoryStrc* pInventory = sub_00463DD0_GetPlayerUnit()->pInventory;
+    D2InventoryStrc* pInventory = CUNIT_GetPlayerUnit()->pInventory;
     for (int j = 0; j < 7; ++j)
     {
         const int nLoc = gaDurabilityBodyLocs[j];
@@ -1244,7 +1244,7 @@ found:
 // 0x00498120
 void __cdecl PANEL_DrawLifeManaText()
 {
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     const int nMouseX = sub_00468730();
     const int nMouseY = sub_00468740();
     Unicode wszLife[100];
@@ -1257,7 +1257,7 @@ void __cdecl PANEL_DrawLifeManaText()
     {
         int nLife = PANEL_GetSmoothedOrbValue(6) >> 8;
         const int nMaxLife = STATLIST_GetMaxLifeFromUnit(pPlayer) >> 8;
-        D2UnitStrc* pUnit = sub_00463DD0_GetPlayerUnit();
+        D2UnitStrc* pUnit = CUNIT_GetPlayerUnit();
         if (pUnit && pUnit->dwUnitType == UNIT_PLAYER && pUnit->dwAnimMode != 0x11 && nLife >= 0 && nLife <= 1)
             nLife = 1;
 
@@ -1655,7 +1655,7 @@ static void PANEL_BeltHotkey(int nSlot)
         return;
     }
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     PANEL_UseBeltSlot(nSlot, pPlayer, pPlayer->pInventory, GetKeyState(0x10) & 0x8000);
 }
 
@@ -1714,7 +1714,7 @@ void __cdecl PANEL_DrawExperienceBar()
     unsigned short awText[100];
     Unicode* wszText = (Unicode*)awText;
 
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     const int nClass = !pPlayer ? -1 : pPlayer->dwClassId;
     const unsigned int nLevel = STATLIST_UnitGetStatValue(pPlayer, STAT_LEVEL, 0);
     const unsigned int nExperience = STATLIST_UnitGetStatValue(pPlayer, STAT_EXPERIENCE, 0);
@@ -1785,7 +1785,7 @@ void __cdecl VIEW_InitBeltColors()
 void __cdecl PANEL_DrawBelt()
 {
     D2Win_10127_SetFont(1);
-    D2InventoryStrc* pInventory = sub_00463DD0_GetPlayerUnit()->pInventory;
+    D2InventoryStrc* pInventory = CUNIT_GetPlayerUnit()->pInventory;
     D2UnitStrc* pBelt = INVENTORY_GetItemFromBodyLoc(pInventory, 8);
     if (pBelt)
     {
@@ -1991,7 +1991,7 @@ void __stdcall PANEL_BeltMouseReleaseMsg(SMSGHANDLER_PARAMS* pMsg)
         pMsg->bReturn=0;
         return;
     }
-    D2UnitStrc* pPlayer=sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer=CUNIT_GetPlayerUnit();
     const int x=pMsg->nXpos;
     const int y=pMsg->nYpos;
     gbRightSkillButtonDown=0;
@@ -2080,7 +2080,7 @@ void __stdcall PANEL_BeltMouseMove(SMSGHANDLER_PARAMS* pMsg)
 
     const int nX = pMsg->nXpos;
     const int nY = pMsg->nYpos;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (GAME_IsLeftClickRepeating())
     {
         return;
@@ -2142,7 +2142,7 @@ void __stdcall PANEL_BeltClickMsg(SMSGHANDLER_PARAMS* pMsg)
 
     const int nX = pMsg->nXpos;
     const int nY = pMsg->nYpos;
-    D2UnitStrc* pPlayer = sub_00463DD0_GetPlayerUnit();
+    D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (AUTOMAP_IsCursorOverMiniPanelButton(pMsg))
     {
         pMsg->bReturn = 1;

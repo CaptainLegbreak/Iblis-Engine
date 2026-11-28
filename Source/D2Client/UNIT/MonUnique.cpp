@@ -167,21 +167,21 @@ unsigned short __fastcall MONUNIQUE_GetMonsterDataWord14(D2UnitStrc* pUnit)
 }
 
 // 0x004AC780
-void __fastcall sub_004AC780_SetMonsterWord(D2UnitStrc* pUnit, unsigned short nValue)
+void __fastcall MONUNIQUE_SetNameSeed(D2UnitStrc* pUnit, unsigned short nValue)
 {
     if (pUnit && pUnit->dwUnitType == UNIT_MONSTER && pUnit->pMonsterData)
         pUnit->pMonsterData->wNameSeed = nValue;
 }
 
 // 0x004AC7A0
-void __fastcall sub_004AC7A0_SetSuperUniqueId(D2UnitStrc* pUnit, unsigned short wSuperUniqueId)
+void __fastcall MONUNIQUE_SetBossHcIdx(D2UnitStrc* pUnit, unsigned short wSuperUniqueId)
 {
     if (pUnit && pUnit->dwUnitType == UNIT_MONSTER && pUnit->pMonsterData)
         pUnit->pMonsterData->wBossHcIdx = wSuperUniqueId;
 }
 
 // 0x004AC7C0
-short __fastcall sub_004AC7C0_GetSuperUniqueId(D2UnitStrc* pUnit)
+short __fastcall MONUNIQUE_GetBossHcIdx(D2UnitStrc* pUnit)
 {
     D2MonsterDataStrc* pMonsterData = MONUNIQUE_MonsterDataOf(pUnit);
     if (!pMonsterData)
@@ -190,7 +190,7 @@ short __fastcall sub_004AC7C0_GetSuperUniqueId(D2UnitStrc* pUnit)
 }
 
 // 0x004AC7E0
-int __fastcall sub_004AC7E0_CheckMonTypeFlag(D2UnitStrc* pUnit, unsigned short nFlag)
+int __fastcall MONUNIQUE_CheckMonTypeFlag(D2UnitStrc* pUnit, unsigned short nFlag)
 {
     D2MonsterDataStrc* pMonsterData = MONUNIQUE_MonsterDataOf(pUnit);
     if (!pMonsterData)
@@ -257,7 +257,7 @@ void __fastcall MONUNIQUE_SetMonsterHoverName(D2UnitStrc* pUnit, int nMode, int 
     D2MonsterDataStrc* pMonsterData = (pUnit && sub_0044BE50(pUnit) == 1) ? pUnit->pMonsterData : NULL;
     if (pMonsterData && (pMonsterData->nTypeFlag & 2))
     {
-        D2SuperUniquesTxt* pSuperUniquesTxtRecord = DATATBLS_GetSuperUniquesTxtRecord(sub_004AC7C0_GetSuperUniqueId(pUnit));
+        D2SuperUniquesTxt* pSuperUniquesTxtRecord = DATATBLS_GetSuperUniquesTxtRecord(MONUNIQUE_GetBossHcIdx(pUnit));
         if (!pSuperUniquesTxtRecord)
         {
             return;

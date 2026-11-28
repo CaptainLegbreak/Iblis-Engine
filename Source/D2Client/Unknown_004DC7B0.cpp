@@ -29,18 +29,18 @@ static int sub_004DC710_UpdateUnitSightFlag(D2UnitStrc* pUnit)
         switch (pUnit->dwUnitType)
         {
         case UNIT_PLAYER:
-            pPlayer = sub_00463DE0_GetPlayerUnit();
+            pPlayer = CUNIT_GetPlayerUnit2();
             if (pPlayer == pUnit || !pUnit->dwAnimMode || pUnit->dwAnimMode == 0x11)
                 goto set_flag;
             break;
         case UNIT_MONSTER:
             if (!pUnit->dwAnimMode || pUnit->dwAnimMode == 0xC)
                 goto set_flag;
-            pPlayer = sub_00463DE0_GetPlayerUnit();
+            pPlayer = CUNIT_GetPlayerUnit2();
             break;
         case UNIT_MISSILE:
         case UNIT_ITEM:
-            pPlayer = sub_00463DE0_GetPlayerUnit();
+            pPlayer = CUNIT_GetPlayerUnit2();
             break;
         default:
             goto set_flag;
