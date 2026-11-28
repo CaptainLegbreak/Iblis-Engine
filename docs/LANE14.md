@@ -62,7 +62,6 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Claimed
 
-- 5: link report (docs/PORT_LINK.md), started 2026-11-27 17:00 PT.
 
 ## Findings
 
@@ -107,6 +106,14 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
   entries after the file merges, worth a fix in Codex.
 
 ## Status
+
+- 2026-11-27 17:35 PT: queue items 1-5 all in PRs, merge in order #2, #3, #4, #5, #6 (#1 superseded by #2).
+  #6 = item 5, docs/PORT_LINK.md: the modern link fails with 4,274 unresolved symbols (the linker's count) and
+  407 duplicates, 7,444 references once per symbol and file; by linkdebt category: type 2,593, placeholder
+  1,799, unsourced data 1,282, local copies 709, ident 346, duplicate data 315, no address 235, renamed 117,
+  interior 46, CRT 2, import 0. tools/link_report.py remeasures after each sync. Parked: the 16 data bytes
+  (Game.exe), the PKWARE run on the user's MPQs, and the Bink/Smacker/IJL export names (Game.exe or the DLLs).
+  Nothing claimed; waiting for the coordinator's next items or a sync.
 
 - 2026-11-27 17:00 PT: on the new queue. PR #2 replaces #1 (same tree, made by tools/codex_sync.py, which now
   drops the `// build:` markers itself: item 4; #1 can be closed unmerged). PR #3 pklib (item 2; the MPQ run is
