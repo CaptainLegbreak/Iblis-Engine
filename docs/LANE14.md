@@ -93,6 +93,13 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Findings
 
+- 2026-11-27 21:20 PT, for **Codex lane 11** (from the replay harness, PR #16): Storm's `GetCallerId`
+  (Storm/SOURCE/SMEM.CPP) writes four globals no source defines: `gdwCallerId` 0x007768A8, `gdwCallerWord`
+  0x007768AC, `gnCallerLine` 0x007768B0, `gszCallerFile` 0x007768B4 (BSS, unsourced in Codex's own link debt).
+  Every Storm allocation goes through it, so the engine's Storm stops on the first allocation that misses the
+  cache. They need definitions in SMEM.CPP. Same file: `gbCallerFirst` is declared as `gbCallerFirst` and
+  defined as `gbCallerFirst_00708340` (placeholder, aliased for now).
+
 - 2026-11-27 20:55 PT, item 6c after the sync to Codex 89e75a2 (#496, PR #15): with aliases regenerated, 3 symbols
   left the unresolved list and 0 joined it.
 
@@ -289,6 +296,11 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
   entries after the file merges, worth a fix in Codex.
 
 ## Status
+
+- 2026-11-27 21:20 PT: 6d, PR #16: replay case sfile. Stock 1.14d's Storm reads the user's d2data.mpq in the
+  oracle (listfile + 470 files). The engine's Storm (with the aliases and the open explode) reads the listfile
+  and the first six files identically, then stops on Storm's unsourced caller globals (Findings, lane 11).
+  rng/bitbuf/startup still identical. Open: #15 (sync to #496), #16.
 
 - 2026-11-27 20:55 PT: board check. #14 (item 6) merged. Codex main moved to 89e75a2 (#496): 6b in PR #15, the
   first sync with aliases: regenerated from a link without them (2,817; 15 dropped out as Codex fixed them, 1 new,
