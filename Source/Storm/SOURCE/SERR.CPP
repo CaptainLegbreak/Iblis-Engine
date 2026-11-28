@@ -55,7 +55,7 @@ void __cdecl UnlockErrorState(); // 0x0041C1E0
 void __stdcall AddMessageSource(unsigned short wFacility); // 0x0041C0F0
 void __cdecl AddDefaultMessageSources(); // 0x0041C140
 void __cdecl BreakIntoDebugger(); // 0x0041C160
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode);
+void __stdcall SErrSetLastError(unsigned int dwErrCode); // 0x0041C340
 void __stdcall SErrSuppressErrors(int bSuppress); // 0x0041C360
 int __stdcall SErrGetErrorStr(unsigned long error, char* buffer, unsigned long size);
 int __stdcall SErrDisplayError(unsigned int nErrorCode, const char* szFile, int nLine, const char* szDescription, int bRecoverable, unsigned int nExitCode);
@@ -280,7 +280,7 @@ int __stdcall SErrRegisterMessageSource(unsigned short wFacility, void* hModule,
 }
 
 // 0x0041C340
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode)
+void __stdcall SErrSetLastError(unsigned int dwErrCode)
 {
     gdwStormLastError_007790F4 = dwErrCode;
     SetLastError(dwErrCode);

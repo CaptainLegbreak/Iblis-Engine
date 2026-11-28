@@ -1665,7 +1665,7 @@ void __cdecl CMDTBL_Hotkey15()
 }
 
 // 0x00468F00
-void __cdecl sub_00468F00_ShowBelt()
+void __cdecl CMDTBL_ShowBelt()
 {
     D2UnitStrc* pPlayer = CUNIT_GetPlayerUnit();
     if (pPlayer)
@@ -1905,7 +1905,7 @@ void __cdecl CMDTBL_HotkeyUiVarOn()
 }
 
 // 0x00469230
-void __cdecl sub_00469230_RunMButtonDown()
+void __cdecl CMDTBL_RunMButtonDown()
 {
     if (gpfnMButtonDownCommand)
     {
@@ -1915,7 +1915,7 @@ void __cdecl sub_00469230_RunMButtonDown()
 }
 
 // 0x00469270
-void __cdecl sub_00469270_RunMButtonUp()
+void __cdecl CMDTBL_RunMButtonUp()
 {
     if (gpfnMButtonUpCommand)
     {
@@ -1925,7 +1925,7 @@ void __cdecl sub_00469270_RunMButtonUp()
 }
 
 // 0x004692B0
-void __cdecl sub_004692B0_RunXButton1Down()
+void __cdecl CMDTBL_RunXButton1Down()
 {
     if (gpfnXButton1DownCommand)
     {
@@ -1935,7 +1935,7 @@ void __cdecl sub_004692B0_RunXButton1Down()
 }
 
 // 0x004692F0
-void __cdecl sub_004692F0_RunXButton1Up()
+void __cdecl CMDTBL_RunXButton1Up()
 {
     if (gpfnXButton1UpCommand)
     {
@@ -1945,7 +1945,7 @@ void __cdecl sub_004692F0_RunXButton1Up()
 }
 
 // 0x00469330
-void __cdecl sub_00469330_RunXButton2Down()
+void __cdecl CMDTBL_RunXButton2Down()
 {
     if (gpfnXButton2DownCommand)
     {
@@ -2427,7 +2427,7 @@ void __stdcall SCMD_HandleHotkeyMessage(SMSGHANDLER_PARAMS* pMsg)
             gaHotkeyCommands[gtHotkeys_007A6F90[i].nCommand].pfnCommand();
             pMsg->bReturn = 1;
             pMsg->lResult = 0;
-            sub_00420290_BreakHandlerChain(pMsg);
+            SMsgBreakHandlerChain(pMsg);
             return;
         }
     }
@@ -3003,7 +3003,7 @@ void __stdcall CMDTBL_DispatchHotkey(SMSGHANDLER_PARAMS* pMsg)
             gaHotkeyCommands[gaHotkeys[i].nAction].pfnUnk0x04();
             pMsg->bReturn = 1;
             pMsg->lResult = 0;
-            sub_00420290_BreakHandlerChain(pMsg);
+            SMsgBreakHandlerChain(pMsg);
             return;
         }
     }
@@ -3165,7 +3165,7 @@ extern D2HotkeyCommandStrc gaHotkeyCommands[57] = {
     { (void (__cdecl *)())&CMDTBL_Hotkey5 },
     { (void (__cdecl *)())&CMDTBL_Hotkey6 },
     { (void (__cdecl *)())&CMDTBL_Hotkey7 },
-    { (void (__cdecl *)())&sub_00468F00_ShowBelt, 0, 1 },
+    { (void (__cdecl *)())&CMDTBL_ShowBelt, 0, 1 },
     { (void (__cdecl *)())&CMDTBL_BeltHotkey0 },
     { (void (__cdecl *)())&CMDTBL_BeltHotkey1 },
     { (void (__cdecl *)())&CMDTBL_BeltHotkey2 },

@@ -164,10 +164,7 @@ typedef int (__stdcall* D2LaunchCallback)(int nArg);
 
 typedef void (__cdecl* D2LaunchDoneFn)();
 
-struct D2LaunchThreadRecordStrc
-{
-    int nData[0x52];
-};
+#include "D2LaunchThreadRecord.h"
 
 #include "D2Win32Types.h"
 

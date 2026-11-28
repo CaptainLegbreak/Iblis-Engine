@@ -241,7 +241,7 @@ void* D2Strc00420E80::sub_00420E80_GetField158()
 }
 
 // 0x00420E90
-static inline unsigned int sub_00420E90_TakeLow32(unsigned __int64* pValue)
+static inline unsigned int ExtractLowPart(unsigned __int64* pValue)
 {
     const unsigned int nLow = (unsigned int)*pValue;
     *pValue >>= 32;
@@ -249,7 +249,7 @@ static inline unsigned int sub_00420E90_TakeLow32(unsigned __int64* pValue)
 }
 
 // 0x00420F00
-static inline unsigned int sub_00420F00_TakeLow32Ext(unsigned __int64* pValue)
+static inline unsigned int ExtractLowPartSx(unsigned __int64* pValue)
 {
     const unsigned int nLow = (unsigned int)*pValue;
     *pValue >>= 32;
@@ -262,11 +262,11 @@ static inline unsigned int sub_00420F00_TakeLow32Ext(unsigned __int64* pValue)
 
 unsigned int __fastcall sub_M119_Emit_00420E90(unsigned __int64* pValue, int nOther)
 {
-    return sub_00420E90_TakeLow32(pValue) + sub_00420F00_TakeLow32Ext((unsigned __int64*)nOther);
+    return ExtractLowPart(pValue) + ExtractLowPartSx((unsigned __int64*)nOther);
 }
 
 // 0x00420EB0
-static unsigned int __stdcall sub_00420EB0_Accumulate64(unsigned __int64 nValue, unsigned __int64* pAccumulator)
+static unsigned int __stdcall ExtractLowPartLargeSum(unsigned __int64 nValue, unsigned __int64* pAccumulator)
 {
     *pAccumulator += nValue;
     const unsigned __int64 nCarry = *pAccumulator < nValue ? 1ui64 : 0ui64;
@@ -276,7 +276,7 @@ static unsigned int __stdcall sub_00420EB0_Accumulate64(unsigned __int64 nValue,
     return nLow;
 }
 
-void __stdcall sub_00424B00_BigSquare(BigBuffer* pResult, BigBuffer* pA, BigStack* pStack)
+void __stdcall Square(BigBuffer* pResult, BigBuffer* pA, BigStack* pStack)
 {
     BigBuffer* pWork;
     if (pResult == pA)
@@ -299,7 +299,7 @@ void __stdcall sub_00424B00_BigSquare(BigBuffer* pResult, BigBuffer* pA, BigStac
             if (j < i)
                 nCarry += nProduct;
             unsigned int& rDigit = pWork->AtInline(k);
-            rDigit = sub_00420EB0_Accumulate64(nSum, &nCarry);
+            rDigit = ExtractLowPartLargeSum(nSum, &nCarry);
         }
         pWork->AtInline(j + i) = (unsigned int)nCarry;
     }
@@ -314,29 +314,29 @@ void __stdcall sub_00424B00_BigSquare(BigBuffer* pResult, BigBuffer* pA, BigStac
 }
 
 // 0x00420F30
-static void __stdcall sub_00420F30_BigMulAddDigit(unsigned __int64* pAcc, unsigned int nDigit)
+static void __stdcall BigMulAddDigit(unsigned __int64* pAcc, unsigned int nDigit)
 {
     *pAcc = *pAcc * 0x100000000ui64 + nDigit;
 }
 
 void __stdcall sub_K01_Emit_00420F30(unsigned __int64* pAcc, unsigned int nDigit)
 {
-    sub_00420F30_BigMulAddDigit(pAcc, nDigit);
+    BigMulAddDigit(pAcc, nDigit);
 }
 
 // 0x00420F60
-static unsigned __int64 __stdcall sub_00420F60_BigJoinDigits(unsigned int nHigh, unsigned int nLow)
+static unsigned __int64 __stdcall MakeLarge(unsigned int nHigh, unsigned int nLow)
 {
     return (unsigned __int64)nHigh * 0x100000000ui64 + nLow;
 }
 
 unsigned __int64 __stdcall sub_K01_Emit_00420F60(unsigned int nHigh, unsigned int nLow)
 {
-    return sub_00420F60_BigJoinDigits(nHigh, nLow);
+    return MakeLarge(nHigh, nLow);
 }
 
 // 0x00420FE0
-extern "C" LimbCell* __fastcall sub_00420FE0_LastCell(SequenceView* sequence)
+extern "C" LimbCell* __fastcall LastCell(SequenceView* sequence)
 {
     unsigned int count = sequence->count;
     if (count)

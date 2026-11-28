@@ -187,7 +187,7 @@ extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject); // 0x
 
 extern "C" char* __cdecl strstr(const char* szString, const char* szSubString); // 0x00686900
 
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
+void __stdcall SErrSetLastError(unsigned int dwErrCode); // 0x0041C340
 
 int __stdcall SErrDisplayError(unsigned int nErrorCode, const char* szFile, int nLine, const char* szDescription, int bRecoverable, unsigned int nExitCode); // 0x0041CAF0
 
@@ -726,7 +726,7 @@ static int __stdcall ReadFileChecked(unsigned int nOffset, unsigned int* pnFileP
         {
             if (*pnRead == nSize)
                 return 1;
-            sub_0041C340_SetLastError(0x26);
+            SErrSetLastError(0x26);
             return 0;
         }
         const unsigned long dwError = GetLastError();
@@ -1147,7 +1147,7 @@ int __fastcall s_OpenArchive(ARCHIVEREC* pArchive, unsigned int nFlags, int bKee
             {
                 pArchive->~ARCHIVEREC();
                 SMemFree(pArchive, "delete", -1, 0);
-                sub_0041C340_SetLastError(0x8510006C);
+                SErrSetLastError(0x8510006C);
                 SMemFree(pBuffer, ".\\SOURCE\\SFILE.CPP", 0x10DF, 0);
                 return 0;
             }
@@ -1193,7 +1193,7 @@ int __fastcall s_OpenArchive(ARCHIVEREC* pArchive, unsigned int nFlags, int bKee
     else if ((nFlags & 1) && !bKeepOnFail)
     {
         SFileCloseArchive(pArchive);
-        sub_0041C340_SetLastError(0x0F);
+        SErrSetLastError(0x0F);
         return 0;
     }
     *phArchive = pArchive;
@@ -1436,7 +1436,7 @@ int __stdcall SFileDdaGetVolume(void* hFile, int* pnVolume, int* pnPan)
     }
     if (!pNode)
     {
-        sub_0041C340_SetLastError(0x85100072);
+        SErrSetLastError(0x85100072);
         LeaveCriticalSection(&gBasePathLock_00779068);
         return 0;
     }
@@ -1471,7 +1471,7 @@ int __stdcall SFileDdaSetVolume(void* hFile, int nVolume, int nPan)
     if (!pNode)
     {
         LeaveCriticalSection(&gBasePathLock_00779068);
-        sub_0041C340_SetLastError(0x85100072);
+        SErrSetLastError(0x85100072);
         return 0;
     }
     if (nVolume != 0x7FFFFFFF && nVolume != pNode->nVolume)
@@ -1495,7 +1495,7 @@ int __stdcall SFileGetArchiveName(void* hArchive, char* szBuffer, unsigned int n
         *szBuffer = 0;
     if (!szBuffer)
     {
-        sub_0041C340_SetLastError(0x57);
+        SErrSetLastError(0x57);
         return 0;
     }
     EnterCriticalSection(&gBasePathLock_00779068);
@@ -1515,7 +1515,7 @@ int __stdcall SFileGetFileArchive(void* hFile, int* pValue)
 {
     if (pValue) *pValue = 0;
     if (!pValue) {
-        sub_0041C340_SetLastError(0x57);
+        SErrSetLastError(0x57);
         return 0;
     }
     EnterCriticalSection(&gBasePathLock_00779068);
@@ -1536,7 +1536,7 @@ int __stdcall CopyFileRecName(void* hFile, char* szBuffer, unsigned int nSize)
         *szBuffer = 0;
     if (!szBuffer)
     {
-        sub_0041C340_SetLastError(0x57);
+        SErrSetLastError(0x57);
         return 0;
     }
     EnterCriticalSection(&gBasePathLock_00779068);
@@ -1556,7 +1556,7 @@ int __stdcall SFileGetFileName(void* hFile, char* dest, unsigned int size)
 {
  if (dest)
   *dest = 0;
- if (!dest) { sub_0041C340_SetLastError(0x57); return 0; }
+ if (!dest) { SErrSetLastError(0x57); return 0; }
  EnterCriticalSection(&gBasePathLock_00779068);
  FILEREC* rec;
  if (!GetFileRec(hFile, &rec)) {
@@ -1610,7 +1610,7 @@ int __stdcall SFileSetBasePath(const char* szPath)
         const int bBackslash = szPath[SStrLen(szPath) - 1] == '\\';
         if (SStrLen(szPath) + !bBackslash + 1 > 0x104)
         {
-            sub_0041C340_SetLastError(0xA1);
+            SErrSetLastError(0xA1);
             return 0;
         }
 
@@ -1649,7 +1649,7 @@ unsigned long __stdcall SFileSetFilePointer(void* hFile, long nDistance, long* p
 {
     if (pnDistanceHigh && *pnDistanceHigh)
     {
-        sub_0041C340_SetLastError(0x57);
+        SErrSetLastError(0x57);
         return (unsigned long)-1;
     }
 
@@ -2780,13 +2780,13 @@ int __stdcall SFileDdaBeginEx(void* hFile, unsigned int nBufferSize, unsigned in
     VALIDATEBEGIN;
     VALIDATE(nBufferSize);
     VALIDATEEND;
-    if (!gpDirectSound_00778F20) { sub_0041C340_SetLastError(0x85100071); return 0; }
+    if (!gpDirectSound_00778F20) { SErrSetLastError(0x85100071); return 0; }
     FILEREC* pFile;
     EnterCriticalSection(&gBasePathLock_00779068);
     if (!GetFileRec(hFile, &pFile)) { LeaveCriticalSection(&gBasePathLock_00779068); return 0; }
     if (pFile->bDdaActive) SFileDdaEnd(hFile);
     if (!((gnStormDirectFlags_00779058 | nFlags) & 1) && (pFile->nKind != -1 || !pFile->archive)) {
-        sub_0041C340_SetLastError(0x8510006f);
+        SErrSetLastError(0x8510006f);
         LeaveCriticalSection(&gBasePathLock_00779068);
         return 0;
     }
@@ -2864,7 +2864,7 @@ int __stdcall SFileDdaBeginEx(void* hFile, unsigned int nBufferSize, unsigned in
         return 1;
     }
 invalid:
-    sub_0041C340_SetLastError(0xd);
+    SErrSetLastError(0xd);
     return 0;
 }
 
@@ -3286,7 +3286,7 @@ int __stdcall SFileReadFileEx2(void* hFile, unsigned char* buffer, unsigned int 
         LeaveCriticalSection(&gBasePathLock_00779068);
         return nValid ? 1 : 0;
     }
-    sub_0041C340_SetLastError(0x26);
+    SErrSetLastError(0x26);
     LeaveCriticalSection(&gBasePathLock_00779068);
     return 0;
 }
@@ -3499,7 +3499,7 @@ static int __stdcall GetFileBlockEntry(void* hArchive, const char* szName, unsig
                     if (!bValid)
                     {
                         bResult = 0;
-                        sub_0041C340_SetLastError(0x3EE);
+                        SErrSetLastError(0x3EE);
                     }
                     else
                     {
@@ -3513,7 +3513,7 @@ static int __stdcall GetFileBlockEntry(void* hArchive, const char* szName, unsig
             }
         }
         while (pArchive && (pArchive = pArchive->m_link.Next()) != 0);
-        sub_0041C340_SetLastError(2);
+        SErrSetLastError(2);
     }
 Done:
     return bResult;
@@ -3558,7 +3558,7 @@ int __stdcall SFileAuthenticateArchive(void* hArchive, unsigned int* pnResult)
     {
         if (pnResult)
             *pnResult = 1;
-        sub_0041C340_SetLastError(0x4DC);
+        SErrSetLastError(0x4DC);
         return 0;
     }
     D2StormCryptFuncsStrc* pFuncs = 0;
@@ -3668,7 +3668,7 @@ cleanup:
     if (hLibrary)
         FreeLibrary(hLibrary);
     if (!bResult)
-        sub_0041C340_SetLastError(0x4DC);
+        SErrSetLastError(0x4DC);
     return bResult;
 }
 
@@ -3756,7 +3756,7 @@ int __stdcall SFileDdaGetPos(void* hFile, unsigned int* pnPlayed, unsigned int* 
         }
         if (!pStream)
         {
-            sub_0041C340_SetLastError(0x85100072);
+            SErrSetLastError(0x85100072);
         }
         else
         {
@@ -3764,7 +3764,7 @@ int __stdcall SFileDdaGetPos(void* hFile, unsigned int* pnPlayed, unsigned int* 
             const int nState = pStream->fillstatus;
             if (nState == 4)
             {
-                sub_0041C340_SetLastError(0x85100072);
+                SErrSetLastError(0x85100072);
             }
             else
             {
@@ -3792,7 +3792,7 @@ extern "C" int __stdcall SFileDdaInitialize(int nValue)
     VALIDATE(nValue);
     if (!nValid)
     {
-        sub_0041C340_SetLastError(0x57);
+        SErrSetLastError(0x57);
         return nValid;
     }
     gpDirectSound_00778F20 = (D2DirectSoundStrc*)nValue;
@@ -4044,7 +4044,7 @@ int __stdcall SFileOpenArchive(const char* szMpqName, int nPriority, unsigned in
     const int nVolume = CheckCdVolume(szPath);
     if ((dwFlags & 1) && !nVolume)
     {
-        sub_0041C340_SetLastError(0xF);
+        SErrSetLastError(0xF);
         LeaveCriticalSection(&gBasePathLock_00779068);
         return 0;
     }
@@ -4118,7 +4118,7 @@ int __stdcall SFileOpenPathAsArchive(void* hArchive, const char* szPrefix, int n
     ARCHIVEREC* pParent = (ARCHIVEREC*)hArchive;
     if (!pParent)
     {
-        sub_0041C340_SetLastError(0x57);
+        SErrSetLastError(0x57);
         LeaveCriticalSection(&gBasePathLock_00779068);
         return 0;
     }
@@ -4185,7 +4185,7 @@ int __stdcall SFileOpenFileEx(void* hMpq, const char* szFileName, unsigned int d
             if (nResult)
                 SetFilePointer(hFile, pBlock->nOffset, 0, 0);
             else
-                sub_0041C340_SetLastError(2);
+                SErrSetLastError(2);
         }
         else
         {
@@ -4270,7 +4270,7 @@ int __stdcall SFileOpenFileAsArchive(unsigned int hMpq, const char* szName, int 
         return 1;
     }
     SFileCloseFile(hFile);
-    sub_0041C340_SetLastError(0x3EE);
+    SErrSetLastError(0x3EE);
     LeaveCriticalSection(&gBasePathLock_00779068);
     return 0;
 }

@@ -75,7 +75,7 @@ struct D2TgaFieldsStrc
 
 #pragma pack(pop)
 
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
+void __stdcall SErrSetLastError(unsigned int dwErrCode); // 0x0041C340
 
 struct D2BitOutputStrc
 {
@@ -1604,7 +1604,7 @@ int __stdcall SBmpLoadImage(const char* filename,unsigned char* palette,unsigned
  valid &= (*filename)?-1:0;
  const unsigned int capacity=bufferSize;
  valid &= (capacity||!pixels)?-1:0;
- if(!valid){sub_0041C340_SetLastError(87);return 0;}
+ if(!valid){SErrSetLastError(87);return 0;}
  void* hFile;
  if(!SFileOpenFile(filename,&hFile))return 0;
  int type=0;

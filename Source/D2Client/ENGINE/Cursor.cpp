@@ -120,8 +120,6 @@ static inline int CURSOR_GetCursorAnimField00(int nIndex)
     return gaCursorAnim[nIndex].bAnimated;
 }
 
-int __stdcall sub_M121_Emit_00467DF0(int nIndex) { return CURSOR_GetCursorAnimField00(nIndex); }
-
 // 0x00467E40
 static int CURSOR_IsCursorAnimated(int nIndex)
 {
@@ -362,9 +360,7 @@ void __cdecl CURSOR_StepCursorAnim()
 void __cdecl CURSOR_UpdateCursor()
 {
     const unsigned int dwTick = GetTickCount();
-    D2_ASSERT(gnCursorAnimCount == CURSOR_ANIM_COUNT, 0x84);
-    D2_ASSERT(gnCursorAnim < CURSOR_ANIM_COUNT, 0x85);
-    if (gaCursorAnim[gnCursorAnim].bAnimated && dwTick > gdwCursorAnimTick + 0x10)
+    if (CURSOR_GetCursorAnimField00(gnCursorAnim) && dwTick > gdwCursorAnimTick + 0x10)
     {
         gdwCursorAnimTick = dwTick;
         if (gnCursorState != 3)

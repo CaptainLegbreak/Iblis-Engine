@@ -73,7 +73,7 @@ void __fastcall FOG_SOCKET_Destroy(FSafeSock* pSafeSock); // 0x0040DBD0
 void __fastcall BNDOWNLOAD_HashBuffer(unsigned char* pDigest, const void* pData, unsigned int nLength); // 0x005209D0
 void __fastcall sub_00520C00_ClearReply(unsigned char nReply); // 0x00520C00
 void __stdcall SLogClose(void* hLog); // 0x0041FD00
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
+void __stdcall SErrSetLastError(unsigned int dwErrCode); // 0x0041C340
 void __stdcall SMemCopy(void* pDst, const void* pSrc, unsigned int nSize); // 0x0041D2A0
 void __stdcall SMemZero(void* pLocation, unsigned int nLength); // 0x0041D300
 void __stdcall SLogSetIndent(void* hLog, int nValue); // 0x00420120

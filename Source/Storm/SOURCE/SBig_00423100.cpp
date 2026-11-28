@@ -1,4 +1,4 @@
-// This piece stays apart from SBig.cpp (a declaration difference). sub_00423100_Sub reads each buffer's
+// This piece stays apart from SBig.cpp (a declaration difference). Sub reads each buffer's
 // limb count through a copy of a one-member count struct (BigBuffer::IsUsed below), and that copy is what
 // keeps one of the counts in a stack slot as the original does. SBig.cpp's types (Source/Include
 // D2StormArrayA.h, D2StormBigBuffer.h) hold the count as a plain unsigned int, which every function in
@@ -99,7 +99,7 @@ inline unsigned int ExtractLowPartSx(unsigned __int64& nValue)
 }
 
 // 0x00423100
-static void __stdcall sub_00423100_Sub(BigBuffer& a, const BigBuffer& b, const BigBuffer& c)
+static void __stdcall Sub(BigBuffer& a, const BigBuffer& b, const BigBuffer& c)
 {
     unsigned __int64 nBorrow = 0;
     unsigned int i = 0;
@@ -114,5 +114,5 @@ static void __stdcall sub_00423100_Sub(BigBuffer& a, const BigBuffer& b, const B
 // 0x00423AC0
 void __stdcall SBigSub(D2StormBigStrc* pResult, D2StormBigStrc* pA, D2StormBigStrc* pB)
 {
-    sub_00423100_Sub(pResult->tPrimary, pA->tPrimary, pB->tPrimary);
+    Sub(pResult->tPrimary, pA->tPrimary, pB->tPrimary);
 }

@@ -19,7 +19,6 @@ struct D2HotkeySlotTableStrc;
 struct D2SkillsTxt;
 struct D2SkillIconStateStrc;
 struct D2UiCelFileStrc;
-struct D2WeatherLayerStateStrc;
 struct D2MonsterDataStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
@@ -33,15 +32,8 @@ extern unsigned int gdwBitMasks[]; // 0x006CE268
 
 extern D2SkillIconStateStrc gtHotkeySlots; // 0x007C0300
 
-struct D2WeatherLayerStateStrc
-{
-    void* apCelFiles[4];
-};
-
 void __fastcall ARCHIVE_FreeClientCellFile(void* pCel); // 0x00478A00
 extern D2UiCelFileStrc gaPanelCels[7]; // 0x00724BF0
-extern D2WeatherLayerStateStrc gtSplashCels; // 0x007A89B0
-extern D2WeatherLayerStateStrc gtBubbleCels; // 0x007A893C
 extern D2NpcEntryStrc gaNpcEntries[]; // 0x00726850
 void __fastcall TEXT_DrawCenteredText(int nLeft, int nY, int nRight, const Unicode* wszText, int nColor); // 0x004A7080
 extern "C" __declspec(dllimport) unsigned long __stdcall GetTickCount(); // 0x006CC260

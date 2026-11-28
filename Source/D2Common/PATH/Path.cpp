@@ -269,12 +269,6 @@ static void __stdcall PATH_GetTablePair(int b, int a, int* pOut1, int* pOut2)
     *pOut2 = gaOffsetsForSnappingToCardinalDirection[b + PATH_SNAP_CENTER][a + PATH_SNAP_CENTER];
 }
 
-void __stdcall sub_K15_Emit8(int* p, int n)
-{
-    PATH_GetTablePair(p[1], n, p, p + 1);
-    PATH_GetTablePair(n, p[2], p + 2, p + 3);
-}
-
 // 0x00648050
 static void PATH_FindValidTargetCoordsByMovingOrthogonally(D2PathInfoStrc* pPathInfo)
 {
@@ -288,8 +282,9 @@ static void PATH_FindValidTargetCoordsByMovingOrthogonally(D2PathInfoStrc* pPath
         int nX = pPathInfo->tTargetCoord.X;
         const int nCollisionPattern = pPathInfo->nCollisionPattern;
         const int nCollisionMask = pPathInfo->nCollisionMask;
-        const int nOffsetX = gaOffsetsForSnappingToCardinalDirection[nDeltaY + PATH_SNAP_CENTER][nDeltaX + PATH_SNAP_CENTER];
-        const int nOffsetY = gaOffsetsForSnappingToCardinalDirection[nDeltaX + PATH_SNAP_CENTER][nDeltaY + PATH_SNAP_CENTER];
+        int nOffsetX;
+        int nOffsetY;
+        PATH_GetTablePair(nDeltaX, nDeltaY, &nOffsetX, &nOffsetY);
         nY = pPathInfo->tTargetCoord.Y;
         int nChebyshevDistance = D2_MAX(nAbsDeltaX, nAbsDeltaY);
         while (nChebyshevDistance < PATH_SNAP_RANGE)

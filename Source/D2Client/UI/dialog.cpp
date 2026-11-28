@@ -299,7 +299,7 @@ void __stdcall DIALOG_MouseMoveMsg(SMSGHANDLER_PARAMS* pMsg)
         {
             pMsg->bReturn = 1;
             pMsg->lResult = 0;
-            sub_00420290_BreakHandlerChain(pMsg);
+            SMsgBreakHandlerChain(pMsg);
             return;
         }
     }
@@ -324,7 +324,7 @@ void __stdcall DIALOG_LButtonUpMsg(SMSGHANDLER_PARAMS* pMsg)
 
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
     D2_ASSERT(pDialog, 0x123);
     if (pDialog->bActive != 1)
     {
@@ -357,7 +357,7 @@ static void __stdcall DIALOG_LButtonDownMsg(SMSGHANDLER_PARAMS* pMsg)
     {
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         return;
     }
 
@@ -367,7 +367,7 @@ static void __stdcall DIALOG_LButtonDownMsg(SMSGHANDLER_PARAMS* pMsg)
             {
                 pMsg->bReturn = 1;
                 pMsg->lResult = 0;
-                sub_00420290_BreakHandlerChain(pMsg);
+                SMsgBreakHandlerChain(pMsg);
                 return;
             }
     }
@@ -391,7 +391,7 @@ static void __stdcall DIALOG_LButtonDownMsg(SMSGHANDLER_PARAMS* pMsg)
             {
                 pMsg->bReturn = 1;
                 pMsg->lResult = 0;
-                sub_00420290_BreakHandlerChain(pMsg);
+                SMsgBreakHandlerChain(pMsg);
             }
             if (GAME_GetUIVarState(7) && TEXT_IsInRightPanelButton(UI_GetPanelSlideMode(), nX, nY))
                 goto handled;
@@ -404,7 +404,7 @@ static void __stdcall DIALOG_LButtonDownMsg(SMSGHANDLER_PARAMS* pMsg)
                 pDialog->pfnDefault();
                 pMsg->bReturn = 1;
                 pMsg->lResult = 0;
-                sub_00420290_BreakHandlerChain(pMsg);
+                SMsgBreakHandlerChain(pMsg);
                 return;
             }
             FOG_DisplayHalt("", sub_00408090(), 0x1AA);
@@ -415,7 +415,7 @@ static void __stdcall DIALOG_LButtonDownMsg(SMSGHANDLER_PARAMS* pMsg)
 handled:
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 void __fastcall sub_M304_Emit_004B7150(D2ClientDialogStrc* pDialog)
@@ -433,7 +433,7 @@ static void __stdcall DIALOG_HandleDialogKey(int bClose, SMSGHANDLER_PARAMS* pMs
 {
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
     if (!bClose)
         return;
 
@@ -499,12 +499,12 @@ void __stdcall ROSTERPETS_HandleDialogEscape(SMSGHANDLER_PARAMS* pMsg)
     {
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         return;
     }
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
     pTimer = gpTimer_007C0E54;
     D2_ASSERT(pTimer, 0x1C2);
     if (pTimer->nVersion >= 5)
@@ -614,7 +614,7 @@ void __stdcall DIALOG_EnterMsg(SMSGHANDLER_PARAMS* pMsg)
 {
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
     D2ClientDialogStrc* pDialog = gpDialogList;
     D2_ASSERT(pDialog, 0x2C8);
     if (pDialog->nState < 5)
@@ -665,7 +665,7 @@ void __stdcall DIALOG_KeyDownMsg(SMSGHANDLER_PARAMS* pMsg)
     {
         pMsg->bReturn = 1;
         pMsg->lResult = 0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
     }
 }
 
@@ -975,7 +975,7 @@ void __fastcall DIALOG_DrawDialog(D2ClientDialogStrc* pDialog)
 }
 
 // 0x004B82F0
-void __fastcall sub_004B82F0_Select(D2ClientDialogStrc* pDialog, int nIndex)
+void __fastcall DIALOG_SelectLine(D2ClientDialogStrc* pDialog, int nIndex)
 {
     D2_ASSERT(pDialog, 0x4E7);
     D2_ASSERT(nIndex < pDialog->nLines, 0x4ED);
@@ -1137,7 +1137,7 @@ void __fastcall DIALOG_AddTextLine(D2ClientDialogStrc* pDialog, const Unicode* w
     tRect.nRight = pDialog->nX + pDialog->nWidth;
     sub_00467430(&tRect);
     if (pDialog->nHover == -1 && bEnabled)
-        sub_004B82F0_Select(pDialog, nIndex);
+        DIALOG_SelectLine(pDialog, nIndex);
 }
 
 // 0x004B70F0

@@ -126,7 +126,7 @@ static long gnSEvtDispatchDepth_007792FC;                                       
 
 void __stdcall CopyIdHashTable(_IDHASHTABLE* pDest, _IDHASHTABLE* pSource); // 0x00426180
 
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode); // 0x0041C340
+void __stdcall SErrSetLastError(unsigned int dwErrCode); // 0x0041C340
 
 int __stdcall SEvtDispatch(unsigned int nType, unsigned int nSubType, unsigned int nId, void* pData);
 

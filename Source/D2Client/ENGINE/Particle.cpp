@@ -68,12 +68,6 @@ struct B28GfxData
 
 extern "C" B28GfxData* __fastcall sub_0046F060_GetGfx(B28Unit* unit);
 
-struct B28SoundNode
-{
-    unsigned int value;
-    B28SoundNode* next;
-};
-
 struct B28AiCmd
 {
     B28AiCmd* pNextCmd;
@@ -105,17 +99,7 @@ struct B28Unit
     B28MonsterData* monsterData;
 };
 
-struct B28Game
-{
-    unsigned char pad0[0x1C];
-    void* pool;
-};
-
 typedef char AssertGfx[(OFFSET(B28GfxData,offsetX)==0x34)?1:-1];
-
-typedef char AssertSoundNext[(OFFSET(B28SoundNode,next)==4)?1:-1];
-
-typedef char AssertSoundSize[(sizeof(B28SoundNode)==8)?1:-1];
 
 typedef char AssertAiSize[(sizeof(B28AiCmd)==0x1C)?1:-1];
 
@@ -126,8 +110,6 @@ typedef char AssertAiLast[(OFFSET(B28AiControl,pLastCmd)==0x24)?1:-1];
 typedef char AssertMonsterAi[(OFFSET(B28MonsterData,pAiControl)==0x28)?1:-1];
 
 typedef char AssertUnitData[(OFFSET(B28Unit,monsterData)==0x14)?1:-1];
-
-typedef char AssertGamePool[(OFFSET(B28Game,pool)==0x1C)?1:-1];
 
 // 0x004DA000
 void __stdcall PARTICLE_ResetGfxMotion(D2UnitStrc* pUnit)

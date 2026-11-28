@@ -70,8 +70,6 @@ struct D2PathDirectionStrc;
 
 struct D2StaticPathStrc;
 
-struct D2CltMissileModeStrc;
-
 
 struct D2BallisticStrc;
 
@@ -209,12 +207,6 @@ void __stdcall D2COMMON_10170_PathSetTargetPos(D2DynamicPathStrc* pPath, int nX,
 
 typedef int (__fastcall* D2UnitFindCallback)(D2UnitStrc* pUnit, void* pArg);
 
-struct D2CltMissileModeStrc
-{
-    D2UnitFindCallback pfUnitFindCallback;
-    int nCollisionMask;
-};
-
 
 extern const int gaSpiralOuterY[7]; // 0x006DADC0
 
@@ -228,8 +220,6 @@ extern const int gaSpiralOuterA[7]; // 0x006DAE2C
 
 extern const int gaSpiralInnerX[4]; // 0x006DAE48
 
-
-extern D2CltMissileModeStrc gaCltMissileModes[]; // 0x0072A350
 
 
 

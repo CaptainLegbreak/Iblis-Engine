@@ -10,17 +10,9 @@
 #include "D2StormTypes.h"
 #include "D2ClientSound.h"
 #include "FogApi.h"
+#include "D2Packets.h"
 
-struct D2GSPacketText5EStrc
-{
-    unsigned char aText[37];
-};
-
-struct D2GSPacketSrv5E
-{
-    unsigned char nHeader;
-    D2GSPacketText5EStrc tText;
-};
+extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize);
 
 #pragma pack(push, 1)
 struct D2UiPacketStrc_004B9210
@@ -46,7 +38,7 @@ void __fastcall VIEW_FireLevelEvent(int nIndex); // 0x0046B630
 
 int gbQuestIntroFlagsReady; // 0x007C0ECC
 
-D2GSPacketText5EStrc gaQuestIntroFlags; // 0x007C0EA4
+unsigned char gaQuestIntroFlags[37]; // 0x007C0EA4
 
 extern "C" void __fastcall QUESTLOG_SetQuestPacketValue(unsigned int value); // 0x004A3100
 
@@ -113,7 +105,7 @@ void __fastcall sub_004B9210_DispatchUiPacket(D2UiPacketStrc_004B9210* pPacket)
 // 0x004B92B0
 void __fastcall sub_004B92B0_StorePacketText(const D2GSPacketSrv5E* pPacket)
 {
-    gaQuestIntroFlags = pPacket->tText;
+    memcpy(gaQuestIntroFlags, pPacket->nQuestIntroFlags, sizeof(gaQuestIntroFlags));
     gbQuestIntroFlagsReady = 1;
 }
 
@@ -158,7 +150,7 @@ int __stdcall INV_GetTableByte(int nUnused, int nIndex)
 {
     D2_ASSERT(gbQuestIntroFlagsReady, 0x60);
     D2_ASSERT(nIndex < 0x25, 0x65);
-    return gaQuestIntroFlags.aText[nIndex];
+    return gaQuestIntroFlags[nIndex];
 }
 
 

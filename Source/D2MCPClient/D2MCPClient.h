@@ -10,10 +10,7 @@ struct D2LaunchAddressStrc
     int nData2;
     int nData3;
 };
-struct D2LaunchThreadRecordStrc
-{
-    int nData[0x52];
-};
+#include "D2LaunchThreadRecord.h"
 
 void __stdcall CHATDLG_SetCharLogonReceived(int nValue); // 0x00449C40
 void __stdcall sub_00449E50_SetValue(int nValue); // 0x00449E50

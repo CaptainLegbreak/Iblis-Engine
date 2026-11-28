@@ -569,12 +569,6 @@ D2DrlgTileDataStrc* __fastcall DRLGROOMTILE_InitShadowTileData(D2DrlgRoomStrc* p
     return pTileData;
 }
 
-void __fastcall sub_M107_Emit_0066F180(D2DrlgRoomStrc* pDrlgRoom, int bReset)
-{
-    if (bReset)
-        DRLGROOMTILE_ResetRoomTileSelections(pDrlgRoom);
-}
-
 // 0x0066E060
 void __fastcall DRLGROOMTILE_InitTileShadow(D2DrlgRoomStrc* pDrlgRoom, int nX, int nY, unsigned int nPackedTileInformation)
 {
@@ -1374,11 +1368,7 @@ void __fastcall DRLGROOMTILE_FreeRoom(D2DrlgRoomStrc* pDrlgRoom, int bKeepRoom)
             break;
         }
 
-        for (D2RoomTileStrc* pRoomTile = pDrlgRoom->pRoomTiles; pRoomTile; pRoomTile = pRoomTile->pNext)
-        {
-            pRoomTile->pSelectedTiles = 0;
-            pRoomTile->pUnselectedTiles = 0;
-        }
+        DRLGROOMTILE_ResetRoomTileSelections(pDrlgRoom);
 
         if (bKeepRoom)
         {

@@ -15,7 +15,6 @@ struct D2DrlgActStrc;
 extern "C" const char gszEmptyAssertText; // 0x006CC837
 
 
-
 extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 0x00681EF0
@@ -23,7 +22,6 @@ extern "C" void* __cdecl memset(void* pDst, int nValue, unsigned int nSize); // 
 extern "C" __declspec(dllimport) unsigned int __stdcall GetTickCount(); // 0x006CC260
 
 void* __fastcall FOG_AllocPool(D2PoolSystemStrc* pMemPool, int nSize, const char* szFile, int nLine, int n0); // 0x0040B430
-
 
 
 extern D2EnvironmentCycleStrc gNormalEnvironmentCycle[]; // 0x007443F0
@@ -54,8 +52,6 @@ enum D2C_J07DungeonConstants
 };
 
 
-
-
 extern const int gnTownLevelIdsByAct[5]; // 0x006E7D1C
 
 int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char* szFile, int nLine, int n0); // 0x0040B480
@@ -63,16 +59,6 @@ int __fastcall FOG_FreePool(D2PoolSystemStrc* pMemPool, void* pFree, const char*
 
 void __fastcall DRLGROOM_InitNearRooms(D2PoolSystemStrc* pMemPool, D2DrlgRoomStrc* pDrlgRoom); // 0x0066C370
 
-
-
-
-int gStatsClientAllocatedRooms;                                                                             // 0x0096C8B8
-
-int gStatsClientFreedRooms;                                                                                 // 0x0096C8BC
-
-int gStatsFreedRooms;                                                                                       // 0x0096C8C0
-
-int gStatsAllocatedRooms;                                                                                   // 0x0096C8C4
 
 #define ROOMFLAG_1 0x00000001
 

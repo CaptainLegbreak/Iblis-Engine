@@ -32,24 +32,6 @@ struct D2MsgHandlerEntryStrc;
 
 struct Unicode;
 
-struct D2ClientFlagsLowStrc;
-
-struct D2ClientFlagsStrc;
-
-struct D2ClientFlagsLowStrc
-{
-    unsigned char bFlag0 : 1;
-    unsigned char bNumberDisplay : 1;
-    unsigned char bFlags2 : 6;
-};
-
-struct D2ClientFlagsStrc
-{
-    unsigned int bFlags0 : 8;
-    unsigned int bClassOverride : 1;
-    unsigned int bFlags9 : 23;
-};
-
 extern "C" __declspec(dllimport) unsigned short __stdcall GetSystemDefaultLangID(); // 0x006CC354
 
 struct HKL__;
@@ -261,10 +243,6 @@ extern "C" void* __cdecl memcpy(void* pDst, const void* pSrc, unsigned int nSize
 
 int __fastcall UNICODE_StrLen(const Unicode* pString); // 0x00526800
 
-extern D2ClientFlagsLowStrc gtClientFlagsLow_00712EFC; // 0x00712EFC
-
-extern D2ClientFlagsStrc gtClientFlags_00712EFC; // 0x00712EFC
-
 int gnLanguageId;        // 0x007BB5DC
 
 extern int gnChatHistoryCursor; // 0x007BB5D8
@@ -421,7 +399,7 @@ void __stdcall CHAT_OnImeComposition(SMSGHANDLER_PARAMS* pMsg)
     }
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 
@@ -446,7 +424,7 @@ void __stdcall CHAT_HandleImeStartComposition(SMSGHANDLER_PARAMS* pMsg)
         gnImeState = 5;
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x0047AD10
@@ -492,7 +470,7 @@ void __stdcall CHAT_ImeNotifyMsg(SMSGHANDLER_PARAMS* pMsg)
 
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 
     HIMC hImc = ImmGetContext(WINDOW_GetWindow());
     if (!hImc)
@@ -1875,7 +1853,7 @@ void __stdcall CHAT_HandleChatKeyDown(SMSGHANDLER_PARAMS* pMsg)
 {
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
     if (pMsg->lParam & 0x40000000)
     {
         return;
@@ -1975,7 +1953,7 @@ void __stdcall CHAT_OnChatChar(SMSGHANDLER_PARAMS* pMsg)
     }
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 

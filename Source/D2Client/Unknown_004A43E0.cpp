@@ -69,24 +69,6 @@ struct D2SplittedTextStrc;
 
 struct SMSGHANDLER_PARAMS;
 
-struct ByteRecord;
-
-struct PacketWords;
-
-struct PacketShorts;
-
-struct Digest;
-
-struct HashState;
-
-struct Member;
-
-struct ClassRecord;
-
-struct ClassTableView;
-
-struct UnitView;
-
 class ListBoxImplementation;
 
 
@@ -184,160 +166,11 @@ void __stdcall TEXT_OpenTextPanel(int bFlag); // 0x0049FBA0
 
 
 
-struct ByteRecord
-{
-    char gap00[0x3E];
-    unsigned char value;
-    char tail[0x4F];
-};
-
-#pragma pack(push, 1)
-
-struct PacketWords
-{
-    char prefix[1];
-    unsigned short kind;
-    unsigned short wSlots[6];
-};
-
-struct PacketShorts
-{
-    char prefix[1];
-    unsigned short kind;
-    unsigned short a;
-    unsigned short b;
-    unsigned short c;
-};
-
-#pragma pack(pop)
-
-struct Digest
-{
-    unsigned int a;
-    unsigned int b;
-    unsigned int c;
-    unsigned int d;
-    unsigned int e;
-};
-
-struct HashState
-{
-    unsigned int a;
-    unsigned int b;
-    unsigned int c;
-    unsigned int d;
-    unsigned int e;
-    unsigned int lowCount;
-    unsigned int highCount;
-    char block[0x40];
-};
-
-struct Member
-{
-    short value;
-};
-
-struct ClassRecord
-{
-    char gap00[2];
-    short relation;
-    short next;
-    char gapToMembers[0x16A];
-    Member members[8];
-    char tail[0x28];
-};
-
-struct ClassTableView
-{
-    char gap00[0xA78];
-    ClassRecord* records;
-    char gapAfterRecords[4];
-    int count;
-};
-
-struct UnitView
-{
-    unsigned int type;
-    int classId;
-};
-
-typedef char ByteRecord_value[OFFSET(ByteRecord,value)==0x3E?1:-1];
-
-typedef char PacketWords_kind[OFFSET(PacketWords,kind)==0x1?1:-1];
-
-typedef char PacketWords_wSlots[OFFSET(PacketWords,wSlots)==0x3?1:-1];
-
-typedef char PacketShorts_kind[OFFSET(PacketShorts,kind)==0x1?1:-1];
-
-typedef char PacketShorts_a[OFFSET(PacketShorts,a)==0x3?1:-1];
-
-typedef char PacketShorts_b[OFFSET(PacketShorts,b)==0x5?1:-1];
-
-typedef char PacketShorts_c[OFFSET(PacketShorts,c)==0x7?1:-1];
-
-typedef char ClassRecord_relation[OFFSET(ClassRecord,relation)==0x2?1:-1];
-
-typedef char ClassRecord_next[OFFSET(ClassRecord,next)==0x4?1:-1];
-
-typedef char ClassRecord_members[OFFSET(ClassRecord,members)==0x170?1:-1];
-
-typedef char ClassTableView_records[OFFSET(ClassTableView,records)==0xA78?1:-1];
-
-typedef char ClassTableView_count[OFFSET(ClassTableView,count)==0xA80?1:-1];
-
-typedef char UnitView_type[OFFSET(UnitView,type)==0x0?1:-1];
-
-typedef char UnitView_classId[OFFSET(UnitView,classId)==0x4?1:-1];
-
-typedef char Digest_a[OFFSET(Digest,a)==0x0?1:-1];
-
-typedef char Digest_b[OFFSET(Digest,b)==0x4?1:-1];
-
-typedef char Digest_c[OFFSET(Digest,c)==0x8?1:-1];
-
-typedef char Digest_d[OFFSET(Digest,d)==0xC?1:-1];
-
-typedef char Digest_e[OFFSET(Digest,e)==0x10?1:-1];
-
-typedef char HashState_a[OFFSET(HashState,a)==0x0?1:-1];
-
-typedef char HashState_b[OFFSET(HashState,b)==0x4?1:-1];
-
-typedef char HashState_c[OFFSET(HashState,c)==0x8?1:-1];
-
-typedef char HashState_d[OFFSET(HashState,d)==0xC?1:-1];
-
-typedef char HashState_e[OFFSET(HashState,e)==0x10?1:-1];
-
-typedef char HashState_lowCount[OFFSET(HashState,lowCount)==0x14?1:-1];
-
-typedef char HashState_highCount[OFFSET(HashState,highCount)==0x18?1:-1];
-
-typedef char ByteRecord_size[sizeof(ByteRecord)==0x8E?1:-1];
-
-typedef char PacketWords_size[sizeof(PacketWords)==0xF?1:-1];
-
-typedef char PacketShorts_size[sizeof(PacketShorts)==0x9?1:-1];
-
-typedef char Digest_size[sizeof(Digest)==0x14?1:-1];
-
-typedef char HashState_size[sizeof(HashState)==0x5C?1:-1];
-
-typedef char Member_size[sizeof(Member)==0x2?1:-1];
-
-typedef char ClassRecord_size[sizeof(ClassRecord)==0x1A8?1:-1];
-
-extern "C" ByteRecord* sgptSoundHeaderTable;
-
 extern "C" int gRecordCount_007BC9A4;
 
 extern "C" unsigned int gValue_007BF254; // 0x007BF254
 
 
-
-extern "C" HashState gatBnHashCtx[];
-
-extern "C" ClassTableView* gClassTable_00744304;
 
 static bool TEXT_ConvertHoverText(int nLangId, Unicode* wszText, const char* szText); // 0x0049E280
 
@@ -374,8 +207,6 @@ extern D2TextBoxStrc* gpTextBox; // 0x007BF0A4
 
 #define D2_ASSERT(expr, line) if (!(expr)) { FOG_DisplayHalt("", sub_00408090(), line); exit(-1); }
 
-struct D2TextNodeStrc;
-
 struct D2RectStrc;
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
@@ -386,23 +217,12 @@ extern "C" __declspec(noreturn) void __cdecl exit(int nCode); // 0x00681E09
 
 #pragma pack(push, 2)
 
-struct D2TextNodeStrc
-{
-    Unicode* pLines[6];
-    unsigned short nLines;
-    int nColor;
-    unsigned int dwEndTick;
-    D2TextNodeStrc* pNext;
-};
-
 #pragma pack(pop)
 
 
 
 Unicode* __fastcall sub_00526790(Unicode* pDest, const Unicode* pSource, int nCount); // 0x00526790
 
-
-D2TextNodeStrc* __fastcall TEXT_CloneStringList(D2TextNodeStrc* pSource); // 0x0049DB10
 
 extern D2TextListStrc gtOverheadTextList; // 0x007BF1EA
 
@@ -707,8 +527,6 @@ int __cdecl MONSTER_GetQuestFlags(); // 0x004B32D0
 static int TEXT_FindQuestIndex(int nKey);
 
 
-struct D2StringSoundStrc;
-
 
 
 
@@ -732,19 +550,9 @@ extern void* gpWaypointIconCel; // 0x007BF079
 
 
 
-struct D2StringSoundStrc
-{
-    unsigned short wStringId;
-    unsigned short wSoundId;
-};
-
 extern "C" const char gszFormatD[]; // 0x006D57BC
 
 extern "C" const char gszFormatSound[]; // 0x006DA194
-
-extern D2StringSoundStrc* gapClassStringSounds[]; // 0x00722F1C
-
-extern D2StringSoundStrc gaMonStringSounds[]; // 0x00723750
 
 static void __stdcall TEXT_ShowHoverText(const Unicode* wszText, D2UnitStrc* pUnit, D2HoverTextStrc* pHoverText, D2CoordStrc* pPos); // 0x004A0A00
 
@@ -770,8 +578,6 @@ struct D2ActiveRoomStrc;
 
 struct D2StoredUnitRecordStrc;
 
-struct D2GSPacketSrv5A;
-
 struct D2SuperUniquesTxt;
 
 void __fastcall SKILLDESC_BuildPropText(D2UnitStrc* pItem, Unicode* wszText, int nArg, int bFlag, int nArg2); // 0x004E6410
@@ -782,24 +588,6 @@ Unicode* __fastcall sub_00526700(Unicode* pDst, const Unicode* pSrc); // 0x00526
 
 extern Unicode gwszTradePartnerName[]; // 0x007C0E84
 
-#pragma pack(push, 1)
-
-struct D2GSPacketSrv5A
-{
-    unsigned char nHeader;
-    unsigned char nType;
-    unsigned char nColor;
-    int dwParam;
-    unsigned char nParam;
-    union
-    {
-        char szText[32];
-        char szTextData[2][16];
-    };
-};
-
-#pragma pack(pop)
-
 extern "C" char* __cdecl strcpy(char* szDst, const char* szSrc);
 
 extern "C" int __cdecl strcmp(const char* sz1, const char* sz2);
@@ -808,8 +596,6 @@ void __fastcall TEXT_PrintPartyText(const Unicode* wszText, char nColor); // 0x0
 
 
 extern D2DrlgActStrc* gpGlobal_007A0634; // 0x007A0634
-
-static int TEXT_FormatPartyEvent(Unicode* pOut, D2GSPacketSrv5A* pPacket); // 0x0049E8F0
 
 void __fastcall TEXT_PrintChatLine(const Unicode* wszText, char nColor); // 0x0049E3A0
 
@@ -972,8 +758,6 @@ extern D2QuestTableStrc gaQuestTable[41]; // 0x00723F30
 
 Unicode* __fastcall strncpy(Unicode* pDest, const Unicode* pSource, int nCount); // 0x00526790
 
-
-static void TEXT_FreeTextNode(D2TextNodeStrc* pNode); // 0x0049D490
 
 
 static inline int sub_F08_ListTop()
@@ -1859,7 +1643,7 @@ void __stdcall TEXT_PrevEntryMsg(SMSGHANDLER_PARAMS* pMsg)
 
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x004A5AB0
@@ -1886,7 +1670,7 @@ void __stdcall TEXT_NextEntryMsg(SMSGHANDLER_PARAMS* pMsg)
 
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x004A5B30
@@ -1906,7 +1690,7 @@ void __stdcall TEXT_SelectSecondaryColumnMsg(SMSGHANDLER_PARAMS* pMsg)
 
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x004A5B90
@@ -1926,7 +1710,7 @@ void __stdcall TEXT_SelectPrimaryColumnMsg(SMSGHANDLER_PARAMS* pMsg)
 
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x004A5BF0
@@ -1953,7 +1737,7 @@ void __stdcall TEXT_ClearEntryKeyMsg(SMSGHANDLER_PARAMS* pMsg)
 
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 
@@ -1971,7 +1755,7 @@ void __stdcall TEXT_CancelKeyConfigMsg(SMSGHANDLER_PARAMS* message)
     } else gbKeyConfigReady = 1;
     message->bReturn = 1;
     message->lResult = 0;
-    sub_00420290_BreakHandlerChain(message);
+    SMsgBreakHandlerChain(message);
 }
 
 // 0x004A5D00
@@ -2063,7 +1847,7 @@ void __stdcall TEXT_KeyConfigButtonUpMsg(SMSGHANDLER_PARAMS* pMsg)
     sub_004A4AD0_Press(nX, nY);
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x004A5F70
@@ -2091,7 +1875,7 @@ void __stdcall TEXT_ApplyEntryMsg(SMSGHANDLER_PARAMS* pMsg)
 
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x004A6000
@@ -2115,7 +1899,7 @@ void __stdcall TEXT_RegisterPressMsgHandler(SMSGHANDLER_PARAMS* pMsg)
     sub_004A4AD0_Press(nX, nY);
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 
@@ -2167,7 +1951,7 @@ store_key:
 
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x004A61A0
@@ -2201,7 +1985,7 @@ void __stdcall TEXT_KeyUpMsgHandler(SMSGHANDLER_PARAMS* pMsg)
 
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 

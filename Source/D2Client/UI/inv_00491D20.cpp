@@ -534,7 +534,7 @@ static void __stdcall INV_ClickOutsidePanel(int nY, SMSGHANDLER_PARAMS* pMsg, in
     pMsg->bReturn = 1;
     gbHoverInGrid = 0;
     gbHoverInBodyLoc = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 // 0x004912A0
@@ -549,7 +549,7 @@ void __stdcall INV_HandlePanelClick(SMSGHANDLER_PARAMS* pMsg)
     if(x>gnScreenWidth) {
         pMsg->bReturn=1;
         pMsg->lResult=0;
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
     }
     D2UnitStrc* player=CUNIT_GetPlayerUnit();
     INV_LoadUiRecords();
@@ -565,7 +565,7 @@ void __stdcall INV_HandlePanelClick(SMSGHANDLER_PARAMS* pMsg)
             pMsg->bReturn=1;
             pMsg->lResult=0;
             sub_004B9A00(4,0,0,0,0);
-            sub_00420290_BreakHandlerChain(pMsg);
+            SMsgBreakHandlerChain(pMsg);
             return;
         }
     }
@@ -576,7 +576,7 @@ void __stdcall INV_HandlePanelClick(SMSGHANDLER_PARAMS* pMsg)
             pMsg->bReturn=1;
             pMsg->lResult=0;
             sub_004B9A00(4,0,0,0,0);
-            sub_00420290_BreakHandlerChain(pMsg);
+            SMsgBreakHandlerChain(pMsg);
             return;
         }
         pMsg->bReturn=1;
@@ -616,7 +616,7 @@ AFTER_BODY:
             if(!handled && GAME_IsExpansion() && INV_IsOverWeaponSwapTab(x,y)) {
                 pMsg->bReturn=1;
                 sub_0048A730_SwapWeapons();
-                sub_00420290_BreakHandlerChain(pMsg);
+                SMsgBreakHandlerChain(pMsg);
                 return;
             }
         }
@@ -626,7 +626,7 @@ AFTER_BODY:
             if(CURSOR_GetCursorState()==6) UI_CancelCursorItemUse();
             else if(CURSOR_GetCursorState()==8) MSG_SendDword(0x4C,-1);
         }
-        sub_00420290_BreakHandlerChain(pMsg);
+        SMsgBreakHandlerChain(pMsg);
         gbHoverInGrid=0;
         gbHoverInBodyLoc=0;
         gpHoverItem=0;
@@ -641,7 +641,7 @@ AFTER_BODY:
             pMsg->lResult=0;
             pMsg->bReturn=1;
             gbHoverInGrid=0;gbHoverInBodyLoc=0;gpHoverItem=0;gpLastHoverItem=0;
-            sub_00420290_BreakHandlerChain(pMsg);
+            SMsgBreakHandlerChain(pMsg);
             return;
         }
         break;
@@ -660,7 +660,7 @@ AFTER_BODY:
                 pMsg->lResult=0;
                 pMsg->bReturn=1;
                 gbHoverInGrid=0;gbHoverInBodyLoc=0;gpHoverItem=0;gpLastHoverItem=0;
-                sub_00420290_BreakHandlerChain(pMsg);
+                SMsgBreakHandlerChain(pMsg);
                 return;
             }
         }
@@ -671,7 +671,7 @@ AFTER_BODY:
             pMsg->lResult=0;
             pMsg->bReturn=1;
             gbHoverInGrid=0;gbHoverInBodyLoc=0;gpHoverItem=0;gpLastHoverItem=0;
-            sub_00420290_BreakHandlerChain(pMsg);
+            SMsgBreakHandlerChain(pMsg);
             if(result) sub_004B90B0_SendState();
             return;
         }
@@ -715,13 +715,13 @@ void __stdcall INV_HandleNpcClick(SMSGHANDLER_PARAMS* msg)
     if(!AUTOMAP_IsCursorOverMiniPanelButton(msg) && INV_IsInNpcPanelRect(x,y) && INV_IsNpcStateIdle()) {
         gbPanelButtonDown=1;msg->bReturn=1;msg->lResult=0;
         sub_004B9A00(4,0,0,0,0);
-        sub_00420290_BreakHandlerChain(msg);return;
+        SMsgBreakHandlerChain(msg);return;
     }
     if(CURSOR_GetCursorItem()) {
         int nArg;
         if(AUTOMAP_IsCursorOverMiniPanelButton(msg)==1) {INV_ResetNpcButtons();return;}
         if(x<0 || x>gtPlayerInvRect.nLeft || y<0 || y>gtPlayerInvRect.nBottom) goto OUTSIDE;
-        msg->bReturn=1;msg->lResult=0;sub_00420290_BreakHandlerChain(msg);
+        msg->bReturn=1;msg->lResult=0;SMsgBreakHandlerChain(msg);
         if(x<gtNpcInvGrid.nGridLeft || x>gtNpcInvGrid.nGridRight || y<gtNpcInvGrid.nGridTop || y>gtNpcInvGrid.nGridBottom) return;
         if(CURSOR_GetCursorState()==6 || !NPCMENU_GetInteractNpcId(&nArg)) return;
         D2UnitStrc* player=CUNIT_FindClientUnit(nArg,1);
@@ -753,9 +753,9 @@ void __stdcall INV_HandleNpcClick(SMSGHANDLER_PARAMS* msg)
                 sub_004B9A00(6,0,0,0,0);gdwNpcPanelDelayTick=0;INV_SelectItemPageTab(3);
             }
         } else {
-            msg->bReturn=1;msg->lResult=0;sub_00420290_BreakHandlerChain(msg);return;
+            msg->bReturn=1;msg->lResult=0;SMsgBreakHandlerChain(msg);return;
         }
-        msg->bReturn=1;msg->lResult=0;sub_00420290_BreakHandlerChain(msg);return;
+        msg->bReturn=1;msg->lResult=0;SMsgBreakHandlerChain(msg);return;
     }
     if(x<gtNpcInvRect.nLeft || x>gtNpcInvRect.nRight) goto OUTSIDE;
     {
@@ -783,7 +783,7 @@ void __stdcall INV_HandleNpcClick(SMSGHANDLER_PARAMS* msg)
                     gbPanelButtonClicked=1;
                 } else {INV_ResetNpcButtons();gbPanelButtonClicked=0;}
             }
-            msg->bReturn=1;msg->lResult=0;sub_00420290_BreakHandlerChain(msg);return;
+            msg->bReturn=1;msg->lResult=0;SMsgBreakHandlerChain(msg);return;
         }
     }
     if(y<gtNpcInvRect.nTop || y>gtNpcInvRect.nBottom) goto OUTSIDE;
@@ -795,7 +795,7 @@ void __stdcall INV_HandleNpcClick(SMSGHANDLER_PARAMS* msg)
     }
     }
 HANDLE:
-    msg->bReturn=1;msg->lResult=0;sub_00420290_BreakHandlerChain(msg);return;
+    msg->bReturn=1;msg->lResult=0;SMsgBreakHandlerChain(msg);return;
 OUTSIDE:
     INV_HandlePanelClick(msg);
 }

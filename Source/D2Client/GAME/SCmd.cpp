@@ -855,15 +855,6 @@ struct D2ByteRecordStrc
     unsigned char f_27;
 };
 
-struct D2GridCellStrc
-{
-    unsigned char unk0x00[4];
-    unsigned char nValue0;
-    unsigned char nValue1;
-    unsigned char f_6;
-    unsigned char nValue3;
-};
-
 struct D2PacketRecord6Strc
 {
     unsigned char nHeader;
@@ -1049,7 +1040,6 @@ extern int gbChaosLightEvent; // 0x007A7460
 
 extern D2ClientTimedBoxStrc gtTimedBox; // 0x007A742C
 
-extern D2GridCellStrc gtGridCells_007B0E68[]; // 0x007B0E68
 
 extern unsigned char gabRowTable[][0x100]; // 0x007B5C10
 
@@ -1255,7 +1245,7 @@ void __stdcall SCMD_HandleResetMessage(SMSGHANDLER_PARAMS* pMsg)
     TEXT_ClearListFlags();
     pMsg->bReturn = 1;
     pMsg->lResult = 0;
-    sub_00420290_BreakHandlerChain(pMsg);
+    SMsgBreakHandlerChain(pMsg);
 }
 
 Unicode* __fastcall sub_00526700(Unicode* pDest, const Unicode* pSource);                                 // 0x00526700

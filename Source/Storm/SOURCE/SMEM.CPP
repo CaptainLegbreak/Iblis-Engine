@@ -24,7 +24,7 @@ extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA(const char* s
 extern "C" __declspec(dllimport) int __cdecl wsprintfA(char* szBuffer, const char* szFormat, ...);          // 0x006CC468
 
 int __stdcall SErrDisplayError(unsigned int nErrorCode, const char* szFile, int nLine, const char* szDescription, int bRecoverable, unsigned int nExitCode); // 0x0041CAF0
-void __stdcall sub_0041C340_SetLastError(unsigned long dwErrCode);                                          // 0x0041C340
+void __stdcall SErrSetLastError(unsigned int dwErrCode);                                          // 0x0041C340
 void __stdcall SMemFill(void* pLocation, unsigned int nLength, unsigned char nFillWith);                    // 0x0041D2C0
 void __stdcall SMemZero(void* pDest, unsigned int nSize);                                                   // 0x0041D300
 void __cdecl SMemInitialize();                                                                      // 0x00411CD0
@@ -135,7 +135,7 @@ static D2SMemHeapStrc* __stdcall LockHeap(int* pLockIndex, D2SMemBlockStrc* pBlo
 // 0x004117A0
 static void __stdcall ReportHeapError(const char* szFile, int nLine, unsigned int nError)
 {
-    sub_0041C340_SetLastError(nError);
+    SErrSetLastError(nError);
     if (gnFlag1)
     {
         SErrDisplayError(nError, szFile, nLine, 0, 1, 1);
@@ -1151,7 +1151,7 @@ int __stdcall SMemFindNextBlock(unsigned int hHeap, void* pMemory, void** ppBloc
     VALIDATE(pInfo->size == sizeof(SMEMBLOCKDETAILS));
     if (!nValid)
     {
-        sub_0041C340_SetLastError(0x57);
+        SErrSetLastError(0x57);
         return 0;
     }
 
@@ -1477,7 +1477,7 @@ char* __fastcall GetBlockData(char* pHeader)
 }
 
 // 0x00411740
-static D2SMemHeapStrc* __stdcall sub_00411740_FindFreeBlock(unsigned int dwSize, unsigned int* pHash, int bLeaveIfMissing)
+static D2SMemHeapStrc* __stdcall FindFreeBlock(unsigned int dwSize, unsigned int* pHash, int bLeaveIfMissing)
 {
     const unsigned int nHash = (unsigned char)dwSize;
     EnterCriticalSection(&gaFreeBlockLocks_00776CC0[nHash]);
@@ -1499,7 +1499,7 @@ static D2SMemHeapStrc* __stdcall sub_00411740_FindFreeBlock(unsigned int dwSize,
 
 D2SMemHeapStrc* __stdcall sub_K01_Emit_00411740(unsigned int dwSize, unsigned int* pHash, int bLeaveIfMissing)
 {
-    return sub_00411740_FindFreeBlock(dwSize, pHash, bLeaveIfMissing);
+    return FindFreeBlock(dwSize, pHash, bLeaveIfMissing);
 }
 
 // 0x00411DA0

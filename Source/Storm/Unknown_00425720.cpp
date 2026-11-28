@@ -22,9 +22,9 @@ struct BigNum
     {
         SBigDel(hHandle);
     }
-    BigNum& sub_00425FE0_Apply(const BigNum& tBase, const BigNum& tExponent, const BigNum& tModulus);
-    void* sub_00426010_ReadFill(void* pBuffer, unsigned int nSize);
-    int sub_00426050_Call(const void* pData, unsigned int nSize);
+    BigNum& PowMod(const BigNum& tBase, const BigNum& tExponent, const BigNum& tModulus); // 0x00425FE0
+    void* ToBinary(void* pBuffer, unsigned int nSize); // 0x00426010
+    int FromBinary(const void* pData, unsigned int nSize); // 0x00426050
 };
 
 namespace Crypt
@@ -45,64 +45,64 @@ extern "C" unsigned int __cdecl _rotl(unsigned int nValue, int nShift);
 extern "C" const unsigned char gaSha1Padding[]; // 0x00708890
 
 // 0x00425720
-unsigned int __fastcall sub_00425720_Rotl(unsigned int nValue, int nShift)
+unsigned int __fastcall Rotl(unsigned int nValue, int nShift)
 {
     return _rotl(nValue, nShift);
 }
 
 // 0x00425730
-void __fastcall sub_00425730_Sha1Round0(unsigned int a, unsigned int* b, unsigned int c, unsigned int d, unsigned int* e, unsigned int* w)
+void __fastcall Sha1Round0(unsigned int a, unsigned int* b, unsigned int c, unsigned int d, unsigned int* e, unsigned int* w)
 {
-    *e += sub_00425720_Rotl(a, 5) + ((*b & c) | (~*b & d)) + *w + 0x5A827999;
-    *b = sub_00425720_Rotl(*b, 30);
+    *e += Rotl(a, 5) + ((*b & c) | (~*b & d)) + *w + 0x5A827999;
+    *b = Rotl(*b, 30);
     *w = 0;
 }
 
 // 0x00425770
-void __fastcall sub_00425770_Sha1Round1(unsigned int a, unsigned int* b, unsigned int c, unsigned int d, unsigned int* e, unsigned int* w)
+void __fastcall Sha1Round1(unsigned int a, unsigned int* b, unsigned int c, unsigned int d, unsigned int* e, unsigned int* w)
 {
-    *e += sub_00425720_Rotl(a, 5) + (*b ^ c ^ d) + *w + 0x6ED9EBA1;
-    *b = sub_00425720_Rotl(*b, 30);
+    *e += Rotl(a, 5) + (*b ^ c ^ d) + *w + 0x6ED9EBA1;
+    *b = Rotl(*b, 30);
     *w = 0;
 }
 
 // 0x004257B0
-void __fastcall sub_004257B0_Sha1Round2(unsigned int a, unsigned int* b, unsigned int c, unsigned int d, unsigned int* e, unsigned int* w)
+void __fastcall Sha1Round2(unsigned int a, unsigned int* b, unsigned int c, unsigned int d, unsigned int* e, unsigned int* w)
 {
-    *e += sub_00425720_Rotl(a, 5) + ((*b & c) | (*b & d) | (c & d)) + *w + 0x8F1BBCDC;
-    *b = sub_00425720_Rotl(*b, 30);
+    *e += Rotl(a, 5) + ((*b & c) | (*b & d) | (c & d)) + *w + 0x8F1BBCDC;
+    *b = Rotl(*b, 30);
     *w = 0;
 }
 
 // 0x004257F0
-void __fastcall sub_004257F0_Sha1Round3(unsigned int a, unsigned int* b, unsigned int c, unsigned int d, unsigned int* e, unsigned int* w)
+void __fastcall Sha1Round3(unsigned int a, unsigned int* b, unsigned int c, unsigned int d, unsigned int* e, unsigned int* w)
 {
-    *e += sub_00425720_Rotl(a, 5) + (*b ^ c ^ d) + *w + 0xCA62C1D6;
-    *b = sub_00425720_Rotl(*b, 30);
+    *e += Rotl(a, 5) + (*b ^ c ^ d) + *w + 0xCA62C1D6;
+    *b = Rotl(*b, 30);
     *w = 0;
 }
 
 // 0x00425830
-void __fastcall sub_00425830_LoadBE32(unsigned int* pOut, const unsigned char* pIn)
+void __fastcall LoadBE32(unsigned int* pOut, const unsigned char* pIn)
 {
     *pOut = ((((pIn[0] << 8) | pIn[1]) << 8 | pIn[2]) << 8) | pIn[3];
 }
 
 // 0x00425850
-void __fastcall sub_00425850_Sha1Transform(unsigned int* pState, const unsigned char* pBlock)
+void __fastcall Sha1Transform(unsigned int* pState, const unsigned char* pBlock)
 {
     unsigned int W[80];
     int i;
 
     for (i = 0; i < 16; i++)
     {
-        sub_00425830_LoadBE32(&W[i], pBlock);
+        LoadBE32(&W[i], pBlock);
         pBlock += 4;
     }
 
     do
     {
-        W[i] = sub_00425720_Rotl(W[i - 3] ^ W[i - 8] ^ W[i - 14] ^ W[i - 16], 1);
+        W[i] = Rotl(W[i - 3] ^ W[i - 8] ^ W[i - 14] ^ W[i - 16], 1);
     } while (++i < 80);
 
     unsigned int a = pState[0];
@@ -114,41 +114,41 @@ void __fastcall sub_00425850_Sha1Transform(unsigned int* pState, const unsigned 
     i = 0;
     do
     {
-        sub_00425730_Sha1Round0(a, &b, c, d, &e, &W[i]);
-        sub_00425730_Sha1Round0(e, &a, b, c, &d, &W[i + 1]);
-        sub_00425730_Sha1Round0(d, &e, a, b, &c, &W[i + 2]);
-        sub_00425730_Sha1Round0(c, &d, e, a, &b, &W[i + 3]);
-        sub_00425730_Sha1Round0(b, &c, d, e, &a, &W[i + 4]);
+        Sha1Round0(a, &b, c, d, &e, &W[i]);
+        Sha1Round0(e, &a, b, c, &d, &W[i + 1]);
+        Sha1Round0(d, &e, a, b, &c, &W[i + 2]);
+        Sha1Round0(c, &d, e, a, &b, &W[i + 3]);
+        Sha1Round0(b, &c, d, e, &a, &W[i + 4]);
         i += 5;
     } while (i < 20);
 
     do
     {
-        sub_00425770_Sha1Round1(a, &b, c, d, &e, &W[i]);
-        sub_00425770_Sha1Round1(e, &a, b, c, &d, &W[i + 1]);
-        sub_00425770_Sha1Round1(d, &e, a, b, &c, &W[i + 2]);
-        sub_00425770_Sha1Round1(c, &d, e, a, &b, &W[i + 3]);
-        sub_00425770_Sha1Round1(b, &c, d, e, &a, &W[i + 4]);
+        Sha1Round1(a, &b, c, d, &e, &W[i]);
+        Sha1Round1(e, &a, b, c, &d, &W[i + 1]);
+        Sha1Round1(d, &e, a, b, &c, &W[i + 2]);
+        Sha1Round1(c, &d, e, a, &b, &W[i + 3]);
+        Sha1Round1(b, &c, d, e, &a, &W[i + 4]);
         i += 5;
     } while (i < 40);
 
     do
     {
-        sub_004257B0_Sha1Round2(a, &b, c, d, &e, &W[i]);
-        sub_004257B0_Sha1Round2(e, &a, b, c, &d, &W[i + 1]);
-        sub_004257B0_Sha1Round2(d, &e, a, b, &c, &W[i + 2]);
-        sub_004257B0_Sha1Round2(c, &d, e, a, &b, &W[i + 3]);
-        sub_004257B0_Sha1Round2(b, &c, d, e, &a, &W[i + 4]);
+        Sha1Round2(a, &b, c, d, &e, &W[i]);
+        Sha1Round2(e, &a, b, c, &d, &W[i + 1]);
+        Sha1Round2(d, &e, a, b, &c, &W[i + 2]);
+        Sha1Round2(c, &d, e, a, &b, &W[i + 3]);
+        Sha1Round2(b, &c, d, e, &a, &W[i + 4]);
         i += 5;
     } while (i < 60);
 
     do
     {
-        sub_004257F0_Sha1Round3(a, &b, c, d, &e, &W[i]);
-        sub_004257F0_Sha1Round3(e, &a, b, c, &d, &W[i + 1]);
-        sub_004257F0_Sha1Round3(d, &e, a, b, &c, &W[i + 2]);
-        sub_004257F0_Sha1Round3(c, &d, e, a, &b, &W[i + 3]);
-        sub_004257F0_Sha1Round3(b, &c, d, e, &a, &W[i + 4]);
+        Sha1Round3(a, &b, c, d, &e, &W[i]);
+        Sha1Round3(e, &a, b, c, &d, &W[i + 1]);
+        Sha1Round3(d, &e, a, b, &c, &W[i + 2]);
+        Sha1Round3(c, &d, e, a, &b, &W[i + 3]);
+        Sha1Round3(b, &c, d, e, &a, &W[i + 4]);
         i += 5;
     } while (i < 80);
 
@@ -183,7 +183,7 @@ void Sha1::Append(const unsigned char* pData, unsigned int nLen)
         {
             for (; nUsed < 64; nUsed++)
                 aBlock[nUsed] = pData[nUsed];
-            sub_00425850_Sha1Transform(aState, aBlock);
+            Sha1Transform(aState, aBlock);
             nLen -= 64;
             pData += 64;
             nUsed = 0;
@@ -191,7 +191,7 @@ void Sha1::Append(const unsigned char* pData, unsigned int nLen)
     }
     while (nLen >= 64)
     {
-        sub_00425850_Sha1Transform(aState, pData);
+        Sha1Transform(aState, pData);
         nLen -= 64;
         pData += 64;
     }
@@ -200,7 +200,7 @@ void Sha1::Append(const unsigned char* pData, unsigned int nLen)
 }
 
 // 0x00425E80
-void __fastcall sub_00425E80_PutBE64(unsigned char* pOut, unsigned __int64 nValue)
+void __fastcall PutBE64(unsigned char* pOut, unsigned __int64 nValue)
 {
     pOut[7] = (unsigned char)nValue; nValue >>= 8;
     pOut[6] = (unsigned char)nValue; nValue >>= 8;
@@ -213,7 +213,7 @@ void __fastcall sub_00425E80_PutBE64(unsigned char* pOut, unsigned __int64 nValu
 }
 
 // 0x00425EE0
-void __fastcall sub_00425EE0_PutBE32(unsigned int nValue, unsigned char* pOut)
+void __fastcall PutBE32(unsigned int nValue, unsigned char* pOut)
 {
     pOut[3] = (unsigned char)nValue; nValue >>= 8;
     pOut[2] = (unsigned char)nValue; nValue >>= 8;
@@ -234,7 +234,7 @@ static inline void sub_PutBE64(unsigned char* p, unsigned __int64 v)
 }
 
 // 0x00425F00
-void Sha1::sub_00425F00_Final(unsigned char* pDigest)
+void Sha1::Final(unsigned char* pDigest)
 {
     unsigned char aCount[8];
     sub_PutBE64(aCount, nBitCount);
@@ -252,14 +252,14 @@ void Sha1::sub_00425F00_Final(unsigned char* pDigest)
 }
 
 // 0x00425FE0
-BigNum& BigNum::sub_00425FE0_Apply(const BigNum& tBase, const BigNum& tExponent, const BigNum& tModulus)
+BigNum& BigNum::PowMod(const BigNum& tBase, const BigNum& tExponent, const BigNum& tModulus)
 {
     SBigPowMod(hHandle, tBase.hHandle, tExponent.hHandle, tModulus.hHandle);
     return *this;
 }
 
 // 0x00426010
-void* BigNum::sub_00426010_ReadFill(void* pBuffer, unsigned int nSize)
+void* BigNum::ToBinary(void* pBuffer, unsigned int nSize)
 {
     unsigned int nRead;
     SBigToBinaryBuffer(hHandle, pBuffer, nSize, &nRead);
@@ -269,7 +269,7 @@ void* BigNum::sub_00426010_ReadFill(void* pBuffer, unsigned int nSize)
 }
 
 // 0x00426050
-int BigNum::sub_00426050_Call(const void* pData, unsigned int nSize)
+int BigNum::FromBinary(const void* pData, unsigned int nSize)
 {
     return SBigFromBinary(hHandle, pData, nSize);
 }
@@ -277,18 +277,18 @@ int BigNum::sub_00426050_Call(const void* pData, unsigned int nSize)
 // 0x00426070
 void Crypt::RSA::Prepare(const void* pExponent, unsigned int nExponentSize, const void* pModulus, unsigned int nModulusSize)
 {
-    hExponent.sub_00426050_Call(pExponent, nExponentSize);
-    hModulus.sub_00426050_Call(pModulus, nModulusSize);
+    hExponent.FromBinary(pExponent, nExponentSize);
+    hModulus.FromBinary(pModulus, nModulusSize);
 }
 
 // 0x004260A0
 void Crypt::RSA::Process(void* pBuffer, unsigned int nSize)
 {
     BigNum tInput;
-    tInput.sub_00426050_Call(pBuffer, nSize);
+    tInput.FromBinary(pBuffer, nSize);
     BigNum tOutput;
-    tOutput.sub_00425FE0_Apply(tInput, hModulus, hExponent);
-    tOutput.sub_00426010_ReadFill(pBuffer, nSize);
+    tOutput.PowMod(tInput, hModulus, hExponent);
+    tOutput.ToBinary(pBuffer, nSize);
 }
 
 extern "C" unsigned char gData_00708890[64] = { 0x80 }; // 0x00708890

@@ -16,6 +16,7 @@
 #include "D2ItemsWorld.h"
 #include "D2ClientSound.h"
 #include "D2UnitEventArgs.h"
+#include "D2Packets.h"
 #include "FogApi.h"
 #include "D2CommonApi.h"
 #include "D2CommonApi2.h"
@@ -96,15 +97,6 @@ struct D2ItemSaveStrc;
 
 struct D2GSPacketSrv9D;
 
-struct D2GSPacketSrv9C
-{
-    unsigned char nHeader;
-    unsigned char nAction;
-    unsigned char nPacketSize;
-    unsigned char nComponent;
-    int nItemId;
-    unsigned char pBitstream[244];
-};
 
 
 extern "C" const char gszEmptyAssertText; // 0x006CC837
@@ -347,17 +339,6 @@ static void ITEM_RefreshEquippedItems(D2UnitStrc* pUnit); // 0x004C1350
 
 #pragma pack(push, 1)
 
-struct D2GSPacketSrv9D
-{
-    unsigned char nHeader;
-    unsigned char nAction;
-    unsigned char nPacketSize;
-    unsigned char nComponent;
-    int nItemId;
-    unsigned char nUnitType;
-    int nUnitId;
-    unsigned char pBitstream[244];
-};
 
 #pragma pack(pop)
 

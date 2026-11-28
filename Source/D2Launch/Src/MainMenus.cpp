@@ -273,16 +273,8 @@ int __cdecl MAINMENUS_IsListedCode(); // 0x00432350
 
 extern "C" int __cdecl strcmp(const char* szA, const char* szB);
 
-struct D2LaunchThreadRecordStrc
-{
-    int nData[0x52];
-};
 
-struct D2LaunchPayloadStrc
-{
-    unsigned int nSize;
-    D2LaunchThreadRecordStrc tRecord;
-};
+#include "D2LaunchPayload.h"
 
 
 

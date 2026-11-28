@@ -95,7 +95,6 @@ int __fastcall sub_00451F30_TestUnitFlag(D2UnitStrc* pUnit, int nFlag); // 0x004
 
 void __fastcall UNITMODE_SendUnitActionPacket(int nHeader, D2UnitStrc* pUnit, int nArg1, int nArg2, int nArg3); // 0x00480B40
 
-void __cdecl sub_K04_EmitUse(D2UnitStrc* pUnit);
 
 
 
@@ -723,12 +722,8 @@ static int __stdcall UNITMODE_ChangeModeAndRefresh(D2UnitStrc* pUnit, int nMode)
 // 0x00480E70
 void __fastcall UNITMODE_SetUnitMode(D2UnitStrc* pUnit, int nMode)
 {
-    sub_004E4020_Nop(pUnit);
-    if (pUnit)
-        pUnit->dwFlags &= ~0x40;
-    if (UNITS_ChangeAnimMode(pUnit, nMode))
+    if (UNITMODE_ChangeModeAndRefresh(pUnit, nMode))
     {
-        GFX_RefreshUnitGfx(pUnit, 0);
         UNITMODE_SetModeOverlay(pUnit, nMode);
         UNITSND_UpdateUnitSound(pUnit, nMode, 0);
     }
@@ -742,13 +737,6 @@ void __fastcall UNITMODE_SetUnitModeNoOverlay(D2UnitStrc* pUnit, int nMode)
         pUnit->dwFlags &= ~0x40;
     if (UNITS_ChangeAnimMode(pUnit, nMode))
         GFX_RefreshUnitGfx(pUnit, 0);
-}
-
-int __cdecl sub_K04_EmitSetUnitMode(D2UnitStrc* pUnit, int nMode)
-{
-    const int bOk = UNITMODE_ChangeModeAndRefresh(pUnit, nMode);
-    sub_K04_EmitUse(pUnit);
-    return bOk;
 }
 
 inline int UNITS_GetUnitXPosition(D2UnitStrc* pUnit)

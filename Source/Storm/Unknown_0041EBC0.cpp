@@ -144,7 +144,7 @@ struct CHuffman
     unsigned int nItemsUsed;
     HUFFNODE* pItemsByValue[0x102];
     D2StormHuffCacheStrc cache[128];
-    unsigned int sub_0041EBC0_DecodeOne(D2StormHuffInputStrc*);
+    unsigned int DecodeOne(D2StormHuffInputStrc*); // 0x0041EBC0
     HUFFNODE* First() {
   HUFFNODE* item=head->next->prev;
   return (int)item>0?item:0;
