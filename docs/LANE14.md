@@ -77,6 +77,10 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
 
 ## Findings
 
+- 2026-11-27 19:00 PT, item 6c after the sync to Codex 19eef12 (#493, PR #10): 23 symbols became unresolved,
+  21 of them because a declaration now takes `D2PoolSystemStrc*` where its definition (or another file's
+  declaration) still takes `void*`, the pool retyping part way, **Codex lane 12**: `CodecDecodeDccData`, `DRLGACTIVATE_RoomExPropagateSetStatus`, `DRLGGRID_FillNewCellFlags`, `DRLGROOM_AllocPresetUnit`, `DUNGEON_AllocAct`, `FOG_AsyncDataLoadFileEx`, `FOG_FreePool`, `FOG_FreeServerMemory`, `GFXUTIL_GetNextRosterInfo`, `GfxHashAdd`, `GfxHashFreeEntry`, `LRUCacheInit`, `QUESTRECORD_FreeRecord`, `UNITFINDS_InitializeUnitFindData`, `WAYPOINTS_FreeWaypointData`, `sub_0040B430`, `sub_0040B480`.
+
 - 2026-11-27 18:20 PT, item 6c, link findings at Codex 7442280 (docs/PORT_LINK.md, PR #8), by lane, the
   most-referenced first (number = files that ask; `a` -> `b`: declared a, the definition at its address is b):
   - **Codex lane 12:**
@@ -205,6 +209,11 @@ needs and posts the source fixes for the Codex lanes to make, and it builds the 
   entries after the file merges, worth a fix in Codex.
 
 ## Status
+
+- 2026-11-27 19:00 PT: board check. Codex main moved to 19eef12 (#493): 6b in PR #10, clean, and checked
+  against Game.exe this time: all 1,693 records Codex renders from the user's Game.exe are identical in the
+  engine's copy. 538/538 compile, same warnings; link 4,198 unresolved (pool retyping part way, posted for
+  lane 12). Open: #8, #9, #10.
 
 - 2026-11-27 18:45 PT: 6d in PR #9: docs/REPLAY.md (design: two runners, the oracle maps the player's stock
   Game.exe in-process and calls 1.14d at its addresses; cases rng -> C runtime/Fog -> tables -> drlg -> drops
