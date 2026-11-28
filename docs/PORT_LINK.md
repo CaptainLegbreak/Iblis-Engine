@@ -44,33 +44,33 @@ inline); `import` is empty because the Bink, Smacker and IJL imports link agains
 | interior | 9 | 9 |
 | unsourced_data | 1270 | 768 |
 | no_address | 235 | 172 |
-| duplicate_data | 315 | 129 |
-| local_copy | 711 | 279 |
+| duplicate_data | 187 | 84 |
+| local_copy | 839 | 324 |
 | **total** | 7345 | 4601 |
 
 ## By module (references)
 
 | Module | import | crt | type | ident | plchld | renamed | inter | unsrc | noaddr | dup | copy | total |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| D2Client | 0 | 0 | 763 | 70 | 634 | 57 | 2 | 387 | 132 | 120 | 393 | 2558 |
-| D2Game | 0 | 2 | 1028 | 134 | 408 | 20 | 0 | 123 | 7 | 51 | 99 | 1872 |
-| D2Common | 0 | 0 | 176 | 82 | 158 | 5 | 0 | 263 | 9 | 13 | 83 | 789 |
+| D2Client | 0 | 0 | 763 | 70 | 634 | 57 | 2 | 387 | 132 | 54 | 459 | 2558 |
+| D2Game | 0 | 2 | 1028 | 134 | 408 | 20 | 0 | 123 | 7 | 49 | 101 | 1872 |
+| D2Common | 0 | 0 | 176 | 82 | 158 | 5 | 0 | 263 | 9 | 8 | 88 | 789 |
 | D2Direct3D | 0 | 0 | 79 | 27 | 76 | 0 | 1 | 83 | 2 | 0 | 0 | 268 |
-| D2Launch | 0 | 0 | 79 | 3 | 110 | 7 | 4 | 28 | 7 | 8 | 4 | 250 |
-| Fog | 0 | 0 | 38 | 2 | 11 | 9 | 0 | 89 | 5 | 48 | 39 | 241 |
+| D2Launch | 0 | 0 | 79 | 3 | 110 | 7 | 4 | 28 | 7 | 4 | 8 | 250 |
+| Fog | 0 | 0 | 38 | 2 | 11 | 9 | 0 | 89 | 5 | 32 | 55 | 241 |
 | D2Win | 0 | 0 | 63 | 9 | 63 | 2 | 0 | 65 | 0 | 2 | 4 | 208 |
 | D2Multi | 0 | 0 | 31 | 1 | 109 | 1 | 2 | 35 | 1 | 18 | 4 | 202 |
-| D2CMP | 0 | 0 | 62 | 10 | 11 | 3 | 0 | 46 | 11 | 25 | 14 | 182 |
-| Storm | 0 | 0 | 28 | 2 | 45 | 10 | 0 | 27 | 3 | 8 | 29 | 152 |
+| D2CMP | 0 | 0 | 62 | 10 | 11 | 3 | 0 | 46 | 11 | 0 | 39 | 182 |
+| Storm | 0 | 0 | 28 | 2 | 45 | 10 | 0 | 27 | 3 | 4 | 33 | 152 |
 | D2BNClient | 0 | 0 | 76 | 1 | 34 | 0 | 0 | 33 | 1 | 0 | 4 | 149 |
 | D2Glide | 0 | 0 | 38 | 0 | 19 | 0 | 0 | 36 | 9 | 6 | 6 | 114 |
-| D2Hell | 0 | 0 | 2 | 2 | 19 | 1 | 0 | 6 | 47 | 4 | 5 | 86 |
+| D2Hell | 0 | 0 | 2 | 2 | 19 | 1 | 0 | 6 | 47 | 0 | 9 | 86 |
 | D2Gdi | 0 | 0 | 22 | 0 | 34 | 0 | 0 | 3 | 0 | 0 | 0 | 59 |
 | D2Sound | 0 | 0 | 13 | 3 | 11 | 2 | 0 | 7 | 0 | 2 | 8 | 46 |
 | D2DDraw | 0 | 0 | 24 | 0 | 13 | 0 | 0 | 4 | 0 | 2 | 2 | 45 |
 | D2MCPClient | 0 | 0 | 13 | 0 | 3 | 0 | 0 | 13 | 0 | 2 | 0 | 31 |
 | Bnclient | 0 | 0 | 11 | 0 | 5 | 1 | 0 | 2 | 0 | 0 | 11 | 30 |
-| D2Lang | 0 | 0 | 2 | 1 | 11 | 0 | 0 | 7 | 1 | 2 | 4 | 28 |
+| D2Lang | 0 | 0 | 2 | 1 | 11 | 0 | 0 | 7 | 1 | 0 | 6 | 28 |
 | Main | 0 | 0 | 7 | 0 | 2 | 0 | 0 | 7 | 0 | 4 | 0 | 20 |
 | D2Gfx | 0 | 0 | 1 | 0 | 5 | 0 | 0 | 4 | 0 | 0 | 0 | 10 |
 | D2Net | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 | 0 | 0 | 2 | 4 |
@@ -160,18 +160,18 @@ inline); `import` is empty because the Bink, Smacker and IJL imports link agains
 - `WardenModule::~WardenModule`, in Source/D2CMP/SRC/CelCmp.cpp
 - `WardenModule::~WardenModule`, in Source/D2Client/GAME/Game.cpp
 
-**duplicate_data** (129 symbols)
+**duplicate_data** (84 symbols)
 
-- `D2ChatStormListAStrc::IGNORELIST_ResetStringList`, in Source/D2Client/GAME/Game.cpp, Source/Fog/Src/LogManager.cpp, Source/Storm/SOURCE/SERR.CPP, Source/Storm/SOURCE/SEVT.CPP
-- `??3@YAXPAX@Z`, in Source/D2CMP/SRC/CelCmp.cpp, Source/D2Client/GAME/Game.cpp, Source/Main/Unknown_004053F0.cpp, Source/Storm/SOURCE/SBig.c
-- `D2CommonStringEntryNodeStrc::IGNORELIST_DestroyStringEntryNode`, in Source/D2CMP/SRC/CelCmp.cpp, Source/D2Client/GAME/Game.cpp, Source/D2Common/Chat/Ignorelist.cpp, Source/Storm/SOURCE/SFI
-- `D2ChatStormBaseArrayBStrc::IGNORELIST_GetMappingSlotArrayCount`, in Source/D2CMP/SRC/CelCmp.cpp, Source/D2Client/GAME/Game.cpp, Source/D2Common/Chat/Ignorelist.cpp, Source/Storm/SOURCE/SFI
-- `D2ChatStormListAStrc::IGNORELIST_GetStringListHead`, in Source/D2Client/GAME/Game.cpp, Source/Storm/SOURCE/SERR.CPP, Source/Storm/SOURCE/SEVT.CPP, Source/Storm/SOURCE/SFILE.CPP
-- `D2ChatStormBaseArrayAStrc::IGNORELIST_GetStringSlotArrayCount`, in Source/D2CMP/SRC/CelCmp.cpp, Source/D2Client/GAME/Game.cpp, Source/D2Common/Chat/Ignorelist.cpp, Source/Storm/SOURCE/SFI
 - `gpfnMcpMotdCallback`, in Source/D2Client/CORE/WINMAIN.CPP, Source/D2Client/Unknown_0044B400.cpp, Source/D2Client/Unknown_0044BA20.cpp, Source/D2M
-- `Library::Library`, in Source/D2CMP/SRC/CelCmp.cpp, Source/D2Client/GAME/Game.cpp, Source/D2Client/WARDEN/WardenClient.cpp
+- `gGameListLock`, in Source/D2Game/GAME/Clients.cpp, Source/D2Game/GAME/Game.cpp, Source/D2Game/OBJECTS/objrgn.cpp
+- `gaStateStack`, in Source/D2Client/CORE/WINMAIN.CPP, Source/D2Client/GAME/Game.cpp, Source/D2Client/GAME/Game_0044B7B0.cpp
+- `gbQuestDebug`, in Source/D2Game/MONSTER/MonsterRegion.cpp, Source/D2Game/OBJECTS/objrgn.cpp, Source/D2Game/Quests/QUESTS.CPP
+- `gdwGlobal_00882D14`, in Source/D2Game/GAME/Clients.cpp, Source/D2Game/GAME/Game.cpp, Source/D2Game/OBJECTS/objrgn.cpp
+- `gdwLastClientsUpdateTick`, in Source/D2Game/GAME/Clients.cpp, Source/D2Game/GAME/Game.cpp, Source/D2Game/OBJECTS/objrgn.cpp
+- `gdwPlayerPos`, in Source/D2Game/GAME/Clients.cpp, Source/D2Game/GAME/Game.cpp, Source/D2Game/OBJECTS/objrgn.cpp
+- `gnAct`, in Source/D2Game/GAME/Clients.cpp, Source/D2Game/GAME/Game.cpp, Source/D2Game/OBJECTS/objrgn.cpp
 
-**local_copy** (279 symbols)
+**local_copy** (324 symbols)
 
 - `sub_M106_Emit_0051DC70`, in Source/Bnclient/Unknown_00520DC0.cpp, Source/Bnclient/Unknown_00527BE0.cpp, Source/D2BNClient/BnDownload.cpp, Source/D2B
 - `ACT3Q7_StatusFilterCallback`, in Source/D2Game/Quests/a2q0.cpp, Source/D2Game/Quests/a2q7.cpp, Source/D2Game/Quests/a2q8.cpp, Source/D2Game/Quests/a3q0.c
